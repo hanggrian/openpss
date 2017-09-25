@@ -80,7 +80,7 @@ internal class LoginDialog(override val resources: ResourceBundle, requiredStaff
             }
             when {
                 staff == null -> errorAlert(getString(R.strings.notice_failure_credentials)).showAndWait()
-                staff!!.level < requiredStaffLevel -> errorAlert(R.strings.notice_failure_level).showAndWait()
+                staff!!.level < requiredStaffLevel -> errorAlert(getString(R.strings.notice_failure_level)).showAndWait()
                 else -> {
                     result = staff!!
                     close()
@@ -166,7 +166,7 @@ internal class LoginDialog(override val resources: ResourceBundle, requiredStaff
 
             passwordField.tooltip.textProperty().bind(stringBindingOf(passwordField.textProperty(), passwordToggle.selectedProperty()) {
                 when {
-                    !passwordToggle.isSelected -> "Toggle button to see password."
+                    !passwordToggle.isSelected -> getString(R.strings.notice_failure_credentials)
                     else -> passwordField.text
                 }
             })

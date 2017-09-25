@@ -6,6 +6,8 @@ import com.wijayaprinting.javafx.io.PreferencesFile
 import com.wijayaprinting.mysql.dao.Staff
 import javafx.application.Application
 import javafx.stage.Stage
+import org.apache.commons.lang3.SystemUtils
+import java.awt.Image
 
 /**
  * @author Hendra Anggrian (hendraanggrian@gmail.com)
@@ -26,5 +28,19 @@ abstract class WijayaPrintingApp : Application() {
                 .showAndWait()
                 .filter { it is Staff }
                 .ifPresent { launch(it as Staff, primaryStage) }
+    }
+
+    protected fun setImageOnOSX(image: Image) {
+        if (SystemUtils.IS_OS_MAC_OSX) {
+            Class.forName("com.apple.eawt.Application")
+                    .newInstance()
+                    .javaClass
+                    .getMethod("getApplication")
+                    .invoke(null).let { application ->
+                application.javaClass
+                        .getMethod("setDockIconImage", java.awt.Image::class.java)
+                        .invoke(application, image)
+            }
+        }
     }
 }

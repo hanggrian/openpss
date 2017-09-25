@@ -89,13 +89,19 @@ internal class LoginDialog(override val resources: ResourceBundle, requiredStaff
         }
         dialogPane.lookupButton(tryButton).disableProperty().bind(expandableContent.validBinding)
         dialogPane.lookupButton(loginButton).disableProperty().bind(content.validBinding or expandableContent.validBinding)
-        runLater { content.staffField.requestFocus() }
 
         content.staffField.textProperty().bindBidirectional(mysqlFile.staff)
         expandableContent.ipField.textProperty().bindBidirectional(mysqlFile.ip)
         expandableContent.portField.textProperty().bindBidirectional(mysqlFile.port)
         expandableContent.userField.textProperty().bindBidirectional(mysqlFile.user)
         expandableContent.passwordField.textProperty().bindBidirectional(mysqlFile.password)
+
+        runLater {
+            when {
+                content.staffField.text.isEmpty() -> content.staffField.requestFocus()
+                else -> content.passwordField.requestFocus()
+            }
+        }
     }
 
     inner class Content : GridPane() {

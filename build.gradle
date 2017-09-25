@@ -1,0 +1,74 @@
+buildscript {
+    ext.versions = [
+            release  : '0.1',
+            // main
+            mysql    : '0.0.3',
+            kotlin   : '1.1.50',
+            kotfx    : '0.4.3',
+            lang3    : '3.6',
+            validator: '1.6',
+            // test
+            junit    : '4.12'
+    ]
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin"
+        classpath "com.hendraanggrian:rsync:0.3"
+        classpath 'com.novoda:bintray-release:0.5.0'
+    }
+}
+
+group 'com.wijayaprinting'
+version versions.release
+
+apply plugin: 'java-library'
+apply plugin: 'kotlin'
+apply plugin: 'rsync'
+apply plugin: 'com.novoda.bintray-release'
+
+rsync {
+    packageName = "com.wijayaprinting.javafx"
+    leadingSlash = true
+}
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+
+repositories {
+    jcenter()
+    maven { url 'https://dl.bintray.com/hendraanggrian/maven' }
+    maven { url 'https://dl.bintray.com/kotlin/exposed/' }
+}
+
+dependencies {
+    implementation "com.wijayaprinting:mysql:$versions.mysql"
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre8:$versions.kotlin"
+    implementation "com.hendraanggrian:kotfx:$versions.kotfx"
+    implementation "org.apache.commons:commons-lang3:$versions.lang3"
+    implementation "commons-validator:commons-validator:$versions.validator"
+    testImplementation "junit:junit:$versions.junit"
+}
+
+compileKotlin {
+    kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8
+}
+
+compileTestKotlin {
+    kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8
+}
+
+publish {
+    userOrg = 'hendraanggrian'
+    groupId = 'com.wijayaprinting'
+    artifactId = 'javafx'
+    publishVersion = versions.release
+    desc = 'Backbone of JavaFX application.'
+    website = 'https://github.com/WijayaPrinting/wp-javafx'
+}
+
+/** QUICK LINT CHECK BEFORE UPLOAD
+ ./gradlew clean build
+ ./gradlew bintrayUpload -PdryRun=false -PbintrayUser=hendraanggrian -PbintrayKey=
+ */

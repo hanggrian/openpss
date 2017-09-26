@@ -8,6 +8,7 @@ import javafx.application.Application
 import javafx.stage.Stage
 import org.apache.commons.lang3.SystemUtils
 import java.awt.Image
+import java.awt.Toolkit
 
 /**
  * @author Hendra Anggrian (hendraanggrian@gmail.com)
@@ -23,7 +24,10 @@ abstract class WijayaPrintingApp : Application() {
     }
 
     override fun start(primaryStage: Stage) {
-        val resources = Language.parse(PreferencesFile().language.value).getResources("strings", WijayaPrintingApp::class.java.classLoader)
+        primaryStage.icons.add(javafx.scene.image.Image(R.png.ic_launcher_512px))
+        setImageOnOSX(Toolkit.getDefaultToolkit().getImage(WijayaPrintingApp::class.java.getResource(R.png.ic_launcher_512px)))
+
+        val resources = Language.parse(PreferencesFile().language.value).getResources("strings")
         LoginDialog(resources, requiredStaffLevel)
                 .showAndWait()
                 .filter { it is Staff }

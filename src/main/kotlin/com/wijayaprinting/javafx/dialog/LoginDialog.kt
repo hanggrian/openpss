@@ -12,7 +12,10 @@ import com.wijayaprinting.mysql.dao.Staffs
 import javafx.event.ActionEvent
 import javafx.geometry.Pos
 import javafx.scene.control.*
+import javafx.scene.image.Image
+import javafx.scene.image.ImageView
 import javafx.scene.layout.GridPane
+import javafx.stage.Stage
 import kotfx.bindings.not
 import kotfx.bindings.or
 import kotfx.bindings.stringBindingOf
@@ -34,37 +37,21 @@ internal class LoginDialog(override val resources: ResourceBundle, requiredStaff
 
     val content = Content()
     val expandableContent = ExpandableContent()
-    val tryButton = ButtonType(getString(R.strings.try_connect), ButtonBar.ButtonData.CANCEL_CLOSE)
+    val aboutButton = ButtonType("About", ButtonBar.ButtonData.CANCEL_CLOSE)
     val loginButton = ButtonType(getString(R.strings.login), ButtonBar.ButtonData.OK_DONE)
 
     init {
-        val languageComboBox = ComboBox<Language>(Language.listAll())
-        languageComboBox.selectionModel.select(Language.parse(resources.locale.language))
-        languageComboBox.selectionModel.selectedItemProperty().addListener { _, _, newValue ->
-            PreferencesFile().apply { language.set(newValue.locale) }.save()
-            close()
-            infoAlert(getString(R.strings.notice_restart)).showAndWait()
-            exitFXApplication()
-        }
-
         title = getString(R.strings.wp_login)
         headerText = getString(R.strings.wp_login)
-        graphic = languageComboBox
+        graphic = ImageView(Image(R.png.ic_launcher_96px))
 
+        (dialogPane.scene.window as Stage).icons.add(Image(R.png.ic_launcher_96px))
         dialogPane.content = content
         dialogPane.expandableContent = expandableContent
-        dialogPane.buttonTypes.addAll(tryButton, loginButton)
 
-        dialogPane.lookupButton(tryButton).addEventFilter(ActionEvent.ACTION) { event ->
-            mysqlFile.save()
+        dialogPane.buttonTypes.addAll(aboutButton, loginButton)
+        dialogPane.lookupButton(aboutButton).addEventFilter(ActionEvent.ACTION) { event ->
             event.consume()
-            try {
-                expandableContent.connect()
-                transaction { }
-                infoAlert(getString(R.strings.notice_success_connection)).show()
-            } catch (e: Exception) {
-                errorAlert(e.message!!).show()
-            }
         }
         dialogPane.lookupButton(loginButton).addEventFilter(ActionEvent.ACTION) { event ->
             mysqlFile.save()
@@ -87,7 +74,7 @@ internal class LoginDialog(override val resources: ResourceBundle, requiredStaff
                 }
             }
         }
-        dialogPane.lookupButton(tryButton).disableProperty().bind(expandableContent.validBinding)
+        dialogPane.lookupButton(aboutButton).disableProperty().bind(expandableContent.validBinding)
         dialogPane.lookupButton(loginButton).disableProperty().bind(content.validBinding or expandableContent.validBinding)
 
         content.staffField.textProperty().bindBidirectional(mysqlFile.staff)
@@ -105,6 +92,17 @@ internal class LoginDialog(override val resources: ResourceBundle, requiredStaff
     }
 
     inner class Content : GridPane() {
+        val languageLabel = Label("Language")
+        val languageComboBox = ComboBox<Language>(Language.listAll()).apply {
+            maxWidth = Double.MAX_VALUE
+            selectionModel.select(Language.parse(resources.locale.language))
+            selectionModel.selectedItemProperty().addListener { _, _, newValue ->
+                PreferencesFile().apply { language.set(newValue.locale) }.save()
+                close()
+                infoAlert(getString(R.strings.notice_restart)).showAndWait()
+                exitFXApplication()
+            }
+        }
         val staffLabel = Label(getString(R.strings.staff))
         val staffField = TextField2(getString(R.strings.idorname))
         val passwordLabel = Label(getString(R.strings.password))
@@ -117,11 +115,13 @@ internal class LoginDialog(override val resources: ResourceBundle, requiredStaff
             hgap = 8.0
             vgap = 8.0
 
-            add(staffLabel, 0, 0)
-            add(staffField, 1, 0, 2, 1)
-            add(passwordLabel, 0, 1)
-            add(passwordField, 1, 1)
-            add(passwordToggle, 2, 1)
+            add(languageLabel, 0, 0)
+            add(languageComboBox, 1, 0, 2, 1)
+            add(staffLabel, 0, 1)
+            add(staffField, 1, 1, 2, 1)
+            add(passwordLabel, 0, 2)
+            add(passwordField, 1, 2)
+            add(passwordToggle, 2, 2)
 
             passwordField.tooltip.textProperty().bind(stringBindingOf(passwordField.textProperty(), passwordToggle.selectedProperty()) {
                 when {
@@ -149,6 +149,19 @@ internal class LoginDialog(override val resources: ResourceBundle, requiredStaff
         val passwordLabel = Label("Password")
         val passwordField = PasswordField2("Password").apply { tooltip = Tooltip() }
         val passwordToggle = ImageToggleButton(R.png.ic_visibility_18dp, R.png.ic_visibility_off_18dp)
+        val tryButton = Button("Try connection").apply {
+            maxWidth = Double.MAX_VALUE
+            setOnAction {
+                mysqlFile.save()
+                try {
+                    expandableContent.connect()
+                    transaction { }
+                    infoAlert(getString(R.strings.notice_success_connection)).show()
+                } catch (e: Exception) {
+                    errorAlert(e.message!!).show()
+                }
+            }
+        }
 
         val validBinding = not(ipField.validProperty) or
                 portField.textProperty().isEmpty or
@@ -169,6 +182,7 @@ internal class LoginDialog(override val resources: ResourceBundle, requiredStaff
             add(passwordLabel, 0, 4)
             add(passwordField, 1, 4)
             add(passwordToggle, 2, 4)
+            add(tryButton, 1, 5, 2, 1)
 
             passwordField.tooltip.textProperty().bind(stringBindingOf(passwordField.textProperty(), passwordToggle.selectedProperty()) {
                 when {

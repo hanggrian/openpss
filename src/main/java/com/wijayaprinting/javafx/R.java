@@ -1,4 +1,6 @@
-// rsync generated this class at 2017-09-26T05:15:54.751 from:
+// rsync generated this class at 2017-09-26T08:04:13.307 from:
+// ic_launcher_512px.png
+// ic_launcher_96px.png
 // ic_visibility_18dp.png
 // ic_visibility_off_18dp.png
 // strings_en.properties
@@ -12,6 +14,10 @@ public final class R {
   }
 
   public static final class png {
+    public static final String ic_launcher_512px = "/ic_launcher_512px.png";
+
+    public static final String ic_launcher_96px = "/ic_launcher_96px.png";
+
     public static final String ic_visibility_18dp = "/ic_visibility_18dp.png";
 
     public static final String ic_visibility_off_18dp = "/ic_visibility_off_18dp.png";

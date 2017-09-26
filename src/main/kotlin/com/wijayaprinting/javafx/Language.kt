@@ -11,6 +11,8 @@ data class Language(val locale: String, val name: String) {
 
     override fun toString(): String = name
 
+    fun getResources(name: String): ResourceBundle = ResourceBundle.getBundle(name, Locale(locale))
+
     fun getResources(name: String, classLoader: ClassLoader): ResourceBundle = ResourceBundle.getBundle(name, Locale(locale), classLoader)
 
     companion object {

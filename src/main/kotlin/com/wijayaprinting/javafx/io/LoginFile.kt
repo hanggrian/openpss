@@ -5,7 +5,7 @@ import javafx.beans.property.SimpleStringProperty
 /**
  * @author Hendra Anggrian (hendraanggrian@gmail.com)
  */
-class LoginFile : PropertiesFile(".wp-login") {
+class LoginFile : PropertiesFile(".login") {
 
     companion object {
         private const val STAFF = "staff"

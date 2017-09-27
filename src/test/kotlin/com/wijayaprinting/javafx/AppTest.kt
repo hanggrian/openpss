@@ -7,7 +7,7 @@ import kotfx.dialogs.alert
 /**
  * @author Hendra Anggrian (hendraanggrian@gmail.com)
  */
-class AppTest : WijayaPrintingApp() {
+class AppTest : WPApp() {
 
     companion object {
         @JvmStatic

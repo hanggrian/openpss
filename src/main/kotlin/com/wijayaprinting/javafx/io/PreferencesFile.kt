@@ -6,7 +6,7 @@ import javafx.beans.property.SimpleStringProperty
 /**
  * @author Hendra Anggrian (hendraanggrian@gmail.com)
  */
-class PreferencesFile : PropertiesFile(".wp-preferences") {
+class PreferencesFile : PropertiesFile(".preferences") {
 
     companion object {
         private const val LANGUAGE = "language"

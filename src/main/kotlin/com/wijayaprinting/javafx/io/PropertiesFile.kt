@@ -6,7 +6,7 @@ import java.util.*
 /**
  * @author Hendra Anggrian (hendraanggrian@gmail.com)
  */
-abstract class PropertiesFile(child: String) : File(HomeFolder(), child) {
+abstract class PropertiesFile(child: String) : File(WPFolder(), child) {
 
     abstract fun save(comments: String?)
 
@@ -24,18 +24,16 @@ abstract class PropertiesFile(child: String) : File(HomeFolder(), child) {
     }
 
     @JvmOverloads
-    protected fun getString(key: String, defaultValue: String? = null) = when (defaultValue) {
+    protected fun getString(key: String, defaultValue: String? = null): String = when (defaultValue) {
         null -> properties.getProperty(key)
         else -> properties.getProperty(key, defaultValue)
     }
 
-    protected fun setString(key: String, value: String) = properties.setProperty(key, value)
+    protected fun setString(key: String, value: String): Any = properties.setProperty(key, value)
 
-    protected fun store(comments: String? = null) {
-        outputStream().let {
-            properties.store(it, comments)
-            it.close()
-        }
+    protected fun store(comments: String? = null): Unit = outputStream().let {
+        properties.store(it, comments)
+        it.close()
     }
 
     private fun createNewFileIfNotExists() {

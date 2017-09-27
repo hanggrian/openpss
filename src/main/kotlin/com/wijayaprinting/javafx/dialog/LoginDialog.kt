@@ -59,7 +59,7 @@ internal class LoginDialog(override val resources: ResourceBundle, requiredStaff
                     .ifPresent {
                         PreferencesFile().apply { language.set(it.locale) }.save()
                         close()
-                        infoAlert(getString(R.strings.notice_restart)).showAndWait()
+                        infoAlert(getString(R.strings._notice_language_changed)).showAndWait()
                         exitFXApplication()
                     }
         }
@@ -76,8 +76,8 @@ internal class LoginDialog(override val resources: ResourceBundle, requiredStaff
                 if (staff == null) staff = Staff.find { Staffs.name eq name and correctPassword }.firstOrNull()
             }
             when {
-                staff == null -> errorAlert(getString(R.strings.notice_failure_credentials)).showAndWait()
-                staff!!.level < requiredStaffLevel -> errorAlert(getString(R.strings.notice_failure_level)).showAndWait()
+                staff == null -> errorAlert(getString(R.strings._error_login_credentials)).showAndWait()
+                staff!!.level < requiredStaffLevel -> errorAlert(getString(R.strings._error_login_level)).showAndWait()
                 else -> {
                     result = staff!!
                     close()
@@ -148,7 +148,7 @@ internal class LoginDialog(override val resources: ResourceBundle, requiredStaff
                 try {
                     expandableContent.connect()
                     transaction { }
-                    infoAlert(getString(R.strings.notice_success_connection)).show()
+                    infoAlert(getString(R.strings._notice_connection_success)).show()
                 } catch (e: Exception) {
                     errorAlert(e.message!!).show()
                 }

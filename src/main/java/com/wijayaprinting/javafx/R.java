@@ -1,4 +1,4 @@
-// rsync generated this class at 2017-09-27T16:21:55.128 from:
+// rsync generated this class at 2017-09-27T21:55:41.377 from:
 // ic_launcher_512px.png
 // ic_launcher_96px.png
 // ic_visibility_18dp.png
@@ -54,27 +54,27 @@ public final class R {
   }
 
   public static final class strings {
-    public static final String notice_failure_level = "notice_failure_level";
-
     public static final String test_connection = "test_connection";
 
     public static final String wp_login = "wp_login";
 
+    public static final String _error_login_level = "_error_login_level";
+
     public static final String language = "language";
+
+    public static final String _notice_connection_success = "_notice_connection_success";
+
+    public static final String _error_login_credentials = "_error_login_credentials";
 
     public static final String idorname = "idorname";
 
     public static final String login = "login";
 
-    public static final String notice_failure_credentials = "notice_failure_credentials";
-
     public static final String password = "password";
-
-    public static final String notice_success_connection = "notice_success_connection";
 
     public static final String staff = "staff";
 
-    public static final String notice_restart = "notice_restart";
+    public static final String _notice_language_changed = "_notice_language_changed";
 
     private strings() {
     }

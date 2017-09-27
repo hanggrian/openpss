@@ -7,7 +7,7 @@ import kotfx.bindings.intBindingOf
 /**
  * @author Hendra Anggrian (hendraanggrian@gmail.com)
  */
-class IntField : TextField2 {
+class IntField : PromptTextField {
 
     val valueProperty = SimpleIntegerProperty().apply { bind(intBindingOf(textProperty()) { if (text.isNotEmpty()) text.toInt() else text.length }) }
     val value = valueProperty.value

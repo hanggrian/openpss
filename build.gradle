@@ -1,10 +1,14 @@
+def config = new Properties()
+def stream = new FileInputStream('src/main/resources/javafx.properties')
+config.load(stream)
+stream.close()
+
 buildscript {
     ext.versions = [
-            release  : '0.1',
             // main
-            mysql    : '0.0.3',
+            mysql    : '0.0.4',
             kotlin   : '1.1.50',
-            kotfx    : '0.4.3',
+            kotfx    : '0.4.4',
             lang3    : '3.6',
             validator: '1.6',
             // test
@@ -15,13 +19,13 @@ buildscript {
     }
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin"
-        classpath "com.hendraanggrian:rsync:0.3"
+        classpath 'com.hendraanggrian:rsync:0.4'
         classpath 'com.novoda:bintray-release:0.5.0'
     }
 }
 
-group 'com.wijayaprinting'
-version versions.release
+group config.getProperty('group')
+version config.getProperty('version')
 
 apply plugin: 'java-library'
 apply plugin: 'kotlin'
@@ -29,7 +33,7 @@ apply plugin: 'rsync'
 apply plugin: 'com.novoda.bintray-release'
 
 rsync {
-    packageName = "com.wijayaprinting.javafx"
+    packageName = config.getProperty('group') + '.' + config.getProperty('artifact')
     leadingSlash = true
 }
 
@@ -61,11 +65,11 @@ compileTestKotlin {
 
 publish {
     userOrg = 'hendraanggrian'
-    groupId = 'com.wijayaprinting'
-    artifactId = 'javafx'
-    publishVersion = versions.release
-    desc = 'Backbone of JavaFX application.'
-    website = 'https://github.com/WijayaPrinting/wp-javafx'
+    groupId = config.getProperty('group')
+    artifactId = config.getProperty('artifact')
+    publishVersion = config.getProperty('version')
+    desc = config.getProperty('desc')
+    website = config.getProperty('website')
 }
 
 /** QUICK LINT CHECK BEFORE UPLOAD

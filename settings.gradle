@@ -1,6 +1,1 @@
-def config = new Properties()
-def stream = new FileInputStream('src/main/resources/javafx.properties')
-config.load(stream)
-stream.close()
-
-rootProject.name = config.getProperty('artifact')
+rootProject.name = 'javafx'

@@ -4,8 +4,8 @@
 // javafx.properties
 // ic_visibility_off_18dp.png
 // ic_launcher_96px.png
-// strings_en.properties
-// strings_in.properties
+// javafx_en.properties
+// javafx_in.properties
 package com.wijayaprinting.javafx;
 
 import java.lang.String;
@@ -45,9 +45,9 @@ public final class R {
   public static final class properties {
     public static final String javafx = "/javafx.properties";
 
-    public static final String strings_en = "/strings_en.properties";
+    public static final String strings_en = "/javafx_en.properties";
 
-    public static final String strings_in = "/strings_in.properties";
+    public static final String strings_in = "/javafx_in.properties";
 
     private properties() {
     }

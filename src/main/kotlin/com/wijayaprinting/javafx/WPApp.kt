@@ -1,7 +1,7 @@
 package com.wijayaprinting.javafx
 
 import com.wijayaprinting.javafx.dialog.LoginDialog
-import com.wijayaprinting.javafx.io.PreferencesFile
+import com.wijayaprinting.javafx.io.JavaFXFile
 import javafx.application.Application
 import javafx.scene.image.Image
 import javafx.stage.Stage
@@ -21,7 +21,7 @@ abstract class WPApp : Application() {
         primaryStage.icons.add(Image(R.png.ic_launcher_512px))
         setImageOnOSX(Toolkit.getDefaultToolkit().getImage(WPApp::class.java.getResource(R.png.ic_launcher_512px)))
 
-        val resources = Language.parse(PreferencesFile()[PreferencesFile.LANGUAGE].value).getResources("strings")
+        val resources = Language.parse(JavaFXFile()[JavaFXFile.LANGUAGE].value).getResources("javafx")
         LoginDialog(resources, loginTitle)
                 .showAndWait()
                 .filter { it is String }

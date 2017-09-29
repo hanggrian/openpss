@@ -1,7 +1,5 @@
 package com.wijayaprinting.javafx.io
 
-import com.wijayaprinting.javafx.utils.useInputStream
-import com.wijayaprinting.javafx.utils.useOutputStream
 import javafx.beans.property.SimpleStringProperty
 import javafx.beans.property.StringProperty
 import java.io.File
@@ -11,16 +9,16 @@ import kotlin.collections.HashMap
 /**
  * @author Hendra Anggrian (hendraanggrian@gmail.com)
  */
-abstract class PropertiesFile(child: String, vararg keys: Any) : File(WPFolder(), child), Map<String, StringProperty> {
+abstract class WPFile(child: String, vararg keys: Any) : File(WPFolder(), child), Map<String, StringProperty> {
 
-    /** Properties reference to get, set, and finally save into this mysqlFile. */
+    /** Properties reference to get, set, and finally save into this file. */
     private val properties = Properties()
     /** Actual map that stores properties for bindings. */
     private val map = HashMap<String, StringProperty>()
 
     init {
         createNewFileIfNotExists()
-        useInputStream { properties.load(it) }
+        inputStream().use { properties.load(it) }
         keys.forEach {
             when (it) {
                 is String -> map.put(it, SimpleStringProperty(properties.getProperty(it)))
@@ -37,7 +35,7 @@ abstract class PropertiesFile(child: String, vararg keys: Any) : File(WPFolder()
     @JvmOverloads
     fun save(comments: String? = null) {
         map.keys.forEach { properties.setProperty(it, map[it]!!.value) }
-        useOutputStream { properties.store(it, comments) }
+        outputStream().use { properties.store(it, comments) }
     }
 
     private fun createNewFileIfNotExists() {

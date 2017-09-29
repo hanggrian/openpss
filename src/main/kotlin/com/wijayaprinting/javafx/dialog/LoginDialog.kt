@@ -4,12 +4,11 @@ import com.wijayaprinting.javafx.Language
 import com.wijayaprinting.javafx.R
 import com.wijayaprinting.javafx.Resourced
 import com.wijayaprinting.javafx.control.*
-import com.wijayaprinting.javafx.io.MySQLFile
-import com.wijayaprinting.javafx.io.MySQLFile.Companion.IP
-import com.wijayaprinting.javafx.io.MySQLFile.Companion.PORT
-import com.wijayaprinting.javafx.io.MySQLFile.Companion.USERNAME
-import com.wijayaprinting.javafx.io.PreferencesFile
-import com.wijayaprinting.javafx.io.PreferencesFile.Companion.LANGUAGE
+import com.wijayaprinting.javafx.io.JavaFXFile
+import com.wijayaprinting.javafx.io.JavaFXFile.Companion.IP
+import com.wijayaprinting.javafx.io.JavaFXFile.Companion.LANGUAGE
+import com.wijayaprinting.javafx.io.JavaFXFile.Companion.PORT
+import com.wijayaprinting.javafx.io.JavaFXFile.Companion.USERNAME
 import com.wijayaprinting.javafx.utils.safeTransaction
 import com.wijayaprinting.mysql.MySQL
 import javafx.event.ActionEvent
@@ -32,8 +31,7 @@ import java.util.*
  */
 internal class LoginDialog(override val resources: ResourceBundle, title: String) : Dialog<Any>(), Resourced {
 
-    val mysqlFile = MySQLFile()
-    val preferencesFile = PreferencesFile()
+    val file = JavaFXFile()
 
     val content = Content()
     val expandableContent = ExpandableContent()
@@ -53,12 +51,12 @@ internal class LoginDialog(override val resources: ResourceBundle, title: String
         dialogPane.buttonTypes.addAll(languageButton, loginButton)
         dialogPane.lookupButton(languageButton).addEventFilter(ActionEvent.ACTION) { event ->
             event.consume()
-            val initialLanguage = Language.parse(preferencesFile[LANGUAGE].value)
+            val initialLanguage = Language.parse(file[LANGUAGE].value)
             choiceDialog<Language>(getString(R.strings.language), initialLanguage, *Language.listAll().toTypedArray())
                     .showAndWait()
                     .filter { it != initialLanguage }
                     .ifPresent {
-                        preferencesFile.apply { get(LANGUAGE).set(it.locale) }.save()
+                        file.apply { get(LANGUAGE).set(it.locale) }.save()
                         close()
                         infoAlert(getString(R.strings._notice_language_changed)).showAndWait()
                         exitFXApplication()
@@ -66,7 +64,7 @@ internal class LoginDialog(override val resources: ResourceBundle, title: String
         }
         dialogPane.lookupButton(loginButton).addEventFilter(ActionEvent.ACTION) { event ->
             event.consume()
-            mysqlFile.save()
+            file.save()
             connect()
             if (safeTransaction { }) {
                 result = content.usernameField.text
@@ -78,9 +76,9 @@ internal class LoginDialog(override val resources: ResourceBundle, title: String
                 or not(expandableContent.ipField.validProperty)
                 or expandableContent.portField.textProperty().isEmpty)
 
-        content.usernameField.textProperty().bindBidirectional(mysqlFile[USERNAME])
-        expandableContent.ipField.textProperty().bindBidirectional(mysqlFile[IP])
-        expandableContent.portField.textProperty().bindBidirectional(mysqlFile[PORT])
+        content.usernameField.textProperty().bindBidirectional(file[USERNAME])
+        expandableContent.ipField.textProperty().bindBidirectional(file[IP])
+        expandableContent.portField.textProperty().bindBidirectional(file[PORT])
 
         runLater {
             if (content.usernameField.text.isEmpty()) content.usernameField.requestFocus()

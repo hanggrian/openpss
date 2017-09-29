@@ -2,20 +2,18 @@ buildscript {
     ext.versions = [
             release: '0.2',
             // main
-            mysql  : '0.0.7',
+            mysql  : '0.0.8',
             kotlin : '1.1.51',
             kotfx  : '0.4.4',
             commons: [
                     lang3    : '3.6',
-                    validator: '1.6',
-                    io       : '2.5'
+                    validator: '1.6'
             ],
             // test
             junit  : '4.12'
     ]
     repositories {
         jcenter()
-        maven { url 'https://dl.bintray.com/hendraanggrian/maven' }
     }
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin"
@@ -64,7 +62,6 @@ dependencies {
     implementation "commons-validator:commons-validator:$versions.commons.validator"
 
     testImplementation "junit:junit:$versions.junit"
-    testImplementation "commons-io:commons-io:$versions.commons.io"
 }
 
 compileKotlin { kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8 }

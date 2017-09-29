@@ -21,9 +21,11 @@ import javafx.scene.text.Font
 import kotfx.bindings.bindingOf
 import kotfx.bindings.not
 import kotfx.bindings.or
+import kotfx.dialogs.errorAlert
 import kotfx.dialogs.infoAlert
 import kotfx.exitFXApplication
 import kotfx.runLater
+import java.net.InetAddress
 import java.util.*
 
 /**
@@ -31,18 +33,21 @@ import java.util.*
  */
 internal class LoginDialog(override val resources: ResourceBundle, headerText: String, graphic: Node) : Dialog<Any>(), Resourced {
 
+    companion object {
+        private const val IP_LOOKUP_TIMEOUT = 3000
+    }
+
     val file = JavaFXFile()
 
     val content = Content()
     val expandableContent = ExpandableContent()
-    val testButton = ButtonType("Test", ButtonBar.ButtonData.CANCEL_CLOSE)
     val loginButton = ButtonType(getString(R.javafx.login), ButtonBar.ButtonData.OK_DONE)
 
     init {
         this.headerText = "Wijaya Printing\n$headerText"
-        this.graphic = VBox(graphic,
-                Label("MySQL ${com.wijayaprinting.mysql.BuildConfig.VERSION}").apply { font = Font(9.0) },
-                Label("JavaFX ${com.wijayaprinting.javafx.BuildConfig.VERSION}").apply { font = Font(9.0) })
+        this.graphic = VBox(
+                Label("MySQL ${com.wijayaprinting.mysql.BuildConfig.VERSION} | JavaFX ${com.wijayaprinting.javafx.BuildConfig.VERSION}").apply { font = Font(9.0) },
+                graphic)
                 .apply { alignment = Pos.CENTER_RIGHT }
         title = "Login"
         isResizable = false
@@ -50,17 +55,23 @@ internal class LoginDialog(override val resources: ResourceBundle, headerText: S
         dialogPane.content = content
         dialogPane.expandableContent = expandableContent
 
-        dialogPane.buttonTypes.addAll(testButton, loginButton)
-        dialogPane.lookupButton(testButton).addEventFilter(ActionEvent.ACTION) { event ->
-            event.consume()
-        }
+        dialogPane.buttonTypes.addAll(ButtonType.CANCEL, loginButton)
         dialogPane.lookupButton(loginButton).addEventFilter(ActionEvent.ACTION) { event ->
             event.consume()
             file.save()
-            connect()
-            if (safeTransaction { }) {
-                result = content.usernameField.text
-                close()
+            when (InetAddress.getByName(expandableContent.ipField.text).isReachable(IP_LOOKUP_TIMEOUT)) {
+                false -> errorAlert("IP address unreachable.").showAndWait()
+                true -> {
+                    MySQL.connect(
+                            expandableContent.ipField.text,
+                            expandableContent.portField.text,
+                            content.usernameField.text,
+                            content.passwordField.text)
+                    if (safeTransaction { }) {
+                        result = content.usernameField.text
+                        close()
+                    }
+                }
             }
         }
         dialogPane.lookupButton(loginButton).disableProperty().bind(content.usernameField.textProperty().isEmpty
@@ -78,12 +89,6 @@ internal class LoginDialog(override val resources: ResourceBundle, headerText: S
             dialogPane.isExpanded = !expandableContent.ipField.isValid || expandableContent.portField.text.isEmpty()
         }
     }
-
-    fun connect() = MySQL.connect(
-            expandableContent.ipField.text,
-            expandableContent.portField.text,
-            content.usernameField.text,
-            content.passwordField.text)
 
     inner class Content : GridPane() {
         val languageLabel = Label(getString(R.javafx.language))

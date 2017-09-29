@@ -34,7 +34,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Gradle: com.wijayaprinting:mysql:0.0.7" level="project" />
+    <orderEntry type="library" name="Gradle: com.wijayaprinting:mysql:0.0.8" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jre8:1.1.51" level="project" />
     <orderEntry type="library" name="Gradle: com.hendraanggrian:kotfx:0.4.4" level="project" />
     <orderEntry type="library" name="Gradle: org.apache.commons:commons-lang3:3.6" level="project" />

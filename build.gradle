@@ -6,7 +6,7 @@ stream.close()
 buildscript {
     ext.versions = [
             // main
-            mysql    : '0.0.4',
+            mysql    : '0.0.6',
             kotlin   : '1.1.50',
             kotfx    : '0.4.4',
             lang3    : '3.6',

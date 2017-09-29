@@ -10,7 +10,7 @@ import kotfx.bindings.intBindingOf
 class IntField : PromptTextField {
 
     val valueProperty = SimpleIntegerProperty().apply { bind(intBindingOf(textProperty()) { if (text.isNotEmpty()) text.toInt() else text.length }) }
-    val value = valueProperty.value
+    val value get() = valueProperty.value
 
     constructor() : super()
 

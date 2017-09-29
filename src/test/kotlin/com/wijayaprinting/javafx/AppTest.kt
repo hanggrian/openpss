@@ -1,8 +1,7 @@
 package com.wijayaprinting.javafx
 
-import com.wijayaprinting.mysql.dao.Staff
 import javafx.stage.Stage
-import kotfx.dialogs.alert
+import kotfx.dialogs.infoAlert
 
 /**
  * @author Hendra Anggrian (hendraanggrian@gmail.com)
@@ -14,9 +13,9 @@ class AppTest : WPApp() {
         fun main(vararg args: String) = launch(AppTest::class.java, *args)
     }
 
-    override val requiredStaffLevel: Int get() = Staff.LEVEL_EMPLOYEE
+    override val loginTitle: String get() = "AppTest.kt"
 
-    override fun launch(staff: Staff, stage: Stage) {
-        alert(staff.name).showAndWait()
+    override fun launch(employeeName: String, stage: Stage) {
+        infoAlert(employeeName, "Successfully logged in.").showAndWait()
     }
 }

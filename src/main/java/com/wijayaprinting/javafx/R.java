@@ -1,9 +1,9 @@
-// rsync generated this class at 2017-09-27T21:55:41.377 from:
+// rsync generated this class at 2017-09-28T02:35:49.816 from:
 // ic_launcher_512px.png
-// ic_launcher_96px.png
 // ic_visibility_18dp.png
-// ic_visibility_off_18dp.png
 // javafx.properties
+// ic_visibility_off_18dp.png
+// ic_launcher_96px.png
 // strings_en.properties
 // strings_in.properties
 package com.wijayaprinting.javafx;
@@ -17,11 +17,11 @@ public final class R {
   public static final class png {
     public static final String ic_launcher_512px = "/ic_launcher_512px.png";
 
-    public static final String ic_launcher_96px = "/ic_launcher_96px.png";
-
     public static final String ic_visibility_18dp = "/ic_visibility_18dp.png";
 
     public static final String ic_visibility_off_18dp = "/ic_visibility_off_18dp.png";
+
+    public static final String ic_launcher_96px = "/ic_launcher_96px.png";
 
     private png() {
     }
@@ -54,27 +54,19 @@ public final class R {
   }
 
   public static final class strings {
-    public static final String test_connection = "test_connection";
-
-    public static final String wp_login = "wp_login";
-
-    public static final String _error_login_level = "_error_login_level";
-
-    public static final String language = "language";
-
-    public static final String _notice_connection_success = "_notice_connection_success";
-
-    public static final String _error_login_credentials = "_error_login_credentials";
-
-    public static final String idorname = "idorname";
-
     public static final String login = "login";
 
     public static final String password = "password";
 
-    public static final String staff = "staff";
-
     public static final String _notice_language_changed = "_notice_language_changed";
+
+    public static final String wp_login = "wp_login";
+
+    public static final String test_connection = "test_connection";
+
+    public static final String username = "username";
+
+    public static final String language = "language";
 
     private strings() {
     }

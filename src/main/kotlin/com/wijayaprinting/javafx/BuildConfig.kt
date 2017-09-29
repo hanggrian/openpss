@@ -1,5 +1,6 @@
 package com.wijayaprinting.javafx
 
+import com.wijayaprinting.javafx.utils.use
 import java.util.*
 
 /**
@@ -15,9 +16,7 @@ object BuildConfig {
 
     init {
         val config = Properties()
-        val stream = BuildConfig.javaClass.getResourceAsStream(R.properties.javafx)
-        config.load(stream)
-        stream.close()
+        BuildConfig.javaClass.getResourceAsStream(R.properties.javafx).use { config.load(it) }
         GROUP = config.getProperty(R.javafx.group)
         ARTIFACT = config.getProperty(R.javafx.artifact)
         VERSION = config.getProperty(R.javafx.version)

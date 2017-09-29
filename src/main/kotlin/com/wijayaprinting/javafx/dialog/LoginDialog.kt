@@ -12,15 +12,15 @@ import com.wijayaprinting.javafx.io.JavaFXFile.Companion.USERNAME
 import com.wijayaprinting.javafx.utils.safeTransaction
 import com.wijayaprinting.mysql.MySQL
 import javafx.event.ActionEvent
+import javafx.geometry.Pos
+import javafx.scene.Node
 import javafx.scene.control.*
-import javafx.scene.image.Image
-import javafx.scene.image.ImageView
 import javafx.scene.layout.GridPane
-import javafx.stage.Stage
+import javafx.scene.layout.VBox
+import javafx.scene.text.Font
 import kotfx.bindings.bindingOf
 import kotfx.bindings.not
 import kotfx.bindings.or
-import kotfx.dialogs.choiceDialog
 import kotfx.dialogs.infoAlert
 import kotfx.exitFXApplication
 import kotfx.runLater
@@ -29,38 +29,30 @@ import java.util.*
 /**
  * @author Hendra Anggrian (hendraanggrian@gmail.com)
  */
-internal class LoginDialog(override val resources: ResourceBundle, title: String) : Dialog<Any>(), Resourced {
+internal class LoginDialog(override val resources: ResourceBundle, headerText: String, graphic: Node) : Dialog<Any>(), Resourced {
 
     val file = JavaFXFile()
 
     val content = Content()
     val expandableContent = ExpandableContent()
-    val languageButton = ButtonType(getString(R.strings.language), ButtonBar.ButtonData.CANCEL_CLOSE)
-    val loginButton = ButtonType(getString(R.strings.login), ButtonBar.ButtonData.OK_DONE)
+    val testButton = ButtonType("Test", ButtonBar.ButtonData.CANCEL_CLOSE)
+    val loginButton = ButtonType(getString(R.javafx.login), ButtonBar.ButtonData.OK_DONE)
 
     init {
-        this.title = title
-        headerText = getString(R.strings.wp_login)
-        graphic = ImageView(Image(R.png.ic_launcher_96px))
+        this.headerText = "Wijaya Printing\n$headerText"
+        this.graphic = VBox(graphic,
+                Label("MySQL ${com.wijayaprinting.mysql.BuildConfig.VERSION}").apply { font = Font(9.0) },
+                Label("JavaFX ${com.wijayaprinting.javafx.BuildConfig.VERSION}").apply { font = Font(9.0) })
+                .apply { alignment = Pos.CENTER_RIGHT }
+        title = "Login"
         isResizable = false
 
-        (dialogPane.scene.window as Stage).icons.add(Image(R.png.ic_launcher_96px))
         dialogPane.content = content
         dialogPane.expandableContent = expandableContent
 
-        dialogPane.buttonTypes.addAll(languageButton, loginButton)
-        dialogPane.lookupButton(languageButton).addEventFilter(ActionEvent.ACTION) { event ->
+        dialogPane.buttonTypes.addAll(testButton, loginButton)
+        dialogPane.lookupButton(testButton).addEventFilter(ActionEvent.ACTION) { event ->
             event.consume()
-            val initialLanguage = Language.parse(file[LANGUAGE].value)
-            choiceDialog<Language>(getString(R.strings.language), initialLanguage, *Language.listAll().toTypedArray())
-                    .showAndWait()
-                    .filter { it != initialLanguage }
-                    .ifPresent {
-                        file.apply { get(LANGUAGE).set(it.locale) }.save()
-                        close()
-                        infoAlert(getString(R.strings._notice_language_changed)).showAndWait()
-                        exitFXApplication()
-                    }
         }
         dialogPane.lookupButton(loginButton).addEventFilter(ActionEvent.ACTION) { event ->
             event.consume()
@@ -94,22 +86,34 @@ internal class LoginDialog(override val resources: ResourceBundle, title: String
             content.passwordField.text)
 
     inner class Content : GridPane() {
-        val usernameLabel = Label(getString(R.strings.username))
-        val usernameField = PromptTextField(getString(R.strings.username))
-        val passwordLabel = Label(getString(R.strings.password))
-        val passwordField = PromptPasswordField(getString(R.strings.password)).apply { tooltip = Tooltip() }
+        val languageLabel = Label(getString(R.javafx.language))
+        val languageBox = ChoiceBox<Language>(Language.listAll())
+        val usernameLabel = Label(getString(R.javafx.username))
+        val usernameField = PromptTextField(getString(R.javafx.username))
+        val passwordLabel = Label(getString(R.javafx.password))
+        val passwordField = PromptPasswordField(getString(R.javafx.password)).apply { tooltip = Tooltip() }
         val passwordToggle = ImageToggleButton(R.png.ic_visibility_18dp, R.png.ic_visibility_off_18dp)
 
         init {
             hgap = 8.0
             vgap = 8.0
 
-            add(usernameLabel, 0, 0)
-            add(usernameField, 1, 0, 2, 1)
-            add(passwordLabel, 0, 1)
-            add(passwordField, 1, 1)
-            add(passwordToggle, 2, 1)
+            add(languageLabel, 0, 0)
+            add(languageBox, 1, 0)
+            add(usernameLabel, 0, 1)
+            add(usernameField, 1, 1, 2, 1)
+            add(passwordLabel, 0, 2)
+            add(passwordField, 1, 2)
+            add(passwordToggle, 2, 2)
 
+            val initialLanguage = Language.parse(file[LANGUAGE].value)
+            languageBox.selectionModel.select(initialLanguage)
+            languageBox.selectionModel.selectedItemProperty().addListener { _, _, newValue ->
+                file.apply { get(LANGUAGE).set(newValue.locale) }.save()
+                close()
+                infoAlert(getString(R.javafx._notice_language_changed)).showAndWait()
+                exitFXApplication()
+            }
             passwordField.tooltipProperty().bind(bindingOf(passwordField.textProperty(), passwordToggle.selectedProperty()) {
                 if (!passwordToggle.isSelected) null
                 else Tooltip(passwordField.text)

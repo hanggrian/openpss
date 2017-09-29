@@ -1,14 +1,17 @@
 buildscript {
     ext.versions = [
-            release  : '0.2',
+            release: '0.2',
             // main
-            mysql    : '0.0.7',
-            kotlin   : '1.1.51',
-            kotfx    : '0.4.4',
-            lang3    : '3.6',
-            validator: '1.6',
+            mysql  : '0.0.7',
+            kotlin : '1.1.51',
+            kotfx  : '0.4.4',
+            commons: [
+                    lang3    : '3.6',
+                    validator: '1.6',
+                    io       : '2.5'
+            ],
             // test
-            junit    : '4.12'
+            junit  : '4.12'
     ]
     repositories {
         jcenter()
@@ -57,9 +60,11 @@ dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre8:$versions.kotlin"
     implementation "com.hendraanggrian:kotfx:$versions.kotfx"
-    implementation "org.apache.commons:commons-lang3:$versions.lang3"
-    implementation "commons-validator:commons-validator:$versions.validator"
+    implementation "org.apache.commons:commons-lang3:$versions.commons.lang3"
+    implementation "commons-validator:commons-validator:$versions.commons.validator"
+
     testImplementation "junit:junit:$versions.junit"
+    testImplementation "commons-io:commons-io:$versions.commons.io"
 }
 
 compileKotlin { kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8 }

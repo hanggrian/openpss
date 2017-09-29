@@ -13,7 +13,6 @@ import com.wijayaprinting.javafx.utils.safeTransaction
 import com.wijayaprinting.mysql.MySQL
 import javafx.event.ActionEvent
 import javafx.geometry.Pos
-import javafx.scene.Node
 import javafx.scene.control.*
 import javafx.scene.layout.GridPane
 import javafx.scene.layout.VBox
@@ -31,7 +30,7 @@ import java.util.*
 /**
  * @author Hendra Anggrian (hendraanggrian@gmail.com)
  */
-internal class LoginDialog(override val resources: ResourceBundle, headerText: String, graphic: Node) : Dialog<Any>(), Resourced {
+class LoginDialog(override val resources: ResourceBundle) : Dialog<Any>(), Resourced {
 
     companion object {
         private const val IP_LOOKUP_TIMEOUT = 3000
@@ -39,17 +38,15 @@ internal class LoginDialog(override val resources: ResourceBundle, headerText: S
 
     val file = JavaFXFile()
 
+    val graphic = Graphic()
     val content = Content()
     val expandableContent = ExpandableContent()
     val loginButton = ButtonType(getString(R.javafx.login), ButtonBar.ButtonData.OK_DONE)
 
     init {
-        this.headerText = "Wijaya Printing\n$headerText"
-        this.graphic = VBox(
-                Label("MySQL ${com.wijayaprinting.mysql.BuildConfig.VERSION} | JavaFX ${com.wijayaprinting.javafx.BuildConfig.VERSION}").apply { font = Font(9.0) },
-                graphic)
-                .apply { alignment = Pos.CENTER_RIGHT }
-        title = "Login"
+        this.title = "Wijaya Printing Login"
+        this.headerText = "Wijaya Printing Login"
+        setGraphic(graphic)
         isResizable = false
 
         dialogPane.content = content
@@ -87,6 +84,12 @@ internal class LoginDialog(override val resources: ResourceBundle, headerText: S
             if (content.usernameField.text.isEmpty()) content.usernameField.requestFocus()
             else content.passwordField.requestFocus()
             dialogPane.isExpanded = !expandableContent.ipField.isValid || expandableContent.portField.text.isEmpty()
+        }
+    }
+
+    inner class Graphic : VBox(Label("MySQL ${com.wijayaprinting.mysql.BuildConfig.VERSION} | JavaFX ${com.wijayaprinting.javafx.BuildConfig.VERSION}").apply { font = Font(9.0) }) {
+        init {
+            alignment = Pos.CENTER_RIGHT
         }
     }
 

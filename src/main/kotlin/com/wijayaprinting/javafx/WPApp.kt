@@ -3,27 +3,34 @@ package com.wijayaprinting.javafx
 import com.wijayaprinting.javafx.dialog.LoginDialog
 import com.wijayaprinting.javafx.io.JavaFXFile
 import javafx.application.Application
-import javafx.scene.Node
 import javafx.stage.Stage
+import kotfx.runLater
 import org.apache.commons.lang3.SystemUtils.IS_OS_MAC_OSX
+import java.util.*
 
 /**
  * @author Hendra Anggrian (hendraanggrian@gmail.com)
  */
 abstract class WPApp : Application() {
 
-    abstract val loginHeader: String
+    protected lateinit var dialog: LoginDialog
+    protected lateinit var resources: ResourceBundle
 
-    abstract val loginGraphic: Node
+    abstract fun onStart()
+    abstract fun onSuccess(employeeName: String, stage: Stage)
 
-    abstract fun launch(employeeName: String, stage: Stage)
+    override fun init() {
+        resources = Language.parse(JavaFXFile()[JavaFXFile.LANGUAGE].value).getResources("javafx")
+        runLater {
+            dialog = LoginDialog(resources)
+            onStart()
+        }
+    }
 
     override fun start(primaryStage: Stage) {
-        val resources = Language.parse(JavaFXFile()[JavaFXFile.LANGUAGE].value).getResources("javafx")
-        LoginDialog(resources, loginHeader, loginGraphic)
-                .showAndWait()
+        dialog.showAndWait()
                 .filter { it is String }
-                .ifPresent { launch(it as String, primaryStage) }
+                .ifPresent { onSuccess(it as String, primaryStage) }
     }
 
     protected fun setImageOnOSX(image: java.awt.Image) {

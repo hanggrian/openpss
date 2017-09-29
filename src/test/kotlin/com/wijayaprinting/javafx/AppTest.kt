@@ -1,6 +1,5 @@
 package com.wijayaprinting.javafx
 
-import javafx.scene.Node
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import javafx.stage.Stage
@@ -16,10 +15,13 @@ class AppTest : WPApp() {
         fun main(vararg args: String) = launch(AppTest::class.java, *args)
     }
 
-    override val loginHeader: String get() = "Test"
-    override val loginGraphic: Node get() = ImageView(Image(AppTest::class.java.getResourceAsStream("/ic_launcher_96px.png")))
+    override fun onStart() {
+        dialog.title = "Test title"
+        dialog.headerText = "Test header text"
+        dialog.graphic.children.add(ImageView(Image(AppTest::class.java.getResourceAsStream("/ic_launcher_96px.png"))))
+    }
 
-    override fun launch(employeeName: String, stage: Stage) {
+    override fun onSuccess(employeeName: String, stage: Stage) {
         infoAlert(employeeName, "Successfully logged in.").showAndWait()
     }
 }

@@ -8,7 +8,7 @@ import kotfx.bindings.bindingOf
 /**
  * @author Hendra Anggrian (hendraanggrian@gmail.com)
  */
-class ImageToggleButton(selected: Image, unselected: Image) : ToggleButton() {
+open class ImageToggleButton(selected: Image, unselected: Image) : ToggleButton() {
 
     constructor(selected: String, unselected: String) : this(Image(selected), Image(unselected))
 

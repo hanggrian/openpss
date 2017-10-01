@@ -21,31 +21,15 @@ abstract class WPApp : Application() {
     abstract fun onSuccess(employeeName: String)
 
     override fun init() {
-        resources = Language.parse(JavaFXFile()[JavaFXFile.LANGUAGE].value).getResources("javafx")
-        runLater {
-            dialog = LoginDialog(resources)
-            onStart()
-        }
+        resources = Language.parse(JavaFXFile()[JavaFXFile.LANGUAGE].value).getResources("string")
     }
 
     override fun start(primaryStage: Stage) {
         stage = primaryStage
+        dialog = LoginDialog(resources)
+        onStart()
         dialog.showAndWait()
                 .filter { it is String }
                 .ifPresent { onSuccess(it as String) }
-    }
-
-    protected fun setImageOnOSX(image: java.awt.Image) {
-        if (IS_OS_MAC_OSX) {
-            Class.forName("com.apple.eawt.Application")
-                    .newInstance()
-                    .javaClass
-                    .getMethod("getApplication")
-                    .invoke(null).let { application ->
-                application.javaClass
-                        .getMethod("setDockIconImage", java.awt.Image::class.java)
-                        .invoke(application, image)
-            }
-        }
     }
 }

@@ -17,7 +17,7 @@ class AppTest : WPApp() {
     override fun onStart() {
         dialog.title = "Test title"
         dialog.headerText = "Test header text"
-        dialog.graphic.children.add(ImageView(Image(AppTest::class.java.getResourceAsStream("/ic_launcher_96px.png"))))
+        dialog.graphic.children.add(ImageView(Image(AppTest::class.java.getResourceAsStream("/ic_launcher.png"))))
     }
 
     override fun onSuccess(employeeName: String) {

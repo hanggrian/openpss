@@ -7,7 +7,7 @@ import javafx.scene.image.ImageView
 /**
  * @author Hendra Anggrian (hendraanggrian@gmail.com)
  */
-class ImageButton(image: Image) : Button("", ImageView(image)) {
+open class ImageButton(image: Image) : Button("", ImageView(image)) {
 
     constructor(image: String) : this(Image(image))
 }

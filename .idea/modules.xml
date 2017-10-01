@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/javafx.iml" filepath="$PROJECT_DIR$/.idea/modules/javafx.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/javafx.iml" filepath="$PROJECT_DIR$/.idea/modules/javafx.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/javafx_main.iml" filepath="$PROJECT_DIR$/.idea/modules/javafx_main.iml" group="javafx" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/javafx_test.iml" filepath="$PROJECT_DIR$/.idea/modules/javafx_test.iml" group="javafx" />
     </modules>

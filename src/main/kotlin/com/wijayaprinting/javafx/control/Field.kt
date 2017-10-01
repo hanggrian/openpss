@@ -5,7 +5,7 @@ import javafx.scene.control.TextField
 /**
  * @author Hendra Anggrian (hendraanggrian@gmail.com)
  */
-open class PromptTextField() : TextField() {
+open class Field() : TextField() {
 
     constructor(promptText: String) : this() {
         this.promptText = promptText

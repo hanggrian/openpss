@@ -1,9 +1,9 @@
 package com.wijayaprinting.javafx
 
+import javafx.scene.Scene
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import javafx.stage.Stage
-import kotfx.dialogs.infoAlert
 
 /**
  * @author Hendra Anggrian (hendraanggrian@gmail.com)
@@ -21,7 +21,9 @@ class AppTest : WPApp() {
         dialog.graphic.children.add(ImageView(Image(AppTest::class.java.getResourceAsStream("/ic_launcher_96px.png"))))
     }
 
-    override fun onSuccess(employeeName: String, stage: Stage) {
-        infoAlert(employeeName, "Successfully logged in.").showAndWait()
+    override fun onSuccess(stage: Stage, employeeName: String) {
+        stage.apply {
+            scene = Scene(Controller.inflate(AppTest::class.java.getResource("/layout_test.fxml"), resources, employeeName))
+        }.show()
     }
 }

@@ -17,7 +17,7 @@ abstract class WPApp : Application() {
     protected lateinit var resources: ResourceBundle
 
     abstract fun onStart()
-    abstract fun onSuccess(employeeName: String, stage: Stage)
+    abstract fun onSuccess(stage: Stage, employeeName: String)
 
     override fun init() {
         resources = Language.parse(JavaFXFile()[JavaFXFile.LANGUAGE].value).getResources("javafx")
@@ -30,7 +30,7 @@ abstract class WPApp : Application() {
     override fun start(primaryStage: Stage) {
         dialog.showAndWait()
                 .filter { it is String }
-                .ifPresent { onSuccess(it as String, primaryStage) }
+                .ifPresent { onSuccess(primaryStage, it as String) }
     }
 
     protected fun setImageOnOSX(image: java.awt.Image) {

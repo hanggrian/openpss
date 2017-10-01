@@ -1,12 +1,8 @@
-// rsync generated this class at 2017-09-29T18:19:37.436 from:
-// ic_info_18dp.png
-// ic_launcher_512px.png
+// rsync generated this class at 2017-10-01T12:55:54.178 from:
 // ic_visibility_18dp.png
 // ic_visibility_off_18dp.png
-// ic_list_18dp.png
-// ic_launcher_96px.png
-// javafx_in.properties
 // javafx_en.properties
+// javafx_in.properties
 package com.wijayaprinting.javafx;
 
 import java.lang.String;
@@ -25,9 +21,9 @@ public final class R {
   }
 
   public static final class properties {
-    public static final String javafx_in = "/javafx_in.properties";
-
     public static final String javafx_en = "/javafx_en.properties";
+
+    public static final String javafx_in = "/javafx_in.properties";
 
     private properties() {
     }

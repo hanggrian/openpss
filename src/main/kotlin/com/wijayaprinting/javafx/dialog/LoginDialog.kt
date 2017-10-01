@@ -9,7 +9,6 @@ import com.wijayaprinting.javafx.io.JavaFXFile.Companion.IP
 import com.wijayaprinting.javafx.io.JavaFXFile.Companion.LANGUAGE
 import com.wijayaprinting.javafx.io.JavaFXFile.Companion.PORT
 import com.wijayaprinting.javafx.io.JavaFXFile.Companion.USERNAME
-import com.wijayaprinting.javafx.utils.safeTransaction
 import com.wijayaprinting.mysql.MySQL
 import javafx.event.ActionEvent
 import javafx.geometry.Pos
@@ -59,14 +58,16 @@ class LoginDialog(override val resources: ResourceBundle) : Dialog<Any>(), Resou
             when (InetAddress.getByName(expandableContent.ipField.text).isReachable(IP_LOOKUP_TIMEOUT)) {
                 false -> errorAlert("IP address unreachable.").showAndWait()
                 true -> {
-                    MySQL.connect(
-                            expandableContent.ipField.text,
-                            expandableContent.portField.text,
-                            content.usernameField.text,
-                            content.passwordField.text)
-                    if (safeTransaction { }) {
+                    try {
+                        MySQL.connect(
+                                expandableContent.ipField.text,
+                                expandableContent.portField.text,
+                                content.usernameField.text,
+                                content.passwordField.text)
                         result = content.usernameField.text
                         close()
+                    } catch (e: Exception) {
+                        errorAlert(e.message ?: "Unknown error!").showAndWait()
                     }
                 }
             }
@@ -130,7 +131,7 @@ class LoginDialog(override val resources: ResourceBundle) : Dialog<Any>(), Resou
     }
 
     inner class ExpandableContent : GridPane() {
-        val ipLabel = Label("IP Address")
+        val ipLabel = Label("IP address")
         val ipField = IPField("127.0.0.1")
         val portLabel = Label("Port")
         val portField = IntField("3306")

@@ -5,7 +5,7 @@ import javafx.scene.control.PasswordField
 /**
  * @author Hendra Anggrian (hendraanggrian@gmail.com)
  */
-open class PromptPasswordField() : PasswordField() {
+class PromptPasswordField() : PasswordField() {
 
     constructor(promptText: String) : this() {
         this.promptText = promptText

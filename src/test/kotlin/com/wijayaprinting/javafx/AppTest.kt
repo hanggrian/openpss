@@ -3,7 +3,6 @@ package com.wijayaprinting.javafx
 import javafx.scene.Scene
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
-import javafx.stage.Stage
 
 /**
  * @author Hendra Anggrian (hendraanggrian@gmail.com)
@@ -21,7 +20,7 @@ class AppTest : WPApp() {
         dialog.graphic.children.add(ImageView(Image(AppTest::class.java.getResourceAsStream("/ic_launcher_96px.png"))))
     }
 
-    override fun onSuccess(stage: Stage, employeeName: String) {
+    override fun onSuccess(employeeName: String) {
         stage.apply {
             scene = Scene(Controller.inflate(AppTest::class.java.getResource("/layout_test.fxml"), resources, employeeName))
         }.show()

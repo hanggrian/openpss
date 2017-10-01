@@ -18,7 +18,7 @@ buildscript {
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin"
         classpath 'com.hendraanggrian:rsync:0.4'
-        classpath 'com.hendraanggrian:buildconfig:0.1'
+        classpath 'com.hendraanggrian:buildconfig:0.2'
         classpath 'com.novoda:bintray-release:0.5.0'
     }
 }

@@ -1,11 +1,9 @@
-package com.wijayaprinting.javafx.control
-
-import javafx.scene.control.TextField
+package com.wijayaprinting.javafx.control.field
 
 /**
  * @author Hendra Anggrian (hendraanggrian@gmail.com)
  */
-open class Field() : TextField() {
+open class PasswordField() : javafx.scene.control.PasswordField() {
 
     constructor(promptText: String) : this() {
         this.promptText = promptText

@@ -1,4 +1,4 @@
-package com.wijayaprinting.javafx.control
+package com.wijayaprinting.javafx.control.button
 
 import javafx.scene.control.Button
 import javafx.scene.image.Image
@@ -7,7 +7,7 @@ import javafx.scene.image.ImageView
 /**
  * @author Hendra Anggrian (hendraanggrian@gmail.com)
  */
-open class ImageButton(image: Image) : Button("", ImageView(image)) {
+class ImageButton(image: Image) : Button("", ImageView(image)) {
 
     constructor(image: String) : this(Image(image))
 }

@@ -4,8 +4,6 @@ import com.wijayaprinting.javafx.dialog.LoginDialog
 import com.wijayaprinting.javafx.io.JavaFXFile
 import javafx.application.Application
 import javafx.stage.Stage
-import kotfx.runLater
-import org.apache.commons.lang3.SystemUtils.IS_OS_MAC_OSX
 import java.util.*
 
 /**
@@ -21,7 +19,7 @@ abstract class WPApp : Application() {
     abstract fun onSuccess(employeeName: String)
 
     override fun init() {
-        resources = Language.parse(JavaFXFile()[JavaFXFile.LANGUAGE].value).getResources("string")
+        resources = Language.parse(JavaFXFile()[JavaFXFile.LANGUAGE].value).getResources(BuildConfig.ARTIFACT)
     }
 
     override fun start(primaryStage: Stage) {

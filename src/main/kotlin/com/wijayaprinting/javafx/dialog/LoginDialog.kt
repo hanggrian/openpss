@@ -3,14 +3,17 @@ package com.wijayaprinting.javafx.dialog
 import com.wijayaprinting.javafx.Language
 import com.wijayaprinting.javafx.R
 import com.wijayaprinting.javafx.Resourced
-import com.wijayaprinting.javafx.control.*
-import com.wijayaprinting.javafx.control.PasswordField
+import com.wijayaprinting.javafx.control.button.ImageToggleButton
+import com.wijayaprinting.javafx.control.field.IPField
+import com.wijayaprinting.javafx.control.field.IntField
+import com.wijayaprinting.javafx.control.field.PasswordField
+import com.wijayaprinting.javafx.control.field.TextField
 import com.wijayaprinting.javafx.io.JavaFXFile
 import com.wijayaprinting.javafx.io.JavaFXFile.Companion.IP
 import com.wijayaprinting.javafx.io.JavaFXFile.Companion.LANGUAGE
 import com.wijayaprinting.javafx.io.JavaFXFile.Companion.PORT
 import com.wijayaprinting.javafx.io.JavaFXFile.Companion.USERNAME
-import com.wijayaprinting.javafx.layout.GapGridPane
+import com.wijayaprinting.javafx.layout.GridPane
 import com.wijayaprinting.mysql.MySQL
 import javafx.event.ActionEvent
 import javafx.geometry.Pos
@@ -41,11 +44,11 @@ class LoginDialog(override val resources: ResourceBundle) : Dialog<Any>(), Resou
     val graphic = Graphic()
     val content = Content()
     val expandableContent = ExpandableContent()
-    val loginButton = ButtonType(getString(R.string.login), ButtonBar.ButtonData.OK_DONE)
+    val loginButton = ButtonType(getString(R.javafx.login), ButtonBar.ButtonData.OK_DONE)
 
     init {
-        this.title = getString(R.string.wijaya_printing_login)
-        this.headerText = getString(R.string.wijaya_printing_login)
+        this.title = getString(R.javafx.wijaya_printing_login)
+        this.headerText = getString(R.javafx.wijaya_printing_login)
         setGraphic(graphic)
         isResizable = false
 
@@ -57,7 +60,7 @@ class LoginDialog(override val resources: ResourceBundle) : Dialog<Any>(), Resou
             event.consume()
             file.save()
             when (InetAddress.getByName(expandableContent.ipField.text).isReachable(IP_LOOKUP_TIMEOUT)) {
-                false -> errorAlert(getString(R.string.ip_address_unreachable)).showAndWait()
+                false -> errorAlert(getString(R.javafx.ip_address_unreachable)).showAndWait()
                 true -> {
                     try {
                         MySQL.connect(
@@ -95,13 +98,13 @@ class LoginDialog(override val resources: ResourceBundle) : Dialog<Any>(), Resou
         }
     }
 
-    inner class Content : GapGridPane(8.0) {
-        val languageLabel = Label(getString(R.string.language))
+    inner class Content : GridPane(8.0) {
+        val languageLabel = Label(getString(R.javafx.language))
         val languageBox = ChoiceBox<Language>(Language.listAll())
-        val usernameLabel = Label(getString(R.string.username))
-        val usernameField = Field(getString(R.string.username))
-        val passwordLabel = Label(getString(R.string.password))
-        val passwordField = PasswordField(getString(R.string.password)).apply { tooltip = Tooltip() }
+        val usernameLabel = Label(getString(R.javafx.username))
+        val usernameField = TextField(getString(R.javafx.username))
+        val passwordLabel = Label(getString(R.javafx.password))
+        val passwordField = PasswordField(getString(R.javafx.password)).apply { tooltip = Tooltip() }
         val passwordToggle = ImageToggleButton(R.png.btn_visibility, R.png.btn_visibility_off)
 
         init {
@@ -118,7 +121,7 @@ class LoginDialog(override val resources: ResourceBundle) : Dialog<Any>(), Resou
             languageBox.selectionModel.selectedItemProperty().addListener { _, _, newValue ->
                 file.apply { get(LANGUAGE).set(newValue.locale) }.save()
                 close()
-                infoAlert(getString(R.string.language_changed)).showAndWait()
+                infoAlert(getString(R.javafx.language_changed)).showAndWait()
                 exitFXApplication()
             }
             passwordField.tooltipProperty().bind(bindingOf(passwordField.textProperty(), passwordToggle.selectedProperty()) {
@@ -128,10 +131,10 @@ class LoginDialog(override val resources: ResourceBundle) : Dialog<Any>(), Resou
         }
     }
 
-    inner class ExpandableContent : GapGridPane(8.0) {
-        val ipLabel = Label(getString(R.string.ip_address))
+    inner class ExpandableContent : GridPane(8.0) {
+        val ipLabel = Label(getString(R.javafx.ip_address))
         val ipField = IPField("127.0.0.1")
-        val portLabel = Label(getString(R.string.port))
+        val portLabel = Label(getString(R.javafx.port))
         val portField = IntField("3306")
 
         init {

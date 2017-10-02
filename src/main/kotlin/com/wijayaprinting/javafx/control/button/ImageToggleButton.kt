@@ -1,4 +1,4 @@
-package com.wijayaprinting.javafx.control
+package com.wijayaprinting.javafx.control.button
 
 import javafx.scene.control.ToggleButton
 import javafx.scene.image.Image
@@ -8,7 +8,7 @@ import kotfx.bindings.bindingOf
 /**
  * @author Hendra Anggrian (hendraanggrian@gmail.com)
  */
-open class ImageToggleButton(selected: Image, unselected: Image) : ToggleButton() {
+class ImageToggleButton(selected: Image, unselected: Image) : ToggleButton() {
 
     constructor(selected: String, unselected: String) : this(Image(selected), Image(unselected))
 

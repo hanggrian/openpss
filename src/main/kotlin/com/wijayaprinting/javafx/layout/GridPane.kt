@@ -5,7 +5,7 @@ import javafx.scene.layout.GridPane
 /**
  * @author Hendra Anggrian (hendraanggrian@gmail.com)
  */
-open class GapGridPane(hgap: Double, vgap: Double) : GridPane() {
+open class GridPane(hgap: Double, vgap: Double) : GridPane() {
 
     constructor(gap: Double) : this(gap, gap)
 

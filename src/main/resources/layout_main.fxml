@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<TabPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.111"
+         fx:controller="com.wijayaprinting.javafx.controller.MainController"
+         prefHeight="560.0" prefWidth="720.0" tabClosingPolicy="UNAVAILABLE">
+    <Tab fx:id="customerTab" text="Customer" closable="false" disable="true"/>
+    <Tab fx:id="attendanceTab" text="Attendance" closable="false">
+        <fx:include fx:id="attendance" source="layout_attendance.fxml"/>
+    </Tab>
+    <Tab fx:id="aboutTab" text="About" closable="false"/>
+</TabPane>

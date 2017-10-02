@@ -2,32 +2,50 @@ package com.wijayaprinting.javafx
 
 import com.wijayaprinting.javafx.dialog.LoginDialog
 import com.wijayaprinting.javafx.io.JavaFXFile
+import com.wijayaprinting.javafx.utils.*
 import javafx.application.Application
+import javafx.fxml.FXMLLoader
+import javafx.scene.Scene
+import javafx.scene.image.Image
+import javafx.scene.image.ImageView
 import javafx.stage.Stage
-import java.util.*
+import java.awt.Toolkit
 
 /**
  * @author Hendra Anggrian (hendraanggrian@gmail.com)
  */
-abstract class WPApp : Application() {
+class WPApp : Application() {
 
-    protected lateinit var dialog: LoginDialog
-    protected lateinit var resources: ResourceBundle
-    protected lateinit var stage: Stage
-
-    abstract fun onStart()
-    abstract fun onSuccess(employeeName: String)
-
-    override fun init() {
-        resources = Language.parse(JavaFXFile()[JavaFXFile.LANGUAGE].value).getResources(BuildConfig.ARTIFACT)
+    companion object {
+        @JvmStatic
+        fun main(vararg args: String) = launch(WPApp::class.java, *args)
     }
 
-    override fun start(primaryStage: Stage) {
-        stage = primaryStage
-        dialog = LoginDialog(resources)
-        onStart()
-        dialog.showAndWait()
+    override fun init() {
+        initResources(Language.parse(JavaFXFile()[JavaFXFile.LANGUAGE].value).getResources("string"))
+    }
+
+    override fun start(stage: Stage) {
+        stage.icon = Image(R.png.logo_launcher)
+        setIconOnOSX(Toolkit.getDefaultToolkit().getImage(WPApp::class.java.getResource(R.png.logo_launcher)))
+
+        LoginDialog()
+                .apply {
+                    icon = Image(R.png.ic_launcher)
+                    title = "${getString(R.string.app_name)} ${BuildConfig.VERSION}"
+                    graphic.children.add(ImageView(Image(R.png.ic_launcher)))
+                }
+                .showAndWait()
                 .filter { it is String }
-                .ifPresent { onSuccess(it as String) }
+                .ifPresent {
+                    val minSize = Pair(720.0, 640.0)
+                    stage.apply {
+                        scene = Scene(FXMLLoader.load(WPApp::class.java.getResource(R.fxml.layout_main), resources), minSize.first, minSize.second)
+                        icons.add(Image(R.png.ic_launcher))
+                        title = "${getString(R.string.app_name)} ${BuildConfig.VERSION}"
+                        minWidth = minSize.first
+                        minHeight = minSize.second
+                    }.show()
+                }
     }
 }

@@ -1,28 +1,18 @@
 package com.wijayaprinting.javafx
 
-import javafx.scene.Scene
-import javafx.scene.image.Image
-import javafx.scene.image.ImageView
+import javafx.application.Application
+import javafx.stage.Stage
 
 /**
  * @author Hendra Anggrian (hendraanggrian@gmail.com)
  */
-class AppTest : WPApp() {
+class AppTest : Application() {
+    override fun start(primaryStage: Stage?) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 
     companion object {
         @JvmStatic
         fun main(vararg args: String) = launch(AppTest::class.java, *args)
-    }
-
-    override fun onStart() {
-        dialog.title = "Test title"
-        dialog.headerText = "Test header text"
-        dialog.graphic.children.add(ImageView(Image(AppTest::class.java.getResourceAsStream("/ic_launcher.png"))))
-    }
-
-    override fun onSuccess(employeeName: String) {
-        stage.apply {
-            scene = Scene(Controller.inflate(AppTest::class.java.getResource("/layout_test.fxml"), resources, employeeName))
-        }.show()
     }
 }

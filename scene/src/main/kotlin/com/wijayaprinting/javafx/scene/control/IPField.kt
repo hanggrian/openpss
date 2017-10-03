@@ -8,9 +8,9 @@ import org.apache.commons.validator.routines.InetAddressValidator
 /**
  * @author Hendra Anggrian (hendraanggrian@gmail.com)
  */
-class IPField : TextField() {
+open class IPField : TextField() {
 
-    val validProperty: SimpleBooleanProperty = SimpleBooleanProperty().apply {
+    val validProperty = SimpleBooleanProperty().apply {
         bind(booleanBindingOf(textProperty()) {
             InetAddressValidator.getInstance().isValidInet4Address(text)
         })

@@ -15,8 +15,10 @@ import java.sql.SQLException
  * @return true if a transaction is successful without an error, false otherwise.
  * @see [transaction]
  */
-inline fun <T> safeTransaction(noinline statement: Transaction.() -> T) = try {
-    transaction(statement)
-} catch (e: SQLException) {
-    errorAlert(e.message ?: "Unknown error!").showAndWait()
+inline fun <T> safeTransaction(noinline statement: Transaction.() -> T) {
+    try {
+        transaction(statement)
+    } catch (e: SQLException) {
+        errorAlert(e.message ?: "Unknown error!").showAndWait()
+    }
 }

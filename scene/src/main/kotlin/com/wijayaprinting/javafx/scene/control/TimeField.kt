@@ -12,9 +12,9 @@ import org.joda.time.format.DateTimeFormat
 /**
  * @author Hendra Anggrian (hendraanggrian@gmail.com)
  */
-class TimeField : TextField() {
+open class TimeField : TextField() {
 
-    val valueProperty: SimpleObjectProperty<LocalTime> = SimpleObjectProperty<LocalTime>().apply {
+    val valueProperty = SimpleObjectProperty<LocalTime>().apply {
         bind(bindingOf(textProperty()) {
             try {
                 LocalTime.parse(text, DateTimeFormat.forPattern(PATTERN_TIME))
@@ -23,9 +23,11 @@ class TimeField : TextField() {
             }
         })
     }
-    val value: LocalTime? get() = valueProperty.value
+    var value: LocalTime?
+        get() = valueProperty.get()
+        set(value) = valueProperty.set(value)
 
-    val validProperty: SimpleBooleanProperty = SimpleBooleanProperty().apply {
+    val validProperty = SimpleBooleanProperty().apply {
         bind(booleanBindingOf(textProperty()) {
             try {
                 LocalTime.parse(text, DateTimeFormat.forPattern(PATTERN_TIME))
@@ -36,4 +38,8 @@ class TimeField : TextField() {
         })
     }
     val isValid: Boolean = validProperty.value
+
+    init {
+        promptText = PATTERN_TIME
+    }
 }

@@ -9,15 +9,17 @@ import kotfx.bindings.longBindingOf
 /**
  * @author Hendra Anggrian (hendraanggrian@gmail.com)
  */
-class LongField : TextField() {
+open class LongField : TextField() {
 
-    val valueProperty: SimpleLongProperty = SimpleLongProperty().apply {
+    val valueProperty = SimpleLongProperty().apply {
         bind(longBindingOf(textProperty()) {
             if (isDigits) text.toLong()
             else 0
         })
     }
-    val value: Long get() = valueProperty.value
+    var value: Long
+        get() = valueProperty.get()
+        set(value) = valueProperty.set(value)
 
     init {
         digitsOnly()

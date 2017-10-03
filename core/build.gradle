@@ -4,11 +4,20 @@ version versions.release
 apply plugin: 'java-library'
 apply plugin: 'kotlin'
 apply plugin: 'rsync'
+apply plugin: 'buildconfig'
 
 rsync {
     packageName = 'com.wijayaprinting.javafx'
     leadingSlash = true
-    debug = true
+    debug = false
+}
+
+buildconfig {
+    groupId = group
+    artifactId = 'javafx'
+    version = versions.release
+    packageName = 'com.wijayaprinting.javafx'
+    debug = true // set true when building app, false when building stage
 }
 
 dependencies {

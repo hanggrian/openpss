@@ -10,17 +10,19 @@ import kotfx.bindings.floatBindingOf
 /**
  * @author Hendra Anggrian (hendraanggrian@gmail.com)
  */
-class FloatField : TextField() {
+open class FloatField : TextField() {
 
-    val valueProperty: SimpleFloatProperty = SimpleFloatProperty().apply {
+    val valueProperty = SimpleFloatProperty().apply {
         bind(floatBindingOf(textProperty()) {
             if (isDecimal) text.toFloat()
             else 0f
         })
     }
-    val value: Float get() = valueProperty.value
+    var value: Float
+        get() = valueProperty.get()
+        set(value) = valueProperty.set(value)
 
-    val validProperty: SimpleBooleanProperty = SimpleBooleanProperty().apply {
+    val validProperty = SimpleBooleanProperty().apply {
         bind(booleanBindingOf(textProperty()) { isDecimal })
     }
     val isValid: Boolean = validProperty.value

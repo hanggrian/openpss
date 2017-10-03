@@ -8,7 +8,7 @@
       fx:controller="com.wijayaprinting.javafx.controller.MainController"
       prefHeight="560.0" prefWidth="720.0">
     <MenuBar fx:id="menuBar">
-        <Menu mnemonicParsing="false" text="File">
+        <Menu mnemonicParsing="false" text="%help">
             <MenuItem mnemonicParsing="false" text="%about" onAction="#aboutMenuItemOnAction"/>
         </Menu>
     </MenuBar>
@@ -16,14 +16,14 @@
         <Tab closable="false" disable="true" text="Customer">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@tab_customer.png"/>
+                    <Image url="@tab_user.png"/>
                 </ImageView>
             </graphic>
         </Tab>
         <Tab closable="false" text="Attendance">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@tab_attendance.png"/>
+                    <Image url="@tab_clock.png"/>
                 </ImageView>
             </graphic>
             <fx:include fx:id="attendance" source="layout_attendance.fxml"/>

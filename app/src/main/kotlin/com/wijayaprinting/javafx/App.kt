@@ -5,7 +5,7 @@ import com.wijayaprinting.javafx.io.PreferencesFile
 import com.wijayaprinting.javafx.scene.control.IPField
 import com.wijayaprinting.javafx.scene.control.IntField
 import com.wijayaprinting.javafx.scene.utils.attachButtons
-import com.wijayaprinting.javafx.scene.utils.setGap
+import com.wijayaprinting.javafx.scene.utils.gaps
 import com.wijayaprinting.javafx.utils.icon
 import com.wijayaprinting.javafx.utils.setIconOnOSX
 import com.wijayaprinting.mysql.MySQL
@@ -42,7 +42,7 @@ class App : Application() {
     }
 
     override fun init() {
-        initResources(Language.parse(PreferencesFile()[PreferencesFile.LANGUAGE].value).getResources("string"))
+        setResources(Language.parse(PreferencesFile()[PreferencesFile.LANGUAGE].value).getResources("string"))
     }
 
     override fun start(stage: Stage) {
@@ -128,7 +128,7 @@ class App : Application() {
             }
         }
 
-        inner class Graphic : VBox(Label("MySQL ${com.wijayaprinting.mysql.BuildConfig.VERSION} | JavaFX ${BuildConfig.VERSION}").apply { font = Font(9.0) }) {
+        inner class Graphic : VBox(Label("MySQL ${com.wijayaprinting.mysql.BuildConfig.VERSION}").apply { font = Font(9.0) }) {
             init {
                 alignment = Pos.CENTER_RIGHT
             }
@@ -147,7 +147,7 @@ class App : Application() {
             val passwordToggle = ToggleButton().apply { attachButtons(R.png.btn_visibility, R.png.btn_visibility_off) }
 
             init {
-                setGap(8.0)
+                gaps = 8.0
                 add(languageLabel, 0, 0)
                 add(languageBox, 1, 0)
                 add(usernameLabel, 0, 1)
@@ -178,7 +178,7 @@ class App : Application() {
             val portField = IntField().apply { promptText = "3306" }
 
             init {
-                setGap(8.0)
+                gaps = 8.0
                 add(ipLabel, 0, 0)
                 add(ipField, 1, 0)
                 add(portLabel, 0, 1)

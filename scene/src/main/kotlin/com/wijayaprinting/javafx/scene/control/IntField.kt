@@ -9,15 +9,17 @@ import kotfx.bindings.intBindingOf
 /**
  * @author Hendra Anggrian (hendraanggrian@gmail.com)
  */
-class IntField : TextField() {
+open class IntField : TextField() {
 
-    val valueProperty: SimpleIntegerProperty = SimpleIntegerProperty().apply {
+    val valueProperty = SimpleIntegerProperty().apply {
         bind(intBindingOf(textProperty()) {
             if (isDigits) text.toInt()
             else 0
         })
     }
-    val value: Int get() = valueProperty.value
+    var value: Int
+        get() = valueProperty.get()
+        set(value) = valueProperty.set(value)
 
     init {
         digitsOnly()

@@ -5,7 +5,12 @@ package com.wijayaprinting.javafx.scene.utils
 
 import javafx.scene.layout.GridPane
 
-inline fun GridPane.setGap(gap: Double) {
-    hgap = gap
-    vgap = gap
-}
+inline var GridPane.gaps: Double
+    get() {
+        check(hgap == vgap)
+        return hgap
+    }
+    set(value) {
+        hgap = value
+        vgap = value
+    }

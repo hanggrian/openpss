@@ -2,9 +2,7 @@ package com.wijayaprinting.javafx.layout
 
 import com.wijayaprinting.javafx.R
 import com.wijayaprinting.javafx.control.EmployeeListView
-import com.wijayaprinting.javafx.control.button.ImageButton
 import com.wijayaprinting.javafx.control.field.IntField
-import com.wijayaprinting.javafx.control.field.TextField
 import com.wijayaprinting.javafx.data.Employee
 import com.wijayaprinting.javafx.dialog.DateTimeDialog
 import com.wijayaprinting.javafx.utils.getString
@@ -13,6 +11,8 @@ import javafx.beans.property.Property
 import javafx.collections.ObservableList
 import javafx.geometry.Insets
 import javafx.scene.control.*
+import javafx.scene.image.Image
+import javafx.scene.image.ImageView
 import javafx.scene.layout.AnchorPane
 import javafx.scene.layout.Pane
 import javafx.scene.layout.VBox
@@ -28,13 +28,16 @@ class EmployeeTitledPane(title: String, shifts: ObservableList<Shift>, private v
         maxWidth = Double.MAX_VALUE
         valueProperty().bindBidirectional(employee.shift as Property<Shift>)
     }
-    private val dailyField: TextField = IntField(getString(R.string.daily_income)).apply {
+    private val dailyField: TextField = IntField().apply {
+        promptText = getString(R.string.daily_income)
         textProperty().bindBidirectional(employee.daily, stringConverter<Number> { if (it.isBlank()) 0 else Integer.valueOf(it) })
     }
-    private val overtimeField: TextField = IntField(getString(R.string.overtime_income)).apply {
+    private val overtimeField: TextField = IntField().apply {
+        promptText = getString(R.string.overtime_income)
         textProperty().bindBidirectional(employee.overtimeHourly, stringConverter<Number> { if (it.isBlank()) 0 else Integer.valueOf(it) })
     }
-    private val addButton: Button = ImageButton(R.png.btn_add).apply {
+    private val addButton: Button = Button().apply {
+        graphic = ImageView(Image(R.png.btn_add))
         setOnAction {
             DateTimeDialog()
                     .showAndWait()
@@ -64,13 +67,16 @@ class EmployeeTitledPane(title: String, shifts: ObservableList<Shift>, private v
                 AnchorPane.setRightAnchor(addButton, 0.0)
             })
         }
-
         isCollapsible = false
-        contextMenu = ContextMenu()
-        contextMenu.items.add(MenuItem(getString(R.string.delete)).apply {
-            setOnAction {
-                (parent as Pane).children.remove(this@EmployeeTitledPane)
-            }
-        })
+        contextMenu = ContextMenu(
+                MenuItem(getString(R.string.add)),
+                MenuItem(getString(R.string.delete)),
+                SeparatorMenuItem(),
+                MenuItem("${getString(R.string.delete)} ${employee.name}").apply {
+                    setOnAction { (parent as Pane).children.remove(this@EmployeeTitledPane) }
+                },
+                MenuItem(getString(R.string.delete_others)).apply {
+                    setOnAction { (parent as Pane).children.remove(this@EmployeeTitledPane) }
+                })
     }
 }

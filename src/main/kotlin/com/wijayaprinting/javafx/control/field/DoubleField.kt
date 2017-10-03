@@ -3,17 +3,14 @@ package com.wijayaprinting.javafx.control.field
 import com.wijayaprinting.javafx.utils.isDecimal
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleDoubleProperty
+import javafx.scene.control.TextField
 import kotfx.bindings.booleanBindingOf
 import kotfx.bindings.doubleBindingOf
 
 /**
  * @author Hendra Anggrian (hendraanggrian@gmail.com)
  */
-class DoubleField : TextField {
-
-    constructor() : super()
-    constructor(promptText: String) : super(promptText)
-    constructor(promptText: String, text: String) : super(promptText, text)
+class DoubleField : TextField() {
 
     val valueProperty: SimpleDoubleProperty = SimpleDoubleProperty().apply {
         bind(doubleBindingOf(textProperty()) {

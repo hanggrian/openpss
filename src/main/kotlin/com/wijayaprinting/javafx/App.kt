@@ -14,11 +14,11 @@ import java.awt.Toolkit
 /**
  * @author Hendra Anggrian (hendraanggrian@gmail.com)
  */
-class WPApp : Application() {
+class App : Application() {
 
     companion object {
         @JvmStatic
-        fun main(vararg args: String) = launch(WPApp::class.java, *args)
+        fun main(vararg args: String) = launch(App::class.java, *args)
     }
 
     override fun init() {
@@ -27,7 +27,7 @@ class WPApp : Application() {
 
     override fun start(stage: Stage) {
         stage.icon = Image(R.png.logo_launcher)
-        setIconOnOSX(Toolkit.getDefaultToolkit().getImage(WPApp::class.java.getResource(R.png.logo_launcher)))
+        setIconOnOSX(Toolkit.getDefaultToolkit().getImage(App::class.java.getResource(R.png.logo_launcher)))
 
         LoginDialog()
                 .apply {
@@ -40,7 +40,7 @@ class WPApp : Application() {
                 .ifPresent {
                     val minSize = Pair(720.0, 640.0)
                     stage.apply {
-                        scene = Scene(FXMLLoader.load(WPApp::class.java.getResource(R.fxml.layout_main), resources), minSize.first, minSize.second)
+                        scene = Scene(FXMLLoader.load(App::class.java.getResource(R.fxml.layout_main), resources), minSize.first, minSize.second)
                         icons.add(Image(R.png.ic_launcher))
                         title = "${getString(R.string.app_name)} ${BuildConfig.VERSION}"
                         minWidth = minSize.first

@@ -3,7 +3,7 @@
 
 package com.wijayaprinting.javafx.utils
 
-import com.wijayaprinting.javafx.control.field.TextField
+import javafx.scene.control.TextField
 import org.apache.commons.lang3.math.NumberUtils
 
 /**

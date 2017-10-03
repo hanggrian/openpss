@@ -2,14 +2,15 @@ package com.wijayaprinting.javafx.dialog
 
 import com.wijayaprinting.javafx.R
 import com.wijayaprinting.javafx.control.field.TimeField
-import com.wijayaprinting.javafx.layout.GridPane
 import com.wijayaprinting.javafx.utils.getString
+import com.wijayaprinting.javafx.utils.setGap
 import javafx.geometry.Pos
 import javafx.scene.control.ButtonType
 import javafx.scene.control.DatePicker
 import javafx.scene.control.Dialog
 import javafx.scene.control.Label
 import javafx.scene.image.ImageView
+import javafx.scene.layout.GridPane
 import kotfx.bindings.not
 import kotfx.bindings.or
 import kotfx.runLater
@@ -39,7 +40,7 @@ class DateTimeDialog : Dialog<DateTime>() {
         }
     }
 
-    inner class Content : GridPane(8.0) {
+    inner class Content : GridPane() {
         val dateLabel = Label(getString(R.string.date))
         val datePicker: DatePicker = DatePicker().apply {
             isEditable = false // force pick from popup
@@ -53,6 +54,7 @@ class DateTimeDialog : Dialog<DateTime>() {
         }
 
         init {
+            setGap(8.0)
             add(dateLabel, 0, 0)
             add(datePicker, 1, 0)
             add(timeLabel, 0, 1)

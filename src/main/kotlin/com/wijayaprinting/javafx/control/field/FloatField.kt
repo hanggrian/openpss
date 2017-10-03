@@ -3,17 +3,14 @@ package com.wijayaprinting.javafx.control.field
 import com.wijayaprinting.javafx.utils.isDecimal
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleFloatProperty
+import javafx.scene.control.TextField
 import kotfx.bindings.booleanBindingOf
 import kotfx.bindings.floatBindingOf
 
 /**
  * @author Hendra Anggrian (hendraanggrian@gmail.com)
  */
-class FloatField : TextField {
-
-    constructor() : super()
-    constructor(promptText: String) : super(promptText)
-    constructor(promptText: String, text: String) : super(promptText, text)
+class FloatField : TextField() {
 
     val valueProperty: SimpleFloatProperty = SimpleFloatProperty().apply {
         bind(floatBindingOf(textProperty()) {

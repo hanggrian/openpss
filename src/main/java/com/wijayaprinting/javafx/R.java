@@ -1,4 +1,4 @@
-// rsync generated this class at 2017-10-02T18:59:49.428 from:
+// rsync generated this class at 2017-10-03T15:23:11.608 from:
 // string_en.properties
 // layout_attendance.fxml
 // logo_launcher.png
@@ -7,7 +7,6 @@
 // btn_add.png
 // btn_visibility.png
 // layout_main.fxml
-// tab_about.png
 // btn_visibility_off.png
 // layout_record.fxml
 // ic_shift_delete.png
@@ -53,8 +52,6 @@ public final class R {
 
     public static final String btn_visibility = "/btn_visibility.png";
 
-    public static final String tab_about = "/tab_about.png";
-
     public static final String btn_visibility_off = "/btn_visibility_off.png";
 
     public static final String ic_shift_delete = "/ic_shift_delete.png";
@@ -88,9 +85,11 @@ public final class R {
 
     public static final String cancel = "cancel";
 
-    public static final String reset_saved_data = "reset_saved_data";
+    public static final String reader = "reader";
 
     public static final String merge_close_records = "merge_close_records";
+
+    public static final String delete_others = "delete_others";
 
     public static final String end = "end";
 
@@ -144,8 +143,6 @@ public final class R {
 
     public static final String overtime = "overtime";
 
-    public static final String wijaya_printing_login = "wijaya_printing_login";
-
     public static final String daily = "daily";
 
     public static final String error_employee_noshift = "error_employee_noshift";
@@ -159,8 +156,6 @@ public final class R {
     public static final String date = "date";
 
     public static final String ip_address_unreachable = "ip_address_unreachable";
-
-    public static final String this_will_reset_employees_saved_salary_and_shifts = "this_will_reset_employees_saved_salary_and_shifts";
 
     public static final String process = "process";
 

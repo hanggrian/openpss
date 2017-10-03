@@ -3,6 +3,7 @@ package com.wijayaprinting.javafx.control.field
 import com.wijayaprinting.mysql.utils.PATTERN_TIME
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleObjectProperty
+import javafx.scene.control.TextField
 import kotfx.bindings.bindingOf
 import kotfx.bindings.booleanBindingOf
 import org.joda.time.LocalTime
@@ -11,7 +12,7 @@ import org.joda.time.format.DateTimeFormat
 /**
  * @author Hendra Anggrian (hendraanggrian@gmail.com)
  */
-class TimeField : TextField(PATTERN_TIME) {
+class TimeField : TextField() {
 
     val valueProperty: SimpleObjectProperty<LocalTime> = SimpleObjectProperty<LocalTime>().apply {
         bind(bindingOf(textProperty()) {

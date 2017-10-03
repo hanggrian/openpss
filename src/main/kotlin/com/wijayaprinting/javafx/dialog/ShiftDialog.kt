@@ -3,13 +3,14 @@ package com.wijayaprinting.javafx.dialog
 import com.wijayaprinting.javafx.R
 import com.wijayaprinting.javafx.control.field.DoubleField
 import com.wijayaprinting.javafx.control.field.TimeField
-import com.wijayaprinting.javafx.layout.GridPane
 import com.wijayaprinting.javafx.utils.getString
+import com.wijayaprinting.javafx.utils.setGap
 import javafx.geometry.Pos
 import javafx.scene.control.ButtonType
 import javafx.scene.control.Dialog
 import javafx.scene.control.Label
 import javafx.scene.image.ImageView
+import javafx.scene.layout.GridPane
 import kotfx.bindings.not
 import kotfx.bindings.or
 import kotfx.runLater
@@ -42,7 +43,7 @@ class ShiftDialog : Dialog<Triple<LocalTime, LocalTime, BigDecimal>>() {
         }
     }
 
-    inner class Content : GridPane(8.0) {
+    inner class Content : GridPane() {
         val startField = TimeField().apply {
             prefWidth = 64.0
             alignment = Pos.CENTER
@@ -51,12 +52,14 @@ class ShiftDialog : Dialog<Triple<LocalTime, LocalTime, BigDecimal>>() {
             prefWidth = 64.0
             alignment = Pos.CENTER
         }
-        val recessField = DoubleField(getString(R.string.hour)).apply {
+        val recessField = DoubleField().apply {
+            promptText = getString(R.string.hour)
             prefWidth = 64.0
             alignment = Pos.CENTER
         }
 
         init {
+            setGap(8.0)
             add(Label(getString(R.string.shift)), 0, 0)
             add(startField, 1, 0)
             add(Label("-"), 2, 0)

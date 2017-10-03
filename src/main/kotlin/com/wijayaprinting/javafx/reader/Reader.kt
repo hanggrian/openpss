@@ -20,17 +20,8 @@ interface Reader {
         private var ALL: ObservableList<Reader>? = null
 
         fun listAll(): ObservableList<Reader> {
-            if (ALL == null) {
-                ALL = observableListOf(EClockingReader())
-            }
+            if (ALL == null) ALL = observableListOf(EClockingReader())
             return ALL!!
-        }
-
-        fun parse(name: String): Reader {
-            checkNotNull(ALL, { "Call listAll() before parse()!" })
-            val reader = ALL!!.firstOrNull { it.toString() == name }
-            checkNotNull(reader, { "No reader found with that name!" })
-            return reader!!
         }
     }
 }

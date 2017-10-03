@@ -1,98 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.wijayaprinting.javafx.control.field.FileField?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ButtonBar?>
-<?import javafx.scene.control.CheckBox?>
-<?import javafx.scene.control.ChoiceBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.SeparatorMenuItem?>
-<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.FlowPane?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.VBox?>
-
-<VBox prefHeight="560.0" prefWidth="720.0" spacing="8.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.wijayaprinting.javafx.controller.AttendanceController">
-    <children>
-        <MenuBar>
-            <menus>
-                <Menu mnemonicParsing="false" text="Edit">
-                    <items>
-                        <MenuItem mnemonicParsing="false" onAction="#menuItemClearOnAction" text="%clear" />
-                        <SeparatorMenuItem mnemonicParsing="false" />
-                        <MenuItem mnemonicParsing="false" onAction="#menuItemResetOnAction" text="%reset_saved_data" />
-                    </items>
-                </Menu>
-                <Menu fx:id="menuShift" mnemonicParsing="false" text="%shift">
-                    <items>
-                        <SeparatorMenuItem mnemonicParsing="false" />
-                        <MenuItem mnemonicParsing="false" onAction="#menuItemShiftAddOnAction" text="%add" />
-                    </items>
-                </Menu>
-            </menus>
-        </MenuBar>
-      <GridPane hgap="8.0" vgap="8.0">
+<?import javafx.scene.layout.*?>
+<VBox xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.wijayaprinting.javafx.controller.AttendanceController">
+    <GridPane hgap="8.0" vgap="8.0">
         <columnConstraints>
-          <ColumnConstraints hgrow="NEVER" />
-          <ColumnConstraints hgrow="SOMETIMES" />
-            <ColumnConstraints hgrow="NEVER" />
+            <ColumnConstraints/>
+            <ColumnConstraints/>
+            <ColumnConstraints/>
+            <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES"/>
+            <ColumnConstraints/>
         </columnConstraints>
         <rowConstraints>
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints prefHeight="30.0"/>
+            <RowConstraints prefHeight="30.0"/>
+            <RowConstraints prefHeight="30.0"/>
         </rowConstraints>
-         <children>
-                <Label fx:id="labelFile" text="%input_file" GridPane.rowIndex="1" />
-                <TextField fx:id="textFieldFile" promptText="%input_file" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                <Button mnemonicParsing="false" onAction="#buttonBrowseOnAction" GridPane.columnIndex="2" GridPane.rowIndex="1">
-                    <graphic>
-                        <ImageView pickOnBounds="true" preserveRatio="true">
-                            <image>
-                                <Image url="@btn_folder.png" />
-                            </image>
-                        </ImageView>
-                    </graphic>
-                </Button>
-                <Label fx:id="labelMerge" text="%merge_close_records" GridPane.rowIndex="2" />
-                <CheckBox fx:id="checkBoxMerge" mnemonicParsing="false" selected="true" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <Label text="%reader" />
-            <ChoiceBox fx:id="readerBox" GridPane.columnIndex="1" />
-            <Button mnemonicParsing="false" onAction="#buttonBrowseOnAction" GridPane.columnIndex="2">
-               <graphic>
-                  <ImageView pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@btn_folder.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
-         </children>
-         <VBox.margin>
-            <Insets left="8.0" right="8.0" top="8.0" />
-         </VBox.margin>
-      </GridPane>
-          <ButtonBar buttonMinWidth="192.0">
-              <buttons>
-                  <Button fx:id="buttonRead" mnemonicParsing="false" onAction="#buttonReadOnAction" text="%read" />
-                  <Button fx:id="buttonProcess" defaultButton="true" mnemonicParsing="false" onAction="#buttonProcessOnAction" text="%process" />
-              </buttons>
-         <VBox.margin>
-            <Insets left="8.0" right="8.0" />
-         </VBox.margin>
-          </ButtonBar>
-        <ScrollPane fx:id="scrollPane" VBox.vgrow="ALWAYS">
-            <content>
-                <FlowPane fx:id="flowPane" prefWrapLength="720.0" />
-            </content>
-        </ScrollPane>
-    </children>
+        <VBox.margin>
+            <Insets bottom="8.0" left="8.0" right="8.0" top="8.0"/>
+        </VBox.margin>
+        <TitledPane collapsible="false" prefWidth="192.0" text="Shift" GridPane.rowSpan="3">
+            <ListView fx:id="shiftListView"/>
+            <contextMenu>
+                <ContextMenu>
+                    <items>
+                        <MenuItem mnemonicParsing="false" onAction="#addShiftMenuItemOnAction" text="%add"/>
+                        <MenuItem mnemonicParsing="false" onAction="#deleteShiftMenuItemOnAction" text="%delete"/>
+                    </items>
+                </ContextMenu>
+            </contextMenu>
+        </TitledPane>
+        <Label fx:id="fileLabel" text="%input_file" GridPane.columnIndex="1"/>
+        <FileField fx:id="fileField" promptText="%input_file" GridPane.columnIndex="2" GridPane.columnSpan="2"/>
+        <Button mnemonicParsing="false" onAction="#browseButtonOnAction" GridPane.columnIndex="4">
+            <graphic>
+                <ImageView pickOnBounds="true" preserveRatio="true">
+                    <Image url="@btn_folder.png"/>
+                </ImageView>
+            </graphic>
+        </Button>
+        <Label fx:id="readerLabel" text="%reader" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+        <ChoiceBox fx:id="readerChoiceBox" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
+        <CheckBox fx:id="mergeCheckBox" mnemonicParsing="false" selected="true" text="%merge_close_records"
+                  GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.rowIndex="1"/>
+        <ButtonBar GridPane.columnIndex="1" GridPane.columnSpan="4" GridPane.rowIndex="2">
+            <buttons>
+                <Button fx:id="clearButton" cancelButton="true" mnemonicParsing="false" onAction="#clearButtonOnAction"
+                        text="%clear"/>
+                <Button fx:id="readButton" mnemonicParsing="false" onAction="#readButtonOnAction" text="%read"/>
+                <Button fx:id="processButton" defaultButton="true" mnemonicParsing="false"
+                        onAction="#processButtonOnAction" text="%process"/>
+            </buttons>
+        </ButtonBar>
+    </GridPane>
+    <ScrollPane fx:id="scrollPane" VBox.vgrow="ALWAYS">
+        <FlowPane fx:id="flowPane" prefWrapLength="720.0"/>
+    </ScrollPane>
 </VBox>

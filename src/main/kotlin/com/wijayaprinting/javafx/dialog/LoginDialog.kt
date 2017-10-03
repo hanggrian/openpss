@@ -1,23 +1,23 @@
 package com.wijayaprinting.javafx.dialog
 
+import com.wijayaprinting.javafx.BuildConfig
 import com.wijayaprinting.javafx.Language
 import com.wijayaprinting.javafx.R
-import com.wijayaprinting.javafx.control.button.ImageToggleButton
 import com.wijayaprinting.javafx.control.field.IPField
 import com.wijayaprinting.javafx.control.field.IntField
-import com.wijayaprinting.javafx.control.field.PasswordField
-import com.wijayaprinting.javafx.control.field.TextField
 import com.wijayaprinting.javafx.io.JavaFXFile
 import com.wijayaprinting.javafx.io.JavaFXFile.Companion.IP
 import com.wijayaprinting.javafx.io.JavaFXFile.Companion.LANGUAGE
 import com.wijayaprinting.javafx.io.JavaFXFile.Companion.PORT
 import com.wijayaprinting.javafx.io.JavaFXFile.Companion.USERNAME
-import com.wijayaprinting.javafx.layout.GridPane
+import com.wijayaprinting.javafx.utils.attachButtons
 import com.wijayaprinting.javafx.utils.getString
+import com.wijayaprinting.javafx.utils.setGap
 import com.wijayaprinting.mysql.MySQL
 import javafx.event.ActionEvent
 import javafx.geometry.Pos
 import javafx.scene.control.*
+import javafx.scene.layout.GridPane
 import javafx.scene.layout.VBox
 import javafx.scene.text.Font
 import kotfx.bindings.bindingOf
@@ -46,8 +46,8 @@ class LoginDialog : Dialog<Any>() {
     val loginButton = ButtonType(getString(R.string.login), ButtonBar.ButtonData.OK_DONE)
 
     init {
-        this.title = getString(R.string.wijaya_printing_login)
-        this.headerText = getString(R.string.wijaya_printing_login)
+        this.title = "${getString(R.string.app_name)} ${BuildConfig.VERSION}"
+        this.headerText = getString(R.string.login)
         setGraphic(graphic)
         isResizable = false
 
@@ -97,16 +97,20 @@ class LoginDialog : Dialog<Any>() {
         }
     }
 
-    inner class Content : GridPane(8.0) {
+    inner class Content : GridPane() {
         val languageLabel = Label(getString(R.string.language))
         val languageBox = ChoiceBox<Language>(Language.listAll())
         val usernameLabel = Label(getString(R.string.username))
         val usernameField = TextField(getString(R.string.username))
         val passwordLabel = Label(getString(R.string.password))
-        val passwordField = PasswordField(getString(R.string.password)).apply { tooltip = Tooltip() }
-        val passwordToggle = ImageToggleButton(R.png.btn_visibility, R.png.btn_visibility_off)
+        val passwordField = PasswordField().apply {
+            promptText = getString(R.string.password)
+            tooltip = Tooltip()
+        }
+        val passwordToggle = ToggleButton().apply { attachButtons(R.png.btn_visibility, R.png.btn_visibility_off) }
 
         init {
+            setGap(8.0)
             add(languageLabel, 0, 0)
             add(languageBox, 1, 0)
             add(usernameLabel, 0, 1)
@@ -130,13 +134,14 @@ class LoginDialog : Dialog<Any>() {
         }
     }
 
-    inner class ExpandableContent : GridPane(8.0) {
+    inner class ExpandableContent : GridPane() {
         val ipLabel = Label(getString(R.string.ip_address))
-        val ipField = IPField("127.0.0.1")
+        val ipField = IPField().apply { promptText = "127.0.0.1" }
         val portLabel = Label(getString(R.string.port))
-        val portField = IntField("3306")
+        val portField = IntField().apply { promptText = "3306" }
 
         init {
+            setGap(8.0)
             add(ipLabel, 0, 0)
             add(ipField, 1, 0)
             add(portLabel, 0, 1)

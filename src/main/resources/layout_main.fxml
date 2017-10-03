@@ -1,12 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.scene.control.Tab?>
-<?import javafx.scene.control.TabPane?>
-<TabPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.111"
-         fx:controller="com.wijayaprinting.javafx.controller.MainController"
-         prefHeight="560.0" prefWidth="720.0" tabClosingPolicy="UNAVAILABLE">
-    <Tab fx:id="customerTab" text="Customer" closable="false" disable="true"/>
-    <Tab fx:id="attendanceTab" text="Attendance" closable="false">
-        <fx:include fx:id="attendance" source="layout_attendance.fxml"/>
-    </Tab>
-    <Tab fx:id="aboutTab" text="About" closable="false"/>
-</TabPane>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.VBox?>
+<VBox xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.wijayaprinting.javafx.controller.MainController"
+      prefHeight="560.0" prefWidth="720.0">
+    <MenuBar fx:id="menuBar">
+        <Menu mnemonicParsing="false" text="File">
+            <MenuItem mnemonicParsing="false" text="%about" onAction="#aboutMenuItemOnAction"/>
+        </Menu>
+    </MenuBar>
+    <TabPane tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
+        <Tab closable="false" disable="true" text="Customer">
+            <graphic>
+                <ImageView pickOnBounds="true" preserveRatio="true">
+                    <Image url="@tab_customer.png"/>
+                </ImageView>
+            </graphic>
+        </Tab>
+        <Tab closable="false" text="Attendance">
+            <graphic>
+                <ImageView pickOnBounds="true" preserveRatio="true">
+                    <Image url="@tab_attendance.png"/>
+                </ImageView>
+            </graphic>
+            <fx:include fx:id="attendance" source="layout_attendance.fxml"/>
+        </Tab>
+    </TabPane>
+</VBox>

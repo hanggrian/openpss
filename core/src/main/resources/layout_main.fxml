@@ -13,12 +13,13 @@
         </Menu>
     </MenuBar>
     <TabPane tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
-        <Tab closable="false" disable="true" text="Customer">
+        <Tab closable="false" text="Customer">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
                     <Image url="@tab_user.png"/>
                 </ImageView>
             </graphic>
+            <fx:include fx:id="customer" source="layout_customer.fxml"/>
         </Tab>
         <Tab closable="false" text="Attendance">
             <graphic>

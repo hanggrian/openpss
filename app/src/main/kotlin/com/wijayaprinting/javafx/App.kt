@@ -54,6 +54,8 @@ class App : Application() {
                     icon = Image(R.png.ic_launcher)
                     title = "${getString(R.string.app_name)} ${BuildConfig.VERSION}"
                     graphic.children.add(ImageView(Image(R.png.ic_launcher)))
+
+                    content.passwordField.text = "justforApp1e!"
                 }
                 .showAndWait()
                 .filter { it is String }

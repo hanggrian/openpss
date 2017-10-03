@@ -1,4 +1,4 @@
-// buildconfig generated this class at 2017-10-03T20:51:46.174.
+// buildconfig generated this class at 2017-10-04T03:56:46.959.
 package com.wijayaprinting.javafx;
 
 import java.lang.Boolean;
@@ -11,7 +11,7 @@ public final class BuildConfig {
 
   public static final String VERSION = "0.1";
 
-  public static final Boolean DEBUG = true;
+  public static final Boolean DEBUG = false;
 
   private BuildConfig() {
   }

@@ -1,9 +1,9 @@
-@file:JvmName("TextFieldsKt")
+@file:JvmName("TextInputControlsKt")
 @file:Suppress("NOTHING_TO_INLINE")
 
 package com.wijayaprinting.javafx.scene.utils
 
-import javafx.scene.control.TextField
+import javafx.scene.control.TextInputControl
 import org.apache.commons.lang3.math.NumberUtils
 
 /**
@@ -11,13 +11,13 @@ import org.apache.commons.lang3.math.NumberUtils
  * @see com.wijayaprinting.javafx.scene.control.IntField
  * @see com.wijayaprinting.javafx.scene.control.LongField
  */
-inline fun TextField.digitsOnly() = textProperty().addListener { _, _, newValue ->
+inline fun TextInputControl.digitsOnly() = textProperty().addListener { _, _, newValue ->
     if (!isDigits) text = newValue.replace("[^\\d]".toRegex(), "")
 }
 
-inline val TextField.isDigits: Boolean get() = NumberUtils.isDigits(text)
+inline val TextInputControl.isDigits: Boolean get() = NumberUtils.isDigits(text)
 
-inline val TextField.isDecimal: Boolean
+inline val TextInputControl.isDecimal: Boolean
     get() {
         /** Not supported with SceneBuilder!. */
         // NumberUtils.isCreatable(text)
@@ -28,3 +28,5 @@ inline val TextField.isDecimal: Boolean
             return false
         }
     }
+
+inline val TextInputControl.textOrNull: String? get() = if (text.isEmpty()) null else text

@@ -146,7 +146,7 @@ class AttendanceController {
             setExtra(set)
             val minSize = Pair(960.0, 640.0)
             Stage().apply {
-                scene = Scene(FXMLLoader.load(App::class.java.getResource(R.fxml.layout_record), resources), minSize.first, minSize.second)
+                scene = Scene(FXMLLoader.load(App::class.java.getResource(R.fxml.layout_attendance_record), resources), minSize.first, minSize.second)
                 icons.add(Image(R.png.ic_launcher))
                 title = "${getString(R.string.app_name)} ${BuildConfig.VERSION} - ${getString(R.string.record)}"
                 minWidth = minSize.first

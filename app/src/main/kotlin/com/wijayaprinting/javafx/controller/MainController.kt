@@ -21,6 +21,7 @@ import java.net.URI
 class MainController {
 
     @FXML lateinit var menuBar: MenuBar
+    @FXML lateinit var customerController: CustomerController
     @FXML lateinit var attendanceController: AttendanceController
 
     @FXML

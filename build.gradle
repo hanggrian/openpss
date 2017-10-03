@@ -1,20 +1,20 @@
 buildscript {
     ext.versions = [
-            release : '0.1',
+            release: '0.1',
             // main
-            mysql   : '0.1',
-            kotlin  : '1.1.51',
-            kotfx   : '0.4.4',
-            guava   : '23.0',    // multimap is crucial here
-            rxjava2 : '2.1.0',   // heavy task in background
-            commons : [
+            mysql  : '0.1',
+            kotlin : '1.1.51',
+            kotfx  : '0.4.4',
+            guava  : '23.0',    // multimap is crucial here
+            rxjava2: '2.1.0',   // heavy task in background
+            commons: [
                     lang3    : '3.6',
                     validator: '1.6',
                     poi      : '3.16',    // read xlsx
                     math3    : '3.6.1'   // decimal number precision
             ],
             // test
-            junit   : '4.12'
+            junit  : '4.12'
     ]
     repositories {
         jcenter()
@@ -26,49 +26,10 @@ buildscript {
     }
 }
 
-group 'com.wijayaprinting'
-version versions.release
-
-apply plugin: 'java'
-apply plugin: 'kotlin'
-apply plugin: 'rsync'
-apply plugin: 'buildconfig'
-
-rsync {
-    packageName = 'com.wijayaprinting.javafx'
-    leadingSlash = true
-    debug = true
+allprojects {
+    repositories {
+        jcenter()
+        maven { url 'https://dl.bintray.com/hendraanggrian/maven' }
+        maven { url 'https://dl.bintray.com/kotlin/exposed/' }
+    }
 }
-
-buildconfig {
-    groupId = group
-    artifactId = 'javafx'
-    version = versions.release
-    packageName = 'com.wijayaprinting.javafx'
-    debug = true
-}
-
-
-repositories {
-    jcenter()
-    maven { url 'https://dl.bintray.com/hendraanggrian/maven' }
-    maven { url 'https://dl.bintray.com/kotlin/exposed/' }
-}
-
-dependencies {
-    implementation "com.wijayaprinting:mysql:$versions.mysql"
-
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre8:$versions.kotlin"
-    implementation "com.hendraanggrian:kotfx:$versions.kotfx"
-    implementation "com.google.guava:guava:$versions.guava"
-    implementation "io.reactivex.rxjava2:rxjavafx:$versions.rxjava2"
-    implementation "org.apache.commons:commons-lang3:$versions.commons.lang3"
-    implementation "commons-validator:commons-validator:$versions.commons.validator"
-    implementation "org.apache.poi:poi-ooxml:$versions.commons.poi"
-    implementation "org.apache.commons:commons-math3:$versions.commons.math3"
-
-    testImplementation "junit:junit:$versions.junit"
-}
-
-compileKotlin { kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8 }
-compileTestKotlin { kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8 }

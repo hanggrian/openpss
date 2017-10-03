@@ -1,1 +1,3 @@
-rootProject.name = 'javafx'
+include ':app'
+include ':scene'
+include ':core'

@@ -2,8 +2,18 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel>
+      <module name="app_main" target="1.8" />
+      <module name="app_test" target="1.8" />
+      <module name="control_main" target="1.8" />
+      <module name="control_test" target="1.8" />
+      <module name="core_main" target="1.8" />
+      <module name="core_test" target="1.8" />
       <module name="javafx_main" target="1.8" />
       <module name="javafx_test" target="1.8" />
+      <module name="scene_main" target="1.8" />
+      <module name="scene_test" target="1.8" />
+      <module name="wp-javafx-wp-javafx_main" target="1.8" />
+      <module name="wp-javafx-wp-javafx_test" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

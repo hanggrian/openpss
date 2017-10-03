@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.wijayaprinting.javafx.scene.control.FileField?>
+<?import com.wijayaprinting.javafx.scene.layout.ShiftTitledPane?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<VBox xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.wijayaprinting.javafx.controller.AttendanceController">
+    <GridPane hgap="8.0" vgap="8.0">
+        <columnConstraints>
+            <ColumnConstraints/>
+            <ColumnConstraints/>
+            <ColumnConstraints/>
+            <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES"/>
+            <ColumnConstraints/>
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints prefHeight="30.0"/>
+            <RowConstraints prefHeight="30.0"/>
+            <RowConstraints prefHeight="30.0"/>
+        </rowConstraints>
+        <VBox.margin>
+            <Insets bottom="8.0" left="8.0" right="8.0" top="8.0"/>
+        </VBox.margin>
+        <ShiftTitledPane fx:id="shiftTitledPane" collapsible="false" prefWidth="192.0" text="%shift" GridPane.rowSpan="3"/>
+        <Label fx:id="fileLabel" text="%input_file" GridPane.columnIndex="1"/>
+        <FileField fx:id="fileField" promptText="%input_file" GridPane.columnIndex="2" GridPane.columnSpan="2"/>
+        <Button mnemonicParsing="false" onAction="#browseButtonOnAction" GridPane.columnIndex="4">
+            <graphic>
+                <ImageView pickOnBounds="true" preserveRatio="true">
+                    <Image url="@btn_folder.png"/>
+                </ImageView>
+            </graphic>
+        </Button>
+        <Label fx:id="readerLabel" text="%reader" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+        <ChoiceBox fx:id="readerChoiceBox" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
+        <CheckBox fx:id="mergeCheckBox" mnemonicParsing="false" selected="true" text="%merge_close_records"
+                  GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.rowIndex="1"/>
+        <ButtonBar GridPane.columnIndex="1" GridPane.columnSpan="4" GridPane.rowIndex="2">
+            <buttons>
+                <Button fx:id="clearButton" cancelButton="true" mnemonicParsing="false" onAction="#clearButtonOnAction"
+                        text="%clear"/>
+                <Button fx:id="readButton" mnemonicParsing="false" onAction="#readButtonOnAction" text="%read"/>
+                <Button fx:id="processButton" defaultButton="true" mnemonicParsing="false"
+                        onAction="#processButtonOnAction" text="%process"/>
+            </buttons>
+        </ButtonBar>
+    </GridPane>
+    <ScrollPane fx:id="scrollPane" VBox.vgrow="ALWAYS">
+        <FlowPane fx:id="flowPane" prefWrapLength="720.0"/>
+    </ScrollPane>
+</VBox>

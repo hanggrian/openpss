@@ -1,0 +1,21 @@
+group 'com.wijayaprinting'
+version versions.release
+
+apply plugin: 'java-library'
+apply plugin: 'kotlin'
+apply plugin: 'rsync'
+
+rsync {
+    packageName = 'com.wijayaprinting.javafx'
+    leadingSlash = true
+    debug = true
+}
+
+dependencies {
+    implementation "com.wijayaprinting:mysql:$versions.mysql"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre8:$versions.kotlin"
+    implementation "com.hendraanggrian:kotfx:$versions.kotfx"
+    implementation "org.apache.commons:commons-math3:$versions.commons.math3"
+}
+
+compileKotlin { kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8 }

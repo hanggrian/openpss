@@ -3,6 +3,7 @@ package com.wijayaprinting.javafx.scene.layout
 import com.wijayaprinting.javafx.R
 import com.wijayaprinting.javafx.getString
 import com.wijayaprinting.javafx.safeTransaction
+import com.wijayaprinting.javafx.scene.Refreshable
 import com.wijayaprinting.javafx.scene.control.DoubleField
 import com.wijayaprinting.javafx.scene.control.TimeField
 import com.wijayaprinting.javafx.scene.utils.setGap
@@ -13,7 +14,7 @@ import javafx.scene.image.ImageView
 import javafx.scene.layout.GridPane
 import kotfx.bindings.not
 import kotfx.bindings.or
-import kotfx.collections.toObservableList
+import kotfx.collections.toMutableObservableList
 import kotfx.dialogs.confirmAlert
 import kotfx.dialogs.warningAlert
 import kotfx.runLater
@@ -23,7 +24,11 @@ import java.math.BigDecimal
 /**
  * @author Hendra Anggrian (hendraanggrian@gmail.com)
  */
-class ShiftTitledPane : TitledPane() {
+class ShiftTitledPane : TitledPane(), Refreshable {
+
+    override fun refresh() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 
     val listView = ListView<Shift>()
     val addMenuItem = MenuItem(getString(R.string.add))
@@ -33,7 +38,7 @@ class ShiftTitledPane : TitledPane() {
         content = listView
         contextMenu = ContextMenu(addMenuItem, deleteMenuItem)
 
-        safeTransaction { listView.items = Shift.all().toList().toObservableList() }
+        safeTransaction { listView.items = Shift.all().toList().toMutableObservableList() }
         addMenuItem.setOnAction {
             AddDialog()
                     .showAndWait()
@@ -45,7 +50,6 @@ class ShiftTitledPane : TitledPane() {
                                 recess = mRecess
                             }
                         }
-                        // refreshShift()
                     }
         }
         deleteMenuItem.setOnAction {
@@ -55,8 +59,9 @@ class ShiftTitledPane : TitledPane() {
                     .showAndWait()
                     .filter { it == ButtonType.OK }
                     .ifPresent {
-                        safeTransaction { shift.delete() }
-                        // refreshShift()
+                        safeTransaction {
+                            shift.delete()
+                        }
                     }
         }
     }

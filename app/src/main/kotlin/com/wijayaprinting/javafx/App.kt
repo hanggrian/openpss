@@ -1,6 +1,7 @@
 package com.wijayaprinting.javafx
 
-import com.wijayaprinting.javafx.io.JavaFXFile
+import com.wijayaprinting.javafx.io.MySQLFile
+import com.wijayaprinting.javafx.io.PreferencesFile
 import com.wijayaprinting.javafx.scene.control.IPField
 import com.wijayaprinting.javafx.scene.control.IntField
 import com.wijayaprinting.javafx.scene.utils.attachButtons
@@ -41,7 +42,7 @@ class App : Application() {
     }
 
     override fun init() {
-        initResources(Language.parse(JavaFXFile()[JavaFXFile.LANGUAGE].value).getResources("string"))
+        initResources(Language.parse(PreferencesFile()[PreferencesFile.LANGUAGE].value).getResources("string"))
     }
 
     override fun start(stage: Stage) {
@@ -73,7 +74,8 @@ class App : Application() {
             private const val IP_LOOKUP_TIMEOUT = 3000
         }
 
-        val file = JavaFXFile()
+        val preferencesFile = PreferencesFile()
+        val mysqlFile = MySQLFile()
 
         val graphic = Graphic()
         val content = Content()
@@ -92,7 +94,7 @@ class App : Application() {
             dialogPane.buttonTypes.addAll(ButtonType.CANCEL, loginButton)
             dialogPane.lookupButton(loginButton).addEventFilter(ActionEvent.ACTION) { event ->
                 event.consume()
-                file.save()
+                mysqlFile.save()
                 when (InetAddress.getByName(expandableContent.ipField.text).isReachable(IP_LOOKUP_TIMEOUT)) {
                     false -> errorAlert(getString(R.string.ip_address_unreachable)).showAndWait()
                     true -> {
@@ -115,9 +117,9 @@ class App : Application() {
                     or not(expandableContent.ipField.validProperty)
                     or expandableContent.portField.textProperty().isEmpty)
 
-            content.usernameField.textProperty().bindBidirectional(file[JavaFXFile.USERNAME])
-            expandableContent.ipField.textProperty().bindBidirectional(file[JavaFXFile.IP])
-            expandableContent.portField.textProperty().bindBidirectional(file[JavaFXFile.PORT])
+            content.usernameField.textProperty().bindBidirectional(mysqlFile[MySQLFile.USERNAME])
+            expandableContent.ipField.textProperty().bindBidirectional(mysqlFile[MySQLFile.IP])
+            expandableContent.portField.textProperty().bindBidirectional(mysqlFile[MySQLFile.PORT])
 
             runLater {
                 if (content.usernameField.text.isEmpty()) content.usernameField.requestFocus()
@@ -154,10 +156,10 @@ class App : Application() {
                 add(passwordField, 1, 2)
                 add(passwordToggle, 2, 2)
 
-                val initialLanguage = Language.parse(file[JavaFXFile.LANGUAGE].value)
+                val initialLanguage = Language.parse(preferencesFile[PreferencesFile.LANGUAGE].value)
                 languageBox.selectionModel.select(initialLanguage)
                 languageBox.selectionModel.selectedItemProperty().addListener { _, _, newValue ->
-                    file.apply { get(JavaFXFile.LANGUAGE).set(newValue.locale) }.save()
+                    preferencesFile.apply { get(PreferencesFile.LANGUAGE).set(newValue.locale) }.save()
                     close()
                     infoAlert(getString(R.string.language_changed)).showAndWait()
                     exitFXApplication()

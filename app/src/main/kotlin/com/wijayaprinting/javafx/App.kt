@@ -26,7 +26,7 @@ import kotfx.bindings.not
 import kotfx.bindings.or
 import kotfx.dialogs.errorAlert
 import kotfx.dialogs.infoAlert
-import kotfx.exitFXApplication
+import kotfx.exitFX
 import kotfx.runLater
 import java.awt.Toolkit
 import java.net.InetAddress
@@ -164,7 +164,7 @@ class App : Application() {
                     preferencesFile.apply { get(PreferencesFile.LANGUAGE).set(newValue.locale) }.save()
                     close()
                     infoAlert(getString(R.string.language_changed)).showAndWait()
-                    exitFXApplication()
+                    exitFX()
                 }
                 passwordField.tooltipProperty().bind(bindingOf(passwordField.textProperty(), passwordToggle.selectedProperty()) {
                     if (!passwordToggle.isSelected) null

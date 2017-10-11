@@ -14,7 +14,7 @@ import javafx.scene.control.cell.TextFieldTreeTableCell
 import javafx.stage.Stage
 import kotfx.dialogs.warningAlert
 import kotfx.runLater
-import kotfx.stringConverter
+import kotfx.stringConverterOf
 
 /**
  * @author Hendra Anggrian (hendraanggrian@gmail.com)
@@ -50,7 +50,7 @@ class AttendanceRecordController {
         treeTableColumnStart.setCellValueFactory { ReadOnlyObjectWrapper(it.value.value.start) }
         treeTableColumnEnd.setCellValueFactory { ReadOnlyObjectWrapper(it.value.value.end) }
         treeTableColumnDaily.setCellValueFactory { it.value.value.daily as ObservableValue<Double> }
-        treeTableColumnDaily.cellFactory = TextFieldTreeTableCell.forTreeTableColumn<Record, Double>(stringConverter { it.toDouble() })
+        treeTableColumnDaily.cellFactory = TextFieldTreeTableCell.forTreeTableColumn<Record, Double>(stringConverterOf { it.toDouble() })
         treeTableColumnDaily.setOnEditStart {
             if (it.rowValue.value.type != Record.TYPE_CHILD) {
                 it.consume()
@@ -60,7 +60,7 @@ class AttendanceRecordController {
         treeTableColumnDaily.setOnEditCommit { it.rowValue.value.daily.set(it.newValue) }
         treeTableColumnDailyIncome.setCellValueFactory { it.value.value.dailyIncome as ObservableValue<Double> }
         treeTableColumnOvertime.setCellValueFactory { it.value.value.overtime as ObservableValue<Double> }
-        treeTableColumnOvertime.cellFactory = TextFieldTreeTableCell.forTreeTableColumn<Record, Double>(stringConverter { it.toDouble() })
+        treeTableColumnOvertime.cellFactory = TextFieldTreeTableCell.forTreeTableColumn<Record, Double>(stringConverterOf { it.toDouble() })
         treeTableColumnOvertime.setOnEditStart {
             if (it.rowValue.value.type != Record.TYPE_CHILD) {
                 it.consume()

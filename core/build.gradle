@@ -9,7 +9,7 @@ apply plugin: 'buildconfig'
 rsync {
     packageName = 'com.wijayaprinting.javafx'
     leadingSlash = true
-    debug = false
+    debug = isDebug
 }
 
 buildconfig {
@@ -17,7 +17,7 @@ buildconfig {
     artifactId = 'javafx'
     version = versions.release
     packageName = 'com.wijayaprinting.javafx'
-    debug = true // set true when building app, false when building stage
+    debug = isDebug
 }
 
 dependencies {

@@ -36,7 +36,7 @@ import kotfx.bindings.not
 import kotfx.bindings.or
 import kotfx.dialogs.*
 import kotfx.runLater
-import kotfx.stringConverter
+import kotfx.stringConverterOf
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
 import java.io.File
@@ -176,11 +176,11 @@ class AttendanceController {
         }
         val dailyField: TextField = IntField().apply {
             promptText = getString(R.string.daily_income)
-            textProperty().bindBidirectional(employee.daily, stringConverter<Number> { if (it.isBlank()) 0 else Integer.valueOf(it) })
+            textProperty().bindBidirectional(employee.daily, stringConverterOf<Number> { if (it.isBlank()) 0 else Integer.valueOf(it) })
         }
         val overtimeField: TextField = IntField().apply {
             promptText = getString(R.string.overtime_income)
-            textProperty().bindBidirectional(employee.overtimeHourly, stringConverter<Number> { if (it.isBlank()) 0 else Integer.valueOf(it) })
+            textProperty().bindBidirectional(employee.overtimeHourly, stringConverterOf<Number> { if (it.isBlank()) 0 else Integer.valueOf(it) })
         }
 
         val addMenuItem = MenuItem(getString(R.string.add)).apply {

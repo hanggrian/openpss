@@ -1,10 +1,11 @@
 buildscript {
+    ext.isDebug = true // set false when building app, true when building stage
     ext.versions = [
             release: '0.1',
             // main
             mysql  : '0.2',
             kotlin : '1.1.51',
-            kotfx  : '0.4.4',
+            kotfx  : '0.5',
             guava  : '23.0',    // multimap is crucial here
             rxjava2: '2.1.0',   // heavy task in background
             commons: [
@@ -21,8 +22,8 @@ buildscript {
     }
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin"
-        classpath 'com.hendraanggrian:rsync:0.5'
-        classpath 'com.hendraanggrian:buildconfig:0.2'
+        classpath 'com.hendraanggrian:rsync:0.6'
+        classpath 'com.hendraanggrian:buildconfig:0.3'
     }
 }
 

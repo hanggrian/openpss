@@ -4,24 +4,26 @@ import com.wijayaprinting.javafx.io.MySQLFile
 import com.wijayaprinting.javafx.io.PreferencesFile
 import com.wijayaprinting.javafx.scene.control.IPField
 import com.wijayaprinting.javafx.scene.control.IntField
+import com.wijayaprinting.javafx.scene.utils.attachButtons
 import com.wijayaprinting.javafx.scene.utils.gaps
 import com.wijayaprinting.javafx.utils.icon
 import com.wijayaprinting.javafx.utils.setIconOnOSX
 import com.wijayaprinting.mysql.MySQL
-import io.reactivex.Completable
-import io.reactivex.rxjavafx.schedulers.JavaFxScheduler
-import io.reactivex.rxkotlin.subscribeBy
-import io.reactivex.schedulers.Schedulers
 import javafx.application.Application
 import javafx.event.ActionEvent
 import javafx.fxml.FXMLLoader
+import javafx.geometry.Pos.CENTER
 import javafx.scene.Scene
 import javafx.scene.control.*
+import javafx.scene.control.ButtonType.CANCEL
+import javafx.scene.control.ButtonType.OK
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import javafx.scene.layout.GridPane
-import javafx.scene.layout.VBox
+import javafx.scene.layout.HBox
 import javafx.stage.Stage
+import javafx.util.Callback
+import kotfx.bindings.bindingOf
 import kotfx.bindings.not
 import kotfx.bindings.or
 import kotfx.dialogs.errorAlert
@@ -85,32 +87,49 @@ class App : Application() {
             dialogPane.content = content
             dialogPane.expandableContent = expandableContent
 
-            dialogPane.buttonTypes.addAll(ButtonType.CANCEL, loginButton)
+            dialogPane.buttonTypes.addAll(CANCEL, loginButton)
             dialogPane.lookupButton(loginButton).addEventFilter(ActionEvent.ACTION) { event ->
                 event.consume()
                 mysqlFile.save()
-                if (InetAddress.getByName(content.ipField.text).isReachable(IP_LOOKUP_TIMEOUT)) {
+                if (!InetAddress.getByName(content.ipField.text).isReachable(IP_LOOKUP_TIMEOUT)) {
                     errorAlert(getString(R.string.ip_address_unreachable)).showAndWait()
                     return@addEventFilter
-                } else {
-
-                    
-                    Completable
-                            .create {
-                                try {
-                                    MySQL.connect(content.ipField.text, content.portField.text, content.usernameField.text, "")
-                                    it.onComplete()
-                                } catch (e: Exception) {
-                                    it.onError(e)
-                                }
+                }
+                kotfx.dialogs
+                        .dialog<String>(getString(R.string.password), ImageView(R.png.ic_key), getString(R.string.password_required)) {
+                            val passwordLabel = Label(getString(R.string.password))
+                            val passwordField = PasswordField().apply { promptText = getString(R.string.password) }
+                            val passwordToggle = ToggleButton().apply { attachButtons(R.png.btn_visibility, R.png.btn_visibility_off) }
+                            buttonTypes.addAll(CANCEL, OK)
+                            lookupButton(OK).disableProperty().bind(passwordField.textProperty().isEmpty)
+                            passwordField.tooltipProperty().bind(bindingOf(passwordField.textProperty(), passwordToggle.selectedProperty()) {
+                                if (!passwordToggle.isSelected) null
+                                else Tooltip(passwordField.text)
+                            })
+                            content = HBox().apply {
+                                spacing = 8.0
+                                alignment = CENTER
+                                children.addAll(passwordLabel, passwordField, passwordToggle)
                             }
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(JavaFxScheduler.platform())
-                            .subscribeBy({ errorAlert(it.message ?: "Unknown error!").showAndWait() }) {
+                            runLater { passwordField.requestFocus() }
+
+                            if (BuildConfig.DEBUG) {
+                                passwordField.text = "justforApp1e!"
+                            }
+
+                            Callback { if (it == OK) passwordField.text else "" }
+                        }
+                        .showAndWait()
+                        .filter { it.isNotEmpty() }
+                        .ifPresent { password ->
+                            try {
+                                MySQL.connect(content.ipField.text, content.portField.text, content.usernameField.text, password)
                                 result = content.usernameField.text
                                 close()
+                            } catch (e: Exception) {
+                                errorAlert(e.message ?: "Unknown error!").showAndWait()
                             }
-                }
+                        }
             }
             dialogPane.lookupButton(loginButton).disableProperty().bind(content.usernameField.textProperty().isEmpty
                     or not(content.ipField.validProperty)
@@ -159,13 +178,22 @@ class App : Application() {
             }
         }
 
-        inner class ExpandableContent : VBox() {
-            val aboutLabel = Label("MySQL version ${com.wijayaprinting.mysql.BuildConfig.VERSION}")
+        inner class ExpandableContent : GridPane() {
+            val aboutLabel = Label("An open-source software.\nFor more information and update, visit:")
             val hyperlink = Hyperlink("https://github.com/WijayaPrinting/")
+            val javafxLabel = Label("JavaFX")
+            val javafxLabel2 = Label(BuildConfig.VERSION)
+            val mysqlLabel = Label("MySQL")
+            val mysqlLabel2 = Label(com.wijayaprinting.mysql.BuildConfig.VERSION)
 
             init {
-                spacing = 8.0
-                children.addAll(aboutLabel, hyperlink)
+                gaps = 8.0
+                add(aboutLabel, 0, 0, 2, 1)
+                add(hyperlink, 0, 1, 2, 1)
+                add(javafxLabel, 0, 2)
+                add(javafxLabel2, 1, 2)
+                add(mysqlLabel, 0, 3)
+                add(mysqlLabel2, 1, 3)
             }
         }
     }

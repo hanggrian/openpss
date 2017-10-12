@@ -1,22 +1,23 @@
-// rsync generated this class at 2017-10-12T21:51:28.971 from:
-// string_en.properties
-// layout_attendance.fxml
-// btn_refresh.png
-// logo_launcher.png
-// ic_calendar.png
-// string_in.properties
+// rsync generated this class at 2017-10-13T03:02:42.319 from:
 // btn_add.png
-// ic_user.png
-// tab_clock.png
-// btn_visibility.png
-// layout_main.fxml
-// tab_user.png
-// layout_attendance_record.fxml
-// btn_visibility_off.png
-// ic_clock.png
-// ic_launcher.png
 // btn_folder.png
+// btn_refresh.png
+// btn_visibility.png
+// btn_visibility_off.png
+// ic_calendar.png
+// ic_clock.png
+// ic_key.png
+// ic_launcher.png
+// ic_user.png
+// layout_attendance.fxml
+// layout_attendance_record.fxml
 // layout_customer.fxml
+// layout_main.fxml
+// logo_launcher.png
+// string_en.properties
+// string_in.properties
+// tab_clock.png
+// tab_user.png
 package com.wijayaprinting.javafx;
 
 import java.lang.String;
@@ -25,54 +26,56 @@ public final class R {
   private R() {
   }
 
-  public static final class properties {
-    public static final String string_en = "/string_en.properties";
+  public static final class png {
+    public static final String btn_add = "/btn_add.png";
 
-    public static final String string_in = "/string_in.properties";
+    public static final String btn_folder = "/btn_folder.png";
 
-    private properties() {
+    public static final String btn_refresh = "/btn_refresh.png";
+
+    public static final String btn_visibility = "/btn_visibility.png";
+
+    public static final String btn_visibility_off = "/btn_visibility_off.png";
+
+    public static final String ic_calendar = "/ic_calendar.png";
+
+    public static final String ic_clock = "/ic_clock.png";
+
+    public static final String ic_key = "/ic_key.png";
+
+    public static final String ic_launcher = "/ic_launcher.png";
+
+    public static final String ic_user = "/ic_user.png";
+
+    public static final String logo_launcher = "/logo_launcher.png";
+
+    public static final String tab_clock = "/tab_clock.png";
+
+    public static final String tab_user = "/tab_user.png";
+
+    private png() {
     }
   }
 
   public static final class fxml {
     public static final String layout_attendance = "/layout_attendance.fxml";
 
-    public static final String layout_main = "/layout_main.fxml";
-
     public static final String layout_attendance_record = "/layout_attendance_record.fxml";
 
     public static final String layout_customer = "/layout_customer.fxml";
+
+    public static final String layout_main = "/layout_main.fxml";
 
     private fxml() {
     }
   }
 
-  public static final class png {
-    public static final String btn_refresh = "/btn_refresh.png";
+  public static final class properties {
+    public static final String string_en = "/string_en.properties";
 
-    public static final String logo_launcher = "/logo_launcher.png";
+    public static final String string_in = "/string_in.properties";
 
-    public static final String ic_calendar = "/ic_calendar.png";
-
-    public static final String btn_add = "/btn_add.png";
-
-    public static final String ic_user = "/ic_user.png";
-
-    public static final String tab_clock = "/tab_clock.png";
-
-    public static final String btn_visibility = "/btn_visibility.png";
-
-    public static final String tab_user = "/tab_user.png";
-
-    public static final String btn_visibility_off = "/btn_visibility_off.png";
-
-    public static final String ic_clock = "/ic_clock.png";
-
-    public static final String ic_launcher = "/ic_launcher.png";
-
-    public static final String btn_folder = "/btn_folder.png";
-
-    private png() {
+    private properties() {
     }
   }
 
@@ -93,6 +96,8 @@ public final class R {
 
     public static final String merge_close_records = "merge_close_records";
 
+    public static final String password_required = "password_required";
+
     public static final String delete_others = "delete_others";
 
     public static final String end = "end";
@@ -106,8 +111,6 @@ public final class R {
     public static final String edit = "edit";
 
     public static final String language = "language";
-
-    public static final String about = "about";
 
     public static final String overtime_income = "overtime_income";
 
@@ -126,8 +129,6 @@ public final class R {
     public static final String total = "total";
 
     public static final String password = "password";
-
-    public static final String about_content = "about_content";
 
     public static final String error_employee_incomplete = "error_employee_incomplete";
 
@@ -166,8 +167,6 @@ public final class R {
     public static final String process = "process";
 
     public static final String employee = "employee";
-
-    public static final String about_expandable_content = "about_expandable_content";
 
     public static final String app_name = "app_name";
 

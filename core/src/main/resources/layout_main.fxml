@@ -9,7 +9,6 @@
       prefHeight="560.0" prefWidth="720.0">
     <MenuBar fx:id="menuBar">
         <Menu mnemonicParsing="false" text="%help">
-            <MenuItem mnemonicParsing="false" text="%about" onAction="#aboutMenuItemOnAction"/>
         </Menu>
     </MenuBar>
     <TabPane tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">

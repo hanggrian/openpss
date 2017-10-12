@@ -3,7 +3,7 @@ buildscript {
     ext.versions = [
             release: '0.1',
             // main
-            mysql  : '0.2',
+            mysql  : '0.3',
             kotlin : '1.1.51',
             kotfx  : '0.5',
             guava  : '23.0',    // multimap is crucial here

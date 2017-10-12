@@ -1,24 +1,23 @@
 package com.wijayaprinting.javafx.data
 
 import com.wijayaprinting.javafx.safeTransaction
-import com.wijayaprinting.mysql.dao.Shift
 import com.wijayaprinting.mysql.dao.Wage
 import com.wijayaprinting.mysql.dao.Wages
-import com.wijayaprinting.mysql.utils.minutesDiff
+import javafx.beans.property.DoubleProperty
 import javafx.beans.property.IntegerProperty
+import javafx.beans.property.SimpleDoubleProperty
 import javafx.beans.property.SimpleIntegerProperty
-import javafx.beans.property.SimpleObjectProperty
-import javafx.beans.value.ObservableValue
 import javafx.collections.ObservableList
 import kotfx.bindings.doubleBindingOf
 import kotfx.collections.mutableObservableListOf
 import org.jetbrains.exposed.sql.update
 import org.joda.time.DateTime
+import org.joda.time.Minutes.minutes
+import org.joda.time.Period
+import java.math.BigDecimal
 
 /**
  * Data class representing an Employee with 'no' as its identifier to avoid duplicate in [Set] scenario.
- *
- * @author Hendra Anggrian (hendraanggrian@gmail.com)
  */
 data class Employee(
         /** Id and name are final values that should be determined upon xlsx reading. */
@@ -27,32 +26,35 @@ data class Employee(
 
         /** Attendances and shift should be set with [EmployeeTitledPane]. */
         val attendances: ObservableList<DateTime> = mutableObservableListOf(),
-        val shift: ObservableValue<Shift> = SimpleObjectProperty<Shift>(),
 
         /** Wages below are retrieved from sqlite, or empty if there is none. */
         val daily: IntegerProperty = SimpleIntegerProperty(),
-        val overtimeHourly: IntegerProperty = SimpleIntegerProperty()
+        val hourlyOvertime: IntegerProperty = SimpleIntegerProperty(),
+        val recess: DoubleProperty = SimpleDoubleProperty()
 ) {
 
     init {
         safeTransaction {
             Wage.findById(id)?.let { wage ->
                 daily.value = wage.daily
-                overtimeHourly.value = wage.hourlyOvertime
+                hourlyOvertime.value = wage.hourlyOvertime
+                recess.value = wage.recess.toDouble()
             }
         }
     }
 
-    @Suppress("IMPLICIT_CAST_TO_ANY")
     fun saveWage() = safeTransaction {
+        @Suppress("IMPLICIT_CAST_TO_ANY")
         when (Wage.findById(id)) {
             null -> Wage.new(id) {
                 daily = this@Employee.daily.value
-                hourlyOvertime = this@Employee.overtimeHourly.value
+                hourlyOvertime = this@Employee.hourlyOvertime.value
+                recess = BigDecimal.valueOf(this@Employee.recess.value)
             }
             else -> Wages.update({ Wages.id eq id }) {
                 it[daily] = this@Employee.daily.value
-                it[hourlyOvertime] = this@Employee.overtimeHourly.value
+                it[hourlyOvertime] = this@Employee.hourlyOvertime.value
+                it[recess] = BigDecimal.valueOf(this@Employee.recess.value)
             }
         }
     }
@@ -62,7 +64,7 @@ data class Employee(
 
     override fun toString(): String = "$id. $name"
 
-    fun toNodeRecord(): Record = Record(Record.TYPE_NODE, this, shift.value.start, shift.value.end)
+    fun toNodeRecord(): Record = Record(Record.TYPE_NODE, this, DateTime.now(), DateTime.now())
 
     fun toChildRecords(): Set<Record> {
         val records = mutableSetOf<Record>()
@@ -91,15 +93,7 @@ data class Employee(
         }
     }
 
-    fun mergeDuplicates() {
-        val iterator = attendances.iterator()
-        var temp: DateTime? = null
-        while (iterator.hasNext()) {
-            val record = iterator.next()
-            if (temp != null && record.minutesDiff(temp) <= 5) {
-                iterator.remove()
-            }
-            temp = record
-        }
-    }
+    fun mergeDuplicates() = attendances.removeAll((0 until (attendances.size - 1))
+            .filter { Period(attendances[it], attendances[it + 1]).toStandardMinutes().isLessThan(minutes(5)) }
+            .map { attendances[it] })
 }

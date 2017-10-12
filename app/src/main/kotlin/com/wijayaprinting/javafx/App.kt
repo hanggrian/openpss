@@ -61,7 +61,7 @@ class App : Application() {
                     stage.apply {
                         scene = Scene(FXMLLoader.load(App::class.java.getResource(R.fxml.layout_main), resources), minSize.first, minSize.second)
                         icons.add(Image(R.png.ic_launcher))
-                        title = "${getString(R.string.app_name)} ${BuildConfig.VERSION}"
+                        title = getString(R.string.app_name)
                         minWidth = minSize.first
                         minHeight = minSize.second
                     }.show()
@@ -69,7 +69,6 @@ class App : Application() {
     }
 
     inner class LoginDialog : Dialog<Any>() {
-
         val preferencesFile = PreferencesFile()
         val mysqlFile = MySQLFile()
 
@@ -117,10 +116,10 @@ class App : Application() {
                                 passwordField.text = "justforApp1e!"
                             }
 
-                            Callback { if (it == OK) passwordField.text else "" }
+                            Callback { if (it == OK) passwordField.text else null }
                         }
                         .showAndWait()
-                        .filter { it.isNotEmpty() }
+                        .filter { it != null }
                         .ifPresent { password ->
                             try {
                                 MySQL.connect(content.ipField.text, content.portField.text, content.usernameField.text, password)

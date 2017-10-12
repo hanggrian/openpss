@@ -9,7 +9,6 @@ import org.joda.time.DateTime
 import java.io.File
 
 /**
- * @author Hendra Anggrian hendraanggrian@gmail.com)
  * @see Reader
  */
 class EClockingReader : Reader {

@@ -1,9 +1,7 @@
 package com.wijayaprinting.javafx.data
 
-import com.wijayaprinting.mysql.dao.Shift
 import com.wijayaprinting.mysql.utils.PATTERN_DATETIME
 import com.wijayaprinting.mysql.utils.PATTERN_TIME
-import com.wijayaprinting.mysql.utils.hoursDiff
 import javafx.beans.property.DoubleProperty
 import javafx.beans.property.SimpleDoubleProperty
 import kotfx.bindings.doubleBindingOf
@@ -28,8 +26,6 @@ data class Record(
 
         val total: DoubleProperty = SimpleDoubleProperty()
 ) {
-
-    private val mShift: Shift get() = mEmployee.shift.value
 
     val employee: Employee?
         get() = when (type) {
@@ -57,20 +53,16 @@ data class Record(
 
     init {
         if (type != TYPE_ROOT) {
-            dailyIncome.bind(doubleBindingOf(daily, mEmployee.daily) {
-                round(daily.value * mEmployee.daily.value / mShift.workingHours, 2)
-            })
-            overtimeIncome.bind(doubleBindingOf(overtime, mEmployee.overtimeHourly) {
-                round(mEmployee.overtimeHourly.value * overtime.value, 2)
-            })
+            dailyIncome.bind(doubleBindingOf(daily, mEmployee.daily) { round(daily.value * mEmployee.daily.value /*/ mShift.workingHours*/, 2) })
+            overtimeIncome.bind(doubleBindingOf(overtime, mEmployee.hourlyOvertime) { round(mEmployee.hourlyOvertime.value * overtime.value, 2) })
             when (type) {
                 TYPE_NODE -> {
-                    daily.set(mShift.workingHours)
+                    daily.set(0.0/*mShift.workingHours*/)
                     overtime.set(0.0)
                     total.set(0.0)
                 }
                 TYPE_CHILD -> {
-                    val mShiftStart = mShift.getActualStart(mStart)
+                    /*val mShiftStart = mShift.getActualStart(mStart)
                     val mShiftEnd = mShift.getActualEnd(mEnd)
                     var mDaily: Double
                     val mHourlyOvertime: Double
@@ -101,7 +93,7 @@ data class Record(
                     mDaily -= mShift.recess.toDouble()
                     daily.set(if (mDaily < 0) 0.0 else round(mDaily, 2))
                     overtime.set(round(mHourlyOvertime, 2))
-                    total.bind(dailyIncome + overtimeIncome)
+                    total.bind(dailyIncome + overtimeIncome)*/
                 }
                 TYPE_TOTAL -> total.bind(dailyIncome + overtimeIncome)
             }

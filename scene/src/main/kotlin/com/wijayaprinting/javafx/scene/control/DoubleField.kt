@@ -5,19 +5,14 @@ import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleDoubleProperty
 import javafx.scene.control.TextField
 import kotfx.bindings.booleanBindingOf
-import kotfx.bindings.doubleBindingOf
+import kotfx.stringConverterOf
 
 /**
  * @author Hendra Anggrian (hendraanggrian@gmail.com)
  */
 open class DoubleField : TextField() {
 
-    val valueProperty = SimpleDoubleProperty().apply {
-        bind(doubleBindingOf(textProperty()) {
-            if (isDecimal) text.toDouble()
-            else 0.0
-        })
-    }
+    val valueProperty = SimpleDoubleProperty().apply { textProperty().bindBidirectional(this, stringConverterOf<Number> { if (!isDecimal) 0.0 else it.toDouble() }) }
     var value: Double
         get() = valueProperty.get()
         set(value) = valueProperty.set(value)

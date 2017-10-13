@@ -4,24 +4,18 @@ import com.wijayaprinting.javafx.scene.utils.digitsOnly
 import com.wijayaprinting.javafx.scene.utils.isDigits
 import javafx.beans.property.SimpleLongProperty
 import javafx.scene.control.TextField
-import kotfx.bindings.longBindingOf
+import kotfx.stringConverterOf
 
-/**
- * @author Hendra Anggrian (hendraanggrian@gmail.com)
- */
 open class LongField : TextField() {
 
-    val valueProperty = SimpleLongProperty().apply {
-        bind(longBindingOf(textProperty()) {
-            if (isDigits) text.toLong()
-            else 0
-        })
+    val valueProperty = SimpleLongProperty()
+
+    init {
+        textProperty().bindBidirectional(valueProperty, stringConverterOf<Number> { if (!isDigits) 0 else it.toLong() })
+        digitsOnly()
     }
+
     var value: Long
         get() = valueProperty.get()
         set(value) = valueProperty.set(value)
-
-    init {
-        digitsOnly()
-    }
 }

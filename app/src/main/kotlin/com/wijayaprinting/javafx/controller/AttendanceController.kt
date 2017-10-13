@@ -5,8 +5,11 @@ import com.wijayaprinting.javafx.data.Employee
 import com.wijayaprinting.javafx.reader.Reader
 import com.wijayaprinting.javafx.scene.control.DoubleField
 import com.wijayaprinting.javafx.scene.control.FileField
-import com.wijayaprinting.javafx.scene.control.TimeField
-import com.wijayaprinting.javafx.scene.utils.gaps
+import com.wijayaprinting.javafx.scene.control.IntField
+import com.wijayaprinting.javafx.scene.layout.TimeBox
+import com.wijayaprinting.javafx.scene.utils.setGaps
+import com.wijayaprinting.javafx.scene.utils.setMaxSize
+import com.wijayaprinting.javafx.scene.utils.setSize
 import com.wijayaprinting.mysql.utils.PATTERN_DATETIME
 import io.reactivex.Observable
 import io.reactivex.rxjavafx.schedulers.JavaFxScheduler
@@ -14,15 +17,11 @@ import io.reactivex.schedulers.Schedulers
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
 import javafx.geometry.Insets
-import javafx.geometry.Pos
+import javafx.geometry.Pos.CENTER
 import javafx.scene.Scene
 import javafx.scene.control.*
-import javafx.scene.image.Image
 import javafx.scene.image.ImageView
-import javafx.scene.layout.FlowPane
-import javafx.scene.layout.GridPane
-import javafx.scene.layout.Pane
-import javafx.scene.layout.VBox
+import javafx.scene.layout.*
 import javafx.stage.FileChooser
 import javafx.stage.Stage
 import javafx.util.Callback
@@ -32,10 +31,9 @@ import kotfx.bindings.not
 import kotfx.bindings.or
 import kotfx.dialogs.*
 import kotfx.runLater
-import kotfx.stringConverterOf
 import org.joda.time.DateTime
-import org.joda.time.format.DateTimeFormat
 import java.io.File
+import java.time.LocalDate
 import java.util.*
 
 /**
@@ -62,7 +60,7 @@ class AttendanceController {
         flowPane.prefWrapLengthProperty().bind(fileField.scene.widthProperty())
 
         if (BuildConfig.DEBUG) {
-            fileField.text = "/Users/hendraanggrian/Downloads/Absen 7-10-17.xlsx"
+            fileField.text = "/Users/hendraanggrian/Desktop/Absen 7-10-17.xlsx"
         }
     }
 
@@ -98,7 +96,7 @@ class AttendanceController {
                     }
                     emitter.onComplete()
                 }
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.computation())
                 .observeOn(JavaFxScheduler.platform())
                 .subscribe({ employee ->
                     val pane = EmployeeTitledPane(employee)
@@ -137,8 +135,7 @@ class AttendanceController {
             val minSize = Pair(960.0, 640.0)
             Stage().apply {
                 scene = Scene(FXMLLoader.load(App::class.java.getResource(R.fxml.layout_attendance_record), resources), minSize.first, minSize.second)
-                icons.add(Image(R.png.ic_launcher))
-                title = "${getString(R.string.app_name)} ${BuildConfig.VERSION} - ${getString(R.string.record)}"
+                title = "${getString(R.string.app_name)} - ${getString(R.string.record)}"
                 minWidth = minSize.first
                 minHeight = minSize.second
             }.showAndWait()
@@ -151,71 +148,75 @@ class AttendanceController {
         init {
             isCollapsible = false
             setContent(content)
-            contextMenu = ContextMenu(content.addMenuItem, content.deleteMenuItem, SeparatorMenuItem(), content.deleteThisMenuItem, content.deleteOthersMenuItem)
+            contextMenu = ContextMenu(content.addMenuItem, SeparatorMenuItem(), content.deleteThisMenuItem, content.deleteOthersMenuItem)
         }
 
         inner class Content : VBox() {
             val dailyLabel = Label(getString(R.string.daily_income))
-            val dailyField = DoubleField().apply {
-                prefWidth = 96.0
-                promptText = getString(R.string.daily_income)
-                valueProperty.bindBidirectional(employee.daily)
-                // textProperty().bindBidirectional(employee.daily, stringConverterOf<Number> { if (it.isBlank()) 0 else Integer.valueOf(it) })
-            }
+            val dailyField = IntField()
             val overtimeLabel = Label(getString(R.string.overtime_income))
-            val overtimeField = DoubleField().apply {
-                prefWidth = 96.0
-                promptText = getString(R.string.overtime_income)
-                valueProperty.bindBidirectional(employee.hourlyOvertime)
-                // textProperty().bindBidirectional(employee.hourlyOvertime, stringConverterOf<Number> { if (it.isBlank()) 0 else Integer.valueOf(it) })
-            }
+            val overtimeField = IntField()
             val recessLabel = Label(getString(R.string.recess))
-            val recessField = DoubleField().apply {
-                prefWidth = 96.0
-                promptText = getString(R.string.recess)
-                valueProperty.bindBidirectional(employee.recess)
-                // textProperty().bindBidirectional(employee.recess, stringConverterOf<Number> { if (it.isBlank()) 0 else Integer.valueOf(it) })
-            }
-            val listView = ListView<DateTime>(employee.attendances).apply {
-                prefWidth = 128.0
-                setCellFactory { _ ->
+            val recessField = DoubleField()
+            val listView = ListView<DateTime>(employee.attendances)
+
+            val addMenuItem = MenuItem(getString(R.string.add))
+            val deleteThisMenuItem = MenuItem("${getString(R.string.delete)} ${employee.name}")
+            val deleteOthersMenuItem = MenuItem(getString(R.string.delete_others))
+
+            init {
+                dailyField.prefWidth = 96.0
+                dailyField.promptText = getString(R.string.daily_income)
+                dailyField.valueProperty.bindBidirectional(employee.daily)
+
+                overtimeField.prefWidth = 96.0
+                overtimeField.promptText = getString(R.string.overtime_income)
+                overtimeField.valueProperty.bindBidirectional(employee.hourlyOvertime)
+
+                recessField.prefWidth = 96.0
+                recessField.promptText = getString(R.string.recess)
+                recessField.valueProperty.bindBidirectional(employee.recess)
+
+                listView.prefWidth = 128.0
+                listView.setCellFactory {
                     object : ListCell<DateTime>() {
                         override fun updateItem(item: DateTime?, empty: Boolean) {
                             super.updateItem(item, empty)
-                            text = when {
-                                item == null || empty -> null
-                                else -> DateTimeFormat.forPattern(PATTERN_DATETIME).print(item)
+                            text = null
+                            graphic = null
+                            if (item != null && !empty) {
+                                val label = Label(item.toString(PATTERN_DATETIME)).apply { setMaxSize(Double.MAX_VALUE) }
+                                val hyperlink = Hyperlink(null, ImageView(R.png.btn_clear)).apply { setSize(18.0) }
+                                hyperlink.setOnAction { listView.items.remove(item) }
+                                graphic = HBox(label, hyperlink).apply { alignment = CENTER }
+                                HBox.setHgrow(label, Priority.ALWAYS)
                             }
                         }
                     }
                 }
-            }
 
-            val addMenuItem = MenuItem(getString(R.string.add)).apply {
-                setOnAction {
+                addMenuItem.setOnAction {
                     dialog<DateTime>(getString(R.string.record), ImageView(R.png.ic_calendar), getString(R.string.record)) {
                         val datePicker: DatePicker = DatePicker().apply {
+                            listView.selectionModel.selectedItem?.let {
+                                value = LocalDate.of(it.year, it.monthOfYear, it.dayOfMonth)
+                            }
                             isEditable = false // force pick from popup
                             maxWidth = 128.0
-                            alignment = Pos.CENTER
+                            alignment = CENTER
                         }
-                        val timeField: TimeField = TimeField().apply {
-                            maxWidth = 64.0
-                            alignment = Pos.CENTER
-                        }
-                        content = GridPane().apply {
-                            gaps = 8.0
-                            add(Label(getString(R.string.date)), 0, 0)
-                            add(datePicker, 1, 0)
-                            add(Label(getString(R.string.time)), 0, 1)
-                            add(timeField, 1, 1)
+                        val timeBox = TimeBox()
+                        content = HBox().apply {
+                            spacing = 8.0
+                            alignment = CENTER
+                            children.addAll(Label(getString(R.string.date)), datePicker, timeBox)
                         }
                         buttonTypes.addAll(ButtonType.OK, ButtonType.CANCEL)
-                        lookupButton(ButtonType.OK).disableProperty().bind(datePicker.valueProperty().isNull or not(timeField.validProperty))
+                        lookupButton(ButtonType.OK).disableProperty().bind(datePicker.valueProperty().isNull or not(timeBox.validProperty))
                         runLater { datePicker.requestFocus() }
                         Callback {
                             if (it != ButtonType.OK) null
-                            else DateTime(datePicker.value.year, datePicker.value.monthValue, datePicker.value.dayOfMonth, timeField.value!!.hourOfDay, timeField.value!!.minuteOfHour)
+                            else DateTime(datePicker.value.year, datePicker.value.monthValue, datePicker.value.dayOfMonth, timeBox.value.hourOfDay, timeBox.value.minuteOfHour)
                         }
                     }.showAndWait()
                             .ifPresent {
@@ -223,29 +224,20 @@ class AttendanceController {
                                 Collections.sort(listView.items)
                             }
                 }
-            }
-            val deleteMenuItem = MenuItem(getString(R.string.delete)).apply {
-                visibleProperty().bind(listView.selectionModel.selectedItemProperty().isNotNull)
-                setOnAction {
-                    listView.items.removeAt(listView.selectionModel.selectedIndex)
-                    Collections.sort(listView.items)
+                deleteThisMenuItem.setOnAction {
+                    (this@EmployeeTitledPane.parent as Pane).let { it.children.remove(this@EmployeeTitledPane) }
                 }
-            }
-            val deleteThisMenuItem = MenuItem("${getString(R.string.delete)} ${employee.name}").apply {
-                setOnAction { (this@EmployeeTitledPane.parent as Pane).children.remove(this@EmployeeTitledPane) }
-            }
-            val deleteOthersMenuItem = MenuItem(getString(R.string.delete_others)).apply {
-                setOnAction {
-                    (parent as Pane).children.removeAll(((this@EmployeeTitledPane.parent as Pane).children).toMutableList().apply {
-                        remove(this@EmployeeTitledPane)
-                    })
+                deleteOthersMenuItem.setOnAction {
+                    (this@EmployeeTitledPane.parent as Pane).let {
+                        it.children.removeAll(((it).children).toMutableList().apply {
+                            remove(this@EmployeeTitledPane)
+                        })
+                    }
                 }
-            }
 
-            init {
                 children.addAll(GridPane().apply {
-                    gaps = 4.0
-                    padding = Insets(4.0, 4.0, 4.0, 4.0)
+                    setGaps(4.0)
+                    padding = Insets(8.0)
                     add(dailyLabel, 0, 0)
                     add(dailyField, 1, 0)
                     add(overtimeLabel, 0, 1)

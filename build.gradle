@@ -1,7 +1,7 @@
 buildscript {
-    ext.isDebug = true // set false when building app, true when building stage
+    ext.isDebug = false // set false when building app, true when building stage
     ext.versions = [
-            release: '0.1',
+            release: '0.2',
             // main
             mysql  : '0.3',
             kotlin : '1.1.51',

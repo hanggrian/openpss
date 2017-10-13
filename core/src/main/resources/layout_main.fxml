@@ -4,23 +4,24 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.VBox?>
-<VBox xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.wijayaprinting.javafx.controller.MainController"
-      prefHeight="560.0" prefWidth="720.0">
+<VBox prefHeight="560.0" prefWidth="720.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.wijayaprinting.javafx.controller.MainController">
     <MenuBar fx:id="menuBar">
         <Menu mnemonicParsing="false" text="%help">
         </Menu>
     </MenuBar>
-    <TabPane tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
-        <Tab closable="false" text="Customer">
+
+    <TabPane fx:id="tabPane" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
+        <Tab closable="false" style="-fx-padding: 8;" text="Customer"
+             disable="true">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@tab_user.png"/>
+                    <Image url="@tab_address.png"/>
                 </ImageView>
             </graphic>
             <fx:include fx:id="customer" source="layout_customer.fxml"/>
         </Tab>
-        <Tab closable="false" text="Attendance">
+        <Tab closable="false" style="-fx-padding: 8;" text="Attendance">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
                     <Image url="@tab_clock.png"/>

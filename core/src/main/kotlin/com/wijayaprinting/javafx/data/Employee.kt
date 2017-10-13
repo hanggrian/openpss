@@ -10,6 +10,7 @@ import javafx.beans.property.SimpleIntegerProperty
 import javafx.collections.ObservableList
 import kotfx.bindings.doubleBindingOf
 import kotfx.collections.mutableObservableListOf
+import org.apache.commons.math3.util.Precision.round
 import org.jetbrains.exposed.sql.update
 import org.joda.time.DateTime
 import org.joda.time.Minutes.minutes
@@ -32,6 +33,10 @@ data class Employee(
         val hourlyOvertime: IntegerProperty = SimpleIntegerProperty(),
         val recess: DoubleProperty = SimpleDoubleProperty()
 ) {
+
+    companion object {
+        const val WORKING_HOURS = 8.0
+    }
 
     init {
         safeTransaction {
@@ -77,19 +82,29 @@ data class Employee(
 
     fun toTotalRecords(childs: Collection<Record>): Record = Record(Record.TYPE_TOTAL, this, DateTime(0), DateTime(0)).apply {
         childs.map { it.daily }.toTypedArray().let { mains ->
-            daily.bind(doubleBindingOf(*mains) { mains.map { it.value }.sum() })
+            daily.bind(doubleBindingOf(*mains) {
+                round(mains.map { it.value }.sum(), 2)
+            })
         }
         childs.map { it.dailyIncome }.toTypedArray().let { mainIncomes ->
-            dailyIncome.bind(doubleBindingOf(*mainIncomes) { mainIncomes.map { it.value }.sum() })
+            dailyIncome.bind(doubleBindingOf(*mainIncomes) {
+                round(mainIncomes.map { it.value }.sum(), 2)
+            })
         }
         childs.map { it.overtime }.toTypedArray().let { overtimes ->
-            overtime.bind(doubleBindingOf(*overtimes) { overtimes.map { it.value }.sum() })
+            overtime.bind(doubleBindingOf(*overtimes) {
+                round(overtimes.map { it.value }.sum(), 2)
+            })
         }
         childs.map { it.overtimeIncome }.toTypedArray().let { overtimeIncomes ->
-            overtimeIncome.bind(doubleBindingOf(*overtimeIncomes) { overtimeIncomes.map { it.value }.sum() })
+            overtimeIncome.bind(doubleBindingOf(*overtimeIncomes) {
+                round(overtimeIncomes.map { it.value }.sum(), 2)
+            })
         }
         childs.map { it.total }.toTypedArray().let { totals ->
-            total.bind(doubleBindingOf(*totals) { totals.map { it.value }.sum() })
+            total.bind(doubleBindingOf(*totals) {
+                round(totals.map { it.value }.sum(), 2)
+            })
         }
     }
 

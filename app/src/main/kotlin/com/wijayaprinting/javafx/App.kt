@@ -5,7 +5,7 @@ import com.wijayaprinting.javafx.io.PreferencesFile
 import com.wijayaprinting.javafx.scene.control.IPField
 import com.wijayaprinting.javafx.scene.control.IntField
 import com.wijayaprinting.javafx.scene.utils.attachButtons
-import com.wijayaprinting.javafx.scene.utils.gaps
+import com.wijayaprinting.javafx.scene.utils.setGaps
 import com.wijayaprinting.javafx.utils.icon
 import com.wijayaprinting.javafx.utils.setIconOnOSX
 import com.wijayaprinting.mysql.MySQL
@@ -113,7 +113,7 @@ class App : Application() {
                             runLater { passwordField.requestFocus() }
 
                             if (BuildConfig.DEBUG) {
-                                passwordField.text = "justforApp1e!"
+                                passwordField.text = "1234"
                             }
 
                             Callback { if (it == OK) passwordField.text else null }
@@ -157,7 +157,7 @@ class App : Application() {
             }
 
             init {
-                gaps = 8.0
+                setGaps(8.0)
                 add(languageLabel, 0, 0)
                 add(languageBox, 1, 0, 2, 1)
                 add(usernameLabel, 0, 1)
@@ -186,7 +186,7 @@ class App : Application() {
             val mysqlLabel2 = Label(com.wijayaprinting.mysql.BuildConfig.VERSION)
 
             init {
-                gaps = 8.0
+                setGaps(8.0)
                 add(aboutLabel, 0, 0, 2, 1)
                 add(hyperlink, 0, 1, 2, 1)
                 add(javafxLabel, 0, 2)

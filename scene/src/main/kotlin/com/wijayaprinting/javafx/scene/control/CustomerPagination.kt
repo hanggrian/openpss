@@ -5,7 +5,7 @@ import com.wijayaprinting.javafx.R
 import com.wijayaprinting.javafx.getString
 import com.wijayaprinting.javafx.safeTransaction
 import com.wijayaprinting.javafx.scene.Updatable
-import com.wijayaprinting.javafx.scene.utils.gaps
+import com.wijayaprinting.javafx.scene.utils.setGaps
 import com.wijayaprinting.javafx.scene.utils.textOrNull
 import com.wijayaprinting.mysql.dao.Customer
 import com.wijayaprinting.mysql.dao.Customers
@@ -25,9 +25,6 @@ import org.jetbrains.exposed.sql.SizedIterable
 import org.jetbrains.exposed.sql.or
 import org.joda.time.DateTime
 
-/**
- * @author Hendra Anggrian (hendraanggrian@gmail.com
- */
 class CustomerPagination : Pagination(), Updatable {
 
     companion object {
@@ -131,7 +128,7 @@ class CustomerPagination : Pagination(), Updatable {
             graphic = ImageView(R.png.ic_user)
             headerText = customer?.toString() ?: "Add customer"
             dialogPane.content = GridPane().apply {
-                gaps = 8.0
+                setGaps(8.0)
                 add(Label("Name"), 0, 0)
                 add(nameField, 1, 0)
                 add(Label("Email"), 0, 1)

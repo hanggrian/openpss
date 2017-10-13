@@ -5,9 +5,7 @@ apply plugin: 'java'
 apply plugin: 'kotlin'
 
 dependencies {
-    implementation "com.wijayaprinting:mysql:$versions.mysql"
     implementation project(':scene')
-    implementation project(':core')
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre8:$versions.kotlin"
     implementation "com.hendraanggrian:kotfx:$versions.kotfx"

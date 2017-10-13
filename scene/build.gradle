@@ -5,13 +5,11 @@ apply plugin: 'java-library'
 apply plugin: 'kotlin'
 
 dependencies {
-    implementation "com.wijayaprinting:mysql:$versions.mysql"
-    implementation project(':core')
+    api project(':core')
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre8:$versions.kotlin"
-    implementation "com.hendraanggrian:kotfx:$versions.kotfx"
-    implementation "org.apache.commons:commons-lang3:$versions.commons.lang3"
-    implementation "commons-validator:commons-validator:$versions.commons.validator"
+    api "org.jetbrains.kotlin:kotlin-stdlib-jre8:$versions.kotlin"
+    api "org.apache.commons:commons-lang3:$versions.commons.lang3"
+    api "commons-validator:commons-validator:$versions.commons.validator"
 }
 
 compileKotlin { kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8 }

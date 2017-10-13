@@ -8,6 +8,7 @@ import kotfx.bindings.doubleBindingOf
 import kotfx.bindings.plus
 import org.apache.commons.math3.util.Precision.round
 import org.joda.time.DateTime
+import org.joda.time.Period
 
 /**
  * @author Hendra Anggrian (hendraanggrian@gmail.com)
@@ -53,47 +54,24 @@ data class Record(
 
     init {
         if (type != TYPE_ROOT) {
-            dailyIncome.bind(doubleBindingOf(daily, mEmployee.daily) { round(daily.value * mEmployee.daily.value /*/ mShift.workingHours*/, 2) })
+            dailyIncome.bind(doubleBindingOf(daily, mEmployee.daily) { round(daily.value * mEmployee.daily.value / Employee.WORKING_HOURS, 2) })
             overtimeIncome.bind(doubleBindingOf(overtime, mEmployee.hourlyOvertime) { round(mEmployee.hourlyOvertime.value * overtime.value, 2) })
             when (type) {
                 TYPE_NODE -> {
-                    daily.set(0.0/*mShift.workingHours*/)
-                    overtime.set(0.0)
+                    daily.set(Employee.WORKING_HOURS)
+                    overtime.set(mEmployee.recess.value)
                     total.set(0.0)
                 }
                 TYPE_CHILD -> {
-                    /*val mShiftStart = mShift.getActualStart(mStart)
-                    val mShiftEnd = mShift.getActualEnd(mEnd)
-                    var mDaily: Double
-                    val mHourlyOvertime: Double
-                    when {
-                    // comes late, ends early
-                        mStart >= mShiftStart && mEnd <= mShiftEnd -> {
-                            mDaily = mEnd.hoursDiff(mStart)
-                            mHourlyOvertime = 0.0
-                        }
-                    // comes early, ends early
-                        mStart < mShiftStart && mEnd <= mShiftEnd -> {
-                            mDaily = mEnd.hoursDiff(mShiftStart)
-                            mHourlyOvertime = mShiftStart.hoursDiff(mStart)
-                        }
-                    // comes late, ends late
-                        mStart >= mShiftStart && mEnd > mShiftEnd -> {
-                            mDaily = mShiftEnd.hoursDiff(mStart)
-                            mHourlyOvertime = mEnd.hoursDiff(mShiftEnd)
-                        }
-                    // comes early, ends late, employee of the month!
-                        mStart < mShiftStart && mEnd > mShiftEnd -> {
-                            mDaily = mShiftEnd.hoursDiff(mShiftStart)
-                            mHourlyOvertime = mShiftStart.hoursDiff(mStart) + mEnd.hoursDiff(mShiftEnd)
-                        }
-                        else -> error("Fatal calculation error!")
+                    val workingHours = (Math.abs(Period(mStart, mEnd).toStandardMinutes().minutes) / 60.0) - mEmployee.recess.value
+                    if (workingHours <= Employee.WORKING_HOURS) {
+                        daily.set(round(workingHours, 2))
+                        overtime.set(0.0)
+                    } else {
+                        daily.set(Employee.WORKING_HOURS)
+                        overtime.set(round(workingHours - Employee.WORKING_HOURS, 2))
                     }
-                    // recesses
-                    mDaily -= mShift.recess.toDouble()
-                    daily.set(if (mDaily < 0) 0.0 else round(mDaily, 2))
-                    overtime.set(round(mHourlyOvertime, 2))
-                    total.bind(dailyIncome + overtimeIncome)*/
+                    total.bind(dailyIncome + overtimeIncome)
                 }
                 TYPE_TOTAL -> total.bind(dailyIncome + overtimeIncome)
             }

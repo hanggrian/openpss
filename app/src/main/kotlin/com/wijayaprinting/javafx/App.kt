@@ -57,7 +57,7 @@ class App : Application() {
                 .showAndWait()
                 .filter { it is String }
                 .ifPresent {
-                    val minSize = Pair(720.0, 640.0)
+                    val minSize = Pair(960.0, 720.0)
                     stage.apply {
                         scene = Scene(FXMLLoader.load(App::class.java.getResource(R.fxml.layout_main), resources), minSize.first, minSize.second)
                         icons.add(Image(R.png.ic_launcher))
@@ -113,7 +113,7 @@ class App : Application() {
                             runLater { passwordField.requestFocus() }
 
                             if (BuildConfig.DEBUG) {
-                                passwordField.text = "1234"
+                                passwordField.text = "justforApp1e!"
                             }
 
                             Callback { if (it == OK) passwordField.text else null }

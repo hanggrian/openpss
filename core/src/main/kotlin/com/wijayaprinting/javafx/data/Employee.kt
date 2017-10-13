@@ -26,7 +26,8 @@ data class Employee(
         val name: String,
 
         /** Attendances and shift should be set with [EmployeeTitledPane]. */
-        val attendances: ObservableList<DateTime> = mutableObservableListOf(),
+        private val mAttendances: ObservableList<DateTime> = mutableObservableListOf(),
+        private val mDuplicate: ObservableList<DateTime> = mutableObservableListOf(),
 
         /** Wages below are retrieved from sqlite, or empty if there is none. */
         val daily: IntegerProperty = SimpleIntegerProperty(),
@@ -62,6 +63,31 @@ data class Employee(
                 it[recess] = BigDecimal.valueOf(this@Employee.recess.value)
             }
         }
+    }
+
+    val attendances: ObservableList<DateTime> get() = mAttendances
+
+    fun addAttendance(element: DateTime) {
+        mAttendances.add(element)
+        mDuplicate.add(element)
+    }
+
+    fun addAllAttendances(elements: Collection<DateTime>) {
+        mAttendances.addAll(elements)
+        mDuplicate.addAll(elements)
+    }
+
+    fun revert() {
+        mAttendances.clear()
+        mAttendances.addAll(mDuplicate)
+    }
+
+    fun mergeDuplicates() {
+        val toRemove = (0 until (mAttendances.size - 1))
+                .filter { Period(mAttendances[it], mAttendances[it + 1]).toStandardMinutes().isLessThan(minutes(5)) }
+                .map { mAttendances[it] }
+        mAttendances.removeAll(toRemove)
+        mDuplicate.removeAll(toRemove)
     }
 
     override fun hashCode(): Int = id.hashCode()
@@ -107,8 +133,4 @@ data class Employee(
             })
         }
     }
-
-    fun mergeDuplicates() = attendances.removeAll((0 until (attendances.size - 1))
-            .filter { Period(attendances[it], attendances[it + 1]).toStandardMinutes().isLessThan(minutes(5)) }
-            .map { attendances[it] })
 }

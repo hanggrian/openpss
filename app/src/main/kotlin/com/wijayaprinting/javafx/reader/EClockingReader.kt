@@ -22,7 +22,7 @@ class EClockingReader : Reader {
         val workbook = XSSFWorkbook(stream)
         val sheet = workbook.getSheetAt(SHEET_RAW_ATTENDANCE_LOGS)
         sheet.iterator().asSequence().forEachIndexed { rowIndex, row ->
-            // skips right to content
+            // skips right to employeeBox
             if (rowIndex > 4) {
                 val name = row.getCell(CELL_NAME).stringCellValue
                 val no = row.getCell(CELL_NO).numericCellValue.toInt()
@@ -30,7 +30,7 @@ class EClockingReader : Reader {
                 val day = date.dayOfMonth
                 val month = date.monthOfYear
                 val year = date.year
-                val attendee = Employee(no, name)
+                val employee = Employee(no, name)
                 for (CELL_RECORD in CELL_RECORD_START until CELL_RECORD_END) {
                     row.getCell(CELL_RECORD).let {
                         if (it.cellTypeEnum == CellType.NUMERIC) {
@@ -38,7 +38,7 @@ class EClockingReader : Reader {
                             val hour = record.hourOfDay
                             val minute = record.minuteOfHour
                             val attendance = DateTime(year, month, day, hour, minute)
-                            multimap.put(attendee, when (true) {
+                            multimap.put(employee, when (true) {
                                 SystemUtils.IS_OS_WINDOWS -> attendance.plusMinutes(18)
                                 SystemUtils.IS_OS_MAC -> attendance.minusMinutes(7)
                                 else -> attendance
@@ -53,7 +53,7 @@ class EClockingReader : Reader {
 
         val set = mutableSetOf<Employee>()
         for (attendee in multimap.keySet()) {
-            attendee.attendances.addAll(multimap.get(attendee))
+            attendee.addAllAttendances(multimap.get(attendee))
             set.add(attendee)
         }
         return set

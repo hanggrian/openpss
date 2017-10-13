@@ -88,14 +88,6 @@ data class Record(
         /** Last child row of a node, displaying calculated total. */
         const val TYPE_TOTAL = 3
 
-        private var ROOT: Record? = null
-
-        val root: Record
-            get() {
-                if (ROOT == null) {
-                    ROOT = Record(TYPE_ROOT, Employee(0, ""), DateTime(0), DateTime(0))
-                }
-                return ROOT!!
-            }
+        val ROOT: Record = Record(TYPE_ROOT, Employee(0, ""), DateTime(0), DateTime(0))
     }
 }

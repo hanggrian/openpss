@@ -5,15 +5,13 @@ apply plugin: 'java'
 apply plugin: 'kotlin'
 
 dependencies {
+    implementation project(':core')
     implementation project(':scene')
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre8:$versions.kotlin"
-    implementation "com.hendraanggrian:kotfx:$versions.kotfx"
     implementation "com.google.guava:guava:$versions.guava"
     implementation "io.reactivex.rxjava2:rxkotlin:$versions.rx"
     implementation "io.reactivex.rxjava2:rxjavafx:$versions.rx"
-    implementation "org.apache.commons:commons-lang3:$versions.commons.lang3"
-    implementation "commons-validator:commons-validator:$versions.commons.validator"
     implementation "org.apache.poi:poi-ooxml:$versions.commons.poi"
 
     testImplementation "junit:junit:$versions.junit"

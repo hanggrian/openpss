@@ -21,12 +21,16 @@ import javafx.geometry.Pos.CENTER
 import javafx.scene.Node
 import javafx.scene.Scene
 import javafx.scene.control.*
+import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import javafx.scene.layout.*
 import javafx.stage.FileChooser
 import javafx.stage.Stage
 import javafx.util.Callback
-import kotfx.bindings.*
+import kotfx.bindings.bindingOf
+import kotfx.bindings.isEmpty
+import kotfx.bindings.not
+import kotfx.bindings.or
 import kotfx.dialogs.*
 import kotfx.runLater
 import org.joda.time.DateTime
@@ -34,15 +38,11 @@ import java.io.File
 import java.time.LocalDate
 import java.util.*
 
-/**
- * @author Hendra Anggrian (hendraanggrian@gmail.com)
- */
 class AttendanceController {
 
     @FXML lateinit var fileField: FileField
     @FXML lateinit var readerChoiceBox: ChoiceBox<Reader>
     @FXML lateinit var mergeCheckBox: CheckBox
-    @FXML lateinit var clearButton: Button
     @FXML lateinit var readButton: Button
     @FXML lateinit var processButton: Button
     @FXML lateinit var flowPane: FlowPane
@@ -52,13 +52,12 @@ class AttendanceController {
         readerChoiceBox.items = Reader.listAll()
         if (readerChoiceBox.items.isNotEmpty()) readerChoiceBox.selectionModel.select(0)
 
-        clearButton.disableProperty().bind(fileField.textProperty().isEmpty and flowPane.children.isEmpty)
         readButton.disableProperty().bind(fileField.validProperty)
         processButton.disableProperty().bind(flowPane.children.isEmpty)
         flowPane.prefWrapLengthProperty().bind(fileField.scene.widthProperty())
 
         if (BuildConfig.DEBUG) {
-            fileField.text = "/Users/hendraanggrian/Desktop/Absen 7-10-17.xlsx"
+            fileField.text = "/Users/hendraanggrian/Downloads/Absen 7-10-17.xlsx"
         }
     }
 
@@ -66,12 +65,6 @@ class AttendanceController {
     fun browseButtonOnAction() = fileChooser(FileChooser.ExtensionFilter("XLSX file", "*.xlsx"))
             .showOpenDialog(fileField.scene.window)
             ?.let { fileField.text = it.absolutePath }
-
-    @FXML
-    fun clearButtonOnAction() {
-        fileField.clear()
-        flowPane.children.clear()
-    }
 
     @FXML
     fun readButtonOnAction() {
@@ -139,26 +132,61 @@ class AttendanceController {
     }
 
     class EmployeeTitledPane(val employee: Employee) : TitledPane() {
-        val content = Content()
-        val graphic = Graphic()
+        val indicatorImage = ImageView()
+        val employeeBox = EmployeeBox()
+        val addMenu = MenuItem(getString(R.string.add))
+        val revertMenu = MenuItem(getString(R.string.revert))
+        val deleteMenu = MenuItem("${getString(R.string.delete)} ${employee.name}")
+        val deleteOthersMenu = MenuItem(getString(R.string.delete_others))
+        val deleteAllMenu = MenuItem(getString(R.string.delete_all))
 
         init {
             isCollapsible = false
             text = employee.toString()
-            setContent(content)
-            setGraphic(graphic)
-            contextMenu = ContextMenu(content.addMenuItem, SeparatorMenuItem(), content.deleteThisMenuItem, content.deleteOthersMenuItem)
-        }
+            content = employeeBox
+            graphic = indicatorImage
 
-        inner class Graphic : Button() {
-            init {
-                setSize(18.0)
-                graphicProperty().bind(bindingOf<Node?>(hoverProperty()) { if (isHover) ImageView(R.png.btn_clear) else null })
-                setOnAction { (this@EmployeeTitledPane.parent as Pane).children.remove(this@EmployeeTitledPane) }
+            indicatorImage.imageProperty().bind(bindingOf(employeeBox.listView.items) { Image(if (employeeBox.listView.items.size % 2 == 0) R.png.btn_checkbox else R.png.btn_checkbox_outline) })
+
+            contextMenu = ContextMenu(addMenu, SeparatorMenuItem(), revertMenu, SeparatorMenuItem(), deleteMenu, deleteOthersMenu, deleteAllMenu)
+            addMenu.setOnAction {
+                dialog<DateTime>(getString(R.string.record), ImageView(R.png.ic_calendar), getString(R.string.record)) {
+                    val datePicker: DatePicker = DatePicker().apply {
+                        employeeBox.listView.selectionModel.selectedItem?.let {
+                            value = LocalDate.of(it.year, it.monthOfYear, it.dayOfMonth)
+                        }
+                        isEditable = false // force pick from popup
+                        maxWidth = 128.0
+                        alignment = CENTER
+                    }
+                    val timeBox = TimeBox()
+                    content = HBox().apply {
+                        spacing = 8.0
+                        alignment = CENTER
+                        children.addAll(Label(getString(R.string.date)), datePicker, timeBox)
+                    }
+                    buttonTypes.addAll(ButtonType.OK, ButtonType.CANCEL)
+                    lookupButton(ButtonType.OK).disableProperty().bind(datePicker.valueProperty().isNull or not(timeBox.validProperty))
+                    runLater { datePicker.requestFocus() }
+                    Callback {
+                        if (it != ButtonType.OK) null
+                        else DateTime(datePicker.value.year, datePicker.value.monthValue, datePicker.value.dayOfMonth, timeBox.value.hourOfDay, timeBox.value.minuteOfHour)
+                    }
+                }.showAndWait()
+                        .ifPresent {
+                            employeeBox.listView.items.add(it)
+                            Collections.sort(employeeBox.listView.items)
+                        }
             }
+            revertMenu.setOnAction { employee.revert() }
+            deleteMenu.setOnAction { flowPane.children.remove(this@EmployeeTitledPane) }
+            deleteOthersMenu.setOnAction { flowPane.children.removeAll(((flowPane).children).toMutableList().apply { remove(this@EmployeeTitledPane) }) }
+            deleteAllMenu.setOnAction { flowPane.children.clear() }
         }
 
-        inner class Content : VBox() {
+        private val flowPane: Pane get() = (this@EmployeeTitledPane.parent as Pane)
+
+        inner class EmployeeBox : VBox() {
             val dailyLabel = Label(getString(R.string.daily_income))
             val dailyField = IntField()
             val overtimeLabel = Label(getString(R.string.overtime_income))
@@ -166,10 +194,6 @@ class AttendanceController {
             val recessLabel = Label(getString(R.string.recess))
             val recessField = DoubleField()
             val listView = ListView<DateTime>(employee.attendances)
-
-            val addMenuItem = MenuItem(getString(R.string.add))
-            val deleteThisMenuItem = MenuItem("${getString(R.string.delete)} ${employee.name}")
-            val deleteOthersMenuItem = MenuItem(getString(R.string.delete_others))
 
             init {
                 dailyField.prefWidth = 96.0
@@ -193,53 +217,13 @@ class AttendanceController {
                             graphic = null
                             if (item != null && !empty) {
                                 val label = Label(item.toString(PATTERN_DATETIME)).apply { setMaxSize(Double.MAX_VALUE) }
-                                val button = Button().apply { setSize(18.0) }
-                                button.graphicProperty().bind(bindingOf<Node?>(button.hoverProperty()) { if (button.isHover) ImageView(R.png.btn_clear) else null })
-                                button.setOnAction { listView.items.remove(item) }
-                                graphic = HBox(label, button).apply { alignment = CENTER }
+                                val deleteButton = Button().apply { setSize(18.0) }
+                                deleteButton.graphicProperty().bind(bindingOf<Node?>(deleteButton.hoverProperty()) { if (deleteButton.isHover) ImageView(R.png.btn_clear) else null })
+                                deleteButton.setOnAction { listView.items.remove(item) }
                                 HBox.setHgrow(label, Priority.ALWAYS)
+                                graphic = HBox(label, deleteButton).apply { alignment = CENTER }
                             }
                         }
-                    }
-                }
-
-                addMenuItem.setOnAction {
-                    dialog<DateTime>(getString(R.string.record), ImageView(R.png.ic_calendar), getString(R.string.record)) {
-                        val datePicker: DatePicker = DatePicker().apply {
-                            listView.selectionModel.selectedItem?.let {
-                                value = LocalDate.of(it.year, it.monthOfYear, it.dayOfMonth)
-                            }
-                            isEditable = false // force pick from popup
-                            maxWidth = 128.0
-                            alignment = CENTER
-                        }
-                        val timeBox = TimeBox()
-                        content = HBox().apply {
-                            spacing = 8.0
-                            alignment = CENTER
-                            children.addAll(Label(getString(R.string.date)), datePicker, timeBox)
-                        }
-                        buttonTypes.addAll(ButtonType.OK, ButtonType.CANCEL)
-                        lookupButton(ButtonType.OK).disableProperty().bind(datePicker.valueProperty().isNull or not(timeBox.validProperty))
-                        runLater { datePicker.requestFocus() }
-                        Callback {
-                            if (it != ButtonType.OK) null
-                            else DateTime(datePicker.value.year, datePicker.value.monthValue, datePicker.value.dayOfMonth, timeBox.value.hourOfDay, timeBox.value.minuteOfHour)
-                        }
-                    }.showAndWait()
-                            .ifPresent {
-                                listView.items.add(it)
-                                Collections.sort(listView.items)
-                            }
-                }
-                deleteThisMenuItem.setOnAction {
-                    (this@EmployeeTitledPane.parent as Pane).let { it.children.remove(this@EmployeeTitledPane) }
-                }
-                deleteOthersMenuItem.setOnAction {
-                    (this@EmployeeTitledPane.parent as Pane).let {
-                        it.children.removeAll(((it).children).toMutableList().apply {
-                            remove(this@EmployeeTitledPane)
-                        })
                     }
                 }
 

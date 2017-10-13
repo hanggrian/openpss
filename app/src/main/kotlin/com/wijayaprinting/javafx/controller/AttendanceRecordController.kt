@@ -34,7 +34,7 @@ class AttendanceRecordController {
     @FXML
     @Suppress("UNCHECKED_CAST")
     fun initialize() = runLater {
-        treeTableView.root = TreeItem(Record.root) // dummy for invisible root
+        treeTableView.root = TreeItem(Record.ROOT) // dummy for invisible root
         treeTableView.isShowRoot = false
         getExtra<Set<Employee>>().forEach { employee ->
             val node = employee.toNodeRecord()

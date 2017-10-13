@@ -35,18 +35,16 @@
         <Label text="%input_file" GridPane.columnIndex="0" GridPane.rowIndex="0" />
         <FileField fx:id="fileField" promptText="%input_file" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="0" />
         <Button mnemonicParsing="false" onAction="#browseButtonOnAction" GridPane.columnIndex="3" GridPane.rowIndex="0">
-            <graphic>
-                <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@btn_folder.png" />
-                </ImageView>
-            </graphic>
-        </Button>
+         <graphic>
+             <ImageView pickOnBounds="true" preserveRatio="true">
+                 <Image url="@btn_folder.png"/>
+             </ImageView>
+         </graphic></Button>
         <Label text="%reader" GridPane.columnIndex="0" GridPane.rowIndex="1" />
         <ChoiceBox fx:id="readerChoiceBox" GridPane.columnIndex="1" GridPane.rowIndex="1" />
         <CheckBox fx:id="mergeCheckBox" mnemonicParsing="false" selected="true" text="%merge_close_records" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
         <ButtonBar GridPane.columnIndex="0" GridPane.columnSpan="4" GridPane.rowIndex="2">
             <buttons>
-                <Button fx:id="clearButton" cancelButton="true" mnemonicParsing="false" onAction="#clearButtonOnAction" text="%clear" />
                 <Button fx:id="readButton" mnemonicParsing="false" onAction="#readButtonOnAction" text="%read" />
                 <Button fx:id="processButton" defaultButton="true" mnemonicParsing="false" onAction="#processButtonOnAction" text="%process" />
             </buttons>

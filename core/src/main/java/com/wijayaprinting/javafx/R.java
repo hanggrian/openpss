@@ -1,32 +1,79 @@
-// rsync generated this class at 2017-10-13T17:30:24.020 from:
-// string_en.properties
-// layout_attendance.fxml
-// btn_refresh.png
-// logo_launcher.png
-// ic_calendar.png
-// string_in.properties
-// btn_add.png
-// ic_user.png
-// tab_clock.png
-// btn_visibility.png
+// rsync generated this class at 2017-10-14T00:29:15.054 from:
+// btn_checkbox.png
+// btn_checkbox_outline.png
 // btn_clear.png
-// layout_main.fxml
-// layout_attendance_record.fxml
+// btn_folder.png
+// btn_refresh.png
+// btn_visibility.png
 // btn_visibility_off.png
+// ic_calendar.png
 // ic_clock.png
 // ic_key.png
-// btn_delete.png
-// btn_remove.png
 // ic_launcher.png
-// btn_folder.png
-// tab_address.png
+// ic_user.png
+// layout_attendance.fxml
+// layout_attendance_record.fxml
 // layout_customer.fxml
+// layout_main.fxml
+// logo_launcher.png
+// string_en.properties
+// string_in.properties
+// tab_address.png
+// tab_clock.png
 package com.wijayaprinting.javafx;
 
 import java.lang.String;
 
 public final class R {
   private R() {
+  }
+
+  public static final class png {
+    public static final String btn_checkbox = "/btn_checkbox.png";
+
+    public static final String btn_checkbox_outline = "/btn_checkbox_outline.png";
+
+    public static final String btn_clear = "/btn_clear.png";
+
+    public static final String btn_folder = "/btn_folder.png";
+
+    public static final String btn_refresh = "/btn_refresh.png";
+
+    public static final String btn_visibility = "/btn_visibility.png";
+
+    public static final String btn_visibility_off = "/btn_visibility_off.png";
+
+    public static final String ic_calendar = "/ic_calendar.png";
+
+    public static final String ic_clock = "/ic_clock.png";
+
+    public static final String ic_key = "/ic_key.png";
+
+    public static final String ic_launcher = "/ic_launcher.png";
+
+    public static final String ic_user = "/ic_user.png";
+
+    public static final String logo_launcher = "/logo_launcher.png";
+
+    public static final String tab_address = "/tab_address.png";
+
+    public static final String tab_clock = "/tab_clock.png";
+
+    private png() {
+    }
+  }
+
+  public static final class fxml {
+    public static final String layout_attendance = "/layout_attendance.fxml";
+
+    public static final String layout_attendance_record = "/layout_attendance_record.fxml";
+
+    public static final String layout_customer = "/layout_customer.fxml";
+
+    public static final String layout_main = "/layout_main.fxml";
+
+    private fxml() {
+    }
   }
 
   public static final class properties {
@@ -38,56 +85,6 @@ public final class R {
     }
   }
 
-  public static final class fxml {
-    public static final String layout_attendance = "/layout_attendance.fxml";
-
-    public static final String layout_main = "/layout_main.fxml";
-
-    public static final String layout_attendance_record = "/layout_attendance_record.fxml";
-
-    public static final String layout_customer = "/layout_customer.fxml";
-
-    private fxml() {
-    }
-  }
-
-  public static final class png {
-    public static final String btn_refresh = "/btn_refresh.png";
-
-    public static final String logo_launcher = "/logo_launcher.png";
-
-    public static final String ic_calendar = "/ic_calendar.png";
-
-    public static final String btn_add = "/btn_add.png";
-
-    public static final String ic_user = "/ic_user.png";
-
-    public static final String tab_clock = "/tab_clock.png";
-
-    public static final String btn_visibility = "/btn_visibility.png";
-
-    public static final String btn_clear = "/btn_clear.png";
-
-    public static final String btn_visibility_off = "/btn_visibility_off.png";
-
-    public static final String ic_clock = "/ic_clock.png";
-
-    public static final String ic_key = "/ic_key.png";
-
-    public static final String btn_delete = "/btn_delete.png";
-
-    public static final String btn_remove = "/btn_remove.png";
-
-    public static final String ic_launcher = "/ic_launcher.png";
-
-    public static final String btn_folder = "/btn_folder.png";
-
-    public static final String tab_address = "/tab_address.png";
-
-    private png() {
-    }
-  }
-
   public static final class string {
     public static final String daily_income = "daily_income";
 
@@ -96,6 +93,8 @@ public final class R {
     public static final String exit = "exit";
 
     public static final String add = "add";
+
+    public static final String delete_all = "delete_all";
 
     public static final String error_unknown = "error_unknown";
 
@@ -126,6 +125,8 @@ public final class R {
     public static final String hour = "hour";
 
     public static final String start = "start";
+
+    public static final String revert = "revert";
 
     public static final String error_employee_odd = "error_employee_odd";
 

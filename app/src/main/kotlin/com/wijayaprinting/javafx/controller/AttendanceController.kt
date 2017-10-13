@@ -18,6 +18,7 @@ import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
 import javafx.geometry.Insets
 import javafx.geometry.Pos.CENTER
+import javafx.scene.Node
 import javafx.scene.Scene
 import javafx.scene.control.*
 import javafx.scene.image.ImageView
@@ -25,10 +26,7 @@ import javafx.scene.layout.*
 import javafx.stage.FileChooser
 import javafx.stage.Stage
 import javafx.util.Callback
-import kotfx.bindings.and
-import kotfx.bindings.isEmpty
-import kotfx.bindings.not
-import kotfx.bindings.or
+import kotfx.bindings.*
 import kotfx.dialogs.*
 import kotfx.runLater
 import org.joda.time.DateTime
@@ -99,9 +97,7 @@ class AttendanceController {
                 .subscribeOn(Schedulers.computation())
                 .observeOn(JavaFxScheduler.platform())
                 .subscribe({ employee ->
-                    val pane = EmployeeTitledPane(employee)
-                    pane.text = employee.toString()
-                    flowPane.children.add(pane)
+                    flowPane.children.add(EmployeeTitledPane(employee))
                 }, { e ->
                     e.message ?: getString(R.string.error_unknown).let { errorAlert(it).showAndWait() }
                 }, {
@@ -144,11 +140,22 @@ class AttendanceController {
 
     class EmployeeTitledPane(val employee: Employee) : TitledPane() {
         val content = Content()
+        val graphic = Graphic()
 
         init {
             isCollapsible = false
+            text = employee.toString()
             setContent(content)
+            setGraphic(graphic)
             contextMenu = ContextMenu(content.addMenuItem, SeparatorMenuItem(), content.deleteThisMenuItem, content.deleteOthersMenuItem)
+        }
+
+        inner class Graphic : Button() {
+            init {
+                setSize(18.0)
+                graphicProperty().bind(bindingOf<Node?>(hoverProperty()) { if (isHover) ImageView(R.png.btn_clear) else null })
+                setOnAction { (this@EmployeeTitledPane.parent as Pane).children.remove(this@EmployeeTitledPane) }
+            }
         }
 
         inner class Content : VBox() {
@@ -186,9 +193,10 @@ class AttendanceController {
                             graphic = null
                             if (item != null && !empty) {
                                 val label = Label(item.toString(PATTERN_DATETIME)).apply { setMaxSize(Double.MAX_VALUE) }
-                                val hyperlink = Hyperlink(null, ImageView(R.png.btn_clear)).apply { setSize(18.0) }
-                                hyperlink.setOnAction { listView.items.remove(item) }
-                                graphic = HBox(label, hyperlink).apply { alignment = CENTER }
+                                val button = Button().apply { setSize(18.0) }
+                                button.graphicProperty().bind(bindingOf<Node?>(button.hoverProperty()) { if (button.isHover) ImageView(R.png.btn_clear) else null })
+                                button.setOnAction { listView.items.remove(item) }
+                                graphic = HBox(label, button).apply { alignment = CENTER }
                                 HBox.setHgrow(label, Priority.ALWAYS)
                             }
                         }

@@ -1,5 +1,5 @@
 buildscript {
-    ext.isDebug = false // set false when building app, true when building stage
+    ext.isDebug = true // set false when building app, true when building stage
     ext.versions = [
             release: '0.2',
             // main

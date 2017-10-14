@@ -3,29 +3,40 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640.0"
-      prefWidth="768.0" spacing="8.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.wijayaprinting.javafx.controller.AttendanceRecordController">
+<GridPane xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1"
+          fx:controller="com.wijayaprinting.javafx.controller.AttendanceRecordController">
+    <columnConstraints>
+        <ColumnConstraints hgrow="NEVER"/>
+        <ColumnConstraints hgrow="NEVER"/>
+        <ColumnConstraints hgrow="ALWAYS"/>
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints minHeight="10.0" vgrow="SOMETIMES"/>
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+    </rowConstraints>
     <children>
-        <HBox alignment="CENTER_LEFT">
-            <VBox.margin>
-                <Insets left="8.0" right="8.0" top="8.0"/>
-            </VBox.margin>
-            <children>
-                <ButtonBar buttonMinWidth="192.0" HBox.hgrow="ALWAYS">
-                    <buttons>
-                        <Button cancelButton="true" mnemonicParsing="false" onAction="#buttonCancelOnAction"
-                                text="%cancel"/>
-                        <Button fx:id="buttonPrint" defaultButton="true" mnemonicParsing="false"
-                                onAction="#buttonPrintOnAction" text="%print"/>
-                    </buttons>
-                    <HBox.margin>
-                        <Insets left="8.0"/>
-                    </HBox.margin>
-                </ButtonBar>
-            </children>
-        </HBox>
-        <TreeTableView fx:id="treeTableView" editable="true" style="-fx-font-family: Tahoma;" VBox.vgrow="ALWAYS">
+        <Label text="Grand total">
+            <GridPane.margin>
+                <Insets bottom="8.0" left="8.0" right="8.0" top="8.0"/>
+            </GridPane.margin>
+        </Label>
+        <Label fx:id="grandTotalLabel" text="-" GridPane.columnIndex="1">
+            <GridPane.margin>
+                <Insets bottom="8.0" top="8.0"/>
+            </GridPane.margin>
+        </Label>
+        <ButtonBar GridPane.columnIndex="2">
+            <buttons>
+                <Button cancelButton="true" mnemonicParsing="false" onAction="#buttonCancelOnAction" text="%cancel"/>
+                <Button fx:id="buttonPrint" defaultButton="true" mnemonicParsing="false" onAction="#buttonPrintOnAction"
+                        text="%print"/>
+            </buttons>
+            <GridPane.margin>
+                <Insets bottom="8.0" left="8.0" right="8.0" top="8.0"/>
+            </GridPane.margin>
+        </ButtonBar>
+        <TreeTableView fx:id="treeTableView" editable="true" style="-fx-font-family: Tahoma;" GridPane.columnSpan="3"
+                       GridPane.rowIndex="1">
             <columns>
                 <TreeTableColumn fx:id="treeTableColumnEmployee" editable="false" text="%employee"/>
                 <TreeTableColumn fx:id="treeTableColumnStart" editable="false" maxWidth="156.0" minWidth="156.0"
@@ -48,4 +59,4 @@
             </columnResizePolicy>
         </TreeTableView>
     </children>
-</VBox>
+</GridPane>

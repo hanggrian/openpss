@@ -45,6 +45,7 @@ class AttendanceController {
     @FXML lateinit var mergeCheckBox: CheckBox
     @FXML lateinit var readButton: Button
     @FXML lateinit var processButton: Button
+    @FXML lateinit var titledPane: TitledPane
     @FXML lateinit var flowPane: FlowPane
 
     @FXML
@@ -54,6 +55,7 @@ class AttendanceController {
 
         readButton.disableProperty().bind(fileField.validProperty)
         processButton.disableProperty().bind(flowPane.children.isEmpty)
+        titledPane.textProperty().bind(bindingOf(flowPane.children) { flowPane.children.size.toString() + " " + getString(R.string.employee) })
         flowPane.prefWrapLengthProperty().bind(fileField.scene.widthProperty())
 
         if (BuildConfig.DEBUG) {
@@ -76,7 +78,7 @@ class AttendanceController {
                     try {
                         val employees = readerChoiceBox.selectionModel.selectedItem.read(File(fileField.text))
                         when (BuildConfig.DEBUG) {
-                            true -> employees.filter { it.name == "Yanti" || it.name == "Yoyo" }.toMutableList()
+                            true -> employees.filter { it.name == "Yanti" || it.name == "Yoyo" || it.name == "Mus" }.toMutableList()
                             else -> employees
                         }.forEach {
                             if (mergeCheckBox.isSelected) it.mergeDuplicates()

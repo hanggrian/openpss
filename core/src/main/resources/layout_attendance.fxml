@@ -8,6 +8,7 @@
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -37,7 +38,7 @@
         <Button mnemonicParsing="false" onAction="#browseButtonOnAction" GridPane.columnIndex="3" GridPane.rowIndex="0">
          <graphic>
              <ImageView pickOnBounds="true" preserveRatio="true">
-                 <Image url="@btn_folder.png"/>
+                 <Image url="@btn_folder.png" />
              </ImageView>
          </graphic></Button>
         <Label text="%reader" GridPane.columnIndex="0" GridPane.rowIndex="1" />
@@ -50,7 +51,11 @@
             </buttons>
         </ButtonBar>
     </GridPane>
-    <ScrollPane VBox.vgrow="ALWAYS">
-        <FlowPane fx:id="flowPane" prefWrapLength="720.0" />
-    </ScrollPane>
+   <TitledPane fx:id="titledPane" alignment="CENTER" collapsible="false" VBox.vgrow="ALWAYS">
+      <content>
+          <ScrollPane hbarPolicy="NEVER" minHeight="0.0" vbarPolicy="ALWAYS">
+              <FlowPane fx:id="flowPane" prefWrapLength="720.0" />
+          </ScrollPane>
+      </content>
+   </TitledPane>
 </VBox>

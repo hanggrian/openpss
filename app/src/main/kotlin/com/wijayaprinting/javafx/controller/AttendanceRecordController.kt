@@ -3,7 +3,9 @@ package com.wijayaprinting.javafx.controller
 import com.wijayaprinting.javafx.data.Employee
 import com.wijayaprinting.javafx.data.Record
 import com.wijayaprinting.javafx.getExtra
+import javafx.beans.property.DoubleProperty
 import javafx.beans.property.ReadOnlyObjectWrapper
+import javafx.beans.property.SimpleDoubleProperty
 import javafx.beans.value.ObservableValue
 import javafx.fxml.FXML
 import javafx.print.PrinterJob
@@ -11,16 +13,18 @@ import javafx.scene.control.TreeItem
 import javafx.scene.control.TreeTableColumn
 import javafx.scene.control.TreeTableView
 import javafx.scene.control.cell.TextFieldTreeTableCell
+import javafx.scene.text.Text
+import javafx.scene.text.TextFlow
 import javafx.stage.Stage
+import kotfx.bindings.plus
+import kotfx.bindings.stringBindingOf
 import kotfx.dialogs.warningAlert
 import kotfx.runLater
 import kotfx.stringConverterOf
 
-/**
- * @author Hendra Anggrian (hendraanggrian@gmail.com)
- */
 class AttendanceRecordController {
 
+    @FXML lateinit var grandTotalFlow: TextFlow
     @FXML lateinit var treeTableView: TreeTableView<Record>
     @FXML lateinit var treeTableColumnEmployee: TreeTableColumn<Record, Employee>
     @FXML lateinit var treeTableColumnStart: TreeTableColumn<Record, String>
@@ -34,12 +38,15 @@ class AttendanceRecordController {
     @FXML
     @Suppress("UNCHECKED_CAST")
     fun initialize() = runLater {
+        val totals = mutableListOf<DoubleProperty>()
+
         treeTableView.root = TreeItem(Record.ROOT) // dummy for invisible root
         treeTableView.isShowRoot = false
         getExtra<Set<Employee>>().forEach { employee ->
             val node = employee.toNodeRecord()
             val childs = employee.toChildRecords()
             val total = employee.toTotalRecords(childs)
+            totals.add(total.total)
             treeTableView.root.children.add(TreeItem(node).apply {
                 isExpanded = true
                 children.addAll(*childs.map { TreeItem(it) }.toTypedArray(), TreeItem(total))
@@ -70,6 +77,11 @@ class AttendanceRecordController {
         treeTableColumnOvertime.setOnEditCommit { it.rowValue.value.overtime.set(it.newValue) }
         treeTableColumnOvertimeIncome.setCellValueFactory { it.value.value.overtimeIncome as ObservableValue<Double> }
         treeTableColumnTotal.setCellValueFactory { it.value.value.total as ObservableValue<Double> }
+
+        val first = totals.firstOrNull() ?: return@runLater
+        var binding = first + SimpleDoubleProperty(0.0)
+        (1 until totals.size).forEach { binding += totals[it] }
+        grandTotalFlow.children.add(Text().apply { textProperty().bind(stringBindingOf(binding) { binding.get().toString() }) })
     }
 
     @FXML

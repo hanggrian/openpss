@@ -8,5 +8,5 @@
 /captures
 .externalNativeBuild
 
-/out
+/out/*
 !out/artifacts

@@ -30,12 +30,10 @@ import kotfx.dialogs.errorAlert
 import kotfx.dialogs.infoAlert
 import kotfx.exitFX
 import kotfx.runLater
+import org.apache.log4j.BasicConfigurator
 import java.awt.Toolkit
 import java.net.InetAddress
 
-/**
- * @author Hendra Anggrian (hendraanggrian@gmail.com)
- */
 class App : Application() {
 
     companion object {
@@ -46,6 +44,7 @@ class App : Application() {
     }
 
     override fun init() {
+        if (BuildConfig.DEBUG) BasicConfigurator.configure()
         setResources(Language.parse(PreferencesFile()[PreferencesFile.LANGUAGE].value).getResources("string"))
     }
 

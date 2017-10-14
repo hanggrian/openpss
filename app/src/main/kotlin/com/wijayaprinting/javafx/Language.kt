@@ -4,9 +4,6 @@ import javafx.collections.ObservableList
 import kotfx.collections.observableListOf
 import java.util.*
 
-/**
- * @author Hendra Anggrian (hendraanggrian@gmail.com)
- */
 data class Language(val locale: String, val name: String) {
 
     override fun toString(): String = name

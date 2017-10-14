@@ -17,9 +17,7 @@ import org.joda.time.Minutes.minutes
 import org.joda.time.Period
 import java.math.BigDecimal
 
-/**
- * Data class representing an Employee with 'no' as its identifier to avoid duplicate in [Set] scenario.
- */
+/** Data class representing an Employee with 'no' as its identifier to avoid duplicate in [Set] scenario. */
 data class Employee(
         /** Id and name are final values that should be determined upon xlsx reading. */
         val id: Int,

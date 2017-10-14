@@ -1,25 +1,25 @@
-// rsync generated this class at 2017-10-14T17:05:56.735 from:
-// string_en.properties
-// layout_attendance.fxml
-// btn_refresh.png
-// logo_launcher.png
-// ic_calendar.png
-// string_in.properties
+// rsync generated this class at 2017-10-14T19:12:54.717 from:
+// btn_checkbox.png
 // btn_checkbox_outline.png
-// ic_user.png
-// tab_clock.png
-// btn_visibility.png
 // btn_clear.png
-// layout_main.fxml
-// layout_attendance_record.fxml
+// btn_folder.png
+// btn_refresh.png
+// btn_visibility.png
 // btn_visibility_off.png
+// ic_calendar.png
 // ic_clock.png
 // ic_key.png
 // ic_launcher.png
-// btn_checkbox.png
-// btn_folder.png
-// tab_address.png
+// ic_user.png
+// layout_attendance.fxml
+// layout_attendance_record.fxml
 // layout_customer.fxml
+// layout_main.fxml
+// logo_launcher.png
+// string_en.properties
+// string_in.properties
+// tab_address.png
+// tab_clock.png
 package com.wijayaprinting.javafx;
 
 import java.lang.String;
@@ -28,46 +28,22 @@ public final class R {
   private R() {
   }
 
-  public static final class properties {
-    public static final String string_en = "/string_en.properties";
-
-    public static final String string_in = "/string_in.properties";
-
-    private properties() {
-    }
-  }
-
-  public static final class fxml {
-    public static final String layout_attendance = "/layout_attendance.fxml";
-
-    public static final String layout_main = "/layout_main.fxml";
-
-    public static final String layout_attendance_record = "/layout_attendance_record.fxml";
-
-    public static final String layout_customer = "/layout_customer.fxml";
-
-    private fxml() {
-    }
-  }
-
   public static final class png {
-    public static final String btn_refresh = "/btn_refresh.png";
-
-    public static final String logo_launcher = "/logo_launcher.png";
-
-    public static final String ic_calendar = "/ic_calendar.png";
+    public static final String btn_checkbox = "/btn_checkbox.png";
 
     public static final String btn_checkbox_outline = "/btn_checkbox_outline.png";
 
-    public static final String ic_user = "/ic_user.png";
+    public static final String btn_clear = "/btn_clear.png";
 
-    public static final String tab_clock = "/tab_clock.png";
+    public static final String btn_folder = "/btn_folder.png";
+
+    public static final String btn_refresh = "/btn_refresh.png";
 
     public static final String btn_visibility = "/btn_visibility.png";
 
-    public static final String btn_clear = "/btn_clear.png";
-
     public static final String btn_visibility_off = "/btn_visibility_off.png";
+
+    public static final String ic_calendar = "/ic_calendar.png";
 
     public static final String ic_clock = "/ic_clock.png";
 
@@ -75,13 +51,37 @@ public final class R {
 
     public static final String ic_launcher = "/ic_launcher.png";
 
-    public static final String btn_checkbox = "/btn_checkbox.png";
+    public static final String ic_user = "/ic_user.png";
 
-    public static final String btn_folder = "/btn_folder.png";
+    public static final String logo_launcher = "/logo_launcher.png";
 
     public static final String tab_address = "/tab_address.png";
 
+    public static final String tab_clock = "/tab_clock.png";
+
     private png() {
+    }
+  }
+
+  public static final class fxml {
+    public static final String layout_attendance = "/layout_attendance.fxml";
+
+    public static final String layout_attendance_record = "/layout_attendance_record.fxml";
+
+    public static final String layout_customer = "/layout_customer.fxml";
+
+    public static final String layout_main = "/layout_main.fxml";
+
+    private fxml() {
+    }
+  }
+
+  public static final class properties {
+    public static final String string_en = "/string_en.properties";
+
+    public static final String string_in = "/string_in.properties";
+
+    private properties() {
     }
   }
 

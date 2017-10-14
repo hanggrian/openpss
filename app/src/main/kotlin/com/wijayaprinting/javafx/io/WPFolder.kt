@@ -5,9 +5,6 @@ import java.io.File
 import java.nio.file.Files
 import java.nio.file.LinkOption
 
-/**
- * @author Hendra Anggrian (hendraanggrian@gmail.com)
- */
 class WPFolder : File("${System.getProperty("user.home")}$separator.wp") {
 
     init {

@@ -1,8 +1,5 @@
 package com.wijayaprinting.javafx.io
 
-/**
- * @author Hendra Anggrian (hendraanggrian@gmail.com)
- */
 class MySQLFile : WPFile("mysql",
         Pair(USERNAME, ""),
         Pair(IP, ""),

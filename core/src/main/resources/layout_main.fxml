@@ -12,8 +12,7 @@
     </MenuBar>
 
     <TabPane fx:id="tabPane" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
-        <Tab closable="false" style="-fx-padding: 8;" text="Customer"
-             disable="true">
+        <Tab closable="false" disable="true" style="-fx-padding: 8 16 8 16;" text="Customer">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
                     <Image url="@tab_address.png"/>
@@ -21,7 +20,7 @@
             </graphic>
             <fx:include fx:id="customer" source="layout_customer.fxml"/>
         </Tab>
-        <Tab closable="false" style="-fx-padding: 8;" text="Attendance">
+        <Tab closable="false" style="-fx-padding: 8 16 8 16;" text="Attendance">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
                     <Image url="@tab_clock.png"/>

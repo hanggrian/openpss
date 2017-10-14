@@ -13,6 +13,7 @@ dependencies {
     implementation "io.reactivex.rxjava2:rxkotlin:$versions.rx"
     implementation "io.reactivex.rxjava2:rxjavafx:$versions.rx"
     implementation "org.apache.poi:poi-ooxml:$versions.commons.poi"
+    implementation "org.slf4j:slf4j-log4j12:$versions.slf4j"
 
     testImplementation "junit:junit:$versions.junit"
 }

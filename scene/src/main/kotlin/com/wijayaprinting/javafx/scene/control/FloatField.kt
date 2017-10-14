@@ -7,9 +7,6 @@ import javafx.scene.control.TextField
 import kotfx.bindings.booleanBindingOf
 import kotfx.stringConverterOf
 
-/**
- * @author Hendra Anggrian (hendraanggrian@gmail.com)
- */
 open class FloatField : TextField() {
 
     val valueProperty = SimpleFloatProperty()

@@ -6,9 +6,6 @@ import java.io.File
 import java.util.*
 import kotlin.collections.HashMap
 
-/**
- * @author Hendra Anggrian (hendraanggrian@gmail.com)
- */
 abstract class WPFile(child: String, vararg keys: Any) : File(WPFolder(), child), Map<String, StringProperty> {
 
     /** Properties reference to get, set, and finally save into this file. */

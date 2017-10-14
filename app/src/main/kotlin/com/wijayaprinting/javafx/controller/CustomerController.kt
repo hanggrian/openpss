@@ -7,9 +7,6 @@ import javafx.scene.control.Label
 import javafx.scene.control.TextField
 import kotfx.bindings.stringBindingOf
 
-/**
- * @author Hendra Anggrian (hendraanggrian@gmail.com)
- */
 class CustomerController {
 
     @FXML lateinit var customerField: TextField

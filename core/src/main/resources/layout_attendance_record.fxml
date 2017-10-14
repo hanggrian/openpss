@@ -3,39 +3,36 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.TextFlow?>
 <GridPane xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1"
           fx:controller="com.wijayaprinting.javafx.controller.AttendanceRecordController">
     <columnConstraints>
         <ColumnConstraints hgrow="NEVER"/>
-        <ColumnConstraints hgrow="NEVER"/>
         <ColumnConstraints hgrow="ALWAYS"/>
     </columnConstraints>
     <rowConstraints>
-        <RowConstraints minHeight="10.0" vgrow="SOMETIMES"/>
-        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+        <RowConstraints vgrow="NEVER"/>
+        <RowConstraints vgrow="ALWAYS"/>
     </rowConstraints>
     <children>
-        <Label text="Grand total">
+        <TextFlow fx:id="grandTotalFlow" maxHeight="-Infinity">
             <GridPane.margin>
-                <Insets bottom="8.0" left="8.0" right="8.0" top="8.0"/>
+                <Insets bottom="8.0" left="8.0" top="8.0"/>
             </GridPane.margin>
-        </Label>
-        <Label fx:id="grandTotalLabel" text="-" GridPane.columnIndex="1">
-            <GridPane.margin>
-                <Insets bottom="8.0" top="8.0"/>
-            </GridPane.margin>
-        </Label>
-        <ButtonBar GridPane.columnIndex="2">
+            <Text text="%grand_total"/>
+            <Text text=": "/>
+        </TextFlow>
+        <ButtonBar GridPane.columnIndex="1">
             <buttons>
                 <Button cancelButton="true" mnemonicParsing="false" onAction="#buttonCancelOnAction" text="%cancel"/>
-                <Button fx:id="buttonPrint" defaultButton="true" mnemonicParsing="false" onAction="#buttonPrintOnAction"
-                        text="%print"/>
+                <Button defaultButton="true" mnemonicParsing="false" onAction="#buttonPrintOnAction" text="%print"/>
             </buttons>
             <GridPane.margin>
-                <Insets bottom="8.0" left="8.0" right="8.0" top="8.0"/>
+                <Insets bottom="8.0" right="8.0" top="8.0"/>
             </GridPane.margin>
         </ButtonBar>
-        <TreeTableView fx:id="treeTableView" editable="true" style="-fx-font-family: Tahoma;" GridPane.columnSpan="3"
+        <TreeTableView fx:id="treeTableView" editable="true" style="-fx-font-family: Tahoma;" GridPane.columnSpan="2"
                        GridPane.rowIndex="1">
             <columns>
                 <TreeTableColumn fx:id="treeTableColumnEmployee" editable="false" text="%employee"/>

@@ -9,10 +9,6 @@ import javafx.stage.Stage
 import kotfx.runLater
 import org.apache.commons.lang3.SystemUtils
 
-
-/**
- * @author Hendra Anggrian (hendraanggrian@gmail.com)
- */
 class MainController {
 
     @FXML lateinit var menuBar: MenuBar

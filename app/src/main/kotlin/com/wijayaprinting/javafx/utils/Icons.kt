@@ -23,15 +23,14 @@ inline var Dialog<*>.icon: Image
     }
 
 inline fun Application.setIconOnOSX(image: java.awt.Image) {
-    if (SystemUtils.IS_OS_MAC_OSX) {
-        Class.forName("com.apple.eawt.Application")
-                .newInstance()
-                .javaClass
-                .getMethod("getApplication")
-                .invoke(null).let { application ->
-            application.javaClass
-                    .getMethod("setDockIconImage", java.awt.Image::class.java)
-                    .invoke(application, image)
-        }
-    }
+    if (SystemUtils.IS_OS_MAC_OSX) Class.forName("com.apple.eawt.Application")
+            .newInstance()
+            .javaClass
+            .getMethod("getApplication")
+            .invoke(null)
+            .let { application ->
+                application.javaClass
+                        .getMethod("setDockIconImage", java.awt.Image::class.java)
+                        .invoke(application, image)
+            }
 }

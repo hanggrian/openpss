@@ -10,8 +10,8 @@ import com.wijayaprinting.javafx.utils.icon
 import com.wijayaprinting.javafx.utils.setIconOnOSX
 import com.wijayaprinting.mysql.MySQL
 import javafx.application.Application
-import javafx.application.Platform
-import javafx.application.Platform.*
+import javafx.application.Platform.exit
+import javafx.application.Platform.runLater
 import javafx.event.ActionEvent
 import javafx.fxml.FXMLLoader
 import javafx.geometry.Pos.CENTER
@@ -30,7 +30,7 @@ import kotfx.bindings.not
 import kotfx.bindings.or
 import kotfx.dialogs.errorAlert
 import kotfx.dialogs.infoAlert
-import org.apache.log4j.BasicConfigurator
+import org.apache.log4j.BasicConfigurator.configure
 import java.awt.Toolkit
 import java.net.InetAddress
 
@@ -44,7 +44,7 @@ class App : Application() {
     }
 
     override fun init() {
-        if (BuildConfig.DEBUG) BasicConfigurator.configure()
+        if (BuildConfig.DEBUG) configure()
         setResources(Language.parse(PreferencesFile()[PreferencesFile.LANGUAGE].value).getResources("string"))
     }
 

@@ -1,11 +1,10 @@
 package com.wijayaprinting.javafx.controller
 
 import com.wijayaprinting.javafx.safeTransaction
-import com.wijayaprinting.javafx.scene.control.CustomerPagination
+import com.wijayaprinting.javafx.control.CustomerPagination
 import javafx.fxml.FXML
 import javafx.scene.control.Label
 import javafx.scene.control.TextField
-import kotfx.bindings.stringBindingOf
 
 class CustomerController {
 

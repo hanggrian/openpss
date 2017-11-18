@@ -1,7 +1,5 @@
-package com.wijayaprinting.javafx.scene.control
+package com.wijayaprinting.javafx.control
 
-import com.wijayaprinting.javafx.BuildConfig
-import com.wijayaprinting.javafx.R
 import com.wijayaprinting.javafx.getString
 import com.wijayaprinting.javafx.safeTransaction
 import com.wijayaprinting.javafx.scene.Updatable
@@ -33,11 +31,11 @@ class CustomerPagination : Pagination(), Updatable {
 
     val textProperty = SimpleStringProperty("").apply { addListener { _, _, _ -> safeTransaction { update() } } }
     var currentPageContainer: StackPane? = null
-    val addMenuItem = MenuItem(getString(R.string.add))
-    val deleteMenuItem = MenuItem(getString(R.string.delete))
+    val addMenuItem = MenuItem(getString(com.wijayaprinting.javafx.R.string.add))
+    val deleteMenuItem = MenuItem(getString(com.wijayaprinting.javafx.R.string.delete))
 
     init {
-        if (!BuildConfig.DEBUG) {
+        if (!com.wijayaprinting.javafx.BuildConfig.DEBUG) {
             setPageFactory { page -> getPageContainer(page) }
             contextMenu = ContextMenu(addMenuItem, deleteMenuItem)
             addMenuItem.setOnAction {
@@ -125,7 +123,7 @@ class CustomerPagination : Pagination(), Updatable {
 
         init {
             title = customer?.toString() ?: "Add customer"
-            graphic = ImageView(R.png.ic_user)
+            graphic = ImageView(com.wijayaprinting.javafx.R.png.ic_user)
             headerText = customer?.toString() ?: "Add customer"
             dialogPane.content = GridPane().apply {
                 setGaps(8.0)

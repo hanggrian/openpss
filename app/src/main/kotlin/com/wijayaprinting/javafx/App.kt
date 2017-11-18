@@ -10,6 +10,8 @@ import com.wijayaprinting.javafx.utils.icon
 import com.wijayaprinting.javafx.utils.setIconOnOSX
 import com.wijayaprinting.mysql.MySQL
 import javafx.application.Application
+import javafx.application.Platform
+import javafx.application.Platform.*
 import javafx.event.ActionEvent
 import javafx.fxml.FXMLLoader
 import javafx.geometry.Pos.CENTER
@@ -28,8 +30,6 @@ import kotfx.bindings.not
 import kotfx.bindings.or
 import kotfx.dialogs.errorAlert
 import kotfx.dialogs.infoAlert
-import kotfx.exitFX
-import kotfx.runLater
 import org.apache.log4j.BasicConfigurator
 import java.awt.Toolkit
 import java.net.InetAddress
@@ -171,7 +171,7 @@ class App : Application() {
                     preferencesFile.apply { get(PreferencesFile.LANGUAGE).set(newValue.locale) }.save()
                     close()
                     infoAlert(getString(R.string.language_changed)).showAndWait()
-                    exitFX()
+                    exit()
                 }
             }
         }

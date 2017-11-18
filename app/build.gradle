@@ -1,5 +1,5 @@
-group 'com.wijayaprinting'
-version versions.release
+group release_group
+version release_version
 
 apply plugin: 'java'
 apply plugin: 'kotlin'
@@ -8,14 +8,17 @@ dependencies {
     implementation project(':core')
     implementation project(':scene')
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre8:$versions.kotlin"
-    implementation "com.google.guava:guava:$versions.guava"
-    implementation "io.reactivex.rxjava2:rxkotlin:$versions.rx"
-    implementation "io.reactivex.rxjava2:rxjavafx:$versions.rx"
-    implementation "org.apache.poi:poi-ooxml:$versions.commons.poi"
-    implementation "org.slf4j:slf4j-log4j12:$versions.slf4j"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin"
+    implementation "com.google.guava:guava:$guava-jre"
 
-    testImplementation "junit:junit:$versions.junit"
+    implementation "io.reactivex.rxjava2:rxjava:$rx_java"
+    implementation "io.reactivex.rxjava2:rxjavafx:$rx_kotlin"
+    implementation "io.reactivex.rxjava2:rxkotlin:$rx_kotlin"
+
+    implementation "org.apache.poi:poi-ooxml:$apache_poi"
+    implementation "org.slf4j:slf4j-log4j12:$slf4j"
+
+    testImplementation "junit:junit:$junit"
 }
 
 compileKotlin { kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8 }

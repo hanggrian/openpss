@@ -3,6 +3,7 @@ package com.wijayaprinting.javafx.controller
 import com.wijayaprinting.javafx.data.Employee
 import com.wijayaprinting.javafx.data.Record
 import com.wijayaprinting.javafx.getExtra
+import javafx.application.Platform.runLater
 import javafx.beans.property.DoubleProperty
 import javafx.beans.property.ReadOnlyObjectWrapper
 import javafx.beans.property.SimpleDoubleProperty
@@ -19,7 +20,6 @@ import javafx.stage.Stage
 import kotfx.bindings.plus
 import kotfx.bindings.stringBindingOf
 import kotfx.dialogs.warningAlert
-import kotfx.runLater
 import kotfx.stringConverterOf
 
 class AttendanceRecordController {

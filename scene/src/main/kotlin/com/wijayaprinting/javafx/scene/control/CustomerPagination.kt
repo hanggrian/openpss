@@ -9,6 +9,7 @@ import com.wijayaprinting.javafx.scene.utils.setGaps
 import com.wijayaprinting.javafx.scene.utils.textOrNull
 import com.wijayaprinting.mysql.dao.Customer
 import com.wijayaprinting.mysql.dao.Customers
+import javafx.application.Platform.runLater
 import javafx.beans.property.SimpleStringProperty
 import javafx.event.Event
 import javafx.event.EventHandler
@@ -19,7 +20,6 @@ import javafx.scene.image.ImageView
 import javafx.scene.layout.GridPane
 import javafx.scene.layout.StackPane
 import kotfx.collections.toObservableList
-import kotfx.runLater
 import org.apache.commons.lang3.math.NumberUtils
 import org.jetbrains.exposed.sql.SizedIterable
 import org.jetbrains.exposed.sql.or
@@ -48,10 +48,10 @@ class CustomerPagination : Pagination(), Updatable {
                                 Customer.new {
                                     name = mName as String
                                     since = DateTime.now()
-                                    email = mEmail as String?
-                                    phone1 = mPhone1 as String?
-                                    phone2 = mPhone2 as String?
-                                    note = mNote as String?
+                                    //email = mEmail as? String
+                                    //phone1 = mPhone1 as String?
+                                    //phone2 = mPhone2 as String?
+                                    //note = mNote as String?
                                 }
                                 update()
                             }

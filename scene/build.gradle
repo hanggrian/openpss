@@ -1,15 +1,15 @@
-group 'com.wijayaprinting'
-version versions.release
+group release_group
+version release_version
 
 apply plugin: 'java-library'
 apply plugin: 'kotlin'
 
 dependencies {
-    api project(':core')
+    compile project(':core')
 
-    api "org.jetbrains.kotlin:kotlin-stdlib-jre8:$versions.kotlin"
-    api "org.apache.commons:commons-lang3:$versions.commons.lang3"
-    api "commons-validator:commons-validator:$versions.commons.validator"
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin"
+    compile "org.apache.commons:commons-lang3:$commons_lang"
+    compile "commons-validator:commons-validator:$commons_validator"
 }
 
 compileKotlin { kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8 }

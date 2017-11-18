@@ -14,6 +14,7 @@ import com.wijayaprinting.mysql.utils.PATTERN_DATETIME
 import io.reactivex.Observable
 import io.reactivex.rxjavafx.schedulers.JavaFxScheduler
 import io.reactivex.schedulers.Schedulers
+import javafx.application.Platform.runLater
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
 import javafx.geometry.Insets
@@ -32,7 +33,6 @@ import kotfx.bindings.isEmpty
 import kotfx.bindings.not
 import kotfx.bindings.or
 import kotfx.dialogs.*
-import kotfx.runLater
 import org.joda.time.DateTime
 import java.io.File
 import java.time.LocalDate

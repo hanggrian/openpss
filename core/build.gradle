@@ -1,5 +1,5 @@
-group 'com.wijayaprinting'
-version versions.release
+group release_group
+version release_version
 
 apply plugin: 'java-library'
 apply plugin: 'kotlin'
@@ -7,25 +7,25 @@ apply plugin: 'rsync'
 apply plugin: 'buildconfig'
 
 rsync {
-    packageName = 'com.wijayaprinting.javafx'
-    leadingSlash = true
-    debug = isDebug
+    packageName "$release_group.$release_artifact"
+    leadingSlash true
+    debug is_debug.toBoolean()
 }
 
 buildconfig {
-    groupId = group
-    artifactId = 'javafx'
-    version = versions.release
-    packageName = 'com.wijayaprinting.javafx'
-    debug = isDebug
+    groupId release_group
+    artifactId release_artifact
+    version release_version
+    packageName "$release_group.$release_artifact"
+    debug is_debug.toBoolean()
 }
 
 dependencies {
-    api "com.wijayaprinting:mysql:$versions.mysql"
+    compile "com.wijayaprinting:mysql:$wp_mysql"
 
-    api "org.jetbrains.kotlin:kotlin-stdlib-jre8:$versions.kotlin"
-    api "com.hendraanggrian:kotfx:$versions.kotfx"
-    api "org.apache.commons:commons-math3:$versions.commons.math3"
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin"
+    compile "com.hendraanggrian:kotfx:$kotfx"
+    compile "org.apache.commons:commons-math3:$commons_math"
 }
 
 compileKotlin { kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8 }

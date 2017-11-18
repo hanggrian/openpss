@@ -1,7 +1,7 @@
 package com.wijayaprinting.javafx
 
+import javafx.application.Platform.runLater
 import javafx.fxml.FXML
-import kotfx.runLater
 
 /**
  * @author Hendra Anggrian (hendraanggrian@gmail.com)

@@ -1,12 +1,12 @@
 package com.wijayaprinting.javafx.controller
 
+import javafx.application.Platform.runLater
 import javafx.fxml.FXML
 import javafx.geometry.Insets
 import javafx.scene.control.MenuBar
 import javafx.scene.control.TabPane
 import javafx.scene.layout.StackPane
 import javafx.stage.Stage
-import kotfx.runLater
 import org.apache.commons.lang3.SystemUtils
 
 class MainController {

@@ -1,5 +1,4 @@
-@file:JvmName("IconsKt")
-@file:Suppress("NOTHING_TO_INLINE")
+@file:Suppress("NOTHING_TO_INLINE", "UNUSED")
 
 package com.wijayaprinting.javafx.utils
 

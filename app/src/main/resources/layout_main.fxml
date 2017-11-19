@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.VBox?>
 <VBox prefHeight="720.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.wijayaprinting.javafx.controller.MainController">
@@ -12,20 +10,10 @@
     </MenuBar>
 
     <TabPane fx:id="tabPane" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
-        <Tab closable="false" disable="true" style="-fx-padding: 8 16 8 16;" text="Customer">
-            <graphic>
-                <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@tab_address.png"/>
-                </ImageView>
-            </graphic>
+        <Tab closable="false" disable="true" text="Customer">
             <fx:include fx:id="customer" source="layout_customer.fxml"/>
         </Tab>
-        <Tab closable="false" style="-fx-padding: 8 16 8 16;" text="Attendance">
-            <graphic>
-                <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@tab_clock.png"/>
-                </ImageView>
-            </graphic>
+        <Tab closable="false" text="Attendance">
             <fx:include fx:id="attendance" source="layout_attendance.fxml"/>
         </Tab>
     </TabPane>

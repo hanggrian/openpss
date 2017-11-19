@@ -10,10 +10,10 @@ import com.wijayaprinting.javafx.scene.layout.TimeBox
 import com.wijayaprinting.javafx.scene.utils.setGaps
 import com.wijayaprinting.javafx.scene.utils.setMaxSize
 import com.wijayaprinting.javafx.scene.utils.setSize
+import com.wijayaprinting.javafx.utils.multithread
 import com.wijayaprinting.mysql.utils.PATTERN_DATETIME
 import io.reactivex.Observable
-import io.reactivex.rxjavafx.schedulers.JavaFxScheduler
-import io.reactivex.schedulers.Schedulers
+import io.reactivex.rxkotlin.subscribeBy
 import javafx.application.Platform.runLater
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
@@ -22,6 +22,8 @@ import javafx.geometry.Pos.CENTER
 import javafx.scene.Node
 import javafx.scene.Scene
 import javafx.scene.control.*
+import javafx.scene.control.ButtonType.CANCEL
+import javafx.scene.control.ButtonType.OK
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import javafx.scene.layout.*
@@ -42,10 +44,9 @@ class AttendanceController {
 
     @FXML lateinit var fileField: FileField
     @FXML lateinit var readerChoiceBox: ChoiceBox<Reader>
-    @FXML lateinit var mergeCheckBox: CheckBox
+    @FXML lateinit var mergeToggleButton: ToggleButton
     @FXML lateinit var readButton: Button
     @FXML lateinit var processButton: Button
-    @FXML lateinit var titledPane: TitledPane
     @FXML lateinit var flowPane: FlowPane
 
     @FXML
@@ -55,7 +56,6 @@ class AttendanceController {
 
         readButton.disableProperty().bind(fileField.validProperty)
         processButton.disableProperty().bind(flowPane.children.isEmpty)
-        titledPane.textProperty().bind(bindingOf(flowPane.children) { flowPane.children.size.toString() + " " + getString(R.string.employee) })
         flowPane.prefWrapLengthProperty().bind(fileField.scene.widthProperty())
 
         if (BuildConfig.DEBUG) {
@@ -70,8 +70,8 @@ class AttendanceController {
 
     @FXML
     fun readButtonOnAction() {
-        val dialog = infoAlert(getString(R.string.please_wait), getString(R.string.please_wait_content)) { buttonTypes.clear() }
-        dialog.show()
+        val progressDialog = infoAlert(getString(R.string.please_wait), getString(R.string.please_wait_content)) { buttonTypes.clear() }
+        progressDialog.show()
         flowPane.children.clear()
         Observable
                 .create<Employee> { emitter ->
@@ -81,7 +81,7 @@ class AttendanceController {
                             true -> employees.filter { it.name == "Yanti" || it.name == "Yoyo" || it.name == "Mus" }.toMutableList()
                             else -> employees
                         }.forEach {
-                            if (mergeCheckBox.isSelected) it.mergeDuplicates()
+                            if (mergeToggleButton.isSelected) it.mergeDuplicates()
                             emitter.onNext(it)
                         }
                     } catch (e: Exception) {
@@ -89,16 +89,14 @@ class AttendanceController {
                     }
                     emitter.onComplete()
                 }
-                .subscribeOn(Schedulers.computation())
-                .observeOn(JavaFxScheduler.platform())
-                .subscribe({ employee ->
+                .multithread()
+                .subscribeBy({ e -> e.message ?: getString(R.string.error_unknown).let { errorAlert(it).showAndWait() } }, {
+                    progressDialog.dialogPane.buttonTypes.add(OK) // apparently alert won't close without a button
+                    progressDialog.close()
+                    if (!flowPane.children.isEmpty()) infoAlert("Read success", "${flowPane.children.size} employees found.").showAndWait()
+                }) { employee ->
                     flowPane.children.add(EmployeeTitledPane(employee))
-                }, { e ->
-                    e.message ?: getString(R.string.error_unknown).let { errorAlert(it).showAndWait() }
-                }, {
-                    dialog.dialogPane.buttonTypes.add(ButtonType.OK) // apparently alert won't close without a button
-                    dialog.close()
-                })
+                }
     }
 
     @FXML
@@ -167,11 +165,11 @@ class AttendanceController {
                         alignment = CENTER
                         children.addAll(Label(getString(R.string.date)), datePicker, timeBox)
                     }
-                    buttonTypes.addAll(ButtonType.OK, ButtonType.CANCEL)
-                    lookupButton(ButtonType.OK).disableProperty().bind(datePicker.valueProperty().isNull or not(timeBox.validProperty))
+                    buttonTypes.addAll(OK, CANCEL)
+                    lookupButton(OK).disableProperty().bind(datePicker.valueProperty().isNull or not(timeBox.validProperty))
                     runLater { datePicker.requestFocus() }
                     Callback {
-                        if (it != ButtonType.OK) null
+                        if (it != OK) null
                         else DateTime(datePicker.value.year, datePicker.value.monthValue, datePicker.value.dayOfMonth, timeBox.value.hourOfDay, timeBox.value.minuteOfHour)
                     }
                 }.showAndWait()

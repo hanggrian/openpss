@@ -47,6 +47,7 @@ class AttendanceController {
     @FXML lateinit var mergeToggleButton: ToggleButton
     @FXML lateinit var readButton: Button
     @FXML lateinit var processButton: Button
+    @FXML lateinit var employeeCountLabel: Label
     @FXML lateinit var flowPane: FlowPane
 
     @FXML
@@ -56,6 +57,7 @@ class AttendanceController {
 
         readButton.disableProperty().bind(fileField.validProperty)
         processButton.disableProperty().bind(flowPane.children.isEmpty)
+        employeeCountLabel.textProperty().bind(bindingOf(flowPane.children) { flowPane.children.size.toString() + " " + getString(R.string.employee) })
         flowPane.prefWrapLengthProperty().bind(fileField.scene.widthProperty())
 
         if (BuildConfig.DEBUG) {
@@ -93,7 +95,6 @@ class AttendanceController {
                 .subscribeBy({ e -> e.message ?: getString(R.string.error_unknown).let { errorAlert(it).showAndWait() } }, {
                     progressDialog.dialogPane.buttonTypes.add(OK) // apparently alert won't close without a button
                     progressDialog.close()
-                    if (!flowPane.children.isEmpty()) infoAlert("Read success", "${flowPane.children.size} employees found.").showAndWait()
                 }) { employee ->
                     flowPane.children.add(EmployeeTitledPane(employee))
                 }
@@ -120,7 +121,7 @@ class AttendanceController {
             }
         }
         if (set.isNotEmpty()) {
-            setExtra(set)
+            AttendanceRecordController.EMPLOYEES = set
             val minSize = Pair(960.0, 640.0)
             Stage().apply {
                 scene = Scene(FXMLLoader.load(App::class.java.getResource(R.fxml.layout_attendance_record), resources), minSize.first, minSize.second)
@@ -151,7 +152,7 @@ class AttendanceController {
             contextMenu = ContextMenu(addMenu, SeparatorMenuItem(), revertMenu, SeparatorMenuItem(), deleteMenu, deleteOthersMenu, deleteAllMenu)
             addMenu.setOnAction {
                 dialog<DateTime>(getString(R.string.record), ImageView(R.png.ic_calendar), getString(R.string.record)) {
-                    val datePicker: DatePicker = DatePicker().apply {
+                    val datePicker = DatePicker().apply {
                         employeeBox.listView.selectionModel.selectedItem?.let {
                             value = LocalDate.of(it.year, it.monthOfYear, it.dayOfMonth)
                         }
@@ -172,11 +173,10 @@ class AttendanceController {
                         if (it != OK) null
                         else DateTime(datePicker.value.year, datePicker.value.monthValue, datePicker.value.dayOfMonth, timeBox.value.hourOfDay, timeBox.value.minuteOfHour)
                     }
-                }.showAndWait()
-                        .ifPresent {
-                            employeeBox.listView.items.add(it)
-                            Collections.sort(employeeBox.listView.items)
-                        }
+                }.showAndWait().ifPresent {
+                    employeeBox.listView.items.add(it)
+                    Collections.sort(employeeBox.listView.items)
+                }
             }
             revertMenu.setOnAction { employee.revert() }
             deleteMenu.setOnAction { flowPane.children.remove(this@EmployeeTitledPane) }

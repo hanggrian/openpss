@@ -8,11 +8,9 @@ import kotfx.bindings.doubleBindingOf
 import kotfx.bindings.plus
 import org.apache.commons.math3.util.Precision.round
 import org.joda.time.DateTime
+import org.joda.time.LocalDate
 import org.joda.time.Period
 
-/**
- * @author Hendra Anggrian (hendraanggrian@gmail.com)
- */
 data class Record(
         val type: Int,
         private val mEmployee: Employee,
@@ -27,7 +25,6 @@ data class Record(
 
         val total: DoubleProperty = SimpleDoubleProperty()
 ) {
-
     val employee: Employee?
         get() = when (type) {
             TYPE_NODE -> mEmployee
@@ -51,6 +48,8 @@ data class Record(
             TYPE_TOTAL -> ""
             else -> throw UnsupportedOperationException()
         }
+
+    infix fun startMatch(date: LocalDate): Boolean = mStart.toLocalDate() == date
 
     init {
         if (type != TYPE_ROOT) {

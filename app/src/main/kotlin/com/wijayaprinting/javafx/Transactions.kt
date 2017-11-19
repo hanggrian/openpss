@@ -14,6 +14,7 @@ import java.sql.SQLException
  *
  * @see [transaction]
  */
+@Deprecated("Use rxexposed instead!")
 inline fun <T> safeTransaction(noinline statement: Transaction.() -> T) {
     try {
         transaction(statement)

@@ -1,6 +1,8 @@
 package com.wijayaprinting.javafx.data
 
-import com.wijayaprinting.javafx.safeTransaction
+import com.hendraanggrian.rxexposed.SQLCompletables
+import com.hendraanggrian.rxexposed.SQLSingles
+import com.wijayaprinting.javafx.utils.multithread
 import com.wijayaprinting.mysql.dao.Wage
 import com.wijayaprinting.mysql.dao.Wages
 import javafx.beans.property.DoubleProperty
@@ -16,76 +18,78 @@ import org.joda.time.DateTime
 import org.joda.time.Minutes.minutes
 import org.joda.time.Period
 import java.math.BigDecimal
+import java.util.Optional.ofNullable
 
-/** Data class representing an Employee with 'no' as its identifier to avoid duplicate in [Set] scenario. */
+/** Data class representing an Employee with 'no' as its identifier to avoid duplicates in [Set] scenario. */
 data class Employee(
         /** Id and name are final values that should be determined upon xlsx reading. */
         val id: Int,
         val name: String,
 
         /** Attendances and shift should be set with [EmployeeTitledPane]. */
-        private val mAttendances: ObservableList<DateTime> = mutableObservableListOf(),
-        private val mDuplicate: ObservableList<DateTime> = mutableObservableListOf(),
+        val attendances: ObservableList<DateTime> = mutableObservableListOf(),
+        private val duplicates: ObservableList<DateTime> = mutableObservableListOf(),
 
-        /** Wages below are retrieved from sqlite, or empty if there is none. */
+        /** Wages below are retrieved from sql, or empty if there is none. */
         val daily: IntegerProperty = SimpleIntegerProperty(),
         val hourlyOvertime: IntegerProperty = SimpleIntegerProperty(),
         val recess: DoubleProperty = SimpleDoubleProperty()
 ) {
-
     companion object {
         const val WORKING_HOURS = 8.0
     }
 
     init {
-        safeTransaction {
-            Wage.findById(id)?.let { wage ->
-                daily.value = wage.daily
-                hourlyOvertime.value = wage.hourlyOvertime
-                recess.value = wage.recess.toDouble()
-            }
-        }
+        SQLSingles.transaction { ofNullable(Wage.findById(id)) }
+                .multithread()
+                .filter { it.isPresent }
+                .map { it.get() }
+                .subscribe({
+                    daily.value = it.daily
+                    hourlyOvertime.value = it.hourlyOvertime
+                    recess.value = it.recess.toDouble()
+                }) {}
     }
 
-    fun saveWage() = safeTransaction {
-        @Suppress("IMPLICIT_CAST_TO_ANY")
-        when (Wage.findById(id)) {
-            null -> Wage.new(id) {
-                daily = this@Employee.daily.value
-                hourlyOvertime = this@Employee.hourlyOvertime.value
-                recess = BigDecimal.valueOf(this@Employee.recess.value)
-            }
-            else -> Wages.update({ Wages.id eq id }) {
-                it[daily] = this@Employee.daily.value
-                it[hourlyOvertime] = this@Employee.hourlyOvertime.value
-                it[recess] = BigDecimal.valueOf(this@Employee.recess.value)
-            }
-        }
+    fun saveWage() {
+        SQLCompletables
+                .transaction {
+                    when (Wage.findById(id)) {
+                        null -> Wage.new(id) {
+                            daily = this@Employee.daily.value
+                            hourlyOvertime = this@Employee.hourlyOvertime.value
+                            recess = BigDecimal.valueOf(this@Employee.recess.value)
+                        }
+                        else -> Wages.update({ Wages.id eq id }) {
+                            it[daily] = this@Employee.daily.value
+                            it[hourlyOvertime] = this@Employee.hourlyOvertime.value
+                            it[recess] = BigDecimal.valueOf(this@Employee.recess.value)
+                        }
+                    }
+                }.subscribe()
     }
-
-    val attendances: ObservableList<DateTime> get() = mAttendances
 
     fun addAttendance(element: DateTime) {
-        mAttendances.add(element)
-        mDuplicate.add(element)
+        attendances.add(element)
+        duplicates.add(element)
     }
 
     fun addAllAttendances(elements: Collection<DateTime>) {
-        mAttendances.addAll(elements)
-        mDuplicate.addAll(elements)
+        attendances.addAll(elements)
+        duplicates.addAll(elements)
     }
 
     fun revert() {
-        mAttendances.clear()
-        mAttendances.addAll(mDuplicate)
+        attendances.clear()
+        attendances.addAll(duplicates)
     }
 
     fun mergeDuplicates() {
-        val toRemove = (0 until (mAttendances.size - 1))
-                .filter { Period(mAttendances[it], mAttendances[it + 1]).toStandardMinutes().isLessThan(minutes(5)) }
-                .map { mAttendances[it] }
-        mAttendances.removeAll(toRemove)
-        mDuplicate.removeAll(toRemove)
+        val toRemove = (0 until (attendances.size - 1))
+                .filter { Period(attendances[it], attendances[it + 1]).toStandardMinutes().isLessThan(minutes(5)) }
+                .map { attendances[it] }
+        attendances.removeAll(toRemove)
+        duplicates.removeAll(toRemove)
     }
 
     override fun hashCode(): Int = id.hashCode()

@@ -28,11 +28,12 @@ import javafx.util.Callback
 import kotfx.bindings.bindingOf
 import kotfx.bindings.not
 import kotfx.bindings.or
+import kotfx.dialogs.dialog
 import kotfx.dialogs.errorAlert
 import kotfx.dialogs.infoAlert
 import org.apache.log4j.BasicConfigurator.configure
 import java.awt.Toolkit
-import java.net.InetAddress
+import java.net.InetAddress.getByName
 
 class App : Application() {
 
@@ -68,9 +69,6 @@ class App : Application() {
     }
 
     inner class LoginDialog : Dialog<Any>() {
-        val preferencesFile = PreferencesFile()
-        val mysqlFile = MySQLFile()
-
         val content = Content()
         val expandableContent = ExpandableContent()
         val loginButton = ButtonType(getString(R.string.login), ButtonBar.ButtonData.OK_DONE)
@@ -88,54 +86,50 @@ class App : Application() {
             dialogPane.buttonTypes.addAll(CANCEL, loginButton)
             dialogPane.lookupButton(loginButton).addEventFilter(ActionEvent.ACTION) { event ->
                 event.consume()
-                mysqlFile.save()
-                if (!InetAddress.getByName(content.ipField.text).isReachable(IP_LOOKUP_TIMEOUT)) {
+                MySQLFile.save()
+                if (!getByName(content.ipField.text).isReachable(IP_LOOKUP_TIMEOUT)) {
                     errorAlert(getString(R.string.ip_address_unreachable)).showAndWait()
                     return@addEventFilter
                 }
-                kotfx.dialogs
-                        .dialog<String>(getString(R.string.password), ImageView(R.png.ic_key), getString(R.string.password_required)) {
-                            val passwordLabel = Label(getString(R.string.password))
-                            val passwordField = PasswordField().apply { promptText = getString(R.string.password) }
-                            val passwordToggle = ToggleButton().apply { attachButtons(R.png.btn_visibility, R.png.btn_visibility_off) }
-                            buttonTypes.addAll(CANCEL, OK)
-                            lookupButton(OK).disableProperty().bind(passwordField.textProperty().isEmpty)
-                            passwordField.tooltipProperty().bind(bindingOf(passwordField.textProperty(), passwordToggle.selectedProperty()) {
-                                if (!passwordToggle.isSelected) null
-                                else Tooltip(passwordField.text)
-                            })
-                            content = HBox().apply {
-                                spacing = 8.0
-                                alignment = CENTER
-                                children.addAll(passwordLabel, passwordField, passwordToggle)
-                            }
-                            runLater { passwordField.requestFocus() }
+                dialog<String>(getString(R.string.password), ImageView(R.png.ic_key), getString(R.string.password_required)) {
+                    val passwordLabel = Label(getString(R.string.password))
+                    val passwordField = PasswordField().apply { promptText = getString(R.string.password) }
+                    val passwordToggle = ToggleButton().apply { attachButtons(R.png.btn_visibility, R.png.btn_visibility_off) }
+                    buttonTypes.addAll(CANCEL, OK)
+                    lookupButton(OK).disableProperty().bind(passwordField.textProperty().isEmpty)
+                    passwordField.tooltipProperty().bind(bindingOf(passwordField.textProperty(), passwordToggle.selectedProperty()) {
+                        if (!passwordToggle.isSelected) null
+                        else Tooltip(passwordField.text)
+                    })
+                    content = HBox().apply {
+                        spacing = 8.0
+                        alignment = CENTER
+                        children.addAll(passwordLabel, passwordField, passwordToggle)
+                    }
+                    runLater { passwordField.requestFocus() }
 
-                            if (BuildConfig.DEBUG) {
-                                passwordField.text = "justforApp1e!"
-                            }
+                    if (BuildConfig.DEBUG) {
+                        passwordField.text = "justforApp1e!"
+                    }
 
-                            Callback { if (it == OK) passwordField.text else null }
-                        }
-                        .showAndWait()
-                        .filter { it != null }
-                        .ifPresent { password ->
-                            try {
-                                MySQL.connect(content.ipField.text, content.portField.text, content.usernameField.text, password)
-                                result = content.usernameField.text
-                                close()
-                            } catch (e: Exception) {
-                                errorAlert(e.message ?: "Unknown error!").showAndWait()
-                            }
-                        }
+                    Callback { if (it == OK) passwordField.text else null }
+                }.showAndWait().filter { it != null }.ifPresent { password ->
+                    try {
+                        MySQL.connect(content.ipField.text, content.portField.text, content.usernameField.text, password)
+                        result = content.usernameField.text
+                        close()
+                    } catch (e: Exception) {
+                        errorAlert(e.message ?: "Unknown error!").showAndWait()
+                    }
+                }
             }
             dialogPane.lookupButton(loginButton).disableProperty().bind(content.usernameField.textProperty().isEmpty
                     or not(content.ipField.validProperty)
                     or content.portField.textProperty().isEmpty)
 
-            content.usernameField.textProperty().bindBidirectional(mysqlFile[MySQLFile.USERNAME])
-            content.ipField.textProperty().bindBidirectional(mysqlFile[MySQLFile.IP])
-            content.portField.textProperty().bindBidirectional(mysqlFile[MySQLFile.PORT])
+            content.usernameField.textProperty().bindBidirectional(MySQLFile[MySQLFile.USERNAME])
+            content.ipField.textProperty().bindBidirectional(MySQLFile[MySQLFile.IP])
+            content.portField.textProperty().bindBidirectional(MySQLFile[MySQLFile.PORT])
 
             runLater { content.usernameField.requestFocus() }
         }
@@ -165,10 +159,10 @@ class App : Application() {
                 add(ipField, 1, 2)
                 add(portField, 2, 2)
 
-                val initialLanguage = Language.parse(preferencesFile[PreferencesFile.LANGUAGE].value)
+                val initialLanguage = Language.parse(PreferencesFile[PreferencesFile.LANGUAGE].value)
                 languageBox.selectionModel.select(initialLanguage)
                 languageBox.selectionModel.selectedItemProperty().addListener { _, _, newValue ->
-                    preferencesFile.apply { get(PreferencesFile.LANGUAGE).set(newValue.locale) }.save()
+                    PreferencesFile.apply { get(PreferencesFile.LANGUAGE).set(newValue.locale) }.save()
                     close()
                     infoAlert(getString(R.string.language_changed)).showAndWait()
                     exit()

@@ -30,6 +30,7 @@ dependencies {
     implementation "io.reactivex.rxjava2:rxkotlin:$rx_kotlin"
 
     implementation "com.wijayaprinting:mysql:$wp_mysql"
+    implementation "com.hendraanggrian:rxexposed:$rx_exposed"
     implementation "com.hendraanggrian:kotfx:$kotfx"
     implementation "com.google.guava:guava:$guava-jre"
     implementation "org.apache.commons:commons-math3:$commons_math"

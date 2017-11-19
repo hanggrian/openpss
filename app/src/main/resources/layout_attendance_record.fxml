@@ -1,59 +1,70 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.text.TextFlow?>
-<GridPane xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1"
-          fx:controller="com.wijayaprinting.javafx.controller.AttendanceRecordController">
-    <columnConstraints>
-        <ColumnConstraints hgrow="NEVER"/>
-        <ColumnConstraints hgrow="ALWAYS"/>
-    </columnConstraints>
-    <rowConstraints>
-        <RowConstraints vgrow="NEVER"/>
-        <RowConstraints vgrow="ALWAYS"/>
-    </rowConstraints>
-    <children>
+<VBox xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.wijayaprinting.javafx.controller.AttendanceRecordController">
+    <ToolBar prefHeight="40.0" prefWidth="200.0">
+        <ToggleButton fx:id="dailyToggle" mnemonicParsing="false" text="%daily"/>
+        <ToggleButton fx:id="overtimeToggle" mnemonicParsing="false" text="%overtime"/>
+        <ToggleButton fx:id="bothToggle" mnemonicParsing="false" text="%both"/>
+        <Separator/>
+        <Button mnemonicParsing="false" onAction="#nullifyOnAction">
+            <graphic>
+                <ImageView pickOnBounds="true" preserveRatio="true">
+                    <Image url="@btn_empty.png"/>
+                </ImageView>
+            </graphic>
+            <tooltip>
+                <Tooltip text="%nullify_working_hours"/>
+            </tooltip>
+        </Button>
+        <Button mnemonicParsing="false">
+            <graphic>
+                <ImageView pickOnBounds="true" preserveRatio="true">
+                    <Image url="@btn_timer_off.png"/>
+                </ImageView>
+            </graphic>
+        </Button>
+        <Separator/>
+        <Button mnemonicParsing="false" onAction="#printOnAction">
+            <graphic>
+                <ImageView pickOnBounds="true" preserveRatio="true">
+                    <Image url="@btn_print.png"/>
+                </ImageView>
+            </graphic>
+            <tooltip>
+                <Tooltip text="%print"/>
+            </tooltip>
+        </Button>
+        <Separator/>
         <TextFlow fx:id="grandTotalFlow" maxHeight="-Infinity">
-            <GridPane.margin>
-                <Insets bottom="8.0" left="8.0" top="8.0"/>
-            </GridPane.margin>
             <Text text="%grand_total"/>
             <Text text=": "/>
         </TextFlow>
-        <ButtonBar GridPane.columnIndex="1">
-            <buttons>
-                <Button cancelButton="true" mnemonicParsing="false" onAction="#buttonCancelOnAction" text="%cancel"/>
-                <Button defaultButton="true" mnemonicParsing="false" onAction="#buttonPrintOnAction" text="%print"/>
-            </buttons>
-            <GridPane.margin>
-                <Insets bottom="8.0" right="8.0" top="8.0"/>
-            </GridPane.margin>
-        </ButtonBar>
-        <TreeTableView fx:id="treeTableView" editable="true" style="-fx-font-family: Tahoma;" GridPane.columnSpan="2"
-                       GridPane.rowIndex="1">
-            <columns>
-                <TreeTableColumn fx:id="treeTableColumnEmployee" editable="false" text="%employee"/>
-                <TreeTableColumn fx:id="treeTableColumnStart" editable="false" maxWidth="156.0" minWidth="156.0"
-                                 prefWidth="156.0" resizable="false" style="-fx-alignment: CENTER;" text="%start"/>
-                <TreeTableColumn fx:id="treeTableColumnEnd" editable="false" maxWidth="156.0" minWidth="156.0"
-                                 prefWidth="156.0" resizable="false" style="-fx-alignment: CENTER;" text="%end"/>
-                <TreeTableColumn fx:id="treeTableColumnDaily" maxWidth="64.0" minWidth="64.0" prefWidth="64.0"
-                                 resizable="false" style="-fx-alignment: CENTER;" text="%daily"/>
-                <TreeTableColumn fx:id="treeTableColumnDailyIncome" editable="false"
-                                 style="-fx-alignment: CENTER-RIGHT;" text="%daily_income"/>
-                <TreeTableColumn fx:id="treeTableColumnOvertime" maxWidth="64.0" minWidth="64.0" prefWidth="64.0"
-                                 resizable="false" style="-fx-alignment: CENTER;" text="%overtime"/>
-                <TreeTableColumn fx:id="treeTableColumnOvertimeIncome" editable="false"
-                                 style="-fx-alignment: CENTER-RIGHT;" text="%overtime_income"/>
-                <TreeTableColumn fx:id="treeTableColumnTotal" editable="false" style="-fx-alignment: CENTER-RIGHT;"
-                                 text="%total"/>
-            </columns>
-            <columnResizePolicy>
-                <TreeTableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
-            </columnResizePolicy>
-        </TreeTableView>
-    </children>
-</GridPane>
+    </ToolBar>
+    <TreeTableView fx:id="treeTableView" editable="true" style="-fx-font-family: Tahoma;" VBox.vgrow="ALWAYS">
+        <columns>
+            <TreeTableColumn fx:id="employeeColumn" editable="false" text="%employee"/>
+            <TreeTableColumn fx:id="startColumn" editable="false" maxWidth="156.0" minWidth="156.0" prefWidth="156.0"
+                             resizable="false" style="-fx-alignment: CENTER;" text="%start"/>
+            <TreeTableColumn fx:id="endColumn" editable="false" maxWidth="156.0" minWidth="156.0" prefWidth="156.0"
+                             resizable="false" style="-fx-alignment: CENTER;" text="%end"/>
+            <TreeTableColumn fx:id="dailyColumn" maxWidth="64.0" minWidth="64.0" prefWidth="64.0" resizable="false"
+                             style="-fx-alignment: CENTER;" text="%daily"/>
+            <TreeTableColumn fx:id="dailyIncomeColumn" editable="false" style="-fx-alignment: CENTER-RIGHT;"
+                             text="%daily_income"/>
+            <TreeTableColumn fx:id="overtimeColumn" maxWidth="64.0" minWidth="64.0" prefWidth="64.0" resizable="false"
+                             style="-fx-alignment: CENTER;" text="%overtime"/>
+            <TreeTableColumn fx:id="overtimeIncomeColumn" editable="false" style="-fx-alignment: CENTER-RIGHT;"
+                             text="%overtime_income"/>
+            <TreeTableColumn fx:id="totalColumn" editable="false" style="-fx-alignment: CENTER-RIGHT;" text="%total"/>
+        </columns>
+        <columnResizePolicy>
+            <TreeTableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+        </columnResizePolicy>
+    </TreeTableView>
+</VBox>

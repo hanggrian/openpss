@@ -3,6 +3,7 @@ package com.wijayaprinting.javafx.controller
 import com.wijayaprinting.javafx.R
 import com.wijayaprinting.javafx.data.Employee
 import com.wijayaprinting.javafx.data.Record
+import com.wijayaprinting.javafx.dialog.DateTimeDialog
 import com.wijayaprinting.javafx.getString
 import com.wijayaprinting.javafx.io.PreferencesFile
 import javafx.application.Platform.runLater
@@ -16,12 +17,14 @@ import javafx.print.PrinterJob
 import javafx.scene.control.*
 import javafx.scene.control.ButtonType.CANCEL
 import javafx.scene.control.ButtonType.OK
+import javafx.scene.control.SelectionMode.MULTIPLE
 import javafx.scene.control.cell.TextFieldTreeTableCell
 import javafx.scene.image.ImageView
 import javafx.scene.layout.HBox
 import javafx.scene.text.Text
 import javafx.scene.text.TextFlow
 import javafx.util.Callback
+import kotfx.bindings.booleanBindingOf
 import kotfx.bindings.plus
 import kotfx.bindings.stringBindingOf
 import kotfx.dialogs.dialog
@@ -42,7 +45,9 @@ class AttendanceRecordController {
     @FXML lateinit var dailyToggle: ToggleButton
     @FXML lateinit var overtimeToggle: ToggleButton
     @FXML lateinit var bothToggle: ToggleButton
+    @FXML lateinit var lockButton: Button
     @FXML lateinit var grandTotalFlow: TextFlow
+
     @FXML lateinit var treeTableView: TreeTableView<Record>
     @FXML lateinit var employeeColumn: TreeTableColumn<Record, Employee>
     @FXML lateinit var startColumn: TreeTableColumn<Record, String>
@@ -77,8 +82,13 @@ class AttendanceRecordController {
             else PreferencesFile.apply { get(PreferencesFile.RECORD_AFFECTION).set(newValue.userData as String) }.save()
         }
 
-        val totals = mutableListOf<DoubleProperty>()
+        lockButton.disableProperty().bind(booleanBindingOf(treeTableView.selectionModel.selectedIndexProperty()) {
+            if (treeTableView.selectionModel.selectedIndex == -1) true
+            else treeTableView.selectionModel.selectedItems.map { it.value.type }.any { it != Record.TYPE_CHILD }
+        })
 
+        val totals = mutableListOf<DoubleProperty>()
+        treeTableView.selectionModel.selectionMode = MULTIPLE
         treeTableView.root = TreeItem(Record.ROOT) // dummy for invisible root
         treeTableView.isShowRoot = false
         EMPLOYEES.forEach { employee ->
@@ -137,8 +147,7 @@ class AttendanceRecordController {
         lookupButton(OK).disableProperty().bind(datePicker.valueProperty().isNull)
         runLater { datePicker.requestFocus() }
         Callback {
-            if (it != OK) null
-            else LocalDate(datePicker.value.year, datePicker.value.monthValue, datePicker.value.dayOfMonth)
+            if (it != OK) null else LocalDate(datePicker.value.year, datePicker.value.monthValue, datePicker.value.dayOfMonth)
         }
     }.showAndWait().ifPresent { date ->
         treeTableView.root.children
@@ -156,6 +165,13 @@ class AttendanceRecordController {
                     }
                 }
     }
+
+    @FXML
+    fun lockOnAction() = DateTimeDialog("", ImageView(), "")
+            .showAndWait()
+            .ifPresent {
+
+            }
 
     @FXML
     fun printOnAction() {

@@ -2,11 +2,11 @@ package com.wijayaprinting.javafx.controller
 
 import com.wijayaprinting.javafx.*
 import com.wijayaprinting.javafx.data.Employee
+import com.wijayaprinting.javafx.dialog.DateTimeDialog
 import com.wijayaprinting.javafx.reader.Reader
 import com.wijayaprinting.javafx.scene.control.DoubleField
 import com.wijayaprinting.javafx.scene.control.FileField
 import com.wijayaprinting.javafx.scene.control.IntField
-import com.wijayaprinting.javafx.scene.layout.TimeBox
 import com.wijayaprinting.javafx.scene.utils.setGaps
 import com.wijayaprinting.javafx.scene.utils.setMaxSize
 import com.wijayaprinting.javafx.scene.utils.setSize
@@ -22,22 +22,20 @@ import javafx.geometry.Pos.CENTER
 import javafx.scene.Node
 import javafx.scene.Scene
 import javafx.scene.control.*
-import javafx.scene.control.ButtonType.CANCEL
 import javafx.scene.control.ButtonType.OK
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import javafx.scene.layout.*
 import javafx.stage.FileChooser
 import javafx.stage.Stage
-import javafx.util.Callback
 import kotfx.bindings.bindingOf
 import kotfx.bindings.isEmpty
-import kotfx.bindings.not
-import kotfx.bindings.or
-import kotfx.dialogs.*
+import kotfx.dialogs.errorAlert
+import kotfx.dialogs.fileChooser
+import kotfx.dialogs.infoAlert
+import kotfx.dialogs.warningAlert
 import org.joda.time.DateTime
 import java.io.File
-import java.time.LocalDate
 import java.util.*
 
 class AttendanceController {
@@ -61,7 +59,7 @@ class AttendanceController {
         flowPane.prefWrapLengthProperty().bind(fileField.scene.widthProperty())
 
         if (BuildConfig.DEBUG) {
-            fileField.text = "/Users/hendraanggrian/Downloads/Absen 7-10-17.xlsx"
+            fileField.text = "/Users/hendraanggrian/Downloads/Absen 11-18-17.xlsx"
         }
     }
 
@@ -133,13 +131,13 @@ class AttendanceController {
     }
 
     class EmployeeTitledPane(val employee: Employee) : TitledPane() {
-        val indicatorImage = ImageView()
-        val employeeBox = EmployeeBox()
-        val addMenu = MenuItem(getString(R.string.add))
-        val revertMenu = MenuItem(getString(R.string.revert))
-        val deleteMenu = MenuItem("${getString(R.string.delete)} ${employee.name}")
-        val deleteOthersMenu = MenuItem(getString(R.string.delete_others))
-        val deleteAllMenu = MenuItem(getString(R.string.delete_all))
+        private val indicatorImage = ImageView()
+        private val employeeBox = EmployeeBox()
+        private val addMenu = MenuItem(getString(R.string.add))
+        private val revertMenu = MenuItem(getString(R.string.revert))
+        private val deleteMenu = MenuItem("${getString(R.string.delete)} ${employee.name}")
+        private val deleteOthersMenu = MenuItem(getString(R.string.delete_others))
+        private val deleteAllMenu = MenuItem(getString(R.string.delete_all))
 
         init {
             isCollapsible = false
@@ -151,32 +149,12 @@ class AttendanceController {
 
             contextMenu = ContextMenu(addMenu, SeparatorMenuItem(), revertMenu, SeparatorMenuItem(), deleteMenu, deleteOthersMenu, deleteAllMenu)
             addMenu.setOnAction {
-                dialog<DateTime>(getString(R.string.record), ImageView(R.png.ic_calendar), getString(R.string.record)) {
-                    val datePicker = DatePicker().apply {
-                        employeeBox.listView.selectionModel.selectedItem?.let {
-                            value = LocalDate.of(it.year, it.monthOfYear, it.dayOfMonth)
+                DateTimeDialog(getString(R.string.record), ImageView(R.png.ic_calendar), getString(R.string.record), employeeBox.listView.selectionModel.selectedItem)
+                        .showAndWait()
+                        .ifPresent {
+                            employeeBox.listView.items.add(it)
+                            Collections.sort(employeeBox.listView.items)
                         }
-                        isEditable = false // force pick from popup
-                        maxWidth = 128.0
-                        alignment = CENTER
-                    }
-                    val timeBox = TimeBox()
-                    content = HBox().apply {
-                        spacing = 8.0
-                        alignment = CENTER
-                        children.addAll(Label(getString(R.string.date)), datePicker, timeBox)
-                    }
-                    buttonTypes.addAll(OK, CANCEL)
-                    lookupButton(OK).disableProperty().bind(datePicker.valueProperty().isNull or not(timeBox.validProperty))
-                    runLater { datePicker.requestFocus() }
-                    Callback {
-                        if (it != OK) null
-                        else DateTime(datePicker.value.year, datePicker.value.monthValue, datePicker.value.dayOfMonth, timeBox.value.hourOfDay, timeBox.value.minuteOfHour)
-                    }
-                }.showAndWait().ifPresent {
-                    employeeBox.listView.items.add(it)
-                    Collections.sort(employeeBox.listView.items)
-                }
             }
             revertMenu.setOnAction { employee.revert() }
             deleteMenu.setOnAction { flowPane.children.remove(this@EmployeeTitledPane) }
@@ -187,12 +165,12 @@ class AttendanceController {
         private val flowPane: Pane get() = (this@EmployeeTitledPane.parent as Pane)
 
         inner class EmployeeBox : VBox() {
-            val dailyLabel = Label(getString(R.string.daily_income))
-            val dailyField = IntField()
-            val overtimeLabel = Label(getString(R.string.overtime_income))
-            val overtimeField = IntField()
-            val recessLabel = Label(getString(R.string.recess))
-            val recessField = DoubleField()
+            private val dailyLabel = Label(getString(R.string.daily_income))
+            private val dailyField = IntField()
+            private val overtimeLabel = Label(getString(R.string.overtime_income))
+            private val overtimeField = IntField()
+            private val recessLabel = Label(getString(R.string.recess))
+            private val recessField = DoubleField()
             val listView = ListView<DateTime>(employee.attendances)
 
             init {

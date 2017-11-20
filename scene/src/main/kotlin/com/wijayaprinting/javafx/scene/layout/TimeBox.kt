@@ -14,8 +14,8 @@ import org.joda.time.format.DateTimeFormat
 
 open class TimeBox : HBox() {
 
-    val hourBox = IntField()
-    val minBox = IntField()
+    val hourField = IntField()
+    val minuteField = IntField()
 
     val valueProperty = SimpleObjectProperty<LocalTime>()
     val validProperty = SimpleBooleanProperty()
@@ -24,24 +24,24 @@ open class TimeBox : HBox() {
         alignment = CENTER
         spacing = 8.0
 
-        listOf(hourBox, minBox).forEach {
+        listOf(hourField, minuteField).forEach {
             it.text = "00"
             it.promptText = "00"
             it.maxWidth = 48.0
             it.alignment = CENTER
         }
-        children.addAll(hourBox, Label(":"), minBox)
+        children.addAll(hourField, Label(":"), minuteField)
 
-        valueProperty.bind(bindingOf(hourBox.textProperty(), minBox.textProperty()) {
+        valueProperty.bind(bindingOf(hourField.textProperty(), minuteField.textProperty()) {
             try {
-                LocalTime.parse("${hourBox.text}:${minBox.text}", DateTimeFormat.forPattern(PATTERN_TIME))
+                LocalTime.parse("${hourField.text}:${minuteField.text}", DateTimeFormat.forPattern(PATTERN_TIME))
             } catch (e: Exception) {
                 LocalTime.MIDNIGHT
             }
         })
-        validProperty.bind(booleanBindingOf(hourBox.textProperty(), minBox.textProperty()) {
+        validProperty.bind(booleanBindingOf(hourField.textProperty(), minuteField.textProperty()) {
             try {
-                LocalTime.parse("${hourBox.text}:${minBox.text}", DateTimeFormat.forPattern(PATTERN_TIME))
+                LocalTime.parse("${hourField.text}:${minuteField.text}", DateTimeFormat.forPattern(PATTERN_TIME))
                 true
             } catch (e: Exception) {
                 false

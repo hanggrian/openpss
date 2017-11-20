@@ -22,7 +22,7 @@
                 <Tooltip text="%nullify_working_hours"/>
             </tooltip>
         </Button>
-        <Button mnemonicParsing="false">
+        <Button mnemonicParsing="false" onAction="#lockOnAction" fx:id="lockButton">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
                     <Image url="@btn_timer_off.png"/>

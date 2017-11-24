@@ -4,6 +4,8 @@
     <bytecodeTargetLevel>
       <module name="app_main" target="1.9" />
       <module name="app_test" target="1.9" />
+      <module name="buildSrc_main" target="1.9" />
+      <module name="buildSrc_test" target="1.9" />
       <module name="control_main" target="1.8" />
       <module name="control_test" target="1.8" />
       <module name="core_main" target="1.9" />

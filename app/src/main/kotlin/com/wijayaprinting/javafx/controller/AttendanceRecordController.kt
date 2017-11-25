@@ -1,36 +1,30 @@
 package com.wijayaprinting.javafx.controller
 
-import com.wijayaprinting.javafx.R
 import com.wijayaprinting.javafx.data.Employee
 import com.wijayaprinting.javafx.data.Record
-import com.wijayaprinting.javafx.dialog.DateTimeDialog
-import com.wijayaprinting.javafx.getString
 import com.wijayaprinting.javafx.io.PreferencesFile
+import com.wijayaprinting.javafx.scene.control.DoubleField
+import com.wijayaprinting.javafx.scene.layout.TimeBox
+import com.wijayaprinting.javafx.utils.asJoda
+import com.wijayaprinting.javafx.utils.round
 import javafx.application.Platform.runLater
 import javafx.beans.property.DoubleProperty
 import javafx.beans.property.ReadOnlyObjectWrapper
 import javafx.beans.property.SimpleDoubleProperty
 import javafx.beans.value.ObservableValue
 import javafx.fxml.FXML
-import javafx.geometry.Pos
 import javafx.print.PrinterJob
 import javafx.scene.control.*
-import javafx.scene.control.ButtonType.CANCEL
-import javafx.scene.control.ButtonType.OK
 import javafx.scene.control.SelectionMode.MULTIPLE
 import javafx.scene.control.cell.TextFieldTreeTableCell
-import javafx.scene.image.ImageView
-import javafx.scene.layout.HBox
 import javafx.scene.text.Text
 import javafx.scene.text.TextFlow
-import javafx.util.Callback
 import kotfx.bindings.booleanBindingOf
 import kotfx.bindings.plus
 import kotfx.bindings.stringBindingOf
-import kotfx.dialogs.dialog
 import kotfx.dialogs.warningAlert
 import kotfx.stringConverterOf
-import org.joda.time.LocalDate
+import java.time.LocalDate.now
 
 class AttendanceRecordController {
 
@@ -45,7 +39,13 @@ class AttendanceRecordController {
     @FXML lateinit var dailyToggle: ToggleButton
     @FXML lateinit var overtimeToggle: ToggleButton
     @FXML lateinit var bothToggle: ToggleButton
-    @FXML lateinit var lockButton: Button
+    @FXML lateinit var picker: DatePicker
+    @FXML lateinit var field: DoubleField
+    @FXML lateinit var substractButton: Button
+    @FXML lateinit var addButton: Button
+    @FXML lateinit var timeBox: TimeBox
+    @FXML lateinit var lockStartButton: Button
+    @FXML lateinit var lockEndButton: Button
     @FXML lateinit var grandTotalFlow: TextFlow
 
     @FXML lateinit var treeTableView: TreeTableView<Record>
@@ -65,13 +65,10 @@ class AttendanceRecordController {
     fun initialize() = runLater {
         dailyToggle.toggleGroup = toggleGroup
         dailyToggle.userData = AFFECT_DAILY
-
         overtimeToggle.toggleGroup = toggleGroup
         overtimeToggle.userData = AFFECT_OVERTIME
-
         bothToggle.toggleGroup = toggleGroup
         bothToggle.userData = AFFECT_BOTH
-
         toggleGroup.selectToggle(when (PreferencesFile[PreferencesFile.RECORD_AFFECTION].value) {
             AFFECT_DAILY -> dailyToggle
             AFFECT_OVERTIME -> overtimeToggle
@@ -82,10 +79,14 @@ class AttendanceRecordController {
             else PreferencesFile.apply { get(PreferencesFile.RECORD_AFFECTION).set(newValue.userData as String) }.save()
         }
 
-        lockButton.disableProperty().bind(booleanBindingOf(treeTableView.selectionModel.selectedIndexProperty()) {
-            if (treeTableView.selectionModel.selectedIndex == -1) true
-            else treeTableView.selectionModel.selectedItems.map { it.value.type }.any { it != Record.TYPE_CHILD }
-        })
+        picker.value = now()
+
+        arrayOf(substractButton, addButton, lockStartButton, lockEndButton).forEach {
+            it.disableProperty().bind(booleanBindingOf(treeTableView.selectionModel.selectedIndexProperty()) {
+                if (treeTableView.selectionModel.selectedIndex == -1) true
+                else treeTableView.selectionModel.selectedItems.map { it.value.type }.any { it != Record.TYPE_CHILD }
+            })
+        }
 
         val totals = mutableListOf<DoubleProperty>()
         treeTableView.selectionModel.selectionMode = MULTIPLE
@@ -103,8 +104,8 @@ class AttendanceRecordController {
         }
 
         employeeColumn.setCellValueFactory { ReadOnlyObjectWrapper(it.value.value.employee) }
-        startColumn.setCellValueFactory { ReadOnlyObjectWrapper(it.value.value.start) }
-        endColumn.setCellValueFactory { ReadOnlyObjectWrapper(it.value.value.end) }
+        startColumn.setCellValueFactory { it.value.value.startString }
+        endColumn.setCellValueFactory { it.value.value.endString }
         dailyColumn.setCellValueFactory { it.value.value.daily as ObservableValue<Double> }
         dailyColumn.cellFactory = TextFieldTreeTableCell.forTreeTableColumn<Record, Double>(stringConverterOf { it.toDouble() })
         dailyColumn.setOnEditStart {
@@ -134,50 +135,46 @@ class AttendanceRecordController {
     }
 
     @FXML
-    fun nullifyOnAction() = dialog<LocalDate>(getString(R.string.nullify_working_hours), ImageView(R.png.ic_calendar), getString(R.string.nullify_working_hours)) {
-        val datePicker = DatePicker().apply {
-            isEditable = false // force pick from popup
-        }
-        content = HBox().apply {
-            spacing = 8.0
-            alignment = Pos.CENTER
-            children.addAll(Label(getString(R.string.date)), datePicker)
-        }
-        buttonTypes.addAll(OK, CANCEL)
-        lookupButton(OK).disableProperty().bind(datePicker.valueProperty().isNull)
-        runLater { datePicker.requestFocus() }
-        Callback {
-            if (it != OK) null else LocalDate(datePicker.value.year, datePicker.value.monthValue, datePicker.value.dayOfMonth)
-        }
-    }.showAndWait().ifPresent { date ->
-        treeTableView.root.children
-                .flatMap { it.children }
-                .map { it.value }
-                .filter { it.type == Record.TYPE_CHILD && it startMatch date }
-                .forEach {
-                    when (toggleGroup.selectedToggle) {
-                        dailyToggle -> it.daily.set(0.0)
-                        overtimeToggle -> it.overtime.set(0.0)
-                        else -> {
-                            it.daily.set(0.0)
-                            it.overtime.set(0.0)
-                        }
-                    }
-                }
-    }
+    fun substractOnAction() = treeTableView.selectionModel.selectedItems
+            .map { it.value }
+            .forEach { it.affect { value -> (value - field.value).let { (if (it < 0) 0.0 else it).round } } }
 
     @FXML
-    fun lockOnAction() = DateTimeDialog("", ImageView(), "")
-            .showAndWait()
-            .ifPresent {
+    fun addOnAction() = treeTableView.selectionModel.selectedItems
+            .map { it.value }
+            .forEach { it.affect { value -> (value + field.value).round } }
 
-            }
+    @FXML
+    fun zeroOnAction() = treeTableView.root.children
+            .flatMap { it.children }
+            .map { it.value }
+            .filter { it.type == Record.TYPE_CHILD && it.start.value.toLocalDate() == picker.value.asJoda() }
+            .forEach { it.affect({ 0.0 }) }
+
+    @FXML
+    fun lockStartOnAction() = treeTableView.selectionModel.selectedItems
+            .map { it.value }
+            .forEach { if (it.start.value.toLocalTime().isBefore(timeBox.value)) it.start.set(it.cloneStart(timeBox.value)) }
+
+    @FXML
+    fun lockEndOnAction() = treeTableView.selectionModel.selectedItems
+            .map { it.value }
+            .forEach { if (it.end.value.toLocalTime().isAfter(timeBox.value)) it.end.set(it.cloneEnd(timeBox.value)) }
 
     @FXML
     fun printOnAction() {
         val printerJob = PrinterJob.createPrinterJob()
         if (printerJob.showPrintDialog(treeTableView.scene.window) && printerJob.printPage(treeTableView)) {
             printerJob.endJob()
+        }
+    }
+
+    private fun Record.affect(affection: (Double) -> Double) = when (toggleGroup.selectedToggle) {
+        dailyToggle -> daily.set(affection(daily.value))
+        overtimeToggle -> overtime.set(affection(overtime.value))
+        else -> {
+            daily.set(affection(daily.value))
+            overtime.set(affection(overtime.value))
         }
     }
 }

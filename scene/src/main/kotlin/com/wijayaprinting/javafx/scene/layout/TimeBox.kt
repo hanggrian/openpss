@@ -22,7 +22,7 @@ open class TimeBox : HBox() {
 
     init {
         alignment = CENTER
-        spacing = 8.0
+        spacing = 4.0
 
         listOf(hourField, minuteField).forEach {
             it.text = "00"

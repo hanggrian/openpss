@@ -32,8 +32,10 @@ import kotfx.dialogs.dialog
 import kotfx.dialogs.errorAlert
 import kotfx.dialogs.infoAlert
 import org.apache.log4j.BasicConfigurator.configure
+import java.awt.Desktop.getDesktop
 import java.awt.Toolkit
 import java.net.InetAddress.getByName
+import java.net.URI
 
 class App : Application() {
 
@@ -172,7 +174,7 @@ class App : Application() {
 
         inner class ExpandableContent : GridPane() {
             val aboutLabel = Label("An open-source software.\nFor more information and update, visit:")
-            val hyperlink = Hyperlink("https://github.com/WijayaPrinting/")
+            val hyperlink = Hyperlink("https://github.com/WijayaPrinting/").apply { setOnAction { getDesktop().browse(URI(text)) } }
             val javafxLabel = Label("JavaFX")
             val javafxLabel2 = Label(BuildConfig.VERSION)
             val mysqlLabel = Label("MySQL")

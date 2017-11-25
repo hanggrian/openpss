@@ -1,21 +1,25 @@
 package com.wijayaprinting.javafx.data
 
+import com.wijayaprinting.javafx.utils.round
 import com.wijayaprinting.mysql.utils.PATTERN_DATETIME
 import com.wijayaprinting.mysql.utils.PATTERN_TIME
 import javafx.beans.property.DoubleProperty
 import javafx.beans.property.SimpleDoubleProperty
+import javafx.beans.property.SimpleObjectProperty
+import javafx.beans.property.SimpleStringProperty
 import kotfx.bindings.doubleBindingOf
 import kotfx.bindings.plus
-import org.apache.commons.math3.util.Precision.round
+import kotfx.bindings.stringBindingOf
 import org.joda.time.DateTime
-import org.joda.time.LocalDate
+import org.joda.time.LocalTime
 import org.joda.time.Period
+import java.lang.Math.abs
 
 data class Record(
         val type: Int,
-        private val mEmployee: Employee,
-        private val mStart: DateTime,
-        private val mEnd: DateTime,
+        val actualEmployee: Employee,
+        val start: SimpleObjectProperty<DateTime>,
+        val end: SimpleObjectProperty<DateTime>,
 
         val daily: DoubleProperty = SimpleDoubleProperty(),
         val overtime: DoubleProperty = SimpleDoubleProperty(),
@@ -27,48 +31,58 @@ data class Record(
 ) {
     val employee: Employee?
         get() = when (type) {
-            TYPE_NODE -> mEmployee
+            TYPE_NODE -> actualEmployee
             TYPE_CHILD -> null
             TYPE_TOTAL -> null
             else -> throw UnsupportedOperationException()
         }
 
-    val start: String
-        get() = when (type) {
-            TYPE_NODE -> mStart.toString(PATTERN_TIME)
-            TYPE_CHILD -> mStart.toString(PATTERN_DATETIME)
-            TYPE_TOTAL -> ""
-            else -> throw UnsupportedOperationException()
+    val startString: SimpleStringProperty
+        get() = SimpleStringProperty().apply {
+            bind(stringBindingOf(start) {
+                when (type) {
+                    TYPE_NODE -> start.value.toString(PATTERN_TIME)
+                    TYPE_CHILD -> start.value.toString(PATTERN_DATETIME)
+                    TYPE_TOTAL -> ""
+                    else -> throw UnsupportedOperationException()
+                }
+            })
         }
 
-    val end: String
-        get() = when (type) {
-            TYPE_NODE -> mEnd.toString(PATTERN_TIME)
-            TYPE_CHILD -> mEnd.toString(PATTERN_DATETIME)
-            TYPE_TOTAL -> ""
-            else -> throw UnsupportedOperationException()
+    val endString: SimpleStringProperty
+        get() = SimpleStringProperty().apply {
+            bind(stringBindingOf(end) {
+                when (type) {
+                    TYPE_NODE -> end.value.toString(PATTERN_TIME)
+                    TYPE_CHILD -> end.value.toString(PATTERN_DATETIME)
+                    TYPE_TOTAL -> ""
+                    else -> throw UnsupportedOperationException()
+                }
+            })
         }
 
-    infix fun startMatch(date: LocalDate): Boolean = mStart.toLocalDate() == date
+    fun cloneStart(time: LocalTime) = DateTime(start.value.year, start.value.monthOfYear, start.value.dayOfMonth, time.hourOfDay, time.minuteOfHour)
+
+    fun cloneEnd(time: LocalTime) = DateTime(end.value.year, end.value.monthOfYear, end.value.dayOfMonth, time.hourOfDay, time.minuteOfHour)
 
     init {
         if (type != TYPE_ROOT) {
-            dailyIncome.bind(doubleBindingOf(daily, mEmployee.daily) { round(daily.value * mEmployee.daily.value / Employee.WORKING_HOURS, 2) })
-            overtimeIncome.bind(doubleBindingOf(overtime, mEmployee.hourlyOvertime) { round(mEmployee.hourlyOvertime.value * overtime.value, 2) })
+            dailyIncome.bind(doubleBindingOf(daily, actualEmployee.daily) { (daily.value * actualEmployee.daily.value / Employee.WORKING_HOURS).round })
+            overtimeIncome.bind(doubleBindingOf(overtime, actualEmployee.hourlyOvertime) { (actualEmployee.hourlyOvertime.value * overtime.value).round })
             when (type) {
                 TYPE_NODE -> {
                     daily.set(Employee.WORKING_HOURS)
-                    overtime.set(mEmployee.recess.value)
+                    overtime.set(actualEmployee.recess.value)
                     total.set(0.0)
                 }
                 TYPE_CHILD -> {
-                    val workingHours = (Math.abs(Period(mStart, mEnd).toStandardMinutes().minutes) / 60.0) - mEmployee.recess.value
+                    val workingHours = (abs(Period(start.value, end.value).toStandardMinutes().minutes) / 60.0) - actualEmployee.recess.value
                     if (workingHours <= Employee.WORKING_HOURS) {
-                        daily.set(round(workingHours, 2))
+                        daily.set(workingHours.round)
                         overtime.set(0.0)
                     } else {
                         daily.set(Employee.WORKING_HOURS)
-                        overtime.set(round(workingHours - Employee.WORKING_HOURS, 2))
+                        overtime.set((workingHours - Employee.WORKING_HOURS).round)
                     }
                     total.bind(dailyIncome + overtimeIncome)
                 }
@@ -87,6 +101,6 @@ data class Record(
         /** Last child row of a node, displaying calculated total. */
         const val TYPE_TOTAL = 3
 
-        val ROOT: Record = Record(TYPE_ROOT, Employee(0, ""), DateTime(0), DateTime(0))
+        val ROOT: Record = Record(TYPE_ROOT, Employee(0, ""), SimpleObjectProperty(DateTime(0)), SimpleObjectProperty(DateTime(0)))
     }
 }

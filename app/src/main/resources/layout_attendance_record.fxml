@@ -1,33 +1,74 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.wijayaprinting.javafx.scene.control.DoubleField?>
+<?import com.wijayaprinting.javafx.scene.layout.TimeBox?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.text.TextFlow?>
 <VBox xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.wijayaprinting.javafx.controller.AttendanceRecordController">
     <ToolBar prefHeight="40.0" prefWidth="200.0">
-        <ToggleButton fx:id="dailyToggle" mnemonicParsing="false" text="%daily"/>
-        <ToggleButton fx:id="overtimeToggle" mnemonicParsing="false" text="%overtime"/>
-        <ToggleButton fx:id="bothToggle" mnemonicParsing="false" text="%both"/>
-        <Separator/>
-        <Button mnemonicParsing="false" onAction="#nullifyOnAction">
+        <HBox>
+            <ToggleButton fx:id="dailyToggle" mnemonicParsing="false" text="%daily"/>
+            <ToggleButton fx:id="overtimeToggle" mnemonicParsing="false" text="%overtime"/>
+            <ToggleButton fx:id="bothToggle" mnemonicParsing="false" text="%both"/>
+        </HBox>
+        <DatePicker fx:id="picker" editable="false" prefWidth="128.0"/>
+        <DoubleField fx:id="field" prefWidth="64.0"/>
+        <Button fx:id="substractButton" mnemonicParsing="false" onAction="#substractOnAction">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@btn_empty.png"/>
+                    <Image url="@btn_substract.png"/>
                 </ImageView>
             </graphic>
             <tooltip>
-                <Tooltip text="%nullify_working_hours"/>
+                <Tooltip text="%substract"/>
             </tooltip>
         </Button>
-        <Button mnemonicParsing="false" onAction="#lockOnAction" fx:id="lockButton">
+        <Button fx:id="addButton" mnemonicParsing="false" onAction="#addOnAction">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@btn_timer_off.png"/>
+                    <Image url="@btn_add.png"/>
                 </ImageView>
             </graphic>
+            <tooltip>
+                <Tooltip text="%add"/>
+            </tooltip>
+        </Button>
+        <Button mnemonicParsing="false" onAction="#zeroOnAction">
+            <graphic>
+                <ImageView pickOnBounds="true" preserveRatio="true">
+                    <Image url="@btn_zero.png"/>
+                </ImageView>
+            </graphic>
+            <tooltip>
+                <Tooltip text="%zero_working_hours"/>
+            </tooltip>
+        </Button>
+        <Separator/>
+        <TimeBox fx:id="timeBox"/>
+        <Button fx:id="lockStartButton" mnemonicParsing="false" onAction="#lockStartOnAction">
+            <graphic>
+                <ImageView pickOnBounds="true" preserveRatio="true">
+                    <Image url="@btn_lock_in.png"/>
+                </ImageView>
+            </graphic>
+            <tooltip>
+                <Tooltip text="%lock_start_time"/>
+            </tooltip>
+        </Button>
+        <Button fx:id="lockEndButton" mnemonicParsing="false" onAction="#lockEndOnAction">
+            <graphic>
+                <ImageView pickOnBounds="true" preserveRatio="true">
+                    <Image url="@btn_lock_out.png"/>
+                </ImageView>
+            </graphic>
+            <tooltip>
+                <Tooltip text="%lock_end_time"/>
+            </tooltip>
         </Button>
         <Separator/>
         <Button mnemonicParsing="false" onAction="#printOnAction">

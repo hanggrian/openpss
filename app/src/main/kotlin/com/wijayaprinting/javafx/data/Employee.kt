@@ -5,10 +5,7 @@ import com.hendraanggrian.rxexposed.SQLSingles
 import com.wijayaprinting.javafx.utils.multithread
 import com.wijayaprinting.mysql.dao.Wage
 import com.wijayaprinting.mysql.dao.Wages
-import javafx.beans.property.DoubleProperty
-import javafx.beans.property.IntegerProperty
-import javafx.beans.property.SimpleDoubleProperty
-import javafx.beans.property.SimpleIntegerProperty
+import javafx.beans.property.*
 import javafx.collections.ObservableList
 import kotfx.bindings.doubleBindingOf
 import kotfx.collections.mutableObservableListOf
@@ -97,18 +94,18 @@ data class Employee(
 
     override fun toString(): String = "$id. $name"
 
-    fun toNodeRecord(): Record = Record(Record.TYPE_NODE, this, DateTime.now(), DateTime.now())
+    fun toNodeRecord(): Record = Record(Record.TYPE_NODE, this, SimpleObjectProperty(DateTime.now()), SimpleObjectProperty(DateTime.now()))
 
     fun toChildRecords(): Set<Record> {
         val records = mutableSetOf<Record>()
         val iterator = attendances.iterator()
         while (iterator.hasNext()) {
-            records.add(Record(Record.TYPE_CHILD, this, iterator.next(), iterator.next()))
+            records.add(Record(Record.TYPE_CHILD, this, SimpleObjectProperty(iterator.next()), SimpleObjectProperty(iterator.next())))
         }
         return records
     }
 
-    fun toTotalRecords(childs: Collection<Record>): Record = Record(Record.TYPE_TOTAL, this, DateTime(0), DateTime(0)).apply {
+    fun toTotalRecords(childs: Collection<Record>): Record = Record(Record.TYPE_TOTAL, this, SimpleObjectProperty(DateTime(0)), SimpleObjectProperty(DateTime(0))).apply {
         childs.map { it.daily }.toTypedArray().let { mains ->
             daily.bind(doubleBindingOf(*mains) {
                 round(mains.map { it.value }.sum(), 2)

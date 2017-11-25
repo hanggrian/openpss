@@ -60,6 +60,7 @@ class AttendanceController {
 
         if (BuildConfig.DEBUG) {
             fileField.text = "/Users/hendraanggrian/Downloads/Absen 11-18-17.xlsx"
+            readButton.fire()
         }
     }
 

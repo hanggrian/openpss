@@ -76,14 +76,15 @@ data class Record(
                     total.set(0.0)
                 }
                 TYPE_CHILD -> {
-                    val workingHours = (abs(Period(start.value, end.value).toStandardMinutes().minutes) / 60.0) - actualEmployee.recess.value
-                    if (workingHours <= Employee.WORKING_HOURS) {
-                        daily.set(workingHours.round)
-                        overtime.set(0.0)
-                    } else {
-                        daily.set(Employee.WORKING_HOURS)
-                        overtime.set((workingHours - Employee.WORKING_HOURS).round)
-                    }
+                    val workingHours = { (abs(Period(start.value, end.value).toStandardMinutes().minutes) / 60.0) - actualEmployee.recess.value }
+                    daily.bind(doubleBindingOf(start, end) {
+                        val hours = workingHours()
+                        if (hours <= Employee.WORKING_HOURS) hours.round else Employee.WORKING_HOURS
+                    })
+                    overtime.bind(doubleBindingOf(start, end) {
+                        val hours = workingHours()
+                        if (hours <= Employee.WORKING_HOURS) 0.0 else (hours - Employee.WORKING_HOURS).round
+                    })
                     total.bind(dailyIncome + overtimeIncome)
                 }
                 TYPE_TOTAL -> total.bind(dailyIncome + overtimeIncome)

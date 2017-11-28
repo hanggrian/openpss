@@ -2,6 +2,7 @@ package com.wijayaprinting.javafx.dialog
 
 import com.wijayaprinting.javafx.scene.layout.TimeBox
 import com.wijayaprinting.javafx.scene.utils.setGaps
+import com.wijayaprinting.javafx.utils.asJava
 import javafx.application.Platform
 import javafx.scene.Node
 import javafx.scene.control.ButtonType
@@ -13,7 +14,6 @@ import javafx.scene.layout.GridPane
 import kotfx.bindings.not
 import kotfx.bindings.or
 import org.joda.time.DateTime
-import java.time.LocalDate
 
 class DateTimeDialog @JvmOverloads constructor(
         title: String,
@@ -23,11 +23,13 @@ class DateTimeDialog @JvmOverloads constructor(
 ) : Dialog<DateTime>() {
 
     private val datePicker = DatePicker().apply {
-        prefill?.let { value = LocalDate.of(it.year, it.monthOfYear, it.dayOfMonth) }
+        prefill?.let { value = it.toLocalDate().asJava() }
         isEditable = false // force pick from popup
         maxWidth = 128.0
     }
-    private val timeBox = TimeBox()
+    private val timeBox = TimeBox().apply {
+        prefill?.let { value = it.toLocalTime() }
+    }
     private val hourSlider = Slider(0.0, 24.0, 0.0).apply { valueProperty().bindBidirectional(timeBox.hourField.valueProperty) }
     private val minuteSlider = Slider(0.0, 60.0, 0.0).apply { valueProperty().bindBidirectional(timeBox.minuteField.valueProperty) }
 

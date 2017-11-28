@@ -51,7 +51,10 @@ open class TimeBox : HBox() {
 
     var value: LocalTime
         get() = valueProperty.get()
-        set(value) = valueProperty.set(value)
+        set(value) {
+            hourField.text = value.hourOfDay.toString()
+            minuteField.text = value.minuteOfHour.toString()
+        }
 
     val isValid: Boolean = validProperty.get()
 }

@@ -11,7 +11,7 @@ public final class BuildConfig {
 
   public static final String VERSION = "0.2";
 
-  public static final Boolean DEBUG = true;
+  public static final Boolean DEBUG = false;
 
   private BuildConfig() {
   }

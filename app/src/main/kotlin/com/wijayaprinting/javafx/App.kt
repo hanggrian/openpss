@@ -59,7 +59,7 @@ class App : Application() {
                 .showAndWait()
                 .filter { it is String }
                 .ifPresent {
-                    val minSize = Pair(960.0, 720.0)
+                    val minSize = Pair(960.0, 640.0)
                     stage.apply {
                         scene = Scene(FXMLLoader.load(App::class.java.getResource(R.fxml.layout_main), resources), minSize.first, minSize.second)
                         icons.add(Image(R.png.ic_launcher))

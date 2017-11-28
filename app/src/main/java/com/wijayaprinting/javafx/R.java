@@ -1,14 +1,17 @@
-// rsync generated this class at 2017-11-19T20:17:13.711852 from:
+// rsync generated this class at 2017-11-29T00:21:26.225 from:
 // string_en.properties
 // layout_attendance.fxml
 // btn_refresh.png
+// btn_substract.png
+// btn_lock_out.png
 // logo_launcher.png
 // ic_calendar.png
+// btn_zero.png
 // string_in.properties
+// btn_add.png
 // btn_checkbox_outline.png
 // ic_user.png
 // btn_visibility.png
-// btn_empty.png
 // btn_clear.png
 // layout_main.fxml
 // layout_attendance_record.fxml
@@ -21,6 +24,7 @@
 // btn_checkbox.png
 // btn_folder.png
 // layout_customer.fxml
+// btn_lock_in.png
 package com.wijayaprinting.javafx;
 
 import java.lang.String;
@@ -54,17 +58,19 @@ public final class R {
   public static final class png {
     public static final String btn_refresh = "/btn_refresh.png";
 
+    public static final String btn_lock_out = "/btn_lock_out.png";
+
     public static final String logo_launcher = "/logo_launcher.png";
 
     public static final String ic_calendar = "/ic_calendar.png";
+
+    public static final String btn_add = "/btn_add.png";
 
     public static final String btn_checkbox_outline = "/btn_checkbox_outline.png";
 
     public static final String ic_user = "/ic_user.png";
 
     public static final String btn_visibility = "/btn_visibility.png";
-
-    public static final String btn_empty = "/btn_empty.png";
 
     public static final String btn_clear = "/btn_clear.png";
 
@@ -84,108 +90,112 @@ public final class R {
 
     public static final String btn_folder = "/btn_folder.png";
 
+    public static final String btn_lock_in = "/btn_lock_in.png";
+
     private png() {
     }
   }
 
   public static final class string {
-    public static final String date = "date";
+    public static final String daily_income = "daily_income";
 
-    public static final String shift = "shift";
+    public static final String are_you_sure = "are_you_sure";
 
-    public static final String language = "language";
+    public static final String lock_end_time = "lock_end_time";
 
-    public static final String employee = "employee";
+    public static final String exit = "exit";
 
-    public static final String password = "password";
+    public static final String add = "add";
 
-    public static final String record = "record";
+    public static final String delete_all = "delete_all";
 
     public static final String error_unknown = "error_unknown";
 
     public static final String merge_close_records = "merge_close_records";
 
-    public static final String are_you_sure = "are_you_sure";
+    public static final String password_required = "password_required";
 
-    public static final String add = "add";
+    public static final String delete_others = "delete_others";
+
+    public static final String end = "end";
+
+    public static final String language_changed = "language_changed";
+
+    public static final String recess = "recess";
 
     public static final String read = "read";
 
     public static final String edit = "edit";
 
-    public static final String revert = "revert";
+    public static final String language = "language";
+
+    public static final String lock_start_time = "lock_start_time";
 
     public static final String both = "both";
 
-    public static final String exit = "exit";
-
-    public static final String recess = "recess";
-
-    public static final String nullify_working_hours = "nullify_working_hours";
-
-    public static final String port = "port";
-
-    public static final String daily = "daily";
-
     public static final String overtime_income = "overtime_income";
-
-    public static final String overtime = "overtime";
-
-    public static final String please_wait = "please_wait";
-
-    public static final String delete_all = "delete_all";
-
-    public static final String error_employee_incomplete = "error_employee_incomplete";
-
-    public static final String server = "server";
-
-    public static final String login = "login";
-
-    public static final String delete = "delete";
-
-    public static final String please_wait_content = "please_wait_content";
-
-    public static final String ip_address_unreachable = "ip_address_unreachable";
-
-    public static final String total = "total";
 
     public static final String hour = "hour";
 
-    public static final String browse_file = "browse_file";
-
-    public static final String end = "end";
-
-    public static final String error_employee_odd = "error_employee_odd";
-
     public static final String grand_total = "grand_total";
-
-    public static final String daily_income = "daily_income";
-
-    public static final String process = "process";
-
-    public static final String clear = "clear";
 
     public static final String start = "start";
 
-    public static final String ip_address = "ip_address";
+    public static final String revert = "revert";
 
-    public static final String app_name = "app_name";
+    public static final String error_employee_odd = "error_employee_odd";
+
+    public static final String please_wait = "please_wait";
+
+    public static final String shift = "shift";
 
     public static final String help = "help";
 
-    public static final String input_file = "input_file";
+    public static final String total = "total";
 
-    public static final String print = "print";
+    public static final String password = "password";
 
-    public static final String password_required = "password_required";
+    public static final String error_employee_incomplete = "error_employee_incomplete";
 
-    public static final String delete_others = "delete_others";
+    public static final String username = "username";
+
+    public static final String login = "login";
+
+    public static final String server = "server";
+
+    public static final String delete = "delete";
+
+    public static final String clear = "clear";
+
+    public static final String port = "port";
+
+    public static final String record = "record";
+
+    public static final String please_wait_content = "please_wait_content";
+
+    public static final String overtime = "overtime";
+
+    public static final String daily = "daily";
+
+    public static final String ip_address = "ip_address";
 
     public static final String time = "time";
 
-    public static final String language_changed = "language_changed";
+    public static final String print = "print";
 
-    public static final String username = "username";
+    public static final String browse_file = "browse_file";
+
+    public static final String date = "date";
+
+    public static final String ip_address_unreachable = "ip_address_unreachable";
+
+    public static final String process = "process";
+
+    public static final String employee = "employee";
+
+    public static final String app_name = "app_name";
+
+    public static final String input_file = "input_file";
 
     private string() {
     }

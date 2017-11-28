@@ -59,7 +59,7 @@ class AttendanceController {
         flowPane.prefWrapLengthProperty().bind(fileField.scene.widthProperty())
 
         if (BuildConfig.DEBUG) {
-            fileField.text = "/Users/hendraanggrian/Downloads/Absen 11-18-17.xlsx"
+            fileField.text = "/Users/hendraanggrian/Downloads/Absen 11-25-17.xlsx"
             readButton.fire()
         }
     }

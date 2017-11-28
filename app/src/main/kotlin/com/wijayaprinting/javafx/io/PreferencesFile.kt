@@ -1,11 +1,9 @@
 package com.wijayaprinting.javafx.io
 
 import com.wijayaprinting.javafx.Language
-import com.wijayaprinting.javafx.controller.AttendanceRecordController
 
 open class PreferencesFile : WPFile("preferences",
-        Pair(LANGUAGE, Language.LOCALE_EN),
-        Pair(RECORD_AFFECTION, AttendanceRecordController.AFFECT_DAILY.toString())
+        Pair(LANGUAGE, Language.LOCALE_EN)
 ) {
     companion object : PreferencesFile() {
         const val LANGUAGE = "language"

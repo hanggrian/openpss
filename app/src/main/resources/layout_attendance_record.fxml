@@ -1,51 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.wijayaprinting.javafx.scene.control.DoubleField?>
 <?import com.wijayaprinting.javafx.scene.layout.TimeBox?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.text.TextFlow?>
 <VBox xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.wijayaprinting.javafx.controller.AttendanceRecordController">
     <ToolBar prefHeight="40.0" prefWidth="200.0">
-        <HBox>
-            <ToggleButton fx:id="dailyToggle" mnemonicParsing="false" text="%daily"/>
-            <ToggleButton fx:id="overtimeToggle" mnemonicParsing="false" text="%overtime"/>
-            <ToggleButton fx:id="bothToggle" mnemonicParsing="false" text="%both"/>
-        </HBox>
-        <DatePicker fx:id="picker" editable="false" prefWidth="128.0"/>
-        <DoubleField fx:id="field" prefWidth="64.0"/>
-        <Button fx:id="substractButton" mnemonicParsing="false" onAction="#substractOnAction">
+        <Button mnemonicParsing="false" onAction="#printOnAction">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@btn_substract.png"/>
+                    <Image url="@btn_print.png"/>
                 </ImageView>
             </graphic>
             <tooltip>
-                <Tooltip text="%substract"/>
-            </tooltip>
-        </Button>
-        <Button fx:id="addButton" mnemonicParsing="false" onAction="#addOnAction">
-            <graphic>
-                <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@btn_add.png"/>
-                </ImageView>
-            </graphic>
-            <tooltip>
-                <Tooltip text="%add"/>
-            </tooltip>
-        </Button>
-        <Button mnemonicParsing="false" onAction="#zeroOnAction">
-            <graphic>
-                <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@btn_zero.png"/>
-                </ImageView>
-            </graphic>
-            <tooltip>
-                <Tooltip text="%zero_working_hours"/>
+                <Tooltip text="%print"/>
             </tooltip>
         </Button>
         <Separator/>
@@ -71,20 +42,10 @@
             </tooltip>
         </Button>
         <Separator/>
-        <Button mnemonicParsing="false" onAction="#printOnAction">
-            <graphic>
-                <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@btn_print.png"/>
-                </ImageView>
-            </graphic>
-            <tooltip>
-                <Tooltip text="%print"/>
-            </tooltip>
-        </Button>
-        <Separator/>
         <TextFlow fx:id="grandTotalFlow" maxHeight="-Infinity">
             <Text text="%grand_total"/>
             <Text text=": "/>
+            <Text fx:id="totalText"/>
         </TextFlow>
     </ToolBar>
     <TreeTableView fx:id="treeTableView" editable="true" style="-fx-font-family: Tahoma;" VBox.vgrow="ALWAYS">

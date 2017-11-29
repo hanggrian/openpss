@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.wijayaprinting.javafx.scene.layout.TimeBox?>
+<?import com.wijayaprinting.manager.scene.layout.TimeBox?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.text.TextFlow?>
 <VBox xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.wijayaprinting.javafx.controller.AttendanceRecordController">
+      fx:controller="com.wijayaprinting.manager.controller.AttendanceRecordController">
     <ToolBar prefHeight="40.0" prefWidth="200.0">
         <Button mnemonicParsing="false" onAction="#printOnAction">
             <graphic>

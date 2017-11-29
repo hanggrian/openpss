@@ -8,13 +8,13 @@ plugins {
 }
 
 rsync {
-    packageName = "com.wijayaprinting.javafx"
+    packageName = "com.wijayaprinting.data"
     leadingSlash = true
     debug = isDebug
 }
 
 buildconfig {
-    packageName = "com.wijayaprinting.javafx"
+    packageName = "com.wijayaprinting.data"
     groupId(releaseGroup)
     artifactId(releaseArtifact)
     version(releaseVersion)
@@ -34,7 +34,7 @@ dependencies {
     implementation(apache("commons", "math3", commonsMathVersion))
     implementation(apache("poi", "ooxml", poiVersion))
 
-    implementation("com.wijayaprinting:mysql:$mysqlVersion")
+    implementation("com.wijayaprinting:data:$dataVersion")
     implementation("com.hendraanggrian:rxexposed:$rxexposedVersion")
     implementation("com.google.guava:guava:$guavaVersion-jre")
     implementation("org.slf4j:slf4j-log4j12:$slf4jVersion")

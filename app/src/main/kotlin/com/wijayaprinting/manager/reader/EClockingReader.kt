@@ -11,9 +11,17 @@ import java.io.File
 /**
  * @see Reader
  */
-class EClockingReader : Reader {
+open class EClockingReader : Reader {
 
-    override fun toString(): String = "e Clocking 2.1.015"
+    companion object : EClockingReader() {
+        private const val SHEET_RAW_ATTENDANCE_LOGS = 1
+        private const val CELL_DEPT = 1
+        private const val CELL_NAME = 2
+        private const val CELL_NO = 3
+        private const val CELL_DATE = 4
+        private const val CELL_RECORD_START = 6
+        private const val CELL_RECORD_END = 17
+    }
 
     @Throws(Exception::class)
     override fun read(file: File): Collection<Employee> {
@@ -60,13 +68,5 @@ class EClockingReader : Reader {
         return set
     }
 
-    companion object {
-        private const val SHEET_RAW_ATTENDANCE_LOGS = 1
-        private const val CELL_DEPT = 1
-        private const val CELL_NAME = 2
-        private const val CELL_NO = 3
-        private const val CELL_DATE = 4
-        private const val CELL_RECORD_START = 6
-        private const val CELL_RECORD_END = 17
-    }
+    override fun toString(): String = "e Clocking 2.1.015"
 }

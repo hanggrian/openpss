@@ -1,6 +1,6 @@
 package com.wijayaprinting.manager.controller
 
-import com.wijayaprinting.data.utils.PATTERN_DATETIME
+import com.wijayaprinting.data.PATTERN_DATETIME
 import com.wijayaprinting.manager.*
 import com.wijayaprinting.manager.data.Employee
 import com.wijayaprinting.manager.dialog.DateTimeDialog

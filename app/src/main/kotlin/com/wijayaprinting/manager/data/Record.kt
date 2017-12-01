@@ -1,6 +1,6 @@
 package com.wijayaprinting.manager.data
 
-import com.wijayaprinting.data.utils.PATTERN_DATETIME
+import com.wijayaprinting.data.PATTERN_DATETIME
 import com.wijayaprinting.manager.utils.round
 import javafx.beans.property.DoubleProperty
 import javafx.beans.property.SimpleDoubleProperty

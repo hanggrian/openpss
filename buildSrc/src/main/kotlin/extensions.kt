@@ -7,7 +7,7 @@ const val releaseVersion = "0.3"
 /** Set false when building app, true when building stage. */
 const val isDebug = false
 
-const val dataVersion = "0.1"
+const val dataVersion = "0.2"
 const val kotlinVersion = "1.1.60"
 const val kotfxVersion = "0.6"
 const val guavaVersion = "23.3"
@@ -22,7 +22,7 @@ const val slf4jVersion = "1.7.25"
 
 const val junitVersion = "4.12"
 
-fun DependencyHandler.kotfx(version: Any) = "com.hendraanggrian:kotfx:$version"
-fun DependencyHandler.rx(module: Any, version: Any) = "io.reactivex.rxjava2:rx$module:$version"
-fun DependencyHandler.apache(module1: Any, module2: Any, version: Any) = "org.apache.$module1:$module1-$module2:$version"
-fun DependencyHandler.junit(version: Any) = "junit:junit:$version"
+fun DependencyHandler.kotfx(version: String) = "com.hendraanggrian:kotfx:$version"
+fun DependencyHandler.rx(module: String, version: String) = "io.reactivex.rxjava2:rx$module:$version"
+fun DependencyHandler.apache(module1: String, module2: String, version: String) = "org.apache.$module1:$module1-$module2:$version"
+fun DependencyHandler.junit(version: String) = "junit:junit:$version"

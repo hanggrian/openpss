@@ -1,7 +1,7 @@
 package com.wijayaprinting.manager.scene.layout
 
+import com.wijayaprinting.data.PATTERN_TIME
 import com.wijayaprinting.manager.scene.control.IntField
-import com.wijayaprinting.data.utils.PATTERN_TIME
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleObjectProperty
 import javafx.geometry.Pos.CENTER

@@ -5,21 +5,17 @@ import javafx.collections.ObservableList
 import kotfx.collections.observableListOf
 import java.io.File
 
-/**
- * An xlsx reader that generates collection of employees given input file.
- * The actual reading process is helped by rxjava, therefore long operation and exception throwing may happen in [Reader.read].
- */
+/** An xlsx reader that generates collection of employees given input file. */
 interface Reader {
 
+    /** The actual reading process is helped by rxjava, therefore long operation and exception throwing may happen in [Reader.read]. */
     @Throws(Exception::class)
     fun read(file: File): Collection<Employee>
 
-    companion object {
-        private var ALL: ObservableList<Reader>? = null
+    /** [toString] must be overriden since it is used as identifier to reader. */
+    override fun toString(): String
 
-        fun listAll(): ObservableList<Reader> {
-            if (ALL == null) ALL = observableListOf(EClockingReader())
-            return ALL!!
-        }
+    companion object {
+        fun listAll(): ObservableList<Reader> = observableListOf(EClockingReader)
     }
 }

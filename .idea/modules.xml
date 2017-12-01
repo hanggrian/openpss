@@ -4,23 +4,14 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/app.iml" group="app" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/wp-javafx/app.iml" filepath="$PROJECT_DIR$/.idea/modules/wp-javafx/app.iml" group="app" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/app.iml" group="app" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/app_main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/app_main.iml" group="app" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/app_main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/app_main.iml" group="app" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/app_test.iml" filepath="$PROJECT_DIR$/.idea/modules/app/app_test.iml" group="app" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/app_test.iml" filepath="$PROJECT_DIR$/.idea/modules/app/app_test.iml" group="app" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/buildSrc.iml" filepath="$PROJECT_DIR$/.idea/modules/buildSrc.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/buildSrc.iml" filepath="$PROJECT_DIR$/.idea/modules/buildSrc.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/buildSrc_main.iml" filepath="$PROJECT_DIR$/.idea/modules/buildSrc_main.iml" group="buildSrc" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/buildSrc_main.iml" filepath="$PROJECT_DIR$/.idea/modules/buildSrc_main.iml" group="buildSrc" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/buildSrc_test.iml" filepath="$PROJECT_DIR$/.idea/modules/buildSrc_test.iml" group="buildSrc" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/buildSrc_test.iml" filepath="$PROJECT_DIR$/.idea/modules/buildSrc_test.iml" group="buildSrc" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/manager.iml" filepath="$PROJECT_DIR$/.idea/modules/manager.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/scene/scene.iml" filepath="$PROJECT_DIR$/.idea/modules/scene/scene.iml" group="scene" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/scene/scene.iml" filepath="$PROJECT_DIR$/.idea/modules/scene/scene.iml" group="scene" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/scene/scene_main.iml" filepath="$PROJECT_DIR$/.idea/modules/scene/scene_main.iml" group="scene" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/scene/scene_main.iml" filepath="$PROJECT_DIR$/.idea/modules/scene/scene_main.iml" group="scene" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/scene/scene_test.iml" filepath="$PROJECT_DIR$/.idea/modules/scene/scene_test.iml" group="scene" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/scene/scene_test.iml" filepath="$PROJECT_DIR$/.idea/modules/scene/scene_test.iml" group="scene" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/wp-javafx.iml" filepath="$PROJECT_DIR$/.idea/modules/wp-javafx.iml" />
     </modules>

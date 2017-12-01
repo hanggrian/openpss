@@ -1,6 +1,6 @@
 package com.wijayaprinting.manager
 
-import com.wijayaprinting.data.MySQL
+import com.wijayaprinting.data.connectDatabase
 import com.wijayaprinting.manager.io.MySQLFile
 import com.wijayaprinting.manager.io.PreferencesFile
 import com.wijayaprinting.manager.scene.control.IPField
@@ -62,7 +62,6 @@ class App : Application() {
                     val minSize = Pair(960.0, 640.0)
                     stage.apply {
                         scene = Scene(FXMLLoader.load(App::class.java.getResource(R.fxml.layout_main), resources), minSize.first, minSize.second)
-                        icons.add(Image(R.png.ic_launcher))
                         title = getString(R.string.app_name)
                         minWidth = minSize.first
                         minHeight = minSize.second
@@ -76,7 +75,6 @@ class App : Application() {
         val loginButton = ButtonType(getString(R.string.login), ButtonBar.ButtonData.OK_DONE)
 
         init {
-            icon = Image(R.png.ic_launcher)
             title = getString(R.string.app_name)
             headerText = getString(R.string.login)
             graphic = ImageView(R.png.ic_launcher)
@@ -117,7 +115,7 @@ class App : Application() {
                     Callback { if (it == OK) passwordField.text else null }
                 }.showAndWait().filter { it != null }.ifPresent { password ->
                     try {
-                        MySQL.connect(content.ipField.text, content.portField.text, content.usernameField.text, password)
+                        connectDatabase(content.ipField.text, content.portField.text, content.usernameField.text, password)
                         result = content.usernameField.text
                         close()
                     } catch (e: Exception) {

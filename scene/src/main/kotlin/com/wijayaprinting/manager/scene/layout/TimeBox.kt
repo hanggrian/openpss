@@ -7,6 +7,7 @@ import javafx.beans.property.SimpleObjectProperty
 import javafx.geometry.Pos.CENTER
 import javafx.scene.control.Label
 import javafx.scene.layout.HBox
+import kotfx.bind
 import kotfx.bindings.bindingOf
 import kotfx.bindings.booleanBindingOf
 import org.joda.time.LocalTime
@@ -32,21 +33,21 @@ open class TimeBox : HBox() {
         }
         children.addAll(hourField, Label(":"), minuteField)
 
-        valueProperty.bind(bindingOf(hourField.textProperty(), minuteField.textProperty()) {
+        valueProperty bind bindingOf(hourField.textProperty(), minuteField.textProperty()) {
             try {
                 LocalTime.parse("${hourField.text}:${minuteField.text}", DateTimeFormat.forPattern(PATTERN_TIME))
             } catch (e: Exception) {
                 LocalTime.MIDNIGHT
             }
-        })
-        validProperty.bind(booleanBindingOf(hourField.textProperty(), minuteField.textProperty()) {
+        }
+        validProperty bind booleanBindingOf(hourField.textProperty(), minuteField.textProperty()) {
             try {
                 LocalTime.parse("${hourField.text}:${minuteField.text}", DateTimeFormat.forPattern(PATTERN_TIME))
                 true
             } catch (e: Exception) {
                 false
             }
-        })
+        }
     }
 
     var value: LocalTime

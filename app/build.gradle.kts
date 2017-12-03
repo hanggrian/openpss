@@ -25,7 +25,6 @@ dependencies {
     implementation(project(":scene"))
 
     implementation(kotlin("stdlib", kotlinVersion))
-    implementation(kotfx(kotfxVersion))
 
     implementation(rx("java", rxjavaVersion))
     implementation(rx("javafx", rxkotlinVersion))
@@ -35,7 +34,9 @@ dependencies {
     implementation(apache("poi", "ooxml", poiVersion))
 
     implementation("com.wijayaprinting:data:$dataVersion")
-    implementation("com.hendraanggrian:rxexposed:$rxexposedVersion")
+    implementation(hendraanggrian("kotfx", kotfxVersion))
+    implementation(hendraanggrian("rxexposed", rxexposedVersion))
+
     implementation("com.google.guava:guava:$guavaVersion-jre")
     implementation("org.slf4j:slf4j-log4j12:$slf4jVersion")
 

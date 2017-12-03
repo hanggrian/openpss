@@ -25,6 +25,8 @@ import javafx.scene.layout.GridPane
 import javafx.scene.layout.HBox
 import javafx.stage.Stage
 import javafx.util.Callback
+import kotfx.bind
+import kotfx.bindBidirectional
 import kotfx.bindings.bindingOf
 import kotfx.bindings.not
 import kotfx.bindings.or
@@ -96,11 +98,11 @@ class App : Application() {
                     val passwordField = PasswordField().apply { promptText = getString(R.string.password) }
                     val passwordToggle = ToggleButton().apply { attachButtons(R.png.btn_visibility, R.png.btn_visibility_off) }
                     buttonTypes.addAll(CANCEL, OK)
-                    lookupButton(OK).disableProperty().bind(passwordField.textProperty().isEmpty)
-                    passwordField.tooltipProperty().bind(bindingOf(passwordField.textProperty(), passwordToggle.selectedProperty()) {
+                    lookupButton(OK).disableProperty() bind passwordField.textProperty().isEmpty
+                    passwordField.tooltipProperty() bind bindingOf(passwordField.textProperty(), passwordToggle.selectedProperty()) {
                         if (!passwordToggle.isSelected) null
                         else Tooltip(passwordField.text)
-                    })
+                    }
                     content = HBox().apply {
                         spacing = 8.0
                         alignment = CENTER
@@ -123,13 +125,13 @@ class App : Application() {
                     }
                 }
             }
-            dialogPane.lookupButton(loginButton).disableProperty().bind(content.usernameField.textProperty().isEmpty
+            dialogPane.lookupButton(loginButton).disableProperty() bind (content.usernameField.textProperty().isEmpty
                     or not(content.ipField.validProperty)
                     or content.portField.textProperty().isEmpty)
 
-            content.usernameField.textProperty().bindBidirectional(MySQLFile[MySQLFile.USERNAME])
-            content.ipField.textProperty().bindBidirectional(MySQLFile[MySQLFile.IP])
-            content.portField.textProperty().bindBidirectional(MySQLFile[MySQLFile.PORT])
+            content.usernameField.textProperty() bindBidirectional MySQLFile[MySQLFile.USERNAME]
+            content.ipField.textProperty() bindBidirectional MySQLFile[MySQLFile.IP]
+            content.portField.textProperty() bindBidirectional MySQLFile[MySQLFile.PORT]
 
             runLater { content.usernameField.requestFocus() }
         }

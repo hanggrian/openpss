@@ -28,6 +28,8 @@ import javafx.scene.image.ImageView
 import javafx.scene.layout.*
 import javafx.stage.FileChooser
 import javafx.stage.Stage
+import kotfx.bind
+import kotfx.bindBidirectional
 import kotfx.bindings.bindingOf
 import kotfx.bindings.isEmpty
 import kotfx.dialogs.errorAlert
@@ -53,10 +55,10 @@ class AttendanceController {
         readerChoiceBox.items = Reader.listAll()
         if (readerChoiceBox.items.isNotEmpty()) readerChoiceBox.selectionModel.select(0)
 
-        readButton.disableProperty().bind(fileField.validProperty)
-        processButton.disableProperty().bind(flowPane.children.isEmpty)
-        employeeCountLabel.textProperty().bind(bindingOf(flowPane.children) { flowPane.children.size.toString() + " " + getString(R.string.employee) })
-        flowPane.prefWrapLengthProperty().bind(fileField.scene.widthProperty())
+        readButton.disableProperty() bind fileField.validProperty
+        processButton.disableProperty() bind flowPane.children.isEmpty
+        employeeCountLabel.textProperty() bind bindingOf(flowPane.children) { flowPane.children.size.toString() + " " + getString(R.string.employee) }
+        flowPane.prefWrapLengthProperty() bind fileField.scene.widthProperty()
 
         if (BuildConfig.DEBUG) {
             fileField.text = "/Users/hendraanggrian/Downloads/Absen 11-25-17.xlsx"
@@ -146,7 +148,7 @@ class AttendanceController {
             content = employeeBox
             graphic = indicatorImage
 
-            indicatorImage.imageProperty().bind(bindingOf(employeeBox.listView.items) { Image(if (employeeBox.listView.items.size % 2 == 0) R.png.btn_checkbox else R.png.btn_checkbox_outline) })
+            indicatorImage.imageProperty() bind bindingOf(employeeBox.listView.items) { Image(if (employeeBox.listView.items.size % 2 == 0) R.png.btn_checkbox else R.png.btn_checkbox_outline) }
 
             contextMenu = ContextMenu(addMenu, SeparatorMenuItem(), revertMenu, SeparatorMenuItem(), deleteMenu, deleteOthersMenu, deleteAllMenu)
             addMenu.setOnAction {
@@ -177,15 +179,15 @@ class AttendanceController {
             init {
                 dailyField.prefWidth = 96.0
                 dailyField.promptText = getString(R.string.daily_income)
-                dailyField.valueProperty.bindBidirectional(employee.daily)
+                dailyField.valueProperty bindBidirectional employee.daily
 
                 overtimeField.prefWidth = 96.0
                 overtimeField.promptText = getString(R.string.overtime_income)
-                overtimeField.valueProperty.bindBidirectional(employee.hourlyOvertime)
+                overtimeField.valueProperty bindBidirectional employee.hourlyOvertime
 
                 recessField.prefWidth = 96.0
                 recessField.promptText = getString(R.string.recess)
-                recessField.valueProperty.bindBidirectional(employee.recess)
+                recessField.valueProperty bindBidirectional employee.recess
 
                 listView.prefWidth = 128.0
                 listView.setCellFactory {
@@ -197,7 +199,7 @@ class AttendanceController {
                             if (item != null && !empty) {
                                 val label = Label(item.toString(PATTERN_DATETIME)).apply { setMaxSize(Double.MAX_VALUE) }
                                 val deleteButton = Button().apply { setSize(18.0) }
-                                deleteButton.graphicProperty().bind(bindingOf<Node?>(deleteButton.hoverProperty()) { if (deleteButton.isHover) ImageView(R.png.btn_clear) else null })
+                                deleteButton.graphicProperty() bind bindingOf<Node?>(deleteButton.hoverProperty()) { if (deleteButton.isHover) ImageView(R.png.btn_clear) else null }
                                 deleteButton.setOnAction { listView.items.remove(item) }
                                 HBox.setHgrow(label, Priority.ALWAYS)
                                 graphic = HBox(label, deleteButton).apply { alignment = CENTER }

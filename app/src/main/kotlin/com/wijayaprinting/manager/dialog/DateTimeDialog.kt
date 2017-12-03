@@ -11,6 +11,8 @@ import javafx.scene.control.DatePicker
 import javafx.scene.control.Dialog
 import javafx.scene.control.Slider
 import javafx.scene.layout.GridPane
+import kotfx.bind
+import kotfx.bindBidirectional
 import kotfx.bindings.not
 import kotfx.bindings.or
 import org.joda.time.DateTime
@@ -30,8 +32,8 @@ class DateTimeDialog @JvmOverloads constructor(
     private val timeBox = TimeBox().apply {
         prefill?.let { value = it.toLocalTime() }
     }
-    private val hourSlider = Slider(0.0, 24.0, 0.0).apply { valueProperty().bindBidirectional(timeBox.hourField.valueProperty) }
-    private val minuteSlider = Slider(0.0, 60.0, 0.0).apply { valueProperty().bindBidirectional(timeBox.minuteField.valueProperty) }
+    private val hourSlider = Slider(0.0, 24.0, 0.0).apply { valueProperty() bindBidirectional timeBox.hourField.valueProperty }
+    private val minuteSlider = Slider(0.0, 60.0, 0.0).apply { valueProperty() bindBidirectional timeBox.minuteField.valueProperty }
 
     init {
         this.title = title
@@ -45,7 +47,7 @@ class DateTimeDialog @JvmOverloads constructor(
             add(minuteSlider, 0, 2, 2, 1)
         }
         dialogPane.buttonTypes.addAll(OK, ButtonType.CANCEL)
-        dialogPane.lookupButton(OK).disableProperty().bind(datePicker.valueProperty().isNull or not(timeBox.validProperty))
+        dialogPane.lookupButton(OK).disableProperty() bind (datePicker.valueProperty().isNull or not(timeBox.validProperty))
         Platform.runLater { datePicker.requestFocus() }
         setResultConverter {
             if (it != OK) null

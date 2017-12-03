@@ -2,10 +2,8 @@ package com.wijayaprinting.manager.data
 
 import com.wijayaprinting.data.PATTERN_DATETIME
 import com.wijayaprinting.manager.utils.round
-import javafx.beans.property.DoubleProperty
-import javafx.beans.property.SimpleDoubleProperty
-import javafx.beans.property.SimpleObjectProperty
-import javafx.beans.property.SimpleStringProperty
+import javafx.beans.property.*
+import kotfx.bind
 import kotfx.bindings.doubleBindingOf
 import kotfx.bindings.plus
 import kotfx.bindings.stringBindingOf
@@ -36,7 +34,7 @@ data class Record(
             else -> throw UnsupportedOperationException()
         }
 
-    val startString: SimpleStringProperty
+    val startString: StringProperty
         get() = SimpleStringProperty().apply {
             bind(stringBindingOf(start) {
                 when (type) {
@@ -48,7 +46,7 @@ data class Record(
             })
         }
 
-    val endString: SimpleStringProperty
+    val endString: StringProperty
         get() = SimpleStringProperty().apply {
             bind(stringBindingOf(end) {
                 when (type) {
@@ -66,8 +64,8 @@ data class Record(
 
     init {
         if (type != TYPE_ROOT) {
-            dailyIncome.bind(doubleBindingOf(daily, actualEmployee.daily) { (daily.value * actualEmployee.daily.value / Employee.WORKING_HOURS).round })
-            overtimeIncome.bind(doubleBindingOf(overtime, actualEmployee.hourlyOvertime) { (actualEmployee.hourlyOvertime.value * overtime.value).round })
+            dailyIncome bind doubleBindingOf(daily, actualEmployee.daily) { (daily.value * actualEmployee.daily.value / Employee.WORKING_HOURS).round }
+            overtimeIncome bind doubleBindingOf(overtime, actualEmployee.hourlyOvertime) { (actualEmployee.hourlyOvertime.value * overtime.value).round }
             when (type) {
                 TYPE_NODE -> {
                     daily.set(Employee.WORKING_HOURS)
@@ -76,17 +74,17 @@ data class Record(
                 }
                 TYPE_CHILD -> {
                     val workingHours = { (abs(Period(start.value, end.value).toStandardMinutes().minutes) / 60.0) - actualEmployee.recess.value }
-                    daily.bind(doubleBindingOf(start, end) {
+                    daily bind doubleBindingOf(start, end) {
                         val hours = workingHours()
                         if (hours <= Employee.WORKING_HOURS) hours.round else Employee.WORKING_HOURS
-                    })
-                    overtime.bind(doubleBindingOf(start, end) {
+                    }
+                    overtime bind doubleBindingOf(start, end) {
                         val hours = workingHours()
                         if (hours <= Employee.WORKING_HOURS) 0.0 else (hours - Employee.WORKING_HOURS).round
-                    })
-                    total.bind(dailyIncome + overtimeIncome)
+                    }
+                    total bind (dailyIncome + overtimeIncome)
                 }
-                TYPE_TOTAL -> total.bind(dailyIncome + overtimeIncome)
+                TYPE_TOTAL -> total bind (dailyIncome + overtimeIncome)
             }
         }
     }
@@ -118,28 +116,28 @@ fun Employee.toChildRecords(): Set<Record> {
 
 fun Employee.toTotalRecords(childs: Collection<Record>): Record = Record(Record.TYPE_TOTAL, this, SimpleObjectProperty(DateTime(0)), SimpleObjectProperty(DateTime(0))).apply {
     childs.map { it.daily }.toTypedArray().let { mains ->
-        daily.bind(doubleBindingOf(*mains) {
+        daily bind doubleBindingOf(*mains) {
             mains.map { it.value }.sum().round
-        })
+        }
     }
     childs.map { it.dailyIncome }.toTypedArray().let { mainIncomes ->
-        dailyIncome.bind(doubleBindingOf(*mainIncomes) {
+        dailyIncome bind doubleBindingOf(*mainIncomes) {
             mainIncomes.map { it.value }.sum().round
-        })
+        }
     }
     childs.map { it.overtime }.toTypedArray().let { overtimes ->
-        overtime.bind(doubleBindingOf(*overtimes) {
+        overtime bind doubleBindingOf(*overtimes) {
             overtimes.map { it.value }.sum().round
-        })
+        }
     }
     childs.map { it.overtimeIncome }.toTypedArray().let { overtimeIncomes ->
-        overtimeIncome.bind(doubleBindingOf(*overtimeIncomes) {
+        overtimeIncome bind doubleBindingOf(*overtimeIncomes) {
             overtimeIncomes.map { it.value }.sum().round
-        })
+        }
     }
     childs.map { it.total }.toTypedArray().let { totals ->
-        total.bind(doubleBindingOf(*totals) {
+        total bind doubleBindingOf(*totals) {
             totals.map { it.value }.sum().round
-        })
+        }
     }
 }

@@ -3,7 +3,6 @@ package com.wijayaprinting.manager.controller
 import com.wijayaprinting.manager.data.*
 import com.wijayaprinting.manager.scene.layout.TimeBox
 import javafx.application.Platform.runLater
-import javafx.beans.property.ReadOnlyObjectWrapper
 import javafx.beans.value.ObservableValue
 import javafx.fxml.FXML
 import javafx.print.PrinterJob
@@ -14,8 +13,10 @@ import javafx.scene.control.TreeTableColumn
 import javafx.scene.control.TreeTableView
 import javafx.scene.text.Text
 import javafx.scene.text.TextFlow
+import kotfx.bind
 import kotfx.bindings.booleanBindingOf
 import kotfx.bindings.stringBindingOf
+import kotfx.toProperty
 import java.lang.Character.isDigit
 import java.text.NumberFormat.getCurrencyInstance
 
@@ -45,10 +46,10 @@ class AttendanceRecordController {
     @Suppress("UNCHECKED_CAST")
     fun initialize() = runLater {
         arrayOf(lockStartButton, lockEndButton).forEach {
-            it.disableProperty().bind(booleanBindingOf(treeTableView.selectionModel.selectedIndexProperty()) {
+            it.disableProperty() bind booleanBindingOf(treeTableView.selectionModel.selectedIndexProperty()) {
                 if (treeTableView.selectionModel.selectedIndex == -1) true
                 else treeTableView.selectionModel.selectedItems.map { it.value.type }.any { it != Record.TYPE_CHILD }
-            })
+            }
         }
 
         treeTableView.selectionModel.selectionMode = MULTIPLE
@@ -64,7 +65,7 @@ class AttendanceRecordController {
             })
         }
 
-        employeeColumn.setCellValueFactory { ReadOnlyObjectWrapper(it.value.value.employee) }
+        employeeColumn.setCellValueFactory { it.value.value.employee.toProperty() }
         startColumn.setCellValueFactory { it.value.value.startString }
         endColumn.setCellValueFactory { it.value.value.endString }
         dailyColumn.setCellValueFactory { it.value.value.daily as ObservableValue<Double> }
@@ -73,12 +74,12 @@ class AttendanceRecordController {
         overtimeIncomeColumn.setCellValueFactory { it.value.value.overtimeIncome as ObservableValue<Double> }
         totalColumn.setCellValueFactory { it.value.value.total as ObservableValue<Double> }
 
-        totalText.textProperty().bind(stringBindingOf(*treeTableView.root.children.flatMap { it.children }.map { it.value.total }.toTypedArray()) {
+        totalText.textProperty() bind stringBindingOf(*treeTableView.root.children.flatMap { it.children }.map { it.value.total }.toTypedArray()) {
             getCurrencyInstance().format(treeTableView.root.children.flatMap { it.children }
                     .map { it.value.total.value }
                     .sum())
                     .let { it.substring(it.indexOf(it.toCharArray().first { isDigit(it) })) }
-        })
+        }
     }
 
     @FXML

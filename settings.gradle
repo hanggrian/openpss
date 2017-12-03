@@ -1,2 +1,5 @@
+/** actual app module */
 include ':app'
+
+/** library module used in app and SceneBuilder */
 include ':scene'

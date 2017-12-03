@@ -1,10 +1,11 @@
 package com.wijayaprinting.manager.controller
 
-import com.wijayaprinting.manager.safeTransaction
 import com.wijayaprinting.manager.control.CustomerPagination
+import com.wijayaprinting.manager.safeTransaction
 import javafx.fxml.FXML
 import javafx.scene.control.Label
 import javafx.scene.control.TextField
+import kotfx.bind
 
 class CustomerController {
 
@@ -14,7 +15,7 @@ class CustomerController {
 
     @FXML
     fun initialize() {
-        customerPagination.textProperty.bind(customerField.textProperty())
+        customerPagination.textProperty bind customerField.textProperty()
         // nameLabel.textProperty().bind(stringBindingOf(customerPagination.currentPageContainer))
     }
 

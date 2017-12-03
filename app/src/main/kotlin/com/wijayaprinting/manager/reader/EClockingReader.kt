@@ -2,15 +2,14 @@ package com.wijayaprinting.manager.reader
 
 import com.google.common.collect.LinkedHashMultimap
 import com.wijayaprinting.manager.data.Employee
-import org.apache.commons.lang3.SystemUtils
+import org.apache.commons.lang3.SystemUtils.IS_OS_MAC
+import org.apache.commons.lang3.SystemUtils.IS_OS_WINDOWS
 import org.apache.poi.ss.usermodel.CellType
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import org.joda.time.DateTime
 import java.io.File
 
-/**
- * @see Reader
- */
+/** A custom reader to third-party software e Clocking fingerprint reader. */
 open class EClockingReader : Reader {
 
     companion object : EClockingReader() {
@@ -30,7 +29,7 @@ open class EClockingReader : Reader {
         val workbook = XSSFWorkbook(stream)
         val sheet = workbook.getSheetAt(SHEET_RAW_ATTENDANCE_LOGS)
         sheet.iterator().asSequence().forEachIndexed { rowIndex, row ->
-            // skips right to employeeBox
+            // skips right to employee
             if (rowIndex > 4) {
                 val dept = row.getCell(CELL_DEPT).stringCellValue
                 val name = row.getCell(CELL_NAME).stringCellValue
@@ -48,8 +47,8 @@ open class EClockingReader : Reader {
                             val minute = record.minuteOfHour
                             val attendance = DateTime(year, month, day, hour, minute)
                             multimap.put(employee, when (true) {
-                                SystemUtils.IS_OS_WINDOWS -> attendance.plusMinutes(18)
-                                SystemUtils.IS_OS_MAC -> attendance.minusMinutes(7)
+                                IS_OS_WINDOWS -> attendance.plusMinutes(18)
+                                IS_OS_MAC -> attendance.minusMinutes(7)
                                 else -> attendance
                             })
                         }
@@ -61,9 +60,9 @@ open class EClockingReader : Reader {
         stream.close()
 
         val set = mutableSetOf<Employee>()
-        for (attendee in multimap.keySet()) {
-            attendee.addAllAttendances(multimap.get(attendee))
-            set.add(attendee)
+        for (employee in multimap.keySet()) {
+            employee.addAllAttendances(multimap.get(employee))
+            set.add(employee)
         }
         return set
     }

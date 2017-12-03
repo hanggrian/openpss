@@ -14,6 +14,7 @@ import com.wijayaprinting.manager.scene.utils.setSize
 import com.wijayaprinting.manager.utils.multithread
 import io.reactivex.Observable
 import io.reactivex.rxkotlin.subscribeBy
+import io.reactivex.schedulers.Schedulers.computation
 import javafx.application.Platform.runLater
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
@@ -92,7 +93,7 @@ class AttendanceController {
                     }
                     emitter.onComplete()
                 }
-                .multithread()
+                .multithread(computation())
                 .subscribeBy({ e -> e.message ?: getString(R.string.error_unknown).let { errorAlert(it).showAndWait() } }, {
                     progressDialog.dialogPane.buttonTypes.add(OK) // apparently alert won't close without a button
                     progressDialog.close()
@@ -148,7 +149,9 @@ class AttendanceController {
             content = employeeBox
             graphic = indicatorImage
 
-            indicatorImage.imageProperty() bind bindingOf(employeeBox.listView.items) { Image(if (employeeBox.listView.items.size % 2 == 0) R.png.btn_checkbox else R.png.btn_checkbox_outline) }
+            indicatorImage.imageProperty() bind bindingOf(employeeBox.listView.items) {
+                Image(if (employeeBox.listView.items.size % 2 == 0) R.png.btn_checkbox else R.png.btn_checkbox_outline)
+            }
 
             contextMenu = ContextMenu(addMenu, SeparatorMenuItem(), revertMenu, SeparatorMenuItem(), deleteMenu, deleteOthersMenu, deleteAllMenu)
             addMenu.setOnAction {
@@ -169,28 +172,34 @@ class AttendanceController {
 
         inner class EmployeeBox : VBox() {
             private val dailyLabel = Label(getString(R.string.daily_income))
-            private val dailyField = IntField()
+            private val dailyField = IntField().apply {
+                prefWidth = 96.0
+                promptText = getString(R.string.daily_income)
+                valueProperty bindBidirectional employee.daily
+            }
+
             private val overtimeLabel = Label(getString(R.string.overtime_income))
-            private val overtimeField = IntField()
+            private val overtimeField = IntField().apply {
+                prefWidth = 96.0
+                promptText = getString(R.string.overtime_income)
+                valueProperty bindBidirectional employee.hourlyOvertime
+            }
+
             private val recessLabel = Label(getString(R.string.recess))
-            private val recessField = DoubleField()
-            val listView = ListView<DateTime>(employee.attendances)
+            private val recessField = DoubleField().apply {
+                prefWidth = 48.0
+                promptText = getString(R.string.recess)
+                valueProperty bindBidirectional employee.recess
+            }
+            private val recessOvertimeField = DoubleField().apply {
+                prefWidth = 48.0
+                promptText = getString(R.string.recess)
+                valueProperty bindBidirectional employee.recessOvertime
+            }
 
-            init {
-                dailyField.prefWidth = 96.0
-                dailyField.promptText = getString(R.string.daily_income)
-                dailyField.valueProperty bindBidirectional employee.daily
-
-                overtimeField.prefWidth = 96.0
-                overtimeField.promptText = getString(R.string.overtime_income)
-                overtimeField.valueProperty bindBidirectional employee.hourlyOvertime
-
-                recessField.prefWidth = 96.0
-                recessField.promptText = getString(R.string.recess)
-                recessField.valueProperty bindBidirectional employee.recess
-
-                listView.prefWidth = 128.0
-                listView.setCellFactory {
+            val listView = ListView<DateTime>(employee.attendances).apply {
+                prefWidth = 128.0
+                setCellFactory {
                     object : ListCell<DateTime>() {
                         override fun updateItem(item: DateTime?, empty: Boolean) {
                             super.updateItem(item, empty)
@@ -207,16 +216,19 @@ class AttendanceController {
                         }
                     }
                 }
+            }
 
+            init {
                 children.addAll(GridPane().apply {
                     setGaps(4.0)
-                    padding = Insets(8.0)
+                    padding = Insets(4.0, 8.0, 4.0, 8.0)
                     add(dailyLabel, 0, 0)
-                    add(dailyField, 1, 0)
+                    add(dailyField, 1, 0, 2, 1)
                     add(overtimeLabel, 0, 1)
-                    add(overtimeField, 1, 1)
+                    add(overtimeField, 1, 1, 2, 1)
                     add(recessLabel, 0, 2)
                     add(recessField, 1, 2)
+                    add(recessOvertimeField, 2, 2)
                 }, listView)
             }
         }

@@ -12,11 +12,12 @@ import com.wijayaprinting.manager.utils.setIconOnOSX
 import javafx.application.Application
 import javafx.application.Platform.exit
 import javafx.application.Platform.runLater
-import javafx.event.ActionEvent
+import javafx.event.ActionEvent.ACTION
 import javafx.fxml.FXMLLoader
 import javafx.geometry.Pos.CENTER
 import javafx.scene.Scene
 import javafx.scene.control.*
+import javafx.scene.control.ButtonBar.ButtonData.OK_DONE
 import javafx.scene.control.ButtonType.CANCEL
 import javafx.scene.control.ButtonType.OK
 import javafx.scene.image.Image
@@ -50,7 +51,7 @@ class App : Application() {
 
     override fun init() {
         if (BuildConfig.DEBUG) configure()
-        setResources(Language.parse(PreferencesFile()[PreferencesFile.LANGUAGE].value).getResources("string"))
+        setResources(Language.parse(PreferencesFile[PreferencesFile.LANGUAGE].value).getResources("string"))
     }
 
     override fun start(stage: Stage) {
@@ -74,7 +75,7 @@ class App : Application() {
     inner class LoginDialog : Dialog<Any>() {
         val content = Content()
         val expandableContent = ExpandableContent()
-        val loginButton = ButtonType(getString(R.string.login), ButtonBar.ButtonData.OK_DONE)
+        val loginButton = ButtonType(getString(R.string.login), OK_DONE)
 
         init {
             title = getString(R.string.app_name)
@@ -86,7 +87,7 @@ class App : Application() {
             dialogPane.expandableContent = expandableContent
 
             dialogPane.buttonTypes.addAll(CANCEL, loginButton)
-            dialogPane.lookupButton(loginButton).addEventFilter(ActionEvent.ACTION) { event ->
+            dialogPane.lookupButton(loginButton).addEventFilter(ACTION) { event ->
                 event.consume()
                 MySQLFile.save()
                 if (!getByName(content.ipField.text).isReachable(IP_LOOKUP_TIMEOUT)) {

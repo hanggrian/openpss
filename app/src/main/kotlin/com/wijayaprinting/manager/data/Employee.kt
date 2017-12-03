@@ -5,6 +5,7 @@ import com.hendraanggrian.rxexposed.SQLSingles
 import com.wijayaprinting.data.Wage
 import com.wijayaprinting.data.Wages
 import com.wijayaprinting.manager.utils.multithread
+import io.reactivex.rxkotlin.subscribeBy
 import javafx.beans.property.DoubleProperty
 import javafx.beans.property.IntegerProperty
 import javafx.beans.property.SimpleDoubleProperty
@@ -32,7 +33,8 @@ data class Employee @JvmOverloads constructor(
         /** Wages below are retrieved from sql, or empty if there is none. */
         val daily: IntegerProperty = SimpleIntegerProperty(),
         val hourlyOvertime: IntegerProperty = SimpleIntegerProperty(),
-        val recess: DoubleProperty = SimpleDoubleProperty()
+        val recess: DoubleProperty = SimpleDoubleProperty(),
+        val recessOvertime: DoubleProperty = SimpleDoubleProperty()
 ) {
     companion object {
         const val WORKING_HOURS = 8.0
@@ -43,30 +45,31 @@ data class Employee @JvmOverloads constructor(
                 .multithread()
                 .filter { it.isPresent }
                 .map { it.get() }
-                .subscribe({
-                    daily.value = it.daily
-                    hourlyOvertime.value = it.hourlyOvertime
-                    recess.value = it.recess.toDouble()
-                }) {}
+                .subscribeBy({}) { wage ->
+                    daily.value = wage.daily
+                    hourlyOvertime.value = wage.hourlyOvertime
+                    recess.value = wage.recess.toDouble()
+                    recessOvertime.value = wage.recessOvertime.toDouble()
+                }
     }
 
-    fun saveWage() {
-        SQLCompletables
-                .transaction {
-                    when (Wage.findById(id)) {
-                        null -> Wage.new(id) {
-                            daily = this@Employee.daily.value
-                            hourlyOvertime = this@Employee.hourlyOvertime.value
-                            recess = BigDecimal.valueOf(this@Employee.recess.value)
-                        }
-                        else -> Wages.update({ Wages.id eq id }) {
-                            it[daily] = this@Employee.daily.value
-                            it[hourlyOvertime] = this@Employee.hourlyOvertime.value
-                            it[recess] = BigDecimal.valueOf(this@Employee.recess.value)
-                        }
-                    }
-                }.subscribe()
-    }
+    fun saveWage() = SQLCompletables
+            .transaction {
+                @Suppress("IMPLICIT_CAST_TO_ANY")
+                if (Wage.findById(id) == null) Wage.new(id) {
+                    daily = this@Employee.daily.value
+                    hourlyOvertime = this@Employee.hourlyOvertime.value
+                    recess = BigDecimal.valueOf(this@Employee.recess.value)
+                    recessOvertime = BigDecimal.valueOf(this@Employee.recessOvertime.value)
+                } else Wages.update({ Wages.id eq id }) { wage ->
+                    wage[daily] = this@Employee.daily.value
+                    wage[hourlyOvertime] = this@Employee.hourlyOvertime.value
+                    wage[recess] = BigDecimal.valueOf(this@Employee.recess.value)
+                    wage[recessOvertime] = BigDecimal.valueOf(this@Employee.recessOvertime.value)
+                }
+            }
+            .multithread()
+            .subscribeBy({}) {}
 
     fun addAttendance(element: DateTime) {
         attendances.add(element)
@@ -83,13 +86,13 @@ data class Employee @JvmOverloads constructor(
         attendances.addAll(duplicates)
     }
 
-    fun mergeDuplicates() {
-        val toRemove = (0 until (attendances.size - 1))
-                .filter { Period(attendances[it], attendances[it + 1]).toStandardMinutes().isLessThan(minutes(5)) }
-                .map { attendances[it] }
-        attendances.removeAll(toRemove)
-        duplicates.removeAll(toRemove)
-    }
+    fun mergeDuplicates() = (0 until (attendances.size - 1))
+            .filter { Period(attendances[it], attendances[it + 1]).toStandardMinutes().isLessThan(minutes(5)) }
+            .map { attendances[it] }
+            .let { toRemove ->
+                attendances.removeAll(toRemove)
+                duplicates.removeAll(toRemove)
+            }
 
     override fun hashCode(): Int = id.hashCode()
     override fun equals(other: Any?): Boolean = other != null && other is Employee && other.id == id

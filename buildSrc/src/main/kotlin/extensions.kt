@@ -7,7 +7,7 @@ const val releaseVersion = "0.3"
 /** Set false when building app, true when building stage. */
 const val isDebug = false
 
-const val dataVersion = "0.2"
+const val dataVersion = "0.3"
 const val kotlinVersion = "1.1.61"
 const val kotfxVersion = "0.8"
 const val guavaVersion = "23.3"

@@ -4,7 +4,7 @@ import javafx.collections.ObservableList
 import kotfx.collections.observableListOf
 import java.util.*
 
-data class Language(val locale: String, val name: String) {
+data class Language(val locale: String, private val name: String) {
 
     override fun toString(): String = name
 

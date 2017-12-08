@@ -5,7 +5,7 @@ import com.wijayaprinting.manager.scene.layout.TimeBox
 import javafx.application.Platform.runLater
 import javafx.beans.value.ObservableValue
 import javafx.fxml.FXML
-import javafx.print.PrinterJob
+import javafx.print.PrinterJob.createPrinterJob
 import javafx.scene.control.Button
 import javafx.scene.control.SelectionMode.MULTIPLE
 import javafx.scene.control.TreeItem
@@ -85,16 +85,16 @@ class AttendanceRecordController {
     @FXML
     fun lockStartOnAction() = treeTableView.selectionModel.selectedItems
             .map { it.value }
-            .forEach { if (it.start.value.toLocalTime().isBefore(timeBox.value)) it.start.set(it.cloneStart(timeBox.value)) }
+            .forEach { if (it.start.value.toLocalTime() < timeBox.value) it.start.set(it.cloneStart(timeBox.value)) }
 
     @FXML
     fun lockEndOnAction() = treeTableView.selectionModel.selectedItems
             .map { it.value }
-            .forEach { if (it.end.value.toLocalTime().isAfter(timeBox.value)) it.end.set(it.cloneEnd(timeBox.value)) }
+            .forEach { if (it.end.value.toLocalTime() > timeBox.value) it.end.set(it.cloneEnd(timeBox.value)) }
 
     @FXML
     fun printOnAction() {
-        val printerJob = PrinterJob.createPrinterJob()
+        val printerJob = createPrinterJob()
         if (printerJob.showPrintDialog(treeTableView.scene.window) && printerJob.printPage(treeTableView)) printerJob.endJob()
     }
 }

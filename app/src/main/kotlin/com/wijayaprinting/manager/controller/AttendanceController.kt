@@ -67,7 +67,7 @@ class AttendanceController {
     }
 
     @FXML
-    fun browseButtonOnAction() = fileChooser(FileChooser.ExtensionFilter("XLSX file", "*.xlsx"))
+    fun browseButtonOnAction() = fileChooser(FileChooser.ExtensionFilter(getString(R.string.input_file), *readerChoiceBox.value.extensions))
             .showOpenDialog(fileField.scene.window)
             ?.let { fileField.text = it.absolutePath }
 

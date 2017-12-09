@@ -8,18 +8,17 @@
 <?import javafx.scene.text.TextFlow?>
 <VBox xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.wijayaprinting.manager.controller.AttendanceRecordController">
-    <ToolBar prefHeight="40.0" prefWidth="200.0">
-        <Button mnemonicParsing="false" onAction="#printOnAction">
+    <ToolBar>
+        <Button fx:id="undoButton" mnemonicParsing="false" onAction="#undoOnAction">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@btn_print.png"/>
+                    <Image url="@btn_undo.png"/>
                 </ImageView>
             </graphic>
             <tooltip>
-                <Tooltip text="%print"/>
+                <Tooltip text="%undo"/>
             </tooltip>
         </Button>
-        <Separator/>
         <TimeBox fx:id="timeBox"/>
         <Button fx:id="lockStartButton" mnemonicParsing="false" onAction="#lockStartOnAction">
             <graphic>
@@ -39,6 +38,17 @@
             </graphic>
             <tooltip>
                 <Tooltip text="%lock_end_time"/>
+            </tooltip>
+        </Button>
+        <Separator/>
+        <Button mnemonicParsing="false" onAction="#printOnAction">
+            <graphic>
+                <ImageView pickOnBounds="true" preserveRatio="true">
+                    <Image url="@btn_print.png"/>
+                </ImageView>
+            </graphic>
+            <tooltip>
+                <Tooltip text="%print"/>
             </tooltip>
         </Button>
         <Separator/>

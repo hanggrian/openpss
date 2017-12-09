@@ -22,6 +22,10 @@ open class EClockingReader : Reader {
         private const val CELL_RECORD_END = 17
     }
 
+    override fun toString(): String = "e Clocking 2.1.015"
+
+    override val extensions: Array<String> get() = arrayOf("*.xlsx")
+
     @Throws(Exception::class)
     override fun read(file: File): Collection<Employee> {
         val multimap = LinkedHashMultimap.create<Employee, DateTime>()
@@ -66,6 +70,4 @@ open class EClockingReader : Reader {
         }
         return set
     }
-
-    override fun toString(): String = "e Clocking 2.1.015"
 }

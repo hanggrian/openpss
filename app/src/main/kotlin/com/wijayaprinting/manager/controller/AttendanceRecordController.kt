@@ -4,6 +4,7 @@ import com.wijayaprinting.manager.data.*
 import com.wijayaprinting.manager.scene.layout.TimeBox
 import javafx.application.Platform.runLater
 import javafx.beans.value.ObservableValue
+import javafx.collections.ObservableSet
 import javafx.fxml.FXML
 import javafx.print.PrinterJob.createPrinterJob
 import javafx.scene.control.Button
@@ -15,7 +16,9 @@ import javafx.scene.text.Text
 import javafx.scene.text.TextFlow
 import kotfx.bind
 import kotfx.bindings.booleanBindingOf
+import kotfx.bindings.isEmpty
 import kotfx.bindings.stringBindingOf
+import kotfx.collections.mutableObservableSetOf
 import kotfx.toProperty
 import java.lang.Character.isDigit
 import java.text.NumberFormat.getCurrencyInstance
@@ -26,6 +29,7 @@ class AttendanceRecordController {
         lateinit var EMPLOYEES: Set<Employee>
     }
 
+    @FXML lateinit var undoButton: Button
     @FXML lateinit var timeBox: TimeBox
     @FXML lateinit var lockStartButton: Button
     @FXML lateinit var lockEndButton: Button
@@ -42,9 +46,12 @@ class AttendanceRecordController {
     @FXML lateinit var overtimeIncomeColumn: TreeTableColumn<Record, Double>
     @FXML lateinit var totalColumn: TreeTableColumn<Record, Double>
 
+    private var undos: ObservableSet<() -> Unit> = mutableObservableSetOf()
+
     @FXML
     @Suppress("UNCHECKED_CAST")
     fun initialize() = runLater {
+        undoButton.disableProperty() bind undos.isEmpty
         arrayOf(lockStartButton, lockEndButton).forEach {
             it.disableProperty() bind booleanBindingOf(treeTableView.selectionModel.selectedIndexProperty()) {
                 if (treeTableView.selectionModel.selectedIndex == -1) true
@@ -85,14 +92,38 @@ class AttendanceRecordController {
     }
 
     @FXML
-    fun lockStartOnAction() = treeTableView.selectionModel.selectedItems
-            .map { it.value }
-            .forEach { if (it.start.value.toLocalTime() < timeBox.value) it.start.set(it.cloneStart(timeBox.value)) }
+    fun undoOnAction() {
+        undos.forEach { it() }
+        undos.clear()
+    }
 
     @FXML
-    fun lockEndOnAction() = treeTableView.selectionModel.selectedItems
-            .map { it.value }
-            .forEach { if (it.end.value.toLocalTime() > timeBox.value) it.end.set(it.cloneEnd(timeBox.value)) }
+    fun lockStartOnAction() {
+        undos.clear()
+        treeTableView.selectionModel.selectedItems
+                .map { it.value }
+                .forEach { record ->
+                    val initial = record.start.value
+                    if (initial.toLocalTime() < timeBox.value) {
+                        record.start.set(record.cloneStart(timeBox.value))
+                        undos.add { record.start.set(initial) }
+                    }
+                }
+    }
+
+    @FXML
+    fun lockEndOnAction() {
+        undos.clear()
+        treeTableView.selectionModel.selectedItems
+                .map { it.value }
+                .forEach { record ->
+                    val initial = record.end.value
+                    if (initial.toLocalTime() > timeBox.value) {
+                        record.end.set(record.cloneEnd(timeBox.value))
+                        undos.add { record.end.set(initial) }
+                    }
+                }
+    }
 
     @FXML
     fun printOnAction() {

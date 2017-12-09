@@ -5,17 +5,15 @@ import com.wijayaprinting.manager.scene.utils.setGaps
 import com.wijayaprinting.manager.utils.asJava
 import javafx.application.Platform
 import javafx.scene.Node
-import javafx.scene.control.ButtonType
+import javafx.scene.control.ButtonType.CANCEL
 import javafx.scene.control.ButtonType.OK
 import javafx.scene.control.DatePicker
 import javafx.scene.control.Dialog
 import javafx.scene.control.Slider
 import javafx.scene.layout.GridPane
-import kotfx.bind
 import kotfx.bindBidirectional
-import kotfx.bindings.not
-import kotfx.bindings.or
 import org.joda.time.DateTime
+import org.joda.time.DateTime.now
 
 class DateTimeDialog @JvmOverloads constructor(
         title: String,
@@ -25,6 +23,7 @@ class DateTimeDialog @JvmOverloads constructor(
 ) : Dialog<DateTime>() {
 
     private val datePicker = DatePicker().apply {
+        value = (prefill ?: now()).toLocalDate().asJava()
         prefill?.let { value = it.toLocalDate().asJava() }
         isEditable = false // force pick from popup
         maxWidth = 128.0
@@ -46,8 +45,7 @@ class DateTimeDialog @JvmOverloads constructor(
             add(hourSlider, 0, 1, 2, 1)
             add(minuteSlider, 0, 2, 2, 1)
         }
-        dialogPane.buttonTypes.addAll(OK, ButtonType.CANCEL)
-        dialogPane.lookupButton(OK).disableProperty() bind (datePicker.valueProperty().isNull or not(timeBox.validProperty))
+        dialogPane.buttonTypes.addAll(OK, CANCEL)
         Platform.runLater { datePicker.requestFocus() }
         setResultConverter {
             if (it != OK) null

@@ -8,13 +8,13 @@ plugins {
 }
 
 rsync {
-    packageName = "com.wijayaprinting.manager"
-    leadingSlash = true
-    debug = isDebug
+    packageName("com.wijayaprinting.manager")
+    leadingSlash(true)
+    debug(isDebug)
 }
 
 buildconfig {
-    packageName = "com.wijayaprinting.manager"
+    packageName("com.wijayaprinting.manager")
     groupId(releaseGroup)
     artifactId(releaseArtifact)
     version(releaseVersion)

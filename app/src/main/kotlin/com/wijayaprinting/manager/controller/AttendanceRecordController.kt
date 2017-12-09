@@ -74,11 +74,13 @@ class AttendanceRecordController {
         overtimeIncomeColumn.setCellValueFactory { it.value.value.overtimeIncome as ObservableValue<Double> }
         totalColumn.setCellValueFactory { it.value.value.total as ObservableValue<Double> }
 
-        totalText.textProperty() bind stringBindingOf(*treeTableView.root.children.flatMap { it.children }.map { it.value.total }.toTypedArray()) {
-            getCurrencyInstance().format(treeTableView.root.children.flatMap { it.children }
+        totalText.textProperty() bind stringBindingOf(*treeTableView.root.children.flatMap { it.children }.filter { it.value.type == Record.TYPE_CHILD }.map { it.value.total }.toTypedArray()) {
+            getCurrencyInstance().format(treeTableView.root.children
+                    .flatMap { it.children }
+                    .filter { it.value.type == Record.TYPE_TOTAL }
                     .map { it.value.total.value }
                     .sum())
-                    .let { it.substring(it.indexOf(it.toCharArray().first { isDigit(it) })) }
+                    .let { s -> s.substring(s.indexOf(s.toCharArray().first { isDigit(it) })) }
         }
     }
 

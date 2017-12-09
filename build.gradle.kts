@@ -4,8 +4,8 @@ buildscript {
     }
     dependencies {
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
-        classpath("com.hendraanggrian:rsync:0.6")
-        classpath("com.hendraanggrian:buildconfig:0.4")
+        classpath("com.hendraanggrian:rsync:0.7")
+        classpath("com.hendraanggrian:buildconfig:0.5")
     }
 }
 

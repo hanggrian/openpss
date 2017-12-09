@@ -39,7 +39,6 @@ import kotfx.dialogs.infoAlert
 import kotfx.dialogs.warningAlert
 import org.joda.time.DateTime
 import java.io.File
-import java.util.*
 
 class AttendanceController {
 
@@ -138,6 +137,7 @@ class AttendanceController {
         private val indicatorImage = ImageView()
         private val employeeBox = EmployeeBox()
         private val addMenu = MenuItem(getString(R.string.add))
+        private val editMenu = MenuItem(getString(R.string.edit))
         private val revertMenu = MenuItem(getString(R.string.revert))
         private val deleteMenu = MenuItem("${getString(R.string.delete)} ${employee.name}")
         private val deleteOthersMenu = MenuItem(getString(R.string.delete_others))
@@ -149,17 +149,24 @@ class AttendanceController {
             content = employeeBox
             graphic = indicatorImage
 
-            indicatorImage.imageProperty() bind bindingOf(employeeBox.listView.items) {
-                Image(if (employeeBox.listView.items.size % 2 == 0) R.png.btn_checkbox else R.png.btn_checkbox_outline)
-            }
+            indicatorImage.imageProperty() bind bindingOf(employeeBox.listView.items) { Image(if (employeeBox.listView.items.size % 2 == 0) R.png.btn_checkbox else R.png.btn_checkbox_outline) }
+            editMenu.disableProperty() bind employeeBox.listView.selectionModel.selectedItems.isEmpty
 
-            contextMenu = ContextMenu(addMenu, SeparatorMenuItem(), revertMenu, SeparatorMenuItem(), deleteMenu, deleteOthersMenu, deleteAllMenu)
+            contextMenu = ContextMenu(addMenu, editMenu, SeparatorMenuItem(), revertMenu, SeparatorMenuItem(), deleteMenu, deleteOthersMenu, deleteAllMenu)
             addMenu.setOnAction {
-                DateTimeDialog(getString(R.string.record), ImageView(R.png.ic_calendar), getString(R.string.record), employeeBox.listView.selectionModel.selectedItem)
+                DateTimeDialog(getString(R.string.record), ImageView(R.png.ic_calendar), getString(R.string.add), employeeBox.listView.selectionModel.selectedItem)
                         .showAndWait()
                         .ifPresent {
                             employeeBox.listView.items.add(it)
-                            Collections.sort(employeeBox.listView.items)
+                            employeeBox.listView.items.sort()
+                        }
+            }
+            editMenu.setOnAction {
+                DateTimeDialog(getString(R.string.record), ImageView(R.png.ic_calendar), getString(R.string.edit), employeeBox.listView.selectionModel.selectedItem)
+                        .showAndWait()
+                        .ifPresent {
+                            employeeBox.listView.items[employeeBox.listView.selectionModel.selectedIndex] = it
+                            employeeBox.listView.items.sort()
                         }
             }
             revertMenu.setOnAction { employee.revert() }

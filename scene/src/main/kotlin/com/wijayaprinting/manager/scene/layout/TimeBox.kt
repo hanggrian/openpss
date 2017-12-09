@@ -16,6 +16,7 @@ import org.joda.time.format.DateTimeFormat
 open class TimeBox : HBox() {
 
     val hourField = IntField()
+    val dividerLabel = Label(":")
     val minuteField = IntField()
 
     val valueProperty = SimpleObjectProperty<LocalTime>()
@@ -25,13 +26,15 @@ open class TimeBox : HBox() {
         alignment = CENTER
         spacing = 4.0
 
+        hourField.textProperty().addListener { _, oldValue, newValue -> if (newValue.toIntOrNull() ?: 0 !in 0..24) hourField.text = oldValue }
+        minuteField.textProperty().addListener { _, oldValue, newValue -> if (newValue.toIntOrNull() ?: 0 !in 0..60) minuteField.text = oldValue }
         listOf(hourField, minuteField).forEach {
-            it.text = "00"
             it.promptText = "00"
             it.maxWidth = 48.0
             it.alignment = CENTER
         }
-        children.addAll(hourField, Label(":"), minuteField)
+
+        children.addAll(hourField, dividerLabel, minuteField)
 
         valueProperty bind bindingOf(hourField.textProperty(), minuteField.textProperty()) {
             try {

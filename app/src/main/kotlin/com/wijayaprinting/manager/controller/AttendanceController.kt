@@ -15,7 +15,6 @@ import com.wijayaprinting.manager.utils.multithread
 import io.reactivex.Observable
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers.computation
-import javafx.application.Platform.runLater
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
 import javafx.geometry.Insets
@@ -27,16 +26,21 @@ import javafx.scene.control.ButtonType.OK
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import javafx.scene.layout.*
-import javafx.stage.FileChooser
 import javafx.stage.Stage
-import kotfx.bind
-import kotfx.bindBidirectional
 import kotfx.bindings.bindingOf
 import kotfx.bindings.isEmpty
-import kotfx.dialogs.errorAlert
+import kotfx.controls.label
+import kotfx.controls.listView
+import kotfx.controls.popups.menuItem
+import kotfx.controls.titledPane
+import kotfx.dialogs.errorAlertWait
 import kotfx.dialogs.fileChooser
 import kotfx.dialogs.infoAlert
 import kotfx.dialogs.warningAlert
+import kotfx.layouts.gridPane
+import kotfx.layouts.vbox
+import kotfx.properties.bind
+import kotfx.properties.bindBidirectional
 import org.joda.time.DateTime
 import java.io.File
 
@@ -51,13 +55,13 @@ class AttendanceController {
     @FXML lateinit var flowPane: FlowPane
 
     @FXML
-    fun initialize() = runLater {
+    fun initialize() = run {
         readerChoiceBox.items = Reader.listAll()
         if (readerChoiceBox.items.isNotEmpty()) readerChoiceBox.selectionModel.select(0)
 
         readButton.disableProperty() bind fileField.validProperty
         processButton.disableProperty() bind flowPane.children.isEmpty
-        employeeCountLabel.textProperty() bind bindingOf(flowPane.children) { flowPane.children.size.toString() + " " + getString(R.string.employee) }
+        employeeCountLabel.textProperty() bind bindingOf(flowPane.children) { "${flowPane.children.size} ${getString(R.string.employee)}" }
         flowPane.prefWrapLengthProperty() bind fileField.scene.widthProperty()
 
         if (BuildConfig.DEBUG) {
@@ -67,14 +71,14 @@ class AttendanceController {
     }
 
     @FXML
-    fun browseButtonOnAction() = fileChooser(FileChooser.ExtensionFilter(getString(R.string.input_file), *readerChoiceBox.value.extensions))
-            .showOpenDialog(fileField.scene.window)
-            ?.let { fileField.text = it.absolutePath }
+    fun browseButtonOnAction() = fileField.scene.window.fileChooser(getString(R.string.input_file), *readerChoiceBox.value.extensions)?.let { fileField.text = it.absolutePath }
 
     @FXML
     fun readButtonOnAction() {
-        val progressDialog = infoAlert(getString(R.string.please_wait), getString(R.string.please_wait_content)) { buttonTypes.clear() }
-        progressDialog.show()
+        val progressDialog = infoAlert(getString(R.string.please_wait_content)) {
+            header(getString(R.string.please_wait))
+            buttonTypes.clear()
+        }
         flowPane.children.clear()
         Observable
                 .create<Employee> { emitter ->
@@ -93,11 +97,70 @@ class AttendanceController {
                     emitter.onComplete()
                 }
                 .multithread(computation())
-                .subscribeBy({ e -> e.message ?: getString(R.string.error_unknown).let { errorAlert(it).showAndWait() } }, {
+                .subscribeBy({ e -> errorAlertWait(e.message ?: getString(R.string.error_unknown)) }, {
                     progressDialog.dialogPane.buttonTypes.add(OK) // apparently alert won't close without a button
                     progressDialog.close()
                 }) { employee ->
                     flowPane.children.add(EmployeeTitledPane(employee))
+                    flowPane.children.add(titledPane(employee.toString(), ImageView()) {
+                        isCollapsible = false
+                        content = vbox {
+                            gridPane {
+                                setGaps(4)
+                                padding = Insets(4.0, 8.0, 4.0, 8.0)
+                                label(getString(R.string.daily_income)) col 0 row 0
+                                val dailyField = IntField().apply {
+                                    prefWidth = 96.0
+                                    promptText = getString(R.string.daily_income)
+                                    valueProperty bindBidirectional employee.daily
+                                }.add() col 1 row 0 colSpan 2
+                                label(getString(R.string.overtime_income)) col 0 row 1
+                                val overtimeField = IntField().apply {
+                                    prefWidth = 96.0
+                                    promptText = getString(R.string.overtime_income)
+                                    valueProperty bindBidirectional employee.hourlyOvertime
+                                }.add() col 1 row 1 colSpan 2
+                                label(getString(R.string.recess)) col 0 row 2
+                                val recessField = DoubleField().apply {
+                                    prefWidth = 48.0
+                                    promptText = getString(R.string.recess)
+                                    valueProperty bindBidirectional employee.recess
+                                }.add() col 1 row 2
+                                val recessOvertimeField = DoubleField().apply {
+                                    prefWidth = 48.0
+                                    promptText = getString(R.string.recess)
+                                    valueProperty bindBidirectional employee.recessOvertime
+                                }.add() col 2 row 2
+                            }
+                            val listView = listView(employee.attendances) {
+                                prefWidth = 128.0
+                                setCellFactory {
+                                    object : ListCell<DateTime>() {
+                                        override fun updateItem(item: DateTime?, empty: Boolean) {
+                                            super.updateItem(item, empty)
+                                            text = null
+                                            graphic = null
+                                            if (item != null && !empty) {
+                                                val label = Label(item.toString(PATTERN_DATETIME)).apply { setMaxSize(Double.MAX_VALUE) }
+                                                val deleteButton = Button().apply { setSize(18.0) }
+                                                deleteButton.graphicProperty() bind bindingOf<Node?>(deleteButton.hoverProperty()) { if (deleteButton.isHover) ImageView(R.png.btn_clear) else null }
+                                                deleteButton.setOnAction { listView.items.remove(item) }
+                                                HBox.setHgrow(label, Priority.ALWAYS)
+                                                graphic = HBox(label, deleteButton).apply { alignment = CENTER }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+                            (graphic as ImageView).imageProperty() bind bindingOf(listView.items) { Image(if (listView.items.size % 2 == 0) R.png.btn_checkbox else R.png.btn_checkbox_outline) }
+                            // editMenu.disableProperty() bind employeeBox.listView.selectionModel.selectedItems.isEmpty
+                        }
+                        contextMenu = ContextMenu(
+                                menuItem {
+
+                                })
+                    })
                 }
     }
 
@@ -108,11 +171,11 @@ class AttendanceController {
             val employee = (pane as EmployeeTitledPane).employee
             when {
                 employee.daily.value <= 0 || employee.hourlyOvertime.value <= 0 -> {
-                    warningAlert(pane.employee.name, getString(R.string.error_employee_incomplete)).show()
+                    warningAlert(getString(R.string.error_employee_incomplete)) { header(pane.employee.name) }
                     return
                 }
                 employee.attendances.size % 2 != 0 -> {
-                    warningAlert(pane.employee.name, getString(R.string.error_employee_odd)).show()
+                    warningAlert(getString(R.string.error_employee_odd)) { header(pane.employee.name) }
                     return
                 }
                 else -> {

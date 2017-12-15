@@ -11,7 +11,7 @@ import javafx.scene.control.DatePicker
 import javafx.scene.control.Dialog
 import javafx.scene.control.Slider
 import javafx.scene.layout.GridPane
-import kotfx.bindBidirectional
+import kotfx.properties.bindBidirectional
 import org.joda.time.DateTime
 import org.joda.time.DateTime.now
 

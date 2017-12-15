@@ -3,7 +3,6 @@ package com.wijayaprinting.manager.controller
 import com.wijayaprinting.manager.data.*
 import com.wijayaprinting.manager.scene.layout.TimeBox
 import javafx.application.Platform.runLater
-import javafx.beans.value.ObservableValue
 import javafx.collections.ObservableSet
 import javafx.fxml.FXML
 import javafx.print.PrinterJob.createPrinterJob
@@ -14,12 +13,13 @@ import javafx.scene.control.TreeTableColumn
 import javafx.scene.control.TreeTableView
 import javafx.scene.text.Text
 import javafx.scene.text.TextFlow
-import kotfx.bind
 import kotfx.bindings.booleanBindingOf
 import kotfx.bindings.isEmpty
 import kotfx.bindings.stringBindingOf
 import kotfx.collections.mutableObservableSetOf
-import kotfx.toProperty
+import kotfx.properties.asObservable
+import kotfx.properties.asProperty
+import kotfx.properties.bind
 import java.lang.Character.isDigit
 import java.text.NumberFormat.getCurrencyInstance
 
@@ -72,14 +72,14 @@ class AttendanceRecordController {
             })
         }
 
-        employeeColumn.setCellValueFactory { it.value.value.employee.toProperty() }
+        employeeColumn.setCellValueFactory { it.value.value.employee.asProperty() }
         startColumn.setCellValueFactory { it.value.value.startString }
         endColumn.setCellValueFactory { it.value.value.endString }
-        dailyColumn.setCellValueFactory { it.value.value.daily as ObservableValue<Double> }
-        dailyIncomeColumn.setCellValueFactory { it.value.value.dailyIncome as ObservableValue<Double> }
-        overtimeColumn.setCellValueFactory { it.value.value.overtime as ObservableValue<Double> }
-        overtimeIncomeColumn.setCellValueFactory { it.value.value.overtimeIncome as ObservableValue<Double> }
-        totalColumn.setCellValueFactory { it.value.value.total as ObservableValue<Double> }
+        dailyColumn.setCellValueFactory { it.value.value.daily.asObservable() }
+        dailyIncomeColumn.setCellValueFactory { it.value.value.dailyIncome.asObservable() }
+        overtimeColumn.setCellValueFactory { it.value.value.overtime.asObservable() }
+        overtimeIncomeColumn.setCellValueFactory { it.value.value.overtimeIncome.asObservable() }
+        totalColumn.setCellValueFactory { it.value.value.total.asObservable() }
 
         totalText.textProperty() bind stringBindingOf(*treeTableView.root.children.flatMap { it.children }.filter { it.value.type == Record.TYPE_CHILD }.map { it.value.total }.toTypedArray()) {
             getCurrencyInstance().format(treeTableView.root.children

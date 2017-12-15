@@ -4,8 +4,8 @@ import com.wijayaprinting.manager.scene.utils.isDecimal
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleDoubleProperty
 import javafx.scene.control.TextField
-import kotfx.bind
 import kotfx.bindings.booleanBindingOf
+import kotfx.properties.bind
 import kotfx.stringConverterOf
 
 open class DoubleField : TextField() {
@@ -14,7 +14,7 @@ open class DoubleField : TextField() {
     val validProperty = SimpleBooleanProperty()
 
     init {
-        textProperty().bindBidirectional(valueProperty, stringConverterOf<Number> { if (!isDecimal) 0.0 else it.toDouble() })
+        textProperty().bindBidirectional(valueProperty, stringConverterOf<Number>({ if (!isDecimal) 0.0 else it.toDouble() }))
         validProperty bind booleanBindingOf(textProperty()) { isDecimal }
     }
 

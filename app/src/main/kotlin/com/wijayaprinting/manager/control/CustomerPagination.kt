@@ -17,8 +17,8 @@ import javafx.scene.control.*
 import javafx.scene.image.ImageView
 import javafx.scene.layout.GridPane
 import javafx.scene.layout.StackPane
-import kotfx.bind
 import kotfx.collections.toObservableList
+import kotfx.properties.bind
 import org.apache.commons.lang3.math.NumberUtils
 import org.jetbrains.exposed.sql.SizedIterable
 import org.jetbrains.exposed.sql.or

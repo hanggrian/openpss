@@ -11,29 +11,30 @@ import com.wijayaprinting.manager.utils.icon
 import com.wijayaprinting.manager.utils.setIconOnOSX
 import javafx.application.Application
 import javafx.application.Platform.exit
-import javafx.application.Platform.runLater
-import javafx.event.ActionEvent.ACTION
 import javafx.fxml.FXMLLoader
 import javafx.geometry.Pos.CENTER
 import javafx.scene.Scene
-import javafx.scene.control.*
-import javafx.scene.control.ButtonBar.ButtonData.OK_DONE
 import javafx.scene.control.ButtonType.CANCEL
 import javafx.scene.control.ButtonType.OK
+import javafx.scene.control.ChoiceBox
+import javafx.scene.control.PasswordField
+import javafx.scene.control.TextField
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
-import javafx.scene.layout.GridPane
-import javafx.scene.layout.HBox
 import javafx.stage.Stage
-import javafx.util.Callback
-import kotfx.bind
-import kotfx.bindBidirectional
 import kotfx.bindings.bindingOf
 import kotfx.bindings.not
 import kotfx.bindings.or
-import kotfx.dialogs.dialog
-import kotfx.dialogs.errorAlert
-import kotfx.dialogs.infoAlert
+import kotfx.controls.*
+import kotfx.controls.popups.tooltip
+import kotfx.dialogs.dialogWait
+import kotfx.dialogs.errorAlertWait
+import kotfx.dialogs.infoAlertWait
+import kotfx.dialogs.okButton
+import kotfx.layouts.gridPane
+import kotfx.layouts.hbox
+import kotfx.properties.bind
+import kotfx.properties.bindBidirectional
 import org.apache.log4j.BasicConfigurator.configure
 import java.awt.Desktop.getDesktop
 import java.awt.Toolkit
@@ -41,6 +42,13 @@ import java.net.InetAddress.getByName
 import java.net.URI
 
 class App : Application() {
+
+    lateinit var languageBox: ChoiceBox<Language>
+    lateinit var usernameField: TextField
+    lateinit var ipField: IPField
+    lateinit var portField: IntField
+
+    lateinit var passwordField: PasswordField
 
     companion object {
         private const val IP_LOOKUP_TIMEOUT = 3000
@@ -58,138 +66,89 @@ class App : Application() {
         stage.icon = Image(R.png.logo_launcher)
         setIconOnOSX(Toolkit.getDefaultToolkit().getImage(App::class.java.getResource(R.png.logo_launcher)))
 
-        LoginDialog()
-                .showAndWait()
-                .filter { it is String }
-                .ifPresent {
-                    val minSize = Pair(960.0, 640.0)
-                    stage.apply {
-                        scene = Scene(FXMLLoader.load(App::class.java.getResource(R.fxml.layout_main), resources), minSize.first, minSize.second)
-                        title = getString(R.string.app_name)
-                        minWidth = minSize.first
-                        minHeight = minSize.second
-                    }.show()
-                }
-    }
-
-    inner class LoginDialog : Dialog<Any>() {
-        val content = Content()
-        val expandableContent = ExpandableContent()
-        val loginButton = ButtonType(getString(R.string.login), OK_DONE)
-
-        init {
-            title = getString(R.string.app_name)
-            headerText = getString(R.string.login)
-            graphic = ImageView(R.png.ic_launcher)
-            isResizable = false
-
-            dialogPane.content = content
-            dialogPane.expandableContent = expandableContent
-
-            dialogPane.buttonTypes.addAll(CANCEL, loginButton)
-            dialogPane.lookupButton(loginButton).addEventFilter(ACTION) { event ->
-                event.consume()
-                MySQLFile.save()
-                if (!getByName(content.ipField.text).isReachable(IP_LOOKUP_TIMEOUT)) {
-                    errorAlert(getString(R.string.ip_address_unreachable)).showAndWait()
-                    return@addEventFilter
-                }
-                dialog<String>(getString(R.string.password), ImageView(R.png.ic_key), getString(R.string.password_required)) {
-                    val passwordLabel = Label(getString(R.string.password))
-                    val passwordField = PasswordField().apply { promptText = getString(R.string.password) }
-                    val passwordToggle = ToggleButton().apply { attachButtons(R.png.btn_visibility, R.png.btn_visibility_off) }
-                    buttonTypes.addAll(CANCEL, OK)
-                    lookupButton(OK).disableProperty() bind passwordField.textProperty().isEmpty
-                    passwordField.tooltipProperty() bind bindingOf(passwordField.textProperty(), passwordToggle.selectedProperty()) {
-                        if (!passwordToggle.isSelected) null
-                        else Tooltip(passwordField.text)
-                    }
-                    content = HBox().apply {
-                        spacing = 8.0
-                        alignment = CENTER
-                        children.addAll(passwordLabel, passwordField, passwordToggle)
-                    }
-                    runLater { passwordField.requestFocus() }
-
-                    if (BuildConfig.DEBUG) {
-                        passwordField.text = "justforApp1e!"
-                    }
-
-                    Callback { if (it == OK) passwordField.text else null }
-                }.showAndWait().filter { it != null }.ifPresent { password ->
-                    try {
-                        connectDatabase(content.ipField.text, content.portField.text, content.usernameField.text, password)
-                        result = content.usernameField.text
-                        close()
-                    } catch (e: Exception) {
-                        errorAlert(e.message ?: "Unknown error!").showAndWait()
-                    }
-                }
-            }
-            dialogPane.lookupButton(loginButton).disableProperty() bind (content.usernameField.textProperty().isEmpty
-                    or not(content.ipField.validProperty)
-                    or content.portField.textProperty().isEmpty)
-
-            content.usernameField.textProperty() bindBidirectional MySQLFile[MySQLFile.USERNAME]
-            content.ipField.textProperty() bindBidirectional MySQLFile[MySQLFile.IP]
-            content.portField.textProperty() bindBidirectional MySQLFile[MySQLFile.PORT]
-
-            runLater { content.usernameField.requestFocus() }
-        }
-
-        inner class Content : GridPane() {
-            val languageLabel = Label(getString(R.string.language))
-            val languageBox = ChoiceBox<Language>(Language.listAll()).apply { maxWidth = Double.MAX_VALUE }
-            val usernameLabel = Label(getString(R.string.username))
-            val usernameField = TextField(getString(R.string.username))
-            val serverLabel = Label(getString(R.string.server))
-            val ipField = IPField().apply {
-                promptText = getString(R.string.ip_address)
-                prefWidth = 128.0
-            }
-            val portField = IntField().apply {
-                promptText = getString(R.string.port)
-                prefWidth = 64.0
-            }
-
-            init {
-                setGaps(8.0)
-                add(languageLabel, 0, 0)
-                add(languageBox, 1, 0, 2, 1)
-                add(usernameLabel, 0, 1)
-                add(usernameField, 1, 1, 2, 1)
-                add(serverLabel, 0, 2)
-                add(ipField, 1, 2)
-                add(portField, 2, 2)
+        dialogWait<Any>(getString(R.string.app_name)) {
+            header(getString(R.string.login))
+            graphic(ImageView(R.png.ic_launcher))
+            resizable(false)
+            content(gridPane {
+                setGaps(8)
+                label(getString(R.string.language)) col 0 row 0
+                languageBox = choiceBox(Language.listAll()) { maxWidth = Double.MAX_VALUE } col 1 row 0 colSpan 2
+                label(getString(R.string.username)) col 0 row 1
+                usernameField = textField { promptText = getString(R.string.username) } col 1 row 1 colSpan 2
+                label(getString(R.string.server)) col 0 row 2
+                ipField = IPField().apply {
+                    promptText = getString(R.string.ip_address)
+                    prefWidth = 128.0
+                }.add() col 1 row 2
+                portField = IntField().apply {
+                    promptText = getString(R.string.port)
+                    prefWidth = 64.0
+                }.add() col 2 row 2
 
                 val initialLanguage = Language.parse(PreferencesFile[PreferencesFile.LANGUAGE].value)
                 languageBox.selectionModel.select(initialLanguage)
                 languageBox.selectionModel.selectedItemProperty().addListener { _, _, newValue ->
                     PreferencesFile.apply { get(PreferencesFile.LANGUAGE).set(newValue.locale) }.save()
                     close()
-                    infoAlert(getString(R.string.language_changed)).showAndWait()
+                    infoAlertWait(getString(R.string.language_changed))
                     exit()
                 }
-            }
-        }
+                usernameField.textProperty() bindBidirectional MySQLFile[MySQLFile.USERNAME]
+                ipField.textProperty() bindBidirectional MySQLFile[MySQLFile.IP]
+                portField.textProperty() bindBidirectional MySQLFile[MySQLFile.PORT]
+                run { usernameField.requestFocus() }
+            })
+            expandableContent(gridPane {
+                setGaps(8)
+                label("An open-source software.\nFor more information and update, visit:") col 0 row 0 colSpan 2
+                hyperlink("https://github.com/WijayaPrinting/") { setOnAction { getDesktop().browse(URI(text)) } } col 0 row 1 colSpan 2
+                label("Manager") col 0 row 2
+                label(BuildConfig.VERSION) col 1 row 2
+                label("Data") col 0 row 3
+                label(com.wijayaprinting.data.BuildConfig.VERSION) col 1 row 3
+            })
 
-        inner class ExpandableContent : GridPane() {
-            val aboutLabel = Label("An open-source software.\nFor more information and update, visit:")
-            val hyperlink = Hyperlink("https://github.com/WijayaPrinting/").apply { setOnAction { getDesktop().browse(URI(text)) } }
-            val javafxLabel = Label("JavaFX")
-            val javafxLabel2 = Label(BuildConfig.VERSION)
-            val mysqlLabel = Label("MySQL")
-            val mysqlLabel2 = Label(com.wijayaprinting.data.BuildConfig.VERSION)
-
-            init {
-                setGaps(8.0)
-                add(aboutLabel, 0, 0, 2, 1)
-                add(hyperlink, 0, 1, 2, 1)
-                add(javafxLabel, 0, 2)
-                add(javafxLabel2, 1, 2)
-                add(mysqlLabel, 0, 3)
-                add(mysqlLabel2, 1, 3)
-            }
+            button(CANCEL)
+            okButton(getString((R.string.login))) {
+                MySQLFile.save()
+                if (!getByName(ipField.text).isReachable(IP_LOOKUP_TIMEOUT)) errorAlertWait(getString(R.string.ip_address_unreachable))
+                else dialogWait<String>(getString(R.string.password)) {
+                    header(getString(R.string.password_required))
+                    graphic(ImageView(R.png.ic_key))
+                    content(hbox {
+                        spacing = 8.0
+                        alignment = CENTER
+                        label(getString(R.string.password))
+                        passwordField = passwordField { promptText = getString(R.string.password) }
+                        val passwordToggle = toggleButton { attachButtons(R.png.btn_visibility, R.png.btn_visibility_off) }
+                        passwordField.tooltipProperty() bind bindingOf(passwordField.textProperty(), passwordToggle.selectedProperty()) { if (!passwordToggle.isSelected) null else tooltip(passwordField.text) }
+                        run { passwordField.requestFocus() }
+                        if (BuildConfig.DEBUG) {
+                            passwordField.text = "justforApp1e!"
+                        }
+                    })
+                    buttons(CANCEL, OK)
+                    OK.asNode().disableProperty() bind passwordField.textProperty().isEmpty
+                    setResultConverter { if (it == OK) passwordField.text else null }
+                }.filter { it != null }.ifPresent { password ->
+                    try {
+                        connectDatabase(ipField.text, portField.text, usernameField.text, password)
+                        result = usernameField.text
+                        close()
+                    } catch (e: Exception) {
+                        errorAlertWait(e.message ?: "Unknown error!")
+                    }
+                }
+            }.asNode().disableProperty() bind (usernameField.textProperty().isEmpty or not(ipField.validProperty) or portField.textProperty().isEmpty)
+        }.filter { it is String }.ifPresent {
+            val minSize = Pair(960.0, 640.0)
+            stage.apply {
+                scene = Scene(FXMLLoader.load(App::class.java.getResource(R.fxml.layout_main), resources), minSize.first, minSize.second)
+                title = getString(R.string.app_name)
+                minWidth = minSize.first
+                minHeight = minSize.second
+            }.show()
         }
     }
 }

@@ -6,8 +6,8 @@ package com.wijayaprinting.manager.scene.utils
 import javafx.scene.control.ToggleButton
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
-import kotfx.bind
 import kotfx.bindings.bindingOf
+import kotfx.properties.bind
 
 inline fun ToggleButton.attachButtons(selected: String, unselected: String) = attachButtons(Image(selected), Image(unselected))
 

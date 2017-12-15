@@ -3,10 +3,10 @@ package com.wijayaprinting.manager.data
 import com.wijayaprinting.data.PATTERN_DATETIME
 import com.wijayaprinting.manager.utils.round
 import javafx.beans.property.*
-import kotfx.bind
 import kotfx.bindings.doubleBindingOf
 import kotfx.bindings.plus
 import kotfx.bindings.stringBindingOf
+import kotfx.properties.bind
 import org.joda.time.DateTime
 import org.joda.time.LocalTime
 import org.joda.time.Period

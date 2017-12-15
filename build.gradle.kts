@@ -3,9 +3,9 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
-        classpath("com.hendraanggrian:rsync:0.7")
-        classpath("com.hendraanggrian:buildconfig:0.5")
+        classpath(kotlin("gradle-plugin", kotlinVersion))
+        classpath(hendraanggrian("rsync", "0.7"))
+        classpath(hendraanggrian("buildconfig", "0.5"))
     }
 }
 

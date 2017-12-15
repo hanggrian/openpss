@@ -5,7 +5,7 @@ import com.wijayaprinting.manager.safeTransaction
 import javafx.fxml.FXML
 import javafx.scene.control.Label
 import javafx.scene.control.TextField
-import kotfx.bind
+import kotfx.properties.bind
 
 class CustomerController {
 

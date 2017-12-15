@@ -7,9 +7,9 @@ import javafx.beans.property.SimpleObjectProperty
 import javafx.geometry.Pos.CENTER
 import javafx.scene.control.Label
 import javafx.scene.layout.HBox
-import kotfx.bind
 import kotfx.bindings.bindingOf
 import kotfx.bindings.booleanBindingOf
+import kotfx.properties.bind
 import org.joda.time.LocalTime
 import org.joda.time.format.DateTimeFormat
 

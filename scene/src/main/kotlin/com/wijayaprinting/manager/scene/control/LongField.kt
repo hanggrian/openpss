@@ -11,7 +11,7 @@ open class LongField : TextField() {
     val valueProperty = SimpleLongProperty()
 
     init {
-        textProperty().bindBidirectional(valueProperty, stringConverterOf<Number> { if (!isDigits) 0 else it.toLong() })
+        textProperty().bindBidirectional(valueProperty, stringConverterOf<Number>({ if (!isDigits) 0 else it.toLong() }))
         digitsOnly()
     }
 

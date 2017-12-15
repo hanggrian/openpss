@@ -11,7 +11,7 @@ open class IntField : TextField() {
     val valueProperty = SimpleIntegerProperty()
 
     init {
-        textProperty().bindBidirectional(valueProperty, stringConverterOf<Number> { if (!isDigits) 0 else it.toInt() })
+        textProperty().bindBidirectional(valueProperty, stringConverterOf<Number>({ if (!isDigits) 0 else it.toInt() }))
         digitsOnly()
     }
 

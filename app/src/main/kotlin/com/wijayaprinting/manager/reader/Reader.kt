@@ -13,7 +13,7 @@ interface Reader {
     /** [toString] must be overriden since it is used as identifier to reader. */
     override fun toString(): String
 
-    /** Expected file extensions to for [FileChooser.ExtensionFilter]. */
+    /** Expected file extensions for [FileChooser.ExtensionFilter]. */
     val extensions: Array<String>
 
     /**

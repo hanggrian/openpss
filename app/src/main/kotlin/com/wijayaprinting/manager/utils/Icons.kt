@@ -3,7 +3,6 @@
 package com.wijayaprinting.manager.utils
 
 import javafx.application.Application
-import javafx.scene.control.Dialog
 import javafx.scene.image.Image
 import javafx.stage.Stage
 import org.apache.commons.lang3.SystemUtils
@@ -13,12 +12,6 @@ inline var Stage.icon: Image
     set(value) {
         if (icons.isEmpty()) icons.clear()
         icons.add(value)
-    }
-
-inline var Dialog<*>.icon: Image
-    get() = (dialogPane.scene.window as Stage).icon
-    set(value) {
-        (dialogPane.scene.window as Stage).icon = value
     }
 
 inline fun Application.setIconOnOSX(image: java.awt.Image) {

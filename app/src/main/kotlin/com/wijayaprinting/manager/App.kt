@@ -16,7 +16,6 @@ import javafx.geometry.Pos.CENTER
 import javafx.scene.Scene
 import javafx.scene.control.ButtonType.CANCEL
 import javafx.scene.control.ButtonType.OK
-import javafx.scene.control.ChoiceBox
 import javafx.scene.control.PasswordField
 import javafx.scene.control.TextField
 import javafx.scene.image.Image
@@ -26,29 +25,23 @@ import kotfx.bindings.bindingOf
 import kotfx.bindings.not
 import kotfx.bindings.or
 import kotfx.controls.*
-import kotfx.controls.popups.tooltip
+import kotfx.controls.menus.tooltipOf
 import kotfx.dialogs.dialogWait
 import kotfx.dialogs.errorAlertWait
 import kotfx.dialogs.infoAlertWait
 import kotfx.dialogs.okButton
-import kotfx.layouts.gridPane
-import kotfx.layouts.hbox
+import kotfx.layouts.gridPaneOf
+import kotfx.layouts.hboxOf
 import kotfx.properties.bind
 import kotfx.properties.bindBidirectional
+import kotfx.runFX
 import org.apache.log4j.BasicConfigurator.configure
 import java.awt.Desktop.getDesktop
-import java.awt.Toolkit
+import java.awt.Toolkit.getDefaultToolkit
 import java.net.InetAddress.getByName
 import java.net.URI
 
 class App : Application() {
-
-    lateinit var languageBox: ChoiceBox<Language>
-    lateinit var usernameField: TextField
-    lateinit var ipField: IPField
-    lateinit var portField: IntField
-
-    lateinit var passwordField: PasswordField
 
     companion object {
         private const val IP_LOOKUP_TIMEOUT = 3000
@@ -64,42 +57,48 @@ class App : Application() {
 
     override fun start(stage: Stage) {
         stage.icon = Image(R.png.logo_launcher)
-        setIconOnOSX(Toolkit.getDefaultToolkit().getImage(App::class.java.getResource(R.png.logo_launcher)))
+        setIconOnOSX(getDefaultToolkit().getImage(App::class.java.getResource(R.png.logo_launcher)))
 
         dialogWait<Any>(getString(R.string.app_name)) {
             header(getString(R.string.login))
             graphic(ImageView(R.png.ic_launcher))
             resizable(false)
-            content(gridPane {
+            lateinit var usernameField: TextField
+            lateinit var ipField: IPField
+            lateinit var portField: IntField
+            content(gridPaneOf {
                 setGaps(8)
                 label(getString(R.string.language)) col 0 row 0
-                languageBox = choiceBox(Language.listAll()) { maxWidth = Double.MAX_VALUE } col 1 row 0 colSpan 2
+                choiceBox(Language.listAll()) {
+                    maxWidth = Double.MAX_VALUE
+                    selectionModel.select(Language.parse(PreferencesFile[PreferencesFile.LANGUAGE].value))
+                    selectionModel.selectedItemProperty().addListener { _, _, newValue ->
+                        PreferencesFile[PreferencesFile.LANGUAGE].set(newValue.locale)
+                        PreferencesFile.save()
+                        close()
+                        infoAlertWait(getString(R.string.language_changed)).ifPresent { exit() }
+                    }
+                } col 1 row 0 colSpan 2
                 label(getString(R.string.username)) col 0 row 1
-                usernameField = textField { promptText = getString(R.string.username) } col 1 row 1 colSpan 2
+                usernameField = textField {
+                    promptText = getString(R.string.username)
+                    textProperty() bindBidirectional MySQLFile[MySQLFile.USERNAME]
+                } col 1 row 1 colSpan 2
                 label(getString(R.string.server)) col 0 row 2
                 ipField = IPField().apply {
                     promptText = getString(R.string.ip_address)
                     prefWidth = 128.0
+                    textProperty() bindBidirectional MySQLFile[MySQLFile.IP]
                 }.add() col 1 row 2
                 portField = IntField().apply {
                     promptText = getString(R.string.port)
                     prefWidth = 64.0
+                    textProperty() bindBidirectional MySQLFile[MySQLFile.PORT]
                 }.add() col 2 row 2
 
-                val initialLanguage = Language.parse(PreferencesFile[PreferencesFile.LANGUAGE].value)
-                languageBox.selectionModel.select(initialLanguage)
-                languageBox.selectionModel.selectedItemProperty().addListener { _, _, newValue ->
-                    PreferencesFile.apply { get(PreferencesFile.LANGUAGE).set(newValue.locale) }.save()
-                    close()
-                    infoAlertWait(getString(R.string.language_changed))
-                    exit()
-                }
-                usernameField.textProperty() bindBidirectional MySQLFile[MySQLFile.USERNAME]
-                ipField.textProperty() bindBidirectional MySQLFile[MySQLFile.IP]
-                portField.textProperty() bindBidirectional MySQLFile[MySQLFile.PORT]
-                run { usernameField.requestFocus() }
+                runFX { usernameField.requestFocus() }
             })
-            expandableContent(gridPane {
+            expandableContent(gridPaneOf {
                 setGaps(8)
                 label("An open-source software.\nFor more information and update, visit:") col 0 row 0 colSpan 2
                 hyperlink("https://github.com/WijayaPrinting/") { setOnAction { getDesktop().browse(URI(text)) } } col 0 row 1 colSpan 2
@@ -116,14 +115,15 @@ class App : Application() {
                 else dialogWait<String>(getString(R.string.password)) {
                     header(getString(R.string.password_required))
                     graphic(ImageView(R.png.ic_key))
-                    content(hbox {
+                    lateinit var passwordField: PasswordField
+                    content(hboxOf {
                         spacing = 8.0
                         alignment = CENTER
                         label(getString(R.string.password))
                         passwordField = passwordField { promptText = getString(R.string.password) }
                         val passwordToggle = toggleButton { attachButtons(R.png.btn_visibility, R.png.btn_visibility_off) }
-                        passwordField.tooltipProperty() bind bindingOf(passwordField.textProperty(), passwordToggle.selectedProperty()) { if (!passwordToggle.isSelected) null else tooltip(passwordField.text) }
-                        run { passwordField.requestFocus() }
+                        passwordField.tooltipProperty() bind bindingOf(passwordField.textProperty(), passwordToggle.selectedProperty()) { if (!passwordToggle.isSelected) null else tooltipOf(passwordField.text) }
+                        runFX { passwordField.requestFocus() }
                         if (BuildConfig.DEBUG) {
                             passwordField.text = "justforApp1e!"
                         }

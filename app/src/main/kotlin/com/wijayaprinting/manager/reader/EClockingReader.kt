@@ -29,40 +29,39 @@ open class EClockingReader : Reader {
     @Throws(Exception::class)
     override fun read(file: File): Collection<Employee> {
         val multimap = LinkedHashMultimap.create<Employee, DateTime>()
-        val stream = file.inputStream()
-        val workbook = XSSFWorkbook(stream)
-        val sheet = workbook.getSheetAt(SHEET_RAW_ATTENDANCE_LOGS)
-        sheet.iterator().asSequence().forEachIndexed { rowIndex, row ->
-            // skips right to employee
-            if (rowIndex > 4) {
-                val dept = row.getCell(CELL_DEPT).stringCellValue
-                val name = row.getCell(CELL_NAME).stringCellValue
-                val no = row.getCell(CELL_NO).numericCellValue.toInt()
-                val date = DateTime(row.getCell(CELL_DATE).dateCellValue.time)
-                val day = date.dayOfMonth
-                val month = date.monthOfYear
-                val year = date.year
-                val employee = Employee(no, name, dept)
-                for (CELL_RECORD in CELL_RECORD_START until CELL_RECORD_END) {
-                    row.getCell(CELL_RECORD).let {
-                        if (it.cellTypeEnum == CellType.NUMERIC) {
-                            val record = DateTime(it.dateCellValue.time)
-                            val hour = record.hourOfDay
-                            val minute = record.minuteOfHour
-                            val attendance = DateTime(year, month, day, hour, minute)
-                            multimap.put(employee, when (true) {
-                                IS_OS_WINDOWS -> attendance.plusMinutes(18)
-                                IS_OS_MAC -> attendance.minusMinutes(7)
-                                else -> attendance
-                            })
+        file.inputStream().use { stream ->
+            val workbook = XSSFWorkbook(stream)
+            val sheet = workbook.getSheetAt(SHEET_RAW_ATTENDANCE_LOGS)
+            sheet.iterator().asSequence().forEachIndexed { rowIndex, row ->
+                // skips right to employee
+                if (rowIndex > 4) {
+                    val dept = row.getCell(CELL_DEPT).stringCellValue
+                    val name = row.getCell(CELL_NAME).stringCellValue
+                    val no = row.getCell(CELL_NO).numericCellValue.toInt()
+                    val date = DateTime(row.getCell(CELL_DATE).dateCellValue.time)
+                    val day = date.dayOfMonth
+                    val month = date.monthOfYear
+                    val year = date.year
+                    val employee = Employee(no, name, dept)
+                    for (CELL_RECORD in CELL_RECORD_START until CELL_RECORD_END) {
+                        row.getCell(CELL_RECORD).let {
+                            if (it.cellTypeEnum == CellType.NUMERIC) {
+                                val record = DateTime(it.dateCellValue.time)
+                                val hour = record.hourOfDay
+                                val minute = record.minuteOfHour
+                                val attendance = DateTime(year, month, day, hour, minute)
+                                multimap.put(employee, when (true) {
+                                    IS_OS_WINDOWS -> attendance.plusMinutes(18)
+                                    IS_OS_MAC -> attendance.minusMinutes(7)
+                                    else -> attendance
+                                })
+                            }
                         }
                     }
                 }
             }
+            workbook.close()
         }
-        workbook.close()
-        stream.close()
-
         val set = mutableSetOf<Employee>()
         for (employee in multimap.keySet()) {
             employee.addAllAttendances(multimap.get(employee))

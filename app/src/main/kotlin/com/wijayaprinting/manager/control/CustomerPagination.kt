@@ -19,6 +19,7 @@ import javafx.scene.layout.GridPane
 import javafx.scene.layout.StackPane
 import kotfx.collections.toObservableList
 import kotfx.properties.bind
+import kotfx.runFX
 import org.apache.commons.lang3.math.NumberUtils
 import org.jetbrains.exposed.sql.SizedIterable
 import org.jetbrains.exposed.sql.or
@@ -141,7 +142,7 @@ class CustomerPagination : Pagination(), Updatable {
             }
             dialogPane.buttonTypes.addAll(ButtonType.CANCEL, ButtonType.OK)
             dialogPane.lookupButton(ButtonType.OK).disableProperty() bind nameField.textProperty().isEmpty
-            runLater { nameField.requestFocus() }
+            runFX { nameField.requestFocus() }
             setResultConverter {
                 if (it == ButtonType.OK) arrayOf(
                         nameField.text,

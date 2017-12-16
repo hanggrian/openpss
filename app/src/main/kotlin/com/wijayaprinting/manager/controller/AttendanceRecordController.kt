@@ -2,7 +2,6 @@ package com.wijayaprinting.manager.controller
 
 import com.wijayaprinting.manager.data.*
 import com.wijayaprinting.manager.scene.layout.TimeBox
-import javafx.application.Platform.runLater
 import javafx.collections.ObservableSet
 import javafx.fxml.FXML
 import javafx.print.PrinterJob.createPrinterJob
@@ -20,6 +19,7 @@ import kotfx.collections.mutableObservableSetOf
 import kotfx.properties.asObservable
 import kotfx.properties.asProperty
 import kotfx.properties.bind
+import kotfx.runFX
 import java.lang.Character.isDigit
 import java.text.NumberFormat.getCurrencyInstance
 
@@ -49,8 +49,7 @@ class AttendanceRecordController {
     private var undos: ObservableSet<() -> Unit> = mutableObservableSetOf()
 
     @FXML
-    @Suppress("UNCHECKED_CAST")
-    fun initialize() = runLater {
+    fun initialize() = runFX {
         undoButton.disableProperty() bind undos.isEmpty
         arrayOf(lockStartButton, lockEndButton).forEach {
             it.disableProperty() bind booleanBindingOf(treeTableView.selectionModel.selectedIndexProperty()) {

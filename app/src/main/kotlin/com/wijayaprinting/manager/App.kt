@@ -5,6 +5,8 @@ import com.wijayaprinting.manager.io.MySQLFile
 import com.wijayaprinting.manager.io.PreferencesFile
 import com.wijayaprinting.manager.scene.control.IPField
 import com.wijayaprinting.manager.scene.control.IntField
+import com.wijayaprinting.manager.scene.control.intField
+import com.wijayaprinting.manager.scene.control.ipField
 import com.wijayaprinting.manager.scene.utils.attachButtons
 import com.wijayaprinting.manager.scene.utils.setGaps
 import com.wijayaprinting.manager.utils.icon
@@ -85,16 +87,16 @@ class App : Application() {
                     textProperty() bindBidirectional MySQLFile[MySQLFile.USERNAME]
                 } col 1 row 1 colSpan 2
                 label(getString(R.string.server)) col 0 row 2
-                ipField = IPField().apply {
+                ipField = ipField {
                     promptText = getString(R.string.ip_address)
                     prefWidth = 128.0
                     textProperty() bindBidirectional MySQLFile[MySQLFile.IP]
-                }.add() col 1 row 2
-                portField = IntField().apply {
+                } col 1 row 2
+                portField = intField {
                     promptText = getString(R.string.port)
                     prefWidth = 64.0
                     textProperty() bindBidirectional MySQLFile[MySQLFile.PORT]
-                }.add() col 2 row 2
+                } col 2 row 2
 
                 runFX { usernameField.requestFocus() }
             })

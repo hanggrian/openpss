@@ -1,12 +1,10 @@
-// rsync generated this class at 2017-11-29T00:21:26.225 from:
+// rsync generated this class at 2017-12-17T00:11:54.004 from:
 // string_en.properties
 // layout_attendance.fxml
 // btn_refresh.png
-// btn_substract.png
 // btn_lock_out.png
 // logo_launcher.png
 // ic_calendar.png
-// btn_zero.png
 // string_in.properties
 // btn_add.png
 // btn_checkbox_outline.png
@@ -18,6 +16,7 @@
 // btn_visibility_off.png
 // ic_clock.png
 // ic_key.png
+// btn_delete.png
 // btn_print.png
 // btn_merge.png
 // ic_launcher.png
@@ -25,6 +24,7 @@
 // btn_folder.png
 // layout_customer.fxml
 // btn_lock_in.png
+// btn_undo.png
 package com.wijayaprinting.manager;
 
 import java.lang.String;
@@ -80,6 +80,8 @@ public final class R {
 
     public static final String ic_key = "/ic_key.png";
 
+    public static final String btn_delete = "/btn_delete.png";
+
     public static final String btn_print = "/btn_print.png";
 
     public static final String btn_merge = "/btn_merge.png";
@@ -92,13 +94,13 @@ public final class R {
 
     public static final String btn_lock_in = "/btn_lock_in.png";
 
+    public static final String btn_undo = "/btn_undo.png";
+
     private png() {
     }
   }
 
   public static final class string {
-    public static final String daily_income = "daily_income";
-
     public static final String are_you_sure = "are_you_sure";
 
     public static final String lock_end_time = "lock_end_time";
@@ -110,6 +112,8 @@ public final class R {
     public static final String delete_all = "delete_all";
 
     public static final String error_unknown = "error_unknown";
+
+    public static final String income = "income";
 
     public static final String merge_close_records = "merge_close_records";
 
@@ -133,13 +137,15 @@ public final class R {
 
     public static final String both = "both";
 
-    public static final String overtime_income = "overtime_income";
-
     public static final String hour = "hour";
 
     public static final String grand_total = "grand_total";
 
+    public static final String undo = "undo";
+
     public static final String start = "start";
+
+    public static final String day = "day";
 
     public static final String revert = "revert";
 
@@ -154,6 +160,8 @@ public final class R {
     public static final String total = "total";
 
     public static final String password = "password";
+
+    public static final String role = "role";
 
     public static final String error_employee_incomplete = "error_employee_incomplete";
 

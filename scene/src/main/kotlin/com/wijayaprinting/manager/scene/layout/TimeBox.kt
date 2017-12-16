@@ -1,3 +1,5 @@
+@file:Suppress("NOTHING_TO_INLINE", "UNUSED")
+
 package com.wijayaprinting.manager.scene.layout
 
 import com.wijayaprinting.data.PATTERN_TIME
@@ -9,6 +11,9 @@ import javafx.scene.control.Label
 import javafx.scene.layout.HBox
 import kotfx.bindings.bindingOf
 import kotfx.bindings.booleanBindingOf
+import kotfx.internal.ChildManager
+import kotfx.internal.ControlDsl
+import kotfx.internal.ItemManager
 import kotfx.properties.bind
 import org.joda.time.LocalTime
 import org.joda.time.format.DateTimeFormat
@@ -62,3 +67,19 @@ open class TimeBox : HBox() {
 
     val isValid: Boolean = validProperty.get()
 }
+
+
+@JvmOverloads
+inline fun timeBoxOf(
+        noinline init: ((@ControlDsl TimeBox).() -> Unit)? = null
+): TimeBox = TimeBox().apply { init?.invoke(this) }
+
+@JvmOverloads
+inline fun ChildManager.timeBox(
+        noinline init: ((@ControlDsl TimeBox).() -> Unit)? = null
+): TimeBox = TimeBox().apply { init?.invoke(this) }.add()
+
+@JvmOverloads
+inline fun ItemManager.timeBox(
+        noinline init: ((@ControlDsl TimeBox).() -> Unit)? = null
+): TimeBox = TimeBox().apply { init?.invoke(this) }.add()

@@ -1,6 +1,7 @@
 package com.wijayaprinting.manager.dialog
 
 import com.wijayaprinting.manager.scene.layout.TimeBox
+import com.wijayaprinting.manager.scene.layout.timeBox
 import com.wijayaprinting.manager.scene.utils.setGaps
 import com.wijayaprinting.manager.utils.asJava
 import javafx.scene.Node
@@ -38,9 +39,7 @@ class DateTimeDialog @JvmOverloads constructor(
                 isEditable = false // force pick from popup
                 maxWidth = 128.0
             } col 0 row 0
-            timeBox = TimeBox().apply {
-                prefill?.let { value = it.toLocalTime() }
-            }.add() col 1 row 0
+            timeBox = timeBox { prefill?.let { value = it.toLocalTime() } } col 1 row 0
             slider(0, 24, 0) { valueProperty() bindBidirectional timeBox.hourField.valueProperty }
             slider(0, 60, 0) { valueProperty() bindBidirectional timeBox.minuteField.valueProperty }
         }

@@ -1,3 +1,5 @@
+@file:Suppress("NOTHING_TO_INLINE", "UNUSED")
+
 package com.wijayaprinting.manager.scene.control
 
 import com.wijayaprinting.manager.scene.utils.isDecimal
@@ -5,6 +7,9 @@ import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleFloatProperty
 import javafx.scene.control.TextField
 import kotfx.bindings.booleanBindingOf
+import kotfx.internal.ChildManager
+import kotfx.internal.ControlDsl
+import kotfx.internal.ItemManager
 import kotfx.properties.bind
 import kotfx.stringConverterOf
 
@@ -24,3 +29,18 @@ open class FloatField : TextField() {
 
     val isValid: Boolean = validProperty.value
 }
+
+@JvmOverloads
+inline fun floatFieldOf(
+        noinline init: ((@ControlDsl FloatField).() -> Unit)? = null
+): FloatField = FloatField().apply { init?.invoke(this) }
+
+@JvmOverloads
+inline fun ChildManager.floatField(
+        noinline init: ((@ControlDsl FloatField).() -> Unit)? = null
+): FloatField = FloatField().apply { init?.invoke(this) }.add()
+
+@JvmOverloads
+inline fun ItemManager.floatField(
+        noinline init: ((@ControlDsl FloatField).() -> Unit)? = null
+): FloatField = FloatField().apply { init?.invoke(this) }.add()

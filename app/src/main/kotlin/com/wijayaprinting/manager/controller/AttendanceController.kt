@@ -5,9 +5,9 @@ import com.wijayaprinting.manager.*
 import com.wijayaprinting.manager.data.Employee
 import com.wijayaprinting.manager.dialog.DateTimeDialog
 import com.wijayaprinting.manager.reader.Reader
-import com.wijayaprinting.manager.scene.control.DoubleField
 import com.wijayaprinting.manager.scene.control.FileField
-import com.wijayaprinting.manager.scene.control.IntField
+import com.wijayaprinting.manager.scene.control.doubleField
+import com.wijayaprinting.manager.scene.control.intField
 import com.wijayaprinting.manager.scene.utils.setGaps
 import com.wijayaprinting.manager.scene.utils.setMaxSize
 import com.wijayaprinting.manager.scene.utils.setSize
@@ -28,17 +28,15 @@ import javafx.scene.image.ImageView
 import javafx.scene.layout.FlowPane
 import javafx.scene.layout.HBox
 import javafx.scene.layout.Priority
+import javafx.scene.text.Font.font
 import javafx.stage.Stage
 import kotfx.bindings.bindingOf
 import kotfx.bindings.isEmpty
 import kotfx.bindings.stringBindingOf
-import kotfx.controls.imageViewOf
-import kotfx.controls.label
-import kotfx.controls.listView
+import kotfx.controls.*
 import kotfx.controls.menus.contextMenuOf
 import kotfx.controls.menus.menuItem
 import kotfx.controls.menus.separatorMenuItem
-import kotfx.controls.titledPaneOf
 import kotfx.dialogs.errorAlertWait
 import kotfx.dialogs.fileChooser
 import kotfx.dialogs.infoAlert
@@ -56,20 +54,20 @@ class AttendanceController {
     @FXML lateinit var fileField: FileField
     @FXML lateinit var readerChoiceBox: ChoiceBox<Reader>
     @FXML lateinit var mergeToggleButton: ToggleButton
+    @FXML lateinit var flowPane: FlowPane
+    @FXML lateinit var employeeCountLabel: Label
     @FXML lateinit var readButton: Button
     @FXML lateinit var processButton: Button
-    @FXML lateinit var employeeCountLabel: Label
-    @FXML lateinit var flowPane: FlowPane
 
     @FXML
     fun initialize() = runFX {
         readerChoiceBox.items = Reader.listAll()
         if (readerChoiceBox.items.isNotEmpty()) readerChoiceBox.selectionModel.select(0)
 
+        flowPane.prefWrapLengthProperty() bind fileField.scene.widthProperty()
+        employeeCountLabel.textProperty() bind stringBindingOf(flowPane.children) { "${flowPane.children.size} ${getString(R.string.employee)}" }
         readButton.disableProperty() bind fileField.validProperty
         processButton.disableProperty() bind flowPane.children.isEmpty
-        employeeCountLabel.textProperty() bind stringBindingOf(flowPane.children) { "${flowPane.children.size} ${getString(R.string.employee)}" }
-        flowPane.prefWrapLengthProperty() bind fileField.scene.widthProperty()
 
         if (BuildConfig.DEBUG) {
             fileField.text = "/Users/hendraanggrian/Downloads/Absen 11-25-17.xlsx"
@@ -115,30 +113,40 @@ class AttendanceController {
                         content = vboxOf {
                             gridPane {
                                 setGaps(4)
-                                padding = Insets(4.0, 8.0, 4.0, 8.0)
-                                label(getString(R.string.daily_income)) col 0 row 0
-                                IntField().apply {
-                                    prefWidth = 96.0
-                                    promptText = getString(R.string.daily_income)
+                                padding = Insets(8.0)
+                                employee.role?.let { role ->
+                                    label(getString(R.string.role)) col 0 row 0 marginRight 4
+                                    textField(role) {
+                                        prefWidth = 100.0
+                                        isEditable = false
+                                    } col 1 row 0 colSpan 3
+                                }
+                                label(getString(R.string.income)) col 0 row 1 marginRight 4
+                                intField {
+                                    prefWidth = 100.0
+                                    promptText = getString(R.string.income)
                                     valueProperty bindBidirectional employee.daily
-                                }.add() col 1 row 0 colSpan 2
-                                label(getString(R.string.overtime_income)) col 0 row 1
-                                IntField().apply {
+                                } col 1 row 1 colSpan 2
+                                label("@${getString(R.string.day)}") { font = font(9.0) } col 3 row 1
+                                label(getString(R.string.overtime)) col 0 row 2 marginRight 4
+                                intField {
                                     prefWidth = 96.0
-                                    promptText = getString(R.string.overtime_income)
+                                    promptText = getString(R.string.overtime)
                                     valueProperty bindBidirectional employee.hourlyOvertime
-                                }.add() col 1 row 1 colSpan 2
-                                label(getString(R.string.recess)) col 0 row 2
-                                DoubleField().apply {
+                                } col 1 row 2 colSpan 2
+                                label("@${getString(R.string.hour)}") { font = font(9.0) } col 3 row 2
+                                label(getString(R.string.recess)) col 0 row 3 marginRight 4
+                                doubleField {
                                     prefWidth = 48.0
                                     promptText = getString(R.string.recess)
                                     valueProperty bindBidirectional employee.recess
-                                }.add() col 1 row 2
-                                DoubleField().apply {
+                                } col 1 row 3
+                                doubleField {
                                     prefWidth = 48.0
                                     promptText = getString(R.string.recess)
                                     valueProperty bindBidirectional employee.recessOvertime
-                                }.add() col 2 row 2
+                                } col 2 row 3
+                                label(getString(R.string.hour)) { font = font(9.0) } col 3 row 3
                             }
                             listView = listView(employee.attendances) {
                                 prefWidth = 128.0

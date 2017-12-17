@@ -6,11 +6,11 @@ import com.wijayaprinting.manager.scene.utils.isDecimal
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleFloatProperty
 import javafx.scene.control.TextField
-import kotfx.bindings.booleanBindingOf
+import kotfx.bind
+import kotfx.booleanBindingOf
 import kotfx.internal.ChildManager
 import kotfx.internal.ControlDsl
 import kotfx.internal.ItemManager
-import kotfx.properties.bind
 import kotfx.stringConverter
 
 open class FloatField : TextField() {

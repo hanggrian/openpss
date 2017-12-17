@@ -12,14 +12,7 @@ import javafx.scene.control.TreeTableColumn
 import javafx.scene.control.TreeTableView
 import javafx.scene.text.Text
 import javafx.scene.text.TextFlow
-import kotfx.bindings.booleanBindingOf
-import kotfx.bindings.isEmpty
-import kotfx.bindings.stringBindingOf
-import kotfx.collections.mutableObservableSetOf
-import kotfx.properties.asObservable
-import kotfx.properties.asProperty
-import kotfx.properties.bind
-import kotfx.runFX
+import kotfx.*
 import java.lang.Character.isDigit
 import java.text.NumberFormat.getCurrencyInstance
 

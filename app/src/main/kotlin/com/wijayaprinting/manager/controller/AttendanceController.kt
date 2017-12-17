@@ -26,24 +26,10 @@ import javafx.scene.control.ButtonType.OK
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import javafx.scene.layout.FlowPane
-import javafx.scene.layout.HBox
 import javafx.scene.layout.Priority.ALWAYS
 import javafx.scene.text.Font.font
 import javafx.stage.Stage
-import kotfx.bindings.bindingOf
-import kotfx.bindings.isEmpty
-import kotfx.bindings.stringBindingOf
-import kotfx.controls.*
-import kotfx.controls.menus.contextMenuOf
-import kotfx.controls.menus.menuItem
-import kotfx.controls.menus.separatorMenuItem
-import kotfx.dialogs.*
-import kotfx.layouts.gridPane
-import kotfx.layouts.hboxOf
-import kotfx.layouts.vboxOf
-import kotfx.properties.bind
-import kotfx.properties.bindBidirectional
-import kotfx.runFX
+import kotfx.*
 import org.joda.time.DateTime
 import java.io.File
 

@@ -7,7 +7,6 @@ import com.wijayaprinting.manager.safeTransaction
 import com.wijayaprinting.manager.scene.Updatable
 import com.wijayaprinting.manager.scene.utils.setGaps
 import com.wijayaprinting.manager.scene.utils.textOrNull
-import javafx.application.Platform.runLater
 import javafx.beans.property.SimpleStringProperty
 import javafx.event.Event
 import javafx.event.EventHandler
@@ -17,9 +16,9 @@ import javafx.scene.control.*
 import javafx.scene.image.ImageView
 import javafx.scene.layout.GridPane
 import javafx.scene.layout.StackPane
-import kotfx.collections.toObservableList
-import kotfx.properties.bind
+import kotfx.bind
 import kotfx.runFX
+import kotfx.toObservableList
 import org.apache.commons.lang3.math.NumberUtils
 import org.jetbrains.exposed.sql.SizedIterable
 import org.jetbrains.exposed.sql.or

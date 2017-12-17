@@ -3,7 +3,7 @@
 
 package com.wijayaprinting.manager
 
-import kotfx.dialogs.errorAlert
+import kotfx.errorAlert
 import org.jetbrains.exposed.sql.Transaction
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.sql.SQLException

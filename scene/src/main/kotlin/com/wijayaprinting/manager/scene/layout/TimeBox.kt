@@ -9,12 +9,12 @@ import javafx.beans.property.SimpleObjectProperty
 import javafx.geometry.Pos.CENTER
 import javafx.scene.control.Label
 import javafx.scene.layout.HBox
-import kotfx.bindings.bindingOf
-import kotfx.bindings.booleanBindingOf
+import kotfx.bind
+import kotfx.bindingOf
+import kotfx.booleanBindingOf
 import kotfx.internal.ChildManager
 import kotfx.internal.ControlDsl
 import kotfx.internal.ItemManager
-import kotfx.properties.bind
 import org.joda.time.LocalTime
 import org.joda.time.format.DateTimeFormat
 

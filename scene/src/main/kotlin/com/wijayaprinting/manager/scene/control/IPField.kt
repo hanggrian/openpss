@@ -4,11 +4,11 @@ package com.wijayaprinting.manager.scene.control
 
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.scene.control.TextField
-import kotfx.bindings.booleanBindingOf
+import kotfx.bind
+import kotfx.booleanBindingOf
 import kotfx.internal.ChildManager
 import kotfx.internal.ControlDsl
 import kotfx.internal.ItemManager
-import kotfx.properties.bind
 import org.apache.commons.validator.routines.InetAddressValidator
 
 open class IPField : TextField() {

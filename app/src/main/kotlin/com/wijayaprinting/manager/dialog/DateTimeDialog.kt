@@ -9,13 +9,7 @@ import javafx.scene.control.ButtonType.CANCEL
 import javafx.scene.control.ButtonType.OK
 import javafx.scene.control.DatePicker
 import javafx.scene.control.Dialog
-import kotfx.controls.datePicker
-import kotfx.controls.slider
-import kotfx.dialogs.addButtons
-import kotfx.dialogs.content
-import kotfx.layouts.gridPaneOf
-import kotfx.properties.bindBidirectional
-import kotfx.runFX
+import kotfx.*
 import org.joda.time.DateTime
 import org.joda.time.DateTime.now
 

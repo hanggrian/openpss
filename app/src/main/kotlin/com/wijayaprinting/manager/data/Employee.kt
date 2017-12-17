@@ -11,7 +11,7 @@ import javafx.beans.property.IntegerProperty
 import javafx.beans.property.SimpleDoubleProperty
 import javafx.beans.property.SimpleIntegerProperty
 import javafx.collections.ObservableList
-import kotfx.collections.mutableObservableListOf
+import kotfx.mutableObservableListOf
 import org.jetbrains.exposed.sql.update
 import org.joda.time.DateTime
 import org.joda.time.Minutes.minutes

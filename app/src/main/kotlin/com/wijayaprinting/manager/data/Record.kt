@@ -3,10 +3,10 @@ package com.wijayaprinting.manager.data
 import com.wijayaprinting.data.PATTERN_DATETIME
 import com.wijayaprinting.manager.utils.round
 import javafx.beans.property.*
-import kotfx.bindings.doubleBindingOf
-import kotfx.bindings.plus
-import kotfx.bindings.stringBindingOf
-import kotfx.properties.bind
+import kotfx.bind
+import kotfx.doubleBindingOf
+import kotfx.plus
+import kotfx.stringBindingOf
 import org.joda.time.DateTime
 import org.joda.time.LocalTime
 import org.joda.time.Period
@@ -63,7 +63,7 @@ data class Record @JvmOverloads constructor(
         get() = SimpleStringProperty().apply {
             bind(stringBindingOf(end) {
                 when (type) {
-                    TYPE_NODE -> "${actualEmployee.recess.value}\t${actualEmployee.recessOvertime.value}"
+                    TYPE_NODE -> "${actualEmployee.recess.value}\t\t${actualEmployee.recessOvertime.value}"
                     TYPE_CHILD -> end.value.toString(PATTERN_DATETIME)
                     TYPE_TOTAL -> "TOTAL"
                     else -> throw UnsupportedOperationException()

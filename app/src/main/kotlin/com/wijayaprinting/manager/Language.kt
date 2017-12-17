@@ -1,7 +1,7 @@
 package com.wijayaprinting.manager
 
 import javafx.collections.ObservableList
-import kotfx.collections.observableListOf
+import kotfx.observableListOf
 import java.util.*
 
 data class Language(val locale: String, private val name: String) {

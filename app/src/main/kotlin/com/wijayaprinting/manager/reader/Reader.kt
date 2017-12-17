@@ -4,7 +4,7 @@ import com.wijayaprinting.manager.data.Employee
 import com.wijayaprinting.manager.reader.Reader.Companion.toString
 import javafx.collections.ObservableList
 import javafx.stage.FileChooser
-import kotfx.collections.observableListOf
+import kotfx.observableListOf
 import java.io.File
 
 /** A file reader that generates collection of employees given input file. */

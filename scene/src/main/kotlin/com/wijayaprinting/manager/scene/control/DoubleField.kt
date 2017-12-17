@@ -11,7 +11,7 @@ import kotfx.internal.ChildManager
 import kotfx.internal.ControlDsl
 import kotfx.internal.ItemManager
 import kotfx.properties.bind
-import kotfx.stringConverterOf
+import kotfx.stringConverter
 
 open class DoubleField : TextField() {
 
@@ -19,7 +19,7 @@ open class DoubleField : TextField() {
     val validProperty = SimpleBooleanProperty()
 
     init {
-        textProperty().bindBidirectional(valueProperty, stringConverterOf<Number>({ if (!isDecimal) 0.0 else it.toDouble() }))
+        textProperty().bindBidirectional(valueProperty, stringConverter<Number>({ if (!isDecimal) 0.0 else it.toDouble() }))
         validProperty bind booleanBindingOf(textProperty()) { isDecimal }
     }
 

@@ -9,14 +9,14 @@ import javafx.scene.control.TextField
 import kotfx.internal.ChildManager
 import kotfx.internal.ControlDsl
 import kotfx.internal.ItemManager
-import kotfx.stringConverterOf
+import kotfx.stringConverter
 
 open class IntField : TextField() {
 
     val valueProperty = SimpleIntegerProperty()
 
     init {
-        textProperty().bindBidirectional(valueProperty, stringConverterOf<Number>({ if (!isDigits) 0 else it.toInt() }))
+        textProperty().bindBidirectional(valueProperty, stringConverter<Number>({ if (!isDigits) 0 else it.toInt() }))
         digitsOnly()
     }
 

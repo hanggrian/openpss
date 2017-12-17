@@ -63,7 +63,7 @@ data class Record @JvmOverloads constructor(
         get() = SimpleStringProperty().apply {
             bind(stringBindingOf(end) {
                 when (type) {
-                    TYPE_NODE -> ""
+                    TYPE_NODE -> "${actualEmployee.recess.value}\t${actualEmployee.recessOvertime.value}"
                     TYPE_CHILD -> end.value.toString(PATTERN_DATETIME)
                     TYPE_TOTAL -> "TOTAL"
                     else -> throw UnsupportedOperationException()
@@ -81,8 +81,8 @@ data class Record @JvmOverloads constructor(
             overtimeIncome bind doubleBindingOf(overtime, actualEmployee.hourlyOvertime) { (actualEmployee.hourlyOvertime.value * overtime.value).round }
             when (type) {
                 TYPE_NODE -> {
-                    daily.set(actualEmployee.recess.value)
-                    overtime.set(actualEmployee.recessOvertime.value)
+                    daily.set(0.0)
+                    overtime.set(0.0)
                     total.set(0.0)
                 }
                 TYPE_CHILD -> {

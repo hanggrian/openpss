@@ -11,6 +11,8 @@ import javafx.scene.control.DatePicker
 import javafx.scene.control.Dialog
 import kotfx.controls.datePicker
 import kotfx.controls.slider
+import kotfx.dialogs.addButtons
+import kotfx.dialogs.content
 import kotfx.layouts.gridPaneOf
 import kotfx.properties.bindBidirectional
 import kotfx.runFX
@@ -31,7 +33,7 @@ class DateTimeDialog @JvmOverloads constructor(
 
         lateinit var datePicker: DatePicker
         lateinit var timeBox: TimeBox
-        dialogPane.content = gridPaneOf {
+        content = gridPaneOf {
             setGaps(8.0)
             datePicker = datePicker {
                 value = (prefill ?: now()).toLocalDate().asJava()
@@ -40,10 +42,10 @@ class DateTimeDialog @JvmOverloads constructor(
                 maxWidth = 128.0
             } col 0 row 0
             timeBox = timeBox { prefill?.let { value = it.toLocalTime() } } col 1 row 0
-            slider(0, 24, 0) { valueProperty() bindBidirectional timeBox.hourField.valueProperty }
-            slider(0, 60, 0) { valueProperty() bindBidirectional timeBox.minuteField.valueProperty }
+            slider(0, 24, 0) { valueProperty() bindBidirectional timeBox.hourField.valueProperty } col 0 row 1 colSpan 2
+            slider(0, 60, 0) { valueProperty() bindBidirectional timeBox.minuteField.valueProperty } col 0 row 2 colSpan 2
         }
-        dialogPane.buttonTypes.addAll(OK, CANCEL)
+        addButtons(OK, CANCEL)
 
         runFX { datePicker.requestFocus() }
         setResultConverter {

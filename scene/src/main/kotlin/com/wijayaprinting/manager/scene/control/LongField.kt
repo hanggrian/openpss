@@ -9,14 +9,14 @@ import javafx.scene.control.TextField
 import kotfx.internal.ChildManager
 import kotfx.internal.ControlDsl
 import kotfx.internal.ItemManager
-import kotfx.stringConverterOf
+import kotfx.stringConverter
 
 open class LongField : TextField() {
 
     val valueProperty = SimpleLongProperty()
 
     init {
-        textProperty().bindBidirectional(valueProperty, stringConverterOf<Number>({ if (!isDigits) 0 else it.toLong() }))
+        textProperty().bindBidirectional(valueProperty, stringConverter<Number>({ if (!isDigits) 0 else it.toLong() }))
         digitsOnly()
     }
 

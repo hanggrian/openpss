@@ -11,7 +11,7 @@ import kotfx.internal.ChildManager
 import kotfx.internal.ControlDsl
 import kotfx.internal.ItemManager
 import kotfx.properties.bind
-import kotfx.stringConverterOf
+import kotfx.stringConverter
 
 open class FloatField : TextField() {
 
@@ -19,7 +19,7 @@ open class FloatField : TextField() {
     val validProperty = SimpleBooleanProperty()
 
     init {
-        textProperty().bindBidirectional(valueProperty, stringConverterOf<Number>({ if (!isDecimal) 0f else it.toFloat() }))
+        textProperty().bindBidirectional(valueProperty, stringConverter<Number>({ if (!isDecimal) 0f else it.toFloat() }))
         validProperty bind booleanBindingOf(textProperty()) { isDecimal }
     }
 

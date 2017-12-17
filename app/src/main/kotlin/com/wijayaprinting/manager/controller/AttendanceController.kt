@@ -27,7 +27,7 @@ import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import javafx.scene.layout.FlowPane
 import javafx.scene.layout.HBox
-import javafx.scene.layout.Priority
+import javafx.scene.layout.Priority.ALWAYS
 import javafx.scene.text.Font.font
 import javafx.stage.Stage
 import kotfx.bindings.bindingOf
@@ -37,11 +37,9 @@ import kotfx.controls.*
 import kotfx.controls.menus.contextMenuOf
 import kotfx.controls.menus.menuItem
 import kotfx.controls.menus.separatorMenuItem
-import kotfx.dialogs.errorAlertWait
-import kotfx.dialogs.fileChooser
-import kotfx.dialogs.infoAlert
-import kotfx.dialogs.warningAlert
+import kotfx.dialogs.*
 import kotfx.layouts.gridPane
+import kotfx.layouts.hboxOf
 import kotfx.layouts.vboxOf
 import kotfx.properties.bind
 import kotfx.properties.bindBidirectional
@@ -76,14 +74,16 @@ class AttendanceController {
     }
 
     @FXML
-    fun browseButtonOnAction() = fileField.scene.window.fileChooser(getString(R.string.input_file), *readerChoiceBox.value.extensions)?.let { fileField.text = it.absolutePath }
+    fun browseButtonOnAction() = fileChooser(getString(R.string.input_file), *readerChoiceBox.value.extensions)
+            .showOpenDialog(fileField.scene.window)
+            ?.let { fileField.text = it.absolutePath }
 
     @FXML
     fun readButtonOnAction() {
         val progressDialog = infoAlert(getString(R.string.please_wait_content)) {
-            header(getString(R.string.please_wait))
+            headerText = getString(R.string.please_wait)
             buttonTypes.clear()
-        }
+        }.apply { show() }
         flowPane.children.clear()
         Observable
                 .create<Employee> { emitter ->
@@ -102,8 +102,8 @@ class AttendanceController {
                     emitter.onComplete()
                 }
                 .multithread(computation())
-                .subscribeBy({ e -> errorAlertWait(e.message ?: getString(R.string.error_unknown)) }, {
-                    progressDialog.dialogPane.buttonTypes.add(OK) // apparently alert won't close without a button
+                .subscribeBy({ e -> errorAlert(e.message ?: getString(R.string.error_unknown)).showAndWait() }, {
+                    progressDialog.addButtons(OK) // apparently alert won't close without a button
                     progressDialog.close()
                 }) { employee ->
                     flowPane.children.add(titledPaneOf(employee.toString()) {
@@ -156,13 +156,14 @@ class AttendanceController {
                                             super.updateItem(item, empty)
                                             text = null
                                             graphic = null
-                                            if (item != null && !empty) {
-                                                val label = Label(item.toString(PATTERN_DATETIME)).apply { setMaxSize(Double.MAX_VALUE) }
-                                                val deleteButton = Button().apply { setSize(18.0) }
-                                                deleteButton.graphicProperty() bind bindingOf<Node?>(deleteButton.hoverProperty()) { if (deleteButton.isHover) ImageView(R.png.btn_clear) else null }
-                                                deleteButton.setOnAction { listView.items.remove(item) }
-                                                HBox.setHgrow(label, Priority.ALWAYS)
-                                                graphic = HBox(label, deleteButton).apply { alignment = CENTER }
+                                            if (item != null && !empty) graphic = hboxOf {
+                                                alignment = CENTER
+                                                label(item.toString(PATTERN_DATETIME)) { setMaxSize(Double.MAX_VALUE) } hGrow ALWAYS
+                                                button {
+                                                    setSize(17.0)
+                                                    graphicProperty() bind bindingOf<Node>(hoverProperty()) { if (isHover) ImageView(R.png.btn_clear) else null }
+                                                    setOnAction { listView.items.remove(item) }
+                                                }
                                             }
                                         }
                                     }
@@ -209,11 +210,11 @@ class AttendanceController {
         flowPane.children.map { it.userData as Employee }.forEach { employee ->
             when {
                 employee.daily.value <= 0 || employee.hourlyOvertime.value <= 0 -> {
-                    warningAlert(getString(R.string.error_employee_incomplete)) { header(employee.name) }
+                    warningAlert(getString(R.string.error_employee_incomplete)) { headerText = employee.name }.showAndWait()
                     return
                 }
                 employee.attendances.size % 2 != 0 -> {
-                    warningAlert(getString(R.string.error_employee_odd)) { header(employee.name) }
+                    warningAlert(getString(R.string.error_employee_odd)) { headerText = employee.name }.showAndWait()
                     return
                 }
                 else -> {

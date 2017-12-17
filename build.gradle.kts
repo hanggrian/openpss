@@ -12,7 +12,7 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
-        maven(url = "https://dl.bintray.com/hendraanggrian/maven")
         maven(url = "https://dl.bintray.com/kotlin/exposed/")
+        maven(url = "https://dl.bintray.com/hendraanggrian/maven")
     }
 }

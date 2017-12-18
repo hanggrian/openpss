@@ -6,9 +6,9 @@ import javafx.beans.property.SimpleBooleanProperty
 import javafx.scene.control.TextField
 import kotfx.bind
 import kotfx.booleanBindingOf
-import kotfx.internal.ChildManager
-import kotfx.internal.ControlDsl
-import kotfx.internal.ItemManager
+import kotfx.controls.ItemManager
+import kotfx.internal.KotfxDsl
+import kotfx.layouts.ChildManager
 import org.apache.commons.validator.routines.InetAddressValidator
 
 open class IPField : TextField() {
@@ -23,16 +23,16 @@ open class IPField : TextField() {
 }
 
 @JvmOverloads
-inline fun ipFieldOf(
-        noinline init: ((@ControlDsl IPField).() -> Unit)? = null
+inline fun ipField(
+        noinline init: ((@KotfxDsl IPField).() -> Unit)? = null
 ): IPField = IPField().apply { init?.invoke(this) }
 
 @JvmOverloads
 inline fun ChildManager.ipField(
-        noinline init: ((@ControlDsl IPField).() -> Unit)? = null
+        noinline init: ((@KotfxDsl IPField).() -> Unit)? = null
 ): IPField = IPField().apply { init?.invoke(this) }.add()
 
 @JvmOverloads
 inline fun ItemManager.ipField(
-        noinline init: ((@ControlDsl IPField).() -> Unit)? = null
+        noinline init: ((@KotfxDsl IPField).() -> Unit)? = null
 ): IPField = IPField().apply { init?.invoke(this) }.add()

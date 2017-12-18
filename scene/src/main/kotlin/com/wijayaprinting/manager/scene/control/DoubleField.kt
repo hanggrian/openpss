@@ -8,9 +8,9 @@ import javafx.beans.property.SimpleDoubleProperty
 import javafx.scene.control.TextField
 import kotfx.bind
 import kotfx.booleanBindingOf
-import kotfx.internal.ChildManager
-import kotfx.internal.ControlDsl
-import kotfx.internal.ItemManager
+import kotfx.controls.ItemManager
+import kotfx.internal.KotfxDsl
+import kotfx.layouts.ChildManager
 import kotfx.stringConverter
 
 open class DoubleField : TextField() {
@@ -31,16 +31,16 @@ open class DoubleField : TextField() {
 }
 
 @JvmOverloads
-inline fun doubleFieldOf(
-        noinline init: ((@ControlDsl DoubleField).() -> Unit)? = null
+inline fun doubleField(
+        noinline init: ((@KotfxDsl DoubleField).() -> Unit)? = null
 ): DoubleField = DoubleField().apply { init?.invoke(this) }
 
 @JvmOverloads
 inline fun ChildManager.doubleField(
-        noinline init: ((@ControlDsl DoubleField).() -> Unit)? = null
+        noinline init: ((@KotfxDsl DoubleField).() -> Unit)? = null
 ): DoubleField = DoubleField().apply { init?.invoke(this) }.add()
 
 @JvmOverloads
 inline fun ItemManager.doubleField(
-        noinline init: ((@ControlDsl DoubleField).() -> Unit)? = null
+        noinline init: ((@KotfxDsl DoubleField).() -> Unit)? = null
 ): DoubleField = DoubleField().apply { init?.invoke(this) }.add()

@@ -63,7 +63,7 @@ data class Record @JvmOverloads constructor(
         get() = SimpleStringProperty().apply {
             bind(stringBindingOf(end) {
                 when (type) {
-                    TYPE_NODE -> "${actualEmployee.recess.value}\t\t${actualEmployee.recessOvertime.value}"
+                    TYPE_NODE -> "${actualEmployee.recess.value}\t${actualEmployee.recessOvertime.value}"
                     TYPE_CHILD -> end.value.toString(PATTERN_DATETIME)
                     TYPE_TOTAL -> "TOTAL"
                     else -> throw UnsupportedOperationException()

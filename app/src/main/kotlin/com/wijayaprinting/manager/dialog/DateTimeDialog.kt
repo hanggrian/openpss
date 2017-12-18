@@ -27,7 +27,7 @@ class DateTimeDialog @JvmOverloads constructor(
 
         lateinit var datePicker: DatePicker
         lateinit var timeBox: TimeBox
-        content = gridPaneOf {
+        content = gridPane {
             setGaps(8.0)
             datePicker = datePicker {
                 value = (prefill ?: now()).toLocalDate().asJava()

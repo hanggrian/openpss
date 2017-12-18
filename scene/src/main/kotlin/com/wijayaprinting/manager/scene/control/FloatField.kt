@@ -8,9 +8,9 @@ import javafx.beans.property.SimpleFloatProperty
 import javafx.scene.control.TextField
 import kotfx.bind
 import kotfx.booleanBindingOf
-import kotfx.internal.ChildManager
-import kotfx.internal.ControlDsl
-import kotfx.internal.ItemManager
+import kotfx.controls.ItemManager
+import kotfx.internal.KotfxDsl
+import kotfx.layouts.ChildManager
 import kotfx.stringConverter
 
 open class FloatField : TextField() {
@@ -31,16 +31,16 @@ open class FloatField : TextField() {
 }
 
 @JvmOverloads
-inline fun floatFieldOf(
-        noinline init: ((@ControlDsl FloatField).() -> Unit)? = null
+inline fun floatField(
+        noinline init: ((@KotfxDsl FloatField).() -> Unit)? = null
 ): FloatField = FloatField().apply { init?.invoke(this) }
 
 @JvmOverloads
 inline fun ChildManager.floatField(
-        noinline init: ((@ControlDsl FloatField).() -> Unit)? = null
+        noinline init: ((@KotfxDsl FloatField).() -> Unit)? = null
 ): FloatField = FloatField().apply { init?.invoke(this) }.add()
 
 @JvmOverloads
 inline fun ItemManager.floatField(
-        noinline init: ((@ControlDsl FloatField).() -> Unit)? = null
+        noinline init: ((@KotfxDsl FloatField).() -> Unit)? = null
 ): FloatField = FloatField().apply { init?.invoke(this) }.add()

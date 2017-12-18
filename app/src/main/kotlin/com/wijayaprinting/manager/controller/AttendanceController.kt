@@ -16,11 +16,9 @@ import io.reactivex.Observable
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers.computation
 import javafx.fxml.FXML
-import javafx.fxml.FXMLLoader
 import javafx.geometry.Insets
 import javafx.geometry.Pos.CENTER
 import javafx.scene.Node
-import javafx.scene.Scene
 import javafx.scene.control.*
 import javafx.scene.control.ButtonType.OK
 import javafx.scene.image.Image
@@ -28,7 +26,6 @@ import javafx.scene.image.ImageView
 import javafx.scene.layout.FlowPane
 import javafx.scene.layout.Priority.ALWAYS
 import javafx.scene.text.Font.font
-import javafx.stage.Stage
 import kotfx.*
 import org.joda.time.DateTime
 import java.io.File
@@ -92,11 +89,11 @@ class AttendanceController {
                     progressDialog.addButtons(OK) // apparently alert won't close without a button
                     progressDialog.close()
                 }) { employee ->
-                    flowPane.children.add(titledPaneOf(employee.toString()) {
+                    flowPane.children.add(titledPane(employee.toString()) {
                         userData = employee
                         isCollapsible = false
                         lateinit var listView: ListView<DateTime>
-                        content = vboxOf {
+                        content = vbox {
                             gridPane {
                                 setGaps(4)
                                 padding = Insets(8.0)
@@ -142,9 +139,9 @@ class AttendanceController {
                                             super.updateItem(item, empty)
                                             text = null
                                             graphic = null
-                                            if (item != null && !empty) graphic = hboxOf {
+                                            if (item != null && !empty) graphic = kotfx.hbox {
                                                 alignment = CENTER
-                                                label(item.toString(PATTERN_DATETIME)) { setMaxSize(Double.MAX_VALUE) } hGrow ALWAYS
+                                                label(item.toString(PATTERN_DATETIME)) { setMaxSize(Double.MAX_VALUE) } hpriority ALWAYS
                                                 button {
                                                     setSize(17.0)
                                                     graphicProperty() bind bindingOf<Node>(hoverProperty()) { if (isHover) ImageView(R.png.btn_clear) else null }
@@ -156,7 +153,7 @@ class AttendanceController {
                                 }
                             }
                         }
-                        contextMenu = contextMenuOf {
+                        contextMenu = contextMenu {
                             menuItem(getString(R.string.add)) {
                                 setOnAction {
                                     DateTimeDialog(getString(R.string.record), ImageView(R.png.ic_calendar), getString(R.string.add), listView.selectionModel.selectedItem)
@@ -181,11 +178,11 @@ class AttendanceController {
                             separatorMenuItem()
                             menuItem(getString(R.string.revert)) { setOnAction { employee.revert() } }
                             separatorMenuItem()
-                            menuItem("${getString(R.string.delete)} ${employee.name}") { setOnAction { flowPane.children.remove(this@titledPaneOf) } }
-                            menuItem(getString(R.string.delete_others)) { setOnAction { flowPane.children.removeAll(((flowPane).children).toMutableList().apply { remove(this@titledPaneOf) }) } }
+                            menuItem("${getString(R.string.delete)} ${employee.name}") { setOnAction { flowPane.children.remove(this@titledPane) } }
+                            menuItem(getString(R.string.delete_others)) { setOnAction { flowPane.children.removeAll(((flowPane).children).toMutableList().apply { remove(this@titledPane) }) } }
                             menuItem(getString(R.string.delete_all)) { setOnAction { flowPane.children.clear() } }
                         }
-                        graphic = imageViewOf { imageProperty() bind bindingOf(listView.items) { Image(if (listView.items.size % 2 == 0) R.png.btn_checkbox else R.png.btn_checkbox_outline) } }
+                        graphic = imageView { imageProperty() bind bindingOf(listView.items) { Image(if (listView.items.size % 2 == 0) R.png.btn_checkbox else R.png.btn_checkbox_outline) } }
                     })
                 }
     }
@@ -212,9 +209,8 @@ class AttendanceController {
         if (set.isNotEmpty()) {
             AttendanceRecordController.EMPLOYEES = set
             val minSize = Pair(960.0, 640.0)
-            Stage().apply {
-                scene = Scene(FXMLLoader.load(App::class.java.getResource(R.fxml.layout_attendance_record), resources), minSize.first, minSize.second)
-                title = "${getString(R.string.app_name)} - ${getString(R.string.record)}"
+            stage("${getString(R.string.app_name)} - ${getString(R.string.record)}") {
+                scene = App::class.java.getResource(R.fxml.layout_attendance_record).loadFXML(resources).toScene(minSize.first, minSize.second)
                 minWidth = minSize.first
                 minHeight = minSize.second
             }.showAndWait()

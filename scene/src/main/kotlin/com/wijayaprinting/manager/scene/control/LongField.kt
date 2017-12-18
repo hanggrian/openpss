@@ -6,9 +6,9 @@ import com.wijayaprinting.manager.scene.utils.digitsOnly
 import com.wijayaprinting.manager.scene.utils.isDigits
 import javafx.beans.property.SimpleLongProperty
 import javafx.scene.control.TextField
-import kotfx.internal.ChildManager
-import kotfx.internal.ControlDsl
-import kotfx.internal.ItemManager
+import kotfx.controls.ItemManager
+import kotfx.internal.KotfxDsl
+import kotfx.layouts.ChildManager
 import kotfx.stringConverter
 
 open class LongField : TextField() {
@@ -26,16 +26,16 @@ open class LongField : TextField() {
 }
 
 @JvmOverloads
-inline fun longFieldOf(
-        noinline init: ((@ControlDsl LongField).() -> Unit)? = null
+inline fun longField(
+        noinline init: ((@KotfxDsl LongField).() -> Unit)? = null
 ): LongField = LongField().apply { init?.invoke(this) }
 
 @JvmOverloads
 inline fun ChildManager.longField(
-        noinline init: ((@ControlDsl LongField).() -> Unit)? = null
+        noinline init: ((@KotfxDsl LongField).() -> Unit)? = null
 ): LongField = LongField().apply { init?.invoke(this) }.add()
 
 @JvmOverloads
 inline fun ItemManager.longField(
-        noinline init: ((@ControlDsl LongField).() -> Unit)? = null
+        noinline init: ((@KotfxDsl LongField).() -> Unit)? = null
 ): LongField = LongField().apply { init?.invoke(this) }.add()

@@ -12,9 +12,9 @@ import javafx.scene.layout.HBox
 import kotfx.bind
 import kotfx.bindingOf
 import kotfx.booleanBindingOf
-import kotfx.internal.ChildManager
-import kotfx.internal.ControlDsl
-import kotfx.internal.ItemManager
+import kotfx.controls.ItemManager
+import kotfx.internal.KotfxDsl
+import kotfx.layouts.ChildManager
 import org.joda.time.LocalTime
 import org.joda.time.format.DateTimeFormat
 
@@ -70,16 +70,16 @@ open class TimeBox : HBox() {
 
 
 @JvmOverloads
-inline fun timeBoxOf(
-        noinline init: ((@ControlDsl TimeBox).() -> Unit)? = null
+inline fun timeBox(
+        noinline init: ((@KotfxDsl TimeBox).() -> Unit)? = null
 ): TimeBox = TimeBox().apply { init?.invoke(this) }
 
 @JvmOverloads
 inline fun ChildManager.timeBox(
-        noinline init: ((@ControlDsl TimeBox).() -> Unit)? = null
+        noinline init: ((@KotfxDsl TimeBox).() -> Unit)? = null
 ): TimeBox = TimeBox().apply { init?.invoke(this) }.add()
 
 @JvmOverloads
 inline fun ItemManager.timeBox(
-        noinline init: ((@ControlDsl TimeBox).() -> Unit)? = null
+        noinline init: ((@KotfxDsl TimeBox).() -> Unit)? = null
 ): TimeBox = TimeBox().apply { init?.invoke(this) }.add()

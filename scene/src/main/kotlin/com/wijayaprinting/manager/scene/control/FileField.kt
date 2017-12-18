@@ -6,9 +6,9 @@ import javafx.beans.property.SimpleBooleanProperty
 import javafx.scene.control.TextField
 import kotfx.bind
 import kotfx.booleanBindingOf
-import kotfx.internal.ChildManager
-import kotfx.internal.ControlDsl
-import kotfx.internal.ItemManager
+import kotfx.controls.ItemManager
+import kotfx.internal.KotfxDsl
+import kotfx.layouts.ChildManager
 import kotfx.or
 import java.io.File
 
@@ -27,16 +27,16 @@ open class FileField : TextField() {
 }
 
 @JvmOverloads
-inline fun fileFieldOf(
-        noinline init: ((@ControlDsl FileField).() -> Unit)? = null
+inline fun fileField(
+        noinline init: ((@KotfxDsl FileField).() -> Unit)? = null
 ): FileField = FileField().apply { init?.invoke(this) }
 
 @JvmOverloads
 inline fun ChildManager.fileField(
-        noinline init: ((@ControlDsl FileField).() -> Unit)? = null
+        noinline init: ((@KotfxDsl FileField).() -> Unit)? = null
 ): FileField = FileField().apply { init?.invoke(this) }.add()
 
 @JvmOverloads
 inline fun ItemManager.fileField(
-        noinline init: ((@ControlDsl FileField).() -> Unit)? = null
+        noinline init: ((@KotfxDsl FileField).() -> Unit)? = null
 ): FileField = FileField().apply { init?.invoke(this) }.add()

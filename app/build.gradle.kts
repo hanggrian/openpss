@@ -23,17 +23,13 @@ buildconfig {
 
 dependencies {
     implementation(project(":scene"))
-
     implementation(kotlin("stdlib", kotlinVersion))
 
-    implementation(rx("java", rxjavaVersion))
-    implementation(rx("javafx", rxkotlinVersion))
-    implementation(rx("kotlin", rxkotlinVersion))
+    implementation(rx("javafx", rxjavafxVersion))
+    implementation(hendraanggrian("rxexposed", rxexposedVersion))
 
     implementation(apache("commons", "math3", commonsMathVersion))
     implementation(apache("poi", "ooxml", poiVersion))
-
-    implementation(hendraanggrian("rxexposed", rxexposedVersion))
 
     implementation(google("guava", guavaVersion))
     implementation(slf4j("log4j12", slf4jVersion))

@@ -6,9 +6,9 @@ import com.wijayaprinting.manager.scene.utils.digitsOnly
 import com.wijayaprinting.manager.scene.utils.isDigits
 import javafx.beans.property.SimpleIntegerProperty
 import javafx.scene.control.TextField
-import kotfx.internal.ChildManager
-import kotfx.internal.ControlDsl
-import kotfx.internal.ItemManager
+import kotfx.controls.ItemManager
+import kotfx.internal.KotfxDsl
+import kotfx.layouts.ChildManager
 import kotfx.stringConverter
 
 open class IntField : TextField() {
@@ -26,16 +26,16 @@ open class IntField : TextField() {
 }
 
 @JvmOverloads
-inline fun intFieldOf(
-        noinline init: ((@ControlDsl IntField).() -> Unit)? = null
+inline fun intField(
+        noinline init: ((@KotfxDsl IntField).() -> Unit)? = null
 ): IntField = IntField().apply { init?.invoke(this) }
 
 @JvmOverloads
 inline fun ChildManager.intField(
-        noinline init: ((@ControlDsl IntField).() -> Unit)? = null
+        noinline init: ((@KotfxDsl IntField).() -> Unit)? = null
 ): IntField = IntField().apply { init?.invoke(this) }.add()
 
 @JvmOverloads
 inline fun ItemManager.intField(
-        noinline init: ((@ControlDsl IntField).() -> Unit)? = null
+        noinline init: ((@KotfxDsl IntField).() -> Unit)? = null
 ): IntField = IntField().apply { init?.invoke(this) }.add()

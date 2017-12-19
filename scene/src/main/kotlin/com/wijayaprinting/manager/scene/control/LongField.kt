@@ -6,9 +6,9 @@ import com.wijayaprinting.manager.scene.utils.digitsOnly
 import com.wijayaprinting.manager.scene.utils.isDigits
 import javafx.beans.property.SimpleLongProperty
 import javafx.scene.control.TextField
-import kotfx.controls.ItemManager
-import kotfx.internal.KotfxDsl
-import kotfx.layouts.ChildManager
+import kotfx.ChildManager
+import kotfx.ItemManager
+import kotfx.KotfxDsl
 import kotfx.stringConverter
 
 open class LongField : TextField() {

@@ -4,12 +4,7 @@ package com.wijayaprinting.manager.scene.control
 
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.scene.control.TextField
-import kotfx.bind
-import kotfx.booleanBindingOf
-import kotfx.controls.ItemManager
-import kotfx.internal.KotfxDsl
-import kotfx.layouts.ChildManager
-import kotfx.or
+import kotfx.*
 import java.io.File
 
 open class FileField : TextField() {

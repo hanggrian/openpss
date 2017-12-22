@@ -2,12 +2,10 @@
 
 package com.wijayaprinting.manager.scene.control
 
-import com.wijayaprinting.manager.scene.utils.digitsOnly
-import com.wijayaprinting.manager.scene.utils.isDigits
 import javafx.beans.property.SimpleLongProperty
 import javafx.scene.control.TextField
-import kotfx.ChildManager
-import kotfx.ItemManager
+import kotfx.ChildRoot
+import kotfx.ItemRoot
 import kotfx.KotfxDsl
 import kotfx.stringConverter
 
@@ -16,8 +14,8 @@ open class LongField : TextField() {
     val valueProperty = SimpleLongProperty()
 
     init {
-        textProperty().bindBidirectional(valueProperty, stringConverter<Number>({ if (!isDigits) 0 else it.toLong() }))
-        digitsOnly()
+        textProperty().bindBidirectional(valueProperty, stringConverter<Number>({ it.toLongOrNull() ?: 0 }))
+        textProperty().addListener { _, oldValue, newValue -> text = if (newValue.isEmpty()) "0" else newValue.toLongOrNull()?.toString() ?: oldValue }
     }
 
     var value: Long
@@ -25,17 +23,6 @@ open class LongField : TextField() {
         set(value) = valueProperty.set(value)
 }
 
-@JvmOverloads
-inline fun longField(
-        noinline init: ((@KotfxDsl LongField).() -> Unit)? = null
-): LongField = LongField().apply { init?.invoke(this) }
-
-@JvmOverloads
-inline fun ChildManager.longField(
-        noinline init: ((@KotfxDsl LongField).() -> Unit)? = null
-): LongField = LongField().apply { init?.invoke(this) }.add()
-
-@JvmOverloads
-inline fun ItemManager.longField(
-        noinline init: ((@KotfxDsl LongField).() -> Unit)? = null
-): LongField = LongField().apply { init?.invoke(this) }.add()
+@JvmOverloads inline fun longField(noinline init: ((@KotfxDsl LongField).() -> Unit)? = null): LongField = LongField().apply { init?.invoke(this) }
+@JvmOverloads inline fun ChildRoot.longField(noinline init: ((@KotfxDsl LongField).() -> Unit)? = null): LongField = LongField().apply { init?.invoke(this) }.add()
+@JvmOverloads inline fun ItemRoot.longField(noinline init: ((@KotfxDsl LongField).() -> Unit)? = null): LongField = LongField().apply { init?.invoke(this) }.add()

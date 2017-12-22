@@ -2,15 +2,16 @@ import org.gradle.api.artifacts.dsl.DependencyHandler
 
 const val releaseGroup = "com.wijayaprinting"
 const val releaseArtifact = "manager"
-const val releaseVersion = "0.3"
+const val releaseVersion = "0.4"
 
-const val isDebug = false // Set false when building app, true when building stage.
+/** Set false when building app, true when building stage. */
+const val isDebug = false
 
 const val kotlinVersion = "1.2.10"
 
 const val dataVersion = "0.4"
 const val kotfxVersion = "0.12"
-const val guavaVersion = "23.5-jre"
+const val guavaVersion = "23.6-jre"
 const val rxjavafxVersion = "2.2.2"
 const val rxexposedVersion = "0.1"
 const val poiVersion = "3.16"

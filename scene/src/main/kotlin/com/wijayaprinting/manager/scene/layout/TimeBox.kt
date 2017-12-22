@@ -4,20 +4,18 @@ package com.wijayaprinting.manager.scene.layout
 
 import com.wijayaprinting.data.PATTERN_TIME
 import com.wijayaprinting.manager.scene.control.IntField
+import com.wijayaprinting.manager.scene.control.intField
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleObjectProperty
 import javafx.geometry.Pos.CENTER
-import javafx.scene.control.Label
-import javafx.scene.layout.HBox
 import kotfx.*
 import org.joda.time.LocalTime
 import org.joda.time.format.DateTimeFormat
 
-open class TimeBox : HBox() {
+open class TimeBox : _HBox() {
 
-    val hourField = IntField()
-    val dividerLabel = Label(":")
-    val minuteField = IntField()
+    lateinit var hourField: IntField
+    lateinit var minuteField: IntField
 
     val valueProperty = SimpleObjectProperty<LocalTime>()
     val validProperty = SimpleBooleanProperty()
@@ -26,15 +24,19 @@ open class TimeBox : HBox() {
         alignment = CENTER
         spacing = 4.0
 
-        hourField.textProperty().addListener { _, oldValue, newValue -> if (newValue.toIntOrNull() ?: 0 !in 0..24) hourField.text = oldValue }
-        minuteField.textProperty().addListener { _, oldValue, newValue -> if (newValue.toIntOrNull() ?: 0 !in 0..60) minuteField.text = oldValue }
-        listOf(hourField, minuteField).forEach {
-            it.promptText = "00"
-            it.maxWidth = 48.0
-            it.alignment = CENTER
+        hourField = intField {
+            promptText = "0"
+            maxWidth = 48.0
+            alignment = CENTER
+            textProperty().addListener { _, oldValue, newValue -> if (newValue.toIntOrNull() ?: 0 !in 0..24) hourField.text = oldValue }
         }
-
-        children.addAll(hourField, dividerLabel, minuteField)
+        label(":")
+        minuteField = intField {
+            promptText = "0"
+            maxWidth = 48.0
+            alignment = CENTER
+            textProperty().addListener { _, oldValue, newValue -> if (newValue.toIntOrNull() ?: 0 !in 0..60) minuteField.text = oldValue }
+        }
 
         valueProperty bind bindingOf(hourField.textProperty(), minuteField.textProperty()) {
             try {
@@ -64,17 +66,6 @@ open class TimeBox : HBox() {
 }
 
 
-@JvmOverloads
-inline fun timeBox(
-        noinline init: ((@KotfxDsl TimeBox).() -> Unit)? = null
-): TimeBox = TimeBox().apply { init?.invoke(this) }
-
-@JvmOverloads
-inline fun ChildManager.timeBox(
-        noinline init: ((@KotfxDsl TimeBox).() -> Unit)? = null
-): TimeBox = TimeBox().apply { init?.invoke(this) }.add()
-
-@JvmOverloads
-inline fun ItemManager.timeBox(
-        noinline init: ((@KotfxDsl TimeBox).() -> Unit)? = null
-): TimeBox = TimeBox().apply { init?.invoke(this) }.add()
+@JvmOverloads inline fun timeBox(noinline init: ((@KotfxDsl TimeBox).() -> Unit)? = null): TimeBox = TimeBox().apply { init?.invoke(this) }
+@JvmOverloads inline fun ChildRoot.timeBox(noinline init: ((@KotfxDsl TimeBox).() -> Unit)? = null): TimeBox = TimeBox().apply { init?.invoke(this) }.add()
+@JvmOverloads inline fun ItemRoot.timeBox(noinline init: ((@KotfxDsl TimeBox).() -> Unit)? = null): TimeBox = TimeBox().apply { init?.invoke(this) }.add()

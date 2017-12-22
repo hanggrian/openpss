@@ -2,7 +2,6 @@
 
 package com.wijayaprinting.manager.scene.control
 
-import com.wijayaprinting.manager.scene.utils.isDecimal
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleDoubleProperty
 import javafx.scene.control.TextField
@@ -14,8 +13,15 @@ open class DoubleField : TextField() {
     val validProperty = SimpleBooleanProperty()
 
     init {
-        textProperty().bindBidirectional(valueProperty, stringConverter<Number>({ if (!isDecimal) 0.0 else it.toDouble() }))
-        validProperty bind booleanBindingOf(textProperty()) { isDecimal }
+        textProperty().bindBidirectional(valueProperty, stringConverter<Number>({ it.toDoubleOrNull() ?: 0.0 }))
+        validProperty bind booleanBindingOf(textProperty()) {
+            try {
+                java.lang.Double.parseDouble(text)
+                true
+            } catch (e: NumberFormatException) {
+                false
+            }
+        }
     }
 
     var value: Double
@@ -25,17 +31,6 @@ open class DoubleField : TextField() {
     val isValid: Boolean = validProperty.value
 }
 
-@JvmOverloads
-inline fun doubleField(
-        noinline init: ((@KotfxDsl DoubleField).() -> Unit)? = null
-): DoubleField = DoubleField().apply { init?.invoke(this) }
-
-@JvmOverloads
-inline fun ChildManager.doubleField(
-        noinline init: ((@KotfxDsl DoubleField).() -> Unit)? = null
-): DoubleField = DoubleField().apply { init?.invoke(this) }.add()
-
-@JvmOverloads
-inline fun ItemManager.doubleField(
-        noinline init: ((@KotfxDsl DoubleField).() -> Unit)? = null
-): DoubleField = DoubleField().apply { init?.invoke(this) }.add()
+@JvmOverloads inline fun doubleField(noinline init: ((@KotfxDsl DoubleField).() -> Unit)? = null): DoubleField = DoubleField().apply { init?.invoke(this) }
+@JvmOverloads inline fun ChildRoot.doubleField(noinline init: ((@KotfxDsl DoubleField).() -> Unit)? = null): DoubleField = DoubleField().apply { init?.invoke(this) }.add()
+@JvmOverloads inline fun ItemRoot.doubleField(noinline init: ((@KotfxDsl DoubleField).() -> Unit)? = null): DoubleField = DoubleField().apply { init?.invoke(this) }.add()

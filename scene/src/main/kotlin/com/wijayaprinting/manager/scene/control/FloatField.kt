@@ -2,7 +2,6 @@
 
 package com.wijayaprinting.manager.scene.control
 
-import com.wijayaprinting.manager.scene.utils.isDecimal
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleFloatProperty
 import javafx.scene.control.TextField
@@ -14,8 +13,15 @@ open class FloatField : TextField() {
     val validProperty = SimpleBooleanProperty()
 
     init {
-        textProperty().bindBidirectional(valueProperty, stringConverter<Number>({ if (!isDecimal) 0f else it.toFloat() }))
-        validProperty bind booleanBindingOf(textProperty()) { isDecimal }
+        textProperty().bindBidirectional(valueProperty, stringConverter<Number>({ it.toFloatOrNull() ?: 0f }))
+        validProperty bind booleanBindingOf(textProperty()) {
+            try {
+                java.lang.Float.parseFloat(text)
+                true
+            } catch (e: NumberFormatException) {
+                false
+            }
+        }
     }
 
     var value: Float
@@ -25,17 +31,6 @@ open class FloatField : TextField() {
     val isValid: Boolean = validProperty.value
 }
 
-@JvmOverloads
-inline fun floatField(
-        noinline init: ((@KotfxDsl FloatField).() -> Unit)? = null
-): FloatField = FloatField().apply { init?.invoke(this) }
-
-@JvmOverloads
-inline fun ChildManager.floatField(
-        noinline init: ((@KotfxDsl FloatField).() -> Unit)? = null
-): FloatField = FloatField().apply { init?.invoke(this) }.add()
-
-@JvmOverloads
-inline fun ItemManager.floatField(
-        noinline init: ((@KotfxDsl FloatField).() -> Unit)? = null
-): FloatField = FloatField().apply { init?.invoke(this) }.add()
+@JvmOverloads inline fun floatField(noinline init: ((@KotfxDsl FloatField).() -> Unit)? = null): FloatField = FloatField().apply { init?.invoke(this) }
+@JvmOverloads inline fun ChildRoot.floatField(noinline init: ((@KotfxDsl FloatField).() -> Unit)? = null): FloatField = FloatField().apply { init?.invoke(this) }.add()
+@JvmOverloads inline fun ItemRoot.floatField(noinline init: ((@KotfxDsl FloatField).() -> Unit)? = null): FloatField = FloatField().apply { init?.invoke(this) }.add()

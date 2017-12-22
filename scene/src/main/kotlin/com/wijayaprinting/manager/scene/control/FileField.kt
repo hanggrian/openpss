@@ -27,11 +27,11 @@ inline fun fileField(
 ): FileField = FileField().apply { init?.invoke(this) }
 
 @JvmOverloads
-inline fun ChildManager.fileField(
+inline fun ChildRoot.fileField(
         noinline init: ((@KotfxDsl FileField).() -> Unit)? = null
 ): FileField = FileField().apply { init?.invoke(this) }.add()
 
 @JvmOverloads
-inline fun ItemManager.fileField(
+inline fun ItemRoot.fileField(
         noinline init: ((@KotfxDsl FileField).() -> Unit)? = null
 ): FileField = FileField().apply { init?.invoke(this) }.add()

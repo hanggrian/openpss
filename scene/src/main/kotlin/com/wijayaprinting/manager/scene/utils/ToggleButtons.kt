@@ -1,4 +1,3 @@
-@file:JvmName("ToggleButtonsKt")
 @file:Suppress("NOTHING_TO_INLINE")
 
 package com.wijayaprinting.manager.scene.utils

@@ -1,4 +1,3 @@
-@file:JvmName("ResourcesKt")
 @file:Suppress("NOTHING_TO_INLINE")
 
 package com.wijayaprinting.manager

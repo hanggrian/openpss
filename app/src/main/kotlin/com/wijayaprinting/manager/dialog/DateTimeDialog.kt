@@ -34,6 +34,7 @@ class DateTimeDialog @JvmOverloads constructor(
                 prefill?.let { value = it.toLocalDate().asJava() }
                 isEditable = false // force pick from popup
                 maxWidth = 128.0
+                runFX { requestFocus() }
             } col 0 row 0
             timeBox = timeBox { prefill?.let { value = it.toLocalTime() } } col 1 row 0
             slider(0, 24, 0) { valueProperty() bindBidirectional timeBox.hourField.valueProperty } col 0 row 1 colSpan 2
@@ -41,7 +42,6 @@ class DateTimeDialog @JvmOverloads constructor(
         }
         addButtons(OK, CANCEL)
 
-        runFX { datePicker.requestFocus() }
         setResultConverter {
             if (it != OK) null
             else DateTime(datePicker.value.year, datePicker.value.monthValue, datePicker.value.dayOfMonth, timeBox.value.hourOfDay, timeBox.value.minuteOfHour)

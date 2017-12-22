@@ -4,9 +4,7 @@ import com.wijayaprinting.data.Customer
 import com.wijayaprinting.data.Customers
 import com.wijayaprinting.manager.getString
 import com.wijayaprinting.manager.safeTransaction
-import com.wijayaprinting.manager.scene.Updatable
 import com.wijayaprinting.manager.scene.utils.setGaps
-import com.wijayaprinting.manager.scene.utils.textOrNull
 import javafx.beans.property.SimpleStringProperty
 import javafx.event.Event
 import javafx.event.EventHandler
@@ -24,7 +22,7 @@ import org.jetbrains.exposed.sql.SizedIterable
 import org.jetbrains.exposed.sql.or
 import org.joda.time.DateTime
 
-class CustomerPagination : Pagination(), Updatable {
+class CustomerPagination : Pagination() {
 
     companion object {
         const val COUNT_PER_PAGE = 20
@@ -74,7 +72,7 @@ class CustomerPagination : Pagination(), Updatable {
             condition
         }
 
-    override fun update() {
+    fun update() {
         pageCount = (customers.count() / COUNT_PER_PAGE) + 1
         if (currentPageContainer != null) {
             currentPageContainer!!.fireEvent(PageEvent(currentPageIndex))
@@ -152,5 +150,7 @@ class CustomerPagination : Pagination(), Updatable {
                 ) else null
             }
         }
+
+        val TextInputControl.textOrNull: String? get() = if (text.isEmpty()) null else text
     }
 }

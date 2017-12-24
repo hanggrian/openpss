@@ -21,17 +21,6 @@ open class FileField : TextField() {
     val isValid: Boolean get() = validProperty.value
 }
 
-@JvmOverloads
-inline fun fileField(
-        noinline init: ((@KotfxDsl FileField).() -> Unit)? = null
-): FileField = FileField().apply { init?.invoke(this) }
-
-@JvmOverloads
-inline fun ChildRoot.fileField(
-        noinline init: ((@KotfxDsl FileField).() -> Unit)? = null
-): FileField = FileField().apply { init?.invoke(this) }.add()
-
-@JvmOverloads
-inline fun ItemRoot.fileField(
-        noinline init: ((@KotfxDsl FileField).() -> Unit)? = null
-): FileField = FileField().apply { init?.invoke(this) }.add()
+@JvmOverloads inline fun fileField(noinline init: ((@KotfxDsl FileField).() -> Unit)? = null): FileField = FileField().apply { init?.invoke(this) }
+@JvmOverloads inline fun ChildRoot.fileField(noinline init: ((@KotfxDsl FileField).() -> Unit)? = null): FileField = FileField().apply { init?.invoke(this) }.add()
+@JvmOverloads inline fun ItemRoot.fileField(noinline init: ((@KotfxDsl FileField).() -> Unit)? = null): FileField = FileField().apply { init?.invoke(this) }.add()

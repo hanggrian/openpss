@@ -1,4 +1,4 @@
-// rsync generated this class at 2017-12-17T00:11:54.004 from:
+// rsync generated this class at 2017-12-24T23:58:02.017 from:
 // string_en.properties
 // layout_attendance.fxml
 // btn_refresh.png
@@ -101,6 +101,8 @@ public final class R {
   }
 
   public static final class string {
+    public static final String daily_income = "daily_income";
+
     public static final String are_you_sure = "are_you_sure";
 
     public static final String lock_end_time = "lock_end_time";
@@ -137,6 +139,8 @@ public final class R {
 
     public static final String both = "both";
 
+    public static final String overtime_income = "overtime_income";
+
     public static final String hour = "hour";
 
     public static final String grand_total = "grand_total";
@@ -146,6 +150,8 @@ public final class R {
     public static final String start = "start";
 
     public static final String day = "day";
+
+    public static final String multiple_actions = "multiple_actions";
 
     public static final String revert = "revert";
 

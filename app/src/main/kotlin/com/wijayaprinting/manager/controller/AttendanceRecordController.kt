@@ -1,15 +1,16 @@
 package com.wijayaprinting.manager.controller
 
+import com.wijayaprinting.data.PATTERN_DATETIME
+import com.wijayaprinting.data.PATTERN_TIME
+import com.wijayaprinting.manager.R
 import com.wijayaprinting.manager.data.*
+import com.wijayaprinting.manager.getString
 import com.wijayaprinting.manager.scene.layout.TimeBox
 import javafx.collections.ObservableSet
 import javafx.fxml.FXML
 import javafx.print.PrinterJob.createPrinterJob
-import javafx.scene.control.Button
+import javafx.scene.control.*
 import javafx.scene.control.SelectionMode.MULTIPLE
-import javafx.scene.control.TreeItem
-import javafx.scene.control.TreeTableColumn
-import javafx.scene.control.TreeTableView
 import javafx.scene.text.Text
 import javafx.scene.text.TextFlow
 import kotfx.*
@@ -22,7 +23,7 @@ class AttendanceRecordController {
         lateinit var EMPLOYEES: Set<Employee>
     }
 
-    @FXML lateinit var undoButton: Button
+    @FXML lateinit var undoButton: SplitMenuButton
     @FXML lateinit var timeBox: TimeBox
     @FXML lateinit var lockStartButton: Button
     @FXML lateinit var lockEndButton: Button
@@ -39,11 +40,9 @@ class AttendanceRecordController {
     @FXML lateinit var overtimeIncomeColumn: TreeTableColumn<Record, Double>
     @FXML lateinit var totalColumn: TreeTableColumn<Record, Double>
 
-    private var undos: ObservableSet<() -> Unit> = mutableObservableSetOf()
-
     @FXML
     fun initialize() = runFX {
-        undoButton.disableProperty() bind undos.isEmpty
+        undoButton.disableProperty() bind undoButton.items.isEmpty
         arrayOf(lockStartButton, lockEndButton).forEach {
             it.disableProperty() bind booleanBindingOf(treeTableView.selectionModel.selectedIndexProperty()) {
                 if (treeTableView.selectionModel.selectedIndex == -1) true
@@ -84,37 +83,54 @@ class AttendanceRecordController {
     }
 
     @FXML
-    fun undoOnAction() {
-        undos.forEach { it() }
-        undos.clear()
-    }
+    fun undoOnAction() = undoButton.items[0].fire()
 
     @FXML
     fun lockStartOnAction() {
-        undos.clear()
+        var name: String? = null
+        val undos: ObservableSet<() -> Unit> = mutableObservableSetOf()
         treeTableView.selectionModel.selectedItems
                 .map { it.value }
                 .forEach { record ->
                     val initial = record.start.value
                     if (initial.toLocalTime() < timeBox.value) {
                         record.start.set(record.cloneStart(timeBox.value))
+                        name = if (name == null) "${record.actualEmployee.name} ${initial.toString(PATTERN_DATETIME)} -> ${timeBox.value.toString(PATTERN_TIME)}" else getString(R.string.multiple_actions)
                         undos.add { record.start.set(initial) }
                     }
                 }
+        if (name != null && undos.isNotEmpty()) undoButton.items.add(0, menuItem {
+            text = name
+            setOnAction {
+                undos.forEach { it() }
+                undoButton.items.getOrNull(undoButton.items.indexOf(this) - 1)?.fire()
+                undoButton.items.remove(this)
+            }
+        })
     }
 
     @FXML
     fun lockEndOnAction() {
-        undos.clear()
+        var name: String? = null
+        val undos: ObservableSet<() -> Unit> = mutableObservableSetOf()
         treeTableView.selectionModel.selectedItems
                 .map { it.value }
                 .forEach { record ->
                     val initial = record.end.value
                     if (initial.toLocalTime() > timeBox.value) {
                         record.end.set(record.cloneEnd(timeBox.value))
+                        name = if (name == null) "${record.actualEmployee.name} ${initial.toString(PATTERN_DATETIME)} -> ${timeBox.value.toString(PATTERN_TIME)}" else getString(R.string.multiple_actions)
                         undos.add { record.end.set(initial) }
                     }
                 }
+        if (name != null && undos.isNotEmpty()) undoButton.items.add(0, menuItem {
+            text = name
+            setOnAction {
+                undos.forEach { it() }
+                undoButton.items.getOrNull(undoButton.items.indexOf(this) - 1)?.fire()
+                undoButton.items.remove(this)
+            }
+        })
     }
 
     @FXML

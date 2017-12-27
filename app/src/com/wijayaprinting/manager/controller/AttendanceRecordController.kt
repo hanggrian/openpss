@@ -4,7 +4,6 @@ import com.wijayaprinting.data.PATTERN_DATETIME
 import com.wijayaprinting.data.PATTERN_TIME
 import com.wijayaprinting.manager.R
 import com.wijayaprinting.manager.data.*
-import com.wijayaprinting.manager.getString
 import com.wijayaprinting.manager.scene.layout.TimeBox
 import javafx.collections.ObservableSet
 import javafx.fxml.FXML
@@ -17,7 +16,7 @@ import kotfx.*
 import java.lang.Character.isDigit
 import java.text.NumberFormat.getCurrencyInstance
 
-class AttendanceRecordController {
+class AttendanceRecordController : Controller() {
 
     lateinit var employees: Set<Employee>
 

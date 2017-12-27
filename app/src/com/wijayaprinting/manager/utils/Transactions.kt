@@ -1,6 +1,6 @@
 @file:Suppress("NOTHING_TO_INLINE")
 
-package com.wijayaprinting.manager
+package com.wijayaprinting.manager.utils
 
 import kotfx.errorAlert
 import org.jetbrains.exposed.sql.Transaction

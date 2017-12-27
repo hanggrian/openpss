@@ -34,18 +34,18 @@ import java.net.InetAddress.getByName
 import java.net.URI
 import java.util.*
 
-class App : Application() {
+class App : Application(), Resourceful {
 
     companion object {
         private const val IP_LOOKUP_TIMEOUT = 3000
 
-        @JvmStatic
-        fun main(vararg args: String) = launch(App::class.java, *args)
+        @JvmStatic fun main(vararg args: String) = launch(App::class.java, *args)
     }
+
+    override val resources: ResourceBundle = Language.parse(PreferencesFile[PreferencesFile.LANGUAGE].value).getResources("string")
 
     override fun init() {
         if (BuildConfig.DEBUG) configure()
-        setResources(Language.parse(PreferencesFile[PreferencesFile.LANGUAGE].value).getResources("string"))
     }
 
     override fun start(stage: Stage) {
@@ -96,7 +96,7 @@ class App : Application() {
                 label("An open-source software.\nFor more information and update, visit:") col 0 row 0 colSpan 2
                 hyperlink("https://github.com/WijayaPrinting/") { setOnAction { getDesktop().browse(URI(text)) } } col 0 row 1 colSpan 2
                 label("Manager") col 0 row 2
-                label(BuildConfig.VERSION) col 1 row 2
+                label(com.wijayaprinting.manager.BuildConfig.VERSION) col 1 row 2
                 label("Data") col 0 row 3
                 label(com.wijayaprinting.data.BuildConfig.VERSION) col 1 row 3
             }

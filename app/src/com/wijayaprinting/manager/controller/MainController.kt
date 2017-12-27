@@ -5,7 +5,7 @@ import javafx.scene.control.MenuBar
 import javafx.scene.control.TabPane
 import org.apache.commons.lang3.SystemUtils.IS_OS_MAC
 
-class MainController {
+class MainController : Controller() {
 
     @FXML lateinit var menuBar: MenuBar
     @FXML lateinit var tabPane: TabPane

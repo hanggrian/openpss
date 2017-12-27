@@ -2,9 +2,8 @@ package com.wijayaprinting.manager.control
 
 import com.wijayaprinting.data.Customer
 import com.wijayaprinting.data.Customers
-import com.wijayaprinting.manager.getString
-import com.wijayaprinting.manager.safeTransaction
 import com.wijayaprinting.manager.scene.utils.setGaps
+import com.wijayaprinting.manager.utils.safeTransaction
 import javafx.beans.property.SimpleStringProperty
 import javafx.event.Event
 import javafx.event.EventHandler
@@ -30,8 +29,8 @@ class CustomerPagination : Pagination() {
 
     val textProperty = SimpleStringProperty("").apply { addListener { _, _, _ -> safeTransaction { update() } } }
     var currentPageContainer: StackPane? = null
-    val addMenuItem = MenuItem(getString(com.wijayaprinting.manager.R.string.add))
-    val deleteMenuItem = MenuItem(getString(com.wijayaprinting.manager.R.string.delete))
+    val addMenuItem = MenuItem(com.wijayaprinting.manager.R.string.add)
+    val deleteMenuItem = MenuItem(com.wijayaprinting.manager.R.string.delete)
 
     init {
         if (!com.wijayaprinting.manager.BuildConfig.DEBUG) {

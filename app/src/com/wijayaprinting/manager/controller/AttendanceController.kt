@@ -1,7 +1,9 @@
 package com.wijayaprinting.manager.controller
 
 import com.wijayaprinting.data.PATTERN_DATETIME
-import com.wijayaprinting.manager.*
+import com.wijayaprinting.manager.App
+import com.wijayaprinting.manager.BuildConfig
+import com.wijayaprinting.manager.R
 import com.wijayaprinting.manager.data.Employee
 import com.wijayaprinting.manager.dialog.DateTimeDialog
 import com.wijayaprinting.manager.reader.Reader
@@ -31,7 +33,7 @@ import kotfx.*
 import org.joda.time.DateTime
 import java.io.File
 
-class AttendanceController {
+class AttendanceController : Controller() {
 
     @FXML lateinit var fileField: FileField
     @FXML lateinit var readerChoiceBox: ChoiceBox<Reader>

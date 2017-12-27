@@ -19,9 +19,7 @@ import java.text.NumberFormat.getCurrencyInstance
 
 class AttendanceRecordController {
 
-    companion object {
-        lateinit var EMPLOYEES: Set<Employee>
-    }
+    lateinit var employees: Set<Employee>
 
     @FXML lateinit var undoButton: SplitMenuButton
     @FXML lateinit var timeBox: TimeBox
@@ -53,7 +51,7 @@ class AttendanceRecordController {
         treeTableView.selectionModel.selectionMode = MULTIPLE
         treeTableView.root = TreeItem(Record.ROOT) // dummy for invisible root
         treeTableView.isShowRoot = false
-        EMPLOYEES.forEach { employee ->
+        employees.forEach { employee ->
             val node = employee.toNodeRecord()
             val childs = employee.toChildRecords()
             val total = employee.toTotalRecords(childs)

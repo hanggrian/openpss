@@ -24,6 +24,7 @@ import javafx.scene.control.PasswordField
 import javafx.scene.control.TextField
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
+import javafx.scene.layout.Pane
 import javafx.stage.Stage
 import kotfx.*
 import org.apache.log4j.BasicConfigurator.configure
@@ -42,11 +43,8 @@ class App : Application() {
         fun main(vararg args: String) = launch(App::class.java, *args)
     }
 
-    private lateinit var res: ResourceBundle
-
     override fun init() {
         if (BuildConfig.DEBUG) configure()
-        res = Language.parse(PreferencesFile[PreferencesFile.LANGUAGE].value).getResources("string")
         setResources(Language.parse(PreferencesFile[PreferencesFile.LANGUAGE].value).getResources("string"))
     }
 
@@ -141,7 +139,7 @@ class App : Application() {
             val minSize = Pair(960.0, 640.0)
             stage.apply {
                 title = getString(R.string.app_name)
-                scene = App::class.java.getResource(R.fxml.layout_main).loadFXML(resources).toScene(minSize.first, minSize.second)
+                scene = App::class.java.getResource(R.fxml.layout_main).loadFXML(resources).load<Pane>().toScene(minSize.first, minSize.second)
                 minWidth = minSize.first
                 minHeight = minSize.second
             }.show()

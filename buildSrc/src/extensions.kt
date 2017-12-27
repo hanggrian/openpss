@@ -10,7 +10,7 @@ const val isDebug = false
 const val kotlinVersion = "1.2.10"
 
 const val dataVersion = "0.4"
-const val kotfxVersion = "0.12"
+const val kotfxVersion = "0.13"
 const val guavaVersion = "23.6-jre"
 const val rxjavafxVersion = "2.2.2"
 const val rxexposedVersion = "0.1"

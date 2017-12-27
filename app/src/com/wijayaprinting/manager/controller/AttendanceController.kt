@@ -24,6 +24,7 @@ import javafx.scene.control.ButtonType.OK
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import javafx.scene.layout.FlowPane
+import javafx.scene.layout.Pane
 import javafx.scene.layout.Priority.ALWAYS
 import javafx.scene.text.Font.font
 import kotfx.*
@@ -189,7 +190,7 @@ class AttendanceController {
 
     @FXML
     fun processButtonOnAction() {
-        val set = mutableSetOf<Employee>()
+        val employees = mutableSetOf<Employee>()
         flowPane.children.map { it.userData as Employee }.forEach { employee ->
             when {
                 employee.daily.value <= 0 || employee.hourlyOvertime.value <= 0 -> {
@@ -202,17 +203,18 @@ class AttendanceController {
                 }
                 else -> {
                     employee.saveWage()
-                    set.add(employee)
+                    employees.add(employee)
                 }
             }
         }
-        if (set.isNotEmpty()) {
-            AttendanceRecordController.EMPLOYEES = set
+        if (employees.isNotEmpty()) {
             val minSize = Pair(960.0, 640.0)
             stage("${getString(R.string.app_name)} - ${getString(R.string.record)}") {
-                scene = App::class.java.getResource(R.fxml.layout_attendance_record).loadFXML(resources).toScene(minSize.first, minSize.second)
+                val loader = App::class.java.getResource(R.fxml.layout_attendance_record).loadFXML(resources)
+                scene = loader.load<Pane>().toScene(minSize.first, minSize.second)
                 minWidth = minSize.first
                 minHeight = minSize.second
+                loader.getController<AttendanceRecordController>().employees = employees
             }.showAndWait()
         }
     }

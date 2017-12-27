@@ -1,4 +1,5 @@
 import org.gradle.kotlin.dsl.kotlin
+import org.jetbrains.kotlin.gradle.plugin.android.AndroidGradleWrapper.srcDir
 
 plugins {
     java
@@ -7,13 +8,27 @@ plugins {
     id("buildconfig")
 }
 
+java.sourceSets {
+    getByName("main") {
+        java.srcDir("src")
+        resources.srcDir("res")
+    }
+    getByName("test") {
+        java.srcDir("tests/src")
+        resources.srcDir("tests/res")
+    }
+}
+
 rsync {
+    srcDir("src")
+    resDir("res")
     packageName("com.wijayaprinting.manager")
     leadingSlash(true)
     debug(isDebug)
 }
 
 buildconfig {
+    srcDir("src")
     packageName("com.wijayaprinting.manager")
     groupId(releaseGroup)
     artifactId(releaseArtifact)

@@ -31,6 +31,7 @@ import java.awt.Desktop.getDesktop
 import java.awt.Toolkit.getDefaultToolkit
 import java.net.InetAddress.getByName
 import java.net.URI
+import java.util.*
 
 class App : Application() {
 
@@ -41,8 +42,11 @@ class App : Application() {
         fun main(vararg args: String) = launch(App::class.java, *args)
     }
 
+    private lateinit var res: ResourceBundle
+
     override fun init() {
         if (BuildConfig.DEBUG) configure()
+        res = Language.parse(PreferencesFile[PreferencesFile.LANGUAGE].value).getResources("string")
         setResources(Language.parse(PreferencesFile[PreferencesFile.LANGUAGE].value).getResources("string"))
     }
 

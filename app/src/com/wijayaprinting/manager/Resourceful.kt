@@ -2,6 +2,7 @@ package com.wijayaprinting.manager
 
 import java.util.*
 
+/** Easy access to [ResourceBundle] in application and controllers. */
 interface Resourceful {
 
     val resources: ResourceBundle

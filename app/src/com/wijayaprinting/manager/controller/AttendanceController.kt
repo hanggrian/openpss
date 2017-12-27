@@ -216,7 +216,7 @@ class AttendanceController : Controller() {
                 scene = loader.load<Pane>().toScene(minSize.first, minSize.second)
                 minWidth = minSize.first
                 minHeight = minSize.second
-                loader.getController<AttendanceRecordController>().employees = employees
+                loader.getController<Controller>().setUserData(employees)
             }.showAndWait()
         }
     }

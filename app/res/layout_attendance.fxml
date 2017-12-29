@@ -11,7 +11,7 @@
     <ToolBar>
         <ChoiceBox fx:id="readerChoiceBox"/>
         <FileField fx:id="fileField" prefWidth="448.0" promptText="%input_file"/>
-        <Button mnemonicParsing="false" onAction="#browseButtonOnAction">
+        <Button mnemonicParsing="false" onAction="#browseOnAction">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
                     <Image url="@btn_folder.png"/>
@@ -42,9 +42,9 @@
         <Label fx:id="employeeCountLabel" text="Label"/>
         <ButtonBar HBox.hgrow="ALWAYS">
             <buttons>
-                <Button fx:id="readButton" mnemonicParsing="false" onAction="#readButtonOnAction" text="%read"/>
+                <Button fx:id="readButton" mnemonicParsing="false" onAction="#readOnAction" text="%read"/>
                 <Button fx:id="processButton" defaultButton="true" mnemonicParsing="false"
-                        onAction="#processButtonOnAction" text="%process"/>
+                        onAction="#processOnAction" text="%process"/>
             </buttons>
         </ButtonBar>
     </HBox>

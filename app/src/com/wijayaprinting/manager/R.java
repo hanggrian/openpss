@@ -1,4 +1,4 @@
-// rsync generated this class at 2017-12-29T16:41:46.823 from:
+// rsync generated this class at 2017-12-29T21:14:10.898 from:
 // string_en.properties
 // layout_attendance.fxml
 // btn_refresh.png
@@ -9,9 +9,12 @@
 // btn_add.png
 // btn_checkbox_outline.png
 // ic_user.png
+// license_rxjavafx.txt
 // btn_visibility.png
 // btn_clear.png
 // layout_main.fxml
+// license_apache_poi.txt
+// license_apache_commonslang.txt
 // layout_attendance_record.fxml
 // btn_visibility_off.png
 // ic_clock.png
@@ -19,12 +22,21 @@
 // btn_delete.png
 // btn_print.png
 // btn_merge.png
+// license_kotlin.txt
 // ic_launcher.png
 // btn_checkbox.png
+// license_apache_commonsvalidator.txt
+// lato_regular.ttf
+// lato_bold.ttf
+// license_kotfx.txt
 // btn_folder.png
+// license_guava.txt
 // layout_customer.fxml
+// license_slf4j.txt
 // btn_lock_in.png
+// lato_light.ttf
 // btn_undo.png
+// license_apache_commonsmath.txt
 package com.wijayaprinting.manager;
 
 import java.lang.String;
@@ -100,6 +112,40 @@ public final class R {
     }
   }
 
+  public static final class txt {
+    public static final String license_rxjavafx = "/license_rxjavafx.txt";
+
+    public static final String license_apache_poi = "/license_apache_poi.txt";
+
+    public static final String license_apache_commonslang = "/license_apache_commonslang.txt";
+
+    public static final String license_kotlin = "/license_kotlin.txt";
+
+    public static final String license_apache_commonsvalidator = "/license_apache_commonsvalidator.txt";
+
+    public static final String license_kotfx = "/license_kotfx.txt";
+
+    public static final String license_guava = "/license_guava.txt";
+
+    public static final String license_slf4j = "/license_slf4j.txt";
+
+    public static final String license_apache_commonsmath = "/license_apache_commonsmath.txt";
+
+    private txt() {
+    }
+  }
+
+  public static final class ttf {
+    public static final String lato_regular = "/lato_regular.ttf";
+
+    public static final String lato_bold = "/lato_bold.ttf";
+
+    public static final String lato_light = "/lato_light.ttf";
+
+    private ttf() {
+    }
+  }
+
   public static final class string {
     public static final String daily_income = "daily_income";
 
@@ -114,6 +160,8 @@ public final class R {
     public static final String delete_all = "delete_all";
 
     public static final String error_unknown = "error_unknown";
+
+    public static final String author = "author";
 
     public static final String income = "income";
 
@@ -141,6 +189,8 @@ public final class R {
 
     public static final String about = "about";
 
+    public static final String open_source_software = "open_source_software";
+
     public static final String overtime_income = "overtime_income";
 
     public static final String hour = "hour";
@@ -156,6 +206,8 @@ public final class R {
     public static final String multiple_actions = "multiple_actions";
 
     public static final String revert = "revert";
+
+    public static final String license = "license";
 
     public static final String error_employee_odd = "error_employee_odd";
 
@@ -181,6 +233,8 @@ public final class R {
 
     public static final String server = "server";
 
+    public static final String check_for_updates = "check_for_updates";
+
     public static final String delete = "delete";
 
     public static final String clear = "clear";
@@ -201,7 +255,11 @@ public final class R {
 
     public static final String print = "print";
 
+    public static final String select_license = "select_license";
+
     public static final String browse_file = "browse_file";
+
+    public static final String version = "version";
 
     public static final String date = "date";
 

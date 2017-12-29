@@ -60,12 +60,12 @@ class AttendanceController : Controller() {
     }
 
     @FXML
-    fun browseButtonOnAction() = fileChooser(getString(R.string.input_file), *readerChoiceBox.value.extensions)
+    fun browseOnAction() = fileChooser(getString(R.string.input_file), *readerChoiceBox.value.extensions)
             .showOpenDialog(fileField.scene.window)
             ?.let { fileField.text = it.absolutePath }
 
     @FXML
-    fun readButtonOnAction() {
+    fun readOnAction() {
         val progressDialog = infoAlert(getString(R.string.please_wait_content)) {
             headerText = getString(R.string.please_wait)
             buttonTypes.clear()
@@ -191,7 +191,7 @@ class AttendanceController : Controller() {
     }
 
     @FXML
-    fun processButtonOnAction() {
+    fun processOnAction() {
         val employees = mutableSetOf<Employee>()
         flowPane.children.map { it.userData as Employee }.forEach { employee ->
             when {

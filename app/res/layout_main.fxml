@@ -5,16 +5,25 @@
 <VBox xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.wijayaprinting.manager.controller.MainController">
     <MenuBar fx:id="menuBar">
+        <Menu mnemonicParsing="false" text="%navigate">
+            <CheckMenuItem mnemonicParsing="false" fx:id="customerMenu" onAction="#customerOnAction" text="%customer"/>
+            <CheckMenuItem mnemonicParsing="false" fx:id="receiptMenu" onAction="#receiptOnAction" text="%receipt"/>
+            <CheckMenuItem mnemonicParsing="false" fx:id="attendanceMenu" onAction="#attendanceOnAction"
+                           text="%attendance"/>
+        </Menu>
         <Menu mnemonicParsing="false" text="%help">
-            <MenuItem onAction="#aboutOnAction" mnemonicParsing="false" text="%about"/>
+            <MenuItem mnemonicParsing="false" onAction="#aboutOnAction" text="%about"/>
         </Menu>
     </MenuBar>
 
     <TabPane fx:id="tabPane" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
-        <Tab closable="false" disable="true" text="Customer">
+        <Tab closable="false" disable="true" text="%customer">
             <fx:include fx:id="customer" source="layout_customer.fxml"/>
         </Tab>
-        <Tab closable="false" text="Attendance">
+        <Tab closable="false" disable="true" text="%receipt">
+            <fx:include fx:id="receipt" source="layout_receipt.fxml"/>
+        </Tab>
+        <Tab closable="false" text="%attendance">
             <fx:include fx:id="attendance" source="layout_attendance.fxml"/>
         </Tab>
     </TabPane>

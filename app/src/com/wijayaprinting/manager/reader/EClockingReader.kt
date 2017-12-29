@@ -4,7 +4,7 @@ import com.google.common.collect.LinkedHashMultimap
 import com.wijayaprinting.manager.data.Employee
 import org.apache.commons.lang3.SystemUtils.IS_OS_MAC
 import org.apache.commons.lang3.SystemUtils.IS_OS_WINDOWS
-import org.apache.poi.ss.usermodel.CellType
+import org.apache.poi.ss.usermodel.CellType.NUMERIC
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import org.joda.time.DateTime
 import java.io.File
@@ -43,9 +43,10 @@ open class EClockingReader : Reader {
                     val month = date.monthOfYear
                     val year = date.year
                     val employee = Employee(no, name, dept)
-                    for (CELL_RECORD in CELL_RECORD_START until CELL_RECORD_END) {
-                        row.getCell(CELL_RECORD).let {
-                            if (it.cellTypeEnum == CellType.NUMERIC) {
+                    (CELL_RECORD_START until CELL_RECORD_END)
+                            .map { row.getCell(it) }
+                            .filter { it.cellTypeEnum == NUMERIC }
+                            .forEach {
                                 val record = DateTime(it.dateCellValue.time)
                                 val hour = record.hourOfDay
                                 val minute = record.minuteOfHour
@@ -56,8 +57,6 @@ open class EClockingReader : Reader {
                                     else -> attendance
                                 })
                             }
-                        }
-                    }
                 }
             }
             workbook.close()

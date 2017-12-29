@@ -2,7 +2,7 @@ package com.wijayaprinting.manager.controller
 
 import com.wijayaprinting.data.PATTERN_DATETIME
 import com.wijayaprinting.manager.App
-import com.wijayaprinting.manager.BuildConfig
+import com.wijayaprinting.manager.BuildConfig.DEBUG
 import com.wijayaprinting.manager.R
 import com.wijayaprinting.manager.data.Employee
 import com.wijayaprinting.manager.dialog.DateTimeDialog
@@ -53,7 +53,7 @@ class AttendanceController : Controller() {
         readButton.disableProperty() bind fileField.validProperty
         processButton.disableProperty() bind flowPane.children.isEmpty
 
-        if (BuildConfig.DEBUG) {
+        if (DEBUG) {
             fileField.text = "/Users/hendraanggrian/Downloads/Absen 11-25-17.xlsx"
             readButton.fire()
         }
@@ -75,7 +75,7 @@ class AttendanceController : Controller() {
                 .create<Employee> { emitter ->
                     try {
                         val employees = readerChoiceBox.selectionModel.selectedItem.read(File(fileField.text))
-                        when (BuildConfig.DEBUG) {
+                        when (DEBUG) {
                             true -> employees.filter { it.name == "Yanti" || it.name == "Yoyo" || it.name == "Mus" }.toMutableList()
                             else -> employees
                         }.forEach {
@@ -193,22 +193,24 @@ class AttendanceController : Controller() {
     @FXML
     fun processOnAction() {
         val employees = mutableSetOf<Employee>()
-        flowPane.children.map { it.userData as Employee }.forEach { employee ->
-            when {
-                employee.daily.value <= 0 || employee.hourlyOvertime.value <= 0 -> {
-                    warningAlert(getString(R.string.error_employee_incomplete)) { headerText = employee.name }.showAndWait()
-                    return
+        flowPane.children
+                .map { it.userData as Employee }
+                .forEach { employee ->
+                    when {
+                        employee.daily.value <= 0 || employee.hourlyOvertime.value <= 0 -> {
+                            warningAlert(getString(R.string.error_employee_incomplete)) { headerText = employee.name }.showAndWait()
+                            return
+                        }
+                        employee.attendances.size % 2 != 0 -> {
+                            warningAlert(getString(R.string.error_employee_odd)) { headerText = employee.name }.showAndWait()
+                            return
+                        }
+                        else -> {
+                            employee.saveWage()
+                            employees.add(employee)
+                        }
+                    }
                 }
-                employee.attendances.size % 2 != 0 -> {
-                    warningAlert(getString(R.string.error_employee_odd)) { headerText = employee.name }.showAndWait()
-                    return
-                }
-                else -> {
-                    employee.saveWage()
-                    employees.add(employee)
-                }
-            }
-        }
         if (employees.isNotEmpty()) {
             val minSize = Pair(960.0, 640.0)
             stage("${getString(R.string.app_name)} - ${getString(R.string.record)}") {

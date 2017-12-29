@@ -77,8 +77,7 @@ class AttendanceRecordController : Controller() {
         }
     }
 
-    @FXML
-    fun undoOnAction() = undoButton.items[0].fire()
+    @FXML fun undoOnAction() = undoButton.items[0].fire()
 
     @FXML
     fun lockStartOnAction() {

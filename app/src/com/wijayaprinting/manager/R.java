@@ -1,4 +1,4 @@
-// rsync generated this class at 2017-12-29T21:14:10.898 from:
+// rsync generated this class at 2017-12-30T01:32:21.752 from:
 // string_en.properties
 // layout_attendance.fxml
 // btn_refresh.png
@@ -19,6 +19,7 @@
 // btn_visibility_off.png
 // ic_clock.png
 // ic_key.png
+// layout_receipt.fxml
 // btn_delete.png
 // btn_print.png
 // btn_merge.png
@@ -60,6 +61,8 @@ public final class R {
     public static final String layout_main = "/layout_main.fxml";
 
     public static final String layout_attendance_record = "/layout_attendance_record.fxml";
+
+    public static final String layout_receipt = "/layout_receipt.fxml";
 
     public static final String layout_customer = "/layout_customer.fxml";
 
@@ -159,6 +162,8 @@ public final class R {
 
     public static final String delete_all = "delete_all";
 
+    public static final String navigate = "navigate";
+
     public static final String error_unknown = "error_unknown";
 
     public static final String author = "author";
@@ -188,6 +193,8 @@ public final class R {
     public static final String both = "both";
 
     public static final String about = "about";
+
+    public static final String customer = "customer";
 
     public static final String open_source_software = "open_source_software";
 
@@ -253,6 +260,8 @@ public final class R {
 
     public static final String time = "time";
 
+    public static final String receipt = "receipt";
+
     public static final String print = "print";
 
     public static final String select_license = "select_license";
@@ -270,6 +279,8 @@ public final class R {
     public static final String app_name = "app_name";
 
     public static final String input_file = "input_file";
+
+    public static final String attendance = "attendance";
 
     private string() {
     }

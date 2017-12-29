@@ -1,6 +1,6 @@
 package com.wijayaprinting.manager.io
 
-open class MySQLFile : WPFile("mysql",
+open class MySQLFile : PropertiesFile("mysql",
         Pair(USERNAME, ""),
         Pair(IP, ""),
         Pair(PORT, "")

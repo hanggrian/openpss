@@ -6,7 +6,8 @@ import java.io.File
 import java.util.*
 import kotlin.collections.HashMap
 
-abstract class WPFile(child: String, vararg keys: Any) : File(WPFolder(), child), Map<String, StringProperty> {
+/** Represents a properties file used that acts as local settings. */
+abstract class PropertiesFile(child: String, vararg keys: Any) : File(PropertiesFolder(), child), Map<String, StringProperty> {
 
     /** Properties reference to get, set, and finally save into this file. */
     private val properties = Properties()

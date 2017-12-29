@@ -22,16 +22,8 @@ class MainController : Controller() {
     @FXML
     fun initialize() {
         menuBar.isUseSystemMenuBar = IS_OS_MAC
-        tabPane.selectionModel.selectedIndexProperty().addListener { _, _, index ->
-            customerMenu.isSelected = false
-            receiptMenu.isSelected = false
-            attendanceMenu.isSelected = false
-            when (index) {
-                0 -> customerMenu.isSelected = true
-                1 -> receiptMenu.isSelected = true
-                2 -> attendanceMenu.isSelected = true
-            }
-        }
+        tabPane.selectionModel.selectedIndexProperty().addListener { _, _, index -> updateNavigation(index.toInt()) }
+        updateNavigation(tabPane.selectionModel.selectedIndex)
     }
 
     @FXML fun customerOnAction() = tabPane.selectionModel.select(0)
@@ -41,5 +33,16 @@ class MainController : Controller() {
     @FXML
     fun aboutOnAction() {
         AboutDialog(resources).showAndWait()
+    }
+
+    private fun updateNavigation(index: Int) {
+        customerMenu.isSelected = false
+        receiptMenu.isSelected = false
+        attendanceMenu.isSelected = false
+        when (index) {
+            0 -> customerMenu.isSelected = true
+            1 -> receiptMenu.isSelected = true
+            2 -> attendanceMenu.isSelected = true
+        }
     }
 }

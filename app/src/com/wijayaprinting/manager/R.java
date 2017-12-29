@@ -1,4 +1,4 @@
-// rsync generated this class at 2017-12-30T01:32:21.752 from:
+// rsync generated this class at 2017-12-30T02:50:07.229 from:
 // string_en.properties
 // layout_attendance.fxml
 // btn_refresh.png
@@ -160,8 +160,6 @@ public final class R {
 
     public static final String add = "add";
 
-    public static final String delete_all = "delete_all";
-
     public static final String navigate = "navigate";
 
     public static final String error_unknown = "error_unknown";
@@ -183,6 +181,8 @@ public final class R {
     public static final String recess = "recess";
 
     public static final String read = "read";
+
+    public static final String delete_employees_to_the_right = "delete_employees_to_the_right";
 
     public static final String edit = "edit";
 

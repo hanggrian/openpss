@@ -1,7 +1,6 @@
 package com.wijayaprinting.manager.controller
 
 import com.wijayaprinting.data.PATTERN_DATETIME
-import com.wijayaprinting.manager.App
 import com.wijayaprinting.manager.BuildConfig.DEBUG
 import com.wijayaprinting.manager.R
 import com.wijayaprinting.manager.data.Employee
@@ -54,7 +53,7 @@ class AttendanceController : Controller() {
         processButton.disableProperty() bind flowPane.children.isEmpty
 
         if (DEBUG) {
-            fileField.text = "/Users/hendraanggrian/Downloads/Absen 11-25-17.xlsx"
+            fileField.text = "/Users/hendraanggrian/Downloads/Absen 12-29-17.xlsx"
             readButton.fire()
         }
     }
@@ -91,6 +90,7 @@ class AttendanceController : Controller() {
                 .subscribeBy({ e -> errorAlert(e.message ?: getString(R.string.error_unknown)).showAndWait() }, {
                     progressDialog.addButtons(OK) // apparently alert won't close without a button
                     progressDialog.close()
+                    rebindProcessButton()
                 }) { employee ->
                     flowPane.children.add(titledPane(employee.toString()) {
                         userData = employee
@@ -181,9 +181,26 @@ class AttendanceController : Controller() {
                             separatorMenuItem()
                             menuItem(getString(R.string.revert)) { setOnAction { employee.revert() } }
                             separatorMenuItem()
-                            menuItem("${getString(R.string.delete)} ${employee.name}") { setOnAction { flowPane.children.remove(this@titledPane) } }
-                            menuItem(getString(R.string.delete_others)) { setOnAction { flowPane.children.removeAll(((flowPane).children).toMutableList().apply { remove(this@titledPane) }) } }
-                            menuItem(getString(R.string.delete_all)) { setOnAction { flowPane.children.clear() } }
+                            menuItem("${getString(R.string.delete)} ${employee.name}") {
+                                setOnAction {
+                                    flowPane.children.remove(this@titledPane)
+                                    rebindProcessButton()
+                                }
+                            }
+                            menuItem(getString(R.string.delete_others)) {
+                                disableProperty() bind (flowPane.children.sizeBinding lessEq 1)
+                                setOnAction {
+                                    flowPane.children.removeAll(flowPane.children.toMutableList().apply { remove(this@titledPane) })
+                                    rebindProcessButton()
+                                }
+                            }
+                            menuItem(getString(R.string.delete_employees_to_the_right)) {
+                                disableProperty() bind booleanBindingOf(flowPane.children) { flowPane.children.indexOf(this@titledPane) == flowPane.children.lastIndex }
+                                setOnAction {
+                                    flowPane.children.removeAll(flowPane.children.toList().takeLast(flowPane.children.lastIndex - flowPane.children.indexOf(this@titledPane)))
+                                    rebindProcessButton()
+                                }
+                            }
                         }
                         graphic = imageView { imageProperty() bind bindingOf(listView.items) { Image(if (listView.items.size % 2 == 0) R.png.btn_checkbox else R.png.btn_checkbox_outline) } }
                     })
@@ -196,30 +213,26 @@ class AttendanceController : Controller() {
         flowPane.children
                 .map { it.userData as Employee }
                 .forEach { employee ->
-                    when {
-                        employee.daily.value <= 0 || employee.hourlyOvertime.value <= 0 -> {
-                            warningAlert(getString(R.string.error_employee_incomplete)) { headerText = employee.name }.showAndWait()
-                            return
-                        }
-                        employee.attendances.size % 2 != 0 -> {
-                            warningAlert(getString(R.string.error_employee_odd)) { headerText = employee.name }.showAndWait()
-                            return
-                        }
-                        else -> {
-                            employee.saveWage()
-                            employees.add(employee)
-                        }
-                    }
+                    employee.saveWage()
+                    employees.add(employee)
                 }
         if (employees.isNotEmpty()) {
             val minSize = Pair(960.0, 640.0)
             stage("${getString(R.string.app_name)} - ${getString(R.string.record)}") {
-                val loader = App::class.java.getResource(R.fxml.layout_attendance_record).loadFXML(resources)
+                val loader = getResource(R.fxml.layout_attendance_record).loadFXML(resources)
                 scene = loader.load<Pane>().toScene(minSize.first, minSize.second)
                 minWidth = minSize.first
                 minHeight = minSize.second
                 loader.getController<Controller>().setUserData(employees)
             }.showAndWait()
         }
+    }
+
+    /** As employees are populated, process button need to be rebinded according to new requirements. */
+    private fun rebindProcessButton() {
+        processButton.disableProperty().unbind()
+        processButton.disableProperty() bind (flowPane.children.isEmpty or booleanBindingOf(flowPane.children, *flowPane.children.map { (it as TitledPane).content }.map { (it as Pane).children[1] as ListView<*> }.map { it.items }.toTypedArray()) {
+            flowPane.children.map { it.userData as Employee }.any { it.attendances.size % 2 != 0 }
+        })
     }
 }

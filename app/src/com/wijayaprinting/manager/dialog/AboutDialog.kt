@@ -1,6 +1,5 @@
 package com.wijayaprinting.manager.dialog
 
-import com.wijayaprinting.manager.App
 import com.wijayaprinting.manager.R
 import com.wijayaprinting.manager.internal.Resourceful
 import javafx.event.ActionEvent.ACTION
@@ -25,9 +24,9 @@ import java.util.stream.Collectors.joining
 
 class AboutDialog(override val resources: ResourceBundle) : Dialog<Unit>(), Resourceful {
 
-    private val latoBold = App::class.java.getResource(R.ttf.lato_bold).toExternalForm()
-    private val latoLight = App::class.java.getResource(R.ttf.lato_light).toExternalForm()
-    private val latoRegular = App::class.java.getResource(R.ttf.lato_regular).toExternalForm()
+    private val latoBold = getResource(R.ttf.lato_bold).toExternalForm()
+    private val latoLight = getResource(R.ttf.lato_light).toExternalForm()
+    private val latoRegular = getResource(R.ttf.lato_regular).toExternalForm()
 
     init {
         title = getString(R.string.about)
@@ -69,7 +68,7 @@ class AboutDialog(override val resources: ResourceBundle) : Dialog<Unit>(), Reso
             titledPane(getString(R.string.license), kotfx.textArea {
                 prefHeight = 256.0
                 isEditable = false
-                textProperty() bind stringBindingOf(listView.selectionModel.selectedIndexProperty()) { listView.selectionModel.selectedItem?.content ?: getString(R.string.select_license) }
+                textProperty() bind stringBindingOf(listView.selectionModel.selectedIndexProperty()) { listView.selectionModel.selectedItem?.getContent(this@AboutDialog) ?: getString(R.string.select_license) }
             }) { isCollapsible = false }
         }
         addButton(ButtonType("Homepage", CANCEL_CLOSE)).apply {
@@ -89,7 +88,7 @@ class AboutDialog(override val resources: ResourceBundle) : Dialog<Unit>(), Reso
     ) {
         override fun toString(): String = name
 
-        val content: String get() = File(App::class.java.getResource(resource).toURI()).inputStream().use { return BufferedReader(InputStreamReader(it)).lines().collect(joining("\n")) }
+        fun getContent(resourceful: Resourceful): String = File(resourceful.getResource(resource).toURI()).inputStream().use { return BufferedReader(InputStreamReader(it)).lines().collect(joining("\n")) }
 
         companion object {
             fun listAll() = observableListOf(

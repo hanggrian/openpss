@@ -1,4 +1,6 @@
+
 import org.gradle.api.artifacts.dsl.DependencyHandler
+import org.gradle.plugin.use.PluginDependenciesSpec
 
 const val releaseGroup = "com.wijayaprinting"
 const val releaseArtifact = "manager"
@@ -21,6 +23,9 @@ const val commonsMathVersion = "3.6.1"
 const val slf4jVersion = "1.7.25"
 
 const val junitVersion = "4.12"
+
+inline val PluginDependenciesSpec.rsync get() = id("rsync")
+inline val PluginDependenciesSpec.buildconfig get() = id("buildconfig")
 
 fun DependencyHandler.rx(module: String, version: String) = "io.reactivex.rxjava2:rx$module:$version"
 fun DependencyHandler.apache(module1: String, module2: String, version: String) = "org.apache.$module1:$module1-$module2:$version"

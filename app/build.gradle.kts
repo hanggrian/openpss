@@ -4,8 +4,8 @@ import org.jetbrains.kotlin.gradle.plugin.android.AndroidGradleWrapper.srcDir
 plugins {
     java
     kotlin("jvm")
-    id("rsync")
-    id("buildconfig")
+    rsync
+    buildconfig
 }
 
 java.sourceSets {

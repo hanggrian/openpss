@@ -49,7 +49,7 @@ class App : Application(), Resourceful {
 
     override fun start(stage: Stage) {
         stage.icon = Image(R.png.logo_launcher)
-        setIconOnOSX(getDefaultToolkit().getImage(App::class.java.getResource(R.png.logo_launcher)))
+        setIconOnOSX(getDefaultToolkit().getImage(getResource(R.png.logo_launcher)))
 
         dialog<Any>(getString(R.string.app_name)) {
             headerText = getString(R.string.login)
@@ -132,7 +132,7 @@ class App : Application(), Resourceful {
             val minSize = Pair(960.0, 640.0)
             stage.apply {
                 title = getString(R.string.app_name)
-                scene = App::class.java.getResource(R.fxml.layout_main).loadFXML(resources).load<Pane>().toScene(minSize.first, minSize.second)
+                scene = getResource(R.fxml.layout_main).loadFXML(resources).load<Pane>().toScene(minSize.first, minSize.second)
                 minWidth = minSize.first
                 minHeight = minSize.second
             }.show()

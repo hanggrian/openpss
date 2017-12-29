@@ -2,7 +2,7 @@ package com.wijayaprinting.manager.dialog
 
 import com.wijayaprinting.manager.App
 import com.wijayaprinting.manager.R
-import com.wijayaprinting.manager.Resourceful
+import com.wijayaprinting.manager.internal.Resourceful
 import javafx.event.ActionEvent.ACTION
 import javafx.geometry.Insets
 import javafx.geometry.Pos.CENTER_LEFT

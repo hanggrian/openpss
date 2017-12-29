@@ -1,7 +1,7 @@
 package com.wijayaprinting.manager.controller
 
-import com.wijayaprinting.manager.Language
-import com.wijayaprinting.manager.Resourceful
+import com.wijayaprinting.manager.internal.Language
+import com.wijayaprinting.manager.internal.Resourceful
 import com.wijayaprinting.manager.io.PreferencesFile
 import java.util.*
 

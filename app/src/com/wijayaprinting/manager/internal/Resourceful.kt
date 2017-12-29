@@ -1,4 +1,4 @@
-package com.wijayaprinting.manager
+package com.wijayaprinting.manager.internal
 
 import java.util.*
 

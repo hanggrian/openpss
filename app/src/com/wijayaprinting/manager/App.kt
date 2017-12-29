@@ -2,6 +2,8 @@ package com.wijayaprinting.manager
 
 import com.wijayaprinting.data.MySQL
 import com.wijayaprinting.manager.dialog.AboutDialog
+import com.wijayaprinting.manager.internal.Language
+import com.wijayaprinting.manager.internal.Resourceful
 import com.wijayaprinting.manager.io.MySQLFile
 import com.wijayaprinting.manager.io.PreferencesFile
 import com.wijayaprinting.manager.scene.control.IPField

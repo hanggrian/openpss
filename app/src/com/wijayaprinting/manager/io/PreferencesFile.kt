@@ -1,6 +1,6 @@
 package com.wijayaprinting.manager.io
 
-import com.wijayaprinting.manager.Language
+import com.wijayaprinting.manager.internal.Language
 
 open class PreferencesFile : WPFile("preferences",
         Pair(LANGUAGE, Language.LOCALE_EN)

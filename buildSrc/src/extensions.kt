@@ -5,7 +5,7 @@ const val releaseArtifact = "manager"
 const val releaseVersion = "0.4"
 
 /** Set false when building app, true when building stage. */
-const val isDebug = false
+const val isDebug = true
 
 const val kotlinVersion = "1.2.10"
 

@@ -1,4 +1,4 @@
-// rsync generated this class at 2017-12-24T23:58:02.017 from:
+// rsync generated this class at 2017-12-29T16:41:46.823 from:
 // string_en.properties
 // layout_attendance.fxml
 // btn_refresh.png
@@ -139,6 +139,8 @@ public final class R {
 
     public static final String both = "both";
 
+    public static final String about = "about";
+
     public static final String overtime_income = "overtime_income";
 
     public static final String hour = "hour";
@@ -173,6 +175,8 @@ public final class R {
 
     public static final String username = "username";
 
+    public static final String about_info = "about_info";
+
     public static final String login = "login";
 
     public static final String server = "server";
@@ -200,8 +204,6 @@ public final class R {
     public static final String browse_file = "browse_file";
 
     public static final String date = "date";
-
-    public static final String ip_address_unreachable = "ip_address_unreachable";
 
     public static final String process = "process";
 

@@ -1,6 +1,7 @@
 package com.wijayaprinting.manager
 
 import com.wijayaprinting.data.MySQL
+import com.wijayaprinting.manager.dialog.AboutDialog
 import com.wijayaprinting.manager.io.MySQLFile
 import com.wijayaprinting.manager.io.PreferencesFile
 import com.wijayaprinting.manager.scene.control.IPField
@@ -16,7 +17,7 @@ import javafx.application.Application
 import javafx.application.Platform.exit
 import javafx.event.ActionEvent.ACTION
 import javafx.geometry.Pos.CENTER
-import javafx.scene.control.ButtonBar.ButtonData.OK_DONE
+import javafx.scene.control.ButtonBar.ButtonData.LEFT
 import javafx.scene.control.ButtonType
 import javafx.scene.control.ButtonType.CANCEL
 import javafx.scene.control.ButtonType.OK
@@ -28,18 +29,14 @@ import javafx.scene.layout.Pane
 import javafx.stage.Stage
 import kotfx.*
 import org.apache.log4j.BasicConfigurator.configure
-import java.awt.Desktop.getDesktop
 import java.awt.Toolkit.getDefaultToolkit
-import java.net.InetAddress.getByName
-import java.net.URI
 import java.util.*
 
 class App : Application(), Resourceful {
 
     companion object {
-        private const val IP_LOOKUP_TIMEOUT = 3000
-
-        @JvmStatic fun main(vararg args: String) = launch(App::class.java, *args)
+        @JvmStatic
+        fun main(vararg args: String) = launch(App::class.java, *args)
     }
 
     override val resources: ResourceBundle = Language.parse(PreferencesFile[PreferencesFile.LANGUAGE].value).getResources("string")
@@ -91,22 +88,16 @@ class App : Application(), Resourceful {
 
                 runFX { usernameField.requestFocus() }
             }
-            expandableContent = gridPane {
-                setGaps(8)
-                label("An open-source software.\nFor more information and update, visit:") col 0 row 0 colSpan 2
-                hyperlink("https://github.com/WijayaPrinting/") { setOnAction { getDesktop().browse(URI(text)) } } col 0 row 1 colSpan 2
-                label("Manager") col 0 row 2
-                label(com.wijayaprinting.manager.BuildConfig.VERSION) col 1 row 2
-                label("Data") col 0 row 3
-                label(com.wijayaprinting.data.BuildConfig.VERSION) col 1 row 3
-            }
 
-            addButtons(CANCEL, ButtonType(getString(R.string.login), OK_DONE)).apply {
+            addButton(ButtonType(getString(R.string.about), LEFT)).addEventFilter(ACTION) { event ->
+                event.consume()
+                AboutDialog(resources).showAndWait()
+            }
+            addButtons(CANCEL, OK).apply {
                 addEventFilter(ACTION) { event ->
                     event.consume()
                     MySQLFile.save()
-                    if (!getByName(ipField.text).isReachable(IP_LOOKUP_TIMEOUT)) errorAlert(getString(R.string.ip_address_unreachable)).showAndWait()
-                    else dialog<String>(getString(R.string.password)) {
+                    dialog<String>(getString(R.string.password)) {
                         headerText = getString(R.string.password_required)
                         graphic = ImageView(R.png.ic_key)
                         lateinit var passwordField: PasswordField

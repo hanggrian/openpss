@@ -4,14 +4,13 @@ import com.hendraanggrian.rxexposed.SQLCompletables
 import com.hendraanggrian.rxexposed.SQLSingles
 import com.wijayaprinting.data.Wage
 import com.wijayaprinting.data.Wages
+import com.wijayaprinting.manager.internal.RevertableObservableList
 import com.wijayaprinting.manager.utils.multithread
 import io.reactivex.rxkotlin.subscribeBy
 import javafx.beans.property.DoubleProperty
 import javafx.beans.property.IntegerProperty
 import javafx.beans.property.SimpleDoubleProperty
 import javafx.beans.property.SimpleIntegerProperty
-import javafx.collections.ObservableList
-import kotfx.mutableObservableListOf
 import org.jetbrains.exposed.sql.update
 import org.joda.time.DateTime
 import org.joda.time.Minutes.minutes
@@ -26,9 +25,8 @@ data class Employee @JvmOverloads constructor(
         val name: String,
         val role: String? = null,
 
-        /** Attendances and shift should be set with [EmployeeTitledPane]. */
-        val attendances: ObservableList<DateTime> = mutableObservableListOf(),
-        private val duplicates: ObservableList<DateTime> = mutableObservableListOf(),
+        /** Attendances and shift should be set in [com.wijayaprinting.manager.controller.AttendanceController]. */
+        val attendances: RevertableObservableList<DateTime> = RevertableObservableList(),
 
         /** Wages below are retrieved from sql, or empty if there is none. */
         val daily: IntegerProperty = SimpleIntegerProperty(),
@@ -36,15 +34,11 @@ data class Employee @JvmOverloads constructor(
         val recess: DoubleProperty = SimpleDoubleProperty(),
         val recessOvertime: DoubleProperty = SimpleDoubleProperty()
 ) {
-    companion object {
-        const val WORKING_HOURS = 8.0
-    }
-
     init {
         SQLSingles.transaction { ofNullable(Wage.findById(id)) }
-                .multithread()
                 .filter { it.isPresent }
                 .map { it.get() }
+                .multithread()
                 .subscribeBy({}) { wage ->
                     daily.value = wage.daily
                     hourlyOvertime.value = wage.hourlyOvertime
@@ -54,8 +48,7 @@ data class Employee @JvmOverloads constructor(
     }
 
     fun saveWage() = SQLCompletables
-            .transaction {
-                @Suppress("IMPLICIT_CAST_TO_ANY")
+            .transaction @Suppress("IMPLICIT_CAST_TO_ANY") {
                 if (Wage.findById(id) == null) Wage.new(id) {
                     daily = this@Employee.daily.value
                     hourlyOvertime = this@Employee.hourlyOvertime.value
@@ -71,28 +64,9 @@ data class Employee @JvmOverloads constructor(
             .multithread()
             .subscribeBy({}) {}
 
-    fun addAttendance(element: DateTime) {
-        attendances.add(element)
-        duplicates.add(element)
-    }
-
-    fun addAllAttendances(elements: Collection<DateTime>) {
-        attendances.addAll(elements)
-        duplicates.addAll(elements)
-    }
-
-    fun revert() {
-        attendances.clear()
-        attendances.addAll(duplicates)
-    }
-
-    fun mergeDuplicates() = (0 until (attendances.size - 1))
-            .filter { Period(attendances[it], attendances[it + 1]).toStandardMinutes().isLessThan(minutes(5)) }
-            .map { attendances[it] }
-            .let { toRemove ->
-                attendances.removeAll(toRemove)
-                duplicates.removeAll(toRemove)
-            }
+    fun mergeDuplicates() = attendances.removeAllRevertable((0 until attendances.lastIndex)
+            .filter { index -> Period(attendances[index], attendances[index + 1]).toStandardMinutes() < minutes(5) }
+            .map { index -> attendances[index] })
 
     override fun hashCode(): Int = id.hashCode()
     override fun equals(other: Any?): Boolean = other != null && other is Employee && other.id == id

@@ -63,7 +63,7 @@ open class EClockingReader : Reader {
         }
         val set = mutableSetOf<Employee>()
         for (employee in multimap.keySet()) {
-            employee.addAllAttendances(multimap.get(employee))
+            employee.attendances.addAllRevertable(multimap.get(employee))
             set.add(employee)
         }
         return set

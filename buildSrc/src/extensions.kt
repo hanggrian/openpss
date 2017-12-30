@@ -4,7 +4,7 @@ import org.gradle.plugin.use.PluginDependenciesSpec
 
 const val releaseGroup = "com.wijayaprinting"
 const val releaseArtifact = "manager"
-const val releaseVersion = "0.4"
+const val releaseVersion = "0.5"
 
 /** Set false when building app, true when building stage. */
 const val isDebug = true

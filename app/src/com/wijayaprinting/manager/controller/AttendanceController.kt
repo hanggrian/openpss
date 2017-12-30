@@ -53,7 +53,7 @@ class AttendanceController : Controller() {
         processButton.disableProperty() bind flowPane.children.isEmpty
 
         if (DEBUG) {
-            fileField.text = "/Users/hendraanggrian/Downloads/Absen 12-29-17.xlsx"
+            fileField.text = "/Users/hendraanggrian/Downloads/Absen 11-25-17.xlsx"
             readButton.fire()
         }
     }
@@ -75,7 +75,7 @@ class AttendanceController : Controller() {
                     try {
                         val employees = readerChoiceBox.selectionModel.selectedItem.read(File(fileField.text))
                         when (DEBUG) {
-                            // true -> employees.filter { it.name == "Yanti" || it.name == "Yoyo" || it.name == "Mus" }.toMutableList()
+                            true -> employees.filter { it.name == "Yanti" || it.name == "Yoyo" || it.name == "Mus" }.toMutableList()
                             else -> employees
                         }.forEach {
                             if (mergeToggleButton.isSelected) it.mergeDuplicates()
@@ -87,7 +87,7 @@ class AttendanceController : Controller() {
                     emitter.onComplete()
                 }
                 .multithread(computation())
-                .subscribeBy({ e -> errorAlert(e.message ?: getString(R.string.error_unknown)).showAndWait() }, {
+                .subscribeBy({ e -> errorAlert(e.message.toString()).showAndWait() }, {
                     progressDialog.addButtons(OK) // apparently alert won't close without a button
                     progressDialog.close()
                     rebindProcessButton()
@@ -179,7 +179,7 @@ class AttendanceController : Controller() {
                                 disableProperty() bind listView.selectionModel.selectedItems.isEmpty
                             }
                             separatorMenuItem()
-                            menuItem(getString(R.string.revert)) { setOnAction { employee.revert() } }
+                            menuItem(getString(R.string.revert)) { setOnAction { employee.attendances.revert() } }
                             separatorMenuItem()
                             menuItem("${getString(R.string.delete)} ${employee.name}") {
                                 setOnAction {
@@ -209,30 +209,31 @@ class AttendanceController : Controller() {
 
     @FXML
     fun processOnAction() {
-        val employees = mutableSetOf<Employee>()
-        flowPane.children
-                .map { it.userData as Employee }
-                .forEach { employee ->
-                    employee.saveWage()
-                    employees.add(employee)
-                }
-        if (employees.isNotEmpty()) {
+        val set = mutableSetOf<Employee>()
+        employees.forEach { employee ->
+            employee.saveWage()
+            set.add(employee)
+        }
+        if (set.isNotEmpty()) {
             val minSize = Pair(960.0, 640.0)
             stage("${getString(R.string.app_name)} - ${getString(R.string.record)}") {
                 val loader = getResource(R.fxml.layout_attendance_record).loadFXML(resources)
                 scene = loader.load<Pane>().toScene(minSize.first, minSize.second)
                 minWidth = minSize.first
                 minHeight = minSize.second
-                loader.getController<Controller>().setUserData(employees)
+                loader.getController<Controller>().setUserData(set)
             }.showAndWait()
         }
     }
+
+    /** Employees are stored in flowpane childrens' user data. */
+    private val employees: Iterable<Employee> get() = flowPane.children.map { it.userData as Employee }
 
     /** As employees are populated, process button need to be rebinded according to new requirements. */
     private fun rebindProcessButton() {
         processButton.disableProperty().unbind()
         processButton.disableProperty() bind (flowPane.children.isEmpty or booleanBindingOf(flowPane.children, *flowPane.children.map { (it as TitledPane).content }.map { (it as Pane).children[1] as ListView<*> }.map { it.items }.toTypedArray()) {
-            flowPane.children.map { it.userData as Employee }.any { it.attendances.size % 2 != 0 }
+            employees.any { it.attendances.size % 2 != 0 }
         })
     }
 }

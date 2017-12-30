@@ -2,10 +2,7 @@
 
 package com.wijayaprinting.manager.utils
 
-import io.reactivex.Completable
-import io.reactivex.Observable
-import io.reactivex.Scheduler
-import io.reactivex.Single
+import io.reactivex.*
 import io.reactivex.rxjavafx.schedulers.JavaFxScheduler.platform
 import io.reactivex.schedulers.Schedulers.io
 
@@ -20,6 +17,12 @@ inline fun <T> Single<T>.multithread(
         subscribeOn: Scheduler = io(),
         observeOn: Scheduler = platform()
 ): Single<T> = subscribeOn(subscribeOn).observeOn(observeOn)
+
+@JvmOverloads
+inline fun <T> Maybe<T>.multithread(
+        subscribeOn: Scheduler = io(),
+        observeOn: Scheduler = platform()
+): Maybe<T> = subscribeOn(subscribeOn).observeOn(observeOn)
 
 @JvmOverloads
 inline fun Completable.multithread(

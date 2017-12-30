@@ -60,20 +60,27 @@
     </ToolBar>
     <TreeTableView fx:id="treeTableView" editable="true" style="-fx-font-family: Tahoma;" VBox.vgrow="ALWAYS">
         <columns>
-            <TreeTableColumn fx:id="employeeColumn" editable="false" text="%employee"/>
-            <TreeTableColumn fx:id="startColumn" editable="false" maxWidth="156.0" minWidth="156.0" prefWidth="156.0"
+            <TreeTableColumn fx:id="employeeColumn" sortable="false" editable="false" text="%employee"/>
+            <TreeTableColumn fx:id="startColumn" sortable="false" editable="false" maxWidth="156.0" minWidth="156.0"
+                             prefWidth="156.0"
                              resizable="false" style="-fx-alignment: CENTER;" text="%start"/>
-            <TreeTableColumn fx:id="endColumn" editable="false" maxWidth="156.0" minWidth="156.0" prefWidth="156.0"
+            <TreeTableColumn fx:id="endColumn" sortable="false" editable="false" maxWidth="156.0" minWidth="156.0"
+                             prefWidth="156.0"
                              resizable="false" style="-fx-alignment: CENTER;" text="%end"/>
-            <TreeTableColumn fx:id="dailyColumn" maxWidth="64.0" minWidth="64.0" prefWidth="64.0" resizable="false"
+            <TreeTableColumn fx:id="dailyColumn" sortable="false" editable="false" maxWidth="64.0" minWidth="64.0"
+                             prefWidth="64.0" resizable="false"
                              style="-fx-alignment: CENTER;" text="%daily"/>
-            <TreeTableColumn fx:id="dailyIncomeColumn" editable="false" style="-fx-alignment: CENTER-RIGHT;"
+            <TreeTableColumn fx:id="dailyIncomeColumn" sortable="false" editable="false"
+                             style="-fx-alignment: CENTER-RIGHT;"
                              text="%daily_income"/>
-            <TreeTableColumn fx:id="overtimeColumn" maxWidth="64.0" minWidth="64.0" prefWidth="64.0" resizable="false"
+            <TreeTableColumn fx:id="overtimeColumn" sortable="false" editable="false" maxWidth="64.0" minWidth="64.0"
+                             prefWidth="64.0" resizable="false"
                              style="-fx-alignment: CENTER;" text="%overtime"/>
-            <TreeTableColumn fx:id="overtimeIncomeColumn" editable="false" style="-fx-alignment: CENTER-RIGHT;"
+            <TreeTableColumn fx:id="overtimeIncomeColumn" sortable="false" editable="false"
+                             style="-fx-alignment: CENTER-RIGHT;"
                              text="%overtime_income"/>
-            <TreeTableColumn fx:id="totalColumn" editable="false" style="-fx-alignment: CENTER-RIGHT;" text="%total"/>
+            <TreeTableColumn fx:id="totalColumn" sortable="false" editable="false" style="-fx-alignment: CENTER-RIGHT;"
+                             text="%total"/>
         </columns>
         <columnResizePolicy>
             <TreeTableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>

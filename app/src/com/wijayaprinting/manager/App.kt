@@ -37,8 +37,7 @@ import java.util.*
 class App : Application(), Resourceful {
 
     companion object {
-        @JvmStatic
-        fun main(vararg args: String) = launch(App::class.java, *args)
+        @JvmStatic fun main(vararg args: String) = launch(App::class.java, *args)
     }
 
     override val resources: ResourceBundle = Language.parse(PreferencesFile[PreferencesFile.LANGUAGE].value).getResources("string")

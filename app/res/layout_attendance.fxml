@@ -21,7 +21,7 @@
                 <Tooltip text="%browse_file"/>
             </tooltip>
         </Button>
-        <ToggleButton fx:id="mergeToggleButton" mnemonicParsing="false" selected="true">
+        <ToggleButton mnemonicParsing="false" fx:id="mergeToggleButton" selected="true">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
                     <Image url="@btn_merge.png"/>
@@ -42,9 +42,9 @@
         <Label fx:id="employeeCountLabel" text="Label"/>
         <ButtonBar HBox.hgrow="ALWAYS">
             <buttons>
-                <Button fx:id="readButton" mnemonicParsing="false" onAction="#readOnAction" text="%read"/>
-                <Button fx:id="processButton" defaultButton="true" mnemonicParsing="false"
-                        onAction="#processOnAction" text="%process"/>
+                <Button mnemonicParsing="false" fx:id="readButton" onAction="#readOnAction" text="%read"/>
+                <Button mnemonicParsing="false" fx:id="processButton" onAction="#processOnAction" text="%process"
+                        defaultButton="true"/>
             </buttons>
         </ButtonBar>
     </HBox>

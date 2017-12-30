@@ -1,4 +1,4 @@
-// rsync generated this class at 2017-12-30T02:50:07.229 from:
+// rsync generated this class at 2017-12-31T02:31:15.516 from:
 // string_en.properties
 // layout_attendance.fxml
 // btn_refresh.png
@@ -160,9 +160,9 @@ public final class R {
 
     public static final String add = "add";
 
-    public static final String navigate = "navigate";
+    public static final String powered_by = "powered_by";
 
-    public static final String error_unknown = "error_unknown";
+    public static final String navigate = "navigate";
 
     public static final String author = "author";
 
@@ -216,8 +216,6 @@ public final class R {
 
     public static final String license = "license";
 
-    public static final String error_employee_odd = "error_employee_odd";
-
     public static final String please_wait = "please_wait";
 
     public static final String shift = "shift";
@@ -229,8 +227,6 @@ public final class R {
     public static final String password = "password";
 
     public static final String role = "role";
-
-    public static final String error_employee_incomplete = "error_employee_incomplete";
 
     public static final String username = "username";
 

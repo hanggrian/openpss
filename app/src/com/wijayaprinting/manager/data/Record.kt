@@ -27,6 +27,8 @@ data class Record @JvmOverloads constructor(
         val total: DoubleProperty = SimpleDoubleProperty()
 ) {
     companion object {
+        private const val WORKING_HOURS = 8.0
+
         /** Dummy since [javafx.scene.control.TreeTableView] must have a root item. */
         const val TYPE_ROOT = 0
         /** Parent row displaying employee and its preferences. */
@@ -77,7 +79,7 @@ data class Record @JvmOverloads constructor(
 
     init {
         if (type != TYPE_ROOT) {
-            dailyIncome bind doubleBindingOf(daily, actualEmployee.daily) { (daily.value * actualEmployee.daily.value / Employee.WORKING_HOURS).round }
+            dailyIncome bind doubleBindingOf(daily, actualEmployee.daily) { (daily.value * actualEmployee.daily.value / WORKING_HOURS).round }
             overtimeIncome bind doubleBindingOf(overtime, actualEmployee.hourlyOvertime) { (actualEmployee.hourlyOvertime.value * overtime.value).round }
             when (type) {
                 TYPE_NODE -> {
@@ -90,15 +92,15 @@ data class Record @JvmOverloads constructor(
                     daily bind doubleBindingOf(start, end) {
                         val hours = workingHours()
                         when {
-                            hours <= Employee.WORKING_HOURS -> hours.round
-                            else -> Employee.WORKING_HOURS
+                            hours <= WORKING_HOURS -> hours.round
+                            else -> WORKING_HOURS
                         }
                     }
                     overtime bind doubleBindingOf(start, end) {
                         val hours = workingHours()
-                        val overtime = (hours - Employee.WORKING_HOURS).round
+                        val overtime = (hours - WORKING_HOURS).round
                         when {
-                            hours <= Employee.WORKING_HOURS -> 0.0
+                            hours <= WORKING_HOURS -> 0.0
                             overtime <= actualEmployee.recessOvertime.value -> overtime
                             else -> (overtime - actualEmployee.recessOvertime.value).round
                         }
@@ -107,45 +109,6 @@ data class Record @JvmOverloads constructor(
                 }
                 TYPE_TOTAL -> total bind dailyIncome + overtimeIncome
             }
-        }
-    }
-}
-
-fun Employee.toNodeRecord(): Record = Record(Record.TYPE_NODE, this, SimpleObjectProperty(DateTime.now()), SimpleObjectProperty(DateTime.now()))
-
-fun Employee.toChildRecords(): Set<Record> {
-    val records = mutableSetOf<Record>()
-    val iterator = attendances.iterator()
-    while (iterator.hasNext()) {
-        records.add(Record(Record.TYPE_CHILD, this, SimpleObjectProperty(iterator.next()), SimpleObjectProperty(iterator.next())))
-    }
-    return records
-}
-
-fun Employee.toTotalRecords(childs: Collection<Record>): Record = Record(Record.TYPE_TOTAL, this, SimpleObjectProperty(DateTime(0)), SimpleObjectProperty(DateTime(0))).apply {
-    childs.map { it.daily }.toTypedArray().let { mains ->
-        daily bind doubleBindingOf(*mains) {
-            mains.map { it.value }.sum().round
-        }
-    }
-    childs.map { it.dailyIncome }.toTypedArray().let { mainIncomes ->
-        dailyIncome bind doubleBindingOf(*mainIncomes) {
-            mainIncomes.map { it.value }.sum().round
-        }
-    }
-    childs.map { it.overtime }.toTypedArray().let { overtimes ->
-        overtime bind doubleBindingOf(*overtimes) {
-            overtimes.map { it.value }.sum().round
-        }
-    }
-    childs.map { it.overtimeIncome }.toTypedArray().let { overtimeIncomes ->
-        overtimeIncome bind doubleBindingOf(*overtimeIncomes) {
-            overtimeIncomes.map { it.value }.sum().round
-        }
-    }
-    childs.map { it.total }.toTypedArray().let { totals ->
-        total bind doubleBindingOf(*totals) {
-            totals.map { it.value }.sum().round
         }
     }
 }

@@ -9,7 +9,7 @@
 <VBox xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.wijayaprinting.manager.controller.AttendanceRecordController">
     <ToolBar>
-        <SplitMenuButton fx:id="undoButton" mnemonicParsing="false" onAction="#undoOnAction">
+        <SplitMenuButton mnemonicParsing="false" fx:id="undoButton" onAction="#undoOnAction">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
                     <Image url="@btn_undo.png"/>
@@ -20,7 +20,7 @@
             </tooltip>
         </SplitMenuButton>
         <TimeBox fx:id="timeBox"/>
-        <Button fx:id="lockStartButton" mnemonicParsing="false" onAction="#lockStartOnAction">
+        <Button mnemonicParsing="false" fx:id="lockStartButton" onAction="#lockStartOnAction">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
                     <Image url="@btn_lock_in.png"/>
@@ -30,7 +30,7 @@
                 <Tooltip text="%lock_start_time"/>
             </tooltip>
         </Button>
-        <Button fx:id="lockEndButton" mnemonicParsing="false" onAction="#lockEndOnAction">
+        <Button mnemonicParsing="false" fx:id="lockEndButton" onAction="#lockEndOnAction">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
                     <Image url="@btn_lock_out.png"/>
@@ -41,7 +41,7 @@
             </tooltip>
         </Button>
         <Separator/>
-        <Button mnemonicParsing="false" onAction="#printOnAction">
+        <Button mnemonicParsing="false" fx:id="printButton" onAction="#printOnAction">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
                     <Image url="@btn_print.png"/>

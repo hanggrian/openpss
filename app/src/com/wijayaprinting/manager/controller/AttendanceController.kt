@@ -75,7 +75,7 @@ class AttendanceController : Controller() {
                     try {
                         val employees = readerChoiceBox.selectionModel.selectedItem.read(File(fileField.text))
                         when (DEBUG) {
-                            true -> employees.filter { it.name == "Yanti" || it.name == "Yoyo" || it.name == "Mus" }.toMutableList()
+                            // true -> employees.filter { it.name == "Yanti" || it.name == "Yoyo" || it.name == "Mus" }.toMutableList()
                             else -> employees
                         }.forEach {
                             if (mergeToggleButton.isSelected) it.mergeDuplicates()

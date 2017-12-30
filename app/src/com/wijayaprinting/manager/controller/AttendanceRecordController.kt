@@ -7,6 +7,7 @@ import com.wijayaprinting.manager.data.*
 import com.wijayaprinting.manager.scene.layout.TimeBox
 import javafx.collections.ObservableSet
 import javafx.fxml.FXML
+import javafx.print.Printer.defaultPrinterProperty
 import javafx.print.PrinterJob.createPrinterJob
 import javafx.scene.control.*
 import javafx.scene.control.SelectionMode.MULTIPLE
@@ -22,6 +23,7 @@ class AttendanceRecordController : Controller() {
     @FXML lateinit var timeBox: TimeBox
     @FXML lateinit var lockStartButton: Button
     @FXML lateinit var lockEndButton: Button
+    @FXML lateinit var printButton: Button
     @FXML lateinit var grandTotalFlow: TextFlow
     @FXML lateinit var totalText: Text
 
@@ -44,6 +46,7 @@ class AttendanceRecordController : Controller() {
                 else treeTableView.selectionModel.selectedItems.map { it.value.type }.any { it != Record.TYPE_CHILD }
             }
         }
+        printButton.disableProperty() bind defaultPrinterProperty().isNull
 
         treeTableView.selectionModel.selectionMode = MULTIPLE
         treeTableView.root = TreeItem(Record.ROOT) // dummy for invisible root

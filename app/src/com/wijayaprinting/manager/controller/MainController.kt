@@ -35,14 +35,5 @@ class MainController : Controller() {
         AboutDialog(resources).showAndWait()
     }
 
-    private fun updateNavigation(index: Int) {
-        customerMenu.isSelected = false
-        receiptMenu.isSelected = false
-        attendanceMenu.isSelected = false
-        when (index) {
-            0 -> customerMenu.isSelected = true
-            1 -> receiptMenu.isSelected = true
-            2 -> attendanceMenu.isSelected = true
-        }
-    }
+    private fun updateNavigation(index: Int) = arrayOf(customerMenu, receiptMenu, attendanceMenu).forEachIndexed { i, item -> item.isSelected = index == i }
 }

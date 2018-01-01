@@ -11,12 +11,12 @@ class MainController : Controller() {
 
     @FXML lateinit var menuBar: MenuBar
     @FXML lateinit var customerMenu: CheckMenuItem
-    @FXML lateinit var receiptMenu: CheckMenuItem
+    @FXML lateinit var plateMenu: CheckMenuItem
     @FXML lateinit var attendanceMenu: CheckMenuItem
 
     @FXML lateinit var tabPane: TabPane
     @FXML lateinit var customerController: CustomerController
-    @FXML lateinit var receiptController: ReceiptController
+    @FXML lateinit var plateController: PlateController
     @FXML lateinit var attendanceController: AttendanceController
 
     @FXML
@@ -27,7 +27,7 @@ class MainController : Controller() {
     }
 
     @FXML fun customerOnAction() = tabPane.selectionModel.select(0)
-    @FXML fun receiptOnAction() = tabPane.selectionModel.select(1)
+    @FXML fun plateOnAction() = tabPane.selectionModel.select(1)
     @FXML fun attendanceOnAction() = tabPane.selectionModel.select(2)
 
     @FXML
@@ -35,5 +35,5 @@ class MainController : Controller() {
         AboutDialog(resources).showAndWait()
     }
 
-    private fun updateNavigation(index: Int) = arrayOf(customerMenu, receiptMenu, attendanceMenu).forEachIndexed { i, item -> item.isSelected = index == i }
+    private fun updateNavigation(index: Int) = arrayOf(customerMenu, plateMenu, attendanceMenu).forEachIndexed { i, item -> item.isSelected = index == i }
 }

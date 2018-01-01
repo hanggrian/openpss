@@ -52,10 +52,10 @@ class AttendanceController : Controller() {
         readButton.disableProperty() bind fileField.validProperty
         processButton.disableProperty() bind flowPane.children.isEmpty
 
-        if (DEBUG) {
+        /*if (DEBUG) {
             fileField.text = "/Users/hendraanggrian/Downloads/Absen 11-25-17.xlsx"
             readButton.fire()
-        }
+        }*/
     }
 
     @FXML

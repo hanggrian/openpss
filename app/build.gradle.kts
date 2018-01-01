@@ -11,7 +11,7 @@ plugins {
 java.sourceSets {
     getByName("main") {
         java.srcDir("src")
-        resources.srcDir("res")
+        resources.srcDirs("res", "licenses")
     }
     getByName("test") {
         java.srcDir("tests/src")
@@ -39,8 +39,6 @@ buildconfig {
 dependencies {
     implementation(project(":scene"))
     implementation(kotlin("stdlib", kotlinVersion))
-
-    implementation(hendraanggrian("rxexposed", rxexposedVersion))
 
     implementation(apache("commons", "lang3", commonsLangVersion))
     implementation(apache("commons", "math3", commonsMathVersion))

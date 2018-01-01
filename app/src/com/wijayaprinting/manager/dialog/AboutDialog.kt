@@ -1,7 +1,10 @@
 package com.wijayaprinting.manager.dialog
 
+import com.wijayaprinting.data.Data
+import com.wijayaprinting.data.License
 import com.wijayaprinting.manager.R
 import com.wijayaprinting.manager.internal.Resourceful
+import javafx.collections.ObservableList
 import javafx.event.ActionEvent.ACTION
 import javafx.geometry.Insets
 import javafx.geometry.Pos.CENTER_LEFT
@@ -9,6 +12,7 @@ import javafx.scene.control.ButtonBar.ButtonData.CANCEL_CLOSE
 import javafx.scene.control.ButtonType
 import javafx.scene.control.ButtonType.CLOSE
 import javafx.scene.control.Dialog
+import javafx.scene.control.ListCell
 import javafx.scene.control.ListView
 import javafx.scene.image.Image
 import javafx.scene.text.Font.loadFont
@@ -57,8 +61,8 @@ class AboutDialog(override val resources: ResourceBundle) : Dialog<Unit>(), Reso
                     text("Hendra Anggrian") { font = loadFont(latoRegular, 12.0) }
                 } marginTop 4
                 hbox {
-                    button("GitHub") { setOnAction { getDesktop().browse(URI("https://github.com/WijayaPrinting/")) } }
-                    button(getString(R.string.check_for_updates)) { setOnAction { getDesktop().browse(URI("https://github.com/WijayaPrinting/manager/releases/")) } } marginLeft 8
+                    button("GitHub") { setOnAction { getDesktop().browse(URI("https://github.com/WijayaPrinting")) } }
+                    button(getString(R.string.check_for_updates)) { setOnAction { getDesktop().browse(URI("https://github.com/WijayaPrinting/manager/releases")) } } marginLeft 8
                 } marginTop 20
             } marginLeft 48
         }
@@ -66,7 +70,20 @@ class AboutDialog(override val resources: ResourceBundle) : Dialog<Unit>(), Reso
         expandableContent = hbox {
             listView = kotfx.listView {
                 prefHeight = 256.0
-                items = License.listAll()
+                items = licenses
+                setCellFactory {
+                    object : ListCell<License>() {
+                        override fun updateItem(item: License?, empty: Boolean) {
+                            super.updateItem(item, empty)
+                            text = null
+                            graphic = null
+                            if (item != null && !empty) graphic = kotfx.vbox {
+                                label(item.name) { font = loadFont(latoRegular, 12.0) }
+                                label(item.owner) { font = loadFont(latoBold, 12.0) }
+                            }
+                        }
+                    }
+                }
             }
             titledPane(getString(R.string.open_source_software), listView) { isCollapsible = false }
             titledPane(getString(R.string.license), kotfx.textArea {
@@ -85,27 +102,24 @@ class AboutDialog(override val resources: ResourceBundle) : Dialog<Unit>(), Reso
         addButton(CLOSE)
     }
 
-    data class License(
-            private val name: String,
-            private val resource: String,
-            val homepage: String
-    ) {
-        override fun toString(): String = name
+    private val licenses
+        get(): ObservableList<License> = Data.licenses.apply {
+            addAll(listOf(License("Apache", "POI OOXML", "https://poi.apache.org"),
+                    License("Apache", "Commons Lang", "https://commons.apache.org/lang"),
+                    License("Apache", "Commons Math", "https://commons.apache.org/math"),
+                    License("Apache", "Commons Validator", "https://commons.apache.org/validator"),
+                    License("Google", "Guava", "https://github.com/google/guava"),
+                    License("Hendra Anggrian", "Kotfx", "https://github.com/hendraanggrian/kotfx"),
+                    License("ReactiveX", "RxJavaFX", "https://github.com/ReactiveX/RxJavaFX"),
+                    License("Slf4j", "Log4j12", "https://www.slf4j.org")))
+        }.toObservableList()
 
-        fun getContent(resourceful: Resourceful): String = File(resourceful.getResource(resource).toURI()).inputStream().use { return BufferedReader(InputStreamReader(it)).lines().collect(joining("\n")) }
+    private fun License.getContent(resourceful: Resourceful): String = File(resourceful.getResource("/${owner.shorten}_${name.shorten}.txt").toURI())
+            .inputStream()
+            .use { return BufferedReader(InputStreamReader(it)).lines().collect(joining("\n")) }
 
-        companion object {
-            fun listAll() = observableListOf(
-                    License("Apache POI", R.txt.license_apache_poi, "https://poi.apache.org/"),
-                    License("Apache Commons Lang", R.txt.license_apache_commonslang, "https://commons.apache.org/lang/"),
-                    License("Apache Commons Math", R.txt.license_apache_commonsmath, "https://commons.apache.org/math/"),
-                    License("Apache Commons Validator", R.txt.license_apache_commonsvalidator, "https://commons.apache.org/validator/"),
-                    License("Guava", R.txt.license_guava, "https://github.com/google/guava/"),
-                    License("Kotfx", R.txt.license_kotfx, "https://github.com/hendraanggrian/kotfx/"),
-                    License("Kotlin", R.txt.license_kotlin, "https://kotlinlang.org/"),
-                    License("RxJavaFX", R.txt.license_rxjavafx, "https://github.com/ReactiveX/RxJavaFX/"),
-                    License("SLF4J", R.txt.license_slf4j, "https://www.slf4j.org/")
-            )
-        }
-    }
+    private val String.shorten: String
+        get() = toLowerCase()
+                .replace(' ', '_')
+                .replace('/', '_')
 }

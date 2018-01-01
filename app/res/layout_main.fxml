@@ -7,7 +7,7 @@
     <MenuBar fx:id="menuBar">
         <Menu mnemonicParsing="false" text="%navigate">
             <CheckMenuItem mnemonicParsing="false" fx:id="customerMenu" onAction="#customerOnAction" text="%customer"/>
-            <CheckMenuItem mnemonicParsing="false" fx:id="receiptMenu" onAction="#receiptOnAction" text="%receipt"/>
+            <CheckMenuItem mnemonicParsing="false" fx:id="plateMenu" onAction="#plateOnAction" text="%plate"/>
             <CheckMenuItem mnemonicParsing="false" fx:id="attendanceMenu" onAction="#attendanceOnAction"
                            text="%attendance"/>
         </Menu>
@@ -20,8 +20,8 @@
         <Tab closable="false" disable="true" text="%customer">
             <fx:include fx:id="customer" source="layout_customer.fxml"/>
         </Tab>
-        <Tab closable="false" disable="true" text="%receipt">
-            <fx:include fx:id="receipt" source="layout_receipt.fxml"/>
+        <Tab closable="false" text="%plate">
+            <fx:include fx:id="plate" source="layout_plate.fxml"/>
         </Tab>
         <Tab closable="false" text="%attendance">
             <fx:include fx:id="attendance" source="layout_attendance.fxml"/>

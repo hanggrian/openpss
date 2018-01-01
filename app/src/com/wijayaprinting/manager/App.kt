@@ -1,6 +1,6 @@
 package com.wijayaprinting.manager
 
-import com.wijayaprinting.data.MySQL
+import com.wijayaprinting.data.Data
 import com.wijayaprinting.manager.dialog.AboutDialog
 import com.wijayaprinting.manager.internal.Language
 import com.wijayaprinting.manager.internal.Resourceful
@@ -17,6 +17,8 @@ import com.wijayaprinting.manager.utils.setIconOnOSX
 import io.reactivex.rxkotlin.subscribeBy
 import javafx.application.Application
 import javafx.application.Platform.exit
+import javafx.beans.property.BooleanProperty
+import javafx.beans.property.SimpleBooleanProperty
 import javafx.event.ActionEvent.ACTION
 import javafx.geometry.Pos.CENTER
 import javafx.scene.control.ButtonBar.ButtonData.LEFT
@@ -37,6 +39,8 @@ import java.util.*
 class App : Application(), Resourceful {
 
     companion object {
+        var fullAccessProperty: BooleanProperty = SimpleBooleanProperty()
+
         @JvmStatic fun main(vararg args: String) = launch(App::class.java, *args)
     }
 
@@ -117,9 +121,10 @@ class App : Application(), Resourceful {
                         addButtons(CANCEL, OK).disableProperty() bind passwordField.textProperty().isEmpty
                         setResultConverter { if (it == OK) passwordField.text else null }
                     }.showAndWait().filter { it != null }.ifPresent { password ->
-                        MySQL.connect(ipField.text, portField.text, usernameField.text, password)
+                        Data.connect(ipField.text, portField.text, usernameField.text, password)
                                 .multithread()
-                                .subscribeBy({ errorAlert(it.message ?: "Unknown error!").showAndWait() }) {
+                                .subscribeBy({ errorAlert(it.message.toString()).showAndWait() }) { fullAccess ->
+                                    fullAccessProperty.set(fullAccess)
                                     result = usernameField.text
                                     close()
                                 }

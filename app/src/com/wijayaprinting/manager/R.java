@@ -1,4 +1,4 @@
-// rsync generated this class at 2017-12-31T02:31:15.516 from:
+// rsync generated this class at 2018-01-02T03:23:33.692 from:
 // string_en.properties
 // layout_attendance.fxml
 // btn_refresh.png
@@ -9,35 +9,27 @@
 // btn_add.png
 // btn_checkbox_outline.png
 // ic_user.png
-// license_rxjavafx.txt
 // btn_visibility.png
 // btn_clear.png
 // layout_main.fxml
-// license_apache_poi.txt
-// license_apache_commonslang.txt
 // layout_attendance_record.fxml
 // btn_visibility_off.png
 // ic_clock.png
 // ic_key.png
-// layout_receipt.fxml
-// btn_delete.png
+// btn_price.png
 // btn_print.png
+// layout_plate.fxml
 // btn_merge.png
-// license_kotlin.txt
 // ic_launcher.png
 // btn_checkbox.png
-// license_apache_commonsvalidator.txt
 // lato_regular.ttf
 // lato_bold.ttf
-// license_kotfx.txt
 // btn_folder.png
-// license_guava.txt
 // layout_customer.fxml
-// license_slf4j.txt
 // btn_lock_in.png
 // lato_light.ttf
 // btn_undo.png
-// license_apache_commonsmath.txt
+// layout_plate_price.fxml
 package com.wijayaprinting.manager;
 
 import java.lang.String;
@@ -62,9 +54,11 @@ public final class R {
 
     public static final String layout_attendance_record = "/layout_attendance_record.fxml";
 
-    public static final String layout_receipt = "/layout_receipt.fxml";
+    public static final String layout_plate = "/layout_plate.fxml";
 
     public static final String layout_customer = "/layout_customer.fxml";
+
+    public static final String layout_plate_price = "/layout_plate_price.fxml";
 
     private fxml() {
     }
@@ -95,7 +89,7 @@ public final class R {
 
     public static final String ic_key = "/ic_key.png";
 
-    public static final String btn_delete = "/btn_delete.png";
+    public static final String btn_price = "/btn_price.png";
 
     public static final String btn_print = "/btn_print.png";
 
@@ -112,29 +106,6 @@ public final class R {
     public static final String btn_undo = "/btn_undo.png";
 
     private png() {
-    }
-  }
-
-  public static final class txt {
-    public static final String license_rxjavafx = "/license_rxjavafx.txt";
-
-    public static final String license_apache_poi = "/license_apache_poi.txt";
-
-    public static final String license_apache_commonslang = "/license_apache_commonslang.txt";
-
-    public static final String license_kotlin = "/license_kotlin.txt";
-
-    public static final String license_apache_commonsvalidator = "/license_apache_commonsvalidator.txt";
-
-    public static final String license_kotfx = "/license_kotfx.txt";
-
-    public static final String license_guava = "/license_guava.txt";
-
-    public static final String license_slf4j = "/license_slf4j.txt";
-
-    public static final String license_apache_commonsmath = "/license_apache_commonsmath.txt";
-
-    private txt() {
     }
   }
 
@@ -218,11 +189,15 @@ public final class R {
 
     public static final String please_wait = "please_wait";
 
+    public static final String plate = "plate";
+
     public static final String shift = "shift";
 
     public static final String help = "help";
 
     public static final String total = "total";
+
+    public static final String plate_price = "plate_price";
 
     public static final String password = "password";
 
@@ -255,8 +230,6 @@ public final class R {
     public static final String ip_address = "ip_address";
 
     public static final String time = "time";
-
-    public static final String receipt = "receipt";
 
     public static final String print = "print";
 

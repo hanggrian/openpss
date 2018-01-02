@@ -40,7 +40,7 @@ class DateTimeDialog @JvmOverloads constructor(
             slider(0, 24, 0) { valueProperty() bindBidirectional timeBox.hourField.valueProperty } col 0 row 1 colSpan 2
             slider(0, 60, 0) { valueProperty() bindBidirectional timeBox.minuteField.valueProperty } col 0 row 2 colSpan 2
         }
-        addButtons(OK, CANCEL)
+        buttons(OK, CANCEL)
 
         setResultConverter {
             if (it != OK) null

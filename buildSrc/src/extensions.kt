@@ -1,4 +1,3 @@
-
 import org.gradle.api.artifacts.dsl.DependencyHandler
 import org.gradle.plugin.use.PluginDependenciesSpec
 
@@ -11,8 +10,8 @@ const val isDebug = true
 
 const val kotlinVersion = "1.2.10"
 
-const val dataVersion = "0.5"
-const val kotfxVersion = "0.13"
+const val dataVersion = "0.6"
+const val kotfxVersion = "0.14"
 const val guavaVersion = "23.6-jre"
 const val rxjavafxVersion = "2.2.2"
 const val poiVersion = "3.17"

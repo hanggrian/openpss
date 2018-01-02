@@ -1,4 +1,4 @@
-// rsync generated this class at 2018-01-02T03:23:33.692 from:
+// rsync generated this class at 2018-01-02T17:37:33.169 from:
 // string_en.properties
 // layout_attendance.fxml
 // btn_refresh.png
@@ -17,6 +17,7 @@
 // ic_clock.png
 // ic_key.png
 // btn_price.png
+// btn_delete.png
 // btn_print.png
 // layout_plate.fxml
 // btn_merge.png
@@ -91,6 +92,8 @@ public final class R {
 
     public static final String btn_price = "/btn_price.png";
 
+    public static final String btn_delete = "/btn_delete.png";
+
     public static final String btn_print = "/btn_print.png";
 
     public static final String btn_merge = "/btn_merge.png";
@@ -121,135 +124,149 @@ public final class R {
   }
 
   public static final class string {
-    public static final String daily_income = "daily_income";
-
-    public static final String are_you_sure = "are_you_sure";
-
-    public static final String lock_end_time = "lock_end_time";
-
-    public static final String exit = "exit";
-
-    public static final String add = "add";
-
-    public static final String powered_by = "powered_by";
-
-    public static final String navigate = "navigate";
-
-    public static final String author = "author";
-
-    public static final String income = "income";
-
-    public static final String merge_close_records = "merge_close_records";
-
-    public static final String password_required = "password_required";
+    public static final String process = "process";
 
     public static final String delete_others = "delete_others";
 
-    public static final String end = "end";
-
-    public static final String language_changed = "language_changed";
-
-    public static final String recess = "recess";
-
-    public static final String read = "read";
-
-    public static final String delete_employees_to_the_right = "delete_employees_to_the_right";
-
-    public static final String edit = "edit";
-
-    public static final String language = "language";
-
-    public static final String lock_start_time = "lock_start_time";
-
-    public static final String both = "both";
-
-    public static final String about = "about";
-
-    public static final String customer = "customer";
-
-    public static final String open_source_software = "open_source_software";
-
-    public static final String overtime_income = "overtime_income";
-
-    public static final String hour = "hour";
-
-    public static final String grand_total = "grand_total";
-
-    public static final String undo = "undo";
-
-    public static final String start = "start";
-
-    public static final String day = "day";
-
-    public static final String multiple_actions = "multiple_actions";
-
-    public static final String revert = "revert";
-
-    public static final String license = "license";
-
-    public static final String please_wait = "please_wait";
-
-    public static final String plate = "plate";
-
-    public static final String shift = "shift";
-
-    public static final String help = "help";
-
     public static final String total = "total";
 
-    public static final String plate_price = "plate_price";
-
-    public static final String password = "password";
-
-    public static final String role = "role";
-
-    public static final String username = "username";
-
-    public static final String about_info = "about_info";
-
-    public static final String login = "login";
-
-    public static final String server = "server";
-
-    public static final String check_for_updates = "check_for_updates";
-
-    public static final String delete = "delete";
-
-    public static final String clear = "clear";
-
-    public static final String port = "port";
-
-    public static final String record = "record";
-
-    public static final String please_wait_content = "please_wait_content";
-
-    public static final String overtime = "overtime";
-
-    public static final String daily = "daily";
-
-    public static final String ip_address = "ip_address";
-
-    public static final String time = "time";
+    public static final String lock_end_time = "lock_end_time";
 
     public static final String print = "print";
 
-    public static final String select_license = "select_license";
+    public static final String language_changed = "language_changed";
+
+    public static final String please_wait_content = "please_wait_content";
+
+    public static final String show_server = "show_server";
+
+    public static final String server = "server";
+
+    public static final String open_source_software = "open_source_software";
+
+    public static final String about = "about";
+
+    public static final String add = "add";
 
     public static final String browse_file = "browse_file";
 
-    public static final String version = "version";
+    public static final String start = "start";
 
     public static final String date = "date";
 
-    public static final String process = "process";
+    public static final String author = "author";
 
-    public static final String employee = "employee";
+    public static final String exit = "exit";
+
+    public static final String daily = "daily";
+
+    public static final String version = "version";
+
+    public static final String plate = "plate";
+
+    public static final String port = "port";
+
+    public static final String lock_start_time = "lock_start_time";
+
+    public static final String ip_address = "ip_address";
+
+    public static final String daily_income = "daily_income";
+
+    public static final String license = "license";
+
+    public static final String merge_close_records = "merge_close_records";
+
+    public static final String help = "help";
+
+    public static final String role = "role";
+
+    public static final String end = "end";
+
+    public static final String user = "user";
 
     public static final String app_name = "app_name";
 
-    public static final String input_file = "input_file";
+    public static final String day = "day";
+
+    public static final String are_you_sure = "are_you_sure";
+
+    public static final String overtime = "overtime";
+
+    public static final String time = "time";
+
+    public static final String about_info = "about_info";
+
+    public static final String quantity = "quantity";
+
+    public static final String income = "income";
+
+    public static final String read = "read";
+
+    public static final String revert = "revert";
+
+    public static final String server_ip_port = "server_ip_port";
+
+    public static final String powered_by = "powered_by";
+
+    public static final String language = "language";
+
+    public static final String shift = "shift";
+
+    public static final String name = "name";
 
     public static final String attendance = "attendance";
+
+    public static final String select_license = "select_license";
+
+    public static final String please_wait = "please_wait";
+
+    public static final String server_user = "server_user";
+
+    public static final String hour = "hour";
+
+    public static final String clear = "clear";
+
+    public static final String multiple_actions = "multiple_actions";
+
+    public static final String check_for_updates = "check_for_updates";
+
+    public static final String login = "login";
+
+    public static final String server_password = "server_password";
+
+    public static final String both = "both";
+
+    public static final String plate_price = "plate_price";
+
+    public static final String hide_server = "hide_server";
+
+    public static final String undo = "undo";
+
+    public static final String record = "record";
+
+    public static final String password = "password";
+
+    public static final String grand_total = "grand_total";
+
+    public static final String delete = "delete";
+
+    public static final String edit = "edit";
+
+    public static final String customer = "customer";
+
+    public static final String recess = "recess";
+
+    public static final String overtime_income = "overtime_income";
+
+    public static final String price = "price";
+
+    public static final String employee = "employee";
+
+    public static final String delete_employees_to_the_right = "delete_employees_to_the_right";
+
+    public static final String navigate = "navigate";
+
+    public static final String input_file = "input_file";
 
     private string() {
     }

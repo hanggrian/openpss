@@ -18,8 +18,8 @@ import org.joda.time.Period
 import java.math.BigDecimal
 import java.util.Optional.ofNullable
 
-/** Data class representing an Employee with 'no' as its identifier to avoid duplicates in [Set] scenario. */
-data class Employee @JvmOverloads constructor(
+/** Data class representing an Attendee with id as its identifier to avoid duplicates in [Set] scenario. */
+data class Attendee @JvmOverloads constructor(
         /** Id and name are final values that should be determined upon xlsx reading. */
         val id: Int,
         val name: String,
@@ -50,15 +50,15 @@ data class Employee @JvmOverloads constructor(
     fun saveWage() = SQLCompletables
             .transaction @Suppress("IMPLICIT_CAST_TO_ANY") {
                 if (Wage.findById(id) == null) Wage.new(id) {
-                    daily = this@Employee.daily.value
-                    hourlyOvertime = this@Employee.hourlyOvertime.value
-                    recess = BigDecimal.valueOf(this@Employee.recess.value)
-                    recessOvertime = BigDecimal.valueOf(this@Employee.recessOvertime.value)
+                    daily = this@Attendee.daily.value
+                    hourlyOvertime = this@Attendee.hourlyOvertime.value
+                    recess = BigDecimal.valueOf(this@Attendee.recess.value)
+                    recessOvertime = BigDecimal.valueOf(this@Attendee.recessOvertime.value)
                 } else Wages.update({ Wages.id eq id }) { wage ->
-                    wage[daily] = this@Employee.daily.value
-                    wage[hourlyOvertime] = this@Employee.hourlyOvertime.value
-                    wage[recess] = BigDecimal.valueOf(this@Employee.recess.value)
-                    wage[recessOvertime] = BigDecimal.valueOf(this@Employee.recessOvertime.value)
+                    wage[daily] = this@Attendee.daily.value
+                    wage[hourlyOvertime] = this@Attendee.hourlyOvertime.value
+                    wage[recess] = BigDecimal.valueOf(this@Attendee.recess.value)
+                    wage[recessOvertime] = BigDecimal.valueOf(this@Attendee.recessOvertime.value)
                 }
             }
             .multithread()
@@ -69,7 +69,7 @@ data class Employee @JvmOverloads constructor(
             .map { index -> attendances[index] })
 
     override fun hashCode(): Int = id.hashCode()
-    override fun equals(other: Any?): Boolean = other != null && other is Employee && other.id == id
+    override fun equals(other: Any?): Boolean = other != null && other is Attendee && other.id == id
 
     override fun toString(): String = "$id. $name"
 }

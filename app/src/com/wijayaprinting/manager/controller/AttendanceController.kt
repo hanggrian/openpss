@@ -3,7 +3,7 @@ package com.wijayaprinting.manager.controller
 import com.wijayaprinting.data.PATTERN_DATETIME
 import com.wijayaprinting.manager.BuildConfig.DEBUG
 import com.wijayaprinting.manager.R
-import com.wijayaprinting.manager.data.Employee
+import com.wijayaprinting.manager.data.Attendee
 import com.wijayaprinting.manager.dialog.DateTimeDialog
 import com.wijayaprinting.manager.reader.Reader
 import com.wijayaprinting.manager.scene.control.FileField
@@ -12,6 +12,7 @@ import com.wijayaprinting.manager.scene.control.intField
 import com.wijayaprinting.manager.scene.utils.setGaps
 import com.wijayaprinting.manager.scene.utils.setMaxSize
 import com.wijayaprinting.manager.scene.utils.setSize
+import com.wijayaprinting.manager.utils.forceClose
 import com.wijayaprinting.manager.utils.multithread
 import io.reactivex.Observable
 import io.reactivex.rxkotlin.subscribeBy
@@ -21,7 +22,6 @@ import javafx.geometry.Insets
 import javafx.geometry.Pos.CENTER
 import javafx.scene.Node
 import javafx.scene.control.*
-import javafx.scene.control.ButtonType.OK
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import javafx.scene.layout.FlowPane
@@ -71,7 +71,7 @@ class AttendanceController : Controller() {
         }.apply { show() }
         flowPane.children.clear()
         Observable
-                .create<Employee> { emitter ->
+                .create<Attendee> { emitter ->
                     try {
                         val employees = readerChoiceBox.selectionModel.selectedItem.read(File(fileField.text))
                         when (DEBUG) {
@@ -88,8 +88,7 @@ class AttendanceController : Controller() {
                 }
                 .multithread(computation())
                 .subscribeBy({ e -> errorAlert(e.message.toString()).showAndWait() }, {
-                    progressDialog.addButtons(OK) // apparently alert won't close without a button
-                    progressDialog.close()
+                    progressDialog.forceClose()
                     rebindProcessButton()
                 }) { employee ->
                     flowPane.children.add(titledPane(employee.toString()) {
@@ -209,7 +208,7 @@ class AttendanceController : Controller() {
 
     @FXML
     fun processOnAction() {
-        val set = mutableSetOf<Employee>()
+        val set = mutableSetOf<Attendee>()
         employees.forEach { employee ->
             employee.saveWage()
             set.add(employee)
@@ -227,7 +226,7 @@ class AttendanceController : Controller() {
     }
 
     /** Employees are stored in flowpane childrens' user data. */
-    private val employees: Iterable<Employee> get() = flowPane.children.map { it.userData as Employee }
+    private val employees: Iterable<Attendee> get() = flowPane.children.map { it.userData as Attendee }
 
     /** As employees are populated, process button need to be rebinded according to new requirements. */
     private fun rebindProcessButton() {

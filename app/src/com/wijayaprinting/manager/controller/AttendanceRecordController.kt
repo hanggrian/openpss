@@ -27,15 +27,15 @@ class AttendanceRecordController : Controller() {
     @FXML lateinit var grandTotalFlow: TextFlow
     @FXML lateinit var totalText: Text
 
-    @FXML lateinit var treeTableView: TreeTableView<Record>
-    @FXML lateinit var employeeColumn: TreeTableColumn<Record, Employee>
-    @FXML lateinit var startColumn: TreeTableColumn<Record, String>
-    @FXML lateinit var endColumn: TreeTableColumn<Record, String>
-    @FXML lateinit var dailyColumn: TreeTableColumn<Record, Double>
-    @FXML lateinit var dailyIncomeColumn: TreeTableColumn<Record, Double>
-    @FXML lateinit var overtimeColumn: TreeTableColumn<Record, Double>
-    @FXML lateinit var overtimeIncomeColumn: TreeTableColumn<Record, Double>
-    @FXML lateinit var totalColumn: TreeTableColumn<Record, Double>
+    @FXML lateinit var treeTableView: TreeTableView<AttendanceRecord>
+    @FXML lateinit var nameColumn: TreeTableColumn<AttendanceRecord, Attendee>
+    @FXML lateinit var startColumn: TreeTableColumn<AttendanceRecord, String>
+    @FXML lateinit var endColumn: TreeTableColumn<AttendanceRecord, String>
+    @FXML lateinit var dailyColumn: TreeTableColumn<AttendanceRecord, Double>
+    @FXML lateinit var dailyIncomeColumn: TreeTableColumn<AttendanceRecord, Double>
+    @FXML lateinit var overtimeColumn: TreeTableColumn<AttendanceRecord, Double>
+    @FXML lateinit var overtimeIncomeColumn: TreeTableColumn<AttendanceRecord, Double>
+    @FXML lateinit var totalColumn: TreeTableColumn<AttendanceRecord, Double>
 
     @FXML
     fun initialize() = runFX {
@@ -43,15 +43,15 @@ class AttendanceRecordController : Controller() {
         arrayOf(lockStartButton, lockEndButton).forEach {
             it.disableProperty() bind booleanBindingOf(treeTableView.selectionModel.selectedIndexProperty()) {
                 if (treeTableView.selectionModel.selectedIndex == -1) true
-                else treeTableView.selectionModel.selectedItems.map { it.value.type }.any { it != Record.TYPE_CHILD }
+                else treeTableView.selectionModel.selectedItems.map { it.value.type }.any { it != AttendanceRecord.TYPE_CHILD }
             }
         }
         printButton.disableProperty() bind defaultPrinterProperty().isNull
 
         treeTableView.selectionModel.selectionMode = MULTIPLE
-        treeTableView.root = TreeItem(Record.ROOT) // dummy for invisible root
+        treeTableView.root = TreeItem(AttendanceRecord.ROOT) // dummy for invisible root
         treeTableView.isShowRoot = false
-        getUserData<Set<Employee>>().forEach { employee ->
+        getUserData<Set<Attendee>>().forEach { employee ->
             val node = employee.toNodeRecord()
             val childs = employee.toChildRecords()
             val total = employee.toTotalRecords(childs)
@@ -61,7 +61,7 @@ class AttendanceRecordController : Controller() {
             })
         }
 
-        employeeColumn.setCellValueFactory { it.value.value.employee.asProperty() }
+        nameColumn.setCellValueFactory { it.value.value.attendee.asProperty() }
         startColumn.setCellValueFactory { it.value.value.startString }
         endColumn.setCellValueFactory { it.value.value.endString }
         dailyColumn.setCellValueFactory { it.value.value.daily.asObservable() }
@@ -70,10 +70,10 @@ class AttendanceRecordController : Controller() {
         overtimeIncomeColumn.setCellValueFactory { it.value.value.overtimeIncome.asObservable() }
         totalColumn.setCellValueFactory { it.value.value.total.asObservable() }
 
-        totalText.textProperty() bind stringBindingOf(*treeTableView.root.children.flatMap { it.children }.filter { it.value.type == Record.TYPE_CHILD }.map { it.value.total }.toTypedArray()) {
+        totalText.textProperty() bind stringBindingOf(*treeTableView.root.children.flatMap { it.children }.filter { it.value.type == AttendanceRecord.TYPE_CHILD }.map { it.value.total }.toTypedArray()) {
             getCurrencyInstance().format(treeTableView.root.children
                     .flatMap { it.children }
-                    .filter { it.value.type == Record.TYPE_TOTAL }
+                    .filter { it.value.type == AttendanceRecord.TYPE_TOTAL }
                     .map { it.value.total.value }
                     .sum())
                     .let { s -> s.substring(s.indexOf(s.toCharArray().first { isDigit(it) })) }
@@ -92,7 +92,7 @@ class AttendanceRecordController : Controller() {
                     val initial = record.start.value
                     if (initial.toLocalTime() < timeBox.value) {
                         record.start.set(record.cloneStart(timeBox.value))
-                        name = if (name == null) "${record.actualEmployee.name} ${initial.toString(PATTERN_DATETIME)} -> ${timeBox.value.toString(PATTERN_TIME)}" else getString(R.string.multiple_actions)
+                        name = if (name == null) "${record.actualAttendee.name} ${initial.toString(PATTERN_DATETIME)} -> ${timeBox.value.toString(PATTERN_TIME)}" else getString(R.string.multiple_actions)
                         undos.add { record.start.set(initial) }
                     }
                 }
@@ -116,7 +116,7 @@ class AttendanceRecordController : Controller() {
                     val initial = record.end.value
                     if (initial.toLocalTime() > timeBox.value) {
                         record.end.set(record.cloneEnd(timeBox.value))
-                        name = if (name == null) "${record.actualEmployee.name} ${initial.toString(PATTERN_DATETIME)} -> ${timeBox.value.toString(PATTERN_TIME)}" else getString(R.string.multiple_actions)
+                        name = if (name == null) "${record.actualAttendee.name} ${initial.toString(PATTERN_DATETIME)} -> ${timeBox.value.toString(PATTERN_TIME)}" else getString(R.string.multiple_actions)
                         undos.add { record.end.set(initial) }
                     }
                 }

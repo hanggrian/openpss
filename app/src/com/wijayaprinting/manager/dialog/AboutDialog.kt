@@ -1,7 +1,7 @@
 package com.wijayaprinting.manager.dialog
 
-import com.wijayaprinting.data.Data
 import com.wijayaprinting.data.License
+import com.wijayaprinting.data.WP
 import com.wijayaprinting.manager.R
 import com.wijayaprinting.manager.internal.Resourceful
 import javafx.collections.ObservableList
@@ -92,18 +92,18 @@ class AboutDialog(override val resources: ResourceBundle) : Dialog<Unit>(), Reso
                 textProperty() bind stringBindingOf(listView.selectionModel.selectedIndexProperty()) { listView.selectionModel.selectedItem?.getContent(this@AboutDialog) ?: getString(R.string.select_license) }
             }) { isCollapsible = false }
         }
-        addButton(ButtonType("Homepage", CANCEL_CLOSE)).apply {
+        button(ButtonType("Homepage", CANCEL_CLOSE)).apply {
             visibleProperty() bind (dialogPane.expandedProperty() and booleanBindingOf(listView.selectionModel.selectedIndexProperty()) { listView.selectionModel.selectedItem != null })
             addEventFilter(ACTION) { event ->
                 event.consume()
                 getDesktop().browse(URI(listView.selectionModel.selectedItem.homepage))
             }
         }
-        addButton(CLOSE)
+        button(CLOSE)
     }
 
     private val licenses
-        get(): ObservableList<License> = Data.licenses.apply {
+        get(): ObservableList<License> = WP.licenses.apply {
             addAll(listOf(License("Apache", "POI OOXML", "https://poi.apache.org"),
                     License("Apache", "Commons Lang", "https://commons.apache.org/lang"),
                     License("Apache", "Commons Math", "https://commons.apache.org/math"),

@@ -1,7 +1,7 @@
 package com.wijayaprinting.manager.reader
 
 import com.google.common.collect.LinkedHashMultimap
-import com.wijayaprinting.manager.data.Employee
+import com.wijayaprinting.manager.data.Attendee
 import org.apache.commons.lang3.SystemUtils.IS_OS_MAC
 import org.apache.commons.lang3.SystemUtils.IS_OS_WINDOWS
 import org.apache.poi.ss.usermodel.CellType.NUMERIC
@@ -27,13 +27,13 @@ open class EClockingReader : Reader {
     override val extensions: Array<String> get() = arrayOf("*.xlsx")
 
     @Throws(Exception::class)
-    override fun read(file: File): Collection<Employee> {
-        val multimap = LinkedHashMultimap.create<Employee, DateTime>()
+    override fun read(file: File): Collection<Attendee> {
+        val multimap = LinkedHashMultimap.create<Attendee, DateTime>()
         file.inputStream().use { stream ->
             val workbook = XSSFWorkbook(stream)
             val sheet = workbook.getSheetAt(SHEET_RAW_ATTENDANCE_LOGS)
             sheet.iterator().asSequence().forEachIndexed { rowIndex, row ->
-                // skips right to employee
+                // skips right to attendee
                 if (rowIndex > 4) {
                     val dept = row.getCell(CELL_DEPT).stringCellValue
                     val name = row.getCell(CELL_NAME).stringCellValue
@@ -42,7 +42,7 @@ open class EClockingReader : Reader {
                     val day = date.dayOfMonth
                     val month = date.monthOfYear
                     val year = date.year
-                    val employee = Employee(no, name, dept)
+                    val employee = Attendee(no, name, dept)
                     (CELL_RECORD_START until CELL_RECORD_END)
                             .map { row.getCell(it) }
                             .filter { it.cellTypeEnum == NUMERIC }
@@ -61,7 +61,7 @@ open class EClockingReader : Reader {
             }
             workbook.close()
         }
-        val set = mutableSetOf<Employee>()
+        val set = mutableSetOf<Attendee>()
         for (employee in multimap.keySet()) {
             employee.attendances.addAllRevertable(multimap.get(employee))
             set.add(employee)

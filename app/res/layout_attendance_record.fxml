@@ -60,8 +60,8 @@
     </ToolBar>
     <TreeTableView fx:id="treeTableView" style="-fx-font-family: Tahoma;" VBox.vgrow="ALWAYS">
         <columns>
-            <TreeTableColumn fx:id="employeeColumn" sortable="false"
-                             text="%employee"/>
+            <TreeTableColumn fx:id="nameColumn" sortable="false"
+                             text="%name"/>
             <TreeTableColumn fx:id="startColumn" sortable="false" resizable="false"
                              text="%start"
                              maxWidth="156.0" minWidth="156.0" prefWidth="156.0" style="-fx-alignment: CENTER;"/>

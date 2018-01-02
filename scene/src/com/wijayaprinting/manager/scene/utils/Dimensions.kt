@@ -5,34 +5,34 @@ package com.wijayaprinting.manager.scene.utils
 import javafx.scene.layout.GridPane
 import javafx.scene.layout.Region
 
-inline fun Region.setSize(size: Number) {
-    setMinSize(size)
-    setPrefSize(size)
-    setMaxSize(size)
+inline fun Region.size(size: Number) {
+    minSize(size)
+    prefSize(size)
+    maxSize(size)
 }
 
-inline fun Region.setSize(width: Number, height: Number) {
+inline fun Region.size(width: Number, height: Number) {
     setMinSize(width.toDouble(), height.toDouble())
     setPrefSize(width.toDouble(), height.toDouble())
     setMaxSize(width.toDouble(), height.toDouble())
 }
 
-inline fun Region.setMinSize(size: Number) {
+inline fun Region.minSize(size: Number) {
     minWidth = size.toDouble()
     minHeight = size.toDouble()
 }
 
-inline fun Region.setPrefSize(size: Number) {
+inline fun Region.prefSize(size: Number) {
     prefWidth = size.toDouble()
     prefHeight = size.toDouble()
 }
 
-inline fun Region.setMaxSize(size: Number) {
+inline fun Region.maxSize(size: Number) {
     maxWidth = size.toDouble()
     maxHeight = size.toDouble()
 }
 
-inline fun GridPane.setGaps(gap: Number) {
+inline fun GridPane.gap(gap: Number) {
     hgap = gap.toDouble()
     vgap = gap.toDouble()
 }

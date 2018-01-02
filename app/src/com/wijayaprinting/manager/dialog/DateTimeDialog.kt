@@ -2,7 +2,7 @@ package com.wijayaprinting.manager.dialog
 
 import com.wijayaprinting.manager.scene.layout.TimeBox
 import com.wijayaprinting.manager.scene.layout.timeBox
-import com.wijayaprinting.manager.scene.utils.setGaps
+import com.wijayaprinting.manager.scene.utils.gap
 import com.wijayaprinting.manager.utils.asJava
 import javafx.scene.Node
 import javafx.scene.control.ButtonType.CANCEL
@@ -28,7 +28,7 @@ class DateTimeDialog @JvmOverloads constructor(
         lateinit var datePicker: DatePicker
         lateinit var timeBox: TimeBox
         content = gridPane {
-            setGaps(8.0)
+            gap(8.0)
             datePicker = datePicker {
                 value = (prefill ?: now()).toLocalDate().asJava()
                 prefill?.let { value = it.toLocalDate().asJava() }

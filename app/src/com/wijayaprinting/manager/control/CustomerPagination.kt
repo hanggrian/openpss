@@ -2,7 +2,7 @@ package com.wijayaprinting.manager.control
 
 import com.wijayaprinting.data.Customer
 import com.wijayaprinting.data.Customers
-import com.wijayaprinting.manager.scene.utils.setGaps
+import com.wijayaprinting.manager.scene.utils.gap
 import com.wijayaprinting.manager.utils.safeTransaction
 import javafx.beans.property.SimpleStringProperty
 import javafx.event.Event
@@ -124,7 +124,7 @@ class CustomerPagination : Pagination() {
             graphic = ImageView(com.wijayaprinting.manager.R.png.ic_user)
             headerText = customer?.toString() ?: "Add customer"
             dialogPane.content = GridPane().apply {
-                setGaps(8.0)
+                gap(8.0)
                 add(Label("Name"), 0, 0)
                 add(nameField, 1, 0)
                 add(Label("Email"), 0, 1)

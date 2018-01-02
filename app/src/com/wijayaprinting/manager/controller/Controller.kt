@@ -8,7 +8,7 @@ import java.util.*
 /** Base class of all controllers. */
 abstract class Controller : Resourceful {
 
-    override val resources: ResourceBundle = Language.parse(PreferencesFile[PreferencesFile.LANGUAGE].value).getResources("string")
+    override val resources: ResourceBundle = Language.parse(PreferencesFile.language.value).getResources("string")
 
     /** Equivalent to user data in [javafx.scene.Node]. */
     private lateinit var userData: Any

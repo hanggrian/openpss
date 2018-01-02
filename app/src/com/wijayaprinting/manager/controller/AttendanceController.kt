@@ -9,9 +9,9 @@ import com.wijayaprinting.manager.reader.Reader
 import com.wijayaprinting.manager.scene.control.FileField
 import com.wijayaprinting.manager.scene.control.doubleField
 import com.wijayaprinting.manager.scene.control.intField
-import com.wijayaprinting.manager.scene.utils.setGaps
-import com.wijayaprinting.manager.scene.utils.setMaxSize
-import com.wijayaprinting.manager.scene.utils.setSize
+import com.wijayaprinting.manager.scene.utils.gap
+import com.wijayaprinting.manager.scene.utils.maxSize
+import com.wijayaprinting.manager.scene.utils.size
 import com.wijayaprinting.manager.utils.forceClose
 import com.wijayaprinting.manager.utils.multithread
 import io.reactivex.Observable
@@ -97,7 +97,7 @@ class AttendanceController : Controller() {
                         lateinit var listView: ListView<DateTime>
                         content = vbox {
                             gridPane {
-                                setGaps(4)
+                                gap(4)
                                 padding = Insets(8.0)
                                 employee.role?.let { role ->
                                     label(getString(R.string.role)) col 0 row 0 marginRight 4
@@ -143,9 +143,9 @@ class AttendanceController : Controller() {
                                             graphic = null
                                             if (item != null && !empty) graphic = kotfx.hbox {
                                                 alignment = CENTER
-                                                label(item.toString(PATTERN_DATETIME)) { setMaxSize(Double.MAX_VALUE) } hpriority ALWAYS
+                                                label(item.toString(PATTERN_DATETIME)) { maxSize(Double.MAX_VALUE) } hpriority ALWAYS
                                                 button {
-                                                    setSize(17.0)
+                                                    size(17.0)
                                                     graphicProperty() bind bindingOf<Node>(hoverProperty()) { if (isHover) ImageView(R.png.btn_clear) else null }
                                                     setOnAction { listView.items.remove(item) }
                                                 }

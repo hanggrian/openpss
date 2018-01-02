@@ -19,7 +19,6 @@ const val commonsLangVersion = "3.7"
 const val commonsValidatorVersion = "1.6"
 const val commonsMathVersion = "3.6.1"
 const val slf4jVersion = "1.7.25"
-const val jasyptVersion = "1.9.2"
 
 const val junitVersion = "4.12"
 
@@ -33,6 +32,5 @@ fun DependencyHandler.commonsValidator(version: String) = "commons-validator:com
 fun DependencyHandler.google(module: String, version: String) = "com.google.$module:$module:$version"
 fun DependencyHandler.wp(module: String, version: String) = "com.wijayaprinting:$module:$version"
 fun DependencyHandler.slf4j(module: String, version: String) = "org.slf4j:slf4j-$module:$version"
-fun DependencyHandler.jasypt(version: String) = "org.jasypt:jasypt:$version"
 
 fun DependencyHandler.junit(version: String) = "junit:junit:$version"

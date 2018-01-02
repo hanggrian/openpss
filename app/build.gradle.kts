@@ -47,7 +47,6 @@ dependencies {
     implementation(rx("javafx", rxjavafxVersion))
     implementation(google("guava", guavaVersion))
     implementation(slf4j("log4j12", slf4jVersion))
-    implementation(jasypt(jasyptVersion))
 
     testImplementation(junit(junitVersion))
 }

@@ -2,6 +2,7 @@ package com.wijayaprinting.manager
 
 import com.wijayaprinting.data.Employee
 import com.wijayaprinting.data.WP
+import com.wijayaprinting.manager.controller.pane
 import com.wijayaprinting.manager.dialog.AboutDialog
 import com.wijayaprinting.manager.internal.Language
 import com.wijayaprinting.manager.internal.Resourceful
@@ -19,8 +20,6 @@ import com.wijayaprinting.manager.utils.setIconOnOSX
 import io.reactivex.rxkotlin.subscribeBy
 import javafx.application.Application
 import javafx.application.Platform.exit
-import javafx.beans.property.BooleanProperty
-import javafx.beans.property.SimpleBooleanProperty
 import javafx.event.ActionEvent.ACTION
 import javafx.scene.control.ButtonBar.ButtonData.BACK_PREVIOUS
 import javafx.scene.control.ButtonBar.ButtonData.NEXT_FORWARD
@@ -30,7 +29,6 @@ import javafx.scene.control.PasswordField
 import javafx.scene.control.TextField
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
-import javafx.scene.layout.Pane
 import javafx.stage.Stage
 import kotfx.*
 import org.apache.log4j.BasicConfigurator.configure
@@ -40,7 +38,7 @@ import java.util.*
 class App : Application(), Resourceful {
 
     companion object {
-        var fullAccessProperty: BooleanProperty = SimpleBooleanProperty()
+        lateinit var employee: Employee
 
         @JvmStatic fun main(vararg args: String) = launch(App::class.java, *args)
     }
@@ -110,7 +108,7 @@ class App : Application(), Resourceful {
                 label(getString(R.string.server_password)) col 0 row 2
                 serverPasswordField = passwordField {
                     promptText = getString(R.string.server_password)
-                    textProperty() bindBidirectional MySQLFile.encryptedPassword
+                    textProperty() bindBidirectional MySQLFile.password
                 } col 1 row 2 colSpan 2
             }
 
@@ -137,11 +135,13 @@ class App : Application(), Resourceful {
                 if (employeeField.text.isBlank()) employeeField.requestFocus() else passwordField.requestFocus()
                 isExpanded = listOf(serverIPField, serverPortField, serverUserField, serverPasswordField).any { it.text.isBlank() }
             }
-        }.showAndWait().filter { it is Employee }.ifPresent {
+            if (BuildConfig.DEBUG) passwordField.text = "1234"
+        }.showAndWait().filter { it is Employee }.ifPresent { employee ->
+            App.employee = employee as Employee
             val minSize = Pair(960.0, 640.0)
             stage.apply {
                 title = getString(R.string.app_name)
-                scene = getResource(R.fxml.layout_main).loadFXML(resources).load<Pane>().toScene(minSize.first, minSize.second)
+                scene = getResource(R.fxml.layout_main).loadFXML(resources).pane.toScene(minSize.first, minSize.second)
                 minWidth = minSize.first
                 minHeight = minSize.second
             }.show()

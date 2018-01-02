@@ -103,16 +103,15 @@ class AboutDialog(override val resources: ResourceBundle) : Dialog<Unit>(), Reso
     }
 
     private val licenses
-        get(): ObservableList<License> = WP.licenses.apply {
-            addAll(listOf(License("Apache", "POI OOXML", "https://poi.apache.org"),
-                    License("Apache", "Commons Lang", "https://commons.apache.org/lang"),
-                    License("Apache", "Commons Math", "https://commons.apache.org/math"),
-                    License("Apache", "Commons Validator", "https://commons.apache.org/validator"),
-                    License("Google", "Guava", "https://github.com/google/guava"),
-                    License("Hendra Anggrian", "Kotfx", "https://github.com/hendraanggrian/kotfx"),
-                    License("ReactiveX", "RxJavaFX", "https://github.com/ReactiveX/RxJavaFX"),
-                    License("Slf4j", "Log4j12", "https://www.slf4j.org")))
-        }.toObservableList()
+        get(): ObservableList<License> = WP.licenses.addAll(
+                License("Apache", "POI OOXML", "https://poi.apache.org"),
+                License("Apache", "Commons Lang", "https://commons.apache.org/lang"),
+                License("Apache", "Commons Math", "https://commons.apache.org/math"),
+                License("Apache", "Commons Validator", "https://commons.apache.org/validator"),
+                License("Google", "Guava", "https://github.com/google/guava"),
+                License("Hendra Anggrian", "Kotfx", "https://github.com/hendraanggrian/kotfx"),
+                License("ReactiveX", "RxJavaFX", "https://github.com/ReactiveX/RxJavaFX"),
+                License("Slf4j", "Log4j12", "https://www.slf4j.org")).toObservableList()
 
     private fun License.getContent(resourceful: Resourceful): String = File(resourceful.getResource("/${owner.shorten}_${name.shorten}.txt").toURI())
             .inputStream()

@@ -217,10 +217,10 @@ class AttendanceController : Controller() {
             val minSize = Pair(960.0, 640.0)
             stage("${getString(R.string.app_name)} - ${getString(R.string.record)}") {
                 val loader = getResource(R.fxml.layout_attendance_record).loadFXML(resources)
-                scene = loader.load<Pane>().toScene(minSize.first, minSize.second)
+                scene = loader.pane.toScene(minSize.first, minSize.second)
                 minWidth = minSize.first
                 minHeight = minSize.second
-                loader.getController<Controller>().setUserData(set)
+                loader.controller.setExtra(set)
             }.showAndWait()
         }
     }

@@ -1,5 +1,6 @@
 package com.wijayaprinting.manager.controller
 
+import com.wijayaprinting.manager.App
 import com.wijayaprinting.manager.dialog.AboutDialog
 import javafx.fxml.FXML
 import javafx.scene.control.CheckMenuItem
@@ -21,6 +22,9 @@ class MainController : Controller() {
 
     @FXML
     fun initialize() {
+        attendanceMenu.isDisable = !App.employee.fullAccess
+        tabPane.tabs[2].isDisable = !App.employee.fullAccess
+
         menuBar.isUseSystemMenuBar = IS_OS_MAC
         tabPane.selectionModel.selectedIndexProperty().addListener { _, _, index -> updateNavigation(index.toInt()) }
         updateNavigation(tabPane.selectionModel.selectedIndex)

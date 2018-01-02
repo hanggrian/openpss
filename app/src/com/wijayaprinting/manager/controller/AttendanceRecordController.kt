@@ -51,7 +51,7 @@ class AttendanceRecordController : Controller() {
         treeTableView.selectionModel.selectionMode = MULTIPLE
         treeTableView.root = TreeItem(AttendanceRecord.ROOT) // dummy for invisible root
         treeTableView.isShowRoot = false
-        getUserData<Set<Attendee>>().forEach { employee ->
+        getExtra<Set<Attendee>>().forEach { employee ->
             val node = employee.toNodeRecord()
             val childs = employee.toChildRecords()
             val total = employee.toTotalRecords(childs)

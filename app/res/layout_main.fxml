@@ -17,7 +17,7 @@
     </MenuBar>
 
     <TabPane fx:id="tabPane" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
-        <Tab closable="false" disable="true" text="%customer">
+        <Tab closable="false" text="%customer">
             <fx:include fx:id="customer" source="layout_customer.fxml"/>
         </Tab>
         <Tab closable="false" text="%plate">

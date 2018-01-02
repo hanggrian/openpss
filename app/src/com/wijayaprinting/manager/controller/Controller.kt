@@ -10,13 +10,12 @@ abstract class Controller : Resourceful {
 
     override val resources: ResourceBundle = Language.parse(PreferencesFile.language.value).getResources("string")
 
-    /** Equivalent to user data in [javafx.scene.Node]. */
-    private lateinit var userData: Any
+    private var mExtra: Any? = null
 
-    fun setUserData(value: Any) {
-        userData = value
+    fun setExtra(value: Any?) {
+        mExtra = value
     }
 
     @Suppress("UNCHECKED_CAST")
-    fun <T> getUserData() = userData as T
+    fun <T : Any> getExtra(): T = checkNotNull(mExtra as T) { "User data has not been initialized!" }
 }

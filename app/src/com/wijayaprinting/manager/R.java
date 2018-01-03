@@ -1,4 +1,4 @@
-// rsync generated this class at 2018-01-02T17:37:33.169 from:
+// rsync generated this class at 2018-01-03T18:02:14.597 from:
 // string_en.properties
 // layout_attendance.fxml
 // btn_refresh.png
@@ -124,6 +124,12 @@ public final class R {
   }
 
   public static final class string {
+    public static final String confirm_password = "confirm_password";
+
+    public static final String change_password = "change_password";
+
+    public static final String change_password_notice = "change_password_notice";
+
     public static final String process = "process";
 
     public static final String delete_others = "delete_others";
@@ -137,8 +143,6 @@ public final class R {
     public static final String language_changed = "language_changed";
 
     public static final String please_wait_content = "please_wait_content";
-
-    public static final String show_server = "show_server";
 
     public static final String server = "server";
 
@@ -194,8 +198,6 @@ public final class R {
 
     public static final String time = "time";
 
-    public static final String about_info = "about_info";
-
     public static final String quantity = "quantity";
 
     public static final String income = "income";
@@ -238,8 +240,6 @@ public final class R {
 
     public static final String plate_price = "plate_price";
 
-    public static final String hide_server = "hide_server";
-
     public static final String undo = "undo";
 
     public static final String record = "record";
@@ -255,6 +255,8 @@ public final class R {
     public static final String customer = "customer";
 
     public static final String recess = "recess";
+
+    public static final String about_notice = "about_notice";
 
     public static final String overtime_income = "overtime_income";
 

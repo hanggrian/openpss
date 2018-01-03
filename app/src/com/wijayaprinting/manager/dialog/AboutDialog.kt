@@ -47,7 +47,7 @@ class AboutDialog(override val resources: ResourceBundle) : Dialog<Unit>(), Reso
                     text("Manager") { font = loadFont(latoLight, 24.0) }
                 }
                 text("${getString(R.string.version)} ${com.wijayaprinting.manager.BuildConfig.VERSION}") { font = loadFont(latoRegular, 12.0) } marginTop 2
-                text(getString(R.string.about_info)) { font = loadFont(latoBold, 12.0) } marginTop 20
+                text(getString(R.string.about_notice)) { font = loadFont(latoBold, 12.0) } marginTop 20
                 textFlow {
                     text("${getString(R.string.powered_by)}  ") { font = loadFont(latoBold, 12.0) }
                     text("JavaFX") { font = loadFont(latoRegular, 12.0) }

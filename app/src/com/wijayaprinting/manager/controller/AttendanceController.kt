@@ -12,8 +12,10 @@ import com.wijayaprinting.manager.scene.control.intField
 import com.wijayaprinting.manager.scene.utils.gap
 import com.wijayaprinting.manager.scene.utils.maxSize
 import com.wijayaprinting.manager.scene.utils.size
+import com.wijayaprinting.manager.utils.controller
 import com.wijayaprinting.manager.utils.forceClose
 import com.wijayaprinting.manager.utils.multithread
+import com.wijayaprinting.manager.utils.pane
 import io.reactivex.Observable
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers.computation

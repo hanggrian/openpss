@@ -1,9 +1,11 @@
 @file:Suppress("NOTHING_TO_INLINE")
 
-package com.wijayaprinting.manager.data
+package com.wijayaprinting.manager.utils
 
-import com.wijayaprinting.manager.utils.round
+import com.wijayaprinting.manager.data.AttendanceRecord
+import com.wijayaprinting.manager.data.Attendee
 import javafx.beans.property.SimpleObjectProperty
+import kotfx.asMutableProperty
 import kotfx.bind
 import kotfx.doubleBindingOf
 import org.joda.time.DateTime
@@ -19,30 +21,20 @@ fun Attendee.toChildRecords(): Set<AttendanceRecord> {
     return records
 }
 
-fun Attendee.toTotalRecords(children: Collection<AttendanceRecord>): AttendanceRecord = AttendanceRecord(AttendanceRecord.TYPE_TOTAL, this, SimpleObjectProperty(DateTime(0)), SimpleObjectProperty(DateTime(0))).apply {
+fun Attendee.toTotalRecords(children: Collection<AttendanceRecord>): AttendanceRecord = AttendanceRecord(AttendanceRecord.TYPE_TOTAL, this, DateTime(0).asMutableProperty(), DateTime(0).asMutableProperty()).apply {
     children.map { it.daily }.toTypedArray().let { mains ->
-        daily bind doubleBindingOf(*mains) {
-            mains.map { it.value }.sum().round
-        }
+        daily bind doubleBindingOf(*mains) { mains.map { it.value }.sum().round }
     }
     children.map { it.dailyIncome }.toTypedArray().let { mainIncomes ->
-        dailyIncome bind doubleBindingOf(*mainIncomes) {
-            mainIncomes.map { it.value }.sum().round
-        }
+        dailyIncome bind doubleBindingOf(*mainIncomes) { mainIncomes.map { it.value }.sum().round }
     }
     children.map { it.overtime }.toTypedArray().let { overtimes ->
-        overtime bind doubleBindingOf(*overtimes) {
-            overtimes.map { it.value }.sum().round
-        }
+        overtime bind doubleBindingOf(*overtimes) { overtimes.map { it.value }.sum().round }
     }
     children.map { it.overtimeIncome }.toTypedArray().let { overtimeIncomes ->
-        overtimeIncome bind doubleBindingOf(*overtimeIncomes) {
-            overtimeIncomes.map { it.value }.sum().round
-        }
+        overtimeIncome bind doubleBindingOf(*overtimeIncomes) { overtimeIncomes.map { it.value }.sum().round }
     }
     children.map { it.total }.toTypedArray().let { totals ->
-        total bind doubleBindingOf(*totals) {
-            totals.map { it.value }.sum().round
-        }
+        total bind doubleBindingOf(*totals) { totals.map { it.value }.sum().round }
     }
 }

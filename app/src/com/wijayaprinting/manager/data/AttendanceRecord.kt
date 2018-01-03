@@ -15,8 +15,8 @@ import java.lang.Math.abs
 data class AttendanceRecord @JvmOverloads constructor(
         val type: Int,
         val actualAttendee: Attendee,
-        val start: SimpleObjectProperty<DateTime>,
-        val end: SimpleObjectProperty<DateTime>,
+        val start: ObjectProperty<DateTime>,
+        val end: ObjectProperty<DateTime>,
 
         val daily: DoubleProperty = SimpleDoubleProperty(),
         val overtime: DoubleProperty = SimpleDoubleProperty(),

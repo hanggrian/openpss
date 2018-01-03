@@ -1,5 +1,6 @@
-package com.wijayaprinting.manager.controller
+package com.wijayaprinting.manager.utils
 
+import com.wijayaprinting.manager.controller.Controller
 import javafx.fxml.FXMLLoader
 import javafx.scene.layout.Pane
 

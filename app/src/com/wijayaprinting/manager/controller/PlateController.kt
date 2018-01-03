@@ -2,6 +2,7 @@ package com.wijayaprinting.manager.controller
 
 import com.wijayaprinting.manager.App
 import com.wijayaprinting.manager.R
+import com.wijayaprinting.manager.utils.pane
 import javafx.fxml.FXML
 import javafx.scene.control.Button
 import javafx.stage.Modality.APPLICATION_MODAL
@@ -15,7 +16,7 @@ class PlateController : Controller() {
 
     @FXML
     fun initialize() {
-        priceButton.isDisable = !App.employee.fullAccess
+        priceButton.isDisable = !App.fullAccess
     }
 
     @FXML

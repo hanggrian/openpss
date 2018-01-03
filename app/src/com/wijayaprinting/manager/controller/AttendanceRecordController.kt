@@ -5,6 +5,9 @@ import com.wijayaprinting.data.PATTERN_TIME
 import com.wijayaprinting.manager.R
 import com.wijayaprinting.manager.data.*
 import com.wijayaprinting.manager.scene.layout.TimeBox
+import com.wijayaprinting.manager.utils.toChildRecords
+import com.wijayaprinting.manager.utils.toNodeRecord
+import com.wijayaprinting.manager.utils.toTotalRecords
 import javafx.collections.ObservableSet
 import javafx.fxml.FXML
 import javafx.print.Printer.defaultPrinterProperty

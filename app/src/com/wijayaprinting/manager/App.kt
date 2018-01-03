@@ -1,8 +1,10 @@
 package com.wijayaprinting.manager
 
+import com.hendraanggrian.rxexposed.SQLSingles
 import com.wijayaprinting.data.Employee
+import com.wijayaprinting.data.Employees
 import com.wijayaprinting.data.WP
-import com.wijayaprinting.manager.controller.pane
+import com.wijayaprinting.manager.BuildConfig.DEBUG
 import com.wijayaprinting.manager.dialog.AboutDialog
 import com.wijayaprinting.manager.internal.Language
 import com.wijayaprinting.manager.internal.Resourceful
@@ -16,6 +18,7 @@ import com.wijayaprinting.manager.scene.utils.attachButtons
 import com.wijayaprinting.manager.scene.utils.gap
 import com.wijayaprinting.manager.utils.forceClose
 import com.wijayaprinting.manager.utils.multithread
+import com.wijayaprinting.manager.utils.pane
 import com.wijayaprinting.manager.utils.setIconOnOSX
 import io.reactivex.rxkotlin.subscribeBy
 import javafx.application.Application
@@ -23,8 +26,8 @@ import javafx.application.Platform.exit
 import javafx.event.ActionEvent.ACTION
 import javafx.scene.control.ButtonBar.ButtonData.BACK_PREVIOUS
 import javafx.scene.control.ButtonBar.ButtonData.NEXT_FORWARD
-import javafx.scene.control.Dialog
-import javafx.scene.control.Hyperlink
+import javafx.scene.control.ButtonType.CANCEL
+import javafx.scene.control.ButtonType.OK
 import javafx.scene.control.PasswordField
 import javafx.scene.control.TextField
 import javafx.scene.image.Image
@@ -32,13 +35,15 @@ import javafx.scene.image.ImageView
 import javafx.stage.Stage
 import kotfx.*
 import org.apache.log4j.BasicConfigurator.configure
+import org.jetbrains.exposed.sql.update
 import java.awt.Toolkit.getDefaultToolkit
 import java.util.*
 
 class App : Application(), Resourceful {
 
     companion object {
-        lateinit var employee: Employee
+        lateinit var employee: String
+        var fullAccess: Boolean = false
 
         @JvmStatic fun main(vararg args: String) = launch(App::class.java, *args)
     }
@@ -46,7 +51,7 @@ class App : Application(), Resourceful {
     override val resources: ResourceBundle = Language.parse(PreferencesFile.language.value).getResources("string")
 
     override fun init() {
-        if (BuildConfig.DEBUG) configure()
+        if (DEBUG) configure()
     }
 
     override fun start(stage: Stage) {
@@ -111,7 +116,6 @@ class App : Application(), Resourceful {
                     textProperty() bindBidirectional MySQLFile.password
                 } col 1 row 2 colSpan 2
             }
-
             button(getString(R.string.about), BACK_PREVIOUS).addEventFilter(ACTION) { event ->
                 event.consume()
                 AboutDialog(resources).showAndWait()
@@ -130,14 +134,16 @@ class App : Application(), Resourceful {
                             }
                 }
             }
-
             runFX {
                 if (employeeField.text.isBlank()) employeeField.requestFocus() else passwordField.requestFocus()
                 isExpanded = listOf(serverIPField, serverPortField, serverUserField, serverPasswordField).any { it.text.isBlank() }
             }
-            if (BuildConfig.DEBUG) passwordField.text = "1234"
+            if (DEBUG) passwordField.text = "1234"
         }.showAndWait().filter { it is Employee }.ifPresent { employee ->
-            App.employee = employee as Employee
+            employee as Employee
+            App.employee = employee.id.value
+            App.fullAccess = employee.fullAccess
+
             val minSize = Pair(960.0, 640.0)
             stage.apply {
                 title = getString(R.string.app_name)
@@ -145,8 +151,30 @@ class App : Application(), Resourceful {
                 minWidth = minSize.first
                 minHeight = minSize.second
             }.show()
+
+            if (employee.firstTimeLogin) dialog<String>(getString(R.string.change_password), getString(R.string.change_password), ImageView(R.png.ic_key)) {
+                lateinit var changePasswordField: PasswordField
+                lateinit var confirmPasswordField: PasswordField
+                content = gridPane {
+                    gap(8)
+                    label(getString(R.string.password)) col 0 row 0
+                    changePasswordField = passwordField { promptText = getString(R.string.password) } col 1 row 0
+                    label(getString(R.string.change_password)) col 0 row 1
+                    confirmPasswordField = passwordField { promptText = getString(R.string.change_password) } col 1 row 1
+                }
+                button(CANCEL)
+                button(OK).disableProperty() bind (changePasswordField.textProperty().isEmpty
+                        or confirmPasswordField.textProperty().isEmpty
+                        or (changePasswordField.textProperty() neq confirmPasswordField.textProperty()))
+                setResultConverter { if (it == OK) changePasswordField.text else null }
+                runFX { changePasswordField.requestFocus() }
+            }.showAndWait().filter { it is String }.ifPresent { newPassword ->
+                SQLSingles.transaction { Employees.update({ Employees.id eq App.employee }) { employee -> employee[password] = newPassword } }
+                        .multithread()
+                        .subscribeBy({ errorAlert(it.message.toString()).showAndWait() }) {
+                            errorAlert("Password change successful.")
+                        }
+            }
         }
     }
-
-    private val Dialog<*>.detailsButton: Hyperlink get() = dialogPane.lookup(".details-button") as Hyperlink
 }

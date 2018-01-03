@@ -22,8 +22,8 @@ class MainController : Controller() {
 
     @FXML
     fun initialize() {
-        attendanceMenu.isDisable = !App.employee.fullAccess
-        tabPane.tabs[2].isDisable = !App.employee.fullAccess
+        attendanceMenu.isDisable = !App.fullAccess
+        tabPane.tabs[2].isDisable = !App.fullAccess
 
         menuBar.isUseSystemMenuBar = IS_OS_MAC
         tabPane.selectionModel.selectedIndexProperty().addListener { _, _, index -> updateNavigation(index.toInt()) }

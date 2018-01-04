@@ -1,14 +1,17 @@
 package com.wijayaprinting.manager.controller
 
 import com.wijayaprinting.manager.internal.Language
+import com.wijayaprinting.manager.internal.Registrable
 import com.wijayaprinting.manager.internal.Resourceful
 import com.wijayaprinting.manager.io.PreferencesFile
+import io.reactivex.disposables.Disposable
 import java.util.*
 
 /** Base class of all controllers. */
-abstract class Controller : Resourceful {
+abstract class Controller : Resourceful, Registrable {
 
     override val resources: ResourceBundle = Language.parse(PreferencesFile.language.value).getResources("string")
+    override val disposables: MutableSet<Disposable> = mutableSetOf()
 
     private var mExtra: Any? = null
 

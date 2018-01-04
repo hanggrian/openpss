@@ -2,6 +2,7 @@ package com.wijayaprinting.manager.controller
 
 import com.wijayaprinting.manager.App
 import com.wijayaprinting.manager.R
+import com.wijayaprinting.manager.utils.controller
 import com.wijayaprinting.manager.utils.pane
 import javafx.fxml.FXML
 import javafx.scene.control.Button
@@ -28,6 +29,7 @@ class PlateController : Controller() {
             scene = loader.pane.toScene(minSize.first, minSize.second)
             minWidth = minSize.first
             minHeight = minSize.second
+            setOnCloseRequest { loader.controller.disposeAll() }
         }.showAndWait()
     }
 }

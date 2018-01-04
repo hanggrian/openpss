@@ -9,6 +9,7 @@ import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
 import kotfx.asObservable
 import kotfx.asProperty
+import kotfx.toMutableObservableList
 import java.math.BigDecimal
 
 class PlatePriceController : Controller() {
@@ -22,10 +23,10 @@ class PlatePriceController : Controller() {
 
     @FXML
     fun initialize() {
-        SQLSingles.transaction { Plate.all() }
-                .subscribeBy({}) { plates ->
-                    // tableView.items =
-                }
+        SQLSingles
+                .transaction { Plate.all() }
+                .subscribeBy({}) { plates -> tableView.items = plates.toList().toMutableObservableList() }
+                .register()
 
         idColumn.setCellValueFactory { it.value.id.value.asProperty() }
         priceColumn.setCellValueFactory { it.value.price.asProperty() }
@@ -35,5 +36,11 @@ class PlatePriceController : Controller() {
     @FXML
     fun addOnAction() {
 
+        SQLSingles
+                .transaction {
+                    Plate.new {
+
+                    }
+                }
     }
 }

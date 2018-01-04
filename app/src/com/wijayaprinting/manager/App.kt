@@ -1,6 +1,6 @@
 package com.wijayaprinting.manager
 
-import com.hendraanggrian.rxexposed.SQLSingles
+import com.hendraanggrian.rxexposed.SQLCompletables
 import com.wijayaprinting.data.Employee
 import com.wijayaprinting.data.Employees
 import com.wijayaprinting.data.WP
@@ -16,10 +16,7 @@ import com.wijayaprinting.manager.scene.control.intField
 import com.wijayaprinting.manager.scene.control.ipField
 import com.wijayaprinting.manager.scene.utils.attachButtons
 import com.wijayaprinting.manager.scene.utils.gap
-import com.wijayaprinting.manager.utils.forceClose
-import com.wijayaprinting.manager.utils.multithread
-import com.wijayaprinting.manager.utils.pane
-import com.wijayaprinting.manager.utils.setIconOnOSX
+import com.wijayaprinting.manager.utils.*
 import io.reactivex.rxkotlin.subscribeBy
 import javafx.application.Application
 import javafx.application.Platform.exit
@@ -137,8 +134,10 @@ class App : Application(), Resourceful {
             runFX {
                 if (employeeField.text.isBlank()) employeeField.requestFocus() else passwordField.requestFocus()
                 isExpanded = listOf(serverIPField, serverPortField, serverUserField, serverPasswordField).any { it.text.isBlank() }
+                if (DEBUG) {
+                    passwordField.text = "123"
+                }
             }
-            if (DEBUG) passwordField.text = "1234"
         }.showAndWait().filter { it is Employee }.ifPresent { employee ->
             employee as Employee
             App.employee = employee.id.value
@@ -146,10 +145,12 @@ class App : Application(), Resourceful {
 
             val minSize = Pair(960.0, 640.0)
             stage.apply {
+                val loader = getResource(R.fxml.layout_main).loadFXML(resources)
                 title = getString(R.string.app_name)
-                scene = getResource(R.fxml.layout_main).loadFXML(resources).pane.toScene(minSize.first, minSize.second)
+                scene = loader.pane.toScene(minSize.first, minSize.second)
                 minWidth = minSize.first
                 minHeight = minSize.second
+                setOnCloseRequest { loader.controller.disposeAll() }
             }.show()
 
             if (employee.firstTimeLogin) dialog<String>(getString(R.string.change_password), getString(R.string.change_password), ImageView(R.png.ic_key)) {
@@ -169,11 +170,10 @@ class App : Application(), Resourceful {
                 setResultConverter { if (it == OK) changePasswordField.text else null }
                 runFX { changePasswordField.requestFocus() }
             }.showAndWait().filter { it is String }.ifPresent { newPassword ->
-                SQLSingles.transaction { Employees.update({ Employees.id eq App.employee }) { employee -> employee[password] = newPassword } }
+                SQLCompletables
+                        .transaction { Employees.update({ Employees.id eq App.employee }) { employee -> employee[password] = newPassword } }
                         .multithread()
-                        .subscribeBy({ errorAlert(it.message.toString()).showAndWait() }) {
-                            errorAlert("Password change successful.")
-                        }
+                        .subscribeBy({ errorAlert(it.message.toString()).showAndWait() }) { infoAlert(R.string.change_password_successful).showAndWait() }
             }
         }
     }

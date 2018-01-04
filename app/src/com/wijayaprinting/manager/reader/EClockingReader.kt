@@ -2,6 +2,7 @@ package com.wijayaprinting.manager.reader
 
 import com.google.common.collect.LinkedHashMultimap
 import com.wijayaprinting.manager.data.Attendee
+import com.wijayaprinting.manager.internal.Registrable
 import org.apache.commons.lang3.SystemUtils.IS_OS_MAC
 import org.apache.commons.lang3.SystemUtils.IS_OS_WINDOWS
 import org.apache.poi.ss.usermodel.CellType.NUMERIC
@@ -27,7 +28,7 @@ open class EClockingReader : Reader {
     override val extensions: Array<String> get() = arrayOf("*.xlsx")
 
     @Throws(Exception::class)
-    override fun read(file: File): Collection<Attendee> {
+    override fun read(registrable: Registrable, file: File): Collection<Attendee> {
         val multimap = LinkedHashMultimap.create<Attendee, DateTime>()
         file.inputStream().use { stream ->
             val workbook = XSSFWorkbook(stream)
@@ -42,7 +43,7 @@ open class EClockingReader : Reader {
                     val day = date.dayOfMonth
                     val month = date.monthOfYear
                     val year = date.year
-                    val employee = Attendee(no, name, dept)
+                    val attendee = Attendee(registrable, no, name, dept)
                     (CELL_RECORD_START until CELL_RECORD_END)
                             .map { row.getCell(it) }
                             .filter { it.cellTypeEnum == NUMERIC }
@@ -51,7 +52,7 @@ open class EClockingReader : Reader {
                                 val hour = record.hourOfDay
                                 val minute = record.minuteOfHour
                                 val attendance = DateTime(year, month, day, hour, minute)
-                                multimap.put(employee, when (true) {
+                                multimap.put(attendee, when (true) {
                                     IS_OS_WINDOWS -> attendance.plusMinutes(18)
                                     IS_OS_MAC -> attendance.minusMinutes(7)
                                     else -> attendance
@@ -62,9 +63,9 @@ open class EClockingReader : Reader {
             workbook.close()
         }
         val set = mutableSetOf<Attendee>()
-        for (employee in multimap.keySet()) {
-            employee.attendances.addAllRevertable(multimap.get(employee))
-            set.add(employee)
+        for (attendee in multimap.keySet()) {
+            attendee.attendances.addAllRevertable(multimap.get(attendee))
+            set.add(attendee)
         }
         return set
     }

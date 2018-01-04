@@ -1,4 +1,4 @@
-// rsync generated this class at 2018-01-03T18:02:14.597 from:
+// rsync generated this class at 2018-01-04T14:50:47.303 from:
 // string_en.properties
 // layout_attendance.fxml
 // btn_refresh.png
@@ -213,6 +213,8 @@ public final class R {
     public static final String language = "language";
 
     public static final String shift = "shift";
+
+    public static final String change_password_successful = "change_password_successful";
 
     public static final String name = "name";
 

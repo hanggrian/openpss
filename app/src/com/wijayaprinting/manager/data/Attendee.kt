@@ -4,6 +4,7 @@ import com.hendraanggrian.rxexposed.SQLCompletables
 import com.hendraanggrian.rxexposed.SQLSingles
 import com.wijayaprinting.data.Wage
 import com.wijayaprinting.data.Wages
+import com.wijayaprinting.manager.internal.Registrable
 import com.wijayaprinting.manager.internal.RevertableObservableList
 import com.wijayaprinting.manager.utils.multithread
 import io.reactivex.rxkotlin.subscribeBy
@@ -20,6 +21,8 @@ import java.util.Optional.ofNullable
 
 /** Data class representing an Attendee with id as its identifier to avoid duplicates in [Set] scenario. */
 data class Attendee @JvmOverloads constructor(
+        val registrable: Registrable,
+
         /** Id and name are final values that should be determined upon xlsx reading. */
         val id: Int,
         val name: String,
@@ -33,7 +36,7 @@ data class Attendee @JvmOverloads constructor(
         val hourlyOvertime: IntegerProperty = SimpleIntegerProperty(),
         val recess: DoubleProperty = SimpleDoubleProperty(),
         val recessOvertime: DoubleProperty = SimpleDoubleProperty()
-) {
+) : Registrable by registrable {
     init {
         SQLSingles.transaction { ofNullable(Wage.findById(id)) }
                 .filter { it.isPresent }
@@ -45,6 +48,7 @@ data class Attendee @JvmOverloads constructor(
                     recess.value = wage.recess.toDouble()
                     recessOvertime.value = wage.recessOvertime.toDouble()
                 }
+                .register()
     }
 
     fun saveWage() = SQLCompletables
@@ -63,6 +67,7 @@ data class Attendee @JvmOverloads constructor(
             }
             .multithread()
             .subscribeBy({}) {}
+            .register()
 
     fun mergeDuplicates() = attendances.removeAllRevertable((0 until attendances.lastIndex)
             .filter { index -> Period(attendances[index], attendances[index + 1]).toStandardMinutes() < minutes(5) }

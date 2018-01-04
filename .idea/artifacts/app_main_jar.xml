@@ -3,7 +3,7 @@
     <output-path>$PROJECT_DIR$/out/artifacts/app_main_jar</output-path>
     <root id="archive" name="app_main.jar">
       <element id="directory" name="META-INF">
-        <element id="file-copy" path="$PROJECT_DIR$/app/META-INF/MANIFEST.MF" />
+        <element id="file-copy" path="$PROJECT_DIR$/wp-manager/META-INF/MANIFEST.MF" />
       </element>
       <element id="module-output" name="app_main" />
       <element id="module-output" name="scene_main" />
@@ -44,7 +44,7 @@
       <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.errorprone/error_prone_annotations/2.1.3/39b109f2cd352b2d71b52a3b5a1a9850e1dc304b/error_prone_annotations-2.1.3.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.slf4j/slf4j-log4j12/1.7.25/110cefe2df103412849d72ef7a67e4e91e4266b4/slf4j-log4j12-1.7.25.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/commons-codec/commons-codec/1.10/4b95f4897fa13f2cd904aee711aeafc0c5295cd8/commons-codec-1.10.jar" path-in-jar="/" />
-      <element id="dir-copy" path="$PROJECT_DIR$/app/src/main/resources" />
+      <element id="dir-copy" path="$PROJECT_DIR$/wp-manager/src/main/resources" />
     </root>
   </artifact>
 </component>

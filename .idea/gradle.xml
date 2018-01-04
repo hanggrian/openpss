@@ -8,9 +8,9 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/buildSrc" />
-            <option value="$PROJECT_DIR$/scene" />
+            <option value="$PROJECT_DIR$/wp-manager" />
+            <option value="$PROJECT_DIR$/wp-manager-scene" />
           </set>
         </option>
         <option name="useAutoImport" value="true" />

@@ -1,5 +1,5 @@
 /** actual app module */
-include ':app'
+include ':wp-manager'
 
 /** library module used in app and SceneBuilder */
-include ':scene'
+include ':wp-manager-scene'

@@ -10,7 +10,7 @@ const val isDebug = true
 
 const val kotlinVersion = "1.2.10"
 
-const val dataVersion = "0.6"
+const val wpcoreVersion = "0.1"
 const val kotfxVersion = "0.14"
 const val guavaVersion = "23.6-jre"
 const val rxjavafxVersion = "2.2.2"
@@ -30,7 +30,7 @@ fun DependencyHandler.rx(module: String, version: String) = "io.reactivex.rxjava
 fun DependencyHandler.apache(module1: String, module2: String, version: String) = "org.apache.$module1:$module1-$module2:$version"
 fun DependencyHandler.commonsValidator(version: String) = "commons-validator:commons-validator:$version"
 fun DependencyHandler.google(module: String, version: String) = "com.google.$module:$module:$version"
-fun DependencyHandler.wp(module: String, version: String) = "com.wijayaprinting:$module:$version"
+fun DependencyHandler.wp(module: String, version: String) = "com.wijayaprinting:wp-$module:$version"
 fun DependencyHandler.slf4j(module: String, version: String) = "org.slf4j:slf4j-$module:$version"
 
 fun DependencyHandler.junit(version: String) = "junit:junit:$version"

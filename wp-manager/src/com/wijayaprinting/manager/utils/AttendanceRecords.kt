@@ -4,24 +4,23 @@ package com.wijayaprinting.manager.utils
 
 import com.wijayaprinting.manager.data.AttendanceRecord
 import com.wijayaprinting.manager.data.Attendee
-import javafx.beans.property.SimpleObjectProperty
 import kotfx.asMutableProperty
+import kotfx.asProperty
 import kotfx.bind
 import kotfx.doubleBindingOf
 import org.joda.time.DateTime
+import org.joda.time.DateTime.now
 
-fun Attendee.toNodeRecord(): AttendanceRecord = AttendanceRecord(AttendanceRecord.TYPE_NODE, this, SimpleObjectProperty(DateTime.now()), SimpleObjectProperty(DateTime.now()))
+inline fun Attendee.toNodeRecord(): AttendanceRecord = AttendanceRecord(AttendanceRecord.TYPE_NODE, this, now().asProperty(), now().asProperty())
 
-fun Attendee.toChildRecords(): Set<AttendanceRecord> {
+inline fun Attendee.toChildRecords(): Set<AttendanceRecord> {
     val records = mutableSetOf<AttendanceRecord>()
     val iterator = attendances.iterator()
-    while (iterator.hasNext()) {
-        records.add(AttendanceRecord(AttendanceRecord.TYPE_CHILD, this, SimpleObjectProperty(iterator.next()), SimpleObjectProperty(iterator.next())))
-    }
+    while (iterator.hasNext()) records.add(AttendanceRecord(AttendanceRecord.TYPE_CHILD, this, iterator.next().asMutableProperty(), iterator.next().asMutableProperty()))
     return records
 }
 
-fun Attendee.toTotalRecords(children: Collection<AttendanceRecord>): AttendanceRecord = AttendanceRecord(AttendanceRecord.TYPE_TOTAL, this, DateTime(0).asMutableProperty(), DateTime(0).asMutableProperty()).apply {
+inline fun Attendee.toTotalRecords(children: Collection<AttendanceRecord>): AttendanceRecord = AttendanceRecord(AttendanceRecord.TYPE_TOTAL, this, DateTime(0).asProperty(), DateTime(0).asProperty()).apply {
     children.map { it.daily }.toTypedArray().let { mains ->
         daily bind doubleBindingOf(*mains) { mains.map { it.value }.sum().round }
     }

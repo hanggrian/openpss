@@ -23,7 +23,7 @@
         <Button mnemonicParsing="false" fx:id="lockStartButton" onAction="#lockStartOnAction">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@btn_lock_in.png"/>
+                    <Image url="@btn_lock_start.png"/>
                 </ImageView>
             </graphic>
             <tooltip>
@@ -33,11 +33,21 @@
         <Button mnemonicParsing="false" fx:id="lockEndButton" onAction="#lockEndOnAction">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@btn_lock_out.png"/>
+                    <Image url="@btn_lock_end.png"/>
                 </ImageView>
             </graphic>
             <tooltip>
                 <Tooltip text="%lock_end_time"/>
+            </tooltip>
+        </Button>
+        <Button mnemonicParsing="false" fx:id="emptyButton" onAction="#emptyOnAction">
+            <graphic>
+                <ImageView pickOnBounds="true" preserveRatio="true">
+                    <Image url="@btn_empty.png"/>
+                </ImageView>
+            </graphic>
+            <tooltip>
+                <Tooltip text="%empty_working_hours"/>
             </tooltip>
         </Button>
         <Separator/>

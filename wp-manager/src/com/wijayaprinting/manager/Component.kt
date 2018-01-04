@@ -1,10 +1,11 @@
 package com.wijayaprinting.manager
 
+import com.wijayaprinting.Registrable
 import java.net.URL
 import java.util.*
 
 /** Easy access to [ResourceBundle] in application and controllers. */
-interface Resourceful {
+interface Component : Registrable {
 
     val resources: ResourceBundle
 

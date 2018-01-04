@@ -2,6 +2,7 @@ package com.wijayaprinting.manager.control
 
 import com.wijayaprinting.dao.Customer
 import com.wijayaprinting.dao.Customers
+import com.wijayaprinting.manager.BuildConfig.DEBUG
 import com.wijayaprinting.manager.scene.utils.gap
 import com.wijayaprinting.manager.utils.safeTransaction
 import javafx.beans.property.SimpleStringProperty
@@ -33,7 +34,7 @@ class CustomerPagination : Pagination() {
     val deleteMenuItem = MenuItem(com.wijayaprinting.manager.R.string.delete)
 
     init {
-        if (!com.wijayaprinting.manager.BuildConfig.DEBUG) {
+        if (!DEBUG) {
             setPageFactory { page -> getPageContainer(page) }
             contextMenu = ContextMenu(addMenuItem, deleteMenuItem)
             addMenuItem.setOnAction {
@@ -89,7 +90,7 @@ class CustomerPagination : Pagination() {
     private fun getPageListView(page: Int): Node {
         val listView = ListView<Customer>()
         safeTransaction {
-            listView.items = customers.limit(COUNT_PER_PAGE, COUNT_PER_PAGE * page).toList().toObservableList()
+            listView.items = customers.limit(COUNT_PER_PAGE, COUNT_PER_PAGE * page).toObservableList()
         }
         return listView
     }
@@ -124,7 +125,7 @@ class CustomerPagination : Pagination() {
             graphic = ImageView(com.wijayaprinting.manager.R.png.ic_user)
             headerText = customer?.toString() ?: "Add customer"
             dialogPane.content = GridPane().apply {
-                gap(8.0)
+                gap(8)
                 add(Label("Name"), 0, 0)
                 add(nameField, 1, 0)
                 add(Label("Email"), 0, 1)

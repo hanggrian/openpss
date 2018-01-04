@@ -1,34 +1,34 @@
 package com.wijayaprinting.manager.dialog
 
+import com.wijayaprinting.manager.R
 import com.wijayaprinting.manager.scene.layout.TimeBox
 import com.wijayaprinting.manager.scene.layout.timeBox
 import com.wijayaprinting.manager.scene.utils.gap
 import com.wijayaprinting.manager.utils.asJava
-import javafx.scene.Node
 import javafx.scene.control.ButtonType.CANCEL
 import javafx.scene.control.ButtonType.OK
 import javafx.scene.control.DatePicker
 import javafx.scene.control.Dialog
+import javafx.scene.image.ImageView
 import kotfx.*
 import org.joda.time.DateTime
 import org.joda.time.DateTime.now
 
 class DateTimeDialog @JvmOverloads constructor(
         title: String,
-        graphic: Node,
         headerText: String,
         prefill: DateTime? = null
 ) : Dialog<DateTime>() {
 
     init {
         this.title = title
-        this.graphic = graphic
         this.headerText = headerText
+        this.graphic = ImageView(R.png.ic_calendar)
 
         lateinit var datePicker: DatePicker
         lateinit var timeBox: TimeBox
         content = gridPane {
-            gap(8.0)
+            gap(8)
             datePicker = datePicker {
                 value = (prefill ?: now()).toLocalDate().asJava()
                 prefill?.let { value = it.toLocalDate().asJava() }

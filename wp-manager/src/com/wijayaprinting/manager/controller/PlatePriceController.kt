@@ -4,6 +4,7 @@ import com.hendraanggrian.rxexposed.SQLSingles
 import com.wijayaprinting.dao.Plate
 import com.wijayaprinting.manager.App
 import com.wijayaprinting.manager.R
+import com.wijayaprinting.manager.Refreshable
 import com.wijayaprinting.manager.utils.multithread
 import io.reactivex.rxkotlin.subscribeBy
 import javafx.fxml.FXML
@@ -17,9 +18,8 @@ import kotfx.*
 import java.math.BigDecimal
 import java.math.BigDecimal.ZERO
 
-class PlatePriceController : Controller() {
+class PlatePriceController : Controller(), Refreshable {
 
-    @FXML lateinit var addButton: Button
     @FXML lateinit var deleteButton: Button
 
     @FXML lateinit var tableView: TableView<Plate>
@@ -41,10 +41,10 @@ class PlatePriceController : Controller() {
                     }) {}
                     .register()
         }
-        SQLSingles.transaction { Plate.all().toList().toMutableObservableList() }
-                .subscribeBy({}) { plates -> tableView.items = plates }
-                .register()
+        refresh()
     }
+
+    @FXML fun refreshOnAction() = refresh()
 
     @FXML
     fun addOnAction() = inputDialog {
@@ -69,4 +69,8 @@ class PlatePriceController : Controller() {
                         .subscribeBy({ errorAlert(it.message.toString()).showAndWait() }) { plate -> tableView.items.remove(plate) }
                         .register()
             }
+
+    override fun refresh() = SQLSingles.transaction { Plate.all().toMutableObservableList() }
+            .subscribeBy({}) { plates -> tableView.items = plates }
+            .register()
 }

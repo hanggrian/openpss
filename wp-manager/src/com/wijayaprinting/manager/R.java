@@ -1,17 +1,19 @@
-// rsync generated this class at 2018-01-04T18:33:33.333 from:
+// rsync generated this class at 2018-01-05T01:42:47.324 from:
 // string_en.properties
 // layout_attendance.fxml
 // btn_refresh.png
-// btn_lock_out.png
 // logo_launcher.png
 // ic_calendar.png
 // string_in.properties
 // btn_add.png
 // btn_checkbox_outline.png
 // ic_user.png
+// btn_lock_end.png
 // btn_visibility.png
+// btn_empty.png
 // btn_clear.png
 // layout_main.fxml
+// btn_cancel.png
 // layout_attendance_record.fxml
 // btn_visibility_off.png
 // ic_clock.png
@@ -21,13 +23,13 @@
 // btn_print.png
 // layout_plate.fxml
 // btn_merge.png
+// btn_lock_start.png
 // ic_launcher.png
 // btn_checkbox.png
 // lato_regular.ttf
 // lato_bold.ttf
 // btn_folder.png
 // layout_customer.fxml
-// btn_lock_in.png
 // lato_light.ttf
 // btn_undo.png
 // layout_plate_price.fxml
@@ -68,8 +70,6 @@ public final class R {
   public static final class png {
     public static final String btn_refresh = "/btn_refresh.png";
 
-    public static final String btn_lock_out = "/btn_lock_out.png";
-
     public static final String logo_launcher = "/logo_launcher.png";
 
     public static final String ic_calendar = "/ic_calendar.png";
@@ -80,9 +80,15 @@ public final class R {
 
     public static final String ic_user = "/ic_user.png";
 
+    public static final String btn_lock_end = "/btn_lock_end.png";
+
     public static final String btn_visibility = "/btn_visibility.png";
 
+    public static final String btn_empty = "/btn_empty.png";
+
     public static final String btn_clear = "/btn_clear.png";
+
+    public static final String btn_cancel = "/btn_cancel.png";
 
     public static final String btn_visibility_off = "/btn_visibility_off.png";
 
@@ -98,13 +104,13 @@ public final class R {
 
     public static final String btn_merge = "/btn_merge.png";
 
+    public static final String btn_lock_start = "/btn_lock_start.png";
+
     public static final String ic_launcher = "/ic_launcher.png";
 
     public static final String btn_checkbox = "/btn_checkbox.png";
 
     public static final String btn_folder = "/btn_folder.png";
-
-    public static final String btn_lock_in = "/btn_lock_in.png";
 
     public static final String btn_undo = "/btn_undo.png";
 
@@ -144,8 +150,6 @@ public final class R {
 
     public static final String please_wait_content = "please_wait_content";
 
-    public static final String delete_plate_warning= "delete_plate_warning";
-
     public static final String server = "server";
 
     public static final String open_source_software = "open_source_software";
@@ -154,9 +158,9 @@ public final class R {
 
     public static final String add = "add";
 
-    public static final String browse_file = "browse_file";
-
     public static final String start = "start";
+
+    public static final String browse_file = "browse_file";
 
     public static final String date = "date";
 
@@ -165,6 +169,8 @@ public final class R {
     public static final String exit = "exit";
 
     public static final String daily = "daily";
+
+    public static final String delete_plate_warning = "delete_plate_warning";
 
     public static final String version = "version";
 
@@ -198,6 +204,8 @@ public final class R {
 
     public static final String day = "day";
 
+    public static final String multiple_lock_end_time = "multiple_lock_end_time";
+
     public static final String are_you_sure = "are_you_sure";
 
     public static final String overtime = "overtime";
@@ -222,6 +230,8 @@ public final class R {
 
     public static final String change_password_successful = "change_password_successful";
 
+    public static final String empty_working_hours = "empty_working_hours";
+
     public static final String name = "name";
 
     public static final String attendance = "attendance";
@@ -235,8 +245,6 @@ public final class R {
     public static final String hour = "hour";
 
     public static final String clear = "clear";
-
-    public static final String multiple_actions = "multiple_actions";
 
     public static final String check_for_updates = "check_for_updates";
 
@@ -267,6 +275,8 @@ public final class R {
     public static final String about_notice = "about_notice";
 
     public static final String overtime_income = "overtime_income";
+
+    public static final String multiple_lock_start_time = "multiple_lock_start_time";
 
     public static final String price = "price";
 

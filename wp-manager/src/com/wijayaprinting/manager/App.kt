@@ -16,6 +16,7 @@ import com.wijayaprinting.manager.scene.control.ipField
 import com.wijayaprinting.manager.scene.utils.attachButtons
 import com.wijayaprinting.manager.scene.utils.gap
 import com.wijayaprinting.manager.utils.*
+import io.reactivex.disposables.Disposable
 import io.reactivex.rxkotlin.subscribeBy
 import javafx.application.Application
 import javafx.application.Platform.exit
@@ -30,12 +31,13 @@ import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import javafx.stage.Stage
 import kotfx.*
+import org.apache.commons.lang3.SystemUtils.IS_OS_MAC_OSX
 import org.apache.log4j.BasicConfigurator.configure
 import org.jetbrains.exposed.sql.update
 import java.awt.Toolkit.getDefaultToolkit
 import java.util.*
 
-class App : Application(), Resourceful {
+class App : Application(), Component {
 
     companion object {
         lateinit var employee: String
@@ -45,6 +47,7 @@ class App : Application(), Resourceful {
     }
 
     override val resources: ResourceBundle = Language.parse(PreferencesFile.language.value).getResources("string")
+    override val disposables: MutableSet<Disposable> = mutableSetOf()
 
     override fun init() {
         if (DEBUG) configure()
@@ -112,14 +115,10 @@ class App : Application(), Resourceful {
                     textProperty() bindBidirectional MySQLFile.password
                 } col 1 row 2 colSpan 2
             }
-            button(getString(R.string.about), BACK_PREVIOUS).addEventFilter(ACTION) { event ->
-                event.consume()
-                AboutDialog(resources).showAndWait()
-            }
+            button(getString(R.string.about), BACK_PREVIOUS).addConsumedEventFilter(ACTION) { AboutDialog(this@App).showAndWait() }
             button(getString(R.string.login), NEXT_FORWARD).apply {
                 disableProperty() bind (employeeField.textProperty().isEmpty or not(serverIPField.validProperty) or serverPortField.textProperty().isEmpty)
-                addEventFilter(ACTION) { event ->
-                    event.consume()
+                addConsumedEventFilter(ACTION) {
                     PreferencesFile.save()
                     MySQLFile.save()
                     WP.login(serverIPField.text, serverPortField.text, serverUserField.text, serverPasswordField.text, employeeField.text, passwordField.text)
@@ -171,8 +170,21 @@ class App : Application(), Resourceful {
             }.showAndWait().filter { it is String }.ifPresent { newPassword ->
                 SQLCompletables.transaction { Employees.update({ Employees.id eq App.employee }) { employee -> employee[password] = newPassword } }
                         .multithread()
-                        .subscribeBy({ errorAlert(it.message.toString()).showAndWait() }) { infoAlert(R.string.change_password_successful).showAndWait() }
+                        .subscribeBy({ errorAlert(it.message.toString()).showAndWait() }) { infoAlert(getString(R.string.change_password_successful)).showAndWait() }
             }
         }
+    }
+
+    private fun setIconOnOSX(image: java.awt.Image) {
+        if (IS_OS_MAC_OSX) Class.forName("com.apple.eawt.Application")
+                .newInstance()
+                .javaClass
+                .getMethod("getApplication")
+                .invoke(null)
+                .let { application ->
+                    application.javaClass
+                            .getMethod("setDockIconImage", java.awt.Image::class.java)
+                            .invoke(application, image)
+                }
     }
 }

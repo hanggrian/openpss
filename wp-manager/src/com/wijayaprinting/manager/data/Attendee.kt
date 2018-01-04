@@ -31,7 +31,7 @@ data class Attendee @JvmOverloads constructor(
         /** Attendances and shift should be set in [com.wijayaprinting.manager.controller.AttendanceController]. */
         val attendances: RevertableObservableList<DateTime> = RevertableObservableList(),
 
-        /** Wages below are retrieved from sql, or empty if there is none. */
+        /** Wages below are retrieved from sql, or dailyEmpty if there is none. */
         val daily: IntegerProperty = SimpleIntegerProperty(),
         val hourlyOvertime: IntegerProperty = SimpleIntegerProperty(),
         val recess: DoubleProperty = SimpleDoubleProperty(),

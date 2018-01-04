@@ -1,6 +1,7 @@
 package com.wijayaprinting.manager.data
 
 import com.wijayaprinting.PATTERN_DATETIME
+import com.wijayaprinting.manager.utils.abs
 import com.wijayaprinting.manager.utils.round
 import javafx.beans.property.*
 import kotfx.bind
@@ -10,13 +11,14 @@ import kotfx.stringBindingOf
 import org.joda.time.DateTime
 import org.joda.time.LocalTime
 import org.joda.time.Period
-import java.lang.Math.abs
 
 data class AttendanceRecord @JvmOverloads constructor(
         val type: Int,
-        val actualAttendee: Attendee,
+        val attendee: Attendee,
         val start: ObjectProperty<DateTime>,
         val end: ObjectProperty<DateTime>,
+
+        val dailyEmpty: BooleanProperty = SimpleBooleanProperty(),
 
         val daily: DoubleProperty = SimpleDoubleProperty(),
         val overtime: DoubleProperty = SimpleDoubleProperty(),
@@ -31,7 +33,7 @@ data class AttendanceRecord @JvmOverloads constructor(
 
         /** Dummy since [javafx.scene.control.TreeTableView] must have a root item. */
         const val TYPE_ROOT = 0
-        /** Parent row displaying attendee and its preferences. */
+        /** Parent row displaying displayedAttendee and its preferences. */
         const val TYPE_NODE = 1
         /** Child row of a node, displaying an actual record data. */
         const val TYPE_CHILD = 2
@@ -39,46 +41,11 @@ data class AttendanceRecord @JvmOverloads constructor(
         const val TYPE_TOTAL = 3
     }
 
-    val attendee: Attendee?
-        get() = when (type) {
-            TYPE_NODE -> actualAttendee
-            TYPE_CHILD -> null
-            TYPE_TOTAL -> null
-            else -> throw UnsupportedOperationException()
-        }
-
-    val startString: StringProperty
-        get() = SimpleStringProperty().apply {
-            bind(stringBindingOf(start) {
-                when (type) {
-                    TYPE_NODE -> actualAttendee.role ?: ""
-                    TYPE_CHILD -> start.value.toString(PATTERN_DATETIME)
-                    TYPE_TOTAL -> ""
-                    else -> throw UnsupportedOperationException()
-                }
-            })
-        }
-
-    val endString: StringProperty
-        get() = SimpleStringProperty().apply {
-            bind(stringBindingOf(end) {
-                when (type) {
-                    TYPE_NODE -> "${actualAttendee.recess.value}\t${actualAttendee.recessOvertime.value}"
-                    TYPE_CHILD -> end.value.toString(PATTERN_DATETIME)
-                    TYPE_TOTAL -> "TOTAL"
-                    else -> throw UnsupportedOperationException()
-                }
-            })
-        }
-
-    fun cloneStart(time: LocalTime) = DateTime(start.value.year, start.value.monthOfYear, start.value.dayOfMonth, time.hourOfDay, time.minuteOfHour)
-
-    fun cloneEnd(time: LocalTime) = DateTime(end.value.year, end.value.monthOfYear, end.value.dayOfMonth, time.hourOfDay, time.minuteOfHour)
-
     init {
         if (type != TYPE_ROOT) {
-            dailyIncome bind doubleBindingOf(daily, actualAttendee.daily) { (daily.value * actualAttendee.daily.value / WORKING_HOURS).round }
-            overtimeIncome bind doubleBindingOf(overtime, actualAttendee.hourlyOvertime) { (actualAttendee.hourlyOvertime.value * overtime.value).round }
+            dailyEmpty.set(false)
+            dailyIncome bind doubleBindingOf(daily, attendee.daily) { (daily.value * attendee.daily.value / WORKING_HOURS).round }
+            overtimeIncome bind doubleBindingOf(overtime, attendee.hourlyOvertime) { (attendee.hourlyOvertime.value * overtime.value).round }
             when (type) {
                 TYPE_NODE -> {
                     daily.set(0.0)
@@ -86,12 +53,14 @@ data class AttendanceRecord @JvmOverloads constructor(
                     total.set(0.0)
                 }
                 TYPE_CHILD -> {
-                    val workingHours = { (abs(Period(start.value, end.value).toStandardMinutes().minutes) / 60.0) - actualAttendee.recess.value }
-                    daily bind doubleBindingOf(start, end) {
-                        val hours = workingHours()
-                        when {
-                            hours <= WORKING_HOURS -> hours.round
-                            else -> WORKING_HOURS
+                    val workingHours = { (Period(start.value, end.value).toStandardMinutes().minutes.abs / 60.0) - attendee.recess.value }
+                    daily bind doubleBindingOf(start, end, dailyEmpty) {
+                        if (dailyEmpty.value) 0.0 else {
+                            val hours = workingHours()
+                            when {
+                                hours <= WORKING_HOURS -> hours.round
+                                else -> WORKING_HOURS
+                            }
                         }
                     }
                     overtime bind doubleBindingOf(start, end) {
@@ -99,8 +68,8 @@ data class AttendanceRecord @JvmOverloads constructor(
                         val overtime = (hours - WORKING_HOURS).round
                         when {
                             hours <= WORKING_HOURS -> 0.0
-                            overtime <= actualAttendee.recessOvertime.value -> overtime
-                            else -> (overtime - actualAttendee.recessOvertime.value).round
+                            overtime <= attendee.recessOvertime.value -> overtime
+                            else -> (overtime - attendee.recessOvertime.value).round
                         }
                     }
                     total bind dailyIncome + overtimeIncome
@@ -109,4 +78,40 @@ data class AttendanceRecord @JvmOverloads constructor(
             }
         }
     }
+
+    val displayedAttendee: Attendee?
+        get() = when (type) {
+            TYPE_NODE -> attendee
+            TYPE_CHILD -> null
+            TYPE_TOTAL -> null
+            else -> throw UnsupportedOperationException()
+        }
+
+    val displayedStart: StringProperty
+        get() = SimpleStringProperty().apply {
+            bind(stringBindingOf(start) {
+                when (type) {
+                    TYPE_NODE -> attendee.role ?: ""
+                    TYPE_CHILD -> start.value.toString(PATTERN_DATETIME)
+                    TYPE_TOTAL -> ""
+                    else -> throw UnsupportedOperationException()
+                }
+            })
+        }
+
+    val displayedEnd: StringProperty
+        get() = SimpleStringProperty().apply {
+            bind(stringBindingOf(end) {
+                when (type) {
+                    TYPE_NODE -> "${attendee.recess.value}\t${attendee.recessOvertime.value}"
+                    TYPE_CHILD -> end.value.toString(PATTERN_DATETIME)
+                    TYPE_TOTAL -> "TOTAL"
+                    else -> throw UnsupportedOperationException()
+                }
+            })
+        }
+
+    fun cloneStart(time: LocalTime): DateTime = DateTime(start.value.year, start.value.monthOfYear, start.value.dayOfMonth, time.hourOfDay, time.minuteOfHour)
+
+    fun cloneEnd(time: LocalTime): DateTime = DateTime(end.value.year, end.value.monthOfYear, end.value.dayOfMonth, time.hourOfDay, time.minuteOfHour)
 }

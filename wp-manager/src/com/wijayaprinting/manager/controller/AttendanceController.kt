@@ -26,7 +26,6 @@ import javafx.scene.Node
 import javafx.scene.control.*
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
-import javafx.scene.input.MouseEvent.MOUSE_CLICKED
 import javafx.scene.layout.FlowPane
 import javafx.scene.layout.Pane
 import javafx.scene.layout.Priority.ALWAYS
@@ -46,19 +45,19 @@ class AttendanceController : Controller() {
     @FXML lateinit var processButton: Button
 
     @FXML
-    fun initialize() = runFX {
+    fun initialize() {
         readerChoiceBox.items = Reader.listAll()
         if (readerChoiceBox.items.isNotEmpty()) readerChoiceBox.selectionModel.select(0)
 
-        flowPane.prefWrapLengthProperty() bind fileField.scene.widthProperty()
+        runFX { flowPane.prefWrapLengthProperty() bind fileField.scene.widthProperty() }
         employeeCountLabel.textProperty() bind stringBindingOf(flowPane.children) { "${flowPane.children.size} ${getString(R.string.employee)}" }
         readButton.disableProperty() bind fileField.validProperty
         processButton.disableProperty() bind flowPane.children.isEmpty
 
-        /*if (DEBUG) {
+        if (DEBUG) {
             fileField.text = "/Users/hendraanggrian/Downloads/Absen 11-25-17.xlsx"
             readButton.fire()
-        }*/
+        }
     }
 
     @FXML
@@ -78,7 +77,7 @@ class AttendanceController : Controller() {
                     try {
                         val employees = readerChoiceBox.selectionModel.selectedItem.read(this, File(fileField.text))
                         when (DEBUG) {
-                        /*true -> employees.filter { it.name == "Yanti" || it.name == "Yoyo" || it.name == "Mus" }.toMutableList()*/
+                            true -> employees.filter { it.name == "Yanti" || it.name == "Yoyo" || it.name == "Mus" }.toMutableList()
                             else -> employees
                         }.forEach {
                             if (mergeToggleButton.isSelected) it.mergeDuplicates()
@@ -162,7 +161,7 @@ class AttendanceController : Controller() {
                         contextMenu = contextMenu {
                             menuItem(getString(R.string.add)) {
                                 setOnAction {
-                                    DateTimeDialog(getString(R.string.record), ImageView(R.png.ic_calendar), getString(R.string.add), listView.selectionModel.selectedItem)
+                                    DateTimeDialog(getString(R.string.record), getString(R.string.add), listView.selectionModel.selectedItem)
                                             .showAndWait()
                                             .ifPresent {
                                                 listView.items.add(it)
@@ -172,7 +171,7 @@ class AttendanceController : Controller() {
                             }
                             menuItem(getString(R.string.edit)) {
                                 setOnAction {
-                                    DateTimeDialog(getString(R.string.record), ImageView(R.png.ic_calendar), getString(R.string.edit), listView.selectionModel.selectedItem)
+                                    DateTimeDialog(getString(R.string.record), getString(R.string.edit), listView.selectionModel.selectedItem)
                                             .showAndWait()
                                             .ifPresent {
                                                 listView.items[listView.selectionModel.selectedIndex] = it
@@ -205,19 +204,7 @@ class AttendanceController : Controller() {
                                 }
                             }
                         }
-                        graphic = imageView {
-                            imageProperty() bind bindingOf(listView.items, hoverProperty()) {
-                                Image(when {
-                                    isHover -> R.png.btn_delete
-                                    listView.items.size % 2 == 0 -> R.png.btn_checkbox
-                                    else -> R.png.btn_checkbox_outline
-                                })
-                            }
-                            addEventHandler(MOUSE_CLICKED) { event ->
-                                event.consume()
-                                deleteItem.fire()
-                            }
-                        }
+                        graphic = imageView { imageProperty() bind bindingOf(listView.items) { Image(if (listView.items.size % 2 == 0) R.png.btn_checkbox else R.png.btn_checkbox_outline) } }
                     })
                 }
     }
@@ -225,13 +212,13 @@ class AttendanceController : Controller() {
     @FXML
     fun processOnAction() {
         val set = mutableSetOf<Attendee>()
-        employees.forEach { employee ->
-            employee.saveWage()
-            set.add(employee)
+        attendees.forEach { attendee ->
+            attendee.saveWage()
+            set.add(attendee)
         }
         if (set.isNotEmpty()) {
             val minSize = Pair(960.0, 640.0)
-            stage("${getString(R.string.app_name)} - ${getString(R.string.record)}") {
+            stage(getString(R.string.record)) {
                 val loader = getResource(R.fxml.layout_attendance_record).loadFXML(resources)
                 scene = loader.pane.toScene(minSize.first, minSize.second)
                 minWidth = minSize.first
@@ -243,13 +230,13 @@ class AttendanceController : Controller() {
     }
 
     /** Employees are stored in flowpane childrens' user data. */
-    private val employees: Iterable<Attendee> get() = flowPane.children.map { it.userData as Attendee }
+    private val attendees: Iterable<Attendee> get() = flowPane.children.map { it.userData as Attendee }
 
-    /** As employees are populated, process button need to be rebinded according to new requirements. */
+    /** As attendees are populated, process button need to be rebinded according to new requirements. */
     private fun rebindProcessButton() {
         processButton.disableProperty().unbind()
         processButton.disableProperty() bind (flowPane.children.isEmpty or booleanBindingOf(flowPane.children, *flowPane.children.map { (it as TitledPane).content }.map { (it as Pane).children[1] as ListView<*> }.map { it.items }.toTypedArray()) {
-            employees.any { it.attendances.size % 2 != 0 }
+            attendees.any { it.attendances.size % 2 != 0 }
         })
     }
 }

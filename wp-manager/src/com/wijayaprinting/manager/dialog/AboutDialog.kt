@@ -2,8 +2,9 @@ package com.wijayaprinting.manager.dialog
 
 import com.wijayaprinting.License
 import com.wijayaprinting.WP
+import com.wijayaprinting.manager.Component
 import com.wijayaprinting.manager.R
-import com.wijayaprinting.manager.Resourceful
+import com.wijayaprinting.manager.utils.addConsumedEventFilter
 import com.wijayaprinting.utils.addAllSorted
 import javafx.collections.ObservableList
 import javafx.event.ActionEvent.ACTION
@@ -23,11 +24,9 @@ import java.io.BufferedReader
 import java.io.File
 import java.io.InputStreamReader
 import java.net.URI
-import java.util.*
 import java.util.stream.Collectors.joining
 
-
-class AboutDialog(override val resources: ResourceBundle) : Dialog<Unit>(), Resourceful {
+class AboutDialog(private val component: Component) : Dialog<Unit>(), Component by component {
 
     private val latoBold = getResource(R.ttf.lato_bold).toExternalForm()
     private val latoLight = getResource(R.ttf.lato_light).toExternalForm()
@@ -95,10 +94,7 @@ class AboutDialog(override val resources: ResourceBundle) : Dialog<Unit>(), Reso
         }
         button(ButtonType("Homepage", CANCEL_CLOSE)).apply {
             visibleProperty() bind (dialogPane.expandedProperty() and booleanBindingOf(listView.selectionModel.selectedIndexProperty()) { listView.selectionModel.selectedItem != null })
-            addEventFilter(ACTION) { event ->
-                event.consume()
-                browse(listView.selectionModel.selectedItem.homepage)
-            }
+            addConsumedEventFilter(ACTION) { event -> browse(listView.selectionModel.selectedItem.homepage) }
         }
         button(CLOSE)
     }
@@ -120,7 +116,7 @@ class AboutDialog(override val resources: ResourceBundle) : Dialog<Unit>(), Reso
                 License("ReactiveX", "RxJavaFX", "https://github.com/ReactiveX/RxJavaFX"),
                 License("Slf4j", "Log4j12", "https://www.slf4j.org")).toObservableList()
 
-    private fun License.getContent(resourceful: Resourceful): String = File(resourceful.getResource("/${owner.shorten}_${name.shorten}.txt").toURI())
+    private fun License.getContent(component: Component): String = File(component.getResource("/${owner.shorten}_${name.shorten}.txt").toURI())
             .inputStream()
             .use { return BufferedReader(InputStreamReader(it)).lines().collect(joining("\n")) }
 

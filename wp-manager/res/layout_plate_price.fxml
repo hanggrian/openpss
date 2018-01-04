@@ -1,13 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.VBox?>
 <VBox xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.wijayaprinting.manager.controller.PlatePriceController">
     <ToolBar>
-        <Button mnemonicParsing="false" fx:id="addButton" onAction="#addOnAction">
+        <Button mnemonicParsing="false" onAction="#refreshOnAction">
+            <graphic>
+                <ImageView pickOnBounds="true" preserveRatio="true">
+                    <Image url="@btn_refresh.png"/>
+                </ImageView>
+            </graphic>
+            <tooltip>
+                <Tooltip text="%refresh"/>
+            </tooltip>
+        </Button>
+        <Button mnemonicParsing="false" onAction="#addOnAction">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
                     <Image url="@btn_add.png"/>

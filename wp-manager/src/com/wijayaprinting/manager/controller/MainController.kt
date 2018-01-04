@@ -43,7 +43,7 @@ class MainController : Controller() {
 
     @FXML
     fun aboutOnAction() {
-        AboutDialog(resources).showAndWait()
+        AboutDialog(this).showAndWait()
     }
 
     private fun navigateMenu(index: Int) = navigateMenu.items.forEachIndexed { i, item -> (item as CheckMenuItem).isSelected = index == i }

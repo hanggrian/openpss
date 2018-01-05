@@ -1,6 +1,7 @@
 package com.wijayaprinting.manager.dialog
 
 import com.wijayaprinting.manager.R
+import com.wijayaprinting.manager.Resourced
 import com.wijayaprinting.manager.utils.asJava
 import javafx.scene.control.ButtonType.CANCEL
 import javafx.scene.control.ButtonType.OK
@@ -12,28 +13,26 @@ import org.joda.time.LocalDate
 import org.joda.time.LocalDate.now
 
 class DateDialog @JvmOverloads constructor(
-        title: String,
-        headerText: String,
+        val resourced: Resourced,
+        header: String,
         prefill: LocalDate? = null
-) : Dialog<LocalDate>() {
+) : Dialog<LocalDate>(), Resourced by resourced {
+
+    private lateinit var datePicker: DatePicker
 
     init {
-        this.title = title
-        this.headerText = headerText
-        this.graphic = ImageView(R.png.ic_calendar)
-
-        lateinit var datePicker: DatePicker
+        title = header
+        headerText = header
+        graphic = ImageView(R.png.ic_calendar)
         content = anchorPane {
             datePicker = datePicker {
                 value = (prefill ?: now()).asJava()
-                prefill?.let { value = it.asJava() }
                 isEditable = false // force pick from popup
                 maxWidth = 128.0
                 runFX { requestFocus() }
             } anchor 0
         }
         buttons(OK, CANCEL)
-
         setResultConverter {
             if (it != OK) null
             else LocalDate(datePicker.value.year, datePicker.value.monthValue, datePicker.value.dayOfMonth)

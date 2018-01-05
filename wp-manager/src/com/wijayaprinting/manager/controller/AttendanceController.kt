@@ -75,7 +75,7 @@ class AttendanceController : Controller() {
         Observable
                 .create<Attendee> { emitter ->
                     try {
-                        val employees = readerChoiceBox.selectionModel.selectedItem.read(File(fileField.text))
+                        val employees = readerChoiceBox.selectionModel.selectedItem.read(this, File(fileField.text))
                         when (DEBUG) {
                             true -> employees.filter { it.name == "Yanti" || it.name == "Yoyo" || it.name == "Mus" }.toMutableList()
                             else -> employees
@@ -113,26 +113,26 @@ class AttendanceController : Controller() {
                                 intField {
                                     prefWidth = 100.0
                                     promptText = getString(R.string.income)
-                                    valueProperty bindBidirectional employee.daily
+                                    valueProperty bindBidirectional employee.dailyProperty
                                 } col 1 row 1 colSpan 2
                                 label("@${getString(R.string.day)}") { font = font(9.0) } col 3 row 1
                                 label(getString(R.string.overtime)) col 0 row 2 marginRight 4
                                 intField {
                                     prefWidth = 96.0
                                     promptText = getString(R.string.overtime)
-                                    valueProperty bindBidirectional employee.hourlyOvertime
+                                    valueProperty bindBidirectional employee.hourlyOvertimeProperty
                                 } col 1 row 2 colSpan 2
                                 label("@${getString(R.string.hour)}") { font = font(9.0) } col 3 row 2
                                 label(getString(R.string.recess)) col 0 row 3 marginRight 4
                                 doubleField {
                                     prefWidth = 48.0
                                     promptText = getString(R.string.recess)
-                                    valueProperty bindBidirectional employee.recess
+                                    valueProperty bindBidirectional employee.recessProperty
                                 } col 1 row 3
                                 doubleField {
                                     prefWidth = 48.0
                                     promptText = getString(R.string.recess)
-                                    valueProperty bindBidirectional employee.recessOvertime
+                                    valueProperty bindBidirectional employee.recessOvertimeProperty
                                 } col 2 row 3
                                 label(getString(R.string.hour)) { font = font(9.0) } col 3 row 3
                             }
@@ -161,7 +161,7 @@ class AttendanceController : Controller() {
                         contextMenu = contextMenu {
                             menuItem(getString(R.string.add)) {
                                 setOnAction {
-                                    DateTimeDialog(getString(R.string.record), getString(R.string.add), listView.selectionModel.selectedItem)
+                                    DateTimeDialog(this@AttendanceController, getString(R.string.add_record), listView.selectionModel.selectedItem)
                                             .showAndWait()
                                             .ifPresent {
                                                 listView.items.add(it)
@@ -171,7 +171,7 @@ class AttendanceController : Controller() {
                             }
                             menuItem(getString(R.string.edit)) {
                                 setOnAction {
-                                    DateTimeDialog(getString(R.string.record), getString(R.string.edit), listView.selectionModel.selectedItem)
+                                    DateTimeDialog(this@AttendanceController, getString(R.string.edit_record), listView.selectionModel.selectedItem)
                                             .showAndWait()
                                             .ifPresent {
                                                 listView.items[listView.selectionModel.selectedIndex] = it

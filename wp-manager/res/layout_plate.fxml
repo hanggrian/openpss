@@ -3,7 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.VBox?>
-<VBox xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1"
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.wijayaprinting.manager.controller.PlateController">
     <ToolBar>
         <Button mnemonicParsing="false" onAction="#refreshOnAction">
@@ -16,17 +16,6 @@
                 <Tooltip text="%refresh"/>
             </tooltip>
         </Button>
-        <Button mnemonicParsing="false" onAction="#addOnAction">
-            <graphic>
-                <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@btn_add.png"/>
-                </ImageView>
-            </graphic>
-            <tooltip>
-                <Tooltip text="%add"/>
-            </tooltip>
-        </Button>
-        <Separator/>
         <Button mnemonicParsing="false" onAction="#priceOnAction">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
@@ -35,6 +24,17 @@
             </graphic>
             <tooltip>
                 <Tooltip text="%plate_price"/>
+            </tooltip>
+        </Button>
+        <Separator/>
+        <Button mnemonicParsing="false" onAction="#addOnAction">
+            <graphic>
+                <ImageView pickOnBounds="true" preserveRatio="true">
+                    <Image url="@btn_add.png"/>
+                </ImageView>
+            </graphic>
+            <tooltip>
+                <Tooltip text="%add_plate"/>
             </tooltip>
         </Button>
     </ToolBar>

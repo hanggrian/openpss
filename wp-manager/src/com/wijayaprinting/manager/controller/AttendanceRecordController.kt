@@ -11,8 +11,8 @@ import com.wijayaprinting.manager.dialog.DateDialog
 import com.wijayaprinting.manager.scene.layout.TimeBox
 import com.wijayaprinting.manager.utils.toChildRecords
 import com.wijayaprinting.manager.utils.toNodeRecord
+import com.wijayaprinting.manager.utils.toRootRecord
 import com.wijayaprinting.manager.utils.toTotalRecords
-import javafx.beans.property.SimpleObjectProperty
 import javafx.fxml.FXML
 import javafx.print.Printer.defaultPrinterProperty
 import javafx.scene.control.*
@@ -20,7 +20,6 @@ import javafx.scene.control.SelectionMode.MULTIPLE
 import javafx.scene.text.Text
 import javafx.scene.text.TextFlow
 import kotfx.*
-import org.joda.time.DateTime
 import java.text.NumberFormat
 
 class AttendanceRecordController : Controller() {
@@ -35,7 +34,7 @@ class AttendanceRecordController : Controller() {
     @FXML lateinit var totalText: Text
 
     @FXML lateinit var treeTableView: TreeTableView<AttendanceRecord>
-    @FXML lateinit var nameColumn: TreeTableColumn<AttendanceRecord, Attendee>
+    @FXML lateinit var nameColumn: TreeTableColumn<AttendanceRecord, String>
     @FXML lateinit var startColumn: TreeTableColumn<AttendanceRecord, String>
     @FXML lateinit var endColumn: TreeTableColumn<AttendanceRecord, String>
     @FXML lateinit var dailyColumn: TreeTableColumn<AttendanceRecord, Double>
@@ -55,17 +54,17 @@ class AttendanceRecordController : Controller() {
         printButton.disableProperty() bind defaultPrinterProperty().isNull
 
         treeTableView.selectionModel.selectionMode = MULTIPLE
-        treeTableView.root = TreeItem(AttendanceRecord(AttendanceRecord.TYPE_ROOT, Attendee(0, ""), SimpleObjectProperty(DateTime(0)), SimpleObjectProperty(DateTime(0)))) // dummy for invisible root
+        treeTableView.root = TreeItem(Attendee.getDummy(this).toRootRecord())
         treeTableView.isShowRoot = false
 
-        nameColumn.setCellValueFactory { it.value.value.displayedAttendee.asProperty() }
+        nameColumn.setCellValueFactory { it.value.value.displayedName }
         startColumn.setCellValueFactory { it.value.value.displayedStart }
         endColumn.setCellValueFactory { it.value.value.displayedEnd }
-        dailyColumn.setCellValueFactory { it.value.value.daily.asObservable() }
-        dailyIncomeColumn.setCellValueFactory { it.value.value.dailyIncome.asObservable() }
-        overtimeColumn.setCellValueFactory { it.value.value.overtime.asObservable() }
-        overtimeIncomeColumn.setCellValueFactory { it.value.value.overtimeIncome.asObservable() }
-        totalColumn.setCellValueFactory { it.value.value.total.asObservable() }
+        dailyColumn.setCellValueFactory { it.value.value.dailyProperty.asObservable() }
+        dailyIncomeColumn.setCellValueFactory { it.value.value.dailyIncomeProperty.asObservable() }
+        overtimeColumn.setCellValueFactory { it.value.value.overtimeProperty.asObservable() }
+        overtimeIncomeColumn.setCellValueFactory { it.value.value.overtimeIncomeProperty.asObservable() }
+        totalColumn.setCellValueFactory { it.value.value.totalProperty.asObservable() }
 
         runFX {
             getExtra<Set<Attendee>>().forEach { attendee ->
@@ -77,10 +76,10 @@ class AttendanceRecordController : Controller() {
                     children.addAll(*childs.map { TreeItem(it) }.toTypedArray(), TreeItem(total))
                 })
             }
-            totalText.textProperty() bind stringBindingOf(*records.filter { it.type == AttendanceRecord.TYPE_CHILD }.map { it.total }.toTypedArray()) {
+            totalText.textProperty() bind stringBindingOf(*records.filter { it.type == AttendanceRecord.TYPE_CHILD }.map { it.totalProperty }.toTypedArray()) {
                 NumberFormat.getCurrencyInstance().format(records
                         .filter { it.type == AttendanceRecord.TYPE_TOTAL }
-                        .map { it.total.value }
+                        .map { it.totalProperty.value }
                         .sum())
                         .let { s -> s.substring(s.indexOf(s.toCharArray().first { Character.isDigit(it) })) }
             }
@@ -95,11 +94,11 @@ class AttendanceRecordController : Controller() {
         treeTableView.selectionModel.selectedItems
                 .map { it.value }
                 .forEach { record ->
-                    val initial = record.start.value
+                    val initial = record.startProperty.value
                     if (initial.toLocalTime() < timeBox.value) {
-                        record.start.set(record.cloneStart(timeBox.value))
+                        record.startProperty.set(record.cloneStart(timeBox.value))
                         undoable.name = if (undoable.name == null) "${record.attendee.name} ${initial.toString(PATTERN_DATETIME)} -> ${timeBox.value.toString(PATTERN_TIME)}" else getString(R.string.multiple_lock_start_time)
-                        undoable.addAction { record.start.set(initial) }
+                        undoable.addAction { record.startProperty.set(initial) }
                     }
                 }
         undoable.append()
@@ -111,27 +110,27 @@ class AttendanceRecordController : Controller() {
         treeTableView.selectionModel.selectedItems
                 .map { it.value }
                 .forEach { record ->
-                    val initial = record.end.value
+                    val initial = record.endProperty.value
                     if (initial.toLocalTime() > timeBox.value) {
-                        record.end.set(record.cloneEnd(timeBox.value))
+                        record.endProperty.set(record.cloneEnd(timeBox.value))
                         undoable.name = if (undoable.name == null) "${record.attendee.name} ${initial.toString(PATTERN_DATETIME)} -> ${timeBox.value.toString(PATTERN_TIME)}" else getString(R.string.multiple_lock_end_time)
-                        undoable.addAction { record.end.set(initial) }
+                        undoable.addAction { record.endProperty.set(initial) }
                     }
                 }
         undoable.append()
     }
 
     @FXML
-    fun emptyOnAction() = DateDialog(getString(R.string.date), getString(R.string.empty_working_hours))
+    fun emptyOnAction() = DateDialog(this, getString(R.string.empty_daily_income))
             .showAndWait()
             .ifPresent { date ->
                 val undoable = Undoable()
-                records.filter { it.start.value.toLocalDate() == date }
+                records.filter { it.startProperty.value.toLocalDate() == date }
                         .forEach { record ->
-                            val initial = record.dailyEmpty.value
-                            record.dailyEmpty.set(!initial)
-                            if (undoable.name == null) undoable.name = "${getString(R.string.empty_working_hours)} ${record.start.value.toString(PATTERN_DATE)}"
-                            undoable.addAction { record.dailyEmpty.set(initial) }
+                            val initial = record.dailyEmptyProperty.value
+                            record.dailyEmptyProperty.set(!initial)
+                            if (undoable.name == null) undoable.name = "${getString(R.string.daily_emptied)} ${record.startProperty.value.toString(PATTERN_DATE)}"
+                            undoable.addAction { record.dailyEmptyProperty.set(initial) }
                         }
                 undoable.append()
             }
@@ -139,7 +138,6 @@ class AttendanceRecordController : Controller() {
     @FXML
     fun printOnAction() {
         //TreeTablePrinter.print(treeTableView, null)
-
         //val printerJob = createPrinterJob()
         //if (printerJob.showPrintDialog(treeTableView.scene.window) && printerJob.printPage(treeTableView)) printerJob.endJob()
     }

@@ -1,6 +1,7 @@
 package com.wijayaprinting.manager.dialog
 
 import com.wijayaprinting.manager.R
+import com.wijayaprinting.manager.Resourced
 import com.wijayaprinting.manager.scene.layout.TimeBox
 import com.wijayaprinting.manager.scene.layout.timeBox
 import com.wijayaprinting.manager.scene.utils.gap
@@ -15,23 +16,22 @@ import org.joda.time.DateTime
 import org.joda.time.DateTime.now
 
 class DateTimeDialog @JvmOverloads constructor(
-        title: String,
-        headerText: String,
+        val resourced: Resourced,
+        header: String,
         prefill: DateTime? = null
-) : Dialog<DateTime>() {
+) : Dialog<DateTime>(), Resourced by resourced {
+
+    private lateinit var datePicker: DatePicker
+    private lateinit var timeBox: TimeBox
 
     init {
-        this.title = title
-        this.headerText = headerText
-        this.graphic = ImageView(R.png.ic_calendar)
-
-        lateinit var datePicker: DatePicker
-        lateinit var timeBox: TimeBox
+        title = header
+        headerText = header
+        graphic = ImageView(R.png.ic_calendar)
         content = gridPane {
             gap(8)
             datePicker = datePicker {
                 value = (prefill ?: now()).toLocalDate().asJava()
-                prefill?.let { value = it.toLocalDate().asJava() }
                 isEditable = false // force pick from popup
                 maxWidth = 128.0
                 runFX { requestFocus() }
@@ -41,7 +41,6 @@ class DateTimeDialog @JvmOverloads constructor(
             slider(0, 60, 0) { valueProperty() bindBidirectional timeBox.minuteField.valueProperty } col 0 row 2 colSpan 2
         }
         buttons(OK, CANCEL)
-
         setResultConverter {
             if (it != OK) null
             else DateTime(datePicker.value.year, datePicker.value.monthValue, datePicker.value.dayOfMonth, timeBox.value.hourOfDay, timeBox.value.minuteOfHour)

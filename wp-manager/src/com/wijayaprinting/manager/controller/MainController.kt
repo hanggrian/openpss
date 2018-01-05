@@ -27,13 +27,11 @@ class MainController : Controller() {
         employeeLabel.text = App.employee
 
         menuBar.isUseSystemMenuBar = IS_OS_MAC
+        navigateMenu(tabPane.selectionModel.selectedIndex)
         runFX {
             controllers = arrayOf(customerController, plateController, attendanceController)
-            tabPane.selectionModel.selectedIndexProperty().addListener { _, oldIndex, newIndex ->
-                navigateMenu(newIndex.toInt())
-            }
+            tabPane.selectionModel.selectedIndexProperty().addListener { _, _, newIndex -> navigateMenu(newIndex.toInt()) }
         }
-        navigateMenu(tabPane.selectionModel.selectedIndex)
     }
 
     @FXML fun navigateCustomerOnAction() = tabPane.selectionModel.select(0)

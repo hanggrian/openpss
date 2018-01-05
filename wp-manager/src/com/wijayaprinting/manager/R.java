@@ -1,4 +1,4 @@
-// rsync generated this class at 2018-01-05T01:42:47.324 from:
+// rsync generated this class at 2018-01-06T01:57:39.860 from:
 // string_en.properties
 // layout_attendance.fxml
 // btn_refresh.png
@@ -13,12 +13,11 @@
 // btn_empty.png
 // btn_clear.png
 // layout_main.fxml
-// btn_cancel.png
 // layout_attendance_record.fxml
 // btn_visibility_off.png
-// ic_clock.png
 // ic_key.png
 // btn_price.png
+// ic_document.png
 // btn_delete.png
 // btn_print.png
 // layout_plate.fxml
@@ -88,15 +87,13 @@ public final class R {
 
     public static final String btn_clear = "/btn_clear.png";
 
-    public static final String btn_cancel = "/btn_cancel.png";
-
     public static final String btn_visibility_off = "/btn_visibility_off.png";
-
-    public static final String ic_clock = "/ic_clock.png";
 
     public static final String ic_key = "/ic_key.png";
 
     public static final String btn_price = "/btn_price.png";
+
+    public static final String ic_document = "/ic_document.png";
 
     public static final String btn_delete = "/btn_delete.png";
 
@@ -134,7 +131,11 @@ public final class R {
 
     public static final String change_password = "change_password";
 
+    public static final String edit_record = "edit_record";
+
     public static final String change_password_notice = "change_password_notice";
+
+    public static final String note = "note";
 
     public static final String process = "process";
 
@@ -150,6 +151,8 @@ public final class R {
 
     public static final String please_wait_content = "please_wait_content";
 
+    public static final String email = "email";
+
     public static final String server = "server";
 
     public static final String open_source_software = "open_source_software";
@@ -162,6 +165,8 @@ public final class R {
 
     public static final String browse_file = "browse_file";
 
+    public static final String add_plate_receipt = "add_plate_receipt";
+
     public static final String date = "date";
 
     public static final String author = "author";
@@ -173,6 +178,8 @@ public final class R {
     public static final String delete_plate_warning = "delete_plate_warning";
 
     public static final String version = "version";
+
+    public static final String empty_daily_income = "empty_daily_income";
 
     public static final String plate = "plate";
 
@@ -189,8 +196,6 @@ public final class R {
     public static final String license = "license";
 
     public static final String merge_close_records = "merge_close_records";
-
-    public static final String navigateMenu = "navigateMenu";
 
     public static final String help = "help";
 
@@ -218,9 +223,9 @@ public final class R {
 
     public static final String read = "read";
 
-    public static final String revert = "revert";
-
     public static final String server_ip_port = "server_ip_port";
+
+    public static final String revert = "revert";
 
     public static final String powered_by = "powered_by";
 
@@ -229,8 +234,6 @@ public final class R {
     public static final String shift = "shift";
 
     public static final String change_password_successful = "change_password_successful";
-
-    public static final String empty_working_hours = "empty_working_hours";
 
     public static final String name = "name";
 
@@ -254,7 +257,15 @@ public final class R {
 
     public static final String both = "both";
 
+    public static final String search_customer = "search_customer";
+
+    public static final String phone = "phone";
+
+    public static final String add_record = "add_record";
+
     public static final String plate_price = "plate_price";
+
+    public static final String refresh = "refresh";
 
     public static final String undo = "undo";
 
@@ -268,11 +279,17 @@ public final class R {
 
     public static final String edit = "edit";
 
+    public static final String edit_customer = "edit_customer";
+
     public static final String customer = "customer";
 
     public static final String recess = "recess";
 
+    public static final String daily_emptied = "daily_emptied";
+
     public static final String about_notice = "about_notice";
+
+    public static final String add_customer = "add_customer";
 
     public static final String overtime_income = "overtime_income";
 
@@ -283,6 +300,8 @@ public final class R {
     public static final String employee = "employee";
 
     public static final String delete_employees_to_the_right = "delete_employees_to_the_right";
+
+    public static final String navigate = "navigate";
 
     public static final String input_file = "input_file";
 

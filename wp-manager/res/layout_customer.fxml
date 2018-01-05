@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.wijayaprinting.manager.control.CustomerPagination?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
-<VBox xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.111"
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.wijayaprinting.manager.controller.CustomerController">
     <ToolBar>
         <Button mnemonicParsing="false" onAction="#refreshOnAction">
@@ -20,29 +19,45 @@
             </tooltip>
         </Button>
         <TextField fx:id="customerField" promptText="Customer"/>
+        <Separator/>
+        <Button mnemonicParsing="false" onAction="#addOnAction">
+            <graphic>
+                <ImageView pickOnBounds="true" preserveRatio="true">
+                    <Image url="@btn_add.png"/>
+                </ImageView>
+            </graphic>
+            <tooltip>
+                <Tooltip text="%add_customer"/>
+            </tooltip>
+        </Button>
     </ToolBar>
     <SplitPane dividerPositions="0.5" VBox.vgrow="ALWAYS">
-        <CustomerPagination fx:id="customerPagination" GridPane.columnSpan="2" GridPane.rowIndex="1"/>
+        <Pagination fx:id="customerPagination"/>
         <GridPane hgap="8.0" vgap="8.0">
             <columnConstraints>
                 <ColumnConstraints/>
                 <ColumnConstraints hgrow="ALWAYS"/>
             </columnConstraints>
             <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS"/>
+                <RowConstraints minHeight="10.0" prefHeight="30.0"/>
+                <RowConstraints minHeight="10.0" prefHeight="30.0"/>
+                <RowConstraints minHeight="10.0" prefHeight="30.0"/>
+                <RowConstraints minHeight="10.0" prefHeight="30.0"/>
             </rowConstraints>
-            <Label text="Name">
-                <GridPane.margin>
-                    <Insets left="8.0" top="8.0"/>
-                </GridPane.margin>
-            </Label>
-            <Label fx:id="nameLabel" text="Name" style="-fx-font-family: sans-serif; -fx-font-weight: bold;"
-                   GridPane.columnIndex="1">
-                <GridPane.margin>
-                    <Insets left="8.0" top="8.0"/>
-                </GridPane.margin>
-            </Label>
+            <Label text="%email"/>
+            <Label fx:id="emailLabel" style="-fx-font-family: sans-serif; -fx-font-weight: bold;" text="-"
+                   GridPane.columnIndex="1"/>
+            <Label text="%phone" GridPane.rowIndex="1"/>
+            <Label fx:id="phone1Label" style="-fx-font-family: sans-serif; -fx-font-weight: bold;" text="-"
+                   GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+            <Label fx:id="phone2Label" style="-fx-font-family: sans-serif; -fx-font-weight: bold;" text="-"
+                   GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+            <Label text="%note" GridPane.rowIndex="3"/>
+            <Label fx:id="noteLabel" style="-fx-font-family: sans-serif; -fx-font-weight: bold;" text="-"
+                   GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+            <padding>
+                <Insets bottom="8.0" left="8.0" right="8.0" top="8.0"/>
+            </padding>
         </GridPane>
     </SplitPane>
 </VBox>

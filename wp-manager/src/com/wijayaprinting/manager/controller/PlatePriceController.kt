@@ -30,10 +30,7 @@ class PlatePriceController : Controller(), Refreshable {
         idColumn.setCellValueFactory { it.value.id.value.asProperty() }
         priceColumn.setCellValueFactory { it.value.price.asProperty() }
         priceColumn.cellFactory = forTableColumn<Plate, BigDecimal>(stringConverter({ it.toBigDecimalOrNull() ?: ZERO }))
-        priceColumn.setOnEditCommit { event ->
-            event.consume()
-            safeTransaction { event.rowValue.price = event.newValue }
-        }
+        priceColumn.setOnEditCommit { event -> safeTransaction { event.rowValue.price = event.newValue } }
         refresh()
     }
 
@@ -56,6 +53,6 @@ class PlatePriceController : Controller(), Refreshable {
             .ifPresent { tableView.items.remove(safeTransaction { tableView.selectionModel.selectedItem.apply { delete() } }) }
 
     override fun refresh() {
-        tableView.items = safeTransaction { Plate.all() }!!.toMutableObservableList()
+        tableView.items = safeTransaction { Plate.all().toMutableObservableList() }
     }
 }

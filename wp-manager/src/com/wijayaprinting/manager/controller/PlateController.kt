@@ -1,14 +1,14 @@
 package com.wijayaprinting.manager.controller
 
-import com.wijayaprinting.dao.PlateReceipt
 import com.wijayaprinting.manager.R
 import com.wijayaprinting.manager.Refreshable
-import com.wijayaprinting.manager.dialog.SearchCustomerDialog
-import com.wijayaprinting.manager.scene.utils.gap
+import com.wijayaprinting.manager.dialog.PlateReceiptDialog
 import com.wijayaprinting.manager.utils.pane
 import javafx.fxml.FXML
 import javafx.stage.Modality.APPLICATION_MODAL
-import kotfx.*
+import kotfx.loadFXML
+import kotfx.stage
+import kotfx.toScene
 
 class PlateController : Controller(), Refreshable {
 
@@ -20,21 +20,6 @@ class PlateController : Controller(), Refreshable {
     @FXML fun refreshOnAction() = refresh()
 
     @FXML
-    fun addOnAction() {
-        dialog<PlateReceipt>("ASD") {
-            content = gridPane {
-                gap(8)
-                label(getString(R.string.customer)) col 0 row 0
-                button("Pick customer") {
-                    setOnAction {
-                        SearchCustomerDialog(this@PlateController).showAndWait()
-                    }
-                } col 1 row 1
-            }
-        }.showAndWait()
-    }
-
-    @FXML
     fun priceOnAction() {
         val minSize = Pair(240.0, 480.0)
         stage(getString(R.string.plate_price)) {
@@ -44,6 +29,11 @@ class PlateController : Controller(), Refreshable {
             minHeight = minSize.second
             isResizable = false
         }.showAndWait()
+    }
+
+    @FXML
+    fun addOnAction() = PlateReceiptDialog(this).showAndWait().ifPresent {
+
     }
 
     override fun refresh() {

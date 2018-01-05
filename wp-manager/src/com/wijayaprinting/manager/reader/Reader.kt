@@ -1,5 +1,6 @@
 package com.wijayaprinting.manager.reader
 
+import com.wijayaprinting.manager.Resourced
 import com.wijayaprinting.manager.data.Attendee
 import com.wijayaprinting.manager.reader.Reader.Companion.toString
 import javafx.collections.ObservableList
@@ -21,7 +22,7 @@ interface Reader {
      * During its long operation, exception throwing may happen in [Reader.read].
      */
     @Throws(Exception::class)
-    fun read(file: File): Collection<Attendee>
+    fun read(resourced: Resourced, file: File): Collection<Attendee>
 
     companion object {
         fun listAll(): ObservableList<Reader> = observableListOf(EClockingReader)

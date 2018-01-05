@@ -1,6 +1,7 @@
 package com.wijayaprinting.manager.reader
 
 import com.google.common.collect.LinkedHashMultimap
+import com.wijayaprinting.manager.Resourced
 import com.wijayaprinting.manager.data.Attendee
 import org.apache.commons.lang3.SystemUtils.IS_OS_MAC
 import org.apache.commons.lang3.SystemUtils.IS_OS_WINDOWS
@@ -27,7 +28,7 @@ open class EClockingReader : Reader {
     override val extensions: Array<String> get() = arrayOf("*.xlsx")
 
     @Throws(Exception::class)
-    override fun read(file: File): Collection<Attendee> {
+    override fun read(resourced: Resourced, file: File): Collection<Attendee> {
         val multimap = LinkedHashMultimap.create<Attendee, DateTime>()
         file.inputStream().use { stream ->
             val workbook = XSSFWorkbook(stream)
@@ -42,7 +43,7 @@ open class EClockingReader : Reader {
                     val day = date.dayOfMonth
                     val month = date.monthOfYear
                     val year = date.year
-                    val attendee = Attendee(no, name, dept)
+                    val attendee = Attendee(resourced, no, name, dept)
                     (CELL_RECORD_START until CELL_RECORD_END)
                             .map { row.getCell(it) }
                             .filter { it.cellTypeEnum == NUMERIC }

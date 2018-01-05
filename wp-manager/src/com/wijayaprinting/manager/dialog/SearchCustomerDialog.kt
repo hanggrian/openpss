@@ -2,14 +2,14 @@ package com.wijayaprinting.manager.dialog
 
 import com.wijayaprinting.dao.Customer
 import com.wijayaprinting.dao.Customers
-import com.wijayaprinting.manager.Component
+import com.wijayaprinting.manager.Resourced
 import com.wijayaprinting.manager.R
 import com.wijayaprinting.manager.utils.safeTransaction
 import javafx.scene.control.Dialog
 import kotfx.*
 import org.jetbrains.exposed.sql.or
 
-class SearchCustomerDialog(private val component: Component) : Dialog<Customer>(), Component by component {
+class SearchCustomerDialog(private val resourced: Resourced) : Dialog<Customer>(), Resourced by resourced {
 
     init {
         content = vbox {

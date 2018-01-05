@@ -1,12 +1,10 @@
 package com.wijayaprinting.manager.controller
 
-import com.hendraanggrian.rxexposed.SQLSingles
 import com.wijayaprinting.dao.Plate
 import com.wijayaprinting.manager.App
 import com.wijayaprinting.manager.R
 import com.wijayaprinting.manager.Refreshable
-import com.wijayaprinting.manager.utils.multithread
-import io.reactivex.rxkotlin.subscribeBy
+import com.wijayaprinting.manager.utils.safeTransaction
 import javafx.fxml.FXML
 import javafx.scene.control.Button
 import javafx.scene.control.ButtonType.NO
@@ -33,13 +31,8 @@ class PlatePriceController : Controller(), Refreshable {
         priceColumn.setCellValueFactory { it.value.price.asProperty() }
         priceColumn.cellFactory = forTableColumn<Plate, BigDecimal>(stringConverter({ it.toBigDecimalOrNull() ?: ZERO }))
         priceColumn.setOnEditCommit { event ->
-            SQLSingles.transaction { event.rowValue.price = event.newValue }
-                    .multithread()
-                    .subscribeBy({
-                        event.consume()
-                        errorAlert(it.message.toString()).showAndWait()
-                    }) {}
-                    .register()
+            event.consume()
+            safeTransaction { event.rowValue.price = event.newValue }
         }
         refresh()
     }
@@ -53,24 +46,16 @@ class PlatePriceController : Controller(), Refreshable {
         contentText = getString(R.string.name)
         editor.promptText = getString(R.string.plate)
     }.showAndWait().ifPresent { id ->
-        SQLSingles.transaction { Plate.new(id) {} }
-                .multithread()
-                .subscribeBy({ errorAlert(it.message.toString()).showAndWait() }) { plate -> tableView.items.add(plate) }
-                .register()
+        tableView.items.add(safeTransaction { Plate.new(id) {} })
     }
 
     @FXML
     fun deleteOnAction() = warningAlert(getString(R.string.delete_plate_warning), YES, NO)
             .showAndWait()
             .filter { it == YES }
-            .ifPresent {
-                SQLSingles.transaction { tableView.selectionModel.selectedItem.apply { delete() } }
-                        .multithread()
-                        .subscribeBy({ errorAlert(it.message.toString()).showAndWait() }) { plate -> tableView.items.remove(plate) }
-                        .register()
-            }
+            .ifPresent { tableView.items.remove(safeTransaction { tableView.selectionModel.selectedItem.apply { delete() } }) }
 
-    override fun refresh() = SQLSingles.transaction { Plate.all().toMutableObservableList() }
-            .subscribeBy({}) { plates -> tableView.items = plates }
-            .register()
+    override fun refresh() {
+        tableView.items = safeTransaction { Plate.all() }!!.toMutableObservableList()
+    }
 }

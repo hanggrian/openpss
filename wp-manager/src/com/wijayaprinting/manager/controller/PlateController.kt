@@ -5,7 +5,6 @@ import com.wijayaprinting.manager.R
 import com.wijayaprinting.manager.Refreshable
 import com.wijayaprinting.manager.dialog.SearchCustomerDialog
 import com.wijayaprinting.manager.scene.utils.gap
-import com.wijayaprinting.manager.utils.controller
 import com.wijayaprinting.manager.utils.pane
 import javafx.fxml.FXML
 import javafx.stage.Modality.APPLICATION_MODAL
@@ -40,12 +39,10 @@ class PlateController : Controller(), Refreshable {
         val minSize = Pair(240.0, 480.0)
         stage(getString(R.string.plate_price)) {
             initModality(APPLICATION_MODAL)
-            val loader = getResource(R.fxml.layout_plate_price).loadFXML(resources)
-            scene = loader.pane.toScene(minSize.first, minSize.second)
+            scene = getResource(R.fxml.layout_plate_price).loadFXML(resources).pane.toScene(minSize.first, minSize.second)
             minWidth = minSize.first
             minHeight = minSize.second
             isResizable = false
-            setOnCloseRequest { loader.controller.disposeAll() }
         }.showAndWait()
     }
 

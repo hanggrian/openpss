@@ -1,4 +1,4 @@
-package com.wijayaprinting.manager.controller;
+package com.wijayaprinting.manager.experimental;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -11,20 +11,16 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.SnapshotParameters;
-import javafx.scene.control.ScrollBar;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * This class provides a method to print the content of a {@link TableView}. It
  * is at an early stage and currently doesn't support advanced CellFactorys.
- * <p>
- * Found on http://www.jluger.de/blog/20160915_javafx_printing_textview_content.html.
  */
-public class TablePrinter {
+public class TreeTablePrinter {
     /**
      * Prints the content of the provided {@link TableView}.
      *
@@ -34,7 +30,7 @@ public class TablePrinter {
      *                  {@link PrinterJob} and ends it. When a valid
      *                  {@link PrinterJob} is provided, the caller must close it.
      */
-    public static <T> void print(TableView<T> tableView, PrinterJob jobArg) {
+    public static <T> void print(TreeTableView<T> tableView, PrinterJob jobArg) {
         boolean createJob = jobArg == null;
         PrinterJob job;
         if (createJob) {
@@ -55,9 +51,9 @@ public class TablePrinter {
      * @param tableView See description.
      * @param job       See description.
      */
-    private static <T> void printWithJob(TableView<T> tableView, PrinterJob job) {
-        TableView<T> copyView = createTableCopy(tableView, job);
-        ArrayList<T> itemList = new ArrayList<>(tableView.getItems());
+    private static <T> void printWithJob(TreeTableView<T> tableView, PrinterJob job) {
+        TreeTableView<T> copyView = createTableCopy(tableView, job);
+        ArrayList<T> itemList = new ArrayList<>((Collection<T>) tableView.getRoot().getChildren());
         while (itemList.size() > 0) {
             printPage(job, copyView, itemList);
         }
@@ -74,10 +70,11 @@ public class TablePrinter {
      * @param copyView See description.
      * @param itemList See description.
      */
-    private static <T> void printPage(PrinterJob job, TableView<T> copyView, ArrayList<T> itemList) {
+    private static <T> void printPage(PrinterJob job, TreeTableView<T> copyView, ArrayList<T> itemList) {
         ScrollBar verticalScrollbar = getVerticalScrollbar(copyView);
         ObservableList<T> batchItemList = FXCollections.observableArrayList();
-        copyView.setItems(batchItemList);
+        copyView.setRoot(new TreeItem<>());
+        copyView.getRoot().getChildren().addAll((Collection<TreeItem<T>>) batchItemList);
         batchItemList.add(itemList.remove(0));
         while (!verticalScrollbar.isVisible() && itemList.size() > 0) {
             T item = itemList.remove(0);
@@ -102,8 +99,8 @@ public class TablePrinter {
      * @return See description.
      */
     @SuppressWarnings({"rawtypes", "unchecked"})
-    private static <T> TableView<T> createTableCopy(TableView<T> tableView, PrinterJob job) {
-        TableView<T> copyView = new TableView<>();
+    private static <T> TreeTableView<T> createTableCopy(TreeTableView<T> tableView, PrinterJob job) {
+        TreeTableView<T> copyView = new TreeTableView<>();
         PageLayout pageLayout = job.getJobSettings().getPageLayout();
         Paper paper = pageLayout.getPaper();
         double paperHeight = paper.getHeight() - pageLayout.getTopMargin() - pageLayout.getBottomMargin();
@@ -116,8 +113,8 @@ public class TablePrinter {
             copyView.setPrefWidth(paperHeight);
         }
         copyView.setColumnResizePolicy(tableView.getColumnResizePolicy());
-        for (TableColumn<T, ?> t : tableView.getColumns()) {
-            TableColumn cloneColumn = new TableColumn(t.getText());
+        for (TreeTableColumn<T, ?> t : tableView.getColumns()) {
+            TreeTableColumn cloneColumn = new TreeTableColumn(t.getText());
             cloneColumn.setMaxWidth(t.getMaxWidth());
             if (t.getCellValueFactory() != null) {
                 cloneColumn.setCellValueFactory(t.getCellValueFactory());
@@ -128,7 +125,7 @@ public class TablePrinter {
             copyView.getColumns().add(cloneColumn);
         }
         new Scene(copyView);
-        copyView.getScene().getStylesheets().add(TablePrinter.class.getResource("TablePrint.css").toString());
+        // copyView.getScene().getStylesheets().add(TreeTablePrinter.class.getResource("TablePrint.css").toString());
         return copyView;
     }
 
@@ -143,7 +140,7 @@ public class TablePrinter {
      * @return The found {@link ScrollBar} or <code>null</code>, wenn none was
      * found.
      */
-    private static <T> ScrollBar getVerticalScrollbar(TableView<T> tableView) {
+    private static <T> ScrollBar getVerticalScrollbar(TreeTableView<T> tableView) {
         tableView.snapshot(new SnapshotParameters(), null);
         return getVerticalScrollbarForParent(tableView);
     }

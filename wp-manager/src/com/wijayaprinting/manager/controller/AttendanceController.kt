@@ -224,7 +224,6 @@ class AttendanceController : Controller() {
                 minWidth = minSize.first
                 minHeight = minSize.second
                 loader.controller.setExtra(set)
-                setOnCloseRequest { loader.controller.disposeAll() }
             }.showAndWait()
         }
     }

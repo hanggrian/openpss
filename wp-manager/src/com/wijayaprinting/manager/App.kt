@@ -15,7 +15,6 @@ import com.wijayaprinting.manager.scene.control.ipField
 import com.wijayaprinting.manager.scene.utils.attachButtons
 import com.wijayaprinting.manager.scene.utils.gap
 import com.wijayaprinting.manager.utils.*
-import io.reactivex.disposables.Disposable
 import io.reactivex.rxkotlin.subscribeBy
 import javafx.application.Application
 import javafx.application.Platform.exit
@@ -36,7 +35,7 @@ import org.jetbrains.exposed.sql.update
 import java.awt.Toolkit.getDefaultToolkit
 import java.util.*
 
-class App : Application(), Component {
+class App : Application(), Resourced {
 
     companion object {
         lateinit var employee: String
@@ -46,7 +45,6 @@ class App : Application(), Component {
     }
 
     override val resources: ResourceBundle = Language.parse(PreferencesFile.language.value).getResources("string")
-    override val disposables: MutableSet<Disposable> = mutableSetOf()
 
     override fun init() {
         if (DEBUG) configure()
@@ -142,12 +140,10 @@ class App : Application(), Component {
 
             val minSize = Pair(960.0, 640.0)
             stage.apply {
-                val loader = getResource(R.fxml.layout_main).loadFXML(resources)
                 title = getString(R.string.app_name)
-                scene = loader.pane.toScene(minSize.first, minSize.second)
+                scene = getResource(R.fxml.layout_main).loadFXML(resources).pane.toScene(minSize.first, minSize.second)
                 minWidth = minSize.first
                 minHeight = minSize.second
-                setOnCloseRequest { loader.controller.disposeAll() }
             }.show()
 
             if (employee.firstTimeLogin) dialog<String>(getString(R.string.change_password), getString(R.string.change_password), ImageView(R.png.ic_key)) {

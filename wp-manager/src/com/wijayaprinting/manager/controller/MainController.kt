@@ -30,7 +30,6 @@ class MainController : Controller() {
         runFX {
             controllers = arrayOf(customerController, plateController, attendanceController)
             tabPane.selectionModel.selectedIndexProperty().addListener { _, oldIndex, newIndex ->
-                controllers[oldIndex.toInt()].disposeAll()
                 navigateMenu(newIndex.toInt())
             }
         }

@@ -2,7 +2,7 @@ package com.wijayaprinting.manager.dialog
 
 import com.wijayaprinting.License
 import com.wijayaprinting.WP
-import com.wijayaprinting.manager.Component
+import com.wijayaprinting.manager.Resourced
 import com.wijayaprinting.manager.R
 import com.wijayaprinting.manager.utils.addConsumedEventFilter
 import com.wijayaprinting.utils.addAllSorted
@@ -26,7 +26,7 @@ import java.io.InputStreamReader
 import java.net.URI
 import java.util.stream.Collectors.joining
 
-class AboutDialog(private val component: Component) : Dialog<Unit>(), Component by component {
+class AboutDialog(private val resourced: Resourced) : Dialog<Unit>(), Resourced by resourced {
 
     private val latoBold = getResource(R.ttf.lato_bold).toExternalForm()
     private val latoLight = getResource(R.ttf.lato_light).toExternalForm()
@@ -116,7 +116,7 @@ class AboutDialog(private val component: Component) : Dialog<Unit>(), Component 
                 License("ReactiveX", "RxJavaFX", "https://github.com/ReactiveX/RxJavaFX"),
                 License("Slf4j", "Log4j12", "https://www.slf4j.org")).toObservableList()
 
-    private fun License.getContent(component: Component): String = File(component.getResource("/${owner.shorten}_${name.shorten}.txt").toURI())
+    private fun License.getContent(resourced: Resourced): String = File(resourced.getResource("/${owner.shorten}_${name.shorten}.txt").toURI())
             .inputStream()
             .use { return BufferedReader(InputStreamReader(it)).lines().collect(joining("\n")) }
 

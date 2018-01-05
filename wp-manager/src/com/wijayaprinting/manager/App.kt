@@ -19,8 +19,7 @@ import io.reactivex.rxkotlin.subscribeBy
 import javafx.application.Application
 import javafx.application.Platform.exit
 import javafx.event.ActionEvent.ACTION
-import javafx.scene.control.ButtonBar.ButtonData.BACK_PREVIOUS
-import javafx.scene.control.ButtonBar.ButtonData.NEXT_FORWARD
+import javafx.scene.control.ButtonBar.ButtonData.OK_DONE
 import javafx.scene.control.ButtonType.CANCEL
 import javafx.scene.control.ButtonType.OK
 import javafx.scene.control.PasswordField
@@ -111,10 +110,16 @@ class App : Application(), Resourced {
                     promptText = getString(R.string.server_password)
                     textProperty() bindBidirectional MySQLFile.password
                 } col 1 row 2 colSpan 2
+                hyperlink(getString(R.string.about)) { setOnAction { AboutDialog(this@App).showAndWait() } } col 2 row 3
             }
-            button(getString(R.string.about), BACK_PREVIOUS).addConsumedEventFilter(ACTION) { AboutDialog(this@App).showAndWait() }
-            button(getString(R.string.login), NEXT_FORWARD).apply {
-                disableProperty() bind (employeeField.textProperty().isEmpty or not(serverIPField.validProperty) or serverPortField.textProperty().isEmpty)
+            button(CANCEL)
+            button(getString(R.string.login), OK_DONE).apply {
+                disableProperty() bind (employeeField.textProperty().isEmpty
+                        or passwordField.textProperty().isEmpty
+                        or not(serverIPField.validProperty)
+                        or serverPortField.textProperty().isEmpty
+                        or serverUserField.textProperty().isEmpty
+                        or serverPasswordField.textProperty().isEmpty)
                 addConsumedEventFilter(ACTION) {
                     PreferencesFile.save()
                     MySQLFile.save()

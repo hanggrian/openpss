@@ -1,5 +1,6 @@
 package com.wijayaprinting.manager
 
+import java.io.InputStream
 import java.net.URL
 import java.util.*
 
@@ -16,4 +17,5 @@ interface Resourced {
     fun getDouble(key: String): Double = getString(key).toDouble()
 
     fun getResource(name: String): URL = App::class.java.getResource(name)
+    fun getResourceAsStream(name: String): InputStream = App::class.java.getResourceAsStream(name)
 }

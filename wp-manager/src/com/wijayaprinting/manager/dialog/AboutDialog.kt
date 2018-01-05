@@ -2,8 +2,8 @@ package com.wijayaprinting.manager.dialog
 
 import com.wijayaprinting.License
 import com.wijayaprinting.WP
-import com.wijayaprinting.manager.Resourced
 import com.wijayaprinting.manager.R
+import com.wijayaprinting.manager.Resourced
 import com.wijayaprinting.manager.utils.addConsumedEventFilter
 import com.wijayaprinting.utils.addAllSorted
 import javafx.collections.ObservableList
@@ -21,12 +21,11 @@ import javafx.scene.text.Font.loadFont
 import kotfx.*
 import java.awt.Desktop.getDesktop
 import java.io.BufferedReader
-import java.io.File
 import java.io.InputStreamReader
 import java.net.URI
 import java.util.stream.Collectors.joining
 
-class AboutDialog(private val resourced: Resourced) : Dialog<Unit>(), Resourced by resourced {
+class AboutDialog(val resourced: Resourced) : Dialog<Unit>(), Resourced by resourced {
 
     private val latoBold = getResource(R.ttf.lato_bold).toExternalForm()
     private val latoLight = getResource(R.ttf.lato_light).toExternalForm()
@@ -89,12 +88,12 @@ class AboutDialog(private val resourced: Resourced) : Dialog<Unit>(), Resourced 
             titledPane(getString(R.string.license), kotfx.textArea {
                 prefHeight = 256.0
                 isEditable = false
-                textProperty() bind stringBindingOf(listView.selectionModel.selectedIndexProperty()) { listView.selectionModel.selectedItem?.getContent(this@AboutDialog) ?: getString(R.string.select_license) }
+                textProperty() bind stringBindingOf(listView.selectionModel.selectedIndexProperty()) { listView.selectionModel.selectedItem?.content ?: getString(R.string.select_license) }
             }) { isCollapsible = false }
         }
         button(ButtonType("Homepage", CANCEL_CLOSE)).apply {
             visibleProperty() bind (dialogPane.expandedProperty() and booleanBindingOf(listView.selectionModel.selectedIndexProperty()) { listView.selectionModel.selectedItem != null })
-            addConsumedEventFilter(ACTION) { event -> browse(listView.selectionModel.selectedItem.homepage) }
+            addConsumedEventFilter(ACTION) { browse(listView.selectionModel.selectedItem.homepage) }
         }
         button(CLOSE)
     }
@@ -116,9 +115,7 @@ class AboutDialog(private val resourced: Resourced) : Dialog<Unit>(), Resourced 
                 License("ReactiveX", "RxJavaFX", "https://github.com/ReactiveX/RxJavaFX"),
                 License("Slf4j", "Log4j12", "https://www.slf4j.org")).toObservableList()
 
-    private fun License.getContent(resourced: Resourced): String = File(resourced.getResource("/${owner.shorten}_${name.shorten}.txt").toURI())
-            .inputStream()
-            .use { return BufferedReader(InputStreamReader(it)).lines().collect(joining("\n")) }
+    private val License.content: String get() = getResourceAsStream("/${owner.shorten}_${name.shorten}.txt").use { return BufferedReader(InputStreamReader(it)).lines().collect(joining("\n")) }
 
     private val String.shorten: String
         get() = toLowerCase()

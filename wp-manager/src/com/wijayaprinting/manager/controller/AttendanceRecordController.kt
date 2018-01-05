@@ -56,7 +56,7 @@ class AttendanceRecordController : Controller() {
         printButton.disableProperty() bind defaultPrinterProperty().isNull
 
         treeTableView.selectionModel.selectionMode = MULTIPLE
-        treeTableView.root = TreeItem(AttendanceRecord(AttendanceRecord.TYPE_ROOT, Attendee(this, 0, ""), SimpleObjectProperty(DateTime(0)), SimpleObjectProperty(DateTime(0)))) // dummy for invisible root
+        treeTableView.root = TreeItem(AttendanceRecord(AttendanceRecord.TYPE_ROOT, Attendee(0, ""), SimpleObjectProperty(DateTime(0)), SimpleObjectProperty(DateTime(0)))) // dummy for invisible root
         treeTableView.isShowRoot = false
         runFX {
             getExtra<Set<Attendee>>().forEach { attendee ->

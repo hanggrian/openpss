@@ -4,9 +4,10 @@ import com.wijayaprinting.dao.Customer
 import com.wijayaprinting.dao.Customers
 import com.wijayaprinting.manager.Component
 import com.wijayaprinting.manager.R
+import com.wijayaprinting.manager.utils.safeTransaction
 import javafx.scene.control.Dialog
 import kotfx.*
-import org.jetbrains.exposed.sql.transactions.transaction
+import org.jetbrains.exposed.sql.or
 
 class SearchCustomerDialog(private val component: Component) : Dialog<Customer>(), Component by component {
 
@@ -15,10 +16,10 @@ class SearchCustomerDialog(private val component: Component) : Dialog<Customer>(
             val field = textField { promptText = getString(R.string.customer) }
             listView<Customer> {
                 itemsProperty() bind bindingOf(field.textProperty()) {
-                    transaction {
+                    safeTransaction {
                         when {
                             field.text.isEmpty() -> Customer.all()
-                            else -> Customer.find { Customers.name regexp field.text }
+                            else -> Customer.find { Customers.name regexp field.text or (Customers.name regexp field.text) }
                         }.limit(10).toMutableObservableList()
                     }
                 }

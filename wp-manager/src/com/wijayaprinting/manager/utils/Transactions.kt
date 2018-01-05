@@ -2,6 +2,7 @@
 
 package com.wijayaprinting.manager.utils
 
+import javafx.application.Platform
 import kotfx.errorAlert
 import org.jetbrains.exposed.sql.Transaction
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -13,11 +14,14 @@ import java.sql.SQLException
  *
  * @see [transaction]
  */
-@Deprecated("Use RxExposed instead!")
-inline fun <T> safeTransaction(noinline statement: Transaction.() -> T) {
-    try {
-        transaction(statement)
-    } catch (e: SQLException) {
-        errorAlert(e.message ?: "Unknown error!").showAndWait()
+inline fun <T> safeTransaction(noinline statement: Transaction.() -> T): T? = try {
+    transaction(statement)
+} catch (e: SQLException) {
+    errorAlert(e.message.toString()) {
+        headerText = "The app just crashed."
+    }.showAndWait().ifPresent {
+        Platform.exit()
+        System.exit(0)
     }
+    null
 }

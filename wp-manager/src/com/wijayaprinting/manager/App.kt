@@ -1,6 +1,5 @@
 package com.wijayaprinting.manager
 
-import com.hendraanggrian.rxexposed.SQLCompletables
 import com.wijayaprinting.WP
 import com.wijayaprinting.dao.Employee
 import com.wijayaprinting.dao.Employees
@@ -168,9 +167,10 @@ class App : Application(), Component {
                 setResultConverter { if (it == OK) changePasswordField.text else null }
                 runFX { changePasswordField.requestFocus() }
             }.showAndWait().filter { it is String }.ifPresent { newPassword ->
-                SQLCompletables.transaction { Employees.update({ Employees.id eq App.employee }) { employee -> employee[password] = newPassword } }
-                        .multithread()
-                        .subscribeBy({ errorAlert(it.message.toString()).showAndWait() }) { infoAlert(getString(R.string.change_password_successful)).showAndWait() }
+                safeTransaction {
+                    Employees.update({ Employees.id eq App.employee }) { employee -> employee[password] = newPassword }
+                    infoAlert(getString(R.string.change_password_successful)).showAndWait()
+                }
             }
         }
     }

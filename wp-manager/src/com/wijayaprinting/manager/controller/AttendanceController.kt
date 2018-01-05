@@ -75,7 +75,7 @@ class AttendanceController : Controller() {
         Observable
                 .create<Attendee> { emitter ->
                     try {
-                        val employees = readerChoiceBox.selectionModel.selectedItem.read(this, File(fileField.text))
+                        val employees = readerChoiceBox.selectionModel.selectedItem.read(File(fileField.text))
                         when (DEBUG) {
                             true -> employees.filter { it.name == "Yanti" || it.name == "Yoyo" || it.name == "Mus" }.toMutableList()
                             else -> employees

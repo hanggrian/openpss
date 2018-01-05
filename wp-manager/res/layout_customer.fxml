@@ -6,53 +6,43 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
-<SplitPane dividerPositions="0.5" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.111"
-           fx:controller="com.wijayaprinting.manager.controller.CustomerController">
-    <GridPane hgap="8.0" vgap="8.0">
-        <columnConstraints>
-            <ColumnConstraints hgrow="ALWAYS"/>
-            <ColumnConstraints/>
-        </columnConstraints>
-        <rowConstraints>
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS"/>
-        </rowConstraints>
-        <TextField fx:id="customerField" promptText="Customer">
-            <GridPane.margin>
-                <Insets left="8.0" top="8.0"/>
-            </GridPane.margin>
-        </TextField>
-        <Button mnemonicParsing="false" onAction="#refreshButtonOnAction" GridPane.columnIndex="1">
-            <GridPane.margin>
-                <Insets right="8.0" top="8.0"/>
-            </GridPane.margin>
+<VBox xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.111"
+      fx:controller="com.wijayaprinting.manager.controller.CustomerController">
+    <ToolBar>
+        <Button mnemonicParsing="false" onAction="#refreshOnAction">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
                     <Image url="@btn_refresh.png"/>
                 </ImageView>
             </graphic>
+            <tooltip>
+                <Tooltip text="%refresh"/>
+            </tooltip>
         </Button>
+        <TextField fx:id="customerField" promptText="Customer"/>
+    </ToolBar>
+    <SplitPane dividerPositions="0.5" VBox.vgrow="ALWAYS">
         <CustomerPagination fx:id="customerPagination" GridPane.columnSpan="2" GridPane.rowIndex="1"/>
-    </GridPane>
-    <GridPane hgap="8.0" vgap="8.0">
-        <columnConstraints>
-            <ColumnConstraints/>
-            <ColumnConstraints hgrow="ALWAYS"/>
-        </columnConstraints>
-        <rowConstraints>
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS"/>
-        </rowConstraints>
-        <Label text="Name">
-            <GridPane.margin>
-                <Insets left="8.0" top="8.0"/>
-            </GridPane.margin>
-        </Label>
-        <Label fx:id="nameLabel" text="Name" style="-fx-font-family: sans-serif; -fx-font-weight: bold;"
-               GridPane.columnIndex="1">
-            <GridPane.margin>
-                <Insets left="8.0" top="8.0"/>
-            </GridPane.margin>
-        </Label>
-    </GridPane>
-</SplitPane>
+        <GridPane hgap="8.0" vgap="8.0">
+            <columnConstraints>
+                <ColumnConstraints/>
+                <ColumnConstraints hgrow="ALWAYS"/>
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS"/>
+            </rowConstraints>
+            <Label text="Name">
+                <GridPane.margin>
+                    <Insets left="8.0" top="8.0"/>
+                </GridPane.margin>
+            </Label>
+            <Label fx:id="nameLabel" text="Name" style="-fx-font-family: sans-serif; -fx-font-weight: bold;"
+                   GridPane.columnIndex="1">
+                <GridPane.margin>
+                    <Insets left="8.0" top="8.0"/>
+                </GridPane.margin>
+            </Label>
+        </GridPane>
+    </SplitPane>
+</VBox>

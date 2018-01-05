@@ -20,7 +20,7 @@ class CustomerController : Controller() {
     }
 
     @FXML
-    fun refreshButtonOnAction() = safeTransaction {
+    fun refreshOnAction() = safeTransaction {
         customerPagination.update()
     }
 }

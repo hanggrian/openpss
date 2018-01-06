@@ -32,6 +32,7 @@ import org.apache.commons.lang3.SystemUtils.IS_OS_MAC_OSX
 import org.apache.log4j.BasicConfigurator.configure
 import org.jetbrains.exposed.sql.update
 import java.awt.Toolkit.getDefaultToolkit
+import java.net.URL
 import java.util.*
 
 class App : Application(), Resourced {
@@ -51,7 +52,7 @@ class App : Application(), Resourced {
 
     override fun start(stage: Stage) {
         stage.icon = Image(R.png.logo_launcher)
-        setIconOnOSX(getDefaultToolkit().getImage(getResource(R.png.logo_launcher)))
+        setOSXIcon(getResource(R.png.logo_launcher))
         dialog<Any>(getString(R.string.app_name)) {
             lateinit var employeeField: TextField
             lateinit var passwordField: PasswordField
@@ -125,7 +126,9 @@ class App : Application(), Resourced {
                     MySQLFile.save()
                     WP.login(serverIPField.text, serverPortField.text, serverUserField.text, serverPasswordField.text, employeeField.text, passwordField.text)
                             .multithread()
-                            .subscribeBy({ errorAlert(it.message.toString()).showAndWait() }) { employee ->
+                            .subscribeBy({
+                                errorAlert(it.message.toString()).showAndWait()
+                            }) { employee ->
                                 result = employee
                                 forceClose()
                             }
@@ -176,7 +179,7 @@ class App : Application(), Resourced {
         }
     }
 
-    private fun setIconOnOSX(image: java.awt.Image) {
+    private fun setOSXIcon(url: URL) {
         if (IS_OS_MAC_OSX) Class.forName("com.apple.eawt.Application")
                 .newInstance()
                 .javaClass
@@ -185,7 +188,7 @@ class App : Application(), Resourced {
                 .let { application ->
                     application.javaClass
                             .getMethod("setDockIconImage", java.awt.Image::class.java)
-                            .invoke(application, image)
+                            .invoke(application, getDefaultToolkit().getImage(url))
                 }
     }
 }

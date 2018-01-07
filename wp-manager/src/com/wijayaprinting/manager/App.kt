@@ -19,6 +19,7 @@ import io.reactivex.rxkotlin.subscribeBy
 import javafx.application.Application
 import javafx.application.Platform.exit
 import javafx.event.ActionEvent.ACTION
+import javafx.geometry.Pos.CENTER_RIGHT
 import javafx.scene.control.ButtonBar.ButtonData.OK_DONE
 import javafx.scene.control.ButtonType.CANCEL
 import javafx.scene.control.ButtonType.OK
@@ -111,7 +112,17 @@ class App : Application(), Resourced {
                     promptText = getString(R.string.server_password)
                     textProperty() bindBidirectional MySQLFile.password
                 } col 1 row 2 colSpan 2
-                hyperlink(getString(R.string.about)) { setOnAction { AboutDialog(this@App).showAndWait() } } col 2 row 3
+                hbox {
+                    alignment = CENTER_RIGHT
+                    hyperlink(getString(R.string.test_connection)) {
+                        setOnAction {
+                            WP.testConnection(serverIPField.text, serverPortField.text, serverUserField.text, serverPasswordField.text)
+                                    .multithread()
+                                    .subscribeBy({ errorAlert(it.message.toString()).showAndWait() }) { infoAlert(getString(R.string.test_connection_successful)).showAndWait() }
+                        }
+                    }
+                    hyperlink(getString(R.string.about)) { setOnAction { AboutDialog(this@App).showAndWait() } } marginLeft 8
+                } col 0 row 3 colSpan 3
             }
             button(CANCEL)
             button(getString(R.string.login), OK_DONE).apply {
@@ -126,9 +137,7 @@ class App : Application(), Resourced {
                     MySQLFile.save()
                     WP.login(serverIPField.text, serverPortField.text, serverUserField.text, serverPasswordField.text, employeeField.text, passwordField.text)
                             .multithread()
-                            .subscribeBy({
-                                errorAlert(it.message.toString()).showAndWait()
-                            }) { employee ->
+                            .subscribeBy({ errorAlert(it.message.toString()).showAndWait() }) { employee ->
                                 result = employee
                                 forceClose()
                             }

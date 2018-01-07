@@ -10,7 +10,7 @@ const val isDebug = true
 
 const val kotlinVersion = "1.2.10"
 
-const val wpcoreVersion = "0.2"
+const val wpcoreVersion = "0.3"
 const val kotfxVersion = "0.15"
 const val guavaVersion = "23.6-jre"
 const val rxjavafxVersion = "2.2.2"

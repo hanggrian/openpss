@@ -3,12 +3,22 @@
 <?import com.wijayaprinting.manager.scene.control.FileField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.wijayaprinting.manager.controller.AttendanceController">
     <ToolBar>
+        <Button mnemonicParsing="false" onAction="#recessOnAction">
+            <graphic>
+                <ImageView pickOnBounds="true" preserveRatio="true">
+                    <Image url="@btn_alarm.png"/>
+                </ImageView>
+            </graphic>
+            <tooltip>
+                <Tooltip text="%recess"/>
+            </tooltip>
+        </Button>
+        <Separator/>
         <ChoiceBox fx:id="readerChoiceBox"/>
         <FileField fx:id="fileField" prefWidth="448.0" promptText="%input_file"/>
         <Button mnemonicParsing="false" onAction="#browseOnAction">

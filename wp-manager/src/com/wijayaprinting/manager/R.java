@@ -1,4 +1,4 @@
-// rsync generated this class at 2018-01-06T01:57:39.860 from:
+// rsync generated this class at 2018-01-07T22:10:30.273 from:
 // string_en.properties
 // layout_attendance.fxml
 // btn_refresh.png
@@ -15,7 +15,10 @@
 // layout_main.fxml
 // layout_attendance_record.fxml
 // btn_visibility_off.png
+// layout_attendance_reccess.fxml
+// ic_clock.png
 // ic_key.png
+// btn_alarm.png
 // btn_price.png
 // ic_document.png
 // btn_delete.png
@@ -56,6 +59,8 @@ public final class R {
 
     public static final String layout_attendance_record = "/layout_attendance_record.fxml";
 
+    public static final String layout_attendance_reccess = "/layout_attendance_reccess.fxml";
+
     public static final String layout_plate = "/layout_plate.fxml";
 
     public static final String layout_customer = "/layout_customer.fxml";
@@ -89,7 +94,11 @@ public final class R {
 
     public static final String btn_visibility_off = "/btn_visibility_off.png";
 
+    public static final String ic_clock = "/ic_clock.png";
+
     public static final String ic_key = "/ic_key.png";
+
+    public static final String btn_alarm = "/btn_alarm.png";
 
     public static final String btn_price = "/btn_price.png";
 
@@ -175,6 +184,8 @@ public final class R {
 
     public static final String daily = "daily";
 
+    public static final String add_reccess = "add_reccess";
+
     public static final String delete_plate_warning = "delete_plate_warning";
 
     public static final String version = "version";
@@ -206,6 +217,8 @@ public final class R {
     public static final String user = "user";
 
     public static final String app_name = "app_name";
+
+    public static final String test_connection = "test_connection";
 
     public static final String day = "day";
 
@@ -240,6 +253,8 @@ public final class R {
     public static final String attendance = "attendance";
 
     public static final String select_license = "select_license";
+
+    public static final String test_connection_successful = "test_connection_successful";
 
     public static final String please_wait = "please_wait";
 

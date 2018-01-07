@@ -61,6 +61,10 @@ class AttendanceController : Controller() {
     }
 
     @FXML
+    fun recessOnAction() {
+    }
+
+    @FXML
     fun browseOnAction() = fileChooser(getString(R.string.input_file), *readerChoiceBox.value.extensions)
             .showOpenDialog(fileField.scene.window)
             ?.let { fileField.text = it.absolutePath }

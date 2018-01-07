@@ -8,17 +8,17 @@
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.wijayaprinting.manager.controller.CustomerController">
     <ToolBar>
-        <Button mnemonicParsing="false" onAction="#refreshOnAction">
+        <TextField fx:id="customerField" promptText="%search_customer"/>
+        <Button mnemonicParsing="false" onAction="#clearOnAction">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@btn_refresh.png"/>
+                    <Image url="@btn_clear.png"/>
                 </ImageView>
             </graphic>
             <tooltip>
-                <Tooltip text="%refresh"/>
+                <Tooltip text="%clear"/>
             </tooltip>
         </Button>
-        <TextField fx:id="customerField" promptText="Customer"/>
         <Separator/>
         <Button mnemonicParsing="false" onAction="#addOnAction">
             <graphic>

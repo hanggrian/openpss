@@ -44,6 +44,14 @@ data class Attendee @JvmOverloads constructor(
         }
     }
 
+    var daily: Int
+        get() = dailyProperty.get()
+        set(value) = dailyProperty.set(value)
+
+    var hourlyOvertime: Int
+        get() = hourlyOvertimeProperty.get()
+        set(value) = hourlyOvertimeProperty.set(value)
+
     fun saveWage() = safeTransaction {
         val wage = Wage.findById(id)
         if (wage == null) Wage.new(id) {

@@ -48,7 +48,7 @@ class AttendanceRecordController : Controller() {
         undoButton.disableProperty() bind undoButton.items.isEmpty
         arrayOf(lockStartButton, lockEndButton).forEach {
             it.disableProperty() bind (treeTableView.selectionModel.selectedItemProperty().isNull or booleanBindingOf(treeTableView.selectionModel.selectedItemProperty()) {
-                treeTableView.selectionModel.selectedItems?.map { it.value.type }?.any { it != AttendanceRecord.TYPE_CHILD } ?: true
+                treeTableView.selectionModel.selectedItems?.any { !it.value.isChild } ?: true
             })
         }
         printButton.disableProperty() bind defaultPrinterProperty().isNull
@@ -57,7 +57,7 @@ class AttendanceRecordController : Controller() {
         treeTableView.root = TreeItem(Attendee.getDummy(this).toRootRecord())
         treeTableView.isShowRoot = false
 
-        nameColumn.setCellValueFactory { it.value.value.displayedName }
+        nameColumn.setCellValueFactory { it.value.value.displayedName.asProperty() }
         startColumn.setCellValueFactory { it.value.value.displayedStart }
         endColumn.setCellValueFactory { it.value.value.displayedEnd }
         dailyColumn.setCellValueFactory { it.value.value.dailyProperty.asObservable() }
@@ -76,9 +76,9 @@ class AttendanceRecordController : Controller() {
                     children.addAll(*childs.map { TreeItem(it) }.toTypedArray(), TreeItem(total))
                 })
             }
-            totalText.textProperty() bind stringBindingOf(*records.filter { it.type == AttendanceRecord.TYPE_CHILD }.map { it.totalProperty }.toTypedArray()) {
+            totalText.textProperty() bind stringBindingOf(*records.filter { it.isChild }.map { it.totalProperty }.toTypedArray()) {
                 NumberFormat.getCurrencyInstance().format(records
-                        .filter { it.type == AttendanceRecord.TYPE_TOTAL }
+                        .filter { it.isTotal }
                         .map { it.totalProperty.value }
                         .sum())
                         .let { s -> s.substring(s.indexOf(s.toCharArray().first { Character.isDigit(it) })) }

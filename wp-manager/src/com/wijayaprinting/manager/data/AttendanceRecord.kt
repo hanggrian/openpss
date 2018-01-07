@@ -1,10 +1,8 @@
 package com.wijayaprinting.manager.data
 
 import com.wijayaprinting.PATTERN_DATETIME
-import com.wijayaprinting.manager.R
 import com.wijayaprinting.manager.Resourced
 import com.wijayaprinting.manager.utils.round
-import com.wijayaprinting.manager.utils.safeTransaction
 import javafx.beans.property.*
 import kotfx.bind
 import kotfx.doubleBindingOf
@@ -13,12 +11,12 @@ import kotfx.stringBindingOf
 import org.joda.time.DateTime
 import org.joda.time.Interval
 import org.joda.time.LocalTime
+import kotlin.math.absoluteValue
 
 data class AttendanceRecord @JvmOverloads constructor(
         val resourced: Resourced,
 
-        val type: Int,
-        val index: Int, // index of child, ignore if type is not child
+        val index: Int,
 
         val attendee: Attendee,
 
@@ -40,77 +38,76 @@ data class AttendanceRecord @JvmOverloads constructor(
         private const val WORKING_HOURS = 8.0
 
         /** Dummy since [javafx.scene.control.TreeTableView] must have a root item. */
-        const val TYPE_ROOT = 0
+        const val INDEX_ROOT = -3
         /** Parent row displaying name and its preferences. */
-        const val TYPE_NODE = 1
-        /** Child row of a node, displaying an actual record data. */
-        const val TYPE_CHILD = 2
+        const val INDEX_NODE = -2
         /** Last child row of a node, displaying calculated total. */
-        const val TYPE_TOTAL = 3
+        const val INDEX_TOTAL = -1
     }
 
     init {
-        if (type != TYPE_ROOT) {
-            dailyEmptyProperty.set(false)
-            dailyIncomeProperty bind doubleBindingOf(dailyProperty, attendee.dailyProperty) { (dailyProperty.value * attendee.dailyProperty.value / WORKING_HOURS).round }
-            overtimeIncomeProperty bind doubleBindingOf(overtimeProperty, attendee.hourlyOvertimeProperty) { (attendee.hourlyOvertimeProperty.value * overtimeProperty.value).round }
-            when (type) {
-                TYPE_NODE -> {
-                    dailyProperty.set(0.0)
-                    overtimeProperty.set(0.0)
-                    totalProperty.set(0.0)
-                }
-                TYPE_CHILD -> {
-                    val interval = Interval(start, end)
-                    val recessesInterval = attendee.recesses.map { it.getInterval(start, end) }
-                    val workingHours = {
-                        var minutes = interval.toDuration().toStandardMinutes().minutes
-                        recessesInterval.forEach { minutes -= interval.overlap(it)?.toDuration()?.toStandardMinutes()?.minutes ?: 0 }
-                        minutes / 60.0
-                    }
-                    dailyProperty bind doubleBindingOf(startProperty, endProperty, dailyEmptyProperty) {
-                        if (dailyEmptyProperty.value) 0.0 else {
-                            val hours = workingHours()
-                            when {
-                                hours <= WORKING_HOURS -> hours.round
-                                else -> WORKING_HOURS
-                            }
-                        }
-                    }
-                    overtimeProperty bind doubleBindingOf(startProperty, endProperty) {
-                        val hours = workingHours()
-                        val overtime = (hours - WORKING_HOURS).round
-                        when {
-                            hours <= WORKING_HOURS -> 0.0
-                            else -> overtime
-                        }
-                    }
-                    totalProperty bind dailyIncomeProperty + overtimeIncomeProperty
-                }
-                TYPE_TOTAL -> totalProperty bind dailyIncomeProperty + overtimeIncomeProperty
+        dailyEmptyProperty.set(false)
+        if (isNode) {
+            dailyProperty.set(0.0)
+            overtimeProperty.set(0.0)
+            dailyIncomeProperty.set(attendee.daily.toDouble())
+            overtimeIncomeProperty.set(attendee.hourlyOvertime.toDouble())
+            totalProperty.set(0.0)
+        }
+        if (isChild) {
+            val workingHours = {
+                val interval = Interval(start, end)
+                var minutes = interval.toDuration().toStandardMinutes().minutes.absoluteValue
+                attendee.recesses
+                        .map { it.getInterval(start) }
+                        .forEach { recessesInterval -> minutes -= interval.overlap(recessesInterval)?.toDuration()?.toStandardMinutes()?.minutes?.absoluteValue ?: 0 }
+                minutes / 60.0
             }
+            dailyProperty bind doubleBindingOf(startProperty, endProperty, dailyEmptyProperty) {
+                if (isDailyEmpty) 0.0 else {
+                    val hours = workingHours()
+                    when {
+                        hours <= WORKING_HOURS -> hours.round
+                        else -> WORKING_HOURS
+                    }
+                }
+            }
+            overtimeProperty bind doubleBindingOf(startProperty, endProperty) {
+                val hours = workingHours()
+                val overtime = (hours - WORKING_HOURS).round
+                when {
+                    hours <= WORKING_HOURS -> 0.0
+                    else -> overtime
+                }
+            }
+        }
+        if (isChild || isTotal) {
+            dailyIncomeProperty bind doubleBindingOf(dailyProperty) { (daily * attendee.daily / WORKING_HOURS).round }
+            overtimeIncomeProperty bind doubleBindingOf(overtimeProperty) { (overtime * attendee.hourlyOvertime).round }
+            totalProperty bind dailyIncomeProperty + overtimeIncomeProperty
         }
     }
 
-    val displayedName: StringProperty
-        get() = SimpleStringProperty().apply {
-            bind(stringBindingOf(dailyEmptyProperty) {
-                if (dailyEmptyProperty.value) getString(R.string.daily_emptied) else when (type) {
-                    TYPE_NODE -> attendee.toString()
-                    TYPE_CHILD -> attendee.recesses.getOrNull(index)?.let { safeTransaction { it.toString() } } ?: ""
-                    TYPE_TOTAL -> ""
-                    else -> throw UnsupportedOperationException()
-                }
-            })
+    val isRoot: Boolean get() = index == INDEX_ROOT
+    val isNode: Boolean get() = index == INDEX_NODE
+    val isTotal: Boolean get() = index == INDEX_TOTAL
+    val isChild: Boolean get() = index >= 0
+
+    val displayedName: String
+        get() = when {
+            isNode -> attendee.toString()
+            isChild -> attendee.recesses.getOrNull(index)?.toString() ?: ""
+            isTotal -> ""
+            else -> throw UnsupportedOperationException()
         }
 
     val displayedStart: StringProperty
         get() = SimpleStringProperty().apply {
-            bind(stringBindingOf(startProperty) {
-                when (type) {
-                    TYPE_NODE -> attendee.role ?: ""
-                    TYPE_CHILD -> start.toString(PATTERN_DATETIME)
-                    TYPE_TOTAL -> ""
+            bind(stringBindingOf(startProperty, dailyEmptyProperty) {
+                when {
+                    isNode -> attendee.role ?: ""
+                    isChild -> start.toString(PATTERN_DATETIME).let { if (isDailyEmpty) "($it)" else it }
+                    isTotal -> ""
                     else -> throw UnsupportedOperationException()
                 }
             })
@@ -118,11 +115,11 @@ data class AttendanceRecord @JvmOverloads constructor(
 
     val displayedEnd: StringProperty
         get() = SimpleStringProperty().apply {
-            bind(stringBindingOf(endProperty) {
-                when (type) {
-                    TYPE_NODE -> ""
-                    TYPE_CHILD -> end.toString(PATTERN_DATETIME)
-                    TYPE_TOTAL -> "TOTAL"
+            bind(stringBindingOf(endProperty, dailyEmptyProperty) {
+                when {
+                    isNode -> ""
+                    isChild -> end.toString(PATTERN_DATETIME).let { if (isDailyEmpty) "($it)" else it }
+                    isTotal -> "TOTAL"
                     else -> throw UnsupportedOperationException()
                 }
             })
@@ -139,4 +136,16 @@ data class AttendanceRecord @JvmOverloads constructor(
     private var end: DateTime
         get() = endProperty.get()
         set(value) = endProperty.setValue(value)
+
+    private var isDailyEmpty: Boolean
+        get() = dailyEmptyProperty.get()
+        set(value) = dailyEmptyProperty.set(value)
+
+    private var daily: Double
+        get() = dailyProperty.get()
+        set(value) = dailyProperty.set(value)
+
+    private var overtime: Double
+        get() = overtimeProperty.get()
+        set(value) = overtimeProperty.set(value)
 }

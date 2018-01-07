@@ -1,3 +1,5 @@
+@file:Suppress("NOTHING_TO_INLINE")
+
 package com.wijayaprinting.manager.utils
 
 import javafx.scene.control.ButtonType.CLOSE
@@ -7,7 +9,7 @@ import kotfx.button
 import kotfx.buttons
 
 /** Apparently dialog won't close without a button. */
-fun Dialog<*>.forceClose() {
+inline fun Dialog<*>.forceClose() {
     if (buttons.none { it.buttonData.isCancelButton }) button(CLOSE)
     if (buttons.none { it.buttonData.isDefaultButton }) button(OK)
     close()

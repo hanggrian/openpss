@@ -4,10 +4,7 @@ import com.wijayaprinting.dao.Customer
 import com.wijayaprinting.manager.R
 import com.wijayaprinting.manager.Resourced
 import com.wijayaprinting.manager.scene.utils.gap
-import com.wijayaprinting.manager.utils.addConsumedEventFilter
-import com.wijayaprinting.manager.utils.forceClose
 import com.wijayaprinting.manager.utils.safeTransaction
-import javafx.event.ActionEvent.ACTION
 import javafx.scene.control.ButtonType.CANCEL
 import javafx.scene.control.ButtonType.OK
 import javafx.scene.control.Dialog
@@ -43,11 +40,13 @@ class CustomerDialog @JvmOverloads constructor(val resourced: Resourced, var pre
             noteArea = textArea { promptText = getString(R.string.note) } col 1 row 4
         }
         button(CANCEL)
-        button(OK).apply {
-            disableProperty() bind nameField.textProperty().isEmpty
-            addConsumedEventFilter(ACTION) {
-                safeTransaction {
-                    if (isAdd) Customer.new {
+        button(OK).disableProperty() bind nameField.textProperty().isEmpty
+        runFX { nameField.requestFocus() }
+        setResultConverter {
+            when {
+                it == CANCEL -> null
+                isAdd -> safeTransaction {
+                    Customer.new {
                         since = now()
                         name = nameField.text
                         email = emailField.text
@@ -55,12 +54,10 @@ class CustomerDialog @JvmOverloads constructor(val resourced: Resourced, var pre
                         phone2 = phone2Field.text
                         note = noteArea.text
                     }
-                    forceClose()
                 }
+                else -> null
             }
         }
-        runFX { nameField.requestFocus() }
-        setResultConverter { null }
     }
 
     val isAdd: Boolean get() = prefill == null

@@ -5,14 +5,13 @@ import com.wijayaprinting.dao.Customers
 import com.wijayaprinting.manager.dialog.CustomerDialog
 import com.wijayaprinting.manager.utils.safeTransaction
 import javafx.fxml.FXML
+import javafx.scene.Node
 import javafx.scene.control.Label
 import javafx.scene.control.ListView
 import javafx.scene.control.Pagination
 import javafx.scene.control.TextField
-import kotfx.bind
-import kotfx.listView
-import kotfx.stringBindingOf
-import kotfx.toMutableObservableList
+import javafx.util.Callback
+import kotfx.*
 import org.jetbrains.exposed.sql.or
 
 class CustomerController : Controller() {
@@ -30,36 +29,39 @@ class CustomerController : Controller() {
 
     @FXML
     fun initialize() {
-        customerPagination.setPageFactory { page ->
-            val listView = createPage(page)
-            emailLabel.textProperty().unbind()
-            emailLabel.textProperty() bind stringBindingOf(listView.selectionModel.selectedItemProperty()) { listView.selectionModel.selectedItem?.email ?: "-" }
-            phone1Label.textProperty().unbind()
-            phone1Label.textProperty() bind stringBindingOf(listView.selectionModel.selectedItemProperty()) { listView.selectionModel.selectedItem?.phone1 ?: "-" }
-            phone2Label.textProperty().unbind()
-            phone2Label.textProperty() bind stringBindingOf(listView.selectionModel.selectedItemProperty()) { listView.selectionModel.selectedItem?.phone2 ?: "-" }
-            noteLabel.textProperty().unbind()
-            noteLabel.textProperty() bind stringBindingOf(listView.selectionModel.selectedItemProperty()) { listView.selectionModel.selectedItem?.note ?: "-" }
-            listView
+        customerPagination.pageFactoryProperty() bind bindingOf(customerField.textProperty()) {
+            Callback<Int, Node> { page ->
+                createPage(page).apply {
+                    emailLabel.textProperty().unbind()
+                    emailLabel.textProperty() bind stringBindingOf(selectionModel.selectedItemProperty()) { selectionModel.selectedItem?.email ?: "" }
+                    phone1Label.textProperty().unbind()
+                    phone1Label.textProperty() bind stringBindingOf(selectionModel.selectedItemProperty()) { selectionModel.selectedItem?.phone1 ?: "" }
+                    phone2Label.textProperty().unbind()
+                    phone2Label.textProperty() bind stringBindingOf(selectionModel.selectedItemProperty()) { selectionModel.selectedItem?.phone2 ?: "" }
+                    noteLabel.textProperty().unbind()
+                    noteLabel.textProperty() bind stringBindingOf(selectionModel.selectedItemProperty()) { selectionModel.selectedItem?.note ?: "" }
+                }
+            }
         }
     }
 
-    @FXML
-    fun refreshOnAction() = safeTransaction {
-        // customerPagination.update()
+    @FXML fun clearOnAction() {
+        customerField.text = ""
     }
 
     @FXML
-    fun addOnAction() = CustomerDialog(this).showAndWait().ifPresent {
-
+    fun addOnAction() = CustomerDialog(this).showAndWait().ifPresent { customer ->
+        customerField.text = customer.id.toString()
     }
 
     private fun createPage(page: Int): ListView<Customer> = listView {
-        items = safeTransaction {
-            when {
+        safeTransaction {
+            val customers = when {
                 customerField.text.isEmpty() -> Customer.all()
                 else -> Customer.find { Customers.id eq customerField.text.toIntOrNull() or (Customers.name regexp customerField.text) }
-            }.limit(ITEMS_PER_PAGE, ITEMS_PER_PAGE * page).toMutableObservableList()
+            }
+            items = customers.limit(ITEMS_PER_PAGE, ITEMS_PER_PAGE * page).toMutableObservableList()
+            customerPagination.pageCount = (customers.count() / ITEMS_PER_PAGE) + 1
         }
     }
 }

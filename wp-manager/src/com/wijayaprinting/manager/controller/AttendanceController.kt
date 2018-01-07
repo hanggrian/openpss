@@ -53,7 +53,7 @@ class AttendanceController : Controller() {
         processButton.disableProperty() bind flowPane.children.isEmpty
 
         if (DEBUG) {
-            fileField.text = "/Users/hendraanggrian/Downloads/Absen 12-29-17.xlsx"
+            fileField.text = "/Users/hendraanggrian/Downloads/Absen 11-25-17.xlsx"
             readButton.fire()
         }
     }
@@ -83,11 +83,7 @@ class AttendanceController : Controller() {
         Observable
                 .create<Attendee> { emitter ->
                     try {
-                        val employees = readerChoiceBox.selectionModel.selectedItem.read(this, File(fileField.text))
-                        when (DEBUG) {
-                            true -> employees.filter { it.name == "Yanti" || it.name == "Yoyo" || it.name == "Mus" }.toMutableList()
-                            else -> employees
-                        }.forEach {
+                        readerChoiceBox.selectionModel.selectedItem.read(this, File(fileField.text)).forEach {
                             if (mergeToggleButton.isSelected) it.mergeDuplicates()
                             emitter.onNext(it)
                         }
@@ -96,7 +92,7 @@ class AttendanceController : Controller() {
                     }
                     emitter.onComplete()
                 }
-                .multithread(computation())
+                .multithread()
                 .subscribeBy({ e -> errorAlert(e.message.toString()).showAndWait() }, {
                     progressDialog.forceClose()
                     rebindProcessButton()
@@ -223,7 +219,7 @@ class AttendanceController : Controller() {
             attendee.saveWage()
             set.add(attendee)
         }
-        if (set.isNotEmpty()) stage(getString(R.string.record)) {
+        stage(getString(R.string.record)) {
             val minSize = Pair(960.0, 640.0)
             val loader = getResource(R.fxml.layout_attendance_record).loadFXML(resources)
             scene = loader.pane.toScene(minSize.first, minSize.second)

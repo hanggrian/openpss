@@ -1,4 +1,4 @@
-// rsync generated this class at 2018-01-08T00:27:39.922 from:
+// rsync generated this class at 2018-01-08T05:28:10.581 from:
 // string_en.properties
 // layout_attendance.fxml
 // btn_refresh.png
@@ -11,6 +11,7 @@
 // btn_lock_end.png
 // btn_visibility.png
 // btn_empty.png
+// btn_search.png
 // btn_clear.png
 // layout_main.fxml
 // layout_attendance_record.fxml
@@ -89,6 +90,8 @@ public final class R {
     public static final String btn_visibility = "/btn_visibility.png";
 
     public static final String btn_empty = "/btn_empty.png";
+
+    public static final String btn_search = "/btn_search.png";
 
     public static final String btn_clear = "/btn_clear.png";
 

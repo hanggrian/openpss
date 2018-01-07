@@ -18,7 +18,7 @@ interface Reader {
     val extensions: Array<String>
 
     /**
-     * The actual reading process is helped by RxJava in computation thread.
+     * The reading process is executed in background thread.
      * During its long operation, exception throwing may happen in [Reader.read].
      */
     @Throws(Exception::class)

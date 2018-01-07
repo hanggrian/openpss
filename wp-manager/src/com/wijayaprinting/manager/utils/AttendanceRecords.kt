@@ -11,22 +11,19 @@ import kotfx.doubleBindingOf
 import org.joda.time.DateTime
 import org.joda.time.DateTime.now
 
-inline fun Attendee.toRootRecord(): AttendanceRecord = AttendanceRecord(this, AttendanceRecord.TYPE_ROOT, 0, this, DateTime(0).asProperty(), DateTime(0).asProperty())
+inline fun Attendee.toRootRecord(): AttendanceRecord = AttendanceRecord(this, AttendanceRecord.INDEX_ROOT, this, DateTime(0).asProperty(), DateTime(0).asProperty())
 
-inline fun Attendee.toNodeRecord(): AttendanceRecord = AttendanceRecord(this, AttendanceRecord.TYPE_NODE, 0, this, now().asProperty(), now().asProperty())
+inline fun Attendee.toNodeRecord(): AttendanceRecord = AttendanceRecord(this, AttendanceRecord.INDEX_NODE, this, now().asProperty(), now().asProperty())
 
 inline fun Attendee.toChildRecords(): Set<AttendanceRecord> {
     val records = mutableSetOf<AttendanceRecord>()
     val iterator = attendances.iterator()
     var index = 0
-    while (iterator.hasNext()) {
-        records.add(AttendanceRecord(this, AttendanceRecord.TYPE_CHILD, index, this, iterator.next().asMutableProperty(), iterator.next().asMutableProperty()))
-        index++
-    }
+    while (iterator.hasNext()) records.add(AttendanceRecord(this, index++, this, iterator.next().asMutableProperty(), iterator.next().asMutableProperty()))
     return records
 }
 
-inline fun Attendee.toTotalRecords(children: Collection<AttendanceRecord>): AttendanceRecord = AttendanceRecord(this, AttendanceRecord.TYPE_TOTAL, -1, this, DateTime(0).asProperty(), DateTime(0).asProperty()).apply {
+inline fun Attendee.toTotalRecords(children: Collection<AttendanceRecord>): AttendanceRecord = AttendanceRecord(this, AttendanceRecord.INDEX_TOTAL, this, DateTime(0).asProperty(), DateTime(0).asProperty()).apply {
     children.map { it.dailyProperty }.toTypedArray().let { mains ->
         dailyProperty bind doubleBindingOf(*mains) { mains.map { it.value }.sum().round }
     }

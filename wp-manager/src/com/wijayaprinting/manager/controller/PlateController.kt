@@ -20,16 +20,14 @@ class PlateController : Controller(), Refreshable {
     @FXML fun refreshOnAction() = refresh()
 
     @FXML
-    fun priceOnAction() {
+    fun priceOnAction() = stage(getString(R.string.plate_price)) {
         val minSize = Pair(240.0, 480.0)
-        stage(getString(R.string.plate_price)) {
-            initModality(APPLICATION_MODAL)
-            scene = getResource(R.fxml.layout_plate_price).loadFXML(resources).pane.toScene(minSize.first, minSize.second)
-            minWidth = minSize.first
-            minHeight = minSize.second
-            isResizable = false
-        }.showAndWait()
-    }
+        initModality(APPLICATION_MODAL)
+        scene = getResource(R.fxml.layout_plate_price).loadFXML(resources).pane.toScene(minSize.first, minSize.second)
+        minWidth = minSize.first
+        minHeight = minSize.second
+        isResizable = false
+    }.showAndWait()
 
     @FXML
     fun addOnAction() = PlateReceiptDialog(this).showAndWait().ifPresent {

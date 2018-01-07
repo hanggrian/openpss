@@ -1,4 +1,4 @@
-// rsync generated this class at 2018-01-07T22:10:30.273 from:
+// rsync generated this class at 2018-01-08T00:27:39.922 from:
 // string_en.properties
 // layout_attendance.fxml
 // btn_refresh.png
@@ -15,7 +15,6 @@
 // layout_main.fxml
 // layout_attendance_record.fxml
 // btn_visibility_off.png
-// layout_attendance_reccess.fxml
 // ic_clock.png
 // ic_key.png
 // btn_alarm.png
@@ -26,6 +25,7 @@
 // layout_plate.fxml
 // btn_merge.png
 // btn_lock_start.png
+// layout_attendance_recess.fxml
 // ic_launcher.png
 // btn_checkbox.png
 // lato_regular.ttf
@@ -59,9 +59,9 @@ public final class R {
 
     public static final String layout_attendance_record = "/layout_attendance_record.fxml";
 
-    public static final String layout_attendance_reccess = "/layout_attendance_reccess.fxml";
-
     public static final String layout_plate = "/layout_plate.fxml";
+
+    public static final String layout_attendance_recess = "/layout_attendance_recess.fxml";
 
     public static final String layout_customer = "/layout_customer.fxml";
 
@@ -216,9 +216,9 @@ public final class R {
 
     public static final String user = "user";
 
-    public static final String app_name = "app_name";
-
     public static final String test_connection = "test_connection";
+
+    public static final String app_name = "app_name";
 
     public static final String day = "day";
 

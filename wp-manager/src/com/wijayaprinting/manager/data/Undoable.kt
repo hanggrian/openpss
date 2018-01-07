@@ -14,5 +14,8 @@ data class Undoable @JvmOverloads constructor(
         actions.add(action)
     }
 
-    fun undo() = actions.forEach { it() }
+    fun undo() {
+        actions.forEach { it() }
+        actions.clear()
+    }
 }

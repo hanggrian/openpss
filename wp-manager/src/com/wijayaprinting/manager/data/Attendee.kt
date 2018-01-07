@@ -1,13 +1,14 @@
 package com.wijayaprinting.manager.data
 
+import com.wijayaprinting.dao.Recess
 import com.wijayaprinting.dao.Wage
 import com.wijayaprinting.manager.Resourced
 import com.wijayaprinting.manager.internal.RevertableObservableList
 import com.wijayaprinting.manager.utils.safeTransaction
-import javafx.beans.property.DoubleProperty
 import javafx.beans.property.IntegerProperty
-import javafx.beans.property.SimpleDoubleProperty
 import javafx.beans.property.SimpleIntegerProperty
+import javafx.collections.ObservableList
+import kotfx.mutableObservableListOf
 import org.joda.time.DateTime
 import org.joda.time.Minutes.minutes
 import org.joda.time.Period
@@ -21,14 +22,14 @@ data class Attendee @JvmOverloads constructor(
         val name: String,
         val role: String? = null,
 
+        val recesses: ObservableList<Recess> = mutableObservableListOf(),
+
         /** Attendances and shift should be set in [com.wijayaprinting.manager.controller.AttendanceController]. */
         val attendances: RevertableObservableList<DateTime> = RevertableObservableList(),
 
         /** Wages below are retrieved from sql, or dailyEmpty if there is none. */
         val dailyProperty: IntegerProperty = SimpleIntegerProperty(),
-        val hourlyOvertimeProperty: IntegerProperty = SimpleIntegerProperty(),
-        val recessProperty: DoubleProperty = SimpleDoubleProperty(),
-        val recessOvertimeProperty: DoubleProperty = SimpleDoubleProperty()
+        val hourlyOvertimeProperty: IntegerProperty = SimpleIntegerProperty()
 ) : Resourced by resourced {
 
     companion object {
@@ -40,8 +41,6 @@ data class Attendee @JvmOverloads constructor(
         safeTransaction { Wage.findById(id) }?.let { wage ->
             dailyProperty.value = wage.daily
             hourlyOvertimeProperty.value = wage.hourlyOvertime
-            recessProperty.value = wage.recess.toDouble()
-            recessOvertimeProperty.value = wage.recessOvertime.toDouble()
         }
     }
 
@@ -50,13 +49,9 @@ data class Attendee @JvmOverloads constructor(
         if (wage == null) Wage.new(id) {
             daily = dailyProperty.value
             hourlyOvertime = hourlyOvertimeProperty.value
-            recess = recessProperty.value.toBigDecimal()
-            recessOvertime = recessOvertimeProperty.value.toBigDecimal()
         } else {
             wage.daily = dailyProperty.value
             wage.hourlyOvertime = hourlyOvertimeProperty.value
-            wage.recess = recessProperty.value.toBigDecimal()
-            wage.recessOvertime = recessOvertimeProperty.value.toBigDecimal()
         }
     }
 

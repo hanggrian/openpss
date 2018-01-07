@@ -1,21 +1,18 @@
 package com.wijayaprinting.manager.controller
 
 import com.wijayaprinting.PATTERN_DATETIME
+import com.wijayaprinting.dao.Recess
 import com.wijayaprinting.manager.BuildConfig.DEBUG
 import com.wijayaprinting.manager.R
 import com.wijayaprinting.manager.data.Attendee
 import com.wijayaprinting.manager.dialog.DateTimeDialog
 import com.wijayaprinting.manager.reader.Reader
 import com.wijayaprinting.manager.scene.control.FileField
-import com.wijayaprinting.manager.scene.control.doubleField
 import com.wijayaprinting.manager.scene.control.intField
 import com.wijayaprinting.manager.scene.utils.gap
 import com.wijayaprinting.manager.scene.utils.maxSize
 import com.wijayaprinting.manager.scene.utils.size
-import com.wijayaprinting.manager.utils.controller
-import com.wijayaprinting.manager.utils.forceClose
-import com.wijayaprinting.manager.utils.multithread
-import com.wijayaprinting.manager.utils.pane
+import com.wijayaprinting.manager.utils.*
 import io.reactivex.Observable
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers.computation
@@ -30,6 +27,7 @@ import javafx.scene.layout.FlowPane
 import javafx.scene.layout.Pane
 import javafx.scene.layout.Priority.ALWAYS
 import javafx.scene.text.Font.font
+import javafx.stage.Modality
 import kotfx.*
 import org.joda.time.DateTime
 import java.io.File
@@ -55,14 +53,20 @@ class AttendanceController : Controller() {
         processButton.disableProperty() bind flowPane.children.isEmpty
 
         if (DEBUG) {
-            fileField.text = "/Users/hendraanggrian/Downloads/Absen 11-25-17.xlsx"
+            fileField.text = "/Users/hendraanggrian/Downloads/Absen 12-29-17.xlsx"
             readButton.fire()
         }
     }
 
     @FXML
-    fun recessOnAction() {
-    }
+    fun recessOnAction() = stage(getString(R.string.recess)) {
+        val minSize = Pair(240.0, 480.0)
+        initModality(Modality.APPLICATION_MODAL)
+        scene = getResource(R.fxml.layout_attendance_recess).loadFXML(resources).pane.toScene(minSize.first, minSize.second)
+        minWidth = minSize.first
+        minHeight = minSize.second
+        isResizable = false
+    }.showAndWait()
 
     @FXML
     fun browseOnAction() = fileChooser(getString(R.string.input_file), *readerChoiceBox.value.extensions)
@@ -96,51 +100,50 @@ class AttendanceController : Controller() {
                 .subscribeBy({ e -> errorAlert(e.message.toString()).showAndWait() }, {
                     progressDialog.forceClose()
                     rebindProcessButton()
-                }) { employee ->
-                    flowPane.children.add(titledPane(employee.toString()) {
-                        userData = employee
-                        isCollapsible = false
+                }) { attendee ->
+                    flowPane.children.add(titledPane(attendee.toString()) {
                         lateinit var listView: ListView<DateTime>
-                        lateinit var deleteItem: MenuItem
+                        userData = attendee
+                        isCollapsible = false
                         content = vbox {
                             gridPane {
                                 gap(4)
                                 padding = Insets(8.0)
-                                employee.role?.let { role ->
+                                attendee.role?.let { role ->
                                     label(getString(R.string.role)) col 0 row 0 marginRight 4
-                                    textField(role) {
-                                        prefWidth = 100.0
-                                        isEditable = false
-                                    } col 1 row 0 colSpan 3
+                                    label(role) col 1 row 0 colSpan 2
                                 }
                                 label(getString(R.string.income)) col 0 row 1 marginRight 4
                                 intField {
                                     prefWidth = 100.0
                                     promptText = getString(R.string.income)
-                                    valueProperty bindBidirectional employee.dailyProperty
-                                } col 1 row 1 colSpan 2
-                                label("@${getString(R.string.day)}") { font = font(9.0) } col 3 row 1
+                                    valueProperty bindBidirectional attendee.dailyProperty
+                                } col 1 row 1
+                                label("@${getString(R.string.day)}") { font = font(9.0) } col 2 row 1
                                 label(getString(R.string.overtime)) col 0 row 2 marginRight 4
                                 intField {
                                     prefWidth = 96.0
                                     promptText = getString(R.string.overtime)
-                                    valueProperty bindBidirectional employee.hourlyOvertimeProperty
-                                } col 1 row 2 colSpan 2
-                                label("@${getString(R.string.hour)}") { font = font(9.0) } col 3 row 2
+                                    valueProperty bindBidirectional attendee.hourlyOvertimeProperty
+                                } col 1 row 2
+                                label("@${getString(R.string.hour)}") { font = font(9.0) } col 2 row 2
                                 label(getString(R.string.recess)) col 0 row 3 marginRight 4
-                                doubleField {
-                                    prefWidth = 48.0
-                                    promptText = getString(R.string.recess)
-                                    valueProperty bindBidirectional employee.recessProperty
-                                } col 1 row 3
-                                doubleField {
-                                    prefWidth = 48.0
-                                    promptText = getString(R.string.recess)
-                                    valueProperty bindBidirectional employee.recessOvertimeProperty
-                                } col 2 row 3
-                                label(getString(R.string.hour)) { font = font(9.0) } col 3 row 3
+                                vbox {
+                                    safeTransaction {
+                                        Recess.all().forEach { recess ->
+                                            checkBox(recess.toString()) {
+                                                selectedProperty().addListener { _, _, selected ->
+                                                    (this@titledPane.userData as Attendee).recesses.let { recesses ->
+                                                        if (selected) recesses.add(recess) else recesses.remove(recess)
+                                                    }
+                                                }
+                                                isSelected = true
+                                            } marginTop if (children.size > 1) 4 else 0
+                                        }
+                                    }
+                                } col 1 row 3 colSpan 2
                             }
-                            listView = listView(employee.attendances) {
+                            listView = listView(attendee.attendances) {
                                 prefWidth = 128.0
                                 setCellFactory {
                                     object : ListCell<DateTime>() {
@@ -185,9 +188,9 @@ class AttendanceController : Controller() {
                                 disableProperty() bind listView.selectionModel.selectedItems.isEmpty
                             }
                             separatorMenuItem()
-                            menuItem(getString(R.string.revert)) { setOnAction { employee.attendances.revert() } }
+                            menuItem(getString(R.string.revert)) { setOnAction { attendee.attendances.revert() } }
                             separatorMenuItem()
-                            deleteItem = menuItem("${getString(R.string.delete)} ${employee.name}") {
+                            menuItem("${getString(R.string.delete)} ${attendee.name}") {
                                 setOnAction {
                                     flowPane.children.remove(this@titledPane)
                                     rebindProcessButton()
@@ -220,20 +223,18 @@ class AttendanceController : Controller() {
             attendee.saveWage()
             set.add(attendee)
         }
-        if (set.isNotEmpty()) {
+        if (set.isNotEmpty()) stage(getString(R.string.record)) {
             val minSize = Pair(960.0, 640.0)
-            stage(getString(R.string.record)) {
-                val loader = getResource(R.fxml.layout_attendance_record).loadFXML(resources)
-                scene = loader.pane.toScene(minSize.first, minSize.second)
-                minWidth = minSize.first
-                minHeight = minSize.second
-                loader.controller.setExtra(set)
-            }.showAndWait()
-        }
+            val loader = getResource(R.fxml.layout_attendance_record).loadFXML(resources)
+            scene = loader.pane.toScene(minSize.first, minSize.second)
+            minWidth = minSize.first
+            minHeight = minSize.second
+            loader.controller.setExtra(set)
+        }.showAndWait()
     }
 
     /** Employees are stored in flowpane childrens' user data. */
-    private val attendees: Iterable<Attendee> get() = flowPane.children.map { it.userData as Attendee }
+    private val attendees: List<Attendee> get() = flowPane.children.map { it.userData as Attendee }
 
     /** As attendees are populated, process button need to be rebinded according to new requirements. */
     private fun rebindProcessButton() {

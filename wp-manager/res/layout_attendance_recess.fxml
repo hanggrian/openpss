@@ -4,7 +4,7 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.VBox?>
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.wijayaprinting.manager.controller.AttendanceReccessController">
+      fx:controller="com.wijayaprinting.manager.controller.AttendanceRecessController">
     <ToolBar>
         <Button mnemonicParsing="false" onAction="#refreshOnAction">
             <graphic>
@@ -39,8 +39,8 @@
     </ToolBar>
     <TableView fx:id="tableView" VBox.vgrow="ALWAYS">
         <columns>
-            <TableColumn fx:id="startColumn" text="%name" prefWidth="120.0"/>
-            <TableColumn fx:id="endColumn" text="%price" prefWidth="120.0"/>
+            <TableColumn fx:id="startColumn" text="%start" prefWidth="120.0"/>
+            <TableColumn fx:id="endColumn" text="%end" prefWidth="120.0"/>
         </columns>
         <columnResizePolicy>
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>

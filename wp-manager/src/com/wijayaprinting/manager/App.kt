@@ -155,8 +155,8 @@ class App : Application(), Resourced {
             App.employee = employee.id.value
             App.fullAccess = employee.fullAccess
 
-            val minSize = Pair(960.0, 640.0)
             stage.apply {
+                val minSize = Pair(960.0, 640.0)
                 title = getString(R.string.app_name)
                 scene = getResource(R.fxml.layout_main).loadFXML(resources).pane.toScene(minSize.first, minSize.second)
                 minWidth = minSize.first

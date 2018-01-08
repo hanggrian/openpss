@@ -23,7 +23,7 @@ import javafx.scene.layout.FlowPane
 import javafx.scene.layout.Pane
 import javafx.scene.layout.Priority.ALWAYS
 import javafx.scene.text.Font.font
-import javafx.stage.Modality
+import javafx.stage.Modality.APPLICATION_MODAL
 import kotfx.*
 import org.joda.time.DateTime
 import java.io.File
@@ -56,11 +56,8 @@ class AttendanceController : Controller() {
 
     @FXML
     fun recessOnAction() = stage(getString(R.string.recess)) {
-        val minSize = Pair(240.0, 480.0)
-        initModality(Modality.APPLICATION_MODAL)
-        scene = getResource(R.fxml.layout_attendance_recess).loadFXML(resources).pane.toScene(minSize.first, minSize.second)
-        minWidth = minSize.first
-        minHeight = minSize.second
+        initModality(APPLICATION_MODAL)
+        scene = getResource(R.fxml.layout_attendance_recess).loadFXML(resources).pane.toScene()
         isResizable = false
     }.showAndWait()
 
@@ -121,7 +118,7 @@ class AttendanceController : Controller() {
                                 label("@${getString(R.string.hour)}") { font = font(9.0) } col 2 row 2
                                 label(getString(R.string.recess)) col 0 row 3 marginRight 4
                                 vbox {
-                                    safeTransaction {
+                                    expose {
                                         Recess.all().forEach { recess ->
                                             checkBox(recess.toString()) {
                                                 selectedProperty().addListener { _, _, selected ->
@@ -216,11 +213,10 @@ class AttendanceController : Controller() {
             set.add(attendee)
         }
         stage(getString(R.string.record)) {
-            val minSize = Pair(960.0, 640.0)
             val loader = getResource(R.fxml.layout_attendance_record).loadFXML(resources)
-            scene = loader.pane.toScene(minSize.first, minSize.second)
-            minWidth = minSize.first
-            minHeight = minSize.second
+            scene = loader.pane.toScene()
+            minWidth = 960.0
+            minHeight = 640.0
             loader.controller.setExtra(set)
         }.showAndWait()
     }
@@ -229,10 +225,7 @@ class AttendanceController : Controller() {
     private val attendees: List<Attendee> get() = flowPane.children.map { it.userData as Attendee }
 
     /** As attendees are populated, process button need to be rebinded according to new requirements. */
-    private fun rebindProcessButton() {
-        processButton.disableProperty().unbind()
-        processButton.disableProperty() bind (flowPane.children.isEmpty or booleanBindingOf(flowPane.children, *flowPane.children.map { (it as TitledPane).content }.map { (it as Pane).children[1] as ListView<*> }.map { it.items }.toTypedArray()) {
-            attendees.any { it.attendances.size % 2 != 0 }
-        })
-    }
+    private fun rebindProcessButton() = processButton.disableProperty() rebind (flowPane.children.isEmpty or booleanBindingOf(flowPane.children, *flowPane.children.map { (it as TitledPane).content }.map { (it as Pane).children[1] as ListView<*> }.map { it.items }.toTypedArray()) {
+        attendees.any { it.attendances.size % 2 != 0 }
+    })
 }

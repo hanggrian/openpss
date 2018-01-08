@@ -1,5 +1,7 @@
 package com.wijayaprinting.io
 
+import com.wijayaprinting.utils.createIfNotExists
+import com.wijayaprinting.utils.hideOnWindows
 import javafx.beans.property.StringProperty
 import kotfx.asMutableProperty
 import java.io.File
@@ -7,8 +9,7 @@ import java.util.*
 import kotlin.collections.HashMap
 
 /** Represents a properties file used that acts as local settings. */
-@Suppress("LeakingThis")
-abstract class PropertiesFile(child: String) : File(PropertiesFolder(), child) {
+open class PropertiesFile(child: String, vararg pairs: Pair<String, String>) : File(PropertiesFolder(), child) {
 
     /** Properties reference to get, set, and finally save into this file. */
     private val properties = Properties()
@@ -17,12 +18,11 @@ abstract class PropertiesFile(child: String) : File(PropertiesFolder(), child) {
     protected val map = HashMap<String, StringProperty>()
 
     init {
-        if (!exists()) createNewFile()
+        createIfNotExists()
+        hideOnWindows()
         inputStream().use { properties.load(it) }
         pairs.forEach { map.put(it.first, properties.getProperty(it.first, it.second).asMutableProperty()) }
     }
-
-    abstract val pairs: List<Pair<String, String>>
 
     @JvmOverloads
     fun save(comments: String? = null) {

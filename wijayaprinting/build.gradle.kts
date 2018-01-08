@@ -22,16 +22,14 @@ java.sourceSets {
 rsync {
     srcDir("src")
     resDir("res")
-    packageName("$releaseGroup.$releaseArtifact")
+    packageName("com.wijayaprinting")
     leadingSlash(true)
     debug(isDebug)
 }
 
 buildconfig {
     srcDir("src")
-    packageName("$releaseGroup.$releaseArtifact")
-    groupId(releaseGroup)
-    artifactId(releaseArtifact)
+    packageName("com.wijayaprinting")
     version(releaseVersion)
     debug(isDebug)
 }

@@ -3,16 +3,14 @@ package com.wijayaprinting
 import com.wijayaprinting.BuildConfig.DEBUG
 import com.wijayaprinting.dao.Employee
 import com.wijayaprinting.dao.Employees
-import com.wijayaprinting.dialog.AboutDialog
 import com.wijayaprinting.data.Language
+import com.wijayaprinting.dialog.AboutDialog
 import com.wijayaprinting.io.MySQLFile
 import com.wijayaprinting.io.PreferencesFile
 import com.wijayaprinting.scene.control.IPField
 import com.wijayaprinting.scene.control.IntField
 import com.wijayaprinting.scene.control.intField
 import com.wijayaprinting.scene.control.ipField
-import com.wijayaprinting.utils.attachButtons
-import com.wijayaprinting.utils.gap
 import com.wijayaprinting.utils.*
 import io.reactivex.rxkotlin.subscribeBy
 import javafx.application.Application
@@ -38,8 +36,8 @@ import java.util.*
 class App : Application(), Resourced {
 
     companion object {
-        lateinit var employee: String
-        var fullAccess: Boolean = false
+        lateinit var EMPLOYEE: String
+        var FULL_ACCESS: Boolean = false
 
         @JvmStatic fun main(vararg args: String) = launch(App::class.java, *args)
     }
@@ -151,15 +149,14 @@ class App : Application(), Resourced {
             }
         }.showAndWait().filter { it is Employee }.ifPresent { employee ->
             employee as Employee
-            Companion.employee = employee.id.value
-            fullAccess = employee.fullAccess
+            EMPLOYEE = employee.id.value
+            FULL_ACCESS = employee.fullAccess
 
             stage.apply {
-                val minSize = Pair(960.0, 640.0)
                 title = getString(R.string.app_name)
-                scene = getResource(R.fxml.layout_main).loadFXML(resources).pane.toScene(minSize.first, minSize.second)
-                minWidth = minSize.first
-                minHeight = minSize.second
+                scene = getResource(R.fxml.layout_main).loadFXML(resources).pane.toScene()
+                minWidth = 960.0
+                minHeight = 640.0
             }.show()
 
             if (employee.firstTimeLogin) dialog<String>(getString(R.string.change_password), getString(R.string.change_password), ImageView(R.png.ic_key)) {
@@ -179,8 +176,8 @@ class App : Application(), Resourced {
                 setResultConverter { if (it == OK) changePasswordField.text else null }
                 runFX { changePasswordField.requestFocus() }
             }.showAndWait().filter { it is String }.ifPresent { newPassword ->
-                safeTransaction {
-                    Employees.update({ Employees.id eq Companion.employee }) { employee -> employee[password] = newPassword }
+                expose {
+                    Employees.update({ Employees.id eq EMPLOYEE }) { employee -> employee[password] = newPassword }
                     infoAlert(getString(R.string.change_password_successful)).showAndWait()
                 }
             }

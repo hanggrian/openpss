@@ -1,10 +1,10 @@
 package com.wijayaprinting.dialog
 
-import com.wijayaprinting.dao.Customer
-import com.wijayaprinting.dao.Customers
 import com.wijayaprinting.R
 import com.wijayaprinting.Resourced
-import com.wijayaprinting.utils.safeTransaction
+import com.wijayaprinting.dao.Customer
+import com.wijayaprinting.dao.Customers
+import com.wijayaprinting.utils.expose
 import javafx.scene.control.ButtonType.CANCEL
 import javafx.scene.control.ButtonType.OK
 import javafx.scene.control.Dialog
@@ -15,6 +15,10 @@ import kotfx.*
 import org.jetbrains.exposed.sql.or
 
 class SearchCustomerDialog(val resourced: Resourced) : Dialog<Customer>(), Resourced by resourced {
+
+    companion object {
+        private const val ITEMS_PER_PAGE = 15
+    }
 
     private lateinit var textField: TextField
     private lateinit var listView: ListView<Customer>
@@ -27,11 +31,11 @@ class SearchCustomerDialog(val resourced: Resourced) : Dialog<Customer>(), Resou
             textField = textField { promptText = getString(R.string.customer) }
             listView = listView<Customer> {
                 itemsProperty() bind bindingOf(textField.textProperty()) {
-                    safeTransaction {
+                    expose {
                         when {
                             textField.text.isEmpty() -> Customer.all()
                             else -> Customer.find { Customers.id eq textField.text.toIntOrNull() or (Customers.name regexp textField.text) }
-                        }.limit(10).toMutableObservableList()
+                        }.limit(ITEMS_PER_PAGE).toMutableObservableList()
                     }
                 }
             } marginTop 8

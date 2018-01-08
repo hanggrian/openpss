@@ -7,7 +7,7 @@ import com.wijayaprinting.Refreshable
 import com.wijayaprinting.scene.layout.TimeBox
 import com.wijayaprinting.scene.layout.timeBox
 import com.wijayaprinting.utils.gap
-import com.wijayaprinting.utils.safeTransaction
+import com.wijayaprinting.utils.expose
 import javafx.fxml.FXML
 import javafx.scene.control.Button
 import javafx.scene.control.ButtonType.*
@@ -50,7 +50,7 @@ class AttendanceRecessController : Controller(), Refreshable {
         button(OK).disableProperty() bind booleanBindingOf(startBox.valueProperty, endBox.valueProperty) { startBox.value >= endBox.value }
         setResultConverter { if (it == OK) Pair(startBox.value, endBox.value) else null }
     }.showAndWait().ifPresent { (_start, _end) ->
-        tableView.items.add(safeTransaction {
+        tableView.items.add(expose {
             Recess.new {
                 start = _start
                 end = _end
@@ -62,9 +62,9 @@ class AttendanceRecessController : Controller(), Refreshable {
     fun deleteOnAction() = confirmAlert(getString(R.string.are_you_sure), YES, NO)
             .showAndWait()
             .filter { it == YES }
-            .ifPresent { tableView.items.remove(safeTransaction { tableView.selectionModel.selectedItem.apply { delete() } }) }
+            .ifPresent { tableView.items.remove(expose { tableView.selectionModel.selectedItem.apply { delete() } }) }
 
     override fun refresh() {
-        tableView.items = safeTransaction { Recess.all().toMutableObservableList() }
+        tableView.items = expose { Recess.all().toMutableObservableList() }
     }
 }

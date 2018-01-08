@@ -1,10 +1,10 @@
 package com.wijayaprinting.dialog
 
-import com.wijayaprinting.dao.Customer
 import com.wijayaprinting.R
 import com.wijayaprinting.Resourced
+import com.wijayaprinting.dao.Customer
 import com.wijayaprinting.utils.gap
-import com.wijayaprinting.utils.safeTransaction
+import com.wijayaprinting.utils.expose
 import javafx.scene.control.ButtonType.CANCEL
 import javafx.scene.control.ButtonType.OK
 import javafx.scene.control.Dialog
@@ -29,15 +29,15 @@ class CustomerDialog @JvmOverloads constructor(val resourced: Resourced, var pre
         content = gridPane {
             gap(8)
             label(getString(R.string.name)) col 0 row 0
-            nameField = textField { promptText = getString(R.string.name) } col 1 row 0
+            nameField = textField(prefill?.name ?: "") { promptText = getString(R.string.name) } col 1 row 0
             label(getString(R.string.email)) col 0 row 1
-            emailField = textField { promptText = getString(R.string.email) } col 1 row 1
+            emailField = textField(prefill?.email ?: "") { promptText = getString(R.string.email) } col 1 row 1
             label("${getString(R.string.phone)} 1") col 0 row 2
-            phone1Field = textField { promptText = getString(R.string.phone) } col 1 row 2
+            phone1Field = textField(prefill?.phone1 ?: "") { promptText = getString(R.string.phone) } col 1 row 2
             label("${getString(R.string.phone)} 2") col 0 row 3
-            phone2Field = textField { promptText = getString(R.string.phone) } col 1 row 3
+            phone2Field = textField(prefill?.phone2 ?: "") { promptText = getString(R.string.phone) } col 1 row 3
             label(getString(R.string.note)) col 0 row 4
-            noteArea = textArea { promptText = getString(R.string.note) } col 1 row 4
+            noteArea = textArea(prefill?.note ?: "") { promptText = getString(R.string.note) } col 1 row 4
         }
         button(CANCEL)
         button(OK).disableProperty() bind nameField.textProperty().isEmpty
@@ -45,7 +45,7 @@ class CustomerDialog @JvmOverloads constructor(val resourced: Resourced, var pre
         setResultConverter {
             when {
                 it == CANCEL -> null
-                isAdd -> safeTransaction {
+                isAdd -> expose {
                     Customer.new {
                         since = now()
                         name = nameField.text
@@ -55,10 +55,18 @@ class CustomerDialog @JvmOverloads constructor(val resourced: Resourced, var pre
                         note = noteArea.text
                     }
                 }
-                else -> null
+                else -> expose {
+                    prefill!!.apply {
+                        name = nameField.text
+                        email = emailField.text
+                        phone1 = phone1Field.text
+                        phone2 = phone2Field.text
+                        note = noteArea.text
+                    }
+                }
             }
         }
     }
 
-    val isAdd: Boolean get() = prefill == null
+    private val isAdd: Boolean get() = prefill == null
 }

@@ -8,10 +8,10 @@ import org.jetbrains.exposed.dao.IntIdTable
 object Customers : IntIdTable("customer") {
     val name = varchar("name", 50).index()
     val since = datetime("since")
-    val email = varchar("email", 50)
-    val phone1 = varchar("phone1", 15)
-    val phone2 = varchar("phone2", 15)
-    val note = varchar("note", 255)
+    val email = varchar("email", 50).default("")
+    val phone1 = varchar("phone1", 15).default("")
+    val phone2 = varchar("phone2", 15).default("")
+    val note = varchar("note", 255).default("")
 }
 
 class Customer(id: EntityID<Int>) : IntEntity(id) {

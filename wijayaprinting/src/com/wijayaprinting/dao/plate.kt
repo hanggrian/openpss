@@ -15,4 +15,6 @@ class Plate(id: EntityID<String>) : Entity<String>(id) {
     companion object : EntityClass<String, Plate>(Plates)
 
     var price by Plates.price
+
+    override fun toString(): String = "$id - $price"
 }

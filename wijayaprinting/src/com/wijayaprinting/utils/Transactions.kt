@@ -14,7 +14,7 @@ import java.sql.SQLException
  *
  * @see [transaction]
  */
-inline fun <T> safeTransaction(noinline statement: Transaction.() -> T): T? = try {
+inline fun <T> expose(noinline statement: Transaction.() -> T): T? = try {
     transaction(statement)
 } catch (e: SQLException) {
     errorAlert(e.message.toString()) {

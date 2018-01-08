@@ -1,12 +1,9 @@
 import org.gradle.api.artifacts.dsl.DependencyHandler
 import org.gradle.plugin.use.PluginDependenciesSpec
 
-const val releaseGroup = "com.wijayaprinting"
-const val releaseArtifact = "manager"
-const val releaseVersion = "0.5"
-
 /** Set false when building app, true when building stage. */
 const val isDebug = true
+const val releaseVersion = "0.5"
 
 const val kotlinVersion = "1.2.10"
 const val exposedVersion = "0.9.1"
@@ -21,7 +18,7 @@ const val commonsMathVersion = "3.6.1"
 
 const val jodaVersion = "2.9.9"
 const val mysqlConnectorVersion = "5.1.6"
-const val kotfxVersion = "0.15"
+const val kotfxVersion = "0.16"
 const val guavaVersion = "23.6-jre"
 const val slf4jVersion = "1.7.25"
 

@@ -1,24 +1,21 @@
 package com.wijayaprinting.controller
 
-import com.wijayaprinting.App
 import com.wijayaprinting.R
 import com.wijayaprinting.Refreshable
 import com.wijayaprinting.dao.Plate
-import com.wijayaprinting.utils.safeTransaction
+import com.wijayaprinting.utils.expose
 import javafx.fxml.FXML
-import javafx.scene.control.Button
-import javafx.scene.control.ButtonType.NO
-import javafx.scene.control.ButtonType.YES
 import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
 import javafx.scene.control.cell.TextFieldTableCell.forTableColumn
-import kotfx.*
+import kotfx.asProperty
+import kotfx.inputDialog
+import kotfx.stringConverter
+import kotfx.toMutableObservableList
 import java.math.BigDecimal
 import java.math.BigDecimal.ZERO
 
 class PlatePriceController : Controller(), Refreshable {
-
-    @FXML lateinit var deleteButton: Button
 
     @FXML lateinit var tableView: TableView<Plate>
     @FXML lateinit var idColumn: TableColumn<Plate, String>
@@ -26,11 +23,10 @@ class PlatePriceController : Controller(), Refreshable {
 
     @FXML
     fun initialize() {
-        deleteButton.disableProperty() bind (tableView.selectionModel.selectedItemProperty().isNull or !App.fullAccess.asProperty())
         idColumn.setCellValueFactory { it.value.id.value.asProperty() }
         priceColumn.setCellValueFactory { it.value.price.asProperty() }
         priceColumn.cellFactory = forTableColumn<Plate, BigDecimal>(stringConverter({ it.toBigDecimalOrNull() ?: ZERO }))
-        priceColumn.setOnEditCommit { event -> safeTransaction { event.rowValue.price = event.newValue } }
+        priceColumn.setOnEditCommit { event -> expose { event.rowValue.price = event.newValue } }
         refresh()
     }
 
@@ -43,16 +39,10 @@ class PlatePriceController : Controller(), Refreshable {
         contentText = getString(R.string.name)
         editor.promptText = getString(R.string.plate)
     }.showAndWait().ifPresent { id ->
-        tableView.items.add(safeTransaction { Plate.new(id) {} })
+        tableView.items.add(expose { Plate.new(id) {} })
     }
 
-    @FXML
-    fun deleteOnAction() = warningAlert(getString(R.string.delete_plate_warning), YES, NO)
-            .showAndWait()
-            .filter { it == YES }
-            .ifPresent { tableView.items.remove(safeTransaction { tableView.selectionModel.selectedItem.apply { delete() } }) }
-
     override fun refresh() {
-        tableView.items = safeTransaction { Plate.all().toMutableObservableList() }
+        tableView.items = expose { Plate.all().toMutableObservableList() }
     }
 }

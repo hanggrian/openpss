@@ -1,5 +1,6 @@
 package com.wijayaprinting.dao
 
+import com.wijayaprinting.dao.Employee.Companion.DEFAULT_PASSWORD
 import com.wijayaprinting.internal.CustomIdTable
 import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.dao.EntityClass
@@ -7,12 +8,12 @@ import org.jetbrains.exposed.dao.EntityID
 
 object Employees : CustomIdTable<String>("employee") {
     override val id = varchar("id", 50).primaryKey().entityId()
-    val password = varchar("password", 50).default(Employee.DEFAULT_PASSWORD)
+    val password = varchar("password", 50).default(DEFAULT_PASSWORD)
     val fullAccess = bool("full_access")
 }
 
 class Employee(id: EntityID<String>) : Entity<String>(id) {
-    companion object : EntityClass<String, Employee>(Employees){
+    companion object : EntityClass<String, Employee>(Employees) {
         internal const val DEFAULT_PASSWORD = "1234"
     }
 

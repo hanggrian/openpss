@@ -4,7 +4,7 @@ import com.wijayaprinting.dao.Recess
 import com.wijayaprinting.dao.Wage
 import com.wijayaprinting.Resourced
 import com.wijayaprinting.internal.RevertableObservableList
-import com.wijayaprinting.utils.safeTransaction
+import com.wijayaprinting.utils.expose
 import javafx.beans.property.IntegerProperty
 import javafx.beans.property.SimpleIntegerProperty
 import javafx.collections.ObservableList
@@ -38,7 +38,7 @@ data class Attendee @JvmOverloads constructor(
     }
 
     init {
-        safeTransaction { Wage.findById(id) }?.let { wage ->
+        expose { Wage.findById(id) }?.let { wage ->
             dailyProperty.value = wage.daily
             hourlyOvertimeProperty.value = wage.hourlyOvertime
         }
@@ -52,7 +52,7 @@ data class Attendee @JvmOverloads constructor(
         get() = hourlyOvertimeProperty.get()
         set(value) = hourlyOvertimeProperty.set(value)
 
-    fun saveWage() = safeTransaction {
+    fun saveWage() = expose {
         val wage = Wage.findById(id)
         if (wage == null) Wage.new(id) {
             daily = dailyProperty.value

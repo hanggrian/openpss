@@ -22,10 +22,6 @@ import java.net.URI
 
 class AboutDialog(val resourced: Resourced) : Dialog<Unit>(), Resourced by resourced {
 
-    private val latoBold = getResource(R.ttf.lato_bold).toExternalForm()
-    private val latoLight = getResource(R.ttf.lato_light).toExternalForm()
-    private val latoRegular = getResource(R.ttf.lato_regular).toExternalForm()
-
     init {
         title = getString(R.string.about)
         content = hbox {

@@ -18,4 +18,8 @@ interface Resourced {
 
     fun getResource(name: String): URL = App::class.java.getResource(name)
     fun getResourceAsStream(name: String): InputStream = App::class.java.getResourceAsStream(name)
+
+    val latoBold get() = getResource(R.ttf.lato_bold).toExternalForm()
+    val latoLight get() = getResource(R.ttf.lato_light).toExternalForm()
+    val latoRegular get() = getResource(R.ttf.lato_regular).toExternalForm()
 }

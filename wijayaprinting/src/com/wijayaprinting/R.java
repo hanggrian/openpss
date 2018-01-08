@@ -1,4 +1,4 @@
-// rsync generated this class at 2018-01-08T05:28:10.581 from:
+// rsync generated this class at 2018-01-09T02:40:40.482 from:
 // string_en.properties
 // layout_attendance.fxml
 // btn_refresh.png
@@ -11,7 +11,6 @@
 // btn_lock_end.png
 // btn_visibility.png
 // btn_empty.png
-// btn_search.png
 // btn_clear.png
 // layout_main.fxml
 // layout_attendance_record.fxml
@@ -25,6 +24,7 @@
 // btn_print.png
 // layout_plate.fxml
 // btn_merge.png
+// btn_edit.png
 // btn_lock_start.png
 // layout_attendance_recess.fxml
 // ic_launcher.png
@@ -91,8 +91,6 @@ public final class R {
 
     public static final String btn_empty = "/btn_empty.png";
 
-    public static final String btn_search = "/btn_search.png";
-
     public static final String btn_clear = "/btn_clear.png";
 
     public static final String btn_visibility_off = "/btn_visibility_off.png";
@@ -112,6 +110,8 @@ public final class R {
     public static final String btn_print = "/btn_print.png";
 
     public static final String btn_merge = "/btn_merge.png";
+
+    public static final String btn_edit = "/btn_edit.png";
 
     public static final String btn_lock_start = "/btn_lock_start.png";
 
@@ -165,6 +165,8 @@ public final class R {
 
     public static final String email = "email";
 
+    public static final String orders = "orders";
+
     public static final String server = "server";
 
     public static final String open_source_software = "open_source_software";
@@ -210,6 +212,10 @@ public final class R {
     public static final String license = "license";
 
     public static final String merge_close_records = "merge_close_records";
+
+    public static final String select_plate = "select_plate";
+
+    public static final String id = "id";
 
     public static final String help = "help";
 

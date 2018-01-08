@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.wijayaprinting.controller.CustomerController">
+    <ToolBar>
+        <TextField fx:id="customerField" promptText="%search_customer"/>
+        <Button mnemonicParsing="false" onAction="#clearOnAction">
+            <graphic>
+                <ImageView pickOnBounds="true" preserveRatio="true">
+                    <Image url="@btn_clear.png"/>
+                </ImageView>
+            </graphic>
+            <tooltip>
+                <Tooltip text="%clear"/>
+            </tooltip>
+        </Button>
+        <Separator/>
+        <Button mnemonicParsing="false" onAction="#addOnAction">
+            <graphic>
+                <ImageView pickOnBounds="true" preserveRatio="true">
+                    <Image url="@btn_add.png"/>
+                </ImageView>
+            </graphic>
+            <tooltip>
+                <Tooltip text="%add_customer"/>
+            </tooltip>
+        </Button>
+    </ToolBar>
+    <SplitPane dividerPositions="0.5" VBox.vgrow="ALWAYS">
+        <Pagination fx:id="customerPagination"/>
+        <GridPane hgap="8.0" vgap="8.0">
+            <columnConstraints>
+                <ColumnConstraints/>
+                <ColumnConstraints hgrow="ALWAYS"/>
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0"/>
+                <RowConstraints minHeight="10.0" prefHeight="30.0"/>
+                <RowConstraints minHeight="10.0" prefHeight="30.0"/>
+                <RowConstraints minHeight="10.0" prefHeight="30.0"/>
+            </rowConstraints>
+            <Label text="%email"/>
+            <Label fx:id="emailLabel" style="-fx-font-family: sans-serif; -fx-font-weight: bold;" text="-"
+                   GridPane.columnIndex="1"/>
+            <Label text="%phone" GridPane.rowIndex="1"/>
+            <Label fx:id="phone1Label" style="-fx-font-family: sans-serif; -fx-font-weight: bold;" text="-"
+                   GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+            <Label fx:id="phone2Label" style="-fx-font-family: sans-serif; -fx-font-weight: bold;" text="-"
+                   GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+            <Label text="%note" GridPane.rowIndex="3"/>
+            <Label fx:id="noteLabel" style="-fx-font-family: sans-serif; -fx-font-weight: bold;" text="-"
+                   GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+            <padding>
+                <Insets bottom="8.0" left="8.0" right="8.0" top="8.0"/>
+            </padding>
+        </GridPane>
+    </SplitPane>
+</VBox>

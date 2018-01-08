@@ -14,12 +14,18 @@
       <module name="javafx_test" target="1.8" />
       <module name="scene_main" target="1.8" />
       <module name="scene_test" target="1.8" />
+      <module name="wijayaprinting-scene_main" target="1.8" />
+      <module name="wijayaprinting-scene_test" target="1.8" />
+      <module name="wijayaprinting-wijayaprinting_main" target="1.8" />
+      <module name="wijayaprinting-wijayaprinting_test" target="1.8" />
       <module name="wp-javafx-wp-javafx_main" target="1.8" />
       <module name="wp-javafx-wp-javafx_test" target="1.8" />
       <module name="wp-manager-scene_main" target="1.8" />
       <module name="wp-manager-scene_test" target="1.8" />
       <module name="wp-manager-wp-manager_main" target="1.8" />
       <module name="wp-manager-wp-manager_test" target="1.8" />
+      <module name="wp-manager_main" target="1.8" />
+      <module name="wp-manager_test" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

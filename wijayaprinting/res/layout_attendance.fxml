@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.wijayaprinting.scene.control.FileField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.wijayaprinting.controller.AttendanceController">
+    <ToolBar>
+        <Button mnemonicParsing="false" onAction="#recessOnAction">
+            <graphic>
+                <ImageView pickOnBounds="true" preserveRatio="true">
+                    <Image url="@btn_alarm.png"/>
+                </ImageView>
+            </graphic>
+            <tooltip>
+                <Tooltip text="%recess"/>
+            </tooltip>
+        </Button>
+        <Separator/>
+        <ChoiceBox fx:id="readerChoiceBox"/>
+        <FileField fx:id="fileField" prefWidth="448.0" promptText="%input_file"/>
+        <Button mnemonicParsing="false" onAction="#browseOnAction">
+            <graphic>
+                <ImageView pickOnBounds="true" preserveRatio="true">
+                    <Image url="@btn_folder.png"/>
+                </ImageView>
+            </graphic>
+            <tooltip>
+                <Tooltip text="%browse_file"/>
+            </tooltip>
+        </Button>
+        <ToggleButton mnemonicParsing="false" fx:id="mergeToggleButton" selected="true">
+            <graphic>
+                <ImageView pickOnBounds="true" preserveRatio="true">
+                    <Image url="@btn_merge.png"/>
+                </ImageView>
+            </graphic>
+            <tooltip>
+                <Tooltip text="%merge_close_records"/>
+            </tooltip>
+        </ToggleButton>
+    </ToolBar>
+    <ScrollPane hbarPolicy="NEVER" minHeight="0.0" vbarPolicy="ALWAYS" VBox.vgrow="ALWAYS">
+        <FlowPane fx:id="flowPane" prefWrapLength="720.0"/>
+    </ScrollPane>
+    <HBox alignment="CENTER">
+        <padding>
+            <Insets bottom="16.0" left="16.0" right="16.0" top="16.0"/>
+        </padding>
+        <Label fx:id="employeeCountLabel" text="Label"/>
+        <ButtonBar HBox.hgrow="ALWAYS">
+            <buttons>
+                <Button mnemonicParsing="false" fx:id="readButton" onAction="#readOnAction" text="%read"/>
+                <Button mnemonicParsing="false" fx:id="processButton" onAction="#processOnAction" text="%process"
+                        defaultButton="true"/>
+            </buttons>
+        </ButtonBar>
+    </HBox>
+</VBox>

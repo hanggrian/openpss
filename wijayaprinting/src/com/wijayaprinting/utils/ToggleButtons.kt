@@ -1,0 +1,21 @@
+@file:Suppress("NOTHING_TO_INLINE")
+
+package com.wijayaprinting.utils
+
+import javafx.scene.control.ToggleButton
+import javafx.scene.image.Image
+import javafx.scene.image.ImageView
+import kotfx.bind
+import kotfx.bindingOf
+
+inline fun ToggleButton.attachButtons(selected: String, unselected: String) = attachButtons(Image(selected), Image(unselected))
+
+inline fun ToggleButton.attachButtons(selected: Image, unselected: Image) {
+    graphic = ImageView()
+    (graphic as ImageView).imageProperty() bind bindingOf(selectedProperty()) {
+        when {
+            isSelected -> selected
+            else -> unselected
+        }
+    }
+}

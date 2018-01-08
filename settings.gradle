@@ -1,5 +1,5 @@
 /** actual app module */
-include ':wp-manager'
+include ':wijayaprinting'
 
 /** library module used in app and SceneBuilder */
-include ':wp-manager-scene'
+include ':wijayaprinting-scene'

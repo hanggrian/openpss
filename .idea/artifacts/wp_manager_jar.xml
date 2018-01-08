@@ -3,7 +3,7 @@
     <output-path>$PROJECT_DIR$/out/artifacts</output-path>
     <root id="archive" name="wp-manager-wp-manager_main.jar">
       <element id="directory" name="META-INF">
-        <element id="file-copy" path="$PROJECT_DIR$/wp-manager/META-INF/MANIFEST.MF" />
+        <element id="file-copy" path="$PROJECT_DIR$/wijayaprinting/META-INF/MANIFEST.MF" />
       </element>
       <element id="module-output" name="wp-manager-wp-manager_main" />
       <element id="module-output" name="wp-manager-scene_main" />
@@ -43,8 +43,8 @@
       <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.poi/poi-ooxml-schemas/3.17/890114bfa82f5b6380ea0e9b0bf49b0af797b414/poi-ooxml-schemas-3.17.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.checkerframework/checker-compat-qual/2.0.0/fc89b03860d11d6213d0154a62bcd1c2f69b9efa/checker-compat-qual-2.0.0.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.wijayaprinting/wp-core/0.2/2ebfc0ff6579c00d71d5412190f28ae39b357644/wp-core-0.2.jar" path-in-jar="/" />
-      <element id="dir-copy" path="$PROJECT_DIR$/wp-manager/res" />
-      <element id="dir-copy" path="$PROJECT_DIR$/wp-manager/licenses" />
+      <element id="dir-copy" path="$PROJECT_DIR$/wijayaprinting/res" />
+      <element id="dir-copy" path="$PROJECT_DIR$/wijayaprinting/licenses" />
     </root>
   </artifact>
 </component>

@@ -18,7 +18,7 @@ const val commonsMathVersion = "3.6.1"
 
 const val jodaVersion = "2.9.9"
 const val mysqlConnectorVersion = "5.1.6"
-const val kotfxVersion = "0.16"
+const val kotfxVersion = "0.18"
 const val guavaVersion = "23.6-jre"
 const val slf4jVersion = "1.7.25"
 

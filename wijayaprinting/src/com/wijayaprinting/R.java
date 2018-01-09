@@ -1,4 +1,4 @@
-// rsync generated this class at 2018-01-09T02:40:40.482 from:
+// rsync generated this class at 2018-01-10T03:26:44.606 from:
 // string_en.properties
 // layout_attendance.fxml
 // btn_refresh.png
@@ -165,6 +165,8 @@ public final class R {
 
     public static final String email = "email";
 
+    public static final String see_password = "see_password";
+
     public static final String orders = "orders";
 
     public static final String server = "server";
@@ -191,8 +193,6 @@ public final class R {
 
     public static final String add_reccess = "add_reccess";
 
-    public static final String delete_plate_warning = "delete_plate_warning";
-
     public static final String version = "version";
 
     public static final String empty_daily_income = "empty_daily_income";
@@ -212,8 +212,6 @@ public final class R {
     public static final String license = "license";
 
     public static final String merge_close_records = "merge_close_records";
-
-    public static final String select_plate = "select_plate";
 
     public static final String id = "id";
 

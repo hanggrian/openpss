@@ -1,5 +1,8 @@
 package com.wijayaprinting
 
+import bindings.`else`
+import bindings.`if`
+import bindings.then
 import com.wijayaprinting.BuildConfig.DEBUG
 import com.wijayaprinting.dao.Employee
 import com.wijayaprinting.dao.Employees
@@ -82,7 +85,8 @@ class App : Application(), Resourced {
                 label(getString(R.string.password)) col 0 row 2
                 passwordField = passwordField { promptText = getString(R.string.password) } col 1 row 2
                 toggleButton {
-                    attachButtons(R.png.btn_visibility, R.png.btn_visibility_off)
+                    tooltip = kotfx.tooltip(getString(R.string.see_password))
+                    graphic = kotfx.imageView { imageProperty() bind (`if`(this@toggleButton.selectedProperty()) then Image(R.png.btn_visibility) `else` Image(R.png.btn_visibility_off)) }
                     passwordField.tooltipProperty() bind bindingOf(passwordField.textProperty(), selectedProperty()) { if (!isSelected) null else tooltip(passwordField.text) }
                 } col 2 row 2
             }

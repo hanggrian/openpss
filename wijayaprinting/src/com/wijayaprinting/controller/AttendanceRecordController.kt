@@ -1,13 +1,13 @@
 package com.wijayaprinting.controller
 
-import com.wijayaprinting.scene.PATTERN_DATE
-import com.wijayaprinting.scene.PATTERN_DATETIME
-import com.wijayaprinting.scene.PATTERN_TIME
 import com.wijayaprinting.R
 import com.wijayaprinting.data.AttendanceRecord
 import com.wijayaprinting.data.Attendee
 import com.wijayaprinting.data.Undoable
 import com.wijayaprinting.dialog.DateDialog
+import com.wijayaprinting.scene.PATTERN_DATE
+import com.wijayaprinting.scene.PATTERN_DATETIME
+import com.wijayaprinting.scene.PATTERN_TIME
 import com.wijayaprinting.scene.layout.TimeBox
 import com.wijayaprinting.utils.toChildRecords
 import com.wijayaprinting.utils.toNodeRecord
@@ -20,7 +20,8 @@ import javafx.scene.control.SelectionMode.MULTIPLE
 import javafx.scene.text.Text
 import javafx.scene.text.TextFlow
 import kotfx.*
-import java.text.NumberFormat
+import java.lang.Character.isDigit
+import java.text.NumberFormat.getCurrencyInstance
 
 class AttendanceRecordController : Controller() {
 
@@ -77,11 +78,11 @@ class AttendanceRecordController : Controller() {
                 })
             }
             totalText.textProperty() bind stringBindingOf(*records.filter { it.isChild }.map { it.totalProperty }.toTypedArray()) {
-                NumberFormat.getCurrencyInstance().format(records
+                getCurrencyInstance().format(records
                         .filter { it.isTotal }
                         .map { it.totalProperty.value }
                         .sum())
-                        .let { s -> s.substring(s.indexOf(s.toCharArray().first { Character.isDigit(it) })) }
+                        .let { s -> s.substring(s.indexOf(s.toCharArray().first { isDigit(it) })) }
             }
         }
     }

@@ -1,5 +1,8 @@
 package com.wijayaprinting.controller
 
+import bindings.`else`
+import bindings.`if`
+import bindings.then
 import com.wijayaprinting.BuildConfig.DEBUG
 import com.wijayaprinting.R
 import com.wijayaprinting.dao.Recess
@@ -43,7 +46,6 @@ class AttendanceController : Controller() {
         readerChoiceBox.items = Reader.listAll()
         if (readerChoiceBox.items.isNotEmpty()) readerChoiceBox.selectionModel.select(0)
 
-        runFX { flowPane.prefWrapLengthProperty() bind fileField.scene.widthProperty() }
         employeeCountLabel.textProperty() bind stringBindingOf(flowPane.children) { "${flowPane.children.size} ${getString(R.string.employee)}" }
         readButton.disableProperty() bind fileField.validProperty
         processButton.disableProperty() bind flowPane.children.isEmpty
@@ -52,6 +54,7 @@ class AttendanceController : Controller() {
             fileField.text = "/Users/hendraanggrian/Downloads/Absen 11-25-17.xlsx"
             readButton.fire()
         }
+        runFX { flowPane.prefWrapLengthProperty() bind fileField.scene.widthProperty() }
     }
 
     @FXML
@@ -200,7 +203,7 @@ class AttendanceController : Controller() {
                                 }
                             }
                         }
-                        graphic = imageView { imageProperty() bind bindingOf(listView.items) { Image(if (listView.items.size % 2 == 0) R.png.btn_checkbox else R.png.btn_checkbox_outline) } }
+                        graphic = imageView { imageProperty() bind (`if`(booleanBindingOf(listView.items) { listView.items.size % 2 == 0 }) then Image(R.png.btn_checkbox) `else` Image(R.png.btn_checkbox_outline)) }
                     })
                 }
     }

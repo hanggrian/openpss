@@ -12,6 +12,7 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
+        maven(url = "http://repository.jetbrains.com/kotlin-nosql")
         maven(url = "https://dl.bintray.com/kotlin/exposed/")
         maven(url = "https://dl.bintray.com/hendraanggrian/maven")
     }

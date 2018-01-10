@@ -1,14 +1,17 @@
 package com.wijayaprinting.data
 
-import com.wijayaprinting.dao.Recess
-import com.wijayaprinting.dao.Wage
 import com.wijayaprinting.Resourced
+import com.wijayaprinting.dao.Recess
 import com.wijayaprinting.internal.RevertableObservableList
-import com.wijayaprinting.utils.expose
+import com.wijayaprinting.nosql.Wage
+import com.wijayaprinting.nosql.Wages
+import com.wijayaprinting.utils.transaction
 import javafx.beans.property.IntegerProperty
 import javafx.beans.property.SimpleIntegerProperty
 import javafx.collections.ObservableList
 import kotfx.mutableObservableListOf
+import kotlinx.nosql.equal
+import kotlinx.nosql.update
 import org.joda.time.DateTime
 import org.joda.time.Minutes.minutes
 import org.joda.time.Period
@@ -38,9 +41,11 @@ data class Attendee @JvmOverloads constructor(
     }
 
     init {
-        expose { Wage.findById(id) }?.let { wage ->
-            dailyProperty.value = wage.daily
-            hourlyOvertimeProperty.value = wage.hourlyOvertime
+        transaction {
+            Wages.find { employeeId.equal(id) }.singleOrNull()?.let { wage ->
+                dailyProperty.value = wage.daily
+                hourlyOvertimeProperty.value = wage.hourlyOvertime
+            }
         }
     }
 
@@ -52,14 +57,12 @@ data class Attendee @JvmOverloads constructor(
         get() = hourlyOvertimeProperty.get()
         set(value) = hourlyOvertimeProperty.set(value)
 
-    fun saveWage() = expose {
-        val wage = Wage.findById(id)
-        if (wage == null) Wage.new(id) {
-            daily = dailyProperty.value
-            hourlyOvertime = hourlyOvertimeProperty.value
-        } else {
-            wage.daily = dailyProperty.value
-            wage.hourlyOvertime = hourlyOvertimeProperty.value
+    fun saveWage() {
+        transaction @Suppress("IMPLICIT_CAST_TO_ANY") {
+            Wages.find { employeeId.equal(id) }.let {
+                if (it.count() == 0) Wages.insert(Wage(id, daily, hourlyOvertime))
+                else it.projection { employeeId + daily + hourlyOvertime }.update(id, daily, hourlyOvertime)
+            }
         }
     }
 

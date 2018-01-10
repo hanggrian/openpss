@@ -17,6 +17,7 @@ const val commonsValidatorVersion = "1.6"
 const val commonsMathVersion = "3.6.1"
 
 const val jodaVersion = "2.9.9"
+const val nosqlMongodbVersion = "0.1-SNAPSHOT"
 const val mysqlConnectorVersion = "5.1.6"
 const val kotfxVersion = "0.18"
 const val guavaVersion = "23.6-jre"

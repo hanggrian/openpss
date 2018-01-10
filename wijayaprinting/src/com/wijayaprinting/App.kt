@@ -1,19 +1,17 @@
 package com.wijayaprinting
 
-import bindings.`else`
-import bindings.`if`
-import bindings.then
 import com.wijayaprinting.BuildConfig.DEBUG
-import com.wijayaprinting.dao.Employee
-import com.wijayaprinting.dao.Employees
 import com.wijayaprinting.data.Language
 import com.wijayaprinting.dialog.AboutDialog
-import com.wijayaprinting.io.MySQLFile
+import com.wijayaprinting.io.NoSQLFile
 import com.wijayaprinting.io.PreferencesFile
-import com.wijayaprinting.scene.control.IPField
+import com.wijayaprinting.nosql.Employee
+import com.wijayaprinting.nosql.Employees
+import com.wijayaprinting.nosql.NoSQL
+import com.wijayaprinting.scene.control.HostField
 import com.wijayaprinting.scene.control.IntField
+import com.wijayaprinting.scene.control.hostField
 import com.wijayaprinting.scene.control.intField
-import com.wijayaprinting.scene.control.ipField
 import com.wijayaprinting.utils.*
 import io.reactivex.rxkotlin.subscribeBy
 import javafx.application.Application
@@ -29,9 +27,10 @@ import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import javafx.stage.Stage
 import kotfx.*
+import kotlinx.nosql.equal
+import kotlinx.nosql.update
 import org.apache.commons.lang3.SystemUtils.IS_OS_MAC_OSX
 import org.apache.log4j.BasicConfigurator.configure
-import org.jetbrains.exposed.sql.update
 import java.awt.Toolkit.getDefaultToolkit
 import java.net.URL
 import java.util.*
@@ -57,7 +56,7 @@ class App : Application(), Resourced {
         dialog<Any>(getString(R.string.app_name)) {
             lateinit var employeeField: TextField
             lateinit var passwordField: PasswordField
-            lateinit var serverIPField: IPField
+            lateinit var serverHostField: HostField
             lateinit var serverPortField: IntField
             lateinit var serverUserField: TextField
             lateinit var serverPasswordField: PasswordField
@@ -92,53 +91,61 @@ class App : Application(), Resourced {
             }
             expandableContent = gridPane {
                 gap(8)
-                label(getString(R.string.server_ip_port)) col 0 row 0
-                serverIPField = ipField {
+                label(getString(R.string.server_host_port)) col 0 row 0
+                serverHostField = hostField {
                     promptText = getString(R.string.ip_address)
                     prefWidth = 128.0
-                    textProperty() bindBidirectional MySQLFile.ip
+                    textProperty() bindBidirectional NoSQLFile.host
                 } col 1 row 0
                 serverPortField = intField {
                     promptText = getString(R.string.port)
                     prefWidth = 64.0
-                    textProperty() bindBidirectional MySQLFile.port
+                    textProperty() bindBidirectional NoSQLFile.port
                 } col 2 row 0
                 label(getString(R.string.server_user)) col 0 row 1
                 serverUserField = textField {
                     promptText = getString(R.string.server_user)
-                    textProperty() bindBidirectional MySQLFile.user
+                    textProperty() bindBidirectional NoSQLFile.user
                 } col 1 row 1 colSpan 2
                 label(getString(R.string.server_password)) col 0 row 2
                 serverPasswordField = passwordField {
                     promptText = getString(R.string.server_password)
-                    textProperty() bindBidirectional MySQLFile.password
+                    textProperty() bindBidirectional NoSQLFile.password
                 } col 1 row 2 colSpan 2
                 hbox {
                     alignment = CENTER_RIGHT
                     hyperlink(getString(R.string.test_connection)) {
                         setOnAction {
-                            WP.testConnection(serverIPField.text, serverPortField.text, serverUserField.text, serverPasswordField.text)
+                            NoSQL.testConnection(serverHostField.text, serverPortField.value, serverUserField.text, serverPasswordField.text)
                                     .multithread()
-                                    .subscribeBy({ errorAlert(it.message.toString()).showAndWait() }) { infoAlert(getString(R.string.test_connection_successful)).showAndWait() }
+                                    .subscribeBy({
+                                        if (DEBUG) it.printStackTrace()
+                                        errorAlert(it.message.toString()).showAndWait()
+                                    }) { infoAlert(getString(R.string.test_connection_successful)).showAndWait() }
                         }
                     }
-                    hyperlink(getString(R.string.about)) { setOnAction { AboutDialog(this@App).showAndWait() } } marginLeft 8
+                    hyperlink(getString(R.string.about)) {
+                        setOnAction { AboutDialog(this@App).showAndWait() }
+                    } marginLeft 8
                 } col 0 row 3 colSpan 3
             }
             button(CANCEL)
             button(getString(R.string.login), OK_DONE).apply {
                 disableProperty() bind (employeeField.textProperty().isEmpty
                         or passwordField.textProperty().isEmpty
-                        or not(serverIPField.validProperty)
+                        or not(serverHostField.validProperty)
                         or serverPortField.textProperty().isEmpty
                         or serverUserField.textProperty().isEmpty
                         or serverPasswordField.textProperty().isEmpty)
                 addConsumedEventFilter(ACTION) {
                     PreferencesFile.save()
-                    MySQLFile.save()
-                    WP.login(serverIPField.text, serverPortField.text, serverUserField.text, serverPasswordField.text, employeeField.text, passwordField.text)
+                    NoSQLFile.save()
+                    NoSQL.login(serverHostField.text, serverPortField.value, serverUserField.text, serverPasswordField.text, employeeField.text, passwordField.text)
                             .multithread()
-                            .subscribeBy({ errorAlert(it.message.toString()).showAndWait() }) { employee ->
+                            .subscribeBy({
+                                if (DEBUG) it.printStackTrace()
+                                errorAlert(it.message.toString()).showAndWait()
+                            }) { employee ->
                                 result = employee
                                 forceClose()
                             }
@@ -146,14 +153,14 @@ class App : Application(), Resourced {
             }
             runFX {
                 if (employeeField.text.isBlank()) employeeField.requestFocus() else passwordField.requestFocus()
-                isExpanded = listOf(serverIPField, serverPortField, serverUserField, serverPasswordField).any { it.text.isBlank() }
+                isExpanded = listOf(serverHostField, serverPortField, serverUserField, serverPasswordField).any { it.text.isBlank() }
                 if (DEBUG) {
                     passwordField.text = "123"
                 }
             }
         }.showAndWait().filter { it is Employee }.ifPresent { employee ->
             employee as Employee
-            EMPLOYEE = employee.id.value
+            EMPLOYEE = employee.name
             FULL_ACCESS = employee.fullAccess
 
             stage.apply {
@@ -180,8 +187,8 @@ class App : Application(), Resourced {
                 setResultConverter { if (it == OK) changePasswordField.text else null }
                 runFX { changePasswordField.requestFocus() }
             }.showAndWait().filter { it is String }.ifPresent { newPassword ->
-                expose {
-                    Employees.update({ Employees.id eq EMPLOYEE }) { employee -> employee[password] = newPassword }
+                transaction {
+                    Employees.find { name.equal(EMPLOYEE) }.projection { password }.update(newPassword)
                     infoAlert(getString(R.string.change_password_successful)).showAndWait()
                 }
             }

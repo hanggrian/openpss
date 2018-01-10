@@ -1,8 +1,5 @@
 package com.wijayaprinting.controller
 
-import bindings.`else`
-import bindings.`if`
-import bindings.then
 import com.wijayaprinting.BuildConfig.DEBUG
 import com.wijayaprinting.R
 import com.wijayaprinting.dao.Recess
@@ -89,7 +86,12 @@ class AttendanceController : Controller() {
                     emitter.onComplete()
                 }
                 .multithread()
-                .subscribeBy({ e -> errorAlert(e.message.toString()).showAndWait() }, {
+                .subscribeBy({ e ->
+                    progressDialog.forceClose()
+                    rebindProcessButton()
+                    if (DEBUG) e.printStackTrace()
+                    errorAlert(e.message.toString()).showAndWait()
+                }, {
                     progressDialog.forceClose()
                     rebindProcessButton()
                 }) { attendee ->

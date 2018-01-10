@@ -1,8 +1,5 @@
 package com.wijayaprinting.controller
 
-import bindings.`else`
-import bindings.`if`
-import bindings.then
 import com.wijayaprinting.dao.Customer
 import com.wijayaprinting.dao.Customers
 import com.wijayaprinting.dialog.CustomerDialog

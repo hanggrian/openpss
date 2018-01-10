@@ -37,6 +37,7 @@ buildconfig {
 dependencies {
     implementation(project(":wijayaprinting-scene"))
     implementation(kotlin("stdlib", kotlinVersion))
+    implementation(kotlin("nosql-mongodb", nosqlMongodbVersion))
     implementation(exposed(exposedVersion))
 
     implementation(rx("javafx", rxjavafxVersion))

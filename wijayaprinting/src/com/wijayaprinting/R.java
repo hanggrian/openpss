@@ -1,4 +1,4 @@
-// rsync generated this class at 2018-01-10T03:26:44.606 from:
+// rsync generated this class at 2018-01-11T04:57:05.494 from:
 // string_en.properties
 // layout_attendance.fxml
 // btn_refresh.png
@@ -139,6 +139,8 @@ public final class R {
   }
 
   public static final class string {
+    public static final String server_host_port = "server_host_port";
+
     public static final String confirm_password = "confirm_password";
 
     public static final String change_password = "change_password";
@@ -243,8 +245,6 @@ public final class R {
 
     public static final String read = "read";
 
-    public static final String server_ip_port = "server_ip_port";
-
     public static final String revert = "revert";
 
     public static final String powered_by = "powered_by";
@@ -326,6 +326,8 @@ public final class R {
     public static final String navigate = "navigate";
 
     public static final String input_file = "input_file";
+
+    public static final String server_ip_port = "server_ip_port";
 
     private string() {
     }

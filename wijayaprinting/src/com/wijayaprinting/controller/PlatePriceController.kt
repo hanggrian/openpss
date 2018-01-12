@@ -2,31 +2,29 @@ package com.wijayaprinting.controller
 
 import com.wijayaprinting.R
 import com.wijayaprinting.Refreshable
-import com.wijayaprinting.dao.Plate
-import com.wijayaprinting.utils.expose
+import com.wijayaprinting.nosql.Plate
+import com.wijayaprinting.nosql.Plates
+import com.wijayaprinting.utils.transaction
 import javafx.fxml.FXML
 import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
 import javafx.scene.control.cell.TextFieldTableCell.forTableColumn
-import kotfx.asProperty
-import kotfx.inputDialog
-import kotfx.stringConverter
-import kotfx.toMutableObservableList
-import java.math.BigDecimal
-import java.math.BigDecimal.ZERO
+import kotfx.*
+import kotlinx.nosql.equal
+import kotlinx.nosql.update
 
 class PlatePriceController : Controller(), Refreshable {
 
     @FXML lateinit var tableView: TableView<Plate>
-    @FXML lateinit var idColumn: TableColumn<Plate, String>
-    @FXML lateinit var priceColumn: TableColumn<Plate, BigDecimal>
+    @FXML lateinit var nameColumn: TableColumn<Plate, String>
+    @FXML lateinit var priceColumn: TableColumn<Plate, Double>
 
     @FXML
     fun initialize() {
-        idColumn.setCellValueFactory { it.value.id.value.asProperty() }
-        priceColumn.setCellValueFactory { it.value.price.asProperty() }
-        priceColumn.cellFactory = forTableColumn<Plate, BigDecimal>(stringConverter({ it.toBigDecimalOrNull() ?: ZERO }))
-        priceColumn.setOnEditCommit { event -> expose { event.rowValue.price = event.newValue } }
+        nameColumn.setCellValueFactory { it.value.name.asProperty() }
+        priceColumn.setCellValueFactory { it.value.price.asProperty().asObservable() }
+        priceColumn.cellFactory = forTableColumn<Plate, Double>(stringConverter({ it.toDoubleOrNull() ?: 0.0 }))
+        priceColumn.setOnEditCommit { event -> transaction { Plates.find { name.equal(event.rowValue.name) }.projection { price }.update(event.newValue) } }
         refresh()
     }
 
@@ -38,11 +36,14 @@ class PlatePriceController : Controller(), Refreshable {
         headerText = getString(R.string.add_plate)
         contentText = getString(R.string.name)
         editor.promptText = getString(R.string.plate)
-    }.showAndWait().ifPresent { id ->
-        tableView.items.add(expose { Plate.new(id) {} })
+    }.showAndWait().ifPresent { name ->
+        Plate(name, 0.0).let {
+            transaction { Plates.insert(it) }
+            tableView.items.add(it)
+        }
     }
 
     override fun refresh() {
-        tableView.items = expose { Plate.all().toMutableObservableList() }
+        tableView.items = transaction { Plates.find().toMutableObservableList() }
     }
 }

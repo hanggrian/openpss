@@ -1,12 +1,6 @@
-package com.wijayaprinting.dao
+package com.wijayaprinting.nosql
 
-import org.jetbrains.exposed.dao.EntityID
-import org.jetbrains.exposed.dao.IntEntity
-import org.jetbrains.exposed.dao.IntEntityClass
-import org.jetbrains.exposed.dao.IntIdTable
-import java.math.BigDecimal
-import java.math.BigDecimal.ZERO
-
+/*
 object PlateReceipts : IntIdTable("plate_receipt") {
     val datetime = datetime("datetime")
     // val employee = reference("employee", Employees).nullable()
@@ -36,4 +30,4 @@ class PlateReceipt(id: EntityID<Int>) : IntEntity(id) {
         }
 
     val isPaid: Boolean get() = total == paid
-}
+}*/

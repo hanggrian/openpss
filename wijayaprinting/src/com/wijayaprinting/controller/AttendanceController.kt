@@ -2,9 +2,9 @@ package com.wijayaprinting.controller
 
 import com.wijayaprinting.BuildConfig.DEBUG
 import com.wijayaprinting.R
-import com.wijayaprinting.dao.Recess
 import com.wijayaprinting.data.Attendee
 import com.wijayaprinting.dialog.DateTimeDialog
+import com.wijayaprinting.nosql.Recesses
 import com.wijayaprinting.reader.Reader
 import com.wijayaprinting.scene.PATTERN_DATETIME
 import com.wijayaprinting.scene.control.FileField
@@ -123,8 +123,8 @@ class AttendanceController : Controller() {
                                 label("@${getString(R.string.hour)}") { font = font(9.0) } col 2 row 2
                                 label(getString(R.string.recess)) col 0 row 3 marginRight 4
                                 vbox {
-                                    expose {
-                                        Recess.all().forEach { recess ->
+                                    transaction {
+                                        Recesses.find().forEach { recess ->
                                             checkBox(recess.toString()) {
                                                 selectedProperty().addListener { _, _, selected ->
                                                     (this@titledPane.userData as Attendee).recesses.let { recesses ->

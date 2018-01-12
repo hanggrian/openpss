@@ -2,9 +2,9 @@ package com.wijayaprinting.dialog
 
 import com.wijayaprinting.R
 import com.wijayaprinting.Resourced
-import com.wijayaprinting.dao.Customer
-import com.wijayaprinting.dao.Customers
-import com.wijayaprinting.utils.expose
+import com.wijayaprinting.nosql.Customer
+import com.wijayaprinting.nosql.Customers
+import com.wijayaprinting.utils.transaction
 import javafx.scene.control.ButtonType.CANCEL
 import javafx.scene.control.ButtonType.OK
 import javafx.scene.control.Dialog
@@ -12,7 +12,7 @@ import javafx.scene.control.ListView
 import javafx.scene.control.TextField
 import javafx.scene.image.ImageView
 import kotfx.*
-import org.jetbrains.exposed.sql.or
+import kotlinx.nosql.equal
 
 class SearchCustomerDialog(val resourced: Resourced) : Dialog<Customer>(), Resourced by resourced {
 
@@ -31,11 +31,11 @@ class SearchCustomerDialog(val resourced: Resourced) : Dialog<Customer>(), Resou
             textField = textField { promptText = getString(R.string.customer) }
             listView = listView<Customer> {
                 itemsProperty() bind bindingOf(textField.textProperty()) {
-                    expose {
+                    transaction {
                         when {
-                            textField.text.isEmpty() -> Customer.all()
-                            else -> Customer.find { Customers.id eq textField.text.toIntOrNull() or (Customers.name regexp textField.text) }
-                        }.limit(ITEMS_PER_PAGE).toMutableObservableList()
+                            textField.text.isEmpty() -> Customers.find()
+                            else -> Customers.find { name.equal(textField.text) }
+                        }.take(ITEMS_PER_PAGE).toMutableObservableList()
                     }
                 }
             } marginTop 8

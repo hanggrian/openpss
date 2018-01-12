@@ -1,32 +1,6 @@
 package com.wijayaprinting.dialog
 
-import com.wijayaprinting.App.Companion.EMPLOYEE
-import com.wijayaprinting.R
-import com.wijayaprinting.Resourced
-import com.wijayaprinting.dao.Customer
-import com.wijayaprinting.dao.Plate
-import com.wijayaprinting.dao.PlateReceipt
-import com.wijayaprinting.scene.PATTERN_DATE
-import com.wijayaprinting.utils.addConsumedEventFilter
-import com.wijayaprinting.utils.expose
-import com.wijayaprinting.utils.gap
-import javafx.beans.property.IntegerProperty
-import javafx.beans.property.ObjectProperty
-import javafx.beans.property.SimpleObjectProperty
-import javafx.event.ActionEvent.ACTION
-import javafx.scene.control.ButtonBar.ButtonData.HELP
-import javafx.scene.control.ButtonBar.ButtonData.HELP_2
-import javafx.scene.control.ButtonType.CANCEL
-import javafx.scene.control.ButtonType.OK
-import javafx.scene.control.Dialog
-import javafx.scene.control.TableColumn
-import javafx.scene.control.TableView
-import javafx.scene.control.cell.TextFieldTableCell.forTableColumn
-import javafx.scene.image.ImageView
-import javafx.scene.text.Font.loadFont
-import kotfx.*
-import org.joda.time.DateTime.now
-
+/*
 class PlateReceiptDialog(val resourced: Resourced) : Dialog<PlateReceipt>(), Resourced by resourced {
 
     private lateinit var tableView: TableView<Pair<Plate, IntegerProperty>>
@@ -82,4 +56,4 @@ class PlateReceiptDialog(val resourced: Resourced) : Dialog<PlateReceipt>(), Res
         button(OK)
         setResultConverter { null }
     }
-}
+}*/

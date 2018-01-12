@@ -30,7 +30,7 @@
     </ToolBar>
     <TableView fx:id="tableView" VBox.vgrow="ALWAYS" editable="true">
         <columns>
-            <TableColumn fx:id="idColumn" text="%name" prefWidth="120.0" editable="false"/>
+            <TableColumn fx:id="nameColumn" text="%name" prefWidth="120.0" editable="false"/>
             <TableColumn fx:id="priceColumn" text="%price" prefWidth="120.0"/>
         </columns>
         <columnResizePolicy>

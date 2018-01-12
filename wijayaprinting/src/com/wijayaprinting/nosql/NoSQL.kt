@@ -13,7 +13,7 @@ import java.net.InetAddress.getByName
 /** Connect to MongoDB database using RxJava's streams. */
 object NoSQL {
     private const val DATABASE = "wijayaprinting"
-    private val SCHEMAS get() = arrayOf(Employees, Wages)
+    private val SCHEMAS get() = arrayOf(Customers, Employees, Recesses, Wages)
 
     private lateinit var mDB: MongoDB
 
@@ -22,7 +22,7 @@ object NoSQL {
             var employee: Employee? = null
             mDB = connect(host, port, user, password)
             transaction {
-                employee = checkNotNull(Employees.find { this.name.equal(employeeName) }.singleOrNull()) { "Employee not found!" }
+                employee = checkNotNull(Employees.find { name.equal(employeeName) }.singleOrNull()) { "Employee not found!" }
                 require(employee!!.password == employeePassword) { "Invalid password!" }
             }
             emitter.onSuccess(employee!!)

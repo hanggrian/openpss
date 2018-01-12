@@ -1,12 +1,6 @@
-package com.wijayaprinting.dao
+package com.wijayaprinting.nosql
 
-import org.jetbrains.exposed.dao.EntityID
-import org.jetbrains.exposed.dao.IntEntity
-import org.jetbrains.exposed.dao.IntEntityClass
-import org.jetbrains.exposed.dao.IntIdTable
-import org.jetbrains.exposed.sql.ReferenceOption.CASCADE
-import java.math.BigDecimal
-
+/*
 object PlateOrders : IntIdTable("plate_order") {
     val receipt = reference("receipt", PlateReceipts, CASCADE)
     val plate = reference("plate", Plates)
@@ -23,4 +17,4 @@ class PlateOrder(id: EntityID<Int>) : IntEntity(id) {
     var price by PlateOrders.price
 
     val total: BigDecimal get() = qty.toBigDecimal() * price
-}
+}*/

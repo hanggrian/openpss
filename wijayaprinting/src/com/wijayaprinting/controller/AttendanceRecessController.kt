@@ -1,13 +1,14 @@
 package com.wijayaprinting.controller
 
-import com.wijayaprinting.scene.PATTERN_TIME
-import com.wijayaprinting.dao.Recess
 import com.wijayaprinting.R
 import com.wijayaprinting.Refreshable
+import com.wijayaprinting.nosql.Recess
+import com.wijayaprinting.nosql.Recesses
+import com.wijayaprinting.scene.PATTERN_TIME
 import com.wijayaprinting.scene.layout.TimeBox
 import com.wijayaprinting.scene.layout.timeBox
 import com.wijayaprinting.utils.gap
-import com.wijayaprinting.utils.expose
+import com.wijayaprinting.utils.transaction
 import javafx.fxml.FXML
 import javafx.scene.control.Button
 import javafx.scene.control.ButtonType.*
@@ -15,6 +16,8 @@ import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
 import javafx.scene.image.ImageView
 import kotfx.*
+import kotlinx.nosql.equal
+import kotlinx.nosql.id
 import org.joda.time.LocalTime
 
 class AttendanceRecessController : Controller(), Refreshable {
@@ -49,22 +52,21 @@ class AttendanceRecessController : Controller(), Refreshable {
         button(CANCEL)
         button(OK).disableProperty() bind booleanBindingOf(startBox.valueProperty, endBox.valueProperty) { startBox.value >= endBox.value }
         setResultConverter { if (it == OK) Pair(startBox.value, endBox.value) else null }
-    }.showAndWait().ifPresent { (_start, _end) ->
-        tableView.items.add(expose {
-            Recess.new {
-                start = _start
-                end = _end
-            }
-        })
+    }.showAndWait().ifPresent { (start, end) ->
+        transaction { Recesses.insert(Recess(start, end)) }
+        refresh()
     }
 
     @FXML
     fun deleteOnAction() = confirmAlert(getString(R.string.are_you_sure), YES, NO)
             .showAndWait()
             .filter { it == YES }
-            .ifPresent { tableView.items.remove(expose { tableView.selectionModel.selectedItem.apply { delete() } }) }
+            .ifPresent {
+                transaction { Recesses.find { id.equal(tableView.selectionModel.selectedItem.id!!.value) }.remove() }
+                refresh()
+            }
 
     override fun refresh() {
-        tableView.items = expose { Recess.all().toMutableObservableList() }
+        tableView.items = transaction { Recesses.find().toMutableObservableList() }
     }
 }

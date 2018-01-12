@@ -1,16 +1,16 @@
 package com.wijayaprinting.controller
 
-import com.wijayaprinting.dao.Customer
-import com.wijayaprinting.dao.Customers
 import com.wijayaprinting.dialog.CustomerDialog
-import com.wijayaprinting.utils.expose
+import com.wijayaprinting.nosql.Customer
+import com.wijayaprinting.nosql.Customers
+import com.wijayaprinting.utils.transaction
 import javafx.fxml.FXML
 import javafx.scene.Node
 import javafx.scene.control.*
 import javafx.scene.text.Font.loadFont
 import javafx.util.Callback
 import kotfx.*
-import org.jetbrains.exposed.sql.or
+import kotlinx.nosql.equal
 
 class CustomerController : Controller() {
 
@@ -36,26 +36,25 @@ class CustomerController : Controller() {
         phone2Label.font = loadFont(latoBold, 13.0)
         noteLabel.font = loadFont(latoBold, 13.0)
 
-        customerPagination.pageFactoryProperty() bind bindingOf(customerField.textProperty()) {
+        /*customerPagination.pageFactoryProperty() bind bindingOf(customerField.textProperty()) {
             Callback<Int, Node> { page ->
                 listView = listView {
-                    expose {
-                        val customers = when {
-                            customerField.text.isEmpty() -> Customer.all()
-                            else -> Customer.find { Customers.id eq customerField.text.toIntOrNull() or (Customers.name regexp customerField.text) }
+                    runFX {
+                        transaction {
+                            val customers = Customers.find { name.equal(customerField.text) }
+                            items = customers.skip(ITEMS_PER_PAGE * (page - 1)).take(ITEMS_PER_PAGE).toList().toMutableObservableList()
+                            customerPagination.pageCount = (customers.count() / ITEMS_PER_PAGE) + 1
                         }
-                        items = customers.limit(ITEMS_PER_PAGE, ITEMS_PER_PAGE * page).toMutableObservableList()
-                        customerPagination.pageCount = (customers.count() / ITEMS_PER_PAGE) + 1
+                        editButton.disableProperty() rebind selectionModel.selectedItemProperty().isNull
+                        // emailLabel.textProperty() rebind stringBindingOf(selectionModel.selectedItemProperty()) { selectionModel.selectedItem?.email ?: "" }
+                        // phone1Label.textProperty() rebind stringBindingOf(selectionModel.selectedItemProperty()) { selectionModel.selectedItem?.phone1 ?: "" }
+                        // phone2Label.textProperty() rebind stringBindingOf(selectionModel.selectedItemProperty()) { selectionModel.selectedItem?.phone2 ?: "" }
+                        noteLabel.textProperty() rebind stringBindingOf(selectionModel.selectedItemProperty()) { selectionModel.selectedItem?.note ?: "" }
                     }
-                    editButton.disableProperty() rebind selectionModel.selectedItemProperty().isNull
-                    emailLabel.textProperty() rebind stringBindingOf(selectionModel.selectedItemProperty()) { selectionModel.selectedItem?.email ?: "" }
-                    phone1Label.textProperty() rebind stringBindingOf(selectionModel.selectedItemProperty()) { selectionModel.selectedItem?.phone1 ?: "" }
-                    phone2Label.textProperty() rebind stringBindingOf(selectionModel.selectedItemProperty()) { selectionModel.selectedItem?.phone2 ?: "" }
-                    noteLabel.textProperty() rebind stringBindingOf(selectionModel.selectedItemProperty()) { selectionModel.selectedItem?.note ?: "" }
                 }
                 listView
             }
-        }
+        }*/
     }
 
     @FXML fun clearOnAction() {

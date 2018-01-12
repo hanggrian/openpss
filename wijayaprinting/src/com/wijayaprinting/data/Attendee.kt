@@ -1,7 +1,7 @@
 package com.wijayaprinting.data
 
 import com.wijayaprinting.Resourced
-import com.wijayaprinting.dao.Recess
+import com.wijayaprinting.nosql.Recess
 import com.wijayaprinting.internal.RevertableObservableList
 import com.wijayaprinting.nosql.Wage
 import com.wijayaprinting.nosql.Wages
@@ -42,7 +42,7 @@ data class Attendee @JvmOverloads constructor(
 
     init {
         transaction {
-            Wages.find { employeeId.equal(id) }.singleOrNull()?.let { wage ->
+            Wages.find { wageId.equal(id) }.singleOrNull()?.let { wage ->
                 dailyProperty.value = wage.daily
                 hourlyOvertimeProperty.value = wage.hourlyOvertime
             }
@@ -59,9 +59,9 @@ data class Attendee @JvmOverloads constructor(
 
     fun saveWage() {
         transaction @Suppress("IMPLICIT_CAST_TO_ANY") {
-            Wages.find { employeeId.equal(id) }.let {
+            Wages.find { wageId.equal(id) }.let {
                 if (it.count() == 0) Wages.insert(Wage(id, daily, hourlyOvertime))
-                else it.projection { employeeId + daily + hourlyOvertime }.update(id, daily, hourlyOvertime)
+                else it.projection { wageId + daily + hourlyOvertime }.update(id, daily, hourlyOvertime)
             }
         }
     }

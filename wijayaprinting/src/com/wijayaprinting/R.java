@@ -1,4 +1,4 @@
-// rsync generated this class at 2018-01-11T04:57:05.494 from:
+// rsync generated this class at 2018-01-13T01:04:28.655 from:
 // string_en.properties
 // layout_attendance.fxml
 // btn_refresh.png

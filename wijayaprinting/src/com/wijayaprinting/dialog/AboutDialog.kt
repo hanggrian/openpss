@@ -40,7 +40,7 @@ class AboutDialog(val resourced: Resourced) : Dialog<Unit>(), Resourced by resou
                 text(getString(R.string.about_notice)) { font = loadFont(latoBold, 12.0) } marginTop 20
                 textFlow {
                     text("${getString(R.string.powered_by)}  ") { font = loadFont(latoBold, 12.0) }
-                    text("JavaFX") { font = loadFont(latoRegular, 12.0) }
+                    text("JavaFX, MongoDB") { font = loadFont(latoRegular, 12.0) }
                 } marginTop 4
                 textFlow {
                     text("${getString(R.string.author)}  ") { font = loadFont(latoBold, 12.0) }

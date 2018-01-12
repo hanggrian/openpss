@@ -2,7 +2,6 @@ package com.wijayaprinting.controller
 
 import com.wijayaprinting.R
 import com.wijayaprinting.Refreshable
-import com.wijayaprinting.dialog.PlateReceiptDialog
 import com.wijayaprinting.utils.pane
 import javafx.fxml.FXML
 import javafx.stage.Modality.APPLICATION_MODAL
@@ -27,8 +26,10 @@ class PlateController : Controller(), Refreshable {
     }.showAndWait()
 
     @FXML
-    fun addOnAction() = PlateReceiptDialog(this).showAndWait().ifPresent {
+    fun addOnAction() {
+        /*PlateReceiptDialog(this).showAndWait().ifPresent {
 
+        }*/
     }
 
     override fun refresh() {

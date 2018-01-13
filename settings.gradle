@@ -1,5 +1,3 @@
-/** actual app module */
-include ':wijayaprinting'
-
-/** library module used in app and SceneBuilder */
-include ':wijayaprinting-scene'
+include ':app'
+include ':scene' // can be used with SceneBuilder
+include ':common'

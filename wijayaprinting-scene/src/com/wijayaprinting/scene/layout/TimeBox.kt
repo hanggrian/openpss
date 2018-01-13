@@ -2,7 +2,7 @@
 
 package com.wijayaprinting.scene.layout
 
-import com.wijayaprinting.scene.PATTERN_TIME
+import com.wijayaprinting.PATTERN_TIME
 import com.wijayaprinting.scene.control.IntField
 import com.wijayaprinting.scene.control.intField
 import javafx.beans.property.SimpleBooleanProperty

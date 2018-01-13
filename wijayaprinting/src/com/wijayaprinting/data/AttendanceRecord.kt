@@ -1,13 +1,10 @@
 package com.wijayaprinting.data
 
-import com.wijayaprinting.Resourced
-import com.wijayaprinting.scene.PATTERN_DATETIME
-import com.wijayaprinting.utils.round
+import com.wijayaprinting.PATTERN_DATETIME
+import com.wijayaprinting.core.Resourced
+import com.wijayaprinting.util.rounded
 import javafx.beans.property.*
-import kotfx.bind
-import kotfx.doubleBindingOf
-import kotfx.plus
-import kotfx.stringBindingOf
+import kotfx.*
 import org.joda.time.DateTime
 import org.joda.time.Interval
 import org.joda.time.LocalTime
@@ -67,14 +64,14 @@ data class AttendanceRecord @JvmOverloads constructor(
                 if (isDailyEmpty) 0.0 else {
                     val hours = workingHours()
                     when {
-                        hours <= WORKING_HOURS -> hours.round
+                        hours <= WORKING_HOURS -> hours.rounded
                         else -> WORKING_HOURS
                     }
                 }
             }
             overtimeProperty bind doubleBindingOf(startProperty, endProperty) {
                 val hours = workingHours()
-                val overtime = (hours - WORKING_HOURS).round
+                val overtime = (hours - WORKING_HOURS).rounded
                 when {
                     hours <= WORKING_HOURS -> 0.0
                     else -> overtime
@@ -82,8 +79,8 @@ data class AttendanceRecord @JvmOverloads constructor(
             }
         }
         if (isChild || isTotal) {
-            dailyIncomeProperty bind doubleBindingOf(dailyProperty) { (daily * attendee.daily / WORKING_HOURS).round }
-            overtimeIncomeProperty bind doubleBindingOf(overtimeProperty) { (overtime * attendee.hourlyOvertime).round }
+            dailyIncomeProperty bind doubleBindingOf(dailyProperty) { (daily * attendee.daily / WORKING_HOURS).rounded }
+            overtimeIncomeProperty bind doubleBindingOf(overtimeProperty) { (overtime * attendee.hourlyOvertime).rounded }
             totalProperty bind dailyIncomeProperty + overtimeIncomeProperty
         }
     }
@@ -148,4 +145,34 @@ data class AttendanceRecord @JvmOverloads constructor(
     private var overtime: Double
         get() = overtimeProperty.get()
         set(value) = overtimeProperty.set(value)
+}
+
+fun Attendee.toRootRecord(): AttendanceRecord = AttendanceRecord(this, AttendanceRecord.INDEX_ROOT, this, DateTime(0).asProperty(), DateTime(0).asProperty())
+
+fun Attendee.toNodeRecord(): AttendanceRecord = AttendanceRecord(this, AttendanceRecord.INDEX_NODE, this, DateTime.now().asProperty(), DateTime.now().asProperty())
+
+fun Attendee.toChildRecords(): Set<AttendanceRecord> {
+    val records = mutableSetOf<AttendanceRecord>()
+    val iterator = attendances.iterator()
+    var index = 0
+    while (iterator.hasNext()) records.add(AttendanceRecord(this, index++, this, iterator.next().asMutableProperty(), iterator.next().asMutableProperty()))
+    return records
+}
+
+fun Attendee.toTotalRecords(children: Collection<AttendanceRecord>): AttendanceRecord = AttendanceRecord(this, AttendanceRecord.INDEX_TOTAL, this, DateTime(0).asProperty(), DateTime(0).asProperty()).apply {
+    children.map { it.dailyProperty }.toTypedArray().let { mains ->
+        dailyProperty bind doubleBindingOf(*mains) { mains.map { it.value }.sum().rounded }
+    }
+    children.map { it.dailyIncomeProperty }.toTypedArray().let { mainIncomes ->
+        dailyIncomeProperty bind doubleBindingOf(*mainIncomes) { mainIncomes.map { it.value }.sum().rounded }
+    }
+    children.map { it.overtimeProperty }.toTypedArray().let { overtimes ->
+        overtimeProperty bind doubleBindingOf(*overtimes) { overtimes.map { it.value }.sum().rounded }
+    }
+    children.map { it.overtimeIncomeProperty }.toTypedArray().let { overtimeIncomes ->
+        overtimeIncomeProperty bind doubleBindingOf(*overtimeIncomes) { overtimeIncomes.map { it.value }.sum().rounded }
+    }
+    children.map { it.totalProperty }.toTypedArray().let { totals ->
+        totalProperty bind doubleBindingOf(*totals) { totals.map { it.value }.sum().rounded }
+    }
 }

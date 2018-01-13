@@ -1,7 +1,5 @@
 package com.wijayaprinting.io
 
-import com.wijayaprinting.utils.createIfNotExists
-import com.wijayaprinting.utils.hideOnWindows
 import javafx.beans.property.StringProperty
 import kotfx.asMutableProperty
 import java.io.File
@@ -18,8 +16,7 @@ open class PropertiesFile(child: String, vararg pairs: Pair<String, String>) : F
     protected val map = HashMap<String, StringProperty>()
 
     init {
-        createIfNotExists()
-        hideOnWindows()
+        @Suppress("LeakingThis") if (!exists()) createNewFile()
         inputStream().use { properties.load(it) }
         pairs.forEach { map.put(it.first, properties.getProperty(it.first, it.second).asMutableProperty()) }
     }

@@ -11,8 +11,23 @@ open class NoSQLFile : PropertiesFile(".nosql",
 ) {
     companion object : NoSQLFile()
 
-    val host: StringProperty by map
-    val port: StringProperty by map
-    val user: StringProperty by map
-    val password: StringProperty by map
+    val hostProperty: StringProperty by map
+    var host: String
+        get() = hostProperty.get()
+        set(value) = hostProperty.set(value)
+
+    val portProperty: StringProperty by map
+    var port: String
+        get() = portProperty.get()
+        set(value) = portProperty.set(value)
+
+    val userProperty: StringProperty by map
+    var user: String
+        get() = userProperty.get()
+        set(value) = userProperty.set(value)
+
+    val passwordProperty: StringProperty by map
+    var password: String
+        get() = passwordProperty.get()
+        set(value) = passwordProperty.set(value)
 }

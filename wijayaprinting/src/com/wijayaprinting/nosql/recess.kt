@@ -1,8 +1,7 @@
 package com.wijayaprinting.nosql
 
-import com.wijayaprinting.scene.PATTERN_TIME
+import com.wijayaprinting.PATTERN_TIME
 import kotlinx.nosql.Id
-import kotlinx.nosql.integer
 import kotlinx.nosql.mongodb.DocumentSchema
 import kotlinx.nosql.time
 import org.joda.time.DateTime

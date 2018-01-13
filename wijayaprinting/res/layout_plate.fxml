@@ -4,7 +4,7 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.VBox?>
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.wijayaprinting.controller.PlateController">
+      fx:controller="com.wijayaprinting.controllers.PlateController">
     <ToolBar>
         <Button mnemonicParsing="false" onAction="#refreshOnAction">
             <graphic>

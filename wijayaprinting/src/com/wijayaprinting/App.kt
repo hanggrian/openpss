@@ -1,18 +1,22 @@
 package com.wijayaprinting
 
 import com.wijayaprinting.BuildConfig.DEBUG
+import com.wijayaprinting.core.Resourced
 import com.wijayaprinting.data.Language
-import com.wijayaprinting.dialog.AboutDialog
+import com.wijayaprinting.dialogs.AboutDialog
 import com.wijayaprinting.io.NoSQLFile
 import com.wijayaprinting.io.PreferencesFile
 import com.wijayaprinting.nosql.Employee
 import com.wijayaprinting.nosql.Employees
 import com.wijayaprinting.nosql.NoSQL
+import com.wijayaprinting.nosql.transaction
 import com.wijayaprinting.scene.control.HostField
 import com.wijayaprinting.scene.control.IntField
 import com.wijayaprinting.scene.control.hostField
 import com.wijayaprinting.scene.control.intField
-import com.wijayaprinting.utils.*
+import com.wijayaprinting.util.gap
+import com.wijayaprinting.util.multithread
+import com.wijayaprinting.util.pane
 import io.reactivex.rxkotlin.subscribeBy
 import javafx.application.Application
 import javafx.application.Platform.exit
@@ -44,7 +48,7 @@ class App : Application(), Resourced {
         @JvmStatic fun main(vararg args: String) = launch(App::class.java, *args)
     }
 
-    override val resources: ResourceBundle = Language.parse(PreferencesFile.language.value).getResources("string")
+    override val resources: ResourceBundle = Language.valueOf(PreferencesFile.language).getResources("string")
 
     override fun init() {
         if (DEBUG) configure()
@@ -68,18 +72,18 @@ class App : Application(), Resourced {
                 label(getString(R.string.language)) col 0 row 0
                 choiceBox(Language.listAll()) {
                     maxWidth = Double.MAX_VALUE
-                    selectionModel.select(Language.parse(PreferencesFile.language.value))
+                    selectionModel.select(Language.valueOf(PreferencesFile.language))
                     selectionModel.selectedItemProperty().addListener { _, _, language ->
-                        PreferencesFile.language.set(language.locale)
+                        PreferencesFile.language = language.locale
                         PreferencesFile.save()
-                        forceClose()
+                        close()
                         infoAlert(getString(R.string.language_changed)).showAndWait().ifPresent { exit() }
                     }
                 } col 1 row 0 colSpan 2
                 label(getString(R.string.employee)) col 0 row 1
                 employeeField = textField {
                     promptText = getString(R.string.employee)
-                    textProperty() bindBidirectional PreferencesFile.employee
+                    textProperty() bindBidirectional PreferencesFile.employeeProperty
                 } col 1 row 1 colSpan 2
                 label(getString(R.string.password)) col 0 row 2
                 passwordField = passwordField { promptText = getString(R.string.password) } col 1 row 2
@@ -95,22 +99,22 @@ class App : Application(), Resourced {
                 serverHostField = hostField {
                     promptText = getString(R.string.ip_address)
                     prefWidth = 128.0
-                    textProperty() bindBidirectional NoSQLFile.host
+                    textProperty() bindBidirectional NoSQLFile.hostProperty
                 } col 1 row 0
                 serverPortField = intField {
                     promptText = getString(R.string.port)
                     prefWidth = 64.0
-                    textProperty() bindBidirectional NoSQLFile.port
+                    textProperty() bindBidirectional NoSQLFile.portProperty
                 } col 2 row 0
                 label(getString(R.string.server_user)) col 0 row 1
                 serverUserField = textField {
                     promptText = getString(R.string.server_user)
-                    textProperty() bindBidirectional NoSQLFile.user
+                    textProperty() bindBidirectional NoSQLFile.userProperty
                 } col 1 row 1 colSpan 2
                 label(getString(R.string.server_password)) col 0 row 2
                 serverPasswordField = passwordField {
                     promptText = getString(R.string.server_password)
-                    textProperty() bindBidirectional NoSQLFile.password
+                    textProperty() bindBidirectional NoSQLFile.passwordProperty
                 } col 1 row 2 colSpan 2
                 hbox {
                     alignment = CENTER_RIGHT
@@ -137,7 +141,8 @@ class App : Application(), Resourced {
                         or serverPortField.textProperty().isEmpty
                         or serverUserField.textProperty().isEmpty
                         or serverPasswordField.textProperty().isEmpty)
-                addConsumedEventFilter(ACTION) {
+                addEventFilter(ACTION) {
+                    it.consume()
                     PreferencesFile.save()
                     NoSQLFile.save()
                     NoSQL.login(serverHostField.text, serverPortField.value, serverUserField.text, serverPasswordField.text, employeeField.text, passwordField.text)
@@ -147,7 +152,7 @@ class App : Application(), Resourced {
                                 errorAlert(it.message.toString()).showAndWait()
                             }) { employee ->
                                 result = employee
-                                forceClose()
+                                close()
                             }
                 }
             }

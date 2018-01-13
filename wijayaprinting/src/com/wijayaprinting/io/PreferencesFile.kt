@@ -9,6 +9,13 @@ open class PreferencesFile : PropertiesFile(".preferences",
 ) {
     companion object : PreferencesFile()
 
-    val employee: StringProperty by map
-    val language: StringProperty by map
+    val employeeProperty: StringProperty by map
+    var employee: String
+        get() = employeeProperty.get()
+        set(value) = employeeProperty.set(value)
+
+    val languageProperty: StringProperty by map
+    var language: String
+        get() = languageProperty.get()
+        set(value) = languageProperty.set(value)
 }

@@ -8,8 +8,8 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/buildSrc_test.iml" filepath="$PROJECT_DIR$/.idea/modules/buildSrc_test.iml" group="buildSrc" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/manager.iml" filepath="$PROJECT_DIR$/.idea/modules/manager.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/wijayaprinting.iml" filepath="$PROJECT_DIR$/.idea/modules/wijayaprinting.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/wijayaprinting-scene/wijayaprinting-scene.iml" filepath="$PROJECT_DIR$/.idea/modules/wijayaprinting-scene/wijayaprinting-scene.iml" group="wijayaprinting-scene" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/wp-manager-scene/wijayaprinting-scene.iml" filepath="$PROJECT_DIR$/.idea/modules/wp-manager-scene/wijayaprinting-scene.iml" group="wijayaprinting-scene" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/wijayaprinting-scene/wijayaprinting-scene.iml" filepath="$PROJECT_DIR$/.idea/modules/wijayaprinting-scene/wijayaprinting-scene.iml" group="wijayaprinting-scene" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/wijayaprinting-scene/wijayaprinting-scene_main.iml" filepath="$PROJECT_DIR$/.idea/modules/wijayaprinting-scene/wijayaprinting-scene_main.iml" group="wijayaprinting-scene" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/wijayaprinting-scene/wijayaprinting-scene_test.iml" filepath="$PROJECT_DIR$/.idea/modules/wijayaprinting-scene/wijayaprinting-scene_test.iml" group="wijayaprinting-scene" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/wijayaprinting/wijayaprinting-wijayaprinting.iml" filepath="$PROJECT_DIR$/.idea/modules/wijayaprinting/wijayaprinting-wijayaprinting.iml" group="wijayaprinting" />

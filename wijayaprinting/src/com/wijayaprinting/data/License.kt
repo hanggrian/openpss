@@ -1,6 +1,7 @@
 package com.wijayaprinting.data
 
-import com.wijayaprinting.Resourced
+import com.wijayaprinting.core.Listable
+import com.wijayaprinting.core.Resourced
 import javafx.collections.ObservableList
 import kotfx.observableListOf
 import java.io.BufferedReader
@@ -13,8 +14,8 @@ data class License(val owner: String, val name: String, val homepage: String) {
 
     private val String.shorten: String get() = toLowerCase().replace(' ', '_').replace('/', '_').replace('-', '_')
 
-    companion object {
-        fun listAll(): ObservableList<License> = observableListOf(
+    companion object : Listable<License> {
+        override fun listAll(): ObservableList<License> = observableListOf(
                 License("Apache", "Commons Lang", "https://commons.apache.org/lang"),
                 License("Apache", "Commons Math", "https://commons.apache.org/math"),
                 License("Apache", "Commons Validator", "https://commons.apache.org/validator"),

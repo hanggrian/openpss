@@ -11,8 +11,8 @@ object Plates : DocumentSchema<Plate>("plate", Plate::class) {
 }
 
 data class Plate(
-        val name: String,
-        val price: Double
+        var name: String,
+        var price: Double
 ) {
-    val id: Id<String, Plates>? = null
+    lateinit var id: Id<String, Plates>
 }

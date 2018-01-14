@@ -8,6 +8,7 @@ import io.reactivex.Completable
 import io.reactivex.Single
 import javafx.application.Platform
 import kotfx.errorAlert
+import kotlinx.nosql.AbstractSchema
 import kotlinx.nosql.equal
 import kotlinx.nosql.mongodb.MongoDB
 import kotlinx.nosql.mongodb.MongoDBSession
@@ -16,7 +17,7 @@ import java.net.InetAddress.getByName
 /** Connect to MongoDB database using RxJava's streams. */
 object NoSQL {
     private const val DATABASE = "wijayaprinting"
-    private val SCHEMAS get() = arrayOf(Customers, Employees, Recesses, Wages)
+    private val SCHEMAS: Array<AbstractSchema> get() = arrayOf(Customers, Employees, Plates, Recesses, Wages)
 
     @PublishedApi internal lateinit var _DB: MongoDB
 
@@ -42,8 +43,6 @@ object NoSQL {
             emitter.onError(e)
         }
     }
-
-    fun <R> withSession(statement: MongoDBSession.() -> R): R = _DB.withSession(statement)
 
     @Throws(Exception::class)
     private fun connect(host: String, port: Int, user: String, password: String): MongoDB {

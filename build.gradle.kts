@@ -17,4 +17,11 @@ allprojects {
         maven(url = "http://repository.jetbrains.com/kotlin-nosql")
         maven(url = "https://dl.bintray.com/hendraanggrian/maven")
     }
+    tasks.withType(Delete::class.java) {
+        delete(File(projectDir, "out"))
+    }
+}
+
+task<Delete>("clean") {
+    delete(rootProject.buildDir)
 }

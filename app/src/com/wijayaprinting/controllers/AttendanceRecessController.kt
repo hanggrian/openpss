@@ -1,13 +1,13 @@
 package com.wijayaprinting.controllers
 
+import com.wijayaprinting.PATTERN_TIME
 import com.wijayaprinting.R
 import com.wijayaprinting.core.Refreshable
-import com.wijayaprinting.nosql.Recess
-import com.wijayaprinting.nosql.Recesses
-import com.wijayaprinting.PATTERN_TIME
-import com.wijayaprinting.nosql.transaction
 import com.wijayaprinting.layouts.TimeBox
 import com.wijayaprinting.layouts.timeBox
+import com.wijayaprinting.nosql.Recess
+import com.wijayaprinting.nosql.Recesses
+import com.wijayaprinting.nosql.transaction
 import com.wijayaprinting.util.gap
 import javafx.fxml.FXML
 import javafx.scene.control.Button
@@ -24,13 +24,13 @@ class AttendanceRecessController : Controller(), Refreshable {
 
     @FXML lateinit var deleteButton: Button
 
-    @FXML lateinit var tableView: TableView<Recess>
+    @FXML lateinit var recessTable: TableView<Recess>
     @FXML lateinit var startColumn: TableColumn<Recess, String>
     @FXML lateinit var endColumn: TableColumn<Recess, String>
 
     @FXML
     fun initialize() {
-        deleteButton.disableProperty() bind tableView.selectionModel.selectedItemProperty().isNull
+        deleteButton.disableProperty() bind recessTable.selectionModel.selectedItemProperty().isNull
         startColumn.setCellValueFactory { it.value.start.toString(PATTERN_TIME).asProperty() }
         endColumn.setCellValueFactory { it.value.end.toString(PATTERN_TIME).asProperty() }
         refresh()
@@ -53,8 +53,9 @@ class AttendanceRecessController : Controller(), Refreshable {
         button(OK).disableProperty() bind booleanBindingOf(startBox.valueProperty, endBox.valueProperty) { startBox.value >= endBox.value }
         setResultConverter { if (it == OK) Pair(startBox.value, endBox.value) else null }
     }.showAndWait().ifPresent { (start, end) ->
-        transaction { Recesses.insert(Recess(start, end)) }
-        refresh()
+        val recess = Recess(start, end)
+        recess.id = transaction { Recesses.insert(Recess(start, end)) }!!
+        recessTable.items.add(recess)
     }
 
     @FXML
@@ -62,11 +63,13 @@ class AttendanceRecessController : Controller(), Refreshable {
             .showAndWait()
             .filter { it == YES }
             .ifPresent {
-                transaction { Recesses.find { id.equal(tableView.selectionModel.selectedItem.id!!.value) }.remove() }
-                refresh()
+                recessTable.selectionModel.selectedItem.let { recess ->
+                    transaction { Recesses.find { id.equal(recess.id.value) }.remove() }
+                    recessTable.items.remove(recess)
+                }
             }
 
     override fun refresh() {
-        tableView.items = transaction { Recesses.find().toMutableObservableList() }
+        recessTable.items = transaction { Recesses.find().toMutableObservableList() }
     }
 }

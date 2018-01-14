@@ -11,9 +11,9 @@ object Wages : DocumentSchema<Wage>("wage", Wage::class) {
 }
 
 data class Wage(
-        val wageId: Int,
-        val daily: Int,
-        val hourlyOvertime: Int
+        var wageId: Int,
+        var daily: Int,
+        var hourlyOvertime: Int
 ) {
-    val id: Id<String, Wages>? = null
+    lateinit var id: Id<String, Wages>
 }

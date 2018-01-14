@@ -27,8 +27,18 @@
                 <Tooltip text="%add"/>
             </tooltip>
         </Button>
+        <Button mnemonicParsing="false" fx:id="deleteButton" onAction="#deleteOnAction">
+            <graphic>
+                <ImageView pickOnBounds="true" preserveRatio="true">
+                    <Image url="@btn_delete.png"/>
+                </ImageView>
+            </graphic>
+            <tooltip>
+                <Tooltip text="%delete"/>
+            </tooltip>
+        </Button>
     </ToolBar>
-    <TableView fx:id="tableView" VBox.vgrow="ALWAYS" editable="true">
+    <TableView fx:id="plateTable" VBox.vgrow="ALWAYS" editable="true">
         <columns>
             <TableColumn fx:id="nameColumn" text="%name" prefWidth="120.0" editable="false"/>
             <TableColumn fx:id="priceColumn" text="%price" prefWidth="120.0"/>

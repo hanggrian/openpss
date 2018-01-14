@@ -38,7 +38,7 @@
             </tooltip>
         </Button>
     </ToolBar>
-    <TableView fx:id="tableView" VBox.vgrow="ALWAYS">
+    <TableView fx:id="recessTable" VBox.vgrow="ALWAYS">
         <columns>
             <TableColumn fx:id="startColumn" text="%start" prefWidth="120.0"/>
             <TableColumn fx:id="endColumn" text="%end" prefWidth="120.0"/>

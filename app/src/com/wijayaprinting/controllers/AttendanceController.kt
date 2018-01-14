@@ -175,6 +175,7 @@ class AttendanceController : Controller() {
                                 }
                             }
                             menuItem(getString(R.string.edit)) {
+                                disableProperty() bind listView.selectionModel.selectedItems.isEmpty
                                 setOnAction {
                                     DateTimeDialog(this@AttendanceController, getString(R.string.edit_record), listView.selectionModel.selectedItem)
                                             .showAndWait()
@@ -183,7 +184,6 @@ class AttendanceController : Controller() {
                                                 listView.items.sort()
                                             }
                                 }
-                                disableProperty() bind listView.selectionModel.selectedItems.isEmpty
                             }
                             separatorMenuItem()
                             menuItem(getString(R.string.revert)) { setOnAction { attendee.attendances.revert() } }

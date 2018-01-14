@@ -12,11 +12,11 @@ object Employees : DocumentSchema<Employee>("employee", Employee::class) {
 }
 
 data class Employee(
-        val name: String,
-        val password: String,
-        val fullAccess: Boolean
+        var name: String,
+        var password: String,
+        var fullAccess: Boolean
 ) {
-    val id: Id<String, Employees>? = null
+    lateinit var id: Id<String, Employees>
 
     val firstTimeLogin: Boolean get() = password == DEFAULT_PASSWORD
 

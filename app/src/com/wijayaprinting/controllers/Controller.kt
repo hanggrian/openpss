@@ -8,7 +8,7 @@ import java.util.*
 /** Base class of all controllers. */
 abstract class Controller : Resourced {
 
-    override val resources: ResourceBundle = Language.valueOf(PreferencesFile.language).getResources("string")
+    override val resources: ResourceBundle = Language.valueOf(PreferencesFile.language.get()).getResources("string")
 
     private var mExtra: Any? = null
 

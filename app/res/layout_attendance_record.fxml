@@ -19,6 +19,7 @@
                 <Tooltip text="%undo"/>
             </tooltip>
         </SplitMenuButton>
+        <Separator/>
         <TimeBox fx:id="timeBox"/>
         <Button mnemonicParsing="false" fx:id="lockStartButton" onAction="#lockStartOnAction">
             <graphic>
@@ -40,16 +41,14 @@
                 <Tooltip text="%lock_end_time"/>
             </tooltip>
         </Button>
-        <Button mnemonicParsing="false" fx:id="emptyButton" onAction="#emptyOnAction">
-            <graphic>
-                <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@btn_empty.png"/>
-                </ImageView>
-            </graphic>
-            <tooltip>
-                <Tooltip text="%empty_daily_income"/>
-            </tooltip>
-        </Button>
+        <Separator/>
+        <Button mnemonicParsing="false" fx:id="emptyButton" onAction="#emptyOnAction" text="%empty_daily_income"/>
+        <Separator/>
+        <TextFlow fx:id="grandTotalFlow" maxHeight="-Infinity">
+            <Text text="%grand_total"/>
+            <Text text=": "/>
+            <Text fx:id="totalText"/>
+        </TextFlow>
         <Separator/>
         <Button mnemonicParsing="false" fx:id="printButton" onAction="#printOnAction">
             <graphic>
@@ -61,12 +60,6 @@
                 <Tooltip text="%print"/>
             </tooltip>
         </Button>
-        <Separator/>
-        <TextFlow fx:id="grandTotalFlow" maxHeight="-Infinity">
-            <Text text="%grand_total"/>
-            <Text text=": "/>
-            <Text fx:id="totalText"/>
-        </TextFlow>
     </ToolBar>
     <TreeTableView fx:id="treeTableView" style="-fx-font-family: Tahoma;" VBox.vgrow="ALWAYS">
         <columns>

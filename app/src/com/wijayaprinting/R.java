@@ -1,4 +1,4 @@
-// rsync generated this class at 2018-01-13T01:04:28.655 from:
+// rsync generated this class at 2018-01-14T11:19:16.390 from:
 // string_en.properties
 // layout_attendance.fxml
 // btn_refresh.png
@@ -24,6 +24,7 @@
 // btn_print.png
 // layout_plate.fxml
 // btn_merge.png
+// ic_address.png
 // btn_edit.png
 // btn_lock_start.png
 // layout_attendance_recess.fxml
@@ -111,6 +112,8 @@ public final class R {
 
     public static final String btn_merge = "/btn_merge.png";
 
+    public static final String ic_address = "/ic_address.png";
+
     public static final String btn_edit = "/btn_edit.png";
 
     public static final String btn_lock_start = "/btn_lock_start.png";
@@ -187,6 +190,8 @@ public final class R {
 
     public static final String date = "date";
 
+    public static final String contact = "contact";
+
     public static final String author = "author";
 
     public static final String exit = "exit";
@@ -231,6 +236,8 @@ public final class R {
 
     public static final String day = "day";
 
+    public static final String select_customer = "select_customer";
+
     public static final String multiple_lock_end_time = "multiple_lock_end_time";
 
     public static final String are_you_sure = "are_you_sure";
@@ -238,6 +245,8 @@ public final class R {
     public static final String overtime = "overtime";
 
     public static final String time = "time";
+
+    public static final String type = "type";
 
     public static final String quantity = "quantity";
 

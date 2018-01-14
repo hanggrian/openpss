@@ -47,7 +47,6 @@ dependencies {
     implementation(apache("commons", "math3", commonsMathVersion))
     implementation(apache("poi", "ooxml", poiVersion))
 
-    implementation(mysql("connector-java", mysqlConnectorVersion))
     implementation(google("guava", guavaVersion))
     implementation(slf4j("log4j12", slf4jVersion))
 

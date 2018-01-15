@@ -24,6 +24,7 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/common/common_test.iml" filepath="$PROJECT_DIR$/.idea/modules/common/common_test.iml" group="common" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/manager.iml" filepath="$PROJECT_DIR$/.idea/modules/manager.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/scene/scene.iml" filepath="$PROJECT_DIR$/.idea/modules/scene/scene.iml" group="scene" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/scene/scene.iml" filepath="$PROJECT_DIR$/.idea/modules/scene/scene.iml" group="scene" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/wijayaprinting-scene/scene.iml" filepath="$PROJECT_DIR$/.idea/modules/wijayaprinting-scene/scene.iml" group="scene" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/scene/scene_main.iml" filepath="$PROJECT_DIR$/.idea/modules/scene/scene_main.iml" group="scene" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/scene/scene_main.iml" filepath="$PROJECT_DIR$/.idea/modules/scene/scene_main.iml" group="scene" />

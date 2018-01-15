@@ -6,6 +6,7 @@ import com.wijayaprinting.nosql.Recess
 import com.wijayaprinting.nosql.Wage
 import com.wijayaprinting.nosql.Wages
 import com.wijayaprinting.nosql.transaction
+import com.wijayaprinting.collections.isEmpty
 import javafx.beans.property.IntegerProperty
 import javafx.beans.property.SimpleIntegerProperty
 import javafx.collections.ObservableList
@@ -60,7 +61,7 @@ data class Attendee @JvmOverloads constructor(
     fun saveWage() {
         transaction @Suppress("IMPLICIT_CAST_TO_ANY") {
             Wages.find { wageId.equal(id) }.let {
-                if (it.count() == 0) Wages.insert(Wage(id, daily, hourlyOvertime))
+                if (it.isEmpty) Wages.insert(Wage(id, daily, hourlyOvertime))
                 else it.projection { wageId + daily + hourlyOvertime }.update(id, daily, hourlyOvertime)
             }
         }

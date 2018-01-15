@@ -3,6 +3,9 @@ package com.wijayaprinting.controllers
 import com.wijayaprinting.App.Companion.FULL_ACCESS
 import com.wijayaprinting.PATTERN_DATE
 import com.wijayaprinting.R
+import com.wijayaprinting.collections.isNotEmpty
+import com.wijayaprinting.collections.minus
+import com.wijayaprinting.collections.plus
 import com.wijayaprinting.nosql.Customer
 import com.wijayaprinting.nosql.Customers
 import com.wijayaprinting.nosql.transaction
@@ -21,6 +24,7 @@ import kotlinx.nosql.equal
 import kotlinx.nosql.id
 import kotlinx.nosql.mongodb.MongoDBSession
 import kotlinx.nosql.update
+import kotlin.math.ceil
 
 class CustomerController : Controller() {
 
@@ -39,16 +43,40 @@ class CustomerController : Controller() {
     @FXML lateinit var coverLabel: Label
 
     private lateinit var customerList: ListView<Customer>
-    private val nameLabelGraphic = button(null, ImageView(R.png.btn_edit)) {
+    private val nameLabelGraphic = button(graphic = ImageView(R.png.btn_edit)) {
         size(24)
         setOnAction {
-
+            inputDialog(customer!!.name) {
+                title = getString(R.string.edit_customer)
+                headerText = getString(R.string.edit_customer)
+                graphic = ImageView(R.png.ic_user)
+                contentText = getString(R.string.name)
+            }.showAndWait().ifPresent { name ->
+                transaction {
+                    if (Customers.find { this.name.equal(name) }.isNotEmpty) errorAlert(getString(R.string.customer_name_taken)).showAndWait() else {
+                        Customers.find { id.equal(customer!!.id) }.projection { this.name }.update(name)
+                        reload(customer!!)
+                        customerField.text = name
+                    }
+                }
+            }
         }
     }
-    private val noteLabelGraphic = button(null, ImageView(R.png.btn_edit)) {
+    private val noteLabelGraphic = button(graphic = ImageView(R.png.btn_edit)) {
         size(24)
         setOnAction {
-
+            inputDialog(customer!!.note) {
+                title = getString(R.string.edit_customer)
+                headerText = getString(R.string.edit_customer)
+                graphic = ImageView(R.png.ic_user)
+                contentText = getString(R.string.note)
+            }.showAndWait().ifPresent { note ->
+                transaction {
+                    Customers.find { id.equal(customer!!.id) }.projection { this.note }.update(note)
+                    reload(customer!!)
+                    customerField.text = customer!!.name
+                }
+            }
         }
     }
 
@@ -60,16 +88,16 @@ class CustomerController : Controller() {
                     runFX {
                         transaction {
                             val customers = if (customerField.text.isBlank()) Customers.find() else Customers.find { name.matches(customerField.text.toPattern()) }
-                            items = if (page == 0) customers.take(ITEMS_PER_PAGE).toMutableObservableList() else customers.skip(ITEMS_PER_PAGE * (page - 1)).take(ITEMS_PER_PAGE).toMutableObservableList()
-                            customerPagination.pageCount = (customers.count() / ITEMS_PER_PAGE) + 1
+                            customerPagination.pageCount = ceil(customers.count() / ITEMS_PER_PAGE.toDouble()).toInt()
+                            items = customers.skip(ITEMS_PER_PAGE * page).take(ITEMS_PER_PAGE).toMutableObservableList()
                         }
-                        nameLabel.textProperty() rebind stringBindingOf(selectionModel.selectedItemProperty()) { selectionModel.selectedItem?.name ?: "" }
-                        sinceLabel.textProperty() rebind stringBindingOf(selectionModel.selectedItemProperty()) { selectionModel.selectedItem?.since?.toString(PATTERN_DATE) ?: "" }
-                        noteLabel.textProperty() rebind stringBindingOf(selectionModel.selectedItemProperty()) { selectionModel.selectedItem?.note ?: "" }
-                        contactTable.itemsProperty() rebind bindingOf(selectionModel.selectedItemProperty()) { selectionModel.selectedItem?.contacts?.toMutableObservableList() ?: mutableObservableListOf() }
-                        coverLabel.visibleProperty() rebind selectionModel.selectedItemProperty().isNull
                     }
                 }
+                nameLabel.textProperty() rebind stringBindingOf(customerList.selectionModel.selectedItemProperty()) { customer?.name ?: "" }
+                sinceLabel.textProperty() rebind stringBindingOf(customerList.selectionModel.selectedItemProperty()) { customer?.since?.toString(PATTERN_DATE) ?: "" }
+                noteLabel.textProperty() rebind stringBindingOf(customerList.selectionModel.selectedItemProperty()) { customer?.note ?: "" }
+                contactTable.itemsProperty() rebind bindingOf(customerList.selectionModel.selectedItemProperty()) { customer?.contacts?.toObservableList() ?: mutableObservableListOf() }
+                coverLabel.visibleProperty() rebind customerList.selectionModel.selectedItemProperty().isNull
                 customerList
             }
         }
@@ -81,7 +109,7 @@ class CustomerController : Controller() {
         contactTable.contextMenu = contextMenu {
             menuItem(getString(R.string.add)) {
                 setOnAction {
-                    dialog<Customer.Contact>(R.string.add_contact, R.string.add_contact, ImageView(R.png.ic_address)) {
+                    dialog<Customer.Contact>(getString(R.string.add_contact), getString(R.string.add_contact), ImageView(R.png.ic_address)) {
                         lateinit var typeBox: ChoiceBox<String>
                         lateinit var contactField: TextField
                         content = gridPane {
@@ -95,24 +123,20 @@ class CustomerController : Controller() {
                         button(OK).disableProperty() bind (typeBox.selectionModel.selectedItemProperty().isNull or contactField.textProperty().isEmpty)
                         setResultConverter { if (it == OK) Customer.Contact(typeBox.value, contactField.text) else null }
                     }.showAndWait().ifPresent { contact ->
-                        customerList.selectionModel.selectedItem.let { customer ->
-                            transaction {
-                                Customers.find { id.equal(customer.id) }.projection { contacts }.update(customer.contacts + contact)
-                                reload(customer)
-                            }
+                        transaction {
+                            Customers.find { id.equal(customer!!.id) }.projection { contacts }.update(customer!!.contacts + contact)
+                            reload(customer!!)
                         }
                     }
                 }
             }
             menuItem(getString(R.string.delete)) {
-                disableProperty() bind booleanBindingOf(contactTable.selectionModel.selectedItemProperty()) { contactTable.selectionModel.selectedItem == null || !FULL_ACCESS }
+                disableProperty() bind booleanBindingOf(contactTable.selectionModel.selectedItemProperty()) { contact == null || !FULL_ACCESS }
                 setOnAction {
                     confirmAlert(getString(R.string.delete_contact)).showAndWait().ifPresent {
-                        customerList.selectionModel.selectedItem.let { customer ->
-                            transaction {
-                                Customers.find { id.equal(customer.id) }.projection { contacts }.update(customer.contacts - contactTable.selectionModel.selectedItem)
-                                reload(customer)
-                            }
+                        transaction {
+                            Customers.find { id.equal(customer!!.id) }.projection { contacts }.update(customer!!.contacts - contact!!)
+                            reload(customer!!)
                         }
                     }
                 }
@@ -134,10 +158,18 @@ class CustomerController : Controller() {
         graphic = ImageView(R.png.ic_user)
         contentText = getString(R.string.name)
     }.showAndWait().ifPresent { name ->
-        val customer = Customer(name)
-        customer.id = transaction { Customers.insert(Customer(name)) }!!
-        customerField.text = name
+        transaction {
+            if (Customers.find { this.name.equal(name) }.isNotEmpty) errorAlert(getString(R.string.customer_name_taken)).showAndWait() else {
+                val customer = Customer(name)
+                customer.id = Customers.insert(Customer(name))
+                customerField.text = name
+            }
+        }
     }
+
+    private val customer: Customer? get() = customerList.selectionModel.selectedItem
+
+    private val contact: Customer.Contact? get() = contactTable.selectionModel.selectedItem
 
     private fun MongoDBSession.reload(customer: Customer) {
         customerList.items[customerList.items.indexOf(customer)] = Customers.find { id.equal(customer.id) }.single()

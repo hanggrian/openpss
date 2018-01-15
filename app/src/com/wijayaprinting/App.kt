@@ -159,9 +159,7 @@ class App : Application(), Resourced {
             runFX {
                 if (employeeField.text.isBlank()) employeeField.requestFocus() else passwordField.requestFocus()
                 isExpanded = listOf(serverHostField, serverPortField, serverUserField, serverPasswordField).any { it.text.isBlank() }
-                if (DEBUG) {
-                    passwordField.text = "123"
-                }
+                if (DEBUG) { passwordField.text = "123" }
             }
         }.showAndWait().filter { it is Employee }.ifPresent { employee ->
             employee as Employee

@@ -5,10 +5,15 @@
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.wijayaprinting.controllers.MainController">
     <MenuBar fx:id="menuBar">
+        <fx:define>
+            <ToggleGroup fx:id="navigateGroup"/>
+        </fx:define>
         <Menu mnemonicParsing="false" fx:id="navigateMenu" text="%navigate">
-            <CheckMenuItem mnemonicParsing="false" onAction="#navigateCustomerOnAction" text="%customer"/>
-            <CheckMenuItem mnemonicParsing="false" onAction="#navigatePlateOnAction" text="%plate"/>
-            <CheckMenuItem mnemonicParsing="false" onAction="#navigateAttendanceOnAction"
+            <RadioMenuItem mnemonicParsing="false" toggleGroup="$navigateGroup" onAction="#navigateCustomerOnAction"
+                           text="%customer"/>
+            <RadioMenuItem mnemonicParsing="false" toggleGroup="$navigateGroup" onAction="#navigatePlateOnAction"
+                           text="%plate"/>
+            <RadioMenuItem mnemonicParsing="false" toggleGroup="$navigateGroup" onAction="#navigateAttendanceOnAction"
                            text="%attendance"/>
         </Menu>
         <Menu mnemonicParsing="false" text="%help">

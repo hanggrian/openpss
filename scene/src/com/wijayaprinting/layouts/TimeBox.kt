@@ -29,25 +29,25 @@ open class TimeBox : _HBox() {
         hourField = intField {
             maxWidth = 48.0
             alignment = CENTER
-            textProperty().addListener { _, oldValue, newValue -> if (newValue.toIntOrNull() ?: 0 !in 0 until 23) hourField.text = oldValue }
+            textProperty().addListener { _, oldValue, newValue -> if (newValue.toIntOrNull() ?: 0 !in 0 until 24) hourField.text = oldValue }
         }
         label(":")
         minuteField = intField {
             maxWidth = 48.0
             alignment = CENTER
-            textProperty().addListener { _, oldValue, newValue -> if (newValue.toIntOrNull() ?: 0 !in 0 until 59) minuteField.text = oldValue }
+            textProperty().addListener { _, oldValue, newValue -> if (newValue.toIntOrNull() ?: 0 !in 0 until 60) minuteField.text = oldValue }
         }
 
-        valueProperty bind bindingOf(hourField.textProperty(), minuteField.textProperty()) {
+        valueProperty bind bindingOf(hourField.valueProperty, minuteField.valueProperty) {
             try {
-                parse("${hourField.text}:${minuteField.text}", forPattern(PATTERN_TIME))
+                parse("${hourField.value}:${minuteField.value}", forPattern(PATTERN_TIME))
             } catch (e: Exception) {
                 MIDNIGHT
             }
         }
-        validProperty bind booleanBindingOf(hourField.textProperty(), minuteField.textProperty()) {
+        validProperty bind booleanBindingOf(hourField.valueProperty, minuteField.valueProperty) {
             try {
-                parse("${hourField.text}:${minuteField.text}", forPattern(PATTERN_TIME))
+                parse("${hourField.value}:${minuteField.value}", forPattern(PATTERN_TIME))
                 true
             } catch (e: Exception) {
                 false

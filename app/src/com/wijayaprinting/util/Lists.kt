@@ -2,4 +2,8 @@
 
 package com.wijayaprinting.util
 
-inline infix fun <E> List<E>.with(element: E): List<E> = toMutableList().apply { add(element) }
+/** Creates a copy of this list with [element] added. */
+inline operator fun <E> List<E>.plus(element: E): List<E> = toMutableList().apply { add(element) }
+
+/** Creates a copy of this list with [element] removed. */
+inline operator fun <E> List<E>.minus(element: E): List<E> = toMutableList().apply { remove(element) }

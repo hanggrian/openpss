@@ -1,4 +1,4 @@
-// rsync generated this class at 2018-01-14T11:19:16.390 from:
+// rsync generated this class at 2018-01-15T12:53:55.469 from:
 // string_en.properties
 // layout_attendance.fxml
 // btn_refresh.png
@@ -10,7 +10,6 @@
 // ic_user.png
 // btn_lock_end.png
 // btn_visibility.png
-// btn_empty.png
 // btn_clear.png
 // layout_main.fxml
 // layout_attendance_record.fxml
@@ -90,8 +89,6 @@ public final class R {
 
     public static final String btn_visibility = "/btn_visibility.png";
 
-    public static final String btn_empty = "/btn_empty.png";
-
     public static final String btn_clear = "/btn_clear.png";
 
     public static final String btn_visibility_off = "/btn_visibility_off.png";
@@ -147,6 +144,8 @@ public final class R {
     public static final String confirm_password = "confirm_password";
 
     public static final String change_password = "change_password";
+
+    public static final String delete_contact = "delete_contact";
 
     public static final String edit_record = "edit_record";
 
@@ -256,6 +255,8 @@ public final class R {
 
     public static final String revert = "revert";
 
+    public static final String add_contact = "add_contact";
+
     public static final String powered_by = "powered_by";
 
     public static final String language = "language";
@@ -324,9 +325,9 @@ public final class R {
 
     public static final String overtime_income = "overtime_income";
 
-    public static final String multiple_lock_start_time = "multiple_lock_start_time";
-
     public static final String price = "price";
+
+    public static final String multiple_lock_start_time = "multiple_lock_start_time";
 
     public static final String employee = "employee";
 

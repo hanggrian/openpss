@@ -45,7 +45,7 @@ class App : Application(), Resourced {
         lateinit var EMPLOYEE: String
         var FULL_ACCESS: Boolean = false
 
-        @JvmStatic fun main(vararg args: String) = launch(App::class.java, *args)
+        @JvmStatic fun main(args: Array<String>) = launch(App::class.java, *args)
     }
 
     override val resources: ResourceBundle = Language.valueOf(PreferencesFile.language.get()).getResources("string")

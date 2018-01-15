@@ -3,13 +3,11 @@ package com.wijayaprinting.controllers
 import com.wijayaprinting.App.Companion.FULL_ACCESS
 import com.wijayaprinting.PATTERN_DATE
 import com.wijayaprinting.R
-import com.wijayaprinting.dialogs.CustomerDialog
 import com.wijayaprinting.nosql.Customer
 import com.wijayaprinting.nosql.Customers
 import com.wijayaprinting.nosql.transaction
 import com.wijayaprinting.util.gap
 import com.wijayaprinting.util.size
-import com.wijayaprinting.util.with
 import javafx.fxml.FXML
 import javafx.scene.Node
 import javafx.scene.control.*
@@ -21,6 +19,7 @@ import javafx.util.Callback
 import kotfx.*
 import kotlinx.nosql.equal
 import kotlinx.nosql.id
+import kotlinx.nosql.mongodb.MongoDBSession
 import kotlinx.nosql.update
 
 class CustomerController : Controller() {
@@ -39,7 +38,7 @@ class CustomerController : Controller() {
     @FXML lateinit var contactColumn: TableColumn<Customer.Contact, String>
     @FXML lateinit var coverLabel: Label
 
-    private lateinit var listView: ListView<Customer>
+    private lateinit var customerList: ListView<Customer>
     private val nameLabelGraphic = button(null, ImageView(R.png.btn_edit)) {
         size(24)
         setOnAction {
@@ -57,7 +56,7 @@ class CustomerController : Controller() {
     fun initialize() {
         customerPagination.pageFactoryProperty() bind bindingOf(customerField.textProperty()) {
             Callback<Int, Node> { page ->
-                listView = listView {
+                customerList = listView {
                     runFX {
                         transaction {
                             val customers = if (customerField.text.isBlank()) Customers.find() else Customers.find { name.matches(customerField.text.toPattern()) }
@@ -66,12 +65,12 @@ class CustomerController : Controller() {
                         }
                         nameLabel.textProperty() rebind stringBindingOf(selectionModel.selectedItemProperty()) { selectionModel.selectedItem?.name ?: "" }
                         sinceLabel.textProperty() rebind stringBindingOf(selectionModel.selectedItemProperty()) { selectionModel.selectedItem?.since?.toString(PATTERN_DATE) ?: "" }
-                        noteLabel.textProperty() rebind stringBindingOf(selectionModel.selectedItemProperty()) { selectionModel.selectedItem?.note ?: "-" }
-                        // contactTable.itemsProperty() rebind bindingOf(selectionModel.selectedItemProperty()) {}
+                        noteLabel.textProperty() rebind stringBindingOf(selectionModel.selectedItemProperty()) { selectionModel.selectedItem?.note ?: "" }
+                        contactTable.itemsProperty() rebind bindingOf(selectionModel.selectedItemProperty()) { selectionModel.selectedItem?.contacts?.toMutableObservableList() ?: mutableObservableListOf() }
                         coverLabel.visibleProperty() rebind selectionModel.selectedItemProperty().isNull
                     }
                 }
-                listView
+                customerList
             }
         }
 
@@ -82,7 +81,7 @@ class CustomerController : Controller() {
         contactTable.contextMenu = contextMenu {
             menuItem(getString(R.string.add)) {
                 setOnAction {
-                    dialog<Customer.Contact>("Add contact", "Add contact", ImageView(R.png.ic_address)) {
+                    dialog<Customer.Contact>(R.string.add_contact, R.string.add_contact, ImageView(R.png.ic_address)) {
                         lateinit var typeBox: ChoiceBox<String>
                         lateinit var contactField: TextField
                         content = gridPane {
@@ -96,24 +95,35 @@ class CustomerController : Controller() {
                         button(OK).disableProperty() bind (typeBox.selectionModel.selectedItemProperty().isNull or contactField.textProperty().isEmpty)
                         setResultConverter { if (it == OK) Customer.Contact(typeBox.value, contactField.text) else null }
                     }.showAndWait().ifPresent { contact ->
-                        listView.selectionModel.selectedItem.let { customer ->
-                            transaction { Customers.find { id.equal(customer.id) }.projection { contacts }.update(customer.contacts with contact) }
-                            contactTable.items.add(contact)
+                        customerList.selectionModel.selectedItem.let { customer ->
+                            transaction {
+                                Customers.find { id.equal(customer.id) }.projection { contacts }.update(customer.contacts + contact)
+                                reload(customer)
+                            }
                         }
                     }
                 }
             }
-            menuItem(getString(R.string.edit)) {
-                disableProperty() bind contactTable.selectionModel.selectedItemProperty().isNull
-                confirmAlert(R.string.are_you_sure).showAndWait().ifPresent {
-                    // transaction { Customers.find { id.equal(listView.selectionModel.selectedItem) }.remove() }
-                    // contactTable.items.remove()
+            menuItem(getString(R.string.delete)) {
+                disableProperty() bind booleanBindingOf(contactTable.selectionModel.selectedItemProperty()) { contactTable.selectionModel.selectedItem == null || !FULL_ACCESS }
+                setOnAction {
+                    confirmAlert(getString(R.string.delete_contact)).showAndWait().ifPresent {
+                        customerList.selectionModel.selectedItem.let { customer ->
+                            transaction {
+                                Customers.find { id.equal(customer.id) }.projection { contacts }.update(customer.contacts - contactTable.selectionModel.selectedItem)
+                                reload(customer)
+                            }
+                        }
+                    }
                 }
             }
         }
+        typeColumn.setCellValueFactory { it.value.type.asProperty() }
+        contactColumn.setCellValueFactory { it.value.value.asProperty() }
     }
 
-    @FXML fun clearOnAction() {
+    @FXML
+    fun clearOnAction() {
         customerField.text = ""
     }
 
@@ -126,6 +136,10 @@ class CustomerController : Controller() {
     }.showAndWait().ifPresent { name ->
         val customer = Customer(name)
         customer.id = transaction { Customers.insert(Customer(name)) }!!
-        CustomerDialog(this, customer).showAndWait().ifPresent { customerField.text = name }
+        customerField.text = name
+    }
+
+    private fun MongoDBSession.reload(customer: Customer) {
+        customerList.items[customerList.items.indexOf(customer)] = Customers.find { id.equal(customer.id) }.single()
     }
 }

@@ -44,5 +44,5 @@ class MainController : Controller() {
         AboutDialog(this).showAndWait()
     }
 
-    private fun navigateMenu(index: Int) = navigateMenu.items.forEachIndexed { i, item -> (item as CheckMenuItem).isSelected = index == i }
+    private fun navigateMenu(index: Int) = navigateMenu.items.forEachIndexed { i, item -> (item as RadioMenuItem).isSelected = index == i }
 }

@@ -1,7 +1,5 @@
 package com.wijayaprinting.controllers
 
-import com.wijayaprinting.App.Companion.EMPLOYEE
-import com.wijayaprinting.App.Companion.FULL_ACCESS
 import com.wijayaprinting.dialogs.AboutDialog
 import javafx.fxml.FXML
 import javafx.scene.control.*
@@ -23,15 +21,19 @@ class MainController : Controller() {
 
     @FXML
     fun initialize() {
-        navigateMenu.items[2].isDisable = !FULL_ACCESS
-        tabPane.tabs[2].isDisable = !FULL_ACCESS
-        employeeLabel.text = EMPLOYEE
-
         menuBar.isUseSystemMenuBar = IS_OS_MAC
+
+        runFX {
+            navigateMenu.items[2].isDisable = !isFullAccess
+            tabPane.tabs[2].isDisable = !isFullAccess
+            employeeLabel.text = employeeName
+        }
         navigateMenu(tabPane.selectionModel.selectedIndex)
+        tabPane.selectionModel.selectedIndexProperty().addListener { _, _, newIndex -> navigateMenu(newIndex.toInt()) }
+
         runFX {
             controllers = arrayOf(customerController, plateController, attendanceController)
-            tabPane.selectionModel.selectedIndexProperty().addListener { _, _, newIndex -> navigateMenu(newIndex.toInt()) }
+            controllers.forEach { it.employee = employee }
         }
     }
 

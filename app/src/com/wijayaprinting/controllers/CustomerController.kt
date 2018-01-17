@@ -1,6 +1,5 @@
 package com.wijayaprinting.controllers
 
-import com.wijayaprinting.App.Companion.FULL_ACCESS
 import com.wijayaprinting.PATTERN_DATE
 import com.wijayaprinting.R
 import com.wijayaprinting.collections.isNotEmpty
@@ -103,7 +102,7 @@ class CustomerController : Controller() {
         }
 
         nameLabel.font = loadFont(latoBold, 24.0)
-        nameLabel.graphicProperty() bind bindingOf<Node>(nameLabel.hoverProperty()) { if (nameLabel.isHover && FULL_ACCESS) nameLabelGraphic else null }
+        runFX { nameLabel.graphicProperty() bind bindingOf<Node>(nameLabel.hoverProperty()) { if (nameLabel.isHover && isFullAccess) nameLabelGraphic else null } }
         sinceLabel.font = loadFont(latoRegular, 12.0)
         noteLabel.graphicProperty() bind bindingOf<Node>(noteLabel.hoverProperty()) { if (noteLabel.isHover) noteLabelGraphic else null }
         contactTable.contextMenu = contextMenu {
@@ -131,7 +130,7 @@ class CustomerController : Controller() {
                 }
             }
             menuItem(getString(R.string.delete)) {
-                disableProperty() bind booleanBindingOf(contactTable.selectionModel.selectedItemProperty()) { contact == null || !FULL_ACCESS }
+                runFX { disableProperty() bind booleanBindingOf(contactTable.selectionModel.selectedItemProperty()) { contact == null || !isFullAccess } }
                 setOnAction {
                     confirmAlert(getString(R.string.delete_contact)).showAndWait().ifPresent {
                         transaction {

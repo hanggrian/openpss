@@ -2,6 +2,7 @@ package com.wijayaprinting.controllers
 
 import com.wijayaprinting.R
 import com.wijayaprinting.core.Refreshable
+import com.wijayaprinting.util.controller
 import com.wijayaprinting.util.pane
 import javafx.fxml.FXML
 import javafx.stage.Modality.APPLICATION_MODAL
@@ -20,9 +21,11 @@ class PlateController : Controller(), Refreshable {
 
     @FXML
     fun priceOnAction() = stage(getString(R.string.plate_price)) {
+        val loader = getResource(R.fxml.layout_plate_price).loadFXML(resources)
         initModality(APPLICATION_MODAL)
-        scene = getResource(R.fxml.layout_plate_price).loadFXML(resources).pane.toScene()
+        scene = loader.pane.toScene()
         isResizable = false
+        loader.controller.employee = employee
     }.showAndWait()
 
     @FXML

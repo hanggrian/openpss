@@ -3,13 +3,13 @@ package com.wijayaprinting.controllers
 import com.wijayaprinting.BuildConfig.DEBUG
 import com.wijayaprinting.PATTERN_DATETIME
 import com.wijayaprinting.R
+import com.wijayaprinting.controls.FileField
+import com.wijayaprinting.controls.intField
 import com.wijayaprinting.data.Attendee
 import com.wijayaprinting.dialogs.DateTimeDialog
 import com.wijayaprinting.nosql.Recesses
 import com.wijayaprinting.nosql.transaction
 import com.wijayaprinting.readers.Reader
-import com.wijayaprinting.controls.FileField
-import com.wijayaprinting.controls.intField
 import com.wijayaprinting.util.*
 import io.reactivex.Observable
 import io.reactivex.rxkotlin.subscribeBy
@@ -58,9 +58,11 @@ class AttendanceController : Controller() {
 
     @FXML
     fun recessOnAction() = stage(getString(R.string.recess)) {
+        val loader = getResource(R.fxml.layout_attendance_recess).loadFXML(resources)
         initModality(APPLICATION_MODAL)
-        scene = getResource(R.fxml.layout_attendance_recess).loadFXML(resources).pane.toScene()
+        scene = loader.pane.toScene()
         isResizable = false
+        loader.controller.employee = employee
     }.showAndWait()
 
     @FXML

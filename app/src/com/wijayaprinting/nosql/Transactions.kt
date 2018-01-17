@@ -15,7 +15,7 @@ import kotlinx.nosql.mongodb.MongoDBSession
  * @see [kotlinx.nosql.mongodb.MongoDB.withSession]
  */
 inline fun <R> transaction(noinline statement: MongoDBSession.() -> R): R? = try {
-    NoSQL._DB.withSession(statement)
+    NoSQL.DB.withSession(statement)
 } catch (e: MongoException) {
     if (DEBUG) e.printStackTrace()
     errorAlert(e.message.toString()) { headerText = "Connection closed. Please sign in again." }.showAndWait().ifPresent {

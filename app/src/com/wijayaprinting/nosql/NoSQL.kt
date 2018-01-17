@@ -14,16 +14,17 @@ object NoSQL {
     private const val DATABASE = "wijayaprinting"
     private val SCHEMAS: Array<AbstractSchema> get() = arrayOf(Customers, Employees, Plates, Recesses, Wages)
 
-    @PublishedApi internal lateinit var _DB: MongoDB
+    lateinit var DB: MongoDB
 
     fun login(host: String, port: Int, user: String, password: String, employeeName: String, employeePassword: String): Single<Employee> = Single.create { emitter ->
         try {
             var employee: Employee? = null
-            _DB = connect(host, port, user, password)
+            DB = connect(host, port, user, password)
             transaction {
                 employee = checkNotNull(Employees.find { name.equal(employeeName) }.singleOrNull()) { "Employee not found!" }
                 require(employee!!.password == employeePassword) { "Invalid password!" }
             }
+            employee!!.password = "" // password are unused after login, clear for better security.
             emitter.onSuccess(employee!!)
         } catch (e: Exception) {
             emitter.onError(e)

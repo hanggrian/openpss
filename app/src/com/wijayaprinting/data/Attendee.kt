@@ -1,12 +1,12 @@
 package com.wijayaprinting.data
 
 import com.wijayaprinting.collections.RevertableObservableList
+import com.wijayaprinting.collections.isEmpty
 import com.wijayaprinting.core.Resourced
 import com.wijayaprinting.nosql.Recess
 import com.wijayaprinting.nosql.Wage
 import com.wijayaprinting.nosql.Wages
 import com.wijayaprinting.nosql.transaction
-import com.wijayaprinting.collections.isEmpty
 import javafx.beans.property.IntegerProperty
 import javafx.beans.property.SimpleIntegerProperty
 import javafx.collections.ObservableList
@@ -43,9 +43,9 @@ data class Attendee @JvmOverloads constructor(
 
     init {
         transaction {
-            Wages.find { wageId.equal(id) }.singleOrNull()?.let { wage ->
-                dailyProperty.value = wage.daily
-                hourlyOvertimeProperty.value = wage.hourlyOvertime
+            Wages.find { wageId.equal(id) }.singleOrNull()?.let { wages ->
+                dailyProperty.value = wages.daily
+                hourlyOvertimeProperty.value = wages.hourlyOvertime
             }
         }
     }
@@ -60,9 +60,9 @@ data class Attendee @JvmOverloads constructor(
 
     fun saveWage() {
         transaction @Suppress("IMPLICIT_CAST_TO_ANY") {
-            Wages.find { wageId.equal(id) }.let {
-                if (it.isEmpty) Wages.insert(Wage(id, daily, hourlyOvertime))
-                else it.projection { wageId + daily + hourlyOvertime }.update(id, daily, hourlyOvertime)
+            Wages.find { wageId.equal(id) }.let { wage ->
+                if (wage.isEmpty) Wages.insert(Wage(id, daily, hourlyOvertime))
+                else wage.projection { wageId + daily + hourlyOvertime }.update(id, daily, hourlyOvertime)
             }
         }
     }

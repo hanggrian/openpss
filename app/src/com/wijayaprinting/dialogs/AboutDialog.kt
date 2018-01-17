@@ -2,8 +2,8 @@ package com.wijayaprinting.dialogs
 
 import com.wijayaprinting.BuildConfig
 import com.wijayaprinting.R
+import com.wijayaprinting.core.License
 import com.wijayaprinting.core.Resourced
-import com.wijayaprinting.data.License
 import javafx.event.ActionEvent.ACTION
 import javafx.geometry.Insets
 import javafx.geometry.Pos.CENTER_LEFT
@@ -63,7 +63,7 @@ class AboutDialog(val resourced: Resourced) : Dialog<Unit>(), Resourced by resou
                             text = null
                             graphic = null
                             if (item != null && !empty) graphic = kotfx.vbox {
-                                label(item.name) { font = loadFont(latoRegular, 12.0) }
+                                label(item.repo) { font = loadFont(latoRegular, 12.0) }
                                 label(item.owner) { font = loadFont(latoBold, 12.0) }
                             }
                         }

@@ -5,8 +5,9 @@ import com.wijayaprinting.controls.HostField
 import com.wijayaprinting.controls.IntField
 import com.wijayaprinting.controls.hostField
 import com.wijayaprinting.controls.intField
+import com.wijayaprinting.core.EmployeeContainer
+import com.wijayaprinting.core.Language
 import com.wijayaprinting.core.Resourced
-import com.wijayaprinting.data.Language
 import com.wijayaprinting.dialogs.AboutDialog
 import com.wijayaprinting.io.NoSQLFile
 import com.wijayaprinting.io.PreferencesFile
@@ -14,6 +15,7 @@ import com.wijayaprinting.nosql.Employee
 import com.wijayaprinting.nosql.Employees
 import com.wijayaprinting.nosql.NoSQL
 import com.wijayaprinting.nosql.transaction
+import com.wijayaprinting.util.controller
 import com.wijayaprinting.util.gap
 import com.wijayaprinting.util.multithread
 import com.wijayaprinting.util.pane
@@ -38,19 +40,17 @@ import java.awt.Toolkit.getDefaultToolkit
 import java.net.URL
 import java.util.*
 
-class App : Application(), Resourced {
+class App : Application(), Resourced, EmployeeContainer {
 
     companion object {
-        lateinit var EMPLOYEE: String
-        var FULL_ACCESS: Boolean = false
-
         @JvmStatic fun main(args: Array<String>) = launch(App::class.java, *args)
     }
 
     override lateinit var resources: ResourceBundle
+    override lateinit var employee: Employee
 
     override fun init() {
-        resources = Language.valueOf(PreferencesFile.language.get()).getResources("string")
+        resources = Language.from(PreferencesFile.language.get()).resources
     }
 
     override fun start(stage: Stage) {
@@ -71,7 +71,7 @@ class App : Application(), Resourced {
                 label(getString(R.string.language)) col 0 row 0
                 choiceBox(Language.listAll()) {
                     maxWidth = Double.MAX_VALUE
-                    selectionModel.select(Language.valueOf(PreferencesFile.language.get()))
+                    selectionModel.select(Language.from(PreferencesFile.language.get()))
                     selectionModel.selectedItemProperty().addListener { _, _, language ->
                         PreferencesFile.language.set(language.locale)
                         PreferencesFile.save()
@@ -162,16 +162,16 @@ class App : Application(), Resourced {
                     passwordField.text = "123"
                 }
             }
-        }.showAndWait().filter { it is Employee }.ifPresent { employee ->
-            employee as Employee
-            EMPLOYEE = employee.name
-            FULL_ACCESS = employee.fullAccess
+        }.showAndWait().filter { it is Employee }.ifPresent { _employee ->
+            employee = _employee as Employee
 
             stage.apply {
+                val loader = getResource(R.fxml.layout_main).loadFXML(resources)
                 title = getString(R.string.app_name)
-                scene = getResource(R.fxml.layout_main).loadFXML(resources).pane.toScene()
+                scene = loader.pane.toScene()
                 minWidth = 960.0
                 minHeight = 640.0
+                loader.controller.employee = employee
             }.show()
 
             if (employee.firstTimeLogin) dialog<String>(getString(R.string.change_password), getString(R.string.change_password), ImageView(R.png.ic_key)) {
@@ -192,7 +192,7 @@ class App : Application(), Resourced {
                 runFX { changePasswordField.requestFocus() }
             }.showAndWait().filter { it is String }.ifPresent { newPassword ->
                 transaction {
-                    Employees.find { name.equal(EMPLOYEE) }.projection { password }.update(newPassword)
+                    Employees.find { name.equal(employeeName) }.projection { password }.update(newPassword)
                     infoAlert(getString(R.string.change_password_successful)).showAndWait()
                 }
             }

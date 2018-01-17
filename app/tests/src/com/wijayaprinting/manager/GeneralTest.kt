@@ -4,7 +4,7 @@ import com.wijayaprinting.util.rounded
 import org.junit.Test
 import kotlin.math.round
 
-class MathTest {
+class GeneralTest {
 
     @Test
     fun round() {

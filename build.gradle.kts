@@ -14,8 +14,7 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
-        maven(url = "http://repository.jetbrains.com/kotlin-nosql")
-        maven(url = "https://dl.bintray.com/hendraanggrian/maven")
+        maven("http://repository.jetbrains.com/kotlin-nosql")
     }
     tasks.withType(Delete::class.java) {
         delete(File(projectDir, "out"))

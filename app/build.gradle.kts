@@ -48,7 +48,6 @@ dependencies {
     implementation(apache("poi", "ooxml", poiVersion))
 
     implementation(google("guava", guavaVersion))
-    implementation(slf4j("log4j12", slf4jVersion))
 
     testImplementation(junit(junitVersion))
 }

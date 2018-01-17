@@ -34,7 +34,6 @@ import kotfx.*
 import kotlinx.nosql.equal
 import kotlinx.nosql.update
 import org.apache.commons.lang3.SystemUtils.IS_OS_MAC_OSX
-import org.apache.log4j.BasicConfigurator.configure
 import java.awt.Toolkit.getDefaultToolkit
 import java.net.URL
 import java.util.*
@@ -48,10 +47,10 @@ class App : Application(), Resourced {
         @JvmStatic fun main(args: Array<String>) = launch(App::class.java, *args)
     }
 
-    override val resources: ResourceBundle = Language.valueOf(PreferencesFile.language.get()).getResources("string")
+    override lateinit var resources: ResourceBundle
 
     override fun init() {
-        if (DEBUG) configure()
+        resources = Language.valueOf(PreferencesFile.language.get()).getResources("string")
     }
 
     override fun start(stage: Stage) {
@@ -159,7 +158,9 @@ class App : Application(), Resourced {
             runFX {
                 if (employeeField.text.isBlank()) employeeField.requestFocus() else passwordField.requestFocus()
                 isExpanded = listOf(serverHostField, serverPortField, serverUserField, serverPasswordField).any { it.text.isBlank() }
-                if (DEBUG) { passwordField.text = "123" }
+                if (DEBUG) {
+                    passwordField.text = "123"
+                }
             }
         }.showAndWait().filter { it is Employee }.ifPresent { employee ->
             employee as Employee

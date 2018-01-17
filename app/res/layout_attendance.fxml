@@ -11,7 +11,7 @@
         <Button mnemonicParsing="false" onAction="#recessOnAction">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@btn_alarm.png"/>
+                    <Image url="@btn_recess.png"/>
                 </ImageView>
             </graphic>
             <tooltip>

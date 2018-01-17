@@ -1,5 +1,6 @@
 package com.wijayaprinting.controllers
 
+import com.wijayaprinting.core.Refreshable
 import com.wijayaprinting.dialogs.AboutDialog
 import javafx.fxml.FXML
 import javafx.scene.control.*
@@ -29,7 +30,12 @@ class MainController : Controller() {
             employeeLabel.text = employeeName
         }
         navigateMenu(tabPane.selectionModel.selectedIndex)
-        tabPane.selectionModel.selectedIndexProperty().addListener { _, _, newIndex -> navigateMenu(newIndex.toInt()) }
+        tabPane.selectionModel.selectedIndexProperty().addListener { _, _, newValue ->
+            newValue.toInt().let { index ->
+                navigateMenu(index)
+                if (controllers[index] is Refreshable) (controllers[index] as Refreshable).refresh()
+            }
+        }
 
         runFX {
             controllers = arrayOf(customerController, plateController, attendanceController)

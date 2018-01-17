@@ -36,6 +36,7 @@ import kotfx.*
 import kotlinx.nosql.equal
 import kotlinx.nosql.update
 import org.apache.commons.lang3.SystemUtils.IS_OS_MAC_OSX
+import org.apache.log4j.BasicConfigurator.configure
 import java.awt.Toolkit.getDefaultToolkit
 import java.net.URL
 import java.util.*
@@ -50,6 +51,7 @@ class App : Application(), Resourced, EmployeeContainer {
     override lateinit var employee: Employee
 
     override fun init() {
+        if (DEBUG) configure()
         resources = Language.from(PreferencesFile.language.get()).resources
     }
 

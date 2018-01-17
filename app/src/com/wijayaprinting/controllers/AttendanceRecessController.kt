@@ -50,8 +50,8 @@ class AttendanceRecessController : Controller(), Refreshable {
             endBox = timeBox() col 1 row 1
         }
         button(CANCEL)
-        button(OK).disableProperty() bind booleanBindingOf(startBox.valueProperty, endBox.valueProperty) { startBox.value >= endBox.value }
-        setResultConverter { if (it == OK) Pair(startBox.value, endBox.value) else null }
+        button(OK).disableProperty() bind booleanBindingOf(startBox.timeProperty, endBox.timeProperty) { startBox.time >= endBox.time }
+        setResultConverter { if (it == OK) Pair(startBox.time, endBox.time) else null }
     }.showAndWait().ifPresent { (start, end) ->
         val recess = Recess(start, end)
         recess.id = transaction { Recesses.insert(Recess(start, end)) }!!

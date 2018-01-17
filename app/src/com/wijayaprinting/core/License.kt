@@ -10,13 +10,14 @@ enum class License(val owner: String, val repo: String, val homepage: String) {
     APACHE_COMMONS_LANG("Apache", "commons-lang", "https://commons.apache.org/lang"),
     APACHE_COMMONS_MATH("Apache", "commons-math", "https://commons.apache.org/math"),
     APACHE_COMMONS_VALIDATOR("Apache", "commons-validator", "https://commons.apache.org/validator"),
-    APACHE_POI_OOXML("Apache", "POI OOXML", "https://poi.apache.org"),
+    APACHE_POI("Apache", "POI", "https://poi.apache.org"),
     GOOGLE_GUAVA("Google", "Guava", "https://github.com/google/guava"),
     HENDRAANGGRIAN_KOTFX("Hendra Anggrian", "kotfx", "https://github.com/hendraanggrian/kotfx"),
     JETBRAINS_KOTLIN("JetBrains", "Kotlin", "http://kotlinlang.org"),
     JODAORG_JODA_TIME("JodaOrg", "Joda-Time", "www.joda.org/joda-time"),
     REACTIVEX_RXJAVAFX("ReactiveX", "RxJavaFX", "https://github.com/ReactiveX/RxJavaFX"),
-    REACTIVEX_RXKOTLIN("ReactiveX", "RxKotlin", "https://github.com/ReactiveX/RxKotlin");
+    REACTIVEX_RXKOTLIN("ReactiveX", "RxKotlin", "https://github.com/ReactiveX/RxKotlin"),
+    SLF4J_LOG4J12("Slf4j", "Log4j12", "https://www.slf4j.org");
 
     fun getContent(resourced: Resourced): String = resourced.getResourceAsStream("/${name.toLowerCase()}.txt").use { return BufferedReader(InputStreamReader(it)).lines().collect(joining("\n")) }
 

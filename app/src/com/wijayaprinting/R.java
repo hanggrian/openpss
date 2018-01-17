@@ -1,4 +1,4 @@
-// rsync generated this class at 2018-01-16T02:21:04.792 from:
+// rsync generated this class at 2018-01-18T03:42:27.485 from:
 // string_en.properties
 // layout_attendance.fxml
 // btn_refresh.png
@@ -16,7 +16,6 @@
 // btn_visibility_off.png
 // ic_clock.png
 // ic_key.png
-// btn_alarm.png
 // btn_price.png
 // ic_document.png
 // btn_delete.png
@@ -29,10 +28,13 @@
 // layout_attendance_recess.fxml
 // ic_launcher.png
 // btn_checkbox.png
+// btn_customer_add.png
 // lato_regular.ttf
 // lato_bold.ttf
 // btn_folder.png
 // layout_customer.fxml
+// btn_recess.png
+// btn_clear_date.png
 // lato_light.ttf
 // btn_undo.png
 // layout_plate_price.fxml
@@ -97,8 +99,6 @@ public final class R {
 
     public static final String ic_key = "/ic_key.png";
 
-    public static final String btn_alarm = "/btn_alarm.png";
-
     public static final String btn_price = "/btn_price.png";
 
     public static final String ic_document = "/ic_document.png";
@@ -119,7 +119,13 @@ public final class R {
 
     public static final String btn_checkbox = "/btn_checkbox.png";
 
+    public static final String btn_customer_add = "/btn_customer_add.png";
+
     public static final String btn_folder = "/btn_folder.png";
+
+    public static final String btn_recess = "/btn_recess.png";
+
+    public static final String btn_clear_date = "/btn_clear_date.png";
 
     public static final String btn_undo = "/btn_undo.png";
 
@@ -205,6 +211,8 @@ public final class R {
 
     public static final String plate = "plate";
 
+    public static final String paid = "paid";
+
     public static final String port = "port";
 
     public static final String lock_start_time = "lock_start_time";
@@ -232,6 +240,8 @@ public final class R {
     public static final String test_connection = "test_connection";
 
     public static final String app_name = "app_name";
+
+    public static final String any = "any";
 
     public static final String day = "day";
 
@@ -309,6 +319,8 @@ public final class R {
 
     public static final String grand_total = "grand_total";
 
+    public static final String unpaid = "unpaid";
+
     public static final String delete = "delete";
 
     public static final String edit = "edit";
@@ -338,8 +350,6 @@ public final class R {
     public static final String navigate = "navigate";
 
     public static final String input_file = "input_file";
-
-    public static final String server_ip_port = "server_ip_port";
 
     private string() {
     }

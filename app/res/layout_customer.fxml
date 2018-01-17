@@ -1,29 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.wijayaprinting.controls.ItemCountBox?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
-<VBox xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1"
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.wijayaprinting.controllers.CustomerController">
     <ToolBar>
-        <TextField fx:id="customerField" promptText="%search_customer"/>
-        <Button mnemonicParsing="false" onAction="#clearOnAction">
+        <Button mnemonicParsing="false" onAction="#refreshOnAction">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@btn_clear.png"/>
+                    <Image url="@btn_refresh.png"/>
                 </ImageView>
             </graphic>
             <tooltip>
-                <Tooltip text="%clear"/>
+                <Tooltip text="%refresh"/>
             </tooltip>
         </Button>
+        <TextField fx:id="customerField" promptText="%search_customer"/>
+        <ItemCountBox fx:id="itemCountBox"/>
         <Separator/>
         <Button mnemonicParsing="false" onAction="#addOnAction">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@btn_add.png"/>
+                    <Image url="@btn_customer_add.png"/>
                 </ImageView>
             </graphic>
             <tooltip>

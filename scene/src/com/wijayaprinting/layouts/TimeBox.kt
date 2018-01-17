@@ -19,7 +19,7 @@ open class TimeBox : _HBox() {
     lateinit var hourField: IntField
     lateinit var minuteField: IntField
 
-    val valueProperty = SimpleObjectProperty<LocalTime>()
+    val timeProperty = SimpleObjectProperty<LocalTime>()
     val validProperty = SimpleBooleanProperty()
 
     init {
@@ -38,7 +38,7 @@ open class TimeBox : _HBox() {
             textProperty().addListener { _, oldValue, newValue -> if (newValue.toIntOrNull() ?: 0 !in 0 until 60) minuteField.text = oldValue }
         }
 
-        valueProperty bind bindingOf(hourField.valueProperty, minuteField.valueProperty) {
+        timeProperty bind bindingOf(hourField.valueProperty, minuteField.valueProperty) {
             try {
                 parse("${hourField.value}:${minuteField.value}", forPattern(PATTERN_TIME))
             } catch (e: Exception) {
@@ -55,8 +55,8 @@ open class TimeBox : _HBox() {
         }
     }
 
-    var value: LocalTime
-        get() = valueProperty.get()
+    var time: LocalTime
+        get() = timeProperty.get()
         set(value) {
             hourField.text = value.hourOfDay.toString()
             minuteField.text = value.minuteOfHour.toString()

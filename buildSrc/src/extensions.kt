@@ -2,7 +2,7 @@
 const val isDebug = true
 const val releaseVersion = "0.7"
 
-const val kotlinVersion = "1.2.10"
+const val kotlinVersion = "1.2.20"
 const val nosqlMongodbVersion = "0.1-SNAPSHOT"
 
 fun Dependency.apache(module1: String, module2: String, version: String) = "org.apache.$module1:$module1-$module2:$version"
@@ -16,9 +16,9 @@ fun Dependency.google(module: String, version: String) = "com.google.$module:$mo
 const val guavaVersion = "23.6-jre"
 
 fun Dependency.hendraanggrian(module: String, version: String) = "com.hendraanggrian:$module:$version"
-const val kotfxVersion = "0.18"
 inline val Plugin.rsync get() = id("rsync")
 inline val Plugin.buildconfig get() = id("buildconfig")
+const val kotfxVersion = "0.18"
 
 fun Dependency.joda(version: String) = "joda-time:joda-time:$version"
 const val jodaVersion = "2.9.9"
@@ -26,6 +26,9 @@ const val jodaVersion = "2.9.9"
 fun Dependency.rx(module: String, version: String) = "io.reactivex.rxjava2:rx$module:$version"
 const val rxjavafxVersion = "2.2.2"
 const val rxkotlinVersion = "2.2.0"
+
+fun Dependency.slf4j(module: String, version: String) = "org.slf4j:slf4j-$module:$version"
+const val log4j12Version = "1.7.25"
 
 fun Dependency.junit(version: String) = "junit:junit:$version"
 const val junitVersion = "4.12"

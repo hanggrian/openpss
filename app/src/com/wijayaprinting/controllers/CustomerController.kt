@@ -5,6 +5,8 @@ import com.wijayaprinting.R
 import com.wijayaprinting.collections.isNotEmpty
 import com.wijayaprinting.collections.minus
 import com.wijayaprinting.collections.plus
+import com.wijayaprinting.controls.ItemCountBox
+import com.wijayaprinting.core.Refreshable
 import com.wijayaprinting.nosql.Customer
 import com.wijayaprinting.nosql.Customers
 import com.wijayaprinting.nosql.transaction
@@ -25,13 +27,10 @@ import kotlinx.nosql.mongodb.MongoDBSession
 import kotlinx.nosql.update
 import kotlin.math.ceil
 
-class CustomerController : Controller() {
-
-    companion object {
-        private const val ITEMS_PER_PAGE = 20
-    }
+class CustomerController : Controller(), Refreshable {
 
     @FXML lateinit var customerField: TextField
+    @FXML lateinit var itemCountBox: ItemCountBox
     @FXML lateinit var customerPagination: Pagination
     @FXML lateinit var nameLabel: Label
     @FXML lateinit var sinceLabel: Label
@@ -54,8 +53,7 @@ class CustomerController : Controller() {
                 transaction {
                     if (Customers.find { this.name.equal(name) }.isNotEmpty) errorAlert(getString(R.string.customer_name_taken)).showAndWait() else {
                         Customers.find { id.equal(customer!!.id) }.projection { this.name }.update(name)
-                        reload(customer!!)
-                        customerField.text = name
+                        reloadCustomer(customer!!)
                     }
                 }
             }
@@ -72,8 +70,7 @@ class CustomerController : Controller() {
             }.showAndWait().ifPresent { note ->
                 transaction {
                     Customers.find { id.equal(customer!!.id) }.projection { this.note }.update(note)
-                    reload(customer!!)
-                    customerField.text = customer!!.name
+                    reloadCustomer(customer!!)
                 }
             }
         }
@@ -81,25 +78,7 @@ class CustomerController : Controller() {
 
     @FXML
     fun initialize() {
-        customerPagination.pageFactoryProperty() bind bindingOf(customerField.textProperty()) {
-            Callback<Int, Node> { page ->
-                customerList = listView {
-                    runFX {
-                        transaction {
-                            val customers = if (customerField.text.isBlank()) Customers.find() else Customers.find { name.matches(customerField.text.toPattern()) }
-                            customerPagination.pageCount = ceil(customers.count() / ITEMS_PER_PAGE.toDouble()).toInt()
-                            items = customers.skip(ITEMS_PER_PAGE * page).take(ITEMS_PER_PAGE).toMutableObservableList()
-                        }
-                    }
-                }
-                nameLabel.textProperty() rebind stringBindingOf(customerList.selectionModel.selectedItemProperty()) { customer?.name ?: "" }
-                sinceLabel.textProperty() rebind stringBindingOf(customerList.selectionModel.selectedItemProperty()) { customer?.since?.toString(PATTERN_DATE) ?: "" }
-                noteLabel.textProperty() rebind stringBindingOf(customerList.selectionModel.selectedItemProperty()) { customer?.note ?: "" }
-                contactTable.itemsProperty() rebind bindingOf(customerList.selectionModel.selectedItemProperty()) { customer?.contacts?.toObservableList() ?: mutableObservableListOf() }
-                coverLabel.visibleProperty() rebind customerList.selectionModel.selectedItemProperty().isNull
-                customerList
-            }
-        }
+        refresh()
 
         nameLabel.font = loadFont(latoBold, 24.0)
         runFX { nameLabel.graphicProperty() bind bindingOf<Node>(nameLabel.hoverProperty()) { if (nameLabel.isHover && isFullAccess) nameLabelGraphic else null } }
@@ -124,7 +103,7 @@ class CustomerController : Controller() {
                     }.showAndWait().ifPresent { contact ->
                         transaction {
                             Customers.find { id.equal(customer!!.id) }.projection { contacts }.update(customer!!.contacts + contact)
-                            reload(customer!!)
+                            reloadCustomer(customer!!)
                         }
                     }
                 }
@@ -135,7 +114,7 @@ class CustomerController : Controller() {
                     confirmAlert(getString(R.string.delete_contact)).showAndWait().ifPresent {
                         transaction {
                             Customers.find { id.equal(customer!!.id) }.projection { contacts }.update(customer!!.contacts - contact!!)
-                            reload(customer!!)
+                            reloadCustomer(customer!!)
                         }
                     }
                 }
@@ -145,10 +124,7 @@ class CustomerController : Controller() {
         contactColumn.setCellValueFactory { it.value.value.asProperty() }
     }
 
-    @FXML
-    fun clearOnAction() {
-        customerField.text = ""
-    }
+    @FXML fun refreshOnAction() = refresh()
 
     @FXML
     fun addOnAction() = inputDialog {
@@ -157,12 +133,33 @@ class CustomerController : Controller() {
         graphic = ImageView(R.png.ic_user)
         contentText = getString(R.string.name)
     }.showAndWait().ifPresent { name ->
-        transaction {
+        transaction @Suppress("IMPLICIT_CAST_TO_ANY") {
             if (Customers.find { this.name.equal(name) }.isNotEmpty) errorAlert(getString(R.string.customer_name_taken)).showAndWait() else {
                 val customer = Customer(name)
                 customer.id = Customers.insert(Customer(name))
-                customerField.text = name
+                customerList.items.add(0, customer)
+                customerList.selectionModel.select(0)
             }
+        }
+    }
+
+    override fun refresh() = customerPagination.pageFactoryProperty() rebind bindingOf(customerField.textProperty(), itemCountBox.countProperty) {
+        Callback<Int, Node> { page ->
+            customerList = listView {
+                runFX {
+                    transaction {
+                        val customers = if (customerField.text.isBlank()) Customers.find() else Customers.find { name.matches(customerField.text.toPattern()) }
+                        customerPagination.pageCount = ceil(customers.count() / itemCountBox.count.toDouble()).toInt()
+                        items = customers.skip(itemCountBox.count * page).take(itemCountBox.count).toMutableObservableList()
+                    }
+                }
+            }
+            nameLabel.textProperty() rebind stringBindingOf(customerList.selectionModel.selectedItemProperty()) { customer?.name ?: "" }
+            sinceLabel.textProperty() rebind stringBindingOf(customerList.selectionModel.selectedItemProperty()) { customer?.since?.toString(PATTERN_DATE) ?: "" }
+            noteLabel.textProperty() rebind stringBindingOf(customerList.selectionModel.selectedItemProperty()) { customer?.note ?: "" }
+            contactTable.itemsProperty() rebind bindingOf(customerList.selectionModel.selectedItemProperty()) { customer?.contacts?.toObservableList() ?: mutableObservableListOf() }
+            coverLabel.visibleProperty() rebind customerList.selectionModel.selectedItemProperty().isNull
+            customerList
         }
     }
 
@@ -170,7 +167,8 @@ class CustomerController : Controller() {
 
     private val contact: Customer.Contact? get() = contactTable.selectionModel.selectedItem
 
-    private fun MongoDBSession.reload(customer: Customer) {
+    private fun MongoDBSession.reloadCustomer(customer: Customer) = customerList.items.indexOf(customer).let { index ->
         customerList.items[customerList.items.indexOf(customer)] = Customers.find { id.equal(customer.id) }.single()
+        customerList.selectionModel.select(index)
     }
 }

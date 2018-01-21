@@ -1,5 +1,6 @@
-package com.wijayaprinting.core
+package com.wijayaprinting
 
+import com.wijayaprinting.base.Listable
 import javafx.collections.ObservableList
 import kotfx.observableListOf
 import java.util.*

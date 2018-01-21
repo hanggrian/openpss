@@ -4,13 +4,13 @@ import com.mongodb.ServerAddress.defaultPort
 import javafx.beans.property.StringProperty
 
 /** Configuration file for MySQL connection. */
-open class NoSQLFile : PropertiesFile(".nosql",
+open class DatabaseFile : PropertiesFile(".db",
         "host" to "",
         "port" to defaultPort().toString(),
         "user" to "",
         "password" to ""
 ) {
-    companion object : NoSQLFile()
+    companion object : DatabaseFile()
 
     val host: StringProperty by map
     val port: StringProperty by map

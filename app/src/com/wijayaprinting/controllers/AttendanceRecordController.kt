@@ -4,7 +4,7 @@ import com.wijayaprinting.PATTERN_DATE
 import com.wijayaprinting.PATTERN_DATETIME
 import com.wijayaprinting.PATTERN_TIME
 import com.wijayaprinting.R
-import com.wijayaprinting.data.*
+import com.wijayaprinting.models.*
 import com.wijayaprinting.dialogs.DateDialog
 import com.wijayaprinting.layouts.TimeBox
 import javafx.fxml.FXML

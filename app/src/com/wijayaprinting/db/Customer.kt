@@ -1,4 +1,4 @@
-package com.wijayaprinting.nosql
+package com.wijayaprinting.db
 
 import javafx.collections.ObservableList
 import kotfx.observableListOf

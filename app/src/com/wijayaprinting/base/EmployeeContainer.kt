@@ -1,6 +1,6 @@
-package com.wijayaprinting.core
+package com.wijayaprinting.base
 
-import com.wijayaprinting.nosql.Employee
+import com.wijayaprinting.db.Employee
 
 interface EmployeeContainer {
 

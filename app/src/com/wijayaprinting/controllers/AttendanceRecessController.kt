@@ -2,12 +2,12 @@ package com.wijayaprinting.controllers
 
 import com.wijayaprinting.PATTERN_TIME
 import com.wijayaprinting.R
-import com.wijayaprinting.core.Refreshable
+import com.wijayaprinting.base.Refreshable
 import com.wijayaprinting.layouts.TimeBox
 import com.wijayaprinting.layouts.timeBox
-import com.wijayaprinting.nosql.Recess
-import com.wijayaprinting.nosql.Recesses
-import com.wijayaprinting.nosql.transaction
+import com.wijayaprinting.db.Recess
+import com.wijayaprinting.db.Recesses
+import com.wijayaprinting.db.transaction
 import com.wijayaprinting.util.gap
 import javafx.fxml.FXML
 import javafx.scene.control.Button

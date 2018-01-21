@@ -1,14 +1,14 @@
 package com.wijayaprinting.readers
 
-import com.wijayaprinting.core.Listable
-import com.wijayaprinting.core.Resourced
-import com.wijayaprinting.data.Attendee
+import com.wijayaprinting.base.Listable
+import com.wijayaprinting.base.Resourced
+import com.wijayaprinting.models.Attendee
 import javafx.collections.ObservableList
 import javafx.stage.FileChooser
 import kotfx.observableListOf
 import java.io.File
 
-/** A file readers that generates collection of [com.wijayaprinting.data.Attendee] given input file. */
+/** A file readers that generates collection of [com.wijayaprinting.models.Attendee] given input file. */
 interface Reader {
 
     /** Expected file extensions for [FileChooser.ExtensionFilter]. */

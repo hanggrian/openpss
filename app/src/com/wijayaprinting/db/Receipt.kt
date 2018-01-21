@@ -1,4 +1,4 @@
-package com.wijayaprinting.nosql
+package com.wijayaprinting.db
 
 import kotlinx.nosql.*
 import kotlinx.nosql.mongodb.DocumentSchema

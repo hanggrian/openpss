@@ -1,4 +1,4 @@
-package com.wijayaprinting.nosql
+package com.wijayaprinting.db
 
 import com.mongodb.MongoCredential.createCredential
 import com.mongodb.MongoException
@@ -6,7 +6,7 @@ import com.mongodb.ServerAddress
 import com.wijayaprinting.BuildConfig.ARTIFACT
 import com.wijayaprinting.BuildConfig.DEBUG
 import com.wijayaprinting.collections.isEmpty
-import com.wijayaprinting.nosql.Employee.Companion.DEFAULT_PASSWORD
+import com.wijayaprinting.db.Employee.Companion.DEFAULT_PASSWORD
 import io.reactivex.Completable
 import io.reactivex.Single
 import javafx.application.Platform

@@ -1,12 +1,12 @@
-package com.wijayaprinting.data
+package com.wijayaprinting.models
 
 import com.wijayaprinting.collections.RevertableObservableList
 import com.wijayaprinting.collections.isEmpty
-import com.wijayaprinting.core.Resourced
-import com.wijayaprinting.nosql.Recess
-import com.wijayaprinting.nosql.Wage
-import com.wijayaprinting.nosql.Wages
-import com.wijayaprinting.nosql.transaction
+import com.wijayaprinting.base.Resourced
+import com.wijayaprinting.db.Recess
+import com.wijayaprinting.db.Wage
+import com.wijayaprinting.db.Wages
+import com.wijayaprinting.db.transaction
 import javafx.beans.property.IntegerProperty
 import javafx.beans.property.SimpleIntegerProperty
 import javafx.collections.ObservableList

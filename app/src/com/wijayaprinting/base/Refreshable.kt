@@ -1,4 +1,4 @@
-package com.wijayaprinting.core
+package com.wijayaprinting.base
 
 interface Refreshable {
 

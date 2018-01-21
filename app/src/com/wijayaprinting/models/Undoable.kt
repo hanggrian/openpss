@@ -1,4 +1,4 @@
-package com.wijayaprinting.data
+package com.wijayaprinting.models
 
 import javafx.collections.ObservableSet
 import kotfx.mutableObservableSetOf

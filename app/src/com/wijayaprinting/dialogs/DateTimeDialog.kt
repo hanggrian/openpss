@@ -1,7 +1,7 @@
 package com.wijayaprinting.dialogs
 
 import com.wijayaprinting.R
-import com.wijayaprinting.core.Resourced
+import com.wijayaprinting.base.Resourced
 import com.wijayaprinting.layouts.TimeBox
 import com.wijayaprinting.layouts.timeBox
 import com.wijayaprinting.util.asJava

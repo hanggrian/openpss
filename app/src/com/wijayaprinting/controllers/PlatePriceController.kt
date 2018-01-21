@@ -1,10 +1,10 @@
 package com.wijayaprinting.controllers
 
 import com.wijayaprinting.R
-import com.wijayaprinting.core.Refreshable
-import com.wijayaprinting.nosql.Plate
-import com.wijayaprinting.nosql.Plates
-import com.wijayaprinting.nosql.transaction
+import com.wijayaprinting.base.Refreshable
+import com.wijayaprinting.db.Plate
+import com.wijayaprinting.db.Plates
+import com.wijayaprinting.db.transaction
 import javafx.fxml.FXML
 import javafx.scene.control.Button
 import javafx.scene.control.ButtonType.NO

@@ -1,13 +1,13 @@
 package com.wijayaprinting.io
 
-import com.wijayaprinting.core.Language
+import com.wijayaprinting.Language
 import javafx.beans.property.StringProperty
 
-open class PreferencesFile : PropertiesFile(".preferences",
+open class ConfigFile : PropertiesFile(".config",
         "employee" to "",
         "language" to Language.ENGLISH.locale
 ) {
-    companion object : PreferencesFile()
+    companion object : ConfigFile()
 
     val employee: StringProperty by map
     val language: StringProperty by map

@@ -1,8 +1,8 @@
 package com.wijayaprinting.readers
 
 import com.google.common.collect.LinkedHashMultimap
-import com.wijayaprinting.core.Resourced
-import com.wijayaprinting.data.Attendee
+import com.wijayaprinting.base.Resourced
+import com.wijayaprinting.models.Attendee
 import org.apache.commons.lang3.SystemUtils.IS_OS_MAC
 import org.apache.commons.lang3.SystemUtils.IS_OS_WINDOWS
 import org.apache.poi.ss.usermodel.CellType.NUMERIC

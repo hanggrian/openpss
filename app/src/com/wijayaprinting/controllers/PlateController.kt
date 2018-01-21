@@ -1,7 +1,7 @@
 package com.wijayaprinting.controllers
 
 import com.wijayaprinting.R
-import com.wijayaprinting.core.Refreshable
+import com.wijayaprinting.base.Refreshable
 import com.wijayaprinting.util.controller
 import com.wijayaprinting.util.pane
 import javafx.fxml.FXML

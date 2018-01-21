@@ -1,6 +1,6 @@
 package com.wijayaprinting.controllers
 
-import com.wijayaprinting.core.Refreshable
+import com.wijayaprinting.base.Refreshable
 import com.wijayaprinting.dialogs.AboutDialog
 import javafx.fxml.FXML
 import javafx.scene.control.*
@@ -47,7 +47,7 @@ class MainController : Controller() {
 
     @FXML
     fun aboutOnAction() {
-        AboutDialog(this).show()
+        AboutDialog(this).showAndWait()
     }
 
     private fun navigateMenu(index: Int) = navigateMenu.items.forEachIndexed { i, item -> (item as RadioMenuItem).isSelected = index == i }

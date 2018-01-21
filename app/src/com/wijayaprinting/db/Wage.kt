@@ -1,4 +1,4 @@
-package com.wijayaprinting.nosql
+package com.wijayaprinting.db
 
 import kotlinx.nosql.Id
 import kotlinx.nosql.integer

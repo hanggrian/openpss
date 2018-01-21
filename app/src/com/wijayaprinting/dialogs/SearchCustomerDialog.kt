@@ -1,10 +1,10 @@
 package com.wijayaprinting.dialogs
 
 import com.wijayaprinting.R
-import com.wijayaprinting.core.Resourced
-import com.wijayaprinting.nosql.Customer
-import com.wijayaprinting.nosql.Customers
-import com.wijayaprinting.nosql.transaction
+import com.wijayaprinting.base.Resourced
+import com.wijayaprinting.db.Customer
+import com.wijayaprinting.db.Customers
+import com.wijayaprinting.db.transaction
 import javafx.scene.control.ButtonType.CANCEL
 import javafx.scene.control.ButtonType.OK
 import javafx.scene.control.Dialog

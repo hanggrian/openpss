@@ -5,10 +5,10 @@ import com.wijayaprinting.PATTERN_DATETIME
 import com.wijayaprinting.R
 import com.wijayaprinting.controls.FileField
 import com.wijayaprinting.controls.intField
-import com.wijayaprinting.data.Attendee
+import com.wijayaprinting.models.Attendee
 import com.wijayaprinting.dialogs.DateTimeDialog
-import com.wijayaprinting.nosql.Recesses
-import com.wijayaprinting.nosql.transaction
+import com.wijayaprinting.db.Recesses
+import com.wijayaprinting.db.transaction
 import com.wijayaprinting.readers.Reader
 import com.wijayaprinting.util.*
 import io.reactivex.Observable
@@ -232,7 +232,7 @@ class AttendanceController : Controller() {
         }.showAndWait()
     }
 
-    /** Employees are stored in flowpane childrens' user data. */
+    /** Employees are stored in flowpane childrens' user models. */
     private val attendees: List<Attendee> get() = flowPane.children.map { it.userData as Attendee }
 
     /** As attendees are populated, process button need to be rebinded according to new requirements. */

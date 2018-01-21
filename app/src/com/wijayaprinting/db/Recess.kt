@@ -1,4 +1,4 @@
-package com.wijayaprinting.nosql
+package com.wijayaprinting.db
 
 import com.wijayaprinting.PATTERN_TIME
 import kotlinx.nosql.Id

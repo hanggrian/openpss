@@ -1,7 +1,7 @@
-package com.wijayaprinting.data
+package com.wijayaprinting.models
 
 import com.wijayaprinting.PATTERN_DATETIME
-import com.wijayaprinting.core.Resourced
+import com.wijayaprinting.base.Resourced
 import com.wijayaprinting.util.rounded
 import javafx.beans.property.*
 import kotfx.*

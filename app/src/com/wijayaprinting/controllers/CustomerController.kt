@@ -6,10 +6,10 @@ import com.wijayaprinting.collections.isNotEmpty
 import com.wijayaprinting.collections.minus
 import com.wijayaprinting.collections.plus
 import com.wijayaprinting.controls.ItemCountBox
-import com.wijayaprinting.core.Refreshable
-import com.wijayaprinting.nosql.Customer
-import com.wijayaprinting.nosql.Customers
-import com.wijayaprinting.nosql.transaction
+import com.wijayaprinting.base.Refreshable
+import com.wijayaprinting.db.Customer
+import com.wijayaprinting.db.Customers
+import com.wijayaprinting.db.transaction
 import com.wijayaprinting.util.gap
 import com.wijayaprinting.util.size
 import javafx.fxml.FXML

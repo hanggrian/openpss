@@ -38,8 +38,8 @@ data class Customer @JvmOverloads constructor(
     )
 
     companion object {
-        const val TYPE_EMAIL = "email"
-        const val TYPE_PHONE = "phone"
+        private const val TYPE_EMAIL = "email"
+        private const val TYPE_PHONE = "phone"
 
         fun listAllTypes(): ObservableList<String> = observableListOf(TYPE_EMAIL, TYPE_PHONE)
     }

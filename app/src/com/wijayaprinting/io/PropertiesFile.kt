@@ -22,7 +22,7 @@ open class PropertiesFile(child: String, vararg pairs: Pair<String, String>) : F
             val key = it.first
             val value = properties.getProperty(it.first, it.second).asMutableProperty()
             value.addListener { _, _, newValue -> properties.setProperty(key, newValue) }
-            map.put(key, value)
+            map[key] = value
         }
     }
 

@@ -41,7 +41,7 @@ class AttendanceController : Controller() {
     @FXML lateinit var processButton: Button
 
     @FXML
-    fun initialize() {
+    override fun initialize() {
         readerChoiceBox.items = Reader.listAll()
         if (readerChoiceBox.items.isNotEmpty()) readerChoiceBox.selectionModel.select(0)
 

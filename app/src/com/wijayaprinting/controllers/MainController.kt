@@ -21,7 +21,7 @@ class MainController : Controller() {
     private lateinit var controllers: Array<Controller>
 
     @FXML
-    fun initialize() {
+    override fun initialize() {
         menuBar.isUseSystemMenuBar = IS_OS_MAC
 
         runFX {
@@ -30,11 +30,9 @@ class MainController : Controller() {
             employeeLabel.text = employeeName
         }
         navigateMenu(tabPane.selectionModel.selectedIndex)
-        tabPane.selectionModel.selectedIndexProperty().addListener { _, _, newValue ->
-            newValue.toInt().let { index ->
-                navigateMenu(index)
-                if (controllers[index] is Refreshable) (controllers[index] as Refreshable).refresh()
-            }
+        tabPane.selectionModel.selectedIndexProperty().addListener { _, _, index ->
+            navigateMenu(index.toInt())
+            (controllers[index.toInt()] as? Refreshable)?.refresh()
         }
 
         runFX {
@@ -49,7 +47,7 @@ class MainController : Controller() {
 
     @FXML
     fun aboutOnAction() {
-        AboutDialog(this).showAndWait()
+        AboutDialog(this).show()
     }
 
     private fun navigateMenu(index: Int) = navigateMenu.items.forEachIndexed { i, item -> (item as RadioMenuItem).isSelected = index == i }

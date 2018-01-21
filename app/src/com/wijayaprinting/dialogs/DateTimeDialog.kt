@@ -4,8 +4,8 @@ import com.wijayaprinting.R
 import com.wijayaprinting.core.Resourced
 import com.wijayaprinting.layouts.TimeBox
 import com.wijayaprinting.layouts.timeBox
-import com.wijayaprinting.util.gap
 import com.wijayaprinting.util.asJava
+import com.wijayaprinting.util.gap
 import javafx.scene.control.ButtonType.CANCEL
 import javafx.scene.control.ButtonType.OK
 import javafx.scene.control.DatePicker
@@ -36,14 +36,14 @@ class DateTimeDialog @JvmOverloads constructor(
                 maxWidth = 128.0
                 runFX { requestFocus() }
             } col 0 row 0
-            timeBox = timeBox { prefill?.let { value = it.toLocalTime() } } col 1 row 0
+            timeBox = timeBox { prefill?.let { time = it.toLocalTime() } } col 1 row 0
             slider(0, 24, 0) { valueProperty() bindBidirectional timeBox.hourField.valueProperty } col 0 row 1 colSpan 2
             slider(0, 60, 0) { valueProperty() bindBidirectional timeBox.minuteField.valueProperty } col 0 row 2 colSpan 2
         }
         buttons(OK, CANCEL)
         setResultConverter {
             if (it != OK) null
-            else DateTime(datePicker.value.year, datePicker.value.monthValue, datePicker.value.dayOfMonth, timeBox.value.hourOfDay, timeBox.value.minuteOfHour)
+            else DateTime(datePicker.value.year, datePicker.value.monthValue, datePicker.value.dayOfMonth, timeBox.time.hourOfDay, timeBox.time.minuteOfHour)
         }
     }
 }

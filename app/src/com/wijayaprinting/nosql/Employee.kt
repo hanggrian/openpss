@@ -17,10 +17,15 @@ data class Employee(
         var fullAccess: Boolean
 ) {
     lateinit var id: Id<String, Employees>
+    var firstTimeLogin: Boolean = false
 
-    val firstTimeLogin: Boolean get() = password == DEFAULT_PASSWORD
+    /** Password are unused after login, clear for better security. */
+    fun clearPassword() {
+        firstTimeLogin = password == DEFAULT_PASSWORD
+        password = ""
+    }
 
     companion object {
-        private const val DEFAULT_PASSWORD = "1234"
+        const val DEFAULT_PASSWORD = "1234"
     }
 }

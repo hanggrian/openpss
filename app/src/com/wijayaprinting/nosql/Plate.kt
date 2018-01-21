@@ -10,9 +10,9 @@ object Plates : DocumentSchema<Plate>("plate", Plate::class) {
     val price = double("price")
 }
 
-data class Plate(
+data class Plate @JvmOverloads constructor(
         var name: String,
-        var price: Double
+        var price: Double = 0.0
 ) {
     lateinit var id: Id<String, Plates>
 }

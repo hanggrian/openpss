@@ -17,14 +17,17 @@ class PlateController : Controller(), Refreshable {
     @FXML lateinit var statusBox: ChoiceBox<String>
 
     @FXML
-    fun initialize() {
+    override fun initialize() {
         refresh()
 
         statusBox.items = observableListOf(getString(R.string.any), getString(R.string.unpaid), getString(R.string.paid))
         statusBox.selectionModel.select(0)
     }
 
-    @FXML fun refreshOnAction() = refresh()
+    @FXML
+    override fun refresh() {
+
+    }
 
     @FXML
     fun clearDateOnAction() {
@@ -46,7 +49,4 @@ class PlateController : Controller(), Refreshable {
         isResizable = false
         loader.controller.employee = employee
     }.showAndWait()
-
-    override fun refresh() {
-    }
 }

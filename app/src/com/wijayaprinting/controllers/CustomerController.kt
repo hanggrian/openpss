@@ -77,7 +77,7 @@ class CustomerController : Controller(), Refreshable {
     }
 
     @FXML
-    fun initialize() {
+    override fun initialize() {
         refresh()
 
         nameLabel.font = loadFont(latoBold, 24.0)
@@ -124,25 +124,7 @@ class CustomerController : Controller(), Refreshable {
         contactColumn.setCellValueFactory { it.value.value.asProperty() }
     }
 
-    @FXML fun refreshOnAction() = refresh()
-
     @FXML
-    fun addOnAction() = inputDialog {
-        title = getString(R.string.add_customer)
-        headerText = getString(R.string.add_customer)
-        graphic = ImageView(R.png.ic_user)
-        contentText = getString(R.string.name)
-    }.showAndWait().ifPresent { name ->
-        transaction @Suppress("IMPLICIT_CAST_TO_ANY") {
-            if (Customers.find { this.name.equal(name) }.isNotEmpty) errorAlert(getString(R.string.customer_name_taken)).showAndWait() else {
-                val customer = Customer(name)
-                customer.id = Customers.insert(Customer(name))
-                customerList.items.add(0, customer)
-                customerList.selectionModel.select(0)
-            }
-        }
-    }
-
     override fun refresh() = customerPagination.pageFactoryProperty() rebind bindingOf(customerField.textProperty(), itemCountBox.countProperty) {
         Callback<Int, Node> { page ->
             customerList = listView {
@@ -154,12 +136,37 @@ class CustomerController : Controller(), Refreshable {
                     }
                 }
             }
-            nameLabel.textProperty() rebind stringBindingOf(customerList.selectionModel.selectedItemProperty()) { customer?.name ?: "" }
-            sinceLabel.textProperty() rebind stringBindingOf(customerList.selectionModel.selectedItemProperty()) { customer?.since?.toString(PATTERN_DATE) ?: "" }
-            noteLabel.textProperty() rebind stringBindingOf(customerList.selectionModel.selectedItemProperty()) { customer?.note ?: "" }
-            contactTable.itemsProperty() rebind bindingOf(customerList.selectionModel.selectedItemProperty()) { customer?.contacts?.toObservableList() ?: mutableObservableListOf() }
+            nameLabel.textProperty() rebind stringBindingOf(customerList.selectionModel.selectedItemProperty()) {
+                customer?.name ?: ""
+            }
+            sinceLabel.textProperty() rebind stringBindingOf(customerList.selectionModel.selectedItemProperty()) {
+                customer?.since?.toString(PATTERN_DATE) ?: ""
+            }
+            noteLabel.textProperty() rebind stringBindingOf(customerList.selectionModel.selectedItemProperty()) {
+                customer?.note ?: ""
+            }
+            contactTable.itemsProperty() rebind bindingOf(customerList.selectionModel.selectedItemProperty()) {
+                customer?.contacts?.toObservableList() ?: mutableObservableListOf()
+            }
             coverLabel.visibleProperty() rebind customerList.selectionModel.selectedItemProperty().isNull
             customerList
+        }
+    }
+
+    @FXML
+    fun addOnAction() = inputDialog {
+        title = getString(R.string.add_customer)
+        headerText = getString(R.string.add_customer)
+        graphic = ImageView(R.png.ic_user)
+        contentText = getString(R.string.name)
+    }.showAndWait().ifPresent { name ->
+        transaction @Suppress("IMPLICIT_CAST_TO_ANY") {
+            if (Customers.find { this.name.equal(name) }.isNotEmpty) errorAlert(getString(R.string.customer_name_taken)).showAndWait() else {
+                val customer = Customer(name)
+                customer.id = Customers.insert(customer)
+                customerList.items.add(0, customer)
+                customerList.selectionModel.select(0)
+            }
         }
     }
 

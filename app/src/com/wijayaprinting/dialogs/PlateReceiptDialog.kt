@@ -1,7 +1,7 @@
 package com.wijayaprinting.dialogs
 
 /*
-class PlateReceiptDialog(val resourced: Resourced) : Dialog<PlateReceipt>(), Resourced by resourced {
+class PlateReceiptDialog(val resourced: Resourced) : Dialog<Receipt>(), Resourced by resourced {
 
     private lateinit var tableView: TableView<Pair<Plate, IntegerProperty>>
 

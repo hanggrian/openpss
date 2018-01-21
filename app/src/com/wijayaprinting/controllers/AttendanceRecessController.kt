@@ -29,14 +29,17 @@ class AttendanceRecessController : Controller(), Refreshable {
     @FXML lateinit var endColumn: TableColumn<Recess, String>
 
     @FXML
-    fun initialize() {
+    override fun initialize() {
         deleteButton.disableProperty() bind recessTable.selectionModel.selectedItemProperty().isNull
         startColumn.setCellValueFactory { it.value.start.toString(PATTERN_TIME).asProperty() }
         endColumn.setCellValueFactory { it.value.end.toString(PATTERN_TIME).asProperty() }
         refresh()
     }
 
-    @FXML fun refreshOnAction() = refresh()
+    @FXML
+    override fun refresh() {
+        recessTable.items = transaction { Recesses.find().toMutableObservableList() }
+    }
 
     @FXML
     fun addOnAction() = dialog<Pair<LocalTime, LocalTime>>(getString(R.string.add_reccess), getString(R.string.add_reccess), ImageView(R.png.ic_clock)) {
@@ -54,7 +57,7 @@ class AttendanceRecessController : Controller(), Refreshable {
         setResultConverter { if (it == OK) Pair(startBox.time, endBox.time) else null }
     }.showAndWait().ifPresent { (start, end) ->
         val recess = Recess(start, end)
-        recess.id = transaction { Recesses.insert(Recess(start, end)) }!!
+        recess.id = transaction { Recesses.insert(recess) }!!
         recessTable.items.add(recess)
     }
 
@@ -68,8 +71,4 @@ class AttendanceRecessController : Controller(), Refreshable {
                     recessTable.items.remove(recess)
                 }
             }
-
-    override fun refresh() {
-        recessTable.items = transaction { Recesses.find().toMutableObservableList() }
-    }
 }

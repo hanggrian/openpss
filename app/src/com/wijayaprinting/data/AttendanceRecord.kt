@@ -1,6 +1,5 @@
 package com.wijayaprinting.data
 
-import com.wijayaprinting.BuildConfig.DEBUG
 import com.wijayaprinting.PATTERN_DATETIME
 import com.wijayaprinting.core.Resourced
 import com.wijayaprinting.util.rounded
@@ -53,23 +52,9 @@ data class AttendanceRecord @JvmOverloads constructor(
             totalProperty.set(0.0)
         }
         if (isChild) {
-            val workingHours = {
-                try {
-                    val interval = Interval(start, end)
-                    var minutes = interval.toDuration().toStandardMinutes().minutes.absoluteValue
-                    attendee.recesses
-                            .map { it.getInterval(start) }
-                            .forEach { recessesInterval -> minutes -= interval.overlap(recessesInterval)?.toDuration()?.toStandardMinutes()?.minutes?.absoluteValue ?: 0 }
-                    minutes / 60.0
-                } catch (e: Exception) {
-                    if (DEBUG) e.printStackTrace()
-                    errorAlert(e.toString()).showAndWait()
-                    0.0
-                }
-            }
             dailyProperty bind doubleBindingOf(startProperty, endProperty, dailyEmptyProperty) {
                 if (isDailyEmpty) 0.0 else {
-                    val hours = workingHours()
+                    val hours = workingHours
                     when {
                         hours <= WORKING_HOURS -> hours.rounded
                         else -> WORKING_HOURS
@@ -77,7 +62,7 @@ data class AttendanceRecord @JvmOverloads constructor(
                 }
             }
             overtimeProperty bind doubleBindingOf(startProperty, endProperty) {
-                val hours = workingHours()
+                val hours = workingHours
                 val overtime = (hours - WORKING_HOURS).rounded
                 when {
                     hours <= WORKING_HOURS -> 0.0
@@ -152,6 +137,16 @@ data class AttendanceRecord @JvmOverloads constructor(
     private var overtime: Double
         get() = overtimeProperty.get()
         set(value) = overtimeProperty.set(value)
+
+    private val workingHours: Double
+        get() {
+            val interval = Interval(start, end)
+            var minutes = interval.toDuration().toStandardMinutes().minutes.absoluteValue
+            attendee.recesses
+                    .map { it.getInterval(start) }
+                    .forEach { recessesInterval -> minutes -= interval.overlap(recessesInterval)?.toDuration()?.toStandardMinutes()?.minutes?.absoluteValue ?: 0 }
+            return minutes / 60.0
+        }
 }
 
 fun Attendee.toRootRecord(): AttendanceRecord = AttendanceRecord(this, AttendanceRecord.INDEX_ROOT, this, DateTime(0).asProperty(), DateTime(0).asProperty())

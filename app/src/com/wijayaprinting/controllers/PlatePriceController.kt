@@ -26,7 +26,7 @@ class PlatePriceController : Controller(), Refreshable {
     @FXML lateinit var priceColumn: TableColumn<Plate, Double>
 
     @FXML
-    fun initialize() {
+    override fun initialize() {
         nameColumn.setCellValueFactory { it.value.name.asProperty() }
         priceColumn.setCellValueFactory { it.value.price.asProperty().asObservable() }
         priceColumn.cellFactory = forTableColumn<Plate, Double>(stringConverter({ it.toDoubleOrNull() ?: 0.0 }))
@@ -37,7 +37,10 @@ class PlatePriceController : Controller(), Refreshable {
         refresh()
     }
 
-    @FXML fun refreshOnAction() = refresh()
+    @FXML
+    override fun refresh() {
+        plateTable.items = transaction { Plates.find().toMutableObservableList() }
+    }
 
     @FXML
     fun addOnAction() = inputDialog {
@@ -46,7 +49,7 @@ class PlatePriceController : Controller(), Refreshable {
         contentText = getString(R.string.name)
         editor.promptText = getString(R.string.plate)
     }.showAndWait().ifPresent { name ->
-        val plate = Plate(name, 0.0)
+        val plate = Plate(name)
         plate.id = transaction { Plates.insert(plate) }!!
         plateTable.items.add(plate)
     }
@@ -61,8 +64,4 @@ class PlatePriceController : Controller(), Refreshable {
                     plateTable.items.remove(plate)
                 }
             }
-
-    override fun refresh() {
-        plateTable.items = transaction { Plates.find().toMutableObservableList() }
-    }
 }

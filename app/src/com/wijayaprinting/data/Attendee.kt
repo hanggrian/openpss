@@ -43,26 +43,24 @@ data class Attendee @JvmOverloads constructor(
 
     init {
         transaction {
-            Wages.find { wageId.equal(id) }.singleOrNull()?.let { wages ->
-                dailyProperty.value = wages.daily
-                hourlyOvertimeProperty.value = wages.hourlyOvertime
+            Wages.find { wageId.equal(id) }.singleOrNull()?.let { wage ->
+                daily = wage.daily
+                hourlyOvertime = wage.hourlyOvertime
             }
         }
     }
 
-    var daily: Int
-        get() = dailyProperty.get()
-        set(value) = dailyProperty.set(value)
-
-    var hourlyOvertime: Int
-        get() = hourlyOvertimeProperty.get()
-        set(value) = hourlyOvertimeProperty.set(value)
-
     fun saveWage() {
         transaction @Suppress("IMPLICIT_CAST_TO_ANY") {
-            Wages.find { wageId.equal(id) }.let { wage ->
-                if (wage.isEmpty) Wages.insert(Wage(id, daily, hourlyOvertime))
-                else wage.projection { wageId + daily + hourlyOvertime }.update(id, daily, hourlyOvertime)
+            Wages.find { wageId.equal(id) }.let { wages ->
+                if (wages.isEmpty) Wages.insert(Wage(id, daily, hourlyOvertime))
+                else wages.single().let { wage ->
+                    when {
+                        wage.daily != daily && wage.hourlyOvertime != hourlyOvertime -> wages.projection { daily + hourlyOvertime }.update(daily, hourlyOvertime)
+                        wage.daily != daily -> wages.projection { daily }.update(daily)
+                        else -> wages.projection { hourlyOvertime }.update(hourlyOvertime)
+                    }
+                }
             }
         }
     }
@@ -75,4 +73,12 @@ data class Attendee @JvmOverloads constructor(
     override fun equals(other: Any?): Boolean = other != null && other is Attendee && other.id == id
 
     override fun toString(): String = "$id. $name"
+
+    var daily: Int
+        get() = dailyProperty.get()
+        set(value) = dailyProperty.set(value)
+
+    var hourlyOvertime: Int
+        get() = hourlyOvertimeProperty.get()
+        set(value) = hourlyOvertimeProperty.set(value)
 }

@@ -7,7 +7,7 @@
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.wijayaprinting.controllers.AttendanceRecessController">
     <ToolBar>
-        <Button mnemonicParsing="false" onAction="#refreshOnAction">
+        <Button mnemonicParsing="false" onAction="#refresh">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
                     <Image url="@btn_refresh.png"/>

@@ -1,18 +1,12 @@
 package com.wijayaprinting.controllers
 
-import com.wijayaprinting.R
-import com.wijayaprinting.data.AttendanceRecord
-import com.wijayaprinting.data.Attendee
-import com.wijayaprinting.data.Undoable
-import com.wijayaprinting.dialogs.DateDialog
 import com.wijayaprinting.PATTERN_DATE
 import com.wijayaprinting.PATTERN_DATETIME
 import com.wijayaprinting.PATTERN_TIME
+import com.wijayaprinting.R
+import com.wijayaprinting.data.*
+import com.wijayaprinting.dialogs.DateDialog
 import com.wijayaprinting.layouts.TimeBox
-import com.wijayaprinting.data.toChildRecords
-import com.wijayaprinting.data.toNodeRecord
-import com.wijayaprinting.data.toRootRecord
-import com.wijayaprinting.data.toTotalRecords
 import javafx.fxml.FXML
 import javafx.print.Printer.defaultPrinterProperty
 import javafx.scene.control.*
@@ -45,7 +39,7 @@ class AttendanceRecordController : Controller() {
     @FXML lateinit var totalColumn: TreeTableColumn<AttendanceRecord, Double>
 
     @FXML
-    fun initialize() {
+    override fun initialize() {
         undoButton.disableProperty() bind undoButton.items.isEmpty
         arrayOf(lockStartButton, lockEndButton).forEach {
             it.disableProperty() bind (treeTableView.selectionModel.selectedItemProperty().isNull or booleanBindingOf(treeTableView.selectionModel.selectedItemProperty()) {
@@ -96,9 +90,9 @@ class AttendanceRecordController : Controller() {
                 .map { it.value }
                 .forEach { record ->
                     val initial = record.startProperty.value
-                    if (initial.toLocalTime() < timeBox.value) {
-                        record.startProperty.set(record.cloneStart(timeBox.value))
-                        undoable.name = if (undoable.name == null) "${record.attendee.name} ${initial.toString(PATTERN_DATETIME)} -> ${timeBox.value.toString(PATTERN_TIME)}" else getString(R.string.multiple_lock_start_time)
+                    if (initial.toLocalTime() < timeBox.time) {
+                        record.startProperty.set(record.cloneStart(timeBox.time))
+                        undoable.name = if (undoable.name == null) "${record.attendee.name} ${initial.toString(PATTERN_DATETIME)} -> ${timeBox.time.toString(PATTERN_TIME)}" else getString(R.string.multiple_lock_start_time)
                         undoable.addAction { record.startProperty.set(initial) }
                     }
                 }
@@ -112,9 +106,9 @@ class AttendanceRecordController : Controller() {
                 .map { it.value }
                 .forEach { record ->
                     val initial = record.endProperty.value
-                    if (initial.toLocalTime() > timeBox.value) {
-                        record.endProperty.set(record.cloneEnd(timeBox.value))
-                        undoable.name = if (undoable.name == null) "${record.attendee.name} ${initial.toString(PATTERN_DATETIME)} -> ${timeBox.value.toString(PATTERN_TIME)}" else getString(R.string.multiple_lock_end_time)
+                    if (initial.toLocalTime() > timeBox.time) {
+                        record.endProperty.set(record.cloneEnd(timeBox.time))
+                        undoable.name = if (undoable.name == null) "${record.attendee.name} ${initial.toString(PATTERN_DATETIME)} -> ${timeBox.time.toString(PATTERN_TIME)}" else getString(R.string.multiple_lock_end_time)
                         undoable.addAction { record.endProperty.set(initial) }
                     }
                 }

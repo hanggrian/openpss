@@ -11,9 +11,9 @@ import com.wijayaprinting.core.Resourced
 import com.wijayaprinting.dialogs.AboutDialog
 import com.wijayaprinting.io.NoSQLFile
 import com.wijayaprinting.io.PreferencesFile
+import com.wijayaprinting.nosql.Database
 import com.wijayaprinting.nosql.Employee
 import com.wijayaprinting.nosql.Employees
-import com.wijayaprinting.nosql.NoSQL
 import com.wijayaprinting.nosql.transaction
 import com.wijayaprinting.util.controller
 import com.wijayaprinting.util.gap
@@ -121,7 +121,7 @@ class App : Application(), Resourced, EmployeeContainer {
                     alignment = CENTER_RIGHT
                     hyperlink(getString(R.string.test_connection)) {
                         setOnAction {
-                            NoSQL.testConnection(serverHostField.text, serverPortField.value, serverUserField.text, serverPasswordField.text)
+                            Database.testConnection(serverHostField.text, serverPortField.value, serverUserField.text, serverPasswordField.text)
                                     .multithread()
                                     .subscribeBy({
                                         if (DEBUG) it.printStackTrace()
@@ -146,7 +146,7 @@ class App : Application(), Resourced, EmployeeContainer {
                     it.consume()
                     PreferencesFile.save()
                     NoSQLFile.save()
-                    NoSQL.login(serverHostField.text, serverPortField.value, serverUserField.text, serverPasswordField.text, employeeField.text, passwordField.text)
+                    Database.login(serverHostField.text, serverPortField.value, serverUserField.text, serverPasswordField.text, employeeField.text, passwordField.text)
                             .multithread()
                             .subscribeBy({
                                 if (DEBUG) it.printStackTrace()

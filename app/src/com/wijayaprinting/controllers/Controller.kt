@@ -15,6 +15,8 @@ abstract class Controller : Resourced, EmployeeContainer {
 
     private var mExtra: Any? = null
 
+    abstract fun initialize()
+
     fun setExtra(value: Any?) {
         mExtra = value
     }

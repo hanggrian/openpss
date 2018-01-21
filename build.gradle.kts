@@ -8,6 +8,7 @@ buildscript {
         classpath(kotlin("gradle-plugin", kotlinVersion))
         classpath(hendraanggrian("rsync", "0.7"))
         classpath(hendraanggrian("buildconfig", "0.5"))
+        classpath(junitPlatform("gradle-plugin", junitPlatformVersion))
     }
 }
 

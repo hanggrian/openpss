@@ -1,15 +1,16 @@
-/** Set false when building app, true when building stage. */
-const val isDebug = true
+const val releaseGroup = "com.wijayaprinting"
+const val releaseArtifact = "wijayaprinting"
+const val releaseDebug = true // set false when building app, true when building stage.
 const val releaseVersion = "0.7"
 
 const val kotlinVersion = "1.2.20"
 const val nosqlMongodbVersion = "0.1-SNAPSHOT"
 
-fun Dependency.apache(module1: String, module2: String, version: String) = "org.apache.$module1:$module1-$module2:$version"
+fun Dependency.apache(module: String, version: String) = "org.apache.${module.split("-")[0]}:$module:$version"
+val Dependency.`commons-validator` get() = "commons-validator:commons-validator:1.6"
 const val commonsLangVersion = "3.7"
 const val commonsMathVersion = "3.6.1"
 const val poiVersion = "3.17"
-val Dependency.`commons-validator` get() = "commons-validator:commons-validator:1.6"
 
 val Dependency.guava get() = "com.google.guava:guava:23.6-jre"
 

@@ -19,26 +19,23 @@ java.sourceSets {
         java.srcDir("src")
         resources.srcDirs("res", "licenses")
     }
-    getByName("test") {
-        java.srcDir("tests/src")
-        resources.srcDir("tests/res")
-    }
+    getByName("test").java.srcDir("tests/src")
 }
 
 rsync {
     srcDir("src")
     resDir("res")
-    packageName("com.wijayaprinting")
+    packageName(releaseGroup)
     leadingSlash(true)
-    debug(isDebug)
+    debug(releaseDebug)
 }
 
 buildconfig {
     srcDir("src")
-    packageName("com.wijayaprinting")
-    artifactId("wijayaprinting")
+    packageName(releaseGroup)
+    artifactId(releaseArtifact)
     version(releaseVersion)
-    debug(isDebug)
+    debug(releaseDebug)
 }
 
 configure<JUnitPlatformExtension> {
@@ -58,9 +55,9 @@ dependencies {
     implementation(rx("javafx", rxjavafxVersion))
     implementation(rx("kotlin", rxkotlinVersion))
 
-    implementation(apache("commons", "lang3", commonsLangVersion))
-    implementation(apache("commons", "math3", commonsMathVersion))
-    implementation(apache("poi", "ooxml", poiVersion))
+    implementation(apache("commons-lang3", commonsLangVersion))
+    implementation(apache("commons-math3", commonsMathVersion))
+    implementation(apache("poi-ooxml", poiVersion))
 
     implementation(guava)
     implementation(log4j12)
@@ -77,16 +74,12 @@ dependencies {
     testImplementation(junitPlatform("runner", junitPlatformVersion))
 }
 
-fun JUnitPlatformExtension.filters(setup: FiltersExtension.() -> Unit) {
-    when (this) {
-        is ExtensionAware -> extensions.getByType(FiltersExtension::class.java).setup()
-        else -> throw Exception("${this::class} must be an instance of ExtensionAware")
-    }
+fun JUnitPlatformExtension.filters(setup: FiltersExtension.() -> Unit) = when (this) {
+    is ExtensionAware -> extensions.getByType(FiltersExtension::class.java).setup()
+    else -> throw Exception("${this::class} must be an instance of ExtensionAware")
 }
 
-fun FiltersExtension.engines(setup: EnginesExtension.() -> Unit) {
-    when (this) {
-        is ExtensionAware -> extensions.getByType(EnginesExtension::class.java).setup()
-        else -> throw Exception("${this::class} must be an instance of ExtensionAware")
-    }
+fun FiltersExtension.engines(setup: EnginesExtension.() -> Unit) = when (this) {
+    is ExtensionAware -> extensions.getByType(EnginesExtension::class.java).setup()
+    else -> throw Exception("${this::class} must be an instance of ExtensionAware")
 }

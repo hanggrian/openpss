@@ -3,11 +3,11 @@ package com.wijayaprinting.controllers
 import com.wijayaprinting.PATTERN_TIME
 import com.wijayaprinting.R
 import com.wijayaprinting.base.Refreshable
-import com.wijayaprinting.layouts.TimeBox
-import com.wijayaprinting.layouts.timeBox
 import com.wijayaprinting.db.Recess
 import com.wijayaprinting.db.Recesses
 import com.wijayaprinting.db.transaction
+import com.wijayaprinting.layouts.TimeBox
+import com.wijayaprinting.layouts.timeBox
 import com.wijayaprinting.util.gap
 import javafx.fxml.FXML
 import javafx.scene.control.Button
@@ -33,16 +33,16 @@ class AttendanceRecessController : Controller(), Refreshable {
         deleteButton.disableProperty() bind recessTable.selectionModel.selectedItemProperty().isNull
         startColumn.setCellValueFactory { it.value.start.toString(PATTERN_TIME).asProperty() }
         endColumn.setCellValueFactory { it.value.end.toString(PATTERN_TIME).asProperty() }
-        refresh()
+        onRefresh()
     }
 
     @FXML
-    override fun refresh() {
+    override fun onRefresh() {
         recessTable.items = transaction { Recesses.find().toMutableObservableList() }
     }
 
     @FXML
-    fun addOnAction() = dialog<Pair<LocalTime, LocalTime>>(getString(R.string.add_reccess), getString(R.string.add_reccess), ImageView(R.png.ic_clock)) {
+    fun onAdd() = dialog<Pair<LocalTime, LocalTime>>(getString(R.string.add_reccess), getString(R.string.add_reccess), ImageView(R.png.ic_clock)) {
         lateinit var startBox: TimeBox
         lateinit var endBox: TimeBox
         content = gridPane {
@@ -62,7 +62,7 @@ class AttendanceRecessController : Controller(), Refreshable {
     }
 
     @FXML
-    fun deleteOnAction() = confirmAlert(getString(R.string.are_you_sure), YES, NO)
+    fun onDelete() = confirmAlert(getString(R.string.are_you_sure), YES, NO)
             .showAndWait()
             .filter { it == YES }
             .ifPresent {

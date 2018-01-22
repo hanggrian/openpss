@@ -81,10 +81,10 @@ class AttendanceRecordController : Controller() {
         }
     }
 
-    @FXML fun undoOnAction() = undoButton.items[0].fire()
+    @FXML fun onUndo() = undoButton.items[0].fire()
 
     @FXML
-    fun lockStartOnAction() {
+    fun onLockStart() {
         val undoable = Undoable()
         treeTableView.selectionModel.selectedItems
                 .map { it.value }
@@ -100,7 +100,7 @@ class AttendanceRecordController : Controller() {
     }
 
     @FXML
-    fun lockEndOnAction() {
+    fun onLockEnd() {
         val undoable = Undoable()
         treeTableView.selectionModel.selectedItems
                 .map { it.value }
@@ -116,7 +116,7 @@ class AttendanceRecordController : Controller() {
     }
 
     @FXML
-    fun emptyOnAction() = DateDialog(this, getString(R.string.empty_daily_income))
+    fun onEmpty() = DateDialog(this, getString(R.string.empty_daily_income))
             .showAndWait()
             .ifPresent { date ->
                 val undoable = Undoable()
@@ -131,7 +131,7 @@ class AttendanceRecordController : Controller() {
             }
 
     @FXML
-    fun printOnAction() {
+    fun onPrint() {
         //TreeTablePrinter.print(treeTableView, null)
         //val printerJob = createPrinterJob()
         //if (printerJob.showPrintDialog(treeTableView.scene.window) && printerJob.printPage(treeTableView)) printerJob.endJob()

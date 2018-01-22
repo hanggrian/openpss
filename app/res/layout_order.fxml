@@ -4,11 +4,11 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.VBox?>
-<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.wijayaprinting.controllers.PlateController">
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.wijayaprinting.controllers.OrderController">
     <ToolBar>
         <!--suppress JavaFxEventHandler -->
-        <Button mnemonicParsing="false" onAction="#refresh">
+        <Button mnemonicParsing="false" onAction="#onRefresh">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
                     <Image url="@btn_refresh.png"/>
@@ -20,7 +20,7 @@
         </Button>
         <TextField fx:id="customerField" promptText="%search_customer"/>
         <DatePicker fx:id="datePicker" prefWidth="128" editable="false"/>
-        <Button mnemonicParsing="false" onAction="#clearDateOnAction">
+        <Button mnemonicParsing="false" onAction="#onClearDate">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
                     <Image url="@btn_clear_date.png"/>
@@ -33,7 +33,7 @@
         <ChoiceBox fx:id="statusBox"/>
         <ItemCountBox/>
         <Separator/>
-        <Button mnemonicParsing="false" onAction="#addOnAction">
+        <Button mnemonicParsing="false" onAction="#onAdd">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
                     <Image url="@btn_add.png"/>
@@ -44,15 +44,7 @@
             </tooltip>
         </Button>
         <Separator/>
-        <Button mnemonicParsing="false" onAction="#priceOnAction">
-            <graphic>
-                <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@btn_price.png"/>
-                </ImageView>
-            </graphic>
-            <tooltip>
-                <Tooltip text="%plate_price"/>
-            </tooltip>
-        </Button>
+        <Button mnemonicParsing="false" onAction="#onPlatePrice" text="%plate_price"/>
+        <Button mnemonicParsing="false" onAction="#onOffsetPrice" text="%offset_price"/>
     </ToolBar>
 </VBox>

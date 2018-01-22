@@ -16,7 +16,7 @@ import org.joda.time.DateTime
 import org.joda.time.DateTime.now
 
 class DateTimeDialog @JvmOverloads constructor(
-        val resourced: Resourced,
+        resourced: Resourced,
         header: String,
         prefill: DateTime? = null
 ) : Dialog<DateTime>(), Resourced by resourced {

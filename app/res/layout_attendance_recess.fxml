@@ -7,7 +7,7 @@
       fx:controller="com.wijayaprinting.controllers.AttendanceRecessController">
     <ToolBar>
         <!--suppress JavaFxEventHandler -->
-        <Button mnemonicParsing="false" onAction="#refresh">
+        <Button mnemonicParsing="false" onAction="#onRefresh">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
                     <Image url="@btn_refresh.png"/>
@@ -17,7 +17,7 @@
                 <Tooltip text="%refresh"/>
             </tooltip>
         </Button>
-        <Button mnemonicParsing="false" onAction="#addOnAction">
+        <Button mnemonicParsing="false" onAction="#onAdd">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
                     <Image url="@btn_add.png"/>
@@ -27,7 +27,7 @@
                 <Tooltip text="%add"/>
             </tooltip>
         </Button>
-        <Button mnemonicParsing="false" fx:id="deleteButton" onAction="#deleteOnAction">
+        <Button mnemonicParsing="false" fx:id="deleteButton" onAction="#onDelete">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
                     <Image url="@btn_delete.png"/>

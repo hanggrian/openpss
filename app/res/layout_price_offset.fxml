@@ -4,10 +4,10 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.VBox?>
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.wijayaprinting.controllers.PlatePriceController">
+      fx:controller="com.wijayaprinting.controllers.PriceOffsetController">
     <ToolBar>
         <!--suppress JavaFxEventHandler -->
-        <Button mnemonicParsing="false" onAction="#refresh">
+        <Button mnemonicParsing="false" onAction="#onRefresh">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
                     <Image url="@btn_refresh.png"/>
@@ -17,7 +17,7 @@
                 <Tooltip text="%refresh"/>
             </tooltip>
         </Button>
-        <Button mnemonicParsing="false" onAction="#addOnAction">
+        <Button mnemonicParsing="false" onAction="#onAdd">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
                     <Image url="@btn_add.png"/>
@@ -27,7 +27,7 @@
                 <Tooltip text="%add"/>
             </tooltip>
         </Button>
-        <Button mnemonicParsing="false" fx:id="deleteButton" onAction="#deleteOnAction">
+        <Button mnemonicParsing="false" fx:id="deleteButton" onAction="#onDelete">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
                     <Image url="@btn_delete.png"/>
@@ -38,10 +38,12 @@
             </tooltip>
         </Button>
     </ToolBar>
-    <TableView fx:id="plateTable" VBox.vgrow="ALWAYS" editable="true">
+    <TableView fx:id="priceTable" VBox.vgrow="ALWAYS" editable="true">
         <columns>
             <TableColumn fx:id="nameColumn" text="%name" prefWidth="120.0" editable="false"/>
-            <TableColumn fx:id="priceColumn" text="%price" prefWidth="120.0"/>
+            <TableColumn fx:id="minAmountColumn" text="%min_amount" prefWidth="120.0"/>
+            <TableColumn fx:id="minPriceColumn" text="%min_price" prefWidth="120.0"/>
+            <TableColumn fx:id="excessPriceColumn" text="%excess_price" prefWidth="120.0"/>
         </columns>
         <columnResizePolicy>
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>

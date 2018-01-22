@@ -16,7 +16,7 @@ class MainController : Controller() {
     @FXML lateinit var employeeLabel: Label
     @FXML lateinit var tabPane: TabPane
     @FXML lateinit var customerController: CustomerController
-    @FXML lateinit var plateController: PlateController
+    @FXML lateinit var orderController: OrderController
     @FXML lateinit var attendanceController: AttendanceController
     @FXML lateinit var employeeController: EmployeeController
 
@@ -29,12 +29,12 @@ class MainController : Controller() {
         updateNavigateMenu(tabPane.selectionModel.selectedIndex)
         tabPane.selectionModel.selectedIndexProperty().addListener { _, _, index ->
             updateNavigateMenu(index.toInt())
-            (controllers[index.toInt()] as? Refreshable)?.refresh()
+            (controllers[index.toInt()] as? Refreshable)?.onRefresh()
         }
 
         runFX {
             employeeLabel.text = employeeName
-            controllers = arrayOf(customerController, plateController, attendanceController, employeeController)
+            controllers = arrayOf(customerController, orderController, attendanceController, employeeController)
             controllers.forEach {
                 it._employee = _employee
                 if (it is AttendanceController || it is EmployeeController) {
@@ -46,10 +46,10 @@ class MainController : Controller() {
     }
 
     @FXML
-    fun navigateOnAction(event: ActionEvent) = tabPane.selectionModel.select(navigateMenu.items.indexOf(event.source))
+    fun onNavigate(event: ActionEvent) = tabPane.selectionModel.select(navigateMenu.items.indexOf(event.source))
 
     @FXML
-    fun aboutOnAction() {
+    fun onAbout() {
         AboutDialog(this).showAndWait()
     }
 

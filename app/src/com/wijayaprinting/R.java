@@ -1,11 +1,14 @@
-// rsync generated this class at 2018-01-18T03:42:27.485 from:
+// rsync generated this class at 2018-01-23T03:52:44.764 from:
 // string_en.properties
+// btn_user_add.png
 // layout_attendance.fxml
+// layout_employee.fxml
 // btn_refresh.png
 // logo_launcher.png
 // ic_calendar.png
 // string_in.properties
 // btn_add.png
+// layout_order.fxml
 // btn_checkbox_outline.png
 // ic_user.png
 // btn_lock_end.png
@@ -16,28 +19,26 @@
 // btn_visibility_off.png
 // ic_clock.png
 // ic_key.png
-// btn_price.png
 // ic_document.png
 // btn_delete.png
 // btn_print.png
-// layout_plate.fxml
 // btn_merge.png
 // ic_address.png
 // btn_edit.png
 // btn_lock_start.png
 // layout_attendance_recess.fxml
 // ic_launcher.png
+// layout_price_plate.fxml
 // btn_checkbox.png
-// btn_customer_add.png
 // lato_regular.ttf
 // lato_bold.ttf
 // btn_folder.png
+// layout_price_offset.fxml
 // layout_customer.fxml
 // btn_recess.png
 // btn_clear_date.png
 // lato_light.ttf
 // btn_undo.png
-// layout_plate_price.fxml
 package com.wijayaprinting;
 
 import java.lang.String;
@@ -55,26 +56,9 @@ public final class R {
     }
   }
 
-  public static final class fxml {
-    public static final String layout_attendance = "/layout_attendance.fxml";
-
-    public static final String layout_main = "/layout_main.fxml";
-
-    public static final String layout_attendance_record = "/layout_attendance_record.fxml";
-
-    public static final String layout_plate = "/layout_plate.fxml";
-
-    public static final String layout_attendance_recess = "/layout_attendance_recess.fxml";
-
-    public static final String layout_customer = "/layout_customer.fxml";
-
-    public static final String layout_plate_price = "/layout_plate_price.fxml";
-
-    private fxml() {
-    }
-  }
-
   public static final class png {
+    public static final String btn_user_add = "/btn_user_add.png";
+
     public static final String btn_refresh = "/btn_refresh.png";
 
     public static final String logo_launcher = "/logo_launcher.png";
@@ -99,8 +83,6 @@ public final class R {
 
     public static final String ic_key = "/ic_key.png";
 
-    public static final String btn_price = "/btn_price.png";
-
     public static final String ic_document = "/ic_document.png";
 
     public static final String btn_delete = "/btn_delete.png";
@@ -119,8 +101,6 @@ public final class R {
 
     public static final String btn_checkbox = "/btn_checkbox.png";
 
-    public static final String btn_customer_add = "/btn_customer_add.png";
-
     public static final String btn_folder = "/btn_folder.png";
 
     public static final String btn_recess = "/btn_recess.png";
@@ -130,6 +110,29 @@ public final class R {
     public static final String btn_undo = "/btn_undo.png";
 
     private png() {
+    }
+  }
+
+  public static final class fxml {
+    public static final String layout_attendance = "/layout_attendance.fxml";
+
+    public static final String layout_employee = "/layout_employee.fxml";
+
+    public static final String layout_order = "/layout_order.fxml";
+
+    public static final String layout_main = "/layout_main.fxml";
+
+    public static final String layout_attendance_record = "/layout_attendance_record.fxml";
+
+    public static final String layout_attendance_recess = "/layout_attendance_recess.fxml";
+
+    public static final String layout_price_plate = "/layout_price_plate.fxml";
+
+    public static final String layout_price_offset = "/layout_price_offset.fxml";
+
+    public static final String layout_customer = "/layout_customer.fxml";
+
+    private fxml() {
     }
   }
 
@@ -163,13 +166,15 @@ public final class R {
 
     public static final String delete_others = "delete_others";
 
+    public static final String add_offset = "add_offset";
+
+    public static final String add_employee = "add_employee";
+
     public static final String total = "total";
 
     public static final String lock_end_time = "lock_end_time";
 
     public static final String print = "print";
-
-    public static final String language_changed = "language_changed";
 
     public static final String please_wait_content = "please_wait_content";
 
@@ -193,6 +198,8 @@ public final class R {
 
     public static final String add_plate_receipt = "add_plate_receipt";
 
+    public static final String excess_price = "excess_price";
+
     public static final String date = "date";
 
     public static final String contact = "contact";
@@ -202,6 +209,8 @@ public final class R {
     public static final String exit = "exit";
 
     public static final String daily = "daily";
+
+    public static final String min_price = "min_price";
 
     public static final String add_reccess = "add_reccess";
 
@@ -232,6 +241,8 @@ public final class R {
     public static final String help = "help";
 
     public static final String role = "role";
+
+    public static final String please_restart = "please_restart";
 
     public static final String end = "end";
 
@@ -275,9 +286,9 @@ public final class R {
 
     public static final String change_password_successful = "change_password_successful";
 
-    public static final String name = "name";
+    public static final String min_amount = "min_amount";
 
-    public static final String customer_name_taken = "customer_name_taken";
+    public static final String name = "name";
 
     public static final String attendance = "attendance";
 
@@ -294,6 +305,10 @@ public final class R {
     public static final String clear = "clear";
 
     public static final String check_for_updates = "check_for_updates";
+
+    public static final String name_taken = "name_taken";
+
+    public static final String reset_password = "reset_password";
 
     public static final String login = "login";
 
@@ -313,6 +328,8 @@ public final class R {
 
     public static final String undo = "undo";
 
+    public static final String full_access = "full_access";
+
     public static final String record = "record";
 
     public static final String password = "password";
@@ -328,6 +345,8 @@ public final class R {
     public static final String edit_customer = "edit_customer";
 
     public static final String customer = "customer";
+
+    public static final String offset_price = "offset_price";
 
     public static final String recess = "recess";
 

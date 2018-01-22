@@ -10,7 +10,7 @@
       fx:controller="com.wijayaprinting.controllers.CustomerController">
     <ToolBar>
         <!--suppress JavaFxEventHandler -->
-        <Button mnemonicParsing="false" onAction="#refresh">
+        <Button mnemonicParsing="false" onAction="#onRefresh">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
                     <Image url="@btn_refresh.png"/>
@@ -23,10 +23,10 @@
         <TextField fx:id="customerField" promptText="%search_customer"/>
         <ItemCountBox fx:id="itemCountBox"/>
         <Separator/>
-        <Button mnemonicParsing="false" onAction="#addOnAction">
+        <Button mnemonicParsing="false" onAction="#onAdd">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@btn_customer_add.png"/>
+                    <Image url="@btn_user_add.png"/>
                 </ImageView>
             </graphic>
             <tooltip>

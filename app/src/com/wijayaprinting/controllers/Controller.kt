@@ -22,5 +22,5 @@ abstract class Controller : Resourced, EmployeeHolder {
     }
 
     @Suppress("UNCHECKED_CAST")
-    fun <T : Any> getExtra(): T = checkNotNull(mExtra as T) { "User models has not been initialized!" }
+    fun <T : Any> getExtra(): T = checkNotNull(mExtra as T) { "Named models has not been initialized!" }
 }

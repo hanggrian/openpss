@@ -21,8 +21,8 @@ data class Receipt(
         val note: String,
         val paid: Double,
         val printed: Boolean
-) {
-    lateinit var id: Id<String, Receipts>
+) : Ided<Receipts> {
+    override lateinit var id: Id<String, Receipts>
 
     /*val total: Double
         get() {

@@ -8,8 +8,8 @@ open class Orders<D : Any, S : DocumentSchema<D>>(klass: KClass<D>, discriminato
     val total = double<S>("total")
 }
 
-sealed class Order<D : Any, S : DocumentSchema<D>> {
-    open lateinit var id: Id<String, S>
+sealed class Order<D : Any, S : DocumentSchema<D>> : Ided<S> {
+    override lateinit var id: Id<String, S>
     open var total: Double = 0.0
 }
 

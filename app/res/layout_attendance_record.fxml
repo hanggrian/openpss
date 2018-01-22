@@ -9,7 +9,7 @@
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.wijayaprinting.controllers.AttendanceRecordController">
     <ToolBar>
-        <SplitMenuButton mnemonicParsing="false" fx:id="undoButton" onAction="#undoOnAction">
+        <SplitMenuButton mnemonicParsing="false" fx:id="undoButton" onAction="#onUndo">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
                     <Image url="@btn_undo.png"/>
@@ -21,7 +21,7 @@
         </SplitMenuButton>
         <Separator/>
         <TimeBox fx:id="timeBox"/>
-        <Button mnemonicParsing="false" fx:id="lockStartButton" onAction="#lockStartOnAction">
+        <Button mnemonicParsing="false" fx:id="lockStartButton" onAction="#onLockStart">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
                     <Image url="@btn_lock_start.png"/>
@@ -31,7 +31,7 @@
                 <Tooltip text="%lock_start_time"/>
             </tooltip>
         </Button>
-        <Button mnemonicParsing="false" fx:id="lockEndButton" onAction="#lockEndOnAction">
+        <Button mnemonicParsing="false" fx:id="lockEndButton" onAction="#onLockEnd">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
                     <Image url="@btn_lock_end.png"/>
@@ -42,7 +42,7 @@
             </tooltip>
         </Button>
         <Separator/>
-        <Button mnemonicParsing="false" fx:id="emptyButton" onAction="#emptyOnAction" text="%empty_daily_income"/>
+        <Button mnemonicParsing="false" fx:id="emptyButton" onAction="#onEmpty" text="%empty_daily_income"/>
         <Separator/>
         <TextFlow fx:id="grandTotalFlow" maxHeight="-Infinity">
             <Text text="%grand_total"/>
@@ -50,7 +50,7 @@
             <Text fx:id="totalText"/>
         </TextFlow>
         <Separator/>
-        <Button mnemonicParsing="false" fx:id="printButton" onAction="#printOnAction">
+        <Button mnemonicParsing="false" fx:id="printButton" onAction="#onPrint">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
                     <Image url="@btn_print.png"/>

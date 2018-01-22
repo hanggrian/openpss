@@ -13,7 +13,7 @@ import org.joda.time.LocalDate
 import org.joda.time.LocalDate.now
 
 class DateDialog @JvmOverloads constructor(
-        val resourced: Resourced,
+        resourced: Resourced,
         header: String,
         prefill: LocalDate? = null
 ) : Dialog<LocalDate>(), Resourced by resourced {

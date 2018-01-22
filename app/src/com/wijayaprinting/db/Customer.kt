@@ -10,8 +10,8 @@ import kotlinx.nosql.string
 import org.joda.time.LocalDate
 import org.joda.time.LocalDate.now
 
-object Customers : DocumentSchema<Customer>("customer", Customer::class) {
-    val name = string("name")
+object Customers : DocumentSchema<Customer>("customer", Customer::class), NamedColumn<Customers> {
+    override val name = string("name")
     val note = string("note")
     val since = date("since")
     val contacts = ContactColumn()
@@ -23,19 +23,19 @@ object Customers : DocumentSchema<Customer>("customer", Customer::class) {
 }
 
 data class Customer @JvmOverloads constructor(
-        var name: String,
+        override val name: String,
         var note: String = "",
         var since: LocalDate = now(),
         var contacts: List<Contact> = listOf()
-) {
-    lateinit var id: Id<String, Customers>
-
-    override fun toString(): String = name
+) : Named, Ided<Customers> {
+    override lateinit var id: Id<String, Customers>
 
     data class Contact(
             var type: String,
             var value: String
     )
+
+    override fun toString(): String = name
 
     companion object {
         private const val TYPE_EMAIL = "email"

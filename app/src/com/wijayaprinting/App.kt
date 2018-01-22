@@ -14,10 +14,7 @@ import com.wijayaprinting.db.transaction
 import com.wijayaprinting.dialogs.AboutDialog
 import com.wijayaprinting.io.ConfigFile
 import com.wijayaprinting.io.DatabaseFile
-import com.wijayaprinting.util.controller
-import com.wijayaprinting.util.gap
-import com.wijayaprinting.util.multithread
-import com.wijayaprinting.util.pane
+import com.wijayaprinting.util.*
 import io.reactivex.rxkotlin.subscribeBy
 import javafx.application.Application
 import javafx.application.Platform.exit
@@ -77,7 +74,7 @@ class App : Application(), Resourced, EmployeeHolder {
                         ConfigFile.language.set(language.locale)
                         ConfigFile.save()
                         close()
-                        infoAlert(getString(R.string.language_changed)).showAndWait().ifPresent { exit() }
+                        infoAlert(getString(R.string.please_restart)).showAndWait().ifPresent { forceExit() }
                     }
                 } col 1 row 0 colSpan 2
                 label(getString(R.string.employee)) col 0 row 1

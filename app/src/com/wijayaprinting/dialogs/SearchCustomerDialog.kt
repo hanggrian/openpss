@@ -14,7 +14,7 @@ import javafx.scene.image.ImageView
 import kotfx.*
 import kotlinx.nosql.equal
 
-class SearchCustomerDialog(val resourced: Resourced) : Dialog<Customer>(), Resourced by resourced {
+class SearchCustomerDialog(resourced: Resourced) : Dialog<Customer>(), Resourced by resourced {
 
     companion object {
         private const val ITEMS_PER_PAGE = 15

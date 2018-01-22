@@ -57,7 +57,7 @@ class AttendanceController : Controller() {
     }
 
     @FXML
-    fun recessOnAction() = stage(getString(R.string.recess)) {
+    fun onRecess() = stage(getString(R.string.recess)) {
         val loader = getResource(R.fxml.layout_attendance_recess).loadFXML(resources)
         initModality(APPLICATION_MODAL)
         scene = loader.pane.toScene()
@@ -66,12 +66,12 @@ class AttendanceController : Controller() {
     }.showAndWait()
 
     @FXML
-    fun browseOnAction() = fileChooser(getString(R.string.input_file), *readerChoiceBox.value.extensions)
+    fun onBrowse() = fileChooser(getString(R.string.input_file), *readerChoiceBox.value.extensions)
             .showOpenDialog(fileField.scene.window)
             ?.let { fileField.text = it.absolutePath }
 
     @FXML
-    fun readOnAction() {
+    fun onRead() {
         val progressDialog = infoAlert(getString(R.string.please_wait_content)) {
             headerText = getString(R.string.please_wait)
             buttonTypes.clear()
@@ -217,7 +217,7 @@ class AttendanceController : Controller() {
     }
 
     @FXML
-    fun processOnAction() {
+    fun onProcess() {
         val set = mutableSetOf<Attendee>()
         attendees.forEach { attendee ->
             attendee.saveWage()

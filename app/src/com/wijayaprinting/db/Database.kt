@@ -6,11 +6,14 @@ import com.mongodb.ServerAddress
 import com.wijayaprinting.BuildConfig.ARTIFACT
 import com.wijayaprinting.BuildConfig.DEBUG
 import com.wijayaprinting.collections.isEmpty
+import com.wijayaprinting.util.forceExit
 import io.reactivex.Completable
 import io.reactivex.Single
-import javafx.application.Platform
 import kotfx.errorAlert
+import kotlinx.nosql.AbstractColumn
+import kotlinx.nosql.Id
 import kotlinx.nosql.equal
+import kotlinx.nosql.mongodb.DocumentSchema
 import kotlinx.nosql.mongodb.MongoDB
 import kotlinx.nosql.mongodb.MongoDBSession
 import java.net.InetAddress.getByName
@@ -48,7 +51,7 @@ object Database {
     private fun connect(host: String, port: Int, user: String, password: String): MongoDB {
         check(getByName(host).isReachable(3000)) { "IP address unreachable!" }
         return MongoDB(arrayOf(ServerAddress(host, port)), ARTIFACT, arrayOf(createCredential(user, "admin", password.toCharArray())),
-                schemas = arrayOf(Customers, Employees, PlateOrders, PrintOrders, Plates, Receipts, Recesses, Wages))
+                schemas = arrayOf(Customers, Employees, Offsets, PlateOrders, PrintOrders, Plates, Receipts, Recesses, Wages))
     }
 }
 
@@ -62,9 +65,22 @@ fun <R> transaction(statement: MongoDBSession.() -> R): R? = try {
     Database.INSTANCE.withSession(statement)
 } catch (e: MongoException) {
     if (DEBUG) e.printStackTrace()
-    errorAlert(e.message.toString()) { headerText = "Connection closed. Please sign in again." }.showAndWait().ifPresent {
-        Platform.exit()
-        System.exit(0)
-    }
+    errorAlert(e.message.toString()) { headerText = "Connection closed. Please sign in again." }.showAndWait().ifPresent { forceExit() }
     null
+}
+
+/** All DAOs contains ids. */
+interface Ided<S : DocumentSchema<*>> {
+    var id: Id<String, S>
+}
+
+interface NamedColumn<S : DocumentSchema<*>> {
+    val name: AbstractColumn<String, S, String>
+}
+
+/** Some DAOs have name. */
+interface Named {
+    val name: String
+
+    override fun toString(): String
 }

@@ -23,7 +23,7 @@ import java.io.InputStreamReader
 import java.net.URI
 import java.util.stream.Collectors.joining
 
-class AboutDialog(val resourced: Resourced) : Dialog<Unit>(), Resourced by resourced {
+class AboutDialog(resourced: Resourced) : Dialog<Unit>(), Resourced by resourced {
 
     init {
         title = getString(R.string.about)

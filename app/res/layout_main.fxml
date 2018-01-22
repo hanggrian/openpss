@@ -9,17 +9,17 @@
             <ToggleGroup fx:id="navigateGroup"/>
         </fx:define>
         <Menu mnemonicParsing="false" fx:id="navigateMenu" text="%navigate">
-            <RadioMenuItem mnemonicParsing="false" toggleGroup="$navigateGroup" onAction="#navigateOnAction"
+            <RadioMenuItem mnemonicParsing="false" toggleGroup="$navigateGroup" onAction="#onNavigate"
                            text="%customer"/>
-            <RadioMenuItem mnemonicParsing="false" toggleGroup="$navigateGroup" onAction="#navigateOnAction"
-                           text="%plate"/>
-            <RadioMenuItem mnemonicParsing="false" toggleGroup="$navigateGroup" onAction="#navigateOnAction"
+            <RadioMenuItem mnemonicParsing="false" toggleGroup="$navigateGroup" onAction="#onNavigate"
+                           text="%orders"/>
+            <RadioMenuItem mnemonicParsing="false" toggleGroup="$navigateGroup" onAction="#onNavigate"
                            text="%attendance"/>
-            <RadioMenuItem mnemonicParsing="false" toggleGroup="$navigateGroup" onAction="#navigateOnAction"
+            <RadioMenuItem mnemonicParsing="false" toggleGroup="$navigateGroup" onAction="#onNavigate"
                            text="%employee"/>
         </Menu>
         <Menu mnemonicParsing="false" text="%help">
-            <MenuItem mnemonicParsing="false" onAction="#aboutOnAction" text="%about"/>
+            <MenuItem mnemonicParsing="false" onAction="#onAbout" text="%about"/>
         </Menu>
     </MenuBar>
     <AnchorPane VBox.vgrow="ALWAYS">
@@ -30,9 +30,9 @@
                 <!--suppress ALL -->
                 <fx:include fx:id="customer" source="layout_customer.fxml"/>
             </Tab>
-            <Tab closable="false" text="%plate">
+            <Tab closable="false" text="%orders">
                 <!--suppress ALL -->
-                <fx:include fx:id="plate" source="layout_plate.fxml"/>
+                <fx:include fx:id="order" source="layout_order.fxml"/>
             </Tab>
             <Tab closable="false" text="%attendance">
                 <!--suppress ALL -->

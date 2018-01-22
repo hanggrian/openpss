@@ -14,6 +14,6 @@ data class Wage(
         var wageId: Int,
         var daily: Int,
         var hourlyOvertime: Int
-) {
-    lateinit var id: Id<String, Wages>
+) : Ided<Wages> {
+    override lateinit var id: Id<String, Wages>
 }

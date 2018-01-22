@@ -2,16 +2,18 @@ package com.wijayaprinting.controllers
 
 import com.wijayaprinting.PATTERN_DATE
 import com.wijayaprinting.R
+import com.wijayaprinting.base.Refreshable
 import com.wijayaprinting.collections.isNotEmpty
 import com.wijayaprinting.collections.minus
 import com.wijayaprinting.collections.plus
 import com.wijayaprinting.controls.ItemCountBox
-import com.wijayaprinting.base.Refreshable
 import com.wijayaprinting.db.Customer
 import com.wijayaprinting.db.Customers
 import com.wijayaprinting.db.transaction
+import com.wijayaprinting.dialogs.AddUserDialog
 import com.wijayaprinting.util.gap
 import com.wijayaprinting.util.size
+import com.wijayaprinting.util.tidied
 import javafx.fxml.FXML
 import javafx.scene.Node
 import javafx.scene.control.*
@@ -41,24 +43,6 @@ class CustomerController : Controller(), Refreshable {
     @FXML lateinit var coverLabel: Label
 
     private lateinit var customerList: ListView<Customer>
-    private val nameLabelGraphic = button(graphic = ImageView(R.png.btn_edit)) {
-        size(24)
-        setOnAction {
-            inputDialog(customer!!.name) {
-                title = getString(R.string.edit_customer)
-                headerText = getString(R.string.edit_customer)
-                graphic = ImageView(R.png.ic_user)
-                contentText = getString(R.string.name)
-            }.showAndWait().ifPresent { name ->
-                transaction {
-                    if (Customers.find { this.name.equal(name) }.isNotEmpty) errorAlert(getString(R.string.customer_name_taken)).showAndWait() else {
-                        Customers.find { id.equal(customer!!.id) }.projection { this.name }.update(name)
-                        reloadCustomer(customer!!)
-                    }
-                }
-            }
-        }
-    }
     private val noteLabelGraphic = button(graphic = ImageView(R.png.btn_edit)) {
         size(24)
         setOnAction {
@@ -78,10 +62,9 @@ class CustomerController : Controller(), Refreshable {
 
     @FXML
     override fun initialize() {
-        refresh()
+        onRefresh()
 
         nameLabel.font = loadFont(latoBold, 24.0)
-        runFX { nameLabel.graphicProperty() bind bindingOf<Node>(nameLabel.hoverProperty()) { if (nameLabel.isHover && isFullAccess) nameLabelGraphic else null } }
         sinceLabel.font = loadFont(latoRegular, 12.0)
         noteLabel.graphicProperty() bind bindingOf<Node>(noteLabel.hoverProperty()) { if (noteLabel.isHover) noteLabelGraphic else null }
         contactTable.contextMenu = contextMenu {
@@ -125,7 +108,7 @@ class CustomerController : Controller(), Refreshable {
     }
 
     @FXML
-    override fun refresh() = customerPagination.pageFactoryProperty() rebind bindingOf(customerField.textProperty(), itemCountBox.countProperty) {
+    override fun onRefresh() = customerPagination.pageFactoryProperty() rebind bindingOf(customerField.textProperty(), itemCountBox.countProperty) {
         Callback<Int, Node> { page ->
             customerList = listView {
                 runFX {
@@ -154,15 +137,10 @@ class CustomerController : Controller(), Refreshable {
     }
 
     @FXML
-    fun addOnAction() = inputDialog {
-        title = getString(R.string.add_customer)
-        headerText = getString(R.string.add_customer)
-        graphic = ImageView(R.png.ic_user)
-        contentText = getString(R.string.name)
-    }.showAndWait().ifPresent { name ->
-        transaction @Suppress("IMPLICIT_CAST_TO_ANY") {
-            if (Customers.find { this.name.equal(name) }.isNotEmpty) errorAlert(getString(R.string.customer_name_taken)).showAndWait() else {
-                val customer = Customer(name)
+    fun onAdd() = AddUserDialog(this, getString(R.string.add_customer)).showAndWait().ifPresent { name ->
+        transaction {
+            if (Customers.find { this.name.equal(name) }.isNotEmpty) errorAlert(getString(R.string.name_taken)).showAndWait() else {
+                val customer = Customer(name.tidied)
                 customer.id = Customers.insert(customer)
                 customerList.items.add(0, customer)
                 customerList.selectionModel.select(0)

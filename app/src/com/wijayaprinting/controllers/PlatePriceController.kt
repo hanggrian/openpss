@@ -27,6 +27,8 @@ class PlatePriceController : Controller(), Refreshable {
 
     @FXML
     override fun initialize() {
+        deleteButton.isDisable = !isFullAccess
+
         nameColumn.setCellValueFactory { it.value.name.asProperty() }
         priceColumn.setCellValueFactory { it.value.price.asProperty().asObservable() }
         priceColumn.cellFactory = forTableColumn<Plate, Double>(stringConverter({ it.toDoubleOrNull() ?: 0.0 }))

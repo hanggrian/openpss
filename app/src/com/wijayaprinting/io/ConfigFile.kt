@@ -3,12 +3,14 @@ package com.wijayaprinting.io
 import com.wijayaprinting.Language
 import javafx.beans.property.StringProperty
 
-open class ConfigFile : PropertiesFile(".config",
-        "employee" to "",
-        "language" to Language.ENGLISH.locale
-) {
-    companion object : ConfigFile()
+object ConfigFile : PropertiesFile(".config") {
 
-    val employee: StringProperty by map
-    val language: StringProperty by map
+    override val pairs: Array<Pair<String, String>>
+        get() = arrayOf(
+                "employee" to "",
+                "language" to Language.ENGLISH.locale
+        )
+
+    val employee: StringProperty by this
+    val language: StringProperty by this
 }

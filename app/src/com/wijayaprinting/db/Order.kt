@@ -8,21 +8,26 @@ open class Orders<D : Any, S : DocumentSchema<D>>(klass: KClass<D>, discriminato
     val total = double<S>("total")
 }
 
+sealed class Order<D : Any, S : DocumentSchema<D>> {
+    open lateinit var id: Id<String, S>
+    open var total: Double = 0.0
+}
+
 object PlateOrders : Orders<PlateOrder, PlateOrders>(PlateOrder::class, "plate") {
     val plateId = id("plate_id", Plates)
     val qty = integer("qty")
     val price = double("price")
 }
 
-object PrintOrders : Orders<PrintOrder, PrintOrders>(PrintOrder::class, "print")
-
 data class PlateOrder(
-        val plateId: Id<String, Plates>,
-        val qty: Int,
-        val price: Double,
-        val total: Double
-) {
-    lateinit var id: Id<String, PlateOrders>
+        var plateId: Id<String, Plates>?,
+        var qty: Int,
+        var price: Double,
+        override var total: Double
+) : Order<PlateOrder, PlateOrders>() {
+    override lateinit var id: Id<String, PlateOrders>
 }
 
-class PrintOrder
+object PrintOrders : Orders<PrintOrder, PrintOrders>(PrintOrder::class, "print")
+
+class PrintOrder : Order<PrintOrder, PrintOrders>()

@@ -2,6 +2,7 @@ package com.wijayaprinting.controllers
 
 import com.wijayaprinting.base.Refreshable
 import com.wijayaprinting.dialogs.AboutDialog
+import javafx.event.ActionEvent
 import javafx.fxml.FXML
 import javafx.scene.control.*
 import kotfx.runFX
@@ -17,6 +18,7 @@ class MainController : Controller() {
     @FXML lateinit var customerController: CustomerController
     @FXML lateinit var plateController: PlateController
     @FXML lateinit var attendanceController: AttendanceController
+    @FXML lateinit var employeeController: EmployeeController
 
     private lateinit var controllers: Array<Controller>
 
@@ -24,31 +26,32 @@ class MainController : Controller() {
     override fun initialize() {
         menuBar.isUseSystemMenuBar = IS_OS_MAC
 
-        runFX {
-            navigateMenu.items[2].isDisable = !isFullAccess
-            tabPane.tabs[2].isDisable = !isFullAccess
-            employeeLabel.text = employeeName
-        }
-        navigateMenu(tabPane.selectionModel.selectedIndex)
+        updateNavigateMenu(tabPane.selectionModel.selectedIndex)
         tabPane.selectionModel.selectedIndexProperty().addListener { _, _, index ->
-            navigateMenu(index.toInt())
+            updateNavigateMenu(index.toInt())
             (controllers[index.toInt()] as? Refreshable)?.refresh()
         }
 
         runFX {
-            controllers = arrayOf(customerController, plateController, attendanceController)
-            controllers.forEach { it.employee = employee }
+            employeeLabel.text = employeeName
+            controllers = arrayOf(customerController, plateController, attendanceController, employeeController)
+            controllers.forEach {
+                it._employee = _employee
+                if (it is AttendanceController || it is EmployeeController) {
+                    navigateMenu.items[controllers.indexOf(it)].isDisable = !isFullAccess
+                    tabPane.tabs[controllers.indexOf(it)].isDisable = !isFullAccess
+                }
+            }
         }
     }
 
-    @FXML fun navigateCustomerOnAction() = tabPane.selectionModel.select(0)
-    @FXML fun navigatePlateOnAction() = tabPane.selectionModel.select(1)
-    @FXML fun navigateAttendanceOnAction() = tabPane.selectionModel.select(2)
+    @FXML
+    fun navigateOnAction(event: ActionEvent) = tabPane.selectionModel.select(navigateMenu.items.indexOf(event.source))
 
     @FXML
     fun aboutOnAction() {
         AboutDialog(this).showAndWait()
     }
 
-    private fun navigateMenu(index: Int) = navigateMenu.items.forEachIndexed { i, item -> (item as RadioMenuItem).isSelected = index == i }
+    private fun updateNavigateMenu(index: Int) = navigateMenu.items.forEachIndexed { i, item -> (item as RadioMenuItem).isSelected = index == i }
 }

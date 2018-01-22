@@ -1,17 +1,17 @@
 package com.wijayaprinting.controllers
 
-import com.wijayaprinting.base.EmployeeContainer
 import com.wijayaprinting.Language
+import com.wijayaprinting.base.EmployeeHolder
 import com.wijayaprinting.base.Resourced
-import com.wijayaprinting.io.ConfigFile
 import com.wijayaprinting.db.Employee
+import com.wijayaprinting.io.ConfigFile
 import java.util.*
 
 /** Base class of all controllers. */
-abstract class Controller : Resourced, EmployeeContainer {
+abstract class Controller : Resourced, EmployeeHolder {
 
     override val resources: ResourceBundle = Language.from(ConfigFile.language.get()).resources
-    override lateinit var employee: Employee
+    override lateinit var _employee: Employee
 
     private var mExtra: Any? = null
 

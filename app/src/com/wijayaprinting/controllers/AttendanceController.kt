@@ -5,10 +5,10 @@ import com.wijayaprinting.PATTERN_DATETIME
 import com.wijayaprinting.R
 import com.wijayaprinting.controls.FileField
 import com.wijayaprinting.controls.intField
-import com.wijayaprinting.models.Attendee
-import com.wijayaprinting.dialogs.DateTimeDialog
 import com.wijayaprinting.db.Recesses
 import com.wijayaprinting.db.transaction
+import com.wijayaprinting.dialogs.DateTimeDialog
+import com.wijayaprinting.models.Attendee
 import com.wijayaprinting.readers.Reader
 import com.wijayaprinting.util.*
 import io.reactivex.Observable
@@ -62,7 +62,7 @@ class AttendanceController : Controller() {
         initModality(APPLICATION_MODAL)
         scene = loader.pane.toScene()
         isResizable = false
-        loader.controller.employee = employee
+        loader.controller._employee = _employee
     }.showAndWait()
 
     @FXML
@@ -80,7 +80,7 @@ class AttendanceController : Controller() {
         Observable
                 .create<Attendee> { emitter ->
                     try {
-                        readerChoiceBox.selectionModel.selectedItem.read(this, File(fileField.text)).forEach {
+                        readerChoiceBox.selectionModel.selectedItem.read(File(fileField.text)).forEach {
                             if (mergeToggleButton.isSelected) it.mergeDuplicates()
                             emitter.onNext(it)
                         }

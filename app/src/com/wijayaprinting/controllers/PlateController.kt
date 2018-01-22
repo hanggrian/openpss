@@ -47,6 +47,6 @@ class PlateController : Controller(), Refreshable {
         initModality(APPLICATION_MODAL)
         scene = loader.pane.toScene()
         isResizable = false
-        loader.controller.employee = employee
+        loader.controller._employee = _employee
     }.showAndWait()
 }

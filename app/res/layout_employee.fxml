@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.VBox?>
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.wijayaprinting.controllers.EmployeeController">
+    <ToolBar>
+        <!--suppress JavaFxEventHandler -->
+        <Button mnemonicParsing="false" onAction="#refresh">
+            <graphic>
+                <ImageView pickOnBounds="true" preserveRatio="true">
+                    <Image url="@btn_refresh.png"/>
+                </ImageView>
+            </graphic>
+            <tooltip>
+                <Tooltip text="%refresh"/>
+            </tooltip>
+        </Button>
+    </ToolBar>
+    <ListView fx:id="employeeList" VBox.vgrow="ALWAYS"/>
+</VBox>

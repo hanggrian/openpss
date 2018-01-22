@@ -9,7 +9,7 @@ import org.junit.runner.RunWith
 import kotlin.test.assertEquals
 
 @RunWith(JUnitPlatform::class)
-class MathSpec : Spek({
+object MathSpec : Spek({
 
     given("a decimal") {
         val decimal = 2.345134

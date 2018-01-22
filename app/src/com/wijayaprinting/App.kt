@@ -1,19 +1,19 @@
 package com.wijayaprinting
 
 import com.wijayaprinting.BuildConfig.DEBUG
+import com.wijayaprinting.base.EmployeeHolder
+import com.wijayaprinting.base.Resourced
 import com.wijayaprinting.controls.HostField
 import com.wijayaprinting.controls.IntField
 import com.wijayaprinting.controls.hostField
 import com.wijayaprinting.controls.intField
-import com.wijayaprinting.base.EmployeeContainer
-import com.wijayaprinting.base.Resourced
-import com.wijayaprinting.dialogs.AboutDialog
-import com.wijayaprinting.io.DatabaseFile
-import com.wijayaprinting.io.ConfigFile
 import com.wijayaprinting.db.Database
 import com.wijayaprinting.db.Employee
 import com.wijayaprinting.db.Employees
 import com.wijayaprinting.db.transaction
+import com.wijayaprinting.dialogs.AboutDialog
+import com.wijayaprinting.io.ConfigFile
+import com.wijayaprinting.io.DatabaseFile
 import com.wijayaprinting.util.controller
 import com.wijayaprinting.util.gap
 import com.wijayaprinting.util.multithread
@@ -40,14 +40,14 @@ import java.awt.Toolkit.getDefaultToolkit
 import java.net.URL
 import java.util.*
 
-class App : Application(), Resourced, EmployeeContainer {
+class App : Application(), Resourced, EmployeeHolder {
 
     companion object {
         @JvmStatic fun main(args: Array<String>) = launch(App::class.java, *args)
     }
 
     override lateinit var resources: ResourceBundle
-    override lateinit var employee: Employee
+    override lateinit var _employee: Employee
 
     override fun init() {
         if (DEBUG) configure()
@@ -158,13 +158,13 @@ class App : Application(), Resourced, EmployeeContainer {
             }
             runFX {
                 if (employeeField.text.isBlank()) employeeField.requestFocus() else passwordField.requestFocus()
-                isExpanded = listOf(serverHostField, serverPortField, serverUserField, serverPasswordField).any { it.text.isBlank() }
+                isExpanded = !DatabaseFile.isValid
                 if (DEBUG) {
-                    passwordField.text = "123"
+                    passwordField.text = "Test"
                 }
             }
-        }.showAndWait().filter { it is Employee }.ifPresent { _employee ->
-            employee = _employee as Employee
+        }.showAndWait().filter { it is Employee }.ifPresent { employee ->
+            _employee = employee as Employee
 
             stage.apply {
                 val loader = getResource(R.fxml.layout_main).loadFXML(resources)
@@ -172,7 +172,7 @@ class App : Application(), Resourced, EmployeeContainer {
                 scene = loader.pane.toScene()
                 minWidth = 960.0
                 minHeight = 640.0
-                loader.controller.employee = employee
+                loader.controller._employee = employee
             }.show()
 
             if (employee.firstTimeLogin) dialog<String>(getString(R.string.change_password), getString(R.string.change_password), ImageView(R.png.ic_key)) {

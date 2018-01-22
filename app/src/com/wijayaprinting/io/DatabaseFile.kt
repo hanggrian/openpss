@@ -4,16 +4,20 @@ import com.mongodb.ServerAddress.defaultPort
 import javafx.beans.property.StringProperty
 
 /** Configuration file for MySQL connection. */
-open class DatabaseFile : PropertiesFile(".db",
-        "host" to "",
-        "port" to defaultPort().toString(),
-        "user" to "",
-        "password" to ""
-) {
-    companion object : DatabaseFile()
+object DatabaseFile : PropertiesFile(".db") {
 
-    val host: StringProperty by map
-    val port: StringProperty by map
-    val user: StringProperty by map
-    val password: StringProperty by map
+    override val pairs: Array<Pair<String, String>>
+        get() = arrayOf(
+                "host" to "",
+                "port" to defaultPort().toString(),
+                "user" to "",
+                "password" to ""
+        )
+
+    val host: StringProperty by this
+    val port: StringProperty by this
+    val user: StringProperty by this
+    val password: StringProperty by this
+
+    val isValid: Boolean get() = host.value.isNotBlank() && port.value.isNotBlank() && user.value.isNotBlank() && password.value.isNotBlank()
 }

@@ -1,7 +1,6 @@
 package com.wijayaprinting.readers
 
 import com.google.common.collect.LinkedHashMultimap
-import com.wijayaprinting.base.Resourced
 import com.wijayaprinting.models.Attendee
 import org.apache.commons.lang3.SystemUtils.IS_OS_MAC
 import org.apache.commons.lang3.SystemUtils.IS_OS_WINDOWS
@@ -11,22 +10,22 @@ import org.joda.time.DateTime
 import java.io.File
 
 /** A custom readers to third-party software e Clocking fingerprint reader. */
-open class EClockingReader(override vararg val extensions: String) : Reader {
+object EClockingReader : Reader() {
 
-    companion object : EClockingReader("*.xlsx") {
-        private const val SHEET_RAW_ATTENDANCE_LOGS = 1
-        private const val CELL_DEPT = 1
-        private const val CELL_NAME = 2
-        private const val CELL_NO = 3
-        private const val CELL_DATE = 4
-        private const val CELL_RECORD_START = 6
-        private const val CELL_RECORD_END = 17
-    }
+    private const val SHEET_RAW_ATTENDANCE_LOGS = 1
+    private const val CELL_DEPT = 1
+    private const val CELL_NAME = 2
+    private const val CELL_NO = 3
+    private const val CELL_DATE = 4
+    private const val CELL_RECORD_START = 6
+    private const val CELL_RECORD_END = 17
 
-    override fun toString(): String = "e Clocking 2.1.015"
+    override val name: String get() = "e Clocking 2.1.015"
+
+    override val extensions: Array<String> get() = arrayOf("*.xlsx")
 
     @Throws(Exception::class)
-    override fun read(resourced: Resourced, file: File): Collection<Attendee> {
+    override fun read(file: File): Collection<Attendee> {
         val multimap = LinkedHashMultimap.create<Attendee, DateTime>()
         file.inputStream().use { stream ->
             val workbook = XSSFWorkbook(stream)
@@ -41,7 +40,7 @@ open class EClockingReader(override vararg val extensions: String) : Reader {
                     val day = date.dayOfMonth
                     val month = date.monthOfYear
                     val year = date.year
-                    val attendee = Attendee(resourced, no, name, dept)
+                    val attendee = Attendee(no, name, dept)
                     (CELL_RECORD_START until CELL_RECORD_END)
                             .map { row.getCell(it) }
                             .filter { it.cellTypeEnum == NUMERIC }

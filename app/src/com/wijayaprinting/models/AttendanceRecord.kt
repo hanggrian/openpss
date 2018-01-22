@@ -1,18 +1,18 @@
 package com.wijayaprinting.models
 
 import com.wijayaprinting.PATTERN_DATETIME
-import com.wijayaprinting.base.Resourced
+import com.wijayaprinting.models.AttendanceRecord.Companion.INDEX_NODE
+import com.wijayaprinting.models.AttendanceRecord.Companion.INDEX_TOTAL
 import com.wijayaprinting.util.rounded
 import javafx.beans.property.*
 import kotfx.*
 import org.joda.time.DateTime
+import org.joda.time.DateTime.now
 import org.joda.time.Interval
 import org.joda.time.LocalTime
 import kotlin.math.absoluteValue
 
-data class AttendanceRecord @JvmOverloads constructor(
-        val resourced: Resourced,
-
+open class AttendanceRecord @JvmOverloads constructor(
         val index: Int,
 
         val attendee: Attendee,
@@ -29,13 +29,12 @@ data class AttendanceRecord @JvmOverloads constructor(
         val overtimeIncomeProperty: DoubleProperty = SimpleDoubleProperty(),
 
         val totalProperty: DoubleProperty = SimpleDoubleProperty()
-) : Resourced by resourced {
+) {
 
-    companion object {
+    /** Dummy for invisible [javafx.scene.control.TreeTableView] root. */
+    companion object : AttendanceRecord(Int.MIN_VALUE, Attendee, DateTime(0).asProperty(), DateTime(0).asProperty()) {
         private const val WORKING_HOURS = 8.0
 
-        /** Dummy since [javafx.scene.control.TreeTableView] must have a root item. */
-        const val INDEX_ROOT = -3
         /** Parent row displaying name and its preferences. */
         const val INDEX_NODE = -2
         /** Last child row of a node, displaying calculated total. */
@@ -77,7 +76,6 @@ data class AttendanceRecord @JvmOverloads constructor(
         }
     }
 
-    val isRoot: Boolean get() = index == INDEX_ROOT
     val isNode: Boolean get() = index == INDEX_NODE
     val isTotal: Boolean get() = index == INDEX_TOTAL
     val isChild: Boolean get() = index >= 0
@@ -149,19 +147,17 @@ data class AttendanceRecord @JvmOverloads constructor(
         }
 }
 
-fun Attendee.toRootRecord(): AttendanceRecord = AttendanceRecord(this, AttendanceRecord.INDEX_ROOT, this, DateTime(0).asProperty(), DateTime(0).asProperty())
-
-fun Attendee.toNodeRecord(): AttendanceRecord = AttendanceRecord(this, AttendanceRecord.INDEX_NODE, this, DateTime.now().asProperty(), DateTime.now().asProperty())
+fun Attendee.toNodeRecord(): AttendanceRecord = AttendanceRecord(INDEX_NODE, this, now().asProperty(), now().asProperty())
 
 fun Attendee.toChildRecords(): Set<AttendanceRecord> {
     val records = mutableSetOf<AttendanceRecord>()
     val iterator = attendances.iterator()
     var index = 0
-    while (iterator.hasNext()) records.add(AttendanceRecord(this, index++, this, iterator.next().asMutableProperty(), iterator.next().asMutableProperty()))
+    while (iterator.hasNext()) records.add(AttendanceRecord(index++, this, iterator.next().asMutableProperty(), iterator.next().asMutableProperty()))
     return records
 }
 
-fun Attendee.toTotalRecords(children: Collection<AttendanceRecord>): AttendanceRecord = AttendanceRecord(this, AttendanceRecord.INDEX_TOTAL, this, DateTime(0).asProperty(), DateTime(0).asProperty()).apply {
+fun Attendee.toTotalRecords(children: Collection<AttendanceRecord>): AttendanceRecord = AttendanceRecord(INDEX_TOTAL, this, DateTime(0).asProperty(), DateTime(0).asProperty()).apply {
     children.map { it.dailyProperty }.toTypedArray().let { mains ->
         dailyProperty bind doubleBindingOf(*mains) { mains.map { it.value }.sum().rounded }
     }

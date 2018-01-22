@@ -4,28 +4,28 @@ import javafx.beans.property.StringProperty
 import kotfx.asMutableProperty
 import java.io.File
 import java.util.*
-import kotlin.collections.HashMap
 
 /** Represents a properties file used that acts as local settings. */
-open class PropertiesFile(child: String, vararg pairs: Pair<String, String>) : File(PropertiesFolder(), child) {
+@Suppress("LeakingThis")
+abstract class PropertiesFile(
+        child: String,
+        private val map: MutableMap<String, StringProperty> = mutableMapOf()
+) : File(PropertiesFolder(), child), MutableMap<String, StringProperty> by map {
+
+    abstract val pairs: Array<Pair<String, String>>
 
     /** Properties reference to get, set, and finally save into this file. */
     private val properties = Properties()
 
-    /** Actual map that stores properties for bindings. */
-    protected val map = HashMap<String, StringProperty>()
-
     init {
-        @Suppress("LeakingThis") if (!exists()) createNewFile()
+        if (!exists()) createNewFile()
         inputStream().use { properties.load(it) }
-        pairs.forEach {
-            val key = it.first
-            val value = properties.getProperty(it.first, it.second).asMutableProperty()
-            value.addListener { _, _, newValue -> properties.setProperty(key, newValue) }
-            map[key] = value
+        pairs.forEach { (key, value) ->
+            val valueProperty = properties.getProperty(key, value).asMutableProperty()
+            valueProperty.addListener { _, _, newValue -> properties.setProperty(key, newValue) }
+            map[key] = valueProperty
         }
     }
 
-    @JvmOverloads
-    fun save(comments: String? = null): Unit = outputStream().use { properties.store(it, comments) }
+    @JvmOverloads fun save(comments: String? = null): Unit = outputStream().use { properties.store(it, comments) }
 }

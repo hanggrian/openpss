@@ -11,7 +11,7 @@ object Employees : DocumentSchema<Employee>("employee", Employee::class) {
     val fullAccess = boolean("full_access")
 }
 
-data class Employee(
+open class Employee(
         var name: String,
         var password: String,
         var fullAccess: Boolean
@@ -25,7 +25,7 @@ data class Employee(
         password = ""
     }
 
-    companion object {
+    companion object : Employee("Test", "Test", false) {
         const val DEFAULT_PASSWORD = "1234"
     }
 }

@@ -9,12 +9,14 @@
             <ToggleGroup fx:id="navigateGroup"/>
         </fx:define>
         <Menu mnemonicParsing="false" fx:id="navigateMenu" text="%navigate">
-            <RadioMenuItem mnemonicParsing="false" toggleGroup="$navigateGroup" onAction="#navigateCustomerOnAction"
+            <RadioMenuItem mnemonicParsing="false" toggleGroup="$navigateGroup" onAction="#navigateOnAction"
                            text="%customer"/>
-            <RadioMenuItem mnemonicParsing="false" toggleGroup="$navigateGroup" onAction="#navigatePlateOnAction"
+            <RadioMenuItem mnemonicParsing="false" toggleGroup="$navigateGroup" onAction="#navigateOnAction"
                            text="%plate"/>
-            <RadioMenuItem mnemonicParsing="false" toggleGroup="$navigateGroup" onAction="#navigateAttendanceOnAction"
+            <RadioMenuItem mnemonicParsing="false" toggleGroup="$navigateGroup" onAction="#navigateOnAction"
                            text="%attendance"/>
+            <RadioMenuItem mnemonicParsing="false" toggleGroup="$navigateGroup" onAction="#navigateOnAction"
+                           text="%employee"/>
         </Menu>
         <Menu mnemonicParsing="false" text="%help">
             <MenuItem mnemonicParsing="false" onAction="#aboutOnAction" text="%about"/>
@@ -25,13 +27,20 @@
                  AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0"
                  AnchorPane.topAnchor="0">
             <Tab closable="false" text="%customer">
+                <!--suppress ALL -->
                 <fx:include fx:id="customer" source="layout_customer.fxml"/>
             </Tab>
             <Tab closable="false" text="%plate">
+                <!--suppress ALL -->
                 <fx:include fx:id="plate" source="layout_plate.fxml"/>
             </Tab>
             <Tab closable="false" text="%attendance">
+                <!--suppress ALL -->
                 <fx:include fx:id="attendance" source="layout_attendance.fxml"/>
+            </Tab>
+            <Tab closable="false" text="%employee">
+                <!--suppress ALL -->
+                <fx:include fx:id="employee" source="layout_employee.fxml"/>
             </Tab>
         </TabPane>
         <Label fx:id="employeeLabel" AnchorPane.rightAnchor="8" AnchorPane.topAnchor="8"/>

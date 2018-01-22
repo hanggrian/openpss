@@ -6,7 +6,6 @@ import com.mongodb.ServerAddress
 import com.wijayaprinting.BuildConfig.ARTIFACT
 import com.wijayaprinting.BuildConfig.DEBUG
 import com.wijayaprinting.collections.isEmpty
-import com.wijayaprinting.db.Employee.Companion.DEFAULT_PASSWORD
 import io.reactivex.Completable
 import io.reactivex.Single
 import javafx.application.Platform
@@ -25,7 +24,7 @@ object Database {
             var employee: Employee? = null
             INSTANCE = connect(host, port, user, password)
             transaction {
-                if (Employees.find { name.equal("Test") }.isEmpty) Employees.insert(Employee("Test", DEFAULT_PASSWORD, true))
+                if (Employees.find { name.equal(Employee.name) }.isEmpty) Employees.insert(Employee)
                 employee = checkNotNull(Employees.find { name.equal(employeeName) }.singleOrNull()) { "Employee not found!" }
                 require(employee!!.password == employeePassword) { "Invalid password!" }
             }
@@ -59,8 +58,7 @@ object Database {
  *
  * @see [kotlinx.nosql.mongodb.MongoDB.withSession]
  */
-@Suppress("NOTHING_TO_INLINE")
-inline fun <R> transaction(noinline statement: MongoDBSession.() -> R): R? = try {
+fun <R> transaction(statement: MongoDBSession.() -> R): R? = try {
     Database.INSTANCE.withSession(statement)
 } catch (e: MongoException) {
     if (DEBUG) e.printStackTrace()

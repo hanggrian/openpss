@@ -4,9 +4,9 @@ import com.wijayaprinting.PATTERN_DATE
 import com.wijayaprinting.PATTERN_DATETIME
 import com.wijayaprinting.PATTERN_TIME
 import com.wijayaprinting.R
-import com.wijayaprinting.models.*
 import com.wijayaprinting.dialogs.DateDialog
 import com.wijayaprinting.layouts.TimeBox
+import com.wijayaprinting.models.*
 import javafx.fxml.FXML
 import javafx.print.Printer.defaultPrinterProperty
 import javafx.scene.control.*
@@ -49,7 +49,7 @@ class AttendanceRecordController : Controller() {
         printButton.disableProperty() bind defaultPrinterProperty().isNull
 
         treeTableView.selectionModel.selectionMode = MULTIPLE
-        treeTableView.root = TreeItem(Attendee.getDummy(this).toRootRecord())
+        treeTableView.root = TreeItem(AttendanceRecord)
         treeTableView.isShowRoot = false
 
         nameColumn.setCellValueFactory { it.value.value.displayedName.asProperty() }

@@ -1,9 +1,9 @@
 package com.wijayaprinting.manager
 
 import com.wijayaprinting.db.Database.login
-import com.wijayaprinting.db.Employee
-import com.wijayaprinting.db.PlateOrder
-import com.wijayaprinting.db.PlateOrders
+import com.wijayaprinting.db.dao.Employee
+import com.wijayaprinting.db.dao.PlateOrder
+import com.wijayaprinting.db.schema.PlateOrders
 import com.wijayaprinting.db.transaction
 import com.wijayaprinting.io.DatabaseFile
 import org.jetbrains.spek.api.Spek

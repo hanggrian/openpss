@@ -5,7 +5,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.VBox?>
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.wijayaprinting.controllers.EmployeeController">
+      fx:controller="com.wijayaprinting.ui.employee.EmployeeController">
     <ToolBar>
         <!--suppress JavaFxEventHandler -->
         <Button mnemonicParsing="false" onAction="#onRefresh">

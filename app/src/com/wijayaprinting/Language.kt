@@ -1,6 +1,6 @@
 package com.wijayaprinting
 
-import com.wijayaprinting.base.Listable
+import com.wijayaprinting.ui.Listable
 import javafx.collections.ObservableList
 import kotfx.observableListOf
 import java.util.*

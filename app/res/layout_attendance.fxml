@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.wijayaprinting.controls.FileField?>
+<?import com.wijayaprinting.ui.scene.control.FileField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.wijayaprinting.controllers.AttendanceController">
+      fx:controller="com.wijayaprinting.ui.attendance.AttendanceController">
     <ToolBar>
         <Button mnemonicParsing="false" onAction="#onRecess">
             <graphic>

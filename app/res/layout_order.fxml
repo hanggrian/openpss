@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.wijayaprinting.controls.ItemCountBox?>
+<?import com.wijayaprinting.ui.scene.control.ItemCountBox?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.VBox?>
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.wijayaprinting.controllers.OrderController">
+      fx:controller="com.wijayaprinting.ui.order.OrderController">
     <ToolBar>
         <!--suppress JavaFxEventHandler -->
         <Button mnemonicParsing="false" onAction="#onRefresh">

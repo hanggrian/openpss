@@ -9,17 +9,17 @@
             <ToggleGroup fx:id="navigateGroup"/>
         </fx:define>
         <Menu mnemonicParsing="false" fx:id="navigateMenu" text="%navigate">
-            <RadioMenuItem mnemonicParsing="false" toggleGroup="$navigateGroup" onAction="#onNavigate"
+            <RadioMenuItem mnemonicParsing="false" toggleGroup="$navigateGroup" onAction="#navigate"
                            text="%customer"/>
-            <RadioMenuItem mnemonicParsing="false" toggleGroup="$navigateGroup" onAction="#onNavigate"
+            <RadioMenuItem mnemonicParsing="false" toggleGroup="$navigateGroup" onAction="#navigate"
                            text="%orders"/>
-            <RadioMenuItem mnemonicParsing="false" toggleGroup="$navigateGroup" onAction="#onNavigate"
-                           text="%attendance"/>
-            <RadioMenuItem mnemonicParsing="false" toggleGroup="$navigateGroup" onAction="#onNavigate"
+            <RadioMenuItem mnemonicParsing="false" toggleGroup="$navigateGroup" onAction="#navigate"
+                           text="%wage"/>
+            <RadioMenuItem mnemonicParsing="false" toggleGroup="$navigateGroup" onAction="#navigate"
                            text="%employee"/>
         </Menu>
         <Menu mnemonicParsing="false" text="%help">
-            <MenuItem mnemonicParsing="false" onAction="#onAbout" text="%about"/>
+            <MenuItem mnemonicParsing="false" onAction="#about" text="%about"/>
         </Menu>
     </MenuBar>
     <AnchorPane VBox.vgrow="ALWAYS">
@@ -34,9 +34,9 @@
                 <!--suppress ALL -->
                 <fx:include fx:id="order" source="layout_order.fxml"/>
             </Tab>
-            <Tab closable="false" text="%attendance">
+            <Tab closable="false" text="%wage">
                 <!--suppress ALL -->
-                <fx:include fx:id="attendance" source="layout_attendance.fxml"/>
+                <fx:include fx:id="wage" source="layout_wage.fxml"/>
             </Tab>
             <Tab closable="false" text="%employee">
                 <!--suppress ALL -->

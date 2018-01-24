@@ -8,7 +8,7 @@
       fx:controller="com.wijayaprinting.ui.order.OrderController">
     <ToolBar>
         <!--suppress JavaFxEventHandler -->
-        <Button mnemonicParsing="false" onAction="#onRefresh">
+        <Button mnemonicParsing="false" onAction="#refresh">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
                     <Image url="@btn_refresh.png"/>
@@ -20,7 +20,7 @@
         </Button>
         <TextField fx:id="customerField" promptText="%search_customer"/>
         <DatePicker fx:id="datePicker" prefWidth="128" editable="false"/>
-        <Button mnemonicParsing="false" onAction="#onClearDate">
+        <Button mnemonicParsing="false" onAction="#clearDate">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
                     <Image url="@btn_clear_date.png"/>
@@ -33,7 +33,7 @@
         <ChoiceBox fx:id="statusBox"/>
         <ItemCountBox/>
         <Separator/>
-        <Button mnemonicParsing="false" onAction="#onAdd">
+        <Button mnemonicParsing="false" onAction="#add">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
                     <Image url="@btn_add.png"/>
@@ -44,7 +44,7 @@
             </tooltip>
         </Button>
         <Separator/>
-        <Button mnemonicParsing="false" onAction="#onPlatePrice" text="%plate_price"/>
-        <Button mnemonicParsing="false" onAction="#onOffsetPrice" text="%offset_price"/>
+        <Button mnemonicParsing="false" onAction="#platePrice" text="%plate_price"/>
+        <Button mnemonicParsing="false" onAction="#offsetPrice" text="%offset_price"/>
     </ToolBar>
 </VBox>

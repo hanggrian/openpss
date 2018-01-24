@@ -1,9 +1,9 @@
 package com.wijayaprinting.ui
 
-import com.wijayaprinting.ui.attendance.AttendanceController
 import com.wijayaprinting.ui.customer.CustomerController
 import com.wijayaprinting.ui.employee.EmployeeController
 import com.wijayaprinting.ui.order.OrderController
+import com.wijayaprinting.ui.wage.WageController
 import javafx.event.ActionEvent
 import javafx.fxml.FXML
 import javafx.scene.control.*
@@ -19,27 +19,26 @@ class MainController : Controller() {
     @FXML lateinit var tabPane: TabPane
     @FXML lateinit var customerController: CustomerController
     @FXML lateinit var orderController: OrderController
-    @FXML lateinit var attendanceController: AttendanceController
+    @FXML lateinit var wageController: WageController
     @FXML lateinit var employeeController: EmployeeController
 
     private lateinit var controllers: Array<Controller>
 
-    @FXML
     override fun initialize() {
         menuBar.isUseSystemMenuBar = IS_OS_MAC
 
         updateNavigateMenu(tabPane.selectionModel.selectedIndex)
         tabPane.selectionModel.selectedIndexProperty().addListener { _, _, index ->
             updateNavigateMenu(index.toInt())
-            (controllers[index.toInt()] as? Refreshable)?.onRefresh()
+            (controllers[index.toInt()] as? Refreshable)?.refresh()
         }
 
         runFX {
             employeeLabel.text = employeeName
-            controllers = arrayOf(customerController, orderController, attendanceController, employeeController)
+            controllers = arrayOf(customerController, orderController, wageController, employeeController)
             controllers.forEach {
                 it._employee = _employee
-                if (it is AttendanceController || it is EmployeeController) {
+                if (it is WageController || it is EmployeeController) {
                     navigateMenu.items[controllers.indexOf(it)].isDisable = !isFullAccess
                     tabPane.tabs[controllers.indexOf(it)].isDisable = !isFullAccess
                 }
@@ -48,10 +47,10 @@ class MainController : Controller() {
     }
 
     @FXML
-    fun onNavigate(event: ActionEvent) = tabPane.selectionModel.select(navigateMenu.items.indexOf(event.source))
+    fun navigate(event: ActionEvent) = tabPane.selectionModel.select(navigateMenu.items.indexOf(event.source))
 
     @FXML
-    fun onAbout() {
+    fun about() {
         AboutDialog(this).showAndWait()
     }
 

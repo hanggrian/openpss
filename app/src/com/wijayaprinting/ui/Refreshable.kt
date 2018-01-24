@@ -1,6 +1,8 @@
 package com.wijayaprinting.ui
 
+import javafx.fxml.FXML
+
 interface Refreshable {
 
-    fun onRefresh()
+    @FXML fun refresh()
 }

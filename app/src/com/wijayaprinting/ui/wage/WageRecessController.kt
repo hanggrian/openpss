@@ -1,15 +1,15 @@
-package com.wijayaprinting.ui.attendance
+package com.wijayaprinting.ui.wage
 
 import com.wijayaprinting.PATTERN_TIME
 import com.wijayaprinting.R
-import com.wijayaprinting.ui.Refreshable
 import com.wijayaprinting.db.dao.Recess
 import com.wijayaprinting.db.schema.Recesses
 import com.wijayaprinting.db.transaction
 import com.wijayaprinting.ui.Controller
+import com.wijayaprinting.ui.Refreshable
+import com.wijayaprinting.ui.gap
 import com.wijayaprinting.ui.scene.layout.TimeBox
 import com.wijayaprinting.ui.scene.layout.timeBox
-import com.wijayaprinting.ui.gap
 import javafx.fxml.FXML
 import javafx.scene.control.Button
 import javafx.scene.control.ButtonType.*
@@ -21,7 +21,7 @@ import kotlinx.nosql.equal
 import kotlinx.nosql.id
 import org.joda.time.LocalTime
 
-class AttendanceRecessController : Controller(), Refreshable {
+class WageRecessController : Controller(), Refreshable {
 
     @FXML lateinit var deleteButton: Button
 
@@ -29,21 +29,19 @@ class AttendanceRecessController : Controller(), Refreshable {
     @FXML lateinit var startColumn: TableColumn<Recess, String>
     @FXML lateinit var endColumn: TableColumn<Recess, String>
 
-    @FXML
     override fun initialize() {
         deleteButton.disableProperty() bind recessTable.selectionModel.selectedItemProperty().isNull
         startColumn.setCellValueFactory { it.value.start.toString(PATTERN_TIME).asProperty() }
         endColumn.setCellValueFactory { it.value.end.toString(PATTERN_TIME).asProperty() }
-        onRefresh()
+        refresh()
     }
 
-    @FXML
-    override fun onRefresh() {
+    override fun refresh() {
         recessTable.items = transaction { Recesses.find().toMutableObservableList() }
     }
 
     @FXML
-    fun onAdd() = dialog<Pair<LocalTime, LocalTime>>(getString(R.string.add_reccess), getString(R.string.add_reccess), ImageView(R.png.ic_clock)) {
+    fun add() = dialog<Pair<LocalTime, LocalTime>>(getString(R.string.add_reccess), getString(R.string.add_reccess), ImageView(R.png.ic_clock)) {
         lateinit var startBox: TimeBox
         lateinit var endBox: TimeBox
         content = gridPane {
@@ -63,7 +61,7 @@ class AttendanceRecessController : Controller(), Refreshable {
     }
 
     @FXML
-    fun onDelete() = confirmAlert(getString(R.string.are_you_sure), YES, NO)
+    fun delete() = confirmAlert(getString(R.string.are_you_sure), YES, NO)
             .showAndWait()
             .filter { it == YES }
             .ifPresent {

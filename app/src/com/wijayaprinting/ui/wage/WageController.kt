@@ -1,20 +1,17 @@
-package com.wijayaprinting.ui.attendance
+package com.wijayaprinting.ui.wage
 
 import com.wijayaprinting.BuildConfig.DEBUG
 import com.wijayaprinting.PATTERN_DATETIME
 import com.wijayaprinting.R
-import com.wijayaprinting.ui.scene.control.FileField
-import com.wijayaprinting.ui.scene.control.intField
 import com.wijayaprinting.db.schema.Recesses
 import com.wijayaprinting.db.transaction
-import com.wijayaprinting.ui.DateTimeDialog
-import com.wijayaprinting.ui.attendance.readers.Reader
-import com.wijayaprinting.ui.controller
-import com.wijayaprinting.ui.Controller
-import com.wijayaprinting.ui.gap
-import com.wijayaprinting.ui.pane
-import com.wijayaprinting.ui.size
-import com.wijayaprinting.util.*
+import com.wijayaprinting.ui.*
+import com.wijayaprinting.ui.scene.control.FileField
+import com.wijayaprinting.ui.scene.control.intField
+import com.wijayaprinting.ui.wage.WageRecordController.Companion.EXTRA_ATTENDEES
+import com.wijayaprinting.ui.wage.WageRecordController.Companion.EXTRA_STAGE
+import com.wijayaprinting.ui.wage.readers.Reader
+import com.wijayaprinting.util.multithread
 import io.reactivex.Observable
 import io.reactivex.rxkotlin.subscribeBy
 import javafx.fxml.FXML
@@ -30,11 +27,12 @@ import javafx.scene.layout.Pane
 import javafx.scene.layout.Priority.ALWAYS
 import javafx.scene.text.Font.font
 import javafx.stage.Modality.APPLICATION_MODAL
+import javafx.stage.Stage
 import kotfx.*
 import org.joda.time.DateTime
 import java.io.File
 
-class AttendanceController : Controller() {
+class WageController : Controller() {
 
     @FXML lateinit var fileField: FileField
     @FXML lateinit var readerChoiceBox: ChoiceBox<Reader>
@@ -44,7 +42,6 @@ class AttendanceController : Controller() {
     @FXML lateinit var readButton: Button
     @FXML lateinit var processButton: Button
 
-    @FXML
     override fun initialize() {
         readerChoiceBox.items = Reader.listAll()
         if (readerChoiceBox.items.isNotEmpty()) readerChoiceBox.selectionModel.select(0)
@@ -61,8 +58,8 @@ class AttendanceController : Controller() {
     }
 
     @FXML
-    fun onRecess() = stage(getString(R.string.recess)) {
-        val loader = getResource(R.fxml.layout_attendance_recess).loadFXML(resources)
+    fun recess() = stage(getString(R.string.recess)) {
+        val loader = getResource(R.fxml.layout_wage_recess).loadFXML(resources)
         initModality(APPLICATION_MODAL)
         scene = loader.pane.toScene()
         isResizable = false
@@ -70,12 +67,12 @@ class AttendanceController : Controller() {
     }.showAndWait()
 
     @FXML
-    fun onBrowse() = fileChooser(getString(R.string.input_file), *readerChoiceBox.value.extensions)
+    fun browse() = fileChooser(getString(R.string.input_file), *readerChoiceBox.value.extensions)
             .showOpenDialog(fileField.scene.window)
             ?.let { fileField.text = it.absolutePath }
 
     @FXML
-    fun onRead() {
+    fun read() {
         val progressDialog = infoAlert(getString(R.string.please_wait_content)) {
             headerText = getString(R.string.please_wait)
             buttonTypes.clear()
@@ -172,7 +169,7 @@ class AttendanceController : Controller() {
                         contextMenu = contextMenu {
                             menuItem(getString(R.string.add)) {
                                 setOnAction {
-                                    DateTimeDialog(this@AttendanceController, getString(R.string.add_record), listView.selectionModel.selectedItem)
+                                    DateTimeDialog(this@WageController, getString(R.string.add_record), listView.selectionModel.selectedItem)
                                             .showAndWait()
                                             .ifPresent {
                                                 listView.items.add(it)
@@ -183,7 +180,7 @@ class AttendanceController : Controller() {
                             menuItem(getString(R.string.edit)) {
                                 disableProperty() bind listView.selectionModel.selectedItems.isEmpty
                                 setOnAction {
-                                    DateTimeDialog(this@AttendanceController, getString(R.string.edit_record), listView.selectionModel.selectedItem)
+                                    DateTimeDialog(this@WageController, getString(R.string.edit_record), listView.selectionModel.selectedItem)
                                             .showAndWait()
                                             .ifPresent {
                                                 listView.items[listView.selectionModel.selectedIndex] = it
@@ -221,18 +218,18 @@ class AttendanceController : Controller() {
     }
 
     @FXML
-    fun onProcess() {
+    fun process() {
         val set = mutableSetOf<Attendee>()
         attendees.forEach { attendee ->
             attendee.saveWage()
             set.add(attendee)
         }
-        stage(getString(R.string.record)) {
-            val loader = getResource(R.fxml.layout_attendance_record).loadFXML(resources)
+        Stage().apply {
+            val loader = getResource(R.fxml.layout_wage_record).loadFXML(resources)
             scene = loader.pane.toScene()
             minWidth = 960.0
             minHeight = 640.0
-            loader.controller.setExtra(set)
+            loader.controller.addExtra(EXTRA_ATTENDEES, set).addExtra(EXTRA_STAGE, this)
         }.showAndWait()
     }
 

@@ -1,5 +1,6 @@
 package com.wijayaprinting.experimental;
 
+import com.wijayaprinting.App;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Orientation;
@@ -128,7 +129,7 @@ public class TablePrinter {
             copyView.getColumns().add(cloneColumn);
         }
         new Scene(copyView);
-        copyView.getScene().getStylesheets().add(TablePrinter.class.getResource("TablePrint.css").toString());
+        copyView.getScene().getStylesheets().add(App.class.getResource("/table_print.css").toExternalForm());
         return copyView;
     }
 

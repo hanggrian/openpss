@@ -2,19 +2,15 @@ package com.wijayaprinting.ui.customer
 
 import com.wijayaprinting.PATTERN_DATE
 import com.wijayaprinting.R
-import com.wijayaprinting.ui.Refreshable
 import com.wijayaprinting.collections.isNotEmpty
 import com.wijayaprinting.collections.minus
 import com.wijayaprinting.collections.plus
-import com.wijayaprinting.ui.scene.control.ItemCountBox
 import com.wijayaprinting.db.dao.Customer
 import com.wijayaprinting.db.schema.Customers
 import com.wijayaprinting.db.transaction
-import com.wijayaprinting.ui.Controller
-import com.wijayaprinting.ui.AddUserDialog
-import com.wijayaprinting.ui.gap
-import com.wijayaprinting.ui.size
-import com.wijayaprinting.util.tidied
+import com.wijayaprinting.ui.*
+import com.wijayaprinting.ui.scene.control.ItemCountBox
+import com.wijayaprinting.util.tidy
 import javafx.fxml.FXML
 import javafx.scene.Node
 import javafx.scene.control.*
@@ -61,9 +57,8 @@ class CustomerController : Controller(), Refreshable {
         }
     }
 
-    @FXML
     override fun initialize() {
-        onRefresh()
+        refresh()
 
         nameLabel.font = loadFont(latoBold, 24.0)
         sinceLabel.font = loadFont(latoRegular, 12.0)
@@ -108,8 +103,7 @@ class CustomerController : Controller(), Refreshable {
         contactColumn.setCellValueFactory { it.value.value.asProperty() }
     }
 
-    @FXML
-    override fun onRefresh() = customerPagination.pageFactoryProperty() rebind bindingOf(customerField.textProperty(), itemCountBox.countProperty) {
+    override fun refresh() = customerPagination.pageFactoryProperty() rebind bindingOf(customerField.textProperty(), itemCountBox.countProperty) {
         Callback<Int, Node> { page ->
             customerList = listView {
                 runFX {
@@ -138,10 +132,10 @@ class CustomerController : Controller(), Refreshable {
     }
 
     @FXML
-    fun onAdd() = AddUserDialog(this, getString(R.string.add_customer)).showAndWait().ifPresent { name ->
+    fun add() = AddUserDialog(this, getString(R.string.add_customer)).showAndWait().ifPresent { name ->
         transaction {
             if (Customers.find { this.name.equal(name) }.isNotEmpty) errorAlert(getString(R.string.name_taken)).showAndWait() else {
-                val customer = Customer(name.tidied)
+                val customer = Customer(name.tidy)
                 customer.id = Customers.insert(customer)
                 customerList.items.add(0, customer)
                 customerList.selectionModel.select(0)

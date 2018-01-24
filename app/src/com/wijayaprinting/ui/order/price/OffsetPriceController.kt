@@ -1,4 +1,4 @@
-package com.wijayaprinting.ui.plate
+package com.wijayaprinting.ui.order.price
 
 import com.wijayaprinting.R
 import com.wijayaprinting.db.dao.Offset
@@ -14,13 +14,12 @@ import kotfx.stringConverter
 import kotlinx.nosql.equal
 import kotlinx.nosql.update
 
-class PriceOffsetController : PriceController<Offset, Offsets>(Offsets, R.string.add_offset) {
+class OffsetPriceController : PriceController<Offset, Offsets>(Offsets, R.string.add_offset) {
 
     @FXML lateinit var minAmountColumn: TableColumn<Offset, Int>
     @FXML lateinit var minPriceColumn: TableColumn<Offset, Double>
     @FXML lateinit var excessPriceColumn: TableColumn<Offset, Double>
 
-    @FXML
     override fun initialize() {
         super.initialize()
         minAmountColumn.setCellValueFactory { it.value.minAmount.asProperty().asObservable() }

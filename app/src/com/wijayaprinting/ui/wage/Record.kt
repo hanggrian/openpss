@@ -1,4 +1,4 @@
-package com.wijayaprinting.ui.attendance
+package com.wijayaprinting.ui.wage
 
 import com.wijayaprinting.PATTERN_DATETIME
 import com.wijayaprinting.util.rounded
@@ -9,7 +9,7 @@ import org.joda.time.Interval
 import org.joda.time.LocalTime
 import kotlin.math.absoluteValue
 
-open class AttendanceRecord @JvmOverloads constructor(
+open class Record @JvmOverloads constructor(
         val index: Int,
 
         val attendee: Attendee,
@@ -29,7 +29,7 @@ open class AttendanceRecord @JvmOverloads constructor(
 ) {
 
     /** Dummy for invisible [javafx.scene.control.TreeTableView] root. */
-    companion object : AttendanceRecord(Int.MIN_VALUE, Attendee, DateTime(0).asProperty(), DateTime(0).asProperty()) {
+    companion object : Record(Int.MIN_VALUE, Attendee, DateTime(0).asProperty(), DateTime(0).asProperty()) {
         private const val WORKING_HOURS = 8.0
 
         /** Parent row displaying name and its preferences. */

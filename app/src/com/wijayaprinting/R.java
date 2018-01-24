@@ -1,7 +1,6 @@
-// rsync generated this class at 2018-01-23T03:52:44.764 from:
+// rsync generated this class at 2018-01-23T17:09:27.490 from:
 // string_en.properties
 // btn_user_add.png
-// layout_attendance.fxml
 // layout_employee.fxml
 // btn_refresh.png
 // logo_launcher.png
@@ -12,21 +11,23 @@
 // btn_checkbox_outline.png
 // ic_user.png
 // btn_lock_end.png
+// layout_wage_record.fxml
 // btn_visibility.png
 // btn_clear.png
 // layout_main.fxml
-// layout_attendance_record.fxml
 // btn_visibility_off.png
+// layout_wage.fxml
 // ic_clock.png
 // ic_key.png
 // ic_document.png
+// tree_table_print.css
 // btn_delete.png
 // btn_print.png
 // btn_merge.png
 // ic_address.png
 // btn_edit.png
 // btn_lock_start.png
-// layout_attendance_recess.fxml
+// table_print.css
 // ic_launcher.png
 // layout_price_plate.fxml
 // btn_checkbox.png
@@ -38,6 +39,7 @@
 // btn_recess.png
 // btn_clear_date.png
 // lato_light.ttf
+// layout_wage_recess.fxml
 // btn_undo.png
 package com.wijayaprinting;
 
@@ -114,17 +116,15 @@ public final class R {
   }
 
   public static final class fxml {
-    public static final String layout_attendance = "/layout_attendance.fxml";
-
     public static final String layout_employee = "/layout_employee.fxml";
 
     public static final String layout_order = "/layout_order.fxml";
 
+    public static final String layout_wage_record = "/layout_wage_record.fxml";
+
     public static final String layout_main = "/layout_main.fxml";
 
-    public static final String layout_attendance_record = "/layout_attendance_record.fxml";
-
-    public static final String layout_attendance_recess = "/layout_attendance_recess.fxml";
+    public static final String layout_wage = "/layout_wage.fxml";
 
     public static final String layout_price_plate = "/layout_price_plate.fxml";
 
@@ -132,7 +132,18 @@ public final class R {
 
     public static final String layout_customer = "/layout_customer.fxml";
 
+    public static final String layout_wage_recess = "/layout_wage_recess.fxml";
+
     private fxml() {
+    }
+  }
+
+  public static final class css {
+    public static final String tree_table_print = "/tree_table_print.css";
+
+    public static final String table_print = "/table_print.css";
+
+    private css() {
     }
   }
 
@@ -290,8 +301,6 @@ public final class R {
 
     public static final String name = "name";
 
-    public static final String attendance = "attendance";
-
     public static final String select_license = "select_license";
 
     public static final String test_connection_successful = "test_connection_successful";
@@ -327,6 +336,8 @@ public final class R {
     public static final String refresh = "refresh";
 
     public static final String undo = "undo";
+
+    public static final String wage = "wage";
 
     public static final String full_access = "full_access";
 

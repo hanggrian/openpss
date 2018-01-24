@@ -1,7 +1,7 @@
-package com.wijayaprinting.ui.attendance.readers
+package com.wijayaprinting.ui.wage.readers
 
 import com.wijayaprinting.ui.Listable
-import com.wijayaprinting.ui.attendance.Attendee
+import com.wijayaprinting.ui.wage.Attendee
 import javafx.collections.ObservableList
 import javafx.stage.FileChooser
 import kotfx.observableListOf

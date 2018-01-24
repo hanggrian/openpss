@@ -6,9 +6,9 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.wijayaprinting.ui.attendance.AttendanceController">
+      fx:controller="com.wijayaprinting.ui.wage.WageController">
     <ToolBar>
-        <Button mnemonicParsing="false" onAction="#onRecess">
+        <Button mnemonicParsing="false" onAction="#recess">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
                     <Image url="@btn_recess.png"/>
@@ -21,7 +21,7 @@
         <Separator/>
         <ChoiceBox fx:id="readerChoiceBox"/>
         <FileField fx:id="fileField" prefWidth="448.0" promptText="%input_file"/>
-        <Button mnemonicParsing="false" onAction="#onBrowse">
+        <Button mnemonicParsing="false" onAction="#browse">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
                     <Image url="@btn_folder.png"/>
@@ -52,8 +52,8 @@
         <Label fx:id="employeeCountLabel" text="Label"/>
         <ButtonBar HBox.hgrow="ALWAYS">
             <buttons>
-                <Button mnemonicParsing="false" fx:id="readButton" onAction="#onRead" text="%read"/>
-                <Button mnemonicParsing="false" fx:id="processButton" onAction="#onProcess" text="%process"
+                <Button mnemonicParsing="false" fx:id="readButton" onAction="#read" text="%read"/>
+                <Button mnemonicParsing="false" fx:id="processButton" onAction="#process" text="%process"
                         defaultButton="true"/>
             </buttons>
         </ButtonBar>

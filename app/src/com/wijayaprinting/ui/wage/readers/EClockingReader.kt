@@ -1,7 +1,7 @@
-package com.wijayaprinting.ui.attendance.readers
+package com.wijayaprinting.ui.wage.readers
 
 import com.google.common.collect.LinkedHashMultimap
-import com.wijayaprinting.ui.attendance.Attendee
+import com.wijayaprinting.ui.wage.Attendee
 import org.apache.commons.lang3.SystemUtils.IS_OS_MAC
 import org.apache.commons.lang3.SystemUtils.IS_OS_WINDOWS
 import org.apache.poi.ss.usermodel.CellType.NUMERIC

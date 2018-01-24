@@ -1,0 +1,10 @@
+.table-cell:empty {
+-fx-background-color: white;
+-fx-border-color: white;
+}
+.table-view {
+-fx-background-color: white;
+}
+.table-view {
+-fx-border-color: white;
+}

@@ -1,4 +1,4 @@
-package com.wijayaprinting.ui.attendance
+package com.wijayaprinting.ui.wage
 
 import com.wijayaprinting.collections.RevertibleObservableList
 import com.wijayaprinting.collections.isEmpty

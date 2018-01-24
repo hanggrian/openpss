@@ -1,4 +1,4 @@
-package com.wijayaprinting.ui.attendance
+package com.wijayaprinting.ui.wage
 
 import com.wijayaprinting.util.rounded
 import kotfx.asMutableProperty
@@ -7,17 +7,17 @@ import kotfx.bind
 import kotfx.doubleBindingOf
 import org.joda.time.DateTime
 
-fun Attendee.toNodeRecord(): AttendanceRecord = AttendanceRecord(AttendanceRecord.INDEX_NODE, this, DateTime.now().asProperty(), DateTime.now().asProperty())
+fun Attendee.toNodeRecord(): Record = Record(Record.INDEX_NODE, this, DateTime.now().asProperty(), DateTime.now().asProperty())
 
-fun Attendee.toChildRecords(): Set<AttendanceRecord> {
-    val records = mutableSetOf<AttendanceRecord>()
+fun Attendee.toChildRecords(): Set<Record> {
+    val records = mutableSetOf<Record>()
     val iterator = attendances.iterator()
     var index = 0
-    while (iterator.hasNext()) records.add(AttendanceRecord(index++, this, iterator.next().asMutableProperty(), iterator.next().asMutableProperty()))
+    while (iterator.hasNext()) records.add(Record(index++, this, iterator.next().asMutableProperty(), iterator.next().asMutableProperty()))
     return records
 }
 
-fun Attendee.toTotalRecords(children: Collection<AttendanceRecord>): AttendanceRecord = AttendanceRecord(AttendanceRecord.INDEX_TOTAL, this, DateTime(0).asProperty(), DateTime(0).asProperty()).apply {
+fun Attendee.toTotalRecords(children: Collection<Record>): Record = Record(Record.INDEX_TOTAL, this, DateTime(0).asProperty(), DateTime(0).asProperty()).apply {
     children.map { it.dailyProperty }.toTypedArray().let { mains ->
         dailyProperty bind doubleBindingOf(*mains) { mains.map { it.value }.sum().rounded }
     }

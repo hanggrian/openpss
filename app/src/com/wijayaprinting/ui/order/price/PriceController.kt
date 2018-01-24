@@ -1,12 +1,12 @@
-package com.wijayaprinting.ui.plate
+package com.wijayaprinting.ui.order.price
 
 import com.wijayaprinting.R
-import com.wijayaprinting.ui.Refreshable
 import com.wijayaprinting.collections.isNotEmpty
 import com.wijayaprinting.db.Named
 import com.wijayaprinting.db.NamedDocumentSchema
 import com.wijayaprinting.db.transaction
 import com.wijayaprinting.ui.Controller
+import com.wijayaprinting.ui.Refreshable
 import javafx.fxml.FXML
 import javafx.scene.control.Button
 import javafx.scene.control.ButtonType.NO
@@ -29,18 +29,17 @@ abstract class PriceController<D : Named<S>, S : NamedDocumentSchema<D>>(
     @FXML lateinit var nameColumn: TableColumn<D, String>
 
     override fun initialize() {
-        onRefresh()
+        refresh()
         runFX { deleteButton.disableProperty() bind (priceTable.selectionModel.selectedItemProperty().isNull or !isFullAccess.asProperty()) }
         nameColumn.setCellValueFactory { it.value.name.asProperty() }
     }
 
-    @FXML
-    override fun onRefresh() {
+    override fun refresh() {
         priceTable.items = transaction { schema.find().toMutableObservableList() }
     }
 
     @FXML
-    fun onAdd() = inputDialog {
+    fun add() = inputDialog {
         title = getString(addDialogHeaderId)
         headerText = getString(addDialogHeaderId)
         contentText = getString(R.string.name)
@@ -56,7 +55,7 @@ abstract class PriceController<D : Named<S>, S : NamedDocumentSchema<D>>(
     }
 
     @FXML
-    fun onDelete() = confirmAlert(getString(R.string.are_you_sure), YES, NO)
+    fun delete() = confirmAlert(getString(R.string.are_you_sure), YES, NO)
             .showAndWait()
             .filter { it == YES }
             .ifPresent {

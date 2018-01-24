@@ -1,4 +1,4 @@
-package com.wijayaprinting.ui.attendance
+package com.wijayaprinting.ui.wage
 
 import javafx.collections.ObservableSet
 import kotfx.mutableObservableSetOf

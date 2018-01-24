@@ -1,56 +1,57 @@
-package com.wijayaprinting.ui.attendance
+package com.wijayaprinting.ui.wage
 
 import com.wijayaprinting.PATTERN_DATE
 import com.wijayaprinting.PATTERN_DATETIME
 import com.wijayaprinting.PATTERN_TIME
 import com.wijayaprinting.R
+import com.wijayaprinting.ui.Controller
 import com.wijayaprinting.ui.DateDialog
 import com.wijayaprinting.ui.scene.layout.TimeBox
-import com.wijayaprinting.ui.Controller
+import com.wijayaprinting.util.withoutCurrency
 import javafx.fxml.FXML
 import javafx.print.Printer.defaultPrinterProperty
+import javafx.print.PrinterJob.createPrinterJob
 import javafx.scene.control.*
 import javafx.scene.control.SelectionMode.MULTIPLE
-import javafx.scene.text.Text
-import javafx.scene.text.TextFlow
+import javafx.stage.Stage
 import kotfx.*
-import java.lang.Character.isDigit
 import java.text.NumberFormat.getCurrencyInstance
 
-class AttendanceRecordController : Controller() {
+class WageRecordController : Controller() {
+
+    companion object {
+        const val EXTRA_STAGE = "EXTRA_STAGE"
+        const val EXTRA_ATTENDEES = "EXTRA_ATTENDEES"
+    }
 
     @FXML lateinit var undoButton: SplitMenuButton
     @FXML lateinit var timeBox: TimeBox
     @FXML lateinit var lockStartButton: Button
     @FXML lateinit var lockEndButton: Button
-    @FXML lateinit var emptyButton: Button
     @FXML lateinit var printButton: Button
-    @FXML lateinit var grandTotalFlow: TextFlow
-    @FXML lateinit var totalText: Text
 
-    @FXML lateinit var treeTableView: TreeTableView<AttendanceRecord>
-    @FXML lateinit var nameColumn: TreeTableColumn<AttendanceRecord, String>
-    @FXML lateinit var startColumn: TreeTableColumn<AttendanceRecord, String>
-    @FXML lateinit var endColumn: TreeTableColumn<AttendanceRecord, String>
-    @FXML lateinit var dailyColumn: TreeTableColumn<AttendanceRecord, Double>
-    @FXML lateinit var dailyIncomeColumn: TreeTableColumn<AttendanceRecord, Double>
-    @FXML lateinit var overtimeColumn: TreeTableColumn<AttendanceRecord, Double>
-    @FXML lateinit var overtimeIncomeColumn: TreeTableColumn<AttendanceRecord, Double>
-    @FXML lateinit var totalColumn: TreeTableColumn<AttendanceRecord, Double>
+    @FXML lateinit var recordTable: TreeTableView<Record>
+    @FXML lateinit var nameColumn: TreeTableColumn<Record, String>
+    @FXML lateinit var startColumn: TreeTableColumn<Record, String>
+    @FXML lateinit var endColumn: TreeTableColumn<Record, String>
+    @FXML lateinit var dailyColumn: TreeTableColumn<Record, Double>
+    @FXML lateinit var dailyIncomeColumn: TreeTableColumn<Record, Double>
+    @FXML lateinit var overtimeColumn: TreeTableColumn<Record, Double>
+    @FXML lateinit var overtimeIncomeColumn: TreeTableColumn<Record, Double>
+    @FXML lateinit var totalColumn: TreeTableColumn<Record, Double>
 
-    @FXML
     override fun initialize() {
         undoButton.disableProperty() bind undoButton.items.isEmpty
         arrayOf(lockStartButton, lockEndButton).forEach {
-            it.disableProperty() bind (treeTableView.selectionModel.selectedItemProperty().isNull or booleanBindingOf(treeTableView.selectionModel.selectedItemProperty()) {
-                treeTableView.selectionModel.selectedItems?.any { !it.value.isChild } ?: true
+            it.disableProperty() bind (recordTable.selectionModel.selectedItemProperty().isNull or booleanBindingOf(recordTable.selectionModel.selectedItemProperty()) {
+                recordTable.selectionModel.selectedItems?.any { !it.value.isChild } ?: true
             })
         }
         printButton.disableProperty() bind defaultPrinterProperty().isNull
 
-        treeTableView.selectionModel.selectionMode = MULTIPLE
-        treeTableView.root = TreeItem(AttendanceRecord)
-        treeTableView.isShowRoot = false
+        recordTable.selectionModel.selectionMode = MULTIPLE
+        recordTable.root = TreeItem(Record)
+        recordTable.isShowRoot = false
 
         nameColumn.setCellValueFactory { it.value.value.displayedName.asProperty() }
         startColumn.setCellValueFactory { it.value.value.displayedStart }
@@ -62,31 +63,32 @@ class AttendanceRecordController : Controller() {
         totalColumn.setCellValueFactory { it.value.value.totalProperty.asObservable() }
 
         runFX {
-            getExtra<Set<Attendee>>().forEach { attendee ->
+            getExtra<Set<Attendee>>(EXTRA_ATTENDEES).forEach { attendee ->
                 val node = attendee.toNodeRecord()
                 val childs = attendee.toChildRecords()
                 val total = attendee.toTotalRecords(childs)
-                treeTableView.root.children.add(TreeItem(node).apply {
+                recordTable.root.children.add(TreeItem(node).apply {
                     isExpanded = true
                     children.addAll(*childs.map { TreeItem(it) }.toTypedArray(), TreeItem(total))
                 })
             }
-            totalText.textProperty() bind stringBindingOf(*records.filter { it.isChild }.map { it.totalProperty }.toTypedArray()) {
+            getExtra<Stage>(EXTRA_STAGE).titleProperty() bind stringBindingOf(*records.filter { it.isChild }.map { it.totalProperty }.toTypedArray()) {
                 getCurrencyInstance().format(records
                         .filter { it.isTotal }
                         .map { it.totalProperty.value }
                         .sum())
-                        .let { s -> s.substring(s.indexOf(s.toCharArray().first { isDigit(it) })) }
+                        .let { s -> "${getString(R.string.record)} - ${s.withoutCurrency}" }
             }
         }
     }
 
-    @FXML fun onUndo() = undoButton.items[0].fire()
+    @FXML
+    fun undo() = undoButton.items[0].fire()
 
     @FXML
-    fun onLockStart() {
+    fun lockStart() {
         val undoable = Undoable()
-        treeTableView.selectionModel.selectedItems
+        recordTable.selectionModel.selectedItems
                 .map { it.value }
                 .forEach { record ->
                     val initial = record.startProperty.value
@@ -100,9 +102,9 @@ class AttendanceRecordController : Controller() {
     }
 
     @FXML
-    fun onLockEnd() {
+    fun lockEnd() {
         val undoable = Undoable()
-        treeTableView.selectionModel.selectedItems
+        recordTable.selectionModel.selectedItems
                 .map { it.value }
                 .forEach { record ->
                     val initial = record.endProperty.value
@@ -116,7 +118,7 @@ class AttendanceRecordController : Controller() {
     }
 
     @FXML
-    fun onEmpty() = DateDialog(this, getString(R.string.empty_daily_income))
+    fun empty() = DateDialog(this, getString(R.string.empty_daily_income))
             .showAndWait()
             .ifPresent { date ->
                 val undoable = Undoable()
@@ -131,13 +133,12 @@ class AttendanceRecordController : Controller() {
             }
 
     @FXML
-    fun onPrint() {
-        //TreeTablePrinter.print(treeTableView, null)
-        //val printerJob = createPrinterJob()
-        //if (printerJob.showPrintDialog(treeTableView.scene.window) && printerJob.printPage(treeTableView)) printerJob.endJob()
+    fun print() {
+        val printerJob = createPrinterJob()
+        printerJob.printPage(recordTable)
     }
 
-    private val records: List<AttendanceRecord> get() = treeTableView.root.children.flatMap { it.children }.map { it.value }
+    private val records: List<Record> get() = recordTable.root.children.flatMap { it.children }.map { it.value }
 
     private fun Undoable.append() {
         if (isValid) undoButton.items.add(0, menuItem {

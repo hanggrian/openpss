@@ -1,10 +1,6 @@
 package com.wijayaprinting
 
 import com.wijayaprinting.BuildConfig.DEBUG
-import com.wijayaprinting.ui.scene.control.HostField
-import com.wijayaprinting.ui.scene.control.IntField
-import com.wijayaprinting.ui.scene.control.hostField
-import com.wijayaprinting.ui.scene.control.intField
 import com.wijayaprinting.db.Database
 import com.wijayaprinting.db.dao.Employee
 import com.wijayaprinting.db.schema.Employees
@@ -12,10 +8,15 @@ import com.wijayaprinting.db.transaction
 import com.wijayaprinting.io.ConfigFile
 import com.wijayaprinting.io.DatabaseFile
 import com.wijayaprinting.ui.*
-import com.wijayaprinting.ui.AboutDialog
-import com.wijayaprinting.util.*
+import com.wijayaprinting.ui.scene.control.HostField
+import com.wijayaprinting.ui.scene.control.IntField
+import com.wijayaprinting.ui.scene.control.hostField
+import com.wijayaprinting.ui.scene.control.intField
+import com.wijayaprinting.util.forceExit
+import com.wijayaprinting.util.multithread
 import io.reactivex.rxkotlin.subscribeBy
 import javafx.application.Application
+import javafx.application.ConditionalFeature.UNIFIED_WINDOW
 import javafx.event.ActionEvent.ACTION
 import javafx.geometry.Pos.CENTER_RIGHT
 import javafx.scene.control.ButtonBar.ButtonData.OK_DONE
@@ -26,6 +27,7 @@ import javafx.scene.control.TextField
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import javafx.stage.Stage
+import javafx.stage.StageStyle.UNIFIED
 import kotfx.*
 import kotlinx.nosql.equal
 import kotlinx.nosql.update
@@ -162,6 +164,7 @@ class App : Application(), Resourced, EmployeeHolder {
             _employee = employee as Employee
 
             stage.apply {
+                if (UNIFIED_WINDOW.isSupported) initStyle(UNIFIED)
                 val loader = getResource(R.fxml.layout_main).loadFXML(resources)
                 title = getString(R.string.app_name)
                 scene = loader.pane.toScene()

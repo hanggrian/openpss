@@ -4,10 +4,10 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.VBox?>
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.wijayaprinting.ui.plate.PriceOffsetController">
+      fx:controller="com.wijayaprinting.ui.order.price.OffsetPriceController">
     <ToolBar>
         <!--suppress JavaFxEventHandler -->
-        <Button mnemonicParsing="false" onAction="#onRefresh">
+        <Button mnemonicParsing="false" onAction="#refresh">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
                     <Image url="@btn_refresh.png"/>
@@ -17,7 +17,7 @@
                 <Tooltip text="%refresh"/>
             </tooltip>
         </Button>
-        <Button mnemonicParsing="false" onAction="#onAdd">
+        <Button mnemonicParsing="false" onAction="#add">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
                     <Image url="@btn_add.png"/>
@@ -27,7 +27,7 @@
                 <Tooltip text="%add"/>
             </tooltip>
         </Button>
-        <Button mnemonicParsing="false" fx:id="deleteButton" onAction="#onDelete">
+        <Button mnemonicParsing="false" fx:id="deleteButton" onAction="#delete">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
                     <Image url="@btn_delete.png"/>

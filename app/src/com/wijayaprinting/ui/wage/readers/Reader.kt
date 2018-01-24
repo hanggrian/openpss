@@ -1,6 +1,5 @@
 package com.wijayaprinting.ui.wage.readers
 
-import com.wijayaprinting.ui.Listable
 import com.wijayaprinting.ui.wage.Attendee
 import javafx.collections.ObservableList
 import javafx.stage.FileChooser
@@ -25,7 +24,7 @@ abstract class Reader {
     /** Identifier of a reader. */
     override fun toString(): String = name
 
-    companion object : Listable<Reader> {
-        override fun listAll(): ObservableList<Reader> = observableListOf(EClockingReader)
+    companion object {
+        fun listAll(): ObservableList<Reader> = observableListOf(EClockingReader)
     }
 }

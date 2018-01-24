@@ -1,4 +1,4 @@
-package com.wijayaprinting.io
+package com.wijayaprinting.io.properties
 
 import com.wijayaprinting.Language
 import javafx.beans.property.StringProperty

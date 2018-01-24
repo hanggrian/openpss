@@ -5,7 +5,7 @@ import com.wijayaprinting.db.dao.Employee
 import com.wijayaprinting.db.dao.PlateOrder
 import com.wijayaprinting.db.schema.PlateOrders
 import com.wijayaprinting.db.transaction
-import com.wijayaprinting.io.DatabaseFile
+import com.wijayaprinting.io.properties.DatabaseFile
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.given
 import org.jetbrains.spek.api.dsl.it

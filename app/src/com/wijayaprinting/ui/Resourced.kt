@@ -1,12 +1,11 @@
 package com.wijayaprinting.ui
 
-import com.wijayaprinting.App
-import com.wijayaprinting.R
+import javafx.scene.text.Font
+import javafx.scene.text.Font.loadFont
 import java.io.InputStream
 import java.net.URL
 import java.util.*
 
-/** Easy access to [ResourceBundle] in application and plate. */
 interface Resourced {
 
     val resources: ResourceBundle
@@ -18,10 +17,12 @@ interface Resourced {
     fun getFloat(key: String): Float = getString(key).toFloat()
     fun getDouble(key: String): Double = getString(key).toDouble()
 
-    fun getResource(name: String): URL = App::class.java.getResource(name)
-    fun getResourceAsStream(name: String): InputStream = App::class.java.getResourceAsStream(name)
+    fun getStrings(vararg keys: String): Array<String> = keys.map { getString(it) }.toTypedArray()
 
-    val latoBold: String get() = getResource(R.ttf.lato_bold).toExternalForm()
-    val latoLight: String get() = getResource(R.ttf.lato_light).toExternalForm()
-    val latoRegular: String get() = getResource(R.ttf.lato_regular).toExternalForm()
+    fun getResource(name: String): URL = javaClass.getResource(name)
+    fun getResourceAsStream(name: String): InputStream = javaClass.getResourceAsStream(name)
+
+    fun getExternalForm(id: String): String = getResource(id).toExternalForm()
+
+    fun getFont(font: String, size: Number): Font = loadFont(getExternalForm(font), size.toDouble())
 }

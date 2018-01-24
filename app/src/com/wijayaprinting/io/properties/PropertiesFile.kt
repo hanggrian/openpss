@@ -1,5 +1,6 @@
-package com.wijayaprinting.io
+package com.wijayaprinting.io.properties
 
+import com.wijayaprinting.io.HomeFolder
 import javafx.beans.property.StringProperty
 import kotfx.asMutableProperty
 import java.io.File
@@ -8,9 +9,9 @@ import java.util.*
 /** Represents a properties file used that acts as local settings. */
 @Suppress("LeakingThis")
 abstract class PropertiesFile(
-        child: String,
+        fileName: String,
         private val map: MutableMap<String, StringProperty> = mutableMapOf()
-) : File(PropertiesFolder(), child), MutableMap<String, StringProperty> by map {
+) : File(HomeFolder(), fileName), MutableMap<String, StringProperty> by map {
 
     abstract val pairs: Array<Pair<String, String>>
 

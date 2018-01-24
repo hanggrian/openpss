@@ -1,21 +1,36 @@
 package com.wijayaprinting.ui.wage
 
+import com.sun.javafx.scene.control.skin.TreeTableViewSkin
+import com.sun.javafx.scene.control.skin.VirtualFlow
+import com.wijayaprinting.BuildConfig.DEBUG
 import com.wijayaprinting.PATTERN_DATE
 import com.wijayaprinting.PATTERN_DATETIME
 import com.wijayaprinting.PATTERN_TIME
 import com.wijayaprinting.R
+import com.wijayaprinting.io.ImageFile
 import com.wijayaprinting.ui.Controller
 import com.wijayaprinting.ui.DateDialog
 import com.wijayaprinting.ui.scene.layout.TimeBox
+import com.wijayaprinting.util.multithread
 import com.wijayaprinting.util.withoutCurrency
+import io.reactivex.Completable
+import io.reactivex.rxjavafx.schedulers.JavaFxScheduler.platform
+import io.reactivex.rxkotlin.subscribeBy
+import io.reactivex.schedulers.Schedulers.io
 import javafx.fxml.FXML
 import javafx.print.Printer.defaultPrinterProperty
-import javafx.print.PrinterJob.createPrinterJob
 import javafx.scene.control.*
 import javafx.scene.control.SelectionMode.MULTIPLE
 import javafx.stage.Stage
 import kotfx.*
+import java.awt.print.Printable.NO_SUCH_PAGE
+import java.awt.print.Printable.PAGE_EXISTS
+import java.awt.print.PrinterException
+import java.awt.print.PrinterJob
+import java.io.IOException
 import java.text.NumberFormat.getCurrencyInstance
+import javax.imageio.ImageIO
+
 
 class WageRecordController : Controller() {
 
@@ -53,7 +68,7 @@ class WageRecordController : Controller() {
         recordTable.root = TreeItem(Record)
         recordTable.isShowRoot = false
 
-        nameColumn.setCellValueFactory { it.value.value.displayedName.asProperty() }
+        nameColumn.setCellValueFactory { it.value.value.displayedName.asProperty().asObservable() }
         startColumn.setCellValueFactory { it.value.value.displayedStart }
         endColumn.setCellValueFactory { it.value.value.displayedEnd }
         dailyColumn.setCellValueFactory { it.value.value.dailyProperty.asObservable() }
@@ -69,6 +84,7 @@ class WageRecordController : Controller() {
                 val total = attendee.toTotalRecords(childs)
                 recordTable.root.children.add(TreeItem(node).apply {
                     isExpanded = true
+                    expandedProperty().addListener { _, _, expanded -> if (!expanded) isExpanded = true } // uncollapsible
                     children.addAll(*childs.map { TreeItem(it) }.toTypedArray(), TreeItem(total))
                 })
             }
@@ -77,7 +93,7 @@ class WageRecordController : Controller() {
                         .filter { it.isTotal }
                         .map { it.totalProperty.value }
                         .sum())
-                        .let { s -> "${getString(R.string.record)} - ${s.withoutCurrency}" }
+                        .let { s -> "${getString(R.string.record)} (${s.withoutCurrency})" }
             }
         }
     }
@@ -133,9 +149,46 @@ class WageRecordController : Controller() {
             }
 
     @FXML
-    fun print() {
-        val printerJob = createPrinterJob()
-        printerJob.printPage(recordTable)
+    fun print() = getExternalForm(R.css.style_treetableview_print).let { printStyle ->
+        recordTable.stylesheets.add(printStyle)
+        val files = mutableListOf<ImageFile>()
+        Completable
+                .create { emitter ->
+                    val flow = (recordTable.skin as TreeTableViewSkin<*>).children[1] as VirtualFlow<*>
+                    var i = 0
+                    do {
+                        val file = ImageFile(i)
+                        try {
+                            file.write(recordTable.snapshot(null, null))
+                            files.add(file)
+                        } catch (e: IOException) {
+                            emitter.onError(e)
+                        }
+                        recordTable.scrollTo(flow.lastVisibleCell.index + 2)
+                        i++
+                    } while (flow.lastVisibleCell.index + 1 < recordTable.root.children.size + recordTable.root.children.map { it.children.size }.sum())
+                    emitter.onComplete()
+                }
+                .multithread(platform(), io())
+                .subscribeBy({ e ->
+                    recordTable.stylesheets.remove(printStyle)
+                    if (DEBUG) e.printStackTrace()
+                }, {
+                    recordTable.stylesheets.remove(printStyle)
+                    val job = PrinterJob.getPrinterJob().apply {
+                        setPrintable { graphics, _, pageIndex ->
+                            if (pageIndex != 0) NO_SUCH_PAGE
+                            val image = ImageIO.read(files[pageIndex])
+                            graphics.drawImage(image, 0, 0, image.width, image.height, null)
+                            PAGE_EXISTS
+                        }
+                    }
+                    try {
+                        job.print()
+                    } catch (e: PrinterException) {
+                        e.printStackTrace()
+                    }
+                })
     }
 
     private val records: List<Record> get() = recordTable.root.children.flatMap { it.children }.map { it.value }

@@ -2,6 +2,9 @@ package com.wijayaprinting.db.dao
 
 import com.wijayaprinting.db.Named
 import com.wijayaprinting.db.schema.Employees
+import javafx.beans.property.BooleanProperty
+import javafx.beans.property.StringProperty
+import kotfx.asMutableProperty
 import kotlinx.nosql.Id
 
 open class Employee(
@@ -10,6 +13,7 @@ open class Employee(
         var fullAccess: Boolean
 ) : Named<Employees> {
     override lateinit var id: Id<String, Employees>
+
     var firstTimeLogin: Boolean = false
 
     /** Password are unused after login, clear for better security. */

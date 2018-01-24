@@ -4,7 +4,7 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.VBox?>
-<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.wijayaprinting.ui.employee.EmployeeController">
     <ToolBar>
         <!--suppress JavaFxEventHandler -->
@@ -19,9 +19,8 @@
             </tooltip>
         </Button>
         <Separator/>
-        <Button mnemonicParsing="false" onAction="#fullAccess" fx:id="fullAccessButton" text="%full_access"/>
-        <Button mnemonicParsing="false" onAction="#resetPassword" fx:id="resetPasswordButton"
-                text="%reset_password"/>
+        <Button fx:id="fullAccessButton" mnemonicParsing="false" onAction="#fullAccess" text="%full_access"/>
+        <Button fx:id="resetPasswordButton" mnemonicParsing="false" onAction="#resetPassword" text="%reset_password"/>
         <Separator/>
         <Button mnemonicParsing="false" onAction="#add">
             <graphic>
@@ -36,7 +35,7 @@
     </ToolBar>
     <TableView fx:id="employeeTable" editable="true" VBox.vgrow="ALWAYS">
         <columns>
-            <TableColumn fx:id="nameColumn" text="%name" editable="false"/>
+            <TableColumn fx:id="nameColumn" editable="false" text="%name"/>
             <TableColumn fx:id="fullAccessColumn" text="%full_access"/>
         </columns>
         <columnResizePolicy>

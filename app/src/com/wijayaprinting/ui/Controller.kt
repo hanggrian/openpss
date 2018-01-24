@@ -2,7 +2,7 @@ package com.wijayaprinting.ui
 
 import com.wijayaprinting.Language
 import com.wijayaprinting.db.dao.Employee
-import com.wijayaprinting.io.ConfigFile
+import com.wijayaprinting.io.properties.ConfigFile
 import javafx.fxml.FXML
 import java.util.*
 

@@ -16,7 +16,7 @@ import javafx.scene.control.ButtonType.NO
 import javafx.scene.control.ButtonType.YES
 import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
-import javafx.scene.control.cell.TextFieldTableCell.forTableColumn
+import javafx.scene.control.cell.ChoiceBoxTableCell.forTableColumn
 import kotfx.*
 import kotlinx.nosql.equal
 import kotlinx.nosql.update
@@ -28,18 +28,19 @@ class EmployeeController : Controller(), Refreshable {
 
     @FXML lateinit var employeeTable: TableView<Employee>
     @FXML lateinit var nameColumn: TableColumn<Employee, String>
-    @FXML lateinit var fullAccessColumn: TableColumn<Employee, Boolean>
+    @FXML lateinit var fullAccessColumn: TableColumn<Employee, String>
 
     override fun initialize() {
         fullAccessButton.disableProperty() bind employeeTable.selectionModel.selectedItemProperty().isNull
         resetPasswordButton.disableProperty() bind employeeTable.selectionModel.selectedItemProperty().isNull
 
         nameColumn.setCellValueFactory { it.value.name.asProperty() }
-        fullAccessColumn.setCellValueFactory { it.value.fullAccess.asProperty().asObservable() }
-        fullAccessColumn.cellFactory = forTableColumn<Employee, Boolean>(stringConverter({ it.toBoolean() }))
+        fullAccessColumn.setCellValueFactory { getString(if (it.value.fullAccess) R.string.grant else R.string.block).asProperty() }
+        fullAccessColumn.cellFactory = forTableColumn<Employee, String>(*getStrings(R.string.grant, R.string.block))
         fullAccessColumn.setOnEditCommit { event ->
-            transaction { Employees.find { name.equal(event.rowValue.name) }.projection { fullAccess }.update(event.newValue) }
-            event.rowValue.fullAccess = event.newValue
+            val result = event.newValue == getString(R.string.grant)
+            transaction { Employees.find { name.equal(event.rowValue.name) }.projection { fullAccess }.update(result) }
+            event.rowValue.fullAccess = result
         }
         refresh()
     }

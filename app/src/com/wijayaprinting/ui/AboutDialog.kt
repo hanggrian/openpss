@@ -2,7 +2,6 @@ package com.wijayaprinting.ui
 
 import com.wijayaprinting.BuildConfig
 import com.wijayaprinting.R
-import javafx.collections.ObservableList
 import javafx.event.ActionEvent.ACTION
 import javafx.geometry.Insets
 import javafx.geometry.Pos.CENTER_LEFT
@@ -13,7 +12,6 @@ import javafx.scene.control.Dialog
 import javafx.scene.control.ListCell
 import javafx.scene.control.ListView
 import javafx.scene.image.Image
-import javafx.scene.text.Font.loadFont
 import kotfx.*
 import java.awt.Desktop.getDesktop
 import java.io.BufferedReader
@@ -34,18 +32,18 @@ class AboutDialog(resourced: Resourced) : Dialog<Unit>(), Resourced by resourced
             vbox {
                 alignment = CENTER_LEFT
                 textFlow {
-                    text("Wijaya ") { font = loadFont(latoBold, 24.0) }
-                    text("Printing") { font = loadFont(latoLight, 24.0) }
+                    text("Wijaya ") { font = getFont(R.ttf.lato_bold, 24) }
+                    text("Printing") { font = getFont(R.ttf.lato_light, 24) }
                 }
-                text("${getString(R.string.version)} ${BuildConfig.VERSION}") { font = loadFont(latoRegular, 12.0) } marginTop 2
-                text(getString(R.string.about_notice)) { font = loadFont(latoBold, 12.0) } marginTop 20
+                text("${getString(R.string.version)} ${BuildConfig.VERSION}") { font = getFont(R.ttf.lato_regular, 12) } marginTop 2
+                text(getString(R.string.about_notice)) { font = getFont(R.ttf.lato_bold, 12) } marginTop 20
                 textFlow {
-                    text("${getString(R.string.powered_by)}  ") { font = loadFont(latoBold, 12.0) }
-                    text("JavaFX, MongoDB") { font = loadFont(latoRegular, 12.0) }
+                    text("${getString(R.string.powered_by)}  ") { font = getFont(R.ttf.lato_bold, 12) }
+                    text("JavaFX, MongoDB") { font = getFont(R.ttf.lato_regular, 12) }
                 } marginTop 4
                 textFlow {
-                    text("${getString(R.string.author)}  ") { font = loadFont(latoBold, 12.0) }
-                    text("Hendra Anggrian") { font = loadFont(latoRegular, 12.0) }
+                    text("${getString(R.string.author)}  ") { font = getFont(R.ttf.lato_bold, 12) }
+                    text("Hendra Anggrian") { font = getFont(R.ttf.lato_regular, 12) }
                 } marginTop 4
                 hbox {
                     button("GitHub") { setOnAction { browse("https://github.com/hendraanggrian/wijayaprinting") } }
@@ -57,7 +55,7 @@ class AboutDialog(resourced: Resourced) : Dialog<Unit>(), Resourced by resourced
         expandableContent = hbox {
             listView = kotfx.listView {
                 prefHeight = 256.0
-                items = License.listAll()
+                items = observableListOf(*License.values())
                 setCellFactory {
                     object : ListCell<License>() {
                         override fun updateItem(item: License?, empty: Boolean) {
@@ -65,8 +63,8 @@ class AboutDialog(resourced: Resourced) : Dialog<Unit>(), Resourced by resourced
                             text = null
                             graphic = null
                             if (item != null && !empty) graphic = kotfx.vbox {
-                                label(item.repo) { font = loadFont(latoRegular, 12.0) }
-                                label(item.owner) { font = loadFont(latoBold, 12.0) }
+                                label(item.repo) { font = getFont(R.ttf.lato_regular, 12) }
+                                label(item.owner) { font = getFont(R.ttf.lato_bold, 12) }
                             }
                         }
                     }
@@ -76,7 +74,10 @@ class AboutDialog(resourced: Resourced) : Dialog<Unit>(), Resourced by resourced
             titledPane(getString(R.string.license), kotfx.textArea {
                 prefHeight = 256.0
                 isEditable = false
-                textProperty() bind stringBindingOf(listView.selectionModel.selectedIndexProperty()) { listView.selectionModel.selectedItem?.getContent(this@AboutDialog) ?: getString(R.string.select_license) }
+                textProperty() bind stringBindingOf(listView.selectionModel.selectedIndexProperty()) {
+                    listView.selectionModel.selectedItem?.getContent(this@AboutDialog)
+                            ?: getString(R.string.select_license)
+                }
             }) { isCollapsible = false }
         }
         button(ButtonType("Homepage", CANCEL_CLOSE)).apply {
@@ -111,9 +112,5 @@ class AboutDialog(resourced: Resourced) : Dialog<Unit>(), Resourced by resourced
         fun getContent(resourced: Resourced): String = resourced
                 .getResourceAsStream("/${name.toLowerCase()}.txt")
                 .use { return BufferedReader(InputStreamReader(it)).lines().collect(joining("\n")) }
-
-        companion object : Listable<License> {
-            override fun listAll(): ObservableList<License> = observableListOf(*values())
-        }
     }
 }

@@ -5,8 +5,8 @@ import com.wijayaprinting.db.Database
 import com.wijayaprinting.db.dao.Employee
 import com.wijayaprinting.db.schema.Employees
 import com.wijayaprinting.db.transaction
-import com.wijayaprinting.io.ConfigFile
-import com.wijayaprinting.io.DatabaseFile
+import com.wijayaprinting.io.properties.ConfigFile
+import com.wijayaprinting.io.properties.DatabaseFile
 import com.wijayaprinting.ui.*
 import com.wijayaprinting.ui.scene.control.HostField
 import com.wijayaprinting.ui.scene.control.IntField
@@ -67,7 +67,7 @@ class App : Application(), Resourced, EmployeeHolder {
             content = gridPane {
                 gap(8)
                 label(getString(R.string.language)) col 0 row 0
-                choiceBox(Language.listAll()) {
+                choiceBox(observableListOf(*Language.values())) {
                     maxWidth = Double.MAX_VALUE
                     selectionModel.select(Language.from(ConfigFile.language.get()))
                     selectionModel.selectedItemProperty().addListener { _, _, language ->

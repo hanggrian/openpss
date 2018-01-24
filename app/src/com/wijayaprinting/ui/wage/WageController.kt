@@ -73,7 +73,7 @@ class WageController : Controller() {
 
     @FXML
     fun read() {
-        val progressDialog = infoAlert(getString(R.string.please_wait_content)) {
+        val dialog = infoAlert(getString(R.string.please_wait_content)) {
             headerText = getString(R.string.please_wait)
             buttonTypes.clear()
         }.apply { show() }
@@ -92,14 +92,14 @@ class WageController : Controller() {
                 }
                 .multithread()
                 .subscribeBy({ e ->
-                    progressDialog.button(CANCEL)
-                    progressDialog.close()
+                    dialog.button(CANCEL)
+                    dialog.close()
                     rebindProcessButton()
                     if (DEBUG) e.printStackTrace()
                     errorAlert(e.message.toString()).showAndWait()
                 }, {
-                    progressDialog.button(CANCEL)
-                    progressDialog.close()
+                    dialog.button(CANCEL)
+                    dialog.close()
                     rebindProcessButton()
                 }) { attendee ->
                     flowPane.children.add(titledPane(attendee.toString()) {

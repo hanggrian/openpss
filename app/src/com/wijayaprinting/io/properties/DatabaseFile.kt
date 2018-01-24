@@ -1,4 +1,4 @@
-package com.wijayaprinting.io
+package com.wijayaprinting.io.properties
 
 import com.mongodb.ServerAddress.defaultPort
 import javafx.beans.property.StringProperty

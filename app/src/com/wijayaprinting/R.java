@@ -1,4 +1,4 @@
-// rsync generated this class at 2018-01-23T17:09:27.490 from:
+// rsync generated this class at 2018-01-25T04:44:12.136 from:
 // string_en.properties
 // btn_user_add.png
 // layout_employee.fxml
@@ -19,15 +19,14 @@
 // layout_wage.fxml
 // ic_clock.png
 // ic_key.png
+// style_treetableview_print.css
 // ic_document.png
-// tree_table_print.css
 // btn_delete.png
 // btn_print.png
 // btn_merge.png
 // ic_address.png
 // btn_edit.png
 // btn_lock_start.png
-// table_print.css
 // ic_launcher.png
 // layout_price_plate.fxml
 // btn_checkbox.png
@@ -139,9 +138,7 @@ public final class R {
   }
 
   public static final class css {
-    public static final String tree_table_print = "/tree_table_print.css";
-
-    public static final String table_print = "/table_print.css";
+    public static final String style_treetableview_print = "/style_treetableview_print.css";
 
     private css() {
     }
@@ -174,6 +171,8 @@ public final class R {
     public static final String note = "note";
 
     public static final String process = "process";
+
+    public static final String grant = "grant";
 
     public static final String delete_others = "delete_others";
 
@@ -222,6 +221,8 @@ public final class R {
     public static final String daily = "daily";
 
     public static final String min_price = "min_price";
+
+    public static final String block = "block";
 
     public static final String add_reccess = "add_reccess";
 
@@ -344,8 +345,6 @@ public final class R {
     public static final String record = "record";
 
     public static final String password = "password";
-
-    public static final String grand_total = "grand_total";
 
     public static final String unpaid = "unpaid";
 

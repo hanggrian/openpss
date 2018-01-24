@@ -60,8 +60,8 @@ class CustomerController : Controller(), Refreshable {
     override fun initialize() {
         refresh()
 
-        nameLabel.font = loadFont(latoBold, 24.0)
-        sinceLabel.font = loadFont(latoRegular, 12.0)
+        nameLabel.font = getFont(R.ttf.lato_bold, 24)
+        sinceLabel.font = getFont(R.ttf.lato_regular, 12)
         noteLabel.graphicProperty() bind bindingOf<Node>(noteLabel.hoverProperty()) { if (noteLabel.isHover) noteLabelGraphic else null }
         contactTable.contextMenu = contextMenu {
             menuItem(getString(R.string.add)) {

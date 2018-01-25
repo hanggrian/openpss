@@ -7,8 +7,8 @@ import com.wijayaprinting.db.schema.Recesses
 import com.wijayaprinting.db.transaction
 import com.wijayaprinting.io.WageFolder
 import com.wijayaprinting.ui.*
-import com.wijayaprinting.ui.scene.control.CustomListCell
 import com.wijayaprinting.ui.scene.control.FileField
+import com.wijayaprinting.ui.scene.control.GraphicListCell
 import com.wijayaprinting.ui.scene.control.intField
 import com.wijayaprinting.ui.wage.WageRecordController.Companion.EXTRA_ATTENDEES
 import com.wijayaprinting.ui.wage.WageRecordController.Companion.EXTRA_STAGE
@@ -146,8 +146,8 @@ class WageController : Controller() {
                             listView = listView(attendee.attendances) {
                                 prefWidth = 128.0
                                 setCellFactory {
-                                    object : CustomListCell<DateTime>() {
-                                        override fun getGraphic(item: DateTime): Node = kotfx.hbox {
+                                    object : GraphicListCell<DateTime>() {
+                                        override operator fun get(item: DateTime): Node = kotfx.hbox {
                                             alignment = CENTER
                                             label(item.toString(PATTERN_DATETIME)) { maxWidth = Double.MAX_VALUE } hpriority ALWAYS
                                             button {

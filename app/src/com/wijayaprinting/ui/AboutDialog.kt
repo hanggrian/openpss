@@ -2,7 +2,7 @@ package com.wijayaprinting.ui
 
 import com.wijayaprinting.BuildConfig.VERSION
 import com.wijayaprinting.R
-import com.wijayaprinting.ui.scene.control.CustomListCell
+import com.wijayaprinting.ui.scene.control.GraphicListCell
 import com.wijayaprinting.util.getFont
 import com.wijayaprinting.util.getResourceAsStream
 import javafx.event.ActionEvent.ACTION
@@ -60,8 +60,8 @@ class AboutDialog(resourced: Resourced) : Dialog<Unit>(), Resourced by resourced
                 prefHeight = 256.0
                 items = License.values().toObservableList()
                 setCellFactory {
-                    object : CustomListCell<License>() {
-                        override fun getGraphic(item: License): Node = kotfx.vbox {
+                    object : GraphicListCell<License>() {
+                        override operator fun get(item: License): Node = kotfx.vbox {
                             label(item.repo) { font = getFont(R.ttf.lato_regular, 12) }
                             label(item.owner) { font = getFont(R.ttf.lato_bold, 12) }
                         }

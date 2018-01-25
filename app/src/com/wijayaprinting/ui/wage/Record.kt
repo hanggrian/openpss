@@ -1,6 +1,8 @@
 package com.wijayaprinting.ui.wage
 
 import com.wijayaprinting.PATTERN_DATETIME
+import com.wijayaprinting.R
+import com.wijayaprinting.ui.Resourced
 import com.wijayaprinting.util.rounded
 import javafx.beans.property.*
 import kotfx.*
@@ -9,9 +11,10 @@ import org.joda.time.Interval
 import org.joda.time.LocalTime
 import kotlin.math.absoluteValue
 
-open class Record @JvmOverloads constructor(
-        val index: Int,
+class Record @JvmOverloads constructor(
+        resourced: Resourced,
 
+        val index: Int,
         val attendee: Attendee,
 
         val startProperty: ObjectProperty<DateTime>,
@@ -26,16 +29,18 @@ open class Record @JvmOverloads constructor(
         val overtimeIncomeProperty: DoubleProperty = SimpleDoubleProperty(),
 
         val totalProperty: DoubleProperty = SimpleDoubleProperty()
-) {
+) : Resourced by resourced {
 
-    /** Dummy for invisible [javafx.scene.control.TreeTableView] root. */
-    companion object : Record(Int.MIN_VALUE, Attendee, DateTime(0).asProperty(), DateTime(0).asProperty()) {
+    companion object {
         private const val WORKING_HOURS = 8.0
 
         /** Parent row displaying name and its preferences. */
         const val INDEX_NODE = -2
         /** Last child row of a node, displaying calculated total. */
         const val INDEX_TOTAL = -1
+
+        /** Dummy for invisible [javafx.scene.control.TreeTableView] root. */
+        fun getDummy(resourced: Resourced) = Record(resourced, Int.MIN_VALUE, Attendee, DateTime(0).asProperty(), DateTime(0).asProperty())
     }
 
     init {
@@ -101,7 +106,16 @@ open class Record @JvmOverloads constructor(
         get() = SimpleStringProperty().apply {
             bind(stringBindingOf(endProperty, dailyEmptyProperty) {
                 when {
-                    isNode -> ""
+                    isNode -> {
+                        val days = attendee.attendances.size / 2
+                        val word = getString(R.string.day).let {
+                            when {
+                                days > 0 && it == "day" -> "days"
+                                else -> it
+                            }
+                        }
+                        "$days $word"
+                    }
                     isChild -> end.toString(PATTERN_DATETIME).let { if (isDailyEmpty) "($it)" else it }
                     isTotal -> "TOTAL"
                     else -> throw UnsupportedOperationException()

@@ -12,6 +12,7 @@ import com.wijayaprinting.io.WageFile
 import com.wijayaprinting.ui.Controller
 import com.wijayaprinting.ui.DateDialog
 import com.wijayaprinting.ui.scene.layout.TimeBox
+import com.wijayaprinting.ui.wage.Record.Companion.getDummy
 import com.wijayaprinting.util.getExternalForm
 import com.wijayaprinting.util.withoutCurrency
 import io.reactivex.Completable
@@ -58,7 +59,7 @@ class WageRecordController : Controller() {
         }
 
         recordTable.selectionModel.selectionMode = MULTIPLE
-        recordTable.root = TreeItem(Record)
+        recordTable.root = TreeItem(getDummy(this))
         recordTable.isShowRoot = false
 
         nameColumn.setCellValueFactory { it.value.value.displayedName.asProperty().asObservable() }
@@ -72,9 +73,9 @@ class WageRecordController : Controller() {
 
         runLater {
             getExtra<Set<Attendee>>(EXTRA_ATTENDEES).forEach { attendee ->
-                val node = attendee.toNodeRecord()
-                val childs = attendee.toChildRecords()
-                val total = attendee.toTotalRecords(childs)
+                val node = attendee.toNodeRecord(this)
+                val childs = attendee.toChildRecords(this)
+                val total = attendee.toTotalRecords(this, childs)
                 recordTable.root.children.add(TreeItem(node).apply {
                     isExpanded = true
                     expandedProperty().addListener { _, _, expanded -> if (!expanded) isExpanded = true } // uncollapsible

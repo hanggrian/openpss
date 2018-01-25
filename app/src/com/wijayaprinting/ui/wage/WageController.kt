@@ -11,6 +11,7 @@ import com.wijayaprinting.ui.scene.control.intField
 import com.wijayaprinting.ui.wage.WageRecordController.Companion.EXTRA_ATTENDEES
 import com.wijayaprinting.ui.wage.WageRecordController.Companion.EXTRA_STAGE
 import com.wijayaprinting.ui.wage.readers.Reader
+import com.wijayaprinting.util.getResource
 import com.wijayaprinting.util.multithread
 import io.reactivex.Observable
 import io.reactivex.rxkotlin.subscribeBy
@@ -27,7 +28,6 @@ import javafx.scene.layout.Pane
 import javafx.scene.layout.Priority.ALWAYS
 import javafx.scene.text.Font.font
 import javafx.stage.Modality.APPLICATION_MODAL
-import javafx.stage.Stage
 import kotfx.*
 import org.joda.time.DateTime
 import java.io.File
@@ -54,7 +54,7 @@ class WageController : Controller() {
             fileField.text = "/Users/hendraanggrian/Downloads/Absen 11-25-17.xlsx"
             readButton.fire()
         }
-        runFX { flowPane.prefWrapLengthProperty() bind fileField.scene.widthProperty() }
+        runLater { flowPane.prefWrapLengthProperty() bind fileField.scene.widthProperty() }
     }
 
     @FXML
@@ -224,7 +224,7 @@ class WageController : Controller() {
             attendee.saveWage()
             set.add(attendee)
         }
-        Stage().apply {
+        stage {
             val loader = getResource(R.fxml.layout_wage_record).loadFXML(resources)
             scene = loader.pane.toScene()
             minWidth = 960.0

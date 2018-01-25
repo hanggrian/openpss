@@ -11,6 +11,7 @@ import com.wijayaprinting.io.ImageFile
 import com.wijayaprinting.ui.Controller
 import com.wijayaprinting.ui.DateDialog
 import com.wijayaprinting.ui.scene.layout.TimeBox
+import com.wijayaprinting.util.getExternalForm
 import com.wijayaprinting.util.multithread
 import com.wijayaprinting.util.withoutCurrency
 import io.reactivex.Completable
@@ -23,13 +24,8 @@ import javafx.scene.control.*
 import javafx.scene.control.SelectionMode.MULTIPLE
 import javafx.stage.Stage
 import kotfx.*
-import java.awt.print.Printable.NO_SUCH_PAGE
-import java.awt.print.Printable.PAGE_EXISTS
-import java.awt.print.PrinterException
-import java.awt.print.PrinterJob
 import java.io.IOException
 import java.text.NumberFormat.getCurrencyInstance
-import javax.imageio.ImageIO
 
 
 class WageRecordController : Controller() {
@@ -77,7 +73,7 @@ class WageRecordController : Controller() {
         overtimeIncomeColumn.setCellValueFactory { it.value.value.overtimeIncomeProperty.asObservable() }
         totalColumn.setCellValueFactory { it.value.value.totalProperty.asObservable() }
 
-        runFX {
+        runLater {
             getExtra<Set<Attendee>>(EXTRA_ATTENDEES).forEach { attendee ->
                 val node = attendee.toNodeRecord()
                 val childs = attendee.toChildRecords()
@@ -151,16 +147,13 @@ class WageRecordController : Controller() {
     @FXML
     fun print() = getExternalForm(R.css.style_treetableview_print).let { printStyle ->
         recordTable.stylesheets.add(printStyle)
-        val files = mutableListOf<ImageFile>()
         Completable
                 .create { emitter ->
                     val flow = (recordTable.skin as TreeTableViewSkin<*>).children[1] as VirtualFlow<*>
                     var i = 0
                     do {
-                        val file = ImageFile(i)
                         try {
-                            file.write(recordTable.snapshot(null, null))
-                            files.add(file)
+                            ImageFile(getString(R.string.wage), i).write(recordTable.snapshot(null, null))
                         } catch (e: IOException) {
                             emitter.onError(e)
                         }
@@ -175,19 +168,7 @@ class WageRecordController : Controller() {
                     if (DEBUG) e.printStackTrace()
                 }, {
                     recordTable.stylesheets.remove(printStyle)
-                    val job = PrinterJob.getPrinterJob().apply {
-                        setPrintable { graphics, _, pageIndex ->
-                            if (pageIndex != 0) NO_SUCH_PAGE
-                            val image = ImageIO.read(files[pageIndex])
-                            graphics.drawImage(image, 0, 0, image.width, image.height, null)
-                            PAGE_EXISTS
-                        }
-                    }
-                    try {
-                        job.print()
-                    } catch (e: PrinterException) {
-                        e.printStackTrace()
-                    }
+                    
                 })
     }
 

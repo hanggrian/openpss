@@ -5,10 +5,12 @@ import javafx.collections.ObservableList
 import javafx.stage.FileChooser
 import kotfx.observableListOf
 import java.io.File
+import java.io.IOException
 
-/** A file readers that generates collection of [com.wijayaprinting.model.Attendee] given input file. */
+/** A file readers that generates collection of [Attendee] given input file. */
 abstract class Reader {
 
+    /** Identifier of a reader. */
     abstract val name: String
 
     /** Expected file extensions for [FileChooser.ExtensionFilter]. */
@@ -18,10 +20,9 @@ abstract class Reader {
      * The reading process is executed in background thread.
      * During its long operation, exception throwing may happen in [read].
      */
-    @Throws(Exception::class)
+    @Throws(IOException::class)
     abstract fun read(file: File): Collection<Attendee>
 
-    /** Identifier of a reader. */
     override fun toString(): String = name
 
     companion object {

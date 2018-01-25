@@ -5,6 +5,8 @@ package com.wijayaprinting.ui.scene.layout
 import com.wijayaprinting.PATTERN_TIME
 import com.wijayaprinting.ui.scene.control.IntField
 import com.wijayaprinting.ui.scene.control.intField
+import javafx.beans.property.BooleanProperty
+import javafx.beans.property.ObjectProperty
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleObjectProperty
 import javafx.geometry.Pos.CENTER
@@ -19,8 +21,8 @@ open class TimeBox : _HBox() {
     lateinit var hourField: IntField
     lateinit var minuteField: IntField
 
-    val timeProperty = SimpleObjectProperty<LocalTime>()
-    val validProperty = SimpleBooleanProperty()
+    val timeProperty: ObjectProperty<LocalTime> = SimpleObjectProperty<LocalTime>()
+    val validProperty: BooleanProperty = SimpleBooleanProperty()
 
     init {
         alignment = CENTER
@@ -68,6 +70,6 @@ open class TimeBox : _HBox() {
 }
 
 
-@JvmOverloads inline fun timeBox(noinline init: ((@KotfxDsl TimeBox).() -> Unit)? = null): TimeBox = TimeBox().apply { init?.invoke(this) }
-@JvmOverloads inline fun ChildRoot.timeBox(noinline init: ((@KotfxDsl TimeBox).() -> Unit)? = null): TimeBox = TimeBox().apply { init?.invoke(this) }.add()
-@JvmOverloads inline fun ItemRoot.timeBox(noinline init: ((@KotfxDsl TimeBox).() -> Unit)? = null): TimeBox = TimeBox().apply { init?.invoke(this) }.add()
+@JvmOverloads inline fun timeBox(noinline init: ((@LayoutDsl TimeBox).() -> Unit)? = null): TimeBox = TimeBox().apply { init?.invoke(this) }
+@JvmOverloads inline fun ChildRoot.timeBox(noinline init: ((@LayoutDsl TimeBox).() -> Unit)? = null): TimeBox = TimeBox().apply { init?.invoke(this) }.add()
+@JvmOverloads inline fun ItemRoot.timeBox(noinline init: ((@LayoutDsl TimeBox).() -> Unit)? = null): TimeBox = TimeBox().apply { init?.invoke(this) }.add()

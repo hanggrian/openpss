@@ -7,7 +7,7 @@ import com.wijayaprinting.ui.wage.WageController
 import javafx.event.ActionEvent
 import javafx.fxml.FXML
 import javafx.scene.control.*
-import kotfx.runFX
+import kotfx.runLater
 import org.apache.commons.lang3.SystemUtils.IS_OS_MAC
 
 class MainController : Controller() {
@@ -33,7 +33,7 @@ class MainController : Controller() {
             (controllers[index.toInt()] as? Refreshable)?.refresh()
         }
 
-        runFX {
+        runLater {
             employeeLabel.text = employeeName
             controllers = arrayOf(customerController, orderController, wageController, employeeController)
             controllers.forEach {

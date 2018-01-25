@@ -3,7 +3,7 @@ const val releaseArtifact = "wijayaprinting"
 const val releaseDebug = true // set false when building app, true when building stage.
 const val releaseVersion = "0.7"
 
-const val kotlinVersion = "1.2.20"
+const val kotlinVersion = "1.2.21"
 const val nosqlMongodbVersion = "0.1-SNAPSHOT"
 
 fun Dependency.apache(module: String, version: String) = "org.apache.${module.split("-")[0]}:$module:$version"
@@ -17,7 +17,7 @@ val Dependency.guava get() = "com.google.guava:guava:23.6-jre"
 fun Dependency.hendraanggrian(module: String, version: String) = "com.hendraanggrian:$module:$version"
 inline val Plugin.rsync get() = id("rsync")
 inline val Plugin.buildconfig get() = id("buildconfig")
-const val kotfxVersion = "0.18"
+const val kotfxVersion = "0.19"
 
 val Dependency.`joda-time` get() = "joda-time:joda-time:2.9.9"
 

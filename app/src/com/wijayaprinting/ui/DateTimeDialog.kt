@@ -32,7 +32,7 @@ class DateTimeDialog @JvmOverloads constructor(
                 value = (prefill ?: now()).toLocalDate().asJava()
                 isEditable = false // force pick from popup
                 maxWidth = 128.0
-                runFX { requestFocus() }
+                runLater { requestFocus() }
             } col 0 row 0
             timeBox = timeBox { prefill?.let { time = it.toLocalTime() } } col 1 row 0
             slider(0, 24, 0) { valueProperty() bindBidirectional timeBox.hourField.valueProperty } col 0 row 1 colSpan 2

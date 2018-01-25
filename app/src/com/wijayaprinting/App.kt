@@ -13,6 +13,7 @@ import com.wijayaprinting.ui.scene.control.IntField
 import com.wijayaprinting.ui.scene.control.hostField
 import com.wijayaprinting.ui.scene.control.intField
 import com.wijayaprinting.util.forceExit
+import com.wijayaprinting.util.getResource
 import com.wijayaprinting.util.multithread
 import io.reactivex.rxkotlin.subscribeBy
 import javafx.application.Application
@@ -67,7 +68,7 @@ class App : Application(), Resourced, EmployeeHolder {
             content = gridPane {
                 gap(8)
                 label(getString(R.string.language)) col 0 row 0
-                choiceBox(observableListOf(*Language.values())) {
+                choiceBox(Language.values().toObservableList()) {
                     maxWidth = Double.MAX_VALUE
                     selectionModel.select(Language.from(ConfigFile.language.get()))
                     selectionModel.selectedItemProperty().addListener { _, _, language ->
@@ -153,7 +154,7 @@ class App : Application(), Resourced, EmployeeHolder {
                             }
                 }
             }
-            runFX {
+            runLater {
                 if (employeeField.text.isBlank()) employeeField.requestFocus() else passwordField.requestFocus()
                 isExpanded = !DatabaseFile.isValid
                 if (DEBUG) {
@@ -188,7 +189,7 @@ class App : Application(), Resourced, EmployeeHolder {
                         or confirmPasswordField.textProperty().isEmpty
                         or (changePasswordField.textProperty() neq confirmPasswordField.textProperty()))
                 setResultConverter { if (it == OK) changePasswordField.text else null }
-                runFX { changePasswordField.requestFocus() }
+                runLater { changePasswordField.requestFocus() }
             }.showAndWait().filter { it is String }.ifPresent { newPassword ->
                 transaction {
                     Employees.find { name.equal(employeeName) }.projection { password }.update(newPassword)

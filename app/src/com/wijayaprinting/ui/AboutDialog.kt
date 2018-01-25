@@ -2,6 +2,8 @@ package com.wijayaprinting.ui
 
 import com.wijayaprinting.BuildConfig
 import com.wijayaprinting.R
+import com.wijayaprinting.util.getFont
+import com.wijayaprinting.util.getResourceAsStream
 import javafx.event.ActionEvent.ACTION
 import javafx.geometry.Insets
 import javafx.geometry.Pos.CENTER_LEFT
@@ -55,7 +57,7 @@ class AboutDialog(resourced: Resourced) : Dialog<Unit>(), Resourced by resourced
         expandableContent = hbox {
             listView = kotfx.listView {
                 prefHeight = 256.0
-                items = observableListOf(*License.values())
+                items = License.values().toObservableList()
                 setCellFactory {
                     object : ListCell<License>() {
                         override fun updateItem(item: License?, empty: Boolean) {
@@ -75,8 +77,7 @@ class AboutDialog(resourced: Resourced) : Dialog<Unit>(), Resourced by resourced
                 prefHeight = 256.0
                 isEditable = false
                 textProperty() bind stringBindingOf(listView.selectionModel.selectedIndexProperty()) {
-                    listView.selectionModel.selectedItem?.getContent(this@AboutDialog)
-                            ?: getString(R.string.select_license)
+                    listView.selectionModel.selectedItem?.content ?: getString(R.string.select_license)
                 }
             }) { isCollapsible = false }
         }
@@ -109,8 +110,9 @@ class AboutDialog(resourced: Resourced) : Dialog<Unit>(), Resourced by resourced
         REACTIVEX_RXKOTLIN("ReactiveX", "RxKotlin", "https://github.com/ReactiveX/RxKotlin"),
         SLF4J_LOG4J12("Slf4j", "Log4j12", "https://www.slf4j.org");
 
-        fun getContent(resourced: Resourced): String = resourced
-                .getResourceAsStream("/${name.toLowerCase()}.txt")
-                .use { return BufferedReader(InputStreamReader(it)).lines().collect(joining("\n")) }
+        val content: String
+            get() = getResourceAsStream("/${name.toLowerCase()}.txt").use {
+                return BufferedReader(InputStreamReader(it)).lines().collect(joining("\n"))
+            }
     }
 }

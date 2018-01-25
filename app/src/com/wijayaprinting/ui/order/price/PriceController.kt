@@ -30,7 +30,7 @@ abstract class PriceController<D : Named<S>, S : NamedDocumentSchema<D>>(
 
     override fun initialize() {
         refresh()
-        runFX { deleteButton.disableProperty() bind (priceTable.selectionModel.selectedItemProperty().isNull or !isFullAccess.asProperty()) }
+        runLater { deleteButton.disableProperty() bind (priceTable.selectionModel.selectedItemProperty().isNull or !isFullAccess.asProperty()) }
         nameColumn.setCellValueFactory { it.value.name.asProperty() }
     }
 

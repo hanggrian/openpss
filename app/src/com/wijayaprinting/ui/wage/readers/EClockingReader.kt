@@ -24,7 +24,6 @@ object EClockingReader : Reader() {
 
     override val extensions: Array<String> get() = arrayOf("*.xlsx")
 
-    @Throws(Exception::class)
     override fun read(file: File): Collection<Attendee> {
         val multimap = LinkedHashMultimap.create<Attendee, DateTime>()
         file.inputStream().use { stream ->

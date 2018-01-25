@@ -1,7 +1,6 @@
 package com.wijayaprinting.ui
 
 import com.wijayaprinting.R
-import com.wijayaprinting.ui.Resourced
 import com.wijayaprinting.util.asJava
 import javafx.scene.control.ButtonType.CANCEL
 import javafx.scene.control.ButtonType.OK
@@ -29,7 +28,7 @@ class DateDialog @JvmOverloads constructor(
                 value = (prefill ?: now()).asJava()
                 isEditable = false // force pick from popup
                 maxWidth = 128.0
-                runFX { requestFocus() }
+                runLater { requestFocus() }
             } anchor 0
         }
         buttons(OK, CANCEL)

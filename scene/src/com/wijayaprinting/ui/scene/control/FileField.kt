@@ -2,6 +2,7 @@
 
 package com.wijayaprinting.ui.scene.control
 
+import javafx.beans.property.BooleanProperty
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.scene.control.TextField
 import kotfx.*
@@ -9,7 +10,7 @@ import java.io.File
 
 open class FileField : TextField() {
 
-    val validProperty = SimpleBooleanProperty()
+    val validProperty: BooleanProperty = SimpleBooleanProperty()
 
     init {
         validProperty bind (textProperty().isEmpty or booleanBindingOf(textProperty()) {
@@ -23,6 +24,6 @@ open class FileField : TextField() {
         set(value) = validProperty.set(value)
 }
 
-@JvmOverloads inline fun fileField(noinline init: ((@KotfxDsl FileField).() -> Unit)? = null): FileField = FileField().apply { init?.invoke(this) }
-@JvmOverloads inline fun ChildRoot.fileField(noinline init: ((@KotfxDsl FileField).() -> Unit)? = null): FileField = FileField().apply { init?.invoke(this) }.add()
-@JvmOverloads inline fun ItemRoot.fileField(noinline init: ((@KotfxDsl FileField).() -> Unit)? = null): FileField = FileField().apply { init?.invoke(this) }.add()
+@JvmOverloads inline fun fileField(noinline init: ((@LayoutDsl FileField).() -> Unit)? = null): FileField = FileField().apply { init?.invoke(this) }
+@JvmOverloads inline fun ChildRoot.fileField(noinline init: ((@LayoutDsl FileField).() -> Unit)? = null): FileField = FileField().apply { init?.invoke(this) }.add()
+@JvmOverloads inline fun ItemRoot.fileField(noinline init: ((@LayoutDsl FileField).() -> Unit)? = null): FileField = FileField().apply { init?.invoke(this) }.add()

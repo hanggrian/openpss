@@ -3,8 +3,8 @@ package com.wijayaprinting.io.properties
 import com.mongodb.ServerAddress.defaultPort
 import javafx.beans.property.StringProperty
 
-/** Configuration file for MySQL connection. */
-object DatabaseFile : PropertiesFile(".db") {
+/** Properties file for MongoDB connection. */
+object DatabaseFile : PropertiesFile("db") {
 
     override val pairs: Array<Pair<String, String>>
         get() = arrayOf(

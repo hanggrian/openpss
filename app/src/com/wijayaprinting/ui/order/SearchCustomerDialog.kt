@@ -42,7 +42,7 @@ class SearchCustomerDialog(resourced: Resourced) : Dialog<Customer>(), Resourced
         }
         button(CANCEL)
         button(OK).disableProperty() bind listView.selectionModel.selectedItemProperty().isNull
-        runFX { textField.requestFocus() }
+        runLater { textField.requestFocus() }
         setResultConverter {
             if (it == OK) listView.selectionModel.selectedItem
             else null

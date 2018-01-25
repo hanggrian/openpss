@@ -1,17 +1,20 @@
 package com.wijayaprinting.io.properties
 
-import com.wijayaprinting.io.HomeFolder
+import com.wijayaprinting.io.HiddenFolder
 import javafx.beans.property.StringProperty
 import kotfx.asMutableProperty
 import java.io.File
 import java.util.*
 
-/** Represents a properties file used that acts as local settings. */
+/**
+ * Represents a file of [Properties] that acts as local settings.
+ * It is saved as hidden file located in [HiddenFolder].
+ */
 @Suppress("LeakingThis")
 abstract class PropertiesFile(
-        fileName: String,
+        name: String,
         private val map: MutableMap<String, StringProperty> = mutableMapOf()
-) : File(HomeFolder(), fileName), MutableMap<String, StringProperty> by map {
+) : File(HiddenFolder, ".$name"), MutableMap<String, StringProperty> by map {
 
     abstract val pairs: Array<Pair<String, String>>
 

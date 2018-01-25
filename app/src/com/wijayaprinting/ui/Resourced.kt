@@ -1,11 +1,8 @@
 package com.wijayaprinting.ui
 
-import javafx.scene.text.Font
-import javafx.scene.text.Font.loadFont
-import java.io.InputStream
-import java.net.URL
 import java.util.*
 
+/** Easier access to [ResourceBundle] across app. */
 interface Resourced {
 
     val resources: ResourceBundle
@@ -17,12 +14,10 @@ interface Resourced {
     fun getFloat(key: String): Float = getString(key).toFloat()
     fun getDouble(key: String): Double = getString(key).toDouble()
 
-    fun getStrings(vararg keys: String): Array<String> = keys.map { getString(it) }.toTypedArray()
-
-    fun getResource(name: String): URL = javaClass.getResource(name)
-    fun getResourceAsStream(name: String): InputStream = javaClass.getResourceAsStream(name)
-
-    fun getExternalForm(id: String): String = getResource(id).toExternalForm()
-
-    fun getFont(font: String, size: Number): Font = loadFont(getExternalForm(font), size.toDouble())
+    fun getStringArray(vararg keys: String): Array<String> = keys.map { getString(it) }.toTypedArray()
+    fun getBooleanArray(vararg keys: String): Array<Boolean> = keys.map { getBoolean(it) }.toTypedArray()
+    fun getIntArray(vararg keys: String): Array<Int> = keys.map { getInt(it) }.toTypedArray()
+    fun getLongArray(vararg keys: String): Array<Long> = keys.map { getLong(it) }.toTypedArray()
+    fun getFloatArray(vararg keys: String): Array<Float> = keys.map { getFloat(it) }.toTypedArray()
+    fun getDoubleArray(vararg keys: String): Array<Double> = keys.map { getDouble(it) }.toTypedArray()
 }

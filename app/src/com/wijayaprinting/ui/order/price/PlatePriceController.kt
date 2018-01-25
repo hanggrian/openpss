@@ -9,7 +9,7 @@ import javafx.scene.control.TableColumn
 import javafx.scene.control.cell.TextFieldTableCell.forTableColumn
 import kotfx.asObservable
 import kotfx.asProperty
-import kotfx.stringConverter
+import kotfx.stringConverterOf
 import kotlinx.nosql.equal
 import kotlinx.nosql.update
 
@@ -20,7 +20,7 @@ class PlatePriceController : PriceController<Plate, Plates>(Plates, R.string.add
     override fun initialize() {
         super.initialize()
         priceColumn.setCellValueFactory { it.value.price.asProperty().asObservable() }
-        priceColumn.cellFactory = forTableColumn<Plate, Double>(stringConverter({ it.toDoubleOrNull() ?: 0.0 }))
+        priceColumn.cellFactory = forTableColumn<Plate, Double>(stringConverterOf({ it.toDoubleOrNull() ?: 0.0 }))
         priceColumn.setOnEditCommit { event ->
             transaction { Plates.find { name.equal(event.rowValue.name) }.projection { price }.update(event.newValue) }
             event.rowValue.price = event.newValue

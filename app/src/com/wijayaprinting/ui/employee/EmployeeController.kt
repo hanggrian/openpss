@@ -36,7 +36,7 @@ class EmployeeController : Controller(), Refreshable {
 
         nameColumn.setCellValueFactory { it.value.name.asProperty() }
         fullAccessColumn.setCellValueFactory { getString(if (it.value.fullAccess) R.string.grant else R.string.block).asProperty() }
-        fullAccessColumn.cellFactory = forTableColumn<Employee, String>(*getStrings(R.string.grant, R.string.block))
+        fullAccessColumn.cellFactory = forTableColumn<Employee, String>(*getStringArray(R.string.grant, R.string.block))
         fullAccessColumn.setOnEditCommit { event ->
             val result = event.newValue == getString(R.string.grant)
             transaction { Employees.find { name.equal(event.rowValue.name) }.projection { fullAccess }.update(result) }

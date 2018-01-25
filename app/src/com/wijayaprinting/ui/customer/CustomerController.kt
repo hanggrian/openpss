@@ -10,6 +10,7 @@ import com.wijayaprinting.db.schema.Customers
 import com.wijayaprinting.db.transaction
 import com.wijayaprinting.ui.*
 import com.wijayaprinting.ui.scene.control.ItemCountBox
+import com.wijayaprinting.util.getFont
 import com.wijayaprinting.util.tidy
 import javafx.fxml.FXML
 import javafx.scene.Node
@@ -17,7 +18,6 @@ import javafx.scene.control.*
 import javafx.scene.control.ButtonType.CANCEL
 import javafx.scene.control.ButtonType.OK
 import javafx.scene.image.ImageView
-import javafx.scene.text.Font.loadFont
 import javafx.util.Callback
 import kotfx.*
 import kotlinx.nosql.equal
@@ -88,7 +88,7 @@ class CustomerController : Controller(), Refreshable {
                 }
             }
             menuItem(getString(R.string.delete)) {
-                runFX { disableProperty() bind booleanBindingOf(contactTable.selectionModel.selectedItemProperty()) { contact == null || !isFullAccess } }
+                runLater { disableProperty() bind booleanBindingOf(contactTable.selectionModel.selectedItemProperty()) { contact == null || !isFullAccess } }
                 setOnAction {
                     confirmAlert(getString(R.string.delete_contact)).showAndWait().ifPresent {
                         transaction {
@@ -106,7 +106,7 @@ class CustomerController : Controller(), Refreshable {
     override fun refresh() = customerPagination.pageFactoryProperty() rebind bindingOf(customerField.textProperty(), itemCountBox.countProperty) {
         Callback<Int, Node> { page ->
             customerList = listView {
-                runFX {
+                runLater {
                     transaction {
                         val customers = if (customerField.text.isBlank()) Customers.find() else Customers.find { name.matches(customerField.text.toPattern()) }
                         customerPagination.pageCount = ceil(customers.count() / itemCountBox.count.toDouble()).toInt()

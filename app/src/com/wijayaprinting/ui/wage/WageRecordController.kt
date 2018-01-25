@@ -7,23 +7,22 @@ import com.wijayaprinting.PATTERN_DATE
 import com.wijayaprinting.PATTERN_DATETIME
 import com.wijayaprinting.PATTERN_TIME
 import com.wijayaprinting.R
-import com.wijayaprinting.io.ImageFile
+import com.wijayaprinting.io.WageContentFolder
+import com.wijayaprinting.io.WageFile
 import com.wijayaprinting.ui.Controller
 import com.wijayaprinting.ui.DateDialog
 import com.wijayaprinting.ui.scene.layout.TimeBox
 import com.wijayaprinting.util.getExternalForm
-import com.wijayaprinting.util.multithread
 import com.wijayaprinting.util.withoutCurrency
 import io.reactivex.Completable
-import io.reactivex.rxjavafx.schedulers.JavaFxScheduler.platform
 import io.reactivex.rxkotlin.subscribeBy
-import io.reactivex.schedulers.Schedulers.io
 import javafx.fxml.FXML
-import javafx.print.Printer.defaultPrinterProperty
 import javafx.scene.control.*
+import javafx.scene.control.ButtonBar.ButtonData.CANCEL_CLOSE
 import javafx.scene.control.SelectionMode.MULTIPLE
 import javafx.stage.Stage
 import kotfx.*
+import java.awt.Desktop.getDesktop
 import java.io.IOException
 import java.text.NumberFormat.getCurrencyInstance
 
@@ -39,7 +38,6 @@ class WageRecordController : Controller() {
     @FXML lateinit var timeBox: TimeBox
     @FXML lateinit var lockStartButton: Button
     @FXML lateinit var lockEndButton: Button
-    @FXML lateinit var printButton: Button
 
     @FXML lateinit var recordTable: TreeTableView<Record>
     @FXML lateinit var nameColumn: TreeTableColumn<Record, String>
@@ -58,7 +56,6 @@ class WageRecordController : Controller() {
                 recordTable.selectionModel.selectedItems?.any { !it.value.isChild } ?: true
             })
         }
-        printButton.disableProperty() bind defaultPrinterProperty().isNull
 
         recordTable.selectionModel.selectionMode = MULTIPLE
         recordTable.root = TreeItem(Record)
@@ -94,8 +91,7 @@ class WageRecordController : Controller() {
         }
     }
 
-    @FXML
-    fun undo() = undoButton.items[0].fire()
+    @FXML fun undo() = undoButton.items[0].fire()
 
     @FXML
     fun lockStart() {
@@ -145,30 +141,32 @@ class WageRecordController : Controller() {
             }
 
     @FXML
-    fun print() = getExternalForm(R.css.style_treetableview_print).let { printStyle ->
-        recordTable.stylesheets.add(printStyle)
+    fun screenshot() = getExternalForm(R.css.style_treetableview_print).let { printStyle ->
         Completable
                 .create { emitter ->
+                    recordTable.stylesheets.add(printStyle)
+                    recordTable.scrollTo(0)
                     val flow = (recordTable.skin as TreeTableViewSkin<*>).children[1] as VirtualFlow<*>
                     var i = 0
                     do {
                         try {
-                            ImageFile(getString(R.string.wage), i).write(recordTable.snapshot(null, null))
+                            WageFile(i).write(recordTable.snapshot(null, null))
                         } catch (e: IOException) {
                             emitter.onError(e)
                         }
-                        recordTable.scrollTo(flow.lastVisibleCell.index + 2)
+                        recordTable.scrollTo(flow.lastVisibleCell.index)
                         i++
                     } while (flow.lastVisibleCell.index + 1 < recordTable.root.children.size + recordTable.root.children.map { it.children.size }.sum())
                     emitter.onComplete()
                 }
-                .multithread(platform(), io())
                 .subscribeBy({ e ->
                     recordTable.stylesheets.remove(printStyle)
                     if (DEBUG) e.printStackTrace()
                 }, {
                     recordTable.stylesheets.remove(printStyle)
-                    
+                    infoAlert(getString(R.string.screenshot_finished)) { button(getString(R.string.open_folder), CANCEL_CLOSE) }.showAndWait().filter { it.buttonData == CANCEL_CLOSE }.ifPresent {
+                        getDesktop().open(WageContentFolder)
+                    }
                 })
     }
 

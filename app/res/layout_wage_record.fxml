@@ -17,7 +17,6 @@
                 <Tooltip text="%undo"/>
             </tooltip>
         </SplitMenuButton>
-        <Separator/>
         <TimeBox fx:id="timeBox"/>
         <Button mnemonicParsing="false" fx:id="lockStartButton" onAction="#lockStart">
             <graphic>
@@ -39,17 +38,25 @@
                 <Tooltip text="%lock_end_time"/>
             </tooltip>
         </Button>
-        <Separator/>
-        <Button mnemonicParsing="false" onAction="#empty" text="%empty_daily_income"/>
-        <Separator/>
-        <Button mnemonicParsing="false" fx:id="printButton" onAction="#print">
+        <Button mnemonicParsing="false" onAction="#empty">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@btn_print.png"/>
+                    <Image url="@btn_clear_date.png"/>
                 </ImageView>
             </graphic>
             <tooltip>
-                <Tooltip text="%print"/>
+                <Tooltip text="%empty_daily_income"/>
+            </tooltip>
+        </Button>
+        <Separator/>
+        <Button mnemonicParsing="false" onAction="#screenshot">
+            <graphic>
+                <ImageView pickOnBounds="true" preserveRatio="true">
+                    <Image url="@btn_screenshot.png"/>
+                </ImageView>
+            </graphic>
+            <tooltip>
+                <Tooltip text="%screenshot"/>
             </tooltip>
         </Button>
     </ToolBar>

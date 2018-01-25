@@ -2,14 +2,23 @@ package com.wijayaprinting.io
 
 import com.wijayaprinting.BuildConfig.ARTIFACT
 import org.apache.commons.lang3.SystemUtils.USER_HOME
+import org.joda.time.LocalDate
+import org.joda.time.LocalDate.now
 import java.io.File
 
-@Suppress("LeakingThis")
-sealed class Folder(name: String) : File(name) {
+sealed class Folder : File {
+    constructor(parent: String, child: String) : super(parent, child)
+    constructor(parent: File, child: String) : super(parent, child)
+
     init {
-        mkdirs()
+        @Suppress("LeakingThis") mkdirs()
     }
 }
 
-object HiddenFolder : Folder("$USER_HOME$separator.$ARTIFACT")
-object DesktopFolder : Folder("$USER_HOME${separator}Desktop")
+object MainFolder : Folder(USER_HOME, ".$ARTIFACT")
+
+object WageFolder : Folder(MainFolder, "wage")
+
+open class WageContentFolder(date: LocalDate) : Folder(WageFolder, date.toString("yyyy-MM-dd")) {
+    companion object : WageContentFolder(now())
+}

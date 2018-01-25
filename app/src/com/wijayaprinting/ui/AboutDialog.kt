@@ -1,17 +1,18 @@
 package com.wijayaprinting.ui
 
-import com.wijayaprinting.BuildConfig
+import com.wijayaprinting.BuildConfig.VERSION
 import com.wijayaprinting.R
+import com.wijayaprinting.ui.scene.control.CustomListCell
 import com.wijayaprinting.util.getFont
 import com.wijayaprinting.util.getResourceAsStream
 import javafx.event.ActionEvent.ACTION
 import javafx.geometry.Insets
 import javafx.geometry.Pos.CENTER_LEFT
+import javafx.scene.Node
 import javafx.scene.control.ButtonBar.ButtonData.CANCEL_CLOSE
 import javafx.scene.control.ButtonType
 import javafx.scene.control.ButtonType.CLOSE
 import javafx.scene.control.Dialog
-import javafx.scene.control.ListCell
 import javafx.scene.control.ListView
 import javafx.scene.image.Image
 import kotfx.*
@@ -37,11 +38,11 @@ class AboutDialog(resourced: Resourced) : Dialog<Unit>(), Resourced by resourced
                     text("Wijaya ") { font = getFont(R.ttf.lato_bold, 24) }
                     text("Printing") { font = getFont(R.ttf.lato_light, 24) }
                 }
-                text("${getString(R.string.version)} ${BuildConfig.VERSION}") { font = getFont(R.ttf.lato_regular, 12) } marginTop 2
+                text("${getString(R.string.version)} $VERSION") { font = getFont(R.ttf.lato_regular, 12) } marginTop 2
                 text(getString(R.string.about_notice)) { font = getFont(R.ttf.lato_bold, 12) } marginTop 20
                 textFlow {
                     text("${getString(R.string.powered_by)}  ") { font = getFont(R.ttf.lato_bold, 12) }
-                    text("JavaFX, MongoDB") { font = getFont(R.ttf.lato_regular, 12) }
+                    text("JavaFX") { font = getFont(R.ttf.lato_regular, 12) }
                 } marginTop 4
                 textFlow {
                     text("${getString(R.string.author)}  ") { font = getFont(R.ttf.lato_bold, 12) }
@@ -59,15 +60,10 @@ class AboutDialog(resourced: Resourced) : Dialog<Unit>(), Resourced by resourced
                 prefHeight = 256.0
                 items = License.values().toObservableList()
                 setCellFactory {
-                    object : ListCell<License>() {
-                        override fun updateItem(item: License?, empty: Boolean) {
-                            super.updateItem(item, empty)
-                            text = null
-                            graphic = null
-                            if (item != null && !empty) graphic = kotfx.vbox {
-                                label(item.repo) { font = getFont(R.ttf.lato_regular, 12) }
-                                label(item.owner) { font = getFont(R.ttf.lato_bold, 12) }
-                            }
+                    object : CustomListCell<License>() {
+                        override fun getGraphic(item: License): Node = kotfx.vbox {
+                            label(item.repo) { font = getFont(R.ttf.lato_regular, 12) }
+                            label(item.owner) { font = getFont(R.ttf.lato_bold, 12) }
                         }
                     }
                 }
@@ -98,14 +94,15 @@ class AboutDialog(resourced: Resourced) : Dialog<Unit>(), Resourced by resourced
     }
 
     enum class License(val owner: String, val repo: String, val homepage: String) {
-        APACHE_COMMONS_LANG("Apache", "commons-lang", "https://commons.apache.org/lang"),
-        APACHE_COMMONS_MATH("Apache", "commons-math", "https://commons.apache.org/math"),
-        APACHE_COMMONS_VALIDATOR("Apache", "commons-validator", "https://commons.apache.org/validator"),
+        APACHE_COMMONS_LANG("Apache", "Commons Lang", "https://commons.apache.org/lang"),
+        APACHE_COMMONS_MATH("Apache", "Commons Math", "https://commons.apache.org/math"),
+        APACHE_COMMONS_VALIDATOR("Apache", "Commons Validator", "https://commons.apache.org/validator"),
         APACHE_POI("Apache", "POI", "https://poi.apache.org"),
         GOOGLE_GUAVA("Google", "Guava", "https://github.com/google/guava"),
         HENDRAANGGRIAN_KOTFX("Hendra Anggrian", "kotfx", "https://github.com/hendraanggrian/kotfx"),
         JETBRAINS_KOTLIN("JetBrains", "Kotlin", "http://kotlinlang.org"),
         JODAORG_JODA_TIME("JodaOrg", "Joda-Time", "www.joda.org/joda-time"),
+        MONGODB_MONGO_JAVA_DRIVER("MongoDB", "Mongo Java Driver", "https://mongodb.github.io/mongo-java-driver/"),
         REACTIVEX_RXJAVAFX("ReactiveX", "RxJavaFX", "https://github.com/ReactiveX/RxJavaFX"),
         REACTIVEX_RXKOTLIN("ReactiveX", "RxKotlin", "https://github.com/ReactiveX/RxKotlin"),
         SLF4J_LOG4J12("Slf4j", "Log4j12", "https://www.slf4j.org");

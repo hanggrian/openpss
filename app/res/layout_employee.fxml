@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.VBox?>
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.wijayaprinting.ui.employee.EmployeeController">
@@ -18,10 +17,6 @@
                 <Tooltip text="%refresh"/>
             </tooltip>
         </Button>
-        <Separator/>
-        <Button fx:id="fullAccessButton" mnemonicParsing="false" onAction="#fullAccess" text="%full_access"/>
-        <Button fx:id="resetPasswordButton" mnemonicParsing="false" onAction="#resetPassword" text="%reset_password"/>
-        <Separator/>
         <Button mnemonicParsing="false" onAction="#add">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
@@ -30,6 +25,19 @@
             </graphic>
             <tooltip>
                 <Tooltip text="%add"/>
+            </tooltip>
+        </Button>
+        <Separator/>
+        <Button mnemonicParsing="false" fx:id="fullAccessButton" onAction="#fullAccess" text="%full_access"/>
+        <Button mnemonicParsing="false" fx:id="resetPasswordButton" onAction="#resetPassword" text="%reset_password"/>
+        <Button mnemonicParsing="false" fx:id="deleteButton" onAction="#delete">
+            <graphic>
+                <ImageView pickOnBounds="true" preserveRatio="true">
+                    <Image url="@btn_delete.png"/>
+                </ImageView>
+            </graphic>
+            <tooltip>
+                <Tooltip text="%delete"/>
             </tooltip>
         </Button>
     </ToolBar>

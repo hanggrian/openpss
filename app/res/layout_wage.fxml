@@ -41,6 +41,17 @@
                 <Tooltip text="%merge_close_records"/>
             </tooltip>
         </ToggleButton>
+        <Separator/>
+        <Button mnemonicParsing="false" onAction="#history">
+            <graphic>
+                <ImageView pickOnBounds="true" preserveRatio="true">
+                    <Image url="@btn_history.png"/>
+                </ImageView>
+            </graphic>
+            <tooltip>
+                <Tooltip text="%history"/>
+            </tooltip>
+        </Button>
     </ToolBar>
     <ScrollPane hbarPolicy="NEVER" minHeight="0.0" vbarPolicy="ALWAYS" VBox.vgrow="ALWAYS">
         <FlowPane fx:id="flowPane" prefWrapLength="720.0"/>

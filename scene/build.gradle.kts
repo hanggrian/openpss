@@ -15,6 +15,5 @@ dependencies {
     compile(kotlin("stdlib", kotlinVersion))
 
     compile(hendraanggrian("kotfx", kotfxVersion))
-    compile(`joda-time`)
     compile(`commons-validator`)
 }

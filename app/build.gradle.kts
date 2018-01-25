@@ -50,7 +50,7 @@ dependencies {
     implementation(project(":scene"))
 
     implementation(kotlin("stdlib", kotlinVersion))
-    implementation(kotlin("nosql-mongodb", nosqlMongodbVersion))
+    implementation(kotlin("nosql-mongodb", nosqlVersion))
 
     implementation(rx("javafx", rxjavafxVersion))
     implementation(rx("kotlin", rxkotlinVersion))

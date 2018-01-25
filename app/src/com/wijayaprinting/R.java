@@ -1,10 +1,11 @@
-// rsync generated this class at 2018-01-25T04:44:12.136 from:
+// rsync generated this class at 2018-01-26T03:22:19.936 from:
 // string_en.properties
 // btn_user_add.png
 // layout_employee.fxml
 // btn_refresh.png
 // logo_launcher.png
 // ic_calendar.png
+// btn_arrow_left.png
 // string_in.properties
 // btn_add.png
 // layout_order.fxml
@@ -15,6 +16,7 @@
 // btn_visibility.png
 // btn_clear.png
 // layout_main.fxml
+// btn_history.png
 // btn_visibility_off.png
 // layout_wage.fxml
 // ic_clock.png
@@ -35,11 +37,13 @@
 // btn_folder.png
 // layout_price_offset.fxml
 // layout_customer.fxml
+// btn_arrow_right.png
 // btn_recess.png
 // btn_clear_date.png
 // lato_light.ttf
 // layout_wage_recess.fxml
 // btn_undo.png
+// btn_image.png
 package com.wijayaprinting;
 
 import java.lang.String;
@@ -66,6 +70,8 @@ public final class R {
 
     public static final String ic_calendar = "/ic_calendar.png";
 
+    public static final String btn_arrow_left = "/btn_arrow_left.png";
+
     public static final String btn_add = "/btn_add.png";
 
     public static final String btn_checkbox_outline = "/btn_checkbox_outline.png";
@@ -77,6 +83,8 @@ public final class R {
     public static final String btn_visibility = "/btn_visibility.png";
 
     public static final String btn_clear = "/btn_clear.png";
+
+    public static final String btn_history = "/btn_history.png";
 
     public static final String btn_visibility_off = "/btn_visibility_off.png";
 
@@ -104,11 +112,15 @@ public final class R {
 
     public static final String btn_folder = "/btn_folder.png";
 
+    public static final String btn_arrow_right = "/btn_arrow_right.png";
+
     public static final String btn_recess = "/btn_recess.png";
 
     public static final String btn_clear_date = "/btn_clear_date.png";
 
     public static final String btn_undo = "/btn_undo.png";
+
+    public static final String btn_image = "/btn_image.png";
 
     private png() {
     }
@@ -172,8 +184,6 @@ public final class R {
 
     public static final String process = "process";
 
-    public static final String grant = "grant";
-
     public static final String delete_others = "delete_others";
 
     public static final String add_offset = "add_offset";
@@ -184,9 +194,9 @@ public final class R {
 
     public static final String lock_end_time = "lock_end_time";
 
-    public static final String print = "print";
+    public static final String screenshot_finished = "screenshot_finished";
 
-    public static final String please_wait_content = "please_wait_content";
+    public static final String print = "print";
 
     public static final String email = "email";
 
@@ -201,6 +211,8 @@ public final class R {
     public static final String about = "about";
 
     public static final String add = "add";
+
+    public static final String yes = "yes";
 
     public static final String start = "start";
 
@@ -221,8 +233,6 @@ public final class R {
     public static final String daily = "daily";
 
     public static final String min_price = "min_price";
-
-    public static final String block = "block";
 
     public static final String add_reccess = "add_reccess";
 
@@ -272,6 +282,8 @@ public final class R {
 
     public static final String multiple_lock_end_time = "multiple_lock_end_time";
 
+    public static final String open_folder = "open_folder";
+
     public static final String are_you_sure = "are_you_sure";
 
     public static final String overtime = "overtime";
@@ -286,11 +298,17 @@ public final class R {
 
     public static final String read = "read";
 
+    public static final String history = "history";
+
     public static final String revert = "revert";
+
+    public static final String no = "no";
 
     public static final String add_contact = "add_contact";
 
     public static final String powered_by = "powered_by";
+
+    public static final String screenshot = "screenshot";
 
     public static final String language = "language";
 

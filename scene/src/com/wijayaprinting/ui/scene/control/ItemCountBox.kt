@@ -15,7 +15,6 @@ open class ItemCountBox : ChoiceBox<ItemCountBox.Count>() {
     init {
         items = values().toObservableList()
         selectionModel.select(0)
-
         countProperty bind intBindingOf(selectionModel.selectedItemProperty()) { selectionModel.selectedItem.count }
     }
 

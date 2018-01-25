@@ -5,7 +5,9 @@ import com.wijayaprinting.PATTERN_DATETIME
 import com.wijayaprinting.R
 import com.wijayaprinting.db.schema.Recesses
 import com.wijayaprinting.db.transaction
+import com.wijayaprinting.io.WageFolder
 import com.wijayaprinting.ui.*
+import com.wijayaprinting.ui.scene.control.CustomListCell
 import com.wijayaprinting.ui.scene.control.FileField
 import com.wijayaprinting.ui.scene.control.intField
 import com.wijayaprinting.ui.wage.WageRecordController.Companion.EXTRA_ATTENDEES
@@ -30,6 +32,7 @@ import javafx.scene.text.Font.font
 import javafx.stage.Modality.APPLICATION_MODAL
 import kotfx.*
 import org.joda.time.DateTime
+import java.awt.Desktop.getDesktop
 import java.io.File
 
 class WageController : Controller() {
@@ -66,17 +69,13 @@ class WageController : Controller() {
         loader.controller._employee = _employee
     }.showAndWait()
 
-    @FXML
-    fun browse() = fileChooser(getString(R.string.input_file), *readerChoiceBox.value.extensions)
-            .showOpenDialog(fileField.scene.window)
-            ?.let { fileField.text = it.absolutePath }
+    @FXML fun browse() = fileChooser(getString(R.string.input_file), *readerChoiceBox.value.extensions).showOpenDialog(fileField.scene.window)?.let { fileField.text = it.absolutePath }
+
+    @FXML fun history() = getDesktop().open(WageFolder)
 
     @FXML
     fun read() {
-        val dialog = infoAlert(getString(R.string.please_wait_content)) {
-            headerText = getString(R.string.please_wait)
-            buttonTypes.clear()
-        }.apply { show() }
+        val dialog = infoAlert(getString(R.string.please_wait)) { buttonTypes.clear() }.apply { show() }
         flowPane.children.clear()
         Observable
                 .create<Attendee> { emitter ->
@@ -147,19 +146,14 @@ class WageController : Controller() {
                             listView = listView(attendee.attendances) {
                                 prefWidth = 128.0
                                 setCellFactory {
-                                    object : ListCell<DateTime>() {
-                                        override fun updateItem(item: DateTime?, empty: Boolean) {
-                                            super.updateItem(item, empty)
-                                            text = null
-                                            graphic = null
-                                            if (item != null && !empty) graphic = kotfx.hbox {
-                                                alignment = CENTER
-                                                label(item.toString(PATTERN_DATETIME)) { maxWidth = Double.MAX_VALUE } hpriority ALWAYS
-                                                button {
-                                                    size(17)
-                                                    graphicProperty() bind bindingOf<Node>(hoverProperty()) { if (isHover) ImageView(R.png.btn_clear) else null }
-                                                    setOnAction { listView.items.remove(item) }
-                                                }
+                                    object : CustomListCell<DateTime>() {
+                                        override fun getGraphic(item: DateTime): Node = kotfx.hbox {
+                                            alignment = CENTER
+                                            label(item.toString(PATTERN_DATETIME)) { maxWidth = Double.MAX_VALUE } hpriority ALWAYS
+                                            button {
+                                                size(17)
+                                                graphicProperty() bind bindingOf<Node>(hoverProperty()) { if (isHover) ImageView(R.png.btn_clear) else null }
+                                                setOnAction { listView.items.remove(item) }
                                             }
                                         }
                                     }

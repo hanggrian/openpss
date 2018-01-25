@@ -1,10 +1,10 @@
 const val releaseGroup = "com.wijayaprinting"
 const val releaseArtifact = "wijayaprinting"
-const val releaseDebug = true // set false when building app, true when building stage.
+const val releaseDebug = false
 const val releaseVersion = "0.7"
 
 const val kotlinVersion = "1.2.21"
-const val nosqlMongodbVersion = "0.1-SNAPSHOT"
+const val nosqlVersion = "0.1-SNAPSHOT"
 
 fun Dependency.apache(module: String, version: String) = "org.apache.${module.split("-")[0]}:$module:$version"
 val Dependency.`commons-validator` get() = "commons-validator:commons-validator:1.6"
@@ -17,6 +17,8 @@ val Dependency.guava get() = "com.google.guava:guava:23.6-jre"
 fun Dependency.hendraanggrian(module: String, version: String) = "com.hendraanggrian:$module:$version"
 inline val Plugin.rsync get() = id("rsync")
 inline val Plugin.buildconfig get() = id("buildconfig")
+const val rsyncVersion = "0.8"
+const val buildconfigVersion = "0.6"
 const val kotfxVersion = "0.19"
 
 val Dependency.`joda-time` get() = "joda-time:joda-time:2.9.9"

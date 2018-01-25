@@ -16,7 +16,7 @@ import org.joda.time.LocalTime.MIDNIGHT
 import org.joda.time.LocalTime.parse
 import org.joda.time.format.DateTimeFormat.forPattern
 
-open class TimeBox : _HBox() {
+open class TimeBox @JvmOverloads constructor(prefill: LocalTime = LocalTime(0, 0)) : _HBox() {
 
     lateinit var hourField: IntField
     lateinit var minuteField: IntField
@@ -55,21 +55,25 @@ open class TimeBox : _HBox() {
                 false
             }
         }
+
+        setTimeImpl(prefill)
     }
 
     var time: LocalTime
         get() = timeProperty.get()
-        set(value) {
-            hourField.text = value.hourOfDay.toString()
-            minuteField.text = value.minuteOfHour.toString()
-        }
+        set(value) = setTimeImpl(value)
 
     var isValid: Boolean
         get() = validProperty.get()
         set(value) = validProperty.set(value)
+
+    private fun setTimeImpl(value: LocalTime) {
+        hourField.text = value.hourOfDay.toString()
+        minuteField.text = value.minuteOfHour.toString()
+    }
 }
 
 
-@JvmOverloads inline fun timeBox(noinline init: ((@LayoutDsl TimeBox).() -> Unit)? = null): TimeBox = TimeBox().apply { init?.invoke(this) }
-@JvmOverloads inline fun ChildRoot.timeBox(noinline init: ((@LayoutDsl TimeBox).() -> Unit)? = null): TimeBox = TimeBox().apply { init?.invoke(this) }.add()
-@JvmOverloads inline fun ItemRoot.timeBox(noinline init: ((@LayoutDsl TimeBox).() -> Unit)? = null): TimeBox = TimeBox().apply { init?.invoke(this) }.add()
+@JvmOverloads inline fun timeBox(prefill: LocalTime = LocalTime(0, 0), noinline init: ((@LayoutDsl TimeBox).() -> Unit)? = null): TimeBox = TimeBox(prefill).apply { init?.invoke(this) }
+@JvmOverloads inline fun ChildRoot.timeBox(prefill: LocalTime = LocalTime(0, 0), noinline init: ((@LayoutDsl TimeBox).() -> Unit)? = null): TimeBox = TimeBox(prefill).apply { init?.invoke(this) }.add()
+@JvmOverloads inline fun ItemRoot.timeBox(prefill: LocalTime = LocalTime(0, 0), noinline init: ((@LayoutDsl TimeBox).() -> Unit)? = null): TimeBox = TimeBox(prefill).apply { init?.invoke(this) }.add()

@@ -6,8 +6,8 @@ buildscript {
     }
     dependencies {
         classpath(kotlin("gradle-plugin", kotlinVersion))
-        classpath(hendraanggrian("rsync", "0.7"))
-        classpath(hendraanggrian("buildconfig", "0.5"))
+        classpath(hendraanggrian("rsync", rsyncVersion))
+        classpath(hendraanggrian("buildconfig", buildconfigVersion))
         classpath(junitPlatform("gradle-plugin", junitPlatformVersion))
     }
 }

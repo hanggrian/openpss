@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.wijayaprinting.ui.scene.control.ExplicitDatePicker?>
 <?import com.wijayaprinting.ui.scene.control.ItemCountBox?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
@@ -19,7 +20,7 @@
             </tooltip>
         </Button>
         <TextField fx:id="customerField" promptText="%search_customer"/>
-        <DatePicker fx:id="datePicker" prefWidth="128" editable="false"/>
+        <ExplicitDatePicker fx:id="datePicker" prefWidth="128" editable="false"/>
         <Button mnemonicParsing="false" onAction="#clearDate">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">

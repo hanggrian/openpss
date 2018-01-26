@@ -12,11 +12,12 @@ import javafx.scene.image.ImageView
 import kotfx.*
 import org.joda.time.DateTime
 import org.joda.time.DateTime.now
+import org.joda.time.LocalTime.MIDNIGHT
 
 class DateTimeDialog @JvmOverloads constructor(
         resourced: Resourced,
         header: String,
-        prefill: DateTime = now()
+        prefill: DateTime = now().toLocalDate().toDateTime(MIDNIGHT)
 ) : Dialog<DateTime>(), Resourced by resourced {
 
     private lateinit var datePicker: DatePicker

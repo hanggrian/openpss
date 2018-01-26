@@ -3,7 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.wijayaprinting.ui.MainController">
+      fx:controller="com.wijayaprinting.ui.main.MainController">
     <MenuBar fx:id="menuBar">
         <fx:define>
             <ToggleGroup fx:id="navigateGroup"/>

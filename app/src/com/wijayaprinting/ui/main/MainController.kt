@@ -1,5 +1,7 @@
-package com.wijayaprinting.ui
+package com.wijayaprinting.ui.main
 
+import com.wijayaprinting.ui.Controller
+import com.wijayaprinting.ui.Refreshable
 import com.wijayaprinting.ui.customer.CustomerController
 import com.wijayaprinting.ui.employee.EmployeeController
 import com.wijayaprinting.ui.order.OrderController

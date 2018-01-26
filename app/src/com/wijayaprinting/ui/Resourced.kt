@@ -1,10 +1,12 @@
 package com.wijayaprinting.ui
 
+import com.wijayaprinting.Language
 import java.util.*
 
 /** Easier access to [ResourceBundle] across app. */
 interface Resourced {
 
+    val language: Language
     val resources: ResourceBundle
 
     fun getString(key: String): String = resources.getString(key)

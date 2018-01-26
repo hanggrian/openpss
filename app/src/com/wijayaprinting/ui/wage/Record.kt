@@ -1,7 +1,9 @@
 package com.wijayaprinting.ui.wage
 
+import com.wijayaprinting.Language
 import com.wijayaprinting.PATTERN_DATETIME
 import com.wijayaprinting.R
+import com.wijayaprinting.START_OF_TIME
 import com.wijayaprinting.ui.Resourced
 import com.wijayaprinting.util.rounded
 import javafx.beans.property.*
@@ -40,7 +42,7 @@ class Record @JvmOverloads constructor(
         const val INDEX_TOTAL = -1
 
         /** Dummy for invisible [javafx.scene.control.TreeTableView] root. */
-        fun getDummy(resourced: Resourced) = Record(resourced, Int.MIN_VALUE, Attendee, DateTime(0).asProperty(), DateTime(0).asProperty())
+        fun getDummy(resourced: Resourced) = Record(resourced, Int.MIN_VALUE, Attendee, START_OF_TIME.asProperty(), START_OF_TIME.asProperty())
     }
 
     init {
@@ -106,15 +108,11 @@ class Record @JvmOverloads constructor(
         get() = SimpleStringProperty().apply {
             bind(stringBindingOf(endProperty, dailyEmptyProperty) {
                 when {
-                    isNode -> {
-                        val days = attendee.attendances.size / 2
-                        val word = getString(R.string.day).let {
-                            when {
-                                days > 0 && it == "day" -> "days"
-                                else -> it
-                            }
-                        }
-                        "$days $word"
+                    isNode -> (attendee.attendances.size / 2).let { days ->
+                        "$days ${when {
+                            days > 0 && language == Language.ENGLISH -> "days"
+                            else -> getString(R.string.day)
+                        }}"
                     }
                     isChild -> end.toString(PATTERN_DATETIME).let { if (isDailyEmpty) "($it)" else it }
                     isTotal -> "TOTAL"

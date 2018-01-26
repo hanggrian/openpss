@@ -17,7 +17,7 @@ import org.joda.time.LocalTime.parse
 import org.joda.time.format.DateTimeFormat.forPattern
 
 /** Two fields (hour and minute) that represents [LocalTime]. */
-open class TimeBox @JvmOverloads constructor(prefill: LocalTime = LocalTime(0, 0)) : _HBox() {
+open class TimeBox @JvmOverloads constructor(prefill: LocalTime = MIDNIGHT) : _HBox() {
 
     lateinit var hourField: IntField
     lateinit var minuteField: IntField
@@ -75,6 +75,6 @@ open class TimeBox @JvmOverloads constructor(prefill: LocalTime = LocalTime(0, 0
 }
 
 
-@JvmOverloads inline fun timeBox(prefill: LocalTime = LocalTime(0, 0), noinline init: ((@LayoutDsl TimeBox).() -> Unit)? = null): TimeBox = TimeBox(prefill).apply { init?.invoke(this) }
-@JvmOverloads inline fun ChildRoot.timeBox(prefill: LocalTime = LocalTime(0, 0), noinline init: ((@LayoutDsl TimeBox).() -> Unit)? = null): TimeBox = TimeBox(prefill).apply { init?.invoke(this) }.add()
-@JvmOverloads inline fun ItemRoot.timeBox(prefill: LocalTime = LocalTime(0, 0), noinline init: ((@LayoutDsl TimeBox).() -> Unit)? = null): TimeBox = TimeBox(prefill).apply { init?.invoke(this) }.add()
+@JvmOverloads inline fun timeBox(prefill: LocalTime = MIDNIGHT, noinline init: ((@LayoutDsl TimeBox).() -> Unit)? = null): TimeBox = TimeBox(prefill).apply { init?.invoke(this) }
+@JvmOverloads inline fun ChildRoot.timeBox(prefill: LocalTime = MIDNIGHT, noinline init: ((@LayoutDsl TimeBox).() -> Unit)? = null): TimeBox = TimeBox(prefill).apply { init?.invoke(this) }.add()
+@JvmOverloads inline fun ItemRoot.timeBox(prefill: LocalTime = MIDNIGHT, noinline init: ((@LayoutDsl TimeBox).() -> Unit)? = null): TimeBox = TimeBox(prefill).apply { init?.invoke(this) }.add()

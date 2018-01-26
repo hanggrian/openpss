@@ -27,7 +27,6 @@ import java.awt.Desktop.getDesktop
 import java.io.IOException
 import java.text.NumberFormat.getCurrencyInstance
 
-
 class WageRecordController : Controller() {
 
     companion object {

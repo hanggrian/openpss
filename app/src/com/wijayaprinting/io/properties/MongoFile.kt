@@ -4,7 +4,7 @@ import com.mongodb.ServerAddress.defaultPort
 import javafx.beans.property.StringProperty
 
 /** Properties file for MongoDB connection. */
-object DatabaseFile : PropertiesFile("db") {
+object MongoFile : PropertiesFile("mongo") {
 
     override val pairs: Array<Pair<String, String>>
         get() = arrayOf(

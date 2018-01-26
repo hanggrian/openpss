@@ -1,10 +1,10 @@
-package com.wijayaprinting.ui
+package com.wijayaprinting.ui.main
 
 import com.wijayaprinting.BuildConfig.VERSION
 import com.wijayaprinting.R
+import com.wijayaprinting.ui.Resourced
 import com.wijayaprinting.ui.scene.control.GraphicListCell
 import com.wijayaprinting.util.getFont
-import com.wijayaprinting.util.getResourceAsStream
 import javafx.event.ActionEvent.ACTION
 import javafx.geometry.Insets
 import javafx.geometry.Pos.CENTER_LEFT
@@ -17,10 +17,7 @@ import javafx.scene.control.ListView
 import javafx.scene.image.Image
 import kotfx.*
 import java.awt.Desktop.getDesktop
-import java.io.BufferedReader
-import java.io.InputStreamReader
 import java.net.URI
-import java.util.stream.Collectors.joining
 
 class AboutDialog(resourced: Resourced) : Dialog<Unit>(), Resourced by resourced {
 
@@ -49,8 +46,8 @@ class AboutDialog(resourced: Resourced) : Dialog<Unit>(), Resourced by resourced
                     text("Hendra Anggrian") { font = getFont(R.ttf.lato_regular, 12) }
                 } marginTop 4
                 hbox {
-                    button("GitHub") { setOnAction { browse("https://github.com/hendraanggrian/wijayaprinting") } }
-                    button(getString(R.string.check_for_updates)) { setOnAction { browse("https://github.com/hendraanggrian/wijayaprinting") } } marginLeft 8
+                    button("GitHub") { setOnAction { getDesktop().browse(URI("https://github.com/hendraanggrian/wijayaprinting")) } }
+                    button(getString(R.string.check_for_updates)) { setOnAction { getDesktop().browse(URI("https://github.com/hendraanggrian/wijayaprinting/releases")) } } marginLeft 8
                 } marginTop 20
             } marginLeft 48
         }
@@ -81,35 +78,9 @@ class AboutDialog(resourced: Resourced) : Dialog<Unit>(), Resourced by resourced
             visibleProperty() bind (dialogPane.expandedProperty() and booleanBindingOf(listView.selectionModel.selectedIndexProperty()) { listView.selectionModel.selectedItem != null })
             addEventFilter(ACTION) {
                 it.consume()
-                browse(listView.selectionModel.selectedItem.homepage)
+                getDesktop().browse(URI(listView.selectionModel.selectedItem.homepage))
             }
         }
         button(CLOSE)
-    }
-
-    private fun browse(url: String) = try {
-        getDesktop().browse(URI(url))
-    } catch (e: Exception) {
-        errorAlert(e.message.toString()).showAndWait()
-    }
-
-    enum class License(val owner: String, val repo: String, val homepage: String) {
-        APACHE_COMMONS_LANG("Apache", "Commons Lang", "https://commons.apache.org/lang"),
-        APACHE_COMMONS_MATH("Apache", "Commons Math", "https://commons.apache.org/math"),
-        APACHE_COMMONS_VALIDATOR("Apache", "Commons Validator", "https://commons.apache.org/validator"),
-        APACHE_POI("Apache", "POI", "https://poi.apache.org"),
-        GOOGLE_GUAVA("Google", "Guava", "https://github.com/google/guava"),
-        HENDRAANGGRIAN_KOTFX("Hendra Anggrian", "kotfx", "https://github.com/hendraanggrian/kotfx"),
-        JETBRAINS_KOTLIN("JetBrains", "Kotlin", "http://kotlinlang.org"),
-        JODAORG_JODA_TIME("JodaOrg", "Joda-Time", "www.joda.org/joda-time"),
-        MONGODB_MONGO_JAVA_DRIVER("MongoDB", "Mongo Java Driver", "https://mongodb.github.io/mongo-java-driver/"),
-        REACTIVEX_RXJAVAFX("ReactiveX", "RxJavaFX", "https://github.com/ReactiveX/RxJavaFX"),
-        REACTIVEX_RXKOTLIN("ReactiveX", "RxKotlin", "https://github.com/ReactiveX/RxKotlin"),
-        SLF4J_LOG4J12("Slf4j", "Log4j12", "https://www.slf4j.org");
-
-        val content: String
-            get() = getResourceAsStream("/${name.toLowerCase()}.txt").use {
-                return BufferedReader(InputStreamReader(it)).lines().collect(joining("\n"))
-            }
     }
 }

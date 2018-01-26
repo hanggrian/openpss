@@ -33,7 +33,6 @@ import javafx.stage.Modality.APPLICATION_MODAL
 import kotfx.*
 import org.joda.time.DateTime
 import java.awt.Desktop.getDesktop
-import java.io.File
 
 class WageController : Controller() {
 
@@ -80,7 +79,7 @@ class WageController : Controller() {
         Observable
                 .create<Attendee> { emitter ->
                     try {
-                        readerChoiceBox.selectionModel.selectedItem.read(File(fileField.text)).forEach {
+                        readerChoiceBox.selectionModel.selectedItem.read(fileField.file).forEach {
                             if (mergeToggleButton.isSelected) it.mergeDuplicates()
                             emitter.onNext(it)
                         }
@@ -163,7 +162,7 @@ class WageController : Controller() {
                         contextMenu = contextMenu {
                             menuItem(getString(R.string.add)) {
                                 setOnAction {
-                                    DateTimeDialog(this@WageController, getString(R.string.add_record), listView.selectionModel.selectedItem)
+                                    DateTimeDialog(this@WageController, getString(R.string.add_record))
                                             .showAndWait()
                                             .ifPresent {
                                                 listView.items.add(it)

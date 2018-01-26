@@ -1,4 +1,4 @@
-// rsync generated this class at 2018-01-26T03:22:19.936 from:
+// rsync generated this class at 2018-01-26T19:46:32.897 from:
 // string_en.properties
 // btn_user_add.png
 // layout_employee.fxml
@@ -19,6 +19,7 @@
 // btn_history.png
 // btn_visibility_off.png
 // layout_wage.fxml
+// btn_screenshot.png
 // ic_clock.png
 // ic_key.png
 // style_treetableview_print.css
@@ -43,7 +44,6 @@
 // lato_light.ttf
 // layout_wage_recess.fxml
 // btn_undo.png
-// btn_image.png
 package com.wijayaprinting;
 
 import java.lang.String;
@@ -88,6 +88,8 @@ public final class R {
 
     public static final String btn_visibility_off = "/btn_visibility_off.png";
 
+    public static final String btn_screenshot = "/btn_screenshot.png";
+
     public static final String ic_clock = "/ic_clock.png";
 
     public static final String ic_key = "/ic_key.png";
@@ -119,8 +121,6 @@ public final class R {
     public static final String btn_clear_date = "/btn_clear_date.png";
 
     public static final String btn_undo = "/btn_undo.png";
-
-    public static final String btn_image = "/btn_image.png";
 
     private png() {
     }

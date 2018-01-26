@@ -2,7 +2,7 @@
 
 package com.wijayaprinting.ui.scene.control
 
-import com.wijayaprinting.asJava
+import com.wijayaprinting.toJava
 import javafx.scene.control.DatePicker
 import kotfx.ChildRoot
 import kotfx.ItemRoot
@@ -14,7 +14,7 @@ import org.joda.time.LocalDate.now
 open class ExplicitDatePicker @JvmOverloads constructor(prefill: LocalDate = now()) : DatePicker() {
 
     init {
-        value = prefill.asJava()
+        value = prefill.toJava()
         isEditable = false
         maxWidth = 128.0
     }

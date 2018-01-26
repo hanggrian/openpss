@@ -9,6 +9,9 @@ import java.util.*
 /**
  * Represents a file of [Properties] that acts as local settings.
  * It is saved as hidden file located in [MainFolder].
+ *
+ * Since it is hidden, some systems will misrepresent file name as extension.
+ * To avoid this issue, use an unusual name that is not a known file extension.
  */
 @Suppress("LeakingThis")
 abstract class PropertiesFile(

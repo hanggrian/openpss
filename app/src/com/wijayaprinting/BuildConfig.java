@@ -1,4 +1,4 @@
-// buildconfig generated this class at 2018-01-26T04:42:31.886.
+// buildconfig generated this class at 2018-01-26T19:46:44.586.
 package com.wijayaprinting;
 
 import java.lang.String;
@@ -8,7 +8,7 @@ public final class BuildConfig {
 
   public static final String VERSION = "0.7";
 
-  public static final boolean DEBUG = false;
+  public static final boolean DEBUG = true;
 
   private BuildConfig() {
   }

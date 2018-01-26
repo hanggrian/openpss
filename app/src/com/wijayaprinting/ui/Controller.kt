@@ -9,10 +9,11 @@ import java.util.*
 /** Base class of all controllers. */
 abstract class Controller : Resourced, EmployeeHolder {
 
-    override val resources: ResourceBundle = Language.from(ConfigFile.language.get()).resources
-    override lateinit var _employee: Employee
-
     @FXML abstract fun initialize()
+
+    final override val language: Language = Language.from(ConfigFile.language.get())
+    override val resources: ResourceBundle = language.resources
+    override lateinit var _employee: Employee
 
     private var extras: MutableMap<String, Any>? = null
 

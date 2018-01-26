@@ -12,6 +12,7 @@ const val commonsLangVersion = "3.7"
 const val commonsMathVersion = "3.6.1"
 const val poiVersion = "3.17"
 
+/** Multimap is crucial here. */
 val Dependency.guava get() = "com.google.guava:guava:23.6-jre"
 
 fun Dependency.hendraanggrian(module: String, version: String) = "com.hendraanggrian:$module:$version"
@@ -21,6 +22,7 @@ const val rsyncVersion = "0.8"
 const val buildconfigVersion = "0.6"
 const val kotfxVersion = "0.19"
 
+/** Only used because kotlin-nosql depends on it. */
 val Dependency.`joda-time` get() = "joda-time:joda-time:2.9.9"
 
 fun Dependency.rx(module: String, version: String) = "io.reactivex.rxjava2:rx$module:$version"

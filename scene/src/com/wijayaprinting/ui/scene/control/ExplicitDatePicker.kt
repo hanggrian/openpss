@@ -10,6 +10,7 @@ import kotfx.LayoutDsl
 import org.joda.time.LocalDate
 import org.joda.time.LocalDate.now
 
+/** A [DatePicker] that always has a valid value. */
 open class ExplicitDatePicker @JvmOverloads constructor(prefill: LocalDate = now()) : DatePicker() {
 
     init {

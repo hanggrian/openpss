@@ -8,6 +8,7 @@ import javafx.scene.control.TextField
 import kotfx.*
 import java.io.File
 
+/** Field that display file or directory path. */
 open class FileField : TextField() {
 
     val validProperty: BooleanProperty = SimpleBooleanProperty()

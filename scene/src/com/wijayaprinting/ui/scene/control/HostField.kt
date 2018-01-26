@@ -8,6 +8,7 @@ import javafx.scene.control.TextField
 import kotfx.*
 import org.apache.commons.validator.routines.InetAddressValidator.getInstance
 
+/** Field that display IP address. */
 open class HostField : TextField() {
 
     val validProperty: BooleanProperty = SimpleBooleanProperty()

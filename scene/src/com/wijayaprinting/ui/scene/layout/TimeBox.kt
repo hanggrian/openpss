@@ -16,6 +16,7 @@ import org.joda.time.LocalTime.MIDNIGHT
 import org.joda.time.LocalTime.parse
 import org.joda.time.format.DateTimeFormat.forPattern
 
+/** Two fields (hour and minute) that represents [LocalTime]. */
 open class TimeBox @JvmOverloads constructor(prefill: LocalTime = LocalTime(0, 0)) : _HBox() {
 
     lateinit var hourField: IntField

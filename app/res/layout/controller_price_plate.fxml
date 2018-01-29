@@ -10,7 +10,7 @@
         <Button mnemonicParsing="false" onAction="#refresh">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@btn_refresh.png"/>
+                    <Image url="@/image/btn_refresh.png"/>
                 </ImageView>
             </graphic>
             <tooltip>
@@ -20,7 +20,7 @@
         <Button mnemonicParsing="false" onAction="#add">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@btn_add.png"/>
+                    <Image url="@/image/btn_add.png"/>
                 </ImageView>
             </graphic>
             <tooltip>
@@ -30,7 +30,7 @@
         <Button mnemonicParsing="false" fx:id="deleteButton" onAction="#delete">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@btn_delete.png"/>
+                    <Image url="@/image/btn_delete.png"/>
                 </ImageView>
             </graphic>
             <tooltip>

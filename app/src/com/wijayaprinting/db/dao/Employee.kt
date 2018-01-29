@@ -2,9 +2,6 @@ package com.wijayaprinting.db.dao
 
 import com.wijayaprinting.db.Named
 import com.wijayaprinting.db.schema.Employees
-import javafx.beans.property.BooleanProperty
-import javafx.beans.property.StringProperty
-import kotfx.asMutableProperty
 import kotlinx.nosql.Id
 
 open class Employee(

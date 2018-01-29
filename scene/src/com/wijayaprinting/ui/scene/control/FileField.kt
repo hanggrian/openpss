@@ -20,23 +20,19 @@ open class FileField @JvmOverloads constructor(scope: Scope = FILE) : TextField(
     val validProperty: BooleanProperty = SimpleBooleanProperty()
 
     init {
-        fileProperty bind bindingOf(textProperty()) { File(text) }
-        validProperty bind booleanBindingOf(textProperty()) {
+        fileProperty.bind(bindingOf(textProperty()) { File(text) })
+        validProperty.bind(booleanBindingOf(textProperty()) {
             !file.exists() || when (scope) {
                 FILE -> !file.isFile
                 FOLDER -> !file.isDirectory
                 else -> false
             }
-        }
+        })
     }
 
-    var file: File
-        get() = fileProperty.get()
-        set(value) = fileProperty.set(value)
+    val file: File get() = fileProperty.get()
 
-    var isValid: Boolean
-        get() = validProperty.get()
-        set(value) = validProperty.set(value)
+    val isValid: Boolean get() = validProperty.get()
 
     enum class Scope {
         FILE, FOLDER, ANY

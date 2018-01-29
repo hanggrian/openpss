@@ -41,37 +41,29 @@ open class TimeBox @JvmOverloads constructor(prefill: LocalTime = MIDNIGHT) : _H
             textProperty().addListener { _, oldValue, newValue -> if (newValue.toIntOrNull() ?: 0 !in 0 until 60) minuteField.text = oldValue }
         }
 
-        timeProperty bind bindingOf(hourField.valueProperty, minuteField.valueProperty) {
+        timeProperty.bind(bindingOf(hourField.valueProperty, minuteField.valueProperty) {
             try {
                 parse("${hourField.value}:${minuteField.value}", forPattern(PATTERN_TIME))
             } catch (e: Exception) {
                 MIDNIGHT
             }
-        }
-        validProperty bind booleanBindingOf(hourField.valueProperty, minuteField.valueProperty) {
+        })
+        validProperty.bind(booleanBindingOf(hourField.valueProperty, minuteField.valueProperty) {
             try {
                 parse("${hourField.value}:${minuteField.value}", forPattern(PATTERN_TIME))
                 true
             } catch (e: Exception) {
                 false
             }
-        }
+        })
 
-        setTimeImpl(prefill)
+        hourField.text = prefill.hourOfDay.toString()
+        minuteField.text = prefill.minuteOfHour.toString()
     }
 
-    var time: LocalTime
-        get() = timeProperty.get()
-        set(value) = setTimeImpl(value)
+    val time: LocalTime get() = timeProperty.get()
 
-    var isValid: Boolean
-        get() = validProperty.get()
-        set(value) = validProperty.set(value)
-
-    private fun setTimeImpl(value: LocalTime) {
-        hourField.text = value.hourOfDay.toString()
-        minuteField.text = value.minuteOfHour.toString()
-    }
+    val isValid: Boolean get() = validProperty.get()
 }
 
 

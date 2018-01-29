@@ -48,20 +48,20 @@ class WageController : Controller() {
         readerChoiceBox.items = Reader.listAll()
         if (readerChoiceBox.items.isNotEmpty()) readerChoiceBox.selectionModel.select(0)
 
-        employeeCountLabel.textProperty() bind stringBindingOf(flowPane.children) { "${flowPane.children.size} ${getString(R.string.employee)}" }
-        readButton.disableProperty() bind fileField.validProperty
-        processButton.disableProperty() bind flowPane.children.isEmpty
+        employeeCountLabel.textProperty().bind(stringBindingOf(flowPane.children) { "${flowPane.children.size} ${getString(R.string.employee)}" })
+        readButton.disableProperty().bind(fileField.validProperty)
+        processButton.disableProperty().bind(flowPane.children.isEmpty)
 
         if (DEBUG) {
             fileField.text = "/Users/hendraanggrian/Downloads/Absen 11-25-17.xlsx"
             readButton.fire()
         }
-        runLater { flowPane.prefWrapLengthProperty() bind fileField.scene.widthProperty() }
+        runLater { flowPane.prefWrapLengthProperty().bind(fileField.scene.widthProperty()) }
     }
 
     @FXML
     fun recess() = stage(getString(R.string.recess)) {
-        val loader = getResource(R.fxml.layout_wage_recess).loadFXML(resources)
+        val loader = getResource(R.layout.controller_wage_recess).loadFXML(resources)
         initModality(APPLICATION_MODAL)
         scene = loader.pane.toScene()
         isResizable = false
@@ -116,14 +116,14 @@ class WageController : Controller() {
                                 intField {
                                     prefWidth = 100.0
                                     promptText = getString(R.string.income)
-                                    valueProperty bindBidirectional attendee.dailyProperty
+                                    valueProperty.bindBidirectional(attendee.dailyProperty)
                                 } col 1 row 1
                                 label("@${getString(R.string.day)}") { font = font(9.0) } col 2 row 1
                                 label(getString(R.string.overtime)) col 0 row 2 marginRight 4
                                 intField {
                                     prefWidth = 96.0
                                     promptText = getString(R.string.overtime)
-                                    valueProperty bindBidirectional attendee.hourlyOvertimeProperty
+                                    valueProperty.bindBidirectional(attendee.hourlyOvertimeProperty)
                                 } col 1 row 2
                                 label("@${getString(R.string.hour)}") { font = font(9.0) } col 2 row 2
                                 label(getString(R.string.recess)) col 0 row 3 marginRight 4
@@ -151,7 +151,7 @@ class WageController : Controller() {
                                             label(item.toString(PATTERN_DATETIME)) { maxWidth = Double.MAX_VALUE } hpriority ALWAYS
                                             button {
                                                 size(17)
-                                                graphicProperty() bind bindingOf<Node>(hoverProperty()) { if (isHover) ImageView(R.png.btn_clear) else null }
+                                                graphicProperty().bind(bindingOf<Node>(hoverProperty()) { if (isHover) ImageView(R.image.btn_clear) else null })
                                                 setOnAction { listView.items.remove(item) }
                                             }
                                         }
@@ -171,7 +171,7 @@ class WageController : Controller() {
                                 }
                             }
                             menuItem(getString(R.string.edit)) {
-                                disableProperty() bind listView.selectionModel.selectedItems.isEmpty
+                                disableProperty().bind(listView.selectionModel.selectedItems.isEmpty)
                                 setOnAction {
                                     DateTimeDialog(this@WageController, getString(R.string.edit_record), listView.selectionModel.selectedItem)
                                             .showAndWait()
@@ -191,21 +191,21 @@ class WageController : Controller() {
                                 }
                             }
                             menuItem(getString(R.string.delete_others)) {
-                                disableProperty() bind (flowPane.children.sizeBinding lessEq 1)
+                                disableProperty().bind(flowPane.children.sizeBinding lessEq 1)
                                 setOnAction {
                                     flowPane.children.removeAll(flowPane.children.toMutableList().apply { remove(this@titledPane) })
                                     rebindProcessButton()
                                 }
                             }
                             menuItem(getString(R.string.delete_employees_to_the_right)) {
-                                disableProperty() bind booleanBindingOf(flowPane.children) { flowPane.children.indexOf(this@titledPane) == flowPane.children.lastIndex }
+                                disableProperty().bind(booleanBindingOf(flowPane.children) { flowPane.children.indexOf(this@titledPane) == flowPane.children.lastIndex })
                                 setOnAction {
                                     flowPane.children.removeAll(flowPane.children.toList().takeLast(flowPane.children.lastIndex - flowPane.children.indexOf(this@titledPane)))
                                     rebindProcessButton()
                                 }
                             }
                         }
-                        graphic = imageView { imageProperty() bind (`if`(booleanBindingOf(listView.items) { listView.items.size % 2 == 0 }) then Image(R.png.btn_checkbox) `else` Image(R.png.btn_checkbox_outline)) }
+                        graphic = imageView { imageProperty().bind(`if`(booleanBindingOf(listView.items) { listView.items.size % 2 == 0 }) then Image(R.image.btn_checkbox) `else` Image(R.image.btn_checkbox_outline)) }
                     })
                 }
     }
@@ -218,7 +218,7 @@ class WageController : Controller() {
             set.add(attendee)
         }
         stage {
-            val loader = getResource(R.fxml.layout_wage_record).loadFXML(resources)
+            val loader = getResource(R.layout.controller_wage_record).loadFXML(resources)
             scene = loader.pane.toScene()
             minWidth = 960.0
             minHeight = 640.0
@@ -230,7 +230,7 @@ class WageController : Controller() {
     private val attendees: List<Attendee> get() = flowPane.children.map { it.userData as Attendee }
 
     /** As attendees are populated, process button need to be rebinded according to new requirements. */
-    private fun rebindProcessButton() = processButton.disableProperty() rebind (flowPane.children.isEmpty or booleanBindingOf(flowPane.children, *flowPane.children.map { (it as TitledPane).content }.map { (it as Pane).children[1] as ListView<*> }.map { it.items }.toTypedArray()) {
+    private fun rebindProcessButton() = processButton.disableProperty().bind(flowPane.children.isEmpty or booleanBindingOf(flowPane.children, *flowPane.children.map { (it as TitledPane).content }.map { (it as Pane).children[1] as ListView<*> }.map { it.items }.toTypedArray()) {
         attendees.any { it.attendances.size % 2 != 0 }
     })
 }

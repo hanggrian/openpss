@@ -8,7 +8,6 @@ import com.wijayaprinting.db.transaction
 import com.wijayaprinting.ui.AddUserDialog
 import com.wijayaprinting.ui.Controller
 import com.wijayaprinting.ui.Refreshable
-import com.wijayaprinting.util.forceExit
 import com.wijayaprinting.util.tidy
 import javafx.fxml.FXML
 import javafx.scene.control.Button
@@ -34,11 +33,11 @@ class EmployeeController : Controller(), Refreshable {
 
     override fun initialize() {
         arrayOf(fullAccessButton, resetPasswordButton, deleteButton).forEach {
-            it.disableProperty() bind employeeTable.selectionModel.selectedItemProperty().isNull
+            it.disableProperty().bind(employeeTable.selectionModel.selectedItemProperty().isNull)
         }
 
-        nameColumn.setCellValueFactory { it.value.name.asProperty() }
-        fullAccessColumn.setCellValueFactory { getString(if (it.value.fullAccess) R.string.yes else R.string.no).asProperty() }
+        nameColumn.setCellValueFactory { it.value.name.toProperty() }
+        fullAccessColumn.setCellValueFactory { getString(if (it.value.fullAccess) R.string.yes else R.string.no).toProperty() }
         fullAccessColumn.cellFactory = forTableColumn<Employee, String>(*getStringArray(R.string.yes, R.string.no))
         fullAccessColumn.setOnEditCommit { event ->
             val result = event.newValue == getString(R.string.yes)
@@ -72,7 +71,7 @@ class EmployeeController : Controller(), Refreshable {
                     transaction { confirmedAction(employee) }
                     when {
                         employee.name != employeeName -> refresh()
-                        else -> infoAlert(getString(R.string.please_restart)).showAndWait().ifPresent { forceExit() }
+                        else -> infoAlert(getString(R.string.please_restart)).showAndWait().ifPresent { exit() }
                     }
                 }
             }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.wijayaprinting.ui.scene.control.ItemCountBox?>
+<?import com.wijayaprinting.ui.scene.control.CountBox?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.Image?>
@@ -13,7 +13,7 @@
         <Button mnemonicParsing="false" onAction="#refresh">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@btn_refresh.png"/>
+                    <Image url="@/image/btn_refresh.png"/>
                 </ImageView>
             </graphic>
             <tooltip>
@@ -21,12 +21,12 @@
             </tooltip>
         </Button>
         <TextField fx:id="customerField" promptText="%search_customer"/>
-        <ItemCountBox fx:id="itemCountBox"/>
+        <CountBox fx:id="countBox"/>
         <Separator/>
         <Button mnemonicParsing="false" onAction="#add">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@btn_user_add.png"/>
+                    <Image url="@/image/btn_user_add.png"/>
                 </ImageView>
             </graphic>
             <tooltip>

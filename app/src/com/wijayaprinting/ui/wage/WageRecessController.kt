@@ -30,9 +30,9 @@ class WageRecessController : Controller(), Refreshable {
     @FXML lateinit var endColumn: TableColumn<Recess, String>
 
     override fun initialize() {
-        deleteButton.disableProperty() bind recessTable.selectionModel.selectedItemProperty().isNull
-        startColumn.setCellValueFactory { it.value.start.toString(PATTERN_TIME).asProperty() }
-        endColumn.setCellValueFactory { it.value.end.toString(PATTERN_TIME).asProperty() }
+        deleteButton.disableProperty().bind(recessTable.selectionModel.selectedItemProperty().isNull)
+        startColumn.setCellValueFactory { it.value.start.toString(PATTERN_TIME).toProperty() }
+        endColumn.setCellValueFactory { it.value.end.toString(PATTERN_TIME).toProperty() }
         refresh()
     }
 
@@ -41,7 +41,7 @@ class WageRecessController : Controller(), Refreshable {
     }
 
     @FXML
-    fun add() = dialog<Pair<LocalTime, LocalTime>>(getString(R.string.add_reccess), getString(R.string.add_reccess), ImageView(R.png.ic_clock)) {
+    fun add() = dialog<Pair<LocalTime, LocalTime>>(getString(R.string.add_reccess), getString(R.string.add_reccess), ImageView(R.image.ic_clock)) {
         lateinit var startBox: TimeBox
         lateinit var endBox: TimeBox
         content = gridPane {
@@ -52,7 +52,7 @@ class WageRecessController : Controller(), Refreshable {
             endBox = timeBox() col 1 row 1
         }
         button(CANCEL)
-        button(OK).disableProperty() bind booleanBindingOf(startBox.timeProperty, endBox.timeProperty) { startBox.time >= endBox.time }
+        button(OK).disableProperty().bind(booleanBindingOf(startBox.timeProperty, endBox.timeProperty) { startBox.time >= endBox.time })
         setResultConverter { if (it == OK) Pair(startBox.time, endBox.time) else null }
     }.showAndWait().ifPresent { (start, end) ->
         val recess = Recess(start, end)

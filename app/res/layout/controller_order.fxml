@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.wijayaprinting.ui.scene.control.ExplicitDatePicker?>
-<?import com.wijayaprinting.ui.scene.control.ItemCountBox?>
+<?import com.wijayaprinting.ui.scene.control.CountBox?>
+<?import com.wijayaprinting.ui.scene.control.ForcedDatePicker?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.VBox?>
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.wijayaprinting.ui.order.OrderController">
@@ -12,7 +13,7 @@
         <Button mnemonicParsing="false" onAction="#refresh">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@btn_refresh.png"/>
+                    <Image url="@/image/btn_refresh.png"/>
                 </ImageView>
             </graphic>
             <tooltip>
@@ -20,24 +21,14 @@
             </tooltip>
         </Button>
         <TextField fx:id="customerField" promptText="%search_customer"/>
-        <ExplicitDatePicker fx:id="datePicker" prefWidth="128" editable="false"/>
-        <Button mnemonicParsing="false" onAction="#clearDate">
-            <graphic>
-                <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@btn_clear_date.png"/>
-                </ImageView>
-            </graphic>
-            <tooltip>
-                <Tooltip text="%add_plate"/>
-            </tooltip>
-        </Button>
+        <ForcedDatePicker fx:id="datePicker"/>
         <ChoiceBox fx:id="statusBox"/>
-        <ItemCountBox/>
+        <CountBox fx:id="countBox"/>
         <Separator/>
         <Button mnemonicParsing="false" onAction="#add">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@btn_add.png"/>
+                    <Image url="@/image/btn_add.png"/>
                 </ImageView>
             </graphic>
             <tooltip>

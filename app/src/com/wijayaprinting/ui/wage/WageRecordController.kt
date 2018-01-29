@@ -50,9 +50,9 @@ class WageRecordController : Controller() {
     @FXML lateinit var totalColumn: TreeTableColumn<Record, Double>
 
     override fun initialize() {
-        undoButton.disableProperty() bind undoButton.items.isEmpty
+        undoButton.disableProperty().bind(undoButton.items.isEmpty)
         arrayOf(lockStartButton, lockEndButton).forEach {
-            it.disableProperty() bind (recordTable.selectionModel.selectedItemProperty().isNull or booleanBindingOf(recordTable.selectionModel.selectedItemProperty()) {
+            it.disableProperty().bind(recordTable.selectionModel.selectedItemProperty().isNull or booleanBindingOf(recordTable.selectionModel.selectedItemProperty()) {
                 recordTable.selectionModel.selectedItems?.any { !it.value.isChild } ?: true
             })
         }
@@ -61,7 +61,7 @@ class WageRecordController : Controller() {
         recordTable.root = TreeItem(getDummy(this))
         recordTable.isShowRoot = false
 
-        nameColumn.setCellValueFactory { it.value.value.displayedName.asProperty().asObservable() }
+        nameColumn.setCellValueFactory { it.value.value.displayedName.toProperty().asObservable() }
         startColumn.setCellValueFactory { it.value.value.displayedStart }
         endColumn.setCellValueFactory { it.value.value.displayedEnd }
         dailyColumn.setCellValueFactory { it.value.value.dailyProperty.asObservable() }
@@ -81,13 +81,13 @@ class WageRecordController : Controller() {
                     children.addAll(*childs.map { TreeItem(it) }.toTypedArray(), TreeItem(total))
                 })
             }
-            getExtra<Stage>(EXTRA_STAGE).titleProperty() bind stringBindingOf(*records.filter { it.isChild }.map { it.totalProperty }.toTypedArray()) {
+            getExtra<Stage>(EXTRA_STAGE).titleProperty().bind(stringBindingOf(*records.filter { it.isChild }.map { it.totalProperty }.toTypedArray()) {
                 getCurrencyInstance().format(records
                         .filter { it.isTotal }
                         .map { it.totalProperty.value }
                         .sum())
                         .let { s -> "${getString(R.string.record)} (${s.withoutCurrency})" }
-            }
+            })
         }
     }
 
@@ -141,7 +141,7 @@ class WageRecordController : Controller() {
             }
 
     @FXML
-    fun screenshot() = getExternalForm(R.css.style_treetableview_print).let { printStyle ->
+    fun screenshot() = getExternalForm(R.style.treetableview_print).let { printStyle ->
         Completable
                 .create { emitter ->
                     recordTable.stylesheets.add(printStyle)

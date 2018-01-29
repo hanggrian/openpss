@@ -8,6 +8,7 @@ import javafx.scene.control.ButtonType.CANCEL
 import javafx.scene.control.ButtonType.OK
 import javafx.scene.control.DatePicker
 import javafx.scene.control.Dialog
+import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import kotfx.*
 import org.joda.time.DateTime
@@ -24,27 +25,28 @@ class DateTimeDialog @JvmOverloads constructor(
     private lateinit var timeBox: TimeBox
 
     init {
+        icon = Image(R.image.ic_launcher)
         title = header
         headerText = header
-        graphic = ImageView(R.png.ic_calendar)
+        graphic = ImageView(R.image.ic_calendar)
         content = gridPane {
             gap(8)
 
             datePicker = explicitDatePicker(prefill.toLocalDate()) col 1 row 0
-            button(graphic = ImageView(R.png.btn_arrow_left)) {
+            button(graphic = ImageView(R.image.btn_arrow_left)) {
                 setOnAction {
                     datePicker.value = datePicker.value.minusDays(1)
                 }
             } col 0 row 0
-            button(graphic = ImageView(R.png.btn_arrow_right)) {
+            button(graphic = ImageView(R.image.btn_arrow_right)) {
                 setOnAction {
                     datePicker.value = datePicker.value.plusDays(1)
                 }
             } col 2 row 0
 
             timeBox = timeBox(prefill.toLocalTime()) col 1 row 1
-            slider(0, 24, 0) { valueProperty() bindBidirectional timeBox.hourField.valueProperty } col 0 row 2 colSpan 3
-            slider(0, 60, 0) { valueProperty() bindBidirectional timeBox.minuteField.valueProperty } col 0 row 3 colSpan 3
+            slider(0, 24, 0) { valueProperty().bindBidirectional(timeBox.hourField.valueProperty) } col 0 row 2 colSpan 3
+            slider(0, 60, 0) { valueProperty().bindBidirectional(timeBox.minuteField.valueProperty) } col 0 row 3 colSpan 3
         }
         runLater { datePicker.requestFocus() }
         buttons(OK, CANCEL)

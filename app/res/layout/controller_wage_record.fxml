@@ -10,7 +10,7 @@
         <SplitMenuButton mnemonicParsing="false" fx:id="undoButton" onAction="#undo">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@btn_undo.png"/>
+                    <Image url="@/image/btn_undo.png"/>
                 </ImageView>
             </graphic>
             <tooltip>
@@ -21,7 +21,7 @@
         <Button mnemonicParsing="false" fx:id="lockStartButton" onAction="#lockStart">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@btn_lock_start.png"/>
+                    <Image url="@/image/btn_lock_start.png"/>
                 </ImageView>
             </graphic>
             <tooltip>
@@ -31,7 +31,7 @@
         <Button mnemonicParsing="false" fx:id="lockEndButton" onAction="#lockEnd">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@btn_lock_end.png"/>
+                    <Image url="@/image/btn_lock_end.png"/>
                 </ImageView>
             </graphic>
             <tooltip>
@@ -41,7 +41,7 @@
         <Button mnemonicParsing="false" onAction="#empty">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@btn_clear_date.png"/>
+                    <Image url="@/image/btn_clear_date.png"/>
                 </ImageView>
             </graphic>
             <tooltip>
@@ -52,7 +52,7 @@
         <Button mnemonicParsing="false" onAction="#screenshot">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@btn_screenshot.png"/>
+                    <Image url="@/image/btn_screenshot.png"/>
                 </ImageView>
             </graphic>
             <tooltip>

@@ -11,7 +11,7 @@
         <Button mnemonicParsing="false" onAction="#recess">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@btn_recess.png"/>
+                    <Image url="@/image/btn_recess.png"/>
                 </ImageView>
             </graphic>
             <tooltip>
@@ -24,7 +24,7 @@
         <Button mnemonicParsing="false" onAction="#browse">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@btn_folder.png"/>
+                    <Image url="@/image/btn_folder.png"/>
                 </ImageView>
             </graphic>
             <tooltip>
@@ -34,7 +34,7 @@
         <ToggleButton mnemonicParsing="false" fx:id="mergeToggleButton" selected="true">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@btn_merge.png"/>
+                    <Image url="@/image/btn_merge.png"/>
                 </ImageView>
             </graphic>
             <tooltip>
@@ -45,7 +45,7 @@
         <Button mnemonicParsing="false" onAction="#history">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@btn_history.png"/>
+                    <Image url="@/image/btn_history.png"/>
                 </ImageView>
             </graphic>
             <tooltip>

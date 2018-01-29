@@ -17,7 +17,7 @@ plugins {
 java.sourceSets {
     getByName("main") {
         java.srcDir("src")
-        resources.srcDirs("res", "licenses")
+        resources.srcDir("res")
     }
     getByName("test").java.srcDir("tests/src")
 }
@@ -27,7 +27,6 @@ rsync {
     resDir("res")
     packageName(releaseGroup)
     leadingSlash(true)
-    debug(releaseDebug)
 }
 
 buildconfig {

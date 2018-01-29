@@ -1,170 +1,10 @@
-// rsync generated this class at 2018-01-26T19:46:32.897 from:
-// string_en.properties
-// btn_user_add.png
-// layout_employee.fxml
-// btn_refresh.png
-// logo_launcher.png
-// ic_calendar.png
-// btn_arrow_left.png
-// string_in.properties
-// btn_add.png
-// layout_order.fxml
-// btn_checkbox_outline.png
-// ic_user.png
-// btn_lock_end.png
-// layout_wage_record.fxml
-// btn_visibility.png
-// btn_clear.png
-// layout_main.fxml
-// btn_history.png
-// btn_visibility_off.png
-// layout_wage.fxml
-// btn_screenshot.png
-// ic_clock.png
-// ic_key.png
-// style_treetableview_print.css
-// ic_document.png
-// btn_delete.png
-// btn_print.png
-// btn_merge.png
-// ic_address.png
-// btn_edit.png
-// btn_lock_start.png
-// ic_launcher.png
-// layout_price_plate.fxml
-// btn_checkbox.png
-// lato_regular.ttf
-// lato_bold.ttf
-// btn_folder.png
-// layout_price_offset.fxml
-// layout_customer.fxml
-// btn_arrow_right.png
-// btn_recess.png
-// btn_clear_date.png
-// lato_light.ttf
-// layout_wage_recess.fxml
-// btn_undo.png
+// rsync generated this class at 2018-01-30T02:03:16.154
 package com.wijayaprinting;
 
 import java.lang.String;
 
 public final class R {
   private R() {
-  }
-
-  public static final class properties {
-    public static final String string_en = "/string_en.properties";
-
-    public static final String string_in = "/string_in.properties";
-
-    private properties() {
-    }
-  }
-
-  public static final class png {
-    public static final String btn_user_add = "/btn_user_add.png";
-
-    public static final String btn_refresh = "/btn_refresh.png";
-
-    public static final String logo_launcher = "/logo_launcher.png";
-
-    public static final String ic_calendar = "/ic_calendar.png";
-
-    public static final String btn_arrow_left = "/btn_arrow_left.png";
-
-    public static final String btn_add = "/btn_add.png";
-
-    public static final String btn_checkbox_outline = "/btn_checkbox_outline.png";
-
-    public static final String ic_user = "/ic_user.png";
-
-    public static final String btn_lock_end = "/btn_lock_end.png";
-
-    public static final String btn_visibility = "/btn_visibility.png";
-
-    public static final String btn_clear = "/btn_clear.png";
-
-    public static final String btn_history = "/btn_history.png";
-
-    public static final String btn_visibility_off = "/btn_visibility_off.png";
-
-    public static final String btn_screenshot = "/btn_screenshot.png";
-
-    public static final String ic_clock = "/ic_clock.png";
-
-    public static final String ic_key = "/ic_key.png";
-
-    public static final String ic_document = "/ic_document.png";
-
-    public static final String btn_delete = "/btn_delete.png";
-
-    public static final String btn_print = "/btn_print.png";
-
-    public static final String btn_merge = "/btn_merge.png";
-
-    public static final String ic_address = "/ic_address.png";
-
-    public static final String btn_edit = "/btn_edit.png";
-
-    public static final String btn_lock_start = "/btn_lock_start.png";
-
-    public static final String ic_launcher = "/ic_launcher.png";
-
-    public static final String btn_checkbox = "/btn_checkbox.png";
-
-    public static final String btn_folder = "/btn_folder.png";
-
-    public static final String btn_arrow_right = "/btn_arrow_right.png";
-
-    public static final String btn_recess = "/btn_recess.png";
-
-    public static final String btn_clear_date = "/btn_clear_date.png";
-
-    public static final String btn_undo = "/btn_undo.png";
-
-    private png() {
-    }
-  }
-
-  public static final class fxml {
-    public static final String layout_employee = "/layout_employee.fxml";
-
-    public static final String layout_order = "/layout_order.fxml";
-
-    public static final String layout_wage_record = "/layout_wage_record.fxml";
-
-    public static final String layout_main = "/layout_main.fxml";
-
-    public static final String layout_wage = "/layout_wage.fxml";
-
-    public static final String layout_price_plate = "/layout_price_plate.fxml";
-
-    public static final String layout_price_offset = "/layout_price_offset.fxml";
-
-    public static final String layout_customer = "/layout_customer.fxml";
-
-    public static final String layout_wage_recess = "/layout_wage_recess.fxml";
-
-    private fxml() {
-    }
-  }
-
-  public static final class css {
-    public static final String style_treetableview_print = "/style_treetableview_print.css";
-
-    private css() {
-    }
-  }
-
-  public static final class ttf {
-    public static final String lato_regular = "/lato_regular.ttf";
-
-    public static final String lato_bold = "/lato_bold.ttf";
-
-    public static final String lato_light = "/lato_light.ttf";
-
-    private ttf() {
-    }
   }
 
   public static final class string {
@@ -352,6 +192,8 @@ public final class R {
 
     public static final String plate_price = "plate_price";
 
+    public static final String items = "items";
+
     public static final String refresh = "refresh";
 
     public static final String undo = "undo";
@@ -399,6 +241,141 @@ public final class R {
     public static final String input_file = "input_file";
 
     private string() {
+    }
+  }
+
+  public static final class license {
+    public static final String jodaorg_joda_time = "/license/jodaorg_joda_time.txt";
+
+    public static final String mongodb_mongo_java_driver = "/license/mongodb_mongo_java_driver.txt";
+
+    public static final String apache_commons_lang = "/license/apache_commons_lang.txt";
+
+    public static final String reactivex_rxkotlin = "/license/reactivex_rxkotlin.txt";
+
+    public static final String slf4j_log4j12 = "/license/slf4j_log4j12.txt";
+
+    public static final String google_guava = "/license/google_guava.txt";
+
+    public static final String jetbrains_kotlin = "/license/jetbrains_kotlin.txt";
+
+    public static final String hendraanggrian_kotfx = "/license/hendraanggrian_kotfx.txt";
+
+    public static final String apache_commons_math = "/license/apache_commons_math.txt";
+
+    public static final String apache_poi = "/license/apache_poi.txt";
+
+    public static final String reactivex_rxjavafx = "/license/reactivex_rxjavafx.txt";
+
+    public static final String apache_commons_validator = "/license/apache_commons_validator.txt";
+
+    private license() {
+    }
+  }
+
+  public static final class layout {
+    public static final String controller_main = "/layout/controller_main.fxml";
+
+    public static final String controller_wage = "/layout/controller_wage.fxml";
+
+    public static final String controller_wage_recess = "/layout/controller_wage_recess.fxml";
+
+    public static final String controller_price_offset = "/layout/controller_price_offset.fxml";
+
+    public static final String controller_price_plate = "/layout/controller_price_plate.fxml";
+
+    public static final String controller_employee = "/layout/controller_employee.fxml";
+
+    public static final String controller_customer = "/layout/controller_customer.fxml";
+
+    public static final String controller_wage_record = "/layout/controller_wage_record.fxml";
+
+    public static final String controller_order = "/layout/controller_order.fxml";
+
+    private layout() {
+    }
+  }
+
+  public static final class style {
+    public static final String treetableview_print = "/style/treetableview_print.css";
+
+    private style() {
+    }
+  }
+
+  public static final class image {
+    public static final String btn_user_add = "/image/btn_user_add.png";
+
+    public static final String btn_refresh = "/image/btn_refresh.png";
+
+    public static final String logo_launcher = "/image/logo_launcher.png";
+
+    public static final String ic_calendar = "/image/ic_calendar.png";
+
+    public static final String btn_arrow_left = "/image/btn_arrow_left.png";
+
+    public static final String btn_add = "/image/btn_add.png";
+
+    public static final String btn_checkbox_outline = "/image/btn_checkbox_outline.png";
+
+    public static final String ic_user = "/image/ic_user.png";
+
+    public static final String btn_lock_end = "/image/btn_lock_end.png";
+
+    public static final String btn_visibility = "/image/btn_visibility.png";
+
+    public static final String btn_clear = "/image/btn_clear.png";
+
+    public static final String btn_history = "/image/btn_history.png";
+
+    public static final String btn_visibility_off = "/image/btn_visibility_off.png";
+
+    public static final String btn_screenshot = "/image/btn_screenshot.png";
+
+    public static final String ic_clock = "/image/ic_clock.png";
+
+    public static final String ic_key = "/image/ic_key.png";
+
+    public static final String ic_document = "/image/ic_document.png";
+
+    public static final String btn_delete = "/image/btn_delete.png";
+
+    public static final String btn_print = "/image/btn_print.png";
+
+    public static final String btn_merge = "/image/btn_merge.png";
+
+    public static final String ic_address = "/image/ic_address.png";
+
+    public static final String btn_edit = "/image/btn_edit.png";
+
+    public static final String btn_lock_start = "/image/btn_lock_start.png";
+
+    public static final String ic_launcher = "/image/ic_launcher.png";
+
+    public static final String btn_checkbox = "/image/btn_checkbox.png";
+
+    public static final String btn_folder = "/image/btn_folder.png";
+
+    public static final String btn_arrow_right = "/image/btn_arrow_right.png";
+
+    public static final String btn_recess = "/image/btn_recess.png";
+
+    public static final String btn_clear_date = "/image/btn_clear_date.png";
+
+    public static final String btn_undo = "/image/btn_undo.png";
+
+    private image() {
+    }
+  }
+
+  public static final class font {
+    public static final String lato_regular = "/font/lato_regular.ttf";
+
+    public static final String lato_bold = "/font/lato_bold.ttf";
+
+    public static final String lato_light = "/font/lato_light.ttf";
+
+    private font() {
     }
   }
 }

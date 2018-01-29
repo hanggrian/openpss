@@ -8,6 +8,9 @@
         <fx:define>
             <ToggleGroup fx:id="navigateGroup"/>
         </fx:define>
+        <Menu mnemonicParsing="false" text="File">
+            <MenuItem mnemonicParsing="false" onAction="#addCustomer" text="%add_customer"/>
+        </Menu>
         <Menu mnemonicParsing="false" fx:id="navigateMenu" text="%navigate">
             <RadioMenuItem mnemonicParsing="false" toggleGroup="$navigateGroup" onAction="#navigate"
                            text="%customer"/>
@@ -28,19 +31,19 @@
                  AnchorPane.topAnchor="0">
             <Tab closable="false" text="%customer">
                 <!--suppress ALL -->
-                <fx:include fx:id="customer" source="layout_customer.fxml"/>
+                <fx:include fx:id="customer" source="controller_customer.fxml"/>
             </Tab>
             <Tab closable="false" text="%orders">
                 <!--suppress ALL -->
-                <fx:include fx:id="order" source="layout_order.fxml"/>
+                <fx:include fx:id="order" source="controller_order.fxml"/>
             </Tab>
             <Tab closable="false" text="%wage">
                 <!--suppress ALL -->
-                <fx:include fx:id="wage" source="layout_wage.fxml"/>
+                <fx:include fx:id="wage" source="controller_wage.fxml"/>
             </Tab>
             <Tab closable="false" text="%employee">
                 <!--suppress ALL -->
-                <fx:include fx:id="employee" source="layout_employee.fxml"/>
+                <fx:include fx:id="employee" source="controller_employee.fxml"/>
             </Tab>
         </TabPane>
         <Label fx:id="employeeLabel" AnchorPane.rightAnchor="8" AnchorPane.topAnchor="8"/>

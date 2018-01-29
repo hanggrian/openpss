@@ -16,23 +16,21 @@ open class FloatField : TextField() {
 
     init {
         textProperty().bindBidirectional(valueProperty, stringConverterOf<Number>({ it.toFloatOrNull() ?: 0f }))
-        validProperty bind booleanBindingOf(textProperty()) {
+        validProperty.bind(booleanBindingOf(textProperty()) {
             try {
                 java.lang.Float.parseFloat(text)
                 true
             } catch (e: NumberFormatException) {
                 false
             }
-        }
+        })
     }
 
     var value: Float
         get() = valueProperty.get()
         set(value) = valueProperty.set(value)
 
-    var isValid: Boolean
-        get() = validProperty.get()
-        set(value) = validProperty.set(value)
+    val isValid: Boolean get() = validProperty.get()
 }
 
 @JvmOverloads inline fun floatField(noinline init: ((@LayoutDsl FloatField).() -> Unit)? = null): FloatField = FloatField().apply { init?.invoke(this) }

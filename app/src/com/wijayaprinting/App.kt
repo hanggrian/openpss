@@ -42,13 +42,13 @@ class App : Application(), Resourced, EmployeeHolder {
     }
 
     override fun start(stage: Stage) {
-        stage.icon = Image(R.png.logo_launcher)
-        setOSXIcon(getResource(R.png.logo_launcher))
+        stage.icon = Image(R.image.logo_launcher)
+        setOSXIcon(getResource(R.image.logo_launcher))
         LoginDialog(this).showAndWait().filter { it is Employee }.ifPresent { employee ->
             _employee = employee as Employee
 
             stage.apply {
-                val loader = getResource(R.fxml.layout_main).loadFXML(resources)
+                val loader = getResource(R.layout.controller_main).loadFXML(resources)
                 title = getString(R.string.app_name)
                 scene = loader.pane.toScene()
                 minWidth = 960.0
@@ -56,7 +56,7 @@ class App : Application(), Resourced, EmployeeHolder {
                 loader.controller._employee = employee
             }.show()
 
-            if (employee.firstTimeLogin) dialog<String>(getString(R.string.change_password), getString(R.string.change_password), ImageView(R.png.ic_key)) {
+            if (employee.firstTimeLogin) dialog<String>(getString(R.string.change_password), getString(R.string.change_password), ImageView(R.image.ic_key)) {
                 lateinit var changePasswordField: PasswordField
                 lateinit var confirmPasswordField: PasswordField
                 content = gridPane {
@@ -67,7 +67,7 @@ class App : Application(), Resourced, EmployeeHolder {
                     confirmPasswordField = passwordField { promptText = getString(R.string.change_password) } col 1 row 1
                 }
                 button(CANCEL)
-                button(OK).disableProperty() bind (changePasswordField.textProperty().isEmpty
+                button(OK).disableProperty().bind(changePasswordField.textProperty().isEmpty
                         or confirmPasswordField.textProperty().isEmpty
                         or (changePasswordField.textProperty() neq confirmPasswordField.textProperty()))
                 setResultConverter { if (it == OK) changePasswordField.text else null }

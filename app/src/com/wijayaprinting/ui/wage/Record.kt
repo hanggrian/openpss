@@ -7,7 +7,10 @@ import com.wijayaprinting.START_OF_TIME
 import com.wijayaprinting.ui.Resourced
 import com.wijayaprinting.util.rounded
 import javafx.beans.property.*
-import kotfx.*
+import kotfx.doubleBindingOf
+import kotfx.plus
+import kotfx.stringBindingOf
+import kotfx.toProperty
 import org.joda.time.DateTime
 import org.joda.time.Interval
 import org.joda.time.LocalTime
@@ -42,7 +45,7 @@ class Record @JvmOverloads constructor(
         const val INDEX_TOTAL = -1
 
         /** Dummy for invisible [javafx.scene.control.TreeTableView] root. */
-        fun getDummy(resourced: Resourced) = Record(resourced, Int.MIN_VALUE, Attendee, START_OF_TIME.asProperty(), START_OF_TIME.asProperty())
+        fun getDummy(resourced: Resourced) = Record(resourced, Int.MIN_VALUE, Attendee, START_OF_TIME.toProperty(), START_OF_TIME.toProperty())
     }
 
     init {
@@ -55,7 +58,7 @@ class Record @JvmOverloads constructor(
             totalProperty.set(0.0)
         }
         if (isChild) {
-            dailyProperty bind doubleBindingOf(startProperty, endProperty, dailyEmptyProperty) {
+            dailyProperty.bind(doubleBindingOf(startProperty, endProperty, dailyEmptyProperty) {
                 if (isDailyEmpty) 0.0 else {
                     val hours = workingHours
                     when {
@@ -63,20 +66,20 @@ class Record @JvmOverloads constructor(
                         else -> WORKING_HOURS
                     }
                 }
-            }
-            overtimeProperty bind doubleBindingOf(startProperty, endProperty) {
+            })
+            overtimeProperty.bind(doubleBindingOf(startProperty, endProperty) {
                 val hours = workingHours
                 val overtime = (hours - WORKING_HOURS).rounded
                 when {
                     hours <= WORKING_HOURS -> 0.0
                     else -> overtime
                 }
-            }
+            })
         }
         if (isChild || isTotal) {
-            dailyIncomeProperty bind doubleBindingOf(dailyProperty) { (daily * attendee.daily / WORKING_HOURS).rounded }
-            overtimeIncomeProperty bind doubleBindingOf(overtimeProperty) { (overtime * attendee.hourlyOvertime).rounded }
-            totalProperty bind dailyIncomeProperty + overtimeIncomeProperty
+            dailyIncomeProperty.bind(doubleBindingOf(dailyProperty) { (daily * attendee.daily / WORKING_HOURS).rounded })
+            overtimeIncomeProperty.bind(doubleBindingOf(overtimeProperty) { (overtime * attendee.hourlyOvertime).rounded })
+            totalProperty.bind(dailyIncomeProperty + overtimeIncomeProperty)
         }
     }
 
@@ -147,8 +150,13 @@ class Record @JvmOverloads constructor(
 
     private val workingHours: Double
         get() {
-            val interval = Interval(start, end)
-            var minutes = interval.toDuration().toStandardMinutes().minutes.absoluteValue
+            val isReverse = start > end
+            val interval = when {
+                isReverse -> Interval(end, start)
+                else -> Interval(start, end)
+            }
+            var minutes = interval.toDuration().toStandardMinutes().minutes
+            if (isReverse) minutes *= -1
             attendee.recesses
                     .map { it.getInterval(start) }
                     .forEach { recessesInterval -> minutes -= interval.overlap(recessesInterval)?.toDuration()?.toStandardMinutes()?.minutes?.absoluteValue ?: 0 }

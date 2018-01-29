@@ -4,13 +4,13 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.VBox?>
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.wijayaprinting.ui.employee.EmployeeController">
+      fx:controller="com.wijayaprinting.ui.order.price.OffsetPriceController">
     <ToolBar>
         <!--suppress JavaFxEventHandler -->
         <Button mnemonicParsing="false" onAction="#refresh">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@btn_refresh.png"/>
+                    <Image url="@/image/btn_refresh.png"/>
                 </ImageView>
             </graphic>
             <tooltip>
@@ -20,20 +20,17 @@
         <Button mnemonicParsing="false" onAction="#add">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@btn_user_add.png"/>
+                    <Image url="@/image/btn_add.png"/>
                 </ImageView>
             </graphic>
             <tooltip>
                 <Tooltip text="%add"/>
             </tooltip>
         </Button>
-        <Separator/>
-        <Button mnemonicParsing="false" fx:id="fullAccessButton" onAction="#fullAccess" text="%full_access"/>
-        <Button mnemonicParsing="false" fx:id="resetPasswordButton" onAction="#resetPassword" text="%reset_password"/>
         <Button mnemonicParsing="false" fx:id="deleteButton" onAction="#delete">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@btn_delete.png"/>
+                    <Image url="@/image/btn_delete.png"/>
                 </ImageView>
             </graphic>
             <tooltip>
@@ -41,10 +38,12 @@
             </tooltip>
         </Button>
     </ToolBar>
-    <TableView fx:id="employeeTable" editable="true" VBox.vgrow="ALWAYS">
+    <TableView fx:id="priceTable" VBox.vgrow="ALWAYS" editable="true">
         <columns>
-            <TableColumn fx:id="nameColumn" editable="false" text="%name"/>
-            <TableColumn fx:id="fullAccessColumn" text="%full_access"/>
+            <TableColumn fx:id="nameColumn" text="%name" prefWidth="120.0" editable="false"/>
+            <TableColumn fx:id="minAmountColumn" text="%min_amount" prefWidth="120.0"/>
+            <TableColumn fx:id="minPriceColumn" text="%min_price" prefWidth="120.0"/>
+            <TableColumn fx:id="excessPriceColumn" text="%excess_price" prefWidth="120.0"/>
         </columns>
         <columnResizePolicy>
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>

@@ -1,6 +1,5 @@
 package com.wijayaprinting.ui.main
 
-import com.wijayaprinting.BuildConfig
 import com.wijayaprinting.BuildConfig.DEBUG
 import com.wijayaprinting.Language
 import com.wijayaprinting.R
@@ -13,7 +12,6 @@ import com.wijayaprinting.ui.scene.control.HostField
 import com.wijayaprinting.ui.scene.control.IntField
 import com.wijayaprinting.ui.scene.control.hostField
 import com.wijayaprinting.ui.scene.control.intField
-import com.wijayaprinting.util.forceExit
 import com.wijayaprinting.util.multithread
 import io.reactivex.rxkotlin.subscribeBy
 import javafx.event.ActionEvent
@@ -34,9 +32,10 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced 
     private lateinit var serverPasswordField: PasswordField
 
     init {
+        icon = Image(R.image.ic_launcher)
         title = getString(R.string.app_name)
         headerText = getString(R.string.login)
-        graphic = ImageView(R.png.ic_launcher)
+        graphic = ImageView(R.image.ic_launcher)
         isResizable = false
         content = gridPane {
             gap(8)
@@ -48,20 +47,20 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced 
                     ConfigFile.language.set(language.locale)
                     ConfigFile.save()
                     close()
-                    infoAlert(getString(R.string.please_restart)).showAndWait().ifPresent { forceExit() }
+                    infoAlert(getString(R.string.please_restart)).showAndWait().ifPresent { exit() }
                 }
             } col 1 row 0 colSpan 2
             label(getString(R.string.employee)) col 0 row 1
             employeeField = textField {
                 promptText = getString(R.string.employee)
-                textProperty() bindBidirectional ConfigFile.employee
+                textProperty().bindBidirectional(ConfigFile.employee)
             } col 1 row 1 colSpan 2
             label(getString(R.string.password)) col 0 row 2
             passwordField = passwordField { promptText = getString(R.string.password) } col 1 row 2
             toggleButton {
                 tooltip = tooltip(getString(R.string.see_password))
-                graphic = kotfx.imageView { imageProperty() bind (`if`(this@toggleButton.selectedProperty()) then Image(R.png.btn_visibility) `else` Image(R.png.btn_visibility_off)) }
-                passwordField.tooltipProperty() bind bindingOf(passwordField.textProperty(), selectedProperty()) { if (!isSelected) null else tooltip(passwordField.text) }
+                graphic = kotfx.imageView { imageProperty().bind(`if`(this@toggleButton.selectedProperty()) then Image(R.image.btn_visibility) `else` Image(R.image.btn_visibility_off)) }
+                passwordField.tooltipProperty().bind(bindingOf(passwordField.textProperty(), selectedProperty()) { if (!isSelected) null else tooltip(passwordField.text) })
             } col 2 row 2
         }
         expandableContent = gridPane {
@@ -70,22 +69,22 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced 
             serverHostField = hostField {
                 promptText = getString(R.string.ip_address)
                 prefWidth = 128.0
-                textProperty() bindBidirectional MongoFile.host
+                textProperty().bindBidirectional(MongoFile.host)
             } col 1 row 0
             serverPortField = intField {
                 promptText = getString(R.string.port)
                 prefWidth = 64.0
-                textProperty() bindBidirectional MongoFile.port
+                textProperty().bindBidirectional(MongoFile.port)
             } col 2 row 0
             label(getString(R.string.server_user)) col 0 row 1
             serverUserField = textField {
                 promptText = getString(R.string.server_user)
-                textProperty() bindBidirectional MongoFile.user
+                textProperty().bindBidirectional(MongoFile.user)
             } col 1 row 1 colSpan 2
             label(getString(R.string.server_password)) col 0 row 2
             serverPasswordField = passwordField {
                 promptText = getString(R.string.server_password)
-                textProperty() bindBidirectional MongoFile.password
+                textProperty().bindBidirectional(MongoFile.password)
             } col 1 row 2 colSpan 2
             hbox {
                 alignment = Pos.CENTER_RIGHT
@@ -106,7 +105,7 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced 
         }
         button(ButtonType.CANCEL)
         button(getString(R.string.login), ButtonBar.ButtonData.OK_DONE).apply {
-            disableProperty() bind (employeeField.textProperty().isEmpty
+            disableProperty().bind(employeeField.textProperty().isEmpty
                     or passwordField.textProperty().isEmpty
                     or not(serverHostField.validProperty)
                     or serverPortField.textProperty().isEmpty
@@ -119,7 +118,7 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced 
                 Database.login(serverHostField.text, serverPortField.value, serverUserField.text, serverPasswordField.text, employeeField.text, passwordField.text)
                         .multithread()
                         .subscribeBy({
-                            if (BuildConfig.DEBUG) it.printStackTrace()
+                            if (DEBUG) it.printStackTrace()
                             errorAlert(it.message.toString()).showAndWait()
                         }) { employee ->
                             result = employee

@@ -26,22 +26,22 @@ class SearchCustomerDialog(resourced: Resourced) : Dialog<Customer>(), Resourced
     init {
         title = getString(R.string.search_customer)
         headerText = getString(R.string.search_customer)
-        graphic = ImageView(R.png.ic_user)
+        graphic = ImageView(R.image.ic_user)
         content = vbox {
             textField = textField { promptText = getString(R.string.customer) }
             listView = listView<Customer> {
-                itemsProperty() bind bindingOf(textField.textProperty()) {
+                itemsProperty().bind(bindingOf(textField.textProperty()) {
                     transaction {
                         when {
                             textField.text.isEmpty() -> Customers.find()
                             else -> Customers.find { name.equal(textField.text) }
                         }.take(ITEMS_PER_PAGE).toMutableObservableList()
                     }
-                }
+                })
             } marginTop 8
         }
         button(CANCEL)
-        button(OK).disableProperty() bind listView.selectionModel.selectedItemProperty().isNull
+        button(OK).disableProperty().bind(listView.selectionModel.selectedItemProperty().isNull)
         runLater { textField.requestFocus() }
         setResultConverter {
             if (it == OK) listView.selectionModel.selectedItem

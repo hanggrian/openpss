@@ -13,7 +13,7 @@ open class CountBox : ChoiceBox<Int>() {
     var desc: String = "items"
 
     init {
-        items = observableListOf(20, 40, 60, 80)
+        items = observableListOf(20, 30, 40, 50)
         converter = stringConverterOf({ s -> s.toInt() }) { "$it $desc" }
         selectionModel.selectFirst()
         countProperty.bind(intBindingOf(selectionModel.selectedItemProperty()) { selectionModel.selectedItem })

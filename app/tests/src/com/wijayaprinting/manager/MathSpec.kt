@@ -1,6 +1,6 @@
 package com.wijayaprinting.manager
 
-import com.wijayaprinting.util.rounded
+import com.wijayaprinting.util.round
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.given
 import org.jetbrains.spek.api.dsl.it
@@ -14,7 +14,7 @@ object MathSpec : Spek({
     given("a decimal") {
         val decimal = 2.345134
         it("should round with 2 scale") {
-            assertEquals(decimal.rounded, 2.35)
+            assertEquals(round(decimal), 2.35)
         }
     }
 })

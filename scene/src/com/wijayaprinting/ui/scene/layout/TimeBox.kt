@@ -16,7 +16,11 @@ import org.joda.time.LocalTime.MIDNIGHT
 import org.joda.time.LocalTime.parse
 import org.joda.time.format.DateTimeFormat.forPattern
 
-/** Two fields (hour and minute) that represents [LocalTime]. */
+/**
+ * Two fields (hour and minute) that represents [LocalTime].
+ *
+ * [TimeBox] width is deliberately measured to match [com.wijayaprinting.ui.scene.control.ForcedDatePicker]'s width.
+ */
 open class TimeBox @JvmOverloads constructor(prefill: LocalTime = MIDNIGHT) : _HBox() {
 
     lateinit var hourField: IntField
@@ -27,18 +31,20 @@ open class TimeBox @JvmOverloads constructor(prefill: LocalTime = MIDNIGHT) : _H
 
     init {
         alignment = CENTER
-        spacing = 4.0
 
         hourField = intField {
-            maxWidth = 48.0
+            maxWidth = 52.0
             alignment = CENTER
-            textProperty().addListener { _, oldValue, newValue -> if (newValue.toIntOrNull() ?: 0 !in 0 until 24) hourField.text = oldValue }
+            valueProperty.addListener { _, oldValue, newValue -> if (newValue !in 0 until 24) hourField.value = oldValue.toInt() }
         }
-        label(":")
-        minuteField = intField {
-            maxWidth = 48.0
+        label(":") {
+            minWidth = 12.0
             alignment = CENTER
-            textProperty().addListener { _, oldValue, newValue -> if (newValue.toIntOrNull() ?: 0 !in 0 until 60) minuteField.text = oldValue }
+        }
+        minuteField = intField {
+            maxWidth = 52.0
+            alignment = CENTER
+            valueProperty.addListener { _, oldValue, newValue -> if (newValue !in 0 until 60) minuteField.value = oldValue.toInt() }
         }
 
         timeProperty.bind(bindingOf(hourField.valueProperty, minuteField.valueProperty) {

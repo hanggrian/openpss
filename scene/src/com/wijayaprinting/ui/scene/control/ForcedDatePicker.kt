@@ -10,16 +10,20 @@ import kotfx.LayoutDsl
 import org.joda.time.LocalDate
 import org.joda.time.LocalDate.now
 
-/** A [DatePicker] that always has a valid value. */
+/**
+ * A [DatePicker] that always has a valid value.
+ *
+ * [ForcedDatePicker] width is deliberately measured to match [com.wijayaprinting.ui.scene.layout.TimeBox]'s width.
+ */
 open class ForcedDatePicker @JvmOverloads constructor(prefill: LocalDate = now()) : DatePicker() {
 
     init {
         value = prefill.toJava()
         isEditable = false
-        maxWidth = 128.0
+        maxWidth = 116.0
     }
 }
 
-@JvmOverloads inline fun explicitDatePicker(prefill: LocalDate = now(), noinline init: ((@LayoutDsl ForcedDatePicker).() -> Unit)? = null): ForcedDatePicker = ForcedDatePicker(prefill).apply { init?.invoke(this) }
-@JvmOverloads inline fun ChildRoot.explicitDatePicker(prefill: LocalDate = now(), noinline init: ((@LayoutDsl ForcedDatePicker).() -> Unit)? = null): ForcedDatePicker = ForcedDatePicker(prefill).apply { init?.invoke(this) }.add()
-@JvmOverloads inline fun ItemRoot.explicitDatePicker(prefill: LocalDate = now(), noinline init: ((@LayoutDsl ForcedDatePicker).() -> Unit)? = null): ForcedDatePicker = ForcedDatePicker(prefill).apply { init?.invoke(this) }.add()
+@JvmOverloads inline fun forcedDatePicker(prefill: LocalDate = now(), noinline init: ((@LayoutDsl ForcedDatePicker).() -> Unit)? = null): ForcedDatePicker = ForcedDatePicker(prefill).apply { init?.invoke(this) }
+@JvmOverloads inline fun ChildRoot.forcedDatePicker(prefill: LocalDate = now(), noinline init: ((@LayoutDsl ForcedDatePicker).() -> Unit)? = null): ForcedDatePicker = ForcedDatePicker(prefill).apply { init?.invoke(this) }.add()
+@JvmOverloads inline fun ItemRoot.forcedDatePicker(prefill: LocalDate = now(), noinline init: ((@LayoutDsl ForcedDatePicker).() -> Unit)? = null): ForcedDatePicker = ForcedDatePicker(prefill).apply { init?.invoke(this) }.add()

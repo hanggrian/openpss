@@ -55,7 +55,6 @@ dependencies {
     implementation(rx("kotlin", rxkotlinVersion))
 
     implementation(apache("commons-lang3", commonsLangVersion))
-    implementation(apache("commons-math3", commonsMathVersion))
     implementation(apache("poi-ooxml", poiVersion))
 
     implementation(guava)

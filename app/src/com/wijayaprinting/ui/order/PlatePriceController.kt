@@ -1,6 +1,5 @@
-package com.wijayaprinting.ui.order.price
+package com.wijayaprinting.ui.order
 
-import com.wijayaprinting.R
 import com.wijayaprinting.db.dao.Plate
 import com.wijayaprinting.db.schema.Plates
 import com.wijayaprinting.db.transaction
@@ -13,7 +12,7 @@ import kotfx.toProperty
 import kotlinx.nosql.equal
 import kotlinx.nosql.update
 
-class PlatePriceController : PriceController<Plate, Plates>(Plates, R.string.add_plate) {
+class PlatePriceController : PriceController<Plate, Plates>(Plates) {
 
     @FXML lateinit var priceColumn: TableColumn<Plate, Double>
 

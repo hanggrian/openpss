@@ -146,7 +146,7 @@ class WageController : Controller() {
                                 prefWidth = 128.0
                                 setCellFactory {
                                     object : GraphicListCell<DateTime>() {
-                                        override operator fun get(item: DateTime): Node = kotfx.hbox {
+                                        override fun getGraphic(item: DateTime): Node = kotfx.hbox {
                                             alignment = CENTER
                                             label(item.toString(PATTERN_DATETIME)) { maxWidth = Double.MAX_VALUE } hpriority ALWAYS
                                             button {
@@ -220,8 +220,8 @@ class WageController : Controller() {
         stage {
             val loader = getResource(R.layout.controller_wage_record).loadFXML(resources)
             scene = loader.pane.toScene()
-            minWidth = 960.0
-            minHeight = 640.0
+            minWidth = 1000.0
+            minHeight = 650.0
             loader.controller.addExtra(EXTRA_ATTENDEES, set).addExtra(EXTRA_STAGE, this)
         }.showAndWait()
     }

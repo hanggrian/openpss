@@ -8,8 +8,14 @@ import javafx.scene.text.Font.loadFont
 import java.io.InputStream
 import java.net.URL
 
-inline fun getResource(name: String): URL = App::class.java.getResource(name)
-inline fun getResourceAsStream(name: String): InputStream = App::class.java.getResourceAsStream(name)
+private var mainClass: Class<*>? = null
+    get() {
+        if (field == null) field = App::class.java
+        return field
+    }
+
+fun getResource(name: String): URL = mainClass!!.getResource(name)
+fun getResourceAsStream(name: String): InputStream = mainClass!!.getResourceAsStream(name)
 
 inline fun getExternalForm(id: String): String = getResource(id).toExternalForm()
 

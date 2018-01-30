@@ -10,10 +10,6 @@ enum class License(val owner: String, val repo: String, val homepage: String) {
             "Apache",
             "Commons Lang",
             "https://commons.apache.org/lang"),
-    APACHE_COMMONS_MATH(
-            "Apache",
-            "Commons Math",
-            "https://commons.apache.org/math"),
     APACHE_COMMONS_VALIDATOR(
             "Apache",
             "Commons Validator",

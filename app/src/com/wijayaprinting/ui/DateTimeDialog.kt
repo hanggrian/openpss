@@ -1,7 +1,7 @@
 package com.wijayaprinting.ui
 
 import com.wijayaprinting.R
-import com.wijayaprinting.ui.scene.control.explicitDatePicker
+import com.wijayaprinting.ui.scene.control.forcedDatePicker
 import com.wijayaprinting.ui.scene.layout.TimeBox
 import com.wijayaprinting.ui.scene.layout.timeBox
 import javafx.scene.control.ButtonType.CANCEL
@@ -32,7 +32,7 @@ class DateTimeDialog @JvmOverloads constructor(
         content = gridPane {
             gap(8)
 
-            datePicker = explicitDatePicker(prefill.toLocalDate()) col 1 row 0
+            datePicker = forcedDatePicker(prefill.toLocalDate()) col 1 row 0
             button(graphic = ImageView(R.image.btn_arrow_left)) {
                 setOnAction {
                     datePicker.value = datePicker.value.minusDays(1)
@@ -45,8 +45,18 @@ class DateTimeDialog @JvmOverloads constructor(
             } col 2 row 0
 
             timeBox = timeBox(prefill.toLocalTime()) col 1 row 1
-            slider(0, 24, 0) { valueProperty().bindBidirectional(timeBox.hourField.valueProperty) } col 0 row 2 colSpan 3
-            slider(0, 60, 0) { valueProperty().bindBidirectional(timeBox.minuteField.valueProperty) } col 0 row 3 colSpan 3
+            button(graphic = ImageView(R.image.btn_arrow_left)) {
+                setOnAction {
+                    timeBox.hourField.value--
+                }
+            } col 0 row 1
+            button(graphic = ImageView(R.image.btn_arrow_right)) {
+                setOnAction {
+                    timeBox.hourField.value++
+                }
+            } col 2 row 1
+            //slider(0, 24, 0) { valueProperty().bindBidirectional(timeBox.hourField.valueProperty) } col 0 row 2 colSpan 3
+            //slider(0, 60, 0) { valueProperty().bindBidirectional(timeBox.minuteField.valueProperty) } col 0 row 3 colSpan 3
         }
         runLater { datePicker.requestFocus() }
         buttons(OK, CANCEL)

@@ -5,17 +5,20 @@ import com.wijayaprinting.db.dao.Employee
 import com.wijayaprinting.db.schema.Employees
 import com.wijayaprinting.db.transaction
 import com.wijayaprinting.io.properties.ConfigFile
-import com.wijayaprinting.ui.*
+import com.wijayaprinting.ui.EmployeeHolder
+import com.wijayaprinting.ui.Resourced
+import com.wijayaprinting.ui.controller
 import com.wijayaprinting.ui.main.LoginDialog
+import com.wijayaprinting.ui.main.ResetPasswordDialog
+import com.wijayaprinting.ui.pane
 import com.wijayaprinting.util.getResource
 import javafx.application.Application
-import javafx.scene.control.ButtonType.CANCEL
-import javafx.scene.control.ButtonType.OK
-import javafx.scene.control.PasswordField
 import javafx.scene.image.Image
-import javafx.scene.image.ImageView
 import javafx.stage.Stage
-import kotfx.*
+import kotfx.icon
+import kotfx.infoAlert
+import kotfx.loadFXML
+import kotfx.toScene
 import kotlinx.nosql.equal
 import kotlinx.nosql.update
 import org.apache.commons.lang3.SystemUtils.IS_OS_MAC_OSX
@@ -51,28 +54,12 @@ class App : Application(), Resourced, EmployeeHolder {
                 val loader = getResource(R.layout.controller_main).loadFXML(resources)
                 title = getString(R.string.app_name)
                 scene = loader.pane.toScene()
-                minWidth = 960.0
-                minHeight = 640.0
+                minWidth = 1000.0
+                minHeight = 650.0
                 loader.controller._employee = employee
             }.show()
 
-            if (employee.firstTimeLogin) dialog<String>(getString(R.string.change_password), getString(R.string.change_password), ImageView(R.image.ic_key)) {
-                lateinit var changePasswordField: PasswordField
-                lateinit var confirmPasswordField: PasswordField
-                content = gridPane {
-                    gap(8)
-                    label(getString(R.string.password)) col 0 row 0
-                    changePasswordField = passwordField { promptText = getString(R.string.password) } col 1 row 0
-                    label(getString(R.string.change_password)) col 0 row 1
-                    confirmPasswordField = passwordField { promptText = getString(R.string.change_password) } col 1 row 1
-                }
-                button(CANCEL)
-                button(OK).disableProperty().bind(changePasswordField.textProperty().isEmpty
-                        or confirmPasswordField.textProperty().isEmpty
-                        or (changePasswordField.textProperty() neq confirmPasswordField.textProperty()))
-                setResultConverter { if (it == OK) changePasswordField.text else null }
-                runLater { changePasswordField.requestFocus() }
-            }.showAndWait().filter { it is String }.ifPresent { newPassword ->
+            if (employee.firstTimeLogin) ResetPasswordDialog(this).showAndWait().ifPresent { newPassword ->
                 transaction {
                     Employees.find { name.equal(employeeName) }.projection { password }.update(newPassword)
                     infoAlert(getString(R.string.change_password_successful)).showAndWait()

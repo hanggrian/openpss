@@ -1,7 +1,7 @@
 package com.wijayaprinting.ui
 
 import com.wijayaprinting.R
-import com.wijayaprinting.ui.scene.control.explicitDatePicker
+import com.wijayaprinting.ui.scene.control.forcedDatePicker
 import javafx.scene.control.ButtonType.CANCEL
 import javafx.scene.control.ButtonType.OK
 import javafx.scene.control.DatePicker
@@ -27,7 +27,7 @@ class DateDialog @JvmOverloads constructor(
         graphic = ImageView(R.image.ic_calendar)
         content = gridPane {
             gap(8)
-            datePicker = explicitDatePicker(prefill) col 1 row 0
+            datePicker = forcedDatePicker(prefill) col 1 row 0
             button(graphic = ImageView(R.image.btn_arrow_left)) {
                 setOnAction {
                     datePicker.value = datePicker.value.minusDays(1)

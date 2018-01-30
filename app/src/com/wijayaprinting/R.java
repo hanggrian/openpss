@@ -1,4 +1,4 @@
-// rsync generated this class at 2018-01-30T02:03:16.154
+// rsync generated this class at 2018-01-31T01:27:25.927
 package com.wijayaprinting;
 
 import java.lang.String;
@@ -260,8 +260,6 @@ public final class R {
     public static final String jetbrains_kotlin = "/license/jetbrains_kotlin.txt";
 
     public static final String hendraanggrian_kotfx = "/license/hendraanggrian_kotfx.txt";
-
-    public static final String apache_commons_math = "/license/apache_commons_math.txt";
 
     public static final String apache_poi = "/license/apache_poi.txt";
 

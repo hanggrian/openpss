@@ -9,7 +9,6 @@ const val nosqlVersion = "0.1-SNAPSHOT"
 fun Dependency.apache(module: String, version: String) = "org.apache.${module.split("-")[0]}:$module:$version"
 val Dependency.`commons-validator` get() = "commons-validator:commons-validator:1.6"
 const val commonsLangVersion = "3.7"
-const val commonsMathVersion = "3.6.1"
 const val poiVersion = "3.17"
 
 /** Multimap is crucial here. */

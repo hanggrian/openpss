@@ -8,6 +8,7 @@ import com.wijayaprinting.db.transaction
 import com.wijayaprinting.ui.AddUserDialog
 import com.wijayaprinting.ui.Controller
 import com.wijayaprinting.ui.Refreshable
+import com.wijayaprinting.ui.main.ResetPasswordDialog
 import com.wijayaprinting.util.tidy
 import javafx.fxml.FXML
 import javafx.scene.control.Button
@@ -59,11 +60,32 @@ class EmployeeController : Controller(), Refreshable {
         employeeTable.selectionModel.select(employee)
     }
 
-    @FXML fun fullAccess() = confirm { employee -> Employees.find { name.equal(employee.name) }.projection { fullAccess }.update(!employee.fullAccess) }
-    @FXML fun resetPassword() = confirm { employee -> Employees.find { name.equal(employee.name) }.projection { password }.update(DEFAULT_PASSWORD) }
-    @FXML fun delete() = confirm { employee -> Employees.find { name.equal(employee.name) }.remove() }
+    @FXML
+    fun fullAccess() = confirm({ employee ->
+        Employees.find { name.equal(employee.name) }.projection { fullAccess }.update(!employee.fullAccess)
+    })
 
-    private fun confirm(confirmedAction: MongoDBSession.(Employee) -> Unit) = confirmAlert(getString(R.string.are_you_sure), YES, NO)
+    @FXML
+    fun resetPassword() = confirm({ employee ->
+        Employees.find { name.equal(employee.name) }.projection { password }.update(DEFAULT_PASSWORD)
+    }) {
+        ResetPasswordDialog(this).showAndWait().ifPresent { newPassword ->
+            transaction {
+                Employees.find { name.equal(employeeName) }.projection { password }.update(newPassword)
+                infoAlert(getString(R.string.change_password_successful)).showAndWait()
+            }
+        }
+    }
+
+    @FXML
+    fun delete() = confirm({ employee ->
+        Employees.find { name.equal(employee.name) }.remove()
+    })
+
+    private fun confirm(
+            confirmedAction: MongoDBSession.(Employee) -> Unit,
+            isNotSelfAction: () -> Unit = { infoAlert(getString(R.string.please_restart)).showAndWait().ifPresent { exit() } }
+    ) = confirmAlert(getString(R.string.are_you_sure), YES, NO)
             .showAndWait()
             .filter { it == YES }
             .ifPresent {
@@ -71,7 +93,7 @@ class EmployeeController : Controller(), Refreshable {
                     transaction { confirmedAction(employee) }
                     when {
                         employee.name != employeeName -> refresh()
-                        else -> infoAlert(getString(R.string.please_restart)).showAndWait().ifPresent { exit() }
+                        else -> isNotSelfAction()
                     }
                 }
             }

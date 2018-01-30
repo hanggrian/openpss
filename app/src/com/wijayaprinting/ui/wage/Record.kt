@@ -5,7 +5,7 @@ import com.wijayaprinting.PATTERN_DATETIME
 import com.wijayaprinting.R
 import com.wijayaprinting.START_OF_TIME
 import com.wijayaprinting.ui.Resourced
-import com.wijayaprinting.util.rounded
+import com.wijayaprinting.util.round
 import javafx.beans.property.*
 import kotfx.doubleBindingOf
 import kotfx.plus
@@ -62,14 +62,14 @@ class Record @JvmOverloads constructor(
                 if (isDailyEmpty) 0.0 else {
                     val hours = workingHours
                     when {
-                        hours <= WORKING_HOURS -> hours.rounded
+                        hours <= WORKING_HOURS -> round(hours)
                         else -> WORKING_HOURS
                     }
                 }
             })
             overtimeProperty.bind(doubleBindingOf(startProperty, endProperty) {
                 val hours = workingHours
-                val overtime = (hours - WORKING_HOURS).rounded
+                val overtime = round(hours - WORKING_HOURS)
                 when {
                     hours <= WORKING_HOURS -> 0.0
                     else -> overtime
@@ -77,8 +77,8 @@ class Record @JvmOverloads constructor(
             })
         }
         if (isChild || isTotal) {
-            dailyIncomeProperty.bind(doubleBindingOf(dailyProperty) { (daily * attendee.daily / WORKING_HOURS).rounded })
-            overtimeIncomeProperty.bind(doubleBindingOf(overtimeProperty) { (overtime * attendee.hourlyOvertime).rounded })
+            dailyIncomeProperty.bind(doubleBindingOf(dailyProperty) { round(daily * attendee.daily / WORKING_HOURS) })
+            overtimeIncomeProperty.bind(doubleBindingOf(overtimeProperty) { round(overtime * attendee.hourlyOvertime) })
             totalProperty.bind(dailyIncomeProperty + overtimeIncomeProperty)
         }
     }

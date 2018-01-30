@@ -59,7 +59,7 @@ class AboutDialog(resourced: Resourced) : Dialog<Unit>(), Resourced by resourced
                 items = License.values().toObservableList()
                 setCellFactory {
                     object : GraphicListCell<License>() {
-                        override operator fun get(item: License): Node = kotfx.vbox {
+                        override fun getGraphic(item: License): Node = kotfx.vbox {
                             label(item.repo) { font = getFont(R.font.lato_regular, 12) }
                             label(item.owner) { font = getFont(R.font.lato_bold, 12) }
                         }

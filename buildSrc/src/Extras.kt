@@ -5,6 +5,10 @@ const val releaseVersion = "0.7"
 
 const val kotlinVersion = "1.2.21"
 const val nosqlVersion = "0.1-SNAPSHOT"
+const val coroutinesVersion = "0.22.1"
+
+fun Dependency.kotlinx(module: String, version: String? = null) = "org.jetbrains.kotlinx:kotlinx-$module${version?.let { ":$version" }
+        ?: ""}"
 
 fun Dependency.apache(module: String, version: String) = "org.apache.${module.split("-")[0]}:$module:$version"
 val Dependency.`commons-validator` get() = "commons-validator:commons-validator:1.6"
@@ -15,7 +19,7 @@ const val poiVersion = "3.17"
 val Dependency.guava get() = "com.google.guava:guava:23.6-jre"
 
 fun Dependency.hendraanggrian(module: String, version: String) = "com.hendraanggrian:$module:$version"
-inline val Plugin.rsync get() = id("rsync")
+inline val Plugin.r get() = id("r")
 inline val Plugin.buildconfig get() = id("buildconfig")
 const val rVersion = "0.1"
 const val buildconfigVersion = "0.7"

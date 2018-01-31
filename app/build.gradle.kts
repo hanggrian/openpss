@@ -1,7 +1,7 @@
 import org.gradle.api.plugins.ExtensionAware
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.kotlin
-import org.jetbrains.kotlin.gradle.plugin.android.AndroidGradleWrapper.srcDir
+import org.jetbrains.kotlin.gradle.dsl.Coroutines.*
 
 import org.junit.platform.gradle.plugin.FiltersExtension
 import org.junit.platform.gradle.plugin.EnginesExtension
@@ -10,7 +10,7 @@ import org.junit.platform.gradle.plugin.JUnitPlatformExtension
 plugins {
     java
     kotlin("jvm")
-    rsync
+    r
     buildconfig
     `junit-platform`
 }
@@ -46,11 +46,16 @@ configure<JUnitPlatformExtension> {
     }
 }
 
+kotlin {
+    experimental.coroutines = ENABLE
+}
+
 dependencies {
     implementation(project(":scene"))
 
     implementation(kotlin("stdlib", kotlinVersion))
     implementation(kotlin("nosql-mongodb", nosqlVersion))
+    implementation(kotlinx("coroutines-javafx", coroutinesVersion))
 
     implementation(rx("javafx", rxjavafxVersion))
     implementation(rx("kotlin", rxkotlinVersion))

@@ -5,7 +5,6 @@ import com.wijayaprinting.db.dao.Employee
 import com.wijayaprinting.db.schema.Employees
 import com.wijayaprinting.db.transaction
 import com.wijayaprinting.io.properties.ConfigFile
-import com.wijayaprinting.ui.EmployeeHolder
 import com.wijayaprinting.ui.Resourced
 import com.wijayaprinting.ui.controller
 import com.wijayaprinting.ui.main.LoginDialog
@@ -19,6 +18,7 @@ import kotfx.icon
 import kotfx.infoAlert
 import kotfx.loadFXML
 import kotfx.toScene
+import kotlinx.coroutines.experimental.runBlocking
 import kotlinx.nosql.equal
 import kotlinx.nosql.update
 import org.apache.commons.lang3.SystemUtils.IS_OS_MAC_OSX
@@ -28,7 +28,7 @@ import java.lang.Class.forName
 import java.net.URL
 import java.util.*
 
-class App : Application(), Resourced, EmployeeHolder {
+class App : Application(), Resourced {
 
     companion object {
         @JvmStatic fun main(args: Array<String>) = launch(App::class.java, *args)
@@ -36,7 +36,6 @@ class App : Application(), Resourced, EmployeeHolder {
 
     override lateinit var language: Language
     override lateinit var resources: ResourceBundle
-    override lateinit var _employee: Employee
 
     override fun init() {
         if (DEBUG) configure()
@@ -48,7 +47,7 @@ class App : Application(), Resourced, EmployeeHolder {
         stage.icon = Image(R.image.logo_launcher)
         setOSXIcon(getResource(R.image.logo_launcher))
         LoginDialog(this).showAndWait().filter { it is Employee }.ifPresent { employee ->
-            _employee = employee as Employee
+            employee as Employee
 
             stage.apply {
                 val loader = getResource(R.layout.controller_main).loadFXML(resources)
@@ -61,14 +60,14 @@ class App : Application(), Resourced, EmployeeHolder {
 
             if (employee.firstTimeLogin) ResetPasswordDialog(this).showAndWait().ifPresent { newPassword ->
                 transaction {
-                    Employees.find { name.equal(employeeName) }.projection { password }.update(newPassword)
+                    Employees.find { name.equal(employee.name) }.projection { password }.update(newPassword)
                     infoAlert(getString(R.string.change_password_successful)).showAndWait()
                 }
             }
         }
     }
 
-    private fun setOSXIcon(url: URL) {
+    private fun setOSXIcon(url: URL) = runBlocking {
         if (IS_OS_MAC_OSX) forName("com.apple.eawt.Application")
                 .newInstance()
                 .javaClass

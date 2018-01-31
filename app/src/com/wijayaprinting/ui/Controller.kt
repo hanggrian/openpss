@@ -7,13 +7,18 @@ import javafx.fxml.FXML
 import java.util.*
 
 /** Base class of all controllers. */
-abstract class Controller : Resourced, EmployeeHolder {
+abstract class Controller : Resourced {
 
     @FXML abstract fun initialize()
 
     final override val language: Language = Language.from(ConfigFile.language.get())
     override val resources: ResourceBundle = language.resources
-    override lateinit var _employee: Employee
+
+    /** Field name starts with underscore to avoid conflict with [com.wijayaprinting.ui.employee.EmployeeController]. */
+    lateinit var _employee: Employee
+
+    val employeeName: String get() = _employee.name
+    val isFullAccess: Boolean get() = _employee.fullAccess
 
     private var extras: MutableMap<String, Any>? = null
 

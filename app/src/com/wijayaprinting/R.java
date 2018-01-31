@@ -1,4 +1,4 @@
-// rsync generated this class at 2018-01-31T01:27:25.927
+// r generated this class at 01-31-2018 at 9.40.32 PM
 package com.wijayaprinting;
 
 import java.lang.String;

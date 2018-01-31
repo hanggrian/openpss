@@ -5,7 +5,6 @@ import com.mongodb.ServerAddress
 import com.wijayaprinting.BuildConfig.ARTIFACT
 import com.wijayaprinting.collections.isEmpty
 import com.wijayaprinting.db.dao.Employee
-import com.wijayaprinting.db.dao.Wages
 import com.wijayaprinting.db.schema.*
 import io.reactivex.Completable
 import io.reactivex.Single

@@ -1,4 +1,4 @@
-// buildconfig generated this class at 2018-01-26T19:46:44.586.
+// buildconfig generated this class at 01-31-2018 at 9.41.08 PM
 package com.wijayaprinting;
 
 import java.lang.String;

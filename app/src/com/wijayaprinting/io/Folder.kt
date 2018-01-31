@@ -8,7 +8,7 @@ import java.io.File
 
 sealed class Folder : File {
     constructor(parent: String, child: String) : super(parent, child)
-    constructor(parent: File, child: String) : super(parent, child)
+    constructor(parent: Folder, child: String) : super(parent, child)
 
     init {
         @Suppress("LeakingThis") mkdirs()

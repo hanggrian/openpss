@@ -4,7 +4,7 @@ import com.wijayaprinting.collections.RevertibleObservableList
 import com.wijayaprinting.collections.isEmpty
 import com.wijayaprinting.db.dao.Recess
 import com.wijayaprinting.db.dao.Wage
-import com.wijayaprinting.db.dao.Wages
+import com.wijayaprinting.db.schema.Wages
 import com.wijayaprinting.db.transaction
 import javafx.beans.property.IntegerProperty
 import javafx.beans.property.SimpleIntegerProperty

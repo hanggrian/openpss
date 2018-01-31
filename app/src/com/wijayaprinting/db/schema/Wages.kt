@@ -1,5 +1,6 @@
-package com.wijayaprinting.db.dao
+package com.wijayaprinting.db.schema
 
+import com.wijayaprinting.db.dao.Wage
 import kotlinx.nosql.integer
 import kotlinx.nosql.mongodb.DocumentSchema
 

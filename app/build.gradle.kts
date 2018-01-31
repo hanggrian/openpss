@@ -1,6 +1,7 @@
 import org.gradle.api.plugins.ExtensionAware
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.kotlin
+import org.jetbrains.kotlin.gradle.plugin.android.AndroidGradleWrapper.srcDir
 
 import org.junit.platform.gradle.plugin.FiltersExtension
 import org.junit.platform.gradle.plugin.EnginesExtension
@@ -22,7 +23,7 @@ java.sourceSets {
     getByName("test").java.srcDir("tests/src")
 }
 
-rsync {
+r {
     srcDir("src")
     resDir("res")
     packageName(releaseGroup)

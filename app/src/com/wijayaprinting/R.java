@@ -1,4 +1,4 @@
-// r generated this class at 01-31-2018 at 9.40.32 PM
+// r generated this class at 02-01-2018 at 5.05.10 PM
 package com.wijayaprinting;
 
 import java.lang.String;
@@ -110,8 +110,6 @@ public final class R {
 
     public static final String user = "user";
 
-    public static final String test_connection = "test_connection";
-
     public static final String app_name = "app_name";
 
     public static final String any = "any";
@@ -161,8 +159,6 @@ public final class R {
     public static final String name = "name";
 
     public static final String select_license = "select_license";
-
-    public static final String test_connection_successful = "test_connection_successful";
 
     public static final String please_wait = "please_wait";
 
@@ -251,8 +247,6 @@ public final class R {
 
     public static final String apache_commons_lang = "/license/apache_commons_lang.txt";
 
-    public static final String reactivex_rxkotlin = "/license/reactivex_rxkotlin.txt";
-
     public static final String slf4j_log4j12 = "/license/slf4j_log4j12.txt";
 
     public static final String google_guava = "/license/google_guava.txt";
@@ -262,8 +256,6 @@ public final class R {
     public static final String hendraanggrian_kotfx = "/license/hendraanggrian_kotfx.txt";
 
     public static final String apache_poi = "/license/apache_poi.txt";
-
-    public static final String reactivex_rxjavafx = "/license/reactivex_rxjavafx.txt";
 
     public static final String apache_commons_validator = "/license/apache_commons_validator.txt";
 

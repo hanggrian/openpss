@@ -14,9 +14,6 @@ import com.wijayaprinting.ui.wage.WageRecordController.Companion.EXTRA_ATTENDEES
 import com.wijayaprinting.ui.wage.WageRecordController.Companion.EXTRA_STAGE
 import com.wijayaprinting.ui.wage.readers.Reader
 import com.wijayaprinting.util.getResource
-import com.wijayaprinting.util.multithread
-import io.reactivex.Observable
-import io.reactivex.rxkotlin.subscribeBy
 import javafx.fxml.FXML
 import javafx.geometry.Insets
 import javafx.geometry.Pos.CENTER
@@ -31,7 +28,8 @@ import javafx.scene.layout.Priority.ALWAYS
 import javafx.scene.text.Font.font
 import javafx.stage.Modality.APPLICATION_MODAL
 import kotfx.*
-import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.experimental.javafx.JavaFx
+import kotlinx.coroutines.experimental.launch
 import org.joda.time.DateTime
 import java.awt.Desktop.getDesktop
 
@@ -77,30 +75,10 @@ class WageController : Controller() {
     fun read() {
         val dialog = infoAlert(getString(R.string.please_wait)) { buttonTypes.clear() }.apply { show() }
         flowPane.children.clear()
-        Observable
-                .create<Attendee> { emitter ->
-                    try {
-                        readerChoiceBox.selectionModel.selectedItem.read(fileField.file).forEach {
-                            if (mergeToggleButton.isSelected) it.mergeDuplicates()
-                            emitter.onNext(it)
-                        }
-                    } catch (e: Exception) {
-                        emitter.onError(e)
-                    }
-                    emitter.onComplete()
-                }
-                .multithread()
-                .subscribeBy({ e ->
-                    dialog.button(CANCEL)
-                    dialog.close()
-                    rebindProcessButton()
-                    if (DEBUG) e.printStackTrace()
-                    errorAlert(e.message.toString()).showAndWait()
-                }, {
-                    dialog.button(CANCEL)
-                    dialog.close()
-                    rebindProcessButton()
-                }) { attendee ->
+        launch(JavaFx) {
+            try {
+                readerChoiceBox.selectionModel.selectedItem.read(fileField.file).forEach { attendee ->
+                    if (mergeToggleButton.isSelected) attendee.mergeDuplicates()
                     flowPane.children.add(titledPane(attendee.toString()) {
                         lateinit var listView: ListView<DateTime>
                         userData = attendee
@@ -209,6 +187,17 @@ class WageController : Controller() {
                         graphic = imageView { imageProperty().bind(`if`(booleanBindingOf(listView.items) { listView.items.size % 2 == 0 }) then Image(R.image.btn_checkbox) `else` Image(R.image.btn_checkbox_outline)) }
                     })
                 }
+                dialog.button(CANCEL)
+                dialog.close()
+                rebindProcessButton()
+            } catch (e: Exception) {
+                dialog.button(CANCEL)
+                dialog.close()
+                rebindProcessButton()
+                if (DEBUG) e.printStackTrace()
+                errorAlert(e.message.toString()).showAndWait()
+            }
+        }
     }
 
     @FXML

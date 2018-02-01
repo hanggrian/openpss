@@ -18,7 +18,6 @@ import kotfx.icon
 import kotfx.infoAlert
 import kotfx.loadFXML
 import kotfx.toScene
-import kotlinx.coroutines.experimental.runBlocking
 import kotlinx.nosql.equal
 import kotlinx.nosql.update
 import org.apache.commons.lang3.SystemUtils.IS_OS_MAC_OSX
@@ -67,7 +66,7 @@ class App : Application(), Resourced {
         }
     }
 
-    private fun setOSXIcon(url: URL) = runBlocking {
+    private fun setOSXIcon(url: URL) {
         if (IS_OS_MAC_OSX) forName("com.apple.eawt.Application")
                 .newInstance()
                 .javaClass

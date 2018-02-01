@@ -20,7 +20,7 @@ abstract class Reader {
      * During its long operation, exception throwing may happen in [read].
      */
     @Throws(Exception::class)
-    abstract fun read(file: File): Collection<Attendee>
+    abstract suspend fun read(file: File): Collection<Attendee>
 
     override fun toString(): String = name
 

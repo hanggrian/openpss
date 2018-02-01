@@ -12,5 +12,5 @@ java.sourceSets {
 dependencies {
     compile(kotlin("stdlib", kotlinVersion))
 
-    compile(`joda-time`)
+    compile(jodaTime())
 }

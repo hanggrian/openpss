@@ -15,5 +15,5 @@ dependencies {
     compile(kotlin("stdlib", kotlinVersion))
 
     compile(hendraanggrian("kotfx", kotfxVersion))
-    compile(`commons-validator`)
+    compile(commonsValidator())
 }

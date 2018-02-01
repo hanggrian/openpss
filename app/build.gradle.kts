@@ -55,16 +55,14 @@ dependencies {
 
     implementation(kotlin("stdlib", kotlinVersion))
     implementation(kotlin("nosql-mongodb", nosqlVersion))
+    implementation(kotlinx("coroutines-jdk8", coroutinesVersion))
     implementation(kotlinx("coroutines-javafx", coroutinesVersion))
-
-    implementation(rx("javafx", rxjavafxVersion))
-    implementation(rx("kotlin", rxkotlinVersion))
 
     implementation(apache("commons-lang3", commonsLangVersion))
     implementation(apache("poi-ooxml", poiVersion))
 
-    implementation(guava)
-    implementation(log4j12)
+    implementation(guava())
+    implementation(log4j12())
 
     testImplementation(kotlin("test", kotlinVersion))
     testImplementation(kotlin("reflect", kotlinVersion))

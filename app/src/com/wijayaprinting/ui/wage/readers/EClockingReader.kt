@@ -2,6 +2,7 @@ package com.wijayaprinting.ui.wage.readers
 
 import com.google.common.collect.LinkedHashMultimap
 import com.wijayaprinting.ui.wage.Attendee
+import kotlinx.coroutines.experimental.async
 import org.apache.commons.lang3.SystemUtils.IS_OS_MAC
 import org.apache.commons.lang3.SystemUtils.IS_OS_WINDOWS
 import org.apache.poi.ss.usermodel.CellType.NUMERIC
@@ -24,10 +25,10 @@ object EClockingReader : Reader() {
 
     override val extensions: Array<String> get() = arrayOf("*.xlsx")
 
-    override fun read(file: File): Collection<Attendee> {
+    override suspend fun read(file: File): Collection<Attendee> {
         val multimap = LinkedHashMultimap.create<Attendee, DateTime>()
         file.inputStream().use { stream ->
-            val workbook = XSSFWorkbook(stream)
+            val workbook = async { XSSFWorkbook(stream) }.await()
             val sheet = workbook.getSheetAt(SHEET_RAW_ATTENDANCE_LOGS)
             sheet.iterator().asSequence().drop(5).forEach { row ->
                 val dept = row.getCell(CELL_DEPT).stringCellValue
@@ -42,9 +43,7 @@ object EClockingReader : Reader() {
                         .filter { it.cellTypeEnum == NUMERIC }
                         .map {
                             val record = DateTime(it.dateCellValue.time)
-                            val hour = record.hourOfDay
-                            val minute = record.minuteOfHour
-                            val attendance = DateTime(year, month, day, hour, minute)
+                            val attendance = DateTime(year, month, day, record.hourOfDay, record.minuteOfHour)
                             when (true) {
                                 IS_OS_WINDOWS -> attendance.plusMinutes(18)
                                 IS_OS_MAC -> attendance.minusMinutes(7)

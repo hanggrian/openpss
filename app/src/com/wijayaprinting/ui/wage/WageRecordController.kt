@@ -15,8 +15,6 @@ import com.wijayaprinting.ui.scene.layout.TimeBox
 import com.wijayaprinting.ui.wage.Record.Companion.getDummy
 import com.wijayaprinting.util.getExternalForm
 import com.wijayaprinting.util.withoutCurrency
-import io.reactivex.Completable
-import io.reactivex.rxkotlin.subscribeBy
 import javafx.fxml.FXML
 import javafx.scene.control.*
 import javafx.scene.control.ButtonBar.ButtonData.CANCEL_CLOSE
@@ -142,32 +140,25 @@ class WageRecordController : Controller() {
 
     @FXML
     fun screenshot() = getExternalForm(R.style.treetableview_print).let { printStyle ->
-        Completable
-                .create { emitter ->
-                    recordTable.stylesheets.add(printStyle)
-                    recordTable.scrollTo(0)
-                    val flow = (recordTable.skin as TreeTableViewSkin<*>).children[1] as VirtualFlow<*>
-                    var i = 0
-                    do {
-                        try {
-                            WageFile(i).write(recordTable.snapshot(null, null))
-                        } catch (e: IOException) {
-                            emitter.onError(e)
-                        }
-                        recordTable.scrollTo(flow.lastVisibleCell.index)
-                        i++
-                    } while (flow.lastVisibleCell.index + 1 < recordTable.root.children.size + recordTable.root.children.map { it.children.size }.sum())
-                    emitter.onComplete()
-                }
-                .subscribeBy({ e ->
-                    recordTable.stylesheets.remove(printStyle)
-                    if (DEBUG) e.printStackTrace()
-                }, {
-                    recordTable.stylesheets.remove(printStyle)
-                    infoAlert(getString(R.string.screenshot_finished)) { button(getString(R.string.open_folder), CANCEL_CLOSE) }.showAndWait().filter { it.buttonData == CANCEL_CLOSE }.ifPresent {
-                        getDesktop().open(WageContentFolder)
-                    }
-                })
+        recordTable.stylesheets.add(printStyle)
+        recordTable.scrollTo(0)
+        val flow = (recordTable.skin as TreeTableViewSkin<*>).children[1] as VirtualFlow<*>
+        var i = 0
+        do {
+            try {
+                WageFile(i).write(recordTable.snapshot(null, null))
+            } catch (e: IOException) {
+                recordTable.stylesheets.remove(printStyle)
+                if (DEBUG) e.printStackTrace()
+            }
+            recordTable.scrollTo(flow.lastVisibleCell.index)
+            i++
+        } while (flow.lastVisibleCell.index + 1 < recordTable.root.children.size + recordTable.root.children.map { it.children.size }.sum())
+        recordTable.stylesheets.remove(printStyle)
+
+        infoAlert(getString(R.string.screenshot_finished)) { button(getString(R.string.open_folder), CANCEL_CLOSE) }.showAndWait().filter { it.buttonData == CANCEL_CLOSE }.ifPresent {
+            getDesktop().open(WageContentFolder)
+        }
     }
 
     private val records: List<Record> get() = recordTable.root.children.flatMap { it.children }.map { it.value }

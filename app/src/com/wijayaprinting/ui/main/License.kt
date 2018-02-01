@@ -38,14 +38,6 @@ enum class License(val owner: String, val repo: String, val homepage: String) {
             "MongoDB",
             "Mongo Java Driver",
             "https://mongodb.github.io/mongo-java-driver/"),
-    REACTIVEX_RXJAVAFX(
-            "ReactiveX",
-            "RxJavaFX",
-            "https://github.com/ReactiveX/RxJavaFX"),
-    REACTIVEX_RXKOTLIN(
-            "ReactiveX",
-            "RxKotlin",
-            "https://github.com/ReactiveX/RxKotlin"),
     SLF4J_LOG4J12(
             "Slf4j",
             "Log4j12",

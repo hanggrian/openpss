@@ -12,14 +12,14 @@ import com.wijayaprinting.ui.scene.control.HostField
 import com.wijayaprinting.ui.scene.control.IntField
 import com.wijayaprinting.ui.scene.control.hostField
 import com.wijayaprinting.ui.scene.control.intField
-import com.wijayaprinting.util.multithread
-import io.reactivex.rxkotlin.subscribeBy
 import javafx.event.ActionEvent
 import javafx.geometry.Pos
 import javafx.scene.control.*
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import kotfx.*
+import kotlinx.coroutines.experimental.javafx.JavaFx
+import kotlinx.coroutines.experimental.launch
 
 class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced {
 
@@ -88,16 +88,6 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced 
             } col 1 row 2 colSpan 2
             hbox {
                 alignment = Pos.CENTER_RIGHT
-                hyperlink(getString(R.string.test_connection)) {
-                    setOnAction {
-                        Database.testConnection(serverHostField.text, serverPortField.value, serverUserField.text, serverPasswordField.text)
-                                .multithread()
-                                .subscribeBy({
-                                    if (DEBUG) it.printStackTrace()
-                                    errorAlert(it.message.toString()).showAndWait()
-                                }) { infoAlert(getString(R.string.test_connection_successful)).showAndWait() }
-                    }
-                }
                 hyperlink(getString(R.string.about)) {
                     setOnAction { AboutDialog(this@LoginDialog).showAndWait() }
                 } marginLeft 8
@@ -115,15 +105,15 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced 
                 it.consume()
                 ConfigFile.save()
                 MongoFile.save()
-                Database.login(serverHostField.text, serverPortField.value, serverUserField.text, serverPasswordField.text, employeeField.text, passwordField.text)
-                        .multithread()
-                        .subscribeBy({
-                            if (DEBUG) it.printStackTrace()
-                            errorAlert(it.message.toString()).showAndWait()
-                        }) { employee ->
-                            result = employee
-                            close()
-                        }
+                launch(JavaFx) {
+                    try {
+                        result = Database.login(serverHostField.text, serverPortField.value, serverUserField.text, serverPasswordField.text, employeeField.text, passwordField.text)
+                        close()
+                    } catch (e: Exception) {
+                        if (DEBUG) e.printStackTrace()
+                        errorAlert(e.message.toString()).showAndWait()
+                    }
+                }
             }
         }
         runLater {

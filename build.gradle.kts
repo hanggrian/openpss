@@ -3,7 +3,6 @@ import org.gradle.kotlin.dsl.kotlin
 buildscript {
     repositories {
         jcenter()
-        maven("https://dl.bintray.com/hendraanggrian/maven") // remove this when r is approved in jcenter
     }
     dependencies {
         classpath(kotlin("gradle-plugin", kotlinVersion))

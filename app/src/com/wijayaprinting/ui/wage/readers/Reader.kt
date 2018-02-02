@@ -4,6 +4,7 @@ import com.wijayaprinting.ui.wage.Attendee
 import javafx.collections.ObservableList
 import javafx.stage.FileChooser
 import kotfx.observableListOf
+import kotlinx.coroutines.experimental.Deferred
 import java.io.File
 
 /** A file readers that generates collection of [Attendee] given input file. */
@@ -20,7 +21,7 @@ abstract class Reader {
      * During its long operation, exception throwing may happen in [read].
      */
     @Throws(Exception::class)
-    abstract suspend fun read(file: File): Collection<Attendee>
+    abstract fun read(file: File): Deferred<Collection<Attendee>>
 
     override fun toString(): String = name
 

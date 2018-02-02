@@ -19,7 +19,6 @@ import javafx.geometry.Insets
 import javafx.geometry.Pos.CENTER
 import javafx.scene.Node
 import javafx.scene.control.*
-import javafx.scene.control.ButtonType.CANCEL
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import javafx.scene.layout.FlowPane
@@ -38,6 +37,7 @@ class WageController : Controller() {
     @FXML lateinit var fileField: FileField
     @FXML lateinit var readerChoiceBox: ChoiceBox<Reader>
     @FXML lateinit var mergeToggleButton: ToggleButton
+    @FXML lateinit var scrollPane: ScrollPane
     @FXML lateinit var flowPane: FlowPane
     @FXML lateinit var employeeCountLabel: Label
     @FXML lateinit var readButton: Button
@@ -52,8 +52,8 @@ class WageController : Controller() {
         processButton.disableProperty().bind(flowPane.children.isEmpty)
 
         if (DEBUG) {
-            fileField.text = "/Users/hendraanggrian/Downloads/Absen 11-25-17.xlsx"
-            readButton.fire()
+            fileField.text = "/Users/hendraanggrian/Downloads/Absen 12-29-17.xlsx"
+            //readButton.fire()
         }
         runLater { flowPane.prefWrapLengthProperty().bind(fileField.scene.widthProperty()) }
     }
@@ -67,152 +67,158 @@ class WageController : Controller() {
         loader.controller._employee = _employee
     }.showAndWait()
 
-    @FXML fun browse() = fileChooser(getString(R.string.input_file), *readerChoiceBox.value.extensions).showOpenDialog(fileField.scene.window)?.let { fileField.text = it.absolutePath }
-
     @FXML fun history() = getDesktop().open(WageFolder)
+
+    @FXML fun browse() = fileChooser(getString(R.string.input_file), *readerChoiceBox.value.extensions).showOpenDialog(fileField.scene.window)?.let { fileField.text = it.absolutePath }
 
     @FXML
     fun read() {
-        val dialog = infoAlert(getString(R.string.please_wait)) { buttonTypes.clear() }.apply { show() }
-        flowPane.children.clear()
         launch(JavaFx) {
+            scrollPane.content = borderPane {
+                prefWidthProperty().bind(scrollPane.widthProperty())
+                prefHeightProperty().bind(scrollPane.heightProperty())
+                center = kotfx.progressIndicator { size(72) }
+            }
+            flowPane.children.clear()
+        }
+        launch {
             try {
-                readerChoiceBox.selectionModel.selectedItem.read(fileField.file).forEach { attendee ->
+                readerChoiceBox.selectionModel.selectedItem.read(fileField.file).await().forEach { attendee ->
                     if (mergeToggleButton.isSelected) attendee.mergeDuplicates()
-                    flowPane.children.add(titledPane(attendee.toString()) {
-                        lateinit var listView: ListView<DateTime>
-                        userData = attendee
-                        isCollapsible = false
-                        content = vbox {
-                            gridPane {
-                                gap(4)
-                                padding = Insets(8.0)
-                                attendee.role?.let { role ->
-                                    label(getString(R.string.role)) col 0 row 0 marginRight 4
-                                    label(role) col 1 row 0 colSpan 2
-                                }
-                                label(getString(R.string.income)) col 0 row 1 marginRight 4
-                                intField {
-                                    prefWidth = 100.0
-                                    promptText = getString(R.string.income)
-                                    valueProperty.bindBidirectional(attendee.dailyProperty)
-                                } col 1 row 1
-                                label("@${getString(R.string.day)}") { font = font(9.0) } col 2 row 1
-                                label(getString(R.string.overtime)) col 0 row 2 marginRight 4
-                                intField {
-                                    prefWidth = 96.0
-                                    promptText = getString(R.string.overtime)
-                                    valueProperty.bindBidirectional(attendee.hourlyOvertimeProperty)
-                                } col 1 row 2
-                                label("@${getString(R.string.hour)}") { font = font(9.0) } col 2 row 2
-                                label(getString(R.string.recess)) col 0 row 3 marginRight 4
-                                vbox {
-                                    transaction {
-                                        Recesses.find().forEach { recess ->
-                                            checkBox(recess.toString()) {
-                                                selectedProperty().addListener { _, _, selected ->
-                                                    (this@titledPane.userData as Attendee).recesses.let { recesses ->
-                                                        if (selected) recesses.add(recess) else recesses.remove(recess)
+                    launch(JavaFx) {
+                        flowPane.children.add(titledPane(attendee.toString()) {
+                            lateinit var listView: ListView<DateTime>
+                            userData = attendee
+                            isCollapsible = false
+                            content = vbox {
+                                gridPane {
+                                    gap(4)
+                                    padding = Insets(8.0)
+                                    attendee.role?.let { role ->
+                                        label(getString(R.string.role)) col 0 row 0 marginRight 4
+                                        label(role) col 1 row 0 colSpan 2
+                                    }
+                                    label(getString(R.string.income)) col 0 row 1 marginRight 4
+                                    intField {
+                                        prefWidth = 100.0
+                                        promptText = getString(R.string.income)
+                                        valueProperty.bindBidirectional(attendee.dailyProperty)
+                                    } col 1 row 1
+                                    label("@${getString(R.string.day)}") { font = font(9.0) } col 2 row 1
+                                    label(getString(R.string.overtime)) col 0 row 2 marginRight 4
+                                    intField {
+                                        prefWidth = 96.0
+                                        promptText = getString(R.string.overtime)
+                                        valueProperty.bindBidirectional(attendee.hourlyOvertimeProperty)
+                                    } col 1 row 2
+                                    label("@${getString(R.string.hour)}") { font = font(9.0) } col 2 row 2
+                                    label(getString(R.string.recess)) col 0 row 3 marginRight 4
+                                    vbox {
+                                        transaction {
+                                            Recesses.find().forEach { recess ->
+                                                checkBox(recess.toString()) {
+                                                    selectedProperty().addListener { _, _, selected ->
+                                                        (this@titledPane.userData as Attendee).recesses.let { recesses ->
+                                                            if (selected) recesses.add(recess) else recesses.remove(recess)
+                                                        }
                                                     }
+                                                    isSelected = true
+                                                } marginTop if (children.size > 1) 4 else 0
+                                            }
+                                        }
+                                    } col 1 row 3 colSpan 2
+                                }
+                                listView = listView(attendee.attendances) {
+                                    prefWidth = 128.0
+                                    setCellFactory {
+                                        object : GraphicListCell<DateTime>() {
+                                            override fun getGraphic(item: DateTime): Node = kotfx.hbox {
+                                                alignment = CENTER
+                                                label(item.toString(PATTERN_DATETIME)) { maxWidth = Double.MAX_VALUE } hpriority ALWAYS
+                                                button {
+                                                    size(17)
+                                                    graphicProperty().bind(bindingOf<Node>(hoverProperty()) { if (isHover) ImageView(R.image.btn_clear) else null })
+                                                    setOnAction { listView.items.remove(item) }
                                                 }
-                                                isSelected = true
-                                            } marginTop if (children.size > 1) 4 else 0
-                                        }
-                                    }
-                                } col 1 row 3 colSpan 2
-                            }
-                            listView = listView(attendee.attendances) {
-                                prefWidth = 128.0
-                                setCellFactory {
-                                    object : GraphicListCell<DateTime>() {
-                                        override fun getGraphic(item: DateTime): Node = kotfx.hbox {
-                                            alignment = CENTER
-                                            label(item.toString(PATTERN_DATETIME)) { maxWidth = Double.MAX_VALUE } hpriority ALWAYS
-                                            button {
-                                                size(17)
-                                                graphicProperty().bind(bindingOf<Node>(hoverProperty()) { if (isHover) ImageView(R.image.btn_clear) else null })
-                                                setOnAction { listView.items.remove(item) }
                                             }
                                         }
                                     }
                                 }
                             }
-                        }
-                        contextMenu = contextMenu {
-                            menuItem(getString(R.string.add)) {
-                                setOnAction {
-                                    DateTimeDialog(this@WageController, getString(R.string.add_record))
-                                            .showAndWait()
-                                            .ifPresent {
-                                                listView.items.add(it)
-                                                listView.items.sort()
-                                            }
+                            contextMenu = contextMenu {
+                                menuItem(getString(R.string.add)) {
+                                    setOnAction {
+                                        DateTimeDialog(this@WageController, getString(R.string.add_record))
+                                                .showAndWait()
+                                                .ifPresent {
+                                                    listView.items.add(it)
+                                                    listView.items.sort()
+                                                }
+                                    }
+                                }
+                                menuItem(getString(R.string.edit)) {
+                                    disableProperty().bind(listView.selectionModel.selectedItems.isEmpty)
+                                    setOnAction {
+                                        DateTimeDialog(this@WageController, getString(R.string.edit_record), listView.selectionModel.selectedItem)
+                                                .showAndWait()
+                                                .ifPresent {
+                                                    listView.items[listView.selectionModel.selectedIndex] = it
+                                                    listView.items.sort()
+                                                }
+                                    }
+                                }
+                                separatorMenuItem()
+                                menuItem(getString(R.string.revert)) { setOnAction { attendee.attendances.revert() } }
+                                separatorMenuItem()
+                                menuItem("${getString(R.string.delete)} ${attendee.name}") {
+                                    setOnAction {
+                                        flowPane.children.remove(this@titledPane)
+                                        rebindProcessButton()
+                                    }
+                                }
+                                menuItem(getString(R.string.delete_others)) {
+                                    disableProperty().bind(flowPane.children.sizeBinding lessEq 1)
+                                    setOnAction {
+                                        flowPane.children.removeAll(flowPane.children.toMutableList().apply { remove(this@titledPane) })
+                                        rebindProcessButton()
+                                    }
+                                }
+                                menuItem(getString(R.string.delete_employees_to_the_right)) {
+                                    disableProperty().bind(booleanBindingOf(flowPane.children) { flowPane.children.indexOf(this@titledPane) == flowPane.children.lastIndex })
+                                    setOnAction {
+                                        flowPane.children.removeAll(flowPane.children.toList().takeLast(flowPane.children.lastIndex - flowPane.children.indexOf(this@titledPane)))
+                                        rebindProcessButton()
+                                    }
                                 }
                             }
-                            menuItem(getString(R.string.edit)) {
-                                disableProperty().bind(listView.selectionModel.selectedItems.isEmpty)
-                                setOnAction {
-                                    DateTimeDialog(this@WageController, getString(R.string.edit_record), listView.selectionModel.selectedItem)
-                                            .showAndWait()
-                                            .ifPresent {
-                                                listView.items[listView.selectionModel.selectedIndex] = it
-                                                listView.items.sort()
-                                            }
-                                }
-                            }
-                            separatorMenuItem()
-                            menuItem(getString(R.string.revert)) { setOnAction { attendee.attendances.revert() } }
-                            separatorMenuItem()
-                            menuItem("${getString(R.string.delete)} ${attendee.name}") {
-                                setOnAction {
-                                    flowPane.children.remove(this@titledPane)
-                                    rebindProcessButton()
-                                }
-                            }
-                            menuItem(getString(R.string.delete_others)) {
-                                disableProperty().bind(flowPane.children.sizeBinding lessEq 1)
-                                setOnAction {
-                                    flowPane.children.removeAll(flowPane.children.toMutableList().apply { remove(this@titledPane) })
-                                    rebindProcessButton()
-                                }
-                            }
-                            menuItem(getString(R.string.delete_employees_to_the_right)) {
-                                disableProperty().bind(booleanBindingOf(flowPane.children) { flowPane.children.indexOf(this@titledPane) == flowPane.children.lastIndex })
-                                setOnAction {
-                                    flowPane.children.removeAll(flowPane.children.toList().takeLast(flowPane.children.lastIndex - flowPane.children.indexOf(this@titledPane)))
-                                    rebindProcessButton()
-                                }
-                            }
-                        }
-                        graphic = imageView { imageProperty().bind(`if`(booleanBindingOf(listView.items) { listView.items.size % 2 == 0 }) then Image(R.image.btn_checkbox) `else` Image(R.image.btn_checkbox_outline)) }
-                    })
+                            graphic = imageView { imageProperty().bind(`if`(booleanBindingOf(listView.items) { listView.items.size % 2 == 0 }) then Image(R.image.btn_checkbox) `else` Image(R.image.btn_checkbox_outline)) }
+                        })
+                    }
                 }
-                dialog.button(CANCEL)
-                dialog.close()
-                rebindProcessButton()
+                launch(JavaFx) {
+                    scrollPane.content = flowPane
+                    rebindProcessButton()
+                }
             } catch (e: Exception) {
-                dialog.button(CANCEL)
-                dialog.close()
-                rebindProcessButton()
                 if (DEBUG) e.printStackTrace()
-                errorAlert(e.message.toString()).showAndWait()
+                launch(JavaFx) {
+                    scrollPane.content = flowPane
+                    rebindProcessButton()
+                    errorAlert(e.message.toString()).showAndWait()
+                }
             }
         }
     }
 
     @FXML
     fun process() {
-        val set = mutableSetOf<Attendee>()
-        attendees.forEach { attendee ->
-            attendee.saveWage()
-            set.add(attendee)
-        }
+        attendees.forEach { it.saveWage() }
         stage {
             val loader = getResource(R.layout.controller_wage_record).loadFXML(resources)
             scene = loader.pane.toScene()
             minWidth = 1000.0
             minHeight = 650.0
-            loader.controller.addExtra(EXTRA_ATTENDEES, set).addExtra(EXTRA_STAGE, this)
+            loader.controller.addExtra(EXTRA_ATTENDEES, attendees).addExtra(EXTRA_STAGE, this)
         }.showAndWait()
     }
 

@@ -1,4 +1,4 @@
-// r generated this class at 02-01-2018 at 5.05.10 PM
+// r generated this class at 02-02-2018 at 5.57.50 PM
 package com.wijayaprinting;
 
 import java.lang.String;
@@ -159,8 +159,6 @@ public final class R {
     public static final String name = "name";
 
     public static final String select_license = "select_license";
-
-    public static final String please_wait = "please_wait";
 
     public static final String server_user = "server_user";
 

@@ -55,7 +55,6 @@ dependencies {
 
     implementation(kotlin("stdlib", kotlinVersion))
     implementation(kotlin("nosql-mongodb", nosqlVersion))
-    implementation(kotlinx("coroutines-jdk8", coroutinesVersion))
     implementation(kotlinx("coroutines-javafx", coroutinesVersion))
 
     implementation(apache("commons-lang3", commonsLangVersion))

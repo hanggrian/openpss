@@ -69,7 +69,7 @@ class WageRecordController : Controller() {
         totalColumn.setCellValueFactory { it.value.value.totalProperty.asObservable() }
 
         runLater {
-            getExtra<Set<Attendee>>(EXTRA_ATTENDEES).forEach { attendee ->
+            getExtra<List<Attendee>>(EXTRA_ATTENDEES).forEach { attendee ->
                 val node = attendee.toNodeRecord(this)
                 val childs = attendee.toChildRecords(this)
                 val total = attendee.toTotalRecords(this, childs)

@@ -2,6 +2,7 @@ package com.wijayaprinting.ui.wage.readers
 
 import com.google.common.collect.LinkedHashMultimap
 import com.wijayaprinting.ui.wage.Attendee
+import kotlinx.coroutines.experimental.Deferred
 import kotlinx.coroutines.experimental.async
 import org.apache.commons.lang3.SystemUtils.IS_OS_MAC
 import org.apache.commons.lang3.SystemUtils.IS_OS_WINDOWS
@@ -25,7 +26,7 @@ object EClockingReader : Reader() {
 
     override val extensions: Array<String> get() = arrayOf("*.xlsx")
 
-    override suspend fun read(file: File): Collection<Attendee> {
+    override fun read(file: File): Deferred<Collection<Attendee>> = async {
         val multimap = LinkedHashMultimap.create<Attendee, DateTime>()
         file.inputStream().use { stream ->
             val workbook = async { XSSFWorkbook(stream) }.await()
@@ -53,11 +54,9 @@ object EClockingReader : Reader() {
             }
             workbook.close()
         }
-        val set = mutableSetOf<Attendee>()
-        for (attendee in multimap.keySet()) {
+        multimap.keySet().map { attendee ->
             attendee.attendances.addAllRevertable(multimap.get(attendee))
-            set.add(attendee)
+            attendee
         }
-        return set
     }
 }

@@ -1,5 +1,5 @@
 /**
- * Stolen apache-commons-math3's Precision.
+ * Stolen from apache-commons-math3's Precision.
  */
 
 package com.wijayaprinting.util

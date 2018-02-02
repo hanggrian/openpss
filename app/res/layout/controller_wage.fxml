@@ -18,6 +18,16 @@
                 <Tooltip text="%recess"/>
             </tooltip>
         </Button>
+        <Button mnemonicParsing="false" onAction="#history">
+            <graphic>
+                <ImageView pickOnBounds="true" preserveRatio="true">
+                    <Image url="@/image/btn_history.png"/>
+                </ImageView>
+            </graphic>
+            <tooltip>
+                <Tooltip text="%history"/>
+            </tooltip>
+        </Button>
         <Separator/>
         <ChoiceBox fx:id="readerChoiceBox"/>
         <FileField fx:id="fileField" prefWidth="448.0" promptText="%input_file"/>
@@ -31,7 +41,7 @@
                 <Tooltip text="%browse_file"/>
             </tooltip>
         </Button>
-        <ToggleButton mnemonicParsing="false" fx:id="mergeToggleButton" selected="true">
+        <ToggleButton fx:id="mergeToggleButton" mnemonicParsing="false" selected="true">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
                     <Image url="@/image/btn_merge.png"/>
@@ -41,20 +51,9 @@
                 <Tooltip text="%merge_close_records"/>
             </tooltip>
         </ToggleButton>
-        <Separator/>
-        <Button mnemonicParsing="false" onAction="#history">
-            <graphic>
-                <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/btn_history.png"/>
-                </ImageView>
-            </graphic>
-            <tooltip>
-                <Tooltip text="%history"/>
-            </tooltip>
-        </Button>
     </ToolBar>
-    <ScrollPane hbarPolicy="NEVER" minHeight="0.0" vbarPolicy="ALWAYS" VBox.vgrow="ALWAYS">
-        <FlowPane fx:id="flowPane" prefWrapLength="720.0"/>
+    <ScrollPane fx:id="scrollPane" VBox.vgrow="ALWAYS" hbarPolicy="NEVER" vbarPolicy="ALWAYS">
+        <FlowPane fx:id="flowPane"/>
     </ScrollPane>
     <HBox alignment="CENTER">
         <padding>
@@ -63,9 +62,9 @@
         <Label fx:id="employeeCountLabel" text="Label"/>
         <ButtonBar HBox.hgrow="ALWAYS">
             <buttons>
-                <Button mnemonicParsing="false" fx:id="readButton" onAction="#read" text="%read"/>
-                <Button mnemonicParsing="false" fx:id="processButton" onAction="#process" text="%process"
-                        defaultButton="true"/>
+                <Button fx:id="readButton" mnemonicParsing="false" onAction="#read" text="%read"/>
+                <Button fx:id="processButton" defaultButton="true" mnemonicParsing="false" onAction="#process"
+                        text="%process"/>
             </buttons>
         </ButtonBar>
     </HBox>

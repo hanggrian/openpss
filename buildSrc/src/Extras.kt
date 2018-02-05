@@ -1,6 +1,6 @@
 const val releaseGroup = "com.wijayaprinting"
 const val releaseArtifact = "wijayaprinting"
-const val releaseDebug = false
+const val releaseDebug = true
 const val releaseVersion = "0.8"
 
 const val kotlinVersion = "1.2.21"
@@ -21,9 +21,9 @@ fun Dependency.guava() = "com.google.guava:guava:23.6-jre"
 fun Dependency.hendraanggrian(module: String, version: String) = "com.hendraanggrian:$module:$version"
 inline val Plugin.r get() = id("r")
 inline val Plugin.buildconfig get() = id("buildconfig")
-const val rVersion = "0.1"
-const val buildconfigVersion = "0.7"
-const val kotfxVersion = "0.20"
+const val rVersion = "0.2"
+const val buildconfigVersion = "0.8"
+const val kotfxVersion = "0.21"
 
 /** Only used because kotlin-nosql depends on it. */
 fun Dependency.jodaTime() = "joda-time:joda-time:2.9.9"

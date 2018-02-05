@@ -1,7 +1,7 @@
 package com.wijayaprinting.ui.wage
 
 import javafx.collections.ObservableSet
-import kotfx.mutableObservableSetOf
+import kotfx.collections.mutableObservableSetOf
 
 /** Defines an execution that can be undone. */
 data class Undoable @JvmOverloads constructor(

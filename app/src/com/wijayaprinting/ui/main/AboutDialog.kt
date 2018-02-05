@@ -15,7 +15,15 @@ import javafx.scene.control.ButtonType.CLOSE
 import javafx.scene.control.Dialog
 import javafx.scene.control.ListView
 import javafx.scene.image.Image
-import kotfx.*
+import kotfx.bindings.and
+import kotfx.bindings.booleanBindingOf
+import kotfx.bindings.stringBindingOf
+import kotfx.collections.toObservableList
+import kotfx.dialogs.button
+import kotfx.dialogs.content
+import kotfx.dialogs.expandableContent
+import kotfx.dialogs.icon
+import kotfx.scene.*
 import java.awt.Desktop.getDesktop
 import java.net.URI
 
@@ -54,12 +62,12 @@ class AboutDialog(resourced: Resourced) : Dialog<Unit>(), Resourced by resourced
         }
         lateinit var listView: ListView<License>
         expandableContent = hbox {
-            listView = kotfx.listView {
+            listView = kotfx.scene.listView {
                 prefHeight = 256.0
                 items = License.values().toObservableList()
                 setCellFactory {
                     object : GraphicListCell<License>() {
-                        override fun getGraphic(item: License): Node = kotfx.vbox {
+                        override fun getGraphic(item: License): Node = kotfx.scene.vbox {
                             label(item.repo) { font = getFont(R.font.lato_regular, 12) }
                             label(item.owner) { font = getFont(R.font.lato_bold, 12) }
                         }
@@ -67,7 +75,7 @@ class AboutDialog(resourced: Resourced) : Dialog<Unit>(), Resourced by resourced
                 }
             }
             titledPane(getString(R.string.open_source_software), listView) { isCollapsible = false }
-            titledPane(getString(R.string.license), kotfx.textArea {
+            titledPane(getString(R.string.license), kotfx.scene.textArea {
                 prefHeight = 256.0
                 isEditable = false
                 textProperty().bind(stringBindingOf(listView.selectionModel.selectedIndexProperty()) {

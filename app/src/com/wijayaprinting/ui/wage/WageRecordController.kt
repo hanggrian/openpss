@@ -20,7 +20,16 @@ import javafx.scene.control.*
 import javafx.scene.control.ButtonBar.ButtonData.CANCEL_CLOSE
 import javafx.scene.control.SelectionMode.MULTIPLE
 import javafx.stage.Stage
-import kotfx.*
+import kotfx.bindings.booleanBindingOf
+import kotfx.bindings.isEmpty
+import kotfx.bindings.or
+import kotfx.bindings.stringBindingOf
+import kotfx.dialogs.button
+import kotfx.dialogs.infoAlert
+import kotfx.properties.asObservable
+import kotfx.properties.toProperty
+import kotfx.runLater
+import kotfx.scene.menuItem
 import java.awt.Desktop.getDesktop
 import java.io.IOException
 import java.text.NumberFormat.getCurrencyInstance

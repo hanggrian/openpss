@@ -3,11 +3,13 @@ package com.wijayaprinting.db
 import com.mongodb.MongoClientOptions
 import com.mongodb.MongoCredential.createCredential
 import com.mongodb.ServerAddress
-import com.wijayaprinting.BuildConfig.ARTIFACT
+import com.wijayaprinting.BuildConfig.NAME
 import com.wijayaprinting.collections.isEmpty
 import com.wijayaprinting.db.dao.Config
-import com.wijayaprinting.db.dao.Config.Companion.DEFAULT_TIMEZONE
-import com.wijayaprinting.db.dao.Config.Companion.KEY_TIMEZONE
+import com.wijayaprinting.db.dao.Config.Companion.TIMEZONE_CONTINENT
+import com.wijayaprinting.db.dao.Config.Companion.TIMEZONE_CONTINENT_DEFAULT
+import com.wijayaprinting.db.dao.Config.Companion.TIMEZONE_COUNTRIES
+import com.wijayaprinting.db.dao.Config.Companion.TIMEZONE_COUNTRIES_DEFAULT
 import com.wijayaprinting.db.dao.Employee
 import com.wijayaprinting.db.schema.*
 import kotlinx.coroutines.experimental.Deferred
@@ -29,12 +31,17 @@ object Database {
             if (Employees.find { name.equal(Employee.name) }.isEmpty) Employees.insert(Employee)
 
             // check timezone
-            var timezoneConfig = Configs.find { key.equal(KEY_TIMEZONE) }.firstOrNull()
-            if (timezoneConfig == null) {
-                timezoneConfig = Config(KEY_TIMEZONE, DEFAULT_TIMEZONE)
-                timezoneConfig.id = Configs.insert(timezoneConfig)
+            var timezoneContinent = Configs.find { key.equal(TIMEZONE_CONTINENT) }.firstOrNull()
+            if (timezoneContinent == null) {
+                timezoneContinent = Config(TIMEZONE_CONTINENT, TIMEZONE_CONTINENT_DEFAULT)
+                timezoneContinent.id = Configs.insert(timezoneContinent)
             }
-            check(timezoneConfig.value == getInstance().timeZone.id) { "TimeZone mismatch! Expecting ${timezoneConfig.value}" }
+            var timezoneCountries = Configs.find { key.equal(TIMEZONE_COUNTRIES) }.firstOrNull()
+            if (timezoneCountries == null) {
+                timezoneCountries = Config(TIMEZONE_COUNTRIES, TIMEZONE_COUNTRIES_DEFAULT)
+                timezoneCountries.id = Configs.insert(timezoneCountries)
+            }
+            timezoneCheck(timezoneContinent.value, timezoneCountries.valueList)
 
             // check login credentials
             employee = checkNotNull(Employees.find { name.equal(employeeName) }.singleOrNull()) { "Employee not found!" }
@@ -47,11 +54,22 @@ object Database {
     @Throws(Exception::class)
     private fun connect(host: String, port: Int, user: String, password: String): Deferred<MongoDB> = async {
         MongoDB(arrayOf(ServerAddress(host, port)),
-                ARTIFACT,
+                NAME,
                 arrayOf(createCredential(user, "admin", password.toCharArray())),
                 MongoClientOptions.Builder()
                         .serverSelectionTimeout(3000)
                         .build(),
                 arrayOf(Configs, Customers, Employees, Offsets, PlateOrders, OffsetOrders, Plates, Receipts, Recesses, Wages))
+    }
+
+    @Throws(Exception::class)
+    private fun timezoneCheck(
+            expectedContinent: String,
+            expectedCountries: List<String>
+    ) = getInstance().timeZone.id.split("/").forEachIndexed { index, s ->
+        when (index) {
+            0 -> require(s == expectedContinent)
+            1 -> require(expectedCountries.contains(s))
+        }
     }
 }

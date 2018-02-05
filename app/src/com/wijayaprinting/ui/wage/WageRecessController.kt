@@ -7,7 +7,7 @@ import com.wijayaprinting.db.transaction
 import com.wijayaprinting.ui.SimpleTableController
 import javafx.fxml.FXML
 import javafx.scene.control.TableColumn
-import kotfx.toProperty
+import kotfx.properties.toProperty
 
 class WageRecessController : SimpleTableController<Recess, Recesses>(Recesses) {
 

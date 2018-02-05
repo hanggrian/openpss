@@ -2,17 +2,17 @@
 
 package com.wijayaprinting.ui.scene.control
 
-import javafx.beans.property.IntegerProperty
-import javafx.beans.property.SimpleIntegerProperty
 import javafx.scene.control.TextField
-import kotfx.ChildRoot
-import kotfx.ItemRoot
-import kotfx.LayoutDsl
+import kotfx.annotations.SceneDsl
+import kotfx.properties.IntProperty
+import kotfx.properties.SimpleIntProperty
+import kotfx.scene.ChildRoot
+import kotfx.scene.ItemRoot
 import kotfx.stringConverterOf
 
 open class IntField : TextField() {
 
-    val valueProperty: IntegerProperty = SimpleIntegerProperty()
+    val valueProperty: IntProperty = SimpleIntProperty()
 
     init {
         textProperty().bindBidirectional(valueProperty, stringConverterOf<Number>({ it.toIntOrNull() ?: 0 }))
@@ -26,6 +26,6 @@ open class IntField : TextField() {
         set(value) = valueProperty.set(value)
 }
 
-@JvmOverloads inline fun intField(noinline init: ((@LayoutDsl IntField).() -> Unit)? = null): IntField = IntField().apply { init?.invoke(this) }
-@JvmOverloads inline fun ChildRoot.intField(noinline init: ((@LayoutDsl IntField).() -> Unit)? = null): IntField = IntField().apply { init?.invoke(this) }.add()
-@JvmOverloads inline fun ItemRoot.intField(noinline init: ((@LayoutDsl IntField).() -> Unit)? = null): IntField = IntField().apply { init?.invoke(this) }.add()
+@JvmOverloads inline fun intField(noinline init: ((@SceneDsl IntField).() -> Unit)? = null): IntField = IntField().apply { init?.invoke(this) }
+@JvmOverloads inline fun ChildRoot.intField(noinline init: ((@SceneDsl IntField).() -> Unit)? = null): IntField = IntField().apply { init?.invoke(this) }.add()
+@JvmOverloads inline fun ItemRoot.intField(noinline init: ((@SceneDsl IntField).() -> Unit)? = null): IntField = IntField().apply { init?.invoke(this) }.add()

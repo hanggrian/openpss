@@ -11,7 +11,14 @@ import javafx.scene.control.Dialog
 import javafx.scene.control.ListView
 import javafx.scene.control.TextField
 import javafx.scene.image.ImageView
-import kotfx.*
+import kotfx.bindings.bindingOf
+import kotfx.collections.toMutableObservableList
+import kotfx.dialogs.button
+import kotfx.dialogs.content
+import kotfx.runLater
+import kotfx.scene.listView
+import kotfx.scene.textField
+import kotfx.scene.vbox
 import kotlinx.nosql.equal
 
 class SearchCustomerDialog(resourced: Resourced) : Dialog<Customer>(), Resourced by resourced {

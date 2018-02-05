@@ -6,10 +6,10 @@ import com.wijayaprinting.db.dao.Recess
 import com.wijayaprinting.db.dao.Wage
 import com.wijayaprinting.db.schema.Wages
 import com.wijayaprinting.db.transaction
-import javafx.beans.property.IntegerProperty
-import javafx.beans.property.SimpleIntegerProperty
 import javafx.collections.ObservableList
-import kotfx.mutableObservableListOf
+import kotfx.collections.mutableObservableListOf
+import kotfx.properties.IntProperty
+import kotfx.properties.SimpleIntProperty
 import kotlinx.nosql.equal
 import kotlinx.nosql.update
 import org.joda.time.DateTime
@@ -29,8 +29,8 @@ open class Attendee @JvmOverloads constructor(
         val attendances: RevertibleObservableList<DateTime> = RevertibleObservableList(),
 
         /** Wages below are retrieved from sql, or dailyEmpty if there is none. */
-        val dailyProperty: IntegerProperty = SimpleIntegerProperty(),
-        val hourlyOvertimeProperty: IntegerProperty = SimpleIntegerProperty()
+        val dailyProperty: IntProperty = SimpleIntProperty(),
+        val hourlyOvertimeProperty: IntProperty = SimpleIntProperty()
 ) {
 
     /** Dummy for invisible [javafx.scene.control.TreeTableView] root. */

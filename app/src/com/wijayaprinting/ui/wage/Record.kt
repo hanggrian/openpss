@@ -7,10 +7,10 @@ import com.wijayaprinting.START_OF_TIME
 import com.wijayaprinting.ui.Resourced
 import com.wijayaprinting.util.round
 import javafx.beans.property.*
-import kotfx.doubleBindingOf
-import kotfx.plus
-import kotfx.stringBindingOf
-import kotfx.toProperty
+import kotfx.bindings.doubleBindingOf
+import kotfx.bindings.plus
+import kotfx.bindings.stringBindingOf
+import kotfx.properties.toProperty
 import org.joda.time.DateTime
 import org.joda.time.Interval
 import org.joda.time.LocalTime

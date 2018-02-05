@@ -3,7 +3,7 @@ package com.wijayaprinting.ui.wage.readers
 import com.wijayaprinting.ui.wage.Attendee
 import javafx.collections.ObservableList
 import javafx.stage.FileChooser
-import kotfx.observableListOf
+import kotfx.collections.observableListOf
 import kotlinx.coroutines.experimental.Deferred
 import java.io.File
 

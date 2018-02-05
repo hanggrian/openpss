@@ -17,7 +17,11 @@ import javafx.scene.control.ButtonType.YES
 import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
 import javafx.scene.control.cell.ChoiceBoxTableCell.forTableColumn
-import kotfx.*
+import kotfx.collections.toMutableObservableList
+import kotfx.dialogs.confirmAlert
+import kotfx.dialogs.infoAlert
+import kotfx.exit
+import kotfx.properties.toProperty
 import kotlinx.nosql.equal
 import kotlinx.nosql.mongodb.MongoDBSession
 import kotlinx.nosql.update

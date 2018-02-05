@@ -1,9 +1,9 @@
 package com.wijayaprinting.db.dao
 
-import com.wijayaprinting.db.schema.Customers
 import com.wijayaprinting.db.Named
+import com.wijayaprinting.db.schema.Customers
 import javafx.collections.ObservableList
-import kotfx.observableListOf
+import kotfx.collections.observableListOf
 import kotlinx.nosql.Id
 import org.joda.time.LocalDate
 

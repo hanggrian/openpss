@@ -5,9 +5,9 @@ import com.wijayaprinting.ui.Resourced
 import com.wijayaprinting.ui.wage.Record.Companion.INDEX_NODE
 import com.wijayaprinting.ui.wage.Record.Companion.INDEX_TOTAL
 import com.wijayaprinting.util.round
-import kotfx.doubleBindingOf
-import kotfx.toMutableProperty
-import kotfx.toProperty
+import kotfx.bindings.doubleBindingOf
+import kotfx.properties.toMutableProperty
+import kotfx.properties.toProperty
 import org.joda.time.DateTime.now
 
 fun Attendee.toNodeRecord(resourced: Resourced): Record = Record(resourced, INDEX_NODE, this, now().toProperty(), now().toProperty())

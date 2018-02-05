@@ -6,11 +6,17 @@ import com.wijayaprinting.PATTERN_TIME
 import com.wijayaprinting.ui.scene.control.IntField
 import com.wijayaprinting.ui.scene.control.intField
 import javafx.beans.property.BooleanProperty
-import javafx.beans.property.ObjectProperty
 import javafx.beans.property.SimpleBooleanProperty
-import javafx.beans.property.SimpleObjectProperty
 import javafx.geometry.Pos.CENTER
-import kotfx.*
+import kotfx.annotations.SceneDsl
+import kotfx.bindings.bindingOf
+import kotfx.bindings.booleanBindingOf
+import kotfx.properties.AnyProperty
+import kotfx.properties.SimpleAnyProperty
+import kotfx.scene.ChildRoot
+import kotfx.scene.ItemRoot
+import kotfx.scene._HBox
+import kotfx.scene.label
 import org.joda.time.LocalTime
 import org.joda.time.LocalTime.MIDNIGHT
 import org.joda.time.LocalTime.parse
@@ -26,7 +32,7 @@ open class TimeBox @JvmOverloads constructor(prefill: LocalTime = MIDNIGHT) : _H
     lateinit var hourField: IntField
     lateinit var minuteField: IntField
 
-    val timeProperty: ObjectProperty<LocalTime> = SimpleObjectProperty<LocalTime>()
+    val timeProperty: AnyProperty<LocalTime> = SimpleAnyProperty<LocalTime>()
     val validProperty: BooleanProperty = SimpleBooleanProperty()
 
     init {
@@ -73,6 +79,6 @@ open class TimeBox @JvmOverloads constructor(prefill: LocalTime = MIDNIGHT) : _H
 }
 
 
-@JvmOverloads inline fun timeBox(prefill: LocalTime = MIDNIGHT, noinline init: ((@LayoutDsl TimeBox).() -> Unit)? = null): TimeBox = TimeBox(prefill).apply { init?.invoke(this) }
-@JvmOverloads inline fun ChildRoot.timeBox(prefill: LocalTime = MIDNIGHT, noinline init: ((@LayoutDsl TimeBox).() -> Unit)? = null): TimeBox = TimeBox(prefill).apply { init?.invoke(this) }.add()
-@JvmOverloads inline fun ItemRoot.timeBox(prefill: LocalTime = MIDNIGHT, noinline init: ((@LayoutDsl TimeBox).() -> Unit)? = null): TimeBox = TimeBox(prefill).apply { init?.invoke(this) }.add()
+@JvmOverloads inline fun timeBox(prefill: LocalTime = MIDNIGHT, noinline init: ((@SceneDsl TimeBox).() -> Unit)? = null): TimeBox = TimeBox(prefill).apply { init?.invoke(this) }
+@JvmOverloads inline fun ChildRoot.timeBox(prefill: LocalTime = MIDNIGHT, noinline init: ((@SceneDsl TimeBox).() -> Unit)? = null): TimeBox = TimeBox(prefill).apply { init?.invoke(this) }.add()
+@JvmOverloads inline fun ItemRoot.timeBox(prefill: LocalTime = MIDNIGHT, noinline init: ((@SceneDsl TimeBox).() -> Unit)? = null): TimeBox = TimeBox(prefill).apply { init?.invoke(this) }.add()

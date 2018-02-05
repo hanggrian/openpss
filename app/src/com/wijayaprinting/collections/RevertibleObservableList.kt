@@ -1,8 +1,8 @@
 package com.wijayaprinting.collections
 
 import javafx.collections.ObservableList
-import kotfx.mutableObservableListOf
-import kotfx.toMutableObservableList
+import kotfx.collections.mutableObservableListOf
+import kotfx.collections.toMutableObservableList
 
 class RevertibleObservableList<E> @JvmOverloads constructor(
         private val actual: ObservableList<E> = mutableObservableListOf()

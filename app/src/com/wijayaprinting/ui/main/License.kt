@@ -24,7 +24,7 @@ enum class License(val owner: String, val repo: String, val homepage: String) {
             "https://github.com/google/guava"),
     HENDRAANGGRIAN_KOTFX(
             "Hendra Anggrian",
-            "kotfx",
+            "KotFX",
             "https://github.com/hendraanggrian/kotfx"),
     JETBRAINS_KOTLIN(
             "JetBrains",

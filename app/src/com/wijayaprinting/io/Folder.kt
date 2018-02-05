@@ -1,6 +1,6 @@
 package com.wijayaprinting.io
 
-import com.wijayaprinting.BuildConfig.ARTIFACT
+import com.wijayaprinting.BuildConfig.NAME
 import org.apache.commons.lang3.SystemUtils.USER_HOME
 import org.joda.time.LocalDate
 import org.joda.time.LocalDate.now
@@ -15,7 +15,7 @@ sealed class Folder : File {
     }
 }
 
-object MainFolder : Folder(USER_HOME, ".$ARTIFACT")
+object MainFolder : Folder(USER_HOME, ".$NAME")
 
 object WageFolder : Folder(MainFolder, "wage")
 

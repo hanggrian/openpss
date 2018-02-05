@@ -7,9 +7,9 @@ import com.wijayaprinting.db.transaction
 import javafx.fxml.FXML
 import javafx.scene.control.TableColumn
 import javafx.scene.control.cell.TextFieldTableCell.forTableColumn
-import kotfx.asObservable
+import kotfx.properties.asObservable
+import kotfx.properties.toProperty
 import kotfx.stringConverterOf
-import kotfx.toProperty
 import kotlinx.nosql.equal
 import kotlinx.nosql.update
 

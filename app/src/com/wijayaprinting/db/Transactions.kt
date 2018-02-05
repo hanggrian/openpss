@@ -2,7 +2,7 @@ package com.wijayaprinting.db
 
 import com.mongodb.MongoException
 import com.wijayaprinting.BuildConfig.DEBUG
-import kotfx.errorAlert
+import kotfx.dialogs.errorAlert
 import kotfx.exit
 import kotlinx.nosql.mongodb.MongoDBSession
 

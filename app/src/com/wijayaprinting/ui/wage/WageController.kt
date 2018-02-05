@@ -6,7 +6,10 @@ import com.wijayaprinting.R
 import com.wijayaprinting.db.schema.Recesses
 import com.wijayaprinting.db.transaction
 import com.wijayaprinting.io.WageFolder
-import com.wijayaprinting.ui.*
+import com.wijayaprinting.ui.Controller
+import com.wijayaprinting.ui.DateTimeDialog
+import com.wijayaprinting.ui.controller
+import com.wijayaprinting.ui.pane
 import com.wijayaprinting.ui.scene.control.FileField
 import com.wijayaprinting.ui.scene.control.GraphicListCell
 import com.wijayaprinting.ui.scene.control.intField
@@ -26,7 +29,14 @@ import javafx.scene.layout.Pane
 import javafx.scene.layout.Priority.ALWAYS
 import javafx.scene.text.Font.font
 import javafx.stage.Modality.APPLICATION_MODAL
-import kotfx.*
+import kotfx.bindings.*
+import kotfx.dialogs.errorAlert
+import kotfx.dialogs.fileChooser
+import kotfx.gap
+import kotfx.runLater
+import kotfx.scene.*
+import kotfx.size
+import kotfx.stage
 import kotlinx.coroutines.experimental.javafx.JavaFx
 import kotlinx.coroutines.experimental.launch
 import org.joda.time.DateTime
@@ -77,7 +87,7 @@ class WageController : Controller() {
             scrollPane.content = borderPane {
                 prefWidthProperty().bind(scrollPane.widthProperty())
                 prefHeightProperty().bind(scrollPane.heightProperty())
-                center = kotfx.progressIndicator { size(72) }
+                center = kotfx.scene.progressIndicator { size(72) }
             }
             flowPane.children.clear()
         }
@@ -132,7 +142,7 @@ class WageController : Controller() {
                                     prefWidth = 128.0
                                     setCellFactory {
                                         object : GraphicListCell<DateTime>() {
-                                            override fun getGraphic(item: DateTime): Node = kotfx.hbox {
+                                            override fun getGraphic(item: DateTime): Node = kotfx.scene.hbox {
                                                 alignment = CENTER
                                                 label(item.toString(PATTERN_DATETIME)) { maxWidth = Double.MAX_VALUE } hpriority ALWAYS
                                                 button {

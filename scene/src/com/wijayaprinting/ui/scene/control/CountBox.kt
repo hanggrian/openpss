@@ -2,14 +2,19 @@
 
 package com.wijayaprinting.ui.scene.control
 
-import javafx.beans.property.IntegerProperty
-import javafx.beans.property.SimpleIntegerProperty
 import javafx.scene.control.ChoiceBox
-import kotfx.*
+import kotfx.annotations.SceneDsl
+import kotfx.bindings.intBindingOf
+import kotfx.collections.observableListOf
+import kotfx.properties.IntProperty
+import kotfx.properties.SimpleIntProperty
+import kotfx.scene.ChildRoot
+import kotfx.scene.ItemRoot
+import kotfx.stringConverterOf
 
 open class CountBox : ChoiceBox<Int>() {
 
-    val countProperty: IntegerProperty = SimpleIntegerProperty()
+    val countProperty: IntProperty = SimpleIntProperty()
     var desc: String = "items"
 
     init {
@@ -22,6 +27,6 @@ open class CountBox : ChoiceBox<Int>() {
     val count: Int get() = countProperty.get()
 }
 
-@JvmOverloads inline fun itemCountBox(noinline init: ((@LayoutDsl CountBox).() -> Unit)? = null): CountBox = CountBox().apply { init?.invoke(this) }
-@JvmOverloads inline fun ChildRoot.itemCountBox(noinline init: ((@LayoutDsl CountBox).() -> Unit)? = null): CountBox = CountBox().apply { init?.invoke(this) }.add()
-@JvmOverloads inline fun ItemRoot.itemCountBox(noinline init: ((@LayoutDsl CountBox).() -> Unit)? = null): CountBox = CountBox().apply { init?.invoke(this) }.add()
+@JvmOverloads inline fun itemCountBox(noinline init: ((@SceneDsl CountBox).() -> Unit)? = null): CountBox = CountBox().apply { init?.invoke(this) }
+@JvmOverloads inline fun ChildRoot.itemCountBox(noinline init: ((@SceneDsl CountBox).() -> Unit)? = null): CountBox = CountBox().apply { init?.invoke(this) }.add()
+@JvmOverloads inline fun ItemRoot.itemCountBox(noinline init: ((@SceneDsl CountBox).() -> Unit)? = null): CountBox = CountBox().apply { init?.invoke(this) }.add()

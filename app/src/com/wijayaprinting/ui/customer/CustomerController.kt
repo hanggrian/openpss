@@ -8,7 +8,9 @@ import com.wijayaprinting.collections.plus
 import com.wijayaprinting.db.dao.Customer
 import com.wijayaprinting.db.schema.Customers
 import com.wijayaprinting.db.transaction
-import com.wijayaprinting.ui.*
+import com.wijayaprinting.ui.AddUserDialog
+import com.wijayaprinting.ui.Controller
+import com.wijayaprinting.ui.Refreshable
 import com.wijayaprinting.ui.scene.control.CountBox
 import com.wijayaprinting.util.getFont
 import com.wijayaprinting.util.tidy
@@ -19,7 +21,19 @@ import javafx.scene.control.ButtonType.CANCEL
 import javafx.scene.control.ButtonType.OK
 import javafx.scene.image.ImageView
 import javafx.util.Callback
-import kotfx.*
+import kotfx.bindings.bindingOf
+import kotfx.bindings.booleanBindingOf
+import kotfx.bindings.or
+import kotfx.bindings.stringBindingOf
+import kotfx.collections.mutableObservableListOf
+import kotfx.collections.toMutableObservableList
+import kotfx.collections.toObservableList
+import kotfx.dialogs.*
+import kotfx.gap
+import kotfx.properties.toProperty
+import kotfx.runLater
+import kotfx.scene.*
+import kotfx.size
 import kotlinx.nosql.equal
 import kotlinx.nosql.id
 import kotlinx.nosql.mongodb.MongoDBSession
@@ -67,7 +81,7 @@ class CustomerController : Controller(), Refreshable {
         contactTable.contextMenu = contextMenu {
             menuItem(getString(R.string.add)) {
                 setOnAction {
-                    dialog<Customer.Contact>(getString(R.string.add_contact), getString(R.string.add_contact), ImageView(R.image.ic_address)) {
+                    dialog<Customer.Contact>(getString(R.string.add_contact), ImageView(R.image.ic_address)) {
                         lateinit var typeBox: ChoiceBox<String>
                         lateinit var contactField: TextField
                         content = gridPane {

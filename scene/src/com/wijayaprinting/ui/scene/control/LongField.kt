@@ -5,9 +5,9 @@ package com.wijayaprinting.ui.scene.control
 import javafx.beans.property.LongProperty
 import javafx.beans.property.SimpleLongProperty
 import javafx.scene.control.TextField
-import kotfx.ChildRoot
-import kotfx.ItemRoot
-import kotfx.LayoutDsl
+import kotfx.annotations.SceneDsl
+import kotfx.scene.ChildRoot
+import kotfx.scene.ItemRoot
 import kotfx.stringConverterOf
 
 open class LongField : TextField() {
@@ -26,6 +26,6 @@ open class LongField : TextField() {
         set(value) = valueProperty.set(value)
 }
 
-@JvmOverloads inline fun longField(noinline init: ((@LayoutDsl LongField).() -> Unit)? = null): LongField = LongField().apply { init?.invoke(this) }
-@JvmOverloads inline fun ChildRoot.longField(noinline init: ((@LayoutDsl LongField).() -> Unit)? = null): LongField = LongField().apply { init?.invoke(this) }.add()
-@JvmOverloads inline fun ItemRoot.longField(noinline init: ((@LayoutDsl LongField).() -> Unit)? = null): LongField = LongField().apply { init?.invoke(this) }.add()
+@JvmOverloads inline fun longField(noinline init: ((@SceneDsl LongField).() -> Unit)? = null): LongField = LongField().apply { init?.invoke(this) }
+@JvmOverloads inline fun ChildRoot.longField(noinline init: ((@SceneDsl LongField).() -> Unit)? = null): LongField = LongField().apply { init?.invoke(this) }.add()
+@JvmOverloads inline fun ItemRoot.longField(noinline init: ((@SceneDsl LongField).() -> Unit)? = null): LongField = LongField().apply { init?.invoke(this) }.add()

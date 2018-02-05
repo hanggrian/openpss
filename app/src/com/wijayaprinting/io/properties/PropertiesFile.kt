@@ -2,7 +2,7 @@ package com.wijayaprinting.io.properties
 
 import com.wijayaprinting.io.MainFolder
 import javafx.beans.property.StringProperty
-import kotfx.toMutableProperty
+import kotfx.properties.toMutableProperty
 import java.io.File
 import java.util.*
 

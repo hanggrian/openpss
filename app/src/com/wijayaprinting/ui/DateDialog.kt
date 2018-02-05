@@ -8,7 +8,13 @@ import javafx.scene.control.DatePicker
 import javafx.scene.control.Dialog
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
-import kotfx.*
+import kotfx.dialogs.buttons
+import kotfx.dialogs.content
+import kotfx.dialogs.icon
+import kotfx.gap
+import kotfx.runLater
+import kotfx.scene.button
+import kotfx.scene.gridPane
 import org.joda.time.LocalDate
 import org.joda.time.LocalDate.now
 

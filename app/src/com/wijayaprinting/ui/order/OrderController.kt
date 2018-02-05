@@ -10,10 +10,10 @@ import com.wijayaprinting.util.getResource
 import javafx.fxml.FXML
 import javafx.scene.control.ChoiceBox
 import javafx.stage.Modality.APPLICATION_MODAL
-import kotfx.loadFXML
-import kotfx.observableListOf
+import kotfx.collections.observableListOf
+import kotfx.scene.loadFXML
+import kotfx.scene.toScene
 import kotfx.stage
-import kotfx.toScene
 
 class OrderController : Controller(), Refreshable {
 

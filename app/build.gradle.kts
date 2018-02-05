@@ -7,9 +7,13 @@ import org.junit.platform.gradle.plugin.FiltersExtension
 import org.junit.platform.gradle.plugin.EnginesExtension
 import org.junit.platform.gradle.plugin.JUnitPlatformExtension
 
+group = releaseGroup
+version = releaseVersion
+
 plugins {
     java
     kotlin("jvm")
+    idea
     r
     buildconfig
     `junit-platform`
@@ -24,26 +28,12 @@ java.sourceSets {
 }
 
 r {
-    srcDir("src")
-    resDir("res")
-    packageName(releaseGroup)
-    leadingSlash(true)
+    resourcesDir = "res"
 }
 
 buildconfig {
-    srcDir("src")
-    packageName(releaseGroup)
-    artifactId(releaseArtifact)
-    version(releaseVersion)
-    debug(releaseDebug)
-}
-
-configure<JUnitPlatformExtension> {
-    filters {
-        engines {
-            include("spek")
-        }
-    }
+    name = releaseArtifact
+    debug = releaseDebug
 }
 
 kotlin {
@@ -73,6 +63,14 @@ dependencies {
         exclude("org.junit.platform")
     }
     testImplementation(junitPlatform("runner", junitPlatformVersion))
+}
+
+configure<JUnitPlatformExtension> {
+    filters {
+        engines {
+            include("spek")
+        }
+    }
 }
 
 fun JUnitPlatformExtension.filters(setup: FiltersExtension.() -> Unit) = when (this) {

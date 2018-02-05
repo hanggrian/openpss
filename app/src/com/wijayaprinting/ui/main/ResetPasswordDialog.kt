@@ -2,14 +2,22 @@ package com.wijayaprinting.ui.main
 
 import com.wijayaprinting.R
 import com.wijayaprinting.ui.Resourced
-import com.wijayaprinting.ui.gap
 import javafx.scene.control.ButtonType.CANCEL
 import javafx.scene.control.ButtonType.OK
 import javafx.scene.control.Dialog
 import javafx.scene.control.PasswordField
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
-import kotfx.*
+import kotfx.bindings.neq
+import kotfx.bindings.or
+import kotfx.dialogs.button
+import kotfx.dialogs.content
+import kotfx.dialogs.icon
+import kotfx.gap
+import kotfx.runLater
+import kotfx.scene.gridPane
+import kotfx.scene.label
+import kotfx.scene.passwordField
 
 class ResetPasswordDialog(resourced: Resourced) : Dialog<String>(), Resourced by resourced {
 

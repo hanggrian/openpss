@@ -2,7 +2,6 @@ package com.wijayaprinting.ui.wage
 
 import com.wijayaprinting.R
 import com.wijayaprinting.ui.Resourced
-import com.wijayaprinting.ui.gap
 import com.wijayaprinting.ui.scene.layout.TimeBox
 import com.wijayaprinting.ui.scene.layout.timeBox
 import javafx.scene.control.ButtonType.CANCEL
@@ -10,7 +9,13 @@ import javafx.scene.control.ButtonType.OK
 import javafx.scene.control.Dialog
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
-import kotfx.*
+import kotfx.bindings.booleanBindingOf
+import kotfx.dialogs.button
+import kotfx.dialogs.content
+import kotfx.dialogs.icon
+import kotfx.gap
+import kotfx.scene.gridPane
+import kotfx.scene.label
 import org.joda.time.LocalTime
 
 class AddRecessDialog(resourced: Resourced) : Dialog<Pair<LocalTime, LocalTime>>(), Resourced by resourced {

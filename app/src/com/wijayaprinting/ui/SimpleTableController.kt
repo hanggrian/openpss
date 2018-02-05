@@ -8,7 +8,11 @@ import javafx.scene.control.Button
 import javafx.scene.control.ButtonType.NO
 import javafx.scene.control.ButtonType.YES
 import javafx.scene.control.TableView
-import kotfx.*
+import kotfx.bindings.or
+import kotfx.collections.toMutableObservableList
+import kotfx.dialogs.confirmAlert
+import kotfx.properties.toProperty
+import kotfx.runLater
 import kotlinx.nosql.equal
 import kotlinx.nosql.id
 import kotlinx.nosql.mongodb.DocumentSchema

@@ -7,7 +7,6 @@ import com.wijayaprinting.db.Database
 import com.wijayaprinting.io.properties.ConfigFile
 import com.wijayaprinting.io.properties.MongoFile
 import com.wijayaprinting.ui.Resourced
-import com.wijayaprinting.ui.gap
 import com.wijayaprinting.ui.scene.control.HostField
 import com.wijayaprinting.ui.scene.control.IntField
 import com.wijayaprinting.ui.scene.control.hostField
@@ -17,7 +16,13 @@ import javafx.geometry.Pos
 import javafx.scene.control.*
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
-import kotfx.*
+import kotfx.bindings.*
+import kotfx.collections.toObservableList
+import kotfx.dialogs.*
+import kotfx.exit
+import kotfx.gap
+import kotfx.runLater
+import kotfx.scene.*
 import kotlinx.coroutines.experimental.javafx.JavaFx
 import kotlinx.coroutines.experimental.launch
 
@@ -59,7 +64,7 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced 
             passwordField = passwordField { promptText = getString(R.string.password) } col 1 row 2
             toggleButton {
                 tooltip = tooltip(getString(R.string.see_password))
-                graphic = kotfx.imageView { imageProperty().bind(`if`(this@toggleButton.selectedProperty()) then Image(R.image.btn_visibility) `else` Image(R.image.btn_visibility_off)) }
+                graphic = kotfx.scene.imageView { imageProperty().bind(`if`(this@toggleButton.selectedProperty()) then Image(R.image.btn_visibility) `else` Image(R.image.btn_visibility_off)) }
                 passwordField.tooltipProperty().bind(bindingOf(passwordField.textProperty(), selectedProperty()) { if (!isSelected) null else tooltip(passwordField.text) })
             } col 2 row 2
         }

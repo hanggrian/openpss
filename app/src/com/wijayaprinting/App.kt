@@ -14,10 +14,10 @@ import com.wijayaprinting.util.getResource
 import javafx.application.Application
 import javafx.scene.image.Image
 import javafx.stage.Stage
+import kotfx.dialogs.infoAlert
 import kotfx.icon
-import kotfx.infoAlert
-import kotfx.loadFXML
-import kotfx.toScene
+import kotfx.scene.loadFXML
+import kotfx.scene.toScene
 import kotlinx.coroutines.experimental.javafx.JavaFx
 import kotlinx.coroutines.experimental.launch
 import kotlinx.nosql.equal

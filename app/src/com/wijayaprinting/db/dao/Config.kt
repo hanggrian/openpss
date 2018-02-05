@@ -11,7 +11,12 @@ data class Config(
     override lateinit var id: Id<String, Configs>
 
     companion object {
-        const val KEY_TIMEZONE = "timezone"
-        const val DEFAULT_TIMEZONE="Asia/Jakarta"
+        const val TIMEZONE_CONTINENT = "timezone_continent"
+        const val TIMEZONE_CONTINENT_DEFAULT = "Asia"
+
+        const val TIMEZONE_COUNTRIES = "timezone_country"
+        const val TIMEZONE_COUNTRIES_DEFAULT = "Bangkok, Hanoi, Jakarta"
     }
+
+    val valueList: List<String> get() = value.split(", ")
 }

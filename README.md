@@ -10,6 +10,8 @@ Head to [releases] to download this app in 3 variants:
  * `zip` - Compressed folder containing Windows 64-bit libraries and executables.
  * `jar` - Smaller Java executable that requires JRE 1.8.
 
+There is also `scene.jar`, third-party library for SceneBuilder to design fxml files in this project.
+
 Developer note
 --------------
 #### Tech stacks
@@ -21,13 +23,14 @@ Built with Kotlin in mind, this app is fully written in Kotlin and using some Ko
  * Spek Test Framework
  
 Others include:
+ * MongoDB server.
  * Google's Guava, used mainly for its powerful multimap.
  * Joda-Time and SLF4J, brought by Kotlin NoSQL.
  * Apache POI and some of its commons libraries.
  * Personal libraries.
 
 #### How to build
-To open the project, you're going to need Oracle JDK 1.8 and IntelliJ IDEA.
+To open the project, you're going to need Oracle JDK 1.8, IntelliJ IDEA and optional SceneBuilder.
 Testing the app requires authenticated MongoDB server over IP address (or localhost).
 
 Then, simply follow steps below to build [releases]:

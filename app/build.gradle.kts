@@ -20,17 +20,25 @@ plugins {
     `junit-platform`
 }
 
-application {
-    applicationName = releaseArtifact
-    mainClassName = "$releaseGroup.App"
-}
-
 java.sourceSets {
     getByName("main") {
         java.srcDir("src")
         resources.srcDir("res")
     }
     getByName("test").java.srcDir("tests/src")
+}
+
+configurations {
+    "ktlint"()
+}
+
+application {
+    applicationName = releaseArtifact
+    mainClassName = "$releaseGroup.App"
+}
+
+kotlin {
+    experimental.coroutines = ENABLE
 }
 
 r {
@@ -40,14 +48,6 @@ r {
 buildconfig {
     name = releaseArtifact
     debug = releaseDebug
-}
-
-kotlin {
-    experimental.coroutines = ENABLE
-}
-
-configurations {
-    "ktlint"()
 }
 
 dependencies {

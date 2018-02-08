@@ -1,5 +1,8 @@
 import org.gradle.kotlin.dsl.kotlin
 
+group = releaseGroup
+version = releaseVersion
+
 plugins {
     `java-library`
     kotlin("jvm")

@@ -7,10 +7,9 @@ import com.wijayaprinting.ui.wage.Record.Companion.INDEX_TOTAL
 import com.wijayaprinting.util.round
 import kotfx.bindings.doubleBindingOf
 import kotfx.properties.toMutableProperty
-import kotfx.properties.toProperty
 import org.joda.time.DateTime.now
 
-fun Attendee.toNodeRecord(resourced: Resourced): Record = Record(resourced, INDEX_NODE, this, now().toProperty(), now().toProperty())
+fun Attendee.toNodeRecord(resourced: Resourced): Record = Record(resourced, INDEX_NODE, this, now().toMutableProperty(), now().toMutableProperty())
 
 fun Attendee.toChildRecords(resourced: Resourced): Set<Record> {
     val records = mutableSetOf<Record>()
@@ -20,7 +19,7 @@ fun Attendee.toChildRecords(resourced: Resourced): Set<Record> {
     return records
 }
 
-fun Attendee.toTotalRecords(resourced: Resourced, children: Collection<Record>): Record = Record(resourced, INDEX_TOTAL, this, START_OF_TIME.toProperty(), START_OF_TIME.toProperty()).apply {
+fun Attendee.toTotalRecords(resourced: Resourced, children: Collection<Record>): Record = Record(resourced, INDEX_TOTAL, this, START_OF_TIME.toMutableProperty(), START_OF_TIME.toMutableProperty()).apply {
     children.map { it.dailyProperty }.toTypedArray().let { mains -> dailyProperty.bind(doubleBindingOf(*mains) { round(mains.map { it.value }.sum()) }) }
     children.map { it.dailyIncomeProperty }.toTypedArray().let { mainIncomes -> dailyIncomeProperty.bind(doubleBindingOf(*mainIncomes) { round(mainIncomes.map { it.value }.sum()) }) }
     children.map { it.overtimeProperty }.toTypedArray().let { overtimes -> overtimeProperty.bind(doubleBindingOf(*overtimes) { round(overtimes.map { it.value }.sum()) }) }

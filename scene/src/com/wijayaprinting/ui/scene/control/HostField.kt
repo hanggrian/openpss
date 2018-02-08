@@ -2,11 +2,11 @@
 
 package com.wijayaprinting.ui.scene.control
 
-import javafx.beans.property.BooleanProperty
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.scene.control.TextField
 import kotfx.annotations.SceneDsl
 import kotfx.bindings.booleanBindingOf
+import kotfx.properties.MutableBooleanProperty
 import kotfx.scene.ChildRoot
 import kotfx.scene.ItemRoot
 import org.apache.commons.validator.routines.InetAddressValidator.getInstance
@@ -14,7 +14,7 @@ import org.apache.commons.validator.routines.InetAddressValidator.getInstance
 /** Field that display IP address. */
 open class HostField : TextField() {
 
-    val validProperty: BooleanProperty = SimpleBooleanProperty()
+    val validProperty: MutableBooleanProperty = SimpleBooleanProperty()
 
     init {
         validProperty.bind(booleanBindingOf(textProperty()) { getInstance().isValidInet4Address(text) })

@@ -11,9 +11,7 @@ java.sourceSets {
 
 dependencies {
     compile(project(":common"))
-
     compile(kotlin("stdlib", kotlinVersion))
-
     compile(hendraanggrian("kotfx", kotfxVersion))
     compile(commonsValidator())
 }

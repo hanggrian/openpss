@@ -8,7 +8,11 @@ import com.wijayaprinting.ui.order.OrderController
 import com.wijayaprinting.ui.wage.WageController
 import javafx.event.ActionEvent
 import javafx.fxml.FXML
-import javafx.scene.control.*
+import javafx.scene.control.Label
+import javafx.scene.control.Menu
+import javafx.scene.control.MenuBar
+import javafx.scene.control.RadioMenuItem
+import javafx.scene.control.TabPane
 import kotfx.runLater
 import org.apache.commons.lang3.SystemUtils.IS_OS_MAC
 
@@ -49,7 +53,6 @@ class MainController : Controller() {
     }
 
     @FXML fun addCustomer() = customerController.add()
-
 
     @FXML fun navigate(event: ActionEvent) = tabPane.selectionModel.select(navigateMenu.items.indexOf(event.source))
 

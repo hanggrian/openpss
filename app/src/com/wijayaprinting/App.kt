@@ -12,12 +12,12 @@ import com.wijayaprinting.ui.main.ResetPasswordDialog
 import com.wijayaprinting.ui.pane
 import com.wijayaprinting.util.getResource
 import javafx.application.Application
+import javafx.fxml.FXMLLoader
+import javafx.scene.Scene
 import javafx.scene.image.Image
 import javafx.stage.Stage
 import kotfx.dialogs.infoAlert
 import kotfx.icon
-import kotfx.scene.loadFXML
-import kotfx.scene.toScene
 import kotlinx.coroutines.experimental.javafx.JavaFx
 import kotlinx.coroutines.experimental.launch
 import kotlinx.nosql.equal
@@ -27,7 +27,7 @@ import org.apache.log4j.BasicConfigurator.configure
 import java.awt.Toolkit.getDefaultToolkit
 import java.lang.Class.forName
 import java.net.URL
-import java.util.*
+import java.util.ResourceBundle
 
 class App : Application(), Resourced {
 
@@ -52,9 +52,9 @@ class App : Application(), Resourced {
             employee as Employee
 
             stage.apply {
-                val loader = getResource(R.layout.controller_main).loadFXML(resources)
+                val loader = FXMLLoader(getResource(R.layout.controller_main), resources)
                 title = getString(R.string.app_name)
-                scene = loader.pane.toScene()
+                scene = Scene(loader.pane)
                 minWidth = 1000.0
                 minHeight = 650.0
                 loader.controller._employee = employee

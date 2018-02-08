@@ -2,24 +2,24 @@
 
 package com.wijayaprinting.ui.scene.control
 
-import javafx.beans.property.BooleanProperty
-import javafx.beans.property.FloatProperty
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleFloatProperty
 import javafx.scene.control.TextField
 import kotfx.annotations.SceneDsl
 import kotfx.bindings.booleanBindingOf
+import kotfx.properties.MutableBooleanProperty
+import kotfx.properties.MutableFloatProperty
 import kotfx.scene.ChildRoot
 import kotfx.scene.ItemRoot
 import kotfx.stringConverterOf
 
 open class FloatField : TextField() {
 
-    val valueProperty: FloatProperty = SimpleFloatProperty()
-    val validProperty: BooleanProperty = SimpleBooleanProperty()
+    val valueProperty: MutableFloatProperty = SimpleFloatProperty()
+    val validProperty: MutableBooleanProperty = SimpleBooleanProperty()
 
     init {
-        textProperty().bindBidirectional(valueProperty, stringConverterOf<Number>({ it.toFloatOrNull() ?: 0f }))
+        textProperty().bindBidirectional(valueProperty, stringConverterOf<Number> { it.toFloatOrNull() ?: 0f })
         validProperty.bind(booleanBindingOf(textProperty()) {
             try {
                 java.lang.Float.parseFloat(text)

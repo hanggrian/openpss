@@ -6,11 +6,17 @@ import com.wijayaprinting.R
 import com.wijayaprinting.START_OF_TIME
 import com.wijayaprinting.ui.Resourced
 import com.wijayaprinting.util.round
-import javafx.beans.property.*
+import javafx.beans.property.SimpleBooleanProperty
+import javafx.beans.property.SimpleDoubleProperty
+import javafx.beans.property.SimpleStringProperty
+import javafx.beans.property.StringProperty
 import kotfx.bindings.doubleBindingOf
 import kotfx.bindings.plus
 import kotfx.bindings.stringBindingOf
-import kotfx.properties.toProperty
+import kotfx.properties.MutableAnyProperty
+import kotfx.properties.MutableBooleanProperty
+import kotfx.properties.MutableDoubleProperty
+import kotfx.properties.toMutableProperty
 import org.joda.time.DateTime
 import org.joda.time.Interval
 import org.joda.time.LocalTime
@@ -22,18 +28,18 @@ class Record @JvmOverloads constructor(
         val index: Int,
         val attendee: Attendee,
 
-        val startProperty: ObjectProperty<DateTime>,
-        val endProperty: ObjectProperty<DateTime>,
+        val startProperty: MutableAnyProperty<DateTime>,
+        val endProperty: MutableAnyProperty<DateTime>,
 
-        val dailyEmptyProperty: BooleanProperty = SimpleBooleanProperty(),
+        val dailyEmptyProperty: MutableBooleanProperty = SimpleBooleanProperty(),
 
-        val dailyProperty: DoubleProperty = SimpleDoubleProperty(),
-        val overtimeProperty: DoubleProperty = SimpleDoubleProperty(),
+        val dailyProperty: MutableDoubleProperty = SimpleDoubleProperty(),
+        val overtimeProperty: MutableDoubleProperty = SimpleDoubleProperty(),
 
-        val dailyIncomeProperty: DoubleProperty = SimpleDoubleProperty(),
-        val overtimeIncomeProperty: DoubleProperty = SimpleDoubleProperty(),
+        val dailyIncomeProperty: MutableDoubleProperty = SimpleDoubleProperty(),
+        val overtimeIncomeProperty: MutableDoubleProperty = SimpleDoubleProperty(),
 
-        val totalProperty: DoubleProperty = SimpleDoubleProperty()
+        val totalProperty: MutableDoubleProperty = SimpleDoubleProperty()
 ) : Resourced by resourced {
 
     companion object {
@@ -45,7 +51,7 @@ class Record @JvmOverloads constructor(
         const val INDEX_TOTAL = -1
 
         /** Dummy for invisible [javafx.scene.control.TreeTableView] root. */
-        fun getDummy(resourced: Resourced) = Record(resourced, Int.MIN_VALUE, Attendee, START_OF_TIME.toProperty(), START_OF_TIME.toProperty())
+        fun getDummy(resourced: Resourced) = Record(resourced, Int.MIN_VALUE, Attendee, START_OF_TIME.toMutableProperty(), START_OF_TIME.toMutableProperty())
     }
 
     init {

@@ -6,7 +6,7 @@ import javafx.scene.control.ChoiceBox
 import kotfx.annotations.SceneDsl
 import kotfx.bindings.intBindingOf
 import kotfx.collections.observableListOf
-import kotfx.properties.IntProperty
+import kotfx.properties.MutableIntProperty
 import kotfx.properties.SimpleIntProperty
 import kotfx.scene.ChildRoot
 import kotfx.scene.ItemRoot
@@ -14,12 +14,12 @@ import kotfx.stringConverterOf
 
 open class CountBox : ChoiceBox<Int>() {
 
-    val countProperty: IntProperty = SimpleIntProperty()
+    val countProperty: MutableIntProperty = SimpleIntProperty()
     var desc: String = "items"
 
     init {
         items = observableListOf(20, 30, 40, 50)
-        converter = stringConverterOf({ s -> s.toInt() }) { "$it $desc" }
+        converter = stringConverterOf({ "$it $desc" }) { s -> s.toInt() }
         selectionModel.selectFirst()
         countProperty.bind(intBindingOf(selectionModel.selectedItemProperty()) { selectionModel.selectedItem })
     }

@@ -1,7 +1,7 @@
 package com.wijayaprinting.ui
 
 import com.wijayaprinting.Language
-import java.util.*
+import java.util.ResourceBundle
 
 /** Easier access to [ResourceBundle] across app. */
 interface Resourced {

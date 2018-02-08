@@ -19,7 +19,7 @@ class PlatePriceController : PriceController<Plate, Plates>(Plates) {
     override fun initialize() {
         super.initialize()
         priceColumn.setCellValueFactory { it.value.price.toProperty().asObservable() }
-        priceColumn.cellFactory = forTableColumn<Plate, Double>(stringConverterOf({ it.toDoubleOrNull() ?: 0.0 }))
+        priceColumn.cellFactory = forTableColumn<Plate, Double>(stringConverterOf { it.toDoubleOrNull() ?: 0.0 })
         priceColumn.setOnEditCommit { event ->
             transaction { Plates.find { name.equal(event.rowValue.name) }.projection { price }.update(event.newValue) }
             event.rowValue.price = event.newValue

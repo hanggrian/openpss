@@ -5,13 +5,13 @@ package com.wijayaprinting.ui.scene.layout
 import com.wijayaprinting.PATTERN_TIME
 import com.wijayaprinting.ui.scene.control.IntField
 import com.wijayaprinting.ui.scene.control.intField
-import javafx.beans.property.BooleanProperty
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.geometry.Pos.CENTER
 import kotfx.annotations.SceneDsl
 import kotfx.bindings.bindingOf
 import kotfx.bindings.booleanBindingOf
-import kotfx.properties.AnyProperty
+import kotfx.properties.MutableAnyProperty
+import kotfx.properties.MutableBooleanProperty
 import kotfx.properties.SimpleAnyProperty
 import kotfx.scene.ChildRoot
 import kotfx.scene.ItemRoot
@@ -32,8 +32,8 @@ open class TimeBox @JvmOverloads constructor(prefill: LocalTime = MIDNIGHT) : _H
     lateinit var hourField: IntField
     lateinit var minuteField: IntField
 
-    val timeProperty: AnyProperty<LocalTime> = SimpleAnyProperty<LocalTime>()
-    val validProperty: BooleanProperty = SimpleBooleanProperty()
+    val timeProperty: MutableAnyProperty<LocalTime> = SimpleAnyProperty<LocalTime>()
+    val validProperty: MutableBooleanProperty = SimpleBooleanProperty()
 
     init {
         alignment = CENTER

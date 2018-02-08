@@ -8,11 +8,11 @@ import com.wijayaprinting.ui.pane
 import com.wijayaprinting.ui.scene.control.CountBox
 import com.wijayaprinting.util.getResource
 import javafx.fxml.FXML
+import javafx.fxml.FXMLLoader
+import javafx.scene.Scene
 import javafx.scene.control.ChoiceBox
 import javafx.stage.Modality.APPLICATION_MODAL
 import kotfx.collections.observableListOf
-import kotfx.scene.loadFXML
-import kotfx.scene.toScene
 import kotfx.stage
 
 class OrderController : Controller(), Refreshable {
@@ -29,7 +29,6 @@ class OrderController : Controller(), Refreshable {
     }
 
     override fun refresh() {
-
     }
 
     @FXML
@@ -42,8 +41,8 @@ class OrderController : Controller(), Refreshable {
     @FXML
     fun platePrice() = stage(getString(R.string.plate_price)) {
         initModality(APPLICATION_MODAL)
-        val loader = getResource(R.layout.controller_price_plate).loadFXML(resources)
-        scene = loader.pane.toScene()
+        val loader = FXMLLoader(getResource(R.layout.controller_price_plate), resources)
+        scene = Scene(loader.pane)
         isResizable = false
         loader.controller._employee = _employee
     }.showAndWait()
@@ -51,8 +50,8 @@ class OrderController : Controller(), Refreshable {
     @FXML
     fun offsetPrice() = stage(getString(R.string.offset_price)) {
         initModality(APPLICATION_MODAL)
-        val loader = getResource(R.layout.controller_price_offset).loadFXML(resources)
-        scene = loader.pane.toScene()
+        val loader = FXMLLoader(getResource(R.layout.controller_price_offset), resources)
+        scene = Scene(loader.pane)
         isResizable = false
         loader.controller._employee = _employee
     }.showAndWait()

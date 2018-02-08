@@ -7,12 +7,12 @@ import com.wijayaprinting.ui.scene.layout.timeBox
 import javafx.scene.control.ButtonType.CANCEL
 import javafx.scene.control.ButtonType.OK
 import javafx.scene.control.Dialog
-import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import kotfx.bindings.booleanBindingOf
-import kotfx.dialogs.button
+import kotfx.dialogs.addButton
 import kotfx.dialogs.content
-import kotfx.dialogs.icon
+import kotfx.dialogs.graphicIcon
+import kotfx.dialogs.headerTitle
 import kotfx.gap
 import kotfx.scene.gridPane
 import kotfx.scene.label
@@ -24,20 +24,18 @@ class AddRecessDialog(resourced: Resourced) : Dialog<Pair<LocalTime, LocalTime>>
     lateinit var endBox: TimeBox
 
     init {
-        icon = Image(R.image.ic_launcher)
-        title = getString(R.string.add_reccess)
-        headerText = getString(R.string.add_reccess)
-        graphic = ImageView(R.image.ic_clock)
+        headerTitle = getString(R.string.add_reccess)
+        graphicIcon = ImageView(R.image.ic_clock)
 
         content = gridPane {
-            gap(8)
+            gap = 8.0
             label(getString(R.string.start)) col 0 row 0
             startBox = timeBox() col 1 row 0
             label(getString(R.string.end)) col 0 row 1
             endBox = timeBox() col 1 row 1
         }
-        button(CANCEL)
-        button(OK).disableProperty().bind(booleanBindingOf(startBox.timeProperty, endBox.timeProperty) { startBox.time >= endBox.time })
+        addButton(CANCEL)
+        addButton(OK).disableProperty().bind(booleanBindingOf(startBox.timeProperty, endBox.timeProperty) { startBox.time >= endBox.time })
         setResultConverter { if (it == OK) Pair(startBox.time, endBox.time) else null }
     }
 }

@@ -18,10 +18,18 @@ import com.wijayaprinting.ui.wage.WageRecordController.Companion.EXTRA_STAGE
 import com.wijayaprinting.ui.wage.readers.Reader
 import com.wijayaprinting.util.getResource
 import javafx.fxml.FXML
+import javafx.fxml.FXMLLoader
 import javafx.geometry.Insets
 import javafx.geometry.Pos.CENTER
 import javafx.scene.Node
-import javafx.scene.control.*
+import javafx.scene.Scene
+import javafx.scene.control.Button
+import javafx.scene.control.ChoiceBox
+import javafx.scene.control.Label
+import javafx.scene.control.ListView
+import javafx.scene.control.ScrollPane
+import javafx.scene.control.TitledPane
+import javafx.scene.control.ToggleButton
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import javafx.scene.layout.FlowPane
@@ -29,13 +37,34 @@ import javafx.scene.layout.Pane
 import javafx.scene.layout.Priority.ALWAYS
 import javafx.scene.text.Font.font
 import javafx.stage.Modality.APPLICATION_MODAL
-import kotfx.bindings.*
+import kotfx.bindings.`else`
+import kotfx.bindings.`if`
+import kotfx.bindings.bindingOf
+import kotfx.bindings.booleanBindingOf
+import kotfx.bindings.isEmpty
+import kotfx.bindings.lessEq
+import kotfx.bindings.or
+import kotfx.bindings.sizeBinding
+import kotfx.bindings.stringBindingOf
+import kotfx.bindings.then
 import kotfx.dialogs.errorAlert
 import kotfx.dialogs.fileChooser
 import kotfx.gap
+import kotfx.maxSize
+import kotfx.minSize
 import kotfx.runLater
-import kotfx.scene.*
-import kotfx.size
+import kotfx.scene.borderPane
+import kotfx.scene.button
+import kotfx.scene.checkBox
+import kotfx.scene.contextMenu
+import kotfx.scene.gridPane
+import kotfx.scene.imageView
+import kotfx.scene.label
+import kotfx.scene.listView
+import kotfx.scene.menuItem
+import kotfx.scene.separatorMenuItem
+import kotfx.scene.titledPane
+import kotfx.scene.vbox
 import kotfx.stage
 import kotlinx.coroutines.experimental.javafx.JavaFx
 import kotlinx.coroutines.experimental.launch
@@ -70,9 +99,9 @@ class WageController : Controller() {
 
     @FXML
     fun recess() = stage(getString(R.string.recess)) {
-        val loader = getResource(R.layout.controller_wage_recess).loadFXML(resources)
+        val loader = FXMLLoader(getResource(R.layout.controller_wage_recess), resources)
         initModality(APPLICATION_MODAL)
-        scene = loader.pane.toScene()
+        scene = Scene(loader.pane)
         isResizable = false
         loader.controller._employee = _employee
     }.showAndWait()
@@ -87,7 +116,7 @@ class WageController : Controller() {
             scrollPane.content = borderPane {
                 prefWidthProperty().bind(scrollPane.widthProperty())
                 prefHeightProperty().bind(scrollPane.heightProperty())
-                center = kotfx.scene.progressIndicator { size(72) }
+                center = kotfx.scene.progressIndicator { maxSize = 72.0 }
             }
             flowPane.children.clear()
         }
@@ -102,7 +131,7 @@ class WageController : Controller() {
                             isCollapsible = false
                             content = vbox {
                                 gridPane {
-                                    gap(4)
+                                    gap = 4.0
                                     padding = Insets(8.0)
                                     attendee.role?.let { role ->
                                         label(getString(R.string.role)) col 0 row 0 marginRight 4
@@ -146,7 +175,8 @@ class WageController : Controller() {
                                                 alignment = CENTER
                                                 label(item.toString(PATTERN_DATETIME)) { maxWidth = Double.MAX_VALUE } hpriority ALWAYS
                                                 button {
-                                                    size(17)
+                                                    minSize = 17.0
+                                                    maxSize = 17.0
                                                     graphicProperty().bind(bindingOf<Node>(hoverProperty()) { if (isHover) ImageView(R.image.btn_clear) else null })
                                                     setOnAction { listView.items.remove(item) }
                                                 }
@@ -224,8 +254,8 @@ class WageController : Controller() {
     fun process() {
         attendees.forEach { it.saveWage() }
         stage {
-            val loader = getResource(R.layout.controller_wage_record).loadFXML(resources)
-            scene = loader.pane.toScene()
+            val loader = FXMLLoader(getResource(R.layout.controller_wage_record), resources)
+            scene = Scene(loader.pane)
             minWidth = 1000.0
             minHeight = 650.0
             loader.controller.addExtra(EXTRA_ATTENDEES, attendees).addExtra(EXTRA_STAGE, this)

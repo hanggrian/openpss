@@ -4,7 +4,7 @@ import com.wijayaprinting.io.MainFolder
 import javafx.beans.property.StringProperty
 import kotfx.properties.toMutableProperty
 import java.io.File
-import java.util.*
+import java.util.Properties
 
 /**
  * Represents a file of [Properties] that acts as local settings.

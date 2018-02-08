@@ -16,9 +16,15 @@ import com.wijayaprinting.util.getFont
 import com.wijayaprinting.util.tidy
 import javafx.fxml.FXML
 import javafx.scene.Node
-import javafx.scene.control.*
 import javafx.scene.control.ButtonType.CANCEL
 import javafx.scene.control.ButtonType.OK
+import javafx.scene.control.ChoiceBox
+import javafx.scene.control.Label
+import javafx.scene.control.ListView
+import javafx.scene.control.Pagination
+import javafx.scene.control.TableColumn
+import javafx.scene.control.TableView
+import javafx.scene.control.TextField
 import javafx.scene.image.ImageView
 import javafx.util.Callback
 import kotfx.bindings.bindingOf
@@ -28,12 +34,24 @@ import kotfx.bindings.stringBindingOf
 import kotfx.collections.mutableObservableListOf
 import kotfx.collections.toMutableObservableList
 import kotfx.collections.toObservableList
-import kotfx.dialogs.*
+import kotfx.dialogs.addButton
+import kotfx.dialogs.confirmAlert
+import kotfx.dialogs.content
+import kotfx.dialogs.dialog
+import kotfx.dialogs.errorAlert
+import kotfx.dialogs.inputDialog
 import kotfx.gap
+import kotfx.maxSize
 import kotfx.properties.toProperty
 import kotfx.runLater
-import kotfx.scene.*
-import kotfx.size
+import kotfx.scene.button
+import kotfx.scene.choiceBox
+import kotfx.scene.contextMenu
+import kotfx.scene.gridPane
+import kotfx.scene.label
+import kotfx.scene.listView
+import kotfx.scene.menuItem
+import kotfx.scene.textField
 import kotlinx.nosql.equal
 import kotlinx.nosql.id
 import kotlinx.nosql.mongodb.MongoDBSession
@@ -55,7 +73,7 @@ class CustomerController : Controller(), Refreshable {
 
     private lateinit var customerList: ListView<Customer>
     private val noteLabelGraphic = button(graphic = ImageView(R.image.btn_edit)) {
-        size(24)
+        maxSize = 24.0
         setOnAction {
             inputDialog(customer!!.note) {
                 title = getString(R.string.edit_customer)
@@ -85,14 +103,14 @@ class CustomerController : Controller(), Refreshable {
                         lateinit var typeBox: ChoiceBox<String>
                         lateinit var contactField: TextField
                         content = gridPane {
-                            gap(8)
+                            gap = 8.0
                             label(getString(R.string.type)) col 0 row 0
                             typeBox = choiceBox(Customer.listAllTypes()) col 1 row 0
                             label(getString(R.string.contact)) col 0 row 1
                             contactField = textField { promptText = getString(R.string.contact) } col 1 row 1
                         }
-                        button(CANCEL)
-                        button(OK).disableProperty().bind(typeBox.selectionModel.selectedItemProperty().isNull or contactField.textProperty().isEmpty)
+                        addButton(CANCEL)
+                        addButton(OK).disableProperty().bind(typeBox.selectionModel.selectedItemProperty().isNull or contactField.textProperty().isEmpty)
                         setResultConverter { if (it == OK) Customer.Contact(typeBox.value, contactField.text) else null }
                     }.showAndWait().ifPresent { contact ->
                         transaction {

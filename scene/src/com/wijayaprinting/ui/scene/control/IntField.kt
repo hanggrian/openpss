@@ -4,7 +4,7 @@ package com.wijayaprinting.ui.scene.control
 
 import javafx.scene.control.TextField
 import kotfx.annotations.SceneDsl
-import kotfx.properties.IntProperty
+import kotfx.properties.MutableIntProperty
 import kotfx.properties.SimpleIntProperty
 import kotfx.scene.ChildRoot
 import kotfx.scene.ItemRoot
@@ -12,10 +12,10 @@ import kotfx.stringConverterOf
 
 open class IntField : TextField() {
 
-    val valueProperty: IntProperty = SimpleIntProperty()
+    val valueProperty: MutableIntProperty = SimpleIntProperty()
 
     init {
-        textProperty().bindBidirectional(valueProperty, stringConverterOf<Number>({ it.toIntOrNull() ?: 0 }))
+        textProperty().bindBidirectional(valueProperty, stringConverterOf<Number> { it.toIntOrNull() ?: 0 })
         textProperty().addListener { _, oldValue, newValue ->
             text = if (newValue.isEmpty()) "0" else newValue.toIntOrNull()?.toString() ?: oldValue
         }

@@ -13,8 +13,10 @@ import javafx.scene.control.TextField
 import javafx.scene.image.ImageView
 import kotfx.bindings.bindingOf
 import kotfx.collections.toMutableObservableList
-import kotfx.dialogs.button
+import kotfx.dialogs.addButton
 import kotfx.dialogs.content
+import kotfx.dialogs.graphicIcon
+import kotfx.dialogs.headerTitle
 import kotfx.runLater
 import kotfx.scene.listView
 import kotfx.scene.textField
@@ -31,9 +33,8 @@ class SearchCustomerDialog(resourced: Resourced) : Dialog<Customer>(), Resourced
     private lateinit var listView: ListView<Customer>
 
     init {
-        title = getString(R.string.search_customer)
-        headerText = getString(R.string.search_customer)
-        graphic = ImageView(R.image.ic_user)
+        headerTitle = getString(R.string.search_customer)
+        graphicIcon = ImageView(R.image.ic_user)
         content = vbox {
             textField = textField { promptText = getString(R.string.customer) }
             listView = listView<Customer> {
@@ -47,8 +48,8 @@ class SearchCustomerDialog(resourced: Resourced) : Dialog<Customer>(), Resourced
                 })
             } marginTop 8
         }
-        button(CANCEL)
-        button(OK).disableProperty().bind(listView.selectionModel.selectedItemProperty().isNull)
+        addButton(CANCEL)
+        addButton(OK).disableProperty().bind(listView.selectionModel.selectedItemProperty().isNull)
         runLater { textField.requestFocus() }
         setResultConverter {
             if (it == OK) listView.selectionModel.selectedItem

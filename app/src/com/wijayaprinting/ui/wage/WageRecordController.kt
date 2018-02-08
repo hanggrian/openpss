@@ -16,15 +16,19 @@ import com.wijayaprinting.ui.wage.Record.Companion.getDummy
 import com.wijayaprinting.util.getExternalForm
 import com.wijayaprinting.util.withoutCurrency
 import javafx.fxml.FXML
-import javafx.scene.control.*
+import javafx.scene.control.Button
 import javafx.scene.control.ButtonBar.ButtonData.CANCEL_CLOSE
 import javafx.scene.control.SelectionMode.MULTIPLE
+import javafx.scene.control.SplitMenuButton
+import javafx.scene.control.TreeItem
+import javafx.scene.control.TreeTableColumn
+import javafx.scene.control.TreeTableView
 import javafx.stage.Stage
 import kotfx.bindings.booleanBindingOf
 import kotfx.bindings.isEmpty
 import kotfx.bindings.or
 import kotfx.bindings.stringBindingOf
-import kotfx.dialogs.button
+import kotfx.dialogs.addButton
 import kotfx.dialogs.infoAlert
 import kotfx.properties.asObservable
 import kotfx.properties.toProperty
@@ -165,7 +169,7 @@ class WageRecordController : Controller() {
         } while (flow.lastVisibleCell.index + 1 < recordTable.root.children.size + recordTable.root.children.map { it.children.size }.sum())
         recordTable.stylesheets.remove(printStyle)
 
-        infoAlert(getString(R.string.screenshot_finished)) { button(getString(R.string.open_folder), CANCEL_CLOSE) }.showAndWait().filter { it.buttonData == CANCEL_CLOSE }.ifPresent {
+        infoAlert(getString(R.string.screenshot_finished)) { addButton(getString(R.string.open_folder), CANCEL_CLOSE) }.showAndWait().filter { it.buttonData == CANCEL_CLOSE }.ifPresent {
             getDesktop().open(WageContentFolder)
         }
     }

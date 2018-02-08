@@ -1,7 +1,8 @@
 package com.wijayaprinting
 
 import com.wijayaprinting.util.fullyCapitalize
-import java.util.*
+import java.util.Locale
+import java.util.ResourceBundle
 import java.util.ResourceBundle.getBundle
 
 enum class Language(val locale: String) {

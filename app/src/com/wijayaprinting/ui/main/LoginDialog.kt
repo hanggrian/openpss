@@ -13,16 +13,39 @@ import com.wijayaprinting.ui.scene.control.hostField
 import com.wijayaprinting.ui.scene.control.intField
 import javafx.event.ActionEvent
 import javafx.geometry.Pos
-import javafx.scene.control.*
+import javafx.scene.control.ButtonBar.ButtonData.OK_DONE
+import javafx.scene.control.ButtonType.CANCEL
+import javafx.scene.control.Dialog
+import javafx.scene.control.PasswordField
+import javafx.scene.control.TextField
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
-import kotfx.bindings.*
+import kotfx.bindings.`else`
+import kotfx.bindings.`if`
+import kotfx.bindings.bindingOf
+import kotfx.bindings.not
+import kotfx.bindings.or
+import kotfx.bindings.then
 import kotfx.collections.toObservableList
-import kotfx.dialogs.*
+import kotfx.dialogs.addButton
+import kotfx.dialogs.content
+import kotfx.dialogs.errorAlert
+import kotfx.dialogs.expandableContent
+import kotfx.dialogs.icon
+import kotfx.dialogs.infoAlert
+import kotfx.dialogs.isExpanded
 import kotfx.exit
 import kotfx.gap
 import kotfx.runLater
-import kotfx.scene.*
+import kotfx.scene.choiceBox
+import kotfx.scene.gridPane
+import kotfx.scene.hbox
+import kotfx.scene.hyperlink
+import kotfx.scene.label
+import kotfx.scene.passwordField
+import kotfx.scene.textField
+import kotfx.scene.toggleButton
+import kotfx.scene.tooltip
 import kotlinx.coroutines.experimental.javafx.JavaFx
 import kotlinx.coroutines.experimental.launch
 
@@ -43,7 +66,7 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced 
         graphic = ImageView(R.image.ic_launcher)
         isResizable = false
         content = gridPane {
-            gap(8)
+            gap = 8.0
             label(getString(R.string.language)) col 0 row 0
             choiceBox(Language.values().toObservableList()) {
                 maxWidth = Double.MAX_VALUE
@@ -69,7 +92,7 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced 
             } col 2 row 2
         }
         expandableContent = gridPane {
-            gap(8)
+            gap = 8.0
             label(getString(R.string.server_host_port)) col 0 row 0
             serverHostField = hostField {
                 promptText = getString(R.string.ip_address)
@@ -98,8 +121,8 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced 
                 } marginLeft 8
             } col 0 row 3 colSpan 3
         }
-        button(ButtonType.CANCEL)
-        button(getString(R.string.login), ButtonBar.ButtonData.OK_DONE).apply {
+        addButton(CANCEL)
+        addButton(getString(R.string.login), OK_DONE).apply {
             disableProperty().bind(employeeField.textProperty().isEmpty
                     or passwordField.textProperty().isEmpty
                     or not(serverHostField.validProperty)

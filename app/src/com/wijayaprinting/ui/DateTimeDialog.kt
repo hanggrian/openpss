@@ -10,7 +10,7 @@ import javafx.scene.control.DatePicker
 import javafx.scene.control.Dialog
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
-import kotfx.dialogs.buttons
+import kotfx.dialogs.addButtons
 import kotfx.dialogs.content
 import kotfx.dialogs.icon
 import kotfx.gap
@@ -36,7 +36,7 @@ class DateTimeDialog @JvmOverloads constructor(
         headerText = header
         graphic = ImageView(R.image.ic_calendar)
         content = gridPane {
-            gap(8)
+            gap = 8.0
 
             datePicker = forcedDatePicker(prefill.toLocalDate()) col 1 row 0
             button(graphic = ImageView(R.image.btn_arrow_left)) {
@@ -65,7 +65,7 @@ class DateTimeDialog @JvmOverloads constructor(
             //slider(0, 60, 0) { valueProperty().bindBidirectional(timeBox.minuteField.valueProperty) } col 0 row 3 colSpan 3
         }
         runLater { datePicker.requestFocus() }
-        buttons(OK, CANCEL)
+        addButtons(OK, CANCEL)
         setResultConverter {
             if (it != OK) null
             else DateTime(datePicker.value.year, datePicker.value.monthValue, datePicker.value.dayOfMonth, timeBox.time.hourOfDay, timeBox.time.minuteOfHour)

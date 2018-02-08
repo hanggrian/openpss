@@ -2,20 +2,20 @@
 
 package com.wijayaprinting.ui.scene.control
 
-import javafx.beans.property.LongProperty
 import javafx.beans.property.SimpleLongProperty
 import javafx.scene.control.TextField
 import kotfx.annotations.SceneDsl
+import kotfx.properties.MutableLongProperty
 import kotfx.scene.ChildRoot
 import kotfx.scene.ItemRoot
 import kotfx.stringConverterOf
 
 open class LongField : TextField() {
 
-    val valueProperty: LongProperty = SimpleLongProperty()
+    val valueProperty: MutableLongProperty = SimpleLongProperty()
 
     init {
-        textProperty().bindBidirectional(valueProperty, stringConverterOf<Number>({ it.toLongOrNull() ?: 0 }))
+        textProperty().bindBidirectional(valueProperty, stringConverterOf<Number> { it.toLongOrNull() ?: 0 })
         textProperty().addListener { _, oldValue, newValue ->
             text = if (newValue.isEmpty()) "0" else newValue.toLongOrNull()?.toString() ?: oldValue
         }

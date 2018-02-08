@@ -4,7 +4,7 @@ import com.wijayaprinting.Language
 import com.wijayaprinting.db.dao.Employee
 import com.wijayaprinting.io.properties.ConfigFile
 import javafx.fxml.FXML
-import java.util.*
+import java.util.ResourceBundle
 
 /** Base class of all controllers. */
 abstract class Controller : Resourced {

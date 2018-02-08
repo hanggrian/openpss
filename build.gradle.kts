@@ -1,4 +1,5 @@
 import org.gradle.kotlin.dsl.kotlin
+import org.jetbrains.kotlin.contracts.model.structure.UNKNOWN_COMPUTATION.type
 
 buildscript {
     repositories {
@@ -24,4 +25,8 @@ allprojects {
 
 task<Delete>("clean") {
     delete(rootProject.buildDir)
+}
+
+task<Wrapper>("wrapper"){
+    gradleVersion = "4.5"
 }

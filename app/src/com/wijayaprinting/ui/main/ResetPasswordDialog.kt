@@ -10,7 +10,7 @@ import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import kotfx.bindings.neq
 import kotfx.bindings.or
-import kotfx.dialogs.button
+import kotfx.dialogs.addButton
 import kotfx.dialogs.content
 import kotfx.dialogs.icon
 import kotfx.gap
@@ -31,14 +31,14 @@ class ResetPasswordDialog(resourced: Resourced) : Dialog<String>(), Resourced by
         graphic = ImageView(R.image.ic_key)
 
         content = gridPane {
-            gap(8)
+            gap = 8.0
             label(getString(R.string.password)) col 0 row 0
             changePasswordField = passwordField { promptText = getString(R.string.password) } col 1 row 0
             label(getString(R.string.change_password)) col 0 row 1
             confirmPasswordField = passwordField { promptText = getString(R.string.change_password) } col 1 row 1
         }
-        button(CANCEL)
-        button(OK).disableProperty().bind(changePasswordField.textProperty().isEmpty
+        addButton(CANCEL)
+        addButton(OK).disableProperty().bind(changePasswordField.textProperty().isEmpty
                 or confirmPasswordField.textProperty().isEmpty
                 or (changePasswordField.textProperty() neq confirmPasswordField.textProperty()))
         setResultConverter { if (it == OK) changePasswordField.text else null }

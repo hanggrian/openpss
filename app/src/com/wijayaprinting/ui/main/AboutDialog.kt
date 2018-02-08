@@ -10,7 +10,6 @@ import javafx.geometry.Insets
 import javafx.geometry.Pos.CENTER_LEFT
 import javafx.scene.Node
 import javafx.scene.control.ButtonBar.ButtonData.CANCEL_CLOSE
-import javafx.scene.control.ButtonType
 import javafx.scene.control.ButtonType.CLOSE
 import javafx.scene.control.Dialog
 import javafx.scene.control.ListView
@@ -19,11 +18,18 @@ import kotfx.bindings.and
 import kotfx.bindings.booleanBindingOf
 import kotfx.bindings.stringBindingOf
 import kotfx.collections.toObservableList
-import kotfx.dialogs.button
+import kotfx.dialogs.addButton
 import kotfx.dialogs.content
 import kotfx.dialogs.expandableContent
 import kotfx.dialogs.icon
-import kotfx.scene.*
+import kotfx.scene.button
+import kotfx.scene.hbox
+import kotfx.scene.imageView
+import kotfx.scene.label
+import kotfx.scene.text
+import kotfx.scene.textFlow
+import kotfx.scene.titledPane
+import kotfx.scene.vbox
 import java.awt.Desktop.getDesktop
 import java.net.URI
 
@@ -83,13 +89,13 @@ class AboutDialog(resourced: Resourced) : Dialog<Unit>(), Resourced by resourced
                 })
             }) { isCollapsible = false }
         }
-        button(ButtonType("Homepage", CANCEL_CLOSE)).apply {
+        addButton("Homepage", CANCEL_CLOSE).apply {
             visibleProperty().bind(dialogPane.expandedProperty() and booleanBindingOf(listView.selectionModel.selectedIndexProperty()) { listView.selectionModel.selectedItem != null })
             addEventFilter(ACTION) {
                 it.consume()
                 getDesktop().browse(URI(listView.selectionModel.selectedItem.homepage))
             }
         }
-        button(CLOSE)
+        addButton(CLOSE)
     }
 }

@@ -2,24 +2,24 @@
 
 package com.wijayaprinting.ui.scene.control
 
-import javafx.beans.property.BooleanProperty
-import javafx.beans.property.DoubleProperty
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleDoubleProperty
 import javafx.scene.control.TextField
 import kotfx.annotations.SceneDsl
 import kotfx.bindings.booleanBindingOf
+import kotfx.properties.MutableBooleanProperty
+import kotfx.properties.MutableDoubleProperty
 import kotfx.scene.ChildRoot
 import kotfx.scene.ItemRoot
 import kotfx.stringConverterOf
 
 open class DoubleField : TextField() {
 
-    val valueProperty: DoubleProperty = SimpleDoubleProperty()
-    val validProperty: BooleanProperty = SimpleBooleanProperty()
+    val valueProperty: MutableDoubleProperty = SimpleDoubleProperty()
+    val validProperty: MutableBooleanProperty = SimpleBooleanProperty()
 
     init {
-        textProperty().bindBidirectional(valueProperty, stringConverterOf<Number>({ it.toDoubleOrNull() ?: 0.0 }))
+        textProperty().bindBidirectional(valueProperty, stringConverterOf<Number> { it.toDoubleOrNull() ?: 0.0 })
         validProperty.bind(booleanBindingOf(textProperty()) {
             try {
                 java.lang.Double.parseDouble(text)

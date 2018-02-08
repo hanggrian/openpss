@@ -18,15 +18,9 @@ import javafx.scene.image.Image
 import javafx.stage.Stage
 import kotfx.dialogs.infoAlert
 import kotfx.icon
-import kotlinx.coroutines.experimental.javafx.JavaFx
-import kotlinx.coroutines.experimental.launch
 import kotlinx.nosql.equal
 import kotlinx.nosql.update
-import org.apache.commons.lang3.SystemUtils.IS_OS_MAC_OSX
 import org.apache.log4j.BasicConfigurator.configure
-import java.awt.Toolkit.getDefaultToolkit
-import java.lang.Class.forName
-import java.net.URL
 import java.util.ResourceBundle
 
 class App : Application(), Resourced {
@@ -46,7 +40,6 @@ class App : Application(), Resourced {
 
     override fun start(stage: Stage) {
         stage.icon = Image(R.image.logo_launcher)
-        if (IS_OS_MAC_OSX) setOSXIcon(getResource(R.image.logo_launcher))
 
         LoginDialog(this).showAndWait().filter { it is Employee }.ifPresent { employee ->
             employee as Employee
@@ -67,18 +60,5 @@ class App : Application(), Resourced {
                 }
             }
         }
-    }
-
-    private fun setOSXIcon(url: URL) = launch(JavaFx) {
-        forName("com.apple.eawt.Application")
-                .newInstance()
-                .javaClass
-                .getMethod("getApplication")
-                .invoke(null)
-                .let { application ->
-                    application.javaClass
-                            .getMethod("setDockIconImage", java.awt.Image::class.java)
-                            .invoke(application, getDefaultToolkit().getImage(url))
-                }
     }
 }

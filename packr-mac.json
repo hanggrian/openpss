@@ -1,0 +1,19 @@
+{
+  "platform": "mac",
+  "jdk": "/Library/Java/JavaVirtualMachines/jdk1.8.0_152.jdk/Contents/Home",
+  "executable": "wijayaprinting",
+  "classpath": [
+    "release/wijayaprinting-0.8.jar"
+  ],
+  "mainclass": "com.wijayaprinting.App",
+  "vmargs": [
+    "Xmx1G"
+  ],
+  "resources": [
+    "app/res"
+  ],
+  "minimizejre": "soft",
+  "output": "release/Wijaya Printing.app",
+  "icon": "art/mac.icns",
+  "bundle": "com.wijayaprinting"
+}

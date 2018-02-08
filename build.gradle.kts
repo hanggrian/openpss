@@ -8,6 +8,7 @@ buildscript {
         classpath(kotlin("gradle-plugin", kotlinVersion))
         classpath(hendraanggrian("r", rVersion))
         classpath(hendraanggrian("buildconfig", buildconfigVersion))
+        classpath(shadow())
         classpath(junitPlatform("gradle-plugin", junitPlatformVersion))
     }
 }

@@ -9,3 +9,5 @@
 .externalNativeBuild
 
 /out
+
+/release

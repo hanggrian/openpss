@@ -1,3 +1,4 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.gradle.api.plugins.ExtensionAware
 import org.gradle.jvm.tasks.Jar
 import org.gradle.kotlin.dsl.configure
@@ -12,11 +13,11 @@ group = releaseGroup
 version = releaseVersion
 
 plugins {
-    application
     kotlin("jvm")
     idea
     r
     buildconfig
+    shadow
     `junit-platform`
 }
 
@@ -28,22 +29,11 @@ java.sourceSets {
     getByName("test").java.srcDir("tests/src")
 }
 
-configurations {
-    "ktlint"()
-}
+configurations.create("ktlint")
 
-application {
-    applicationName = releaseArtifact
-    mainClassName = "$releaseGroup.App"
-}
+kotlin.experimental.coroutines = ENABLE
 
-kotlin {
-    experimental.coroutines = ENABLE
-}
-
-r {
-    resourcesDir = "res"
-}
+r.resourcesDir = "res"
 
 buildconfig {
     name = releaseArtifact
@@ -70,6 +60,13 @@ dependencies {
         exclude("org.junit.platform")
     }
     testImplementation(junitPlatform("runner", junitPlatformVersion))
+}
+
+(tasks["shadowJar"] as ShadowJar).apply {
+    destinationDir = project.file("../release")
+    manifest.attributes(mapOf("Main-Class" to "$releaseGroup.App"))
+    baseName = releaseArtifact
+    classifier = null
 }
 
 task<JavaExec>("ktlint") {

@@ -8,9 +8,7 @@ plugins {
     kotlin("jvm")
 }
 
-java.sourceSets {
-    getByName("main").java.srcDir("src")
-}
+java.sourceSets.getByName("main").java.srcDir("src")
 
 dependencies {
     compile(kotlin("stdlib", kotlinVersion))

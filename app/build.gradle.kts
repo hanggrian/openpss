@@ -13,6 +13,7 @@ group = releaseGroup
 version = releaseVersion
 
 plugins {
+    java
     kotlin("jvm")
     idea
     r
@@ -29,8 +30,6 @@ java.sourceSets {
     getByName("test").java.srcDir("tests/src")
 }
 
-configurations.create("ktlint")
-
 kotlin.experimental.coroutines = ENABLE
 
 r.resourcesDir = "res"
@@ -39,6 +38,8 @@ buildconfig {
     name = releaseArtifact
     debug = releaseDebug
 }
+
+configurations.create("ktlint")
 
 dependencies {
     implementation(project(":scene"))
@@ -79,7 +80,6 @@ task<JavaExec>("ktlint") {
     args("src/**/*.kt")
 }
 tasks["check"].dependsOn(tasks["ktlint"])
-
 task<JavaExec>("ktlintFormat") {
     group = "formatting"
     inputs.dir("src")
@@ -91,19 +91,7 @@ task<JavaExec>("ktlintFormat") {
 }
 
 configure<JUnitPlatformExtension> {
-    filters {
-        engines {
-            include("spek")
-        }
+    if (this is ExtensionAware) extensions.getByType(FiltersExtension::class.java).apply {
+        if (this is ExtensionAware) extensions.getByType(EnginesExtension::class.java).include("spek")
     }
-}
-
-fun JUnitPlatformExtension.filters(setup: FiltersExtension.() -> Unit) = when (this) {
-    is ExtensionAware -> extensions.getByType(FiltersExtension::class.java).setup()
-    else -> error("${this::class} must be an instance of ExtensionAware")
-}
-
-fun FiltersExtension.engines(setup: EnginesExtension.() -> Unit) = when (this) {
-    is ExtensionAware -> extensions.getByType(EnginesExtension::class.java).setup()
-    else -> error("${this::class} must be an instance of ExtensionAware")
 }

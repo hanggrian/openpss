@@ -42,8 +42,8 @@ Then, simply follow steps below to build [releases]:
  * Run `./gradlew shadowJar` to build single fat jar in `release`.
  * Use [packr] to build native packages from that jar with following steps.
    * Configure packr json files for each incremental version or JDK update. 
-   * Execute `java packr.jar packr-mac.json` to pack `app`. 
-   * Execute `java packr.jar packr-windows.json` to pack `zip`.
+   * Execute `java -jar packr.jar packr-mac.json` to pack `app`. 
+   * Execute `java -jar packr.jar packr-windows.json` to pack `zip`.
 
 License
 -------

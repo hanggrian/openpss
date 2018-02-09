@@ -1,7 +1,7 @@
 const val releaseGroup = "com.wijayaprinting"
 const val releaseArtifact = "wijayaprinting"
 const val releaseDebug = true
-const val releaseVersion = "0.8"
+const val releaseVersion = "0.9"
 
 const val kotlinVersion = "1.2.21"
 const val nosqlVersion = "0.1-SNAPSHOT"

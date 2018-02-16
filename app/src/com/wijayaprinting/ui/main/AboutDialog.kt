@@ -2,8 +2,8 @@ package com.wijayaprinting.ui.main
 
 import com.wijayaprinting.BuildConfig.VERSION
 import com.wijayaprinting.R
+import com.wijayaprinting.scene.control.GraphicListCell
 import com.wijayaprinting.ui.Resourced
-import com.wijayaprinting.ui.scene.control.GraphicListCell
 import com.wijayaprinting.util.getExternalForm
 import javafx.event.ActionEvent.ACTION
 import javafx.geometry.Insets

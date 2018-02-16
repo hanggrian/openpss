@@ -1,9 +1,9 @@
 package com.wijayaprinting.ui.wage
 
 import com.wijayaprinting.Language
-import com.wijayaprinting.PATTERN_DATETIME
 import com.wijayaprinting.R
-import com.wijayaprinting.START_OF_TIME
+import com.wijayaprinting.scene.PATTERN_DATETIME
+import com.wijayaprinting.scene.START_OF_TIME
 import com.wijayaprinting.ui.Resourced
 import com.wijayaprinting.util.round
 import javafx.beans.property.BooleanProperty
@@ -22,7 +22,7 @@ import org.joda.time.Interval
 import org.joda.time.LocalTime
 import kotlin.math.absoluteValue
 
-class Record @JvmOverloads constructor(
+class Record(
     resourced: Resourced,
 
     val index: Int,

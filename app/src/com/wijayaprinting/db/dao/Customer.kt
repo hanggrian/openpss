@@ -8,16 +8,16 @@ import kotlinx.nosql.Id
 import org.joda.time.LocalDate
 
 data class Customer @JvmOverloads constructor(
-        override val name: String,
-        var note: String = "",
-        var since: LocalDate = LocalDate.now(),
-        var contacts: List<Contact> = listOf()
+    override val name: String,
+    var note: String = "",
+    var since: LocalDate = LocalDate.now(),
+    var contacts: List<Contact> = listOf()
 ) : Named<Customers> {
     override lateinit var id: Id<String, Customers>
 
     data class Contact(
-            var type: String,
-            var value: String
+        var type: String,
+        var value: String
     )
 
     override fun toString(): String = name

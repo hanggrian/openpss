@@ -1,6 +1,6 @@
 @file:Suppress("NOTHING_TO_INLINE", "UNUSED")
 
-package com.wijayaprinting.ui.scene.control
+package com.wijayaprinting.scene.control
 
 import javafx.beans.property.BooleanProperty
 import javafx.beans.property.DoubleProperty
@@ -37,6 +37,6 @@ open class DoubleField : TextField() {
     val isValid: Boolean get() = validProperty.get()
 }
 
-@JvmOverloads inline fun doubleField(noinline init: ((@SceneDsl DoubleField).() -> Unit)? = null): DoubleField = DoubleField().apply { init?.invoke(this) }
-@JvmOverloads inline fun ChildManager.doubleField(noinline init: ((@SceneDsl DoubleField).() -> Unit)? = null): DoubleField = DoubleField().apply { init?.invoke(this) }.add()
-@JvmOverloads inline fun ItemManager.doubleField(noinline init: ((@SceneDsl DoubleField).() -> Unit)? = null): DoubleField = DoubleField().apply { init?.invoke(this) }.add()
+inline fun doubleField(noinline init: ((@SceneDsl DoubleField).() -> Unit)? = null): DoubleField = DoubleField().apply { init?.invoke(this) }
+inline fun ChildManager.doubleField(noinline init: ((@SceneDsl DoubleField).() -> Unit)? = null): DoubleField = DoubleField().apply { init?.invoke(this) }.add()
+inline fun ItemManager.doubleField(noinline init: ((@SceneDsl DoubleField).() -> Unit)? = null): DoubleField = DoubleField().apply { init?.invoke(this) }.add()

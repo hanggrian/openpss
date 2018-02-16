@@ -1,6 +1,6 @@
 @file:Suppress("NOTHING_TO_INLINE", "UNUSED")
 
-package com.wijayaprinting.ui.scene.control
+package com.wijayaprinting.scene.control
 
 import javafx.beans.property.BooleanProperty
 import javafx.beans.property.FloatProperty
@@ -37,6 +37,6 @@ open class FloatField : TextField() {
     val isValid: Boolean get() = validProperty.get()
 }
 
-@JvmOverloads inline fun floatField(noinline init: ((@SceneDsl FloatField).() -> Unit)? = null): FloatField = FloatField().apply { init?.invoke(this) }
-@JvmOverloads inline fun ChildManager.floatField(noinline init: ((@SceneDsl FloatField).() -> Unit)? = null): FloatField = FloatField().apply { init?.invoke(this) }.add()
-@JvmOverloads inline fun ItemManager.floatField(noinline init: ((@SceneDsl FloatField).() -> Unit)? = null): FloatField = FloatField().apply { init?.invoke(this) }.add()
+inline fun floatField(noinline init: ((@SceneDsl FloatField).() -> Unit)? = null): FloatField = FloatField().apply { init?.invoke(this) }
+inline fun ChildManager.floatField(noinline init: ((@SceneDsl FloatField).() -> Unit)? = null): FloatField = FloatField().apply { init?.invoke(this) }.add()
+inline fun ItemManager.floatField(noinline init: ((@SceneDsl FloatField).() -> Unit)? = null): FloatField = FloatField().apply { init?.invoke(this) }.add()

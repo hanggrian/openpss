@@ -1,10 +1,10 @@
 @file:Suppress("NOTHING_TO_INLINE", "UNUSED")
 
-package com.wijayaprinting.ui.scene.control
+package com.wijayaprinting.scene.control
 
-import com.wijayaprinting.ui.scene.control.FileField.Scope
-import com.wijayaprinting.ui.scene.control.FileField.Scope.FILE
-import com.wijayaprinting.ui.scene.control.FileField.Scope.FOLDER
+import com.wijayaprinting.scene.control.FileField.Scope
+import com.wijayaprinting.scene.control.FileField.Scope.FILE
+import com.wijayaprinting.scene.control.FileField.Scope.FOLDER
 import javafx.beans.property.BooleanProperty
 import javafx.beans.property.ObjectProperty
 import javafx.beans.property.SimpleBooleanProperty
@@ -18,7 +18,7 @@ import kotfx.scene.ItemManager
 import java.io.File
 
 /** Field that display file or directory path. */
-open class FileField @JvmOverloads constructor(scope: Scope = FILE) : TextField() {
+open class FileField(scope: Scope = FILE) : TextField() {
 
     val fileProperty: ObjectProperty<File> = SimpleObjectProperty<File>()
     val validProperty: BooleanProperty = SimpleBooleanProperty()
@@ -43,6 +43,6 @@ open class FileField @JvmOverloads constructor(scope: Scope = FILE) : TextField(
     }
 }
 
-@JvmOverloads inline fun fileField(scope: Scope = FILE, noinline init: ((@SceneDsl FileField).() -> Unit)? = null): FileField = FileField(scope).apply { init?.invoke(this) }
-@JvmOverloads inline fun ChildManager.fileField(scope: Scope = FILE, noinline init: ((@SceneDsl FileField).() -> Unit)? = null): FileField = FileField(scope).apply { init?.invoke(this) }.add()
-@JvmOverloads inline fun ItemManager.fileField(scope: Scope = FILE, noinline init: ((@SceneDsl FileField).() -> Unit)? = null): FileField = FileField(scope).apply { init?.invoke(this) }.add()
+inline fun fileField(scope: Scope = FILE, noinline init: ((@SceneDsl FileField).() -> Unit)? = null): FileField = FileField(scope).apply { init?.invoke(this) }
+inline fun ChildManager.fileField(scope: Scope = FILE, noinline init: ((@SceneDsl FileField).() -> Unit)? = null): FileField = FileField(scope).apply { init?.invoke(this) }.add()
+inline fun ItemManager.fileField(scope: Scope = FILE, noinline init: ((@SceneDsl FileField).() -> Unit)? = null): FileField = FileField(scope).apply { init?.invoke(this) }.add()

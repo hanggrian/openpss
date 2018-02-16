@@ -10,7 +10,8 @@
     "Xmx1G"
   ],
   "resources": [
-    "app/res"
+    "app/res",
+    "scene/sceneres"
   ],
   "minimizejre": "soft",
   "output": "release/Wijaya Printing"

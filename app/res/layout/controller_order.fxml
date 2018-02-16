@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.wijayaprinting.ui.scene.control.CountBox?>
-<?import com.wijayaprinting.ui.scene.control.ForcedDatePicker?>
+<?import com.wijayaprinting.scene.control.CountBox?>
+<?import com.wijayaprinting.scene.layout.DateBox?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -21,7 +21,7 @@
             </tooltip>
         </Button>
         <TextField fx:id="customerField" promptText="%search_customer"/>
-        <ForcedDatePicker fx:id="datePicker"/>
+        <DateBox fx:id="datePicker"/>
         <ChoiceBox fx:id="statusBox"/>
         <CountBox fx:id="countBox"/>
         <Separator/>

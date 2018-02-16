@@ -1,21 +1,24 @@
 @file:Suppress("NOTHING_TO_INLINE", "UNUSED")
 
-package com.wijayaprinting.ui.scene.layout
+package com.wijayaprinting.scene.layout
 
-import com.wijayaprinting.PATTERN_TIME
-import com.wijayaprinting.ui.scene.control.IntField
-import com.wijayaprinting.ui.scene.control.intField
+import com.wijayaprinting.scene.PATTERN_TIME
+import com.wijayaprinting.scene.R
+import com.wijayaprinting.scene.control.IntField
+import com.wijayaprinting.scene.control.intField
 import javafx.beans.property.BooleanProperty
 import javafx.beans.property.ObjectProperty
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleObjectProperty
 import javafx.geometry.Pos.CENTER
+import javafx.scene.image.ImageView
 import kotfx.annotations.SceneDsl
 import kotfx.bindings.bindingOf
 import kotfx.bindings.booleanBindingOf
 import kotfx.scene.ChildManager
 import kotfx.scene.ItemManager
 import kotfx.scene._HBox
+import kotfx.scene.button
 import kotfx.scene.label
 import org.joda.time.LocalTime
 import org.joda.time.LocalTime.MIDNIGHT
@@ -27,7 +30,7 @@ import org.joda.time.format.DateTimeFormat.forPattern
  *
  * [TimeBox] width is deliberately measured to match [com.wijayaprinting.ui.scene.control.ForcedDatePicker]'s width.
  */
-open class TimeBox @JvmOverloads constructor(prefill: LocalTime = MIDNIGHT) : _HBox() {
+open class TimeBox(prefill: LocalTime = MIDNIGHT) : _HBox() {
 
     lateinit var hourField: IntField
     lateinit var minuteField: IntField
@@ -37,21 +40,21 @@ open class TimeBox @JvmOverloads constructor(prefill: LocalTime = MIDNIGHT) : _H
 
     init {
         alignment = CENTER
-        
+        spacing = 8.0
+
+        button(graphic = ImageView(R.image.btn_arrow_left)) { setOnAction { hourField.value-- } }
         hourField = intField {
-            maxWidth = 52.0
+            maxWidth = 48.0
             alignment = CENTER
             valueProperty.addListener { _, oldValue, newValue -> if (newValue !in 0 until 24) hourField.value = oldValue.toInt() }
         }
-        label(":") {
-            minWidth = 12.0
-            alignment = CENTER
-        }
+        label(":") { alignment = CENTER }
         minuteField = intField {
-            maxWidth = 52.0
+            maxWidth = 48.0
             alignment = CENTER
             valueProperty.addListener { _, oldValue, newValue -> if (newValue !in 0 until 60) minuteField.value = oldValue.toInt() }
         }
+        button(graphic = ImageView(R.image.btn_arrow_right)) { setOnAction { hourField.value++ } }
 
         timeProperty.bind(bindingOf(hourField.valueProperty, minuteField.valueProperty) {
             try {
@@ -78,6 +81,6 @@ open class TimeBox @JvmOverloads constructor(prefill: LocalTime = MIDNIGHT) : _H
     val isValid: Boolean get() = validProperty.get()
 }
 
-@JvmOverloads inline fun timeBox(prefill: LocalTime = MIDNIGHT, noinline init: ((@SceneDsl TimeBox).() -> Unit)? = null): TimeBox = TimeBox(prefill).apply { init?.invoke(this) }
-@JvmOverloads inline fun ChildManager.timeBox(prefill: LocalTime = MIDNIGHT, noinline init: ((@SceneDsl TimeBox).() -> Unit)? = null): TimeBox = TimeBox(prefill).apply { init?.invoke(this) }.add()
-@JvmOverloads inline fun ItemManager.timeBox(prefill: LocalTime = MIDNIGHT, noinline init: ((@SceneDsl TimeBox).() -> Unit)? = null): TimeBox = TimeBox(prefill).apply { init?.invoke(this) }.add()
+inline fun timeBox(prefill: LocalTime = MIDNIGHT, noinline init: ((@SceneDsl TimeBox).() -> Unit)? = null): TimeBox = TimeBox(prefill).apply { init?.invoke(this) }
+inline fun ChildManager.timeBox(prefill: LocalTime = MIDNIGHT, noinline init: ((@SceneDsl TimeBox).() -> Unit)? = null): TimeBox = TimeBox(prefill).apply { init?.invoke(this) }.add()
+inline fun ItemManager.timeBox(prefill: LocalTime = MIDNIGHT, noinline init: ((@SceneDsl TimeBox).() -> Unit)? = null): TimeBox = TimeBox(prefill).apply { init?.invoke(this) }.add()

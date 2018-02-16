@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.wijayaprinting.ui.scene.layout.TimeBox?>
+<?import com.wijayaprinting.scene.layout.TimeBox?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.wijayaprinting.ui.wage.WageRecordController">
@@ -17,7 +19,9 @@
                 <Tooltip text="%undo"/>
             </tooltip>
         </SplitMenuButton>
+        <Separator/>
         <TimeBox fx:id="timeBox"/>
+        <Separator/>
         <Button mnemonicParsing="false" fx:id="lockStartButton" onAction="#lockStart">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
@@ -38,6 +42,7 @@
                 <Tooltip text="%lock_end_time"/>
             </tooltip>
         </Button>
+        <Separator/>
         <Button mnemonicParsing="false" onAction="#empty">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
@@ -48,7 +53,7 @@
                 <Tooltip text="%empty_daily_income"/>
             </tooltip>
         </Button>
-        <Separator/>
+        <Region HBox.hgrow="ALWAYS"/>
         <Button mnemonicParsing="false" onAction="#screenshot">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">

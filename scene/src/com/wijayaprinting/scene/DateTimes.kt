@@ -1,6 +1,6 @@
 @file:Suppress("NOTHING_TO_INLINE")
 
-package com.wijayaprinting
+package com.wijayaprinting.scene
 
 import org.joda.time.DateTime
 import org.joda.time.LocalDate

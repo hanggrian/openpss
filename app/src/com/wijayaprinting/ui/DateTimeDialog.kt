@@ -1,33 +1,30 @@
 package com.wijayaprinting.ui
 
 import com.wijayaprinting.R
-import com.wijayaprinting.ui.scene.control.forcedDatePicker
-import com.wijayaprinting.ui.scene.layout.TimeBox
-import com.wijayaprinting.ui.scene.layout.timeBox
+import com.wijayaprinting.scene.layout.DateBox
+import com.wijayaprinting.scene.layout.TimeBox
+import com.wijayaprinting.scene.layout.dateBox
+import com.wijayaprinting.scene.layout.timeBox
 import javafx.scene.control.ButtonType.CANCEL
 import javafx.scene.control.ButtonType.OK
-import javafx.scene.control.DatePicker
 import javafx.scene.control.Dialog
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import kotfx.dialogs.addButtons
 import kotfx.dialogs.content
 import kotfx.dialogs.icon
-import kotfx.gap
 import kotfx.runLater
-import kotfx.scene.button
-import kotfx.scene.gridPane
+import kotfx.scene.vbox
 import org.joda.time.DateTime
 import org.joda.time.DateTime.now
-import org.joda.time.LocalTime.MIDNIGHT
 
-class DateTimeDialog @JvmOverloads constructor(
+class DateTimeDialog(
     resourced: Resourced,
     header: String,
-    prefill: DateTime = now().toLocalDate().toDateTime(MIDNIGHT)
+    prefill: DateTime = now()
 ) : Dialog<DateTime>(), Resourced by resourced {
 
-    private lateinit var datePicker: DatePicker
+    private lateinit var dateBox: DateBox
     private lateinit var timeBox: TimeBox
 
     init {
@@ -35,40 +32,16 @@ class DateTimeDialog @JvmOverloads constructor(
         title = header
         headerText = header
         graphic = ImageView(R.image.ic_calendar)
-        content = gridPane {
-            gap = 8.0
-
-            button(graphic = ImageView(R.image.btn_arrow_left)) {
-                setOnAction {
-                    datePicker.value = datePicker.value.minusDays(1)
-                }
-            } col 0 row 0
-            datePicker = forcedDatePicker(prefill.toLocalDate()) col 1 row 0
-            button(graphic = ImageView(R.image.btn_arrow_right)) {
-                setOnAction {
-                    datePicker.value = datePicker.value.plusDays(1)
-                }
-            } col 2 row 0
-
-            button(graphic = ImageView(R.image.btn_arrow_left)) {
-                setOnAction {
-                    timeBox.hourField.value--
-                }
-            } col 0 row 1
-            timeBox = timeBox(prefill.toLocalTime()) col 1 row 1
-            button(graphic = ImageView(R.image.btn_arrow_right)) {
-                setOnAction {
-                    timeBox.hourField.value++
-                }
-            } col 2 row 1
-            //slider(0, 24, 0) { valueProperty().bindBidirectional(timeBox.hourField.valueProperty) } col 0 row 2 colSpan 3
-            //slider(0, 60, 0) { valueProperty().bindBidirectional(timeBox.minuteField.valueProperty) } col 0 row 3 colSpan 3
+        content = vbox {
+            spacing = 8.0
+            dateBox = dateBox(prefill.toLocalDate())
+            timeBox = timeBox(prefill.toLocalTime())
         }
-        runLater { datePicker.requestFocus() }
+        runLater { dateBox.requestFocus() }
         addButtons(OK, CANCEL)
         setResultConverter {
             if (it != OK) null
-            else DateTime(datePicker.value.year, datePicker.value.monthValue, datePicker.value.dayOfMonth, timeBox.time.hourOfDay, timeBox.time.minuteOfHour)
+            else DateTime(dateBox.picker.value.year, dateBox.picker.value.monthValue, dateBox.picker.value.dayOfMonth, timeBox.time.hourOfDay, timeBox.time.minuteOfHour)
         }
     }
 }

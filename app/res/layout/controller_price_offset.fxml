@@ -17,6 +17,7 @@
                 <Tooltip text="%refresh"/>
             </tooltip>
         </Button>
+        <!--suppress JavaFxEventHandler -->
         <Button mnemonicParsing="false" onAction="#add">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">

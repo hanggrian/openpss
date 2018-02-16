@@ -1,6 +1,6 @@
 @file:Suppress("NOTHING_TO_INLINE", "UNUSED")
 
-package com.wijayaprinting.ui.scene.control
+package com.wijayaprinting.scene.control
 
 import javafx.beans.property.LongProperty
 import javafx.beans.property.SimpleLongProperty
@@ -26,6 +26,6 @@ open class LongField : TextField() {
         set(value) = valueProperty.set(value)
 }
 
-@JvmOverloads inline fun longField(noinline init: ((@SceneDsl LongField).() -> Unit)? = null): LongField = LongField().apply { init?.invoke(this) }
-@JvmOverloads inline fun ChildManager.longField(noinline init: ((@SceneDsl LongField).() -> Unit)? = null): LongField = LongField().apply { init?.invoke(this) }.add()
-@JvmOverloads inline fun ItemManager.longField(noinline init: ((@SceneDsl LongField).() -> Unit)? = null): LongField = LongField().apply { init?.invoke(this) }.add()
+inline fun longField(noinline init: ((@SceneDsl LongField).() -> Unit)? = null): LongField = LongField().apply { init?.invoke(this) }
+inline fun ChildManager.longField(noinline init: ((@SceneDsl LongField).() -> Unit)? = null): LongField = LongField().apply { init?.invoke(this) }.add()
+inline fun ItemManager.longField(noinline init: ((@SceneDsl LongField).() -> Unit)? = null): LongField = LongField().apply { init?.invoke(this) }.add()

@@ -1,6 +1,6 @@
 @file:Suppress("NOTHING_TO_INLINE", "UNUSED")
 
-package com.wijayaprinting.ui.scene.control
+package com.wijayaprinting.scene.control
 
 import javafx.beans.property.IntegerProperty
 import javafx.beans.property.SimpleIntegerProperty
@@ -26,6 +26,6 @@ open class IntField : TextField() {
         set(value) = valueProperty.set(value)
 }
 
-@JvmOverloads inline fun intField(noinline init: ((@SceneDsl IntField).() -> Unit)? = null): IntField = IntField().apply { init?.invoke(this) }
-@JvmOverloads inline fun ChildManager.intField(noinline init: ((@SceneDsl IntField).() -> Unit)? = null): IntField = IntField().apply { init?.invoke(this) }.add()
-@JvmOverloads inline fun ItemManager.intField(noinline init: ((@SceneDsl IntField).() -> Unit)? = null): IntField = IntField().apply { init?.invoke(this) }.add()
+inline fun intField(noinline init: ((@SceneDsl IntField).() -> Unit)? = null): IntField = IntField().apply { init?.invoke(this) }
+inline fun ChildManager.intField(noinline init: ((@SceneDsl IntField).() -> Unit)? = null): IntField = IntField().apply { init?.invoke(this) }.add()
+inline fun ItemManager.intField(noinline init: ((@SceneDsl IntField).() -> Unit)? = null): IntField = IntField().apply { init?.invoke(this) }.add()

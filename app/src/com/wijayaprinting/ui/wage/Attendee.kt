@@ -17,7 +17,7 @@ import org.joda.time.Minutes.minutes
 import org.joda.time.Period
 
 /** Data class representing an Attendee with id as its identifier to avoid duplicates in [Set] scenario. */
-open class Attendee @JvmOverloads constructor(
+open class Attendee(
     /** Id and name are final values that should be determined upon xlsx reading. */
     val id: Int,
     val name: String,

@@ -1,6 +1,6 @@
 @file:Suppress("NOTHING_TO_INLINE", "UNUSED")
 
-package com.wijayaprinting.ui.scene.control
+package com.wijayaprinting.scene.control
 
 import javafx.beans.property.BooleanProperty
 import javafx.beans.property.SimpleBooleanProperty
@@ -23,6 +23,6 @@ open class HostField : TextField() {
     val isValid: Boolean get() = validProperty.get()
 }
 
-@JvmOverloads inline fun hostField(noinline init: ((@SceneDsl HostField).() -> Unit)? = null): HostField = HostField().apply { init?.invoke(this) }
-@JvmOverloads inline fun ChildManager.hostField(noinline init: ((@SceneDsl HostField).() -> Unit)? = null): HostField = HostField().apply { init?.invoke(this) }.add()
-@JvmOverloads inline fun ItemManager.hostField(noinline init: ((@SceneDsl HostField).() -> Unit)? = null): HostField = HostField().apply { init?.invoke(this) }.add()
+inline fun hostField(noinline init: ((@SceneDsl HostField).() -> Unit)? = null): HostField = HostField().apply { init?.invoke(this) }
+inline fun ChildManager.hostField(noinline init: ((@SceneDsl HostField).() -> Unit)? = null): HostField = HostField().apply { init?.invoke(this) }.add()
+inline fun ItemManager.hostField(noinline init: ((@SceneDsl HostField).() -> Unit)? = null): HostField = HostField().apply { init?.invoke(this) }.add()

@@ -1,6 +1,6 @@
 @file:Suppress("NOTHING_TO_INLINE", "UNUSED")
 
-package com.wijayaprinting.ui.scene.control
+package com.wijayaprinting.scene.control
 
 import javafx.beans.property.IntegerProperty
 import javafx.beans.property.SimpleIntegerProperty
@@ -21,12 +21,12 @@ open class CountBox : ChoiceBox<Int>() {
         items = observableListOf(20, 30, 40, 50)
         converter = stringConverterOf({ "$it $desc" }) { s -> s.toInt() }
         selectionModel.selectFirst()
-        countProperty.bind(intBindingOf(selectionModel.selectedItemProperty()) { selectionModel.selectedItem })
+        @Suppress("LeakingThis") countProperty.bind(intBindingOf(valueProperty()) { selectionModel.selectedItem })
     }
 
     val count: Int get() = countProperty.get()
 }
 
-@JvmOverloads inline fun itemCountBox(noinline init: ((@SceneDsl CountBox).() -> Unit)? = null): CountBox = CountBox().apply { init?.invoke(this) }
-@JvmOverloads inline fun ChildManager.itemCountBox(noinline init: ((@SceneDsl CountBox).() -> Unit)? = null): CountBox = CountBox().apply { init?.invoke(this) }.add()
-@JvmOverloads inline fun ItemManager.itemCountBox(noinline init: ((@SceneDsl CountBox).() -> Unit)? = null): CountBox = CountBox().apply { init?.invoke(this) }.add()
+inline fun itemCountBox(noinline init: ((@SceneDsl CountBox).() -> Unit)? = null): CountBox = CountBox().apply { init?.invoke(this) }
+inline fun ChildManager.itemCountBox(noinline init: ((@SceneDsl CountBox).() -> Unit)? = null): CountBox = CountBox().apply { init?.invoke(this) }.add()
+inline fun ItemManager.itemCountBox(noinline init: ((@SceneDsl CountBox).() -> Unit)? = null): CountBox = CountBox().apply { init?.invoke(this) }.add()

@@ -1,7 +1,8 @@
 package com.wijayaprinting.ui
 
 import com.wijayaprinting.R
-import com.wijayaprinting.ui.scene.control.forcedDatePicker
+import com.wijayaprinting.scene.layout.DateBox
+import com.wijayaprinting.scene.layout.dateBox
 import javafx.scene.control.ButtonType.CANCEL
 import javafx.scene.control.ButtonType.OK
 import javafx.scene.control.DatePicker
@@ -11,40 +12,22 @@ import javafx.scene.image.ImageView
 import kotfx.dialogs.addButtons
 import kotfx.dialogs.content
 import kotfx.dialogs.icon
-import kotfx.gap
 import kotfx.runLater
-import kotfx.scene.button
-import kotfx.scene.gridPane
 import org.joda.time.LocalDate
 import org.joda.time.LocalDate.now
 
-class DateDialog @JvmOverloads constructor(
+class DateDialog(
     resourced: Resourced,
     header: String,
     prefill: LocalDate = now()
 ) : Dialog<LocalDate>(), Resourced by resourced {
-
-    private lateinit var datePicker: DatePicker
 
     init {
         icon = Image(R.image.ic_launcher)
         title = header
         headerText = header
         graphic = ImageView(R.image.ic_calendar)
-        content = gridPane {
-            gap = 8.0
-            button(graphic = ImageView(R.image.btn_arrow_left)) {
-                setOnAction {
-                    datePicker.value = datePicker.value.minusDays(1)
-                }
-            } col 0 row 0
-            datePicker = forcedDatePicker(prefill) col 1 row 0
-            button(graphic = ImageView(R.image.btn_arrow_right)) {
-                setOnAction {
-                    datePicker.value = datePicker.value.plusDays(1)
-                }
-            } col 2 row 0
-        }
+        content = dateBox(prefill)
         runLater { datePicker.requestFocus() }
         addButtons(OK, CANCEL)
         setResultConverter {
@@ -52,4 +35,6 @@ class DateDialog @JvmOverloads constructor(
             else LocalDate(datePicker.value.year, datePicker.value.monthValue, datePicker.value.dayOfMonth)
         }
     }
+
+    private inline val datePicker: DatePicker get() = (content as DateBox).picker
 }

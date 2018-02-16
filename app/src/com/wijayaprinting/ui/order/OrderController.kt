@@ -1,11 +1,11 @@
 package com.wijayaprinting.ui.order
 
 import com.wijayaprinting.R
+import com.wijayaprinting.scene.control.CountBox
 import com.wijayaprinting.ui.Controller
 import com.wijayaprinting.ui.Refreshable
 import com.wijayaprinting.ui.controller
 import com.wijayaprinting.ui.pane
-import com.wijayaprinting.ui.scene.control.CountBox
 import com.wijayaprinting.util.getResource
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader

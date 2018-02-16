@@ -1,18 +1,18 @@
 package com.wijayaprinting.ui.wage
 
 import com.wijayaprinting.BuildConfig.DEBUG
-import com.wijayaprinting.PATTERN_DATETIME
 import com.wijayaprinting.R
 import com.wijayaprinting.db.schema.Recesses
 import com.wijayaprinting.db.transaction
 import com.wijayaprinting.io.WageFolder
+import com.wijayaprinting.scene.PATTERN_DATETIME
+import com.wijayaprinting.scene.control.FileField
+import com.wijayaprinting.scene.control.GraphicListCell
+import com.wijayaprinting.scene.control.intField
 import com.wijayaprinting.ui.Controller
 import com.wijayaprinting.ui.DateTimeDialog
 import com.wijayaprinting.ui.controller
 import com.wijayaprinting.ui.pane
-import com.wijayaprinting.ui.scene.control.FileField
-import com.wijayaprinting.ui.scene.control.GraphicListCell
-import com.wijayaprinting.ui.scene.control.intField
 import com.wijayaprinting.ui.wage.WageRecordController.Companion.EXTRA_ATTENDEES
 import com.wijayaprinting.ui.wage.WageRecordController.Companion.EXTRA_STAGE
 import com.wijayaprinting.ui.wage.readers.Reader
@@ -69,6 +69,7 @@ import kotfx.stage
 import kotlinx.coroutines.experimental.javafx.JavaFx
 import kotlinx.coroutines.experimental.launch
 import org.joda.time.DateTime
+import org.joda.time.DateTime.now
 import java.awt.Desktop.getDesktop
 
 class WageController : Controller() {
@@ -91,8 +92,8 @@ class WageController : Controller() {
         processButton.disableProperty().bind(flowPane.children.isEmpty)
 
         if (DEBUG) {
-            fileField.text = "/Users/hendraanggrian/Downloads/Absen 12-29-17.xlsx"
-            //readButton.fire()
+            fileField.text = "/Users/hendraanggrian/Downloads/Absen 11-25-17.xlsx"
+            readButton.fire()
         }
         runLater { flowPane.prefWrapLengthProperty().bind(fileField.scene.widthProperty()) }
     }
@@ -122,7 +123,7 @@ class WageController : Controller() {
         }
         launch {
             try {
-                readerChoiceBox.selectionModel.selectedItem.read(fileField.file).await().forEach { attendee ->
+                readerChoiceBox.value.read(fileField.file).await().forEach { attendee ->
                     if (mergeToggleButton.isSelected) attendee.mergeDuplicates()
                     launch(JavaFx) {
                         flowPane.children.add(titledPane(attendee.toString()) {
@@ -188,23 +189,24 @@ class WageController : Controller() {
                             contextMenu = contextMenu {
                                 menuItem(getString(R.string.add)) {
                                     setOnAction {
-                                        DateTimeDialog(this@WageController, getString(R.string.add_record))
-                                                .showAndWait()
-                                                .ifPresent {
-                                                    listView.items.add(it)
-                                                    listView.items.sort()
-                                                }
+                                        val prefill = listView.selectionModel.selectedItem ?: now()
+                                        DateTimeDialog(this@WageController, getString(R.string.add_record), prefill.minusMinutes(prefill.minuteOfHour))
+                                            .showAndWait()
+                                            .ifPresent {
+                                                listView.items.add(it)
+                                                listView.items.sort()
+                                            }
                                     }
                                 }
                                 menuItem(getString(R.string.edit)) {
                                     disableProperty().bind(listView.selectionModel.selectedItems.isEmpty)
                                     setOnAction {
                                         DateTimeDialog(this@WageController, getString(R.string.edit_record), listView.selectionModel.selectedItem)
-                                                .showAndWait()
-                                                .ifPresent {
-                                                    listView.items[listView.selectionModel.selectedIndex] = it
-                                                    listView.items.sort()
-                                                }
+                                            .showAndWait()
+                                            .ifPresent {
+                                                listView.items[listView.selectionModel.selectedIndex] = it
+                                                listView.items.sort()
+                                            }
                                     }
                                 }
                                 separatorMenuItem()

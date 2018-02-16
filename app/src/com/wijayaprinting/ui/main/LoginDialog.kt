@@ -6,11 +6,11 @@ import com.wijayaprinting.R
 import com.wijayaprinting.db.Database
 import com.wijayaprinting.io.properties.ConfigFile
 import com.wijayaprinting.io.properties.MongoFile
+import com.wijayaprinting.scene.control.HostField
+import com.wijayaprinting.scene.control.IntField
+import com.wijayaprinting.scene.control.hostField
+import com.wijayaprinting.scene.control.intField
 import com.wijayaprinting.ui.Resourced
-import com.wijayaprinting.ui.scene.control.HostField
-import com.wijayaprinting.ui.scene.control.IntField
-import com.wijayaprinting.ui.scene.control.hostField
-import com.wijayaprinting.ui.scene.control.intField
 import javafx.event.ActionEvent
 import javafx.geometry.Pos
 import javafx.scene.control.ButtonBar.ButtonData.OK_DONE
@@ -71,7 +71,7 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced 
             choiceBox(Language.values().toObservableList()) {
                 maxWidth = Double.MAX_VALUE
                 selectionModel.select(Language.from(ConfigFile.language.get()))
-                selectionModel.selectedItemProperty().addListener { _, _, language ->
+                valueProperty().addListener { _, _, language ->
                     ConfigFile.language.set(language.locale)
                     ConfigFile.save()
                     close()
@@ -124,11 +124,11 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced 
         addButton(CANCEL)
         addButton(getString(R.string.login), OK_DONE).apply {
             disableProperty().bind(employeeField.textProperty().isEmpty
-                    or passwordField.textProperty().isEmpty
-                    or not(serverHostField.validProperty)
-                    or serverPortField.textProperty().isEmpty
-                    or serverUserField.textProperty().isEmpty
-                    or serverPasswordField.textProperty().isEmpty)
+                or passwordField.textProperty().isEmpty
+                or not(serverHostField.validProperty)
+                or serverPortField.textProperty().isEmpty
+                or serverUserField.textProperty().isEmpty
+                or serverPasswordField.textProperty().isEmpty)
             addEventFilter(ActionEvent.ACTION) {
                 it.consume()
                 ConfigFile.save()

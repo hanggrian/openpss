@@ -34,5 +34,5 @@ abstract class PropertiesFile(
         }
     }
 
-    @JvmOverloads fun save(comments: String? = null): Unit = outputStream().use { properties.store(it, comments) }
+    fun save(comments: String? = null): Unit = outputStream().use { properties.store(it, comments) }
 }

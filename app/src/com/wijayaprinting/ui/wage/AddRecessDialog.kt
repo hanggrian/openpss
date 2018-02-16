@@ -2,8 +2,8 @@ package com.wijayaprinting.ui.wage
 
 import com.wijayaprinting.R
 import com.wijayaprinting.ui.Resourced
-import com.wijayaprinting.ui.scene.layout.TimeBox
-import com.wijayaprinting.ui.scene.layout.timeBox
+import com.wijayaprinting.scene.layout.TimeBox
+import com.wijayaprinting.scene.layout.timeBox
 import javafx.scene.control.ButtonType.CANCEL
 import javafx.scene.control.ButtonType.OK
 import javafx.scene.control.Dialog

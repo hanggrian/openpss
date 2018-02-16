@@ -4,8 +4,8 @@ import javafx.collections.ObservableList
 import kotfx.collections.mutableObservableListOf
 import kotfx.collections.toMutableObservableList
 
-class RevertibleObservableList<E> @JvmOverloads constructor(
-        private val actual: ObservableList<E> = mutableObservableListOf()
+class RevertibleObservableList<E>(
+    private val actual: ObservableList<E> = mutableObservableListOf()
 ) : ObservableList<E> by actual {
 
     private val clone: ObservableList<E> = actual.toMutableObservableList()

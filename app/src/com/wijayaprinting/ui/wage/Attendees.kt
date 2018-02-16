@@ -1,6 +1,6 @@
 package com.wijayaprinting.ui.wage
 
-import com.wijayaprinting.START_OF_TIME
+import com.wijayaprinting.scene.START_OF_TIME
 import com.wijayaprinting.ui.Resourced
 import com.wijayaprinting.ui.wage.Record.Companion.INDEX_NODE
 import com.wijayaprinting.ui.wage.Record.Companion.INDEX_TOTAL

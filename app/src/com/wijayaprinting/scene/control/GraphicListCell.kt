@@ -1,4 +1,4 @@
-package com.wijayaprinting.ui.scene.control
+package com.wijayaprinting.scene.control
 
 import javafx.scene.Node
 import javafx.scene.control.ListCell

@@ -3,8 +3,6 @@ package com.wijayaprinting.ui.customer
 import com.wijayaprinting.PATTERN_DATE
 import com.wijayaprinting.R
 import com.wijayaprinting.collections.isNotEmpty
-import com.wijayaprinting.collections.minus
-import com.wijayaprinting.collections.plus
 import com.wijayaprinting.db.dao.Customer
 import com.wijayaprinting.db.schema.Customers
 import com.wijayaprinting.db.transaction
@@ -12,7 +10,7 @@ import com.wijayaprinting.ui.AddUserDialog
 import com.wijayaprinting.ui.Controller
 import com.wijayaprinting.ui.Refreshable
 import com.wijayaprinting.ui.scene.control.CountBox
-import com.wijayaprinting.util.getFont
+import com.wijayaprinting.util.getExternalForm
 import com.wijayaprinting.util.tidy
 import javafx.fxml.FXML
 import javafx.scene.Node
@@ -50,6 +48,7 @@ import kotfx.scene.contextMenu
 import kotfx.scene.gridPane
 import kotfx.scene.label
 import kotfx.scene.listView
+import kotfx.scene.loadFont
 import kotfx.scene.menuItem
 import kotfx.scene.textField
 import kotlinx.nosql.equal
@@ -93,8 +92,8 @@ class CustomerController : Controller(), Refreshable {
         refresh()
 
         countBox.desc = getString(R.string.items)
-        nameLabel.font = getFont(R.font.lato_bold, 24)
-        sinceLabel.font = getFont(R.font.lato_regular, 12)
+        nameLabel.loadFont(getExternalForm(R.font.lato_bold), 24.0)
+        sinceLabel.loadFont(getExternalForm(R.font.lato_regular), 12.0)
         noteLabel.graphicProperty().bind(bindingOf<Node>(noteLabel.hoverProperty()) { if (noteLabel.isHover) noteLabelGraphic else null })
         contactTable.contextMenu = contextMenu {
             menuItem(getString(R.string.add)) {

@@ -87,18 +87,18 @@ class EmployeeController : Controller(), Refreshable {
     })
 
     private fun confirm(
-            confirmedAction: MongoDBSession.(Employee) -> Unit,
-            isNotSelfAction: () -> Unit = { infoAlert(getString(R.string.please_restart)).showAndWait().ifPresent { exit() } }
+        confirmedAction: MongoDBSession.(Employee) -> Unit,
+        isNotSelfAction: () -> Unit = { infoAlert(getString(R.string.please_restart)).showAndWait().ifPresent { exit() } }
     ) = confirmAlert(getString(R.string.are_you_sure), YES, NO)
-            .showAndWait()
-            .filter { it == YES }
-            .ifPresent {
-                employeeTable.selectionModel.selectedItem.let { employee ->
-                    transaction { confirmedAction(employee) }
-                    when {
-                        employee.name != employeeName -> refresh()
-                        else -> isNotSelfAction()
-                    }
+        .showAndWait()
+        .filter { it == YES }
+        .ifPresent {
+            employeeTable.selectionModel.selectedItem.let { employee ->
+                transaction { confirmedAction(employee) }
+                when {
+                    employee.name != employeeName -> refresh()
+                    else -> isNotSelfAction()
                 }
             }
+        }
 }

@@ -2,7 +2,7 @@ package com.wijayaprinting.io.properties
 
 import com.wijayaprinting.io.MainFolder
 import javafx.beans.property.StringProperty
-import kotfx.properties.toMutableProperty
+import kotfx.properties.toProperty
 import java.io.File
 import java.util.Properties
 
@@ -15,8 +15,8 @@ import java.util.Properties
  */
 @Suppress("LeakingThis")
 abstract class PropertiesFile(
-        name: String,
-        private val map: MutableMap<String, StringProperty> = mutableMapOf()
+    name: String,
+    private val map: MutableMap<String, StringProperty> = mutableMapOf()
 ) : File(MainFolder, ".$name"), MutableMap<String, StringProperty> by map {
 
     abstract val pairs: Array<Pair<String, String>>
@@ -28,7 +28,7 @@ abstract class PropertiesFile(
         if (!exists()) createNewFile()
         inputStream().use { properties.load(it) }
         pairs.forEach { (key, value) ->
-            val valueProperty = properties.getProperty(key, value).toMutableProperty()
+            val valueProperty = properties.getProperty(key, value).toProperty()
             valueProperty.addListener { _, _, newValue -> properties.setProperty(key, newValue) }
             map[key] = valueProperty
         }

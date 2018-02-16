@@ -13,9 +13,9 @@ plugins {
 java.sourceSets.getByName("main").java.srcDir("src")
 
 dependencies {
-    compile(project(":common"))
     compile(kotlin("stdlib", kotlinVersion))
     compile(hendraanggrian("kotfx", kotfxVersion))
+    compile(jodaTime())
     compile(commonsValidator())
 }
 

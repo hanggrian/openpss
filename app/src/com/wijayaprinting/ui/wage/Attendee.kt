@@ -6,10 +6,10 @@ import com.wijayaprinting.db.dao.Recess
 import com.wijayaprinting.db.dao.Wage
 import com.wijayaprinting.db.schema.Wages
 import com.wijayaprinting.db.transaction
+import javafx.beans.property.IntegerProperty
+import javafx.beans.property.SimpleIntegerProperty
 import javafx.collections.ObservableList
 import kotfx.collections.mutableObservableListOf
-import kotfx.properties.MutableIntProperty
-import kotfx.properties.SimpleIntProperty
 import kotlinx.nosql.equal
 import kotlinx.nosql.update
 import org.joda.time.DateTime
@@ -18,19 +18,19 @@ import org.joda.time.Period
 
 /** Data class representing an Attendee with id as its identifier to avoid duplicates in [Set] scenario. */
 open class Attendee @JvmOverloads constructor(
-        /** Id and name are final values that should be determined upon xlsx reading. */
-        val id: Int,
-        val name: String,
-        val role: String? = null,
+    /** Id and name are final values that should be determined upon xlsx reading. */
+    val id: Int,
+    val name: String,
+    val role: String? = null,
 
-        val recesses: ObservableList<Recess> = mutableObservableListOf(),
+    val recesses: ObservableList<Recess> = mutableObservableListOf(),
 
-        /** Attendances and shift should be set in [com.wijayaprinting.manager.controller.AttendanceController]. */
-        val attendances: RevertibleObservableList<DateTime> = RevertibleObservableList(),
+    /** Attendances and shift should be set in [com.wijayaprinting.manager.controller.AttendanceController]. */
+    val attendances: RevertibleObservableList<DateTime> = RevertibleObservableList(),
 
-        /** Wages below are retrieved from sql, or dailyEmpty if there is none. */
-        val dailyProperty: MutableIntProperty = SimpleIntProperty(),
-        val hourlyOvertimeProperty: MutableIntProperty = SimpleIntProperty()
+    /** Wages below are retrieved from sql, or dailyEmpty if there is none. */
+    val dailyProperty: IntegerProperty = SimpleIntegerProperty(),
+    val hourlyOvertimeProperty: IntegerProperty = SimpleIntegerProperty()
 ) {
 
     /** Dummy for invisible [javafx.scene.control.TreeTableView] root. */
@@ -61,8 +61,8 @@ open class Attendee @JvmOverloads constructor(
     }
 
     fun mergeDuplicates() = attendances.removeAllRevertable((0 until attendances.lastIndex)
-            .filter { index -> Period(attendances[index], attendances[index + 1]).toStandardMinutes() < minutes(5) }
-            .map { index -> attendances[index] })
+        .filter { index -> Period(attendances[index], attendances[index + 1]).toStandardMinutes() < minutes(5) }
+        .map { index -> attendances[index] })
 
     override fun hashCode(): Int = id.hashCode()
     override fun equals(other: Any?): Boolean = other != null && other is Attendee && other.id == id

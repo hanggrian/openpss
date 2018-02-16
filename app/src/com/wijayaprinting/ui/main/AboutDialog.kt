@@ -4,7 +4,7 @@ import com.wijayaprinting.BuildConfig.VERSION
 import com.wijayaprinting.R
 import com.wijayaprinting.ui.Resourced
 import com.wijayaprinting.ui.scene.control.GraphicListCell
-import com.wijayaprinting.util.getFont
+import com.wijayaprinting.util.getExternalForm
 import javafx.event.ActionEvent.ACTION
 import javafx.geometry.Insets
 import javafx.geometry.Pos.CENTER_LEFT
@@ -26,6 +26,7 @@ import kotfx.scene.button
 import kotfx.scene.hbox
 import kotfx.scene.imageView
 import kotfx.scene.label
+import kotfx.scene.loadFont
 import kotfx.scene.text
 import kotfx.scene.textFlow
 import kotfx.scene.titledPane
@@ -47,18 +48,18 @@ class AboutDialog(resourced: Resourced) : Dialog<Unit>(), Resourced by resourced
             vbox {
                 alignment = CENTER_LEFT
                 textFlow {
-                    text("Wijaya ") { font = getFont(R.font.lato_bold, 24) }
-                    text("Printing") { font = getFont(R.font.lato_light, 24) }
+                    text("Wijaya ") { loadFont(getExternalForm(R.font.lato_bold), 24.0) }
+                    text("Printing") { loadFont(getExternalForm(R.font.lato_light), 24.0) }
                 }
-                text("${getString(R.string.version)} $VERSION") { font = getFont(R.font.lato_regular, 12) } marginTop 2
-                text(getString(R.string.about_notice)) { font = getFont(R.font.lato_bold, 12) } marginTop 20
+                text("${getString(R.string.version)} $VERSION") { loadFont(getExternalForm(R.font.lato_regular), 12.0) } marginTop 2
+                text(getString(R.string.about_notice)) { loadFont(getExternalForm(R.font.lato_bold), 12.0) } marginTop 20
                 textFlow {
-                    text("${getString(R.string.powered_by)}  ") { font = getFont(R.font.lato_bold, 12) }
-                    text("JavaFX") { font = getFont(R.font.lato_regular, 12) }
+                    text("${getString(R.string.powered_by)}  ") { loadFont(getExternalForm(R.font.lato_bold), 12.0) }
+                    text("JavaFX") { loadFont(getExternalForm(R.font.lato_regular), 12.0) }
                 } marginTop 4
                 textFlow {
-                    text("${getString(R.string.author)}  ") { font = getFont(R.font.lato_bold, 12) }
-                    text("Hendra Anggrian") { font = getFont(R.font.lato_regular, 12) }
+                    text("${getString(R.string.author)}  ") { loadFont(getExternalForm(R.font.lato_bold), 12.0) }
+                    text("Hendra Anggrian") { loadFont(getExternalForm(R.font.lato_regular), 12.0) }
                 } marginTop 4
                 hbox {
                     button("GitHub") { setOnAction { getDesktop().browse(URI("https://github.com/hendraanggrian/wijayaprinting")) } }
@@ -74,8 +75,8 @@ class AboutDialog(resourced: Resourced) : Dialog<Unit>(), Resourced by resourced
                 setCellFactory {
                     object : GraphicListCell<License>() {
                         override fun getGraphic(item: License): Node = kotfx.scene.vbox {
-                            label(item.repo) { font = getFont(R.font.lato_regular, 12) }
-                            label(item.owner) { font = getFont(R.font.lato_bold, 12) }
+                            label(item.repo) { loadFont(getExternalForm(R.font.lato_regular), 12.0) }
+                            label(item.owner) { loadFont(getExternalForm(R.font.lato_bold), 12.0) }
                         }
                     }
                 }

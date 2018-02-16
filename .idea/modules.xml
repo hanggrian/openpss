@@ -2,17 +2,14 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/app.iml" group="app" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/wp-javafx/app.iml" filepath="$PROJECT_DIR$/.idea/modules/wp-javafx/app.iml" group="app" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/wijayaprinting/app.iml" filepath="$PROJECT_DIR$/.idea/modules/wijayaprinting/app.iml" group="app" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/wp-javafx/app.iml" filepath="$PROJECT_DIR$/.idea/modules/wp-javafx/app.iml" group="app" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/app.iml" group="app" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/app_main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/app_main.iml" group="app" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/app_test.iml" filepath="$PROJECT_DIR$/.idea/modules/app/app_test.iml" group="app" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/buildSrc.iml" filepath="$PROJECT_DIR$/.idea/modules/buildSrc.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/buildSrc_main.iml" filepath="$PROJECT_DIR$/.idea/modules/buildSrc_main.iml" group="buildSrc" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/buildSrc_test.iml" filepath="$PROJECT_DIR$/.idea/modules/buildSrc_test.iml" group="buildSrc" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/common/common.iml" filepath="$PROJECT_DIR$/.idea/modules/common/common.iml" group="common" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/common/common_main.iml" filepath="$PROJECT_DIR$/.idea/modules/common/common_main.iml" group="common" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/common/common_test.iml" filepath="$PROJECT_DIR$/.idea/modules/common/common_test.iml" group="common" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/manager.iml" filepath="$PROJECT_DIR$/.idea/modules/manager.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/scene/scene.iml" filepath="$PROJECT_DIR$/.idea/modules/scene/scene.iml" group="scene" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/wijayaprinting-scene/scene.iml" filepath="$PROJECT_DIR$/.idea/modules/wijayaprinting-scene/scene.iml" group="scene" />

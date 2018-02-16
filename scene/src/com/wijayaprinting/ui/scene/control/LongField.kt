@@ -2,17 +2,17 @@
 
 package com.wijayaprinting.ui.scene.control
 
+import javafx.beans.property.LongProperty
 import javafx.beans.property.SimpleLongProperty
 import javafx.scene.control.TextField
 import kotfx.annotations.SceneDsl
-import kotfx.properties.MutableLongProperty
-import kotfx.scene.ChildRoot
-import kotfx.scene.ItemRoot
+import kotfx.scene.ChildManager
+import kotfx.scene.ItemManager
 import kotfx.stringConverterOf
 
 open class LongField : TextField() {
 
-    val valueProperty: MutableLongProperty = SimpleLongProperty()
+    val valueProperty: LongProperty = SimpleLongProperty()
 
     init {
         textProperty().bindBidirectional(valueProperty, stringConverterOf<Number> { it.toLongOrNull() ?: 0 })
@@ -27,5 +27,5 @@ open class LongField : TextField() {
 }
 
 @JvmOverloads inline fun longField(noinline init: ((@SceneDsl LongField).() -> Unit)? = null): LongField = LongField().apply { init?.invoke(this) }
-@JvmOverloads inline fun ChildRoot.longField(noinline init: ((@SceneDsl LongField).() -> Unit)? = null): LongField = LongField().apply { init?.invoke(this) }.add()
-@JvmOverloads inline fun ItemRoot.longField(noinline init: ((@SceneDsl LongField).() -> Unit)? = null): LongField = LongField().apply { init?.invoke(this) }.add()
+@JvmOverloads inline fun ChildManager.longField(noinline init: ((@SceneDsl LongField).() -> Unit)? = null): LongField = LongField().apply { init?.invoke(this) }.add()
+@JvmOverloads inline fun ItemManager.longField(noinline init: ((@SceneDsl LongField).() -> Unit)? = null): LongField = LongField().apply { init?.invoke(this) }.add()

@@ -22,9 +22,9 @@ import org.joda.time.DateTime.now
 import org.joda.time.LocalTime.MIDNIGHT
 
 class DateTimeDialog @JvmOverloads constructor(
-        resourced: Resourced,
-        header: String,
-        prefill: DateTime = now().toLocalDate().toDateTime(MIDNIGHT)
+    resourced: Resourced,
+    header: String,
+    prefill: DateTime = now().toLocalDate().toDateTime(MIDNIGHT)
 ) : Dialog<DateTime>(), Resourced by resourced {
 
     private lateinit var datePicker: DatePicker
@@ -38,24 +38,24 @@ class DateTimeDialog @JvmOverloads constructor(
         content = gridPane {
             gap = 8.0
 
-            datePicker = forcedDatePicker(prefill.toLocalDate()) col 1 row 0
             button(graphic = ImageView(R.image.btn_arrow_left)) {
                 setOnAction {
                     datePicker.value = datePicker.value.minusDays(1)
                 }
             } col 0 row 0
+            datePicker = forcedDatePicker(prefill.toLocalDate()) col 1 row 0
             button(graphic = ImageView(R.image.btn_arrow_right)) {
                 setOnAction {
                     datePicker.value = datePicker.value.plusDays(1)
                 }
             } col 2 row 0
 
-            timeBox = timeBox(prefill.toLocalTime()) col 1 row 1
             button(graphic = ImageView(R.image.btn_arrow_left)) {
                 setOnAction {
                     timeBox.hourField.value--
                 }
             } col 0 row 1
+            timeBox = timeBox(prefill.toLocalTime()) col 1 row 1
             button(graphic = ImageView(R.image.btn_arrow_right)) {
                 setOnAction {
                     timeBox.hourField.value++

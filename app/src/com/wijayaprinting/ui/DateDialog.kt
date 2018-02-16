@@ -19,9 +19,9 @@ import org.joda.time.LocalDate
 import org.joda.time.LocalDate.now
 
 class DateDialog @JvmOverloads constructor(
-        resourced: Resourced,
-        header: String,
-        prefill: LocalDate = now()
+    resourced: Resourced,
+    header: String,
+    prefill: LocalDate = now()
 ) : Dialog<LocalDate>(), Resourced by resourced {
 
     private lateinit var datePicker: DatePicker
@@ -33,12 +33,12 @@ class DateDialog @JvmOverloads constructor(
         graphic = ImageView(R.image.ic_calendar)
         content = gridPane {
             gap = 8.0
-            datePicker = forcedDatePicker(prefill) col 1 row 0
             button(graphic = ImageView(R.image.btn_arrow_left)) {
                 setOnAction {
                     datePicker.value = datePicker.value.minusDays(1)
                 }
             } col 0 row 0
+            datePicker = forcedDatePicker(prefill) col 1 row 0
             button(graphic = ImageView(R.image.btn_arrow_right)) {
                 setOnAction {
                     datePicker.value = datePicker.value.plusDays(1)

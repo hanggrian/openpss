@@ -5,8 +5,8 @@ package com.wijayaprinting.ui.scene.control
 import com.wijayaprinting.toJava
 import javafx.scene.control.DatePicker
 import kotfx.annotations.SceneDsl
-import kotfx.scene.ChildRoot
-import kotfx.scene.ItemRoot
+import kotfx.scene.ChildManager
+import kotfx.scene.ItemManager
 import org.joda.time.LocalDate
 import org.joda.time.LocalDate.now
 
@@ -25,5 +25,5 @@ open class ForcedDatePicker @JvmOverloads constructor(prefill: LocalDate = now()
 }
 
 @JvmOverloads inline fun forcedDatePicker(prefill: LocalDate = now(), noinline init: ((@SceneDsl ForcedDatePicker).() -> Unit)? = null): ForcedDatePicker = ForcedDatePicker(prefill).apply { init?.invoke(this) }
-@JvmOverloads inline fun ChildRoot.forcedDatePicker(prefill: LocalDate = now(), noinline init: ((@SceneDsl ForcedDatePicker).() -> Unit)? = null): ForcedDatePicker = ForcedDatePicker(prefill).apply { init?.invoke(this) }.add()
-@JvmOverloads inline fun ItemRoot.forcedDatePicker(prefill: LocalDate = now(), noinline init: ((@SceneDsl ForcedDatePicker).() -> Unit)? = null): ForcedDatePicker = ForcedDatePicker(prefill).apply { init?.invoke(this) }.add()
+@JvmOverloads inline fun ChildManager.forcedDatePicker(prefill: LocalDate = now(), noinline init: ((@SceneDsl ForcedDatePicker).() -> Unit)? = null): ForcedDatePicker = ForcedDatePicker(prefill).apply { init?.invoke(this) }.add()
+@JvmOverloads inline fun ItemManager.forcedDatePicker(prefill: LocalDate = now(), noinline init: ((@SceneDsl ForcedDatePicker).() -> Unit)? = null): ForcedDatePicker = ForcedDatePicker(prefill).apply { init?.invoke(this) }.add()

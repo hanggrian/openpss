@@ -13,14 +13,15 @@ import javafx.scene.control.TextField
 import javafx.scene.image.ImageView
 import kotfx.bindings.bindingOf
 import kotfx.collections.toMutableObservableList
+import kotfx.coroutines.resultConverter
 import kotfx.dialogs.addButton
 import kotfx.dialogs.content
 import kotfx.dialogs.graphicIcon
 import kotfx.dialogs.headerTitle
+import kotfx.layout.listView
+import kotfx.layout.textField
+import kotfx.layout.vbox
 import kotfx.runLater
-import kotfx.scene.listView
-import kotfx.scene.textField
-import kotfx.scene.vbox
 import kotlinx.nosql.equal
 
 class SearchCustomerDialog(resourced: Resourced) : Dialog<Customer>(), Resourced by resourced {
@@ -51,7 +52,7 @@ class SearchCustomerDialog(resourced: Resourced) : Dialog<Customer>(), Resourced
         addButton(CANCEL)
         addButton(OK).disableProperty().bind(listView.selectionModel.selectedItemProperty().isNull)
         runLater { textField.requestFocus() }
-        setResultConverter {
+        resultConverter {
             if (it == OK) listView.selectionModel.selectedItem
             else null
         }

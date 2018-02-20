@@ -7,10 +7,10 @@ import javafx.beans.property.FloatProperty
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleFloatProperty
 import javafx.scene.control.TextField
-import kotfx.annotations.SceneDsl
+import kotfx.annotations.LayoutDsl
 import kotfx.bindings.booleanBindingOf
-import kotfx.scene.ChildManager
-import kotfx.scene.ItemManager
+import kotfx.layout.ChildManager
+import kotfx.layout.ItemManager
 import kotfx.stringConverterOf
 
 open class FloatField : TextField() {
@@ -37,6 +37,6 @@ open class FloatField : TextField() {
     val isValid: Boolean get() = validProperty.get()
 }
 
-inline fun floatField(noinline init: ((@SceneDsl FloatField).() -> Unit)? = null): FloatField = FloatField().apply { init?.invoke(this) }
-inline fun ChildManager.floatField(noinline init: ((@SceneDsl FloatField).() -> Unit)? = null): FloatField = FloatField().apply { init?.invoke(this) }.add()
-inline fun ItemManager.floatField(noinline init: ((@SceneDsl FloatField).() -> Unit)? = null): FloatField = FloatField().apply { init?.invoke(this) }.add()
+inline fun floatField(noinline init: ((@LayoutDsl FloatField).() -> Unit)? = null): FloatField = FloatField().apply { init?.invoke(this) }
+inline fun ChildManager.floatField(noinline init: ((@LayoutDsl FloatField).() -> Unit)? = null): FloatField = FloatField().apply { init?.invoke(this) }.add()
+inline fun ItemManager.floatField(noinline init: ((@LayoutDsl FloatField).() -> Unit)? = null): FloatField = FloatField().apply { init?.invoke(this) }.add()

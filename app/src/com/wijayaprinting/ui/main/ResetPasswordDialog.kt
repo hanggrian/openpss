@@ -10,14 +10,15 @@ import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import kotfx.bindings.neq
 import kotfx.bindings.or
+import kotfx.coroutines.resultConverter
 import kotfx.dialogs.addButton
 import kotfx.dialogs.content
 import kotfx.dialogs.icon
 import kotfx.gap
+import kotfx.layout.gridPane
+import kotfx.layout.label
+import kotfx.layout.passwordField
 import kotfx.runLater
-import kotfx.scene.gridPane
-import kotfx.scene.label
-import kotfx.scene.passwordField
 
 class ResetPasswordDialog(resourced: Resourced) : Dialog<String>(), Resourced by resourced {
 
@@ -39,9 +40,9 @@ class ResetPasswordDialog(resourced: Resourced) : Dialog<String>(), Resourced by
         }
         addButton(CANCEL)
         addButton(OK).disableProperty().bind(changePasswordField.textProperty().isEmpty
-                or confirmPasswordField.textProperty().isEmpty
-                or (changePasswordField.textProperty() neq confirmPasswordField.textProperty()))
-        setResultConverter { if (it == OK) changePasswordField.text else null }
+            or confirmPasswordField.textProperty().isEmpty
+            or (changePasswordField.textProperty() neq confirmPasswordField.textProperty()))
+        resultConverter { if (it == OK) changePasswordField.text else null }
         runLater { changePasswordField.requestFocus() }
     }
 }

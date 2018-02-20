@@ -7,12 +7,12 @@ import com.wijayaprinting.scene.toJava
 import javafx.geometry.Pos.CENTER
 import javafx.scene.control.DatePicker
 import javafx.scene.image.ImageView
-import kotfx.annotations.SceneDsl
-import kotfx.scene.ChildManager
-import kotfx.scene.ItemManager
-import kotfx.scene._HBox
-import kotfx.scene.button
-import kotfx.scene.datePicker
+import kotfx.annotations.LayoutDsl
+import kotfx.layout.ChildManager
+import kotfx.layout.ItemManager
+import kotfx.layout._HBox
+import kotfx.layout.button
+import kotfx.layout.datePicker
 import org.joda.time.LocalDate
 import org.joda.time.LocalDate.now
 
@@ -39,6 +39,6 @@ open class DateBox(prefill: LocalDate = now()) : _HBox() {
     }
 }
 
-inline fun dateBox(prefill: LocalDate = now(), noinline init: ((@SceneDsl DateBox).() -> Unit)? = null): DateBox = DateBox(prefill).apply { init?.invoke(this) }
-inline fun ChildManager.dateBox(prefill: LocalDate = now(), noinline init: ((@SceneDsl DateBox).() -> Unit)? = null): DateBox = DateBox(prefill).apply { init?.invoke(this) }.add()
-inline fun ItemManager.dateBox(prefill: LocalDate = now(), noinline init: ((@SceneDsl DateBox).() -> Unit)? = null): DateBox = DateBox(prefill).apply { init?.invoke(this) }.add()
+inline fun dateBox(prefill: LocalDate = now(), noinline init: ((@LayoutDsl DateBox).() -> Unit)? = null): DateBox = DateBox(prefill).apply { init?.invoke(this) }
+inline fun ChildManager.dateBox(prefill: LocalDate = now(), noinline init: ((@LayoutDsl DateBox).() -> Unit)? = null): DateBox = DateBox(prefill).apply { init?.invoke(this) }.add()
+inline fun ItemManager.dateBox(prefill: LocalDate = now(), noinline init: ((@LayoutDsl DateBox).() -> Unit)? = null): DateBox = DateBox(prefill).apply { init?.invoke(this) }.add()

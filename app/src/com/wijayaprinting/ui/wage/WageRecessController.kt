@@ -7,6 +7,7 @@ import com.wijayaprinting.scene.PATTERN_TIME
 import com.wijayaprinting.ui.SimpleTableController
 import javafx.fxml.FXML
 import javafx.scene.control.TableColumn
+import kotfx.coroutines.cellValueFactory
 import kotfx.properties.toProperty
 
 class WageRecessController : SimpleTableController<Recess, Recesses>(Recesses) {
@@ -16,8 +17,8 @@ class WageRecessController : SimpleTableController<Recess, Recesses>(Recesses) {
 
     override fun initialize() {
         super.initialize()
-        startColumn.setCellValueFactory { it.value.start.toString(PATTERN_TIME).toProperty() }
-        endColumn.setCellValueFactory { it.value.end.toString(PATTERN_TIME).toProperty() }
+        startColumn.cellValueFactory { it.value.start.toString(PATTERN_TIME).toProperty() }
+        endColumn.cellValueFactory { it.value.end.toString(PATTERN_TIME).toProperty() }
     }
 
     override fun add() = AddRecessDialog(this).showAndWait().ifPresent { (start, end) ->

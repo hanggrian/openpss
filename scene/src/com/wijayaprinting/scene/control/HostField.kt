@@ -5,10 +5,10 @@ package com.wijayaprinting.scene.control
 import javafx.beans.property.BooleanProperty
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.scene.control.TextField
-import kotfx.annotations.SceneDsl
+import kotfx.annotations.LayoutDsl
 import kotfx.bindings.booleanBindingOf
-import kotfx.scene.ChildManager
-import kotfx.scene.ItemManager
+import kotfx.layout.ChildManager
+import kotfx.layout.ItemManager
 import org.apache.commons.validator.routines.InetAddressValidator.getInstance
 
 /** Field that display IP address. */
@@ -23,6 +23,6 @@ open class HostField : TextField() {
     val isValid: Boolean get() = validProperty.get()
 }
 
-inline fun hostField(noinline init: ((@SceneDsl HostField).() -> Unit)? = null): HostField = HostField().apply { init?.invoke(this) }
-inline fun ChildManager.hostField(noinline init: ((@SceneDsl HostField).() -> Unit)? = null): HostField = HostField().apply { init?.invoke(this) }.add()
-inline fun ItemManager.hostField(noinline init: ((@SceneDsl HostField).() -> Unit)? = null): HostField = HostField().apply { init?.invoke(this) }.add()
+inline fun hostField(noinline init: ((@LayoutDsl HostField).() -> Unit)? = null): HostField = HostField().apply { init?.invoke(this) }
+inline fun ChildManager.hostField(noinline init: ((@LayoutDsl HostField).() -> Unit)? = null): HostField = HostField().apply { init?.invoke(this) }.add()
+inline fun ItemManager.hostField(noinline init: ((@LayoutDsl HostField).() -> Unit)? = null): HostField = HostField().apply { init?.invoke(this) }.add()

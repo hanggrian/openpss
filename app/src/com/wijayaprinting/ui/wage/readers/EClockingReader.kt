@@ -40,17 +40,17 @@ object EClockingReader : Reader() {
                 val month = date.monthOfYear
                 val year = date.year
                 multimap.putAll(Attendee(no, name, dept), (CELL_RECORD_START until CELL_RECORD_END)
-                        .map { row.getCell(it) }
-                        .filter { it.cellTypeEnum == NUMERIC }
-                        .map {
-                            val record = DateTime(it.dateCellValue.time)
-                            val attendance = DateTime(year, month, day, record.hourOfDay, record.minuteOfHour)
-                            when (true) {
-                                IS_OS_WINDOWS -> attendance.plusMinutes(18)
-                                IS_OS_MAC -> attendance.minusMinutes(7)
-                                else -> attendance
-                            }
-                        })
+                    .map { row.getCell(it) }
+                    .filter { it.cellTypeEnum == NUMERIC }
+                    .map {
+                        val record = DateTime(it.dateCellValue.time)
+                        val attendance = DateTime(year, month, day, record.hourOfDay, record.minuteOfHour)
+                        when (true) {
+                            IS_OS_WINDOWS -> attendance.plusMinutes(18)
+                            IS_OS_MAC -> attendance.minusMinutes(7)
+                            else -> attendance
+                        }
+                    })
             }
             workbook.close()
         }

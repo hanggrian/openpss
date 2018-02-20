@@ -7,10 +7,10 @@ import javafx.beans.property.DoubleProperty
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleDoubleProperty
 import javafx.scene.control.TextField
-import kotfx.annotations.SceneDsl
+import kotfx.annotations.LayoutDsl
 import kotfx.bindings.booleanBindingOf
-import kotfx.scene.ChildManager
-import kotfx.scene.ItemManager
+import kotfx.layout.ChildManager
+import kotfx.layout.ItemManager
 import kotfx.stringConverterOf
 
 open class DoubleField : TextField() {
@@ -37,6 +37,6 @@ open class DoubleField : TextField() {
     val isValid: Boolean get() = validProperty.get()
 }
 
-inline fun doubleField(noinline init: ((@SceneDsl DoubleField).() -> Unit)? = null): DoubleField = DoubleField().apply { init?.invoke(this) }
-inline fun ChildManager.doubleField(noinline init: ((@SceneDsl DoubleField).() -> Unit)? = null): DoubleField = DoubleField().apply { init?.invoke(this) }.add()
-inline fun ItemManager.doubleField(noinline init: ((@SceneDsl DoubleField).() -> Unit)? = null): DoubleField = DoubleField().apply { init?.invoke(this) }.add()
+inline fun doubleField(noinline init: ((@LayoutDsl DoubleField).() -> Unit)? = null): DoubleField = DoubleField().apply { init?.invoke(this) }
+inline fun ChildManager.doubleField(noinline init: ((@LayoutDsl DoubleField).() -> Unit)? = null): DoubleField = DoubleField().apply { init?.invoke(this) }.add()
+inline fun ItemManager.doubleField(noinline init: ((@LayoutDsl DoubleField).() -> Unit)? = null): DoubleField = DoubleField().apply { init?.invoke(this) }.add()

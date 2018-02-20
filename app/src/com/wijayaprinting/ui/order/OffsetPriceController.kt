@@ -7,6 +7,8 @@ import com.wijayaprinting.db.transaction
 import javafx.fxml.FXML
 import javafx.scene.control.TableColumn
 import javafx.scene.control.cell.TextFieldTableCell.forTableColumn
+import kotfx.coroutines.cellValueFactory
+import kotfx.coroutines.onEditCommit
 import kotfx.properties.asObservable
 import kotfx.properties.toProperty
 import kotfx.stringConverterOf
@@ -21,25 +23,25 @@ class OffsetPriceController : PriceController<Offset, Offsets>(Offsets) {
 
     override fun initialize() {
         super.initialize()
-        minAmountColumn.setCellValueFactory { it.value.minAmount.toProperty().asObservable() }
+        minAmountColumn.cellValueFactory { it.value.minAmount.toProperty().asObservable() }
         minAmountColumn.cellFactory = forTableColumn<Offset, Int>(stringConverterOf { it.toIntOrNull() ?: 0 })
-        minAmountColumn.setOnEditCommit { event ->
+        minAmountColumn.onEditCommit { event ->
             transaction { Offsets.find { name.equal(event.rowValue.name) }.projection { minAmount }.update(event.newValue) }
             event.rowValue.minAmount = event.newValue
         }
 
-        minPriceColumn.setCellValueFactory { it.value.minPrice.toProperty().asObservable() }
+        minPriceColumn.cellValueFactory { it.value.minPrice.toProperty().asObservable() }
         minPriceColumn.cellFactory = forTableColumn<Offset, Double>(stringConverterOf { it.toDoubleOrNull() ?: 0.0 })
-        minPriceColumn.setOnEditCommit { event ->
+        minPriceColumn.onEditCommit { event ->
             transaction { Offsets.find { name.equal(event.rowValue.name) }.projection { minPrice }.update(event.newValue) }
             event.rowValue.minPrice = event.newValue
         }
 
-        excessPriceColumn.setCellValueFactory { it.value.excessPrice.toProperty().asObservable() }
+        excessPriceColumn.cellValueFactory { it.value.excessPrice.toProperty().asObservable() }
         excessPriceColumn.cellFactory = forTableColumn<Offset, Double>(stringConverterOf {
             it.toDoubleOrNull() ?: 0.0
         })
-        excessPriceColumn.setOnEditCommit { event ->
+        excessPriceColumn.onEditCommit { event ->
             transaction { Offsets.find { name.equal(event.rowValue.name) }.projection { excessPrice }.update(event.newValue) }
             event.rowValue.excessPrice = event.newValue
         }

@@ -12,14 +12,14 @@ import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleObjectProperty
 import javafx.geometry.Pos.CENTER
 import javafx.scene.image.ImageView
-import kotfx.annotations.SceneDsl
+import kotfx.annotations.LayoutDsl
 import kotfx.bindings.bindingOf
 import kotfx.bindings.booleanBindingOf
-import kotfx.scene.ChildManager
-import kotfx.scene.ItemManager
-import kotfx.scene._HBox
-import kotfx.scene.button
-import kotfx.scene.label
+import kotfx.layout.ChildManager
+import kotfx.layout.ItemManager
+import kotfx.layout._HBox
+import kotfx.layout.button
+import kotfx.layout.label
 import org.joda.time.LocalTime
 import org.joda.time.LocalTime.MIDNIGHT
 import org.joda.time.LocalTime.parse
@@ -81,6 +81,6 @@ open class TimeBox(prefill: LocalTime = MIDNIGHT) : _HBox() {
     val isValid: Boolean get() = validProperty.get()
 }
 
-inline fun timeBox(prefill: LocalTime = MIDNIGHT, noinline init: ((@SceneDsl TimeBox).() -> Unit)? = null): TimeBox = TimeBox(prefill).apply { init?.invoke(this) }
-inline fun ChildManager.timeBox(prefill: LocalTime = MIDNIGHT, noinline init: ((@SceneDsl TimeBox).() -> Unit)? = null): TimeBox = TimeBox(prefill).apply { init?.invoke(this) }.add()
-inline fun ItemManager.timeBox(prefill: LocalTime = MIDNIGHT, noinline init: ((@SceneDsl TimeBox).() -> Unit)? = null): TimeBox = TimeBox(prefill).apply { init?.invoke(this) }.add()
+inline fun timeBox(prefill: LocalTime = MIDNIGHT, noinline init: ((@LayoutDsl TimeBox).() -> Unit)? = null): TimeBox = TimeBox(prefill).apply { init?.invoke(this) }
+inline fun ChildManager.timeBox(prefill: LocalTime = MIDNIGHT, noinline init: ((@LayoutDsl TimeBox).() -> Unit)? = null): TimeBox = TimeBox(prefill).apply { init?.invoke(this) }.add()
+inline fun ItemManager.timeBox(prefill: LocalTime = MIDNIGHT, noinline init: ((@LayoutDsl TimeBox).() -> Unit)? = null): TimeBox = TimeBox(prefill).apply { init?.invoke(this) }.add()

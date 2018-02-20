@@ -47,26 +47,28 @@ import kotfx.bindings.or
 import kotfx.bindings.sizeBinding
 import kotfx.bindings.stringBindingOf
 import kotfx.bindings.then
+import kotfx.coroutines.cellFactory
+import kotfx.coroutines.launchFX
+import kotfx.coroutines.onAction
 import kotfx.dialogs.errorAlert
 import kotfx.dialogs.fileChooser
 import kotfx.gap
+import kotfx.layout.borderPane
+import kotfx.layout.button
+import kotfx.layout.checkBox
+import kotfx.layout.contextMenu
+import kotfx.layout.gridPane
+import kotfx.layout.imageView
+import kotfx.layout.label
+import kotfx.layout.listView
+import kotfx.layout.menuItem
+import kotfx.layout.separatorMenuItem
+import kotfx.layout.titledPane
+import kotfx.layout.vbox
 import kotfx.maxSize
 import kotfx.minSize
 import kotfx.runLater
-import kotfx.scene.borderPane
-import kotfx.scene.button
-import kotfx.scene.checkBox
-import kotfx.scene.contextMenu
-import kotfx.scene.gridPane
-import kotfx.scene.imageView
-import kotfx.scene.label
-import kotfx.scene.listView
-import kotfx.scene.menuItem
-import kotfx.scene.separatorMenuItem
-import kotfx.scene.titledPane
-import kotfx.scene.vbox
 import kotfx.stage
-import kotlinx.coroutines.experimental.javafx.JavaFx
 import kotlinx.coroutines.experimental.launch
 import org.joda.time.DateTime
 import org.joda.time.DateTime.now
@@ -113,11 +115,11 @@ class WageController : Controller() {
 
     @FXML
     fun read() {
-        launch(JavaFx) {
+        launchFX {
             scrollPane.content = borderPane {
                 prefWidthProperty().bind(scrollPane.widthProperty())
                 prefHeightProperty().bind(scrollPane.heightProperty())
-                center = kotfx.scene.progressIndicator { maxSize = 72.0 }
+                center = kotfx.layout.progressIndicator { maxSize = 72.0 }
             }
             flowPane.children.clear()
         }
@@ -125,8 +127,8 @@ class WageController : Controller() {
             try {
                 readerChoiceBox.value.read(fileField.file).await().forEach { attendee ->
                     if (mergeToggleButton.isSelected) attendee.mergeDuplicates()
-                    launch(JavaFx) {
-                        flowPane.children.add(titledPane(attendee.toString()) {
+                    launchFX {
+                        flowPane.children += titledPane(attendee.toString()) {
                             lateinit var listView: ListView<DateTime>
                             userData = attendee
                             isCollapsible = false
@@ -170,25 +172,25 @@ class WageController : Controller() {
                                 }
                                 listView = listView(attendee.attendances) {
                                     prefWidth = 128.0
-                                    setCellFactory {
+                                    cellFactory {
                                         object : GraphicListCell<DateTime>() {
-                                            override fun getGraphic(item: DateTime): Node = kotfx.scene.hbox {
+                                            override fun getGraphic(item: DateTime): Node = kotfx.layout.hbox {
                                                 alignment = CENTER
                                                 label(item.toString(PATTERN_DATETIME)) { maxWidth = Double.MAX_VALUE } hpriority ALWAYS
                                                 button {
                                                     minSize = 17.0
                                                     maxSize = 17.0
                                                     graphicProperty().bind(bindingOf<Node>(hoverProperty()) { if (isHover) ImageView(R.image.btn_clear) else null })
-                                                    setOnAction { listView.items.remove(item) }
+                                                    onAction { listView.items.remove(item) }
                                                 }
                                             }
                                         }
                                     }
                                 }
                             }
-                            contextMenu = contextMenu {
+                            contextMenu {
                                 menuItem(getString(R.string.add)) {
-                                    setOnAction {
+                                    onAction {
                                         val prefill = listView.selectionModel.selectedItem ?: now()
                                         DateTimeDialog(this@WageController, getString(R.string.add_record), prefill.minusMinutes(prefill.minuteOfHour))
                                             .showAndWait()
@@ -200,7 +202,7 @@ class WageController : Controller() {
                                 }
                                 menuItem(getString(R.string.edit)) {
                                     disableProperty().bind(listView.selectionModel.selectedItems.isEmpty)
-                                    setOnAction {
+                                    onAction {
                                         DateTimeDialog(this@WageController, getString(R.string.edit_record), listView.selectionModel.selectedItem)
                                             .showAndWait()
                                             .ifPresent {
@@ -210,40 +212,40 @@ class WageController : Controller() {
                                     }
                                 }
                                 separatorMenuItem()
-                                menuItem(getString(R.string.revert)) { setOnAction { attendee.attendances.revert() } }
+                                menuItem(getString(R.string.revert)) { onAction { attendee.attendances.revert() } }
                                 separatorMenuItem()
                                 menuItem("${getString(R.string.delete)} ${attendee.name}") {
-                                    setOnAction {
+                                    onAction {
                                         flowPane.children.remove(this@titledPane)
                                         rebindProcessButton()
                                     }
                                 }
                                 menuItem(getString(R.string.delete_others)) {
                                     disableProperty().bind(flowPane.children.sizeBinding lessEq 1)
-                                    setOnAction {
+                                    onAction {
                                         flowPane.children.removeAll(flowPane.children.toMutableList().apply { remove(this@titledPane) })
                                         rebindProcessButton()
                                     }
                                 }
                                 menuItem(getString(R.string.delete_employees_to_the_right)) {
                                     disableProperty().bind(booleanBindingOf(flowPane.children) { flowPane.children.indexOf(this@titledPane) == flowPane.children.lastIndex })
-                                    setOnAction {
+                                    onAction {
                                         flowPane.children.removeAll(flowPane.children.toList().takeLast(flowPane.children.lastIndex - flowPane.children.indexOf(this@titledPane)))
                                         rebindProcessButton()
                                     }
                                 }
                             }
                             graphic = imageView { imageProperty().bind(`if`(booleanBindingOf(listView.items) { listView.items.size % 2 == 0 }) then Image(R.image.btn_checkbox) `else` Image(R.image.btn_checkbox_outline)) }
-                        })
+                        }
                     }
                 }
-                launch(JavaFx) {
+                launchFX {
                     scrollPane.content = flowPane
                     rebindProcessButton()
                 }
             } catch (e: Exception) {
                 if (DEBUG) e.printStackTrace()
-                launch(JavaFx) {
+                launchFX {
                     scrollPane.content = flowPane
                     rebindProcessButton()
                     errorAlert(e.message.toString()).showAndWait()

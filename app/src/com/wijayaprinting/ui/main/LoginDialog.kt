@@ -11,13 +11,14 @@ import com.wijayaprinting.scene.control.IntField
 import com.wijayaprinting.scene.control.hostField
 import com.wijayaprinting.scene.control.intField
 import com.wijayaprinting.ui.Resourced
-import javafx.event.ActionEvent
+import javafx.event.ActionEvent.ACTION
 import javafx.geometry.Pos
 import javafx.scene.control.ButtonBar.ButtonData.OK_DONE
 import javafx.scene.control.ButtonType.CANCEL
 import javafx.scene.control.Dialog
 import javafx.scene.control.PasswordField
 import javafx.scene.control.TextField
+import javafx.scene.control.Tooltip
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import kotfx.bindings.`else`
@@ -27,6 +28,8 @@ import kotfx.bindings.not
 import kotfx.bindings.or
 import kotfx.bindings.then
 import kotfx.collections.toObservableList
+import kotfx.coroutines.eventFilter
+import kotfx.coroutines.launchFX
 import kotfx.dialogs.addButton
 import kotfx.dialogs.content
 import kotfx.dialogs.errorAlert
@@ -36,18 +39,17 @@ import kotfx.dialogs.infoAlert
 import kotfx.dialogs.isExpanded
 import kotfx.exit
 import kotfx.gap
+import kotfx.layout.choiceBox
+import kotfx.layout.gridPane
+import kotfx.layout.hbox
+import kotfx.layout.hyperlink
+import kotfx.layout.label
+import kotfx.layout.passwordField
+import kotfx.layout.textField
+import kotfx.layout.toggleButton
+import kotfx.layout.tooltip
 import kotfx.runLater
-import kotfx.scene.choiceBox
-import kotfx.scene.gridPane
-import kotfx.scene.hbox
-import kotfx.scene.hyperlink
-import kotfx.scene.label
-import kotfx.scene.passwordField
-import kotfx.scene.textField
-import kotfx.scene.toggleButton
-import kotfx.scene.tooltip
 import kotlinx.coroutines.experimental.javafx.JavaFx
-import kotlinx.coroutines.experimental.launch
 
 class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced {
 
@@ -86,9 +88,9 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced 
             label(getString(R.string.password)) col 0 row 2
             passwordField = passwordField { promptText = getString(R.string.password) } col 1 row 2
             toggleButton {
-                tooltip = tooltip(getString(R.string.see_password))
-                graphic = kotfx.scene.imageView { imageProperty().bind(`if`(this@toggleButton.selectedProperty()) then Image(R.image.btn_visibility) `else` Image(R.image.btn_visibility_off)) }
-                passwordField.tooltipProperty().bind(bindingOf(passwordField.textProperty(), selectedProperty()) { if (!isSelected) null else tooltip(passwordField.text) })
+                tooltip(getString(R.string.see_password))
+                graphic = kotfx.layout.imageView { imageProperty().bind(`if`(this@toggleButton.selectedProperty()) then Image(R.image.btn_visibility) `else` Image(R.image.btn_visibility_off)) }
+                passwordField.tooltipProperty().bind(bindingOf(passwordField.textProperty(), selectedProperty()) { if (!isSelected) null else Tooltip(passwordField.text) })
             } col 2 row 2
         }
         expandableContent = gridPane {
@@ -129,11 +131,11 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced 
                 or serverPortField.textProperty().isEmpty
                 or serverUserField.textProperty().isEmpty
                 or serverPasswordField.textProperty().isEmpty)
-            addEventFilter(ActionEvent.ACTION) {
+            eventFilter(JavaFx, ACTION) {
                 it.consume()
                 ConfigFile.save()
                 MongoFile.save()
-                launch(JavaFx) {
+                launchFX {
                     try {
                         result = Database.login(serverHostField.text, serverPortField.value, serverUserField.text, serverPasswordField.text, employeeField.text, passwordField.text)
                         close()

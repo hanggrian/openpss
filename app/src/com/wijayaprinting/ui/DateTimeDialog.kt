@@ -10,11 +10,12 @@ import javafx.scene.control.ButtonType.OK
 import javafx.scene.control.Dialog
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
+import kotfx.coroutines.resultConverter
 import kotfx.dialogs.addButtons
 import kotfx.dialogs.content
 import kotfx.dialogs.icon
+import kotfx.layout.vbox
 import kotfx.runLater
-import kotfx.scene.vbox
 import org.joda.time.DateTime
 import org.joda.time.DateTime.now
 
@@ -39,7 +40,7 @@ class DateTimeDialog(
         }
         runLater { dateBox.requestFocus() }
         addButtons(OK, CANCEL)
-        setResultConverter {
+        resultConverter {
             if (it != OK) null
             else DateTime(dateBox.picker.value.year, dateBox.picker.value.monthValue, dateBox.picker.value.dayOfMonth, timeBox.time.hourOfDay, timeBox.time.minuteOfHour)
         }

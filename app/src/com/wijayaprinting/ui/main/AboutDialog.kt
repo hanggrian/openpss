@@ -18,19 +18,21 @@ import kotfx.bindings.and
 import kotfx.bindings.booleanBindingOf
 import kotfx.bindings.stringBindingOf
 import kotfx.collections.toObservableList
+import kotfx.coroutines.eventFilter
 import kotfx.dialogs.addButton
 import kotfx.dialogs.content
 import kotfx.dialogs.expandableContent
 import kotfx.dialogs.icon
-import kotfx.scene.button
-import kotfx.scene.hbox
-import kotfx.scene.imageView
-import kotfx.scene.label
-import kotfx.scene.loadFont
-import kotfx.scene.text
-import kotfx.scene.textFlow
-import kotfx.scene.titledPane
-import kotfx.scene.vbox
+import kotfx.layout.button
+import kotfx.layout.hbox
+import kotfx.layout.imageView
+import kotfx.layout.label
+import kotfx.layout.text
+import kotfx.layout.textFlow
+import kotfx.layout.titledPane
+import kotfx.layout.vbox
+import kotfx.loadFont
+import kotlinx.coroutines.experimental.javafx.JavaFx
 import java.awt.Desktop.getDesktop
 import java.net.URI
 
@@ -69,12 +71,12 @@ class AboutDialog(resourced: Resourced) : Dialog<Unit>(), Resourced by resourced
         }
         lateinit var listView: ListView<License>
         expandableContent = hbox {
-            listView = kotfx.scene.listView {
+            listView = kotfx.layout.listView {
                 prefHeight = 256.0
                 items = License.values().toObservableList()
                 setCellFactory {
                     object : GraphicListCell<License>() {
-                        override fun getGraphic(item: License): Node = kotfx.scene.vbox {
+                        override fun getGraphic(item: License): Node = kotfx.layout.vbox {
                             label(item.repo) { loadFont(getExternalForm(R.font.lato_regular), 12.0) }
                             label(item.owner) { loadFont(getExternalForm(R.font.lato_bold), 12.0) }
                         }
@@ -82,7 +84,7 @@ class AboutDialog(resourced: Resourced) : Dialog<Unit>(), Resourced by resourced
                 }
             }
             titledPane(getString(R.string.open_source_software), listView) { isCollapsible = false }
-            titledPane(getString(R.string.license), kotfx.scene.textArea {
+            titledPane(getString(R.string.license), kotfx.layout.textArea {
                 prefHeight = 256.0
                 isEditable = false
                 textProperty().bind(stringBindingOf(listView.selectionModel.selectedIndexProperty()) {
@@ -92,7 +94,7 @@ class AboutDialog(resourced: Resourced) : Dialog<Unit>(), Resourced by resourced
         }
         addButton("Homepage", CANCEL_CLOSE).apply {
             visibleProperty().bind(dialogPane.expandedProperty() and booleanBindingOf(listView.selectionModel.selectedIndexProperty()) { listView.selectionModel.selectedItem != null })
-            addEventFilter(ACTION) {
+            eventFilter(JavaFx, ACTION) {
                 it.consume()
                 getDesktop().browse(URI(listView.selectionModel.selectedItem.homepage))
             }

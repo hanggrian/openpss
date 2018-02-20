@@ -10,11 +10,11 @@ import javafx.beans.property.ObjectProperty
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleObjectProperty
 import javafx.scene.control.TextField
-import kotfx.annotations.SceneDsl
+import kotfx.annotations.LayoutDsl
 import kotfx.bindings.bindingOf
 import kotfx.bindings.booleanBindingOf
-import kotfx.scene.ChildManager
-import kotfx.scene.ItemManager
+import kotfx.layout.ChildManager
+import kotfx.layout.ItemManager
 import java.io.File
 
 /** Field that display file or directory path. */
@@ -43,6 +43,6 @@ open class FileField(scope: Scope = FILE) : TextField() {
     }
 }
 
-inline fun fileField(scope: Scope = FILE, noinline init: ((@SceneDsl FileField).() -> Unit)? = null): FileField = FileField(scope).apply { init?.invoke(this) }
-inline fun ChildManager.fileField(scope: Scope = FILE, noinline init: ((@SceneDsl FileField).() -> Unit)? = null): FileField = FileField(scope).apply { init?.invoke(this) }.add()
-inline fun ItemManager.fileField(scope: Scope = FILE, noinline init: ((@SceneDsl FileField).() -> Unit)? = null): FileField = FileField(scope).apply { init?.invoke(this) }.add()
+inline fun fileField(scope: Scope = FILE, noinline init: ((@LayoutDsl FileField).() -> Unit)? = null): FileField = FileField(scope).apply { init?.invoke(this) }
+inline fun ChildManager.fileField(scope: Scope = FILE, noinline init: ((@LayoutDsl FileField).() -> Unit)? = null): FileField = FileField(scope).apply { init?.invoke(this) }.add()
+inline fun ItemManager.fileField(scope: Scope = FILE, noinline init: ((@LayoutDsl FileField).() -> Unit)? = null): FileField = FileField(scope).apply { init?.invoke(this) }.add()

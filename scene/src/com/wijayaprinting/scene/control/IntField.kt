@@ -5,9 +5,9 @@ package com.wijayaprinting.scene.control
 import javafx.beans.property.IntegerProperty
 import javafx.beans.property.SimpleIntegerProperty
 import javafx.scene.control.TextField
-import kotfx.annotations.SceneDsl
-import kotfx.scene.ChildManager
-import kotfx.scene.ItemManager
+import kotfx.annotations.LayoutDsl
+import kotfx.layout.ChildManager
+import kotfx.layout.ItemManager
 import kotfx.stringConverterOf
 
 open class IntField : TextField() {
@@ -26,6 +26,6 @@ open class IntField : TextField() {
         set(value) = valueProperty.set(value)
 }
 
-inline fun intField(noinline init: ((@SceneDsl IntField).() -> Unit)? = null): IntField = IntField().apply { init?.invoke(this) }
-inline fun ChildManager.intField(noinline init: ((@SceneDsl IntField).() -> Unit)? = null): IntField = IntField().apply { init?.invoke(this) }.add()
-inline fun ItemManager.intField(noinline init: ((@SceneDsl IntField).() -> Unit)? = null): IntField = IntField().apply { init?.invoke(this) }.add()
+inline fun intField(noinline init: ((@LayoutDsl IntField).() -> Unit)? = null): IntField = IntField().apply { init?.invoke(this) }
+inline fun ChildManager.intField(noinline init: ((@LayoutDsl IntField).() -> Unit)? = null): IntField = IntField().apply { init?.invoke(this) }.add()
+inline fun ItemManager.intField(noinline init: ((@LayoutDsl IntField).() -> Unit)? = null): IntField = IntField().apply { init?.invoke(this) }.add()

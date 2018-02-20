@@ -1,5 +1,7 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.gradle.kotlin.dsl.kotlin
+import org.jetbrains.kotlin.gradle.dsl.Coroutines
+import org.jetbrains.kotlin.gradle.dsl.Coroutines.*
 
 group = "$releaseGroup.scene"
 version = releaseVersion
@@ -19,13 +21,16 @@ java.sourceSets {
     }
 }
 
+kotlin.experimental.coroutines = ENABLE
+
 r.resourcesDir = "sceneres"
 
 configurations.create("ktlint")
 
 dependencies {
     compile(kotlin("stdlib", kotlinVersion))
-    compile(hendraanggrian("kotfx", kotfxVersion))
+    compile(hendraanggrian("kotfx-layout", kotfxVersion))
+    compile(hendraanggrian("kotfx-coroutines", kotfxVersion))
     compile(jodaTime())
     compile(commonsValidator())
     ktlint()

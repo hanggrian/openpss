@@ -10,7 +10,7 @@ const val spekVersion = "1.1.5"
 
 const val rVersion = "0.2"
 const val buildconfigVersion = "0.8"
-const val kotfxVersion = "0.25"
+const val kotfxVersion = "0.28"
 const val commonsLangVersion = "3.7"
 const val poiVersion = "3.17"
 const val junitPlatformVersion = "1.0.0"

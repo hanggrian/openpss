@@ -1,21 +1,22 @@
 package com.wijayaprinting.ui.wage
 
 import com.wijayaprinting.R
-import com.wijayaprinting.ui.Resourced
 import com.wijayaprinting.scene.layout.TimeBox
 import com.wijayaprinting.scene.layout.timeBox
+import com.wijayaprinting.ui.Resourced
 import javafx.scene.control.ButtonType.CANCEL
 import javafx.scene.control.ButtonType.OK
 import javafx.scene.control.Dialog
 import javafx.scene.image.ImageView
 import kotfx.bindings.booleanBindingOf
+import kotfx.coroutines.resultConverter
 import kotfx.dialogs.addButton
 import kotfx.dialogs.content
 import kotfx.dialogs.graphicIcon
 import kotfx.dialogs.headerTitle
 import kotfx.gap
-import kotfx.scene.gridPane
-import kotfx.scene.label
+import kotfx.layout.gridPane
+import kotfx.layout.label
 import org.joda.time.LocalTime
 
 class AddRecessDialog(resourced: Resourced) : Dialog<Pair<LocalTime, LocalTime>>(), Resourced by resourced {
@@ -36,6 +37,6 @@ class AddRecessDialog(resourced: Resourced) : Dialog<Pair<LocalTime, LocalTime>>
         }
         addButton(CANCEL)
         addButton(OK).disableProperty().bind(booleanBindingOf(startBox.timeProperty, endBox.timeProperty) { startBox.time >= endBox.time })
-        setResultConverter { if (it == OK) Pair(startBox.time, endBox.time) else null }
+        resultConverter { if (it == OK) Pair(startBox.time, endBox.time) else null }
     }
 }

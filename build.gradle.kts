@@ -16,6 +16,7 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
+        maven("https://dl.bintray.com/hendraanggrian/maven") // temporary until kotfx libraries are approved
         maven("http://repository.jetbrains.com/kotlin-nosql")
     }
     tasks.withType(Delete::class.java) {

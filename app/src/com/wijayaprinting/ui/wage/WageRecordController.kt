@@ -28,12 +28,14 @@ import kotfx.bindings.booleanBindingOf
 import kotfx.bindings.isEmpty
 import kotfx.bindings.or
 import kotfx.bindings.stringBindingOf
+import kotfx.coroutines.cellValueFactory
+import kotfx.coroutines.onAction
 import kotfx.dialogs.addButton
 import kotfx.dialogs.infoAlert
+import kotfx.layout.menuItem
 import kotfx.properties.asObservable
 import kotfx.properties.toProperty
 import kotfx.runLater
-import kotfx.scene.menuItem
 import java.awt.Desktop.getDesktop
 import java.io.IOException
 import java.text.NumberFormat.getCurrencyInstance
@@ -72,32 +74,33 @@ class WageRecordController : Controller() {
         recordTable.root = TreeItem(getDummy(this))
         recordTable.isShowRoot = false
 
-        nameColumn.setCellValueFactory { it.value.value.displayedName.toProperty().asObservable() }
-        startColumn.setCellValueFactory { it.value.value.displayedStart }
-        endColumn.setCellValueFactory { it.value.value.displayedEnd }
-        dailyColumn.setCellValueFactory { it.value.value.dailyProperty.asObservable() }
-        dailyIncomeColumn.setCellValueFactory { it.value.value.dailyIncomeProperty.asObservable() }
-        overtimeColumn.setCellValueFactory { it.value.value.overtimeProperty.asObservable() }
-        overtimeIncomeColumn.setCellValueFactory { it.value.value.overtimeIncomeProperty.asObservable() }
-        totalColumn.setCellValueFactory { it.value.value.totalProperty.asObservable() }
+        nameColumn.cellValueFactory { it.value.value.displayedName.toProperty().asObservable() }
+        startColumn.cellValueFactory { it.value.value.displayedStart }
+        endColumn.cellValueFactory { it.value.value.displayedEnd }
+        dailyColumn.cellValueFactory { it.value.value.dailyProperty.asObservable() }
+        dailyIncomeColumn.cellValueFactory { it.value.value.dailyIncomeProperty.asObservable() }
+        overtimeColumn.cellValueFactory { it.value.value.overtimeProperty.asObservable() }
+        overtimeIncomeColumn.cellValueFactory { it.value.value.overtimeIncomeProperty.asObservable() }
+        totalColumn.cellValueFactory { it.value.value.totalProperty.asObservable() }
 
         runLater {
             getExtra<List<Attendee>>(EXTRA_ATTENDEES).forEach { attendee ->
                 val node = attendee.toNodeRecord(this)
                 val childs = attendee.toChildRecords(this)
                 val total = attendee.toTotalRecords(this, childs)
-                recordTable.root.children.add(TreeItem(node).apply {
+                recordTable.root.children += TreeItem(node).apply {
                     isExpanded = true
                     expandedProperty().addListener { _, _, expanded -> if (!expanded) isExpanded = true } // uncollapsible
-                    children.addAll(*childs.map { TreeItem(it) }.toTypedArray(), TreeItem(total))
-                })
+                    children += childs.map { TreeItem(it) }.toTypedArray()
+                    children += TreeItem(total)
+                }
             }
             getExtra<Stage>(EXTRA_STAGE).titleProperty().bind(stringBindingOf(*records.filter { it.isChild }.map { it.totalProperty }.toTypedArray()) {
                 getCurrencyInstance().format(records
-                        .filter { it.isTotal }
-                        .map { it.totalProperty.value }
-                        .sum())
-                        .let { s -> "${getString(R.string.record)} (${s.withoutCurrency})" }
+                    .filter { it.isTotal }
+                    .map { it.totalProperty.value }
+                    .sum())
+                    .let { s -> "${getString(R.string.record)} (${s.withoutCurrency})" }
             })
         }
     }
@@ -108,15 +111,15 @@ class WageRecordController : Controller() {
     fun lockStart() {
         val undoable = Undoable()
         recordTable.selectionModel.selectedItems
-                .map { it.value }
-                .forEach { record ->
-                    val initial = record.startProperty.value
-                    if (initial.toLocalTime() < timeBox.time) {
-                        record.startProperty.set(record.cloneStart(timeBox.time))
-                        undoable.name = if (undoable.name == null) "${record.attendee.name} ${initial.toString(PATTERN_DATETIME)} -> ${timeBox.time.toString(PATTERN_TIME)}" else getString(R.string.multiple_lock_start_time)
-                        undoable.addAction { record.startProperty.set(initial) }
-                    }
+            .map { it.value }
+            .forEach { record ->
+                val initial = record.startProperty.value
+                if (initial.toLocalTime() < timeBox.time) {
+                    record.startProperty.set(record.cloneStart(timeBox.time))
+                    undoable.name = if (undoable.name == null) "${record.attendee.name} ${initial.toString(PATTERN_DATETIME)} -> ${timeBox.time.toString(PATTERN_TIME)}" else getString(R.string.multiple_lock_start_time)
+                    undoable.addAction { record.startProperty.set(initial) }
                 }
+            }
         undoable.append()
     }
 
@@ -124,50 +127,49 @@ class WageRecordController : Controller() {
     fun lockEnd() {
         val undoable = Undoable()
         recordTable.selectionModel.selectedItems
-                .map { it.value }
-                .forEach { record ->
-                    val initial = record.endProperty.value
-                    if (initial.toLocalTime() > timeBox.time) {
-                        record.endProperty.set(record.cloneEnd(timeBox.time))
-                        undoable.name = if (undoable.name == null) "${record.attendee.name} ${initial.toString(PATTERN_DATETIME)} -> ${timeBox.time.toString(PATTERN_TIME)}" else getString(R.string.multiple_lock_end_time)
-                        undoable.addAction { record.endProperty.set(initial) }
-                    }
+            .map { it.value }
+            .forEach { record ->
+                val initial = record.endProperty.value
+                if (initial.toLocalTime() > timeBox.time) {
+                    record.endProperty.set(record.cloneEnd(timeBox.time))
+                    undoable.name = if (undoable.name == null) "${record.attendee.name} ${initial.toString(PATTERN_DATETIME)} -> ${timeBox.time.toString(PATTERN_TIME)}" else getString(R.string.multiple_lock_end_time)
+                    undoable.addAction { record.endProperty.set(initial) }
                 }
+            }
         undoable.append()
     }
 
     @FXML
     fun empty() = DateDialog(this, getString(R.string.empty_daily_income))
-            .showAndWait()
-            .ifPresent { date ->
-                val undoable = Undoable()
-                records.filter { it.startProperty.value.toLocalDate() == date }
-                        .forEach { record ->
-                            val initial = record.dailyEmptyProperty.value
-                            record.dailyEmptyProperty.set(!initial)
-                            if (undoable.name == null) undoable.name = "${getString(R.string.daily_emptied)} ${record.startProperty.value.toString(PATTERN_DATE)}"
-                            undoable.addAction { record.dailyEmptyProperty.set(initial) }
-                        }
-                undoable.append()
-            }
+        .showAndWait()
+        .ifPresent { date ->
+            val undoable = Undoable()
+            records.filter { it.startProperty.value.toLocalDate() == date }
+                .forEach { record ->
+                    val initial = record.dailyEmptyProperty.value
+                    record.dailyEmptyProperty.set(!initial)
+                    if (undoable.name == null) undoable.name = "${getString(R.string.daily_emptied)} ${record.startProperty.value.toString(PATTERN_DATE)}"
+                    undoable.addAction { record.dailyEmptyProperty.set(initial) }
+                }
+            undoable.append()
+        }
 
     @FXML
     fun screenshot() = getExternalForm(R.style.treetableview_print).let { printStyle ->
-        recordTable.stylesheets.add(printStyle)
+        recordTable.stylesheets += printStyle
         recordTable.scrollTo(0)
         val flow = (recordTable.skin as TreeTableViewSkin<*>).children[1] as VirtualFlow<*>
         var i = 0
         do {
             try {
                 WageFile(i).write(recordTable.snapshot(null, null))
+                recordTable.scrollTo(flow.lastVisibleCell.index)
             } catch (e: IOException) {
-                recordTable.stylesheets.remove(printStyle)
                 if (DEBUG) e.printStackTrace()
             }
-            recordTable.scrollTo(flow.lastVisibleCell.index)
             i++
         } while (flow.lastVisibleCell.index + 1 < recordTable.root.children.size + recordTable.root.children.map { it.children.size }.sum())
-        recordTable.stylesheets.remove(printStyle)
+        recordTable.stylesheets -= printStyle
 
         infoAlert(getString(R.string.screenshot_finished)) { addButton(getString(R.string.open_folder), CANCEL_CLOSE) }.showAndWait().filter { it.buttonData == CANCEL_CLOSE }.ifPresent {
             getDesktop().open(WageContentFolder)
@@ -179,10 +181,10 @@ class WageRecordController : Controller() {
     private fun Undoable.append() {
         if (isValid) undoButton.items.add(0, menuItem {
             text = name
-            setOnAction {
+            onAction {
                 undo()
-                undoButton.items.getOrNull(undoButton.items.indexOf(this) - 1)?.fire()
-                undoButton.items.remove(this)
+                undoButton.items.getOrNull(undoButton.items.indexOf(this@menuItem) - 1)?.fire()
+                undoButton.items -= this@menuItem
             }
         })
     }

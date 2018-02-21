@@ -12,7 +12,7 @@ import com.wijayaprinting.scene.control.hostField
 import com.wijayaprinting.scene.control.intField
 import com.wijayaprinting.ui.Resourced
 import javafx.event.ActionEvent.ACTION
-import javafx.geometry.Pos
+import javafx.geometry.Pos.CENTER_RIGHT
 import javafx.scene.control.ButtonBar.ButtonData.OK_DONE
 import javafx.scene.control.ButtonType.CANCEL
 import javafx.scene.control.Dialog
@@ -30,6 +30,7 @@ import kotfx.bindings.then
 import kotfx.collections.toObservableList
 import kotfx.coroutines.eventFilter
 import kotfx.coroutines.launchFX
+import kotfx.coroutines.onAction
 import kotfx.dialogs.addButton
 import kotfx.dialogs.content
 import kotfx.dialogs.errorAlert
@@ -117,9 +118,9 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced 
                 textProperty().bindBidirectional(MongoFile.password)
             } col 1 row 2 colSpan 2
             hbox {
-                alignment = Pos.CENTER_RIGHT
+                alignment = CENTER_RIGHT
                 hyperlink(getString(R.string.about)) {
-                    setOnAction { AboutDialog(this@LoginDialog).showAndWait() }
+                    onAction { AboutDialog(this@LoginDialog).showAndWait() }
                 } marginLeft 8
             } col 0 row 3 colSpan 3
         }
@@ -135,14 +136,12 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced 
                 it.consume()
                 ConfigFile.save()
                 MongoFile.save()
-                launchFX {
-                    try {
-                        result = Database.login(serverHostField.text, serverPortField.value, serverUserField.text, serverPasswordField.text, employeeField.text, passwordField.text)
-                        close()
-                    } catch (e: Exception) {
-                        if (DEBUG) e.printStackTrace()
-                        errorAlert(e.message.toString()).showAndWait()
-                    }
+                try {
+                    result = Database.login(serverHostField.text, serverPortField.value, serverUserField.text, serverPasswordField.text, employeeField.text, passwordField.text)
+                    launchFX { close() }
+                } catch (e: Exception) {
+                    if (DEBUG) e.printStackTrace()
+                    launchFX { errorAlert(e.message.toString()).showAndWait() }
                 }
             }
         }

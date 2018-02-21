@@ -39,7 +39,7 @@ buildconfig {
     debug = releaseDebug
 }
 
-configurations.create("ktlint")
+val ktlint by configurations.creating
 
 dependencies {
     implementation(project(":scene"))
@@ -50,7 +50,7 @@ dependencies {
     implementation(apache("poi-ooxml", poiVersion))
     implementation(guava())
     implementation(log4j12())
-    ktlint()
+    ktlint(ktlint())
     testImplementation(kotlin("test", kotlinVersion))
     testImplementation(kotlin("reflect", kotlinVersion))
     testImplementation(spek("api", spekVersion)) {
@@ -63,31 +63,33 @@ dependencies {
     testImplementation(junitPlatform("runner", junitPlatformVersion))
 }
 
-(tasks["shadowJar"] as ShadowJar).apply {
-    destinationDir = project.file("../release")
-    manifest.attributes(mapOf("Main-Class" to "$releaseGroup.App"))
-    baseName = releaseArtifact
-    classifier = null
-}
+tasks {
+    val shadowJar by getting(ShadowJar::class) {
+        destinationDir = project.file("../release")
+        manifest.attributes(mapOf("Main-Class" to "$releaseGroup.App"))
+        baseName = releaseArtifact
+        classifier = null
+    }
 
-task<JavaExec>("ktlint") {
-    group = "verification"
-    inputs.dir("src")
-    outputs.dir("src")
-    description = "Check Kotlin code style."
-    classpath = configurations["ktlint"]
-    main = "com.github.shyiko.ktlint.Main"
-    args("src/**/*.kt")
-}
-tasks["check"].dependsOn(tasks["ktlint"])
-task<JavaExec>("ktlintFormat") {
-    group = "formatting"
-    inputs.dir("src")
-    outputs.dir("src")
-    description = "Fix Kotlin code style deviations."
-    classpath = configurations["ktlint"]
-    main = "com.github.shyiko.ktlint.Main"
-    args("-F", "src/**/*.kt")
+    val ktlint by creating(JavaExec::class) {
+        group = "verification"
+        inputs.dir("src")
+        outputs.dir("src")
+        description = "Check Kotlin code style."
+        classpath = configurations["ktlint"]
+        main = "com.github.shyiko.ktlint.Main"
+        args("src/**/*.kt")
+    }
+    get("check").dependsOn(ktlint)
+    "ktlintFormat"(JavaExec::class) {
+        group = "formatting"
+        inputs.dir("src")
+        outputs.dir("src")
+        description = "Fix Kotlin code style deviations."
+        classpath = configurations["ktlint"]
+        main = "com.github.shyiko.ktlint.Main"
+        args("-F", "src/**/*.kt")
+    }
 }
 
 configure<JUnitPlatformExtension> {

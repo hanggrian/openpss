@@ -25,7 +25,7 @@ kotlin.experimental.coroutines = ENABLE
 
 r.resourcesDir = "sceneres"
 
-configurations.create("ktlint")
+val ktlint by configurations.creating
 
 dependencies {
     compile(kotlin("stdlib", kotlinVersion))
@@ -33,31 +33,33 @@ dependencies {
     compile(hendraanggrian("kotfx-coroutines", kotfxVersion))
     compile(jodaTime())
     compile(commonsValidator())
-    ktlint()
+    ktlint(ktlint())
 }
 
-(tasks["shadowJar"] as ShadowJar).apply {
-    destinationDir = project.file("../release")
-    baseName = "$releaseArtifact-scene"
-    classifier = null
-}
+tasks {
+    val shadowJar by getting(ShadowJar::class) {
+        destinationDir = project.file("../release")
+        baseName = "$releaseArtifact-scene"
+        classifier = null
+    }
 
-task<JavaExec>("ktlint") {
-    group = "verification"
-    inputs.dir("src")
-    outputs.dir("src")
-    description = "Check Kotlin code style."
-    classpath = configurations["ktlint"]
-    main = "com.github.shyiko.ktlint.Main"
-    args("src/**/*.kt")
-}
-tasks["check"].dependsOn(tasks["ktlint"])
-task<JavaExec>("ktlintFormat") {
-    group = "formatting"
-    inputs.dir("src")
-    outputs.dir("src")
-    description = "Fix Kotlin code style deviations."
-    classpath = configurations["ktlint"]
-    main = "com.github.shyiko.ktlint.Main"
-    args("-F", "src/**/*.kt")
+    val ktlint by creating(JavaExec::class) {
+        group = "verification"
+        inputs.dir("src")
+        outputs.dir("src")
+        description = "Check Kotlin code style."
+        classpath = configurations["ktlint"]
+        main = "com.github.shyiko.ktlint.Main"
+        args("src/**/*.kt")
+    }
+    get("check").dependsOn(ktlint)
+    "ktlintFormat"(JavaExec::class) {
+        group = "formatting"
+        inputs.dir("src")
+        outputs.dir("src")
+        description = "Fix Kotlin code style deviations."
+        classpath = configurations["ktlint"]
+        main = "com.github.shyiko.ktlint.Main"
+        args("-F", "src/**/*.kt")
+    }
 }

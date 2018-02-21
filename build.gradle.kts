@@ -1,4 +1,6 @@
 import org.gradle.kotlin.dsl.kotlin
+import java.io.File
+import java.nio.file.Files.delete
 
 buildscript {
     repositories {
@@ -24,10 +26,11 @@ allprojects {
     }
 }
 
-task<Delete>("clean") {
-    delete(rootProject.buildDir)
-}
-
-task<Wrapper>("wrapper"){
-    gradleVersion = "4.5"
+tasks {
+    "clean"(Delete::class) {
+        delete(rootProject.buildDir)
+    }
+    "wrapper"(Wrapper::class) {
+        gradleVersion = "4.4.1"
+    }
 }

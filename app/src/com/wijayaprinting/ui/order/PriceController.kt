@@ -8,6 +8,7 @@ import com.wijayaprinting.db.transaction
 import com.wijayaprinting.ui.SimpleTableController
 import javafx.fxml.FXML
 import javafx.scene.control.TableColumn
+import kotfx.coroutines.cellValueFactory
 import kotfx.dialogs.errorAlert
 import kotfx.dialogs.inputDialog
 import kotfx.properties.toProperty
@@ -21,7 +22,7 @@ abstract class PriceController<D : Named<S>, S : NamedDocumentSchema<D>>(schema:
 
     override fun initialize() {
         super.initialize()
-        nameColumn.setCellValueFactory { it.value.name.toProperty() }
+        nameColumn.cellValueFactory { it.value.name.toProperty() }
     }
 
     override fun add() = inputDialog(getString(if (this is PlatePriceController) R.string.add_plate else R.string.add_offset), null) {

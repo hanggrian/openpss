@@ -28,7 +28,6 @@ import kotfx.bindings.not
 import kotfx.bindings.or
 import kotfx.bindings.then
 import kotfx.collections.toObservableList
-import kotfx.coroutines.eventFilter
 import kotfx.coroutines.launchFX
 import kotfx.coroutines.onAction
 import kotfx.dialogs.addButton
@@ -50,7 +49,7 @@ import kotfx.layout.textField
 import kotfx.layout.toggleButton
 import kotfx.layout.tooltip
 import kotfx.runLater
-import kotlinx.coroutines.experimental.javafx.JavaFx
+import kotlinx.coroutines.experimental.launch
 
 class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced {
 
@@ -132,16 +131,18 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced 
                 or serverPortField.textProperty().isEmpty
                 or serverUserField.textProperty().isEmpty
                 or serverPasswordField.textProperty().isEmpty)
-            eventFilter(JavaFx, ACTION) {
+            addEventFilter(ACTION) {
                 it.consume()
-                ConfigFile.save()
-                MongoFile.save()
-                try {
-                    result = Database.login(serverHostField.text, serverPortField.value, serverUserField.text, serverPasswordField.text, employeeField.text, passwordField.text)
-                    launchFX { close() }
-                } catch (e: Exception) {
-                    if (DEBUG) e.printStackTrace()
-                    launchFX { errorAlert(e.message.toString()).showAndWait() }
+                launch {
+                    ConfigFile.save()
+                    MongoFile.save()
+                    try {
+                        result = Database.login(serverHostField.text, serverPortField.value, serverUserField.text, serverPasswordField.text, employeeField.text, passwordField.text)
+                        launchFX { close() }
+                    } catch (e: Exception) {
+                        if (DEBUG) e.printStackTrace()
+                        launchFX { errorAlert(e.message.toString()).showAndWait() }
+                    }
                 }
             }
         }

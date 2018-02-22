@@ -18,7 +18,7 @@ import kotfx.bindings.and
 import kotfx.bindings.booleanBindingOf
 import kotfx.bindings.stringBindingOf
 import kotfx.collections.toObservableList
-import kotfx.coroutines.eventFilter
+import kotfx.coroutines.cellFactory
 import kotfx.dialogs.addButton
 import kotfx.dialogs.content
 import kotfx.dialogs.expandableContent
@@ -32,7 +32,6 @@ import kotfx.layout.textFlow
 import kotfx.layout.titledPane
 import kotfx.layout.vbox
 import kotfx.loadFont
-import kotlinx.coroutines.experimental.javafx.JavaFx
 import java.awt.Desktop.getDesktop
 import java.net.URI
 
@@ -74,7 +73,7 @@ class AboutDialog(resourced: Resourced) : Dialog<Unit>(), Resourced by resourced
             listView = kotfx.layout.listView {
                 prefHeight = 256.0
                 items = License.values().toObservableList()
-                setCellFactory {
+                cellFactory {
                     object : GraphicListCell<License>() {
                         override fun getGraphic(item: License): Node = kotfx.layout.vbox {
                             label(item.repo) { loadFont(getExternalForm(R.font.lato_regular), 12.0) }
@@ -94,7 +93,7 @@ class AboutDialog(resourced: Resourced) : Dialog<Unit>(), Resourced by resourced
         }
         addButton("Homepage", CANCEL_CLOSE).apply {
             visibleProperty().bind(dialogPane.expandedProperty() and booleanBindingOf(listView.selectionModel.selectedIndexProperty()) { listView.selectionModel.selectedItem != null })
-            eventFilter(JavaFx, ACTION) {
+            addEventFilter(ACTION) {
                 it.consume()
                 getDesktop().browse(URI(listView.selectionModel.selectedItem.homepage))
             }

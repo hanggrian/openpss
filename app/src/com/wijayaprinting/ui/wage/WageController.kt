@@ -34,7 +34,6 @@ import javafx.scene.image.ImageView
 import javafx.scene.layout.FlowPane
 import javafx.scene.layout.Pane
 import javafx.scene.layout.Priority.ALWAYS
-import javafx.scene.text.Font.font
 import javafx.stage.Modality.APPLICATION_MODAL
 import kotfx.bindings.`else`
 import kotfx.bindings.`if`
@@ -51,6 +50,7 @@ import kotfx.coroutines.listener
 import kotfx.coroutines.onAction
 import kotfx.dialogs.errorAlert
 import kotfx.dialogs.fileChooser
+import kotfx.font
 import kotfx.gap
 import kotfx.layout.borderPane
 import kotfx.layout.button
@@ -147,14 +147,14 @@ class WageController : Controller() {
                                         promptText = getString(R.string.income)
                                         valueProperty.bindBidirectional(attendee.dailyProperty)
                                     } col 1 row 1
-                                    label("@${getString(R.string.day)}") { font = font(9.0) } col 2 row 1
+                                    label("@${getString(R.string.day)}") { font(size = 9) } col 2 row 1
                                     label(getString(R.string.overtime)) col 0 row 2 marginRight 4
                                     intField {
                                         prefSize(width = 96)
                                         promptText = getString(R.string.overtime)
                                         valueProperty.bindBidirectional(attendee.hourlyOvertimeProperty)
                                     } col 1 row 2
-                                    label("@${getString(R.string.hour)}") { font = font(9.0) } col 2 row 2
+                                    label("@${getString(R.string.hour)}") { font(size = 9) } col 2 row 2
                                     label(getString(R.string.recess)) col 0 row 3 marginRight 4
                                     vbox {
                                         transaction {

@@ -9,7 +9,6 @@ import javafx.scene.control.DatePicker
 import javafx.scene.control.Dialog
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
-import kotfx.coroutines.resultConverter
 import kotfx.dialogs.addButtons
 import kotfx.dialogs.content
 import kotfx.dialogs.icon
@@ -31,7 +30,7 @@ class DateDialog(
         content = dateBox(prefill)
         runLater { datePicker.requestFocus() }
         addButtons(OK, CANCEL)
-        resultConverter {
+        setResultConverter {
             if (it != OK) null
             else LocalDate(datePicker.value.year, datePicker.value.monthValue, datePicker.value.dayOfMonth)
         }

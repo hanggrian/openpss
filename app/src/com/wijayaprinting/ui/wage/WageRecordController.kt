@@ -13,7 +13,7 @@ import com.wijayaprinting.scene.layout.TimeBox
 import com.wijayaprinting.ui.Controller
 import com.wijayaprinting.ui.DateDialog
 import com.wijayaprinting.ui.wage.Record.Companion.getDummy
-import com.wijayaprinting.util.getExternalForm
+import com.wijayaprinting.util.getResource
 import com.wijayaprinting.util.withoutCurrency
 import javafx.fxml.FXML
 import javafx.scene.control.Button
@@ -24,18 +24,18 @@ import javafx.scene.control.TreeItem
 import javafx.scene.control.TreeTableColumn
 import javafx.scene.control.TreeTableView
 import javafx.stage.Stage
+import kotfx.asObservable
 import kotfx.bindings.booleanBindingOf
 import kotfx.bindings.isEmpty
 import kotfx.bindings.or
 import kotfx.bindings.stringBindingOf
-import kotfx.coroutines.cellValueFactory
+import kotfx.coroutines.listener
 import kotfx.coroutines.onAction
 import kotfx.dialogs.addButton
 import kotfx.dialogs.infoAlert
 import kotfx.layout.menuItem
-import kotfx.properties.asObservable
-import kotfx.properties.toProperty
 import kotfx.runLater
+import kotfx.toProperty
 import java.awt.Desktop.getDesktop
 import java.io.IOException
 import java.text.NumberFormat.getCurrencyInstance
@@ -74,14 +74,14 @@ class WageRecordController : Controller() {
         recordTable.root = TreeItem(getDummy(this))
         recordTable.isShowRoot = false
 
-        nameColumn.cellValueFactory { it.value.value.displayedName.toProperty().asObservable() }
-        startColumn.cellValueFactory { it.value.value.displayedStart }
-        endColumn.cellValueFactory { it.value.value.displayedEnd }
-        dailyColumn.cellValueFactory { it.value.value.dailyProperty.asObservable() }
-        dailyIncomeColumn.cellValueFactory { it.value.value.dailyIncomeProperty.asObservable() }
-        overtimeColumn.cellValueFactory { it.value.value.overtimeProperty.asObservable() }
-        overtimeIncomeColumn.cellValueFactory { it.value.value.overtimeIncomeProperty.asObservable() }
-        totalColumn.cellValueFactory { it.value.value.totalProperty.asObservable() }
+        nameColumn.setCellValueFactory { it.value.value.displayedName.toProperty().asObservable() }
+        startColumn.setCellValueFactory { it.value.value.displayedStart }
+        endColumn.setCellValueFactory { it.value.value.displayedEnd }
+        dailyColumn.setCellValueFactory { it.value.value.dailyProperty.asObservable() }
+        dailyIncomeColumn.setCellValueFactory { it.value.value.dailyIncomeProperty.asObservable() }
+        overtimeColumn.setCellValueFactory { it.value.value.overtimeProperty.asObservable() }
+        overtimeIncomeColumn.setCellValueFactory { it.value.value.overtimeIncomeProperty.asObservable() }
+        totalColumn.setCellValueFactory { it.value.value.totalProperty.asObservable() }
 
         runLater {
             getExtra<List<Attendee>>(EXTRA_ATTENDEES).forEach { attendee ->
@@ -90,7 +90,7 @@ class WageRecordController : Controller() {
                 val total = attendee.toTotalRecords(this, childs)
                 recordTable.root.children += TreeItem(node).apply {
                     isExpanded = true
-                    expandedProperty().addListener { _, _, expanded -> if (!expanded) isExpanded = true } // uncollapsible
+                    expandedProperty().listener { _, _, expanded -> if (!expanded) isExpanded = true } // uncollapsible
                     children += childs.map { TreeItem(it) }.toTypedArray()
                     children += TreeItem(total)
                 }
@@ -155,7 +155,7 @@ class WageRecordController : Controller() {
         }
 
     @FXML
-    fun screenshot() = getExternalForm(R.style.treetableview_print).let { printStyle ->
+    fun screenshot() = getResource(R.style.treetableview_print).toExternalForm().let { printStyle ->
         recordTable.stylesheets += printStyle
         recordTable.scrollTo(0)
         val flow = (recordTable.skin as TreeTableViewSkin<*>).children[1] as VirtualFlow<*>

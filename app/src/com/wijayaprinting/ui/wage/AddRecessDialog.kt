@@ -9,7 +9,6 @@ import javafx.scene.control.ButtonType.OK
 import javafx.scene.control.Dialog
 import javafx.scene.image.ImageView
 import kotfx.bindings.booleanBindingOf
-import kotfx.coroutines.resultConverter
 import kotfx.dialogs.addButton
 import kotfx.dialogs.content
 import kotfx.dialogs.graphicIcon
@@ -29,14 +28,16 @@ class AddRecessDialog(resourced: Resourced) : Dialog<Pair<LocalTime, LocalTime>>
         graphicIcon = ImageView(R.image.ic_clock)
 
         content = gridPane {
-            gap = 8.0
+            gap = 8
             label(getString(R.string.start)) col 0 row 0
             startBox = timeBox() col 1 row 0
             label(getString(R.string.end)) col 0 row 1
             endBox = timeBox() col 1 row 1
         }
         addButton(CANCEL)
-        addButton(OK).disableProperty().bind(booleanBindingOf(startBox.timeProperty, endBox.timeProperty) { startBox.time >= endBox.time })
-        resultConverter { if (it == OK) Pair(startBox.time, endBox.time) else null }
+        addButton(OK) {
+            disableProperty().bind(booleanBindingOf(startBox.timeProperty, endBox.timeProperty) { startBox.time >= endBox.time })
+        }
+        setResultConverter { if (it == OK) Pair(startBox.time, endBox.time) else null }
     }
 }

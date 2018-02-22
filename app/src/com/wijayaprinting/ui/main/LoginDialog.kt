@@ -28,7 +28,8 @@ import kotfx.bindings.not
 import kotfx.bindings.or
 import kotfx.bindings.then
 import kotfx.collections.toObservableList
-import kotfx.coroutines.launchFX
+import kotfx.coroutines.FX
+import kotfx.coroutines.listener
 import kotfx.coroutines.onAction
 import kotfx.dialogs.addButton
 import kotfx.dialogs.content
@@ -48,6 +49,7 @@ import kotfx.layout.passwordField
 import kotfx.layout.textField
 import kotfx.layout.toggleButton
 import kotfx.layout.tooltip
+import kotfx.prefSize
 import kotfx.runLater
 import kotlinx.coroutines.experimental.launch
 
@@ -68,12 +70,12 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced 
         graphic = ImageView(R.image.ic_launcher)
         isResizable = false
         content = gridPane {
-            gap = 8.0
+            gap = 8
             label(getString(R.string.language)) col 0 row 0
             choiceBox(Language.values().toObservableList()) {
                 maxWidth = Double.MAX_VALUE
                 selectionModel.select(Language.from(ConfigFile.language.get()))
-                valueProperty().addListener { _, _, language ->
+                valueProperty().listener { _, _, language ->
                     ConfigFile.language.set(language.locale)
                     ConfigFile.save()
                     close()
@@ -94,16 +96,16 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced 
             } col 2 row 2
         }
         expandableContent = gridPane {
-            gap = 8.0
+            gap = 8
             label(getString(R.string.server_host_port)) col 0 row 0
             serverHostField = hostField {
                 promptText = getString(R.string.ip_address)
-                prefWidth = 128.0
+                prefSize(width = 128)
                 textProperty().bindBidirectional(MongoFile.host)
             } col 1 row 0
             serverPortField = intField {
                 promptText = getString(R.string.port)
-                prefWidth = 64.0
+                prefSize(width = 64)
                 textProperty().bindBidirectional(MongoFile.port)
             } col 2 row 0
             label(getString(R.string.server_user)) col 0 row 1
@@ -124,7 +126,7 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced 
             } col 0 row 3 colSpan 3
         }
         addButton(CANCEL)
-        addButton(getString(R.string.login), OK_DONE).apply {
+        addButton(getString(R.string.login), OK_DONE) {
             disableProperty().bind(employeeField.textProperty().isEmpty
                 or passwordField.textProperty().isEmpty
                 or not(serverHostField.validProperty)
@@ -137,11 +139,14 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced 
                     ConfigFile.save()
                     MongoFile.save()
                     try {
-                        result = Database.login(serverHostField.text, serverPortField.value, serverUserField.text, serverPasswordField.text, employeeField.text, passwordField.text)
-                        launchFX { close() }
+                        val employee = Database.login(serverHostField.text, serverPortField.value, serverUserField.text, serverPasswordField.text, employeeField.text, passwordField.text)
+                        launch(FX) {
+                            result = employee
+                            close()
+                        }
                     } catch (e: Exception) {
                         if (DEBUG) e.printStackTrace()
-                        launchFX { errorAlert(e.message.toString()).showAndWait() }
+                        launch(FX) { errorAlert(e.message.toString()).showAndWait() }
                     }
                 }
             }

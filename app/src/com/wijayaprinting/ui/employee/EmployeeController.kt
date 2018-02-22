@@ -18,12 +18,11 @@ import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
 import javafx.scene.control.cell.ChoiceBoxTableCell.forTableColumn
 import kotfx.collections.toMutableObservableList
-import kotfx.coroutines.cellValueFactory
 import kotfx.coroutines.onEditCommit
 import kotfx.dialogs.confirmAlert
 import kotfx.dialogs.infoAlert
 import kotfx.exit
-import kotfx.properties.toProperty
+import kotfx.toProperty
 import kotlinx.nosql.equal
 import kotlinx.nosql.mongodb.MongoDBSession
 import kotlinx.nosql.update
@@ -43,8 +42,8 @@ class EmployeeController : Controller(), Refreshable {
             it.disableProperty().bind(employeeTable.selectionModel.selectedItemProperty().isNull)
         }
 
-        nameColumn.cellValueFactory { it.value.name.toProperty() }
-        fullAccessColumn.cellValueFactory { getString(if (it.value.fullAccess) R.string.yes else R.string.no).toProperty() }
+        nameColumn.setCellValueFactory { it.value.name.toProperty() }
+        fullAccessColumn.setCellValueFactory { getString(if (it.value.fullAccess) R.string.yes else R.string.no).toProperty() }
         fullAccessColumn.cellFactory = forTableColumn<Employee, String>(*getStringArray(R.string.yes, R.string.no))
         fullAccessColumn.onEditCommit { event ->
             val result = event.newValue == getString(R.string.yes)

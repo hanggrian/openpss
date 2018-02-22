@@ -63,18 +63,18 @@ object Database {
     @Throws(Exception::class)
     private fun connect(host: String, port: Int, user: String, password: String): Deferred<MongoDB> = async {
         MongoDB(arrayOf(ServerAddress(host, port)),
-                NAME,
-                arrayOf(createCredential(user, "admin", password.toCharArray())),
-                MongoClientOptions.Builder()
-                        .serverSelectionTimeout(3000)
-                        .build(),
-                arrayOf(Configs, Customers, Employees, Offsets, PlateOrders, OffsetOrders, Plates, Receipts, Recesses, Wages))
+            NAME,
+            arrayOf(createCredential(user, "admin", password.toCharArray())),
+            MongoClientOptions.Builder()
+                .serverSelectionTimeout(3000)
+                .build(),
+            arrayOf(Configs, Customers, Employees, Offsets, PlateOrders, OffsetOrders, Plates, Receipts, Recesses, Wages))
     }
 
     @Throws(Exception::class)
     private fun timezoneCheck(
-            expectedContinent: String,
-            expectedCountries: List<String>
+        expectedContinent: String,
+        expectedCountries: List<String>
     ) = getInstance().timeZone.id.split("/").forEachIndexed { index, s ->
         when (index) {
             0 -> require(s == expectedContinent)

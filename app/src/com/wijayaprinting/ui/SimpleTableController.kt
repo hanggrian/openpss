@@ -11,8 +11,8 @@ import javafx.scene.control.TableView
 import kotfx.bindings.or
 import kotfx.collections.toMutableObservableList
 import kotfx.dialogs.confirmAlert
-import kotfx.properties.toProperty
 import kotfx.runLater
+import kotfx.toProperty
 import kotlinx.nosql.equal
 import kotlinx.nosql.id
 import kotlinx.nosql.mongodb.DocumentSchema
@@ -44,12 +44,12 @@ abstract class SimpleTableController<D : Ided<S>, S : DocumentSchema<D>>(protect
 
     @FXML
     fun delete() = confirmAlert(getString(R.string.are_you_sure), YES, NO)
-            .showAndWait()
-            .filter { it == YES }
-            .ifPresent {
-                table.selectionModel.selectedItem.let {
-                    transaction { schema.find { id.equal(it.id.value) }.remove() }
-                    table.items.remove(it)
-                }
+        .showAndWait()
+        .filter { it == YES }
+        .ifPresent {
+            table.selectionModel.selectedItem.let {
+                transaction { schema.find { id.equal(it.id.value) }.remove() }
+                table.items.remove(it)
             }
+        }
 }

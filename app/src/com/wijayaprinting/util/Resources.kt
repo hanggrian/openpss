@@ -20,5 +20,3 @@ private val mainClass: Class<*>
 
 fun getResource(name: String): URL = mainClass.getResource(name)
 fun getResourceAsStream(name: String): InputStream = mainClass.getResourceAsStream(name)
-
-inline fun getExternalForm(id: String): String = getResource(id).toExternalForm()

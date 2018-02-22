@@ -15,11 +15,14 @@ import javafx.scene.image.ImageView
 import kotfx.annotations.LayoutDsl
 import kotfx.bindings.bindingOf
 import kotfx.bindings.booleanBindingOf
+import kotfx.coroutines.listener
 import kotfx.layout.ChildManager
 import kotfx.layout.ItemManager
 import kotfx.layout._HBox
 import kotfx.layout.button
 import kotfx.layout.label
+import kotfx.maxSize
+import kotfx.spacing
 import org.joda.time.LocalTime
 import org.joda.time.LocalTime.MIDNIGHT
 import org.joda.time.LocalTime.parse
@@ -40,19 +43,19 @@ open class TimeBox(prefill: LocalTime = MIDNIGHT) : _HBox() {
 
     init {
         alignment = CENTER
-        spacing = 8.0
+        spacing(8)
 
         button(graphic = ImageView(R.image.btn_arrow_left)) { setOnAction { hourField.value-- } }
         hourField = intField {
-            maxWidth = 48.0
+            maxSize(width = 48)
             alignment = CENTER
-            valueProperty.addListener { _, oldValue, newValue -> if (newValue !in 0 until 24) hourField.value = oldValue.toInt() }
+            valueProperty.listener { _, oldValue, value -> if (value !in 0 until 24) hourField.value = oldValue.toInt() }
         }
         label(":") { alignment = CENTER }
         minuteField = intField {
-            maxWidth = 48.0
+            maxSize(width = 48)
             alignment = CENTER
-            valueProperty.addListener { _, oldValue, newValue -> if (newValue !in 0 until 60) minuteField.value = oldValue.toInt() }
+            valueProperty.listener { _, oldValue, value -> if (value !in 0 until 60) minuteField.value = oldValue.toInt() }
         }
         button(graphic = ImageView(R.image.btn_arrow_right)) { setOnAction { hourField.value++ } }
 

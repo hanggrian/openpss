@@ -16,7 +16,7 @@ import javafx.beans.property.StringProperty
 import kotfx.bindings.doubleBindingOf
 import kotfx.bindings.plus
 import kotfx.bindings.stringBindingOf
-import kotfx.properties.toProperty
+import kotfx.toProperty
 import org.joda.time.DateTime
 import org.joda.time.Interval
 import org.joda.time.LocalTime

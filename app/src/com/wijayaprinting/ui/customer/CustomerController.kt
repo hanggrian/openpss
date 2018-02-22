@@ -10,7 +10,7 @@ import com.wijayaprinting.scene.control.CountBox
 import com.wijayaprinting.ui.AddUserDialog
 import com.wijayaprinting.ui.Controller
 import com.wijayaprinting.ui.Refreshable
-import com.wijayaprinting.util.getExternalForm
+import com.wijayaprinting.util.getResource
 import com.wijayaprinting.util.tidy
 import javafx.fxml.FXML
 import javafx.scene.Node
@@ -32,15 +32,14 @@ import kotfx.bindings.stringBindingOf
 import kotfx.collections.mutableObservableListOf
 import kotfx.collections.toMutableObservableList
 import kotfx.collections.toObservableList
-import kotfx.coroutines.cellValueFactory
 import kotfx.coroutines.onAction
-import kotfx.coroutines.resultConverter
 import kotfx.dialogs.addButton
 import kotfx.dialogs.confirmAlert
 import kotfx.dialogs.content
 import kotfx.dialogs.dialog
 import kotfx.dialogs.errorAlert
 import kotfx.dialogs.inputDialog
+import kotfx.font
 import kotfx.gap
 import kotfx.layout.button
 import kotfx.layout.choiceBox
@@ -50,10 +49,9 @@ import kotfx.layout.label
 import kotfx.layout.listView
 import kotfx.layout.menuItem
 import kotfx.layout.textField
-import kotfx.loadFont
 import kotfx.maxSize
-import kotfx.properties.toProperty
 import kotfx.runLater
+import kotfx.toProperty
 import kotlinx.nosql.equal
 import kotlinx.nosql.id
 import kotlinx.nosql.mongodb.MongoDBSession
@@ -75,7 +73,7 @@ class CustomerController : Controller(), Refreshable {
 
     private lateinit var customerList: ListView<Customer>
     private val noteLabelGraphic = button(graphic = ImageView(R.image.btn_edit)) {
-        maxSize = 24.0
+        maxSize = 24
         onAction {
             inputDialog(customer!!.note) {
                 title = getString(R.string.edit_customer)
@@ -95,8 +93,8 @@ class CustomerController : Controller(), Refreshable {
         refresh()
 
         countBox.desc = getString(R.string.items)
-        nameLabel.loadFont(getExternalForm(R.font.lato_bold), 24.0)
-        sinceLabel.loadFont(getExternalForm(R.font.lato_regular), 12.0)
+        nameLabel.font(getResource(R.font.lato_bold), 24)
+        sinceLabel.font(getResource(R.font.lato_regular), 12)
         noteLabel.graphicProperty().bind(bindingOf<Node>(noteLabel.hoverProperty()) { if (noteLabel.isHover) noteLabelGraphic else null })
         contactTable.contextMenu {
             menuItem(getString(R.string.add)) {
@@ -105,15 +103,17 @@ class CustomerController : Controller(), Refreshable {
                         lateinit var typeBox: ChoiceBox<String>
                         lateinit var contactField: TextField
                         content = gridPane {
-                            gap = 8.0
+                            gap = 8
                             label(getString(R.string.type)) col 0 row 0
                             typeBox = choiceBox(Customer.listAllTypes()) col 1 row 0
                             label(getString(R.string.contact)) col 0 row 1
                             contactField = textField { promptText = getString(R.string.contact) } col 1 row 1
                         }
                         addButton(CANCEL)
-                        addButton(OK).disableProperty().bind(typeBox.valueProperty().isNull or contactField.textProperty().isEmpty)
-                        resultConverter { if (it == OK) Customer.Contact(typeBox.value, contactField.text) else null }
+                        addButton(OK) {
+                            disableProperty().bind(typeBox.valueProperty().isNull or contactField.textProperty().isEmpty)
+                        }
+                        setResultConverter { if (it == OK) Customer.Contact(typeBox.value, contactField.text) else null }
                     }.showAndWait().ifPresent { contact ->
                         transaction {
                             Customers.find { id.equal(customer!!.id) }.projection { contacts }.update(customer!!.contacts + contact)
@@ -134,8 +134,8 @@ class CustomerController : Controller(), Refreshable {
                 }
             }
         }
-        typeColumn.cellValueFactory { it.value.type.toProperty() }
-        contactColumn.cellValueFactory { it.value.value.toProperty() }
+        typeColumn.setCellValueFactory { it.value.type.toProperty() }
+        contactColumn.setCellValueFactory { it.value.value.toProperty() }
     }
 
     override fun refresh() = customerPagination.pageFactoryProperty().bind(bindingOf(customerField.textProperty(), countBox.countProperty) {

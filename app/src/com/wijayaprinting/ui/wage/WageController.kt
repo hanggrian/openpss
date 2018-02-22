@@ -19,7 +19,6 @@ import com.wijayaprinting.ui.wage.readers.Reader
 import com.wijayaprinting.util.getResource
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
-import javafx.geometry.Insets
 import javafx.geometry.Pos.CENTER
 import javafx.scene.Node
 import javafx.scene.Scene
@@ -47,8 +46,8 @@ import kotfx.bindings.or
 import kotfx.bindings.sizeBinding
 import kotfx.bindings.stringBindingOf
 import kotfx.bindings.then
-import kotfx.coroutines.cellFactory
-import kotfx.coroutines.launchFX
+import kotfx.coroutines.FX
+import kotfx.coroutines.listener
 import kotfx.coroutines.onAction
 import kotfx.dialogs.errorAlert
 import kotfx.dialogs.fileChooser
@@ -67,6 +66,8 @@ import kotfx.layout.titledPane
 import kotfx.layout.vbox
 import kotfx.maxSize
 import kotfx.minSize
+import kotfx.padding
+import kotfx.prefSize
 import kotfx.runLater
 import kotfx.stage
 import kotlinx.coroutines.experimental.launch
@@ -115,11 +116,11 @@ class WageController : Controller() {
 
     @FXML
     fun read() {
-        launchFX {
+        launch(FX) {
             scrollPane.content = borderPane {
                 prefWidthProperty().bind(scrollPane.widthProperty())
                 prefHeightProperty().bind(scrollPane.heightProperty())
-                center = kotfx.layout.progressIndicator { maxSize = 72.0 }
+                center = kotfx.layout.progressIndicator { maxSize = 72 }
             }
             flowPane.children.clear()
         }
@@ -127,29 +128,29 @@ class WageController : Controller() {
             try {
                 readerChoiceBox.value.read(fileField.file).await().forEach { attendee ->
                     if (mergeToggleButton.isSelected) attendee.mergeDuplicates()
-                    launchFX {
+                    launch(FX) {
                         flowPane.children += titledPane(attendee.toString()) {
                             lateinit var listView: ListView<DateTime>
                             userData = attendee
                             isCollapsible = false
                             content = vbox {
                                 gridPane {
-                                    gap = 4.0
-                                    padding = Insets(8.0)
+                                    gap = 4
+                                    padding(8)
                                     attendee.role?.let { role ->
                                         label(getString(R.string.role)) col 0 row 0 marginRight 4
                                         label(role) col 1 row 0 colSpan 2
                                     }
                                     label(getString(R.string.income)) col 0 row 1 marginRight 4
                                     intField {
-                                        prefWidth = 100.0
+                                        prefSize(width = 100)
                                         promptText = getString(R.string.income)
                                         valueProperty.bindBidirectional(attendee.dailyProperty)
                                     } col 1 row 1
                                     label("@${getString(R.string.day)}") { font = font(9.0) } col 2 row 1
                                     label(getString(R.string.overtime)) col 0 row 2 marginRight 4
                                     intField {
-                                        prefWidth = 96.0
+                                        prefSize(width = 96)
                                         promptText = getString(R.string.overtime)
                                         valueProperty.bindBidirectional(attendee.hourlyOvertimeProperty)
                                     } col 1 row 2
@@ -159,7 +160,7 @@ class WageController : Controller() {
                                         transaction {
                                             Recesses.find().forEach { recess ->
                                                 checkBox(recess.toString()) {
-                                                    selectedProperty().addListener { _, _, selected ->
+                                                    selectedProperty().listener { _, _, selected ->
                                                         (this@titledPane.userData as Attendee).recesses.let { recesses ->
                                                             if (selected) recesses.add(recess) else recesses.remove(recess)
                                                         }
@@ -171,15 +172,15 @@ class WageController : Controller() {
                                     } col 1 row 3 colSpan 2
                                 }
                                 listView = listView(attendee.attendances) {
-                                    prefWidth = 128.0
-                                    cellFactory {
+                                    prefSize(width = 128)
+                                    setCellFactory {
                                         object : GraphicListCell<DateTime>() {
                                             override fun getGraphic(item: DateTime): Node = kotfx.layout.hbox {
                                                 alignment = CENTER
                                                 label(item.toString(PATTERN_DATETIME)) { maxWidth = Double.MAX_VALUE } hpriority ALWAYS
                                                 button {
-                                                    minSize = 17.0
-                                                    maxSize = 17.0
+                                                    minSize = 17
+                                                    maxSize = 17
                                                     graphicProperty().bind(bindingOf<Node>(hoverProperty()) { if (isHover) ImageView(R.image.btn_clear) else null })
                                                     onAction { listView.items.remove(item) }
                                                 }
@@ -239,13 +240,13 @@ class WageController : Controller() {
                         }
                     }
                 }
-                launchFX {
+                launch(FX) {
                     scrollPane.content = flowPane
                     rebindProcessButton()
                 }
             } catch (e: Exception) {
                 if (DEBUG) e.printStackTrace()
-                launchFX {
+                launch(FX) {
                     scrollPane.content = flowPane
                     rebindProcessButton()
                     errorAlert(e.message.toString()).showAndWait()
@@ -260,8 +261,7 @@ class WageController : Controller() {
         stage {
             val loader = FXMLLoader(getResource(R.layout.controller_wage_record), resources)
             scene = Scene(loader.pane)
-            minWidth = 1000.0
-            minHeight = 650.0
+            minSize(1000, 650)
             loader.controller.addExtra(EXTRA_ATTENDEES, attendees).addExtra(EXTRA_STAGE, this)
         }.showAndWait()
     }

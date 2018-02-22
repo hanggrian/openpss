@@ -10,12 +10,12 @@ import javafx.scene.control.ButtonType.OK
 import javafx.scene.control.Dialog
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
-import kotfx.coroutines.resultConverter
 import kotfx.dialogs.addButtons
 import kotfx.dialogs.content
 import kotfx.dialogs.icon
 import kotfx.layout.vbox
 import kotfx.runLater
+import kotfx.spacing
 import org.joda.time.DateTime
 import org.joda.time.DateTime.now
 
@@ -34,13 +34,13 @@ class DateTimeDialog(
         headerText = header
         graphic = ImageView(R.image.ic_calendar)
         content = vbox {
-            spacing = 8.0
+            spacing(8)
             dateBox = dateBox(prefill.toLocalDate())
             timeBox = timeBox(prefill.toLocalTime())
         }
         runLater { dateBox.requestFocus() }
         addButtons(OK, CANCEL)
-        resultConverter {
+        setResultConverter {
             if (it != OK) null
             else DateTime(dateBox.picker.value.year, dateBox.picker.value.monthValue, dateBox.picker.value.dayOfMonth, timeBox.time.hourOfDay, timeBox.time.minuteOfHour)
         }

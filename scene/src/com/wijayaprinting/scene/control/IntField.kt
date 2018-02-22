@@ -6,19 +6,24 @@ import javafx.beans.property.IntegerProperty
 import javafx.beans.property.SimpleIntegerProperty
 import javafx.scene.control.TextField
 import kotfx.annotations.LayoutDsl
+import kotfx.bindings.bindBidirectional
+import kotfx.coroutines.listener
 import kotfx.layout.ChildManager
 import kotfx.layout.ItemManager
-import kotfx.stringConverterOf
 
 open class IntField : TextField() {
 
     val valueProperty: IntegerProperty = SimpleIntegerProperty()
 
     init {
-        textProperty().bindBidirectional(valueProperty, stringConverterOf<Number> { it.toIntOrNull() ?: 0 })
-        textProperty().addListener { _, oldValue, newValue ->
-            text = if (newValue.isEmpty()) "0" else newValue.toIntOrNull()?.toString() ?: oldValue
+        textProperty().bindBidirectional(valueProperty) {
+            fromString { it.toIntOrNull() ?: 0 }
         }
+        textProperty().listener { _, oldValue, value ->
+            text = if (value.isEmpty()) "0" else value.toIntOrNull()?.toString() ?: oldValue
+            end()
+        }
+        focusedProperty().listener { _, _, focused -> if (focused && text.isNotEmpty()) selectAll() }
     }
 
     var value: Int

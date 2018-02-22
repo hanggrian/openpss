@@ -13,6 +13,7 @@ import javafx.scene.control.Menu
 import javafx.scene.control.MenuBar
 import javafx.scene.control.RadioMenuItem
 import javafx.scene.control.TabPane
+import kotfx.coroutines.listener
 import kotfx.runLater
 import org.apache.commons.lang3.SystemUtils.IS_OS_MAC
 
@@ -34,7 +35,7 @@ class MainController : Controller() {
         menuBar.isUseSystemMenuBar = IS_OS_MAC
 
         updateNavigateMenu(tabPane.selectionModel.selectedIndex)
-        tabPane.selectionModel.selectedIndexProperty().addListener { _, _, index ->
+        tabPane.selectionModel.selectedIndexProperty().listener { _, _, index ->
             updateNavigateMenu(index.toInt())
             (controllers[index.toInt()] as? Refreshable)?.refresh()
         }

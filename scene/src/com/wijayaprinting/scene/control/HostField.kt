@@ -7,6 +7,7 @@ import javafx.beans.property.SimpleBooleanProperty
 import javafx.scene.control.TextField
 import kotfx.annotations.LayoutDsl
 import kotfx.bindings.booleanBindingOf
+import kotfx.coroutines.listener
 import kotfx.layout.ChildManager
 import kotfx.layout.ItemManager
 import org.apache.commons.validator.routines.InetAddressValidator.getInstance
@@ -18,6 +19,7 @@ open class HostField : TextField() {
 
     init {
         validProperty.bind(booleanBindingOf(textProperty()) { getInstance().isValidInet4Address(text) })
+        focusedProperty().listener { _, _, value -> if (value && text.isNotEmpty()) selectAll() }
     }
 
     val isValid: Boolean get() = validProperty.get()

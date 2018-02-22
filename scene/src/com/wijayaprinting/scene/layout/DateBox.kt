@@ -13,6 +13,8 @@ import kotfx.layout.ItemManager
 import kotfx.layout._HBox
 import kotfx.layout.button
 import kotfx.layout.datePicker
+import kotfx.maxSize
+import kotfx.spacing
 import org.joda.time.LocalDate
 import org.joda.time.LocalDate.now
 
@@ -27,13 +29,13 @@ open class DateBox(prefill: LocalDate = now()) : _HBox() {
 
     init {
         alignment = CENTER
-        spacing = 8.0
+        spacing(8)
 
         button(graphic = ImageView(R.image.btn_arrow_left)) { setOnAction { picker.value = picker.value.minusDays(1) } }
         picker = datePicker {
             value = prefill.toJava()
             isEditable = false
-            maxWidth = 116.0
+            maxSize(width = 116)
         }
         button(graphic = ImageView(R.image.btn_arrow_right)) { setOnAction { picker.value = picker.value.plusDays(1) } }
     }

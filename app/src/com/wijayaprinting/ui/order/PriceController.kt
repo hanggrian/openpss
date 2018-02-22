@@ -8,10 +8,9 @@ import com.wijayaprinting.db.transaction
 import com.wijayaprinting.ui.SimpleTableController
 import javafx.fxml.FXML
 import javafx.scene.control.TableColumn
-import kotfx.coroutines.cellValueFactory
 import kotfx.dialogs.errorAlert
 import kotfx.dialogs.inputDialog
-import kotfx.properties.toProperty
+import kotfx.toProperty
 import kotlinx.nosql.equal
 
 abstract class PriceController<D : Named<S>, S : NamedDocumentSchema<D>>(schema: S) : SimpleTableController<D, S>(schema) {
@@ -22,7 +21,7 @@ abstract class PriceController<D : Named<S>, S : NamedDocumentSchema<D>>(schema:
 
     override fun initialize() {
         super.initialize()
-        nameColumn.cellValueFactory { it.value.name.toProperty() }
+        nameColumn.setCellValueFactory { it.value.name.toProperty() }
     }
 
     override fun add() = inputDialog(getString(if (this is PlatePriceController) R.string.add_plate else R.string.add_offset), null) {

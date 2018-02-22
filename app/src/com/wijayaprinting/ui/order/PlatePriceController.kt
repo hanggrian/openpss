@@ -5,12 +5,10 @@ import com.wijayaprinting.db.schema.Plates
 import com.wijayaprinting.db.transaction
 import javafx.fxml.FXML
 import javafx.scene.control.TableColumn
-import javafx.scene.control.cell.TextFieldTableCell.forTableColumn
-import kotfx.coroutines.cellValueFactory
+import kotfx.asObservable
 import kotfx.coroutines.onEditCommit
-import kotfx.properties.asObservable
-import kotfx.properties.toProperty
-import kotfx.stringConverterOf
+import kotfx.textFieldCellFactory
+import kotfx.toProperty
 import kotlinx.nosql.equal
 import kotlinx.nosql.update
 
@@ -20,8 +18,10 @@ class PlatePriceController : PriceController<Plate, Plates>(Plates) {
 
     override fun initialize() {
         super.initialize()
-        priceColumn.cellValueFactory { it.value.price.toProperty().asObservable() }
-        priceColumn.cellFactory = forTableColumn<Plate, Double>(stringConverterOf { it.toDoubleOrNull() ?: 0.0 })
+        priceColumn.setCellValueFactory { it.value.price.toProperty().asObservable() }
+        priceColumn.textFieldCellFactory {
+            fromString { it.toDoubleOrNull() ?: 0.0 }
+        }
         priceColumn.onEditCommit { event ->
             transaction { Plates.find { name.equal(event.rowValue.name) }.projection { price }.update(event.newValue) }
             event.rowValue.price = event.newValue

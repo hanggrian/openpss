@@ -13,7 +13,6 @@ import javafx.scene.control.TextField
 import javafx.scene.image.ImageView
 import kotfx.bindings.bindingOf
 import kotfx.collections.toMutableObservableList
-import kotfx.coroutines.resultConverter
 import kotfx.dialogs.addButton
 import kotfx.dialogs.content
 import kotfx.dialogs.graphicIcon
@@ -50,9 +49,11 @@ class SearchCustomerDialog(resourced: Resourced) : Dialog<Customer>(), Resourced
             } marginTop 8
         }
         addButton(CANCEL)
-        addButton(OK).disableProperty().bind(listView.selectionModel.selectedItemProperty().isNull)
+        addButton(OK) {
+            disableProperty().bind(listView.selectionModel.selectedItemProperty().isNull)
+        }
         runLater { textField.requestFocus() }
-        resultConverter {
+        setResultConverter {
             if (it == OK) listView.selectionModel.selectedItem
             else null
         }

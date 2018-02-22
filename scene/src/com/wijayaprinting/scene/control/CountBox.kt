@@ -8,9 +8,9 @@ import javafx.scene.control.ChoiceBox
 import kotfx.annotations.LayoutDsl
 import kotfx.bindings.intBindingOf
 import kotfx.collections.observableListOf
+import kotfx.converter
 import kotfx.layout.ChildManager
 import kotfx.layout.ItemManager
-import kotfx.stringConverterOf
 
 open class CountBox : ChoiceBox<Int>() {
 
@@ -19,7 +19,10 @@ open class CountBox : ChoiceBox<Int>() {
 
     init {
         items = observableListOf(20, 30, 40, 50)
-        converter = stringConverterOf({ "$it $desc" }) { s -> s.toInt() }
+        converter {
+            fromString { s -> s.toInt() }
+            toString { "$it $desc" }
+        }
         selectionModel.selectFirst()
         @Suppress("LeakingThis") countProperty.bind(intBindingOf(valueProperty()) { selectionModel.selectedItem })
     }

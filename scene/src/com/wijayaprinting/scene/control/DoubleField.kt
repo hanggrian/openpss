@@ -8,10 +8,11 @@ import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleDoubleProperty
 import javafx.scene.control.TextField
 import kotfx.annotations.LayoutDsl
+import kotfx.bindings.bindBidirectional
 import kotfx.bindings.booleanBindingOf
+import kotfx.coroutines.listener
 import kotfx.layout.ChildManager
 import kotfx.layout.ItemManager
-import kotfx.stringConverterOf
 
 open class DoubleField : TextField() {
 
@@ -19,7 +20,9 @@ open class DoubleField : TextField() {
     val validProperty: BooleanProperty = SimpleBooleanProperty()
 
     init {
-        textProperty().bindBidirectional(valueProperty, stringConverterOf<Number> { it.toDoubleOrNull() ?: 0.0 })
+        textProperty().bindBidirectional(valueProperty) {
+            fromString { it.toDoubleOrNull() ?: 0.0 }
+        }
         validProperty.bind(booleanBindingOf(textProperty()) {
             try {
                 java.lang.Double.parseDouble(text)
@@ -28,6 +31,7 @@ open class DoubleField : TextField() {
                 false
             }
         })
+        focusedProperty().listener { _, _, focused -> if (focused && text.isNotEmpty()) selectAll() }
     }
 
     var value: Double

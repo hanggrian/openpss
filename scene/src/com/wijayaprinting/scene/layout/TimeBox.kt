@@ -2,7 +2,7 @@
 
 package com.wijayaprinting.scene.layout
 
-import com.wijayaprinting.scene.PATTERN_TIME
+import com.wijayaprinting.time.PATTERN_TIME
 import com.wijayaprinting.scene.R
 import com.wijayaprinting.scene.control.IntField
 import com.wijayaprinting.scene.control.intField

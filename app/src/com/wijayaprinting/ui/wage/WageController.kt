@@ -5,10 +5,11 @@ import com.wijayaprinting.R
 import com.wijayaprinting.db.schema.Recesses
 import com.wijayaprinting.db.transaction
 import com.wijayaprinting.io.WageFolder
-import com.wijayaprinting.scene.PATTERN_DATETIME
+import com.wijayaprinting.time.PATTERN_DATETIME_EXTENDED
 import com.wijayaprinting.scene.control.FileField
 import com.wijayaprinting.scene.control.GraphicListCell
 import com.wijayaprinting.scene.control.intField
+import com.wijayaprinting.time.FlexibleInterval
 import com.wijayaprinting.ui.Controller
 import com.wijayaprinting.ui.DateTimeDialog
 import com.wijayaprinting.ui.controller
@@ -17,9 +18,12 @@ import com.wijayaprinting.ui.wage.WageRecordController.Companion.EXTRA_ATTENDEES
 import com.wijayaprinting.ui.wage.WageRecordController.Companion.EXTRA_STAGE
 import com.wijayaprinting.ui.wage.readers.Reader
 import com.wijayaprinting.util.getResource
+import com.wijayaprinting.util.isDelete
+import com.wijayaprinting.util.round
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
-import javafx.geometry.Pos.CENTER
+import javafx.geometry.Pos.BOTTOM_CENTER
+import javafx.geometry.Pos.TOP_CENTER
 import javafx.scene.Node
 import javafx.scene.Scene
 import javafx.scene.control.Button
@@ -30,14 +34,12 @@ import javafx.scene.control.ScrollPane
 import javafx.scene.control.TitledPane
 import javafx.scene.control.ToggleButton
 import javafx.scene.image.Image
-import javafx.scene.image.ImageView
 import javafx.scene.layout.FlowPane
 import javafx.scene.layout.Pane
 import javafx.scene.layout.Priority.ALWAYS
 import javafx.stage.Modality.APPLICATION_MODAL
 import kotfx.bindings.`else`
 import kotfx.bindings.`if`
-import kotfx.bindings.bindingOf
 import kotfx.bindings.booleanBindingOf
 import kotfx.bindings.isEmpty
 import kotfx.bindings.lessEq
@@ -45,15 +47,16 @@ import kotfx.bindings.or
 import kotfx.bindings.sizeBinding
 import kotfx.bindings.stringBindingOf
 import kotfx.bindings.then
+import kotfx.collections.sort
 import kotfx.coroutines.FX
 import kotfx.coroutines.listener
 import kotfx.coroutines.onAction
+import kotfx.coroutines.onKeyPressed
 import kotfx.dialogs.errorAlert
 import kotfx.dialogs.fileChooser
 import kotfx.font
 import kotfx.gap
 import kotfx.layout.borderPane
-import kotfx.layout.button
 import kotfx.layout.checkBox
 import kotfx.layout.contextMenu
 import kotfx.layout.gridPane
@@ -95,7 +98,7 @@ class WageController : Controller() {
         processButton.disableProperty().bind(flowPane.children.isEmpty)
 
         if (DEBUG) {
-            fileField.text = "/Users/hendraanggrian/Downloads/Absen 11-25-17.xlsx"
+            fileField.text = "/Users/hendraanggrian/Downloads/Absen 12-29-17.xlsx"
             readButton.fire()
         }
         runLater { flowPane.prefWrapLengthProperty().bind(fileField.scene.widthProperty()) }
@@ -176,15 +179,22 @@ class WageController : Controller() {
                                     setCellFactory {
                                         object : GraphicListCell<DateTime>() {
                                             override fun getGraphic(item: DateTime): Node = kotfx.layout.hbox {
-                                                alignment = CENTER
-                                                label(item.toString(PATTERN_DATETIME)) { maxWidth = Double.MAX_VALUE } hpriority ALWAYS
-                                                button {
-                                                    minSize = 17
-                                                    maxSize = 17
-                                                    graphicProperty().bind(bindingOf<Node>(hoverProperty()) { if (isHover) ImageView(R.image.btn_clear) else null })
-                                                    onAction { listView.items.remove(item) }
+                                                val index = this@listView.items.indexOf(item)
+                                                alignment = if (index % 2 == 0) BOTTOM_CENTER else TOP_CENTER
+                                                label(item.toString(PATTERN_DATETIME_EXTENDED)) { maxWidth = Double.MAX_VALUE } hpriority ALWAYS
+                                                if (alignment == BOTTOM_CENTER) this@listView.items.getOrNull(index + 1).let { nextItem ->
+                                                    label(when (nextItem) {
+                                                        null -> "Error"
+                                                        else -> round(FlexibleInterval(item, nextItem).hours).toString()
+                                                    }) { font(size = 9) }
                                                 }
                                             }
+                                        }
+                                    }
+                                    onKeyPressed {
+                                        if (it.code.isDelete && selectionModel.selectedItem != null) selectionModel.let {
+                                            listView.items.remove(it.selectedItem)
+                                            it.clearSelection()
                                         }
                                     }
                                 }

@@ -5,7 +5,7 @@ import com.wijayaprinting.collections.isNotEmpty
 import com.wijayaprinting.db.dao.Customer
 import com.wijayaprinting.db.schema.Customers
 import com.wijayaprinting.db.transaction
-import com.wijayaprinting.scene.PATTERN_DATE
+import com.wijayaprinting.time.PATTERN_DATE
 import com.wijayaprinting.scene.control.CountBox
 import com.wijayaprinting.ui.AddUserDialog
 import com.wijayaprinting.ui.Controller

@@ -6,9 +6,9 @@ import com.wijayaprinting.BuildConfig.DEBUG
 import com.wijayaprinting.R
 import com.wijayaprinting.io.WageContentFolder
 import com.wijayaprinting.io.WageFile
-import com.wijayaprinting.scene.PATTERN_DATE
-import com.wijayaprinting.scene.PATTERN_DATETIME
-import com.wijayaprinting.scene.PATTERN_TIME
+import com.wijayaprinting.time.PATTERN_DATE
+import com.wijayaprinting.time.PATTERN_DATETIME
+import com.wijayaprinting.time.PATTERN_TIME
 import com.wijayaprinting.scene.layout.TimeBox
 import com.wijayaprinting.ui.Controller
 import com.wijayaprinting.ui.DateDialog

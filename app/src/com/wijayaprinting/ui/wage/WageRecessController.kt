@@ -3,7 +3,7 @@ package com.wijayaprinting.ui.wage
 import com.wijayaprinting.db.dao.Recess
 import com.wijayaprinting.db.schema.Recesses
 import com.wijayaprinting.db.transaction
-import com.wijayaprinting.scene.PATTERN_TIME
+import com.wijayaprinting.time.PATTERN_TIME
 import com.wijayaprinting.ui.SimpleTableController
 import javafx.fxml.FXML
 import javafx.scene.control.TableColumn

@@ -2,8 +2,9 @@ package com.wijayaprinting.ui.wage
 
 import com.wijayaprinting.Language
 import com.wijayaprinting.R
-import com.wijayaprinting.scene.PATTERN_DATETIME
-import com.wijayaprinting.scene.START_OF_TIME
+import com.wijayaprinting.time.PATTERN_DATETIME
+import com.wijayaprinting.time.START_OF_TIME
+import com.wijayaprinting.time.FlexibleInterval
 import com.wijayaprinting.ui.Resourced
 import com.wijayaprinting.util.round
 import javafx.beans.property.BooleanProperty
@@ -18,7 +19,6 @@ import kotfx.bindings.plus
 import kotfx.bindings.stringBindingOf
 import kotfx.toProperty
 import org.joda.time.DateTime
-import org.joda.time.Interval
 import org.joda.time.LocalTime
 import kotlin.math.absoluteValue
 
@@ -156,13 +156,8 @@ class Record(
 
     private val workingHours: Double
         get() {
-            val isReverse = start > end
-            val interval = when {
-                isReverse -> Interval(end, start)
-                else -> Interval(start, end)
-            }
-            var minutes = interval.toDuration().toStandardMinutes().minutes
-            if (isReverse) minutes *= -1
+            val interval = FlexibleInterval(start, end)
+            var minutes = interval.minutes
             attendee.recesses
                 .map { it.getInterval(start) }
                 .forEach { recessesInterval -> minutes -= interval.overlap(recessesInterval)?.toDuration()?.toStandardMinutes()?.minutes?.absoluteValue ?: 0 }

@@ -2,7 +2,7 @@ package com.wijayaprinting.db.dao
 
 import com.wijayaprinting.db.Ided
 import com.wijayaprinting.db.schema.Recesses
-import com.wijayaprinting.scene.PATTERN_TIME
+import com.wijayaprinting.time.PATTERN_TIME
 import kotlinx.nosql.Id
 import org.joda.time.DateTime
 import org.joda.time.Interval

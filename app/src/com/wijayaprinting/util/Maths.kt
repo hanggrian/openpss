@@ -9,8 +9,6 @@ import java.math.BigDecimal
 import java.math.BigDecimal.ROUND_HALF_UP
 import kotlin.Double.Companion.NaN
 
-private const val POSITIVE_ZERO = 0.0
-
 fun round(
     x: Double,
     scale: Int = 2,
@@ -21,7 +19,7 @@ fun round(
         .toDouble()
         .let { rounded ->
             // MATH-1089: negative values rounded to zero should result in negative zero
-            if (rounded == POSITIVE_ZERO) POSITIVE_ZERO * x else rounded
+            if (rounded == 0.0) 0.0 * x else rounded
         }
 } catch (ex: NumberFormatException) {
     if (isInfinite(x)) x else NaN

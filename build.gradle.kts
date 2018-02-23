@@ -28,8 +28,9 @@ allprojects {
 tasks {
     "clean"(Delete::class) {
         delete(rootProject.buildDir)
+        delete(rootProject.file("release"))
     }
     "wrapper"(Wrapper::class) {
-        gradleVersion = "4.4.1"
+        gradleVersion = "4.5"
     }
 }

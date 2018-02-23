@@ -14,11 +14,9 @@ plugins {
     shadow
 }
 
-java.sourceSets {
-    getByName("main") {
-        java.srcDir("src")
-        resources.srcDir("sceneres")
-    }
+java.sourceSets.getByName("main") {
+    java.srcDir("src")
+    resources.srcDir("sceneres")
 }
 
 kotlin.experimental.coroutines = ENABLE

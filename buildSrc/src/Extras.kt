@@ -1,14 +1,14 @@
 const val releaseGroup = "com.wijayaprinting"
 const val releaseArtifact = "wijayaprinting"
-const val releaseDebug = true
-const val releaseVersion = "0.9"
+const val releaseDebug = false
+const val releaseVersion = "0.10"
 
 const val kotlinVersion = "1.2.21"
 const val nosqlVersion = "0.1-SNAPSHOT"
-const val coroutinesVersion = "0.22.2"
+const val coroutinesVersion = "0.22.3"
 const val spekVersion = "1.1.5"
 
-const val rVersion = "0.2"
+const val rVersion = "0.3"
 const val buildconfigVersion = "0.8"
 const val kotfxVersion = "0.32"
 const val commonsLangVersion = "3.7"

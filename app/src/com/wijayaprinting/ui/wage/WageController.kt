@@ -17,6 +17,7 @@ import com.wijayaprinting.ui.pane
 import com.wijayaprinting.ui.wage.WageRecordController.Companion.EXTRA_ATTENDEES
 import com.wijayaprinting.ui.wage.WageRecordController.Companion.EXTRA_STAGE
 import com.wijayaprinting.ui.wage.readers.Reader
+import com.wijayaprinting.util.getColor
 import com.wijayaprinting.util.getResource
 import com.wijayaprinting.util.isDelete
 import com.wijayaprinting.util.round
@@ -41,7 +42,6 @@ import javafx.scene.layout.FlowPane
 import javafx.scene.layout.Pane
 import javafx.scene.layout.Priority.ALWAYS
 import javafx.scene.layout.StackPane
-import javafx.scene.paint.Color
 import javafx.stage.Modality.APPLICATION_MODAL
 import kotfx.bindings.bindingOf
 import kotfx.bindings.booleanBindingOf
@@ -102,7 +102,7 @@ class WageController : Controller() {
         processButton.disableProperty().bind(flowPane.children.isEmpty)
 
         if (DEBUG) {
-            fileField.text = "/Users/hendraanggrian/Downloads/Absen 12-29-17.xlsx"
+            fileField.text = "/Users/hendraanggrian/Downloads/Absen 11-25-17.xlsx"
             readButton.fire()
         }
         runLater { flowPane.prefWrapLengthProperty().bind(fileField.scene.widthProperty()) }
@@ -189,7 +189,7 @@ class WageController : Controller() {
                                                 val itemLabel = label(item.toString(PATTERN_DATETIME_EXTENDED)) { maxWidth = Double.MAX_VALUE } hpriority ALWAYS
                                                 if (alignment == BOTTOM_CENTER) this@listView.items.getOrNull(index + 1).let { nextItem ->
                                                     when (nextItem) {
-                                                        null -> itemLabel.textFill = Color.web("#F44336")
+                                                        null -> itemLabel.textFill = getColor(R.color.RED)
                                                         else -> label(round(FlexibleInterval(item, nextItem).hours).toString()) { font(size = 9) }
                                                     }
                                                 }

@@ -5,11 +5,11 @@ import com.wijayaprinting.R
 import com.wijayaprinting.db.schema.Recesses
 import com.wijayaprinting.db.transaction
 import com.wijayaprinting.io.WageFolder
-import com.wijayaprinting.time.PATTERN_DATETIME_EXTENDED
 import com.wijayaprinting.scene.control.FileField
 import com.wijayaprinting.scene.control.GraphicListCell
 import com.wijayaprinting.scene.control.intField
 import com.wijayaprinting.time.FlexibleInterval
+import com.wijayaprinting.time.PATTERN_DATETIME_EXTENDED
 import com.wijayaprinting.ui.Controller
 import com.wijayaprinting.ui.DateTimeDialog
 import com.wijayaprinting.ui.controller
@@ -28,25 +28,28 @@ import javafx.scene.Node
 import javafx.scene.Scene
 import javafx.scene.control.Button
 import javafx.scene.control.ChoiceBox
+import javafx.scene.control.ContentDisplay.RIGHT
 import javafx.scene.control.Label
 import javafx.scene.control.ListView
+import javafx.scene.control.MenuItem
 import javafx.scene.control.ScrollPane
 import javafx.scene.control.TitledPane
 import javafx.scene.control.ToggleButton
 import javafx.scene.image.Image
+import javafx.scene.input.MouseEvent.MOUSE_CLICKED
 import javafx.scene.layout.FlowPane
 import javafx.scene.layout.Pane
 import javafx.scene.layout.Priority.ALWAYS
+import javafx.scene.layout.StackPane
+import javafx.scene.paint.Color
 import javafx.stage.Modality.APPLICATION_MODAL
-import kotfx.bindings.`else`
-import kotfx.bindings.`if`
+import kotfx.bindings.bindingOf
 import kotfx.bindings.booleanBindingOf
 import kotfx.bindings.isEmpty
 import kotfx.bindings.lessEq
 import kotfx.bindings.or
 import kotfx.bindings.sizeBinding
 import kotfx.bindings.stringBindingOf
-import kotfx.bindings.then
 import kotfx.collections.sort
 import kotfx.coroutines.FX
 import kotfx.coroutines.listener
@@ -73,6 +76,7 @@ import kotfx.padding
 import kotfx.prefSize
 import kotfx.runLater
 import kotfx.stage
+import kotlinx.coroutines.experimental.delay
 import kotlinx.coroutines.experimental.launch
 import org.joda.time.DateTime
 import org.joda.time.DateTime.now
@@ -134,6 +138,7 @@ class WageController : Controller() {
                     launch(FX) {
                         flowPane.children += titledPane(attendee.toString()) {
                             lateinit var listView: ListView<DateTime>
+                            lateinit var deleteMenu: MenuItem
                             userData = attendee
                             isCollapsible = false
                             content = vbox {
@@ -146,14 +151,14 @@ class WageController : Controller() {
                                     }
                                     label(getString(R.string.income)) col 0 row 1 marginRight 4
                                     intField {
-                                        prefSize(width = 100)
+                                        prefSize(width = 88)
                                         promptText = getString(R.string.income)
                                         valueProperty.bindBidirectional(attendee.dailyProperty)
                                     } col 1 row 1
                                     label("@${getString(R.string.day)}") { font(size = 9) } col 2 row 1
                                     label(getString(R.string.overtime)) col 0 row 2 marginRight 4
                                     intField {
-                                        prefSize(width = 96)
+                                        prefSize(width = 88)
                                         promptText = getString(R.string.overtime)
                                         valueProperty.bindBidirectional(attendee.hourlyOvertimeProperty)
                                     } col 1 row 2
@@ -181,12 +186,12 @@ class WageController : Controller() {
                                             override fun getGraphic(item: DateTime): Node = kotfx.layout.hbox {
                                                 val index = this@listView.items.indexOf(item)
                                                 alignment = if (index % 2 == 0) BOTTOM_CENTER else TOP_CENTER
-                                                label(item.toString(PATTERN_DATETIME_EXTENDED)) { maxWidth = Double.MAX_VALUE } hpriority ALWAYS
+                                                val itemLabel = label(item.toString(PATTERN_DATETIME_EXTENDED)) { maxWidth = Double.MAX_VALUE } hpriority ALWAYS
                                                 if (alignment == BOTTOM_CENTER) this@listView.items.getOrNull(index + 1).let { nextItem ->
-                                                    label(when (nextItem) {
-                                                        null -> "Error"
-                                                        else -> round(FlexibleInterval(item, nextItem).hours).toString()
-                                                    }) { font(size = 9) }
+                                                    when (nextItem) {
+                                                        null -> itemLabel.textFill = Color.web("#F44336")
+                                                        else -> label(round(FlexibleInterval(item, nextItem).hours).toString()) { font(size = 9) }
+                                                    }
                                                 }
                                             }
                                         }
@@ -225,7 +230,7 @@ class WageController : Controller() {
                                 separatorMenuItem()
                                 menuItem(getString(R.string.revert)) { onAction { attendee.attendances.revert() } }
                                 separatorMenuItem()
-                                menuItem("${getString(R.string.delete)} ${attendee.name}") {
+                                deleteMenu = menuItem("${getString(R.string.delete)} ${attendee.name}") {
                                     onAction {
                                         flowPane.children.remove(this@titledPane)
                                         rebindProcessButton()
@@ -246,7 +251,26 @@ class WageController : Controller() {
                                     }
                                 }
                             }
-                            graphic = imageView { imageProperty().bind(`if`(booleanBindingOf(listView.items) { listView.items.size % 2 == 0 }) then Image(R.image.btn_checkbox) `else` Image(R.image.btn_checkbox_outline)) }
+                            contentDisplay = RIGHT
+                            graphic = imageView {
+                                imageProperty().bind(bindingOf(hoverProperty()) { Image(if (isHover) R.image.btn_clear_active else R.image.btn_clear_inactive) })
+                                addEventHandler(MOUSE_CLICKED) {
+                                    it.consume()
+                                    deleteMenu.fire()
+                                }
+                            }
+                            runLater {
+                                applyCss()
+                                layout()
+                                val titleRegion = lookup(".title")
+                                val padding = (titleRegion as StackPane).padding
+                                val graphicWidth = graphic.layoutBounds.width
+                                launch(FX) {
+                                    delay(100)
+                                    val labelWidth = titleRegion.lookup(".text").layoutBounds.width
+                                    graphicTextGap = width - graphicWidth - padding.left - padding.right - labelWidth
+                                }
+                            }
                         }
                     }
                 }

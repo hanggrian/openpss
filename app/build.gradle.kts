@@ -19,6 +19,7 @@ plugins {
     r
     buildconfig
     shadow
+    packr
     `junit-platform`
 }
 
@@ -27,12 +28,12 @@ java.sourceSets {
         java.srcDir("src")
         resources.srcDir("res")
     }
-    getByName("test").java.srcDir("tests/src")
+    get("test").java.srcDir("tests/src")
 }
 
 kotlin.experimental.coroutines = ENABLE
 
-r.resourcesDir = "res"
+r.resourcesDirectory = "res"
 
 buildconfig {
     name = releaseArtifact
@@ -64,13 +65,6 @@ dependencies {
 }
 
 tasks {
-    val shadowJar by getting(ShadowJar::class) {
-        destinationDir = project.file("../release")
-        manifest.attributes(mapOf("Main-Class" to "$releaseGroup.App"))
-        baseName = releaseArtifact
-        classifier = null
-    }
-
     val ktlint by creating(JavaExec::class) {
         group = "verification"
         inputs.dir("src")
@@ -89,6 +83,30 @@ tasks {
         classpath = configurations["ktlint"]
         main = "com.github.shyiko.ktlint.Main"
         args("-F", "src/**/*.kt")
+    }
+
+    val shadowJar by getting(ShadowJar::class) {
+        destinationDir = buildDir.resolve("release")
+        manifest.attributes(mapOf("Main-Class" to "$releaseGroup.App"))
+        baseName = releaseArtifact
+        version = releaseVersion
+        classifier = null
+    }
+
+
+    packr {
+        platforms.mac = "/Library/Java/JavaVirtualMachines/jdk1.8.0_152.jdk/Contents/Home"
+        platforms.windows64 = "C:/Program Files/Java/jdk1.8.0_162"
+
+        classpath("build/release/$releaseArtifact-$releaseVersion.jar")
+        executable = releaseArtifact
+        mainClass = "$releaseGroup.App"
+        vmArgs("Xmx2G")
+        resources("res", "../scene/sceneres")
+        outputName = "Wijaya Printing"
+
+        icon = "mac.icns"
+        bundle = releaseGroup
     }
 }
 

@@ -8,8 +8,9 @@ const val nosqlVersion = "0.1-SNAPSHOT"
 const val coroutinesVersion = "0.22.3"
 const val spekVersion = "1.1.5"
 
-const val rVersion = "0.3"
-const val buildconfigVersion = "0.8"
+const val rVersion = "0.4"
+const val buildconfigVersion = "0.9"
+const val packrVersion = "0.1"
 const val kotfxVersion = "0.32"
 const val commonsLangVersion = "3.7"
 const val poiVersion = "3.17"
@@ -26,6 +27,7 @@ fun Dependency.guava() = "com.google.guava:guava:24.0-jre"
 fun Dependency.hendraanggrian(module: String, version: String) = "com.hendraanggrian:$module:$version"
 inline val Plugin.r get() = id("r")
 inline val Plugin.buildconfig get() = id("buildconfig")
+inline val Plugin.packr get() = id("packr")
 
 fun Dependency.jodaTime() = "joda-time:joda-time:2.9.9"
 

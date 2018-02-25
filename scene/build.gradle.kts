@@ -21,7 +21,7 @@ java.sourceSets.getByName("main") {
 
 kotlin.experimental.coroutines = ENABLE
 
-r.resourcesDir = "sceneres"
+r.resourcesDirectory = "sceneres"
 
 val ktlint by configurations.creating
 
@@ -35,12 +35,6 @@ dependencies {
 }
 
 tasks {
-    val shadowJar by getting(ShadowJar::class) {
-        destinationDir = project.file("../release")
-        baseName = "$releaseArtifact-scene"
-        classifier = null
-    }
-
     val ktlint by creating(JavaExec::class) {
         group = "verification"
         inputs.dir("src")
@@ -59,5 +53,11 @@ tasks {
         classpath = configurations["ktlint"]
         main = "com.github.shyiko.ktlint.Main"
         args("-F", "src/**/*.kt")
+    }
+
+    val shadowJar by getting(ShadowJar::class) {
+        destinationDir = buildDir.resolve("release")
+        baseName = "$releaseArtifact-scene"
+        classifier = null
     }
 }

@@ -10,6 +10,8 @@
         </fx:define>
         <Menu mnemonicParsing="false" text="File">
             <MenuItem mnemonicParsing="false" onAction="#addCustomer" text="%add_customer"/>
+            <SeparatorMenuItem/>
+            <MenuItem mnemonicParsing="false" onAction="#exit" text="%exit"/>
         </Menu>
         <Menu mnemonicParsing="false" fx:id="navigateMenu" text="%navigate">
             <RadioMenuItem mnemonicParsing="false" toggleGroup="$navigateGroup" onAction="#navigate"

@@ -101,7 +101,7 @@ class WageController : Controller() {
         processButton.disableProperty().bind(flowPane.children.emptyBinding())
 
         if (DEBUG) {
-            fileField.text = "/Users/hendraanggrian/Downloads/Absen 11-25-17.xlsx"
+            fileField.text = "/Users/hendraanggrian/Downloads/Absen 2-24-18.xlsx"
             readButton.fire()
         }
         later { flowPane.prefWrapLengthProperty().bind(fileField.scene.widthProperty()) }
@@ -130,7 +130,7 @@ class WageController : Controller() {
         flowPane.children.clear()
         launch {
             try {
-                readerChoiceBox.value.read(fileField.file).await().forEach { attendee ->
+                readerChoiceBox.value.read(fileField.file).forEach { attendee ->
                     if (mergeToggleButton.isSelected) attendee.mergeDuplicates()
                     launch(FX) {
                         flowPane.children += titledPane(attendee.toString()) {

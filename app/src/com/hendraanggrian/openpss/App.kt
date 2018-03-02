@@ -17,6 +17,7 @@ import javafx.fxml.FXMLLoader
 import javafx.scene.Scene
 import javafx.scene.image.Image
 import javafx.stage.Stage
+import kotfx.application.deploy
 import kotfx.scene.control.infoAlert
 import kotfx.stage.icon
 import kotfx.stage.minSize
@@ -28,7 +29,7 @@ import java.util.ResourceBundle
 class App : Application(), Resourced {
 
     companion object {
-        @JvmStatic fun main(args: Array<String>) = Application.launch(App::class.java, *args)
+        @JvmStatic fun main(args: Array<String>) = deploy<App>(*args)
     }
 
     override lateinit var language: Language

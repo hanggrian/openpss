@@ -2,7 +2,6 @@ package com.hendraanggrian.openpss.ui.wage.readers
 
 import com.google.common.collect.LinkedHashMultimap
 import com.hendraanggrian.openpss.ui.wage.Attendee
-import kotlinx.coroutines.experimental.Deferred
 import kotlinx.coroutines.experimental.async
 import org.apache.commons.lang3.SystemUtils.IS_OS_MAC
 import org.apache.commons.lang3.SystemUtils.IS_OS_WINDOWS
@@ -26,7 +25,7 @@ object EClockingReader : Reader() {
 
     override val extensions: Array<String> get() = arrayOf("*.xlsx")
 
-    override fun read(file: File): Deferred<Collection<Attendee>> = async {
+    override suspend fun read(file: File): Collection<Attendee> = async {
         val multimap = LinkedHashMultimap.create<Attendee, DateTime>()
         file.inputStream().use { stream ->
             val workbook = async { XSSFWorkbook(stream) }.await()
@@ -58,5 +57,5 @@ object EClockingReader : Reader() {
             attendee.attendances.addAllRevertable(multimap.get(attendee))
             attendee
         }
-    }
+    }.await()
 }

@@ -4,7 +4,6 @@ import com.hendraanggrian.openpss.ui.wage.Attendee
 import javafx.collections.ObservableList
 import javafx.stage.FileChooser
 import kotfx.collections.observableListOf
-import kotlinx.coroutines.experimental.Deferred
 import java.io.File
 
 /** A file readers that generates collection of [Attendee] given input file. */
@@ -21,7 +20,7 @@ abstract class Reader {
      * During its long operation, exception throwing may happen in [read].
      */
     @Throws(Exception::class)
-    abstract fun read(file: File): Deferred<Collection<Attendee>>
+    abstract suspend fun read(file: File): Collection<Attendee>
 
     override fun toString(): String = name
 

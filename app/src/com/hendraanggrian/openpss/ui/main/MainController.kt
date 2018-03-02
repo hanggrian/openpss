@@ -55,6 +55,8 @@ class MainController : Controller() {
 
     @FXML fun addCustomer() = customerController.add()
 
+    @FXML fun exit() = kotfx.application.exit()
+
     @FXML fun navigate(event: ActionEvent) = tabPane.selectionModel.select(navigateMenu.items.indexOf(event.source))
 
     @FXML fun about() = AboutDialog(this).showAndWait().get()

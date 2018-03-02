@@ -1,5 +1,7 @@
 OpenPSS
 =======
+![OpenOSS icon][OpenOSS icon]
+
 Point of Sale software specifically for offset printing business.
 Powered by JavaFX and Kotlin frameworks.
 Heavily under development.
@@ -62,6 +64,7 @@ License
     See the License for the specific language governing permissions and
     limitations under the License.
 
+[OpenPSS icon]: /art/OpenPSS.png
 [releases]: https://github.com/hendraanggrian/wijayaprinting/releases
 [ktlint]: https://github.com/shyiko/ktlint
 [packr]: https://github.com/hendraanggrian/packr

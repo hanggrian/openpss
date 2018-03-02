@@ -1,7 +1,8 @@
-Wijaya Printing
-===============
-JavaFX app to manage commercial offset printing company.
-Under development (POC).
+OpenPSS
+=======
+Point of Sale software specifically for offset printing business.
+Powered by JavaFX and Kotlin frameworks.
+Heavily under development.
 
 Download
 --------
@@ -39,11 +40,7 @@ Then, simply follow steps below to build [releases]:
    * Generate sources in `app/build/generated`.
    * Check Kotlin code style.
    * Ensure all test specs are successful.
- * Run `./gradlew shadowJar` to build single fat jar in `release`.
- * Use [packr] to build native packages from that jar with following steps.
-   * Configure packr json files for each incremental version or JDK update.
-   * Execute `java -jar packr.jar packr-mac.json` to pack `app`.
-   * Execute `java -jar packr.jar packr-windows.json` to pack `zip`.
+ * Use [shadowJar] and [packr] to build native packages from jar with following steps.
 
 License
 -------
@@ -63,4 +60,4 @@ License
 
 [releases]: https://github.com/hendraanggrian/wijayaprinting/releases
 [ktlint]: https://github.com/shyiko/ktlint
-[packr]: https://github.com/libgdx/packr
+[packr]: https://github.com/hendraanggrian/packr

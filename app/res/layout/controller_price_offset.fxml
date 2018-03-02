@@ -4,7 +4,7 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.VBox?>
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.wijayaprinting.ui.order.OffsetPriceController">
+      fx:controller="com.hendraanggrian.openpss.ui.order.OffsetPriceController">
     <ToolBar>
         <!--suppress JavaFxEventHandler -->
         <Button mnemonicParsing="false" onAction="#refresh">

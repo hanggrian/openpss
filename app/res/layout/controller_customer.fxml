@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.wijayaprinting.scene.control.CountBox?>
+<?import com.hendraanggrian.openpss.scene.control.CountBox?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.wijayaprinting.ui.customer.CustomerController">
+      fx:controller="com.hendraanggrian.openpss.ui.customer.CustomerController">
     <ToolBar>
         <!--suppress JavaFxEventHandler -->
         <Button mnemonicParsing="false" onAction="#refresh">

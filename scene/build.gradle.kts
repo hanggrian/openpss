@@ -4,7 +4,7 @@ import org.gradle.kotlin.dsl.kotlin
 import org.jetbrains.kotlin.gradle.dsl.Coroutines
 import org.jetbrains.kotlin.gradle.dsl.Coroutines.*
 
-group = "$releaseGroup.scene"
+group = "$releaseGroup.$releaseArtifact.scene"
 version = releaseVersion
 
 plugins {
@@ -28,8 +28,10 @@ val ktlint by configurations.creating
 
 dependencies {
     compile(kotlin("stdlib", kotlinVersion))
+    compile(kotlinx("coroutines-javafx", coroutinesVersion))
     compile(hendraanggrian("kotfx-layout", kotfxVersion))
     compile(hendraanggrian("kotfx-listeners", kotfxVersion))
+    compile(hendraanggrian("kotfx-coroutines", kotfxVersion))
     compile(jodaTime())
     compile(commonsValidator())
     ktlint(ktlint())

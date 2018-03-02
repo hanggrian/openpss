@@ -12,7 +12,7 @@ import org.junit.platform.gradle.plugin.FiltersExtension
 import org.junit.platform.gradle.plugin.EnginesExtension
 import org.junit.platform.gradle.plugin.JUnitPlatformExtension
 
-group = releaseGroup
+group = "$releaseGroup.$releaseArtifact"
 version = releaseVersion
 
 plugins {
@@ -44,8 +44,6 @@ dependencies {
     implementation(project(":scene"))
     implementation(kotlin("stdlib", kotlinVersion))
     implementation(kotlin("nosql-mongodb", nosqlVersion))
-    implementation(kotlinx("coroutines-javafx", coroutinesVersion))
-    implementation(hendraanggrian("kotfx-coroutines", kotfxVersion))
     implementation(apache("commons-lang3", commonsLangVersion))
     implementation(apache("poi-ooxml", poiVersion))
     implementation(guava())
@@ -93,26 +91,27 @@ tasks {
         args("-F", "src/**/*.kt")
     }
 
+    val main = "$releaseGroup.$releaseArtifact.App"
     val shadowJar by getting(ShadowJar::class) {
         destinationDir = buildDir.resolve("release")
-        manifest.attributes(mapOf("Main-Class" to "$releaseGroup.App"))
+        manifest.attributes(mapOf("Main-Class" to main))
         baseName = releaseArtifact
         version = releaseVersion
         classifier = null
     }
-
     packr {
         classpath("build/release/$releaseArtifact-$releaseVersion.jar")
         executable = releaseArtifact
-        mainClass = "$releaseGroup.App"
+        mainClass = main
         vmArgs("Xmx2G")
         resources("res", "../scene/sceneres")
         outputName = releaseName
 
-        iconDir = projectDir.resolve("mac.icns")
+        iconDir = rootProject.projectDir.resolve("art").resolve("OpenPPS.icns")
         bundleId = releaseGroup
+        verbose = true
+        openOnDone = true
     }
-
     withType<PackTask> {
         dependsOn(shadowJar)
         when (name) {

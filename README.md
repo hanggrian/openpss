@@ -13,6 +13,10 @@ Head to [releases] to download this app in 3 variants:
 
 There is also `scene.jar`, third-party library for SceneBuilder to design fxml files in this project.
 
+Features
+--------
+ * Multi-language: currently supports English and Bahasa.
+
 Developer note
 --------------
 #### Tech stacks

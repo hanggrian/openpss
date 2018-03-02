@@ -1,4 +1,5 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+import com.hendraanggrian.r.RTask
 import org.gradle.kotlin.dsl.kotlin
 import org.jetbrains.kotlin.gradle.dsl.Coroutines
 import org.jetbrains.kotlin.gradle.dsl.Coroutines.*
@@ -14,27 +15,31 @@ plugins {
     shadow
 }
 
-java.sourceSets.getByName("main") {
-    java.srcDir("src")
-    resources.srcDir("sceneres")
+java.sourceSets {
+    "main" {
+        java.srcDir("src")
+        resources.srcDir("sceneres")
+    }
 }
 
 kotlin.experimental.coroutines = ENABLE
-
-r.resourcesDirectory = "sceneres"
 
 val ktlint by configurations.creating
 
 dependencies {
     compile(kotlin("stdlib", kotlinVersion))
     compile(hendraanggrian("kotfx-layout", kotfxVersion))
-    compile(hendraanggrian("kotfx-coroutines", kotfxVersion))
+    compile(hendraanggrian("kotfx-listeners", kotfxVersion))
     compile(jodaTime())
     compile(commonsValidator())
     ktlint(ktlint())
 }
 
 tasks {
+    withType<RTask> {
+        resourcesDir = "sceneres"
+    }
+
     val ktlint by creating(JavaExec::class) {
         group = "verification"
         inputs.dir("src")
@@ -55,7 +60,7 @@ tasks {
         args("-F", "src/**/*.kt")
     }
 
-    val shadowJar by getting(ShadowJar::class) {
+    getting(ShadowJar::class) {
         destinationDir = buildDir.resolve("release")
         baseName = "$releaseArtifact-scene"
         classifier = null

@@ -11,8 +11,8 @@ import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleObjectProperty
 import javafx.scene.control.TextField
 import kotfx.annotations.LayoutDsl
-import kotfx.bindings.bindingOf
-import kotfx.bindings.booleanBindingOf
+import kotfx.beans.binding.bindingOf
+import kotfx.beans.binding.booleanBindingOf
 import kotfx.layout.ChildManager
 import kotfx.layout.ItemManager
 import java.io.File

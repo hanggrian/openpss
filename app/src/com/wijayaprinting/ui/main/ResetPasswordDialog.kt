@@ -2,22 +2,21 @@ package com.wijayaprinting.ui.main
 
 import com.wijayaprinting.R
 import com.wijayaprinting.ui.Resourced
-import javafx.scene.control.ButtonType.CANCEL
 import javafx.scene.control.ButtonType.OK
 import javafx.scene.control.Dialog
 import javafx.scene.control.PasswordField
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
-import kotfx.bindings.neq
-import kotfx.bindings.or
-import kotfx.dialogs.addButton
-import kotfx.dialogs.content
-import kotfx.dialogs.icon
-import kotfx.gap
+import kotfx.application.later
+import kotfx.beans.binding.neq
+import kotfx.beans.binding.or
 import kotfx.layout.gridPane
 import kotfx.layout.label
 import kotfx.layout.passwordField
-import kotfx.runLater
+import kotfx.scene.control.cancelButton
+import kotfx.scene.control.icon
+import kotfx.scene.control.okButton
+import kotfx.scene.layout.gaps
 
 class ResetPasswordDialog(resourced: Resourced) : Dialog<String>(), Resourced by resourced {
 
@@ -30,20 +29,20 @@ class ResetPasswordDialog(resourced: Resourced) : Dialog<String>(), Resourced by
         headerText = getString(R.string.change_password)
         graphic = ImageView(R.image.ic_key)
 
-        content = gridPane {
-            gap = 8
+        dialogPane.content = gridPane {
+            gaps = 8
             label(getString(R.string.password)) col 0 row 0
             changePasswordField = passwordField { promptText = getString(R.string.password) } col 1 row 0
             label(getString(R.string.change_password)) col 0 row 1
             confirmPasswordField = passwordField { promptText = getString(R.string.change_password) } col 1 row 1
         }
-        addButton(CANCEL)
-        addButton(OK) {
+        cancelButton()
+        okButton {
             disableProperty().bind(changePasswordField.textProperty().isEmpty
                 or confirmPasswordField.textProperty().isEmpty
                 or (changePasswordField.textProperty() neq confirmPasswordField.textProperty()))
         }
         setResultConverter { if (it == OK) changePasswordField.text else null }
-        runLater { changePasswordField.requestFocus() }
+        later { changePasswordField.requestFocus() }
     }
 }

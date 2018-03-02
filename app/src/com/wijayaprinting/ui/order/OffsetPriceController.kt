@@ -6,10 +6,10 @@ import com.wijayaprinting.db.schema.Offsets
 import com.wijayaprinting.db.transaction
 import javafx.fxml.FXML
 import javafx.scene.control.TableColumn
-import kotfx.asObservable
-import kotfx.coroutines.onEditCommit
-import kotfx.textFieldCellFactory
-import kotfx.toProperty
+import kotfx.beans.property.asObservable
+import kotfx.beans.property.toProperty
+import kotfx.listeners.onEditCommit
+import kotfx.listeners.textFieldCellFactory
 import kotlinx.nosql.equal
 import kotlinx.nosql.update
 

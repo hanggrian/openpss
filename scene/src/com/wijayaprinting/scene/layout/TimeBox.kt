@@ -2,10 +2,10 @@
 
 package com.wijayaprinting.scene.layout
 
-import com.wijayaprinting.time.PATTERN_TIME
 import com.wijayaprinting.scene.R
 import com.wijayaprinting.scene.control.IntField
 import com.wijayaprinting.scene.control.intField
+import com.wijayaprinting.time.PATTERN_TIME
 import javafx.beans.property.BooleanProperty
 import javafx.beans.property.ObjectProperty
 import javafx.beans.property.SimpleBooleanProperty
@@ -13,16 +13,16 @@ import javafx.beans.property.SimpleObjectProperty
 import javafx.geometry.Pos.CENTER
 import javafx.scene.image.ImageView
 import kotfx.annotations.LayoutDsl
-import kotfx.bindings.bindingOf
-import kotfx.bindings.booleanBindingOf
-import kotfx.coroutines.listener
+import kotfx.beans.binding.bindingOf
+import kotfx.beans.binding.booleanBindingOf
 import kotfx.layout.ChildManager
 import kotfx.layout.ItemManager
 import kotfx.layout._HBox
 import kotfx.layout.button
 import kotfx.layout.label
-import kotfx.maxSize
-import kotfx.spacing
+import kotfx.listeners.listener
+import kotfx.scene.layout.maxSize
+import kotfx.scene.layout.spacings
 import org.joda.time.LocalTime
 import org.joda.time.LocalTime.MIDNIGHT
 import org.joda.time.LocalTime.parse
@@ -43,7 +43,7 @@ open class TimeBox(prefill: LocalTime = MIDNIGHT) : _HBox() {
 
     init {
         alignment = CENTER
-        spacing(8)
+        spacings = 8
 
         button(graphic = ImageView(R.image.btn_arrow_left)) { setOnAction { hourField.value-- } }
         hourField = intField {

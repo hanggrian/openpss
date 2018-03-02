@@ -3,8 +3,8 @@ package com.wijayaprinting.ui
 import com.wijayaprinting.R
 import javafx.scene.control.TextInputDialog
 import javafx.scene.image.ImageView
-import kotfx.dialogs.graphicIcon
-import kotfx.dialogs.headerTitle
+import kotfx.scene.control.graphicIcon
+import kotfx.scene.control.headerTitle
 
 class AddUserDialog(resourced: Resourced, header: String) : TextInputDialog(), Resourced by resourced {
 

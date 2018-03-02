@@ -8,10 +8,10 @@ object MongoFile : PropertiesFile("mongo") {
 
     override val pairs: Array<Pair<String, String>>
         get() = arrayOf(
-                "host" to "",
-                "port" to defaultPort().toString(),
-                "user" to "",
-                "password" to ""
+            "host" to "",
+            "port" to defaultPort().toString(),
+            "user" to "",
+            "password" to ""
         )
 
     val host: StringProperty by this

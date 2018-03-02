@@ -16,9 +16,9 @@ import javafx.fxml.FXMLLoader
 import javafx.scene.Scene
 import javafx.scene.image.Image
 import javafx.stage.Stage
-import kotfx.dialogs.infoAlert
-import kotfx.icon
-import kotfx.minSize
+import kotfx.scene.control.infoAlert
+import kotfx.stage.icon
+import kotfx.stage.minSize
 import kotlinx.nosql.equal
 import kotlinx.nosql.update
 import org.apache.log4j.BasicConfigurator.configure

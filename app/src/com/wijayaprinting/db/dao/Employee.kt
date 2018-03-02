@@ -5,9 +5,9 @@ import com.wijayaprinting.db.schema.Employees
 import kotlinx.nosql.Id
 
 open class Employee(
-        override val name: String,
-        var password: String,
-        var fullAccess: Boolean
+    override val name: String,
+    var password: String,
+    var fullAccess: Boolean
 ) : Named<Employees> {
     override lateinit var id: Id<String, Employees>
 

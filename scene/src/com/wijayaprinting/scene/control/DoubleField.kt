@@ -8,11 +8,11 @@ import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleDoubleProperty
 import javafx.scene.control.TextField
 import kotfx.annotations.LayoutDsl
-import kotfx.bindings.bindBidirectional
-import kotfx.bindings.booleanBindingOf
-import kotfx.coroutines.listener
+import kotfx.beans.binding.booleanBindingOf
 import kotfx.layout.ChildManager
 import kotfx.layout.ItemManager
+import kotfx.listeners.bindBidirectional
+import kotfx.listeners.listener
 
 open class DoubleField : TextField() {
 

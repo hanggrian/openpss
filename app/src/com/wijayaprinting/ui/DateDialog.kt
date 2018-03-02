@@ -3,16 +3,15 @@ package com.wijayaprinting.ui
 import com.wijayaprinting.R
 import com.wijayaprinting.scene.layout.DateBox
 import com.wijayaprinting.scene.layout.dateBox
-import javafx.scene.control.ButtonType.CANCEL
 import javafx.scene.control.ButtonType.OK
 import javafx.scene.control.DatePicker
 import javafx.scene.control.Dialog
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
-import kotfx.dialogs.addButtons
-import kotfx.dialogs.content
-import kotfx.dialogs.icon
-import kotfx.runLater
+import kotfx.application.later
+import kotfx.scene.control.cancelButton
+import kotfx.scene.control.icon
+import kotfx.scene.control.okButton
 import org.joda.time.LocalDate
 import org.joda.time.LocalDate.now
 
@@ -27,14 +26,15 @@ class DateDialog(
         title = header
         headerText = header
         graphic = ImageView(R.image.ic_calendar)
-        content = dateBox(prefill)
-        runLater { datePicker.requestFocus() }
-        addButtons(OK, CANCEL)
+        dialogPane.content = dateBox(prefill)
+        later { datePicker.requestFocus() }
+        cancelButton()
+        okButton()
         setResultConverter {
             if (it != OK) null
             else LocalDate(datePicker.value.year, datePicker.value.monthValue, datePicker.value.dayOfMonth)
         }
     }
 
-    private inline val datePicker: DatePicker get() = (content as DateBox).picker
+    private inline val datePicker: DatePicker get() = (dialogPane.content as DateBox).picker
 }

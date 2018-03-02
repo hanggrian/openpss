@@ -8,11 +8,11 @@ import javafx.scene.control.Button
 import javafx.scene.control.ButtonType.NO
 import javafx.scene.control.ButtonType.YES
 import javafx.scene.control.TableView
-import kotfx.bindings.or
+import kotfx.application.later
+import kotfx.beans.binding.or
+import kotfx.beans.property.toProperty
 import kotfx.collections.toMutableObservableList
-import kotfx.dialogs.confirmAlert
-import kotfx.runLater
-import kotfx.toProperty
+import kotfx.scene.control.confirmAlert
 import kotlinx.nosql.equal
 import kotlinx.nosql.id
 import kotlinx.nosql.mongodb.DocumentSchema
@@ -32,7 +32,7 @@ abstract class SimpleTableController<D : Ided<S>, S : DocumentSchema<D>>(protect
 
     override fun initialize() {
         refresh()
-        runLater { deleteButton.disableProperty().bind(table.selectionModel.selectedItemProperty().isNull or !isFullAccess.toProperty()) }
+        later { deleteButton.disableProperty().bind(table.selectionModel.selectedItemProperty().isNull or !isFullAccess.toProperty()) }
     }
 
     override fun refresh() {

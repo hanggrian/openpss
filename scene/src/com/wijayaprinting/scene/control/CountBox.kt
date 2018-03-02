@@ -6,11 +6,11 @@ import javafx.beans.property.IntegerProperty
 import javafx.beans.property.SimpleIntegerProperty
 import javafx.scene.control.ChoiceBox
 import kotfx.annotations.LayoutDsl
-import kotfx.bindings.intBindingOf
+import kotfx.beans.binding.intBindingOf
 import kotfx.collections.observableListOf
-import kotfx.converter
 import kotfx.layout.ChildManager
 import kotfx.layout.ItemManager
+import kotfx.listeners.converter
 
 open class CountBox : ChoiceBox<Int>() {
 

@@ -13,8 +13,8 @@ import javafx.scene.control.Menu
 import javafx.scene.control.MenuBar
 import javafx.scene.control.RadioMenuItem
 import javafx.scene.control.TabPane
-import kotfx.coroutines.listener
-import kotfx.runLater
+import kotfx.application.later
+import kotfx.listeners.listener
 import org.apache.commons.lang3.SystemUtils.IS_OS_MAC
 
 class MainController : Controller() {
@@ -40,7 +40,7 @@ class MainController : Controller() {
             (controllers[index.toInt()] as? Refreshable)?.refresh()
         }
 
-        runLater {
+        later {
             employeeLabel.text = employeeName
             controllers = arrayOf(customerController, orderController, wageController, employeeController)
             controllers.forEach {

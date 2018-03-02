@@ -42,23 +42,18 @@ import javafx.scene.layout.FlowPane
 import javafx.scene.layout.Pane
 import javafx.scene.layout.Priority.ALWAYS
 import javafx.scene.layout.StackPane
+import javafx.scene.text.Font.font
 import javafx.stage.Modality.APPLICATION_MODAL
-import kotfx.bindings.bindingOf
-import kotfx.bindings.booleanBindingOf
-import kotfx.bindings.isEmpty
-import kotfx.bindings.lessEq
-import kotfx.bindings.or
-import kotfx.bindings.sizeBinding
-import kotfx.bindings.stringBindingOf
+import kotfx.application.later
+import kotfx.beans.binding.bindingOf
+import kotfx.beans.binding.booleanBindingOf
+import kotfx.beans.binding.lessEq
+import kotfx.beans.binding.or
+import kotfx.beans.binding.stringBindingOf
+import kotfx.collections.emptyBinding
+import kotfx.collections.sizeBinding
 import kotfx.collections.sort
 import kotfx.coroutines.FX
-import kotfx.coroutines.listener
-import kotfx.coroutines.onAction
-import kotfx.coroutines.onKeyPressed
-import kotfx.dialogs.errorAlert
-import kotfx.dialogs.fileChooser
-import kotfx.font
-import kotfx.gap
 import kotfx.layout.borderPane
 import kotfx.layout.checkBox
 import kotfx.layout.contextMenu
@@ -70,12 +65,18 @@ import kotfx.layout.menuItem
 import kotfx.layout.separatorMenuItem
 import kotfx.layout.titledPane
 import kotfx.layout.vbox
-import kotfx.maxSize
-import kotfx.minSize
-import kotfx.padding
-import kotfx.prefSize
-import kotfx.runLater
-import kotfx.stage
+import kotfx.listeners.eventHandler
+import kotfx.listeners.listener
+import kotfx.listeners.onAction
+import kotfx.listeners.onKeyPressed
+import kotfx.scene.control.errorAlert
+import kotfx.scene.layout.gaps
+import kotfx.scene.layout.maxSize
+import kotfx.scene.layout.paddings
+import kotfx.scene.layout.prefSize
+import kotfx.stage.fileChooser
+import kotfx.stage.minSize
+import kotfx.stage.stage
 import kotlinx.coroutines.experimental.delay
 import kotlinx.coroutines.experimental.launch
 import org.joda.time.DateTime
@@ -99,13 +100,13 @@ class WageController : Controller() {
 
         employeeCountLabel.textProperty().bind(stringBindingOf(flowPane.children) { "${flowPane.children.size} ${getString(R.string.employee)}" })
         readButton.disableProperty().bind(fileField.validProperty)
-        processButton.disableProperty().bind(flowPane.children.isEmpty)
+        processButton.disableProperty().bind(flowPane.children.emptyBinding())
 
         if (DEBUG) {
             fileField.text = "/Users/hendraanggrian/Downloads/Absen 11-25-17.xlsx"
             readButton.fire()
         }
-        runLater { flowPane.prefWrapLengthProperty().bind(fileField.scene.widthProperty()) }
+        later { flowPane.prefWrapLengthProperty().bind(fileField.scene.widthProperty()) }
     }
 
     @FXML
@@ -119,18 +120,16 @@ class WageController : Controller() {
 
     @FXML fun history() = getDesktop().open(WageFolder)
 
-    @FXML fun browse() = fileChooser(getString(R.string.input_file), *readerChoiceBox.value.extensions).showOpenDialog(fileField.scene.window)?.let { fileField.text = it.absolutePath }
+    @FXML fun browse() = fileChooser(getString(R.string.input_file), *readerChoiceBox.value.extensions).showOpenDialog(fileField.scene.window)?.run { fileField.text = absolutePath }
 
     @FXML
     fun read() {
-        launch(FX) {
-            scrollPane.content = borderPane {
-                prefWidthProperty().bind(scrollPane.widthProperty())
-                prefHeightProperty().bind(scrollPane.heightProperty())
-                center = kotfx.layout.progressIndicator { maxSize = 72 }
-            }
-            flowPane.children.clear()
+        scrollPane.content = borderPane {
+            prefWidthProperty().bind(scrollPane.widthProperty())
+            prefHeightProperty().bind(scrollPane.heightProperty())
+            center = kotfx.layout.progressIndicator { maxSize = 72 }
         }
+        flowPane.children.clear()
         launch {
             try {
                 readerChoiceBox.value.read(fileField.file).await().forEach { attendee ->
@@ -143,27 +142,27 @@ class WageController : Controller() {
                             isCollapsible = false
                             content = vbox {
                                 gridPane {
-                                    gap = 4
-                                    padding(8)
+                                    gaps = 4
+                                    paddings = 8
                                     attendee.role?.let { role ->
-                                        label(getString(R.string.role)) col 0 row 0 marginRight 4
+                                        label(getString(R.string.role)) col 0 row 0 rightMargin 4
                                         label(role) col 1 row 0 colSpan 2
                                     }
-                                    label(getString(R.string.income)) col 0 row 1 marginRight 4
+                                    label(getString(R.string.income)) col 0 row 1 rightMargin 4
                                     intField {
                                         prefSize(width = 88)
                                         promptText = getString(R.string.income)
                                         valueProperty.bindBidirectional(attendee.dailyProperty)
                                     } col 1 row 1
-                                    label("@${getString(R.string.day)}") { font(size = 9) } col 2 row 1
-                                    label(getString(R.string.overtime)) col 0 row 2 marginRight 4
+                                    label("@${getString(R.string.day)}") { font = font(9.0) } col 2 row 1
+                                    label(getString(R.string.overtime)) col 0 row 2 rightMargin 4
                                     intField {
                                         prefSize(width = 88)
                                         promptText = getString(R.string.overtime)
                                         valueProperty.bindBidirectional(attendee.hourlyOvertimeProperty)
                                     } col 1 row 2
-                                    label("@${getString(R.string.hour)}") { font(size = 9) } col 2 row 2
-                                    label(getString(R.string.recess)) col 0 row 3 marginRight 4
+                                    label("@${getString(R.string.hour)}") { font = font(9.0) } col 2 row 2
+                                    label(getString(R.string.recess)) col 0 row 3 rightMargin 4
                                     vbox {
                                         transaction {
                                             Recesses.find().forEach { recess ->
@@ -174,7 +173,7 @@ class WageController : Controller() {
                                                         }
                                                     }
                                                     isSelected = true
-                                                } marginTop if (children.size > 1) 4 else 0
+                                                } topMargin if (children.size > 1) 4 else 0
                                             }
                                         }
                                     } col 1 row 3 colSpan 2
@@ -190,7 +189,7 @@ class WageController : Controller() {
                                                 if (alignment == BOTTOM_CENTER) this@listView.items.getOrNull(index + 1).let { nextItem ->
                                                     when (nextItem) {
                                                         null -> itemLabel.textFill = getColor(R.color.RED)
-                                                        else -> label(round(FlexibleInterval(item, nextItem).hours).toString()) { font(size = 9) }
+                                                        else -> label(round(FlexibleInterval(item, nextItem).hours).toString()) { font = font(9.0) }
                                                     }
                                                 }
                                             }
@@ -217,7 +216,7 @@ class WageController : Controller() {
                                     }
                                 }
                                 menuItem(getString(R.string.edit)) {
-                                    disableProperty().bind(listView.selectionModel.selectedItems.isEmpty)
+                                    disableProperty().bind(listView.selectionModel.selectedItems.emptyBinding())
                                     onAction {
                                         DateTimeDialog(this@WageController, getString(R.string.edit_record), listView.selectionModel.selectedItem)
                                             .showAndWait()
@@ -237,7 +236,7 @@ class WageController : Controller() {
                                     }
                                 }
                                 menuItem(getString(R.string.delete_others)) {
-                                    disableProperty().bind(flowPane.children.sizeBinding lessEq 1)
+                                    disableProperty().bind(flowPane.children.sizeBinding() lessEq 1)
                                     onAction {
                                         flowPane.children.removeAll(flowPane.children.toMutableList().apply { remove(this@titledPane) })
                                         rebindProcessButton()
@@ -254,22 +253,20 @@ class WageController : Controller() {
                             contentDisplay = RIGHT
                             graphic = imageView {
                                 imageProperty().bind(bindingOf(hoverProperty()) { Image(if (isHover) R.image.btn_clear_active else R.image.btn_clear_inactive) })
-                                addEventHandler(MOUSE_CLICKED) {
+                                eventHandler(MOUSE_CLICKED) {
                                     it.consume()
                                     deleteMenu.fire()
                                 }
                             }
-                            runLater {
+                            launch(FX) {
+                                delay(100)
                                 applyCss()
                                 layout()
                                 val titleRegion = lookup(".title")
                                 val padding = (titleRegion as StackPane).padding
                                 val graphicWidth = graphic.layoutBounds.width
-                                launch(FX) {
-                                    delay(100)
-                                    val labelWidth = titleRegion.lookup(".text").layoutBounds.width
-                                    graphicTextGap = width - graphicWidth - padding.left - padding.right - labelWidth
-                                }
+                                val labelWidth = titleRegion.lookup(".text").layoutBounds.width
+                                graphicTextGap = width - graphicWidth - padding.left - padding.right - labelWidth
                             }
                         }
                     }
@@ -304,7 +301,7 @@ class WageController : Controller() {
     private val attendees: List<Attendee> get() = flowPane.children.map { it.userData as Attendee }
 
     /** As attendees are populated, process button need to be rebinded according to new requirements. */
-    private fun rebindProcessButton() = processButton.disableProperty().bind(flowPane.children.isEmpty or booleanBindingOf(flowPane.children, *flowPane.children.map { (it as TitledPane).content }.map { (it as Pane).children[1] as ListView<*> }.map { it.items }.toTypedArray()) {
+    private fun rebindProcessButton() = processButton.disableProperty().bind(flowPane.children.emptyBinding() or booleanBindingOf(flowPane.children, *flowPane.children.map { (it as TitledPane).content }.map { (it as Pane).children[1] as ListView<*> }.map { it.items }.toTypedArray()) {
         attendees.any { it.attendances.size % 2 != 0 }
     })
 }

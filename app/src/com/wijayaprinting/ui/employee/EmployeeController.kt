@@ -16,13 +16,13 @@ import javafx.scene.control.ButtonType.NO
 import javafx.scene.control.ButtonType.YES
 import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
-import javafx.scene.control.cell.ChoiceBoxTableCell.forTableColumn
+import kotfx.application.exit
+import kotfx.beans.property.toProperty
 import kotfx.collections.toMutableObservableList
-import kotfx.coroutines.onEditCommit
-import kotfx.dialogs.confirmAlert
-import kotfx.dialogs.infoAlert
-import kotfx.exit
-import kotfx.toProperty
+import kotfx.listeners.onEditCommit
+import kotfx.scene.control.choiceBoxCellFactory
+import kotfx.scene.control.confirmAlert
+import kotfx.scene.control.infoAlert
 import kotlinx.nosql.equal
 import kotlinx.nosql.mongodb.MongoDBSession
 import kotlinx.nosql.update
@@ -44,7 +44,7 @@ class EmployeeController : Controller(), Refreshable {
 
         nameColumn.setCellValueFactory { it.value.name.toProperty() }
         fullAccessColumn.setCellValueFactory { getString(if (it.value.fullAccess) R.string.yes else R.string.no).toProperty() }
-        fullAccessColumn.cellFactory = forTableColumn<Employee, String>(*getStringArray(R.string.yes, R.string.no))
+        fullAccessColumn.choiceBoxCellFactory(*getStringArray(R.string.yes, R.string.no))
         fullAccessColumn.onEditCommit { event ->
             val result = event.newValue == getString(R.string.yes)
             transaction { Employees.find { name.equal(event.rowValue.name) }.projection { fullAccess }.update(result) }

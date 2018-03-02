@@ -2,9 +2,9 @@ package com.wijayaprinting.ui.wage
 
 import com.wijayaprinting.Language
 import com.wijayaprinting.R
+import com.wijayaprinting.time.FlexibleInterval
 import com.wijayaprinting.time.PATTERN_DATETIME
 import com.wijayaprinting.time.START_OF_TIME
-import com.wijayaprinting.time.FlexibleInterval
 import com.wijayaprinting.ui.Resourced
 import com.wijayaprinting.util.round
 import javafx.beans.property.BooleanProperty
@@ -14,10 +14,10 @@ import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleDoubleProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.beans.property.StringProperty
-import kotfx.bindings.doubleBindingOf
-import kotfx.bindings.plus
-import kotfx.bindings.stringBindingOf
-import kotfx.toProperty
+import kotfx.beans.binding.doubleBindingOf
+import kotfx.beans.binding.plus
+import kotfx.beans.binding.stringBindingOf
+import kotfx.beans.property.toProperty
 import org.joda.time.DateTime
 import org.joda.time.LocalTime
 import kotlin.math.absoluteValue

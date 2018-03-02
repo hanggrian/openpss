@@ -15,10 +15,10 @@ sealed class Order<D : Any, S : DocumentSchema<D>> : Ided<S> {
 class OffsetOrder : Order<OffsetOrder, OffsetOrders>()
 
 data class PlateOrder(
-        var plateId: Id<String, Plates>?,
-        var qty: Int,
-        var price: Double,
-        override var total: Double
+    var plateId: Id<String, Plates>?,
+    var qty: Int,
+    var price: Double,
+    override var total: Double
 ) : Order<PlateOrder, PlateOrders>() {
     override lateinit var id: Id<String, PlateOrders>
 }

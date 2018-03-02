@@ -2,8 +2,8 @@ package com.wijayaprinting.io.properties
 
 import com.wijayaprinting.io.MainFolder
 import javafx.beans.property.StringProperty
-import kotfx.coroutines.listener
-import kotfx.toProperty
+import kotfx.beans.property.toProperty
+import kotfx.listeners.listener
 import java.io.File
 import java.util.Properties
 

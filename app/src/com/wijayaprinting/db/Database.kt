@@ -3,7 +3,7 @@ package com.wijayaprinting.db
 import com.mongodb.MongoClientOptions
 import com.mongodb.MongoCredential.createCredential
 import com.mongodb.ServerAddress
-import com.wijayaprinting.BuildConfig.NAME
+import com.wijayaprinting.BuildConfig.ARTIFACT
 import com.wijayaprinting.collections.isEmpty
 import com.wijayaprinting.db.dao.Config
 import com.wijayaprinting.db.dao.Config.Companion.TIMEZONE_CONTINENT
@@ -63,7 +63,7 @@ object Database {
     @Throws(Exception::class)
     private fun connect(host: String, port: Int, user: String, password: String): Deferred<MongoDB> = async {
         MongoDB(arrayOf(ServerAddress(host, port)),
-            NAME,
+            ARTIFACT,
             arrayOf(createCredential(user, "admin", password.toCharArray())),
             MongoClientOptions.Builder()
                 .serverSelectionTimeout(3000)

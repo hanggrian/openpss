@@ -14,9 +14,9 @@ class PlateReceiptDialog(val resourced: Resourced) : Dialog<Receipt>(), Resource
         content = gridPane {
             gap(8)
             label(getString(R.string.date)) col 0 row 0
-            label(now().toString(PATTERN_DATE)) { font = loadFont(latoBold, 13.0) } col 1 row 0
+            label(now().toString(PATTERN_DATE)) { font = loadloadFont(latoBold, 13.0) } col 1 row 0
             label(getString(R.string.employee)) col 0 row 1
-            label(EMPLOYEE) { font = loadFont(latoBold, 13.0) } col 1 row 1
+            label(EMPLOYEE) { font = loadloadFont(latoBold, 13.0) } col 1 row 1
             label(getString(R.string.customer)) col 0 row 2
             button {
                 textProperty() bind stringBindingOf(customerProperty) { customerProperty.value?.toString() ?: getString(R.string.search_customer) }

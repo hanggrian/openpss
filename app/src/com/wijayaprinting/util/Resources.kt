@@ -21,6 +21,8 @@ private val mainClass: Class<*>
     }
 
 fun getResource(name: String): URL = mainClass.getResource(name)
+inline fun getResourceString(name: String): String = getResource(name).toExternalForm()
+
 fun getResourceAsStream(name: String): InputStream = mainClass.getResourceAsStream(name)
 
 fun getColor(name: String): Color = web(name)

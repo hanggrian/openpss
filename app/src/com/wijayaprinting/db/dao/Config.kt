@@ -5,8 +5,8 @@ import com.wijayaprinting.db.schema.Configs
 import kotlinx.nosql.Id
 
 data class Config(
-        val key: String,
-        val value: String
+    val key: String,
+    val value: String
 ) : Ided<Configs> {
     override lateinit var id: Id<String, Configs>
 

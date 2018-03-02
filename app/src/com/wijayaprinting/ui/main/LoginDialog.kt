@@ -14,32 +14,21 @@ import com.wijayaprinting.ui.Resourced
 import javafx.event.ActionEvent.ACTION
 import javafx.geometry.Pos.CENTER_RIGHT
 import javafx.scene.control.ButtonBar.ButtonData.OK_DONE
-import javafx.scene.control.ButtonType.CANCEL
 import javafx.scene.control.Dialog
 import javafx.scene.control.PasswordField
 import javafx.scene.control.TextField
 import javafx.scene.control.Tooltip
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
-import kotfx.bindings.`else`
-import kotfx.bindings.`if`
-import kotfx.bindings.bindingOf
-import kotfx.bindings.not
-import kotfx.bindings.or
-import kotfx.bindings.then
+import kotfx.application.exit
+import kotfx.application.later
+import kotfx.beans.binding.`else`
+import kotfx.beans.binding.`if`
+import kotfx.beans.binding.bindingOf
+import kotfx.beans.binding.or
+import kotfx.beans.binding.then
 import kotfx.collections.toObservableList
 import kotfx.coroutines.FX
-import kotfx.coroutines.listener
-import kotfx.coroutines.onAction
-import kotfx.dialogs.addButton
-import kotfx.dialogs.content
-import kotfx.dialogs.errorAlert
-import kotfx.dialogs.expandableContent
-import kotfx.dialogs.icon
-import kotfx.dialogs.infoAlert
-import kotfx.dialogs.isExpanded
-import kotfx.exit
-import kotfx.gap
 import kotfx.layout.choiceBox
 import kotfx.layout.gridPane
 import kotfx.layout.hbox
@@ -49,8 +38,16 @@ import kotfx.layout.passwordField
 import kotfx.layout.textField
 import kotfx.layout.toggleButton
 import kotfx.layout.tooltip
-import kotfx.prefSize
-import kotfx.runLater
+import kotfx.listeners.eventFilter
+import kotfx.listeners.listener
+import kotfx.listeners.onAction
+import kotfx.scene.control.cancelButton
+import kotfx.scene.control.customButton
+import kotfx.scene.control.errorAlert
+import kotfx.scene.control.icon
+import kotfx.scene.control.infoAlert
+import kotfx.scene.layout.gaps
+import kotfx.scene.layout.prefSize
 import kotlinx.coroutines.experimental.launch
 
 class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced {
@@ -69,8 +66,8 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced 
         headerText = getString(R.string.login)
         graphic = ImageView(R.image.ic_launcher)
         isResizable = false
-        content = gridPane {
-            gap = 8
+        dialogPane.content = gridPane {
+            gaps = 8
             label(getString(R.string.language)) col 0 row 0
             choiceBox(Language.values().toObservableList()) {
                 maxWidth = Double.MAX_VALUE
@@ -95,8 +92,8 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced 
                 passwordField.tooltipProperty().bind(bindingOf(passwordField.textProperty(), selectedProperty()) { if (!isSelected) null else Tooltip(passwordField.text) })
             } col 2 row 2
         }
-        expandableContent = gridPane {
-            gap = 8
+        dialogPane.expandableContent = gridPane {
+            gaps = 8
             label(getString(R.string.server_host_port)) col 0 row 0
             serverHostField = hostField {
                 promptText = getString(R.string.ip_address)
@@ -125,15 +122,15 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced 
                 } marginLeft 8
             } col 0 row 3 colSpan 3
         }
-        addButton(CANCEL)
-        addButton(getString(R.string.login), OK_DONE) {
+        cancelButton()
+        customButton(getString(R.string.login), OK_DONE) {
             disableProperty().bind(employeeField.textProperty().isEmpty
                 or passwordField.textProperty().isEmpty
-                or not(serverHostField.validProperty)
+                or !serverHostField.validProperty
                 or serverPortField.textProperty().isEmpty
                 or serverUserField.textProperty().isEmpty
                 or serverPasswordField.textProperty().isEmpty)
-            addEventFilter(ACTION) {
+            eventFilter(ACTION) {
                 it.consume()
                 launch {
                     ConfigFile.save()
@@ -151,9 +148,9 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced 
                 }
             }
         }
-        runLater {
+        later {
             if (employeeField.text.isBlank()) employeeField.requestFocus() else passwordField.requestFocus()
-            isExpanded = !MongoFile.isValid
+            dialogPane.isExpanded = !MongoFile.isValid
             if (DEBUG) {
                 passwordField.text = "Test"
             }

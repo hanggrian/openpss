@@ -13,7 +13,7 @@ import com.wijayaprinting.time.PATTERN_TIME
 import com.wijayaprinting.ui.Controller
 import com.wijayaprinting.ui.DateDialog
 import com.wijayaprinting.ui.wage.Record.Companion.getDummy
-import com.wijayaprinting.util.getResource
+import com.wijayaprinting.util.getResourceString
 import com.wijayaprinting.util.withoutCurrency
 import javafx.fxml.FXML
 import javafx.scene.control.Button
@@ -24,18 +24,19 @@ import javafx.scene.control.TreeItem
 import javafx.scene.control.TreeTableColumn
 import javafx.scene.control.TreeTableView
 import javafx.stage.Stage
-import kotfx.asObservable
-import kotfx.bindings.booleanBindingOf
-import kotfx.bindings.isEmpty
-import kotfx.bindings.or
-import kotfx.bindings.stringBindingOf
-import kotfx.coroutines.listener
-import kotfx.coroutines.onAction
-import kotfx.dialogs.addButton
-import kotfx.dialogs.infoAlert
+import kotfx.application.later
+import kotfx.beans.binding.booleanBindingOf
+import kotfx.beans.binding.or
+import kotfx.beans.binding.stringBindingOf
+import kotfx.beans.property.asObservable
+import kotfx.beans.property.toProperty
+import kotfx.collections.emptyBinding
 import kotfx.layout.menuItem
-import kotfx.runLater
-import kotfx.toProperty
+import kotfx.listeners.listener
+import kotfx.listeners.onAction
+import kotfx.scene.control.customButton
+import kotfx.scene.control.infoAlert
+import kotfx.scene.screenshot
 import java.awt.Desktop.getDesktop
 import java.io.IOException
 import java.text.NumberFormat.getCurrencyInstance
@@ -63,7 +64,7 @@ class WageRecordController : Controller() {
     @FXML lateinit var totalColumn: TreeTableColumn<Record, Double>
 
     override fun initialize() {
-        undoButton.disableProperty().bind(undoButton.items.isEmpty)
+        undoButton.disableProperty().bind(undoButton.items.emptyBinding())
         arrayOf(lockStartButton, lockEndButton).forEach {
             it.disableProperty().bind(recordTable.selectionModel.selectedItemProperty().isNull or booleanBindingOf(recordTable.selectionModel.selectedItemProperty()) {
                 recordTable.selectionModel.selectedItems?.any { !it.value.isChild } ?: true
@@ -83,7 +84,7 @@ class WageRecordController : Controller() {
         overtimeIncomeColumn.setCellValueFactory { it.value.value.overtimeIncomeProperty.asObservable() }
         totalColumn.setCellValueFactory { it.value.value.totalProperty.asObservable() }
 
-        runLater {
+        later {
             getExtra<List<Attendee>>(EXTRA_ATTENDEES).forEach { attendee ->
                 val node = attendee.toNodeRecord(this)
                 val childs = attendee.toChildRecords(this)
@@ -155,14 +156,14 @@ class WageRecordController : Controller() {
         }
 
     @FXML
-    fun screenshot() = getResource(R.style.treetableview_print).toExternalForm().let { printStyle ->
+    fun screenshot() = getResourceString(R.style.treetableview_print).let { printStyle ->
         recordTable.stylesheets += printStyle
         recordTable.scrollTo(0)
         val flow = (recordTable.skin as TreeTableViewSkin<*>).children[1] as VirtualFlow<*>
         var i = 0
         do {
             try {
-                WageFile(i).write(recordTable.snapshot(null, null))
+                WageFile(i).write(recordTable.screenshot())
                 recordTable.scrollTo(flow.lastVisibleCell.index)
             } catch (e: IOException) {
                 if (DEBUG) e.printStackTrace()
@@ -170,8 +171,7 @@ class WageRecordController : Controller() {
             i++
         } while (flow.lastVisibleCell.index + 1 < recordTable.root.children.size + recordTable.root.children.map { it.children.size }.sum())
         recordTable.stylesheets -= printStyle
-
-        infoAlert(getString(R.string.screenshot_finished)) { addButton(getString(R.string.open_folder), CANCEL_CLOSE) }.showAndWait().filter { it.buttonData == CANCEL_CLOSE }.ifPresent {
+        infoAlert(getString(R.string.screenshot_finished)) { customButton(getString(R.string.open_folder), CANCEL_CLOSE) }.showAndWait().filter { it.buttonData == CANCEL_CLOSE }.ifPresent {
             getDesktop().open(WageContentFolder)
         }
     }

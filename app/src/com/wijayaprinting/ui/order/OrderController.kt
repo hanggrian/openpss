@@ -13,7 +13,7 @@ import javafx.scene.Scene
 import javafx.scene.control.ChoiceBox
 import javafx.stage.Modality.APPLICATION_MODAL
 import kotfx.collections.observableListOf
-import kotfx.stage
+import kotfx.stage.stage
 
 class OrderController : Controller(), Refreshable {
 

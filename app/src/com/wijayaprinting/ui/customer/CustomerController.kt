@@ -5,16 +5,15 @@ import com.wijayaprinting.collections.isNotEmpty
 import com.wijayaprinting.db.dao.Customer
 import com.wijayaprinting.db.schema.Customers
 import com.wijayaprinting.db.transaction
-import com.wijayaprinting.time.PATTERN_DATE
 import com.wijayaprinting.scene.control.CountBox
+import com.wijayaprinting.time.PATTERN_DATE
 import com.wijayaprinting.ui.AddUserDialog
 import com.wijayaprinting.ui.Controller
 import com.wijayaprinting.ui.Refreshable
-import com.wijayaprinting.util.getResource
+import com.wijayaprinting.util.getResourceString
 import com.wijayaprinting.util.tidy
 import javafx.fxml.FXML
 import javafx.scene.Node
-import javafx.scene.control.ButtonType.CANCEL
 import javafx.scene.control.ButtonType.OK
 import javafx.scene.control.ChoiceBox
 import javafx.scene.control.Label
@@ -24,23 +23,17 @@ import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
 import javafx.scene.control.TextField
 import javafx.scene.image.ImageView
+import javafx.scene.text.Font.loadFont
 import javafx.util.Callback
-import kotfx.bindings.bindingOf
-import kotfx.bindings.booleanBindingOf
-import kotfx.bindings.or
-import kotfx.bindings.stringBindingOf
+import kotfx.application.later
+import kotfx.beans.binding.bindingOf
+import kotfx.beans.binding.booleanBindingOf
+import kotfx.beans.binding.or
+import kotfx.beans.binding.stringBindingOf
+import kotfx.beans.property.toProperty
 import kotfx.collections.mutableObservableListOf
 import kotfx.collections.toMutableObservableList
 import kotfx.collections.toObservableList
-import kotfx.coroutines.onAction
-import kotfx.dialogs.addButton
-import kotfx.dialogs.confirmAlert
-import kotfx.dialogs.content
-import kotfx.dialogs.dialog
-import kotfx.dialogs.errorAlert
-import kotfx.dialogs.inputDialog
-import kotfx.font
-import kotfx.gap
 import kotfx.layout.button
 import kotfx.layout.choiceBox
 import kotfx.layout.contextMenu
@@ -49,9 +42,15 @@ import kotfx.layout.label
 import kotfx.layout.listView
 import kotfx.layout.menuItem
 import kotfx.layout.textField
-import kotfx.maxSize
-import kotfx.runLater
-import kotfx.toProperty
+import kotfx.listeners.onAction
+import kotfx.scene.control.cancelButton
+import kotfx.scene.control.confirmAlert
+import kotfx.scene.control.dialog
+import kotfx.scene.control.errorAlert
+import kotfx.scene.control.inputDialog
+import kotfx.scene.control.okButton
+import kotfx.scene.layout.gaps
+import kotfx.scene.layout.maxSize
 import kotlinx.nosql.equal
 import kotlinx.nosql.id
 import kotlinx.nosql.mongodb.MongoDBSession
@@ -93,8 +92,8 @@ class CustomerController : Controller(), Refreshable {
         refresh()
 
         countBox.desc = getString(R.string.items)
-        nameLabel.font(getResource(R.font.lato_bold), 24)
-        sinceLabel.font(getResource(R.font.lato_regular), 12)
+        nameLabel.font = loadFont(getResourceString(R.font.lato_bold), 24.0)
+        sinceLabel.font = loadFont(getResourceString(R.font.lato_regular), 12.0)
         noteLabel.graphicProperty().bind(bindingOf<Node>(noteLabel.hoverProperty()) { if (noteLabel.isHover) noteLabelGraphic else null })
         contactTable.contextMenu {
             menuItem(getString(R.string.add)) {
@@ -102,15 +101,15 @@ class CustomerController : Controller(), Refreshable {
                     dialog<Customer.Contact>(getString(R.string.add_contact), ImageView(R.image.ic_address)) {
                         lateinit var typeBox: ChoiceBox<String>
                         lateinit var contactField: TextField
-                        content = gridPane {
-                            gap = 8
+                        dialogPane.content = gridPane {
+                            gaps = 8
                             label(getString(R.string.type)) col 0 row 0
                             typeBox = choiceBox(Customer.listAllTypes()) col 1 row 0
                             label(getString(R.string.contact)) col 0 row 1
                             contactField = textField { promptText = getString(R.string.contact) } col 1 row 1
                         }
-                        addButton(CANCEL)
-                        addButton(OK) {
+                        cancelButton()
+                        okButton {
                             disableProperty().bind(typeBox.valueProperty().isNull or contactField.textProperty().isEmpty)
                         }
                         setResultConverter { if (it == OK) Customer.Contact(typeBox.value, contactField.text) else null }
@@ -123,7 +122,7 @@ class CustomerController : Controller(), Refreshable {
                 }
             }
             menuItem(getString(R.string.delete)) {
-                runLater { disableProperty().bind(booleanBindingOf(contactTable.selectionModel.selectedItemProperty()) { contact == null || !isFullAccess }) }
+                later { disableProperty().bind(booleanBindingOf(contactTable.selectionModel.selectedItemProperty()) { contact == null || !isFullAccess }) }
                 onAction {
                     confirmAlert(getString(R.string.delete_contact)).showAndWait().ifPresent {
                         transaction {
@@ -141,7 +140,7 @@ class CustomerController : Controller(), Refreshable {
     override fun refresh() = customerPagination.pageFactoryProperty().bind(bindingOf(customerField.textProperty(), countBox.countProperty) {
         Callback<Int, Node> { page ->
             customerList = listView {
-                runLater {
+                later {
                     transaction {
                         val customers = if (customerField.text.isBlank()) Customers.find() else Customers.find { name.matches(customerField.text.toPattern()) }
                         customerPagination.pageCount = ceil(customers.count() / countBox.count.toDouble()).toInt()

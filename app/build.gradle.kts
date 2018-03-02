@@ -1,4 +1,7 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+import com.hendraanggrian.buildconfig.BuildConfigTask
+import com.hendraanggrian.packr.PackTask
+import com.hendraanggrian.r.RTask
 import org.gradle.api.plugins.ExtensionAware
 import org.gradle.jvm.tasks.Jar
 import org.gradle.kotlin.dsl.configure
@@ -24,21 +27,16 @@ plugins {
 }
 
 java.sourceSets {
-    getByName("main") {
+    "main" {
         java.srcDir("src")
         resources.srcDir("res")
     }
-    get("test").java.srcDir("tests/src")
+    "test" {
+        java.srcDir("tests/src")
+    }
 }
 
 kotlin.experimental.coroutines = ENABLE
-
-r.resourcesDirectory = "res"
-
-buildconfig {
-    name = releaseArtifact
-    debug = releaseDebug
-}
 
 val ktlint by configurations.creating
 
@@ -47,6 +45,7 @@ dependencies {
     implementation(kotlin("stdlib", kotlinVersion))
     implementation(kotlin("nosql-mongodb", nosqlVersion))
     implementation(kotlinx("coroutines-javafx", coroutinesVersion))
+    implementation(hendraanggrian("kotfx-coroutines", kotfxVersion))
     implementation(apache("commons-lang3", commonsLangVersion))
     implementation(apache("poi-ooxml", poiVersion))
     implementation(guava())
@@ -65,6 +64,15 @@ dependencies {
 }
 
 tasks {
+    withType<RTask> {
+        resourcesDir = "res"
+    }
+    withType<BuildConfigTask> {
+        appName = releaseName
+        debug = releaseDebug
+        field(String::class.java, "ARTIFACT", releaseArtifact)
+    }
+
     val ktlint by creating(JavaExec::class) {
         group = "verification"
         inputs.dir("src")
@@ -93,20 +101,27 @@ tasks {
         classifier = null
     }
 
-
     packr {
-        platforms.mac = "/Library/Java/JavaVirtualMachines/jdk1.8.0_152.jdk/Contents/Home"
-        platforms.windows64 = "C:/Program Files/Java/jdk1.8.0_162"
-
         classpath("build/release/$releaseArtifact-$releaseVersion.jar")
         executable = releaseArtifact
         mainClass = "$releaseGroup.App"
         vmArgs("Xmx2G")
         resources("res", "../scene/sceneres")
-        outputName = "Wijaya Printing"
+        outputName = releaseName
 
-        icon = "mac.icns"
-        bundle = releaseGroup
+        iconDir = projectDir.resolve("mac.icns")
+        bundleId = releaseGroup
+    }
+
+    withType<PackTask> {
+        dependsOn(shadowJar)
+        when (name) {
+            "packMacOS" -> {
+                jdk = "/Library/Java/JavaVirtualMachines/jdk1.8.0_152.jdk/Contents/Home"
+                outputName = "$releaseName.app"
+            }
+            "packWindows64" -> jdk = "C:/Program Files/Java/jdk1.8.0_162"
+        }
     }
 }
 

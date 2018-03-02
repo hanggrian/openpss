@@ -8,9 +8,9 @@ import com.wijayaprinting.db.transaction
 import com.wijayaprinting.ui.SimpleTableController
 import javafx.fxml.FXML
 import javafx.scene.control.TableColumn
-import kotfx.dialogs.errorAlert
-import kotfx.dialogs.inputDialog
-import kotfx.toProperty
+import kotfx.beans.property.toProperty
+import kotfx.scene.control.errorAlert
+import kotfx.scene.control.inputDialog
 import kotlinx.nosql.equal
 
 abstract class PriceController<D : Named<S>, S : NamedDocumentSchema<D>>(schema: S) : SimpleTableController<D, S>(schema) {

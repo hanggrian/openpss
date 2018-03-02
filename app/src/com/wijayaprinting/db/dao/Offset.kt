@@ -5,10 +5,10 @@ import com.wijayaprinting.db.schema.Offsets
 import kotlinx.nosql.Id
 
 data class Offset(
-        override var name: String,
-        var minAmount: Int,
-        var minPrice: Double,
-        var excessPrice: Double
+    override var name: String,
+    var minAmount: Int,
+    var minPrice: Double,
+    var excessPrice: Double
 ) : Named<Offsets> {
     override lateinit var id: Id<String, Offsets>
 

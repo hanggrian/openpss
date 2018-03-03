@@ -61,4 +61,11 @@ tasks {
         main = "com.github.shyiko.ktlint.Main"
         args("-F", "src/**/*.kt")
     }
+
+    withType<ShadowJar> {
+        destinationDir = buildDir.resolve("release")
+        baseName = "$releaseArtifact-scene"
+        version = releaseVersion
+        classifier = null
+    }
 }

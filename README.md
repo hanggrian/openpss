@@ -1,6 +1,6 @@
 OpenPSS
 =======
-![OpenOSS icon][OpenOSS icon]
+![OpenPSS][logo]
 
 Point of Sale software specifically for offset printing business.
 Powered by JavaFX and Kotlin frameworks.
@@ -12,8 +12,6 @@ Head to [releases] to download this app in 3 variants:
  * `app` - Native MacOS app.
  * `zip` - Compressed folder containing Windows 64-bit libraries and executables.
  * `jar` - Smaller Java executable that requires JRE 1.8.
-
-There is also `scene.jar`, third-party library for SceneBuilder to design fxml files in this project.
 
 Features
 --------
@@ -64,7 +62,7 @@ License
     See the License for the specific language governing permissions and
     limitations under the License.
 
-[OpenPSS icon]: /art/OpenPSS.png
+[logo]: /art/OpenPSS.png
 [releases]: https://github.com/hendraanggrian/wijayaprinting/releases
 [ktlint]: https://github.com/shyiko/ktlint
 [packr]: https://github.com/hendraanggrian/packr

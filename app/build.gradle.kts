@@ -99,28 +99,19 @@ tasks {
         version = releaseVersion
         classifier = null
     }
-    packr {
+    withType<PackTask> {
+        dependsOn(shadowJar)
         classpath("build/release/$releaseArtifact-$releaseVersion.jar")
-        executable = releaseArtifact
+        executable = releaseName
         mainClass = main
         vmArgs("Xmx2G")
         resources("res", "../scene/sceneres")
         outputName = releaseName
 
-        iconDir = rootProject.projectDir.resolve("art").resolve("OpenPPS.icns")
+        iconDir = rootProject.projectDir.resolve("art").resolve("OpenPSS.icns")
         bundleId = releaseGroup
         verbose = true
         openOnDone = true
-    }
-    withType<PackTask> {
-        dependsOn(shadowJar)
-        when (name) {
-            "packMacOS" -> {
-                jdk = "/Library/Java/JavaVirtualMachines/jdk1.8.0_152.jdk/Contents/Home"
-                outputName = "$releaseName.app"
-            }
-            "packWindows64" -> jdk = "C:/Program Files/Java/jdk1.8.0_162"
-        }
     }
 }
 

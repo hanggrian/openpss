@@ -7,12 +7,12 @@ import com.hendraanggrian.openpss.scene.layout.dateBox
 import com.hendraanggrian.openpss.scene.layout.timeBox
 import javafx.scene.control.ButtonType.OK
 import javafx.scene.control.Dialog
-import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import kotfx.application.later
-import kotfx.layout.vbox
+import kotfx.layouts.vbox
 import kotfx.scene.control.cancelButton
-import kotfx.scene.control.icon
+import kotfx.scene.control.graphicIcon
+import kotfx.scene.control.headerTitle
 import kotfx.scene.control.okButton
 import kotfx.scene.layout.spacings
 import org.joda.time.DateTime
@@ -20,7 +20,7 @@ import org.joda.time.DateTime.now
 
 class DateTimeDialog(
     resourced: Resourced,
-    header: String,
+    title: String,
     prefill: DateTime = now()
 ) : Dialog<DateTime>(), Resourced by resourced {
 
@@ -28,10 +28,8 @@ class DateTimeDialog(
     private lateinit var timeBox: TimeBox
 
     init {
-        icon = Image(R.image.ic_launcher)
-        title = header
-        headerText = header
-        graphic = ImageView(R.image.ic_calendar)
+        headerTitle = title
+        graphicIcon = ImageView(R.image.ic_calendar)
         dialogPane.content = vbox {
             spacings = 8
             dateBox = dateBox(prefill.toLocalDate())

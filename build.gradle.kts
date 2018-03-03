@@ -22,7 +22,7 @@ allprojects {
     repositories {
         jcenter()
         maven("http://repository.jetbrains.com/kotlin-nosql")
-        maven("https://dl.bintray.com/hendraanggrian/maven") // remove when kotfx-listeners is approved in jcenter
+        maven("https://dl.bintray.com/hendraanggrian/maven") // remove when kotfx-layouts is approved in jcenter
     }
     tasks.withType<Delete> {
         delete(projectDir.resolve("out"))

@@ -10,9 +10,9 @@ import javafx.scene.image.ImageView
 import kotfx.application.later
 import kotfx.beans.binding.neq
 import kotfx.beans.binding.or
-import kotfx.layout.gridPane
-import kotfx.layout.label
-import kotfx.layout.passwordField
+import kotfx.layouts.gridPane
+import kotfx.layouts.label
+import kotfx.layouts.passwordField
 import kotfx.scene.control.cancelButton
 import kotfx.scene.control.icon
 import kotfx.scene.control.okButton

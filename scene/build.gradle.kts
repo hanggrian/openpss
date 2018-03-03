@@ -29,7 +29,7 @@ val ktlint by configurations.creating
 dependencies {
     compile(kotlin("stdlib", kotlinVersion))
     compile(kotlinx("coroutines-javafx", coroutinesVersion))
-    compile(hendraanggrian("kotfx-layout", kotfxVersion))
+    compile(hendraanggrian("kotfx-layouts", kotfxVersion))
     compile(hendraanggrian("kotfx-listeners", kotfxVersion))
     compile(hendraanggrian("kotfx-coroutines", kotfxVersion))
     compile(jodaTime())
@@ -60,11 +60,5 @@ tasks {
         classpath = configurations["ktlint"]
         main = "com.github.shyiko.ktlint.Main"
         args("-F", "src/**/*.kt")
-    }
-
-    getting(ShadowJar::class) {
-        destinationDir = buildDir.resolve("release")
-        baseName = "$releaseArtifact-scene"
-        classifier = null
     }
 }

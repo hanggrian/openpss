@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.hendraanggrian.openpss.ui.main.MainController">
@@ -9,7 +11,14 @@
             <ToggleGroup fx:id="navigateGroup"/>
         </fx:define>
         <Menu mnemonicParsing="false" text="File">
-            <MenuItem mnemonicParsing="false" onAction="#addCustomer" text="%add_customer"/>
+            <MenuItem mnemonicParsing="false" onAction="#addCustomer"
+                      text="%add_customer">
+                <graphic>
+                    <ImageView pickOnBounds="true" preserveRatio="true">
+                        <Image url="@/image/menu_user.png"/>
+                    </ImageView>
+                </graphic>
+            </MenuItem>
             <SeparatorMenuItem/>
             <MenuItem mnemonicParsing="false" onAction="#exit" text="%exit"/>
         </Menu>
@@ -24,7 +33,13 @@
                            text="%employee"/>
         </Menu>
         <Menu mnemonicParsing="false" text="%help">
-            <MenuItem mnemonicParsing="false" onAction="#about" text="%about"/>
+            <MenuItem mnemonicParsing="false" onAction="#about" text="%about">
+                <graphic>
+                    <ImageView pickOnBounds="true" preserveRatio="true">
+                        <Image url="@/image/menu_about.png"/>
+                    </ImageView>
+                </graphic>
+            </MenuItem>
         </Menu>
     </MenuBar>
     <AnchorPane VBox.vgrow="ALWAYS">

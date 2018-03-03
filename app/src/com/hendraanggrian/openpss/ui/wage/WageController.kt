@@ -55,17 +55,17 @@ import kotfx.coroutines.FX
 import kotfx.coroutines.listener
 import kotfx.coroutines.onAction
 import kotfx.coroutines.onKeyPressed
-import kotfx.layout.borderPane
-import kotfx.layout.checkBox
-import kotfx.layout.contextMenu
-import kotfx.layout.gridPane
-import kotfx.layout.imageView
-import kotfx.layout.label
-import kotfx.layout.listView
-import kotfx.layout.menuItem
-import kotfx.layout.separatorMenuItem
-import kotfx.layout.titledPane
-import kotfx.layout.vbox
+import kotfx.layouts.borderPane
+import kotfx.layouts.checkBox
+import kotfx.layouts.contextMenu
+import kotfx.layouts.gridPane
+import kotfx.layouts.imageView
+import kotfx.layouts.label
+import kotfx.layouts.listView
+import kotfx.layouts.menuItem
+import kotfx.layouts.separatorMenuItem
+import kotfx.layouts.titledPane
+import kotfx.layouts.vbox
 import kotfx.listeners.cellFactory
 import kotfx.scene.control.errorAlert
 import kotfx.scene.layout.gaps
@@ -125,7 +125,7 @@ class WageController : Controller() {
         scrollPane.content = borderPane {
             prefWidthProperty().bind(scrollPane.widthProperty())
             prefHeightProperty().bind(scrollPane.heightProperty())
-            center = kotfx.layout.progressIndicator { maxSize = 72 }
+            center = kotfx.layouts.progressIndicator { maxSize = 128 }
         }
         flowPane.children.clear()
         launch {
@@ -182,7 +182,7 @@ class WageController : Controller() {
                                         onUpdateItem { dateTime, empty ->
                                             text = null
                                             graphic = null
-                                            if (dateTime != null && !empty) graphic = kotfx.layout.hbox {
+                                            if (dateTime != null && !empty) graphic = kotfx.layouts.hbox {
                                                 val index = listView.items.indexOf(dateTime)
                                                 alignment = if (index % 2 == 0) BOTTOM_CENTER else TOP_CENTER
                                                 val itemLabel = label(dateTime.toString(PATTERN_DATETIME_EXTENDED)) { maxWidth = Double.MAX_VALUE } hpriority ALWAYS
@@ -196,9 +196,9 @@ class WageController : Controller() {
                                         }
                                     }
                                     onKeyPressed {
-                                        if (it.code.isDelete() && selectionModel.selectedItem != null) selectionModel.let {
-                                            listView.items.remove(it.selectedItem)
-                                            it.clearSelection()
+                                        if (it.code.isDelete() && selectionModel.selectedItem != null) selectionModel.run {
+                                            listView.items.remove(selectedItem)
+                                            clearSelection()
                                         }
                                     }
                                 }
@@ -224,6 +224,15 @@ class WageController : Controller() {
                                                 listView.items[listView.selectionModel.selectedIndex] = it
                                                 listView.items.sort()
                                             }
+                                    }
+                                }
+                                menuItem(getString(R.string.delete)) {
+                                    disableProperty().bind(listView.selectionModel.selectedItems.emptyBinding())
+                                    onAction {
+                                        listView.selectionModel.run {
+                                            listView.items.remove(selectedItem)
+                                            clearSelection()
+                                        }
                                     }
                                 }
                                 separatorMenuItem()

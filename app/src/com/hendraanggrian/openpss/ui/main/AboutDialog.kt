@@ -16,14 +16,14 @@ import kotfx.beans.binding.booleanBindingOf
 import kotfx.beans.binding.stringBindingOf
 import kotfx.collections.toObservableList
 import kotfx.coroutines.onAction
-import kotfx.layout.button
-import kotfx.layout.hbox
-import kotfx.layout.imageView
-import kotfx.layout.label
-import kotfx.layout.text
-import kotfx.layout.textFlow
-import kotfx.layout.titledPane
-import kotfx.layout.vbox
+import kotfx.layouts.button
+import kotfx.layouts.hbox
+import kotfx.layouts.imageView
+import kotfx.layouts.label
+import kotfx.layouts.text
+import kotfx.layouts.textFlow
+import kotfx.layouts.titledPane
+import kotfx.layouts.vbox
 import kotfx.listeners.cellFactory
 import kotfx.scene.control.closeButton
 import kotfx.scene.control.customButton
@@ -36,7 +36,7 @@ import java.net.URI
 class AboutDialog(resourced: Resourced) : Dialog<Unit>(), Resourced by resourced {
 
     init {
-        icon = Image(R.image.ic_launcher)
+        icon = Image(R.image.menu_about)
         title = getString(R.string.about)
         dialogPane.content = hbox {
             paddings = 48
@@ -65,14 +65,14 @@ class AboutDialog(resourced: Resourced) : Dialog<Unit>(), Resourced by resourced
         }
         lateinit var listView: ListView<License>
         dialogPane.expandableContent = hbox {
-            listView = kotfx.layout.listView {
+            listView = kotfx.layouts.listView {
                 prefSize(height = 256)
                 items = License.values().toObservableList()
                 cellFactory {
                     onUpdateItem { license, empty ->
                         text = null
                         graphic = null
-                        if (license != null && !empty) graphic = kotfx.layout.vbox {
+                        if (license != null && !empty) graphic = kotfx.layouts.vbox {
                             label(license.repo) { font = loadFont(getResourceString(R.font.lato_regular), 12.0) }
                             label(license.owner) { font = loadFont(getResourceString(R.font.lato_bold), 12.0) }
                         }
@@ -80,7 +80,7 @@ class AboutDialog(resourced: Resourced) : Dialog<Unit>(), Resourced by resourced
                 }
             }
             titledPane(getString(R.string.open_source_software), listView) { isCollapsible = false }
-            titledPane(getString(R.string.license), kotfx.layout.textArea {
+            titledPane(getString(R.string.license), kotfx.layouts.textArea {
                 prefSize(height = 256)
                 isEditable = false
                 textProperty().bind(stringBindingOf(listView.selectionModel.selectedIndexProperty()) {

@@ -11,7 +11,7 @@ const val spekVersion = "1.1.5"
 
 const val rVersion = "0.6"
 const val buildconfigVersion = "0.11"
-const val packrVersion = "0.2"
+const val packrVersion = "0.3"
 const val kotfxVersion = "0.35"
 const val commonsLangVersion = "3.7"
 const val poiVersion = "3.17"

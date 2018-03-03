@@ -8,8 +8,8 @@ import javafx.scene.control.ButtonType.OK
 import javafx.scene.control.Dialog
 import javafx.scene.image.ImageView
 import kotfx.beans.binding.booleanBindingOf
-import kotfx.layout.gridPane
-import kotfx.layout.label
+import kotfx.layouts.gridPane
+import kotfx.layouts.label
 import kotfx.scene.control.cancelButton
 import kotfx.scene.control.graphicIcon
 import kotfx.scene.control.headerTitle

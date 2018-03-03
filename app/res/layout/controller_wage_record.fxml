@@ -50,7 +50,7 @@
             </graphic>
         </Button>
     </ToolBar>
-    <TreeTableView fx:id="recordTable" style="-fx-font-family: Tahoma;" VBox.vgrow="ALWAYS">
+    <TreeTableView fx:id="recordTable" VBox.vgrow="ALWAYS">
         <columns>
             <TreeTableColumn fx:id="nameColumn" sortable="false"
                              text="%name"/>

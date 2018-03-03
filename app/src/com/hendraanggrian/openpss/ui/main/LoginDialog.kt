@@ -32,15 +32,15 @@ import kotfx.collections.toObservableList
 import kotfx.coroutines.FX
 import kotfx.coroutines.listener
 import kotfx.coroutines.onAction
-import kotfx.layout.choiceBox
-import kotfx.layout.gridPane
-import kotfx.layout.hbox
-import kotfx.layout.hyperlink
-import kotfx.layout.label
-import kotfx.layout.passwordField
-import kotfx.layout.textField
-import kotfx.layout.toggleButton
-import kotfx.layout.tooltip
+import kotfx.layouts.choiceBox
+import kotfx.layouts.gridPane
+import kotfx.layouts.hbox
+import kotfx.layouts.hyperlink
+import kotfx.layouts.label
+import kotfx.layouts.passwordField
+import kotfx.layouts.textField
+import kotfx.layouts.toggleButton
+import kotfx.layouts.tooltip
 import kotfx.scene.control.cancelButton
 import kotfx.scene.control.customButton
 import kotfx.scene.control.errorAlert
@@ -88,7 +88,7 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced 
             passwordField = passwordField { promptText = getString(R.string.password) } col 1 row 2
             toggleButton {
                 tooltip(getString(R.string.see_password))
-                graphic = kotfx.layout.imageView { imageProperty().bind(`if`(this@toggleButton.selectedProperty()) then Image(R.image.btn_visibility) `else` Image(R.image.btn_visibility_off)) }
+                graphic = kotfx.layouts.imageView { imageProperty().bind(`if`(this@toggleButton.selectedProperty()) then Image(R.image.btn_visibility) `else` Image(R.image.btn_visibility_off)) }
                 passwordField.tooltipProperty().bind(bindingOf(passwordField.textProperty(), selectedProperty()) { if (!isSelected) null else Tooltip(passwordField.text) })
             } col 2 row 2
         }

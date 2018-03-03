@@ -33,7 +33,7 @@ import kotfx.beans.property.toProperty
 import kotfx.collections.emptyBinding
 import kotfx.coroutines.listener
 import kotfx.coroutines.onAction
-import kotfx.layout.menuItem
+import kotfx.layouts.menuItem
 import kotfx.scene.control.customButton
 import kotfx.scene.control.infoAlert
 import kotfx.scene.screenshot
@@ -171,9 +171,10 @@ class WageRecordController : Controller() {
             i++
         } while (flow.lastVisibleCell.index + 1 < recordTable.root.children.size + recordTable.root.children.map { it.children.size }.sum())
         recordTable.stylesheets -= printStyle
-        infoAlert(getString(R.string.screenshot_finished)) { customButton(getString(R.string.open_folder), CANCEL_CLOSE) }.showAndWait().filter { it.buttonData == CANCEL_CLOSE }.ifPresent {
-            getDesktop().open(WageContentFolder)
-        }
+        infoAlert(getString(R.string.screenshot_finished)) { customButton(getString(R.string.open_folder), CANCEL_CLOSE) }
+            .showAndWait()
+            .filter { it.buttonData == CANCEL_CLOSE }
+            .ifPresent { getDesktop().open(WageContentFolder) }
     }
 
     private val records: List<Record> get() = recordTable.root.children.flatMap { it.children }.map { it.value }

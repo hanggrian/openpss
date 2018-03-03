@@ -29,7 +29,11 @@
             </tooltip>
         </Button>
         <Separator/>
-        <ChoiceBox fx:id="readerChoiceBox"/>
+        <ChoiceBox fx:id="readerChoiceBox">
+            <tooltip>
+                <Tooltip text="%reader"/>
+            </tooltip>
+        </ChoiceBox>
         <FileField fx:id="fileField" prefWidth="448.0" promptText="%input_file"/>
         <Button mnemonicParsing="false" onAction="#browse">
             <graphic>

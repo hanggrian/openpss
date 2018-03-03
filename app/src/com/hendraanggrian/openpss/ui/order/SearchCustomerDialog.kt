@@ -13,9 +13,9 @@ import javafx.scene.image.ImageView
 import kotfx.application.later
 import kotfx.beans.binding.bindingOf
 import kotfx.collections.toMutableObservableList
-import kotfx.layout.listView
-import kotfx.layout.textField
-import kotfx.layout.vbox
+import kotfx.layouts.listView
+import kotfx.layouts.textField
+import kotfx.layouts.vbox
 import kotfx.scene.control.cancelButton
 import kotfx.scene.control.graphicIcon
 import kotfx.scene.control.headerTitle

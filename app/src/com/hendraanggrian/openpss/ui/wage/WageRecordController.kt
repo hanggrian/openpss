@@ -25,7 +25,6 @@ import javafx.scene.control.TreeTableColumn
 import javafx.scene.control.TreeTableView
 import javafx.scene.text.Font.loadFont
 import javafx.stage.Stage
-import javafx.util.converter.CurrencyStringConverter
 import kotfx.application.later
 import kotfx.beans.binding.booleanBindingOf
 import kotfx.beans.binding.or
@@ -43,7 +42,6 @@ import kotfx.scene.control.infoAlert
 import kotfx.scene.screenshot
 import java.awt.Desktop.getDesktop
 import java.io.IOException
-import java.util.Locale
 
 class WageRecordController : Controller() {
 
@@ -52,13 +50,12 @@ class WageRecordController : Controller() {
         const val EXTRA_ATTENDEES = "EXTRA_ATTENDEES"
     }
 
-    private val converter = CurrencyStringConverter(Locale("in", "ID"))
+    private val converter = MoneyStringConverter()
 
     @FXML lateinit var undoButton: SplitMenuButton
     @FXML lateinit var timeBox: TimeBox
     @FXML lateinit var lockStartButton: Button
     @FXML lateinit var lockEndButton: Button
-
     @FXML lateinit var recordTable: TreeTableView<Record>
     @FXML lateinit var nameColumn: TreeTableColumn<Record, String>
     @FXML lateinit var startColumn: TreeTableColumn<Record, String>
@@ -82,21 +79,28 @@ class WageRecordController : Controller() {
         recordTable.isShowRoot = false
 
         nameColumn.setCellValueFactory { it.value.value.displayedName.toProperty().asObservable() }
-        nameColumn.style()
         startColumn.setCellValueFactory { it.value.value.displayedStart }
-        startColumn.style()
         endColumn.setCellValueFactory { it.value.value.displayedEnd }
-        endColumn.style()
         dailyColumn.setCellValueFactory { it.value.value.dailyProperty.asObservable() }
-        dailyColumn.style()
         dailyIncomeColumn.setCellValueFactory { it.value.value.dailyIncomeProperty.asObservable() }
-        dailyIncomeColumn.style()
         overtimeColumn.setCellValueFactory { it.value.value.overtimeProperty.asObservable() }
-        overtimeColumn.style()
         overtimeIncomeColumn.setCellValueFactory { it.value.value.overtimeIncomeProperty.asObservable() }
-        overtimeIncomeColumn.style()
         totalColumn.setCellValueFactory { it.value.value.totalProperty.asObservable() }
-        totalColumn.style()
+        recordTable.columns.forEach {
+            it.cellFactory {
+                onUpdateItem { any, empty ->
+                    if (any != null && !empty) graphic = label(when (it) {
+                        dailyIncomeColumn, overtimeIncomeColumn, totalColumn -> converter.toString(any as Number)
+                        else -> any.toString()
+                    }) {
+                        font = loadFont(getResourceString(when {
+                            treeTableRow.treeItem.value.isTotal -> R.font.opensans_bold
+                            else -> R.font.opensans_regular
+                        }), 13.0)
+                    }
+                }
+            }
+        }
 
         later {
             getExtra<List<Attendee>>(EXTRA_ATTENDEES).forEach { attendee ->
@@ -188,20 +192,6 @@ class WageRecordController : Controller() {
             .showAndWait()
             .filter { it.buttonData == CANCEL_CLOSE }
             .ifPresent { getDesktop().open(WageContentFolder) }
-    }
-
-    private fun TreeTableColumn<Record, *>.style() = cellFactory {
-        onUpdateItem { any, empty ->
-            if (any != null && !empty) graphic = label(when {
-                this@style == dailyIncomeColumn || this@style == overtimeIncomeColumn || this@style == totalColumn -> converter.toString(any as Number)
-                else -> any.toString()
-            }) {
-                font = loadFont(getResourceString(when {
-                    treeTableRow.treeItem.value.isTotal -> R.font.opensans_bold
-                    else -> R.font.opensans_regular
-                }), 13.0)
-            }
-        }
     }
 
     private val records: List<Record> get() = recordTable.root.children.flatMap { it.children }.map { it.value }

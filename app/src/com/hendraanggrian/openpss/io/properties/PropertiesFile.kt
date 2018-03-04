@@ -4,6 +4,7 @@ import com.hendraanggrian.openpss.io.MainFolder
 import javafx.beans.property.StringProperty
 import kotfx.beans.property.toProperty
 import kotfx.coroutines.listener
+import kotlinx.coroutines.experimental.async
 import java.io.File
 import java.util.Properties
 
@@ -35,5 +36,5 @@ abstract class PropertiesFile(
         }
     }
 
-    fun save(comments: String? = null): Unit = outputStream().use { properties.store(it, comments) }
+    suspend fun save(comments: String? = null): Unit = async { outputStream().use { properties.store(it, comments) } }.await()
 }

@@ -1,10 +1,7 @@
 package com.hendraanggrian.openpss.converter
 
+import com.hendraanggrian.openpss.Language
+import com.hendraanggrian.openpss.io.properties.ConfigFile
 import javafx.util.converter.CurrencyStringConverter
-import java.text.DecimalFormat
-import java.text.NumberFormat.getCurrencyInstance
 
-class MoneyStringConverter : CurrencyStringConverter(getCurrencyInstance().apply {
-    val decimalFormat = this as DecimalFormat
-    decimalFormat.decimalFormatSymbols = decimalFormat.decimalFormatSymbols.apply { currencySymbol = "" }
-})
+class MoneyStringConverter : CurrencyStringConverter(Language.from(ConfigFile.language.value).asLocale())

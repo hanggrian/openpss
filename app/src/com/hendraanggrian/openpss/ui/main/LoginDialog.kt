@@ -48,6 +48,7 @@ import kotfx.scene.control.icon
 import kotfx.scene.control.infoAlert
 import kotfx.scene.layout.gaps
 import kotfx.scene.layout.prefSize
+import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.launch
 
 class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced {
@@ -72,11 +73,13 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced 
             choiceBox(Language.values().toObservableList()) {
                 maxWidth = Double.MAX_VALUE
                 selectionModel.select(Language.from(ConfigFile.language.get()))
-                valueProperty().listener { _, _, language ->
-                    ConfigFile.language.set(language.locale)
+                valueProperty().listener(CommonPool) { _, _, language ->
+                    ConfigFile.language.set(language.code)
                     ConfigFile.save()
-                    close()
-                    infoAlert(getString(R.string.please_restart)).showAndWait().ifPresent { exit() }
+                    launch(FX) {
+                        close()
+                        infoAlert(getString(R.string.please_restart)).showAndWait().ifPresent { exit() }
+                    }
                 }
             } col 1 row 0 colSpan 2
             label(getString(R.string.employee)) col 0 row 1

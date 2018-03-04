@@ -42,7 +42,7 @@ class Record(
 ) : Resourced by resourced {
 
     companion object {
-        private const val WORKING_HOURS = 8.0
+        const val WORKING_HOURS = 8
 
         /** Parent row displaying name and its preferences. */
         const val INDEX_NODE = -2
@@ -68,7 +68,7 @@ class Record(
                     val hours = workingHours
                     when {
                         hours <= WORKING_HOURS -> hours.round()
-                        else -> WORKING_HOURS
+                        else -> WORKING_HOURS.toDouble()
                     }
                 }
             })

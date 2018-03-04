@@ -44,18 +44,18 @@ class AboutDialog(resourced: Resourced) : Dialog<Unit>(), Resourced by resourced
             vbox {
                 alignment = CENTER_LEFT
                 textFlow {
-                    text("Open ") { font = loadFont(getResourceString(R.font.lato_bold), 24.0) }
-                    text("Printing Sales System") { font = loadFont(getResourceString(R.font.lato_light), 24.0) }
+                    text("Open ") { font = loadFont(getResourceString(R.font.opensans_bold), 24.0) }
+                    text("Printing Sales System") { font = loadFont(getResourceString(R.font.opensans_light), 24.0) }
                 }
-                text("${getString(R.string.version)} $VERSION") { font = loadFont(getResourceString(R.font.lato_regular), 12.0) } topMargin 2
-                text(getString(R.string.about_notice)) { font = loadFont(getResourceString(R.font.lato_bold), 12.0) } topMargin 20
+                text("${getString(R.string.version)} $VERSION") { font = loadFont(getResourceString(R.font.opensans_regular), 12.0) } topMargin 2
+                text(getString(R.string.about_notice)) { font = loadFont(getResourceString(R.font.opensans_bold), 12.0) } topMargin 20
                 textFlow {
-                    text("${getString(R.string.powered_by)}  ") { font = loadFont(getResourceString(R.font.lato_bold), 12.0) }
-                    text("JavaFX") { font = loadFont(getResourceString(R.font.lato_regular), 12.0) }
+                    text("${getString(R.string.powered_by)}  ") { font = loadFont(getResourceString(R.font.opensans_bold), 12.0) }
+                    text("JavaFX") { font = loadFont(getResourceString(R.font.opensans_regular), 12.0) }
                 } topMargin 4
                 textFlow {
-                    text("${getString(R.string.author)}  ") { font = loadFont(getResourceString(R.font.lato_bold), 12.0) }
-                    text("Hendra Anggrian") { font = loadFont(getResourceString(R.font.lato_regular), 12.0) }
+                    text("${getString(R.string.author)}  ") { font = loadFont(getResourceString(R.font.opensans_bold), 12.0) }
+                    text("Hendra Anggrian") { font = loadFont(getResourceString(R.font.opensans_regular), 12.0) }
                 } topMargin 4
                 hbox {
                     button("GitHub") { onAction { getDesktop().browse(URI("https://github.com/hendraanggrian/wijayaprinting")) } }
@@ -70,11 +70,9 @@ class AboutDialog(resourced: Resourced) : Dialog<Unit>(), Resourced by resourced
                 items = License.values().toObservableList()
                 cellFactory {
                     onUpdateItem { license, empty ->
-                        text = null
-                        graphic = null
                         if (license != null && !empty) graphic = kotfx.layouts.vbox {
-                            label(license.repo) { font = loadFont(getResourceString(R.font.lato_regular), 12.0) }
-                            label(license.owner) { font = loadFont(getResourceString(R.font.lato_bold), 12.0) }
+                            label(license.repo) { font = loadFont(getResourceString(R.font.opensans_regular), 12.0) }
+                            label(license.owner) { font = loadFont(getResourceString(R.font.opensans_bold), 12.0) }
                         }
                     }
                 }

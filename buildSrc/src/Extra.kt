@@ -7,15 +7,13 @@ const val releaseVersion = "0.11"
 const val kotlinVersion = "1.2.30"
 const val nosqlVersion = "0.1-SNAPSHOT"
 const val coroutinesVersion = "0.22.3"
-const val spekVersion = "1.1.5"
 
-const val rVersion = "0.6"
+const val rVersion = "0.7"
 const val buildconfigVersion = "0.11"
 const val packrVersion = "0.3"
 const val kotfxVersion = "0.35"
 const val commonsLangVersion = "3.7"
 const val poiVersion = "3.17"
-const val junitPlatformVersion = "1.0.0"
 
 fun Dependency.kotlinx(module: String, version: String? = null) = "org.jetbrains.kotlinx:kotlinx-$module${version?.let { ":$version" }
     ?: ""}"
@@ -39,10 +37,10 @@ inline val Plugin.shadow get() = id("com.github.johnrengelman.shadow")
 
 fun Dependency.ktlint() = "com.github.shyiko:ktlint:0.18.0"
 
-fun Dependency.junitPlatform(module: String, version: String) = "org.junit.platform:junit-platform-$module:$version"
+fun Dependency.junitPlatform(module: String) = "org.junit.platform:junit-platform-$module:1.0.0"
 val Plugin.`junit-platform` get() = id("org.junit.platform.gradle.plugin")
 
-fun Dependency.spek(module: String, version: String) = "org.jetbrains.spek:spek-$module:$version"
+fun Dependency.spek(module: String) = "org.jetbrains.spek:spek-$module:1.1.5"
 
 private typealias Dependency = org.gradle.api.artifacts.dsl.DependencyHandler
 private typealias Plugin = org.gradle.plugin.use.PluginDependenciesSpec

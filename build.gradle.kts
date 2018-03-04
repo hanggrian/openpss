@@ -14,7 +14,7 @@ buildscript {
         classpath(hendraanggrian("buildconfig", buildconfigVersion))
         classpath(hendraanggrian("packr", packrVersion))
         classpath(shadow())
-        classpath(junitPlatform("gradle-plugin", junitPlatformVersion))
+        classpath(junitPlatform("gradle-plugin"))
     }
 }
 
@@ -22,7 +22,6 @@ allprojects {
     repositories {
         jcenter()
         maven("http://repository.jetbrains.com/kotlin-nosql")
-        maven("https://dl.bintray.com/hendraanggrian/maven") // remove when kotfx-layouts is approved in jcenter
     }
     tasks.withType<Delete> {
         delete(projectDir.resolve("out"))

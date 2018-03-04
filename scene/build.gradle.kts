@@ -42,22 +42,22 @@ tasks {
         resourcesDir = "sceneres"
     }
 
-    val ktlint by creating(JavaExec::class) {
+    "ktlint"(JavaExec::class) {
+        get("check").dependsOn(this)
         group = "verification"
         inputs.dir("src")
         outputs.dir("src")
         description = "Check Kotlin code style."
-        classpath = configurations["ktlint"]
+        classpath = ktlint
         main = "com.github.shyiko.ktlint.Main"
         args("src/**/*.kt")
     }
-    get("check").dependsOn(ktlint)
     "ktlintFormat"(JavaExec::class) {
         group = "formatting"
         inputs.dir("src")
         outputs.dir("src")
         description = "Fix Kotlin code style deviations."
-        classpath = configurations["ktlint"]
+        classpath = ktlint
         main = "com.github.shyiko.ktlint.Main"
         args("-F", "src/**/*.kt")
     }

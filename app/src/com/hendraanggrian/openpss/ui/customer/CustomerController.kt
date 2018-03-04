@@ -92,8 +92,8 @@ class CustomerController : Controller(), Refreshable {
         refresh()
 
         countBox.desc = getString(R.string.items)
-        nameLabel.font = loadFont(getResourceString(R.font.lato_bold), 24.0)
-        sinceLabel.font = loadFont(getResourceString(R.font.lato_regular), 12.0)
+        nameLabel.font = loadFont(getResourceString(R.font.opensans_bold), 24.0)
+        sinceLabel.font = loadFont(getResourceString(R.font.opensans_regular), 12.0)
         noteLabel.graphicProperty().bind(bindingOf<Node>(noteLabel.hoverProperty()) { if (noteLabel.isHover) noteLabelGraphic else null })
         contactTable.contextMenu {
             menuItem(getString(R.string.add)) {

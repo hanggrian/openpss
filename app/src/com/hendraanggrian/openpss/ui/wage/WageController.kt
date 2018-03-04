@@ -180,15 +180,13 @@ class WageController : Controller() {
                                     prefSize(width = 128)
                                     cellFactory {
                                         onUpdateItem { dateTime, empty ->
-                                            text = null
-                                            graphic = null
                                             if (dateTime != null && !empty) graphic = kotfx.layouts.hbox {
                                                 val index = listView.items.indexOf(dateTime)
                                                 alignment = if (index % 2 == 0) BOTTOM_CENTER else TOP_CENTER
                                                 val itemLabel = label(dateTime.toString(PATTERN_DATETIME_EXTENDED)) { maxWidth = Double.MAX_VALUE } hpriority ALWAYS
                                                 if (alignment == BOTTOM_CENTER) listView.items.getOrNull(index + 1).let { nextItem ->
                                                     when (nextItem) {
-                                                        null -> itemLabel.textFill = getColor(R.color.RED)
+                                                        null -> itemLabel.textFill = getColor(R.color.red)
                                                         else -> label(FlexibleInterval(dateTime, nextItem).hours.round().toString()) { font = font(9.0) }
                                                     }
                                                 }

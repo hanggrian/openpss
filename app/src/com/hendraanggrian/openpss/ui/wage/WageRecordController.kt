@@ -2,6 +2,7 @@ package com.hendraanggrian.openpss.ui.wage
 
 import com.hendraanggrian.openpss.BuildConfig.DEBUG
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.converter.MoneyStringConverter
 import com.hendraanggrian.openpss.io.WageContentFolder
 import com.hendraanggrian.openpss.io.WageFile
 import com.hendraanggrian.openpss.scene.layout.TimeBox
@@ -12,7 +13,6 @@ import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.DateDialog
 import com.hendraanggrian.openpss.ui.wage.Record.Companion.getDummy
 import com.hendraanggrian.openpss.util.getResourceString
-import com.hendraanggrian.openpss.util.withoutCurrency
 import com.sun.javafx.scene.control.skin.TreeTableViewSkin
 import com.sun.javafx.scene.control.skin.VirtualFlow
 import javafx.fxml.FXML
@@ -23,7 +23,9 @@ import javafx.scene.control.SplitMenuButton
 import javafx.scene.control.TreeItem
 import javafx.scene.control.TreeTableColumn
 import javafx.scene.control.TreeTableView
+import javafx.scene.text.Font.loadFont
 import javafx.stage.Stage
+import javafx.util.converter.CurrencyStringConverter
 import kotfx.application.later
 import kotfx.beans.binding.booleanBindingOf
 import kotfx.beans.binding.or
@@ -33,13 +35,15 @@ import kotfx.beans.property.toProperty
 import kotfx.collections.emptyBinding
 import kotfx.coroutines.listener
 import kotfx.coroutines.onAction
+import kotfx.layouts.label
 import kotfx.layouts.menuItem
+import kotfx.listeners.cellFactory
 import kotfx.scene.control.customButton
 import kotfx.scene.control.infoAlert
 import kotfx.scene.screenshot
 import java.awt.Desktop.getDesktop
 import java.io.IOException
-import java.text.NumberFormat.getCurrencyInstance
+import java.util.Locale
 
 class WageRecordController : Controller() {
 
@@ -47,6 +51,8 @@ class WageRecordController : Controller() {
         const val EXTRA_STAGE = "EXTRA_STAGE"
         const val EXTRA_ATTENDEES = "EXTRA_ATTENDEES"
     }
+
+    private val converter = CurrencyStringConverter(Locale("in", "ID"))
 
     @FXML lateinit var undoButton: SplitMenuButton
     @FXML lateinit var timeBox: TimeBox
@@ -76,13 +82,21 @@ class WageRecordController : Controller() {
         recordTable.isShowRoot = false
 
         nameColumn.setCellValueFactory { it.value.value.displayedName.toProperty().asObservable() }
+        nameColumn.style()
         startColumn.setCellValueFactory { it.value.value.displayedStart }
+        startColumn.style()
         endColumn.setCellValueFactory { it.value.value.displayedEnd }
+        endColumn.style()
         dailyColumn.setCellValueFactory { it.value.value.dailyProperty.asObservable() }
+        dailyColumn.style()
         dailyIncomeColumn.setCellValueFactory { it.value.value.dailyIncomeProperty.asObservable() }
+        dailyIncomeColumn.style()
         overtimeColumn.setCellValueFactory { it.value.value.overtimeProperty.asObservable() }
+        overtimeColumn.style()
         overtimeIncomeColumn.setCellValueFactory { it.value.value.overtimeIncomeProperty.asObservable() }
+        overtimeIncomeColumn.style()
         totalColumn.setCellValueFactory { it.value.value.totalProperty.asObservable() }
+        totalColumn.style()
 
         later {
             getExtra<List<Attendee>>(EXTRA_ATTENDEES).forEach { attendee ->
@@ -97,11 +111,10 @@ class WageRecordController : Controller() {
                 }
             }
             getExtra<Stage>(EXTRA_STAGE).titleProperty().bind(stringBindingOf(*records.filter { it.isChild }.map { it.totalProperty }.toTypedArray()) {
-                getCurrencyInstance().format(records
+                "${getString(R.string.record)} - ${converter.toString(records
                     .filter { it.isTotal }
                     .map { it.totalProperty.value }
-                    .sum())
-                    .let { s -> "${getString(R.string.record)} - ${s.withoutCurrency()}" }
+                    .sum())}"
             })
         }
     }
@@ -175,6 +188,20 @@ class WageRecordController : Controller() {
             .showAndWait()
             .filter { it.buttonData == CANCEL_CLOSE }
             .ifPresent { getDesktop().open(WageContentFolder) }
+    }
+
+    private fun TreeTableColumn<Record, *>.style() = cellFactory {
+        onUpdateItem { any, empty ->
+            if (any != null && !empty) graphic = label(when {
+                this@style == dailyIncomeColumn || this@style == overtimeIncomeColumn || this@style == totalColumn -> converter.toString(any as Number)
+                else -> any.toString()
+            }) {
+                font = loadFont(getResourceString(when {
+                    treeTableRow.treeItem.value.isTotal -> R.font.opensans_bold
+                    else -> R.font.opensans_regular
+                }), 13.0)
+            }
+        }
     }
 
     private val records: List<Record> get() = recordTable.root.children.flatMap { it.children }.map { it.value }

@@ -15,6 +15,7 @@ import javafx.scene.image.ImageView
 import kotfx.beans.binding.bindingOf
 import kotfx.beans.binding.booleanBindingOf
 import kotfx.coroutines.listener
+import kotfx.coroutines.onAction
 import kotfx.layouts.ChildManager
 import kotfx.layouts.ItemManager
 import kotfx.layouts.LayoutDsl
@@ -45,7 +46,7 @@ open class TimeBox(prefill: LocalTime = MIDNIGHT) : _HBox() {
         alignment = CENTER
         spacings = 8
 
-        button(graphic = ImageView(R.image.btn_arrow_left)) { setOnAction { hourField.value-- } }
+        button(graphic = ImageView(R.image.btn_arrow_left)) { onAction { hourField.value-- } }
         hourField = intField {
             maxSize(width = 48)
             alignment = CENTER
@@ -57,7 +58,7 @@ open class TimeBox(prefill: LocalTime = MIDNIGHT) : _HBox() {
             alignment = CENTER
             valueProperty.listener { _, oldValue, value -> if (value !in 0 until 60) minuteField.value = oldValue.toInt() }
         }
-        button(graphic = ImageView(R.image.btn_arrow_right)) { setOnAction { hourField.value++ } }
+        button(graphic = ImageView(R.image.btn_arrow_right)) { onAction { hourField.value++ } }
 
         timeProperty.bind(bindingOf(hourField.valueProperty, minuteField.valueProperty) {
             try {

@@ -7,6 +7,7 @@ import com.hendraanggrian.openpss.time.toJava
 import javafx.geometry.Pos.CENTER
 import javafx.scene.control.DatePicker
 import javafx.scene.image.ImageView
+import kotfx.coroutines.onAction
 import kotfx.layouts.ChildManager
 import kotfx.layouts.ItemManager
 import kotfx.layouts.LayoutDsl
@@ -31,13 +32,13 @@ open class DateBox(prefill: LocalDate = now()) : _HBox() {
         alignment = CENTER
         spacings = 8
 
-        button(graphic = ImageView(R.image.btn_arrow_left)) { setOnAction { picker.value = picker.value.minusDays(1) } }
+        button(graphic = ImageView(R.image.btn_arrow_left)) { onAction { picker.value = picker.value.minusDays(1) } }
         picker = datePicker {
             value = prefill.toJava()
             isEditable = false
             maxSize(width = 116)
         }
-        button(graphic = ImageView(R.image.btn_arrow_right)) { setOnAction { picker.value = picker.value.plusDays(1) } }
+        button(graphic = ImageView(R.image.btn_arrow_right)) { onAction { picker.value = picker.value.plusDays(1) } }
     }
 }
 

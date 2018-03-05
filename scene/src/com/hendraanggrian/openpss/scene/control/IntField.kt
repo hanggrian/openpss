@@ -19,7 +19,7 @@ open class IntField : TextField() {
         textProperty().bindBidirectional(valueProperty) {
             fromString { it.toIntOrNull() ?: 0 }
         }
-        textProperty().listener { _, oldValue, value ->
+        textProperty().addListener { _, oldValue, value ->
             text = if (value.isEmpty()) "0" else value.toIntOrNull()?.toString() ?: oldValue
             end()
         }

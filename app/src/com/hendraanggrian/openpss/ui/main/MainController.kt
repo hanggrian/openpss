@@ -13,8 +13,8 @@ import javafx.scene.control.Menu
 import javafx.scene.control.MenuBar
 import javafx.scene.control.RadioMenuItem
 import javafx.scene.control.TabPane
-import kotfx.application.later
-import kotfx.coroutines.listener
+import kotlinfx.application.later
+import kotlinfx.coroutines.listener
 import org.apache.commons.lang3.SystemUtils.IS_OS_MAC
 
 class MainController : Controller() {
@@ -55,7 +55,7 @@ class MainController : Controller() {
 
     @FXML fun addCustomer() = customerController.add()
 
-    @FXML fun exit() = kotfx.application.exit()
+    @FXML fun exit() = kotlinfx.application.exit()
 
     @FXML fun navigate(event: ActionEvent) = tabPane.selectionModel.select(navigateMenu.items.indexOf(event.source))
 

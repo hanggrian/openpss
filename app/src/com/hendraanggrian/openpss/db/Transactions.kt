@@ -2,8 +2,8 @@ package com.hendraanggrian.openpss.db
 
 import com.hendraanggrian.openpss.BuildConfig.DEBUG
 import com.mongodb.MongoException
-import kotfx.application.exit
-import kotfx.scene.control.errorAlert
+import kotlinfx.application.exit
+import kotlinfx.scene.control.errorAlert
 import kotlinx.nosql.mongodb.MongoDBSession
 
 /**

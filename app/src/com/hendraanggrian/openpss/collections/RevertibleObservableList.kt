@@ -1,8 +1,8 @@
 package com.hendraanggrian.openpss.collections
 
 import javafx.collections.ObservableList
-import kotfx.collections.mutableObservableListOf
-import kotfx.collections.toMutableObservableList
+import kotlinfx.collections.mutableObservableListOf
+import kotlinfx.collections.toMutableObservableList
 
 class RevertibleObservableList<E>(
     private val actual: ObservableList<E> = mutableObservableListOf()

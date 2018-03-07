@@ -7,14 +7,14 @@ import com.hendraanggrian.openpss.ui.Resourced
 import javafx.scene.control.ButtonType.OK
 import javafx.scene.control.Dialog
 import javafx.scene.image.ImageView
-import kotfx.beans.binding.booleanBindingOf
-import kotfx.layouts.gridPane
-import kotfx.layouts.label
-import kotfx.scene.control.cancelButton
-import kotfx.scene.control.graphicIcon
-import kotfx.scene.control.headerTitle
-import kotfx.scene.control.okButton
-import kotfx.scene.layout.gaps
+import kotlinfx.beans.binding.booleanBindingOf
+import kotlinfx.layouts.gridPane
+import kotlinfx.layouts.label
+import kotlinfx.scene.control.cancelButton
+import kotlinfx.scene.control.graphicIcon
+import kotlinfx.scene.control.headerTitle
+import kotlinfx.scene.control.okButton
+import kotlinfx.scene.layout.gaps
 import org.joda.time.LocalTime
 
 class AddRecessDialog(resourced: Resourced) : Dialog<Pair<LocalTime, LocalTime>>(), Resourced by resourced {

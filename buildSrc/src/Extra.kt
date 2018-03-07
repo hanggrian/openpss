@@ -6,12 +6,12 @@ const val releaseVersion = "0.11"
 
 const val kotlinVersion = "1.2.30"
 const val nosqlVersion = "0.1-SNAPSHOT"
-const val coroutinesVersion = "0.22.3"
+const val coroutinesVersion = "0.22.4"
 
 const val rVersion = "0.7"
 const val buildconfigVersion = "0.11"
 const val packrVersion = "0.3"
-const val kotfxVersion = "0.35"
+const val kotlinFXVersion = "0.1"
 const val commonsLangVersion = "3.7"
 const val poiVersion = "3.17"
 
@@ -23,7 +23,9 @@ fun Dependency.commonsValidator() = "commons-validator:commons-validator:1.6"
 
 fun Dependency.guava() = "com.google.guava:guava:24.0-jre"
 
-fun Dependency.hendraanggrian(module: String, version: String) = "com.hendraanggrian:$module:$version"
+fun Dependency.hendraanggrian(repo: String?, module: String, version: String) = "com.hendraanggrian${repo?.let { ".$it" }
+    ?: ""}:$module:$version"
+
 inline val Plugin.r get() = id("r")
 inline val Plugin.buildconfig get() = id("buildconfig")
 inline val Plugin.packr get() = id("packr")

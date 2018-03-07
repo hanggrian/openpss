@@ -1,8 +1,8 @@
 package com.hendraanggrian.openpss
 
 import com.hendraanggrian.openpss.db.Database.login
-import com.hendraanggrian.openpss.db.dao.Employee
-import com.hendraanggrian.openpss.db.dao.PlateOrder
+import com.hendraanggrian.openpss.db.schema.Employee
+import com.hendraanggrian.openpss.db.schema.PlateOrder
 import com.hendraanggrian.openpss.db.schema.PlateOrders
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.io.properties.MongoFile

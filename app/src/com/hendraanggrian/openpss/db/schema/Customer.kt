@@ -1,11 +1,25 @@
-package com.hendraanggrian.openpss.db.dao
+package com.hendraanggrian.openpss.db.schema
 
 import com.hendraanggrian.openpss.db.Named
-import com.hendraanggrian.openpss.db.schema.Customers
+import com.hendraanggrian.openpss.db.NamedDocumentSchema
 import javafx.collections.ObservableList
-import kotfx.collections.observableListOf
+import kotlinfx.collections.observableListOf
 import kotlinx.nosql.Id
+import kotlinx.nosql.ListColumn
+import kotlinx.nosql.date
+import kotlinx.nosql.string
 import org.joda.time.LocalDate
+
+object Customers : NamedDocumentSchema<Customer>("customer", Customer::class) {
+    val note = string("note")
+    val since = date("since")
+    val contacts = ContactColumn()
+
+    class ContactColumn : ListColumn<Customer.Contact, Customers>("contacts", Customer.Contact::class) {
+        val type = string("type")
+        val value = string("value")
+    }
+}
 
 data class Customer @JvmOverloads constructor(
     override val name: String,

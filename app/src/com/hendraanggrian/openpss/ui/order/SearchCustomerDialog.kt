@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.ui.order
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.db.dao.Customer
+import com.hendraanggrian.openpss.db.schema.Customer
 import com.hendraanggrian.openpss.db.schema.Customers
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.ui.Resourced
@@ -10,16 +10,16 @@ import javafx.scene.control.Dialog
 import javafx.scene.control.ListView
 import javafx.scene.control.TextField
 import javafx.scene.image.ImageView
-import kotfx.application.later
-import kotfx.beans.binding.bindingOf
-import kotfx.collections.toMutableObservableList
-import kotfx.layouts.listView
-import kotfx.layouts.textField
-import kotfx.layouts.vbox
-import kotfx.scene.control.cancelButton
-import kotfx.scene.control.graphicIcon
-import kotfx.scene.control.headerTitle
-import kotfx.scene.control.okButton
+import kotlinfx.application.later
+import kotlinfx.beans.binding.bindingOf
+import kotlinfx.collections.toMutableObservableList
+import kotlinfx.layouts.listView
+import kotlinfx.layouts.textField
+import kotlinfx.layouts.vbox
+import kotlinfx.scene.control.cancelButton
+import kotlinfx.scene.control.graphicIcon
+import kotlinfx.scene.control.headerTitle
+import kotlinfx.scene.control.okButton
 import kotlinx.nosql.equal
 
 class SearchCustomerDialog(resourced: Resourced) : Dialog<Customer>(), Resourced by resourced {

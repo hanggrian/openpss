@@ -10,5 +10,6 @@ abstract class NamedDocumentSchema<D : Any>(
     valueClass: KClass<D>,
     discriminator: Discriminator<out Any, out kotlinx.nosql.DocumentSchema<String, D>>? = null
 ) : DocumentSchema<D>(name, valueClass, discriminator) {
+
     val name = string("name")
 }

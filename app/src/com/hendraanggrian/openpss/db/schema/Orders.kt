@@ -1,8 +1,8 @@
 package com.hendraanggrian.openpss.db.schema
 
-import com.hendraanggrian.openpss.db.dao.OffsetOrder
-import com.hendraanggrian.openpss.db.dao.PlateOrder
+import com.hendraanggrian.openpss.db.Ided
 import kotlinx.nosql.Discriminator
+import kotlinx.nosql.Id
 import kotlinx.nosql.double
 import kotlinx.nosql.id
 import kotlinx.nosql.integer
@@ -20,4 +20,20 @@ object PlateOrders : Orders<PlateOrder, PlateOrders>(PlateOrder::class, "plate")
     val plateId = id("plate_id", Plates)
     val qty = integer("qty")
     val price = double("price")
+}
+
+sealed class Order<D : Any, S : DocumentSchema<D>> : Ided<S> {
+    override lateinit var id: Id<String, S>
+    open var total: Double = 0.0
+}
+
+class OffsetOrder : Order<OffsetOrder, OffsetOrders>()
+
+data class PlateOrder(
+    var plateId: Id<String, Plates>?,
+    var qty: Int,
+    var price: Double,
+    override var total: Double
+) : Order<PlateOrder, PlateOrders>() {
+    override lateinit var id: Id<String, PlateOrders>
 }

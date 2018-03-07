@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.ui
 
 import com.hendraanggrian.openpss.Language
-import com.hendraanggrian.openpss.db.dao.Employee
+import com.hendraanggrian.openpss.db.schema.Employee
 import com.hendraanggrian.openpss.io.properties.ConfigFile
 import javafx.fxml.FXML
 import java.util.ResourceBundle

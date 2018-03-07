@@ -1,8 +1,15 @@
-package com.hendraanggrian.openpss.db.dao
+package com.hendraanggrian.openpss.db.schema
 
 import com.hendraanggrian.openpss.db.Named
-import com.hendraanggrian.openpss.db.schema.Employees
+import com.hendraanggrian.openpss.db.NamedDocumentSchema
 import kotlinx.nosql.Id
+import kotlinx.nosql.boolean
+import kotlinx.nosql.string
+
+object Employees : NamedDocumentSchema<Employee>("employee", Employee::class) {
+    val password = string("password")
+    val fullAccess = boolean("full_access")
+}
 
 open class Employee(
     override val name: String,

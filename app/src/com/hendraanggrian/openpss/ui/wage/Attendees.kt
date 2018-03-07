@@ -5,8 +5,8 @@ import com.hendraanggrian.openpss.ui.Resourced
 import com.hendraanggrian.openpss.ui.wage.Record.Companion.INDEX_NODE
 import com.hendraanggrian.openpss.ui.wage.Record.Companion.INDEX_TOTAL
 import com.hendraanggrian.openpss.util.round
-import kotfx.beans.binding.doubleBindingOf
-import kotfx.beans.property.toProperty
+import kotlinfx.beans.binding.doubleBindingOf
+import kotlinfx.beans.property.toProperty
 import org.joda.time.DateTime.now
 
 fun Attendee.toNodeRecord(resourced: Resourced): Record = Record(resourced, INDEX_NODE, this, now().toProperty(), now().toProperty())

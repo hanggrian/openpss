@@ -29,9 +29,7 @@ val ktlint by configurations.creating
 dependencies {
     compile(kotlin("stdlib", kotlinVersion))
     compile(kotlinx("coroutines-javafx", coroutinesVersion))
-    compile(hendraanggrian("kotfx-layouts", kotfxVersion))
-    compile(hendraanggrian("kotfx-listeners", kotfxVersion))
-    compile(hendraanggrian("kotfx-coroutines", kotfxVersion))
+    compile(hendraanggrian("kotlinfx", "kotlinfx", kotlinFXVersion))
     compile(jodaTime())
     compile(commonsValidator())
     ktlint(ktlint())

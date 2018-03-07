@@ -11,25 +11,25 @@ import javafx.scene.control.Dialog
 import javafx.scene.control.ListView
 import javafx.scene.image.Image
 import javafx.scene.text.Font.loadFont
-import kotfx.beans.binding.and
-import kotfx.beans.binding.booleanBindingOf
-import kotfx.beans.binding.stringBindingOf
-import kotfx.collections.toObservableList
-import kotfx.coroutines.onAction
-import kotfx.layouts.button
-import kotfx.layouts.hbox
-import kotfx.layouts.imageView
-import kotfx.layouts.label
-import kotfx.layouts.text
-import kotfx.layouts.textFlow
-import kotfx.layouts.titledPane
-import kotfx.layouts.vbox
-import kotfx.listeners.cellFactory
-import kotfx.scene.control.closeButton
-import kotfx.scene.control.customButton
-import kotfx.scene.control.icon
-import kotfx.scene.layout.paddings
-import kotfx.scene.layout.prefSize
+import kotlinfx.beans.binding.and
+import kotlinfx.beans.binding.booleanBindingOf
+import kotlinfx.beans.binding.stringBindingOf
+import kotlinfx.collections.toObservableList
+import kotlinfx.coroutines.onAction
+import kotlinfx.layouts.button
+import kotlinfx.layouts.hbox
+import kotlinfx.layouts.imageView
+import kotlinfx.layouts.label
+import kotlinfx.layouts.text
+import kotlinfx.layouts.textFlow
+import kotlinfx.layouts.titledPane
+import kotlinfx.layouts.vbox
+import kotlinfx.listeners.cellFactory
+import kotlinfx.scene.control.closeButton
+import kotlinfx.scene.control.customButton
+import kotlinfx.scene.control.icon
+import kotlinfx.scene.layout.paddings
+import kotlinfx.scene.layout.prefSize
 import java.awt.Desktop.getDesktop
 import java.net.URI
 
@@ -65,12 +65,12 @@ class AboutDialog(resourced: Resourced) : Dialog<Unit>(), Resourced by resourced
         }
         lateinit var listView: ListView<License>
         dialogPane.expandableContent = hbox {
-            listView = kotfx.layouts.listView {
+            listView = kotlinfx.layouts.listView {
                 prefSize(height = 256)
                 items = License.values().toObservableList()
                 cellFactory {
                     onUpdateItem { license, empty ->
-                        if (license != null && !empty) graphic = kotfx.layouts.vbox {
+                        if (license != null && !empty) graphic = kotlinfx.layouts.vbox {
                             label(license.repo) { font = loadFont(getResourceString(R.font.opensans_regular), 12.0) }
                             label(license.owner) { font = loadFont(getResourceString(R.font.opensans_bold), 12.0) }
                         }
@@ -78,7 +78,7 @@ class AboutDialog(resourced: Resourced) : Dialog<Unit>(), Resourced by resourced
                 }
             }
             titledPane(getString(R.string.open_source_software), listView) { isCollapsible = false }
-            titledPane(getString(R.string.license), kotfx.layouts.textArea {
+            titledPane(getString(R.string.license), kotlinfx.layouts.textArea {
                 prefSize(height = 256)
                 isEditable = false
                 textProperty().bind(stringBindingOf(listView.selectionModel.selectedIndexProperty()) {

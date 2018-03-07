@@ -1,13 +1,13 @@
 package com.hendraanggrian.openpss.ui.wage
 
-import com.hendraanggrian.openpss.db.dao.Recess
+import com.hendraanggrian.openpss.db.schema.Recess
 import com.hendraanggrian.openpss.db.schema.Recesses
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.time.PATTERN_TIME
 import com.hendraanggrian.openpss.ui.SimpleTableController
 import javafx.fxml.FXML
 import javafx.scene.control.TableColumn
-import kotfx.beans.property.toProperty
+import kotlinfx.beans.property.toProperty
 
 class WageRecessController : SimpleTableController<Recess, Recesses>(Recesses) {
 

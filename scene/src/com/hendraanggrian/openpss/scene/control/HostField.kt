@@ -5,11 +5,11 @@ package com.hendraanggrian.openpss.scene.control
 import javafx.beans.property.BooleanProperty
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.scene.control.TextField
-import kotfx.beans.binding.booleanBindingOf
-import kotfx.coroutines.listener
-import kotfx.layouts.ChildManager
-import kotfx.layouts.ItemManager
-import kotfx.layouts.LayoutDsl
+import kotlinfx.beans.binding.booleanBindingOf
+import kotlinfx.coroutines.listener
+import kotlinfx.layouts.ChildManager
+import kotlinfx.layouts.ItemManager
+import kotlinfx.layouts.LayoutDsl
 import org.apache.commons.validator.routines.InetAddressValidator.getInstance
 
 /** Field that display IP address. */

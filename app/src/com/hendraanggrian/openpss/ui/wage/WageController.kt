@@ -42,39 +42,39 @@ import javafx.scene.layout.Priority.ALWAYS
 import javafx.scene.layout.StackPane
 import javafx.scene.text.Font.font
 import javafx.stage.Modality.APPLICATION_MODAL
-import kotfx.application.later
-import kotfx.beans.binding.bindingOf
-import kotfx.beans.binding.booleanBindingOf
-import kotfx.beans.binding.lessEq
-import kotfx.beans.binding.or
-import kotfx.beans.binding.stringBindingOf
-import kotfx.collections.emptyBinding
-import kotfx.collections.sizeBinding
-import kotfx.collections.sort
-import kotfx.coroutines.FX
-import kotfx.coroutines.listener
-import kotfx.coroutines.onAction
-import kotfx.coroutines.onKeyPressed
-import kotfx.layouts.borderPane
-import kotfx.layouts.checkBox
-import kotfx.layouts.contextMenu
-import kotfx.layouts.gridPane
-import kotfx.layouts.imageView
-import kotfx.layouts.label
-import kotfx.layouts.listView
-import kotfx.layouts.menuItem
-import kotfx.layouts.separatorMenuItem
-import kotfx.layouts.titledPane
-import kotfx.layouts.vbox
-import kotfx.listeners.cellFactory
-import kotfx.scene.control.errorAlert
-import kotfx.scene.layout.gaps
-import kotfx.scene.layout.maxSize
-import kotfx.scene.layout.paddings
-import kotfx.scene.layout.prefSize
-import kotfx.stage.fileChooser
-import kotfx.stage.minSize
-import kotfx.stage.stage
+import kotlinfx.application.later
+import kotlinfx.beans.binding.bindingOf
+import kotlinfx.beans.binding.booleanBindingOf
+import kotlinfx.beans.binding.lessEq
+import kotlinfx.beans.binding.or
+import kotlinfx.beans.binding.stringBindingOf
+import kotlinfx.collections.emptyBinding
+import kotlinfx.collections.sizeBinding
+import kotlinfx.collections.sort
+import kotlinfx.coroutines.FX
+import kotlinfx.coroutines.listener
+import kotlinfx.coroutines.onAction
+import kotlinfx.coroutines.onKeyPressed
+import kotlinfx.layouts.borderPane
+import kotlinfx.layouts.checkBox
+import kotlinfx.layouts.contextMenu
+import kotlinfx.layouts.gridPane
+import kotlinfx.layouts.imageView
+import kotlinfx.layouts.label
+import kotlinfx.layouts.listView
+import kotlinfx.layouts.menuItem
+import kotlinfx.layouts.separatorMenuItem
+import kotlinfx.layouts.titledPane
+import kotlinfx.layouts.vbox
+import kotlinfx.listeners.cellFactory
+import kotlinfx.scene.control.errorAlert
+import kotlinfx.scene.layout.gaps
+import kotlinfx.scene.layout.maxSize
+import kotlinfx.scene.layout.paddings
+import kotlinfx.scene.layout.prefSize
+import kotlinfx.stage.fileChooser
+import kotlinfx.stage.minSize
+import kotlinfx.stage.stage
 import kotlinx.coroutines.experimental.delay
 import kotlinx.coroutines.experimental.launch
 import org.joda.time.DateTime
@@ -125,7 +125,7 @@ class WageController : Controller() {
         scrollPane.content = borderPane {
             prefWidthProperty().bind(scrollPane.widthProperty())
             prefHeightProperty().bind(scrollPane.heightProperty())
-            center = kotfx.layouts.progressIndicator { maxSize = 128 }
+            center = kotlinfx.layouts.progressIndicator { maxSize = 128 }
         }
         flowPane.children.clear()
         launch {
@@ -180,7 +180,7 @@ class WageController : Controller() {
                                     prefSize(width = 128)
                                     cellFactory {
                                         onUpdateItem { dateTime, empty ->
-                                            if (dateTime != null && !empty) graphic = kotfx.layouts.hbox {
+                                            if (dateTime != null && !empty) graphic = kotlinfx.layouts.hbox {
                                                 val index = listView.items.indexOf(dateTime)
                                                 alignment = if (index % 2 == 0) BOTTOM_CENTER else TOP_CENTER
                                                 val itemLabel = label(dateTime.toString(PATTERN_DATETIME_EXTENDED)) { maxWidth = Double.MAX_VALUE } hpriority ALWAYS

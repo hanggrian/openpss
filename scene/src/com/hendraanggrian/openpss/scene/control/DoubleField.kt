@@ -7,12 +7,12 @@ import javafx.beans.property.DoubleProperty
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleDoubleProperty
 import javafx.scene.control.TextField
-import kotfx.beans.binding.booleanBindingOf
-import kotfx.coroutines.listener
-import kotfx.layouts.ChildManager
-import kotfx.layouts.ItemManager
-import kotfx.layouts.LayoutDsl
-import kotfx.listeners.bindBidirectional
+import kotlinfx.beans.binding.booleanBindingOf
+import kotlinfx.coroutines.listener
+import kotlinfx.layouts.ChildManager
+import kotlinfx.layouts.ItemManager
+import kotlinfx.layouts.LayoutDsl
+import kotlinfx.listeners.bindBidirectional
 
 open class DoubleField : TextField() {
 

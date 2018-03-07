@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.ui.wage
 
 import javafx.collections.ObservableSet
-import kotfx.collections.mutableObservableSetOf
+import kotlinfx.collections.mutableObservableSetOf
 
 /** Defines an execution that can be undone. */
 data class Undoable(

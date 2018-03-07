@@ -1,12 +1,18 @@
-package com.hendraanggrian.openpss.db.dao
+package com.hendraanggrian.openpss.db.schema
 
 import com.hendraanggrian.openpss.db.Ided
-import com.hendraanggrian.openpss.db.schema.Recesses
 import com.hendraanggrian.openpss.time.PATTERN_TIME
 import kotlinx.nosql.Id
+import kotlinx.nosql.mongodb.DocumentSchema
+import kotlinx.nosql.time
 import org.joda.time.DateTime
 import org.joda.time.Interval
 import org.joda.time.LocalTime
+
+object Recesses : DocumentSchema<Recess>("recess", Recess::class) {
+    val start = time("start")
+    val end = time("end")
+}
 
 data class Recess(
     var start: LocalTime,

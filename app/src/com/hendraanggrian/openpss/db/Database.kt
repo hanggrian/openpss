@@ -2,12 +2,12 @@ package com.hendraanggrian.openpss.db
 
 import com.hendraanggrian.openpss.BuildConfig.ARTIFACT
 import com.hendraanggrian.openpss.collections.isEmpty
-import com.hendraanggrian.openpss.db.dao.Config
-import com.hendraanggrian.openpss.db.dao.Config.Companion.TIMEZONE_CONTINENT
-import com.hendraanggrian.openpss.db.dao.Config.Companion.TIMEZONE_CONTINENT_DEFAULT
-import com.hendraanggrian.openpss.db.dao.Config.Companion.TIMEZONE_COUNTRIES
-import com.hendraanggrian.openpss.db.dao.Config.Companion.TIMEZONE_COUNTRIES_DEFAULT
-import com.hendraanggrian.openpss.db.dao.Employee
+import com.hendraanggrian.openpss.db.schema.Config
+import com.hendraanggrian.openpss.db.schema.Config.Companion.TIMEZONE_CONTINENT
+import com.hendraanggrian.openpss.db.schema.Config.Companion.TIMEZONE_CONTINENT_DEFAULT
+import com.hendraanggrian.openpss.db.schema.Config.Companion.TIMEZONE_COUNTRIES
+import com.hendraanggrian.openpss.db.schema.Config.Companion.TIMEZONE_COUNTRIES_DEFAULT
+import com.hendraanggrian.openpss.db.schema.Employee
 import com.hendraanggrian.openpss.db.schema.Configs
 import com.hendraanggrian.openpss.db.schema.Customers
 import com.hendraanggrian.openpss.db.schema.Employees

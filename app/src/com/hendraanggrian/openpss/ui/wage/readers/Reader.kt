@@ -3,7 +3,7 @@ package com.hendraanggrian.openpss.ui.wage.readers
 import com.hendraanggrian.openpss.ui.wage.Attendee
 import javafx.collections.ObservableList
 import javafx.stage.FileChooser
-import kotfx.collections.observableListOf
+import kotlinfx.collections.observableListOf
 import java.io.File
 
 /** A file readers that generates collection of [Attendee] given input file. */

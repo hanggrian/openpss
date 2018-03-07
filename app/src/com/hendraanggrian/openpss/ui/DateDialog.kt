@@ -7,11 +7,11 @@ import javafx.scene.control.ButtonType.OK
 import javafx.scene.control.DatePicker
 import javafx.scene.control.Dialog
 import javafx.scene.image.ImageView
-import kotfx.application.later
-import kotfx.scene.control.cancelButton
-import kotfx.scene.control.graphicIcon
-import kotfx.scene.control.headerTitle
-import kotfx.scene.control.okButton
+import kotlinfx.application.later
+import kotlinfx.scene.control.cancelButton
+import kotlinfx.scene.control.graphicIcon
+import kotlinfx.scene.control.headerTitle
+import kotlinfx.scene.control.okButton
 import org.joda.time.LocalDate
 import org.joda.time.LocalDate.now
 

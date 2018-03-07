@@ -1,14 +1,14 @@
 package com.hendraanggrian.openpss.ui.order
 
-import com.hendraanggrian.openpss.db.dao.Plate
+import com.hendraanggrian.openpss.db.schema.Plate
 import com.hendraanggrian.openpss.db.schema.Plates
 import com.hendraanggrian.openpss.db.transaction
 import javafx.fxml.FXML
 import javafx.scene.control.TableColumn
-import kotfx.beans.property.asObservable
-import kotfx.beans.property.toProperty
-import kotfx.coroutines.onEditCommit
-import kotfx.listeners.textFieldCellFactory
+import kotlinfx.beans.property.asObservable
+import kotlinfx.beans.property.toProperty
+import kotlinfx.coroutines.onEditCommit
+import kotlinfx.listeners.textFieldCellFactory
 import kotlinx.nosql.equal
 import kotlinx.nosql.update
 

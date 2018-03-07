@@ -10,9 +10,9 @@ buildscript {
     }
     dependencies {
         classpath(kotlin("gradle-plugin", kotlinVersion))
-        classpath(hendraanggrian("r", rVersion))
-        classpath(hendraanggrian("buildconfig", buildconfigVersion))
-        classpath(hendraanggrian("packr", packrVersion))
+        classpath(hendraanggrian(null, "r", rVersion))
+        classpath(hendraanggrian(null, "buildconfig", buildconfigVersion))
+        classpath(hendraanggrian(null, "packr", packrVersion))
         classpath(shadow())
         classpath(junitPlatform("gradle-plugin"))
     }
@@ -22,6 +22,7 @@ allprojects {
     repositories {
         jcenter()
         maven("http://repository.jetbrains.com/kotlin-nosql")
+        maven("https://dl.bintray.com/hendraanggrian/kotlinfx/")
     }
     tasks.withType<Delete> {
         delete(projectDir.resolve("out"))

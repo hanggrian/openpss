@@ -13,10 +13,10 @@ import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleDoubleProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.beans.property.StringProperty
-import kotfx.beans.binding.doubleBindingOf
-import kotfx.beans.binding.plus
-import kotfx.beans.binding.stringBindingOf
-import kotfx.beans.property.toProperty
+import kotlinfx.beans.binding.doubleBindingOf
+import kotlinfx.beans.binding.plus
+import kotlinfx.beans.binding.stringBindingOf
+import kotlinfx.beans.property.toProperty
 import org.joda.time.DateTime
 import org.joda.time.LocalTime
 import kotlin.math.absoluteValue

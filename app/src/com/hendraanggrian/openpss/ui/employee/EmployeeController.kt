@@ -1,8 +1,8 @@
 package com.hendraanggrian.openpss.ui.employee
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.db.dao.Employee
-import com.hendraanggrian.openpss.db.dao.Employee.Companion.DEFAULT_PASSWORD
+import com.hendraanggrian.openpss.db.schema.Employee
+import com.hendraanggrian.openpss.db.schema.Employee.Companion.DEFAULT_PASSWORD
 import com.hendraanggrian.openpss.db.schema.Employees
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.ui.AddUserDialog
@@ -16,13 +16,13 @@ import javafx.scene.control.ButtonType.NO
 import javafx.scene.control.ButtonType.YES
 import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
-import kotfx.application.exit
-import kotfx.beans.property.toProperty
-import kotfx.collections.toMutableObservableList
-import kotfx.coroutines.onEditCommit
-import kotfx.scene.control.choiceBoxCellFactory
-import kotfx.scene.control.confirmAlert
-import kotfx.scene.control.infoAlert
+import kotlinfx.application.exit
+import kotlinfx.beans.property.toProperty
+import kotlinfx.collections.toMutableObservableList
+import kotlinfx.coroutines.onEditCommit
+import kotlinfx.scene.control.choiceBoxCellFactory
+import kotlinfx.scene.control.confirmAlert
+import kotlinfx.scene.control.infoAlert
 import kotlinx.nosql.equal
 import kotlinx.nosql.mongodb.MongoDBSession
 import kotlinx.nosql.update

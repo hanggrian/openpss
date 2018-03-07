@@ -2,7 +2,7 @@ package com.hendraanggrian.openpss
 
 import com.hendraanggrian.openpss.BuildConfig.APP_NAME
 import com.hendraanggrian.openpss.BuildConfig.DEBUG
-import com.hendraanggrian.openpss.db.dao.Employee
+import com.hendraanggrian.openpss.db.schema.Employee
 import com.hendraanggrian.openpss.db.schema.Employees
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.io.properties.ConfigFile
@@ -17,10 +17,10 @@ import javafx.fxml.FXMLLoader
 import javafx.scene.Scene
 import javafx.scene.image.Image
 import javafx.stage.Stage
-import kotfx.application.deploy
-import kotfx.scene.control.infoAlert
-import kotfx.stage.icon
-import kotfx.stage.minSize
+import kotlinfx.application.deploy
+import kotlinfx.scene.control.infoAlert
+import kotlinfx.stage.icon
+import kotlinfx.stage.minSize
 import kotlinx.nosql.equal
 import kotlinx.nosql.update
 import org.apache.log4j.BasicConfigurator.configure

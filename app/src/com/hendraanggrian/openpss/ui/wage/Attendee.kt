@@ -2,14 +2,14 @@ package com.hendraanggrian.openpss.ui.wage
 
 import com.hendraanggrian.openpss.collections.RevertibleObservableList
 import com.hendraanggrian.openpss.collections.isEmpty
-import com.hendraanggrian.openpss.db.dao.Recess
-import com.hendraanggrian.openpss.db.dao.Wage
+import com.hendraanggrian.openpss.db.schema.Recess
+import com.hendraanggrian.openpss.db.schema.Wage
 import com.hendraanggrian.openpss.db.schema.Wages
 import com.hendraanggrian.openpss.db.transaction
 import javafx.beans.property.IntegerProperty
 import javafx.beans.property.SimpleIntegerProperty
 import javafx.collections.ObservableList
-import kotfx.collections.mutableObservableListOf
+import kotlinfx.collections.mutableObservableListOf
 import kotlinx.nosql.equal
 import kotlinx.nosql.update
 import org.joda.time.DateTime

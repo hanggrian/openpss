@@ -7,16 +7,16 @@ import javafx.scene.control.Dialog
 import javafx.scene.control.PasswordField
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
-import kotfx.application.later
-import kotfx.beans.binding.neq
-import kotfx.beans.binding.or
-import kotfx.layouts.gridPane
-import kotfx.layouts.label
-import kotfx.layouts.passwordField
-import kotfx.scene.control.cancelButton
-import kotfx.scene.control.icon
-import kotfx.scene.control.okButton
-import kotfx.scene.layout.gaps
+import kotlinfx.application.later
+import kotlinfx.beans.binding.neq
+import kotlinfx.beans.binding.or
+import kotlinfx.layouts.gridPane
+import kotlinfx.layouts.label
+import kotlinfx.layouts.passwordField
+import kotlinfx.scene.control.cancelButton
+import kotlinfx.scene.control.icon
+import kotlinfx.scene.control.okButton
+import kotlinfx.scene.layout.gaps
 
 class ResetPasswordDialog(resourced: Resourced) : Dialog<String>(), Resourced by resourced {
 

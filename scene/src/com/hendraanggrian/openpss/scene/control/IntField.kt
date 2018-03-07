@@ -5,11 +5,11 @@ package com.hendraanggrian.openpss.scene.control
 import javafx.beans.property.IntegerProperty
 import javafx.beans.property.SimpleIntegerProperty
 import javafx.scene.control.TextField
-import kotfx.coroutines.listener
-import kotfx.layouts.ChildManager
-import kotfx.layouts.ItemManager
-import kotfx.layouts.LayoutDsl
-import kotfx.listeners.bindBidirectional
+import kotlinfx.coroutines.listener
+import kotlinfx.layouts.ChildManager
+import kotlinfx.layouts.ItemManager
+import kotlinfx.layouts.LayoutDsl
+import kotlinfx.listeners.bindBidirectional
 
 open class IntField : TextField() {
 

@@ -21,33 +21,33 @@ import javafx.scene.control.TextField
 import javafx.scene.control.Tooltip
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
-import kotfx.application.exit
-import kotfx.application.later
-import kotfx.beans.binding.`else`
-import kotfx.beans.binding.`if`
-import kotfx.beans.binding.bindingOf
-import kotfx.beans.binding.or
-import kotfx.beans.binding.then
-import kotfx.collections.toObservableList
-import kotfx.coroutines.FX
-import kotfx.coroutines.listener
-import kotfx.coroutines.onAction
-import kotfx.layouts.choiceBox
-import kotfx.layouts.gridPane
-import kotfx.layouts.hbox
-import kotfx.layouts.hyperlink
-import kotfx.layouts.label
-import kotfx.layouts.passwordField
-import kotfx.layouts.textField
-import kotfx.layouts.toggleButton
-import kotfx.layouts.tooltip
-import kotfx.scene.control.cancelButton
-import kotfx.scene.control.customButton
-import kotfx.scene.control.errorAlert
-import kotfx.scene.control.icon
-import kotfx.scene.control.infoAlert
-import kotfx.scene.layout.gaps
-import kotfx.scene.layout.prefSize
+import kotlinfx.application.exit
+import kotlinfx.application.later
+import kotlinfx.beans.binding.`else`
+import kotlinfx.beans.binding.`if`
+import kotlinfx.beans.binding.bindingOf
+import kotlinfx.beans.binding.or
+import kotlinfx.beans.binding.then
+import kotlinfx.collections.toObservableList
+import kotlinfx.coroutines.FX
+import kotlinfx.coroutines.listener
+import kotlinfx.coroutines.onAction
+import kotlinfx.layouts.choiceBox
+import kotlinfx.layouts.gridPane
+import kotlinfx.layouts.hbox
+import kotlinfx.layouts.hyperlink
+import kotlinfx.layouts.label
+import kotlinfx.layouts.passwordField
+import kotlinfx.layouts.textField
+import kotlinfx.layouts.toggleButton
+import kotlinfx.layouts.tooltip
+import kotlinfx.scene.control.cancelButton
+import kotlinfx.scene.control.customButton
+import kotlinfx.scene.control.errorAlert
+import kotlinfx.scene.control.icon
+import kotlinfx.scene.control.infoAlert
+import kotlinfx.scene.layout.gaps
+import kotlinfx.scene.layout.prefSize
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.launch
 
@@ -91,7 +91,7 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced 
             passwordField = passwordField { promptText = getString(R.string.password) } col 1 row 2
             toggleButton {
                 tooltip(getString(R.string.see_password))
-                graphic = kotfx.layouts.imageView { imageProperty().bind(`if`(this@toggleButton.selectedProperty()) then Image(R.image.btn_visibility) `else` Image(R.image.btn_visibility_off)) }
+                graphic = kotlinfx.layouts.imageView { imageProperty().bind(`if`(this@toggleButton.selectedProperty()) then Image(R.image.btn_visibility) `else` Image(R.image.btn_visibility_off)) }
                 passwordField.tooltipProperty().bind(bindingOf(passwordField.textProperty(), selectedProperty()) { if (!isSelected) null else Tooltip(passwordField.text) })
             } col 2 row 2
         }

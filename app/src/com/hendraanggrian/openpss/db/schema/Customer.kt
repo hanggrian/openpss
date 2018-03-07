@@ -1,6 +1,7 @@
 package com.hendraanggrian.openpss.db.schema
 
-import com.hendraanggrian.openpss.db.Named
+import com.hendraanggrian.openpss.db.Document2
+import com.hendraanggrian.openpss.db.NamedDocument
 import com.hendraanggrian.openpss.db.NamedDocumentSchema
 import javafx.collections.ObservableList
 import kotlinfx.collections.observableListOf
@@ -9,6 +10,7 @@ import kotlinx.nosql.ListColumn
 import kotlinx.nosql.date
 import kotlinx.nosql.string
 import org.joda.time.LocalDate
+import org.joda.time.LocalDate.now
 
 object Customers : NamedDocumentSchema<Customer>("customer", Customer::class) {
     val note = string("note")
@@ -24,22 +26,22 @@ object Customers : NamedDocumentSchema<Customer>("customer", Customer::class) {
 data class Customer @JvmOverloads constructor(
     override val name: String,
     var note: String = "",
-    var since: LocalDate = LocalDate.now(),
+    var since: LocalDate = now(),
     var contacts: List<Contact> = listOf()
-) : Named<Customers> {
+) : Document2<Customers>(), NamedDocument<Customers> {
     override lateinit var id: Id<String, Customers>
+
+    override fun toString(): String = name
 
     data class Contact(
         var type: String,
         var value: String
-    )
+    ) {
+        companion object {
+            private const val TYPE_EMAIL = "email"
+            private const val TYPE_PHONE = "phone"
 
-    override fun toString(): String = name
-
-    companion object {
-        private const val TYPE_EMAIL = "email"
-        private const val TYPE_PHONE = "phone"
-
-        fun listAllTypes(): ObservableList<String> = observableListOf(TYPE_EMAIL, TYPE_PHONE)
+            fun listTypes(): ObservableList<String> = observableListOf(TYPE_EMAIL, TYPE_PHONE)
+        }
     }
 }

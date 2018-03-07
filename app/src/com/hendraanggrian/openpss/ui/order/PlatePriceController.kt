@@ -28,5 +28,5 @@ class PlatePriceController : PriceController<Plate, Plates>(Plates) {
         }
     }
 
-    override fun newPrice(name: String): Plate = Plate(name, 0.0)
+    override fun newPrice(name: String): Plate = Plate(name)
 }

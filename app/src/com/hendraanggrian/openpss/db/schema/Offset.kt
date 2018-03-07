@@ -1,6 +1,6 @@
 package com.hendraanggrian.openpss.db.schema
 
-import com.hendraanggrian.openpss.db.Named
+import com.hendraanggrian.openpss.db.NamedDocument
 import com.hendraanggrian.openpss.db.NamedDocumentSchema
 import kotlinx.nosql.Id
 import kotlinx.nosql.double
@@ -12,12 +12,12 @@ object Offsets : NamedDocumentSchema<Offset>("offset", Offset::class) {
     val excessPrice = double("excess_price")
 }
 
-data class Offset(
+data class Offset @JvmOverloads constructor(
     override var name: String,
-    var minAmount: Int,
-    var minPrice: Double,
-    var excessPrice: Double
-) : Named<Offsets> {
+    var minAmount: Int = DEFAULT_AMOUNT,
+    var minPrice: Double = 0.0,
+    var excessPrice: Double = 0.0
+) : NamedDocument<Offsets> {
     override lateinit var id: Id<String, Offsets>
 
     companion object {

@@ -59,7 +59,7 @@ class EmployeeController : Controller(), Refreshable {
 
     @FXML
     fun add() = AddUserDialog(this, getString(R.string.add_employee)).showAndWait().ifPresent { name ->
-        val employee = Employee(name.tidy(), DEFAULT_PASSWORD, false)
+        val employee = Employee(name.tidy())
         employee.id = transaction { Employees.insert(employee) }!!
         employeeTable.items.add(employee)
         employeeTable.selectionModel.select(employee)

@@ -1,6 +1,6 @@
 package com.hendraanggrian.openpss.db.schema
 
-import com.hendraanggrian.openpss.db.Ided
+import com.hendraanggrian.openpss.db.Document
 import kotlinx.nosql.Id
 import kotlinx.nosql.integer
 import kotlinx.nosql.mongodb.DocumentSchema
@@ -15,6 +15,6 @@ data class Wage(
     var wageId: Int,
     var daily: Int,
     var hourlyOvertime: Int
-) : Ided<Wages> {
+) : Document<Wages> {
     override lateinit var id: Id<String, Wages>
 }

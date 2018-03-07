@@ -1,6 +1,6 @@
 package com.hendraanggrian.openpss.db.schema
 
-import com.hendraanggrian.openpss.db.Ided
+import com.hendraanggrian.openpss.db.Document
 import kotlinx.nosql.Id
 import kotlinx.nosql.boolean
 import kotlinx.nosql.dateTime
@@ -27,6 +27,6 @@ data class Receipt(
     val note: String,
     val paid: Double,
     val printed: Boolean
-) : Ided<Receipts> {
+) : Document<Receipts> {
     override lateinit var id: Id<String, Receipts>
 }

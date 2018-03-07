@@ -7,9 +7,9 @@ import com.hendraanggrian.openpss.db.schema.Config.Companion.TIMEZONE_CONTINENT
 import com.hendraanggrian.openpss.db.schema.Config.Companion.TIMEZONE_CONTINENT_DEFAULT
 import com.hendraanggrian.openpss.db.schema.Config.Companion.TIMEZONE_COUNTRIES
 import com.hendraanggrian.openpss.db.schema.Config.Companion.TIMEZONE_COUNTRIES_DEFAULT
-import com.hendraanggrian.openpss.db.schema.Employee
 import com.hendraanggrian.openpss.db.schema.Configs
 import com.hendraanggrian.openpss.db.schema.Customers
+import com.hendraanggrian.openpss.db.schema.Employee
 import com.hendraanggrian.openpss.db.schema.Employees
 import com.hendraanggrian.openpss.db.schema.OffsetOrders
 import com.hendraanggrian.openpss.db.schema.Offsets
@@ -37,7 +37,7 @@ object Database {
         INSTANCE = connect(host, port, user, password).await()
         transaction {
             // add default employee
-            if (Employees.find { name.equal(Employee.name) }.isEmpty()) Employees.insert(Employee)
+            if (Employees.find { name.equal(Employee.BACKDOOR.name) }.isEmpty()) Employees.insert(Employee.BACKDOOR)
 
             // check timezone
             var timezoneContinent = Configs.find { key.equal(TIMEZONE_CONTINENT) }.firstOrNull()

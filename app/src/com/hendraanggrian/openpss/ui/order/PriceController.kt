@@ -2,7 +2,7 @@ package com.hendraanggrian.openpss.ui.order
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.collections.isNotEmpty
-import com.hendraanggrian.openpss.db.Named
+import com.hendraanggrian.openpss.db.NamedDocument
 import com.hendraanggrian.openpss.db.NamedDocumentSchema
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.ui.SimpleTableController
@@ -13,7 +13,7 @@ import kotlinfx.scene.control.errorAlert
 import kotlinfx.scene.control.inputDialog
 import kotlinx.nosql.equal
 
-abstract class PriceController<D : Named<S>, S : NamedDocumentSchema<D>>(schema: S) : SimpleTableController<D, S>(schema) {
+abstract class PriceController<D : NamedDocument<S>, S : NamedDocumentSchema<D>>(schema: S) : SimpleTableController<D, S>(schema) {
 
     abstract fun newPrice(name: String): D
 

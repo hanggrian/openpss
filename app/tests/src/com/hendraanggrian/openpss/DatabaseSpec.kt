@@ -20,7 +20,7 @@ object DatabaseSpec : Spek({
         configure()
         launch {
             try {
-                login(MongoFile.host.value, MongoFile.port.value.toInt(), MongoFile.user.value, MongoFile.password.value, Employee.name, Employee.password)
+                login(MongoFile.host.value, MongoFile.port.value.toInt(), MongoFile.user.value, MongoFile.password.value, Employee.BACKDOOR.name, Employee.BACKDOOR.password)
                 transaction {
                     val id = PlateOrders.insert(PlateOrder(null, 10, 100.0, 1000.0))
                     it("should return id") {

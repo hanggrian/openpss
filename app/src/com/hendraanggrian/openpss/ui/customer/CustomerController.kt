@@ -31,7 +31,7 @@ import kotlinfx.beans.binding.booleanBindingOf
 import kotlinfx.beans.binding.or
 import kotlinfx.beans.binding.stringBindingOf
 import kotlinfx.beans.property.toProperty
-import kotlinfx.collections.mutableObservableListOf
+import kotlinfx.collections.emptyObservableList
 import kotlinfx.collections.toMutableObservableList
 import kotlinfx.collections.toObservableList
 import kotlinfx.coroutines.onAction
@@ -104,7 +104,7 @@ class CustomerController : Controller(), Refreshable {
                         dialogPane.content = gridPane {
                             gaps = 8
                             label(getString(R.string.type)) col 0 row 0
-                            typeBox = choiceBox(Customer.listAllTypes()) col 1 row 0
+                            typeBox = choiceBox(Customer.Contact.listTypes()) col 1 row 0
                             label(getString(R.string.contact)) col 0 row 1
                             contactField = textField { promptText = getString(R.string.contact) } col 1 row 1
                         }
@@ -158,7 +158,7 @@ class CustomerController : Controller(), Refreshable {
                 customer?.note ?: ""
             })
             contactTable.itemsProperty().bind(bindingOf(customerList.selectionModel.selectedItemProperty()) {
-                customer?.contacts?.toObservableList() ?: mutableObservableListOf()
+                customer?.contacts?.toObservableList() ?: emptyObservableList()
             })
             coverLabel.visibleProperty().bind(customerList.selectionModel.selectedItemProperty().isNull)
             customerList

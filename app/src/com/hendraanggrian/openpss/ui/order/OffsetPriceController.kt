@@ -1,7 +1,6 @@
 package com.hendraanggrian.openpss.ui.order
 
 import com.hendraanggrian.openpss.db.schema.Offset
-import com.hendraanggrian.openpss.db.schema.Offset.Companion.DEFAULT_AMOUNT
 import com.hendraanggrian.openpss.db.schema.Offsets
 import com.hendraanggrian.openpss.db.transaction
 import javafx.fxml.FXML
@@ -49,5 +48,5 @@ class OffsetPriceController : PriceController<Offset, Offsets>(Offsets) {
         }
     }
 
-    override fun newPrice(name: String): Offset = Offset(name, DEFAULT_AMOUNT, 0.0, 0.0)
+    override fun newPrice(name: String): Offset = Offset(name)
 }

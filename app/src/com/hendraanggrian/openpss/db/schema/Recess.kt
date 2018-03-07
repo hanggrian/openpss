@@ -1,6 +1,6 @@
 package com.hendraanggrian.openpss.db.schema
 
-import com.hendraanggrian.openpss.db.Ided
+import com.hendraanggrian.openpss.db.Document
 import com.hendraanggrian.openpss.time.PATTERN_TIME
 import kotlinx.nosql.Id
 import kotlinx.nosql.mongodb.DocumentSchema
@@ -17,7 +17,7 @@ object Recesses : DocumentSchema<Recess>("recess", Recess::class) {
 data class Recess(
     var start: LocalTime,
     var end: LocalTime
-) : Ided<Recesses> {
+) : Document<Recesses> {
     override lateinit var id: Id<String, Recesses>
 
     override fun toString(): String = "${start.toString(PATTERN_TIME)} - ${end.toString(PATTERN_TIME)}"

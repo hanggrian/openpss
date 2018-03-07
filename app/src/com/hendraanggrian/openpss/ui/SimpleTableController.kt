@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.ui
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.db.Ided
+import com.hendraanggrian.openpss.db.Document
 import com.hendraanggrian.openpss.db.transaction
 import javafx.fxml.FXML
 import javafx.scene.control.Button
@@ -25,7 +25,7 @@ import kotlinx.nosql.mongodb.DocumentSchema
  * @see [com.hendraanggrian.openpss.ui.order.OffsetPriceController]
  * @see [com.hendraanggrian.openpss.ui.wage.WageRecessController]
  */
-abstract class SimpleTableController<D : Ided<S>, S : DocumentSchema<D>>(protected val schema: S) : Controller(), Refreshable {
+abstract class SimpleTableController<D : Document<S>, S : DocumentSchema<D>>(protected val schema: S) : Controller(), Refreshable {
 
     @FXML lateinit var deleteButton: Button
     @FXML lateinit var table: TableView<D>

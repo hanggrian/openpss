@@ -1,8 +1,8 @@
 package com.hendraanggrian.openpss.db.schema
 
-import com.hendraanggrian.openpss.db.Document2
 import com.hendraanggrian.openpss.db.NamedDocument
 import com.hendraanggrian.openpss.db.NamedDocumentSchema
+import com.hendraanggrian.openpss.db.dbDate
 import javafx.collections.ObservableList
 import kotlinfx.collections.observableListOf
 import kotlinx.nosql.Id
@@ -10,7 +10,6 @@ import kotlinx.nosql.ListColumn
 import kotlinx.nosql.date
 import kotlinx.nosql.string
 import org.joda.time.LocalDate
-import org.joda.time.LocalDate.now
 
 object Customers : NamedDocumentSchema<Customer>("customer", Customer::class) {
     val note = string("note")
@@ -23,15 +22,14 @@ object Customers : NamedDocumentSchema<Customer>("customer", Customer::class) {
     }
 }
 
-data class Customer @JvmOverloads constructor(
+open class Customer @JvmOverloads constructor(
     override val name: String,
     var note: String = "",
-    var since: LocalDate = now(),
+    var since: LocalDate = dbDate,
     var contacts: List<Contact> = listOf()
-) : Document2<Customers>(), NamedDocument<Customers> {
-    override lateinit var id: Id<String, Customers>
+) : NamedDocument<Customers>() {
 
-    override fun toString(): String = name
+    override lateinit var id: Id<String, Customers>
 
     data class Contact(
         var type: String,

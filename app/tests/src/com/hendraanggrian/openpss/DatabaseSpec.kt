@@ -1,35 +1,37 @@
 package com.hendraanggrian.openpss
 
-import com.hendraanggrian.openpss.db.Database.login
+import com.hendraanggrian.openpss.db.login
 import com.hendraanggrian.openpss.db.schema.Employee
-import com.hendraanggrian.openpss.db.schema.PlateOrder
-import com.hendraanggrian.openpss.db.schema.PlateOrders
-import com.hendraanggrian.openpss.db.transaction
+import com.hendraanggrian.openpss.db.dbDateTime
 import com.hendraanggrian.openpss.io.properties.MongoFile
-import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.experimental.runBlocking
 import org.apache.log4j.BasicConfigurator.configure
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.given
 import org.jetbrains.spek.api.dsl.it
-import kotlin.test.assertNotNull
+import org.junit.platform.runner.JUnitPlatform
+import org.junit.runner.RunWith
 
-// @RunWith(JUnitPlatform::class)
+@RunWith(JUnitPlatform::class)
 object DatabaseSpec : Spek({
 
-    if (MongoFile.isValid) given("a database") {
+    if (MongoFile.isValid()) given("a database") {
         configure()
-        launch {
+        runBlocking {
             try {
                 login(MongoFile.host.value, MongoFile.port.value.toInt(), MongoFile.user.value, MongoFile.password.value, Employee.BACKDOOR.name, Employee.BACKDOOR.password)
-                transaction {
-                    val id = PlateOrders.insert(PlateOrder(null, 10, 100.0, 1000.0))
-                    it("should return id") {
-                        assertNotNull(id)
-                    }
+                it("should return correct date") {
+                    println(dbDateTime)
                 }
             } catch (e: Exception) {
                 error(e.message.toString())
             }
         }
+        /*transaction {
+            val id = PlateOrders.insert(PlateOrder(null, 10, 100.0, 1000.0))
+            it("should return id") {
+                assertNotNull(id)
+            }
+        }*/
     }
 })

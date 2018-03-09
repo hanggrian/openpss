@@ -4,7 +4,7 @@ import com.hendraanggrian.openpss.BuildConfig.APP_NAME
 import com.hendraanggrian.openpss.BuildConfig.DEBUG
 import com.hendraanggrian.openpss.Language
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.db.Database
+import com.hendraanggrian.openpss.db.login
 import com.hendraanggrian.openpss.io.properties.ConfigFile
 import com.hendraanggrian.openpss.io.properties.MongoFile
 import com.hendraanggrian.openpss.scene.control.HostField
@@ -12,6 +12,7 @@ import com.hendraanggrian.openpss.scene.control.IntField
 import com.hendraanggrian.openpss.scene.control.hostField
 import com.hendraanggrian.openpss.scene.control.intField
 import com.hendraanggrian.openpss.ui.Resourced
+import com.mongodb.ServerAddress.defaultPort
 import javafx.event.ActionEvent.ACTION
 import javafx.geometry.Pos.CENTER_RIGHT
 import javafx.scene.control.ButtonBar.ButtonData.OK_DONE
@@ -107,6 +108,7 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced 
                 promptText = getString(R.string.port)
                 prefSize(width = 64)
                 textProperty().bindBidirectional(MongoFile.port)
+                if (value == 0) text = defaultPort().toString()
             } col 2 row 0
             label(getString(R.string.server_user)) col 0 row 1
             serverUserField = textField {
@@ -139,7 +141,7 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced 
                     ConfigFile.save()
                     MongoFile.save()
                     try {
-                        val employee = Database.login(serverHostField.text, serverPortField.value, serverUserField.text, serverPasswordField.text, employeeField.text, passwordField.text)
+                        val employee = login(serverHostField.text, serverPortField.value, serverUserField.text, serverPasswordField.text, employeeField.text, passwordField.text)
                         launch(FX) {
                             result = employee
                             close()
@@ -153,7 +155,7 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced 
         }
         later {
             if (employeeField.text.isBlank()) employeeField.requestFocus() else passwordField.requestFocus()
-            dialogPane.isExpanded = !MongoFile.isValid
+            dialogPane.isExpanded = !MongoFile.isValid()
             if (DEBUG) {
                 passwordField.text = "Test"
             }

@@ -14,10 +14,11 @@ object Recesses : DocumentSchema<Recess>("recess", Recess::class) {
     val end = time("end")
 }
 
-data class Recess(
+open class Recess(
     var start: LocalTime,
     var end: LocalTime
-) : Document<Recesses> {
+) : Document<Recesses>() {
+
     override lateinit var id: Id<String, Recesses>
 
     override fun toString(): String = "${start.toString(PATTERN_TIME)} - ${end.toString(PATTERN_TIME)}"

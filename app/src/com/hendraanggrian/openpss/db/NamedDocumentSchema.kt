@@ -5,7 +5,8 @@ import kotlinx.nosql.mongodb.DocumentSchema
 import kotlinx.nosql.string
 import kotlin.reflect.KClass
 
-abstract class NamedDocumentSchema<D : Any>(
+/** Schema with String field `name` is common, they should extend this schema. */
+abstract class NamedDocumentSchema<D : NamedDocument<*>>(
     name: String,
     valueClass: KClass<D>,
     discriminator: Discriminator<out Any, out kotlinx.nosql.DocumentSchema<String, D>>? = null

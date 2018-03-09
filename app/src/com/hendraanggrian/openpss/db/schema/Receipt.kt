@@ -20,13 +20,14 @@ object Receipts : DocumentSchema<Receipt>("plate_receipt", Receipt::class) {
     val printed = boolean("printed")
 }
 
-data class Receipt(
+open class Receipt(
     val employeeId: Id<String, Employees>,
     val customerId: Id<String, Customers>,
     val dateTime: DateTime,
     val note: String,
     val paid: Double,
     val printed: Boolean
-) : Document<Receipts> {
+) : Document<Receipts>() {
+
     override lateinit var id: Id<String, Receipts>
 }

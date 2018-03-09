@@ -1,6 +1,7 @@
 package com.hendraanggrian.openpss.db
 
 import com.hendraanggrian.openpss.BuildConfig.ARTIFACT
+import com.hendraanggrian.openpss.BuildConfig.DEBUG
 import com.hendraanggrian.openpss.collections.isEmpty
 import com.hendraanggrian.openpss.db.schema.Config
 import com.hendraanggrian.openpss.db.schema.Config.Companion.TIMEZONE_CONTINENT
@@ -18,67 +19,94 @@ import com.hendraanggrian.openpss.db.schema.Plates
 import com.hendraanggrian.openpss.db.schema.Receipts
 import com.hendraanggrian.openpss.db.schema.Recesses
 import com.hendraanggrian.openpss.db.schema.Wages
-import com.mongodb.MongoClientOptions
+import com.mongodb.MongoClientOptions.Builder
 import com.mongodb.MongoCredential.createCredential
+import com.mongodb.MongoException
 import com.mongodb.ServerAddress
-import kotlinx.coroutines.experimental.Deferred
+import kotlinfx.application.exit
+import kotlinfx.scene.control.errorAlert
 import kotlinx.coroutines.experimental.async
 import kotlinx.nosql.equal
 import kotlinx.nosql.mongodb.MongoDB
+import kotlinx.nosql.mongodb.MongoDBSession
+import org.joda.time.DateTime
+import org.joda.time.LocalDate
+import org.joda.time.LocalTime
 import java.util.Calendar.getInstance
+import java.util.Date
 
-/** Connect to MongoDB database using RxJava's streams. */
-object Database {
-    lateinit var INSTANCE: MongoDB
+private lateinit var DB: MongoDB
+private val TABLES = arrayOf(Configs, Customers, Employees, Offsets, PlateOrders, OffsetOrders, Plates, Receipts, Recesses, Wages)
 
-    @Throws(Exception::class)
-    suspend fun login(host: String, port: Int, user: String, password: String, employeeName: String, employeePassword: String): Employee {
-        var employee: Employee? = null
-        INSTANCE = connect(host, port, user, password).await()
-        transaction {
-            // add default employee
-            if (Employees.find { name.equal(Employee.BACKDOOR.name) }.isEmpty()) Employees.insert(Employee.BACKDOOR)
+/**
+ * A failed transaction will most likely throw an exception instance of [MongoException].
+ * This function will safely execute a transaction and display an error message on JavaFX if it throws those exceptions.
+ *
+ * @see [kotlinx.nosql.mongodb.MongoDB.withSession]
+ */
+fun <R> transaction(statement: MongoDBSession.() -> R): R? = try {
+    DB.withSession(statement)
+} catch (e: MongoException) {
+    if (DEBUG) e.printStackTrace()
+    errorAlert(e.message.toString()) { headerText = "Connection closed. Please sign in again." }.showAndWait().ifPresent { exit() }
+    null
+}
 
-            // check timezone
-            var timezoneContinent = Configs.find { key.equal(TIMEZONE_CONTINENT) }.firstOrNull()
-            if (timezoneContinent == null) {
-                timezoneContinent = Config(TIMEZONE_CONTINENT, TIMEZONE_CONTINENT_DEFAULT)
-                timezoneContinent.id = Configs.insert(timezoneContinent)
-            }
-            var timezoneCountries = Configs.find { key.equal(TIMEZONE_COUNTRIES) }.firstOrNull()
-            if (timezoneCountries == null) {
-                timezoneCountries = Config(TIMEZONE_COUNTRIES, TIMEZONE_COUNTRIES_DEFAULT)
-                timezoneCountries.id = Configs.insert(timezoneCountries)
-            }
-            timezoneCheck(timezoneContinent.value, timezoneCountries.valueList)
+@Throws(Exception::class)
+suspend fun login(host: String, port: Int, user: String, password: String, employeeName: String, employeePassword: String): Employee {
+    var employee: Employee? = null
+    DB = connect(host, port, user, password)
+    transaction {
+        // add default employee
+        if (Employees.find { name.equal(Employee.BACKDOOR.name) }.isEmpty()) Employees.insert(Employee.BACKDOOR)
 
-            // check login credentials
-            employee = checkNotNull(Employees.find { name.equal(employeeName) }.singleOrNull()) { "Employee not found!" }
-            check(employee!!.password == employeePassword) { "Invalid password!" }
+        // check timezone
+        var timezoneContinent = Configs.find { key.equal(TIMEZONE_CONTINENT) }.firstOrNull()
+        if (timezoneContinent == null) {
+            timezoneContinent = Config(TIMEZONE_CONTINENT, TIMEZONE_CONTINENT_DEFAULT)
+            timezoneContinent.id = Configs.insert(timezoneContinent)
         }
-        employee!!.clearPassword()
-        return employee!!
-    }
-
-    @Throws(Exception::class)
-    private fun connect(host: String, port: Int, user: String, password: String): Deferred<MongoDB> = async {
-        MongoDB(arrayOf(ServerAddress(host, port)),
-            ARTIFACT,
-            arrayOf(createCredential(user, "admin", password.toCharArray())),
-            MongoClientOptions.Builder()
-                .serverSelectionTimeout(3000)
-                .build(),
-            arrayOf(Configs, Customers, Employees, Offsets, PlateOrders, OffsetOrders, Plates, Receipts, Recesses, Wages))
-    }
-
-    @Throws(Exception::class)
-    private fun timezoneCheck(
-        expectedContinent: String,
-        expectedCountries: List<String>
-    ) = getInstance().timeZone.id.split("/").forEachIndexed { index, s ->
-        when (index) {
-            0 -> require(s == expectedContinent)
-            1 -> require(expectedCountries.contains(s))
+        var timezoneCountries = Configs.find { key.equal(TIMEZONE_COUNTRIES) }.firstOrNull()
+        if (timezoneCountries == null) {
+            timezoneCountries = Config(TIMEZONE_COUNTRIES, TIMEZONE_COUNTRIES_DEFAULT)
+            timezoneCountries.id = Configs.insert(timezoneCountries)
         }
+        timezoneCheck(timezoneContinent.value, timezoneCountries.valueList)
+
+        // check login credentials
+        employee = checkNotNull(Employees.find { name.equal(employeeName) }.singleOrNull()) { "Employee not found!" }
+        check(employee!!.password == employeePassword) { "Invalid password!" }
+    }
+    employee!!.clearPassword()
+    return employee!!
+}
+
+@Throws(Exception::class)
+private suspend fun connect(host: String, port: Int, user: String, password: String): MongoDB = async {
+    MongoDB(arrayOf(ServerAddress(host, port)),
+        ARTIFACT,
+        arrayOf(createCredential(user, "admin", password.toCharArray())),
+        Builder().serverSelectionTimeout(3000).build(),
+        TABLES)
+}.await()
+
+@Throws(Exception::class)
+private fun timezoneCheck(
+    expectedContinent: String,
+    expectedCountries: List<String>
+) = getInstance().timeZone.id.split("/").forEachIndexed { index, s ->
+    when (index) {
+        0 -> require(s == expectedContinent)
+        1 -> require(expectedCountries.contains(s))
     }
 }
+
+inline val dbDateTime: DateTime @Throws(Exception::class) get() = DateTime(evalDate())
+
+inline val dbDate: LocalDate @Throws(Exception::class) get() = LocalDate.fromDateFields(evalDate())
+
+inline val dbTime: LocalTime @Throws(Exception::class) get() = LocalTime.fromDateFields(evalDate())
+
+@PublishedApi
+@Throws(Exception::class)
+internal fun evalDate(): Date = DB.db.doEval("new Date()").getDate("retval")

@@ -2,10 +2,10 @@ package com.hendraanggrian.openpss.db
 
 import kotlinx.nosql.mongodb.DocumentSchema
 
-/** Some DAOs have name, in which case [toString] must return the name. */
-interface NamedDocument<S : DocumentSchema<*>> : Document<S> {
+/** When a schema extends [NamedDocumentSchema], its document class must also extend this class. */
+abstract class NamedDocument<S : DocumentSchema<*>> : Document<S>() {
 
-    val name: String
+    abstract val name: String
 
-    override fun toString(): String
+    override fun toString(): String = name
 }

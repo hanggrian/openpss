@@ -11,11 +11,12 @@ object Employees : NamedDocumentSchema<Employee>("employee", Employee::class) {
     val fullAccess = boolean("full_access")
 }
 
-data class Employee @JvmOverloads constructor(
+open class Employee @JvmOverloads constructor(
     override val name: String,
     var password: String = DEFAULT_PASSWORD,
     var fullAccess: Boolean = false
-) : NamedDocument<Employees> {
+) : NamedDocument<Employees>() {
+
     override lateinit var id: Id<String, Employees>
 
     var firstTimeLogin: Boolean = false
@@ -26,10 +27,8 @@ data class Employee @JvmOverloads constructor(
         password = ""
     }
 
-    override fun toString(): String = name
-
     companion object {
-        val BACKDOOR = Employee("Test", "Test")
+        val BACKDOOR = Employee("Test", "Test", false)
         const val DEFAULT_PASSWORD = "1234"
     }
 }

@@ -10,10 +10,10 @@ object Configs : DocumentSchema<Config>("config", Config::class) {
     val value = string("value")
 }
 
-data class Config(
+open class Config(
     val key: String,
     val value: String
-) : Document<Configs> {
+) : Document<Configs>() {
     override lateinit var id: Id<String, Configs>
 
     val valueList: List<String> get() = value.split(", ")

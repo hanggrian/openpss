@@ -6,16 +6,64 @@ Point of Sale software specifically for offset printing business.
 Powered by JavaFX and Kotlin frameworks.
 Heavily under development.
 
-Download
+Features
 --------
+ * Multi-language: currently supports English and Bahasa.
+ 
+How to use
+----------
+#### Download
 Head to [releases] to download this app in 3 variants:
  * `app` - Native MacOS app.
  * `zip` - Compressed folder containing Windows 64-bit libraries and executables.
  * `jar` - Smaller Java executable that requires JRE 1.8.
 
-Features
---------
- * Multi-language: currently supports English and Bahasa.
+#### Database
+[MongoDB] is required to run the app,
+install it on server system and grant privileges to the main user (below uses example user 'hendraanggrian'):
+```json
+{
+	"_id" : "admin.hendraanggrian",
+	"user" : "hendraanggrian",
+	"db" : "admin",
+	"roles" : [
+		{
+			"role" : "userAdminAnyDatabase",
+			"db" : "admin"
+		},
+		{
+			"role" : "dbAdminAnyDatabase",
+			"db" : "admin"
+		},
+		{
+			"role" : "readWriteAnyDatabase",
+			"db" : "admin"
+		},
+		{
+			"role" : "executeFunctions",
+			"db" : "admin"
+		}
+	]
+}
+```
+
+Where `executeFunctions` is a custom role:
+```json
+{
+	"role" : "executeFunctions",
+	"privileges" : [
+		{
+			"resource" : {
+				"anyResource" : true
+			},
+			"actions" : [
+				"anyAction"
+			]
+		}
+	],
+	"roles" : [ ]
+}
+```
 
 Developer note
 --------------
@@ -64,5 +112,6 @@ License
 
 [logo]: /art/OpenPSS.png
 [releases]: https://github.com/hendraanggrian/wijayaprinting/releases
+[MongoDB]: https://www.mongodb.com/
 [ktlint]: https://github.com/shyiko/ktlint
 [packr]: https://github.com/hendraanggrian/packr

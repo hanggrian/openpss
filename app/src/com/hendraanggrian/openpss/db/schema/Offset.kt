@@ -12,12 +12,13 @@ object Offsets : NamedDocumentSchema<Offset>("offset", Offset::class) {
     val excessPrice = double("excess_price")
 }
 
-data class Offset @JvmOverloads constructor(
+open class Offset @JvmOverloads constructor(
     override var name: String,
     var minAmount: Int = DEFAULT_AMOUNT,
     var minPrice: Double = 0.0,
     var excessPrice: Double = 0.0
-) : NamedDocument<Offsets> {
+) : NamedDocument<Offsets>() {
+
     override lateinit var id: Id<String, Offsets>
 
     companion object {

@@ -22,6 +22,7 @@ plugins {
     r
     buildconfig
     shadow
+    application
     packr
     `junit-platform`
 }
@@ -93,7 +94,7 @@ tasks {
     }
 
     val main = "$releaseGroup.$releaseArtifact.App"
-    val shadowJar by getting(ShadowJar::class) {
+    withType<ShadowJar> {
         destinationDir = buildDir.resolve("release")
         manifest.attributes(mapOf("Main-Class" to main))
         baseName = releaseArtifact
@@ -101,8 +102,7 @@ tasks {
         classifier = null
     }
     withType<PackTask> {
-        dependsOn(shadowJar)
-        classpath("build/release/$releaseArtifact-$releaseVersion.jar")
+        classpath(*buildDir.resolve("install/app/lib").listFiles() ?: emptyArray())
         executable = releaseName
         mainClass = main
         vmArgs("Xmx2G")
@@ -121,3 +121,5 @@ configure<JUnitPlatformExtension> {
         if (this is ExtensionAware) extensions.getByType(EnginesExtension::class.java).include("spek")
     }
 }
+
+application.mainClassName = "com.hendraanggrian.openpss.App"

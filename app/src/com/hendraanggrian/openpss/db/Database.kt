@@ -3,12 +3,6 @@ package com.hendraanggrian.openpss.db
 import com.hendraanggrian.openpss.BuildConfig.ARTIFACT
 import com.hendraanggrian.openpss.BuildConfig.DEBUG
 import com.hendraanggrian.openpss.collections.isEmpty
-import com.hendraanggrian.openpss.db.schema.Config
-import com.hendraanggrian.openpss.db.schema.Config.Companion.TIMEZONE_CONTINENT
-import com.hendraanggrian.openpss.db.schema.Config.Companion.TIMEZONE_CONTINENT_DEFAULT
-import com.hendraanggrian.openpss.db.schema.Config.Companion.TIMEZONE_COUNTRIES
-import com.hendraanggrian.openpss.db.schema.Config.Companion.TIMEZONE_COUNTRIES_DEFAULT
-import com.hendraanggrian.openpss.db.schema.Configs
 import com.hendraanggrian.openpss.db.schema.Customers
 import com.hendraanggrian.openpss.db.schema.Employee
 import com.hendraanggrian.openpss.db.schema.Employees
@@ -32,11 +26,10 @@ import kotlinx.nosql.mongodb.MongoDBSession
 import org.joda.time.DateTime
 import org.joda.time.LocalDate
 import org.joda.time.LocalTime
-import java.util.Calendar.getInstance
 import java.util.Date
 
 private lateinit var DB: MongoDB
-private val TABLES = arrayOf(Configs, Customers, Employees, Offsets, PlateOrders, OffsetOrders, Plates, Receipts, Recesses, Wages)
+private val TABLES = arrayOf(Customers, Employees, Offsets, PlateOrders, OffsetOrders, Plates, Receipts, Recesses, Wages)
 
 /**
  * A failed transaction will most likely throw an exception instance of [MongoException].
@@ -59,20 +52,6 @@ suspend fun login(host: String, port: Int, user: String, password: String, emplo
     transaction {
         // add default employee
         if (Employees.find { name.equal(Employee.BACKDOOR.name) }.isEmpty()) Employees.insert(Employee.BACKDOOR)
-
-        // check timezone
-        var timezoneContinent = Configs.find { key.equal(TIMEZONE_CONTINENT) }.firstOrNull()
-        if (timezoneContinent == null) {
-            timezoneContinent = Config(TIMEZONE_CONTINENT, TIMEZONE_CONTINENT_DEFAULT)
-            timezoneContinent.id = Configs.insert(timezoneContinent)
-        }
-        var timezoneCountries = Configs.find { key.equal(TIMEZONE_COUNTRIES) }.firstOrNull()
-        if (timezoneCountries == null) {
-            timezoneCountries = Config(TIMEZONE_COUNTRIES, TIMEZONE_COUNTRIES_DEFAULT)
-            timezoneCountries.id = Configs.insert(timezoneCountries)
-        }
-        timezoneCheck(timezoneContinent.value, timezoneCountries.valueList)
-
         // check login credentials
         employee = checkNotNull(Employees.find { name.equal(employeeName) }.singleOrNull()) { "Employee not found!" }
         check(employee!!.password == employeePassword) { "Invalid password!" }
@@ -89,17 +68,6 @@ private suspend fun connect(host: String, port: Int, user: String, password: Str
         Builder().serverSelectionTimeout(3000).build(),
         TABLES)
 }.await()
-
-@Throws(Exception::class)
-private fun timezoneCheck(
-    expectedContinent: String,
-    expectedCountries: List<String>
-) = getInstance().timeZone.id.split("/").forEachIndexed { index, s ->
-    when (index) {
-        0 -> require(s == expectedContinent)
-        1 -> require(expectedCountries.contains(s))
-    }
-}
 
 inline val dbDateTime: DateTime @Throws(Exception::class) get() = DateTime(evalDate())
 

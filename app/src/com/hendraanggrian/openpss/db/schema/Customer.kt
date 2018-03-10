@@ -22,14 +22,16 @@ object Customers : NamedDocumentSchema<Customer>("customer", Customer::class) {
     }
 }
 
-open class Customer @JvmOverloads constructor(
+data class Customer @JvmOverloads constructor(
     override val name: String,
     var note: String = "",
     var since: LocalDate = dbDate,
     var contacts: List<Contact> = listOf()
-) : NamedDocument<Customers>() {
+) : NamedDocument<Customers> {
 
     override lateinit var id: Id<String, Customers>
+
+    override fun toString(): String = name
 
     data class Contact(
         var type: String,

@@ -7,38 +7,29 @@
       fx:controller="com.hendraanggrian.openpss.ui.employee.EmployeeController">
     <ToolBar>
         <!--suppress JavaFxEventHandler -->
-        <Button mnemonicParsing="false" onAction="#refresh">
+        <Button mnemonicParsing="false" onAction="#refresh" text="%refresh">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
                     <Image url="@/image/btn_refresh.png"/>
                 </ImageView>
             </graphic>
-            <tooltip>
-                <Tooltip text="%refresh"/>
-            </tooltip>
         </Button>
-        <Button mnemonicParsing="false" onAction="#add">
+        <Button mnemonicParsing="false" onAction="#add" text="%add">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
                     <Image url="@/image/btn_user_add.png"/>
                 </ImageView>
             </graphic>
-            <tooltip>
-                <Tooltip text="%add"/>
-            </tooltip>
         </Button>
         <Separator/>
         <Button mnemonicParsing="false" fx:id="fullAccessButton" onAction="#fullAccess" text="%full_access"/>
         <Button mnemonicParsing="false" fx:id="resetPasswordButton" onAction="#resetPassword" text="%reset_password"/>
-        <Button mnemonicParsing="false" fx:id="deleteButton" onAction="#delete">
+        <Button mnemonicParsing="false" fx:id="deleteButton" onAction="#delete" text="%delete">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
                     <Image url="@/image/btn_delete.png"/>
                 </ImageView>
             </graphic>
-            <tooltip>
-                <Tooltip text="%delete"/>
-            </tooltip>
         </Button>
     </ToolBar>
     <TableView fx:id="employeeTable" editable="true" VBox.vgrow="ALWAYS">

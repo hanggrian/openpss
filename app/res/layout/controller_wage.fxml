@@ -8,25 +8,19 @@
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.hendraanggrian.openpss.ui.wage.WageController">
     <ToolBar>
-        <Button mnemonicParsing="false" onAction="#recess">
+        <Button mnemonicParsing="false" onAction="#recess" text="%recess">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
                     <Image url="@/image/btn_recess.png"/>
                 </ImageView>
             </graphic>
-            <tooltip>
-                <Tooltip text="%recess"/>
-            </tooltip>
         </Button>
-        <Button mnemonicParsing="false" onAction="#history">
+        <Button mnemonicParsing="false" onAction="#history" text="%history">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
                     <Image url="@/image/btn_history.png"/>
                 </ImageView>
             </graphic>
-            <tooltip>
-                <Tooltip text="%history"/>
-            </tooltip>
         </Button>
         <Separator/>
         <ChoiceBox fx:id="readerChoiceBox">
@@ -34,7 +28,7 @@
                 <Tooltip text="%reader"/>
             </tooltip>
         </ChoiceBox>
-        <FileField fx:id="fileField" prefWidth="448.0" promptText="%input_file"/>
+        <FileField fx:id="fileField" prefWidth="448" promptText="%input_file"/>
         <Button mnemonicParsing="false" onAction="#browse">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
@@ -61,7 +55,7 @@
     </ScrollPane>
     <HBox alignment="CENTER">
         <padding>
-            <Insets bottom="8.0" left="8.0" right="8.0" top="8.0"/>
+            <Insets bottom="8" left="8" right="8" top="8"/>
         </padding>
         <Label fx:id="employeeCountLabel" text="Label"/>
         <ButtonBar HBox.hgrow="ALWAYS">

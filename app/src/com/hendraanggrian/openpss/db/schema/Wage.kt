@@ -11,11 +11,11 @@ object Wages : DocumentSchema<Wage>("wage", Wage::class) {
     val hourlyOvertime = integer("hourly_overtime")
 }
 
-open class Wage(
+data class Wage(
     var wageId: Int,
     var daily: Int,
     var hourlyOvertime: Int
-) : Document<Wages>() {
+) : Document<Wages> {
 
     override lateinit var id: Id<String, Wages>
 }

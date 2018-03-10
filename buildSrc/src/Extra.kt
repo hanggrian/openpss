@@ -4,8 +4,8 @@ import org.gradle.plugin.use.PluginDependenciesSpec
 const val releaseGroup = "com.hendraanggrian"
 const val releaseArtifact = "openpss"
 const val releaseName = "OpenPSS"
-const val releaseDebug = true
-const val releaseVersion = "0.11"
+const val releaseDebug = false
+const val releaseVersion = "0.12"
 
 const val kotlinVersion = "1.2.30"
 const val nosqlVersion = "0.1-SNAPSHOT"

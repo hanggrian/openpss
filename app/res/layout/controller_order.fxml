@@ -10,30 +10,24 @@
       fx:controller="com.hendraanggrian.openpss.ui.order.OrderController">
     <ToolBar>
         <!--suppress JavaFxEventHandler -->
-        <Button mnemonicParsing="false" onAction="#refresh">
+        <Button mnemonicParsing="false" onAction="#refresh" text="%refresh">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
                     <Image url="@/image/btn_refresh.png"/>
                 </ImageView>
             </graphic>
-            <tooltip>
-                <Tooltip text="%refresh"/>
-            </tooltip>
         </Button>
         <TextField fx:id="customerField" promptText="%search_customer"/>
         <DateBox fx:id="datePicker"/>
         <ChoiceBox fx:id="statusBox"/>
         <CountBox fx:id="countBox"/>
         <Separator/>
-        <Button mnemonicParsing="false" onAction="#add">
+        <Button mnemonicParsing="false" onAction="#add" text="%add_plate">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
                     <Image url="@/image/btn_add.png"/>
                 </ImageView>
             </graphic>
-            <tooltip>
-                <Tooltip text="%add_plate"/>
-            </tooltip>
         </Button>
         <Separator/>
         <Button mnemonicParsing="false" onAction="#platePrice" text="%plate_price"/>

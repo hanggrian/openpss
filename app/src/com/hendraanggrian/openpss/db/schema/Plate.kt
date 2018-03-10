@@ -9,10 +9,12 @@ object Plates : NamedDocumentSchema<Plate>("plate", Plate::class) {
     val price = double("price")
 }
 
-open class Plate @JvmOverloads constructor(
+data class Plate @JvmOverloads constructor(
     override var name: String,
     var price: Double = 0.0
-) : NamedDocument<Plates>() {
+) : NamedDocument<Plates> {
 
     override lateinit var id: Id<String, Plates>
+
+    override fun toString(): String = name
 }

@@ -22,7 +22,7 @@ object PlateOrders : Orders<PlateOrder, PlateOrders>(PlateOrder::class, "plate")
     val price = double("price")
 }
 
-sealed class Order<D : Any, S : DocumentSchema<D>> : Document<S>() {
+sealed class Order<D : Any, S : DocumentSchema<D>> : Document<S> {
 
     override lateinit var id: Id<String, S>
     open var total: Double = 0.0
@@ -30,7 +30,7 @@ sealed class Order<D : Any, S : DocumentSchema<D>> : Document<S>() {
 
 class OffsetOrder : Order<OffsetOrder, OffsetOrders>()
 
-open class PlateOrder(
+data class PlateOrder(
     var plateId: Id<String, Plates>?,
     var qty: Int,
     var price: Double,

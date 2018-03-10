@@ -14,10 +14,10 @@ object Recesses : DocumentSchema<Recess>("recess", Recess::class) {
     val end = time("end")
 }
 
-open class Recess(
+data class Recess(
     var start: LocalTime,
     var end: LocalTime
-) : Document<Recesses>() {
+) : Document<Recesses> {
 
     override lateinit var id: Id<String, Recesses>
 

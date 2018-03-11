@@ -4,8 +4,8 @@ import com.hendraanggrian.openpss.R
 import javafx.scene.control.TextInputDialog
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
-import kotlinfx.scene.control.headerTitle
-import kotlinfx.scene.control.icon
+import kfx.scene.control.headerTitle
+import kfx.scene.control.icon
 
 class AddUserDialog(resourced: Resourced, header: String) : TextInputDialog(), Resourced by resourced {
 

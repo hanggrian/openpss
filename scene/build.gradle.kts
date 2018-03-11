@@ -3,6 +3,7 @@ import com.hendraanggrian.r.RTask
 import org.gradle.kotlin.dsl.kotlin
 import org.jetbrains.kotlin.gradle.dsl.Coroutines
 import org.jetbrains.kotlin.gradle.dsl.Coroutines.*
+import org.gradle.language.base.plugins.LifecycleBasePlugin.*
 
 group = "$releaseGroup.$releaseArtifact.scene"
 version = releaseVersion
@@ -29,9 +30,10 @@ val ktlint by configurations.creating
 dependencies {
     compile(kotlin("stdlib", kotlinVersion))
     compile(kotlinx("coroutines-javafx", coroutinesVersion))
-    compile(hendraanggrian("kotlinfx", "kotlinfx", kotlinFXVersion))
+    compile(hendraanggrian("kfx", "kfx", kfxVersion))
     compile(jodaTime())
     compile(commonsValidator())
+
     ktlint(ktlint())
 }
 
@@ -42,7 +44,7 @@ tasks {
 
     "ktlint"(JavaExec::class) {
         get("check").dependsOn(this)
-        group = "verification"
+        group = VERIFICATION_GROUP
         inputs.dir("src")
         outputs.dir("src")
         description = "Check Kotlin code style."

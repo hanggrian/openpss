@@ -7,7 +7,7 @@ import com.hendraanggrian.openpss.time.PATTERN_TIME
 import com.hendraanggrian.openpss.ui.SimpleTableController
 import javafx.fxml.FXML
 import javafx.scene.control.TableColumn
-import kotlinfx.beans.property.toProperty
+import kfx.beans.property.toProperty
 
 class WageRecessController : SimpleTableController<Recess, Recesses>(Recesses) {
 

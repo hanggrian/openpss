@@ -21,27 +21,27 @@ import javafx.scene.input.MouseEvent
 import javafx.scene.layout.Priority
 import javafx.scene.layout.StackPane
 import javafx.scene.text.Font
-import kotlinfx.beans.binding.bindingOf
-import kotlinfx.collections.emptyBinding
-import kotlinfx.collections.sort
-import kotlinfx.coroutines.FX
-import kotlinfx.coroutines.listener
-import kotlinfx.coroutines.onAction
-import kotlinfx.coroutines.onKeyPressed
-import kotlinfx.layouts.LayoutDsl
-import kotlinfx.layouts.checkBox
-import kotlinfx.layouts.contextMenu
-import kotlinfx.layouts.gridPane
-import kotlinfx.layouts.imageView
-import kotlinfx.layouts.label
-import kotlinfx.layouts.listView
-import kotlinfx.layouts.menuItem
-import kotlinfx.layouts.separatorMenuItem
-import kotlinfx.layouts.vbox
-import kotlinfx.listeners.cellFactory
-import kotlinfx.scene.layout.gaps
-import kotlinfx.scene.layout.paddings
-import kotlinfx.scene.layout.prefSize
+import kfx.beans.binding.bindingOf
+import kfx.collections.emptyBinding
+import kfx.collections.sort
+import kfx.coroutines.FX
+import kfx.coroutines.listener
+import kfx.coroutines.onAction
+import kfx.coroutines.onKeyPressed
+import kfx.layouts.LayoutDsl
+import kfx.layouts.checkBox
+import kfx.layouts.contextMenu
+import kfx.layouts.gridPane
+import kfx.layouts.imageView
+import kfx.layouts.label
+import kfx.layouts.listView
+import kfx.layouts.menuItem
+import kfx.layouts.separatorMenuItem
+import kfx.layouts.vbox
+import kfx.listeners.cellFactory
+import kfx.scene.layout.gaps
+import kfx.scene.layout.paddings
+import kfx.scene.layout.prefSize
 import kotlinx.coroutines.experimental.delay
 import kotlinx.coroutines.experimental.launch
 import org.joda.time.DateTime
@@ -102,7 +102,7 @@ class AttendeePane(
                     onUpdateItem { dateTime, empty ->
                         text = null
                         graphic = null
-                        if (dateTime != null && !empty) graphic = kotlinfx.layouts.hbox {
+                        if (dateTime != null && !empty) graphic = kfx.layouts.hbox {
                             val index = listView.items.indexOf(dateTime)
                             alignment = if (index % 2 == 0) Pos.BOTTOM_CENTER else Pos.TOP_CENTER
                             val itemLabel = label(dateTime.toString(PATTERN_DATETIME_EXTENDED)) { maxWidth = Double.MAX_VALUE } hpriority Priority.ALWAYS

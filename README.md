@@ -21,6 +21,7 @@ Head to [releases] to download this app in 3 variants:
 #### Database
 [MongoDB] is required to run the app,
 install it on server system and grant privileges to the main user (below uses example user 'hendraanggrian'):
+
 ```json
 {
 	"_id" : "admin.hendraanggrian",
@@ -48,6 +49,7 @@ install it on server system and grant privileges to the main user (below uses ex
 ```
 
 Where `executeFunctions` is a custom role:
+
 ```json
 {
 	"role" : "executeFunctions",

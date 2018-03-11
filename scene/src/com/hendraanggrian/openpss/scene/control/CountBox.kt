@@ -5,12 +5,12 @@ package com.hendraanggrian.openpss.scene.control
 import javafx.beans.property.IntegerProperty
 import javafx.beans.property.SimpleIntegerProperty
 import javafx.scene.control.ChoiceBox
-import kotlinfx.beans.binding.intBindingOf
-import kotlinfx.collections.observableListOf
-import kotlinfx.layouts.ChildManager
-import kotlinfx.layouts.ItemManager
-import kotlinfx.layouts.LayoutDsl
-import kotlinfx.listeners.converter
+import kfx.beans.binding.intBindingOf
+import kfx.collections.observableListOf
+import kfx.layouts.ChildManager
+import kfx.layouts.ItemManager
+import kfx.layouts.LayoutDsl
+import kfx.listeners.converter
 
 open class CountBox : ChoiceBox<Int>() {
 

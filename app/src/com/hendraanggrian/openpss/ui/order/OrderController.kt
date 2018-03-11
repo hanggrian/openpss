@@ -12,8 +12,8 @@ import javafx.fxml.FXMLLoader
 import javafx.scene.Scene
 import javafx.scene.control.ChoiceBox
 import javafx.stage.Modality.APPLICATION_MODAL
-import kotlinfx.collections.observableListOf
-import kotlinfx.stage.stage
+import kfx.collections.observableListOf
+import kfx.stage.stage
 
 class OrderController : Controller(), Refreshable {
 

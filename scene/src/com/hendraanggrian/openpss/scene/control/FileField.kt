@@ -10,11 +10,11 @@ import javafx.beans.property.ObjectProperty
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleObjectProperty
 import javafx.scene.control.TextField
-import kotlinfx.beans.binding.bindingOf
-import kotlinfx.beans.binding.booleanBindingOf
-import kotlinfx.layouts.ChildManager
-import kotlinfx.layouts.ItemManager
-import kotlinfx.layouts.LayoutDsl
+import kfx.beans.binding.bindingOf
+import kfx.beans.binding.booleanBindingOf
+import kfx.layouts.ChildManager
+import kfx.layouts.ItemManager
+import kfx.layouts.LayoutDsl
 import java.io.File
 
 /** Field that display file or directory path. */

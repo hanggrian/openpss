@@ -7,15 +7,15 @@ import com.hendraanggrian.openpss.time.toJava
 import javafx.geometry.Pos.CENTER
 import javafx.scene.control.DatePicker
 import javafx.scene.image.ImageView
-import kotlinfx.coroutines.onAction
-import kotlinfx.layouts.ChildManager
-import kotlinfx.layouts.ItemManager
-import kotlinfx.layouts.LayoutDsl
-import kotlinfx.layouts._HBox
-import kotlinfx.layouts.button
-import kotlinfx.layouts.datePicker
-import kotlinfx.scene.layout.maxSize
-import kotlinfx.scene.layout.spacings
+import kfx.coroutines.onAction
+import kfx.layouts.ChildManager
+import kfx.layouts.ItemManager
+import kfx.layouts.LayoutDsl
+import kfx.layouts._HBox
+import kfx.layouts.button
+import kfx.layouts.datePicker
+import kfx.scene.layout.maxSize
+import kfx.scene.layout.spacings
 import org.joda.time.LocalDate
 import org.joda.time.LocalDate.now
 

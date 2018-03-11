@@ -8,11 +8,11 @@ import javafx.scene.control.Button
 import javafx.scene.control.ButtonType.NO
 import javafx.scene.control.ButtonType.YES
 import javafx.scene.control.TableView
-import kotlinfx.application.later
-import kotlinfx.beans.binding.or
-import kotlinfx.beans.property.toProperty
-import kotlinfx.collections.toMutableObservableList
-import kotlinfx.scene.control.confirmAlert
+import kfx.application.later
+import kfx.beans.binding.or
+import kfx.beans.property.toProperty
+import kfx.collections.toMutableObservableList
+import kfx.scene.control.confirmAlert
 import kotlinx.nosql.equal
 import kotlinx.nosql.id
 import kotlinx.nosql.mongodb.DocumentSchema

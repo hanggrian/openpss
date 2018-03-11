@@ -17,8 +17,8 @@ import com.mongodb.MongoClientOptions.Builder
 import com.mongodb.MongoCredential.createCredential
 import com.mongodb.MongoException
 import com.mongodb.ServerAddress
-import kotlinfx.application.exit
-import kotlinfx.scene.control.errorAlert
+import kfx.application.exit
+import kfx.scene.control.errorAlert
 import kotlinx.coroutines.experimental.async
 import kotlinx.nosql.equal
 import kotlinx.nosql.mongodb.MongoDB

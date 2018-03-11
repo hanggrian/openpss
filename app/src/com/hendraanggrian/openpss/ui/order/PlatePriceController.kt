@@ -5,10 +5,10 @@ import com.hendraanggrian.openpss.db.schema.Plates
 import com.hendraanggrian.openpss.db.transaction
 import javafx.fxml.FXML
 import javafx.scene.control.TableColumn
-import kotlinfx.beans.property.asObservable
-import kotlinfx.beans.property.toProperty
-import kotlinfx.coroutines.onEditCommit
-import kotlinfx.listeners.textFieldCellFactory
+import kfx.beans.property.asObservable
+import kfx.beans.property.toProperty
+import kfx.coroutines.onEditCommit
+import kfx.listeners.textFieldCellFactory
 import kotlinx.nosql.equal
 import kotlinx.nosql.update
 

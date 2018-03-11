@@ -8,9 +8,9 @@ import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.ui.SimpleTableController
 import javafx.fxml.FXML
 import javafx.scene.control.TableColumn
-import kotlinfx.beans.property.toProperty
-import kotlinfx.scene.control.errorAlert
-import kotlinfx.scene.control.inputDialog
+import kfx.beans.property.toProperty
+import kfx.scene.control.errorAlert
+import kfx.scene.control.inputDialog
 import kotlinx.nosql.equal
 
 abstract class PriceController<D : NamedDocument<S>, S : NamedDocumentSchema<D>>(schema: S) : SimpleTableController<D, S>(schema) {

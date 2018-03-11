@@ -22,33 +22,33 @@ import javafx.scene.control.TextField
 import javafx.scene.control.Tooltip
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
-import kotlinfx.application.exit
-import kotlinfx.application.later
-import kotlinfx.beans.binding.`else`
-import kotlinfx.beans.binding.`if`
-import kotlinfx.beans.binding.bindingOf
-import kotlinfx.beans.binding.or
-import kotlinfx.beans.binding.then
-import kotlinfx.collections.toObservableList
-import kotlinfx.coroutines.FX
-import kotlinfx.coroutines.listener
-import kotlinfx.coroutines.onAction
-import kotlinfx.layouts.choiceBox
-import kotlinfx.layouts.gridPane
-import kotlinfx.layouts.hbox
-import kotlinfx.layouts.hyperlink
-import kotlinfx.layouts.label
-import kotlinfx.layouts.passwordField
-import kotlinfx.layouts.textField
-import kotlinfx.layouts.toggleButton
-import kotlinfx.layouts.tooltip
-import kotlinfx.scene.control.cancelButton
-import kotlinfx.scene.control.customButton
-import kotlinfx.scene.control.errorAlert
-import kotlinfx.scene.control.icon
-import kotlinfx.scene.control.infoAlert
-import kotlinfx.scene.layout.gaps
-import kotlinfx.scene.layout.prefSize
+import kfx.application.exit
+import kfx.application.later
+import kfx.beans.binding.`else`
+import kfx.beans.binding.`if`
+import kfx.beans.binding.bindingOf
+import kfx.beans.binding.or
+import kfx.beans.binding.then
+import kfx.collections.toObservableList
+import kfx.coroutines.FX
+import kfx.coroutines.listener
+import kfx.coroutines.onAction
+import kfx.layouts.choiceBox
+import kfx.layouts.gridPane
+import kfx.layouts.hbox
+import kfx.layouts.hyperlink
+import kfx.layouts.label
+import kfx.layouts.passwordField
+import kfx.layouts.textField
+import kfx.layouts.toggleButton
+import kfx.layouts.tooltip
+import kfx.scene.control.cancelButton
+import kfx.scene.control.customButton
+import kfx.scene.control.errorAlert
+import kfx.scene.control.icon
+import kfx.scene.control.infoAlert
+import kfx.scene.layout.gaps
+import kfx.scene.layout.prefSize
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.launch
 
@@ -92,7 +92,7 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced 
             passwordField = passwordField { promptText = getString(R.string.password) } col 1 row 2
             toggleButton {
                 tooltip(getString(R.string.see_password))
-                graphic = kotlinfx.layouts.imageView { imageProperty().bind(`if`(this@toggleButton.selectedProperty()) then Image(R.image.btn_visibility) `else` Image(R.image.btn_visibility_off)) }
+                graphic = kfx.layouts.imageView { imageProperty().bind(`if`(this@toggleButton.selectedProperty()) then Image(R.image.btn_visibility) `else` Image(R.image.btn_visibility_off)) }
                 passwordField.tooltipProperty().bind(bindingOf(passwordField.textProperty(), selectedProperty()) { if (!isSelected) null else Tooltip(passwordField.text) })
             } col 2 row 2
         }

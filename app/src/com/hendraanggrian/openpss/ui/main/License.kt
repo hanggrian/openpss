@@ -22,10 +22,10 @@ enum class License(val owner: String, val repo: String, val homepage: String) {
         "Google",
         "Guava",
         "https://github.com/google/guava"),
-    HENDRAANGGRIAN_KOTFX(
+    HENDRAANGGRIAN_KFX(
         "Hendra Anggrian",
-        "KotFX",
-        "https://github.com/hendraanggrian/kotfx"),
+        "KFX",
+        "https://github.com/hendraanggrian/kfx"),
     JETBRAINS_KOTLIN(
         "JetBrains",
         "Kotlin",

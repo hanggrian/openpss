@@ -9,15 +9,15 @@ import com.hendraanggrian.openpss.ui.wage.Record.Companion.WORKING_HOURS
 import javafx.scene.control.ButtonType.OK
 import javafx.scene.control.Dialog
 import javafx.scene.image.ImageView
-import kotlinfx.application.later
-import kotlinfx.coroutines.onAction
-import kotlinfx.layouts.button
-import kotlinfx.layouts.gridPane
-import kotlinfx.scene.control.cancelButton
-import kotlinfx.scene.control.graphicIcon
-import kotlinfx.scene.control.headerTitle
-import kotlinfx.scene.control.okButton
-import kotlinfx.scene.layout.gaps
+import kfx.application.later
+import kfx.coroutines.onAction
+import kfx.layouts.button
+import kfx.layouts.gridPane
+import kfx.scene.control.cancelButton
+import kfx.scene.control.graphicIcon
+import kfx.scene.control.headerTitle
+import kfx.scene.control.okButton
+import kfx.scene.layout.gaps
 import org.joda.time.DateTime
 import org.joda.time.DateTime.now
 

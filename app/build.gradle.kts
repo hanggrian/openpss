@@ -7,6 +7,7 @@ import org.gradle.jvm.tasks.Jar
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.kotlin
 import org.jetbrains.kotlin.gradle.dsl.Coroutines.*
+import org.gradle.language.base.plugins.LifecycleBasePlugin.*
 
 import org.junit.platform.gradle.plugin.FiltersExtension
 import org.junit.platform.gradle.plugin.EnginesExtension
@@ -49,7 +50,7 @@ dependencies {
     implementation(apache("poi-ooxml", poiVersion))
     implementation(guava())
     implementation(log4j12())
-    ktlint(ktlint())
+
     testImplementation(kotlin("test", kotlinVersion))
     testImplementation(kotlin("reflect", kotlinVersion))
     testImplementation(spek("api")) {
@@ -60,6 +61,8 @@ dependencies {
         exclude("org.junit.platform")
     }
     testImplementation(junitPlatform("runner"))
+
+    ktlint(ktlint())
 }
 
 tasks {
@@ -70,12 +73,13 @@ tasks {
     withType<BuildConfigTask> {
         appName = releaseName
         debug = releaseDebug
-        field(String::class.java, "ARTIFACT", releaseArtifact)
+        field("ARTIFACT", releaseArtifact)
+        field("WEBSITE", releaseWebsite)
     }
 
     "ktlint"(JavaExec::class) {
         get("check").dependsOn(this)
-        group = "verification"
+        group = VERIFICATION_GROUP
         inputs.dir("src")
         outputs.dir("src")
         description = "Check Kotlin code style."

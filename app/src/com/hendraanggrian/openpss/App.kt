@@ -17,10 +17,10 @@ import javafx.fxml.FXMLLoader
 import javafx.scene.Scene
 import javafx.scene.image.Image
 import javafx.stage.Stage
-import kotlinfx.application.deploy
-import kotlinfx.scene.control.infoAlert
-import kotlinfx.stage.icon
-import kotlinfx.stage.minSize
+import kfx.application.deploy
+import kfx.scene.control.infoAlert
+import kfx.stage.icon
+import kfx.stage.minSize
 import kotlinx.nosql.equal
 import kotlinx.nosql.update
 import org.apache.log4j.BasicConfigurator.configure

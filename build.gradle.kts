@@ -6,7 +6,7 @@ import java.nio.file.Files.delete
 buildscript {
     repositories {
         jcenter()
-        maven("https://oss.sonatype.org/content/repositories/snapshots")
+        maven("https://oss.sonatype.org/content/repositories/snapshots") // required for packr
     }
     dependencies {
         classpath(kotlin("gradle-plugin", kotlinVersion))
@@ -21,7 +21,7 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
-        maven("http://repository.jetbrains.com/kotlin-nosql")
+        maven("http://repository.jetbrains.com/kotlin-nosql") // required for kotlin-nosql
     }
     tasks.withType<Delete> {
         delete(projectDir.resolve("out"))

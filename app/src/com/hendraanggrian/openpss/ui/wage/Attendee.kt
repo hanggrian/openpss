@@ -9,7 +9,7 @@ import com.hendraanggrian.openpss.db.transaction
 import javafx.beans.property.IntegerProperty
 import javafx.beans.property.SimpleIntegerProperty
 import javafx.collections.ObservableList
-import kotlinfx.collections.mutableObservableListOf
+import kfx.collections.mutableObservableListOf
 import kotlinx.nosql.equal
 import kotlinx.nosql.update
 import org.joda.time.DateTime

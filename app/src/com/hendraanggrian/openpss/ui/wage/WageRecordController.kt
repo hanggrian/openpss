@@ -13,6 +13,7 @@ import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.DateDialog
 import com.hendraanggrian.openpss.ui.wage.Record.Companion.getDummy
 import com.hendraanggrian.openpss.util.getResourceString
+import com.hendraanggrian.openpss.util.openFile
 import com.sun.javafx.scene.control.skin.TreeTableViewSkin
 import com.sun.javafx.scene.control.skin.VirtualFlow
 import javafx.fxml.FXML
@@ -25,22 +26,21 @@ import javafx.scene.control.TreeTableColumn
 import javafx.scene.control.TreeTableView
 import javafx.scene.text.Font.loadFont
 import javafx.stage.Stage
-import kotlinfx.application.later
-import kotlinfx.beans.binding.booleanBindingOf
-import kotlinfx.beans.binding.or
-import kotlinfx.beans.binding.stringBindingOf
-import kotlinfx.beans.property.asObservable
-import kotlinfx.beans.property.toProperty
-import kotlinfx.collections.emptyBinding
-import kotlinfx.coroutines.listener
-import kotlinfx.coroutines.onAction
-import kotlinfx.layouts.label
-import kotlinfx.layouts.menuItem
-import kotlinfx.listeners.cellFactory
-import kotlinfx.scene.control.customButton
-import kotlinfx.scene.control.infoAlert
-import kotlinfx.scene.screenshot
-import java.awt.Desktop.getDesktop
+import kfx.application.later
+import kfx.beans.binding.booleanBindingOf
+import kfx.beans.binding.or
+import kfx.beans.binding.stringBindingOf
+import kfx.beans.property.asObservable
+import kfx.beans.property.toProperty
+import kfx.collections.emptyBinding
+import kfx.coroutines.listener
+import kfx.coroutines.onAction
+import kfx.layouts.label
+import kfx.layouts.menuItem
+import kfx.listeners.cellFactory
+import kfx.scene.control.customButton
+import kfx.scene.control.infoAlert
+import kfx.scene.screenshot
 import java.io.IOException
 
 class WageRecordController : Controller() {
@@ -191,7 +191,7 @@ class WageRecordController : Controller() {
         infoAlert(getString(R.string.screenshot_finished)) { customButton(getString(R.string.open_folder), CANCEL_CLOSE) }
             .showAndWait()
             .filter { it.buttonData == CANCEL_CLOSE }
-            .ifPresent { getDesktop().open(WageContentFolder) }
+            .ifPresent { openFile(WageContentFolder) }
     }
 
     private val records: List<Record> get() = recordTable.root.children.flatMap { it.children }.map { it.value }

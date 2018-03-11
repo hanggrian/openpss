@@ -11,6 +11,7 @@ import com.hendraanggrian.openpss.ui.wage.WageRecordController.Companion.EXTRA_A
 import com.hendraanggrian.openpss.ui.wage.WageRecordController.Companion.EXTRA_STAGE
 import com.hendraanggrian.openpss.ui.wage.readers.Reader
 import com.hendraanggrian.openpss.util.getResource
+import com.hendraanggrian.openpss.util.openFile
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
 import javafx.scene.Scene
@@ -24,23 +25,22 @@ import javafx.scene.control.ToggleButton
 import javafx.scene.layout.FlowPane
 import javafx.scene.layout.Pane
 import javafx.stage.Modality.APPLICATION_MODAL
-import kotlinfx.application.later
-import kotlinfx.beans.binding.booleanBindingOf
-import kotlinfx.beans.binding.lessEq
-import kotlinfx.beans.binding.or
-import kotlinfx.beans.binding.stringBindingOf
-import kotlinfx.collections.emptyBinding
-import kotlinfx.collections.sizeBinding
-import kotlinfx.coroutines.FX
-import kotlinfx.coroutines.onAction
-import kotlinfx.layouts.borderPane
-import kotlinfx.scene.control.errorAlert
-import kotlinfx.scene.layout.maxSize
-import kotlinfx.stage.fileChooser
-import kotlinfx.stage.minSize
-import kotlinfx.stage.stage
+import kfx.application.later
+import kfx.beans.binding.booleanBindingOf
+import kfx.beans.binding.lessEq
+import kfx.beans.binding.or
+import kfx.beans.binding.stringBindingOf
+import kfx.collections.emptyBinding
+import kfx.collections.sizeBinding
+import kfx.coroutines.FX
+import kfx.coroutines.onAction
+import kfx.layouts.borderPane
+import kfx.scene.control.errorAlert
+import kfx.scene.layout.maxSize
+import kfx.stage.fileChooser
+import kfx.stage.minSize
+import kfx.stage.stage
 import kotlinx.coroutines.experimental.launch
-import java.awt.Desktop.getDesktop
 
 class WageController : Controller() {
 
@@ -77,7 +77,7 @@ class WageController : Controller() {
         loader.controller._employee = _employee
     }.showAndWait()
 
-    @FXML fun history() = getDesktop().open(WageFolder)
+    @FXML fun history() = openFile(WageFolder)
 
     @FXML fun browse() = fileChooser(getString(R.string.input_file), *readerChoiceBox.value.extensions).showOpenDialog(fileField.scene.window)?.run { fileField.text = absolutePath }
 
@@ -86,7 +86,7 @@ class WageController : Controller() {
         scrollPane.content = borderPane {
             prefWidthProperty().bind(scrollPane.widthProperty())
             prefHeightProperty().bind(scrollPane.heightProperty())
-            center = kotlinfx.layouts.progressIndicator { maxSize = 128 }
+            center = kfx.layouts.progressIndicator { maxSize = 128 }
         }
         flowPane.children.clear()
         launch {

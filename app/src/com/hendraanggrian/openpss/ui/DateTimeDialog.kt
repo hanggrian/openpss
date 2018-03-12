@@ -6,10 +6,13 @@ import com.hendraanggrian.openpss.scene.layout.TimeBox
 import com.hendraanggrian.openpss.scene.layout.dateBox
 import com.hendraanggrian.openpss.scene.layout.timeBox
 import com.hendraanggrian.openpss.ui.wage.Record.Companion.WORKING_HOURS
+import javafx.beans.property.ObjectProperty
+import javafx.beans.property.SimpleObjectProperty
 import javafx.scene.control.ButtonType.OK
 import javafx.scene.control.Dialog
 import javafx.scene.image.ImageView
 import kfx.application.later
+import kfx.beans.binding.bindingOf
 import kfx.coroutines.onAction
 import kfx.layouts.button
 import kfx.layouts.gridPane

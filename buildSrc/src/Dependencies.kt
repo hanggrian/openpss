@@ -29,4 +29,6 @@ val PluginDependenciesSpec.`junit-platform` get() = id("org.junit.platform.gradl
 
 fun DependencyHandler.spek(module: String) = "org.jetbrains.spek:spek-$module:$spekVersion"
 
+fun DependencyHandler.testFX(module: String) = "org.testfx:testfx-$module:$textFXVersion"
+
 fun DependencyHandler.ktlint() = "com.github.shyiko:ktlint:$ktlintVersion"

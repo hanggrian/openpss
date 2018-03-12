@@ -10,7 +10,7 @@ const val PATTERN_TIME = "HH:mm"
 const val PATTERN_DATETIME = "$PATTERN_DATE $PATTERN_TIME"
 const val PATTERN_DATETIME_EXTENDED = "$PATTERN_DATE EEE $PATTERN_TIME"
 
-val START_OF_TIME: DateTime = DateTime(0)
+val START_OF_TIME = DateTime(0)
 
 /** Converts Joda's date to Java's. */
 inline fun LocalDate.toJava(): java.time.LocalDate = java.time.LocalDate.of(year, monthOfYear, dayOfMonth)

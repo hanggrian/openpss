@@ -1,10 +1,8 @@
 package com.hendraanggrian.openpss.ui
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.scene.layout.DateBox
 import com.hendraanggrian.openpss.scene.layout.dateBox
 import javafx.scene.control.ButtonType.OK
-import javafx.scene.control.DatePicker
 import javafx.scene.control.Dialog
 import javafx.scene.image.ImageView
 import kfx.application.later
@@ -21,18 +19,15 @@ class DateDialog(
     prefill: LocalDate = now()
 ) : Dialog<LocalDate>(), Resourced by resourced {
 
+    private val dateBox = dateBox(prefill)
+
     init {
         headerTitle = title
         graphicIcon = ImageView(R.image.ic_calendar)
-        dialogPane.content = dateBox(prefill)
-        later { datePicker.requestFocus() }
+        dialogPane.content = dateBox
+        later { dateBox.picker.requestFocus() }
         cancelButton()
         okButton()
-        setResultConverter {
-            if (it != OK) null
-            else LocalDate(datePicker.value.year, datePicker.value.monthValue, datePicker.value.dayOfMonth)
-        }
+        setResultConverter { if (it != OK) null else dateBox.dateProperty.value }
     }
-
-    private inline val datePicker: DatePicker get() = (dialogPane.content as DateBox).picker
 }

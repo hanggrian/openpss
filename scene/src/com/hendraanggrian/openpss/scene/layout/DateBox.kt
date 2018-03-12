@@ -4,9 +4,13 @@ package com.hendraanggrian.openpss.scene.layout
 
 import com.hendraanggrian.openpss.scene.R
 import com.hendraanggrian.openpss.time.toJava
+import com.hendraanggrian.openpss.time.toJoda
+import javafx.beans.property.ObjectProperty
+import javafx.beans.property.SimpleObjectProperty
 import javafx.geometry.Pos.CENTER
 import javafx.scene.control.DatePicker
 import javafx.scene.image.ImageView
+import kfx.beans.binding.bindingOf
 import kfx.coroutines.onAction
 import kfx.layouts.ChildManager
 import kfx.layouts.ItemManager
@@ -28,6 +32,8 @@ open class DateBox(prefill: LocalDate = now()) : _HBox() {
 
     lateinit var picker: DatePicker
 
+    val dateProperty: ObjectProperty<LocalDate> = SimpleObjectProperty()
+
     init {
         alignment = CENTER
         spacings = 8
@@ -38,6 +44,7 @@ open class DateBox(prefill: LocalDate = now()) : _HBox() {
             isEditable = false
             maxSize(width = 116)
         }
+        dateProperty.bind(bindingOf(picker.valueProperty()) { picker.value.toJoda() })
         button(graphic = ImageView(R.image.btn_arrow_right)) { onAction { picker.value = picker.value.plusDays(1) } }
     }
 }

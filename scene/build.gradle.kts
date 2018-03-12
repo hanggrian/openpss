@@ -21,6 +21,9 @@ java.sourceSets {
         java.srcDir("src")
         resources.srcDir("sceneres")
     }
+    "test" {
+        java.srcDir("tests/src")
+    }
 }
 
 kotlin.experimental.coroutines = ENABLE
@@ -35,6 +38,10 @@ dependencies {
     compile(commonsValidator())
 
     ktlint(ktlint())
+
+    testImplementation(kotlin("test", kotlinVersion))
+    testImplementation(testFX("core"))
+    testImplementation(testFX("junit"))
 }
 
 tasks {

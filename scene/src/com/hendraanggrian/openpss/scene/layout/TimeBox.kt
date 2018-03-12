@@ -5,15 +5,11 @@ package com.hendraanggrian.openpss.scene.layout
 import com.hendraanggrian.openpss.scene.R
 import com.hendraanggrian.openpss.scene.control.IntField
 import com.hendraanggrian.openpss.scene.control.intField
-import com.hendraanggrian.openpss.time.PATTERN_TIME
-import javafx.beans.property.BooleanProperty
 import javafx.beans.property.ObjectProperty
-import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleObjectProperty
 import javafx.geometry.Pos.CENTER
 import javafx.scene.image.ImageView
 import kfx.beans.binding.bindingOf
-import kfx.beans.binding.booleanBindingOf
 import kfx.coroutines.listener
 import kfx.coroutines.onAction
 import kfx.layouts.ChildManager
@@ -26,8 +22,6 @@ import kfx.scene.layout.maxSize
 import kfx.scene.layout.spacings
 import org.joda.time.LocalTime
 import org.joda.time.LocalTime.MIDNIGHT
-import org.joda.time.LocalTime.parse
-import org.joda.time.format.DateTimeFormat.forPattern
 
 /**
  * Two fields (hour and minute) that represents [LocalTime].
@@ -39,8 +33,7 @@ open class TimeBox(prefill: LocalTime = MIDNIGHT) : _HBox() {
     lateinit var hourField: IntField
     lateinit var minuteField: IntField
 
-    val timeProperty: ObjectProperty<LocalTime> = SimpleObjectProperty<LocalTime>()
-    val validProperty: BooleanProperty = SimpleBooleanProperty()
+    val timeProperty: ObjectProperty<LocalTime> = SimpleObjectProperty()
 
     init {
         alignment = CENTER
@@ -61,19 +54,7 @@ open class TimeBox(prefill: LocalTime = MIDNIGHT) : _HBox() {
         button(graphic = ImageView(R.image.btn_arrow_right)) { onAction { hourField.value++ } }
 
         timeProperty.bind(bindingOf(hourField.valueProperty, minuteField.valueProperty) {
-            try {
-                parse("${hourField.value}:${minuteField.value}", forPattern(PATTERN_TIME))
-            } catch (e: Exception) {
-                MIDNIGHT
-            }
-        })
-        validProperty.bind(booleanBindingOf(hourField.valueProperty, minuteField.valueProperty) {
-            try {
-                parse("${hourField.value}:${minuteField.value}", forPattern(PATTERN_TIME))
-                true
-            } catch (e: Exception) {
-                false
-            }
+            LocalTime(hourField.value, minuteField.value)
         })
 
         hourField.text = prefill.hourOfDay.toString()
@@ -81,8 +62,6 @@ open class TimeBox(prefill: LocalTime = MIDNIGHT) : _HBox() {
     }
 
     val time: LocalTime get() = timeProperty.get()
-
-    val isValid: Boolean get() = validProperty.get()
 }
 
 inline fun timeBox(prefill: LocalTime = MIDNIGHT, noinline init: ((@LayoutDsl TimeBox).() -> Unit)? = null): TimeBox = TimeBox(prefill).apply { init?.invoke(this) }

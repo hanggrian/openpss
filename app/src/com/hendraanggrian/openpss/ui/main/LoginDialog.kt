@@ -48,7 +48,7 @@ import kfx.scene.control.errorAlert
 import kfx.scene.control.icon
 import kfx.scene.control.infoAlert
 import kfx.scene.layout.gaps
-import kfx.scene.layout.prefSize
+import kfx.scene.layout.widthPref
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.launch
 
@@ -101,12 +101,12 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced 
             label(getString(R.string.server_host_port)) col 0 row 0
             serverHostField = hostField {
                 promptText = getString(R.string.ip_address)
-                prefSize(width = 128)
+                widthPref = 128
                 textProperty().bindBidirectional(MongoFile.host)
             } col 1 row 0
             serverPortField = intField {
                 promptText = getString(R.string.port)
-                prefSize(width = 64)
+                widthPref = 64
                 textProperty().bindBidirectional(MongoFile.port)
                 if (value == 0) text = defaultPort().toString()
             } col 2 row 0

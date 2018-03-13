@@ -20,7 +20,7 @@ import javafx.stage.Stage
 import kfx.application.deploy
 import kfx.scene.control.infoAlert
 import kfx.stage.icon
-import kfx.stage.minSize
+import kfx.stage.setSizeMin
 import kotlinx.nosql.equal
 import kotlinx.nosql.update
 import org.apache.log4j.BasicConfigurator.configure
@@ -51,7 +51,7 @@ class App : Application(), Resourced {
                 val loader = FXMLLoader(getResource(R.layout.controller_main), resources)
                 title = APP_NAME
                 scene = Scene(loader.pane)
-                minSize(1000, 650)
+                setSizeMin(1000, 650)
                 loader.controller._employee = employee
             }.show()
 

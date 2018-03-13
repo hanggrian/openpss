@@ -18,8 +18,8 @@ import kfx.layouts.LayoutDsl
 import kfx.layouts._HBox
 import kfx.layouts.button
 import kfx.layouts.label
-import kfx.scene.layout.maxSize
 import kfx.scene.layout.spacings
+import kfx.scene.layout.widthMax
 import org.joda.time.LocalTime
 import org.joda.time.LocalTime.MIDNIGHT
 
@@ -41,13 +41,13 @@ open class TimeBox(prefill: LocalTime = MIDNIGHT) : _HBox() {
 
         button(graphic = ImageView(R.image.btn_arrow_left)) { onAction { hourField.value-- } }
         hourField = intField {
-            maxSize(width = 48)
+            widthMax = 48
             alignment = CENTER
             valueProperty.listener { _, oldValue, value -> if (value !in 0 until 24) hourField.value = oldValue.toInt() }
         }
         label(":") { alignment = CENTER }
         minuteField = intField {
-            maxSize(width = 48)
+            widthMax = 48
             alignment = CENTER
             valueProperty.listener { _, oldValue, value -> if (value !in 0 until 60) minuteField.value = oldValue.toInt() }
         }

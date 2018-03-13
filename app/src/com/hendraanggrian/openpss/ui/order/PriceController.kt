@@ -13,7 +13,8 @@ import kfx.scene.control.errorAlert
 import kfx.scene.control.inputDialog
 import kotlinx.nosql.equal
 
-abstract class PriceController<D : NamedDocument<S>, S : NamedDocumentSchema<D>>(schema: S) : SimpleTableController<D, S>(schema) {
+abstract class PriceController<D : NamedDocument<S>, S : NamedDocumentSchema<D>>(schema: S)
+    : SimpleTableController<D, S>(schema) {
 
     abstract fun newPrice(name: String): D
 

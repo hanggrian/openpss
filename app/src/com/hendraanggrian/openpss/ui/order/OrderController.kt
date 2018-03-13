@@ -31,15 +31,13 @@ class OrderController : Controller(), Refreshable {
     override fun refresh() {
     }
 
-    @FXML
-    fun add() {
+    @FXML fun add() {
         /*PlateReceiptDialog(this).showAndWait().ifPresent {
 
         }*/
     }
 
-    @FXML
-    fun platePrice() = stage(getString(R.string.plate_price)) {
+    @FXML fun platePrice() = stage(getString(R.string.plate_price)) {
         initModality(APPLICATION_MODAL)
         val loader = FXMLLoader(getResource(R.layout.controller_price_plate), resources)
         scene = Scene(loader.pane)
@@ -47,8 +45,7 @@ class OrderController : Controller(), Refreshable {
         loader.controller._employee = _employee
     }.showAndWait()
 
-    @FXML
-    fun offsetPrice() = stage(getString(R.string.offset_price)) {
+    @FXML fun offsetPrice() = stage(getString(R.string.offset_price)) {
         initModality(APPLICATION_MODAL)
         val loader = FXMLLoader(getResource(R.layout.controller_price_offset), resources)
         scene = Scene(loader.pane)

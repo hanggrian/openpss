@@ -45,7 +45,7 @@ class SearchCustomerDialog(resourced: Resourced) : Dialog<Customer>(), Resourced
                         }.take(ITEMS_PER_PAGE).toMutableObservableList()
                     }
                 })
-            } topMargin 8
+            } marginTop 8
         }
         cancelButton()
         okButton {

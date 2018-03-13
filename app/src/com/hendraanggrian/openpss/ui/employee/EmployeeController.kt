@@ -43,7 +43,9 @@ class EmployeeController : Controller(), Refreshable {
         }
 
         nameColumn.setCellValueFactory { it.value.name.toProperty() }
-        fullAccessColumn.setCellValueFactory { getString(if (it.value.fullAccess) R.string.yes else R.string.no).toProperty() }
+        fullAccessColumn.setCellValueFactory {
+            getString(if (it.value.fullAccess) R.string.yes else R.string.no).toProperty()
+        }
         fullAccessColumn.choiceBoxCellFactory(*getStringArray(R.string.yes, R.string.no))
         fullAccessColumn.onEditCommit { event ->
             val result = event.newValue == getString(R.string.yes)
@@ -57,21 +59,18 @@ class EmployeeController : Controller(), Refreshable {
         employeeTable.items = transaction { Employees.find().toMutableObservableList() }
     }
 
-    @FXML
-    fun add() = AddUserDialog(this, getString(R.string.add_employee)).showAndWait().ifPresent { name ->
+    @FXML fun add() = AddUserDialog(this, getString(R.string.add_employee)).showAndWait().ifPresent { name ->
         val employee = Employee(name.tidy())
         employee.id = transaction { Employees.insert(employee) }!!
         employeeTable.items.add(employee)
         employeeTable.selectionModel.select(employee)
     }
 
-    @FXML
-    fun fullAccess() = confirm({ employee ->
+    @FXML fun fullAccess() = confirm({ employee ->
         Employees.find { name.equal(employee.name) }.projection { fullAccess }.update(!employee.fullAccess)
     })
 
-    @FXML
-    fun resetPassword() = confirm({ employee ->
+    @FXML fun resetPassword() = confirm({ employee ->
         Employees.find { name.equal(employee.name) }.projection { password }.update(DEFAULT_PASSWORD)
     }) {
         ResetPasswordDialog(this).showAndWait().ifPresent { newPassword ->
@@ -82,14 +81,17 @@ class EmployeeController : Controller(), Refreshable {
         }
     }
 
-    @FXML
-    fun delete() = confirm({ employee ->
+    @FXML fun delete() = confirm({ employee ->
         Employees.find { name.equal(employee.name) }.remove()
     })
 
     private fun confirm(
         confirmedAction: MongoDBSession.(Employee) -> Unit,
-        isNotSelfAction: () -> Unit = { infoAlert(getString(R.string.please_restart)).showAndWait().ifPresent { exit() } }
+        isNotSelfAction: () -> Unit = {
+            infoAlert(getString(R.string.please_restart)).showAndWait().ifPresent {
+                exit()
+            }
+        }
     ) = confirmAlert(getString(R.string.are_you_sure), YES, NO)
         .showAndWait()
         .filter { it == YES }

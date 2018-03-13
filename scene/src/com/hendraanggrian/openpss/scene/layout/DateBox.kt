@@ -18,8 +18,8 @@ import kfx.layouts.LayoutDsl
 import kfx.layouts._HBox
 import kfx.layouts.button
 import kfx.layouts.datePicker
-import kfx.scene.layout.maxSize
 import kfx.scene.layout.spacings
+import kfx.scene.layout.widthMax
 import org.joda.time.LocalDate
 import org.joda.time.LocalDate.now
 
@@ -42,7 +42,7 @@ open class DateBox(prefill: LocalDate = now()) : _HBox() {
         picker = datePicker {
             value = prefill.toJava()
             isEditable = false
-            maxSize(width = 116)
+            widthMax = 116
         }
         dateProperty.bind(bindingOf(picker.valueProperty()) { picker.value.toJoda() })
         button(graphic = ImageView(R.image.btn_arrow_right)) { onAction { picker.value = picker.value.plusDays(1) } }

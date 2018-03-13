@@ -25,7 +25,9 @@ class OffsetPriceController : PriceController<Offset, Offsets>(Offsets) {
             fromString { it.toIntOrNull() ?: 0 }
         }
         minAmountColumn.onEditCommit { event ->
-            transaction { Offsets.find { name.equal(event.rowValue.name) }.projection { minAmount }.update(event.newValue) }
+            transaction {
+                Offsets.find { name.equal(event.rowValue.name) }.projection { minAmount }.update(event.newValue)
+            }
             event.rowValue.minAmount = event.newValue
         }
 
@@ -34,7 +36,9 @@ class OffsetPriceController : PriceController<Offset, Offsets>(Offsets) {
             fromString { it.toDoubleOrNull() ?: 0.0 }
         }
         minPriceColumn.onEditCommit { event ->
-            transaction { Offsets.find { name.equal(event.rowValue.name) }.projection { minPrice }.update(event.newValue) }
+            transaction {
+                Offsets.find { name.equal(event.rowValue.name) }.projection { minPrice }.update(event.newValue)
+            }
             event.rowValue.minPrice = event.newValue
         }
 
@@ -43,7 +47,9 @@ class OffsetPriceController : PriceController<Offset, Offsets>(Offsets) {
             fromString { it.toDoubleOrNull() ?: 0.0 }
         }
         excessPriceColumn.onEditCommit { event ->
-            transaction { Offsets.find { name.equal(event.rowValue.name) }.projection { excessPrice }.update(event.newValue) }
+            transaction {
+                Offsets.find { name.equal(event.rowValue.name) }.projection { excessPrice }.update(event.newValue)
+            }
             event.rowValue.excessPrice = event.newValue
         }
     }

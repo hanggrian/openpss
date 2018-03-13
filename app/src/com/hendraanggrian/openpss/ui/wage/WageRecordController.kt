@@ -69,9 +69,10 @@ class WageRecordController : Controller() {
     override fun initialize() {
         undoButton.disableProperty().bind(undoButton.items.emptyBinding())
         arrayOf(lockStartButton, lockEndButton).forEach {
-            it.disableProperty().bind(recordTable.selectionModel.selectedItemProperty().isNull or booleanBindingOf(recordTable.selectionModel.selectedItemProperty()) {
-                recordTable.selectionModel.selectedItems?.any { !it.value.isChild } ?: true
-            })
+            it.disableProperty().bind(recordTable.selectionModel.selectedItemProperty().isNull or
+                booleanBindingOf(recordTable.selectionModel.selectedItemProperty()) {
+                    recordTable.selectionModel.selectedItems?.any { !it.value.isChild } ?: true
+                })
         }
 
         recordTable.selectionModel.selectionMode = MULTIPLE
@@ -88,7 +89,7 @@ class WageRecordController : Controller() {
         totalColumn.setCellValueFactory { it.value.value.totalProperty.asObservable() }
         recordTable.columns.forEach {
             it.cellFactory {
-                onUpdateItem { any, empty ->
+                onUpdate { any, empty ->
                     if (any != null && !empty) graphic = label(when (it) {
                         dailyIncomeColumn, overtimeIncomeColumn, totalColumn -> converter.toString(any as Number)
                         else -> any.toString()
@@ -114,7 +115,10 @@ class WageRecordController : Controller() {
                     children += TreeItem(total)
                 }
             }
-            getExtra<Stage>(EXTRA_STAGE).titleProperty().bind(stringBindingOf(*records.filter { it.isChild }.map { it.totalProperty }.toTypedArray()) {
+            getExtra<Stage>(EXTRA_STAGE).titleProperty().bind(stringBindingOf(*records
+                .filter { it.isChild }
+                .map { it.totalProperty }
+                .toTypedArray()) {
                 "${getString(R.string.record)} - ${converter.toString(records
                     .filter { it.isTotal }
                     .map { it.totalProperty.value }
@@ -125,8 +129,7 @@ class WageRecordController : Controller() {
 
     @FXML fun undo() = undoButton.items[0].fire()
 
-    @FXML
-    fun lockStart() {
+    @FXML fun lockStart() {
         val undoable = Undoable()
         recordTable.selectionModel.selectedItems
             .map { it.value }
@@ -134,15 +137,17 @@ class WageRecordController : Controller() {
                 val initial = record.startProperty.value
                 if (initial.toLocalTime() < timeBox.time) {
                     record.startProperty.set(record.cloneStart(timeBox.time))
-                    undoable.name = if (undoable.name == null) "${record.attendee.name} ${initial.toString(PATTERN_DATETIME)} -> ${timeBox.time.toString(PATTERN_TIME)}" else getString(R.string.multiple_lock_start_time)
+                    undoable.name = when {
+                        undoable.name == null -> "${record.attendee.name} ${initial.toString(PATTERN_DATETIME)} -> ${timeBox.time.toString(PATTERN_TIME)}"
+                        else -> getString(R.string.multiple_lock_start_time)
+                    }
                     undoable.addAction { record.startProperty.set(initial) }
                 }
             }
         undoable.append()
     }
 
-    @FXML
-    fun lockEnd() {
+    @FXML fun lockEnd() {
         val undoable = Undoable()
         recordTable.selectionModel.selectedItems
             .map { it.value }
@@ -150,15 +155,17 @@ class WageRecordController : Controller() {
                 val initial = record.endProperty.value
                 if (initial.toLocalTime() > timeBox.time) {
                     record.endProperty.set(record.cloneEnd(timeBox.time))
-                    undoable.name = if (undoable.name == null) "${record.attendee.name} ${initial.toString(PATTERN_DATETIME)} -> ${timeBox.time.toString(PATTERN_TIME)}" else getString(R.string.multiple_lock_end_time)
+                    undoable.name = when {
+                        undoable.name == null -> "${record.attendee.name} ${initial.toString(PATTERN_DATETIME)} -> ${timeBox.time.toString(PATTERN_TIME)}"
+                        else -> getString(R.string.multiple_lock_end_time)
+                    }
                     undoable.addAction { record.endProperty.set(initial) }
                 }
             }
         undoable.append()
     }
 
-    @FXML
-    fun empty() = DateDialog(this, getString(R.string.empty_daily_income))
+    @FXML fun empty() = DateDialog(this, getString(R.string.empty_daily_income))
         .showAndWait()
         .ifPresent { date ->
             val undoable = Undoable()
@@ -172,8 +179,7 @@ class WageRecordController : Controller() {
             undoable.append()
         }
 
-    @FXML
-    fun screenshot() = getResourceString(R.style.treetableview_print).let { printStyle ->
+    @FXML fun screenshot() = getResourceString(R.style.treetableview_print).let { printStyle ->
         recordTable.stylesheets += printStyle
         recordTable.scrollTo(0)
         val flow = (recordTable.skin as TreeTableViewSkin<*>).children[1] as VirtualFlow<*>
@@ -186,10 +192,12 @@ class WageRecordController : Controller() {
                 if (DEBUG) e.printStackTrace()
             }
             i++
-        } while (flow.lastVisibleCell.index + 1 < recordTable.root.children.size + recordTable.root.children.map { it.children.size }.sum())
+        } while (flow.lastVisibleCell.index + 1 < recordTable.root.children.size +
+            recordTable.root.children.map { it.children.size }.sum())
         recordTable.stylesheets -= printStyle
-        infoAlert(getString(R.string.screenshot_finished)) { customButton(getString(R.string.open_folder), CANCEL_CLOSE) }
-            .showAndWait()
+        infoAlert(getString(R.string.screenshot_finished)) {
+            customButton(getString(R.string.open_folder), CANCEL_CLOSE)
+        }.showAndWait()
             .filter { it.buttonData == CANCEL_CLOSE }
             .ifPresent { openFile(WageContentFolder) }
     }

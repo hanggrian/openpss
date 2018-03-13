@@ -30,8 +30,8 @@ import kfx.listeners.cellFactory
 import kfx.scene.control.closeButton
 import kfx.scene.control.customButton
 import kfx.scene.control.icon
+import kfx.scene.layout.heightPref
 import kfx.scene.layout.paddings
-import kfx.scene.layout.prefSize
 
 class AboutDialog(resourced: Resourced) : Dialog<Unit>(), Resourced by resourced {
 
@@ -49,28 +49,38 @@ class AboutDialog(resourced: Resourced) : Dialog<Unit>(), Resourced by resourced
                     text("Open ") { font = loadFont(getResourceString(R.font.opensans_bold), 24.0) }
                     text("Printing Sales System") { font = loadFont(getResourceString(R.font.opensans_light), 24.0) }
                 }
-                text("${getString(R.string.version)} $VERSION") { font = loadFont(getResourceString(R.font.opensans_regular), 12.0) } topMargin 2
-                text(getString(R.string.about_notice)) { font = loadFont(getResourceString(R.font.opensans_bold), 12.0) } topMargin 20
+                text("${getString(R.string.version)} $VERSION") {
+                    font = loadFont(getResourceString(R.font.opensans_regular), 12.0)
+                } marginTop 2
+                text(getString(R.string.about_notice)) {
+                    font = loadFont(getResourceString(R.font.opensans_bold), 12.0)
+                } marginTop 20
                 textFlow {
-                    text("${getString(R.string.powered_by)}  ") { font = loadFont(getResourceString(R.font.opensans_bold), 12.0) }
+                    text("${getString(R.string.powered_by)}  ") {
+                        font = loadFont(getResourceString(R.font.opensans_bold), 12.0)
+                    }
                     text("JavaFX") { font = loadFont(getResourceString(R.font.opensans_regular), 12.0) }
-                } topMargin 4
+                } marginTop 4
                 textFlow {
-                    text("${getString(R.string.author)}  ") { font = loadFont(getResourceString(R.font.opensans_bold), 12.0) }
+                    text("${getString(R.string.author)}  ") {
+                        font = loadFont(getResourceString(R.font.opensans_bold), 12.0)
+                    }
                     text("Hendra Anggrian") { font = loadFont(getResourceString(R.font.opensans_regular), 12.0) }
-                } topMargin 4
+                } marginTop 4
                 hbox {
                     button("GitHub") { onAction { browseUrl(WEBSITE) } }
-                    button(getString(R.string.check_for_updates)) { onAction { browseUrl("$WEBSITE/releases") } } marginLeft 8
-                } topMargin 20
+                    button(getString(R.string.check_for_updates)) {
+                        onAction { browseUrl("$WEBSITE/releases") }
+                    } marginLeft 8
+                } marginTop 20
             } marginLeft 48
         }
         dialogPane.expandableContent = hbox {
             licenseList = kfx.layouts.listView {
-                prefSize(height = 256)
+                heightPref = 256
                 items = License.values().toObservableList()
                 cellFactory {
-                    onUpdateItem { license, empty ->
+                    onUpdate { license, empty ->
                         if (license != null && !empty) graphic = kfx.layouts.vbox {
                             label(license.repo) { font = loadFont(getResourceString(R.font.opensans_regular), 12.0) }
                             label(license.owner) { font = loadFont(getResourceString(R.font.opensans_bold), 12.0) }
@@ -80,7 +90,7 @@ class AboutDialog(resourced: Resourced) : Dialog<Unit>(), Resourced by resourced
             }
             titledPane(getString(R.string.open_source_software), licenseList) { isCollapsible = false }
             titledPane(getString(R.string.license), kfx.layouts.textArea {
-                prefSize(height = 256)
+                heightPref = 256
                 isEditable = false
                 textProperty().bind(stringBindingOf(licenseList.selectionModel.selectedIndexProperty()) {
                     licenseList.selectionModel.selectedItem?.content ?: getString(R.string.select_license)
@@ -88,7 +98,10 @@ class AboutDialog(resourced: Resourced) : Dialog<Unit>(), Resourced by resourced
             }) { isCollapsible = false }
         }
         customButton("Homepage", CANCEL_CLOSE) {
-            visibleProperty().bind(dialogPane.expandedProperty() and booleanBindingOf(licenseList.selectionModel.selectedIndexProperty()) { licenseList.selectionModel.selectedItem != null })
+            visibleProperty().bind(dialogPane.expandedProperty() and
+                booleanBindingOf(licenseList.selectionModel.selectedIndexProperty()) {
+                    licenseList.selectionModel.selectedItem != null
+                })
             addEventFilter(ACTION) {
                 it.consume()
                 browseUrl(licenseList.selectionModel.selectedItem.homepage)

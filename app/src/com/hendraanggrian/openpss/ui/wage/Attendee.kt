@@ -65,6 +65,7 @@ open class Attendee(
         .map { index -> attendances[index] })
 
     override fun hashCode(): Int = id.hashCode()
+
     override fun equals(other: Any?): Boolean = other != null && other is Attendee && other.id == id
 
     override fun toString(): String = "$id. $name"

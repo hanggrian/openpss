@@ -61,5 +61,7 @@ class MainController : Controller() {
 
     @FXML fun about() = AboutDialog(this).showAndWait().get()
 
-    private fun updateNavigateMenu(index: Int) = navigateMenu.items.forEachIndexed { i, item -> (item as RadioMenuItem).isSelected = index == i }
+    private fun updateNavigateMenu(index: Int) = navigateMenu.items.forEachIndexed { i, item ->
+        (item as RadioMenuItem).isSelected = index == i
+    }
 }

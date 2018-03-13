@@ -25,25 +25,28 @@ import kotlinx.nosql.mongodb.DocumentSchema
  * @see [com.hendraanggrian.openpss.ui.order.OffsetPriceController]
  * @see [com.hendraanggrian.openpss.ui.wage.WageRecessController]
  */
-abstract class SimpleTableController<D : Document<S>, S : DocumentSchema<D>>(protected val schema: S) : Controller(), Refreshable {
+abstract class SimpleTableController<D : Document<S>, S : DocumentSchema<D>>(
+    protected val schema: S
+) : Controller(), Refreshable {
 
     @FXML lateinit var deleteButton: Button
     @FXML lateinit var table: TableView<D>
 
     override fun initialize() {
         refresh()
-        later { deleteButton.disableProperty().bind(table.selectionModel.selectedItemProperty().isNull or !isFullAccess.toProperty()) }
+        later {
+            deleteButton.disableProperty().bind(table.selectionModel.selectedItemProperty().isNull or
+                !isFullAccess.toProperty())
+        }
     }
 
     override fun refresh() {
         table.items = transaction { schema.find().toMutableObservableList() }
     }
 
-    @FXML
-    abstract fun add()
+    @FXML abstract fun add()
 
-    @FXML
-    fun delete() = confirmAlert(getString(R.string.are_you_sure), YES, NO)
+    @FXML fun delete() = confirmAlert(getString(R.string.are_you_sure), YES, NO)
         .showAndWait()
         .filter { it == YES }
         .ifPresent {

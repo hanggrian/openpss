@@ -49,6 +49,14 @@
                 <Tooltip text="%merge_close_records"/>
             </tooltip>
         </ToggleButton>
+        <Separator/>
+        <Button fx:id="recessOffButton" mnemonicParsing="false" onAction="#recessOff">
+            <graphic>
+                <ImageView pickOnBounds="true" preserveRatio="true">
+                    <Image url="@/image/btn_recess_off.png"/>
+                </ImageView>
+            </graphic>
+        </Button>
     </ToolBar>
     <ScrollPane fx:id="scrollPane" VBox.vgrow="ALWAYS" hbarPolicy="NEVER" vbarPolicy="ALWAYS">
         <FlowPane fx:id="flowPane"/>

@@ -50,7 +50,7 @@ import kfx.scene.control.errorAlert
 import kfx.scene.control.inputDialog
 import kfx.scene.control.okButton
 import kfx.scene.layout.gaps
-import kfx.scene.layout.maxSize
+import kfx.scene.layout.sizeMax
 import kotlinx.nosql.equal
 import kotlinx.nosql.id
 import kotlinx.nosql.mongodb.MongoDBSession
@@ -72,7 +72,7 @@ class CustomerController : Controller(), Refreshable {
 
     private lateinit var customerList: ListView<Customer>
     private val noteLabelGraphic = button(graphic = ImageView(R.image.btn_edit)) {
-        maxSize = 24
+        sizeMax = 24
         onAction {
             inputDialog(customer!!.note) {
                 title = getString(R.string.edit_customer)
@@ -94,7 +94,9 @@ class CustomerController : Controller(), Refreshable {
         countBox.desc = getString(R.string.items)
         nameLabel.font = loadFont(getResourceString(R.font.opensans_bold), 24.0)
         sinceLabel.font = loadFont(getResourceString(R.font.opensans_regular), 12.0)
-        noteLabel.graphicProperty().bind(bindingOf<Node>(noteLabel.hoverProperty()) { if (noteLabel.isHover) noteLabelGraphic else null })
+        noteLabel.graphicProperty().bind(bindingOf<Node>(noteLabel.hoverProperty()) {
+            if (noteLabel.isHover) noteLabelGraphic else null
+        })
         contactTable.contextMenu {
             menuItem(getString(R.string.add)) {
                 onAction {
@@ -110,23 +112,30 @@ class CustomerController : Controller(), Refreshable {
                         }
                         cancelButton()
                         okButton {
-                            disableProperty().bind(typeBox.valueProperty().isNull or contactField.textProperty().isEmpty)
+                            disableProperty().bind(typeBox.valueProperty().isNull or
+                                contactField.textProperty().isEmpty)
                         }
                         setResultConverter { if (it == OK) Customer.Contact(typeBox.value, contactField.text) else null }
                     }.showAndWait().ifPresent { contact ->
                         transaction {
-                            Customers.find { id.equal(customer!!.id) }.projection { contacts }.update(customer!!.contacts + contact)
+                            Customers.find { id.equal(customer!!.id) }.projection { contacts }
+                                .update(customer!!.contacts + contact)
                             reloadCustomer(customer!!)
                         }
                     }
                 }
             }
             menuItem(getString(R.string.delete)) {
-                later { disableProperty().bind(booleanBindingOf(contactTable.selectionModel.selectedItemProperty()) { contact == null || !isFullAccess }) }
+                later {
+                    disableProperty().bind(booleanBindingOf(contactTable.selectionModel.selectedItemProperty()) {
+                        contact == null || !isFullAccess
+                    })
+                }
                 onAction {
                     confirmAlert(getString(R.string.delete_contact)).showAndWait().ifPresent {
                         transaction {
-                            Customers.find { id.equal(customer!!.id) }.projection { contacts }.update(customer!!.contacts - contact!!)
+                            Customers.find { id.equal(customer!!.id) }.projection { contacts }
+                                .update(customer!!.contacts - contact!!)
                             reloadCustomer(customer!!)
                         }
                     }
@@ -137,42 +146,49 @@ class CustomerController : Controller(), Refreshable {
         contactColumn.setCellValueFactory { it.value.value.toProperty() }
     }
 
-    override fun refresh() = customerPagination.pageFactoryProperty().bind(bindingOf(customerField.textProperty(), countBox.countProperty) {
-        Callback<Int, Node> { page ->
-            customerList = listView {
-                later {
-                    transaction {
-                        val customers = if (customerField.text.isBlank()) Customers.find() else Customers.find { name.matches(customerField.text.toPattern()) }
-                        customerPagination.pageCount = ceil(customers.count() / countBox.count.toDouble()).toInt()
-                        items = customers.skip(countBox.count * page).take(countBox.count).toMutableObservableList()
+    override fun refresh() = customerPagination.pageFactoryProperty()
+        .bind(bindingOf(customerField.textProperty(), countBox.countProperty) {
+            Callback<Int, Node> { page ->
+                customerList = listView {
+                    later {
+                        transaction {
+                            val customers = when {
+                                customerField.text.isBlank() -> Customers.find()
+                                else -> Customers.find { name.matches(customerField.text.toPattern()) }
+                            }
+                            customerPagination.pageCount = ceil(customers.count() / countBox.count.toDouble()).toInt()
+                            items = customers.skip(countBox.count * page).take(countBox.count).toMutableObservableList()
+                        }
                     }
                 }
+                nameLabel.textProperty().bind(stringBindingOf(customerList.selectionModel.selectedItemProperty()) {
+                    customer?.name ?: ""
+                })
+                sinceLabel.textProperty().bind(stringBindingOf(customerList.selectionModel.selectedItemProperty()) {
+                    customer?.since?.toString(PATTERN_DATE) ?: ""
+                })
+                noteLabel.textProperty().bind(stringBindingOf(customerList.selectionModel.selectedItemProperty()) {
+                    customer?.note ?: ""
+                })
+                contactTable.itemsProperty().bind(bindingOf(customerList.selectionModel.selectedItemProperty()) {
+                    customer?.contacts?.toObservableList() ?: emptyObservableList()
+                })
+                coverLabel.visibleProperty().bind(customerList.selectionModel.selectedItemProperty().isNull)
+                customerList
             }
-            nameLabel.textProperty().bind(stringBindingOf(customerList.selectionModel.selectedItemProperty()) {
-                customer?.name ?: ""
-            })
-            sinceLabel.textProperty().bind(stringBindingOf(customerList.selectionModel.selectedItemProperty()) {
-                customer?.since?.toString(PATTERN_DATE) ?: ""
-            })
-            noteLabel.textProperty().bind(stringBindingOf(customerList.selectionModel.selectedItemProperty()) {
-                customer?.note ?: ""
-            })
-            contactTable.itemsProperty().bind(bindingOf(customerList.selectionModel.selectedItemProperty()) {
-                customer?.contacts?.toObservableList() ?: emptyObservableList()
-            })
-            coverLabel.visibleProperty().bind(customerList.selectionModel.selectedItemProperty().isNull)
-            customerList
-        }
-    })
+        })
 
-    @FXML
-    fun add() = AddUserDialog(this, getString(R.string.add_customer)).showAndWait().ifPresent { name ->
+    @FXML fun add() = AddUserDialog(this, getString(R.string.add_customer)).showAndWait().ifPresent { name ->
         transaction {
-            if (Customers.find { this.name.equal(name) }.isNotEmpty()) errorAlert(getString(R.string.name_taken)).showAndWait() else {
-                val customer = Customer(name.tidy())
-                customer.id = Customers.insert(customer)
-                customerList.items.add(0, customer)
-                customerList.selectionModel.select(0)
+            when {
+                Customers.find { this.name.equal(name) }.isNotEmpty() ->
+                    errorAlert(getString(R.string.name_taken)).showAndWait()
+                else -> {
+                    val customer = Customer(name.tidy())
+                    customer.id = Customers.insert(customer)
+                    customerList.items.add(0, customer)
+                    customerList.selectionModel.select(0)
+                }
             }
         }
     }

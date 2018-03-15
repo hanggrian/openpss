@@ -2,6 +2,8 @@ package com.hendraanggrian.openpss.ui.wage
 
 import com.hendraanggrian.openpss.BuildConfig.DEBUG
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.db.schema.Recesses
+import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.io.WageFolder
 import com.hendraanggrian.openpss.scene.control.FileField
 import com.hendraanggrian.openpss.ui.Controller
@@ -16,12 +18,15 @@ import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
 import javafx.scene.Scene
 import javafx.scene.control.Button
+import javafx.scene.control.ButtonType.OK
 import javafx.scene.control.ChoiceBox
 import javafx.scene.control.Label
 import javafx.scene.control.ListView
 import javafx.scene.control.ScrollPane
+import javafx.scene.control.Separator
 import javafx.scene.control.TitledPane
 import javafx.scene.control.ToggleButton
+import javafx.scene.image.ImageView
 import javafx.scene.layout.FlowPane
 import javafx.scene.layout.Pane
 import javafx.stage.Modality.APPLICATION_MODAL
@@ -31,12 +36,20 @@ import kfx.beans.binding.lessEq
 import kfx.beans.binding.or
 import kfx.beans.binding.stringBindingOf
 import kfx.collections.emptyBinding
+import kfx.collections.mutableObservableListOf
 import kfx.collections.sizeBinding
+import kfx.collections.toObservableList
 import kfx.coroutines.FX
 import kfx.coroutines.onAction
 import kfx.layouts.borderPane
-import kfx.scene.control.choiceDialog
+import kfx.layouts.choiceBox
+import kfx.layouts.gridPane
+import kfx.layouts.label
+import kfx.scene.control.cancelButton
+import kfx.scene.control.dialog
 import kfx.scene.control.errorAlert
+import kfx.scene.control.okButton
+import kfx.scene.layout.gaps
 import kfx.scene.layout.size
 import kfx.stage.fileChooser
 import kfx.stage.setSizeMax
@@ -86,10 +99,38 @@ class WageController : Controller() {
     @FXML fun browse() = fileChooser(getString(R.string.input_file), *readerChoiceBox.value.extensions)
         .showOpenDialog(fileField.scene.window)?.run { fileField.text = absolutePath }
 
-    @FXML fun recessOff() = choiceDialog(getString(R.string.disable_recess), null,
-        attendees.filter { it.role != null }.map { it.role }.distinct()
-    ) { contentText = getString(R.string.role) }.showAndWait().ifPresent {
-
+    @FXML fun recessOff() = dialog<Pair<Any, Any>>(getString(R.string.disable_recess), ImageView(R.image.ic_clock)) {
+        lateinit var recessChoice: ChoiceBox<*>
+        lateinit var roleChoice: ChoiceBox<*>
+        dialogPane.content = gridPane {
+            gaps = 8
+            label(getString(R.string.recess)) col 0 row 0
+            transaction {
+                recessChoice = choiceBox(mutableObservableListOf(getString(R.string.all),
+                    Separator(),
+                    *Recesses.find().toObservableList().toTypedArray())) col 1 row 0
+            }
+            label(getString(R.string.employee)) col 0 row 1
+            roleChoice = choiceBox(mutableObservableListOf(
+                *attendees.filter { it.role != null }.map { it.role!! }.distinct().toTypedArray(),
+                Separator(),
+                *attendees.toTypedArray())) col 1 row 1
+        }
+        cancelButton()
+        okButton { disableProperty().bind(recessChoice.valueProperty().isNull or roleChoice.valueProperty().isNull) }
+        setResultConverter { if (it == OK) Pair(recessChoice.value, roleChoice.value) else null }
+    }.showAndWait().ifPresent { (recess, role) ->
+        attendeePanes.filter {
+            when (role) {
+                is String -> it.attendee.role == role
+                else -> it.attendee == role as Attendee
+            }
+        }.forEach {
+            when (recess) {
+                is String -> it.recessChecks
+                else -> it.recessChecks.filter { it.text == recess.toString() }
+            }.forEach { it.isSelected = false }
+        }
     }
 
     @FXML fun read() {
@@ -152,8 +193,9 @@ class WageController : Controller() {
         }.showAndWait()
     }
 
-    /** Employees are stored in flowpane childrens' user model. */
-    private val attendees: List<Attendee> get() = flowPane.children.map { (it as AttendeePane).attendee }
+    private inline val attendeePanes: List<AttendeePane> get() = flowPane.children.map { (it as AttendeePane) }
+
+    private inline val attendees: List<Attendee> get() = attendeePanes.map { it.attendee }
 
     /** As attendees are populated, process button need to be rebinded according to new requirements. */
     private fun rebindProcessButton() = processButton.disableProperty().bind(flowPane.children.emptyBinding() or

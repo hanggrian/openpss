@@ -29,7 +29,8 @@ import org.joda.time.LocalTime
 import java.util.Date
 
 private lateinit var DB: MongoDB
-private val TABLES = arrayOf(Customers, Employees, Offsets, PlateOrders, OffsetOrders, Plates, Receipts, Recesses, Wages)
+private val TABLES = arrayOf(Customers, Employees, Offsets, PlateOrders, OffsetOrders, Plates, Receipts, Recesses,
+    Wages)
 
 /**
  * A failed transaction will most likely throw an exception instance of [MongoException].
@@ -41,12 +42,21 @@ fun <R> transaction(statement: MongoDBSession.() -> R): R? = try {
     DB.withSession(statement)
 } catch (e: MongoException) {
     if (DEBUG) e.printStackTrace()
-    errorAlert(e.message.toString()) { headerText = "Connection closed. Please sign in again." }.showAndWait().ifPresent { exit() }
+    errorAlert(e.message.toString()) {
+        headerText = "Connection closed. Please sign in again."
+    }.showAndWait().ifPresent { exit() }
     null
 }
 
 @Throws(Exception::class)
-suspend fun login(host: String, port: Int, user: String, password: String, employeeName: String, employeePassword: String): Employee {
+suspend fun login(
+    host: String,
+    port: Int,
+    user: String,
+    password: String,
+    employeeName: String,
+    employeePassword: String
+): Employee {
     var employee: Employee? = null
     DB = connect(host, port, user, password)
     transaction {

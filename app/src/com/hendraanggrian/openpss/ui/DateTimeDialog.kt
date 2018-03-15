@@ -58,8 +58,13 @@ class DateTimeDialog(
         cancelButton()
         okButton()
         setResultConverter {
-            if (it != OK) null
-            else DateTime(dateBox.picker.value.year, dateBox.picker.value.monthValue, dateBox.picker.value.dayOfMonth, timeBox.time.hourOfDay, timeBox.time.minuteOfHour)
+            if (it != OK) null else DateTime(
+                dateBox.picker.value.year,
+                dateBox.picker.value.monthValue,
+                dateBox.picker.value.dayOfMonth,
+                timeBox.time.hourOfDay,
+                timeBox.time.minuteOfHour
+            )
         }
     }
 }

@@ -17,7 +17,7 @@ import org.joda.time.Minutes.minutes
 import org.joda.time.Period
 
 /** Data class representing an Attendee with id as its identifier to avoid duplicates in [Set] scenario. */
-open class Attendee(
+data class Attendee(
     /** Id and name are final values that should be determined upon xlsx reading. */
     val id: Int,
     val name: String,
@@ -33,8 +33,10 @@ open class Attendee(
     val hourlyOvertimeProperty: IntegerProperty = SimpleIntegerProperty()
 ) {
 
-    /** Dummy for invisible [javafx.scene.control.TreeTableView] root. */
-    companion object : Attendee(0, "")
+    companion object {
+        /** Dummy for invisible [javafx.scene.control.TreeTableView] root. */
+        val DUMMY = Attendee(0, "")
+    }
 
     init {
         transaction {
@@ -51,7 +53,8 @@ open class Attendee(
                 if (wages.isEmpty()) Wages.insert(Wage(id, daily, hourlyOvertime))
                 else wages.single().let { wage ->
                     when {
-                        wage.daily != daily && wage.hourlyOvertime != hourlyOvertime -> wages.projection { daily + hourlyOvertime }.update(daily, hourlyOvertime)
+                        wage.daily != daily && wage.hourlyOvertime != hourlyOvertime ->
+                            wages.projection { daily + hourlyOvertime }.update(daily, hourlyOvertime)
                         wage.daily != daily -> wages.projection { daily }.update(daily)
                         else -> wages.projection { hourlyOvertime }.update(hourlyOvertime)
                     }

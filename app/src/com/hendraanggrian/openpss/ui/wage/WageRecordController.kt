@@ -138,7 +138,8 @@ class WageRecordController : Controller() {
                 if (initial.toLocalTime() < timeBox.time) {
                     record.startProperty.set(record.cloneStart(timeBox.time))
                     undoable.name = when {
-                        undoable.name == null -> "${record.attendee.name} ${initial.toString(PATTERN_DATETIME)} -> ${timeBox.time.toString(PATTERN_TIME)}"
+                        undoable.name == null -> "${record.attendee.name} ${initial.toString(PATTERN_DATETIME)} -> " +
+                            timeBox.time.toString(PATTERN_TIME)
                         else -> getString(R.string.multiple_lock_start_time)
                     }
                     undoable.addAction { record.startProperty.set(initial) }
@@ -156,7 +157,8 @@ class WageRecordController : Controller() {
                 if (initial.toLocalTime() > timeBox.time) {
                     record.endProperty.set(record.cloneEnd(timeBox.time))
                     undoable.name = when {
-                        undoable.name == null -> "${record.attendee.name} ${initial.toString(PATTERN_DATETIME)} -> ${timeBox.time.toString(PATTERN_TIME)}"
+                        undoable.name == null -> "${record.attendee.name} ${initial.toString(PATTERN_DATETIME)} -> " +
+                            timeBox.time.toString(PATTERN_TIME)
                         else -> getString(R.string.multiple_lock_end_time)
                     }
                     undoable.addAction { record.endProperty.set(initial) }
@@ -173,7 +175,8 @@ class WageRecordController : Controller() {
                 .forEach { record ->
                     val initial = record.dailyEmptyProperty.value
                     record.dailyEmptyProperty.set(!initial)
-                    if (undoable.name == null) undoable.name = "${getString(R.string.daily_emptied)} ${record.startProperty.value.toString(PATTERN_DATE)}"
+                    if (undoable.name == null) undoable.name = "${getString(R.string.daily_emptied)} " +
+                        record.startProperty.value.toString(PATTERN_DATE)
                     undoable.addAction { record.dailyEmptyProperty.set(initial) }
                 }
             undoable.append()

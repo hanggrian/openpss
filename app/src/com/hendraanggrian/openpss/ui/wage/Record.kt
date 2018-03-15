@@ -50,7 +50,8 @@ class Record(
         const val INDEX_TOTAL = -1
 
         /** Dummy for invisible [javafx.scene.control.TreeTableView] root. */
-        fun getDummy(resourced: Resourced) = Record(resourced, Int.MIN_VALUE, Attendee, START_OF_TIME.toProperty(), START_OF_TIME.toProperty())
+        fun getDummy(resourced: Resourced) = Record(resourced, Int.MIN_VALUE, Attendee.DUMMY,
+            START_OF_TIME.toProperty(), START_OF_TIME.toProperty())
     }
 
     init {
@@ -82,8 +83,12 @@ class Record(
             })
         }
         if (isChild || isTotal) {
-            dailyIncomeProperty.bind(doubleBindingOf(dailyProperty) { (daily * attendee.daily / WORKING_HOURS).round() })
-            overtimeIncomeProperty.bind(doubleBindingOf(overtimeProperty) { (overtime * attendee.hourlyOvertime).round() })
+            dailyIncomeProperty.bind(doubleBindingOf(dailyProperty) {
+                (daily * attendee.daily / WORKING_HOURS).round()
+            })
+            overtimeIncomeProperty.bind(doubleBindingOf(overtimeProperty) {
+                (overtime * attendee.hourlyOvertime).round()
+            })
             totalProperty.bind(dailyIncomeProperty + overtimeIncomeProperty)
         }
     }
@@ -124,9 +129,11 @@ class Record(
             })
         }
 
-    fun cloneStart(time: LocalTime): DateTime = DateTime(start.year, start.monthOfYear, start.dayOfMonth, time.hourOfDay, time.minuteOfHour)
+    fun cloneStart(time: LocalTime): DateTime =
+        DateTime(start.year, start.monthOfYear, start.dayOfMonth, time.hourOfDay, time.minuteOfHour)
 
-    fun cloneEnd(time: LocalTime): DateTime = DateTime(end.year, end.monthOfYear, end.dayOfMonth, time.hourOfDay, time.minuteOfHour)
+    fun cloneEnd(time: LocalTime): DateTime =
+        DateTime(end.year, end.monthOfYear, end.dayOfMonth, time.hourOfDay, time.minuteOfHour)
 
     private var start: DateTime
         get() = startProperty.get()
@@ -154,7 +161,9 @@ class Record(
             var minutes = interval.minutes
             attendee.recesses
                 .map { it.getInterval(start) }
-                .forEach { recessesInterval -> minutes -= interval.overlap(recessesInterval)?.toDuration()?.toStandardMinutes()?.minutes?.absoluteValue ?: 0 }
+                .forEach {
+                    minutes -= interval.overlap(it)?.toDuration()?.toStandardMinutes()?.minutes?.absoluteValue ?: 0
+                }
             return minutes / 60.0
         }
 }

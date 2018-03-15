@@ -56,6 +56,9 @@
                     <Image url="@/image/btn_recess_off.png"/>
                 </ImageView>
             </graphic>
+            <tooltip>
+                <Tooltip text="%disable_recess"/>
+            </tooltip>
         </Button>
     </ToolBar>
     <ScrollPane fx:id="scrollPane" VBox.vgrow="ALWAYS" hbarPolicy="NEVER" vbarPolicy="ALWAYS">

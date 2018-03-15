@@ -10,7 +10,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import org.joda.time.DateTime
 import java.io.File
 
-/** A custom readers to third-party software e Clocking fingerprint reader. */
+/** Compatible with e Clocking fingerprint reader version 2.1.015. */
 object EClockingReader : Reader() {
 
     private const val SHEET_RAW_ATTENDANCE_LOGS = 1
@@ -21,9 +21,9 @@ object EClockingReader : Reader() {
     private const val CELL_RECORD_START = 6
     private const val CELL_RECORD_END = 17
 
-    override val name: String get() = "e Clocking 2.1.015"
+    override val name: String = "e Clocking"
 
-    override val extensions: Array<String> get() = arrayOf("*.xlsx")
+    override val extensions: Array<String> = arrayOf("*.xlsx")
 
     override suspend fun read(file: File): Collection<Attendee> = async {
         val multimap = LinkedHashMultimap.create<Attendee, DateTime>()

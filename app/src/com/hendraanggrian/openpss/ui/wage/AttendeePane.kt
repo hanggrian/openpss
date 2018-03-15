@@ -8,17 +8,20 @@ import com.hendraanggrian.openpss.time.FlexibleInterval
 import com.hendraanggrian.openpss.time.PATTERN_DATETIME_EXTENDED
 import com.hendraanggrian.openpss.ui.DateTimeDialog
 import com.hendraanggrian.openpss.ui.Resourced
+import com.hendraanggrian.openpss.util.forceRefresh
 import com.hendraanggrian.openpss.util.getColor
 import com.hendraanggrian.openpss.util.isDelete
 import com.hendraanggrian.openpss.util.round
-import javafx.geometry.Pos
+import javafx.geometry.Pos.BOTTOM_CENTER
+import javafx.geometry.Pos.TOP_CENTER
+import javafx.scene.control.CheckBox
 import javafx.scene.control.ContentDisplay
 import javafx.scene.control.ListView
 import javafx.scene.control.MenuItem
 import javafx.scene.control.TitledPane
 import javafx.scene.image.Image
 import javafx.scene.input.MouseEvent
-import javafx.scene.layout.Priority
+import javafx.scene.layout.Priority.ALWAYS
 import javafx.scene.layout.StackPane
 import javafx.scene.text.Font
 import kfx.beans.binding.bindingOf
@@ -45,6 +48,7 @@ import kfx.scene.layout.widthPref
 import kotlinx.coroutines.experimental.delay
 import kotlinx.coroutines.experimental.launch
 import org.joda.time.DateTime
+import kotlin.math.absoluteValue
 
 class AttendeePane(
     resourced: Resourced,
@@ -52,6 +56,7 @@ class AttendeePane(
 ) : TitledPane(attendee.toString(), null), Resourced by resourced {
 
     private lateinit var listView: ListView<DateTime>
+    val recessChecks: MutableList<CheckBox> = mutableListOf()
     lateinit var deleteMenu: MenuItem
     lateinit var deleteOthersMenu: MenuItem
     lateinit var deleteToTheRightMenu: MenuItem
@@ -84,11 +89,10 @@ class AttendeePane(
                 vbox {
                     transaction {
                         Recesses.find().forEach { recess ->
-                            checkBox(recess.toString()) {
+                            recessChecks += checkBox(recess.toString()) {
                                 selectedProperty().listener { _, _, selected ->
-                                    attendee.recesses.let { recesses ->
-                                        if (selected) recesses.add(recess) else recesses.remove(recess)
-                                    }
+                                    if (selected) attendee.recesses.add(recess) else attendee.recesses.remove(recess)
+                                    listView.forceRefresh()
                                 }
                                 isSelected = true
                             } marginTop if (children.size > 1) 4 else 0
@@ -103,12 +107,24 @@ class AttendeePane(
                         clear()
                         if (dateTime != null && !empty) graphic = kfx.layouts.hbox {
                             val index = listView.items.indexOf(dateTime)
-                            alignment = if (index % 2 == 0) Pos.BOTTOM_CENTER else Pos.TOP_CENTER
-                            val itemLabel = label(dateTime.toString(PATTERN_DATETIME_EXTENDED)) { maxWidth = Double.MAX_VALUE } hpriority Priority.ALWAYS
-                            if (alignment == Pos.BOTTOM_CENTER) listView.items.getOrNull(index + 1).let { nextItem ->
+                            alignment = if (index % 2 == 0) BOTTOM_CENTER else TOP_CENTER
+                            val itemLabel = label(dateTime.toString(PATTERN_DATETIME_EXTENDED)) {
+                                maxWidth = Double.MAX_VALUE
+                            } hpriority ALWAYS
+                            if (alignment == BOTTOM_CENTER) listView.items.getOrNull(index + 1).let { nextItem ->
                                 when (nextItem) {
                                     null -> itemLabel.textFill = getColor(R.color.red)
-                                    else -> label(FlexibleInterval(dateTime, nextItem).hours.round().toString()) { font = Font.font(9.0) }
+                                    else -> {
+                                        val interval = FlexibleInterval(dateTime, nextItem)
+                                        var minutes = interval.minutes
+                                        attendee.recesses
+                                            .map { it.getInterval(dateTime) }
+                                            .forEach {
+                                                minutes -= interval.overlap(it)?.toDuration()?.toStandardMinutes()
+                                                    ?.minutes?.absoluteValue ?: 0
+                                            }
+                                        label((minutes / 60.0).round().toString()) { font = Font.font(9.0) }
+                                    }
                                 }
                             }
                         }
@@ -126,7 +142,8 @@ class AttendeePane(
             menuItem(getString(R.string.add)) {
                 onAction {
                     val prefill = listView.selectionModel.selectedItem ?: DateTime.now()
-                    DateTimeDialog(this@AttendeePane, getString(R.string.add_record), prefill.minusMinutes(prefill.minuteOfHour))
+                    DateTimeDialog(this@AttendeePane, getString(R.string.add_record),
+                        prefill.minusMinutes(prefill.minuteOfHour))
                         .showAndWait()
                         .ifPresent {
                             listView.items.add(it)
@@ -137,7 +154,8 @@ class AttendeePane(
             menuItem(getString(R.string.edit)) {
                 disableProperty().bind(listView.selectionModel.selectedItems.emptyBinding())
                 onAction {
-                    DateTimeDialog(this@AttendeePane, getString(R.string.edit_record), listView.selectionModel.selectedItem)
+                    DateTimeDialog(this@AttendeePane, getString(R.string.edit_record),
+                        listView.selectionModel.selectedItem)
                         .showAndWait()
                         .ifPresent {
                             listView.items[listView.selectionModel.selectedIndex] = it
@@ -163,14 +181,19 @@ class AttendeePane(
         }
         contentDisplay = ContentDisplay.RIGHT
         graphic = imageView {
-            imageProperty().bind(bindingOf(hoverProperty()) { Image(if (isHover) R.image.btn_clear_active else R.image.btn_clear_inactive) })
+            imageProperty().bind(bindingOf(hoverProperty()) {
+                Image(when {
+                    isHover -> R.image.btn_clear_active
+                    else -> R.image.btn_clear_inactive
+                })
+            })
             addEventHandler(MouseEvent.MOUSE_CLICKED) {
                 it.consume()
                 deleteMenu.fire()
             }
         }
         launch(FX) {
-            delay(100)
+            delay(200)
             applyCss()
             layout()
             val titleRegion = lookup(".title")

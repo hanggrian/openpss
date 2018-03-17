@@ -15,38 +15,39 @@ import com.hendraanggrian.openpss.util.round
 import javafx.geometry.Pos.BOTTOM_CENTER
 import javafx.geometry.Pos.TOP_CENTER
 import javafx.scene.control.CheckBox
-import javafx.scene.control.ContentDisplay
+import javafx.scene.control.ContentDisplay.RIGHT
 import javafx.scene.control.ListView
 import javafx.scene.control.MenuItem
 import javafx.scene.control.TitledPane
 import javafx.scene.image.Image
-import javafx.scene.input.MouseEvent
+import javafx.scene.input.MouseEvent.MOUSE_CLICKED
 import javafx.scene.layout.Priority.ALWAYS
 import javafx.scene.layout.StackPane
 import javafx.scene.text.Font
-import kfx.beans.binding.bindingOf
-import kfx.collections.emptyBinding
-import kfx.collections.sort
-import kfx.coroutines.FX
-import kfx.coroutines.listener
-import kfx.coroutines.onAction
-import kfx.coroutines.onKeyPressed
-import kfx.layouts.LayoutDsl
-import kfx.layouts.checkBox
-import kfx.layouts.contextMenu
-import kfx.layouts.gridPane
-import kfx.layouts.imageView
-import kfx.layouts.label
-import kfx.layouts.listView
-import kfx.layouts.menuItem
-import kfx.layouts.separatorMenuItem
-import kfx.layouts.vbox
-import kfx.listeners.cellFactory
-import kfx.scene.layout.gaps
-import kfx.scene.layout.paddings
-import kfx.scene.layout.widthPref
 import kotlinx.coroutines.experimental.delay
 import kotlinx.coroutines.experimental.launch
+import ktfx.beans.binding.bindingOf
+import ktfx.collections.emptyBinding
+import ktfx.collections.sort
+import ktfx.coroutines.FX
+import ktfx.coroutines.eventFilter
+import ktfx.coroutines.listener
+import ktfx.coroutines.onAction
+import ktfx.coroutines.onKeyPressed
+import ktfx.layouts.LayoutDsl
+import ktfx.layouts.checkBox
+import ktfx.layouts.contextMenu
+import ktfx.layouts.gridPane
+import ktfx.layouts.imageView
+import ktfx.layouts.label
+import ktfx.layouts.listView
+import ktfx.layouts.menuItem
+import ktfx.layouts.separatorMenuItem
+import ktfx.layouts.vbox
+import ktfx.listeners.cellFactory
+import ktfx.scene.layout.gaps
+import ktfx.scene.layout.paddings
+import ktfx.scene.layout.widthPref
 import org.joda.time.DateTime
 import kotlin.math.absoluteValue
 
@@ -91,7 +92,7 @@ class AttendeePane(
                         Recesses.find().forEach { recess ->
                             recessChecks += checkBox(recess.toString()) {
                                 selectedProperty().listener { _, _, selected ->
-                                    if (selected) attendee.recesses.add(recess) else attendee.recesses.remove(recess)
+                                    if (selected) attendee.recesses += recess else attendee.recesses -= recess
                                     listView.forceRefresh()
                                 }
                                 isSelected = true
@@ -105,7 +106,7 @@ class AttendeePane(
                 cellFactory {
                     onUpdate { dateTime, empty ->
                         clear()
-                        if (dateTime != null && !empty) graphic = kfx.layouts.hbox {
+                        if (dateTime != null && !empty) graphic = ktfx.layouts.hbox {
                             val index = listView.items.indexOf(dateTime)
                             alignment = if (index % 2 == 0) BOTTOM_CENTER else TOP_CENTER
                             val itemLabel = label(dateTime.toString(PATTERN_DATETIME_EXTENDED)) {
@@ -131,10 +132,8 @@ class AttendeePane(
                     }
                 }
                 onKeyPressed {
-                    if (it.code.isDelete() && selectionModel.selectedItem != null) selectionModel.run {
-                        listView.items.remove(selectedItem)
-                        clearSelection()
-                    }
+                    if (it.code.isDelete() && selectionModel.selectedItem != null)
+                        items.remove(selectionModel.selectedItem)
                 }
             }
         }
@@ -165,12 +164,7 @@ class AttendeePane(
             }
             menuItem(getString(R.string.delete)) {
                 disableProperty().bind(listView.selectionModel.selectedItems.emptyBinding())
-                onAction {
-                    listView.selectionModel.run {
-                        listView.items.remove(selectedItem)
-                        clearSelection()
-                    }
-                }
+                onAction { listView.items.remove(listView.selectionModel.selectedItem) }
             }
             separatorMenuItem()
             menuItem(getString(R.string.revert)) { onAction { attendee.attendances.revert() } }
@@ -179,7 +173,7 @@ class AttendeePane(
             deleteOthersMenu = menuItem(getString(R.string.delete_others))
             deleteToTheRightMenu = menuItem(getString(R.string.delete_employees_to_the_right))
         }
-        contentDisplay = ContentDisplay.RIGHT
+        contentDisplay = RIGHT
         graphic = imageView {
             imageProperty().bind(bindingOf(hoverProperty()) {
                 Image(when {
@@ -187,8 +181,7 @@ class AttendeePane(
                     else -> R.image.btn_clear_inactive
                 })
             })
-            addEventHandler(MouseEvent.MOUSE_CLICKED) {
-                it.consume()
+            eventFilter(type = MOUSE_CLICKED) {
                 deleteMenu.fire()
             }
         }

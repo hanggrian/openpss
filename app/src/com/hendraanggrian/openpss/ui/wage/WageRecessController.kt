@@ -12,14 +12,14 @@ import javafx.fxml.FXML
 import javafx.scene.control.ButtonType.OK
 import javafx.scene.control.TableColumn
 import javafx.scene.image.ImageView
-import kfx.beans.binding.booleanBindingOf
-import kfx.beans.property.toProperty
-import kfx.layouts.gridPane
-import kfx.layouts.label
-import kfx.scene.control.cancelButton
-import kfx.scene.control.dialog
-import kfx.scene.control.okButton
-import kfx.scene.layout.gaps
+import ktfx.beans.binding.booleanBindingOf
+import ktfx.beans.property.toProperty
+import ktfx.layouts.gridPane
+import ktfx.layouts.label
+import ktfx.scene.control.cancelButton
+import ktfx.scene.control.dialog
+import ktfx.scene.control.okButton
+import ktfx.scene.layout.gaps
 import org.joda.time.LocalTime
 
 class WageRecessController : SimpleTableController<Recess, Recesses>(Recesses) {
@@ -50,7 +50,7 @@ class WageRecessController : SimpleTableController<Recess, Recesses>(Recesses) {
                 startBox.time >= endBox.time
             })
         }
-        setResultConverter { if (it == OK) Pair(startBox.time, endBox.time) else null }
+        setResultConverter { if (it == OK) startBox.time to endBox.time else null }
     }.showAndWait().ifPresent { (start, end) ->
         val recess = Recess(start, end)
         recess.id = transaction { Recesses.insert(recess) }!!

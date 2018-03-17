@@ -4,8 +4,8 @@ import com.hendraanggrian.openpss.R
 import javafx.scene.control.TextInputDialog
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
-import kfx.scene.control.headerTitle
-import kfx.scene.control.icon
+import ktfx.scene.control.headerTitle
+import ktfx.scene.control.icon
 
 class AddUserDialog(resourced: Resourced, header: String) : TextInputDialog(), Resourced by resourced {
 

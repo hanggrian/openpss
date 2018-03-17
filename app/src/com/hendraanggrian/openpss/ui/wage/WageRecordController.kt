@@ -26,21 +26,21 @@ import javafx.scene.control.TreeTableColumn
 import javafx.scene.control.TreeTableView
 import javafx.scene.text.Font.loadFont
 import javafx.stage.Stage
-import kfx.application.later
-import kfx.beans.binding.booleanBindingOf
-import kfx.beans.binding.or
-import kfx.beans.binding.stringBindingOf
-import kfx.beans.property.asObservable
-import kfx.beans.property.toProperty
-import kfx.collections.emptyBinding
-import kfx.coroutines.listener
-import kfx.coroutines.onAction
-import kfx.layouts.label
-import kfx.layouts.menuItem
-import kfx.listeners.cellFactory
-import kfx.scene.control.customButton
-import kfx.scene.control.infoAlert
-import kfx.scene.screenshot
+import ktfx.application.later
+import ktfx.beans.binding.booleanBindingOf
+import ktfx.beans.binding.or
+import ktfx.beans.binding.stringBindingOf
+import ktfx.beans.property.asObservable
+import ktfx.beans.property.toProperty
+import ktfx.collections.emptyBinding
+import ktfx.coroutines.listener
+import ktfx.coroutines.onAction
+import ktfx.layouts.label
+import ktfx.layouts.menuItem
+import ktfx.listeners.cellFactory
+import ktfx.scene.control.customButton
+import ktfx.scene.control.infoAlert
+import ktfx.scene.snapshot
 import java.io.IOException
 
 class WageRecordController : Controller() {
@@ -189,7 +189,7 @@ class WageRecordController : Controller() {
         var i = 0
         do {
             try {
-                WageFile(i).write(recordTable.screenshot())
+                WageFile(i).write(recordTable.snapshot())
                 recordTable.scrollTo(flow.lastVisibleCell.index)
             } catch (e: IOException) {
                 if (DEBUG) e.printStackTrace()

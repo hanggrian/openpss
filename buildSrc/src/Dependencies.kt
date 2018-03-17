@@ -10,8 +10,8 @@ fun DependencyHandler.commonsValidator() = "commons-validator:commons-validator:
 
 fun DependencyHandler.guava() = "com.google.guava:guava:$guavaVersion-jre"
 
-fun DependencyHandler.hendraanggrian(repo: String?, module: String, version: String) = "com.hendraanggrian${repo?.let { ".$it" }
-    ?: ""}:$module:$version"
+fun DependencyHandler.hendraanggrian(module: String, version: String, repo: String? = null) =
+    "com.hendraanggrian${repo?.let { ".$it" } ?: ""}:$module:$version"
 
 inline val PluginDependenciesSpec.r get() = id("r")
 inline val PluginDependenciesSpec.buildconfig get() = id("buildconfig")

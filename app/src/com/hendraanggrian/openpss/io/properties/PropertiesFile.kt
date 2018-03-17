@@ -2,8 +2,8 @@ package com.hendraanggrian.openpss.io.properties
 
 import com.hendraanggrian.openpss.io.MainFolder
 import javafx.beans.property.StringProperty
-import kfx.beans.property.toProperty
-import kfx.coroutines.listener
+import ktfx.beans.property.toProperty
+import ktfx.coroutines.listener
 import kotlinx.coroutines.experimental.async
 import java.io.File
 import java.util.Properties

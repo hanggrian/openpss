@@ -13,25 +13,25 @@ import javafx.scene.control.Dialog
 import javafx.scene.control.ListView
 import javafx.scene.image.Image
 import javafx.scene.text.Font.loadFont
-import kfx.beans.binding.and
-import kfx.beans.binding.booleanBindingOf
-import kfx.beans.binding.stringBindingOf
-import kfx.collections.toObservableList
-import kfx.coroutines.onAction
-import kfx.layouts.button
-import kfx.layouts.hbox
-import kfx.layouts.imageView
-import kfx.layouts.label
-import kfx.layouts.text
-import kfx.layouts.textFlow
-import kfx.layouts.titledPane
-import kfx.layouts.vbox
-import kfx.listeners.cellFactory
-import kfx.scene.control.closeButton
-import kfx.scene.control.customButton
-import kfx.scene.control.icon
-import kfx.scene.layout.heightPref
-import kfx.scene.layout.paddings
+import ktfx.beans.binding.and
+import ktfx.beans.binding.booleanBindingOf
+import ktfx.beans.binding.stringBindingOf
+import ktfx.collections.toObservableList
+import ktfx.coroutines.onAction
+import ktfx.layouts.button
+import ktfx.layouts.hbox
+import ktfx.layouts.imageView
+import ktfx.layouts.label
+import ktfx.layouts.text
+import ktfx.layouts.textFlow
+import ktfx.layouts.titledPane
+import ktfx.layouts.vbox
+import ktfx.listeners.cellFactory
+import ktfx.scene.control.closeButton
+import ktfx.scene.control.customButton
+import ktfx.scene.control.icon
+import ktfx.scene.layout.heightPref
+import ktfx.scene.layout.paddings
 
 class AboutDialog(resourced: Resourced) : Dialog<Unit>(), Resourced by resourced {
 
@@ -76,12 +76,12 @@ class AboutDialog(resourced: Resourced) : Dialog<Unit>(), Resourced by resourced
             } marginLeft 48
         }
         dialogPane.expandableContent = hbox {
-            licenseList = kfx.layouts.listView {
+            licenseList = ktfx.layouts.listView {
                 heightPref = 256
                 items = License.values().toObservableList()
                 cellFactory {
                     onUpdate { license, empty ->
-                        if (license != null && !empty) graphic = kfx.layouts.vbox {
+                        if (license != null && !empty) graphic = ktfx.layouts.vbox {
                             label(license.repo) { font = loadFont(getResourceString(R.font.opensans_regular), 12.0) }
                             label(license.owner) { font = loadFont(getResourceString(R.font.opensans_bold), 12.0) }
                         }
@@ -89,7 +89,7 @@ class AboutDialog(resourced: Resourced) : Dialog<Unit>(), Resourced by resourced
                 }
             }
             titledPane(getString(R.string.open_source_software), licenseList) { isCollapsible = false }
-            titledPane(getString(R.string.license), kfx.layouts.textArea {
+            titledPane(getString(R.string.license), ktfx.layouts.textArea {
                 heightPref = 256
                 isEditable = false
                 textProperty().bind(stringBindingOf(licenseList.selectionModel.selectedIndexProperty()) {

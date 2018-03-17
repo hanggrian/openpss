@@ -16,6 +16,6 @@ enum class Language(val code: String, private val country: String) {
     override fun toString(): String = name.replace("_", " ").toLowerCase().capitalizeAll()
 
     companion object {
-        fun from(languageCode: String): Language = values().first { it.code == languageCode }
+        fun from(languageCode: String): Language = values().single { it.code == languageCode }
     }
 }

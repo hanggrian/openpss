@@ -33,15 +33,15 @@ val ktlint by configurations.creating
 dependencies {
     compile(kotlin("stdlib", kotlinVersion))
     compile(kotlinx("coroutines-javafx", coroutinesVersion))
-    compile(hendraanggrian("kfx", "kfx", kfxVersion))
+    compile(hendraanggrian("ktfx", ktfxVersion, "ktfx"))
     compile(jodaTime())
     compile(commonsValidator())
-
-    ktlint(ktlint())
 
     testImplementation(kotlin("test", kotlinVersion))
     testImplementation(testFX("core"))
     testImplementation(testFX("junit"))
+
+    ktlint(ktlint())
 }
 
 tasks {

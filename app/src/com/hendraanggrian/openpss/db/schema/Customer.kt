@@ -4,7 +4,7 @@ import com.hendraanggrian.openpss.db.NamedDocument
 import com.hendraanggrian.openpss.db.NamedDocumentSchema
 import com.hendraanggrian.openpss.db.dbDate
 import javafx.collections.ObservableList
-import kfx.collections.observableListOf
+import ktfx.collections.observableListOf
 import kotlinx.nosql.Id
 import kotlinx.nosql.ListColumn
 import kotlinx.nosql.date

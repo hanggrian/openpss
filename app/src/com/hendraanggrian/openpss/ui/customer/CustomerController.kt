@@ -25,36 +25,36 @@ import javafx.scene.control.TextField
 import javafx.scene.image.ImageView
 import javafx.scene.text.Font.loadFont
 import javafx.util.Callback
-import kfx.application.later
-import kfx.beans.binding.bindingOf
-import kfx.beans.binding.booleanBindingOf
-import kfx.beans.binding.or
-import kfx.beans.binding.stringBindingOf
-import kfx.beans.property.toProperty
-import kfx.collections.emptyObservableList
-import kfx.collections.toMutableObservableList
-import kfx.collections.toObservableList
-import kfx.coroutines.onAction
-import kfx.layouts.button
-import kfx.layouts.choiceBox
-import kfx.layouts.contextMenu
-import kfx.layouts.gridPane
-import kfx.layouts.label
-import kfx.layouts.listView
-import kfx.layouts.menuItem
-import kfx.layouts.textField
-import kfx.scene.control.cancelButton
-import kfx.scene.control.confirmAlert
-import kfx.scene.control.dialog
-import kfx.scene.control.errorAlert
-import kfx.scene.control.inputDialog
-import kfx.scene.control.okButton
-import kfx.scene.layout.gaps
-import kfx.scene.layout.sizeMax
 import kotlinx.nosql.equal
 import kotlinx.nosql.id
 import kotlinx.nosql.mongodb.MongoDBSession
 import kotlinx.nosql.update
+import ktfx.application.later
+import ktfx.beans.binding.bindingOf
+import ktfx.beans.binding.booleanBindingOf
+import ktfx.beans.binding.or
+import ktfx.beans.binding.stringBindingOf
+import ktfx.beans.property.toProperty
+import ktfx.collections.emptyObservableList
+import ktfx.collections.toMutableObservableList
+import ktfx.collections.toObservableList
+import ktfx.coroutines.onAction
+import ktfx.layouts.button
+import ktfx.layouts.choiceBox
+import ktfx.layouts.contextMenu
+import ktfx.layouts.gridPane
+import ktfx.layouts.label
+import ktfx.layouts.listView
+import ktfx.layouts.menuItem
+import ktfx.layouts.textField
+import ktfx.scene.control.cancelButton
+import ktfx.scene.control.confirmAlert
+import ktfx.scene.control.dialog
+import ktfx.scene.control.errorAlert
+import ktfx.scene.control.inputDialog
+import ktfx.scene.control.okButton
+import ktfx.scene.layout.gaps
+import ktfx.scene.layout.sizeMax
 import kotlin.math.ceil
 
 class CustomerController : Controller(), Refreshable {
@@ -193,9 +193,9 @@ class CustomerController : Controller(), Refreshable {
         }
     }
 
-    private val customer: Customer? get() = customerList.selectionModel.selectedItem
+    private inline val customer: Customer? get() = customerList.selectionModel.selectedItem
 
-    private val contact: Customer.Contact? get() = contactTable.selectionModel.selectedItem
+    private inline val contact: Customer.Contact? get() = contactTable.selectionModel.selectedItem
 
     private fun MongoDBSession.reloadCustomer(customer: Customer) = customerList.items.indexOf(customer).let { index ->
         customerList.items[customerList.items.indexOf(customer)] = Customers.find { id.equal(customer.id) }.single()

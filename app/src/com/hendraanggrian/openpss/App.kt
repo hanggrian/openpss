@@ -17,19 +17,19 @@ import javafx.fxml.FXMLLoader
 import javafx.scene.Scene
 import javafx.scene.image.Image
 import javafx.stage.Stage
-import kfx.application.deploy
-import kfx.scene.control.infoAlert
-import kfx.stage.icon
-import kfx.stage.setSizeMin
 import kotlinx.nosql.equal
 import kotlinx.nosql.update
+import ktfx.application.launch
+import ktfx.scene.control.infoAlert
+import ktfx.stage.icon
+import ktfx.stage.setSizeMin
 import org.apache.log4j.BasicConfigurator.configure
 import java.util.ResourceBundle
 
 class App : Application(), Resourced {
 
     companion object {
-        @JvmStatic fun main(args: Array<String>) = deploy<App>(*args)
+        @JvmStatic fun main(args: Array<String>) = launch<App>(*args)
     }
 
     override lateinit var language: Language

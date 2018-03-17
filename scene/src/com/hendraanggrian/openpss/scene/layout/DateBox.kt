@@ -10,16 +10,16 @@ import javafx.beans.property.SimpleObjectProperty
 import javafx.geometry.Pos.CENTER
 import javafx.scene.control.DatePicker
 import javafx.scene.image.ImageView
-import kfx.beans.binding.bindingOf
-import kfx.coroutines.onAction
-import kfx.layouts.ChildManager
-import kfx.layouts.ItemManager
-import kfx.layouts.LayoutDsl
-import kfx.layouts._HBox
-import kfx.layouts.button
-import kfx.layouts.datePicker
-import kfx.scene.layout.spacings
-import kfx.scene.layout.widthMax
+import ktfx.beans.binding.bindingOf
+import ktfx.coroutines.onAction
+import ktfx.layouts.ChildManager
+import ktfx.layouts.ItemManager
+import ktfx.layouts.LayoutDsl
+import ktfx.layouts._HBox
+import ktfx.layouts.button
+import ktfx.layouts.datePicker
+import ktfx.scene.layout.spacings
+import ktfx.scene.layout.widthMax
 import org.joda.time.LocalDate
 import org.joda.time.LocalDate.now
 

@@ -1,8 +1,8 @@
 package com.hendraanggrian.openpss.collections
 
 import javafx.collections.ObservableList
-import kfx.collections.mutableObservableListOf
-import kfx.collections.toMutableObservableList
+import ktfx.collections.mutableObservableListOf
+import ktfx.collections.toMutableObservableList
 
 class RevertibleObservableList<E>(
     private val actual: ObservableList<E> = mutableObservableListOf()
@@ -12,11 +12,11 @@ class RevertibleObservableList<E>(
 
     fun revert() {
         actual.clear()
-        actual.addAll(clone)
+        actual += clone
     }
 
     fun addRevertable(element: E): Boolean {
-        clone.add(element)
+        clone += element
         return actual.add(element)
     }
 
@@ -31,7 +31,7 @@ class RevertibleObservableList<E>(
     }
 
     fun addAllRevertable(elements: Collection<E>): Boolean {
-        clone.addAll(elements)
+        clone += elements
         return actual.addAll(elements)
     }
 
@@ -41,12 +41,12 @@ class RevertibleObservableList<E>(
     }
 
     fun removeRevertable(element: E): Boolean {
-        clone.remove(element)
+        clone -= element
         return actual.remove(element)
     }
 
     fun removeAllRevertable(elements: Collection<E>): Boolean {
-        clone.removeAll(elements)
+        clone -= elements
         return actual.removeAll(elements)
     }
 
@@ -56,7 +56,7 @@ class RevertibleObservableList<E>(
     }
 
     fun removeAllRevertable(vararg elements: E): Boolean {
-        clone.removeAll(*elements)
+        clone -= elements
         return actual.removeAll(*elements)
     }
 
@@ -66,7 +66,7 @@ class RevertibleObservableList<E>(
     }
 
     fun addAllRevertable(vararg elements: E): Boolean {
-        clone.addAll(*elements)
+        clone += elements
         return actual.addAll(*elements)
     }
 

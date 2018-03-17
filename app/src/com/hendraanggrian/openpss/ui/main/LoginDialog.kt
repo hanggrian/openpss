@@ -22,41 +22,40 @@ import javafx.scene.control.TextField
 import javafx.scene.control.Tooltip
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
-import kfx.application.exit
-import kfx.application.later
-import kfx.beans.binding.`else`
-import kfx.beans.binding.`if`
-import kfx.beans.binding.bindingOf
-import kfx.beans.binding.or
-import kfx.beans.binding.then
-import kfx.collections.toObservableList
-import kfx.coroutines.FX
-import kfx.coroutines.listener
-import kfx.coroutines.onAction
-import kfx.layouts.choiceBox
-import kfx.layouts.gridPane
-import kfx.layouts.hbox
-import kfx.layouts.hyperlink
-import kfx.layouts.label
-import kfx.layouts.passwordField
-import kfx.layouts.textField
-import kfx.layouts.toggleButton
-import kfx.layouts.tooltip
-import kfx.scene.control.cancelButton
-import kfx.scene.control.customButton
-import kfx.scene.control.errorAlert
-import kfx.scene.control.icon
-import kfx.scene.control.infoAlert
-import kfx.scene.layout.gaps
-import kfx.scene.layout.widthPref
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.launch
+import ktfx.application.exit
+import ktfx.application.later
+import ktfx.beans.binding.`else`
+import ktfx.beans.binding.`if`
+import ktfx.beans.binding.bindingOf
+import ktfx.beans.binding.or
+import ktfx.beans.binding.then
+import ktfx.collections.toObservableList
+import ktfx.coroutines.FX
+import ktfx.coroutines.listener
+import ktfx.coroutines.onAction
+import ktfx.layouts.choiceBox
+import ktfx.layouts.gridPane
+import ktfx.layouts.hbox
+import ktfx.layouts.hyperlink
+import ktfx.layouts.label
+import ktfx.layouts.passwordField
+import ktfx.layouts.textField
+import ktfx.layouts.toggleButton
+import ktfx.layouts.tooltip
+import ktfx.scene.control.cancelButton
+import ktfx.scene.control.customButton
+import ktfx.scene.control.errorAlert
+import ktfx.scene.control.icon
+import ktfx.scene.control.infoAlert
+import ktfx.scene.layout.gaps
+import ktfx.scene.layout.widthPref
 
 class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced {
 
     private lateinit var employeeField: TextField
     private lateinit var passwordField: PasswordField
-
     private lateinit var serverHostField: HostField
     private lateinit var serverPortField: IntField
     private lateinit var serverUserField: TextField
@@ -92,8 +91,13 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced 
             passwordField = passwordField { promptText = getString(R.string.password) } col 1 row 2
             toggleButton {
                 tooltip(getString(R.string.see_password))
-                graphic = kfx.layouts.imageView { imageProperty().bind(`if`(this@toggleButton.selectedProperty()) then Image(R.image.btn_visibility) `else` Image(R.image.btn_visibility_off)) }
-                passwordField.tooltipProperty().bind(bindingOf(passwordField.textProperty(), selectedProperty()) { if (!isSelected) null else Tooltip(passwordField.text) })
+                graphic = ktfx.layouts.imageView {
+                    imageProperty().bind(`if`(this@toggleButton.selectedProperty())
+                        then Image(R.image.btn_visibility) `else` Image(R.image.btn_visibility_off))
+                }
+                passwordField.tooltipProperty().bind(bindingOf(passwordField.textProperty(), selectedProperty()) {
+                    if (!isSelected) null else Tooltip(passwordField.text)
+                })
             } col 2 row 2
         }
         dialogPane.expandableContent = gridPane {
@@ -141,7 +145,13 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced 
                     ConfigFile.save()
                     MongoFile.save()
                     try {
-                        val employee = login(serverHostField.text, serverPortField.value, serverUserField.text, serverPasswordField.text, employeeField.text, passwordField.text)
+                        val employee = login(
+                            serverHostField.text,
+                            serverPortField.value,
+                            serverUserField.text,
+                            serverPasswordField.text,
+                            employeeField.text,
+                            passwordField.text)
                         launch(FX) {
                             result = employee
                             close()
@@ -156,9 +166,7 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced 
         later {
             if (employeeField.text.isBlank()) employeeField.requestFocus() else passwordField.requestFocus()
             dialogPane.isExpanded = !MongoFile.isValid()
-            if (DEBUG) {
-                passwordField.text = "Test"
-            }
+            if (DEBUG) passwordField.text = "Test"
         }
     }
 }

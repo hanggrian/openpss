@@ -29,32 +29,33 @@ import javafx.scene.control.ToggleButton
 import javafx.scene.image.ImageView
 import javafx.scene.layout.FlowPane
 import javafx.scene.layout.Pane
+import javafx.stage.FileChooser.ExtensionFilter
 import javafx.stage.Modality.APPLICATION_MODAL
-import kfx.application.later
-import kfx.beans.binding.booleanBindingOf
-import kfx.beans.binding.lessEq
-import kfx.beans.binding.or
-import kfx.beans.binding.stringBindingOf
-import kfx.collections.emptyBinding
-import kfx.collections.mutableObservableListOf
-import kfx.collections.sizeBinding
-import kfx.collections.toObservableList
-import kfx.coroutines.FX
-import kfx.coroutines.onAction
-import kfx.layouts.borderPane
-import kfx.layouts.choiceBox
-import kfx.layouts.gridPane
-import kfx.layouts.label
-import kfx.scene.control.cancelButton
-import kfx.scene.control.dialog
-import kfx.scene.control.errorAlert
-import kfx.scene.control.okButton
-import kfx.scene.layout.gaps
-import kfx.scene.layout.size
-import kfx.stage.fileChooser
-import kfx.stage.setSizeMax
-import kfx.stage.stage
 import kotlinx.coroutines.experimental.launch
+import ktfx.application.later
+import ktfx.beans.binding.booleanBindingOf
+import ktfx.beans.binding.lessEq
+import ktfx.beans.binding.or
+import ktfx.beans.binding.stringBindingOf
+import ktfx.collections.emptyBinding
+import ktfx.collections.mutableObservableListOf
+import ktfx.collections.sizeBinding
+import ktfx.collections.toObservableList
+import ktfx.coroutines.FX
+import ktfx.coroutines.onAction
+import ktfx.layouts.borderPane
+import ktfx.layouts.choiceBox
+import ktfx.layouts.gridPane
+import ktfx.layouts.label
+import ktfx.scene.control.cancelButton
+import ktfx.scene.control.dialog
+import ktfx.scene.control.errorAlert
+import ktfx.scene.control.okButton
+import ktfx.scene.layout.gaps
+import ktfx.scene.layout.size
+import ktfx.stage.fileChooser
+import ktfx.stage.setSizeMax
+import ktfx.stage.stage
 
 class WageController : Controller() {
 
@@ -96,7 +97,7 @@ class WageController : Controller() {
 
     @FXML fun history() = openFile(WageFolder)
 
-    @FXML fun browse() = fileChooser(getString(R.string.input_file), *readerChoiceBox.value.extensions)
+    @FXML fun browse() = fileChooser(ExtensionFilter(getString(R.string.input_file), *readerChoiceBox.value.extensions))
         .showOpenDialog(fileField.scene.window)?.run { fileField.text = absolutePath }
 
     @FXML fun recessOff() = dialog<Pair<Any, Any>>(getString(R.string.disable_recess), ImageView(R.image.ic_clock)) {
@@ -118,18 +119,12 @@ class WageController : Controller() {
         }
         cancelButton()
         okButton { disableProperty().bind(recessChoice.valueProperty().isNull or roleChoice.valueProperty().isNull) }
-        setResultConverter { if (it == OK) Pair(recessChoice.value, roleChoice.value) else null }
+        setResultConverter { if (it == OK) recessChoice.value to roleChoice.value else null }
     }.showAndWait().ifPresent { (recess, role) ->
         attendeePanes.filter {
-            when (role) {
-                is String -> it.attendee.role == role
-                else -> it.attendee == role as Attendee
-            }
-        }.forEach {
-            when (recess) {
-                is String -> it.recessChecks
-                else -> it.recessChecks.filter { it.text == recess.toString() }
-            }.forEach { it.isSelected = false }
+            if (role is String) it.attendee.role == role else it.attendee == role as Attendee
+        }.map { it.recessChecks }.forEach {
+            (if (recess is String) it else it.filter { it.text == recess.toString() }).forEach { it.isSelected = false }
         }
     }
 
@@ -137,7 +132,7 @@ class WageController : Controller() {
         scrollPane.content = borderPane {
             prefWidthProperty().bind(scrollPane.widthProperty())
             prefHeightProperty().bind(scrollPane.heightProperty())
-            center = kfx.layouts.progressIndicator { size = 128 }
+            center = ktfx.layouts.progressIndicator { size = 128 }
         }
         flowPane.children.clear()
         launch {
@@ -147,22 +142,22 @@ class WageController : Controller() {
                     launch(FX) {
                         flowPane.children += attendeePane(this@WageController, attendee) {
                             deleteMenu.onAction {
-                                flowPane.children.remove(this@attendeePane)
+                                flowPane.children -= this@attendeePane
                                 rebindProcessButton()
                             }
                             deleteOthersMenu.disableProperty().bind(flowPane.children.sizeBinding() lessEq 1)
                             deleteOthersMenu.onAction {
-                                flowPane.children.removeAll(flowPane.children.toMutableList().apply {
+                                flowPane.children -= flowPane.children.toMutableList().apply {
                                     remove(this@attendeePane)
-                                })
+                                }
                                 rebindProcessButton()
                             }
                             deleteToTheRightMenu.disableProperty().bind(booleanBindingOf(flowPane.children) {
                                 flowPane.children.indexOf(this@attendeePane) == flowPane.children.lastIndex
                             })
                             deleteToTheRightMenu.onAction {
-                                flowPane.children.removeAll(flowPane.children.toList().takeLast(
-                                    flowPane.children.lastIndex - flowPane.children.indexOf(this@attendeePane)))
+                                flowPane.children -= flowPane.children.toList().takeLast(
+                                    flowPane.children.lastIndex - flowPane.children.indexOf(this@attendeePane))
                                 rebindProcessButton()
                             }
                         }

@@ -8,14 +8,14 @@ import javafx.scene.control.Button
 import javafx.scene.control.ButtonType.NO
 import javafx.scene.control.ButtonType.YES
 import javafx.scene.control.TableView
-import kfx.application.later
-import kfx.beans.binding.or
-import kfx.beans.property.toProperty
-import kfx.collections.toMutableObservableList
-import kfx.scene.control.confirmAlert
 import kotlinx.nosql.equal
 import kotlinx.nosql.id
 import kotlinx.nosql.mongodb.DocumentSchema
+import ktfx.application.later
+import ktfx.beans.binding.or
+import ktfx.beans.property.toProperty
+import ktfx.collections.toMutableObservableList
+import ktfx.scene.control.confirmAlert
 
 /**
  * Base controller for editing DAO in simple table with refresh, add, and delete button.

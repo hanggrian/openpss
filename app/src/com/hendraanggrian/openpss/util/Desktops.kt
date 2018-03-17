@@ -2,7 +2,7 @@
 
 package com.hendraanggrian.openpss.util
 
-import kfx.scene.control.errorAlert
+import ktfx.scene.control.errorAlert
 import java.awt.Desktop.getDesktop
 import java.awt.Desktop.isDesktopSupported
 import java.io.File

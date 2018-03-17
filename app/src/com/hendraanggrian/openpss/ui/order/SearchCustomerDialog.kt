@@ -10,16 +10,16 @@ import javafx.scene.control.Dialog
 import javafx.scene.control.ListView
 import javafx.scene.control.TextField
 import javafx.scene.image.ImageView
-import kfx.application.later
-import kfx.beans.binding.bindingOf
-import kfx.collections.toMutableObservableList
-import kfx.layouts.listView
-import kfx.layouts.textField
-import kfx.layouts.vbox
-import kfx.scene.control.cancelButton
-import kfx.scene.control.graphicIcon
-import kfx.scene.control.headerTitle
-import kfx.scene.control.okButton
+import ktfx.application.later
+import ktfx.beans.binding.bindingOf
+import ktfx.collections.toMutableObservableList
+import ktfx.layouts.listView
+import ktfx.layouts.textField
+import ktfx.layouts.vbox
+import ktfx.scene.control.cancelButton
+import ktfx.scene.control.graphicIcon
+import ktfx.scene.control.headerTitle
+import ktfx.scene.control.okButton
 import kotlinx.nosql.equal
 
 class SearchCustomerDialog(resourced: Resourced) : Dialog<Customer>(), Resourced by resourced {

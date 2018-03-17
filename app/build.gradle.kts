@@ -38,6 +38,8 @@ java.sourceSets {
     }
 }
 
+application.mainClassName = "com.hendraanggrian.openpss.App"
+
 kotlin.experimental.coroutines = ENABLE
 
 val ktlint by configurations.creating
@@ -97,10 +99,9 @@ tasks {
         args("-F", "src/**/*.kt")
     }
 
-    val main = "$releaseGroup.$releaseArtifact.App"
     withType<ShadowJar> {
         destinationDir = buildDir.resolve("release")
-        manifest.attributes(mapOf("Main-Class" to main))
+        manifest.attributes(mapOf("Main-Class" to application.mainClassName))
         baseName = releaseArtifact
         version = releaseVersion
         classifier = null
@@ -108,7 +109,7 @@ tasks {
     withType<PackTask> {
         classpath(*buildDir.resolve("install/app/lib").listFiles() ?: emptyArray())
         executable = releaseName
-        mainClass = main
+        mainClass = application.mainClassName
         vmArgs("Xmx2G")
         resources("res", "../scene/sceneres")
         outputName = releaseName
@@ -125,5 +126,3 @@ configure<JUnitPlatformExtension> {
         if (this is ExtensionAware) extensions.getByType(EnginesExtension::class.java).include("spek")
     }
 }
-
-application.mainClassName = "com.hendraanggrian.openpss.App"

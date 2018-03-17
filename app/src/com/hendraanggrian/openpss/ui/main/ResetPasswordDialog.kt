@@ -7,21 +7,21 @@ import javafx.scene.control.Dialog
 import javafx.scene.control.PasswordField
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
-import kfx.application.later
-import kfx.beans.binding.neq
-import kfx.beans.binding.or
-import kfx.layouts.gridPane
-import kfx.layouts.label
-import kfx.layouts.passwordField
-import kfx.scene.control.cancelButton
-import kfx.scene.control.icon
-import kfx.scene.control.okButton
-import kfx.scene.layout.gaps
+import ktfx.application.later
+import ktfx.beans.binding.neq
+import ktfx.beans.binding.or
+import ktfx.layouts.gridPane
+import ktfx.layouts.label
+import ktfx.layouts.passwordField
+import ktfx.scene.control.cancelButton
+import ktfx.scene.control.icon
+import ktfx.scene.control.okButton
+import ktfx.scene.layout.gaps
 
 class ResetPasswordDialog(resourced: Resourced) : Dialog<String>(), Resourced by resourced {
 
-    lateinit var changePasswordField: PasswordField
-    lateinit var confirmPasswordField: PasswordField
+    private lateinit var changePasswordField: PasswordField
+    private lateinit var confirmPasswordField: PasswordField
 
     init {
         icon = Image(R.image.ic_launcher)

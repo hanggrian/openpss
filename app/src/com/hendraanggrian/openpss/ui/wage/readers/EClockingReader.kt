@@ -1,6 +1,6 @@
 package com.hendraanggrian.openpss.ui.wage.readers
 
-import com.google.common.collect.LinkedHashMultimap
+import com.google.common.collect.LinkedHashMultimap.create
 import com.hendraanggrian.openpss.ui.wage.Attendee
 import kotlinx.coroutines.experimental.async
 import org.apache.commons.lang3.SystemUtils.IS_OS_MAC
@@ -26,32 +26,35 @@ object EClockingReader : Reader() {
     override val extensions: Array<String> = arrayOf("*.xlsx")
 
     override suspend fun read(file: File): Collection<Attendee> = async {
-        val multimap = LinkedHashMultimap.create<Attendee, DateTime>()
-        file.inputStream().use { stream ->
-            val workbook = async { XSSFWorkbook(stream) }.await()
-            val sheet = workbook.getSheetAt(SHEET_RAW_ATTENDANCE_LOGS)
-            sheet.iterator().asSequence().drop(5).forEach { row ->
-                val dept = row.getCell(CELL_DEPT).stringCellValue
-                val name = row.getCell(CELL_NAME).stringCellValue
-                val no = row.getCell(CELL_NO).numericCellValue.toInt()
-                val date = DateTime(row.getCell(CELL_DATE).dateCellValue.time)
-                val day = date.dayOfMonth
-                val month = date.monthOfYear
-                val year = date.year
-                multimap.putAll(Attendee(no, name, dept), (CELL_RECORD_START until CELL_RECORD_END)
-                    .map { row.getCell(it) }
-                    .filter { it.cellTypeEnum == NUMERIC }
-                    .map {
-                        val record = DateTime(it.dateCellValue.time)
-                        val attendance = DateTime(year, month, day, record.hourOfDay, record.minuteOfHour)
-                        when (true) {
-                            IS_OS_WINDOWS -> attendance.plusMinutes(18)
-                            IS_OS_MAC -> attendance.minusMinutes(7)
-                            else -> attendance
-                        }
-                    })
+        val multimap = create<Attendee, DateTime>()
+        file.inputStream().use {
+            XSSFWorkbook(it).use {
+                it.getSheetAt(SHEET_RAW_ATTENDANCE_LOGS)
+                    .iterator()
+                    .asSequence()
+                    .drop(5)
+                    .forEach { row ->
+                        val dept = row.getCell(CELL_DEPT).stringCellValue
+                        val name = row.getCell(CELL_NAME).stringCellValue
+                        val no = row.getCell(CELL_NO).numericCellValue.toInt()
+                        val date = DateTime(row.getCell(CELL_DATE).dateCellValue)
+                        val day = date.dayOfMonth
+                        val month = date.monthOfYear
+                        val year = date.year
+                        multimap.putAll(Attendee(no, name, dept), (CELL_RECORD_START until CELL_RECORD_END)
+                            .map { row.getCell(it) }
+                            .filter { it.cellTypeEnum == NUMERIC }
+                            .map {
+                                val record = DateTime(it.dateCellValue)
+                                val attendance = DateTime(year, month, day, record.hourOfDay, record.minuteOfHour)
+                                when (true) {
+                                    IS_OS_WINDOWS -> attendance.plusMinutes(18)
+                                    IS_OS_MAC -> attendance.minusMinutes(7)
+                                    else -> attendance
+                                }
+                            })
+                    }
             }
-            workbook.close()
         }
         multimap.keySet().map { attendee ->
             attendee.attendances.addAllRevertable(multimap.get(attendee))

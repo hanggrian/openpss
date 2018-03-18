@@ -27,7 +27,7 @@ import ktfx.scene.control.confirmAlert
  */
 abstract class SimpleTableController<D : Document<S>, S : DocumentSchema<D>>(
     protected val schema: S
-) : Controller(), Refreshable {
+) : Controller(), Refreshable, Addable {
 
     @FXML lateinit var deleteButton: Button
     @FXML lateinit var table: TableView<D>
@@ -43,8 +43,6 @@ abstract class SimpleTableController<D : Document<S>, S : DocumentSchema<D>>(
     override fun refresh() {
         table.items = transaction { schema.find().toMutableObservableList() }
     }
-
-    @FXML abstract fun add()
 
     @FXML fun delete() = confirmAlert(getString(R.string.are_you_sure), YES, NO)
         .showAndWait()

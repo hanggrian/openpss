@@ -33,7 +33,6 @@ import ktfx.beans.binding.stringBindingOf
 import ktfx.beans.property.asObservable
 import ktfx.beans.property.toProperty
 import ktfx.collections.emptyBinding
-import ktfx.coroutines.listener
 import ktfx.coroutines.onAction
 import ktfx.layouts.label
 import ktfx.layouts.menuItem
@@ -110,7 +109,8 @@ class WageRecordController : Controller() {
                 val total = attendee.toTotalRecords(this, childs)
                 recordTable.root.children += TreeItem(node).apply {
                     isExpanded = true
-                    expandedProperty().listener { _, _, expanded -> if (!expanded) isExpanded = true } // uncollapsible
+                    // uncollapsible
+                    expandedProperty().addListener { _, _, expanded -> if (!expanded) isExpanded = true }
                     children += childs.map { TreeItem(it) }.toTypedArray()
                     children += TreeItem(total)
                 }

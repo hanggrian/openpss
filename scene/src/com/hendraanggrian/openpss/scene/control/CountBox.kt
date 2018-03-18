@@ -30,6 +30,14 @@ open class CountBox : ChoiceBox<Int>() {
     val count: Int get() = countProperty.get()
 }
 
-inline fun itemCountBox(noinline init: ((@LayoutDsl CountBox).() -> Unit)? = null): CountBox = CountBox().apply { init?.invoke(this) }
-inline fun ChildManager.itemCountBox(noinline init: ((@LayoutDsl CountBox).() -> Unit)? = null): CountBox = CountBox().apply { init?.invoke(this) }.add()
-inline fun ItemManager.itemCountBox(noinline init: ((@LayoutDsl CountBox).() -> Unit)? = null): CountBox = CountBox().apply { init?.invoke(this) }.add()
+inline fun itemCountBox(
+    noinline init: ((@LayoutDsl CountBox).() -> Unit)? = null
+): CountBox = CountBox().apply { init?.invoke(this) }
+
+inline fun ChildManager.itemCountBox(
+    noinline init: ((@LayoutDsl CountBox).() -> Unit)? = null
+): CountBox = com.hendraanggrian.openpss.scene.control.itemCountBox(init).add()
+
+inline fun ItemManager.itemCountBox(
+    noinline init: ((@LayoutDsl CountBox).() -> Unit)? = null
+): CountBox = com.hendraanggrian.openpss.scene.control.itemCountBox(init).add()

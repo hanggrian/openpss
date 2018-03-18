@@ -6,6 +6,7 @@ import com.hendraanggrian.openpss.db.schema.Employee.Companion.DEFAULT_PASSWORD
 import com.hendraanggrian.openpss.db.schema.Employees
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.ui.AddUserDialog
+import com.hendraanggrian.openpss.ui.Addable
 import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.main.ResetPasswordDialog
@@ -16,6 +17,9 @@ import javafx.scene.control.ButtonType.NO
 import javafx.scene.control.ButtonType.YES
 import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
+import kotlinx.nosql.equal
+import kotlinx.nosql.mongodb.MongoDBSession
+import kotlinx.nosql.update
 import ktfx.application.exit
 import ktfx.beans.property.toProperty
 import ktfx.collections.toMutableObservableList
@@ -23,11 +27,8 @@ import ktfx.coroutines.onEditCommit
 import ktfx.scene.control.choiceBoxCellFactory
 import ktfx.scene.control.confirmAlert
 import ktfx.scene.control.infoAlert
-import kotlinx.nosql.equal
-import kotlinx.nosql.mongodb.MongoDBSession
-import kotlinx.nosql.update
 
-class EmployeeController : Controller(), Refreshable {
+class EmployeeController : Controller(), Refreshable, Addable {
 
     @FXML lateinit var fullAccessButton: Button
     @FXML lateinit var resetPasswordButton: Button
@@ -59,7 +60,7 @@ class EmployeeController : Controller(), Refreshable {
         employeeTable.items = transaction { Employees.find().toMutableObservableList() }
     }
 
-    @FXML fun add() = AddUserDialog(this, getString(R.string.add_employee)).showAndWait().ifPresent { name ->
+    override fun add() = AddUserDialog(this, getString(R.string.add_employee)).showAndWait().ifPresent { name ->
         val employee = Employee(name.tidy())
         employee.id = transaction { Employees.insert(employee) }!!
         employeeTable.items.add(employee)

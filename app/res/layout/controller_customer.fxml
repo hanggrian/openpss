@@ -17,6 +17,7 @@
                 </ImageView>
             </graphic>
         </Button>
+        <!--suppress JavaFxEventHandler -->
         <Button mnemonicParsing="false" onAction="#add" text="%add">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">

@@ -25,6 +25,14 @@ open class HostField : TextField() {
     val isValid: Boolean get() = validProperty.get()
 }
 
-inline fun hostField(noinline init: ((@LayoutDsl HostField).() -> Unit)? = null): HostField = HostField().apply { init?.invoke(this) }
-inline fun ChildManager.hostField(noinline init: ((@LayoutDsl HostField).() -> Unit)? = null): HostField = HostField().apply { init?.invoke(this) }.add()
-inline fun ItemManager.hostField(noinline init: ((@LayoutDsl HostField).() -> Unit)? = null): HostField = HostField().apply { init?.invoke(this) }.add()
+inline fun hostField(
+    noinline init: ((@LayoutDsl HostField).() -> Unit)? = null
+): HostField = HostField().apply { init?.invoke(this) }
+
+inline fun ChildManager.hostField(
+    noinline init: ((@LayoutDsl HostField).() -> Unit)? = null
+): HostField = com.hendraanggrian.openpss.scene.control.hostField(init).add()
+
+inline fun ItemManager.hostField(
+    noinline init: ((@LayoutDsl HostField).() -> Unit)? = null
+): HostField = com.hendraanggrian.openpss.scene.control.hostField(init).add()

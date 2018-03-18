@@ -25,15 +25,22 @@ abstract class PriceController<D : NamedDocument<S>, S : NamedDocumentSchema<D>>
         nameColumn.setCellValueFactory { it.value.name.toProperty() }
     }
 
-    override fun add() = inputDialog(getString(if (this is PlatePriceController) R.string.add_plate else R.string.add_offset), null) {
+    override fun add() = inputDialog(getString(when {
+        this is PlatePriceController -> R.string.add_plate
+        else -> R.string.add_offset
+    })) {
         contentText = getString(R.string.name)
         editor.promptText = getString(R.string.name)
     }.showAndWait().ifPresent { name ->
         transaction @Suppress("IMPLICIT_CAST_TO_ANY") {
-            if (schema.find { this.name.equal(name) }.isNotEmpty()) errorAlert(getString(R.string.name_taken)).showAndWait() else {
-                val price = newPrice(name)
-                price.id = schema.insert(price)
-                table.items.add(price)
+            when {
+                schema.find { this.name.equal(name) }.isNotEmpty() ->
+                    errorAlert(getString(R.string.name_taken)).showAndWait()
+                else -> {
+                    val price = newPrice(name)
+                    price.id = schema.insert(price)
+                    table.items.add(price)
+                }
             }
         }
     }

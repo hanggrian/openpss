@@ -56,11 +56,11 @@ class AttendeePane(
     val attendee: Attendee
 ) : TitledPane(attendee.toString(), null), Resourced by resourced {
 
-    private lateinit var listView: ListView<DateTime>
     val recessChecks: MutableList<CheckBox> = mutableListOf()
     lateinit var deleteMenu: MenuItem
     lateinit var deleteOthersMenu: MenuItem
     lateinit var deleteToTheRightMenu: MenuItem
+    private lateinit var listView: ListView<DateTime>
 
     init {
         isCollapsible = false

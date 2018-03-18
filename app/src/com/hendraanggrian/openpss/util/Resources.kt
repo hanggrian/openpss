@@ -9,6 +9,7 @@ import java.io.InputStream
 import java.net.URL
 
 inline fun getResource(name: String): URL = App::class.java.getResource(name)
+
 inline fun getResourceString(name: String): String = getResource(name).toExternalForm()
 
 inline fun getResourceAsStream(name: String): InputStream = App::class.java.getResourceAsStream(name)

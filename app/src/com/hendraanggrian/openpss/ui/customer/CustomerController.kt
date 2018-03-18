@@ -3,11 +3,13 @@ package com.hendraanggrian.openpss.ui.customer
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.collections.isNotEmpty
 import com.hendraanggrian.openpss.db.schema.Customer
+import com.hendraanggrian.openpss.db.schema.Customer.Contact
 import com.hendraanggrian.openpss.db.schema.Customers
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.scene.control.CountBox
 import com.hendraanggrian.openpss.time.PATTERN_DATE
 import com.hendraanggrian.openpss.ui.AddUserDialog
+import com.hendraanggrian.openpss.ui.Addable
 import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.util.getResourceString
@@ -56,8 +58,9 @@ import ktfx.scene.control.okButton
 import ktfx.scene.layout.gaps
 import ktfx.scene.layout.sizeMax
 import kotlin.math.ceil
+import kotlin.text.RegexOption.IGNORE_CASE
 
-class CustomerController : Controller(), Refreshable {
+class CustomerController : Controller(), Refreshable, Addable {
 
     @FXML lateinit var customerField: TextField
     @FXML lateinit var countBox: CountBox
@@ -82,7 +85,7 @@ class CustomerController : Controller(), Refreshable {
             }.showAndWait().ifPresent { note ->
                 transaction {
                     Customers.find { id.equal(customer!!.id) }.projection { this.note }.update(note)
-                    reloadCustomer(customer!!)
+                    reload(customer!!)
                 }
             }
         }
@@ -115,12 +118,12 @@ class CustomerController : Controller(), Refreshable {
                             disableProperty().bind(typeBox.valueProperty().isNull or
                                 contactField.textProperty().isEmpty)
                         }
-                        setResultConverter { if (it == OK) Customer.Contact(typeBox.value, contactField.text) else null }
+                        setResultConverter { if (it == OK) Contact(typeBox.value, contactField.text) else null }
                     }.showAndWait().ifPresent { contact ->
                         transaction {
                             Customers.find { id.equal(customer!!.id) }.projection { contacts }
                                 .update(customer!!.contacts + contact)
-                            reloadCustomer(customer!!)
+                            reload(customer!!)
                         }
                     }
                 }
@@ -136,7 +139,7 @@ class CustomerController : Controller(), Refreshable {
                         transaction {
                             Customers.find { id.equal(customer!!.id) }.projection { contacts }
                                 .update(customer!!.contacts - contact!!)
-                            reloadCustomer(customer!!)
+                            reload(customer!!)
                         }
                     }
                 }
@@ -154,7 +157,9 @@ class CustomerController : Controller(), Refreshable {
                         transaction {
                             val customers = when {
                                 customerField.text.isBlank() -> Customers.find()
-                                else -> Customers.find { name.matches(customerField.text.toPattern()) }
+                                else -> Customers.find {
+                                    name.matches(customerField.text.toRegex(IGNORE_CASE).toPattern())
+                                }
                             }
                             customerPagination.pageCount = ceil(customers.count() / countBox.count.toDouble()).toInt()
                             items = customers.skip(countBox.count * page).take(countBox.count).toMutableObservableList()
@@ -178,7 +183,7 @@ class CustomerController : Controller(), Refreshable {
             }
         })
 
-    @FXML fun add() = AddUserDialog(this, getString(R.string.add_customer)).showAndWait().ifPresent { name ->
+    override fun add() = AddUserDialog(this, getString(R.string.add_customer)).showAndWait().ifPresent { name ->
         transaction {
             when {
                 Customers.find { this.name.equal(name) }.isNotEmpty() ->
@@ -187,7 +192,7 @@ class CustomerController : Controller(), Refreshable {
                     val customer = Customer(name.tidy())
                     customer.id = Customers.insert(customer)
                     customerList.items.add(0, customer)
-                    customerList.selectionModel.select(0)
+                    customerList.selectionModel.selectFirst()
                 }
             }
         }
@@ -197,7 +202,7 @@ class CustomerController : Controller(), Refreshable {
 
     private inline val contact: Customer.Contact? get() = contactTable.selectionModel.selectedItem
 
-    private fun MongoDBSession.reloadCustomer(customer: Customer) = customerList.items.indexOf(customer).let { index ->
+    private fun MongoDBSession.reload(customer: Customer) = customerList.items.indexOf(customer).let { index ->
         customerList.items[customerList.items.indexOf(customer)] = Customers.find { id.equal(customer.id) }.single()
         customerList.selectionModel.select(index)
     }

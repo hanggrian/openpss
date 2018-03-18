@@ -49,6 +49,17 @@ open class DateBox(prefill: LocalDate = now()) : _HBox() {
     }
 }
 
-inline fun dateBox(prefill: LocalDate = now(), noinline init: ((@LayoutDsl DateBox).() -> Unit)? = null): DateBox = DateBox(prefill).apply { init?.invoke(this) }
-inline fun ChildManager.dateBox(prefill: LocalDate = now(), noinline init: ((@LayoutDsl DateBox).() -> Unit)? = null): DateBox = DateBox(prefill).apply { init?.invoke(this) }.add()
-inline fun ItemManager.dateBox(prefill: LocalDate = now(), noinline init: ((@LayoutDsl DateBox).() -> Unit)? = null): DateBox = DateBox(prefill).apply { init?.invoke(this) }.add()
+inline fun dateBox(
+    prefill: LocalDate = now(),
+    noinline init: ((@LayoutDsl DateBox).() -> Unit)? = null
+): DateBox = DateBox(prefill).apply { init?.invoke(this) }
+
+inline fun ChildManager.dateBox(
+    prefill: LocalDate = now(),
+    noinline init: ((@LayoutDsl DateBox).() -> Unit)? = null
+): DateBox = com.hendraanggrian.openpss.scene.layout.dateBox(prefill, init).add()
+
+inline fun ItemManager.dateBox(
+    prefill: LocalDate = now(),
+    noinline init: ((@LayoutDsl DateBox).() -> Unit)? = null
+): DateBox = com.hendraanggrian.openpss.scene.layout.dateBox(prefill, init).add()

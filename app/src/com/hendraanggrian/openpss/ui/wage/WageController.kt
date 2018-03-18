@@ -54,7 +54,7 @@ import ktfx.scene.control.okButton
 import ktfx.scene.layout.gaps
 import ktfx.scene.layout.size
 import ktfx.stage.fileChooser
-import ktfx.stage.setSizeMax
+import ktfx.stage.setSizeMin
 import ktfx.stage.stage
 
 class WageController : Controller() {
@@ -71,7 +71,7 @@ class WageController : Controller() {
 
     override fun initialize() {
         readerChoiceBox.items = Reader.listAll()
-        if (readerChoiceBox.items.isNotEmpty()) readerChoiceBox.selectionModel.select(0)
+        if (readerChoiceBox.items.isNotEmpty()) readerChoiceBox.selectionModel.selectFirst()
 
         recessOffButton.disableProperty().bind(flowPane.children.emptyBinding())
         employeeCountLabel.textProperty().bind(stringBindingOf(flowPane.children) {
@@ -98,7 +98,8 @@ class WageController : Controller() {
     @FXML fun history() = openFile(WageFolder)
 
     @FXML fun browse() = fileChooser(ExtensionFilter(getString(R.string.input_file), *readerChoiceBox.value.extensions))
-        .showOpenDialog(fileField.scene.window)?.run { fileField.text = absolutePath }
+        .showOpenDialog(fileField.scene.window)
+        ?.run { fileField.text = absolutePath }
 
     @FXML fun recessOff() = dialog<Pair<Any, Any>>(getString(R.string.disable_recess), ImageView(R.image.ic_clock)) {
         lateinit var recessChoice: ChoiceBox<*>
@@ -109,7 +110,8 @@ class WageController : Controller() {
             transaction {
                 recessChoice = choiceBox(mutableObservableListOf(getString(R.string.all),
                     Separator(),
-                    *Recesses.find().toObservableList().toTypedArray())) col 1 row 0
+                    *Recesses.find().toObservableList().toTypedArray())
+                ) { selectionModel.selectFirst() } col 1 row 0
             }
             label(getString(R.string.employee)) col 0 row 1
             roleChoice = choiceBox(mutableObservableListOf(
@@ -183,7 +185,7 @@ class WageController : Controller() {
         stage {
             val loader = FXMLLoader(getResource(R.layout.controller_wage_record), resources)
             scene = Scene(loader.pane)
-            setSizeMax(1000, 650)
+            setSizeMin(1000, 650)
             loader.controller.addExtra(EXTRA_ATTENDEES, attendees).addExtra(EXTRA_STAGE, this)
         }.showAndWait()
     }

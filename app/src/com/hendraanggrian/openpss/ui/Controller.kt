@@ -11,7 +11,7 @@ abstract class Controller : Resourced {
 
     @FXML abstract fun initialize()
 
-    final override val language: Language = Language.from(ConfigFile.language.get())
+    final override val language: Language = Language.find(ConfigFile.language.value)
     override val resources: ResourceBundle = language.resources
 
     /** Field name starts with underscore to avoid conflict with [com.hendraanggrian.ui.employee.EmployeeController]. */

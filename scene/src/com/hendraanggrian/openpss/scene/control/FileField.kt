@@ -43,6 +43,17 @@ open class FileField(scope: Scope = FILE) : TextField() {
     }
 }
 
-inline fun fileField(scope: Scope = FILE, noinline init: ((@LayoutDsl FileField).() -> Unit)? = null): FileField = FileField(scope).apply { init?.invoke(this) }
-inline fun ChildManager.fileField(scope: Scope = FILE, noinline init: ((@LayoutDsl FileField).() -> Unit)? = null): FileField = FileField(scope).apply { init?.invoke(this) }.add()
-inline fun ItemManager.fileField(scope: Scope = FILE, noinline init: ((@LayoutDsl FileField).() -> Unit)? = null): FileField = FileField(scope).apply { init?.invoke(this) }.add()
+inline fun fileField(
+    scope: Scope = FILE,
+    noinline init: ((@LayoutDsl FileField).() -> Unit)? = null
+): FileField = FileField(scope).apply { init?.invoke(this) }
+
+inline fun ChildManager.fileField(
+    scope: Scope = FILE,
+    noinline init: ((@LayoutDsl FileField).() -> Unit)? = null
+): FileField = com.hendraanggrian.openpss.scene.control.fileField(scope, init).add()
+
+inline fun ItemManager.fileField(
+    scope: Scope = FILE,
+    noinline init: ((@LayoutDsl FileField).() -> Unit)? = null
+): FileField = com.hendraanggrian.openpss.scene.control.fileField(scope, init).add()

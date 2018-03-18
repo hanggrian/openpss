@@ -43,13 +43,17 @@ open class TimeBox(prefill: LocalTime = MIDNIGHT) : _HBox() {
         hourField = intField {
             widthMax = 48
             alignment = CENTER
-            valueProperty.listener { _, oldValue, value -> if (value !in 0 until 24) hourField.value = oldValue.toInt() }
+            valueProperty.listener { _, oldValue, value ->
+                if (value !in 0 until 24) hourField.value = oldValue.toInt()
+            }
         }
         label(":") { alignment = CENTER }
         minuteField = intField {
             widthMax = 48
             alignment = CENTER
-            valueProperty.listener { _, oldValue, value -> if (value !in 0 until 60) minuteField.value = oldValue.toInt() }
+            valueProperty.listener { _, oldValue, value ->
+                if (value !in 0 until 60) minuteField.value = oldValue.toInt()
+            }
         }
         button(graphic = ImageView(R.image.btn_arrow_right)) { onAction { hourField.value++ } }
 
@@ -64,6 +68,17 @@ open class TimeBox(prefill: LocalTime = MIDNIGHT) : _HBox() {
     val time: LocalTime get() = timeProperty.get()
 }
 
-inline fun timeBox(prefill: LocalTime = MIDNIGHT, noinline init: ((@LayoutDsl TimeBox).() -> Unit)? = null): TimeBox = TimeBox(prefill).apply { init?.invoke(this) }
-inline fun ChildManager.timeBox(prefill: LocalTime = MIDNIGHT, noinline init: ((@LayoutDsl TimeBox).() -> Unit)? = null): TimeBox = TimeBox(prefill).apply { init?.invoke(this) }.add()
-inline fun ItemManager.timeBox(prefill: LocalTime = MIDNIGHT, noinline init: ((@LayoutDsl TimeBox).() -> Unit)? = null): TimeBox = TimeBox(prefill).apply { init?.invoke(this) }.add()
+inline fun timeBox(
+    prefill: LocalTime = MIDNIGHT,
+    noinline init: ((@LayoutDsl TimeBox).() -> Unit)? = null
+): TimeBox = TimeBox(prefill).apply { init?.invoke(this) }
+
+inline fun ChildManager.timeBox(
+    prefill: LocalTime = MIDNIGHT,
+    noinline init: ((@LayoutDsl TimeBox).() -> Unit)? = null
+): TimeBox = com.hendraanggrian.openpss.scene.layout.timeBox(prefill, init).add()
+
+inline fun ItemManager.timeBox(
+    prefill: LocalTime = MIDNIGHT,
+    noinline init: ((@LayoutDsl TimeBox).() -> Unit)? = null
+): TimeBox = com.hendraanggrian.openpss.scene.layout.timeBox(prefill, init).add()

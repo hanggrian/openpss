@@ -2,6 +2,7 @@ package com.hendraanggrian.openpss.ui.order
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.scene.control.CountBox
+import com.hendraanggrian.openpss.ui.Addable
 import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.controller
@@ -12,10 +13,10 @@ import javafx.fxml.FXMLLoader
 import javafx.scene.Scene
 import javafx.scene.control.ChoiceBox
 import javafx.stage.Modality.APPLICATION_MODAL
-import ktfx.collections.observableListOf
+import ktfx.collections.toObservableList
 import ktfx.stage.stage
 
-class OrderController : Controller(), Refreshable {
+class OrderController : Controller(), Refreshable, Addable {
 
     @FXML lateinit var statusBox: ChoiceBox<String>
     @FXML lateinit var countBox: CountBox
@@ -24,14 +25,14 @@ class OrderController : Controller(), Refreshable {
         refresh()
 
         countBox.desc = getString(R.string.items)
-        statusBox.items = observableListOf(getString(R.string.any), getString(R.string.unpaid), getString(R.string.paid))
-        statusBox.selectionModel.select(0)
+        statusBox.items = listOf(R.string.any, R.string.unpaid, R.string.paid).map { getString(it) }.toObservableList()
+        statusBox.selectionModel.selectFirst()
     }
 
     override fun refresh() {
     }
 
-    @FXML fun add() {
+    override fun add() {
         /*PlateReceiptDialog(this).showAndWait().ifPresent {
 
         }*/

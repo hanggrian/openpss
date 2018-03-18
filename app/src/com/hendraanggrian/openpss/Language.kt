@@ -5,17 +5,20 @@ import java.util.Locale
 import java.util.ResourceBundle
 import java.util.ResourceBundle.getBundle
 
-enum class Language(val code: String, private val country: String) {
+enum class Language(
+    val code: String,
+    private val country: String
+) {
     ENGLISH("en", "US"),
     BAHASA_INDONESIA("in", "ID");
 
-    val resources: ResourceBundle get() = getBundle("string", asLocale())
+    val resources: ResourceBundle get() = getBundle("string", toLocale())
 
-    fun asLocale(): Locale = Locale(code, country)
+    fun toLocale(): Locale = Locale(code, country)
 
     override fun toString(): String = name.replace("_", " ").toLowerCase().capitalizeAll()
 
     companion object {
-        fun from(languageCode: String): Language = values().single { it.code == languageCode }
+        fun find(languageCode: String): Language = values().single { it.code == languageCode }
     }
 }

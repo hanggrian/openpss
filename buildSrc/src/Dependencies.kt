@@ -2,8 +2,7 @@ import org.gradle.api.artifacts.dsl.DependencyHandler
 import org.gradle.plugin.use.PluginDependenciesSpec
 
 fun DependencyHandler.kotlinx(module: String, version: String? = null) =
-    "org.jetbrains.kotlinx:kotlinx-$module${version?.let { ":$version" }
-        ?: ""}"
+    "org.jetbrains.kotlinx:kotlinx-$module${version?.let { ":$version" } ?: ""}"
 
 fun DependencyHandler.apache(module: String, version: String) = "org.apache.${module.split("-")[0]}:$module:$version"
 fun DependencyHandler.commonsValidator() = "commons-validator:commons-validator:$commonsValidatorVersion"

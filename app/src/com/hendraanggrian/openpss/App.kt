@@ -37,7 +37,7 @@ class App : Application(), Resourced {
 
     override fun init() {
         if (DEBUG) configure()
-        language = Language.from(ConfigFile.language.get())
+        language = Language.find(ConfigFile.language.value)
         resources = language.resources
     }
 

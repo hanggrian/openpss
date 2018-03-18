@@ -31,6 +31,14 @@ open class IntField : TextField() {
         set(value) = valueProperty.set(value)
 }
 
-inline fun intField(noinline init: ((@LayoutDsl IntField).() -> Unit)? = null): IntField = IntField().apply { init?.invoke(this) }
-inline fun ChildManager.intField(noinline init: ((@LayoutDsl IntField).() -> Unit)? = null): IntField = IntField().apply { init?.invoke(this) }.add()
-inline fun ItemManager.intField(noinline init: ((@LayoutDsl IntField).() -> Unit)? = null): IntField = IntField().apply { init?.invoke(this) }.add()
+inline fun intField(
+    noinline init: ((@LayoutDsl IntField).() -> Unit)? = null
+): IntField = IntField().apply { init?.invoke(this) }
+
+inline fun ChildManager.intField(
+    noinline init: ((@LayoutDsl IntField).() -> Unit)? = null
+): IntField = com.hendraanggrian.openpss.scene.control.intField(init).add()
+
+inline fun ItemManager.intField(
+    noinline init: ((@LayoutDsl IntField).() -> Unit)? = null
+): IntField = com.hendraanggrian.openpss.scene.control.intField(init).add()

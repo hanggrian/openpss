@@ -41,6 +41,14 @@ open class DoubleField : TextField() {
     val isValid: Boolean get() = validProperty.get()
 }
 
-inline fun doubleField(noinline init: ((@LayoutDsl DoubleField).() -> Unit)? = null): DoubleField = DoubleField().apply { init?.invoke(this) }
-inline fun ChildManager.doubleField(noinline init: ((@LayoutDsl DoubleField).() -> Unit)? = null): DoubleField = DoubleField().apply { init?.invoke(this) }.add()
-inline fun ItemManager.doubleField(noinline init: ((@LayoutDsl DoubleField).() -> Unit)? = null): DoubleField = DoubleField().apply { init?.invoke(this) }.add()
+inline fun doubleField(
+    noinline init: ((@LayoutDsl DoubleField).() -> Unit)? = null
+): DoubleField = DoubleField().apply { init?.invoke(this) }
+
+inline fun ChildManager.doubleField(
+    noinline init: ((@LayoutDsl DoubleField).() -> Unit)? = null
+): DoubleField = com.hendraanggrian.openpss.scene.control.doubleField(init).add()
+
+inline fun ItemManager.doubleField(
+    noinline init: ((@LayoutDsl DoubleField).() -> Unit)? = null
+): DoubleField = com.hendraanggrian.openpss.scene.control.doubleField(init).add()

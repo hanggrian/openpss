@@ -22,6 +22,7 @@
         <ChoiceBox fx:id="statusBox"/>
         <CountBox fx:id="countBox"/>
         <Separator/>
+        <!--suppress JavaFxEventHandler -->
         <Button mnemonicParsing="false" onAction="#add" text="%add_plate">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">

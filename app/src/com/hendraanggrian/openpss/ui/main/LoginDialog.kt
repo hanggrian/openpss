@@ -72,7 +72,7 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced 
             label(getString(R.string.language)) col 0 row 0
             choiceBox(Language.values().toObservableList()) {
                 maxWidth = Double.MAX_VALUE
-                selectionModel.select(Language.from(ConfigFile.language.get()))
+                selectionModel.select(Language.find(ConfigFile.language.value))
                 valueProperty().listener(CommonPool) { _, _, language ->
                     ConfigFile.language.set(language.code)
                     ConfigFile.save()

@@ -11,8 +11,7 @@
             <ToggleGroup fx:id="navigateGroup"/>
         </fx:define>
         <Menu mnemonicParsing="false" text="File">
-            <MenuItem mnemonicParsing="false" onAction="#addCustomer"
-                      text="%add_customer">
+            <MenuItem fx:id="addCustomerItem" mnemonicParsing="false" onAction="#addCustomer" text="%add_customer">
                 <graphic>
                     <ImageView pickOnBounds="true" preserveRatio="true">
                         <Image url="@/image/menu_user.png"/>
@@ -20,7 +19,7 @@
                 </graphic>
             </MenuItem>
             <SeparatorMenuItem/>
-            <MenuItem mnemonicParsing="false" onAction="#exit" text="%exit"/>
+            <MenuItem fx:id="quitItem" mnemonicParsing="false" onAction="#quit" text="%quit"/>
         </Menu>
         <Menu mnemonicParsing="false" fx:id="navigateMenu" text="%navigate">
             <RadioMenuItem mnemonicParsing="false" toggleGroup="$navigateGroup" onAction="#navigate"

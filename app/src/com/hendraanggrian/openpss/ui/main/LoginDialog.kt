@@ -78,7 +78,7 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced 
                     ConfigFile.save()
                     launch(FX) {
                         close()
-                        infoAlert(getString(R.string.please_restart)).showAndWait().ifPresent { exit() }
+                        later { infoAlert(getString(R.string.please_restart)).showAndWait().ifPresent { exit() } }
                     }
                 }
             } col 1 row 0 colSpan 2

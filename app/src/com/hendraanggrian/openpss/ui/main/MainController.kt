@@ -17,10 +17,10 @@ import javafx.scene.control.TabPane
 import javafx.scene.input.KeyCode.C
 import javafx.scene.input.KeyCode.Q
 import javafx.scene.input.KeyCode.getKeyCode
-import javafx.scene.input.KeyCodeCombination
 import javafx.scene.input.KeyCombination.SHORTCUT_DOWN
 import ktfx.application.later
 import ktfx.coroutines.listener
+import ktfx.scene.input.plus
 import org.apache.commons.lang3.SystemUtils.IS_OS_MAC
 
 class MainController : Controller() {
@@ -41,10 +41,10 @@ class MainController : Controller() {
 
     override fun initialize() {
         menuBar.isUseSystemMenuBar = IS_OS_MAC
-        addCustomerItem.accelerator = KeyCodeCombination(C, SHORTCUT_DOWN)
-        quitItem.accelerator = KeyCodeCombination(Q, SHORTCUT_DOWN)
+        addCustomerItem.accelerator = C + SHORTCUT_DOWN
+        quitItem.accelerator = Q + SHORTCUT_DOWN
         navigateMenu.items.forEachIndexed { index, item ->
-            item.accelerator = KeyCodeCombination(getKeyCode("${index + 1}"), SHORTCUT_DOWN)
+            item.accelerator = getKeyCode("${index + 1}") + SHORTCUT_DOWN
         }
 
         updateNavigateMenu(tabPane.selectionModel.selectedIndex)

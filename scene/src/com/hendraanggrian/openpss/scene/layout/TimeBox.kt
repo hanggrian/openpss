@@ -8,6 +8,7 @@ import com.hendraanggrian.openpss.scene.control.intField
 import javafx.beans.property.ObjectProperty
 import javafx.beans.property.SimpleObjectProperty
 import javafx.geometry.Pos.CENTER
+import javafx.scene.control.Button
 import javafx.scene.image.ImageView
 import ktfx.beans.binding.bindingOf
 import ktfx.coroutines.listener
@@ -32,14 +33,26 @@ open class TimeBox(prefill: LocalTime = MIDNIGHT) : _HBox() {
 
     lateinit var hourField: IntField
     lateinit var minuteField: IntField
-
+    var previousButton: Button
+    var nextButton: Button
     val timeProperty: ObjectProperty<LocalTime> = SimpleObjectProperty()
+    private var onOverlap: ((Boolean) -> Unit)? = null
 
     init {
         alignment = CENTER
         spacings = 8
 
-        button(graphic = ImageView(R.image.btn_arrow_left)) { onAction { hourField.value-- } }
+        previousButton = button(graphic = ImageView(R.image.btn_arrow_left)) {
+            onAction {
+                hourField.value = when {
+                    hourField.value == 0 -> {
+                        onOverlap?.invoke(false)
+                        23
+                    }
+                    else -> hourField.value - 1
+                }
+            }
+        }
         hourField = intField {
             widthMax = 48
             alignment = CENTER
@@ -55,7 +68,17 @@ open class TimeBox(prefill: LocalTime = MIDNIGHT) : _HBox() {
                 if (value !in 0 until 60) minuteField.value = oldValue.toInt()
             }
         }
-        button(graphic = ImageView(R.image.btn_arrow_right)) { onAction { hourField.value++ } }
+        nextButton = button(graphic = ImageView(R.image.btn_arrow_right)) {
+            onAction {
+                hourField.value = when {
+                    hourField.value == 23 -> {
+                        onOverlap?.invoke(true)
+                        0
+                    }
+                    else -> hourField.value + 1
+                }
+            }
+        }
 
         timeProperty.bind(bindingOf(hourField.valueProperty, minuteField.valueProperty) {
             LocalTime(hourField.value, minuteField.value)
@@ -66,6 +89,10 @@ open class TimeBox(prefill: LocalTime = MIDNIGHT) : _HBox() {
     }
 
     val time: LocalTime get() = timeProperty.get()
+
+    fun setOnOverlap(action: ((plus: Boolean) -> Unit)?) {
+        onOverlap = action
+    }
 }
 
 inline fun timeBox(

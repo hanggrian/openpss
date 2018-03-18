@@ -8,6 +8,7 @@ import com.hendraanggrian.openpss.time.toJoda
 import javafx.beans.property.ObjectProperty
 import javafx.beans.property.SimpleObjectProperty
 import javafx.geometry.Pos.CENTER
+import javafx.scene.control.Button
 import javafx.scene.control.DatePicker
 import javafx.scene.image.ImageView
 import ktfx.beans.binding.bindingOf
@@ -31,6 +32,8 @@ import org.joda.time.LocalDate.now
 open class DateBox(prefill: LocalDate = now()) : _HBox() {
 
     lateinit var picker: DatePicker
+    var previousButton: Button
+    var nextButton: Button
 
     val dateProperty: ObjectProperty<LocalDate> = SimpleObjectProperty()
 
@@ -38,14 +41,18 @@ open class DateBox(prefill: LocalDate = now()) : _HBox() {
         alignment = CENTER
         spacings = 8
 
-        button(graphic = ImageView(R.image.btn_arrow_left)) { onAction { picker.value = picker.value.minusDays(1) } }
+        previousButton = button(graphic = ImageView(R.image.btn_arrow_left)) {
+            onAction { picker.value = picker.value.minusDays(1) }
+        }
         picker = datePicker {
             value = prefill.toJava()
             isEditable = false
             widthMax = 116
         }
         dateProperty.bind(bindingOf(picker.valueProperty()) { picker.value.toJoda() })
-        button(graphic = ImageView(R.image.btn_arrow_right)) { onAction { picker.value = picker.value.plusDays(1) } }
+        nextButton = button(graphic = ImageView(R.image.btn_arrow_right)) {
+            onAction { picker.value = picker.value.plusDays(1) }
+        }
     }
 }
 

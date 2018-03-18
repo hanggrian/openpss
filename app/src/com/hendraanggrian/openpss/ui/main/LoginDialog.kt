@@ -19,7 +19,6 @@ import javafx.scene.control.ButtonBar.ButtonData.OK_DONE
 import javafx.scene.control.Dialog
 import javafx.scene.control.PasswordField
 import javafx.scene.control.TextField
-import javafx.scene.control.Tooltip
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import kotlinx.coroutines.experimental.CommonPool
@@ -28,13 +27,13 @@ import ktfx.application.exit
 import ktfx.application.later
 import ktfx.beans.binding.`else`
 import ktfx.beans.binding.`if`
-import ktfx.beans.binding.bindingOf
 import ktfx.beans.binding.or
 import ktfx.beans.binding.then
 import ktfx.collections.toObservableList
 import ktfx.coroutines.FX
 import ktfx.coroutines.listener
 import ktfx.coroutines.onAction
+import ktfx.layouts.anchorPane
 import ktfx.layouts.choiceBox
 import ktfx.layouts.gridPane
 import ktfx.layouts.hbox
@@ -55,7 +54,8 @@ import ktfx.scene.layout.widthPref
 class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced {
 
     private lateinit var employeeField: TextField
-    private lateinit var passwordField: PasswordField
+    private lateinit var passwordField1: PasswordField
+    private lateinit var passwordField2: TextField
     private lateinit var serverHostField: HostField
     private lateinit var serverPortField: IntField
     private lateinit var serverUserField: TextField
@@ -88,16 +88,24 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced 
                 textProperty().bindBidirectional(ConfigFile.employee)
             } col 1 row 1 colSpan 2
             label(getString(R.string.password)) col 0 row 2
-            passwordField = passwordField { promptText = getString(R.string.password) } col 1 row 2
+            anchorPane {
+                passwordField1 = passwordField { promptText = getString(R.string.password) }
+                passwordField2 = textField {
+                    isVisible = false
+                    promptText = getString(R.string.password)
+                }
+                passwordField1.textProperty().bindBidirectional(passwordField2.textProperty())
+            } col 1 row 2
             toggleButton {
                 tooltip(getString(R.string.see_password))
                 graphic = ktfx.layouts.imageView {
                     imageProperty().bind(`if`(this@toggleButton.selectedProperty())
                         then Image(R.image.btn_visibility) `else` Image(R.image.btn_visibility_off))
                 }
-                passwordField.tooltipProperty().bind(bindingOf(passwordField.textProperty(), selectedProperty()) {
-                    if (!isSelected) null else Tooltip(passwordField.text)
-                })
+                selectedProperty().listener { _, _, selected ->
+                    passwordField1.isVisible = !selected
+                    passwordField2.isVisible = selected
+                }
             } col 2 row 2
         }
         dialogPane.expandableContent = gridPane {
@@ -134,7 +142,7 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced 
         cancelButton()
         customButton(getString(R.string.login), OK_DONE) {
             disableProperty().bind(employeeField.textProperty().isEmpty
-                or passwordField.textProperty().isEmpty
+                or passwordField1.textProperty().isEmpty
                 or !serverHostField.validProperty
                 or serverPortField.textProperty().isEmpty
                 or serverUserField.textProperty().isEmpty
@@ -151,7 +159,7 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced 
                             serverUserField.text,
                             serverPasswordField.text,
                             employeeField.text,
-                            passwordField.text)
+                            passwordField1.text)
                         launch(FX) {
                             result = employee
                             close()
@@ -164,9 +172,9 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced 
             }
         }
         later {
-            if (employeeField.text.isBlank()) employeeField.requestFocus() else passwordField.requestFocus()
+            if (employeeField.text.isBlank()) employeeField.requestFocus() else passwordField1.requestFocus()
             dialogPane.isExpanded = !MongoFile.isValid()
-            if (DEBUG) passwordField.text = "Test"
+            if (DEBUG) passwordField1.text = "Test"
         }
     }
 }

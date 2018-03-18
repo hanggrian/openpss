@@ -9,8 +9,11 @@ import com.hendraanggrian.openpss.ui.wage.Record.Companion.WORKING_HOURS
 import javafx.scene.control.ButtonType.OK
 import javafx.scene.control.Dialog
 import javafx.scene.image.ImageView
+import javafx.scene.input.KeyCode.LEFT
+import javafx.scene.input.KeyCode.RIGHT
 import ktfx.application.later
 import ktfx.coroutines.onAction
+import ktfx.coroutines.onKeyPressed
 import ktfx.layouts.button
 import ktfx.layouts.gridPane
 import ktfx.scene.control.cancelButton
@@ -37,21 +40,18 @@ class DateTimeDialog(
             gaps = 8
             dateBox = dateBox(prefill.toLocalDate()) row 0 col 1
             button("-$WORKING_HOURS") {
-                onAction {
-                    when {
-                        timeBox.hourField.value < 8 -> timeBox.hourField.value = 0
-                        else -> timeBox.hourField.value -= WORKING_HOURS
-                    }
-                }
+                onAction { repeat(WORKING_HOURS) { timeBox.previousButton.fire() } }
             } row 1 col 0
-            timeBox = timeBox(prefill.toLocalTime()) row 1 col 1
-            button("+$WORKING_HOURS") {
-                onAction {
-                    when {
-                        timeBox.hourField.value > 15 -> timeBox.hourField.value = 23
-                        else -> timeBox.hourField.value += WORKING_HOURS
+            timeBox = timeBox(prefill.toLocalTime()) {
+                setOnOverlap { plus ->
+                    dateBox.picker.value = when {
+                        plus -> dateBox.picker.value.plusDays(1)
+                        else -> dateBox.picker.value.minusDays(1)
                     }
                 }
+            } row 1 col 1
+            button("+$WORKING_HOURS") {
+                onAction { repeat(WORKING_HOURS) { timeBox.nextButton.fire() } }
             } row 1 col 2
         }
         later { dateBox.requestFocus() }

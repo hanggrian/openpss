@@ -10,7 +10,6 @@ import com.hendraanggrian.openpss.ui.DateTimeDialog
 import com.hendraanggrian.openpss.ui.Resourced
 import com.hendraanggrian.openpss.util.forceRefresh
 import com.hendraanggrian.openpss.util.getColor
-import com.hendraanggrian.openpss.util.isDelete
 import com.hendraanggrian.openpss.util.round
 import javafx.geometry.Pos.BOTTOM_CENTER
 import javafx.geometry.Pos.TOP_CENTER
@@ -45,6 +44,7 @@ import ktfx.layouts.menuItem
 import ktfx.layouts.separatorMenuItem
 import ktfx.layouts.vbox
 import ktfx.listeners.cellFactory
+import ktfx.scene.input.isDelete
 import ktfx.scene.layout.gaps
 import ktfx.scene.layout.paddings
 import ktfx.scene.layout.widthPref

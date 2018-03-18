@@ -21,7 +21,6 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
-        maven("https://dl.bintray.com/hendraanggrian/ktfx") // remove when ktfx is approved
         maven("http://repository.jetbrains.com/kotlin-nosql") // required for kotlin-nosql
     }
     tasks.withType<Delete> {

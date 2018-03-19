@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.VBox?>
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.hendraanggrian.openpss.ui.order.PlatePriceController">
-    <ToolBar>
+    <ToolBar stylesheets="@../style/toolbar.css">
         <!--suppress JavaFxEventHandler -->
         <Button styleClass="stud" mnemonicParsing="false" onAction="#refresh" text="%refresh">
             <graphic>

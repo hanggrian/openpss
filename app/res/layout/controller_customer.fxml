@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <?import com.hendraanggrian.openpss.scene.control.CountBox?>
+<?import com.hendraanggrian.openpss.scene.control.Gap?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.Image?>
@@ -25,7 +26,7 @@
                 </ImageView>
             </graphic>
         </Button>
-        <Separator/>
+        <Gap/>
         <TextField fx:id="customerField" promptText="%search_customer"/>
         <CountBox fx:id="countBox"/>
     </ToolBar>

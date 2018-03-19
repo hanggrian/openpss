@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
+<?import com.hendraanggrian.openpss.scene.control.Gap?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.VBox?>
@@ -22,7 +23,7 @@
                 </ImageView>
             </graphic>
         </Button>
-        <Separator/>
+        <Gap/>
         <Button styleClass="stud" mnemonicParsing="false" fx:id="fullAccessButton" onAction="#fullAccess"
                 text="%full_access">
             <graphic>

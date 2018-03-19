@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
+<?import com.hendraanggrian.openpss.scene.control.Gap?>
 <?import com.hendraanggrian.openpss.scene.layout.TimeBox?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
@@ -16,9 +17,8 @@
                 </ImageView>
             </graphic>
         </SplitMenuButton>
-        <Separator/>
+        <Gap/>
         <TimeBox fx:id="timeBox"/>
-        <Separator/>
         <Button styleClass="stud" mnemonicParsing="false" fx:id="lockStartButton" onAction="#lockStart"
                 text="%lock_start_time">
             <graphic>
@@ -35,7 +35,7 @@
                 </ImageView>
             </graphic>
         </Button>
-        <Separator/>
+        <Gap/>
         <Button styleClass="stud" mnemonicParsing="false" onAction="#empty" text="%empty_daily_income">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">

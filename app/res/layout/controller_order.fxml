@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <?import com.hendraanggrian.openpss.scene.control.CountBox?>
+<?import com.hendraanggrian.openpss.scene.control.Gap?>
 <?import com.hendraanggrian.openpss.scene.layout.DateBox?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
@@ -20,7 +21,7 @@
         <DateBox fx:id="datePicker"/>
         <ChoiceBox fx:id="statusBox"/>
         <CountBox fx:id="countBox"/>
-        <Separator/>
+        <Gap/>
         <!--suppress JavaFxEventHandler -->
         <Button styleClass="stud" mnemonicParsing="false" onAction="#add" text="%add_plate">
             <graphic>
@@ -29,7 +30,7 @@
                 </ImageView>
             </graphic>
         </Button>
-        <Separator/>
+        <Gap/>
         <Button styleClass="stud" mnemonicParsing="false" onAction="#platePrice" text="%plate_price">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">

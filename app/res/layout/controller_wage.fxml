@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <?import com.hendraanggrian.openpss.scene.control.FileField?>
+<?import com.hendraanggrian.openpss.scene.control.Gap?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
@@ -22,15 +23,7 @@
                 </ImageView>
             </graphic>
         </Button>
-        <Button styleClass="stud" fx:id="disableRecessButton" mnemonicParsing="false" onAction="#disableRecess"
-                text="%disable_recess">
-            <graphic>
-                <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/stud_recess_off.png"/>
-                </ImageView>
-            </graphic>
-        </Button>
-        <Separator/>
+        <Gap/>
         <ChoiceBox fx:id="readerChoiceBox">
             <tooltip>
                 <Tooltip text="%reader"/>
@@ -46,6 +39,15 @@
             <tooltip>
                 <Tooltip text="%browse_file"/>
             </tooltip>
+        </Button>
+        <Gap/>
+        <Button styleClass="stud" fx:id="disableRecessButton" mnemonicParsing="false" onAction="#disableRecess"
+                text="%disable_recess">
+            <graphic>
+                <ImageView pickOnBounds="true" preserveRatio="true">
+                    <Image url="@/image/stud_recess_off.png"/>
+                </ImageView>
+            </graphic>
         </Button>
     </ToolBar>
     <ScrollPane fx:id="scrollPane" VBox.vgrow="ALWAYS" hbarPolicy="NEVER" vbarPolicy="ALWAYS">

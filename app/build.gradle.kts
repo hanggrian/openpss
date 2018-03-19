@@ -38,7 +38,7 @@ java.sourceSets {
     }
 }
 
-application.mainClassName = "com.hendraanggrian.openpss.App"
+application.mainClassName = "$group.App"
 
 kotlin.experimental.coroutines = ENABLE
 
@@ -114,7 +114,7 @@ tasks {
         resources("res", "../scene/sceneres")
         outputName = releaseName
 
-        iconDir = rootProject.projectDir.resolve("art").resolve("OpenPSS.icns")
+        iconDir = rootProject.projectDir.resolve("art").resolve("$releaseName.icns")
         bundleId = releaseGroup
         verbose = true
         openOnDone = true

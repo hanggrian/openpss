@@ -56,6 +56,8 @@ import ktfx.scene.layout.size
 import ktfx.stage.fileChooser
 import ktfx.stage.setSizeMin
 import ktfx.stage.stage
+import java.net.URL
+import java.util.ResourceBundle
 
 class WageController : Controller() {
 
@@ -69,7 +71,8 @@ class WageController : Controller() {
     @FXML lateinit var readButton: Button
     @FXML lateinit var processButton: Button
 
-    override fun initialize() {
+    override fun initialize(location: URL, resources: ResourceBundle) {
+        super.initialize(location, resources)
         readerChoiceBox.items = Reader.listAll()
         if (readerChoiceBox.items.isNotEmpty()) readerChoiceBox.selectionModel.selectFirst()
 

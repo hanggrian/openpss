@@ -23,6 +23,8 @@ import ktfx.application.later
 import ktfx.coroutines.listener
 import ktfx.scene.input.plus
 import org.apache.commons.lang3.SystemUtils.IS_OS_MAC
+import java.net.URL
+import java.util.ResourceBundle
 
 class MainController : Controller() {
 
@@ -33,13 +35,15 @@ class MainController : Controller() {
 
     @FXML lateinit var employeeLabel: Label
     @FXML lateinit var tabPane: TabPane
-    @FXML lateinit var controllers: List<Controller>
     @FXML lateinit var customerController: CustomerController
     @FXML lateinit var orderController: OrderController
     @FXML lateinit var wageController: WageController
     @FXML lateinit var employeeController: EmployeeController
 
-    override fun initialize() {
+    private lateinit var controllers: List<Controller>
+
+    override fun initialize(location: URL, resources: ResourceBundle) {
+        super.initialize(location, resources)
         menuBar.isUseSystemMenuBar = IS_OS_MAC
         addCustomerItem.accelerator = C + SHORTCUT_DOWN
         quitItem.accelerator = Q + SHORTCUT_DOWN
@@ -55,6 +59,7 @@ class MainController : Controller() {
 
         later {
             employeeLabel.text = employeeName
+            controllers = listOf(customerController, orderController, wageController, employeeController)
             controllers.forEach {
                 it._employee = _employee
                 if (it == wageController || it == employeeController) {

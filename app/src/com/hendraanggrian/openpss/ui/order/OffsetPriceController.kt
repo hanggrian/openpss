@@ -5,12 +5,14 @@ import com.hendraanggrian.openpss.db.schema.Offsets
 import com.hendraanggrian.openpss.db.transaction
 import javafx.fxml.FXML
 import javafx.scene.control.TableColumn
+import kotlinx.nosql.equal
+import kotlinx.nosql.update
 import ktfx.beans.property.asObservable
 import ktfx.beans.property.toProperty
 import ktfx.coroutines.onEditCommit
 import ktfx.listeners.textFieldCellFactory
-import kotlinx.nosql.equal
-import kotlinx.nosql.update
+import java.net.URL
+import java.util.ResourceBundle
 
 class OffsetPriceController : PriceController<Offset, Offsets>(Offsets) {
 
@@ -18,8 +20,8 @@ class OffsetPriceController : PriceController<Offset, Offsets>(Offsets) {
     @FXML lateinit var minPriceColumn: TableColumn<Offset, Double>
     @FXML lateinit var excessPriceColumn: TableColumn<Offset, Double>
 
-    override fun initialize() {
-        super.initialize()
+    override fun initialize(location: URL, resources: ResourceBundle) {
+        super.initialize(location, resources)
         minAmountColumn.setCellValueFactory { it.value.minAmount.toProperty().asObservable() }
         minAmountColumn.textFieldCellFactory {
             fromString { it.toIntOrNull() ?: 0 }

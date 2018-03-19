@@ -27,6 +27,8 @@ import ktfx.coroutines.onEditCommit
 import ktfx.scene.control.choiceBoxCellFactory
 import ktfx.scene.control.confirmAlert
 import ktfx.scene.control.infoAlert
+import java.net.URL
+import java.util.ResourceBundle
 
 class EmployeeController : Controller(), Refreshable, Addable {
 
@@ -38,7 +40,8 @@ class EmployeeController : Controller(), Refreshable, Addable {
     @FXML lateinit var nameColumn: TableColumn<Employee, String>
     @FXML lateinit var fullAccessColumn: TableColumn<Employee, String>
 
-    override fun initialize() {
+    override fun initialize(location: URL, resources: ResourceBundle) {
+        super.initialize(location, resources)
         arrayOf(fullAccessButton, resetPasswordButton, deleteButton).forEach {
             it.disableProperty().bind(employeeTable.selectionModel.selectedItemProperty().isNull)
         }

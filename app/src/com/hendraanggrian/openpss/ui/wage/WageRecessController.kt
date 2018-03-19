@@ -21,14 +21,16 @@ import ktfx.scene.control.dialog
 import ktfx.scene.control.okButton
 import ktfx.scene.layout.gaps
 import org.joda.time.LocalTime
+import java.net.URL
+import java.util.ResourceBundle
 
 class WageRecessController : SimpleTableController<Recess, Recesses>(Recesses) {
 
     @FXML lateinit var startColumn: TableColumn<Recess, String>
     @FXML lateinit var endColumn: TableColumn<Recess, String>
 
-    override fun initialize() {
-        super.initialize()
+    override fun initialize(location: URL, resources: ResourceBundle) {
+        super.initialize(location, resources)
         startColumn.setCellValueFactory { it.value.start.toString(PATTERN_TIME).toProperty() }
         endColumn.setCellValueFactory { it.value.end.toString(PATTERN_TIME).toProperty() }
     }

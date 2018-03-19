@@ -12,6 +12,8 @@ import kotlinx.nosql.equal
 import ktfx.beans.property.toProperty
 import ktfx.scene.control.errorAlert
 import ktfx.scene.control.inputDialog
+import java.net.URL
+import java.util.ResourceBundle
 
 abstract class PriceController<D : NamedDocument<S>, S : NamedDocumentSchema<D>>(schema: S)
     : SimpleTableController<D, S>(schema) {
@@ -20,8 +22,8 @@ abstract class PriceController<D : NamedDocument<S>, S : NamedDocumentSchema<D>>
 
     @FXML lateinit var nameColumn: TableColumn<D, String>
 
-    override fun initialize() {
-        super.initialize()
+    override fun initialize(location: URL, resources: ResourceBundle) {
+        super.initialize(location, resources)
         nameColumn.setCellValueFactory { it.value.name.toProperty() }
     }
 

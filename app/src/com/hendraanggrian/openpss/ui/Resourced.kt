@@ -1,12 +1,10 @@
 package com.hendraanggrian.openpss.ui
 
-import com.hendraanggrian.openpss.Language
 import java.util.ResourceBundle
 
 /** Easier access to [ResourceBundle] across app. */
 interface Resourced {
 
-    val language: Language
     val resources: ResourceBundle
 
     fun getString(key: String): String = resources.getString(key)

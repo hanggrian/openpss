@@ -16,6 +16,8 @@ import ktfx.beans.binding.or
 import ktfx.beans.property.toProperty
 import ktfx.collections.toMutableObservableList
 import ktfx.scene.control.confirmAlert
+import java.net.URL
+import java.util.ResourceBundle
 
 /**
  * Base controller for editing DAO in simple table with refresh, add, and delete button.
@@ -32,7 +34,8 @@ abstract class SimpleTableController<D : Document<S>, S : DocumentSchema<D>>(
     @FXML lateinit var deleteButton: Button
     @FXML lateinit var table: TableView<D>
 
-    override fun initialize() {
+    override fun initialize(location: URL, resources: ResourceBundle) {
+        super.initialize(location, resources)
         refresh()
         later {
             deleteButton.disableProperty().bind(table.selectionModel.selectedItemProperty().isNull or

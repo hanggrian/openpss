@@ -14,11 +14,6 @@ class FlexibleInterval private constructor(
     private val interval: Interval
 ) : ReadableInterval by interval, Serializable {
 
-    constructor(start: ReadableInstant, end: ReadableInstant) : this(start > end, when (start > end) {
-        true -> Interval(end, start)
-        else -> Interval(start, end)
-    })
-
     val minutes: Int
         get() {
             var minutes = interval.toDuration().toStandardMinutes().minutes
@@ -29,4 +24,13 @@ class FlexibleInterval private constructor(
     inline val hours: Double get() = minutes / 60.0
 
     fun overlap(other: Interval): Interval? = interval.overlap(other)
+
+    companion object {
+        fun of(start: ReadableInstant, end: ReadableInstant): FlexibleInterval = (start > end).let { isReverse ->
+            return FlexibleInterval(isReverse, when (isReverse) {
+                true -> Interval(end, start)
+                else -> Interval(start, end)
+            })
+        }
+    }
 }

@@ -41,6 +41,8 @@ import ktfx.scene.control.customButton
 import ktfx.scene.control.infoAlert
 import ktfx.scene.snapshot
 import java.io.IOException
+import java.net.URL
+import java.util.ResourceBundle
 
 class WageRecordController : Controller() {
 
@@ -65,7 +67,8 @@ class WageRecordController : Controller() {
     @FXML lateinit var overtimeIncomeColumn: TreeTableColumn<Record, Double>
     @FXML lateinit var totalColumn: TreeTableColumn<Record, Double>
 
-    override fun initialize() {
+    override fun initialize(location: URL, resources: ResourceBundle) {
+        super.initialize(location, resources)
         undoButton.disableProperty().bind(undoButton.items.emptyBinding())
         arrayOf(lockStartButton, lockEndButton).forEach {
             it.disableProperty().bind(recordTable.selectionModel.selectedItemProperty().isNull or

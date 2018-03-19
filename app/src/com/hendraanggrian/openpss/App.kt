@@ -32,13 +32,11 @@ class App : Application(), Resourced {
         @JvmStatic fun main(args: Array<String>) = launch<App>(*args)
     }
 
-    override lateinit var language: Language
     override lateinit var resources: ResourceBundle
 
     override fun init() {
         if (DEBUG) configure()
-        language = Language.find(ConfigFile.language.value)
-        resources = language.resources
+        resources = Language.find(ConfigFile.language.value).resources
     }
 
     override fun start(stage: Stage) {

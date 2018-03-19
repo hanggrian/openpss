@@ -4,7 +4,6 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
-<?import java.util.ArrayList?>
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.hendraanggrian.openpss.ui.main.MainController">
     <MenuBar fx:id="menuBar">
@@ -60,13 +59,5 @@
             </Tab>
         </TabPane>
         <Label fx:id="employeeLabel" AnchorPane.rightAnchor="8" AnchorPane.topAnchor="8"/>
-        <fx:define>
-            <ArrayList fx:id="controllers">
-                <fx:reference source="customer"/>
-                <fx:reference source="order"/>
-                <fx:reference source="wage"/>
-                <fx:reference source="employee"/>
-            </ArrayList>
-        </fx:define>
     </AnchorPane>
 </VBox>

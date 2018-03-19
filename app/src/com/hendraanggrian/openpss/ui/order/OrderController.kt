@@ -15,13 +15,16 @@ import javafx.scene.control.ChoiceBox
 import javafx.stage.Modality.APPLICATION_MODAL
 import ktfx.collections.toObservableList
 import ktfx.stage.stage
+import java.net.URL
+import java.util.ResourceBundle
 
 class OrderController : Controller(), Refreshable, Addable {
 
     @FXML lateinit var statusBox: ChoiceBox<String>
     @FXML lateinit var countBox: CountBox
 
-    override fun initialize() {
+    override fun initialize(location: URL, resources: ResourceBundle) {
+        super.initialize(location, resources)
         refresh()
 
         countBox.desc = getString(R.string.items)

@@ -9,11 +9,8 @@ import com.hendraanggrian.openpss.ui.wage.Record.Companion.WORKING_HOURS
 import javafx.scene.control.ButtonType.OK
 import javafx.scene.control.Dialog
 import javafx.scene.image.ImageView
-import javafx.scene.input.KeyCode.LEFT
-import javafx.scene.input.KeyCode.RIGHT
 import ktfx.application.later
 import ktfx.coroutines.onAction
-import ktfx.coroutines.onKeyPressed
 import ktfx.layouts.button
 import ktfx.layouts.gridPane
 import ktfx.scene.control.cancelButton

@@ -157,7 +157,7 @@ class Record(
 
     private val workingHours: Double
         get() {
-            val interval = FlexibleInterval(start, end)
+            val interval = FlexibleInterval.of(start, end)
             var minutes = interval.minutes
             attendee.recesses
                 .map { it.getInterval(start) }

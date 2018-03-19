@@ -57,6 +57,8 @@ import ktfx.scene.control.inputDialog
 import ktfx.scene.control.okButton
 import ktfx.scene.layout.gaps
 import ktfx.scene.layout.sizeMax
+import java.net.URL
+import java.util.ResourceBundle
 import kotlin.math.ceil
 import kotlin.text.RegexOption.IGNORE_CASE
 
@@ -88,7 +90,8 @@ class CustomerController : Controller(), Refreshable, Addable {
         }
     }
 
-    override fun initialize() {
+    override fun initialize(location: URL, resources: ResourceBundle) {
+        super.initialize(location, resources)
         refresh()
 
         countBox.desc = getString(R.string.items)

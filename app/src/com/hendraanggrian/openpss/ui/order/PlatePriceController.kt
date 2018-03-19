@@ -5,19 +5,21 @@ import com.hendraanggrian.openpss.db.schema.Plates
 import com.hendraanggrian.openpss.db.transaction
 import javafx.fxml.FXML
 import javafx.scene.control.TableColumn
+import kotlinx.nosql.equal
+import kotlinx.nosql.update
 import ktfx.beans.property.asObservable
 import ktfx.beans.property.toProperty
 import ktfx.coroutines.onEditCommit
 import ktfx.listeners.textFieldCellFactory
-import kotlinx.nosql.equal
-import kotlinx.nosql.update
+import java.net.URL
+import java.util.ResourceBundle
 
 class PlatePriceController : PriceController<Plate, Plates>(Plates) {
 
     @FXML lateinit var priceColumn: TableColumn<Plate, Double>
 
-    override fun initialize() {
-        super.initialize()
+    override fun initialize(location: URL, resources: ResourceBundle) {
+        super.initialize(location, resources)
         priceColumn.setCellValueFactory { it.value.price.toProperty().asObservable() }
         priceColumn.textFieldCellFactory {
             fromString { it.toDoubleOrNull() ?: 0.0 }

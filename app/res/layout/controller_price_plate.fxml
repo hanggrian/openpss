@@ -7,25 +7,25 @@
       fx:controller="com.hendraanggrian.openpss.ui.order.PlatePriceController">
     <ToolBar>
         <!--suppress JavaFxEventHandler -->
-        <Button mnemonicParsing="false" onAction="#refresh" text="%refresh">
+        <Button styleClass="stud" mnemonicParsing="false" onAction="#refresh" text="%refresh">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/btn_refresh.png"/>
+                    <Image url="@/image/stud_refresh.png"/>
                 </ImageView>
             </graphic>
         </Button>
         <!--suppress JavaFxEventHandler -->
-        <Button mnemonicParsing="false" onAction="#add" text="%add">
+        <Button styleClass="stud" mnemonicParsing="false" onAction="#add" text="%add">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/btn_add.png"/>
+                    <Image url="@/image/stud_add.png"/>
                 </ImageView>
             </graphic>
         </Button>
-        <Button mnemonicParsing="false" fx:id="deleteButton" onAction="#delete" text="%delete">
+        <Button styleClass="stud" mnemonicParsing="false" fx:id="deleteButton" onAction="#delete" text="%delete">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/btn_delete.png"/>
+                    <Image url="@/image/stud_delete.png"/>
                 </ImageView>
             </graphic>
         </Button>

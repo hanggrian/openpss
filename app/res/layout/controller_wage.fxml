@@ -7,18 +7,26 @@
 <?import javafx.scene.layout.*?>
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.hendraanggrian.openpss.ui.wage.WageController">
-    <ToolBar>
-        <Button mnemonicParsing="false" onAction="#recess" text="%recess">
+    <ToolBar stylesheets="@../style/toolbar.css">
+        <Button styleClass="stud" mnemonicParsing="false" onAction="#history" text="%history">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/btn_recess.png"/>
+                    <Image url="@/image/stud_history.png"/>
                 </ImageView>
             </graphic>
         </Button>
-        <Button mnemonicParsing="false" onAction="#history" text="%history">
+        <Button styleClass="stud" mnemonicParsing="false" onAction="#recess" text="%recess">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/btn_history.png"/>
+                    <Image url="@/image/stud_recess.png"/>
+                </ImageView>
+            </graphic>
+        </Button>
+        <Button styleClass="stud" fx:id="disableRecessButton" mnemonicParsing="false" onAction="#disableRecess"
+                text="%disable_recess">
+            <graphic>
+                <ImageView pickOnBounds="true" preserveRatio="true">
+                    <Image url="@/image/stud_recess_off.png"/>
                 </ImageView>
             </graphic>
         </Button>
@@ -38,24 +46,6 @@
             <tooltip>
                 <Tooltip text="%browse_file"/>
             </tooltip>
-        </Button>
-        <ToggleButton fx:id="mergeToggleButton" mnemonicParsing="false" selected="true">
-            <graphic>
-                <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/btn_merge.png"/>
-                </ImageView>
-            </graphic>
-            <tooltip>
-                <Tooltip text="%merge_close_records"/>
-            </tooltip>
-        </ToggleButton>
-        <Separator/>
-        <Button fx:id="disableRecessButton" mnemonicParsing="false" onAction="#disableRecess" text="%disable_recess">
-            <graphic>
-                <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/btn_recess_off.png"/>
-                </ImageView>
-            </graphic>
         </Button>
     </ToolBar>
     <ScrollPane fx:id="scrollPane" VBox.vgrow="ALWAYS" hbarPolicy="NEVER" vbarPolicy="ALWAYS">

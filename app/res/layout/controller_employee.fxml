@@ -5,30 +5,44 @@
 <?import javafx.scene.layout.VBox?>
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.hendraanggrian.openpss.ui.employee.EmployeeController">
-    <ToolBar>
+    <ToolBar stylesheets="@../style/toolbar.css">
         <!--suppress JavaFxEventHandler -->
-        <Button mnemonicParsing="false" onAction="#refresh" text="%refresh">
+        <Button styleClass="stud" mnemonicParsing="false" onAction="#refresh" text="%refresh">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/btn_refresh.png"/>
+                    <Image url="@/image/stud_refresh.png"/>
                 </ImageView>
             </graphic>
         </Button>
         <!--suppress JavaFxEventHandler -->
-        <Button mnemonicParsing="false" onAction="#add" text="%add">
+        <Button styleClass="stud" mnemonicParsing="false" onAction="#add" text="%add">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/btn_user_add.png"/>
+                    <Image url="@/image/stud_user_add.png"/>
                 </ImageView>
             </graphic>
         </Button>
         <Separator/>
-        <Button mnemonicParsing="false" fx:id="fullAccessButton" onAction="#fullAccess" text="%full_access"/>
-        <Button mnemonicParsing="false" fx:id="resetPasswordButton" onAction="#resetPassword" text="%reset_password"/>
-        <Button mnemonicParsing="false" fx:id="deleteButton" onAction="#delete" text="%delete">
+        <Button styleClass="stud" mnemonicParsing="false" fx:id="fullAccessButton" onAction="#fullAccess"
+                text="%full_access">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/btn_delete.png"/>
+                    <Image url="@/image/stud_full_access.png"/>
+                </ImageView>
+            </graphic>
+        </Button>
+        <Button styleClass="stud" mnemonicParsing="false" fx:id="resetPasswordButton" onAction="#resetPassword"
+                text="%reset_password">
+            <graphic>
+                <ImageView pickOnBounds="true" preserveRatio="true">
+                    <Image url="@/image/stud_reset_password.png"/>
+                </ImageView>
+            </graphic>
+        </Button>
+        <Button styleClass="stud" mnemonicParsing="false" fx:id="deleteButton" onAction="#delete" text="%delete">
+            <graphic>
+                <ImageView pickOnBounds="true" preserveRatio="true">
+                    <Image url="@/image/stud_delete.png"/>
                 </ImageView>
             </graphic>
         </Button>

@@ -3,17 +3,16 @@
 <?import com.hendraanggrian.openpss.scene.control.CountBox?>
 <?import com.hendraanggrian.openpss.scene.layout.DateBox?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.VBox?>
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.hendraanggrian.openpss.ui.order.OrderController">
-    <ToolBar>
+    <ToolBar stylesheets="@../style/toolbar.css">
         <!--suppress JavaFxEventHandler -->
-        <Button mnemonicParsing="false" onAction="#refresh" text="%refresh">
+        <Button styleClass="stud" mnemonicParsing="false" onAction="#refresh" text="%refresh">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/btn_refresh.png"/>
+                    <Image url="@/image/stud_refresh.png"/>
                 </ImageView>
             </graphic>
         </Button>
@@ -23,15 +22,27 @@
         <CountBox fx:id="countBox"/>
         <Separator/>
         <!--suppress JavaFxEventHandler -->
-        <Button mnemonicParsing="false" onAction="#add" text="%add_plate">
+        <Button styleClass="stud" mnemonicParsing="false" onAction="#add" text="%add_plate">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/btn_add.png"/>
+                    <Image url="@/image/stud_add.png"/>
                 </ImageView>
             </graphic>
         </Button>
         <Separator/>
-        <Button mnemonicParsing="false" onAction="#platePrice" text="%plate_price"/>
-        <Button mnemonicParsing="false" onAction="#offsetPrice" text="%offset_price"/>
+        <Button styleClass="stud" mnemonicParsing="false" onAction="#platePrice" text="%plate_price">
+            <graphic>
+                <ImageView pickOnBounds="true" preserveRatio="true">
+                    <Image url="@/image/stud_plate.png"/>
+                </ImageView>
+            </graphic>
+        </Button>
+        <Button styleClass="stud" mnemonicParsing="false" onAction="#offsetPrice" text="%offset_price">
+            <graphic>
+                <ImageView pickOnBounds="true" preserveRatio="true">
+                    <Image url="@/image/stud_offset.png"/>
+                </ImageView>
+            </graphic>
+        </Button>
     </ToolBar>
 </VBox>

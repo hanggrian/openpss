@@ -8,44 +8,46 @@
 <?import javafx.scene.layout.VBox?>
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.hendraanggrian.openpss.ui.wage.WageRecordController">
-    <ToolBar>
+    <ToolBar stylesheets="@../style/toolbar.css">
         <SplitMenuButton mnemonicParsing="false" fx:id="undoButton" onAction="#undo" text="%undo">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/btn_undo.png"/>
+                    <Image url="@/image/stud_undo.png"/>
                 </ImageView>
             </graphic>
         </SplitMenuButton>
         <Separator/>
         <TimeBox fx:id="timeBox"/>
         <Separator/>
-        <Button mnemonicParsing="false" fx:id="lockStartButton" onAction="#lockStart" text="%lock_start_time">
+        <Button styleClass="stud" mnemonicParsing="false" fx:id="lockStartButton" onAction="#lockStart"
+                text="%lock_start_time">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/btn_lock_start.png"/>
+                    <Image url="@/image/stud_lock_start.png"/>
                 </ImageView>
             </graphic>
         </Button>
-        <Button mnemonicParsing="false" fx:id="lockEndButton" onAction="#lockEnd" text="%lock_end_time">
+        <Button styleClass="stud" mnemonicParsing="false" fx:id="lockEndButton" onAction="#lockEnd"
+                text="%lock_end_time">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/btn_lock_end.png"/>
+                    <Image url="@/image/stud_lock_end.png"/>
                 </ImageView>
             </graphic>
         </Button>
         <Separator/>
-        <Button mnemonicParsing="false" onAction="#empty" text="%empty_daily_income">
+        <Button styleClass="stud" mnemonicParsing="false" onAction="#empty" text="%empty_daily_income">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/btn_clear_date.png"/>
+                    <Image url="@/image/stud_clear_date.png"/>
                 </ImageView>
             </graphic>
         </Button>
         <Region HBox.hgrow="ALWAYS"/>
-        <Button mnemonicParsing="false" onAction="#screenshot" text="%screenshot">
+        <Button styleClass="stud" mnemonicParsing="false" onAction="#screenshot" text="%screenshot">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/btn_screenshot.png"/>
+                    <Image url="@/image/stud_snapshot.png"/>
                 </ImageView>
             </graphic>
         </Button>

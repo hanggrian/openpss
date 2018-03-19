@@ -25,7 +25,6 @@ import javafx.scene.control.ListView
 import javafx.scene.control.ScrollPane
 import javafx.scene.control.Separator
 import javafx.scene.control.TitledPane
-import javafx.scene.control.ToggleButton
 import javafx.scene.image.ImageView
 import javafx.scene.layout.FlowPane
 import javafx.scene.layout.Pane
@@ -63,7 +62,6 @@ class WageController : Controller() {
 
     @FXML lateinit var fileField: FileField
     @FXML lateinit var readerChoiceBox: ChoiceBox<Reader>
-    @FXML lateinit var mergeToggleButton: ToggleButton
     @FXML lateinit var disableRecessButton: Button
     @FXML lateinit var scrollPane: ScrollPane
     @FXML lateinit var flowPane: FlowPane
@@ -146,7 +144,7 @@ class WageController : Controller() {
         launch {
             try {
                 readerChoiceBox.value.read(fileField.file).forEach { attendee ->
-                    if (mergeToggleButton.isSelected) attendee.mergeDuplicates()
+                    attendee.mergeDuplicates()
                     launch(FX) {
                         flowPane.children += attendeePane(this@WageController, attendee) {
                             deleteMenu.onAction {

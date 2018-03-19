@@ -17,12 +17,12 @@ import com.mongodb.MongoClientOptions.Builder
 import com.mongodb.MongoCredential.createCredential
 import com.mongodb.MongoException
 import com.mongodb.ServerAddress
-import ktfx.application.exit
-import ktfx.scene.control.errorAlert
 import kotlinx.coroutines.experimental.async
 import kotlinx.nosql.equal
 import kotlinx.nosql.mongodb.MongoDB
 import kotlinx.nosql.mongodb.MongoDBSession
+import ktfx.application.exit
+import ktfx.scene.control.errorAlert
 import org.joda.time.DateTime
 import org.joda.time.LocalDate
 import org.joda.time.LocalTime
@@ -79,12 +79,13 @@ private suspend fun connect(host: String, port: Int, user: String, password: Str
         TABLES)
 }.await()
 
-inline val dbDateTime: DateTime @Throws(Exception::class) get() = DateTime(evalDate())
+/** Date and time of server. */
+val dbDateTime: DateTime @Throws(Exception::class) get() = DateTime(evalDate)
 
-inline val dbDate: LocalDate @Throws(Exception::class) get() = LocalDate.fromDateFields(evalDate())
+/** Local date of server. */
+val dbDate: LocalDate @Throws(Exception::class) get() = LocalDate.fromDateFields(evalDate)
 
-inline val dbTime: LocalTime @Throws(Exception::class) get() = LocalTime.fromDateFields(evalDate())
+/** Local time of server. */
+val dbTime: LocalTime @Throws(Exception::class) get() = LocalTime.fromDateFields(evalDate)
 
-@PublishedApi
-@Throws(Exception::class)
-internal fun evalDate(): Date = DB.db.doEval("new Date()").getDate("retval")
+private val evalDate: Date get() = DB.db.doEval("new Date()").getDate("retval")

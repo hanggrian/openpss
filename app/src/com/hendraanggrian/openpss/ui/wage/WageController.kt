@@ -62,7 +62,7 @@ class WageController : Controller() {
     @FXML lateinit var fileField: FileField
     @FXML lateinit var readerChoiceBox: ChoiceBox<Reader>
     @FXML lateinit var mergeToggleButton: ToggleButton
-    @FXML lateinit var recessOffButton: Button
+    @FXML lateinit var disableRecessButton: Button
     @FXML lateinit var scrollPane: ScrollPane
     @FXML lateinit var flowPane: FlowPane
     @FXML lateinit var employeeCountLabel: Label
@@ -73,7 +73,7 @@ class WageController : Controller() {
         readerChoiceBox.items = Reader.listAll()
         if (readerChoiceBox.items.isNotEmpty()) readerChoiceBox.selectionModel.selectFirst()
 
-        recessOffButton.disableProperty().bind(flowPane.children.emptyBinding())
+        disableRecessButton.disableProperty().bind(flowPane.children.emptyBinding())
         employeeCountLabel.textProperty().bind(stringBindingOf(flowPane.children) {
             "${flowPane.children.size} ${getString(R.string.employee)}"
         })
@@ -101,7 +101,10 @@ class WageController : Controller() {
         .showOpenDialog(fileField.scene.window)
         ?.run { fileField.text = absolutePath }
 
-    @FXML fun recessOff() = dialog<Pair<Any, Any>>(getString(R.string.disable_recess), ImageView(R.image.ic_clock)) {
+    @FXML fun disableRecess() = dialog<Pair<Any, Any>>(
+        getString(R.string.disable_recess),
+        ImageView(R.image.ic_clock)
+    ) {
         lateinit var recessChoice: ChoiceBox<*>
         lateinit var roleChoice: ChoiceBox<*>
         dialogPane.content = gridPane {

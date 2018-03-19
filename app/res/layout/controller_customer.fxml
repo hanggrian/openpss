@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 
 <?import com.hendraanggrian.openpss.scene.control.CountBox?>
 <?import javafx.geometry.Insets?>
@@ -59,10 +59,10 @@
                     </columnResizePolicy>
                 </TableView>
             </VBox>
-            <Label fx:id="coverLabel" alignment="CENTER" maxHeight="1.7976931348623157E308"
-                   maxWidth="1.7976931348623157E308"
-                   style="-fx-background-color: #f4f4f4;" text="%select_customer" AnchorPane.bottomAnchor="0"
-                   AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0"/>
+            <Label fx:id="coverLabel" alignment="CENTER" text="%select_customer" style="-fx-background-color: #f4f4f4;"
+                   maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                   AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0"
+                   AnchorPane.topAnchor="0"/>
         </AnchorPane>
     </SplitPane>
 </VBox>

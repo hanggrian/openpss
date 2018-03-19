@@ -1,15 +1,13 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
+<?import java.util.ArrayList?>
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.hendraanggrian.openpss.ui.main.MainController">
     <MenuBar fx:id="menuBar">
-        <fx:define>
-            <ToggleGroup fx:id="navigateGroup"/>
-        </fx:define>
         <Menu mnemonicParsing="false" text="File">
             <MenuItem fx:id="addCustomerItem" mnemonicParsing="false" onAction="#addCustomer" text="%add_customer">
                 <graphic>
@@ -22,14 +20,13 @@
             <MenuItem fx:id="quitItem" mnemonicParsing="false" onAction="#quit" text="%quit"/>
         </Menu>
         <Menu mnemonicParsing="false" fx:id="navigateMenu" text="%navigate">
-            <RadioMenuItem mnemonicParsing="false" toggleGroup="$navigateGroup" onAction="#navigate"
-                           text="%customer"/>
-            <RadioMenuItem mnemonicParsing="false" toggleGroup="$navigateGroup" onAction="#navigate"
-                           text="%orders"/>
-            <RadioMenuItem mnemonicParsing="false" toggleGroup="$navigateGroup" onAction="#navigate"
-                           text="%wage"/>
-            <RadioMenuItem mnemonicParsing="false" toggleGroup="$navigateGroup" onAction="#navigate"
-                           text="%employee"/>
+            <fx:define>
+                <ToggleGroup fx:id="navigate"/>
+            </fx:define>
+            <RadioMenuItem mnemonicParsing="false" toggleGroup="$navigate" onAction="#navigate" text="%customer"/>
+            <RadioMenuItem mnemonicParsing="false" toggleGroup="$navigate" onAction="#navigate" text="%orders"/>
+            <RadioMenuItem mnemonicParsing="false" toggleGroup="$navigate" onAction="#navigate" text="%wage"/>
+            <RadioMenuItem mnemonicParsing="false" toggleGroup="$navigate" onAction="#navigate" text="%employee"/>
         </Menu>
         <Menu mnemonicParsing="false" text="%help">
             <MenuItem mnemonicParsing="false" onAction="#about" text="%about">
@@ -63,5 +60,13 @@
             </Tab>
         </TabPane>
         <Label fx:id="employeeLabel" AnchorPane.rightAnchor="8" AnchorPane.topAnchor="8"/>
+        <fx:define>
+            <ArrayList fx:id="controllers">
+                <fx:reference source="customer"/>
+                <fx:reference source="order"/>
+                <fx:reference source="wage"/>
+                <fx:reference source="employee"/>
+            </ArrayList>
+        </fx:define>
     </AnchorPane>
 </VBox>

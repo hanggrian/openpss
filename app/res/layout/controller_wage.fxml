@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 
 <?import com.hendraanggrian.openpss.scene.control.FileField?>
 <?import javafx.geometry.Insets?>
@@ -50,15 +50,12 @@
             </tooltip>
         </ToggleButton>
         <Separator/>
-        <Button fx:id="recessOffButton" mnemonicParsing="false" onAction="#recessOff">
+        <Button fx:id="disableRecessButton" mnemonicParsing="false" onAction="#disableRecess" text="%disable_recess">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
                     <Image url="@/image/btn_recess_off.png"/>
                 </ImageView>
             </graphic>
-            <tooltip>
-                <Tooltip text="%disable_recess"/>
-            </tooltip>
         </Button>
     </ToolBar>
     <ScrollPane fx:id="scrollPane" VBox.vgrow="ALWAYS" hbarPolicy="NEVER" vbarPolicy="ALWAYS">

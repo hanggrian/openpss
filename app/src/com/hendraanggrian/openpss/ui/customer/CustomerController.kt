@@ -77,10 +77,7 @@ class CustomerController : Controller(), Refreshable, Addable {
     private val noteLabelGraphic = button(graphic = ImageView(R.image.btn_edit)) {
         sizeMax = 24
         onAction {
-            inputDialog(customer!!.note) {
-                title = getString(R.string.edit_customer)
-                headerText = getString(R.string.edit_customer)
-                graphic = ImageView(R.image.ic_user)
+            inputDialog(getString(R.string.edit_customer), ImageView(R.image.ic_user), customer!!.note) {
                 contentText = getString(R.string.note)
             }.showAndWait().ifPresent { note ->
                 transaction {
@@ -104,21 +101,21 @@ class CustomerController : Controller(), Refreshable, Addable {
             menuItem(getString(R.string.add)) {
                 onAction {
                     dialog<Customer.Contact>(getString(R.string.add_contact), ImageView(R.image.ic_address)) {
-                        lateinit var typeBox: ChoiceBox<String>
+                        lateinit var typeChoice: ChoiceBox<String>
                         lateinit var contactField: TextField
                         dialogPane.content = gridPane {
                             gaps = 8
                             label(getString(R.string.type)) col 0 row 0
-                            typeBox = choiceBox(Customer.Contact.listTypes()) col 1 row 0
+                            typeChoice = choiceBox(Customer.Contact.listTypes()) col 1 row 0
                             label(getString(R.string.contact)) col 0 row 1
                             contactField = textField { promptText = getString(R.string.contact) } col 1 row 1
                         }
                         cancelButton()
                         okButton {
-                            disableProperty().bind(typeBox.valueProperty().isNull or
+                            disableProperty().bind(typeChoice.valueProperty().isNull or
                                 contactField.textProperty().isEmpty)
                         }
-                        setResultConverter { if (it == OK) Contact(typeBox.value, contactField.text) else null }
+                        setResultConverter { if (it == OK) Contact(typeChoice.value, contactField.text) else null }
                     }.showAndWait().ifPresent { contact ->
                         transaction {
                             Customers.find { id.equal(customer!!.id) }.projection { contacts }

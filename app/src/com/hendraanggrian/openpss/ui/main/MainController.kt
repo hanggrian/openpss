@@ -18,6 +18,7 @@ import javafx.scene.input.KeyCode.C
 import javafx.scene.input.KeyCode.Q
 import javafx.scene.input.KeyCode.getKeyCode
 import javafx.scene.input.KeyCombination.SHORTCUT_DOWN
+import ktfx.application.exit
 import ktfx.application.later
 import ktfx.coroutines.listener
 import ktfx.scene.input.plus
@@ -32,12 +33,11 @@ class MainController : Controller() {
 
     @FXML lateinit var employeeLabel: Label
     @FXML lateinit var tabPane: TabPane
+    @FXML lateinit var controllers: List<Controller>
     @FXML lateinit var customerController: CustomerController
     @FXML lateinit var orderController: OrderController
     @FXML lateinit var wageController: WageController
     @FXML lateinit var employeeController: EmployeeController
-
-    private lateinit var controllers: Array<Controller>
 
     override fun initialize() {
         menuBar.isUseSystemMenuBar = IS_OS_MAC
@@ -55,10 +55,9 @@ class MainController : Controller() {
 
         later {
             employeeLabel.text = employeeName
-            controllers = arrayOf(customerController, orderController, wageController, employeeController)
             controllers.forEach {
                 it._employee = _employee
-                if (it is WageController || it is EmployeeController) {
+                if (it == wageController || it == employeeController) {
                     navigateMenu.items[controllers.indexOf(it)].isDisable = !isFullAccess
                     tabPane.tabs[controllers.indexOf(it)].isDisable = !isFullAccess
                 }
@@ -68,11 +67,13 @@ class MainController : Controller() {
 
     @FXML fun addCustomer() = customerController.add()
 
-    @FXML fun quit() = ktfx.application.exit()
+    @FXML fun quit() = exit()
 
     @FXML fun navigate(event: ActionEvent) = tabPane.selectionModel.select(navigateMenu.items.indexOf(event.source))
 
-    @FXML fun about() = AboutDialog(this).showAndWait().get()
+    @FXML fun about() {
+        AboutDialog(this).showAndWait()
+    }
 
     private fun updateNavigateMenu(index: Int) = navigateMenu.items.forEachIndexed { i, item ->
         (item as RadioMenuItem).isSelected = index == i

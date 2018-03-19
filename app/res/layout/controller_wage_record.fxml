@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 
 <?import com.hendraanggrian.openpss.scene.layout.TimeBox?>
 <?import javafx.scene.control.*?>
@@ -52,28 +52,20 @@
     </ToolBar>
     <TreeTableView fx:id="recordTable" VBox.vgrow="ALWAYS">
         <columns>
-            <TreeTableColumn fx:id="nameColumn" sortable="false"
-                             text="%name"/>
-            <TreeTableColumn fx:id="startColumn" sortable="false" resizable="false"
-                             text="%start"
+            <TreeTableColumn fx:id="nameColumn" sortable="false" text="%name"/>
+            <TreeTableColumn fx:id="startColumn" sortable="false" resizable="false" text="%start"
                              maxWidth="156" minWidth="156" prefWidth="156" style="-fx-alignment: CENTER;"/>
-            <TreeTableColumn fx:id="endColumn" sortable="false" resizable="false"
-                             text="%end"
+            <TreeTableColumn fx:id="endColumn" sortable="false" resizable="false" text="%end"
                              maxWidth="156" minWidth="156" prefWidth="156" style="-fx-alignment: CENTER;"/>
-            <TreeTableColumn fx:id="dailyColumn" sortable="false" resizable="false"
-                             text="%daily"
+            <TreeTableColumn fx:id="dailyColumn" sortable="false" resizable="false" text="%daily"
                              maxWidth="64" minWidth="64" prefWidth="64" style="-fx-alignment: CENTER;"/>
-            <TreeTableColumn fx:id="dailyIncomeColumn" sortable="false"
-                             text="%daily_income"
+            <TreeTableColumn fx:id="dailyIncomeColumn" sortable="false" text="%daily_income"
                              style="-fx-alignment: CENTER-RIGHT;"/>
-            <TreeTableColumn fx:id="overtimeColumn" sortable="false" resizable="false"
-                             text="%overtime"
+            <TreeTableColumn fx:id="overtimeColumn" sortable="false" resizable="false" text="%overtime"
                              maxWidth="64" minWidth="64" prefWidth="64" style="-fx-alignment: CENTER;"/>
-            <TreeTableColumn fx:id="overtimeIncomeColumn" sortable="false"
-                             text="%overtime_income"
+            <TreeTableColumn fx:id="overtimeIncomeColumn" sortable="false" text="%overtime_income"
                              style="-fx-alignment: CENTER-RIGHT;"/>
-            <TreeTableColumn fx:id="totalColumn" sortable="false"
-                             text="%total"
+            <TreeTableColumn fx:id="totalColumn" sortable="false" text="%total"
                              style="-fx-alignment: CENTER-RIGHT;"/>
         </columns>
         <columnResizePolicy>

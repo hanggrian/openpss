@@ -2,8 +2,8 @@ package com.hendraanggrian.openpss.ui.customer
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.collections.isNotEmpty
+import com.hendraanggrian.openpss.db.schema.Contact
 import com.hendraanggrian.openpss.db.schema.Customer
-import com.hendraanggrian.openpss.db.schema.Customer.Contact
 import com.hendraanggrian.openpss.db.schema.Customers
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.scene.control.CountBox
@@ -70,9 +70,9 @@ class CustomerController : Controller(), Refreshable, Addable {
     @FXML lateinit var nameLabel: Label
     @FXML lateinit var sinceLabel: Label
     @FXML lateinit var noteLabel: Label
-    @FXML lateinit var contactTable: TableView<Customer.Contact>
-    @FXML lateinit var typeColumn: TableColumn<Customer.Contact, String>
-    @FXML lateinit var contactColumn: TableColumn<Customer.Contact, String>
+    @FXML lateinit var contactTable: TableView<Contact>
+    @FXML lateinit var typeColumn: TableColumn<Contact, String>
+    @FXML lateinit var contactColumn: TableColumn<Contact, String>
     @FXML lateinit var coverLabel: Label
 
     private lateinit var customerList: ListView<Customer>
@@ -103,13 +103,13 @@ class CustomerController : Controller(), Refreshable, Addable {
         contactTable.contextMenu {
             menuItem(getString(R.string.add)) {
                 onAction {
-                    dialog<Customer.Contact>(getString(R.string.add_contact), ImageView(R.image.ic_address)) {
+                    dialog<Contact>(getString(R.string.add_contact), ImageView(R.image.ic_contact)) {
                         lateinit var typeChoice: ChoiceBox<String>
                         lateinit var contactField: TextField
                         dialogPane.content = gridPane {
                             gaps = 8
                             label(getString(R.string.type)) col 0 row 0
-                            typeChoice = choiceBox(Customer.Contact.listTypes()) col 1 row 0
+                            typeChoice = choiceBox(Contact.listTypes()) col 1 row 0
                             label(getString(R.string.contact)) col 0 row 1
                             contactField = textField { promptText = getString(R.string.contact) } col 1 row 1
                         }
@@ -200,7 +200,7 @@ class CustomerController : Controller(), Refreshable, Addable {
 
     private inline val customer: Customer? get() = customerList.selectionModel.selectedItem
 
-    private inline val contact: Customer.Contact? get() = contactTable.selectionModel.selectedItem
+    private inline val contact: Contact? get() = contactTable.selectionModel.selectedItem
 
     private fun MongoDBSession.reload(customer: Customer) = customerList.items.indexOf(customer).let { index ->
         customerList.items[customerList.items.indexOf(customer)] = Customers.find { id.equal(customer.id) }.single()

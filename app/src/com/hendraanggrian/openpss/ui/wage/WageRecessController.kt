@@ -36,7 +36,7 @@ class WageRecessController : SimpleTableController<Recess, Recesses>(Recesses) {
     }
 
     override fun add() = dialog<Pair<LocalTime, LocalTime>>(getString(R.string.add_reccess),
-        ImageView(R.image.ic_clock)) {
+        ImageView(R.image.ic_time)) {
         lateinit var startBox: TimeBox
         lateinit var endBox: TimeBox
         dialogPane.content = gridPane {

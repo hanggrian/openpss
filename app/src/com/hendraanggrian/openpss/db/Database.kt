@@ -6,10 +6,8 @@ import com.hendraanggrian.openpss.collections.isEmpty
 import com.hendraanggrian.openpss.db.schema.Customers
 import com.hendraanggrian.openpss.db.schema.Employee
 import com.hendraanggrian.openpss.db.schema.Employees
-import com.hendraanggrian.openpss.db.schema.OffsetOrders
-import com.hendraanggrian.openpss.db.schema.Offsets
-import com.hendraanggrian.openpss.db.schema.PlateOrders
-import com.hendraanggrian.openpss.db.schema.Plates
+import com.hendraanggrian.openpss.db.schema.OffsetPrices
+import com.hendraanggrian.openpss.db.schema.PlatePrices
 import com.hendraanggrian.openpss.db.schema.Receipts
 import com.hendraanggrian.openpss.db.schema.Recesses
 import com.hendraanggrian.openpss.db.schema.Wages
@@ -29,8 +27,7 @@ import org.joda.time.LocalTime
 import java.util.Date
 
 private lateinit var DB: MongoDB
-private val TABLES = arrayOf(Customers, Employees, Offsets, PlateOrders, OffsetOrders, Plates, Receipts, Recesses,
-    Wages)
+private val TABLES = arrayOf(Customers, Employees, OffsetPrices, PlatePrices, Receipts, Recesses, Wages)
 
 /**
  * A failed transaction will most likely throw an exception instance of [MongoException].

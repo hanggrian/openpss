@@ -1,7 +1,7 @@
-package com.hendraanggrian.openpss.ui.order
+package com.hendraanggrian.openpss.ui.receipt
 
-import com.hendraanggrian.openpss.db.schema.Plate
-import com.hendraanggrian.openpss.db.schema.Plates
+import com.hendraanggrian.openpss.db.schema.PlatePrice
+import com.hendraanggrian.openpss.db.schema.PlatePrices
 import com.hendraanggrian.openpss.db.transaction
 import javafx.fxml.FXML
 import javafx.scene.control.TableColumn
@@ -14,9 +14,9 @@ import ktfx.listeners.textFieldCellFactory
 import java.net.URL
 import java.util.ResourceBundle
 
-class PlatePriceController : PriceController<Plate, Plates>(Plates) {
+class PlatePriceController : PriceController<PlatePrice, PlatePrices>(PlatePrices) {
 
-    @FXML lateinit var priceColumn: TableColumn<Plate, Double>
+    @FXML lateinit var priceColumn: TableColumn<PlatePrice, Double>
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
@@ -25,10 +25,12 @@ class PlatePriceController : PriceController<Plate, Plates>(Plates) {
             fromString { it.toDoubleOrNull() ?: 0.0 }
         }
         priceColumn.onEditCommit { event ->
-            transaction { Plates.find { name.equal(event.rowValue.name) }.projection { price }.update(event.newValue) }
+            transaction {
+                PlatePrices.find { name.equal(event.rowValue.name) }.projection { price }.update(event.newValue)
+            }
             event.rowValue.price = event.newValue
         }
     }
 
-    override fun newPrice(name: String): Plate = Plate(name)
+    override fun newPrice(name: String): PlatePrice = PlatePrice(name)
 }

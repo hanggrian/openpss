@@ -23,7 +23,7 @@ class DateDialog(
 
     init {
         headerTitle = title
-        graphicIcon = ImageView(R.image.ic_calendar)
+        graphicIcon = ImageView(R.image.ic_date)
         dialogPane.content = dateBox
         later { dateBox.requestFocus() }
         cancelButton()

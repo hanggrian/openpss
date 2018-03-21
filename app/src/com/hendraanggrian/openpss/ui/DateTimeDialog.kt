@@ -32,7 +32,7 @@ class DateTimeDialog(
 
     init {
         headerTitle = title
-        graphicIcon = ImageView(R.image.ic_calendar)
+        graphicIcon = ImageView(R.image.ic_date)
         dialogPane.content = gridPane {
             gaps = 8
             dateBox = dateBox(prefill.toLocalDate()) row 0 col 1

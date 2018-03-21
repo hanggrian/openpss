@@ -4,10 +4,10 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.VBox?>
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.hendraanggrian.openpss.ui.order.OffsetPriceController">
+      fx:controller="com.hendraanggrian.openpss.ui.receipt.OffsetPriceController">
     <ToolBar stylesheets="@../style/toolbar.css">
         <!--suppress JavaFxEventHandler -->
-        <Button  mnemonicParsing="false" onAction="#refresh" text="%refresh">
+        <Button mnemonicParsing="false" onAction="#refresh" text="%refresh">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
                     <Image url="@/image/stud_refresh.png"/>
@@ -15,14 +15,14 @@
             </graphic>
         </Button>
         <!--suppress JavaFxEventHandler -->
-        <Button  mnemonicParsing="false" onAction="#add" text="%add">
+        <Button mnemonicParsing="false" onAction="#add" text="%add">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
                     <Image url="@/image/stud_add.png"/>
                 </ImageView>
             </graphic>
         </Button>
-        <Button  mnemonicParsing="false" fx:id="deleteButton" onAction="#delete" text="%delete">
+        <Button mnemonicParsing="false" fx:id="deleteButton" onAction="#delete" text="%delete">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
                     <Image url="@/image/stud_delete.png"/>
@@ -33,7 +33,7 @@
     <TableView fx:id="table" VBox.vgrow="ALWAYS" editable="true">
         <columns>
             <TableColumn fx:id="nameColumn" text="%name" prefWidth="192" editable="false"/>
-            <TableColumn fx:id="minAmountColumn" text="%min_amount" prefWidth="128"/>
+            <TableColumn fx:id="minQtyColumn" text="%min_qty" prefWidth="128"/>
             <TableColumn fx:id="minPriceColumn" text="%min_price" prefWidth="128"/>
             <TableColumn fx:id="excessPriceColumn" text="%excess_price" prefWidth="128"/>
         </columns>

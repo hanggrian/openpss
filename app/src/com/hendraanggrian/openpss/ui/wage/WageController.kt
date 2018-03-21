@@ -104,7 +104,7 @@ class WageController : Controller() {
 
     @FXML fun disableRecess() = dialog<Pair<Any, Any>>(
         getString(R.string.disable_recess),
-        ImageView(R.image.ic_clock)
+        ImageView(R.image.ic_time)
     ) {
         lateinit var recessChoice: ChoiceBox<*>
         lateinit var roleChoice: ChoiceBox<*>

@@ -27,7 +27,7 @@ class ResetPasswordDialog(resourced: Resourced) : Dialog<String>(), Resourced by
         icon = Image(R.image.ic_launcher)
         title = getString(R.string.change_password)
         headerText = getString(R.string.change_password)
-        graphic = ImageView(R.image.ic_key)
+        graphic = ImageView(R.image.ic_password)
 
         dialogPane.content = gridPane {
             gaps = 8

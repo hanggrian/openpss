@@ -1,7 +1,7 @@
-package com.hendraanggrian.openpss.ui.order
+package com.hendraanggrian.openpss.ui.receipt
 
-import com.hendraanggrian.openpss.db.schema.Offset
-import com.hendraanggrian.openpss.db.schema.Offsets
+import com.hendraanggrian.openpss.db.schema.OffsetPrice
+import com.hendraanggrian.openpss.db.schema.OffsetPrices
 import com.hendraanggrian.openpss.db.transaction
 import javafx.fxml.FXML
 import javafx.scene.control.TableColumn
@@ -14,23 +14,23 @@ import ktfx.listeners.textFieldCellFactory
 import java.net.URL
 import java.util.ResourceBundle
 
-class OffsetPriceController : PriceController<Offset, Offsets>(Offsets) {
+class OffsetPriceController : PriceController<OffsetPrice, OffsetPrices>(OffsetPrices) {
 
-    @FXML lateinit var minAmountColumn: TableColumn<Offset, Int>
-    @FXML lateinit var minPriceColumn: TableColumn<Offset, Double>
-    @FXML lateinit var excessPriceColumn: TableColumn<Offset, Double>
+    @FXML lateinit var minQtyColumn: TableColumn<OffsetPrice, Int>
+    @FXML lateinit var minPriceColumn: TableColumn<OffsetPrice, Double>
+    @FXML lateinit var excessPriceColumn: TableColumn<OffsetPrice, Double>
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
-        minAmountColumn.setCellValueFactory { it.value.minAmount.toProperty().asObservable() }
-        minAmountColumn.textFieldCellFactory {
+        minQtyColumn.setCellValueFactory { it.value.minQty.toProperty().asObservable() }
+        minQtyColumn.textFieldCellFactory {
             fromString { it.toIntOrNull() ?: 0 }
         }
-        minAmountColumn.onEditCommit { event ->
+        minQtyColumn.onEditCommit { event ->
             transaction {
-                Offsets.find { name.equal(event.rowValue.name) }.projection { minAmount }.update(event.newValue)
+                OffsetPrices.find { name.equal(event.rowValue.name) }.projection { minAmount }.update(event.newValue)
             }
-            event.rowValue.minAmount = event.newValue
+            event.rowValue.minQty = event.newValue
         }
 
         minPriceColumn.setCellValueFactory { it.value.minPrice.toProperty().asObservable() }
@@ -39,7 +39,7 @@ class OffsetPriceController : PriceController<Offset, Offsets>(Offsets) {
         }
         minPriceColumn.onEditCommit { event ->
             transaction {
-                Offsets.find { name.equal(event.rowValue.name) }.projection { minPrice }.update(event.newValue)
+                OffsetPrices.find { name.equal(event.rowValue.name) }.projection { minPrice }.update(event.newValue)
             }
             event.rowValue.minPrice = event.newValue
         }
@@ -50,11 +50,11 @@ class OffsetPriceController : PriceController<Offset, Offsets>(Offsets) {
         }
         excessPriceColumn.onEditCommit { event ->
             transaction {
-                Offsets.find { name.equal(event.rowValue.name) }.projection { excessPrice }.update(event.newValue)
+                OffsetPrices.find { name.equal(event.rowValue.name) }.projection { excessPrice }.update(event.newValue)
             }
             event.rowValue.excessPrice = event.newValue
         }
     }
 
-    override fun newPrice(name: String): Offset = Offset(name)
+    override fun newPrice(name: String): OffsetPrice = OffsetPrice(name)
 }

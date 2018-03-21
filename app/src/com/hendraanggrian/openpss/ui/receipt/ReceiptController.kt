@@ -1,4 +1,4 @@
-package com.hendraanggrian.openpss.ui.order
+package com.hendraanggrian.openpss.ui.receipt
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.scene.control.CountBox
@@ -18,7 +18,7 @@ import ktfx.stage.stage
 import java.net.URL
 import java.util.ResourceBundle
 
-class OrderController : Controller(), Refreshable, Addable {
+class ReceiptController : Controller(), Refreshable, Addable {
 
     @FXML lateinit var statusBox: ChoiceBox<String>
     @FXML lateinit var countBox: CountBox
@@ -35,10 +35,7 @@ class OrderController : Controller(), Refreshable, Addable {
     override fun refresh() {
     }
 
-    override fun add() {
-        /*PlateReceiptDialog(this).showAndWait().ifPresent {
-
-        }*/
+    override fun add() = ReceiptDialog(this, _employee).showAndWait().ifPresent {
     }
 
     @FXML fun platePrice() = stage(getString(R.string.plate_price)) {

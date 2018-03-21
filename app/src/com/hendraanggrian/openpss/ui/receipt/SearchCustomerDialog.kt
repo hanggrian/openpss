@@ -1,4 +1,4 @@
-package com.hendraanggrian.openpss.ui.order
+package com.hendraanggrian.openpss.ui.receipt
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.db.schema.Customer
@@ -20,7 +20,7 @@ import ktfx.scene.control.cancelButton
 import ktfx.scene.control.graphicIcon
 import ktfx.scene.control.headerTitle
 import ktfx.scene.control.okButton
-import kotlinx.nosql.equal
+import kotlin.text.RegexOption.IGNORE_CASE
 
 class SearchCustomerDialog(resourced: Resourced) : Dialog<Customer>(), Resourced by resourced {
 
@@ -41,7 +41,7 @@ class SearchCustomerDialog(resourced: Resourced) : Dialog<Customer>(), Resourced
                     transaction {
                         when {
                             textField.text.isEmpty() -> Customers.find()
-                            else -> Customers.find { name.equal(textField.text) }
+                            else -> Customers.find { name.matches(textField.text.toRegex(IGNORE_CASE).toPattern()) }
                         }.take(ITEMS_PER_PAGE).toMutableObservableList()
                     }
                 })

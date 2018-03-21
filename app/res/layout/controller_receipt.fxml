@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.hendraanggrian.openpss.ui.order.OrderController">
+      fx:controller="com.hendraanggrian.openpss.ui.receipt.ReceiptController">
     <ToolBar stylesheets="@../style/toolbar.css">
         <!--suppress JavaFxEventHandler -->
         <Button mnemonicParsing="false" onAction="#refresh" text="%refresh">
@@ -19,10 +19,10 @@
             </graphic>
         </Button>
         <!--suppress JavaFxEventHandler -->
-        <Button mnemonicParsing="false" onAction="#add" text="%add_plate">
+        <Button mnemonicParsing="false" onAction="#add" text="%add_receipt">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/stud_add.png"/>
+                    <Image url="@/image/stud_add_receipt.png"/>
                 </ImageView>
             </graphic>
         </Button>

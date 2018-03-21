@@ -2,19 +2,20 @@ package com.hendraanggrian.openpss.db.schema
 
 import com.hendraanggrian.openpss.db.NamedDocument
 import com.hendraanggrian.openpss.db.NamedDocumentSchema
+import com.hendraanggrian.openpss.db.BasePlate
 import kotlinx.nosql.Id
 import kotlinx.nosql.double
 
-object Plates : NamedDocumentSchema<Plate>("plate", Plate::class) {
+object PlatePrices : NamedDocumentSchema<PlatePrice>("plate", PlatePrice::class) {
     val price = double("price")
 }
 
-data class Plate @JvmOverloads constructor(
+data class PlatePrice @JvmOverloads constructor(
     override var name: String,
-    var price: Double = 0.0
-) : NamedDocument<Plates> {
+    override var price: Double = 0.0
+) : NamedDocument<PlatePrices>, BasePlate {
 
-    override lateinit var id: Id<String, Plates>
+    override lateinit var id: Id<String, PlatePrices>
 
     override fun toString(): String = name
 }

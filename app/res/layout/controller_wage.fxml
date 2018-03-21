@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.hendraanggrian.openpss.scene.control.FileField?>
 <?import com.hendraanggrian.openpss.scene.control.Gap?>
@@ -9,27 +9,53 @@
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.hendraanggrian.openpss.ui.wage.WageController">
     <ToolBar stylesheets="@../style/toolbar.css">
-        <Button styleClass="stud" mnemonicParsing="false" onAction="#history" text="%history">
+        <Button fx:id="disableRecessButton" mnemonicParsing="false" onAction="#disableRecess" text="%disable_recess">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/stud_history.png"/>
+                    <Image url="@/image/stud_recess_off.png"/>
                 </ImageView>
             </graphic>
         </Button>
-        <Button styleClass="stud" mnemonicParsing="false" onAction="#recess" text="%recess">
+        <Gap/>
+        <Button fx:id="readButton" mnemonicParsing="false" onAction="#read" text="%read">
+            <graphic>
+                <ImageView pickOnBounds="true" preserveRatio="true">
+                    <Image url="@/image/stud_read.png"/>
+                </ImageView>
+            </graphic>
+        </Button>
+        <Button fx:id="processButton" mnemonicParsing="false" onAction="#process" text="%process">
+            <graphic>
+                <ImageView pickOnBounds="true" preserveRatio="true">
+                    <Image url="@/image/stud_process.png"/>
+                </ImageView>
+            </graphic>
+        </Button>
+        <Gap HBox.hgrow="ALWAYS"/>
+        <Button mnemonicParsing="false" onAction="#recess" text="%recess">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
                     <Image url="@/image/stud_recess.png"/>
                 </ImageView>
             </graphic>
         </Button>
-        <Gap/>
-        <ChoiceBox fx:id="readerChoiceBox">
-            <tooltip>
-                <Tooltip text="%reader"/>
-            </tooltip>
-        </ChoiceBox>
-        <FileField fx:id="fileField" prefWidth="448" promptText="%input_file"/>
+        <Button mnemonicParsing="false" onAction="#history" text="%history">
+            <graphic>
+                <ImageView pickOnBounds="true" preserveRatio="true">
+                    <Image url="@/image/stud_history.png"/>
+                </ImageView>
+            </graphic>
+        </Button>
+    </ToolBar>
+    <ToolBar>
+        <Label text="%reader"/>
+        <ChoiceBox fx:id="readerChoiceBox"/>
+        <Label text="%input_file">
+            <HBox.margin>
+                <Insets left="8.0"/>
+            </HBox.margin>
+        </Label>
+        <FileField fx:id="fileField" promptText="%input_file" HBox.hgrow="ALWAYS"/>
         <Button mnemonicParsing="false" onAction="#browse">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
@@ -40,30 +66,13 @@
                 <Tooltip text="%browse_file"/>
             </tooltip>
         </Button>
-        <Gap/>
-        <Button styleClass="stud" fx:id="disableRecessButton" mnemonicParsing="false" onAction="#disableRecess"
-                text="%disable_recess">
-            <graphic>
-                <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/stud_recess_off.png"/>
-                </ImageView>
-            </graphic>
-        </Button>
+        <Label fx:id="employeeCountLabel" text="Label">
+            <HBox.margin>
+                <Insets left="8.0"/>
+            </HBox.margin>
+        </Label>
     </ToolBar>
-    <ScrollPane fx:id="scrollPane" VBox.vgrow="ALWAYS" hbarPolicy="NEVER" vbarPolicy="ALWAYS">
+    <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" vbarPolicy="ALWAYS" VBox.vgrow="ALWAYS">
         <FlowPane fx:id="flowPane"/>
     </ScrollPane>
-    <HBox alignment="CENTER">
-        <padding>
-            <Insets bottom="8" left="8" right="8" top="8"/>
-        </padding>
-        <Label fx:id="employeeCountLabel" text="Label"/>
-        <ButtonBar HBox.hgrow="ALWAYS">
-            <buttons>
-                <Button fx:id="readButton" mnemonicParsing="false" onAction="#read" text="%read"/>
-                <Button fx:id="processButton" defaultButton="true" mnemonicParsing="false" onAction="#process"
-                        text="%process"/>
-            </buttons>
-        </ButtonBar>
-    </HBox>
 </VBox>

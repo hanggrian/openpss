@@ -10,16 +10,15 @@
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.hendraanggrian.openpss.ui.wage.WageRecordController">
     <ToolBar stylesheets="@../style/toolbar.css">
-        <SplitMenuButton mnemonicParsing="false" fx:id="undoButton" onAction="#undo" text="%undo">
+        <Button mnemonicParsing="false" onAction="#empty" text="%empty_daily_income">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/stud_undo.png"/>
+                    <Image url="@/image/stud_clear_date.png"/>
                 </ImageView>
             </graphic>
-        </SplitMenuButton>
+        </Button>
         <Gap/>
-        <TimeBox fx:id="timeBox"/>
-        <Button styleClass="stud" mnemonicParsing="false" fx:id="lockStartButton" onAction="#lockStart"
+        <Button mnemonicParsing="false" fx:id="lockStartButton" onAction="#lockStart"
                 text="%lock_start_time">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
@@ -27,7 +26,7 @@
                 </ImageView>
             </graphic>
         </Button>
-        <Button styleClass="stud" mnemonicParsing="false" fx:id="lockEndButton" onAction="#lockEnd"
+        <Button mnemonicParsing="false" fx:id="lockEndButton" onAction="#lockEnd"
                 text="%lock_end_time">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
@@ -35,22 +34,25 @@
                 </ImageView>
             </graphic>
         </Button>
-        <Gap/>
-        <Button styleClass="stud" mnemonicParsing="false" onAction="#empty" text="%empty_daily_income">
-            <graphic>
-                <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/stud_clear_date.png"/>
-                </ImageView>
-            </graphic>
-        </Button>
         <Region HBox.hgrow="ALWAYS"/>
-        <Button styleClass="stud" mnemonicParsing="false" onAction="#screenshot" text="%screenshot">
+        <Button mnemonicParsing="false" onAction="#screenshot" text="%screenshot">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
                     <Image url="@/image/stud_snapshot.png"/>
                 </ImageView>
             </graphic>
         </Button>
+    </ToolBar>
+    <ToolBar>
+        <SplitMenuButton mnemonicParsing="false" fx:id="undoButton" onAction="#undo" text="%undo">
+            <graphic>
+                <ImageView pickOnBounds="true" preserveRatio="true">
+                    <Image url="@/image/btn_undo.png"/>
+                </ImageView>
+            </graphic>
+        </SplitMenuButton>
+        <Gap/>
+        <TimeBox fx:id="timeBox"/>
     </ToolBar>
     <TreeTableView fx:id="recordTable" VBox.vgrow="ALWAYS">
         <columns>

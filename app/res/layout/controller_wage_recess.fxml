@@ -7,7 +7,7 @@
       fx:controller="com.hendraanggrian.openpss.ui.wage.WageRecessController">
     <ToolBar stylesheets="@../style/toolbar.css">
         <!--suppress JavaFxEventHandler -->
-        <Button styleClass="stud" mnemonicParsing="false" onAction="#refresh" text="%refresh">
+        <Button  mnemonicParsing="false" onAction="#refresh" text="%refresh">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
                     <Image url="@/image/stud_refresh.png"/>
@@ -15,14 +15,14 @@
             </graphic>
         </Button>
         <!--suppress JavaFxEventHandler -->
-        <Button styleClass="stud" mnemonicParsing="false" onAction="#add" text="%add">
+        <Button  mnemonicParsing="false" onAction="#add" text="%add">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
                     <Image url="@/image/stud_add.png"/>
                 </ImageView>
             </graphic>
         </Button>
-        <Button styleClass="stud" mnemonicParsing="false" fx:id="deleteButton" onAction="#delete" text="%delete">
+        <Button  mnemonicParsing="false" fx:id="deleteButton" onAction="#delete" text="%delete">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
                     <Image url="@/image/stud_delete.png"/>

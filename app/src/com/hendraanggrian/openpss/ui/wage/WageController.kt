@@ -60,14 +60,14 @@ import java.util.ResourceBundle
 
 class WageController : Controller() {
 
-    @FXML lateinit var fileField: FileField
-    @FXML lateinit var readerChoiceBox: ChoiceBox<Reader>
     @FXML lateinit var disableRecessButton: Button
-    @FXML lateinit var scrollPane: ScrollPane
-    @FXML lateinit var flowPane: FlowPane
-    @FXML lateinit var employeeCountLabel: Label
     @FXML lateinit var readButton: Button
     @FXML lateinit var processButton: Button
+    @FXML lateinit var readerChoiceBox: ChoiceBox<Reader>
+    @FXML lateinit var fileField: FileField
+    @FXML lateinit var employeeCountLabel: Label
+    @FXML lateinit var scrollPane: ScrollPane
+    @FXML lateinit var flowPane: FlowPane
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)

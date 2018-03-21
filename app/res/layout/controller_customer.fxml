@@ -11,7 +11,7 @@
       fx:controller="com.hendraanggrian.openpss.ui.customer.CustomerController">
     <ToolBar stylesheets="@../style/toolbar.css">
         <!--suppress JavaFxEventHandler -->
-        <Button styleClass="stud" mnemonicParsing="false" onAction="#refresh" text="%refresh">
+        <Button mnemonicParsing="false" onAction="#refresh" text="%refresh">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
                     <Image url="@/image/stud_refresh.png"/>
@@ -19,7 +19,7 @@
             </graphic>
         </Button>
         <!--suppress JavaFxEventHandler -->
-        <Button styleClass="stud" mnemonicParsing="false" onAction="#add" text="%add">
+        <Button mnemonicParsing="false" onAction="#add" text="%add">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
                     <Image url="@/image/stud_user_add.png"/>
@@ -27,11 +27,15 @@
             </graphic>
         </Button>
         <Gap/>
-        <TextField fx:id="customerField" promptText="%search_customer"/>
-        <CountBox fx:id="countBox"/>
     </ToolBar>
     <SplitPane dividerPositions="0.5" VBox.vgrow="ALWAYS">
-        <Pagination fx:id="customerPagination"/>
+        <VBox>
+            <ToolBar>
+                <TextField fx:id="customerField" promptText="%search_customer" HBox.hgrow="ALWAYS"/>
+                <CountBox fx:id="countBox"/>
+            </ToolBar>
+            <Pagination fx:id="customerPagination" VBox.vgrow="ALWAYS"/>
+        </VBox>
         <AnchorPane>
             <VBox AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0"
                   AnchorPane.topAnchor="0">

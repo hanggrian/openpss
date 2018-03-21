@@ -8,7 +8,7 @@
       fx:controller="com.hendraanggrian.openpss.ui.employee.EmployeeController">
     <ToolBar stylesheets="@../style/toolbar.css">
         <!--suppress JavaFxEventHandler -->
-        <Button styleClass="stud" mnemonicParsing="false" onAction="#refresh" text="%refresh">
+        <Button mnemonicParsing="false" onAction="#refresh" text="%refresh">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
                     <Image url="@/image/stud_refresh.png"/>
@@ -16,7 +16,7 @@
             </graphic>
         </Button>
         <!--suppress JavaFxEventHandler -->
-        <Button styleClass="stud" mnemonicParsing="false" onAction="#add" text="%add">
+        <Button mnemonicParsing="false" onAction="#add" text="%add">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
                     <Image url="@/image/stud_user_add.png"/>
@@ -24,7 +24,7 @@
             </graphic>
         </Button>
         <Gap/>
-        <Button styleClass="stud" mnemonicParsing="false" fx:id="fullAccessButton" onAction="#fullAccess"
+        <Button mnemonicParsing="false" fx:id="fullAccessButton" onAction="#fullAccess"
                 text="%full_access">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
@@ -32,7 +32,7 @@
                 </ImageView>
             </graphic>
         </Button>
-        <Button styleClass="stud" mnemonicParsing="false" fx:id="resetPasswordButton" onAction="#resetPassword"
+        <Button mnemonicParsing="false" fx:id="resetPasswordButton" onAction="#resetPassword"
                 text="%reset_password">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
@@ -40,7 +40,7 @@
                 </ImageView>
             </graphic>
         </Button>
-        <Button styleClass="stud" mnemonicParsing="false" fx:id="deleteButton" onAction="#delete" text="%delete">
+        <Button mnemonicParsing="false" fx:id="deleteButton" onAction="#delete" text="%delete">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
                     <Image url="@/image/stud_delete.png"/>

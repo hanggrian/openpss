@@ -8,7 +8,7 @@ import ktfx.layouts.ItemManager
 import ktfx.layouts.LayoutDsl
 import ktfx.scene.layout.widthMin
 
-class Gap(width: Int = 32) : Region() {
+class Gap(width: Int = 48) : Region() {
 
     init {
         widthMin = width

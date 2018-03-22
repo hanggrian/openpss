@@ -33,7 +33,7 @@ import ktfx.scene.control.icon
 import ktfx.scene.layout.heightPref
 import ktfx.scene.layout.paddings
 
-class AboutDialog(resourced: Resourced) : Dialog<Nothing>(), Resourced by resourced {
+class AboutDialog(resourced: Resourced) : Dialog<Unit>(), Resourced by resourced {
 
     private lateinit var licenseList: ListView<License>
 

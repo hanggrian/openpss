@@ -3,6 +3,8 @@ package com.hendraanggrian.openpss.db
 import com.hendraanggrian.openpss.BuildConfig.ARTIFACT
 import com.hendraanggrian.openpss.BuildConfig.DEBUG
 import com.hendraanggrian.openpss.collections.isEmpty
+import com.hendraanggrian.openpss.db.schema.Config
+import com.hendraanggrian.openpss.db.schema.Configs
 import com.hendraanggrian.openpss.db.schema.Customers
 import com.hendraanggrian.openpss.db.schema.Employee
 import com.hendraanggrian.openpss.db.schema.Employees
@@ -27,7 +29,7 @@ import org.joda.time.LocalTime
 import java.util.Date
 
 private lateinit var DB: MongoDB
-private val TABLES = arrayOf(Customers, Employees, OffsetPrices, PlatePrices, Receipts, Recesses, Wages)
+private val TABLES = arrayOf(Configs, Customers, Employees, OffsetPrices, PlatePrices, Receipts, Recesses, Wages)
 
 /**
  * A failed transaction will most likely throw an exception instance of [MongoException].
@@ -57,6 +59,10 @@ suspend fun login(
     var employee: Employee? = null
     DB = connect(host, port, user, password)
     transaction {
+        // check first time installation
+        Config.getKeys().forEach { key ->
+            if (Configs.find { this.key.equal(key) }.isEmpty()) Configs.insert(Config(key))
+        }
         // add default employee
         if (Employees.find { name.equal(Employee.BACKDOOR.name) }.isEmpty()) Employees.insert(Employee.BACKDOOR)
         // check login credentials

@@ -62,9 +62,9 @@ class MainController : Controller() {
             controllers = listOf(customerController, receiptController, wageController, employeeController)
             controllers.forEach {
                 it._employee = _employee
-                if (it == wageController || it == employeeController) {
-                    navigateMenu.items[controllers.indexOf(it)].isDisable = !isFullAccess
-                    tabPane.tabs[controllers.indexOf(it)].isDisable = !isFullAccess
+                if (it == wageController || it == employeeController) controllers.indexOf(it).let { index ->
+                    navigateMenu.items[index].isDisable = !isFullAccess
+                    tabPane.tabs[index].isDisable = !isFullAccess
                 }
             }
         }
@@ -76,9 +76,7 @@ class MainController : Controller() {
 
     @FXML fun navigate(event: ActionEvent) = tabPane.selectionModel.select(navigateMenu.items.indexOf(event.source))
 
-    @FXML fun about() {
-        AboutDialog(this).showAndWait()
-    }
+    @FXML fun about() = AboutDialog(this).showAndWait().get()
 
     private fun updateNavigateMenu(index: Int) = navigateMenu.items.forEachIndexed { i, item ->
         (item as RadioMenuItem).isSelected = index == i

@@ -26,33 +26,33 @@ class OffsetPriceController : PriceController<OffsetPrice, OffsetPrices>(OffsetP
         minQtyColumn.textFieldCellFactory {
             fromString { it.toIntOrNull() ?: 0 }
         }
-        minQtyColumn.onEditCommit { event ->
+        minQtyColumn.onEditCommit {
             transaction {
-                OffsetPrices.find { name.equal(event.rowValue.name) }.projection { minAmount }.update(event.newValue)
+                OffsetPrices.find { name.equal(it.rowValue.name) }.projection { minQty }.update(it.newValue)
             }
-            event.rowValue.minQty = event.newValue
+            it.rowValue.minQty = it.newValue
         }
 
         minPriceColumn.setCellValueFactory { it.value.minPrice.toProperty().asObservable() }
         minPriceColumn.textFieldCellFactory {
             fromString { it.toDoubleOrNull() ?: 0.0 }
         }
-        minPriceColumn.onEditCommit { event ->
+        minPriceColumn.onEditCommit {
             transaction {
-                OffsetPrices.find { name.equal(event.rowValue.name) }.projection { minPrice }.update(event.newValue)
+                OffsetPrices.find { name.equal(it.rowValue.name) }.projection { minPrice }.update(it.newValue)
             }
-            event.rowValue.minPrice = event.newValue
+            it.rowValue.minPrice = it.newValue
         }
 
         excessPriceColumn.setCellValueFactory { it.value.excessPrice.toProperty().asObservable() }
         excessPriceColumn.textFieldCellFactory {
             fromString { it.toDoubleOrNull() ?: 0.0 }
         }
-        excessPriceColumn.onEditCommit { event ->
+        excessPriceColumn.onEditCommit {
             transaction {
-                OffsetPrices.find { name.equal(event.rowValue.name) }.projection { excessPrice }.update(event.newValue)
+                OffsetPrices.find { name.equal(it.rowValue.name) }.projection { excessPrice }.update(it.newValue)
             }
-            event.rowValue.excessPrice = event.newValue
+            it.rowValue.excessPrice = it.newValue
         }
     }
 

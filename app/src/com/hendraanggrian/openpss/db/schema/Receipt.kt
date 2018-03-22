@@ -55,6 +55,7 @@ data class Receipt(
 }
 
 data class Plate(
+    override var title: String,
     val plate: String,
     override var qty: Int,
     override var price: Double,
@@ -62,6 +63,7 @@ data class Plate(
 ) : BaseOrder, BasePlate
 
 data class Offset(
+    override var title: String,
     val offset: String,
     override var qty: Int,
     override var minQty: Int,

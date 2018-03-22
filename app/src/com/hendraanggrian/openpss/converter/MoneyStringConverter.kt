@@ -1,7 +1,6 @@
 package com.hendraanggrian.openpss.converter
 
-import com.hendraanggrian.openpss.Language
-import com.hendraanggrian.openpss.io.properties.ConfigFile
+import com.hendraanggrian.openpss.db.schema.Config
 import javafx.util.converter.CurrencyStringConverter
 
-class MoneyStringConverter : CurrencyStringConverter(Language.find(ConfigFile.language.value).toLocale())
+class MoneyStringConverter : CurrencyStringConverter(Config.getCurrencyLocale())

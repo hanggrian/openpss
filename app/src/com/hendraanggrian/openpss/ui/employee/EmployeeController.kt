@@ -17,12 +17,15 @@ import javafx.scene.control.ButtonType.NO
 import javafx.scene.control.ButtonType.YES
 import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
+import kotlinx.coroutines.experimental.delay
+import kotlinx.coroutines.experimental.launch
 import kotlinx.nosql.equal
 import kotlinx.nosql.mongodb.MongoDBSession
 import kotlinx.nosql.update
 import ktfx.application.exit
 import ktfx.beans.property.toProperty
 import ktfx.collections.toMutableObservableList
+import ktfx.coroutines.FX
 import ktfx.coroutines.onEditCommit
 import ktfx.scene.control.choiceBoxCellFactory
 import ktfx.scene.control.confirmAlert
@@ -35,6 +38,7 @@ class EmployeeController : Controller(), Refreshable, Addable {
     @FXML lateinit var fullAccessButton: Button
     @FXML lateinit var resetPasswordButton: Button
     @FXML lateinit var deleteButton: Button
+    @FXML lateinit var configButton: Button
 
     @FXML lateinit var employeeTable: TableView<Employee>
     @FXML lateinit var nameColumn: TableColumn<Employee, String>
@@ -44,6 +48,10 @@ class EmployeeController : Controller(), Refreshable, Addable {
         super.initialize(location, resources)
         arrayOf(fullAccessButton, resetPasswordButton, deleteButton).forEach {
             it.disableProperty().bind(employeeTable.selectionModel.selectedItemProperty().isNull)
+        }
+        launch(FX) {
+            delay(500)
+            configButton.isDisable = !isFullAccess
         }
 
         nameColumn.setCellValueFactory { it.value.name.toProperty() }
@@ -88,6 +96,8 @@ class EmployeeController : Controller(), Refreshable, Addable {
     @FXML fun delete() = confirm({ employee ->
         Employees.find { name.equal(employee.name) }.remove()
     })
+
+    @FXML fun config() = ConfigDialog(this).showAndWait().get()
 
     private fun confirm(
         confirmedAction: MongoDBSession.(Employee) -> Unit,

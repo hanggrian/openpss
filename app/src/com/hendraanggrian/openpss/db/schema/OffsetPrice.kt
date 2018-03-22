@@ -8,7 +8,7 @@ import kotlinx.nosql.double
 import kotlinx.nosql.integer
 
 object OffsetPrices : NamedDocumentSchema<OffsetPrice>("offset", OffsetPrice::class) {
-    val minAmount = integer("min_amount")
+    val minQty = integer("min_qty")
     val minPrice = double("min_price")
     val excessPrice = double("excess_price")
 }

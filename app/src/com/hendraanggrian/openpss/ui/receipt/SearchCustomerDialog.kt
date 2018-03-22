@@ -20,12 +20,13 @@ import ktfx.scene.control.cancelButton
 import ktfx.scene.control.graphicIcon
 import ktfx.scene.control.headerTitle
 import ktfx.scene.control.okButton
+import ktfx.scene.layout.heightPref
 import kotlin.text.RegexOption.IGNORE_CASE
 
 class SearchCustomerDialog(resourced: Resourced) : Dialog<Customer>(), Resourced by resourced {
 
     companion object {
-        private const val ITEMS_PER_PAGE = 15
+        private const val ITEMS_PER_PAGE = 10
     }
 
     private lateinit var textField: TextField
@@ -37,6 +38,7 @@ class SearchCustomerDialog(resourced: Resourced) : Dialog<Customer>(), Resourced
         dialogPane.content = vbox {
             textField = textField { promptText = getString(R.string.customer) }
             listView = listView<Customer> {
+                heightPref = 252
                 itemsProperty().bind(bindingOf(textField.textProperty()) {
                     transaction {
                         when {

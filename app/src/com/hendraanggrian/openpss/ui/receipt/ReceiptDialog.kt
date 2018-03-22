@@ -6,7 +6,6 @@ import com.hendraanggrian.openpss.db.schema.Employee
 import com.hendraanggrian.openpss.db.schema.Offset
 import com.hendraanggrian.openpss.db.schema.Plate
 import com.hendraanggrian.openpss.db.schema.Receipt
-import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.time.PATTERN_DATE
 import com.hendraanggrian.openpss.ui.Resourced
 import com.hendraanggrian.openpss.util.getResourceString
@@ -15,6 +14,8 @@ import javafx.beans.property.SimpleObjectProperty
 import javafx.scene.control.ButtonType.CANCEL
 import javafx.scene.control.Dialog
 import javafx.scene.control.TableView
+import javafx.scene.control.TableView.CONSTRAINED_RESIZE_POLICY
+import javafx.scene.control.TextArea
 import javafx.scene.image.ImageView
 import javafx.scene.text.Font.loadFont
 import ktfx.application.later
@@ -24,6 +25,8 @@ import ktfx.beans.property.toProperty
 import ktfx.collections.emptyBinding
 import ktfx.coroutines.onAction
 import ktfx.coroutines.onKeyPressed
+import ktfx.layouts.ChildManager
+import ktfx.layouts.TableColumnsBuilder
 import ktfx.layouts.button
 import ktfx.layouts.columns
 import ktfx.layouts.contextMenu
@@ -52,6 +55,7 @@ class ReceiptDialog(
 
     private lateinit var plateTable: TableView<Plate>
     private lateinit var offsetTable: TableView<Offset>
+    private lateinit var noteArea: TextArea
 
     init {
         headerTitle = getString(R.string.add_receipt)
@@ -71,95 +75,95 @@ class ReceiptDialog(
                 })
                 setOnAction { SearchCustomerDialog(resourced).showAndWait().ifPresent { customerProperty.set(it) } }
             } col 1 row 2
-            label(getString(R.string.note)) col 0 row 3
-            textArea { heightPref = 64 } col 1 row 3
-            label(getString(R.string.plate)) col 0 row 4
-            plateTable = tableView<Plate> {
-                heightPref = 128
-                isEditable = true
-                columns {
-                    column<String>(getString(R.string.plate)) {
-                        setCellValueFactory { transaction { it.value.plate }.toProperty() }
-                    }
-                    column<Int>(getString(R.string.qty)) {
-                        setCellValueFactory { it.value.qty.toProperty().asObservable() }
-                    }
-                    column<Double>(getString(R.string.price)) {
-                        setCellValueFactory { it.value.price.toProperty().asObservable() }
-                    }
-                    column<Double>(getString(R.string.total)) {
-                        setCellValueFactory { it.value.total.toProperty().asObservable() }
-                    }
+            label(getString(R.string.plate)) col 0 row 3
+            plateTable = receiptTableView(AddPlateDialog(this@ReceiptDialog)) {
+                column<String>(getString(R.string.title)) {
+                    setCellValueFactory { it.value.title.toProperty() }
                 }
-                contextMenu {
-                    menuItem(getString(R.string.add_plate)) {
-                        onAction {
-                            AddPlateDialog(this@ReceiptDialog).showAndWait().ifPresent { plateTable.items.add(it) }
-                        }
-                    }
-                    separatorMenuItem()
-                    menuItem(getString(R.string.delete)) {
-                        later { disableProperty().bind(plateTable.selectionModel.selectedItemProperty().isNull) }
-                        onAction { plateTable.items.remove(plateTable.selectionModel.selectedItem) }
-                    }
-                    menuItem(getString(R.string.clear)) {
-                        later { disableProperty().bind(plateTable.items.emptyBinding()) }
-                        onAction { plateTable.items.clear() }
-                    }
+                column<String>(getString(R.string.plate)) {
+                    setCellValueFactory { it.value.plate.toProperty() }
                 }
-                onKeyPressed {
-                    if (it.code.isDelete() && selectionModel.selectedItem != null)
-                        items.remove(selectionModel.selectedItem)
+                column<Int>(getString(R.string.qty)) {
+                    setCellValueFactory { it.value.qty.toProperty().asObservable() }
+                    setStyle("-fx-alignment: CENTER-RIGHT;")
+                }
+                column<Double>(getString(R.string.price)) {
+                    setCellValueFactory { it.value.price.toProperty().asObservable() }
+                    setStyle("-fx-alignment: CENTER-RIGHT;")
+                }
+                column<Double>(getString(R.string.total)) {
+                    setCellValueFactory { it.value.total.toProperty().asObservable() }
+                    setStyle("-fx-alignment: CENTER-RIGHT;")
+                }
+            } col 1 row 3
+            label(getString(R.string.offset)) col 0 row 4
+            offsetTable = receiptTableView(AddOffsetDialog(this@ReceiptDialog)) {
+                column<String>(getString(R.string.title)) {
+                    setCellValueFactory { it.value.title.toProperty() }
+                }
+                column<String>(getString(R.string.offset)) {
+                    setCellValueFactory { it.value.offset.toProperty() }
+                }
+                column<Int>(getString(R.string.qty)) {
+                    setCellValueFactory { it.value.qty.toProperty().asObservable() }
+                    setStyle("-fx-alignment: CENTER-RIGHT;")
+                }
+                column<Int>(getString(R.string.min_qty)) {
+                    setCellValueFactory { it.value.minQty.toProperty().asObservable() }
+                    setStyle("-fx-alignment: CENTER-RIGHT;")
+                }
+                column<Double>(getString(R.string.min_price)) {
+                    setCellValueFactory { it.value.minPrice.toProperty().asObservable() }
+                    setStyle("-fx-alignment: CENTER-RIGHT;")
+                }
+                column<Double>(getString(R.string.excess_price)) {
+                    setCellValueFactory { it.value.excessPrice.toProperty().asObservable() }
+                    setStyle("-fx-alignment: CENTER-RIGHT;")
+                }
+                column<Double>(getString(R.string.total)) {
+                    setCellValueFactory { it.value.total.toProperty().asObservable() }
+                    setStyle("-fx-alignment: CENTER-RIGHT;")
                 }
             } col 1 row 4
-            label(getString(R.string.offset)) col 0 row 5
-            offsetTable = tableView<Offset> {
-                heightPref = 128
-                isEditable = true
-                columns {
-                    column<String>(getString(R.string.offset)) {
-                        setCellValueFactory { transaction { it.value.offset }.toProperty() }
-                    }
-                    column<Int>(getString(R.string.qty)) {
-                        setCellValueFactory { it.value.qty.toProperty().asObservable() }
-                    }
-                    column<Int>(getString(R.string.min_qty)) {
-                        setCellValueFactory { it.value.minQty.toProperty().asObservable() }
-                    }
-                    column<Double>(getString(R.string.min_price)) {
-                        setCellValueFactory { it.value.minPrice.toProperty().asObservable() }
-                    }
-                    column<Double>(getString(R.string.excess_price)) {
-                        setCellValueFactory { it.value.excessPrice.toProperty().asObservable() }
-                    }
-                    column<Double>(getString(R.string.total)) {
-                        setCellValueFactory { it.value.total.toProperty().asObservable() }
-                    }
-                }
-                contextMenu {
-                    menuItem(getString(R.string.add_offset)) {
-                        onAction {
-                            AddOffsetDialog(this@ReceiptDialog).showAndWait().ifPresent { offsetTable.items.add(it) }
-                        }
-                    }
-                    separatorMenuItem()
-                    menuItem(getString(R.string.delete)) {
-                        later { disableProperty().bind(offsetTable.selectionModel.selectedItemProperty().isNull) }
-                        onAction { offsetTable.items.remove(offsetTable.selectionModel.selectedItem) }
-                    }
-                    menuItem(getString(R.string.clear)) {
-                        later { disableProperty().bind(offsetTable.items.emptyBinding()) }
-                        onAction { offsetTable.items.clear() }
-                    }
-                }
-                onKeyPressed {
-                    if (it.code.isDelete() && selectionModel.selectedItem != null)
-                        items.remove(selectionModel.selectedItem)
-                }
-            } col 1 row 5
+            label(getString(R.string.note)) col 0 row 5
+            noteArea = textArea { heightPref = 64 } col 1 row 5
         }
         cancelButton()
         okButton()
         setResultConverter { if (it == CANCEL) null else null }
+    }
+
+    private fun <S> ChildManager.receiptTableView(
+        addDialog: Dialog<S>,
+        columnsBuilder: TableColumnsBuilder<S>.() -> Unit
+    ): TableView<S> = tableView {
+        heightPref = 128
+        columnResizePolicy = CONSTRAINED_RESIZE_POLICY
+        columns(columnsBuilder)
+        columns[0].minWidth = 256.0
+        columns.drop(1).let { columns ->
+            val minWidth = 384.0 / columns.size
+            columns.forEach {
+                it.minWidth = minWidth
+            }
+        }
+        contextMenu {
+            menuItem(getString(R.string.add)) {
+                onAction { addDialog.showAndWait().ifPresent { this@tableView.items.add(it) } }
+            }
+            separatorMenuItem()
+            menuItem(getString(R.string.delete)) {
+                later { disableProperty().bind(this@tableView.selectionModel.selectedItemProperty().isNull) }
+                onAction { this@tableView.items.remove(this@tableView.selectionModel.selectedItem) }
+            }
+            menuItem(getString(R.string.clear)) {
+                later { disableProperty().bind(this@tableView.items.emptyBinding()) }
+                onAction { this@tableView.items.clear() }
+            }
+        }
+        onKeyPressed {
+            if (it.code.isDelete() && selectionModel.selectedItem != null)
+                items.remove(selectionModel.selectedItem)
+        }
     }
 }

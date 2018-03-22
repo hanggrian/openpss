@@ -13,6 +13,7 @@ import com.hendraanggrian.openpss.ui.Resourced
 import javafx.scene.control.ButtonType.CANCEL
 import javafx.scene.control.ChoiceBox
 import javafx.scene.control.Dialog
+import javafx.scene.control.TextField
 import javafx.scene.image.ImageView
 import ktfx.beans.binding.lessEq
 import ktfx.beans.binding.or
@@ -21,6 +22,7 @@ import ktfx.coroutines.listener
 import ktfx.layouts.choiceBox
 import ktfx.layouts.gridPane
 import ktfx.layouts.label
+import ktfx.layouts.textField
 import ktfx.scene.control.cancelButton
 import ktfx.scene.control.graphicIcon
 import ktfx.scene.control.headerTitle
@@ -29,6 +31,7 @@ import ktfx.scene.layout.gaps
 
 class AddOffsetDialog(resourced: Resourced) : Dialog<Offset>(), Resourced by resourced {
 
+    private lateinit var titleField: TextField
     private lateinit var offsetChoice: ChoiceBox<OffsetPrice>
     private lateinit var qtyField: IntField
     private lateinit var minQtyField: IntField
@@ -40,22 +43,24 @@ class AddOffsetDialog(resourced: Resourced) : Dialog<Offset>(), Resourced by res
         graphicIcon = ImageView(R.image.ic_offset)
         dialogPane.content = gridPane {
             gaps = 8
-            label(getString(R.string.name)) col 0 row 0
+            label(getString(R.string.title)) col 0 row 0
+            titleField = textField { promptText = getString(R.string.title) } col 1 row 0
+            label(getString(R.string.offset)) col 0 row 1
             offsetChoice = choiceBox(transaction { OffsetPrices.find().toObservableList() }!!) {
                 valueProperty().listener { _, _, offset ->
                     minQtyField.value = offset.minQty
                     minPriceField.value = offset.minPrice
                     excessPriceField.value = offset.excessPrice
                 }
-            } col 1 row 0
-            label(getString(R.string.qty)) col 0 row 1
-            qtyField = intField { promptText = getString(R.string.qty) } col 1 row 1
-            label(getString(R.string.min_qty)) col 0 row 2
-            minQtyField = intField { promptText = getString(R.string.min_qty) } col 1 row 2
-            label(getString(R.string.min_price)) col 0 row 3
-            minPriceField = doubleField { promptText = getString(R.string.min_price) } col 1 row 3
-            label(getString(R.string.excess_price)) col 0 row 4
-            excessPriceField = doubleField { promptText = getString(R.string.excess_price) } col 1 row 4
+            } col 1 row 1
+            label(getString(R.string.qty)) col 0 row 2
+            qtyField = intField { promptText = getString(R.string.qty) } col 1 row 2
+            label(getString(R.string.min_qty)) col 0 row 3
+            minQtyField = intField { promptText = getString(R.string.min_qty) } col 1 row 3
+            label(getString(R.string.min_price)) col 0 row 4
+            minPriceField = doubleField { promptText = getString(R.string.min_price) } col 1 row 4
+            label(getString(R.string.excess_price)) col 0 row 5
+            excessPriceField = doubleField { promptText = getString(R.string.excess_price) } col 1 row 5
         }
         cancelButton()
         okButton {
@@ -68,8 +73,12 @@ class AddOffsetDialog(resourced: Resourced) : Dialog<Offset>(), Resourced by res
         setResultConverter {
             when (it) {
                 CANCEL -> null
-                else -> Offset(offsetChoice.value.name, qtyField.value,
-                    minQtyField.value, minPriceField.value, excessPriceField.value)
+                else -> Offset(titleField.text,
+                    offsetChoice.value.name,
+                    qtyField.value,
+                    minQtyField.value,
+                    minPriceField.value,
+                    excessPriceField.value)
             }
         }
     }

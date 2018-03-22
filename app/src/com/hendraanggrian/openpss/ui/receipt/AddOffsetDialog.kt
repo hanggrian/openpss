@@ -31,8 +31,8 @@ import ktfx.scene.layout.gaps
 
 class AddOffsetDialog(resourced: Resourced) : Dialog<Offset>(), Resourced by resourced {
 
-    private lateinit var titleField: TextField
     private lateinit var offsetChoice: ChoiceBox<OffsetPrice>
+    private lateinit var titleField: TextField
     private lateinit var qtyField: IntField
     private lateinit var minQtyField: IntField
     private lateinit var minPriceField: DoubleField
@@ -43,16 +43,16 @@ class AddOffsetDialog(resourced: Resourced) : Dialog<Offset>(), Resourced by res
         graphicIcon = ImageView(R.image.ic_offset)
         dialogPane.content = gridPane {
             gaps = 8
-            label(getString(R.string.title)) col 0 row 0
-            titleField = textField { promptText = getString(R.string.title) } col 1 row 0
-            label(getString(R.string.offset)) col 0 row 1
+            label(getString(R.string.offset)) col 0 row 0
             offsetChoice = choiceBox(transaction { OffsetPrices.find().toObservableList() }!!) {
                 valueProperty().listener { _, _, offset ->
                     minQtyField.value = offset.minQty
                     minPriceField.value = offset.minPrice
                     excessPriceField.value = offset.excessPrice
                 }
-            } col 1 row 1
+            } col 1 row 0
+            label(getString(R.string.title)) col 0 row 1
+            titleField = textField { promptText = getString(R.string.title) } col 1 row 1
             label(getString(R.string.qty)) col 0 row 2
             qtyField = intField { promptText = getString(R.string.qty) } col 1 row 2
             label(getString(R.string.min_qty)) col 0 row 3
@@ -65,21 +65,20 @@ class AddOffsetDialog(resourced: Resourced) : Dialog<Offset>(), Resourced by res
         cancelButton()
         okButton {
             disableProperty().bind(offsetChoice.valueProperty().isNull or
+                titleField.textProperty().isEmpty or
                 qtyField.valueProperty.lessEq(0) or
                 minQtyField.valueProperty.lessEq(0) or
                 minPriceField.valueProperty.lessEq(0) or
                 excessPriceField.valueProperty.lessEq(0))
         }
         setResultConverter {
-            when (it) {
-                CANCEL -> null
-                else -> Offset(titleField.text,
-                    offsetChoice.value.name,
-                    qtyField.value,
-                    minQtyField.value,
-                    minPriceField.value,
-                    excessPriceField.value)
-            }
+            if (it == CANCEL) null else Offset(
+                offsetChoice.value.name,
+                titleField.text,
+                qtyField.value,
+                minQtyField.value,
+                minPriceField.value,
+                excessPriceField.value)
         }
     }
 }

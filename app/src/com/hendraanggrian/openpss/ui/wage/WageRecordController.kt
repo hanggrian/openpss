@@ -26,6 +26,7 @@ import javafx.scene.control.TreeTableColumn
 import javafx.scene.control.TreeTableView
 import javafx.scene.text.Font.loadFont
 import javafx.stage.Stage
+import javafx.util.converter.NumberStringConverter
 import ktfx.application.later
 import ktfx.beans.binding.booleanBindingOf
 import ktfx.beans.binding.or
@@ -51,8 +52,6 @@ class WageRecordController : Controller() {
         const val EXTRA_ATTENDEES = "EXTRA_ATTENDEES"
     }
 
-    private val converter = MoneyStringConverter()
-
     @FXML lateinit var undoButton: SplitMenuButton
     @FXML lateinit var timeBox: TimeBox
     @FXML lateinit var lockStartButton: Button
@@ -66,6 +65,9 @@ class WageRecordController : Controller() {
     @FXML lateinit var overtimeColumn: TreeTableColumn<Record, Double>
     @FXML lateinit var overtimeIncomeColumn: TreeTableColumn<Record, Double>
     @FXML lateinit var totalColumn: TreeTableColumn<Record, Double>
+
+    private val numberConverter = NumberStringConverter()
+    private val moneyConverter = MoneyStringConverter()
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
@@ -93,7 +95,8 @@ class WageRecordController : Controller() {
             it.cellFactory {
                 onUpdate { any, empty ->
                     if (any != null && !empty) graphic = label(when (it) {
-                        dailyIncomeColumn, overtimeIncomeColumn, totalColumn -> converter.toString(any as Number)
+                        dailyColumn, overtimeColumn -> numberConverter.toString(any as Number)
+                        dailyIncomeColumn, overtimeIncomeColumn, totalColumn -> moneyConverter.toString(any as Number)
                         else -> any.toString()
                     }) {
                         font = loadFont(getResourceString(when {
@@ -122,7 +125,7 @@ class WageRecordController : Controller() {
                 .filter { it.isChild }
                 .map { it.totalProperty }
                 .toTypedArray()) {
-                "${getString(R.string.record)} - ${converter.toString(records
+                "${getString(R.string.record)} - ${moneyConverter.toString(records
                     .filter { it.isTotal }
                     .map { it.totalProperty.value }
                     .sum())}"

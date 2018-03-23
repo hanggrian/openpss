@@ -8,14 +8,14 @@ import com.hendraanggrian.openpss.scene.control.intField
 import javafx.beans.property.ObjectProperty
 import javafx.beans.property.SimpleObjectProperty
 import javafx.geometry.Pos.CENTER
+import javafx.scene.Node
 import javafx.scene.control.Button
 import javafx.scene.image.ImageView
 import ktfx.beans.binding.bindingOf
 import ktfx.coroutines.listener
 import ktfx.coroutines.onAction
-import ktfx.layouts.ChildManager
-import ktfx.layouts.ItemManager
 import ktfx.layouts.LayoutDsl
+import ktfx.layouts.LayoutManager
 import ktfx.layouts._HBox
 import ktfx.layouts.button
 import ktfx.layouts.label
@@ -100,12 +100,7 @@ inline fun timeBox(
     noinline init: ((@LayoutDsl TimeBox).() -> Unit)? = null
 ): TimeBox = TimeBox(prefill).apply { init?.invoke(this) }
 
-inline fun ChildManager.timeBox(
-    prefill: LocalTime = MIDNIGHT,
-    noinline init: ((@LayoutDsl TimeBox).() -> Unit)? = null
-): TimeBox = com.hendraanggrian.openpss.scene.layout.timeBox(prefill, init).add()
-
-inline fun ItemManager.timeBox(
+inline fun LayoutManager<Node>.timeBox(
     prefill: LocalTime = MIDNIGHT,
     noinline init: ((@LayoutDsl TimeBox).() -> Unit)? = null
 ): TimeBox = com.hendraanggrian.openpss.scene.layout.timeBox(prefill, init).add()

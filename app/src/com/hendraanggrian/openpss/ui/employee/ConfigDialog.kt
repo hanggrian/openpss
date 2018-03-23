@@ -34,13 +34,14 @@ class ConfigDialog(resourced: Resourced) : Dialog<Unit>(), Resourced by resource
                 isEditable = true
                 columnResizePolicy = CONSTRAINED_RESIZE_POLICY
                 columns {
-                    column<String> { setCellValueFactory { transaction { it.value.key }.toProperty() } }
-                    column<String> {
+                    column<String>(getString(R.string.key)) { setCellValueFactory { transaction { it.value.key }.toProperty() } }
+                    column<String>(getString(R.string.value)) {
                         setCellValueFactory { transaction { it.value.value }.toProperty() }
                         textFieldCellFactory()
                         onEditCommit {
                             transaction {
                                 Configs.find { key.equal(it.rowValue.key) }.projection { value }.update(it.newValue)
+                                it.rowValue.value = it.newValue
                             }
                         }
                     }

@@ -9,12 +9,12 @@ import javafx.beans.property.BooleanProperty
 import javafx.beans.property.ObjectProperty
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleObjectProperty
+import javafx.scene.Node
 import javafx.scene.control.TextField
 import ktfx.beans.binding.bindingOf
 import ktfx.beans.binding.booleanBindingOf
-import ktfx.layouts.ChildManager
-import ktfx.layouts.ItemManager
 import ktfx.layouts.LayoutDsl
+import ktfx.layouts.LayoutManager
 import java.io.File
 
 /** Field that display file or directory path. */
@@ -48,12 +48,7 @@ inline fun fileField(
     noinline init: ((@LayoutDsl FileField).() -> Unit)? = null
 ): FileField = FileField(scope).apply { init?.invoke(this) }
 
-inline fun ChildManager.fileField(
-    scope: Scope = FILE,
-    noinline init: ((@LayoutDsl FileField).() -> Unit)? = null
-): FileField = com.hendraanggrian.openpss.scene.control.fileField(scope, init).add()
-
-inline fun ItemManager.fileField(
+inline fun LayoutManager<Node>.fileField(
     scope: Scope = FILE,
     noinline init: ((@LayoutDsl FileField).() -> Unit)? = null
 ): FileField = com.hendraanggrian.openpss.scene.control.fileField(scope, init).add()

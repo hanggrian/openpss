@@ -15,6 +15,7 @@ import javafx.beans.property.ObjectProperty
 import javafx.beans.property.SimpleDoubleProperty
 import javafx.beans.property.SimpleObjectProperty
 import javafx.geometry.Pos.CENTER_RIGHT
+import javafx.scene.Node
 import javafx.scene.control.ButtonType.CANCEL
 import javafx.scene.control.Dialog
 import javafx.scene.control.TableView
@@ -33,7 +34,7 @@ import ktfx.beans.property.toProperty
 import ktfx.collections.emptyBinding
 import ktfx.coroutines.onAction
 import ktfx.coroutines.onKeyPressed
-import ktfx.layouts.ChildManager
+import ktfx.layouts.LayoutManager
 import ktfx.layouts.TableColumnsBuilder
 import ktfx.layouts.button
 import ktfx.layouts.columns
@@ -168,7 +169,7 @@ class ReceiptDialog(
         }
     }
 
-    private fun <S> ChildManager.receiptTableView(
+    private fun <S> LayoutManager<Node>.receiptTableView(
         newAddDialog: () -> Dialog<S>,
         columnsBuilder: TableColumnsBuilder<S>.() -> Unit
     ): TableView<S> = tableView {

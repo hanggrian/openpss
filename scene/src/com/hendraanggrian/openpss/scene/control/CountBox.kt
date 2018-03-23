@@ -4,12 +4,12 @@ package com.hendraanggrian.openpss.scene.control
 
 import javafx.beans.property.IntegerProperty
 import javafx.beans.property.SimpleIntegerProperty
+import javafx.scene.Node
 import javafx.scene.control.ChoiceBox
 import ktfx.beans.binding.intBindingOf
 import ktfx.collections.observableListOf
-import ktfx.layouts.ChildManager
-import ktfx.layouts.ItemManager
 import ktfx.layouts.LayoutDsl
+import ktfx.layouts.LayoutManager
 import ktfx.listeners.converter
 
 open class CountBox : ChoiceBox<Int>() {
@@ -34,10 +34,6 @@ inline fun itemCountBox(
     noinline init: ((@LayoutDsl CountBox).() -> Unit)? = null
 ): CountBox = CountBox().apply { init?.invoke(this) }
 
-inline fun ChildManager.itemCountBox(
-    noinline init: ((@LayoutDsl CountBox).() -> Unit)? = null
-): CountBox = com.hendraanggrian.openpss.scene.control.itemCountBox(init).add()
-
-inline fun ItemManager.itemCountBox(
+inline fun LayoutManager<Node>.itemCountBox(
     noinline init: ((@LayoutDsl CountBox).() -> Unit)? = null
 ): CountBox = com.hendraanggrian.openpss.scene.control.itemCountBox(init).add()

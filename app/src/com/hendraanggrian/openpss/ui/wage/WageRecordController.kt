@@ -42,7 +42,6 @@ import ktfx.layouts.menuItem
 import ktfx.listeners.cellFactory
 import ktfx.scene.control.customButton
 import ktfx.scene.control.infoAlert
-import ktfx.scene.layout.heightMax
 import ktfx.scene.snapshot
 import java.net.URL
 import java.util.ResourceBundle
@@ -192,10 +191,8 @@ class WageRecordController : Controller() {
             undoable.append()
         }
 
-    @FXML fun screenshot() = getResourceString(R.style.treetableview_print).let { printStyle ->
-        toolbar1.heightMax = 0
-        toolbar2.heightMax = 0
-        recordTable.stylesheets += printStyle
+    @FXML fun screenshot() = getResourceString(R.style.treetableview_print).let { printStylesheet ->
+        togglePrintMode(true, printStylesheet)
         recordTable.scrollTo(0)
         val flow = (recordTable.skin as TreeTableViewSkin<*>).children[1] as VirtualFlow<*>
         var i = 0
@@ -206,9 +203,7 @@ class WageRecordController : Controller() {
             i++
         } while (flow.lastVisibleCell.index + 1 <
             recordTable.root.children.size + recordTable.root.children.sumBy { it.children.size })
-        toolbar1.maxHeight = Double.MAX_VALUE
-        toolbar2.maxHeight = Double.MAX_VALUE
-        recordTable.stylesheets -= printStyle
+        togglePrintMode(false, printStylesheet)
         infoAlert(getString(R.string.screenshot_finished)) {
             customButton(getString(R.string.open_folder), CANCEL_CLOSE)
         }.showAndWait()
@@ -227,5 +222,18 @@ class WageRecordController : Controller() {
                 undoButton.items -= this@menuItem
             }
         })
+    }
+
+    private fun togglePrintMode(on: Boolean, printStylesheet: String) = when {
+        on -> {
+            root.children -= toolbar1
+            root.children -= toolbar2
+            recordTable.stylesheets += printStylesheet
+        }
+        else -> {
+            root.children.add(0, toolbar2)
+            root.children.add(0, toolbar1)
+            recordTable.stylesheets -= printStylesheet
+        }
     }
 }

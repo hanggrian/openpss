@@ -108,6 +108,8 @@ tasks {
         classifier = null
     }
     withType<PackTask> {
+        dependsOn("installDist")
+
         classpath(*buildDir.resolve("install/app/lib").listFiles() ?: emptyArray())
         executable = releaseName
         mainClass = application.mainClassName

@@ -14,8 +14,7 @@ import javafx.beans.property.DoubleProperty
 import javafx.beans.property.ObjectProperty
 import javafx.beans.property.SimpleDoubleProperty
 import javafx.beans.property.SimpleObjectProperty
-import javafx.geometry.HPos.RIGHT
-import javafx.geometry.Pos.TOP_RIGHT
+import javafx.geometry.Pos.CENTER_RIGHT
 import javafx.scene.control.ButtonType.CANCEL
 import javafx.scene.control.Dialog
 import javafx.scene.control.TableView
@@ -52,6 +51,7 @@ import ktfx.scene.control.okButton
 import ktfx.scene.input.isDelete
 import ktfx.scene.layout.gaps
 import ktfx.scene.layout.heightPref
+import ktfx.styles.labeledStyle
 import org.joda.time.DateTime
 import org.joda.time.DateTime.now
 
@@ -81,18 +81,18 @@ class ReceiptDialog(
             label(employee.name) {
                 font = loadFont(getResourceString(R.font.opensans_bold), 13.0)
             } col 1 row 0
-            label(getString(R.string.date)) col 2 row 0
+            label(getString(R.string.date)) col 0 row 1
             label(dateTime.toString(PATTERN_DATE)) {
                 font = loadFont(getResourceString(R.font.opensans_bold), 13.0)
-            } col 3 row 0 hpos RIGHT
-            label(getString(R.string.customer)) col 0 row 1
+            } col 1 row 1
+            label(getString(R.string.customer)) col 0 row 2
             button {
                 textProperty().bind(stringBindingOf(customerProperty) {
                     customerProperty.value?.toString() ?: getString(R.string.search_customer)
                 })
                 setOnAction { SearchCustomerDialog(resourced).showAndWait().ifPresent { customerProperty.set(it) } }
-            } col 1 row 1 colSpan 3
-            label(getString(R.string.plate)) col 0 row 2
+            } col 1 row 2
+            label(getString(R.string.plate)) col 0 row 3
             plateTable = receiptTableView({ AddPlateDialog(this@ReceiptDialog) }) {
                 column<String>(getString(R.string.plate)) {
                     setCellValueFactory { it.value.plate.toProperty() }
@@ -102,18 +102,18 @@ class ReceiptDialog(
                 }
                 column<String>(getString(R.string.qty)) {
                     setCellValueFactory { numberConverter.toString(it.value.qty).toProperty().asObservable() }
-                    setStyle("-fx-alignment: CENTER-RIGHT;")
+                    style = labeledStyle { alignment = CENTER_RIGHT }
                 }
                 column<String>(getString(R.string.price)) {
                     setCellValueFactory { moneyConverter.toString(it.value.price).toProperty().asObservable() }
-                    setStyle("-fx-alignment: CENTER-RIGHT;")
+                    style = labeledStyle { alignment = CENTER_RIGHT }
                 }
                 column<String>(getString(R.string.total)) {
                     setCellValueFactory { moneyConverter.toString(it.value.total).toProperty().asObservable() }
-                    setStyle("-fx-alignment: CENTER-RIGHT;")
+                    style = labeledStyle { alignment = CENTER_RIGHT }
                 }
-            } col 1 row 2 colSpan 3
-            label(getString(R.string.offset)) col 0 row 3
+            } col 1 row 3
+            label(getString(R.string.offset)) col 0 row 4
             offsetTable = receiptTableView({ AddOffsetDialog(this@ReceiptDialog) }) {
                 column<String>(getString(R.string.offset)) {
                     setCellValueFactory { it.value.offset.toProperty() }
@@ -123,36 +123,36 @@ class ReceiptDialog(
                 }
                 column<String>(getString(R.string.qty)) {
                     setCellValueFactory { numberConverter.toString(it.value.qty).toProperty().asObservable() }
-                    setStyle("-fx-alignment: CENTER-RIGHT;")
+                    style = labeledStyle { alignment = CENTER_RIGHT }
                 }
                 column<String>(getString(R.string.min_qty)) {
                     setCellValueFactory { numberConverter.toString(it.value.minQty).toProperty().asObservable() }
-                    setStyle("-fx-alignment: CENTER-RIGHT;")
+                    style = labeledStyle { alignment = CENTER_RIGHT }
                 }
                 column<String>(getString(R.string.min_price)) {
                     setCellValueFactory { moneyConverter.toString(it.value.minPrice).toProperty().asObservable() }
-                    setStyle("-fx-alignment: CENTER-RIGHT;")
+                    style = labeledStyle { alignment = CENTER_RIGHT }
                 }
                 column<String>(getString(R.string.excess_price)) {
                     setCellValueFactory { moneyConverter.toString(it.value.excessPrice).toProperty().asObservable() }
-                    setStyle("-fx-alignment: CENTER-RIGHT;")
+                    style = labeledStyle { alignment = CENTER_RIGHT }
                 }
                 column<String>(getString(R.string.total)) {
                     setCellValueFactory { moneyConverter.toString(it.value.total).toProperty().asObservable() }
-                    setStyle("-fx-alignment: CENTER-RIGHT;")
+                    style = labeledStyle { alignment = CENTER_RIGHT }
                 }
-            } col 1 row 3 colSpan 3
+            } col 1 row 4
             totalProperty.bind(doubleBindingOf(plateTable.items, offsetTable.items) {
                 plateTable.items.sumByDouble { it.total } +
                     offsetTable.items.sumByDouble { it.total }
             })
-            label(getString(R.string.note)) col 0 row 4
-            noteArea = textArea { heightPref = 64 } col 1 row 4
-            label(getString(R.string.total)) col 2 row 4 pos TOP_RIGHT
+            label(getString(R.string.note)) col 0 row 5
+            noteArea = textArea { heightPref = 64 } col 1 row 5
+            label(getString(R.string.total)) col 0 row 6
             label {
                 font = loadFont(getResourceString(R.font.opensans_bold), 13.0)
                 textProperty().bind(stringBindingOf(totalProperty) { moneyConverter.toString(totalProperty.value) })
-            } col 3 row 4 pos TOP_RIGHT
+            } col 1 row 6
         }
         cancelButton()
         okButton { disableProperty().bind(customerProperty.isNull or totalProperty.lessEq(0)) }

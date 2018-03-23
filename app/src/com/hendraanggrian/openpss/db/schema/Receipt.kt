@@ -40,8 +40,9 @@ object Receipts : DocumentSchema<Receipt>("plate_receipt", Receipt::class) {
     }
 
     class PaymentColumn : ListColumn<Payment, Receipts>("payments", Payment::class) {
+        val employeeId = id("employee_id", Employees)
         val dateTime = dateTime("date_time")
-        val value = string("value")
+        val value = double("value")
     }
 }
 
@@ -58,6 +59,8 @@ data class Receipt @JvmOverloads constructor(
 ) : Document<Receipts> {
 
     override lateinit var id: Id<String, Receipts>
+
+    fun isPaid(): Boolean = payments.sumByDouble { it.value } >= total
 }
 
 data class Plate(

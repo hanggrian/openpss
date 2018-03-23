@@ -21,9 +21,11 @@ import javafx.scene.control.Button
 import javafx.scene.control.ButtonBar.ButtonData.CANCEL_CLOSE
 import javafx.scene.control.SelectionMode.MULTIPLE
 import javafx.scene.control.SplitMenuButton
+import javafx.scene.control.ToolBar
 import javafx.scene.control.TreeItem
 import javafx.scene.control.TreeTableColumn
 import javafx.scene.control.TreeTableView
+import javafx.scene.layout.VBox
 import javafx.scene.text.Font.loadFont
 import javafx.stage.Stage
 import javafx.util.converter.NumberStringConverter
@@ -40,8 +42,8 @@ import ktfx.layouts.menuItem
 import ktfx.listeners.cellFactory
 import ktfx.scene.control.customButton
 import ktfx.scene.control.infoAlert
+import ktfx.scene.layout.heightMax
 import ktfx.scene.snapshot
-import java.io.IOException
 import java.net.URL
 import java.util.ResourceBundle
 
@@ -52,6 +54,9 @@ class WageRecordController : Controller() {
         const val EXTRA_ATTENDEES = "EXTRA_ATTENDEES"
     }
 
+    @FXML lateinit var root: VBox
+    @FXML lateinit var toolbar1: ToolBar
+    @FXML lateinit var toolbar2: ToolBar
     @FXML lateinit var undoButton: SplitMenuButton
     @FXML lateinit var timeBox: TimeBox
     @FXML lateinit var lockStartButton: Button
@@ -75,7 +80,7 @@ class WageRecordController : Controller() {
         arrayOf(lockStartButton, lockEndButton).forEach {
             it.disableProperty().bind(recordTable.selectionModel.selectedItemProperty().isNull or
                 booleanBindingOf(recordTable.selectionModel.selectedItemProperty()) {
-                    recordTable.selectionModel.selectedItems?.any { !it.value.isChild } ?: true
+                    recordTable.selectionModel.selectedItems?.any { !it.value.isChild() } ?: true
                 })
         }
 
@@ -100,7 +105,7 @@ class WageRecordController : Controller() {
                         else -> any.toString()
                     }) {
                         font = loadFont(getResourceString(when {
-                            treeTableRow.treeItem.value.isTotal -> R.font.opensans_bold
+                            treeTableRow.treeItem?.value?.isTotal() ?: true -> R.font.opensans_bold
                             else -> R.font.opensans_regular
                         }), 13.0)
                     }
@@ -122,13 +127,12 @@ class WageRecordController : Controller() {
                 }
             }
             getExtra<Stage>(EXTRA_STAGE).titleProperty().bind(stringBindingOf(*records
-                .filter { it.isChild }
+                .filter { it.isChild() }
                 .map { it.totalProperty }
                 .toTypedArray()) {
                 "${getString(R.string.record)} - ${moneyConverter.toString(records
-                    .filter { it.isTotal }
-                    .map { it.totalProperty.value }
-                    .sum())}"
+                    .filter { it.isTotal() }
+                    .sumByDouble { it.totalProperty.value })}"
             })
         }
     }
@@ -189,20 +193,21 @@ class WageRecordController : Controller() {
         }
 
     @FXML fun screenshot() = getResourceString(R.style.treetableview_print).let { printStyle ->
+        toolbar1.heightMax = 0
+        toolbar2.heightMax = 0
         recordTable.stylesheets += printStyle
         recordTable.scrollTo(0)
         val flow = (recordTable.skin as TreeTableViewSkin<*>).children[1] as VirtualFlow<*>
         var i = 0
         do {
-            try {
-                WageFile(i).write(recordTable.snapshot())
-                recordTable.scrollTo(flow.lastVisibleCell.index)
-            } catch (e: IOException) {
-                if (DEBUG) e.printStackTrace()
-            }
+            if (DEBUG) println("Snapshoting page $i")
+            WageFile(i).write(recordTable.snapshot())
+            recordTable.scrollTo(flow.lastVisibleCell.index)
             i++
-        } while (flow.lastVisibleCell.index + 1 < recordTable.root.children.size +
-            recordTable.root.children.map { it.children.size }.sum())
+        } while (flow.lastVisibleCell.index + 1 <
+            recordTable.root.children.size + recordTable.root.children.sumBy { it.children.size })
+        toolbar1.maxHeight = Double.MAX_VALUE
+        toolbar2.maxHeight = Double.MAX_VALUE
         recordTable.stylesheets -= printStyle
         infoAlert(getString(R.string.screenshot_finished)) {
             customButton(getString(R.string.open_folder), CANCEL_CLOSE)
@@ -211,7 +216,7 @@ class WageRecordController : Controller() {
             .ifPresent { openFile(WageContentFolder) }
     }
 
-    private val records: List<Record> get() = recordTable.root.children.flatMap { it.children }.map { it.value }
+    private inline val records: List<Record> get() = recordTable.root.children.flatMap { it.children }.map { it.value }
 
     private fun Undoable.append() {
         if (isValid) undoButton.items.add(0, menuItem {

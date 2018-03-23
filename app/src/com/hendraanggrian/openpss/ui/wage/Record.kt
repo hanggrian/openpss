@@ -56,14 +56,14 @@ class Record(
 
     init {
         dailyEmptyProperty.set(false)
-        if (isNode) {
+        if (isNode()) {
             dailyProperty.set(0.0)
             overtimeProperty.set(0.0)
             dailyIncomeProperty.set(attendee.daily.toDouble())
             overtimeIncomeProperty.set(attendee.hourlyOvertime.toDouble())
             totalProperty.set(0.0)
         }
-        if (isChild) {
+        if (isChild()) {
             dailyProperty.bind(doubleBindingOf(startProperty, endProperty, dailyEmptyProperty) {
                 if (isDailyEmpty) 0.0 else {
                     val hours = workingHours
@@ -82,7 +82,7 @@ class Record(
                 }
             })
         }
-        if (isChild || isTotal) {
+        if (isChild() || isTotal()) {
             dailyIncomeProperty.bind(doubleBindingOf(dailyProperty) {
                 (daily * attendee.daily / WORKING_HOURS).round()
             })
@@ -93,15 +93,15 @@ class Record(
         }
     }
 
-    val isNode: Boolean get() = index == INDEX_NODE
-    val isTotal: Boolean get() = index == INDEX_TOTAL
-    val isChild: Boolean get() = index >= 0
+    fun isNode(): Boolean = index == INDEX_NODE
+    fun isTotal(): Boolean = index == INDEX_TOTAL
+    fun isChild(): Boolean = index >= 0
 
     val displayedName: String
         get() = when {
-            isNode -> attendee.toString()
-            isChild -> attendee.recesses.getOrNull(index)?.toString() ?: ""
-            isTotal -> ""
+            isNode() -> attendee.toString()
+            isChild() -> attendee.recesses.getOrNull(index)?.toString() ?: ""
+            isTotal() -> ""
             else -> throw UnsupportedOperationException()
         }
 
@@ -109,9 +109,9 @@ class Record(
         get() = SimpleStringProperty().apply {
             bind(stringBindingOf(startProperty, dailyEmptyProperty) {
                 when {
-                    isNode -> attendee.role ?: ""
-                    isChild -> start.toString(PATTERN_DATETIME).let { if (isDailyEmpty) "($it)" else it }
-                    isTotal -> ""
+                    isNode() -> attendee.role ?: ""
+                    isChild() -> start.toString(PATTERN_DATETIME).let { if (isDailyEmpty) "($it)" else it }
+                    isTotal() -> ""
                     else -> throw UnsupportedOperationException()
                 }
             })
@@ -121,9 +121,9 @@ class Record(
         get() = SimpleStringProperty().apply {
             bind(stringBindingOf(endProperty, dailyEmptyProperty) {
                 when {
-                    isNode -> "${attendee.attendances.size / 2} ${getString(R.string.day)}"
-                    isChild -> end.toString(PATTERN_DATETIME).let { if (isDailyEmpty) "($it)" else it }
-                    isTotal -> "TOTAL"
+                    isNode() -> "${attendee.attendances.size / 2} ${getString(R.string.day)}"
+                    isChild() -> end.toString(PATTERN_DATETIME).let { if (isDailyEmpty) "($it)" else it }
+                    isTotal() -> "TOTAL"
                     else -> throw UnsupportedOperationException()
                 }
             })

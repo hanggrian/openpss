@@ -48,6 +48,7 @@ dependencies {
     implementation(project(":scene"))
     implementation(kotlin("stdlib", kotlinVersion))
     implementation(kotlin("nosql-mongodb", nosqlVersion))
+    implementation(hendraanggrian("ktfx", ktfxVersion, "ktfx"))
     implementation(apache("commons-lang3", commonsLangVersion))
     implementation(apache("poi-ooxml", poiVersion))
     implementation(guava())

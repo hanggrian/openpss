@@ -8,8 +8,8 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.hendraanggrian.openpss.ui.wage.WageRecordController">
-    <ToolBar stylesheets="@../style/toolbar.css">
+      fx:controller="com.hendraanggrian.openpss.ui.wage.WageRecordController" fx:id="root">
+    <ToolBar fx:id="toolbar1" stylesheets="@../style/toolbar.css">
         <Button mnemonicParsing="false" onAction="#empty" text="%empty_daily_income">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
@@ -43,7 +43,7 @@
             </graphic>
         </Button>
     </ToolBar>
-    <ToolBar>
+    <ToolBar fx:id="toolbar2">
         <SplitMenuButton mnemonicParsing="false" fx:id="undoButton" onAction="#undo" text="%undo">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">

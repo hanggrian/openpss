@@ -70,8 +70,8 @@ dependencies {
 
 tasks {
     withType<RTask> {
-        resourcesDir = "res"
-        lowercaseField = true
+        resourcesDir = projectDir.resolve("res")
+        lowercase = true
     }
     withType<BuildConfigTask> {
         appName = releaseName
@@ -100,7 +100,7 @@ tasks {
         args("-F", "src/**/*.kt")
     }
 
-    val shadowJar by getting(ShadowJar::class) {
+    withType<ShadowJar> {
         destinationDir = buildDir.resolve("release")
         manifest.attributes(mapOf("Main-Class" to application.mainClassName))
         baseName = releaseArtifact
@@ -110,8 +110,7 @@ tasks {
     withType<PackTask> {
         dependsOn("installDist")
 
-        dependsOn(shadowJar)
-        classpath("build/release/$releaseArtifact-$releaseVersion.jar")
+        classpath(*buildDir.resolve("install/app/lib").listFiles() ?: emptyArray())
         executable = releaseName
         mainClass = application.mainClassName
         vmArgs("Xmx2G")

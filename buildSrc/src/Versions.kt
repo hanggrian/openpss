@@ -2,7 +2,7 @@ const val kotlinVersion = "1.2.31"
 const val nosqlVersion = "0.1-SNAPSHOT"
 const val coroutinesVersion = "0.22.5"
 
-const val rVersion = "0.7"
+const val rVersion = "0.8"
 const val buildconfigVersion = "0.12"
 const val packrVersion = "0.3"
 const val ktfxVersion = "0.2.1"

@@ -48,7 +48,7 @@ dependencies {
 
 tasks {
     withType<RTask> {
-        resourcesDir = "sceneres"
+        resourcesDir = projectDir.resolve("sceneres")
     }
 
     "ktlint"(JavaExec::class) {

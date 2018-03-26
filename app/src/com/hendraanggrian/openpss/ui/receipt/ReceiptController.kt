@@ -1,6 +1,7 @@
 package com.hendraanggrian.openpss.ui.receipt
 
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.converter.MoneyStringConverter
 import com.hendraanggrian.openpss.db.schema.Customer
 import com.hendraanggrian.openpss.db.schema.Customers
 import com.hendraanggrian.openpss.db.schema.Employee
@@ -9,6 +10,7 @@ import com.hendraanggrian.openpss.db.schema.Receipt
 import com.hendraanggrian.openpss.db.schema.Receipts
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.scene.control.CountBox
+import com.hendraanggrian.openpss.time.PATTERN_DATETIME
 import com.hendraanggrian.openpss.ui.Addable
 import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.Refreshable
@@ -17,6 +19,7 @@ import com.hendraanggrian.openpss.ui.pane
 import com.hendraanggrian.openpss.util.getResource
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
+import javafx.geometry.Pos.CENTER_RIGHT
 import javafx.scene.Node
 import javafx.scene.Scene
 import javafx.scene.control.ChoiceBox
@@ -36,6 +39,7 @@ import ktfx.collections.toObservableList
 import ktfx.layouts.columns
 import ktfx.layouts.tableView
 import ktfx.stage.stage
+import ktfx.styles.labeledStyle
 import java.net.URL
 import java.util.ResourceBundle
 import kotlin.math.ceil
@@ -48,6 +52,7 @@ class ReceiptController : Controller(), Refreshable, Addable {
     @FXML lateinit var receiptPagination: Pagination
 
     private lateinit var receiptTable: TableView<Receipt>
+    private val moneyConverter = MoneyStringConverter()
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
@@ -64,15 +69,28 @@ class ReceiptController : Controller(), Refreshable, Addable {
                 receiptTable = tableView {
                     columnResizePolicy = CONSTRAINED_RESIZE_POLICY
                     columns {
-                        column<Employee> {
+                        column<String>(getString(R.string.date)) {
+                            setCellValueFactory { it.value.dateTime.toString(PATTERN_DATETIME).toProperty() }
+                        }
+                        column<Employee>(getString(R.string.employee)) {
                             setCellValueFactory {
                                 transaction { Employees.find { id.equal(it.value.employeeId) }.single().toProperty() }
                             }
                         }
-                        column<Customer> {
+                        column<Customer>(getString(R.string.customer)) {
                             setCellValueFactory {
                                 transaction { Customers.find { id.equal(it.value.customerId) }.single().toProperty() }
                             }
+                        }
+                        column<String>(getString(R.string.total)) {
+                            setCellValueFactory { moneyConverter.toString(it.value.total).toProperty() }
+                            style = labeledStyle { alignment = CENTER_RIGHT }
+                        }
+                        column<Boolean>(getString(R.string.paid)) {
+                            setCellValueFactory { it.value.isPaid().toProperty() }
+                        }
+                        column<Boolean>(getString(R.string.print)) {
+                            setCellValueFactory { it.value.printed.toProperty() }
                         }
                     }
                     later {
@@ -83,9 +101,6 @@ class ReceiptController : Controller(), Refreshable, Addable {
                                     name.matches(customerField.text.toRegex(IGNORE_CASE).toPattern())
                                 }
                             }*/
-                            println(receipts.count())
-                            println(countBox.count.toDouble())
-                            println(ceil(receipts.count() / countBox.count.toDouble()))
                             receiptPagination.pageCount = ceil(receipts.count() / countBox.count.toDouble()).toInt()
                             items = receipts.skip(countBox.count * page).take(countBox.count).toMutableObservableList()
                         }

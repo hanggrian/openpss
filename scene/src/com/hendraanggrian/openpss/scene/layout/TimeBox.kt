@@ -42,7 +42,7 @@ open class TimeBox(prefill: LocalTime = MIDNIGHT) : _HBox() {
         alignment = CENTER
         spacings = 8
 
-        previousButton = button(graphic = ImageView(R.image.btn_arrow_left)) {
+        previousButton = button(graphic = ImageView(R.image.btn_previous)) {
             onAction {
                 hourField.value = when {
                     hourField.value == 0 -> {
@@ -68,7 +68,7 @@ open class TimeBox(prefill: LocalTime = MIDNIGHT) : _HBox() {
                 if (value !in 0 until 60) minuteField.value = oldValue.toInt()
             }
         }
-        nextButton = button(graphic = ImageView(R.image.btn_arrow_right)) {
+        nextButton = button(graphic = ImageView(R.image.btn_next)) {
             onAction {
                 hourField.value = when {
                     hourField.value == 23 -> {

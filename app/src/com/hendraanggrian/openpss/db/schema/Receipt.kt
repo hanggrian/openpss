@@ -42,17 +42,17 @@ object Receipts : DocumentSchema<Receipt>("receipts", Receipt::class) {
 
     class PaymentColumn : ListColumn<Payment, Receipts>("payments", Payment::class) {
         val employeeId = id("employee_id", Employees)
-        val dateTime = dateTime("date_time")
         val value = double("value")
+        val dateTime = dateTime("date_time")
     }
 }
 
 data class Receipt @JvmOverloads constructor(
-    val dateTime: DateTime /*= START_OF_TIME*/,
-    var plates: List<Plate> /*= listOf()*/,
-    var offsets: List<Offset> /*= listOf()*/,
-    var note: String /*= ""*/,
-    var total: Double /*= 0.0*/,
+    val dateTime: DateTime,
+    var plates: List<Plate>,
+    var offsets: List<Offset>,
+    var note: String,
+    var total: Double,
     var payments: List<Payment> = listOf(),
     var printed: Boolean = false
 ) : Document<Receipts> {
@@ -64,7 +64,7 @@ data class Receipt @JvmOverloads constructor(
     fun isPaid(): Boolean = payments.sumByDouble { it.value } >= total
 }
 
-data class Plate(
+data class Plate @JvmOverloads constructor(
     var plate: String,
     override var title: String,
     override var qty: Int,
@@ -72,7 +72,7 @@ data class Plate(
     override var total: Double = qty * price
 ) : BaseOrder, BasePlate
 
-data class Offset(
+data class Offset @JvmOverloads constructor(
     var offset: String,
     override var title: String,
     override var qty: Int,
@@ -85,9 +85,9 @@ data class Offset(
     }
 ) : BaseOrder, BaseOffset
 
-data class Payment(
-    val dateTime: DateTime = dbDateTime,
-    var value: Double
+data class Payment @JvmOverloads constructor(
+    var value: Double,
+    val dateTime: DateTime = dbDateTime
 ) {
 
     lateinit var employeeId: Id<String, Employees>

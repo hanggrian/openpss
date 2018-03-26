@@ -41,7 +41,7 @@ open class DateBox(prefill: LocalDate = now()) : _HBox() {
         alignment = CENTER
         spacings = 8
 
-        previousButton = button(graphic = ImageView(R.image.btn_arrow_left)) {
+        previousButton = button(graphic = ImageView(R.image.btn_previous)) {
             onAction { picker.value = picker.value.minusDays(1) }
         }
         picker = datePicker {
@@ -50,7 +50,7 @@ open class DateBox(prefill: LocalDate = now()) : _HBox() {
             widthMax = 116
         }
         dateProperty.bind(bindingOf(picker.valueProperty()) { picker.value.toJoda() })
-        nextButton = button(graphic = ImageView(R.image.btn_arrow_right)) {
+        nextButton = button(graphic = ImageView(R.image.btn_next)) {
             onAction { picker.value = picker.value.plusDays(1) }
         }
     }

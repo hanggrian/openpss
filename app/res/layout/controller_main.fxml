@@ -38,7 +38,7 @@
         </Menu>
     </MenuBar>
     <AnchorPane VBox.vgrow="ALWAYS">
-        <TabPane fx:id="tabPane" tabClosingPolicy="UNAVAILABLE"
+        <TabPane VBox.vgrow="ALWAYS" fx:id="tabPane" tabClosingPolicy="UNAVAILABLE"
                  AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0"
                  AnchorPane.topAnchor="0">
             <Tab closable="false" text="%customer">

@@ -4,7 +4,6 @@ import com.hendraanggrian.openpss.BuildConfig.APP_NAME
 import com.hendraanggrian.openpss.BuildConfig.DEBUG
 import com.hendraanggrian.openpss.db.schema.Employee
 import com.hendraanggrian.openpss.db.schema.Employees
-import com.hendraanggrian.openpss.db.schema.Receipt
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.io.properties.ConfigFile
 import com.hendraanggrian.openpss.ui.Resourced
@@ -42,11 +41,6 @@ class App : Application(), Resourced {
 
     override fun start(stage: Stage) {
         stage.icon = Image(R.image.logo_launcher)
-
-        println(Receipt::class.java.constructors.size)
-        Receipt::class.java.constructors[0].parameterTypes.forEach {
-            println(it)
-        }
 
         LoginDialog(this).showAndWait().filter { it is Employee }.ifPresent { employee ->
             employee as Employee

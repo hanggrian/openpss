@@ -214,8 +214,7 @@ class WageRecordController : Controller() {
     private inline val records: List<Record> get() = recordTable.root.children.flatMap { it.children }.map { it.value }
 
     private fun Undoable.append() {
-        if (isValid) undoButton.items.add(0, menuItem {
-            text = name
+        if (isValid) undoButton.items.add(0, menuItem(name) {
             onAction {
                 undo()
                 undoButton.items.getOrNull(undoButton.items.indexOf(this@menuItem) - 1)?.fire()

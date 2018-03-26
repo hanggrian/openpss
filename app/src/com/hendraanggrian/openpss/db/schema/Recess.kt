@@ -9,14 +9,14 @@ import org.joda.time.DateTime
 import org.joda.time.Interval
 import org.joda.time.LocalTime
 
-object Recesses : DocumentSchema<Recess>("recess", Recess::class) {
+object Recesses : DocumentSchema<Recess>("recesses", Recess::class) {
     val start = time("start")
     val end = time("end")
 }
 
 data class Recess(
-    var start: LocalTime,
-    var end: LocalTime
+    val start: LocalTime,
+    val end: LocalTime
 ) : Document<Recesses> {
 
     override lateinit var id: Id<String, Recesses>

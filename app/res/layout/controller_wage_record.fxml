@@ -5,7 +5,6 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.hendraanggrian.openpss.ui.wage.WageRecordController" fx:id="root">
@@ -34,7 +33,7 @@
                 </ImageView>
             </graphic>
         </Button>
-        <Region HBox.hgrow="ALWAYS"/>
+        <Gap HBox.hgrow="ALWAYS"/>
         <Button mnemonicParsing="false" onAction="#screenshot" text="%screenshot">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
@@ -53,6 +52,8 @@
         </SplitMenuButton>
         <Gap/>
         <TimeBox fx:id="timeBox"/>
+        <Gap HBox.hgrow="ALWAYS"/>
+        <Label fx:id="totalLabel"/>
     </ToolBar>
     <TreeTableView fx:id="recordTable" VBox.vgrow="ALWAYS">
         <columns>

@@ -2,6 +2,7 @@ package com.hendraanggrian.openpss.ui.receipt
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.converter.MoneyStringConverter
+import com.hendraanggrian.openpss.db.dbDateTime
 import com.hendraanggrian.openpss.db.schema.Customer
 import com.hendraanggrian.openpss.db.schema.Employee
 import com.hendraanggrian.openpss.db.schema.Offset
@@ -54,7 +55,6 @@ import ktfx.scene.layout.gaps
 import ktfx.scene.layout.heightPref
 import ktfx.styles.labeledStyle
 import org.joda.time.DateTime
-import org.joda.time.DateTime.now
 
 class ReceiptDialog(
     resourced: Resourced,
@@ -66,7 +66,7 @@ class ReceiptDialog(
     private lateinit var offsetTable: TableView<Offset>
     private lateinit var noteArea: TextArea
 
-    private val dateTime: DateTime = now()
+    private val dateTime: DateTime = dbDateTime
     private val customerProperty: ObjectProperty<Customer> = SimpleObjectProperty()
     private val totalProperty: DoubleProperty = SimpleDoubleProperty()
 
@@ -159,13 +159,15 @@ class ReceiptDialog(
         okButton { disableProperty().bind(customerProperty.isNull or totalProperty.lessEq(0)) }
         setResultConverter {
             if (it == CANCEL) null else Receipt(
-                employee.id,
-                customerProperty.value.id,
                 dateTime,
                 plateTable.items,
                 offsetTable.items,
                 noteArea.text,
-                totalProperty.value)
+                totalProperty.value
+            ).apply {
+                employeeId = employee.id
+                customerId = customerProperty.value.id
+            }
         }
     }
 

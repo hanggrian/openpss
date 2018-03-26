@@ -19,6 +19,7 @@ import com.sun.javafx.scene.control.skin.VirtualFlow
 import javafx.fxml.FXML
 import javafx.scene.control.Button
 import javafx.scene.control.ButtonBar.ButtonData.CANCEL_CLOSE
+import javafx.scene.control.Label
 import javafx.scene.control.SelectionMode.MULTIPLE
 import javafx.scene.control.SplitMenuButton
 import javafx.scene.control.ToolBar
@@ -27,7 +28,6 @@ import javafx.scene.control.TreeTableColumn
 import javafx.scene.control.TreeTableView
 import javafx.scene.layout.VBox
 import javafx.scene.text.Font.loadFont
-import javafx.stage.Stage
 import javafx.util.converter.NumberStringConverter
 import ktfx.application.later
 import ktfx.beans.binding.booleanBindingOf
@@ -58,6 +58,7 @@ class WageRecordController : Controller() {
     @FXML lateinit var toolbar2: ToolBar
     @FXML lateinit var undoButton: SplitMenuButton
     @FXML lateinit var timeBox: TimeBox
+    @FXML lateinit var totalLabel: Label
     @FXML lateinit var lockStartButton: Button
     @FXML lateinit var lockEndButton: Button
     @FXML lateinit var recordTable: TreeTableView<Record>
@@ -82,6 +83,7 @@ class WageRecordController : Controller() {
                     recordTable.selectionModel.selectedItems?.any { !it.value.isChild() } ?: true
                 })
         }
+        totalLabel.font = loadFont(getResourceString(R.font.opensans_bold), 13.0)
 
         recordTable.selectionModel.selectionMode = MULTIPLE
         recordTable.root = TreeItem(getDummy(this))
@@ -125,14 +127,12 @@ class WageRecordController : Controller() {
                     children += TreeItem(total)
                 }
             }
-            getExtra<Stage>(EXTRA_STAGE).titleProperty().bind(stringBindingOf(*records
-                .filter { it.isChild() }
-                .map { it.totalProperty }
-                .toTypedArray()) {
-                "${getString(R.string.record)} - ${moneyConverter.toString(records
-                    .filter { it.isTotal() }
-                    .sumByDouble { it.totalProperty.value })}"
-            })
+            totalLabel.textProperty().bind(
+                stringBindingOf(*records.filter { it.isChild() }.map { it.totalProperty }.toTypedArray()) {
+                    "${getString(R.string.total)} ${moneyConverter.toString(records
+                        .filter { it.isTotal() }
+                        .sumByDouble { it.totalProperty.value })}"
+                })
         }
     }
 

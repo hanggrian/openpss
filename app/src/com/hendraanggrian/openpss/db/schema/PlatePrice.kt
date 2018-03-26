@@ -6,7 +6,7 @@ import com.hendraanggrian.openpss.db.BasePlate
 import kotlinx.nosql.Id
 import kotlinx.nosql.double
 
-object PlatePrices : NamedDocumentSchema<PlatePrice>("plate", PlatePrice::class) {
+object PlatePrices : NamedDocumentSchema<PlatePrice>("plates", PlatePrice::class) {
     val price = double("price")
 }
 

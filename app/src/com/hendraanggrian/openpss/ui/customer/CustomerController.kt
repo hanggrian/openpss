@@ -149,8 +149,8 @@ class CustomerController : Controller(), Refreshable, Addable {
         contactColumn.setCellValueFactory { it.value.value.toProperty() }
     }
 
-    override fun refresh() = customerPagination.pageFactoryProperty()
-        .bind(bindingOf(customerField.textProperty(), countBox.countProperty) {
+    override fun refresh() = customerPagination.pageFactoryProperty().bind(
+        bindingOf(customerField.textProperty(), countBox.countProperty) {
             Callback<Int, Node> { page ->
                 customerList = listView {
                     later {

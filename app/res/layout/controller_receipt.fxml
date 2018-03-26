@@ -5,8 +5,7 @@
 <?import com.hendraanggrian.openpss.scene.layout.DateBox?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.*?>
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.hendraanggrian.openpss.ui.receipt.ReceiptController">
     <ToolBar stylesheets="@../style/toolbar.css">
@@ -42,10 +41,21 @@
             </graphic>
         </Button>
     </ToolBar>
-    <ToolBar>
-        <TextField fx:id="customerField" promptText="%search_customer"/>
-        <DateBox fx:id="datePicker"/>
-        <ChoiceBox fx:id="statusBox"/>
-        <CountBox fx:id="countBox"/>
-    </ToolBar>
+    <SplitPane dividerPositions="0.5" VBox.vgrow="ALWAYS">
+        <VBox>
+            <ToolBar>
+                <TextField fx:id="customerField" promptText="%search_customer" HBox.hgrow="ALWAYS"/>
+                <CountBox fx:id="countBox"/>
+                <DateBox fx:id="datePicker"/>
+                <ChoiceBox fx:id="statusBox"/>
+            </ToolBar>
+            <Pagination fx:id="receiptPagination" VBox.vgrow="ALWAYS"/>
+        </VBox>
+        <AnchorPane>
+            <VBox AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0"
+                  AnchorPane.topAnchor="0">
+
+            </VBox>
+        </AnchorPane>
+    </SplitPane>
 </VBox>

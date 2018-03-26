@@ -11,7 +11,7 @@ import kotlinx.nosql.string
 import ktfx.collections.observableListOf
 import org.joda.time.LocalDate
 
-object Customers : NamedDocumentSchema<Customer>("customer", Customer::class) {
+object Customers : NamedDocumentSchema<Customer>("customers", Customer::class) {
     val note = string("note")
     val since = date("since")
     val contacts = ContactColumn()
@@ -23,9 +23,9 @@ object Customers : NamedDocumentSchema<Customer>("customer", Customer::class) {
 }
 
 data class Customer @JvmOverloads constructor(
-    override var name: String = "",
+    override var name: String,
     var note: String = "",
-    var since: LocalDate = dbDate,
+    val since: LocalDate = dbDate,
     var contacts: List<Contact> = listOf()
 ) : NamedDocument<Customers> {
 

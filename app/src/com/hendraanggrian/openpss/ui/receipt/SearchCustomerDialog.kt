@@ -10,9 +10,13 @@ import javafx.scene.control.Dialog
 import javafx.scene.control.ListView
 import javafx.scene.control.TextField
 import javafx.scene.image.ImageView
+import javafx.scene.input.KeyCode.ENTER
+import javafx.scene.input.MouseButton.PRIMARY
 import ktfx.application.later
 import ktfx.beans.binding.bindingOf
 import ktfx.collections.toMutableObservableList
+import ktfx.coroutines.onKeyPressed
+import ktfx.coroutines.onMouseClicked
 import ktfx.layouts.listView
 import ktfx.layouts.textField
 import ktfx.layouts.vbox
@@ -47,6 +51,18 @@ class SearchCustomerDialog(resourced: Resourced) : Dialog<Customer>(), Resourced
                         }.take(ITEMS_PER_PAGE).toMutableObservableList()
                     }
                 })
+                onMouseClicked {
+                    if (selectionModel.selectedItem != null && it.button == PRIMARY && it.clickCount == 2) {
+                        result = selectionModel.selectedItem
+                        close()
+                    }
+                }
+                onKeyPressed {
+                    if (selectionModel.selectedItem != null && it.code == ENTER) {
+                        result = selectionModel.selectedItem
+                        close()
+                    }
+                }
             } marginTop 8
         }
         cancelButton()

@@ -186,7 +186,7 @@ class WageController : Controller() {
 
     @FXML fun process() {
         attendees.forEach { it.saveWage() }
-        stage {
+        stage(getString(R.string.record)) {
             val loader = FXMLLoader(getResource(R.layout.controller_wage_record), resources)
             scene = Scene(loader.pane)
             setSizeMin(1000, 650)

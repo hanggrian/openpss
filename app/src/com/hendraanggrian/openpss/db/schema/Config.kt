@@ -8,7 +8,7 @@ import kotlinx.nosql.mongodb.DocumentSchema
 import kotlinx.nosql.string
 import java.util.Locale
 
-object Configs : DocumentSchema<Config>("config", Config::class) {
+object Configs : DocumentSchema<Config>("configs", Config::class) {
     val key = string("key")
     val value = string("value")
 }

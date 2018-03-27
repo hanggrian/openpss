@@ -72,7 +72,7 @@ class EmployeeController : Controller(), Refreshable, Addable {
     }
 
     override fun add() = AddUserDialog(this, getString(R.string.add_employee)).showAndWait().ifPresent { name ->
-        val employee = Employee(name.tidy())
+        val employee = Employee.new(name.tidy())
         employee.id = transaction { Employees.insert(employee) }!!
         employeeTable.items.add(employee)
         employeeTable.selectionModel.select(employee)

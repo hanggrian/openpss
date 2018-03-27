@@ -10,7 +10,10 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import org.joda.time.DateTime
 import java.io.File
 
-/** Compatible with e Clocking fingerprint reader version 2.1.015. */
+/**
+ * Compatible with e Clocking fingerprint reader.
+ * Tested version: `2.1.015`.
+ */
 object EClockingReader : Reader() {
 
     private const val SHEET_RAW_ATTENDANCE_LOGS = 1
@@ -47,7 +50,7 @@ object EClockingReader : Reader() {
                             .map {
                                 val record = DateTime(it.dateCellValue)
                                 val attendance = DateTime(year, month, day, record.hourOfDay, record.minuteOfHour)
-                                when (true) {
+                                when {
                                     IS_OS_WINDOWS -> attendance.plusMinutes(18)
                                     IS_OS_MAC -> attendance.minusMinutes(7)
                                     else -> attendance
@@ -57,7 +60,7 @@ object EClockingReader : Reader() {
             }
         }
         multimap.keySet().map { attendee ->
-            attendee.attendances.addAllRevertable(multimap.get(attendee))
+            attendee.attendances.addAllRevertible(multimap.get(attendee))
             attendee
         }
     }.await()

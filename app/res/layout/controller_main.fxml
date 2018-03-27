@@ -20,12 +20,12 @@
         </Menu>
         <Menu mnemonicParsing="false" fx:id="navigateMenu" text="%navigate">
             <fx:define>
-                <ToggleGroup fx:id="navigate"/>
+                <ToggleGroup fx:id="navigateGroup"/>
             </fx:define>
-            <RadioMenuItem mnemonicParsing="false" toggleGroup="$navigate" onAction="#navigate" text="%customer"/>
-            <RadioMenuItem mnemonicParsing="false" toggleGroup="$navigate" onAction="#navigate" text="%receipt"/>
-            <RadioMenuItem mnemonicParsing="false" toggleGroup="$navigate" onAction="#navigate" text="%wage"/>
-            <RadioMenuItem mnemonicParsing="false" toggleGroup="$navigate" onAction="#navigate" text="%employee"/>
+            <RadioMenuItem mnemonicParsing="false" toggleGroup="$navigateGroup" onAction="#navigate" text="%customer"/>
+            <RadioMenuItem mnemonicParsing="false" toggleGroup="$navigateGroup" onAction="#navigate" text="%receipt"/>
+            <RadioMenuItem mnemonicParsing="false" toggleGroup="$navigateGroup" onAction="#navigate" text="%wage"/>
+            <RadioMenuItem mnemonicParsing="false" toggleGroup="$navigateGroup" onAction="#navigate" text="%employee"/>
         </Menu>
         <Menu mnemonicParsing="false" text="%help">
             <MenuItem mnemonicParsing="false" onAction="#about" text="%about">

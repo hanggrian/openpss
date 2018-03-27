@@ -3,6 +3,7 @@
 <?import com.hendraanggrian.openpss.scene.control.CountBox?>
 <?import com.hendraanggrian.openpss.scene.control.Gap?>
 <?import com.hendraanggrian.openpss.scene.layout.DateBox?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
@@ -44,56 +45,90 @@
     <SplitPane orientation="VERTICAL" dividerPositions="0.7" VBox.vgrow="ALWAYS">
         <VBox>
             <ToolBar>
-                <TextField fx:id="customerField" promptText="%search_customer" HBox.hgrow="ALWAYS"/>
+                <TextField fx:id="customerField" promptText="%search_customer"/>
                 <CountBox fx:id="countBox"/>
-                <DateBox fx:id="datePicker"/>
                 <ChoiceBox fx:id="statusBox"/>
+                <Gap HBox.hgrow="ALWAYS"/>
+                <fx:define>
+                    <ToggleGroup fx:id="pickDateGroup"/>
+                </fx:define>
+                <RadioButton fx:id="allDateRadio" mnemonicParsing="false" toggleGroup="$pickDateGroup"
+                             text="%all_date"/>
+                <RadioButton fx:id="pickDateRadio" mnemonicParsing="false" toggleGroup="$pickDateGroup"
+                             text="%pick_date" selected="true" contentDisplay="RIGHT">
+                    <HBox.margin>
+                        <Insets left="8"/>
+                    </HBox.margin>
+                    <graphic>
+                        <DateBox fx:id="dateBox"/>
+                    </graphic>
+                </RadioButton>
             </ToolBar>
-            <Pagination fx:id="receiptPagination" VBox.vgrow="ALWAYS"/>
+            <Pagination fx:id="receiptPagination" style="-fx-page-information-alignment: right;" VBox.vgrow="ALWAYS"/>
         </VBox>
-        <TabPane prefHeight="-NaN">
-            <Tab closable="false" text="%plate">
-                <TableView fx:id="plateTable">
-                    <columns>
-                        <TableColumn fx:id="platePlateColumn" text="%plate"/>
-                        <TableColumn fx:id="plateTitleColumn" text="%title"/>
-                        <TableColumn fx:id="plateQtyColumn" text="%qty"/>
-                        <TableColumn fx:id="platePriceColumn" text="%price"/>
-                        <TableColumn fx:id="plateTotalColumn" text="%total"/>
-                    </columns>
-                    <columnResizePolicy>
-                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
-                    </columnResizePolicy>
-                </TableView>
-            </Tab>
-            <Tab closable="false" text="%offset">
-                <TableView fx:id="offsetTable">
-                    <columns>
-                        <TableColumn fx:id="offsetOffsetColumn" text="%offset"/>
-                        <TableColumn fx:id="offsetTitleColumn" text="%title"/>
-                        <TableColumn fx:id="offsetQtyColumn" text="%qty"/>
-                        <TableColumn fx:id="offsetMinQtyColumn" text="%min_qty"/>
-                        <TableColumn fx:id="offsetMinPriceColumn" text="%min_price"/>
-                        <TableColumn fx:id="offsetExcessPriceColumn" text="%excess_price"/>
-                        <TableColumn fx:id="offsetTotalColumn" text="%total"/>
-                    </columns>
-                    <columnResizePolicy>
-                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
-                    </columnResizePolicy>
-                </TableView>
-            </Tab>
-            <Tab closable="false" text="%payment">
-                <TableView fx:id="paymentTable">
-                    <columns>
-                        <TableColumn fx:id="paymentEmployeeColumn" text="%employee"/>
-                        <TableColumn fx:id="paymentDateTimeColumn" text="%date"/>
-                        <TableColumn fx:id="paymentValueColumn" text="%value"/>
-                    </columns>
-                    <columnResizePolicy>
-                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
-                    </columnResizePolicy>
-                </TableView>
-            </Tab>
-        </TabPane>
+        <AnchorPane>
+            <TabPane prefHeight="-NaN" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0"
+                     AnchorPane.topAnchor="0">
+                <Tab closable="false" text="%plate">
+                    <TableView fx:id="plateTable">
+                        <columns>
+                            <TableColumn fx:id="platePlateColumn" text="%plate"/>
+                            <TableColumn fx:id="plateTitleColumn" text="%title"/>
+                            <TableColumn fx:id="plateQtyColumn" text="%qty"/>
+                            <TableColumn fx:id="platePriceColumn" text="%price"/>
+                            <TableColumn fx:id="plateTotalColumn" text="%total"/>
+                        </columns>
+                        <columnResizePolicy>
+                            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                        </columnResizePolicy>
+                    </TableView>
+                </Tab>
+                <Tab closable="false" text="%offset">
+                    <TableView fx:id="offsetTable">
+                        <columns>
+                            <TableColumn fx:id="offsetOffsetColumn" text="%offset"/>
+                            <TableColumn fx:id="offsetTitleColumn" text="%title"/>
+                            <TableColumn fx:id="offsetQtyColumn" text="%qty"/>
+                            <TableColumn fx:id="offsetMinQtyColumn" text="%min_qty"/>
+                            <TableColumn fx:id="offsetMinPriceColumn" text="%min_price"/>
+                            <TableColumn fx:id="offsetExcessPriceColumn" text="%excess_price"/>
+                            <TableColumn fx:id="offsetTotalColumn" text="%total"/>
+                        </columns>
+                        <columnResizePolicy>
+                            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                        </columnResizePolicy>
+                    </TableView>
+                </Tab>
+                <Tab closable="false" text="%payment">
+                    <HBox>
+                        <padding>
+                            <Insets topRightBottomLeft="8"/>
+                        </padding>
+                        <VBox HBox.hgrow="ALWAYS">
+                            <Label fx:id="noteLabel" text="%note"/>
+                            <Label fx:id="actualNoteLabel" VBox.vgrow="ALWAYS">
+                                <VBox.margin>
+                                    <Insets top="8"/>
+                                </VBox.margin>
+                            </Label>
+                        </VBox>
+                        <TableView fx:id="paymentTable" HBox.hgrow="ALWAYS">
+                            <columns>
+                                <TableColumn fx:id="paymentEmployeeColumn" text="%employee"/>
+                                <TableColumn fx:id="paymentDateTimeColumn" text="%date"/>
+                                <TableColumn fx:id="paymentValueColumn" text="%value"/>
+                            </columns>
+                            <columnResizePolicy>
+                                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                            </columnResizePolicy>
+                        </TableView>
+                    </HBox>
+                </Tab>
+            </TabPane>
+            <Label fx:id="coverLabel" alignment="CENTER" text="%select_receipt" style="-fx-background-color: #f4f4f4;"
+                   maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                   AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0"
+                   AnchorPane.topAnchor="0"/>
+        </AnchorPane>
     </SplitPane>
 </VBox>

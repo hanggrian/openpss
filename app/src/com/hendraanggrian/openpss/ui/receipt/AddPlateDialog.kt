@@ -62,7 +62,7 @@ class AddPlateDialog(resourced: Resourced) : Dialog<Plate>(), Resourced by resou
                 priceField.valueProperty.lessEq(0))
         }
         setResultConverter {
-            if (it == CANCEL) null else Plate(
+            if (it == CANCEL) null else Plate.new(
                 plateChoice.value.name,
                 titleField.text,
                 qtyField.value,

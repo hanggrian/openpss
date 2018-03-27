@@ -72,7 +72,7 @@ class AddOffsetDialog(resourced: Resourced) : Dialog<Offset>(), Resourced by res
                 excessPriceField.valueProperty.lessEq(0))
         }
         setResultConverter {
-            if (it == CANCEL) null else Offset(
+            if (it == CANCEL) null else Offset.new(
                 offsetChoice.value.name,
                 titleField.text,
                 qtyField.value,

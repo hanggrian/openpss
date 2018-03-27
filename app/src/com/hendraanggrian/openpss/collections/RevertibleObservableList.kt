@@ -15,82 +15,82 @@ class RevertibleObservableList<E>(
         actual += clone
     }
 
-    fun addRevertable(element: E): Boolean {
+    fun addRevertible(element: E): Boolean {
         clone += element
         return actual.add(element)
     }
 
-    fun addRevertable(index: Int, element: E) {
+    fun addRevertible(index: Int, element: E) {
         clone.add(index, element)
         actual.add(index, element)
     }
 
-    fun addAllRevertable(index: Int, elements: Collection<E>): Boolean {
+    fun addAllRevertible(index: Int, elements: Collection<E>): Boolean {
         clone.addAll(index, elements)
         return actual.addAll(index, elements)
     }
 
-    fun addAllRevertable(elements: Collection<E>): Boolean {
+    fun addAllRevertible(elements: Collection<E>): Boolean {
         clone += elements
         return actual.addAll(elements)
     }
 
-    fun clearRevertable() {
+    fun clearRevertible() {
         clone.clear()
         actual.clear()
     }
 
-    fun removeRevertable(element: E): Boolean {
+    fun removeRevertible(element: E): Boolean {
         clone -= element
         return actual.remove(element)
     }
 
-    fun removeAllRevertable(elements: Collection<E>): Boolean {
+    fun removeAllRevertible(elements: Collection<E>): Boolean {
         clone -= elements
         return actual.removeAll(elements)
     }
 
-    fun removeAtRevertable(index: Int): E {
+    fun removeAtRevertible(index: Int): E {
         clone.removeAt(index)
         return actual.removeAt(index)
     }
 
-    fun removeAllRevertable(vararg elements: E): Boolean {
+    fun removeAllRevertible(vararg elements: E): Boolean {
         clone -= elements
         return actual.removeAll(*elements)
     }
 
-    fun setRevertable(index: Int, element: E): E {
+    fun setRevertible(index: Int, element: E): E {
         clone[index] = element
         return actual.set(index, element)
     }
 
-    fun addAllRevertable(vararg elements: E): Boolean {
+    fun addAllRevertible(vararg elements: E): Boolean {
         clone += elements
         return actual.addAll(*elements)
     }
 
-    fun removeRevertable(from: Int, to: Int) {
+    fun removeRevertible(from: Int, to: Int) {
         clone.remove(from, to)
         actual.remove(from, to)
     }
 
-    fun setAllRevertable(vararg elements: E): Boolean {
+    fun setAllRevertible(vararg elements: E): Boolean {
         clone.setAll(*elements)
         return actual.setAll(*elements)
     }
 
-    fun setAllRevertable(col: MutableCollection<out E>?): Boolean {
+    fun setAllRevertible(col: MutableCollection<out E>?): Boolean {
         clone.setAll(col)
         return actual.setAll(col)
     }
 
-    fun retainAllRevertable(elements: Collection<E>): Boolean {
+    fun retainAllRevertible(elements: Collection<E>): Boolean {
         clone.retainAll(elements)
         return actual.retainAll(elements)
     }
 
-    fun retainAllRevertable(vararg elements: E): Boolean {
+    fun retainAllRevertible(vararg elements: E): Boolean {
         clone.retainAll(*elements)
         return actual.retainAll(*elements)
     }

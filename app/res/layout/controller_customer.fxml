@@ -34,7 +34,7 @@
                 <TextField fx:id="customerField" promptText="%search_customer" HBox.hgrow="ALWAYS"/>
                 <CountBox fx:id="countBox"/>
             </ToolBar>
-            <Pagination fx:id="customerPagination" VBox.vgrow="ALWAYS"/>
+            <Pagination fx:id="customerPagination" style="-fx-page-information-alignment: right;" VBox.vgrow="ALWAYS"/>
         </VBox>
         <AnchorPane>
             <VBox AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0"
@@ -51,7 +51,7 @@
                 </Label>
                 <Label fx:id="noteLabel" maxWidth="1.7976931348623157E308">
                     <VBox.margin>
-                        <Insets bottom="8" left="8" right="8" top="8"/>
+                        <Insets topRightBottomLeft="8"/>
                     </VBox.margin>
                 </Label>
                 <TableView fx:id="contactTable" VBox.vgrow="ALWAYS">

@@ -2,7 +2,7 @@ package com.hendraanggrian.openpss.ui.wage
 
 import com.hendraanggrian.openpss.BuildConfig.DEBUG
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.converter.MoneyStringConverter
+import com.hendraanggrian.openpss.converters.MoneyStringConverter
 import com.hendraanggrian.openpss.io.WageContentFolder
 import com.hendraanggrian.openpss.io.WageFile
 import com.hendraanggrian.openpss.scene.layout.TimeBox

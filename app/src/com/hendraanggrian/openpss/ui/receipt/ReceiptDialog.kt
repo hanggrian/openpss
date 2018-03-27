@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.ui.receipt
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.converter.MoneyStringConverter
+import com.hendraanggrian.openpss.converters.MoneyStringConverter
 import com.hendraanggrian.openpss.db.dbDateTime
 import com.hendraanggrian.openpss.db.schema.Customer
 import com.hendraanggrian.openpss.db.schema.Employee
@@ -158,7 +158,7 @@ class ReceiptDialog(
         cancelButton()
         okButton { disableProperty().bind(customerProperty.isNull or totalProperty.lessEq(0)) }
         setResultConverter {
-            if (it == CANCEL) null else Receipt(
+            if (it == CANCEL) null else Receipt.new(
                 dateTime,
                 plateTable.items,
                 offsetTable.items,

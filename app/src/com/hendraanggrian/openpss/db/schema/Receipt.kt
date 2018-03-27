@@ -47,14 +47,14 @@ object Receipts : DocumentSchema<Receipt>("receipts", Receipt::class) {
     }
 }
 
-data class Receipt @JvmOverloads constructor(
+data class Receipt(
     val dateTime: DateTime,
     var plates: List<Plate>,
     var offsets: List<Offset>,
     var note: String,
     var total: Double,
-    var payments: List<Payment> = listOf(),
-    var printed: Boolean = false
+    var payments: List<Payment>,
+    var printed: Boolean
 ) : Document<Receipts> {
 
     override lateinit var id: Id<String, Receipts>
@@ -62,33 +62,76 @@ data class Receipt @JvmOverloads constructor(
     lateinit var customerId: Id<String, Customers>
 
     fun isPaid(): Boolean = payments.sumByDouble { it.value } >= total
+
+    companion object {
+        fun new(
+            dateTime: DateTime,
+            plates: List<Plate>,
+            offsets: List<Offset>,
+            note: String,
+            total: Double,
+            payments: List<Payment> = listOf(),
+            printed: Boolean = false
+        ): Receipt = Receipt(dateTime, plates, offsets, note, total, payments, printed)
+    }
 }
 
-data class Plate @JvmOverloads constructor(
+data class Plate(
     var plate: String,
     override var title: String,
     override var qty: Int,
     override var price: Double,
-    override var total: Double = qty * price
-) : BaseOrder, BasePlate
+    override var total: Double
+) : BaseOrder, BasePlate {
 
-data class Offset @JvmOverloads constructor(
+    companion object {
+        fun new(
+            plate: String,
+            title: String,
+            qty: Int,
+            price: Double,
+            total: Double = qty * price
+        ): Plate = Plate(plate, title, qty, price, total)
+    }
+}
+
+data class Offset(
     var offset: String,
     override var title: String,
     override var qty: Int,
     override var minQty: Int,
     override var minPrice: Double,
     override var excessPrice: Double,
-    override var total: Double = when {
-        qty <= minQty -> minPrice
-        else -> minPrice + ((qty - minQty) * excessPrice)
-    }
-) : BaseOrder, BaseOffset
+    override var total: Double
+) : BaseOrder, BaseOffset {
 
-data class Payment @JvmOverloads constructor(
+    companion object {
+        fun new(
+            offset: String,
+            title: String,
+            qty: Int,
+            minQty: Int,
+            minPrice: Double,
+            excessPrice: Double,
+            total: Double = when {
+                qty <= minQty -> minPrice
+                else -> minPrice + ((qty - minQty) * excessPrice)
+            }
+        ): Offset = Offset(offset, title, qty, minQty, minPrice, excessPrice, total)
+    }
+}
+
+data class Payment(
     var value: Double,
-    val dateTime: DateTime = dbDateTime
+    val dateTime: DateTime
 ) {
 
     lateinit var employeeId: Id<String, Employees>
+
+    companion object {
+        fun new(
+            value: Double,
+            dateTime: DateTime = dbDateTime
+        ): Payment = Payment(value, dateTime)
+    }
 }

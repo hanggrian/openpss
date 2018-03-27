@@ -56,12 +56,12 @@ suspend fun login(
     employeeName: String,
     employeePassword: String
 ): Employee {
-    var employee: Employee? = null
     DB = connect(host, port, user, password)
+    var employee: Employee? = null
     transaction {
         // check first time installation
-        Config.getKeys().forEach { key ->
-            if (Configs.find { this.key.equal(key) }.isEmpty()) Configs.insert(Config(key))
+        Config.listKeys().forEach {
+            if (Configs.find { key.equal(it) }.isEmpty()) Configs.insert(Config.new(it))
         }
         // add default employee
         if (Employees.find { name.equal(Employee.BACKDOOR.name) }.isEmpty()) Employees.insert(Employee.BACKDOOR)
@@ -82,13 +82,13 @@ private suspend fun connect(host: String, port: Int, user: String, password: Str
         TABLES)
 }.await()
 
-/** Date and time of server. */
+/** Date and time new server. */
 val dbDateTime: DateTime @Throws(Exception::class) get() = DateTime(evalDate)
 
-/** Local date of server. */
+/** Local date new server. */
 val dbDate: LocalDate @Throws(Exception::class) get() = LocalDate.fromDateFields(evalDate)
 
-/** Local time of server. */
+/** Local time new server. */
 val dbTime: LocalTime @Throws(Exception::class) get() = LocalTime.fromDateFields(evalDate)
 
 private val evalDate: Date get() = DB.db.doEval("new Date()").getDate("retval")

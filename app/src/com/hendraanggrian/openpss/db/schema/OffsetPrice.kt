@@ -1,6 +1,6 @@
 package com.hendraanggrian.openpss.db.schema
 
-import com.hendraanggrian.openpss.db.BaseOffset
+import com.hendraanggrian.openpss.db.SplitPriced
 import com.hendraanggrian.openpss.db.NamedDocument
 import com.hendraanggrian.openpss.db.NamedDocumentSchema
 import kotlinx.nosql.Id
@@ -18,18 +18,13 @@ data class OffsetPrice(
     override var minQty: Int,
     override var minPrice: Double,
     override var excessPrice: Double
-) : NamedDocument<OffsetPrices>, BaseOffset {
+) : NamedDocument<OffsetPrices>, SplitPriced {
 
     override lateinit var id: Id<String, OffsetPrices>
 
     override fun toString(): String = name
 
     companion object {
-        fun new(
-            name: String,
-            minQty: Int = 1000,
-            minPrice: Double = 0.0,
-            excessPrice: Double = 0.0
-        ): OffsetPrice = OffsetPrice(name, minQty, minPrice, excessPrice)
+        fun new(name: String): OffsetPrice = OffsetPrice(name, 1000, 0.0, 0.0)
     }
 }

@@ -4,6 +4,7 @@ import com.hendraanggrian.openpss.BuildConfig.APP_NAME
 import com.hendraanggrian.openpss.BuildConfig.DEBUG
 import com.hendraanggrian.openpss.db.schema.Employee
 import com.hendraanggrian.openpss.db.schema.Employees
+import com.hendraanggrian.openpss.db.schema.Receipts
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.io.properties.ConfigFile
 import com.hendraanggrian.openpss.ui.Resourced

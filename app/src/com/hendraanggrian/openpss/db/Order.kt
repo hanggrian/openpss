@@ -1,6 +1,6 @@
 package com.hendraanggrian.openpss.db
 
-interface BaseOrder {
+interface Order {
 
     var title: String
     var qty: Int

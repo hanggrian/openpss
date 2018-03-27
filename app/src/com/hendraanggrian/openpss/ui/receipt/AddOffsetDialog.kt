@@ -31,7 +31,7 @@ import ktfx.scene.layout.gaps
 
 class AddOffsetDialog(resourced: Resourced) : Dialog<Offset>(), Resourced by resourced {
 
-    private lateinit var offsetChoice: ChoiceBox<OffsetPrice>
+    private lateinit var typeChoice: ChoiceBox<OffsetPrice>
     private lateinit var titleField: TextField
     private lateinit var qtyField: IntField
     private lateinit var minQtyField: IntField
@@ -43,8 +43,8 @@ class AddOffsetDialog(resourced: Resourced) : Dialog<Offset>(), Resourced by res
         graphicIcon = ImageView(R.image.ic_offset)
         dialogPane.content = gridPane {
             gaps = 8
-            label(getString(R.string.offset)) col 0 row 0
-            offsetChoice = choiceBox(transaction { OffsetPrices.find().toObservableList() }!!) {
+            label(getString(R.string.type)) col 0 row 0
+            typeChoice = choiceBox(transaction { OffsetPrices.find().toObservableList() }!!) {
                 valueProperty().listener { _, _, offset ->
                     minQtyField.value = offset.minQty
                     minPriceField.value = offset.minPrice
@@ -64,7 +64,7 @@ class AddOffsetDialog(resourced: Resourced) : Dialog<Offset>(), Resourced by res
         }
         cancelButton()
         okButton {
-            disableProperty().bind(offsetChoice.valueProperty().isNull or
+            disableProperty().bind(typeChoice.valueProperty().isNull or
                 titleField.textProperty().isEmpty or
                 qtyField.valueProperty.lessEq(0) or
                 minQtyField.valueProperty.lessEq(0) or
@@ -73,7 +73,7 @@ class AddOffsetDialog(resourced: Resourced) : Dialog<Offset>(), Resourced by res
         }
         setResultConverter {
             if (it == CANCEL) null else Offset.new(
-                offsetChoice.value.name,
+                typeChoice.value.name,
                 titleField.text,
                 qtyField.value,
                 minQtyField.value,

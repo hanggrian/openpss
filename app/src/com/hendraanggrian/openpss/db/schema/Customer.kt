@@ -34,12 +34,7 @@ data class Customer(
     override fun toString(): String = name
 
     companion object {
-        fun new(
-            name: String,
-            note: String = "",
-            since: LocalDate = dbDate,
-            contacts: List<Contact> = listOf()
-        ): Customer = Customer(name, note, since, contacts)
+        fun new(name: String): Customer = Customer(name, "", dbDate, listOf())
     }
 }
 

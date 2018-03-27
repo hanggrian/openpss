@@ -67,12 +67,12 @@
             <Pagination fx:id="receiptPagination" style="-fx-page-information-alignment: right;" VBox.vgrow="ALWAYS"/>
         </VBox>
         <AnchorPane>
-            <TabPane prefHeight="-NaN" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0"
-                     AnchorPane.topAnchor="0">
-                <Tab closable="false" text="%plate">
+            <TabPane stylesheets="@../style/tabpane_count.css" prefHeight="-NaN" AnchorPane.bottomAnchor="0"
+                     AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
+                <Tab fx:id="plateTab" closable="false" text="%plate">
                     <TableView fx:id="plateTable">
                         <columns>
-                            <TableColumn fx:id="platePlateColumn" text="%plate"/>
+                            <TableColumn fx:id="plateTypeColumn" text="%type"/>
                             <TableColumn fx:id="plateTitleColumn" text="%title"/>
                             <TableColumn fx:id="plateQtyColumn" text="%qty"/>
                             <TableColumn fx:id="platePriceColumn" text="%price"/>
@@ -83,10 +83,10 @@
                         </columnResizePolicy>
                     </TableView>
                 </Tab>
-                <Tab closable="false" text="%offset">
+                <Tab fx:id="offsetTab" closable="false" text="%offset">
                     <TableView fx:id="offsetTable">
                         <columns>
-                            <TableColumn fx:id="offsetOffsetColumn" text="%offset"/>
+                            <TableColumn fx:id="offsetTypeColumn" text="%type"/>
                             <TableColumn fx:id="offsetTitleColumn" text="%title"/>
                             <TableColumn fx:id="offsetQtyColumn" text="%qty"/>
                             <TableColumn fx:id="offsetMinQtyColumn" text="%min_qty"/>
@@ -99,7 +99,20 @@
                         </columnResizePolicy>
                     </TableView>
                 </Tab>
-                <Tab closable="false" text="%payment">
+                <Tab fx:id="otherTab" closable="false" text="%others">
+                    <TableView fx:id="otherTable">
+                        <columns>
+                            <TableColumn fx:id="otherTitleColumn" text="%title"/>
+                            <TableColumn fx:id="otherQtyColumn" text="%qty"/>
+                            <TableColumn fx:id="otherPriceColumn" text="%price"/>
+                            <TableColumn fx:id="otherTotalColumn" text="%total"/>
+                        </columns>
+                        <columnResizePolicy>
+                            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                        </columnResizePolicy>
+                    </TableView>
+                </Tab>
+                <Tab fx:id="paymentTab" closable="false" text="%payment">
                     <HBox>
                         <padding>
                             <Insets topRightBottomLeft="8"/>

@@ -149,8 +149,8 @@ class CustomerController : Controller(), Refreshable, Addable {
         contactColumn.setCellValueFactory { it.value.value.toProperty() }
     }
 
-    override fun refresh() = customerPagination.pageFactoryProperty().bind(
-        bindingOf(customerField.textProperty(), countBox.countProperty) {
+    override fun refresh() = customerPagination.pageFactoryProperty()
+        .bind(bindingOf(customerField.textProperty(), countBox.countProperty) {
             Callback<Int, Node> { page ->
                 customerList = listView {
                     later {
@@ -166,15 +166,9 @@ class CustomerController : Controller(), Refreshable, Addable {
                         }
                     }
                 }
-                nameLabel.textProperty().bind(stringBindingOf(customerList.selectionModel.selectedItemProperty()) {
-                    customer?.name ?: ""
-                })
-                sinceLabel.textProperty().bind(stringBindingOf(customerList.selectionModel.selectedItemProperty()) {
-                    customer?.since?.toString(PATTERN_DATE) ?: ""
-                })
-                noteLabel.textProperty().bind(stringBindingOf(customerList.selectionModel.selectedItemProperty()) {
-                    customer?.note ?: ""
-                })
+                nameLabel.bindLabel { customer?.name ?: "" }
+                sinceLabel.bindLabel { customer?.since?.toString(PATTERN_DATE) ?: "" }
+                noteLabel.bindLabel { customer?.note ?: "" }
                 contactTable.itemsProperty().bind(bindingOf(customerList.selectionModel.selectedItemProperty()) {
                     customer?.contacts?.toObservableList() ?: emptyObservableList()
                 })
@@ -183,13 +177,13 @@ class CustomerController : Controller(), Refreshable, Addable {
             }
         })
 
-    override fun add() = AddUserDialog(this, getString(R.string.add_customer)).showAndWait().ifPresent { name ->
+    override fun add() = AddUserDialog(this, getString(R.string.add_customer)).showAndWait().ifPresent {
         transaction {
             when {
-                Customers.find { this.name.equal(name) }.isNotEmpty() ->
+                Customers.find { name.equal(it) }.isNotEmpty() ->
                     errorAlert(getString(R.string.name_taken)).showAndWait()
                 else -> {
-                    val customer = Customer.new(name.tidy())
+                    val customer = Customer.new(it.tidy())
                     customer.id = Customers.insert(customer)
                     customerList.items.add(0, customer)
                     customerList.selectionModel.selectFirst()
@@ -206,4 +200,7 @@ class CustomerController : Controller(), Refreshable, Addable {
         customerList.items[customerList.items.indexOf(customer)] = Customers.find { id.equal(customer.id) }.single()
         customerList.selectionModel.select(index)
     }
+
+    private fun Label.bindLabel(target: () -> String) = textProperty()
+        .bind(stringBindingOf(customerList.selectionModel.selectedItemProperty()) { target() })
 }

@@ -31,7 +31,7 @@ import ktfx.scene.layout.gaps
 
 class AddPlateDialog(resourced: Resourced) : Dialog<Plate>(), Resourced by resourced {
 
-    private lateinit var plateChoice: ChoiceBox<PlatePrice>
+    private lateinit var typeChoice: ChoiceBox<PlatePrice>
     private lateinit var titleField: TextField
     private lateinit var qtyField: IntField
     private lateinit var priceField: DoubleField
@@ -41,8 +41,8 @@ class AddPlateDialog(resourced: Resourced) : Dialog<Plate>(), Resourced by resou
         graphicIcon = ImageView(R.image.ic_plate)
         dialogPane.content = gridPane {
             gaps = 8
-            label(getString(R.string.plate)) col 0 row 0
-            plateChoice = choiceBox(transaction { PlatePrices.find().toObservableList() }!!) {
+            label(getString(R.string.type)) col 0 row 0
+            typeChoice = choiceBox(transaction { PlatePrices.find().toObservableList() }!!) {
                 valueProperty().listener { _, _, plate ->
                     priceField.value = plate.price
                 }
@@ -56,14 +56,14 @@ class AddPlateDialog(resourced: Resourced) : Dialog<Plate>(), Resourced by resou
         }
         cancelButton()
         okButton {
-            disableProperty().bind(plateChoice.valueProperty().isNull or
+            disableProperty().bind(typeChoice.valueProperty().isNull or
                 titleField.textProperty().isEmpty or
                 qtyField.valueProperty.lessEq(0) or
                 priceField.valueProperty.lessEq(0))
         }
         setResultConverter {
             if (it == CANCEL) null else Plate.new(
-                plateChoice.value.name,
+                typeChoice.value.name,
                 titleField.text,
                 qtyField.value,
                 priceField.value)

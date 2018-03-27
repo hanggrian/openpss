@@ -89,7 +89,7 @@ class WageRecordController : Controller() {
         recordTable.root = TreeItem(getDummy(this))
         recordTable.isShowRoot = false
 
-        nameColumn.setCellValueFactory { it.value.value.displayedName.toProperty().asObservable() }
+        nameColumn.setCellValueFactory { it.value.value.displayedName.toProperty() }
         startColumn.setCellValueFactory { it.value.value.displayedStart }
         endColumn.setCellValueFactory { it.value.value.displayedEnd }
         dailyColumn.setCellValueFactory { it.value.value.dailyProperty.asObservable() }

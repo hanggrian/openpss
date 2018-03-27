@@ -7,6 +7,7 @@ import com.hendraanggrian.openpss.db.schema.Customers
 import com.hendraanggrian.openpss.db.schema.Employee
 import com.hendraanggrian.openpss.db.schema.Employees
 import com.hendraanggrian.openpss.db.schema.Offset
+import com.hendraanggrian.openpss.db.schema.Other
 import com.hendraanggrian.openpss.db.schema.Payment
 import com.hendraanggrian.openpss.db.schema.Plate
 import com.hendraanggrian.openpss.db.schema.Receipt
@@ -20,8 +21,16 @@ import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.controller
 import com.hendraanggrian.openpss.ui.pane
+import com.hendraanggrian.openpss.util.excessPriceCellValueFactory
 import com.hendraanggrian.openpss.util.getResource
 import com.hendraanggrian.openpss.util.getResourceString
+import com.hendraanggrian.openpss.util.minPriceCellValueFactory
+import com.hendraanggrian.openpss.util.minQtyCellValueFactory
+import com.hendraanggrian.openpss.util.priceCellValueFactory
+import com.hendraanggrian.openpss.util.qtyCellValueFactory
+import com.hendraanggrian.openpss.util.titleCellValueFactory
+import com.hendraanggrian.openpss.util.totalCellValueFactory
+import com.hendraanggrian.openpss.util.typeCellValueFactory
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
 import javafx.geometry.Pos.CENTER_RIGHT
@@ -31,6 +40,7 @@ import javafx.scene.control.ChoiceBox
 import javafx.scene.control.Label
 import javafx.scene.control.Pagination
 import javafx.scene.control.RadioButton
+import javafx.scene.control.Tab
 import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
 import javafx.scene.control.TableView.CONSTRAINED_RESIZE_POLICY
@@ -38,11 +48,13 @@ import javafx.scene.control.TextField
 import javafx.scene.text.Font.loadFont
 import javafx.stage.Modality.APPLICATION_MODAL
 import javafx.util.Callback
+import javafx.util.converter.NumberStringConverter
 import kotlinx.nosql.equal
 import kotlinx.nosql.id
 import ktfx.application.later
 import ktfx.beans.binding.bindingOf
 import ktfx.beans.property.toProperty
+import ktfx.collections.emptyObservableList
 import ktfx.collections.toMutableObservableList
 import ktfx.collections.toObservableList
 import ktfx.layouts.columns
@@ -64,32 +76,38 @@ class ReceiptController : Controller(), Refreshable, Addable {
     @FXML lateinit var receiptPagination: Pagination
     @FXML lateinit var noteLabel: Label
     @FXML lateinit var actualNoteLabel: Label
-
+    @FXML lateinit var plateTab: Tab
     @FXML lateinit var plateTable: TableView<Plate>
-    @FXML lateinit var platePlateColumn: TableColumn<Plate, String>
+    @FXML lateinit var plateTypeColumn: TableColumn<Plate, String>
     @FXML lateinit var plateTitleColumn: TableColumn<Plate, String>
     @FXML lateinit var plateQtyColumn: TableColumn<Plate, String>
     @FXML lateinit var platePriceColumn: TableColumn<Plate, String>
     @FXML lateinit var plateTotalColumn: TableColumn<Plate, String>
-
+    @FXML lateinit var offsetTab: Tab
     @FXML lateinit var offsetTable: TableView<Offset>
-    @FXML lateinit var offsetOffsetColumn: TableColumn<Offset, String>
+    @FXML lateinit var offsetTypeColumn: TableColumn<Offset, String>
     @FXML lateinit var offsetTitleColumn: TableColumn<Offset, String>
     @FXML lateinit var offsetQtyColumn: TableColumn<Offset, String>
     @FXML lateinit var offsetMinQtyColumn: TableColumn<Offset, String>
     @FXML lateinit var offsetMinPriceColumn: TableColumn<Offset, String>
     @FXML lateinit var offsetExcessPriceColumn: TableColumn<Offset, String>
     @FXML lateinit var offsetTotalColumn: TableColumn<Offset, String>
-
+    @FXML lateinit var otherTab: Tab
+    @FXML lateinit var otherTable: TableView<Other>
+    @FXML lateinit var otherTitleColumn: TableColumn<Other, String>
+    @FXML lateinit var otherQtyColumn: TableColumn<Other, String>
+    @FXML lateinit var otherPriceColumn: TableColumn<Other, String>
+    @FXML lateinit var otherTotalColumn: TableColumn<Other, String>
+    @FXML lateinit var paymentTab: Tab
     @FXML lateinit var paymentTable: TableView<Payment>
     @FXML lateinit var paymentEmployeeColumn: TableColumn<Payment, String>
     @FXML lateinit var paymentDateTimeColumn: TableColumn<Payment, String>
     @FXML lateinit var paymentValueColumn: TableColumn<Payment, String>
-
     @FXML lateinit var coverLabel: Label
 
     private lateinit var receiptTable: TableView<Receipt>
     private val moneyConverter = MoneyStringConverter()
+    private val numberConverter = NumberStringConverter()
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
@@ -100,10 +118,27 @@ class ReceiptController : Controller(), Refreshable, Addable {
         statusBox.selectionModel.selectFirst()
         pickDateRadio.graphic.disableProperty().bind(!pickDateRadio.selectedProperty())
         noteLabel.font = loadFont(getResourceString(R.font.opensans_bold), 13.0)
+
+        plateTypeColumn.typeCellValueFactory()
+        plateTitleColumn.titleCellValueFactory()
+        plateQtyColumn.qtyCellValueFactory(numberConverter)
+        platePriceColumn.priceCellValueFactory(moneyConverter)
+        plateTotalColumn.totalCellValueFactory(moneyConverter)
+        offsetTypeColumn.typeCellValueFactory()
+        offsetTitleColumn.titleCellValueFactory()
+        offsetQtyColumn.qtyCellValueFactory(numberConverter)
+        offsetMinQtyColumn.minQtyCellValueFactory(numberConverter)
+        offsetMinPriceColumn.minPriceCellValueFactory(moneyConverter)
+        offsetExcessPriceColumn.excessPriceCellValueFactory(moneyConverter)
+        offsetTotalColumn.totalCellValueFactory(moneyConverter)
+        otherTitleColumn.titleCellValueFactory()
+        otherQtyColumn.qtyCellValueFactory(numberConverter)
+        otherPriceColumn.priceCellValueFactory(moneyConverter)
+        otherTotalColumn.totalCellValueFactory(moneyConverter)
     }
 
-    override fun refresh() = receiptPagination.pageFactoryProperty().bind(
-        bindingOf(customerField.textProperty(), countBox.countProperty) {
+    override fun refresh() = receiptPagination.pageFactoryProperty()
+        .bind(bindingOf(customerField.textProperty(), countBox.countProperty) {
             Callback<Int, Node> { page ->
                 receiptTable = tableView {
                     columnResizePolicy = CONSTRAINED_RESIZE_POLICY
@@ -142,18 +177,27 @@ class ReceiptController : Controller(), Refreshable, Addable {
                             }*/
                             receiptPagination.pageCount = ceil(receipts.count() / countBox.count.toDouble()).toInt()
                             items = receipts.skip(countBox.count * page).take(countBox.count).toMutableObservableList()
+                            items.forEach {
+                                it.offsets.forEach {
+                                    println(it)
+                                }
+                            }
                         }
                     }
                 }
+                plateTable.bindTable(plateTab) { plates }
+                offsetTable.bindTable(offsetTab) { offsets }
+                otherTable.bindTable(otherTab) { others }
+                paymentTable.bindTable(paymentTab) { payments }
                 coverLabel.visibleProperty().bind(receiptTable.selectionModel.selectedItemProperty().isNull)
                 receiptTable
             }
         })
 
-    override fun add() = ReceiptDialog(this, _employee).showAndWait().ifPresent { receipt ->
+    override fun add() = ReceiptDialog(this, _employee).showAndWait().ifPresent {
         transaction {
-            receipt.id = Receipts.insert(receipt)
-            receiptTable.items.add(0, receipt)
+            it.id = Receipts.insert(it)
+            receiptTable.items.add(0, it)
             receiptTable.selectionModel.selectFirst()
         }
     }
@@ -173,4 +217,16 @@ class ReceiptController : Controller(), Refreshable, Addable {
         isResizable = false
         loader.controller._employee = _employee
     }.showAndWait()
+
+    private fun <S> TableView<S>.bindTable(tab: Tab, target: Receipt.() -> List<S>) {
+        itemsProperty().bind(bindingOf(receiptTable.selectionModel.selectedItemProperty()) {
+            receiptTable.selectionModel.selectedItem?.target()?.toObservableList() ?: emptyObservableList()
+        })
+        tab.graphicProperty().bind(bindingOf(itemsProperty()) {
+            when {
+                items.isEmpty() -> null
+                else -> Label(items.size.toString())
+            }
+        })
+    }
 }

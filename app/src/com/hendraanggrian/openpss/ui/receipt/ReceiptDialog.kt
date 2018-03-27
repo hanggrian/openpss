@@ -6,16 +6,24 @@ import com.hendraanggrian.openpss.db.dbDateTime
 import com.hendraanggrian.openpss.db.schema.Customer
 import com.hendraanggrian.openpss.db.schema.Employee
 import com.hendraanggrian.openpss.db.schema.Offset
+import com.hendraanggrian.openpss.db.schema.Other
 import com.hendraanggrian.openpss.db.schema.Plate
 import com.hendraanggrian.openpss.db.schema.Receipt
 import com.hendraanggrian.openpss.time.PATTERN_DATE
 import com.hendraanggrian.openpss.ui.Resourced
+import com.hendraanggrian.openpss.util.excessPriceCellValueFactory
 import com.hendraanggrian.openpss.util.getResourceString
+import com.hendraanggrian.openpss.util.minPriceCellValueFactory
+import com.hendraanggrian.openpss.util.minQtyCellValueFactory
+import com.hendraanggrian.openpss.util.priceCellValueFactory
+import com.hendraanggrian.openpss.util.qtyCellValueFactory
+import com.hendraanggrian.openpss.util.titleCellValueFactory
+import com.hendraanggrian.openpss.util.totalCellValueFactory
+import com.hendraanggrian.openpss.util.typeCellValueFactory
 import javafx.beans.property.DoubleProperty
 import javafx.beans.property.ObjectProperty
 import javafx.beans.property.SimpleDoubleProperty
 import javafx.beans.property.SimpleObjectProperty
-import javafx.geometry.Pos.CENTER_RIGHT
 import javafx.scene.Node
 import javafx.scene.control.ButtonType.CANCEL
 import javafx.scene.control.Dialog
@@ -30,8 +38,6 @@ import ktfx.beans.binding.doubleBindingOf
 import ktfx.beans.binding.lessEq
 import ktfx.beans.binding.or
 import ktfx.beans.binding.stringBindingOf
-import ktfx.beans.property.asObservable
-import ktfx.beans.property.toProperty
 import ktfx.collections.emptyBinding
 import ktfx.coroutines.onAction
 import ktfx.coroutines.onKeyPressed
@@ -53,7 +59,6 @@ import ktfx.scene.control.okButton
 import ktfx.scene.input.isDelete
 import ktfx.scene.layout.gaps
 import ktfx.scene.layout.heightPref
-import ktfx.styles.labeledStyle
 import org.joda.time.DateTime
 
 class ReceiptDialog(
@@ -64,6 +69,7 @@ class ReceiptDialog(
 
     private lateinit var plateTable: TableView<Plate>
     private lateinit var offsetTable: TableView<Offset>
+    private lateinit var otherTable: TableView<Other>
     private lateinit var noteArea: TextArea
 
     private val dateTime: DateTime = dbDateTime
@@ -95,65 +101,41 @@ class ReceiptDialog(
             } col 1 row 2
             label(getString(R.string.plate)) col 0 row 3
             plateTable = receiptTableView({ AddPlateDialog(this@ReceiptDialog) }) {
-                column<String>(getString(R.string.plate)) {
-                    setCellValueFactory { it.value.plate.toProperty() }
-                }
-                column<String>(getString(R.string.title)) {
-                    setCellValueFactory { it.value.title.toProperty() }
-                }
-                column<String>(getString(R.string.qty)) {
-                    setCellValueFactory { numberConverter.toString(it.value.qty).toProperty().asObservable() }
-                    style = labeledStyle { alignment = CENTER_RIGHT }
-                }
-                column<String>(getString(R.string.price)) {
-                    setCellValueFactory { moneyConverter.toString(it.value.price).toProperty().asObservable() }
-                    style = labeledStyle { alignment = CENTER_RIGHT }
-                }
-                column<String>(getString(R.string.total)) {
-                    setCellValueFactory { moneyConverter.toString(it.value.total).toProperty().asObservable() }
-                    style = labeledStyle { alignment = CENTER_RIGHT }
-                }
+                column<String>(getString(R.string.type)) { typeCellValueFactory() }
+                column<String>(getString(R.string.title)) { titleCellValueFactory() }
+                column<String>(getString(R.string.qty)) { qtyCellValueFactory(numberConverter) }
+                column<String>(getString(R.string.price)) { priceCellValueFactory(moneyConverter) }
+                column<String>(getString(R.string.total)) { totalCellValueFactory(moneyConverter) }
             } col 1 row 3
             label(getString(R.string.offset)) col 0 row 4
             offsetTable = receiptTableView({ AddOffsetDialog(this@ReceiptDialog) }) {
-                column<String>(getString(R.string.offset)) {
-                    setCellValueFactory { it.value.offset.toProperty() }
-                }
-                column<String>(getString(R.string.title)) {
-                    setCellValueFactory { it.value.title.toProperty() }
-                }
-                column<String>(getString(R.string.qty)) {
-                    setCellValueFactory { numberConverter.toString(it.value.qty).toProperty().asObservable() }
-                    style = labeledStyle { alignment = CENTER_RIGHT }
-                }
-                column<String>(getString(R.string.min_qty)) {
-                    setCellValueFactory { numberConverter.toString(it.value.minQty).toProperty().asObservable() }
-                    style = labeledStyle { alignment = CENTER_RIGHT }
-                }
-                column<String>(getString(R.string.min_price)) {
-                    setCellValueFactory { moneyConverter.toString(it.value.minPrice).toProperty().asObservable() }
-                    style = labeledStyle { alignment = CENTER_RIGHT }
-                }
-                column<String>(getString(R.string.excess_price)) {
-                    setCellValueFactory { moneyConverter.toString(it.value.excessPrice).toProperty().asObservable() }
-                    style = labeledStyle { alignment = CENTER_RIGHT }
-                }
-                column<String>(getString(R.string.total)) {
-                    setCellValueFactory { moneyConverter.toString(it.value.total).toProperty().asObservable() }
-                    style = labeledStyle { alignment = CENTER_RIGHT }
-                }
+                column<String>(getString(R.string.type)) { typeCellValueFactory() }
+                column<String>(getString(R.string.title)) { titleCellValueFactory() }
+                column<String>(getString(R.string.qty)) { qtyCellValueFactory(numberConverter) }
+                column<String>(getString(R.string.min_qty)) { minQtyCellValueFactory(numberConverter) }
+                column<String>(getString(R.string.min_price)) { minPriceCellValueFactory(moneyConverter) }
+                column<String>(getString(R.string.excess_price)) { excessPriceCellValueFactory(moneyConverter) }
+                column<String>(getString(R.string.total)) { totalCellValueFactory(moneyConverter) }
             } col 1 row 4
-            totalProperty.bind(doubleBindingOf(plateTable.items, offsetTable.items) {
+            label(getString(R.string.others)) col 0 row 5
+            otherTable = receiptTableView({ AddOtherDialog(this@ReceiptDialog) }) {
+                column<String>(getString(R.string.title)) { titleCellValueFactory() }
+                column<String>(getString(R.string.qty)) { qtyCellValueFactory(numberConverter) }
+                column<String>(getString(R.string.price)) { priceCellValueFactory(moneyConverter) }
+                column<String>(getString(R.string.total)) { totalCellValueFactory(moneyConverter) }
+            } col 1 row 5
+            totalProperty.bind(doubleBindingOf(plateTable.items, offsetTable.items, otherTable.items) {
                 plateTable.items.sumByDouble { it.total } +
-                    offsetTable.items.sumByDouble { it.total }
+                    offsetTable.items.sumByDouble { it.total } +
+                    otherTable.items.sumByDouble { it.total }
             })
-            label(getString(R.string.note)) col 0 row 5
-            noteArea = textArea { heightPref = 64 } col 1 row 5
-            label(getString(R.string.total)) col 0 row 6
+            label(getString(R.string.note)) col 0 row 6
+            noteArea = textArea { heightPref = 48 } col 1 row 6
+            label(getString(R.string.total)) col 0 row 7
             label {
                 font = loadFont(getResourceString(R.font.opensans_bold), 13.0)
                 textProperty().bind(stringBindingOf(totalProperty) { moneyConverter.toString(totalProperty.value) })
-            } col 1 row 6
+            } col 1 row 7
         }
         cancelButton()
         okButton { disableProperty().bind(customerProperty.isNull or totalProperty.lessEq(0)) }
@@ -162,6 +144,7 @@ class ReceiptDialog(
                 dateTime,
                 plateTable.items,
                 offsetTable.items,
+                otherTable.items,
                 noteArea.text,
                 totalProperty.value
             ).apply {
@@ -175,7 +158,7 @@ class ReceiptDialog(
         newAddDialog: () -> Dialog<S>,
         columnsBuilder: TableColumnsBuilder<S>.() -> Unit
     ): TableView<S> = tableView {
-        heightPref = 128
+        heightPref = 96
         columnResizePolicy = CONSTRAINED_RESIZE_POLICY
         columns(columnsBuilder)
         columns.forEachIndexed { i, column ->

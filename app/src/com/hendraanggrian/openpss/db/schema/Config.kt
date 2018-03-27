@@ -23,6 +23,6 @@ data class Config(
 
         fun listKeys(): List<String> = listOf(KEY_CURRENCY_LANGUAGE, KEY_CURRENCY_COUNTRY)
 
-        fun new(key: String, value: String = ""): Config = Config(key, value)
+        fun new(key: String): Config = Config(key, "")
     }
 }

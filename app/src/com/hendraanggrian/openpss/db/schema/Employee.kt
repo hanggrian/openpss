@@ -36,8 +36,7 @@ data class Employee(
 
         fun new(
             name: String,
-            password: String = DEFAULT_PASSWORD,
-            fullAccess: Boolean = false
-        ): Employee = Employee(name, password, fullAccess)
+            password: String = DEFAULT_PASSWORD
+        ): Employee = Employee(name, password, false)
     }
 }

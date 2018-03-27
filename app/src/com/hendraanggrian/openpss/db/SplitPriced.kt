@@ -1,6 +1,6 @@
 package com.hendraanggrian.openpss.db
 
-interface BaseOffset {
+interface SplitPriced {
 
     var minQty: Int
     var minPrice: Double

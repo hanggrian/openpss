@@ -1,6 +1,6 @@
 package com.hendraanggrian.openpss.db
 
-interface BasePlate {
+interface Priced {
 
     var price: Double
 }

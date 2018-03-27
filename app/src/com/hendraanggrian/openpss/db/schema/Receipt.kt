@@ -1,10 +1,11 @@
 package com.hendraanggrian.openpss.db.schema
 
-import com.hendraanggrian.openpss.db.BaseOffset
-import com.hendraanggrian.openpss.db.BaseOrder
-import com.hendraanggrian.openpss.db.BasePlate
 import com.hendraanggrian.openpss.db.Document
 import com.hendraanggrian.openpss.db.OrderListColumn
+import com.hendraanggrian.openpss.db.Priced
+import com.hendraanggrian.openpss.db.Order
+import com.hendraanggrian.openpss.db.SplitPriced
+import com.hendraanggrian.openpss.db.Typed
 import com.hendraanggrian.openpss.db.dbDateTime
 import kotlinx.nosql.Id
 import kotlinx.nosql.ListColumn
@@ -23,21 +24,26 @@ object Receipts : DocumentSchema<Receipt>("receipts", Receipt::class) {
     val dateTime = dateTime("date_time")
     val plates = PlateColumn()
     val offsets = OffsetColumn()
-    val note = string("note")
+    val others = OtherColumn()
     val total = double("total")
+    val note = string("note")
     val payments = PaymentColumn()
     val printed = boolean("printed")
 
     class PlateColumn : OrderListColumn<Plate, Receipts>("plates", Plate::class) {
-        val plate = string("plate")
+        val type = string("type")
         val price = double("price")
     }
 
     class OffsetColumn : OrderListColumn<Offset, Receipts>("offsets", Offset::class) {
-        val offset = string("offset")
+        val type = string("type")
         val minQty = integer("min_qty")
         val minPrice = double("min_price")
         val excessPrice = double("excess_price")
+    }
+
+    class OtherColumn : OrderListColumn<Other, Receipts>("others", Other::class) {
+        val price = double("price")
     }
 
     class PaymentColumn : ListColumn<Payment, Receipts>("payments", Payment::class) {
@@ -51,8 +57,9 @@ data class Receipt(
     val dateTime: DateTime,
     var plates: List<Plate>,
     var offsets: List<Offset>,
-    var note: String,
+    var others: List<Other>,
     var total: Double,
+    var note: String,
     var payments: List<Payment>,
     var printed: Boolean
 ) : Document<Receipts> {
@@ -68,56 +75,70 @@ data class Receipt(
             dateTime: DateTime,
             plates: List<Plate>,
             offsets: List<Offset>,
+            others: List<Other>,
             note: String,
-            total: Double,
-            payments: List<Payment> = listOf(),
-            printed: Boolean = false
-        ): Receipt = Receipt(dateTime, plates, offsets, note, total, payments, printed)
+            total: Double
+        ): Receipt = Receipt(dateTime, plates, offsets, others, total, note, listOf(), false)
     }
 }
 
 data class Plate(
-    var plate: String,
+    override var type: String,
     override var title: String,
     override var qty: Int,
     override var price: Double,
     override var total: Double
-) : BaseOrder, BasePlate {
+) : Typed, Order, Priced {
 
     companion object {
         fun new(
-            plate: String,
+            type: String,
             title: String,
             qty: Int,
-            price: Double,
-            total: Double = qty * price
-        ): Plate = Plate(plate, title, qty, price, total)
+            price: Double
+        ): Plate = Plate(type, title, qty, price, qty * price)
     }
 }
 
 data class Offset(
-    var offset: String,
+    override var type: String,
     override var title: String,
     override var qty: Int,
     override var minQty: Int,
     override var minPrice: Double,
     override var excessPrice: Double,
     override var total: Double
-) : BaseOrder, BaseOffset {
+) : Typed, Order, SplitPriced {
 
     companion object {
         fun new(
-            offset: String,
+            type: String,
             title: String,
             qty: Int,
             minQty: Int,
             minPrice: Double,
-            excessPrice: Double,
-            total: Double = when {
-                qty <= minQty -> minPrice
-                else -> minPrice + ((qty - minQty) * excessPrice)
-            }
-        ): Offset = Offset(offset, title, qty, minQty, minPrice, excessPrice, total)
+            excessPrice: Double
+        ): Offset = Offset(type, title, qty, minQty, minPrice, excessPrice, when {
+            qty <= minQty -> minPrice
+            else -> minPrice + ((qty - minQty) * excessPrice)
+        })
+    }
+}
+
+data class Other(
+    override var title: String,
+    override var qty: Int,
+    override var price: Double,
+    override var total: Double
+) : Order, Priced {
+
+    companion object {
+        fun new(
+            title: String,
+            qty: Int,
+            price: Double,
+            total: Double = qty * price
+        ): Other = Other(title, qty, price, total)
     }
 }
 
@@ -129,9 +150,6 @@ data class Payment(
     lateinit var employeeId: Id<String, Employees>
 
     companion object {
-        fun new(
-            value: Double,
-            dateTime: DateTime = dbDateTime
-        ): Payment = Payment(value, dateTime)
+        fun new(value: Double): Payment = Payment(value, dbDateTime)
     }
 }

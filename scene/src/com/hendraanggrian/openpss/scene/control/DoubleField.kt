@@ -9,6 +9,8 @@ import javafx.beans.property.SimpleDoubleProperty
 import javafx.scene.Node
 import javafx.scene.control.TextField
 import ktfx.beans.binding.booleanBindingOf
+import ktfx.beans.value.getValue
+import ktfx.beans.value.setValue
 import ktfx.coroutines.listener
 import ktfx.layouts.LayoutDsl
 import ktfx.layouts.LayoutManager
@@ -17,7 +19,10 @@ import ktfx.listeners.bindBidirectional
 open class DoubleField : TextField() {
 
     val valueProperty: DoubleProperty = SimpleDoubleProperty()
+    var value: Double by valueProperty
+
     val validProperty: BooleanProperty = SimpleBooleanProperty()
+    val isValid: Boolean by validProperty
 
     init {
         textProperty().bindBidirectional(valueProperty) {
@@ -33,12 +38,6 @@ open class DoubleField : TextField() {
         })
         focusedProperty().listener { _, _, focused -> if (focused && text.isNotEmpty()) selectAll() }
     }
-
-    var value: Double
-        get() = valueProperty.get()
-        set(value) = valueProperty.set(value)
-
-    val isValid: Boolean get() = validProperty.get()
 }
 
 inline fun doubleField(

@@ -49,7 +49,6 @@ import java.util.ResourceBundle
 class WageRecordController : Controller() {
 
     companion object {
-        const val EXTRA_STAGE = "EXTRA_STAGE"
         const val EXTRA_ATTENDEES = "EXTRA_ATTENDEES"
     }
 

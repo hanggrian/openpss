@@ -13,6 +13,7 @@ import javafx.scene.Node
 import javafx.scene.control.TextField
 import ktfx.beans.binding.bindingOf
 import ktfx.beans.binding.booleanBindingOf
+import ktfx.beans.value.getValue
 import ktfx.layouts.LayoutDsl
 import ktfx.layouts.LayoutManager
 import java.io.File
@@ -21,7 +22,10 @@ import java.io.File
 open class FileField(scope: Scope = FILE) : TextField() {
 
     val fileProperty: ObjectProperty<File> = SimpleObjectProperty<File>()
+    val file: File by fileProperty
+
     val validProperty: BooleanProperty = SimpleBooleanProperty()
+    val isValid: Boolean by validProperty
 
     init {
         fileProperty.bind(bindingOf(textProperty()) { File(text) })
@@ -33,10 +37,6 @@ open class FileField(scope: Scope = FILE) : TextField() {
             }
         })
     }
-
-    val file: File get() = fileProperty.get()
-
-    val isValid: Boolean get() = validProperty.get()
 
     enum class Scope {
         FILE, FOLDER, ANY

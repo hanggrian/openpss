@@ -16,6 +16,8 @@ import kotlinx.nosql.equal
 import kotlinx.nosql.update
 import ktfx.beans.binding.doubleBindingOf
 import ktfx.beans.property.toProperty
+import ktfx.beans.value.getValue
+import ktfx.beans.value.setValue
 import ktfx.collections.mutableObservableListOf
 import org.joda.time.DateTime
 import org.joda.time.Minutes.minutes
@@ -37,6 +39,9 @@ data class Attendee(
     val dailyProperty: IntegerProperty = SimpleIntegerProperty(),
     val hourlyOvertimeProperty: IntegerProperty = SimpleIntegerProperty()
 ) {
+
+    var daily: Int by dailyProperty
+    var hourlyOvertime: Int by hourlyOvertimeProperty
 
     init {
         transaction {
@@ -73,14 +78,6 @@ data class Attendee(
 
     override fun toString(): String = "$id. $name"
 
-    var daily: Int
-        get() = dailyProperty.get()
-        set(value) = dailyProperty.set(value)
-
-    var hourlyOvertime: Int
-        get() = hourlyOvertimeProperty.get()
-        set(value) = hourlyOvertimeProperty.set(value)
-
     fun toNodeRecord(resourced: Resourced): Record =
         Record(resourced, Record.INDEX_NODE, this, DateTime.now().toProperty(), DateTime.now().toProperty())
 
@@ -95,23 +92,21 @@ data class Attendee(
 
     fun toTotalRecords(resourced: Resourced, children: Collection<Record>): Record =
         Record(resourced, Record.INDEX_TOTAL, this, START_OF_TIME.toProperty(), START_OF_TIME.toProperty()).apply {
-            children.map { it.dailyProperty }.toTypedArray().let { mains ->
-                dailyProperty.bind(doubleBindingOf(*mains) { mains.map { it.value }.sum().round() })
-            }
-            children.map { it.dailyIncomeProperty }.toTypedArray().let { mainIncomes ->
-                dailyIncomeProperty.bind(doubleBindingOf(*mainIncomes) { mainIncomes.map { it.value }.sum().round() })
-            }
-            children.map { it.overtimeProperty }.toTypedArray().let { overtimes ->
-                overtimeProperty.bind(doubleBindingOf(*overtimes) { overtimes.map { it.value }.sum().round() })
-            }
-            children.map { it.overtimeIncomeProperty }.toTypedArray().let { overtimeIncomes ->
-                overtimeIncomeProperty.bind(doubleBindingOf(*overtimeIncomes) {
-                    overtimeIncomes.map { it.value }.sum().round()
-                })
-            }
-            children.map { it.totalProperty }.toTypedArray().let { totals ->
-                totalProperty.bind(doubleBindingOf(*totals) { totals.map { it.value }.sum().round() })
-            }
+            dailyProperty.bind(doubleBindingOf(*children.map { it.dailyProperty }.toTypedArray()) {
+                children.map { it.daily }.sum().round()
+            })
+            dailyIncomeProperty.bind(doubleBindingOf(*children.map { it.dailyIncomeProperty }.toTypedArray()) {
+                children.map { it.dailyIncome }.sum().round()
+            })
+            overtimeProperty.bind(doubleBindingOf(*children.map { it.overtimeProperty }.toTypedArray()) {
+                children.map { it.overtime }.sum().round()
+            })
+            overtimeIncomeProperty.bind(doubleBindingOf(*children.map { it.overtimeIncomeProperty }.toTypedArray()) {
+                children.map { it.overtimeIncome }.sum().round()
+            })
+            totalProperty.bind(doubleBindingOf(*children.map { it.totalProperty }.toTypedArray()) {
+                children.map { it.total }.sum().round()
+            })
         }
 
     companion object {

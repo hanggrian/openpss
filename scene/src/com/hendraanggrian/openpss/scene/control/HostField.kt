@@ -7,6 +7,7 @@ import javafx.beans.property.SimpleBooleanProperty
 import javafx.scene.Node
 import javafx.scene.control.TextField
 import ktfx.beans.binding.booleanBindingOf
+import ktfx.beans.value.getValue
 import ktfx.coroutines.listener
 import ktfx.layouts.LayoutDsl
 import ktfx.layouts.LayoutManager
@@ -16,13 +17,12 @@ import org.apache.commons.validator.routines.InetAddressValidator.getInstance
 open class HostField : TextField() {
 
     val validProperty: BooleanProperty = SimpleBooleanProperty()
+    val isValid: Boolean by validProperty
 
     init {
         validProperty.bind(booleanBindingOf(textProperty()) { getInstance().isValidInet4Address(text) })
         focusedProperty().listener { _, _, value -> if (value && text.isNotEmpty()) selectAll() }
     }
-
-    val isValid: Boolean get() = validProperty.get()
 }
 
 inline fun hostField(

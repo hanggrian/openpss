@@ -25,9 +25,9 @@ import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.launch
 import ktfx.application.exit
 import ktfx.application.later
-import ktfx.beans.binding.`else`
-import ktfx.beans.binding.`if`
+import ktfx.beans.binding.`when`
 import ktfx.beans.binding.or
+import ktfx.beans.binding.otherwise
 import ktfx.beans.binding.then
 import ktfx.collections.toObservableList
 import ktfx.coroutines.FX
@@ -99,8 +99,8 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced 
             toggleButton {
                 tooltip(getString(R.string.see_password))
                 graphic = ktfx.layouts.imageView {
-                    imageProperty().bind(`if`(this@toggleButton.selectedProperty())
-                        then Image(R.image.btn_visibility) `else` Image(R.image.btn_visibility_off))
+                    imageProperty().bind(`when`(this@toggleButton.selectedProperty())
+                        then Image(R.image.btn_visibility) otherwise Image(R.image.btn_visibility_off))
                 }
                 selectedProperty().listener { _, _, selected ->
                     passwordField1.isVisible = !selected

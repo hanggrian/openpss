@@ -17,6 +17,8 @@ import ktfx.beans.binding.doubleBindingOf
 import ktfx.beans.binding.plus
 import ktfx.beans.binding.stringBindingOf
 import ktfx.beans.property.toProperty
+import ktfx.beans.value.getValue
+import ktfx.beans.value.setValue
 import org.joda.time.DateTime
 import org.joda.time.LocalTime
 import kotlin.math.absoluteValue
@@ -40,6 +42,15 @@ class Record(
 
     val totalProperty: DoubleProperty = SimpleDoubleProperty()
 ) : Resourced by resourced {
+
+    var start: DateTime by startProperty
+    var end: DateTime by endProperty
+    var isDailyEmpty: Boolean by dailyEmptyProperty
+    var daily: Double by dailyProperty
+    var overtime: Double by overtimeProperty
+    var dailyIncome: Double by dailyIncomeProperty
+    var overtimeIncome: Double by overtimeIncomeProperty
+    var total: Double by totalProperty
 
     companion object {
         const val WORKING_HOURS = 8
@@ -134,26 +145,6 @@ class Record(
 
     fun cloneEnd(time: LocalTime): DateTime =
         DateTime(end.year, end.monthOfYear, end.dayOfMonth, time.hourOfDay, time.minuteOfHour)
-
-    private var start: DateTime
-        get() = startProperty.get()
-        set(value) = startProperty.setValue(value)
-
-    private var end: DateTime
-        get() = endProperty.get()
-        set(value) = endProperty.setValue(value)
-
-    private var isDailyEmpty: Boolean
-        get() = dailyEmptyProperty.get()
-        set(value) = dailyEmptyProperty.set(value)
-
-    private var daily: Double
-        get() = dailyProperty.get()
-        set(value) = dailyProperty.set(value)
-
-    private var overtime: Double
-        get() = overtimeProperty.get()
-        set(value) = overtimeProperty.set(value)
 
     private val workingHours: Double
         get() {

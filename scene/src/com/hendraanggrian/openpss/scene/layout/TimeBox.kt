@@ -12,6 +12,7 @@ import javafx.scene.Node
 import javafx.scene.control.Button
 import javafx.scene.image.ImageView
 import ktfx.beans.binding.bindingOf
+import ktfx.beans.value.getValue
 import ktfx.coroutines.listener
 import ktfx.coroutines.onAction
 import ktfx.layouts.LayoutDsl
@@ -35,8 +36,10 @@ open class TimeBox(prefill: LocalTime = MIDNIGHT) : _HBox() {
     lateinit var minuteField: IntField
     var previousButton: Button
     var nextButton: Button
-    val timeProperty: ObjectProperty<LocalTime> = SimpleObjectProperty()
     private var onOverlap: ((Boolean) -> Unit)? = null
+
+    val timeProperty: ObjectProperty<LocalTime> = SimpleObjectProperty()
+    val time: LocalTime by timeProperty
 
     init {
         alignment = CENTER
@@ -87,8 +90,6 @@ open class TimeBox(prefill: LocalTime = MIDNIGHT) : _HBox() {
         hourField.text = prefill.hourOfDay.toString()
         minuteField.text = prefill.minuteOfHour.toString()
     }
-
-    val time: LocalTime get() = timeProperty.get()
 
     fun setOnOverlap(action: ((plus: Boolean) -> Unit)?) {
         onOverlap = action

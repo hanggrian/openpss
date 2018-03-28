@@ -10,7 +10,6 @@ import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.controller
 import com.hendraanggrian.openpss.ui.pane
 import com.hendraanggrian.openpss.ui.wage.WageRecordController.Companion.EXTRA_ATTENDEES
-import com.hendraanggrian.openpss.ui.wage.WageRecordController.Companion.EXTRA_STAGE
 import com.hendraanggrian.openpss.ui.wage.readers.Reader
 import com.hendraanggrian.openpss.util.getResource
 import com.hendraanggrian.openpss.util.openFile
@@ -190,7 +189,7 @@ class WageController : Controller() {
             val loader = FXMLLoader(getResource(R.layout.controller_wage_record), resources)
             scene = Scene(loader.pane)
             setSizeMin(1000, 650)
-            loader.controller.addExtra(EXTRA_ATTENDEES, attendees).addExtra(EXTRA_STAGE, this)
+            loader.controller.addExtra(EXTRA_ATTENDEES, attendees)
         }.showAndWait()
     }
 

@@ -13,6 +13,7 @@ import javafx.scene.control.Button
 import javafx.scene.control.DatePicker
 import javafx.scene.image.ImageView
 import ktfx.beans.binding.bindingOf
+import ktfx.beans.value.getValue
 import ktfx.coroutines.onAction
 import ktfx.layouts.LayoutDsl
 import ktfx.layouts.LayoutManager
@@ -36,6 +37,7 @@ open class DateBox(prefill: LocalDate = now()) : _HBox() {
     var nextButton: Button
 
     val dateProperty: ObjectProperty<LocalDate> = SimpleObjectProperty()
+    val date: LocalDate by dateProperty
 
     init {
         alignment = CENTER

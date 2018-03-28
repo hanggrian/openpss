@@ -6,6 +6,8 @@ import javafx.beans.property.IntegerProperty
 import javafx.beans.property.SimpleIntegerProperty
 import javafx.scene.Node
 import javafx.scene.control.TextField
+import ktfx.beans.value.getValue
+import ktfx.beans.value.setValue
 import ktfx.coroutines.listener
 import ktfx.layouts.LayoutDsl
 import ktfx.layouts.LayoutManager
@@ -14,6 +16,7 @@ import ktfx.listeners.bindBidirectional
 open class IntField : TextField() {
 
     val valueProperty: IntegerProperty = SimpleIntegerProperty()
+    var value: Int by valueProperty
 
     init {
         textProperty().bindBidirectional(valueProperty) {
@@ -25,10 +28,6 @@ open class IntField : TextField() {
         }
         focusedProperty().listener { _, _, focused -> if (focused && text.isNotEmpty()) selectAll() }
     }
-
-    var value: Int
-        get() = valueProperty.get()
-        set(value) = valueProperty.set(value)
 }
 
 inline fun intField(

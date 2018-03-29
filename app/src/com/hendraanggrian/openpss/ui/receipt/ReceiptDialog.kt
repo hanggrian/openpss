@@ -1,15 +1,19 @@
 package com.hendraanggrian.openpss.ui.receipt
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.converters.MoneyStringConverter
+import com.hendraanggrian.openpss.currencyConverter
 import com.hendraanggrian.openpss.db.dbDateTime
 import com.hendraanggrian.openpss.db.schema.Customer
+import com.hendraanggrian.openpss.db.schema.Customers
 import com.hendraanggrian.openpss.db.schema.Employee
+import com.hendraanggrian.openpss.db.schema.Employees
 import com.hendraanggrian.openpss.db.schema.Offset
 import com.hendraanggrian.openpss.db.schema.Other
 import com.hendraanggrian.openpss.db.schema.Plate
 import com.hendraanggrian.openpss.db.schema.Receipt
+import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.time.PATTERN_DATE
+import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.Resourced
 import com.hendraanggrian.openpss.util.excessPriceCell
 import com.hendraanggrian.openpss.util.getResourceString
@@ -32,7 +36,8 @@ import javafx.scene.control.TableView.CONSTRAINED_RESIZE_POLICY
 import javafx.scene.control.TextArea
 import javafx.scene.image.ImageView
 import javafx.scene.text.Font.loadFont
-import javafx.util.converter.NumberStringConverter
+import kotlinx.nosql.equal
+import kotlinx.nosql.id
 import ktfx.application.later
 import ktfx.beans.binding.doubleBindingOf
 import ktfx.beans.binding.lessEq
@@ -62,25 +67,27 @@ import ktfx.scene.layout.heightPref
 import org.joda.time.DateTime
 
 class ReceiptDialog(
-    resourced: Resourced,
-    employee: Employee,
-    prefill: Receipt? = null
-) : Dialog<Receipt>(), Resourced by resourced {
+    controller: Controller,
+    private val prefill: Receipt? = null
+) : Dialog<Receipt>(), Resourced by controller {
 
     private lateinit var plateTable: TableView<Plate>
     private lateinit var offsetTable: TableView<Offset>
     private lateinit var otherTable: TableView<Other>
     private lateinit var noteArea: TextArea
 
-    private val dateTime: DateTime = dbDateTime
-    private val customerProperty: ObjectProperty<Customer> = SimpleObjectProperty()
-    private val totalProperty: DoubleProperty = SimpleDoubleProperty()
-
-    private val numberConverter = NumberStringConverter()
-    private val moneyConverter = MoneyStringConverter()
+    private val employee: Employee = transaction {
+        Employees.find { id.equal(prefill?.employeeId ?: controller.employeeId) }.single()
+    }!!
+    private val dateTime: DateTime = prefill?.dateTime ?: dbDateTime
+    private val customerProperty: ObjectProperty<Customer> = SimpleObjectProperty(when {
+        isEdit() -> transaction { Customers.find { id.equal(prefill!!.customerId) }.single() }
+        else -> null
+    })
+    private val totalProperty: DoubleProperty = SimpleDoubleProperty(prefill?.total ?: 0.0)
 
     init {
-        headerTitle = getString(R.string.add_receipt)
+        headerTitle = getString(if (!isEdit()) R.string.add_receipt else R.string.edit_receipt)
         graphicIcon = ImageView(R.image.ic_receipt)
         dialogPane.content = gridPane {
             gaps = 8
@@ -94,35 +101,36 @@ class ReceiptDialog(
             } col 1 row 1
             label(getString(R.string.customer)) col 0 row 2
             button {
+                isDisable = isEdit()
                 textProperty().bind(stringBindingOf(customerProperty) {
                     customerProperty.value?.toString() ?: getString(R.string.search_customer)
                 })
-                setOnAction { SearchCustomerDialog(resourced).showAndWait().ifPresent { customerProperty.set(it) } }
+                setOnAction { SearchCustomerDialog(this@ReceiptDialog).showAndWait().ifPresent { customerProperty.set(it) } }
             } col 1 row 2
             label(getString(R.string.plate)) col 0 row 3
             plateTable = receiptTableView({ AddPlateDialog(this@ReceiptDialog) }) {
                 column<String>(getString(R.string.type)) { typeCell() }
                 column<String>(getString(R.string.title)) { titleCell() }
-                column<String>(getString(R.string.qty)) { qtyCell(numberConverter) }
-                column<String>(getString(R.string.price)) { priceCell(moneyConverter) }
-                column<String>(getString(R.string.total)) { totalCell(moneyConverter) }
+                column<String>(getString(R.string.qty)) { qtyCell() }
+                column<String>(getString(R.string.price)) { priceCell() }
+                column<String>(getString(R.string.total)) { totalCell() }
             } col 1 row 3
             label(getString(R.string.offset)) col 0 row 4
             offsetTable = receiptTableView({ AddOffsetDialog(this@ReceiptDialog) }) {
                 column<String>(getString(R.string.type)) { typeCell() }
                 column<String>(getString(R.string.title)) { titleCell() }
-                column<String>(getString(R.string.qty)) { qtyCell(numberConverter) }
-                column<String>(getString(R.string.min_qty)) { minQtyCell(numberConverter) }
-                column<String>(getString(R.string.min_price)) { minPriceCell(moneyConverter) }
-                column<String>(getString(R.string.excess_price)) { excessPriceCell(moneyConverter) }
-                column<String>(getString(R.string.total)) { totalCell(moneyConverter) }
+                column<String>(getString(R.string.qty)) { qtyCell() }
+                column<String>(getString(R.string.min_qty)) { minQtyCell() }
+                column<String>(getString(R.string.min_price)) { minPriceCell() }
+                column<String>(getString(R.string.excess_price)) { excessPriceCell() }
+                column<String>(getString(R.string.total)) { totalCell() }
             } col 1 row 4
             label(getString(R.string.others)) col 0 row 5
             otherTable = receiptTableView({ AddOtherDialog(this@ReceiptDialog) }) {
                 column<String>(getString(R.string.title)) { titleCell() }
-                column<String>(getString(R.string.qty)) { qtyCell(numberConverter) }
-                column<String>(getString(R.string.price)) { priceCell(moneyConverter) }
-                column<String>(getString(R.string.total)) { totalCell(moneyConverter) }
+                column<String>(getString(R.string.qty)) { qtyCell() }
+                column<String>(getString(R.string.price)) { priceCell() }
+                column<String>(getString(R.string.total)) { totalCell() }
             } col 1 row 5
             totalProperty.bind(doubleBindingOf(plateTable.items, offsetTable.items, otherTable.items) {
                 plateTable.items.sumByDouble { it.total } +
@@ -134,7 +142,7 @@ class ReceiptDialog(
             label(getString(R.string.total)) col 0 row 7
             label {
                 font = loadFont(getResourceString(R.font.opensans_bold), 13.0)
-                textProperty().bind(stringBindingOf(totalProperty) { moneyConverter.toString(totalProperty.value) })
+                textProperty().bind(stringBindingOf(totalProperty) { currencyConverter.toString(totalProperty.value) })
             } col 1 row 7
         }
         cancelButton()
@@ -152,6 +160,8 @@ class ReceiptDialog(
             )
         }
     }
+
+    private fun isEdit(): Boolean = prefill != null
 
     private fun <S> LayoutManager<Node>.receiptTableView(
         newAddDialog: () -> Dialog<S>,

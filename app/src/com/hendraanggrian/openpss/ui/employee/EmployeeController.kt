@@ -54,7 +54,7 @@ class EmployeeController : Controller(), Refreshable, Addable {
         }
 
         nameColumn.setCellValueFactory { it.value.name.toProperty() }
-        fullAccessColumn.doneCell { fullAccess }
+        fullAccessColumn.doneCell(128) { fullAccess }
         refresh()
     }
 

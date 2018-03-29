@@ -2,9 +2,10 @@ package com.hendraanggrian.openpss.ui.wage
 
 import com.hendraanggrian.openpss.BuildConfig.DEBUG
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.converters.MoneyStringConverter
 import com.hendraanggrian.openpss.io.WageContentFolder
 import com.hendraanggrian.openpss.io.WageFile
+import com.hendraanggrian.openpss.currencyConverter
+import com.hendraanggrian.openpss.numberConverter
 import com.hendraanggrian.openpss.scene.layout.TimeBox
 import com.hendraanggrian.openpss.time.PATTERN_DATE
 import com.hendraanggrian.openpss.time.PATTERN_DATETIME
@@ -28,7 +29,6 @@ import javafx.scene.control.TreeTableColumn
 import javafx.scene.control.TreeTableView
 import javafx.scene.layout.VBox
 import javafx.scene.text.Font.loadFont
-import javafx.util.converter.NumberStringConverter
 import ktfx.application.later
 import ktfx.beans.binding.booleanBindingOf
 import ktfx.beans.binding.or
@@ -70,9 +70,6 @@ class WageRecordController : Controller() {
     @FXML lateinit var overtimeIncomeColumn: TreeTableColumn<Record, Double>
     @FXML lateinit var totalColumn: TreeTableColumn<Record, Double>
 
-    private val numberConverter = NumberStringConverter()
-    private val moneyConverter = MoneyStringConverter()
-
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
         undoButton.disableProperty().bind(undoButton.items.emptyBinding())
@@ -101,7 +98,7 @@ class WageRecordController : Controller() {
                 onUpdate { any, empty ->
                     if (any != null && !empty) graphic = label(when (it) {
                         dailyColumn, overtimeColumn -> numberConverter.toString(any as Number)
-                        dailyIncomeColumn, overtimeIncomeColumn, totalColumn -> moneyConverter.toString(any as Number)
+                        dailyIncomeColumn, overtimeIncomeColumn, totalColumn -> currencyConverter.toString(any as Number)
                         else -> any.toString()
                     }) {
                         font = loadFont(getResourceString(when {
@@ -128,7 +125,7 @@ class WageRecordController : Controller() {
             }
             totalLabel.textProperty().bind(
                 stringBindingOf(*records.filter { it.isChild() }.map { it.totalProperty }.toTypedArray()) {
-                    "${getString(R.string.total)} ${moneyConverter.toString(records
+                    "${getString(R.string.total)} ${currencyConverter.toString(records
                         .filter { it.isTotal() }
                         .sumByDouble { it.totalProperty.value })}"
                 })

@@ -10,6 +10,7 @@ import com.hendraanggrian.openpss.ui.Addable
 import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.main.ResetPasswordDialog
+import com.hendraanggrian.openpss.util.doneCell
 import com.hendraanggrian.openpss.util.tidy
 import javafx.fxml.FXML
 import javafx.scene.control.Button
@@ -26,8 +27,6 @@ import ktfx.application.exit
 import ktfx.beans.property.toProperty
 import ktfx.collections.toMutableObservableList
 import ktfx.coroutines.FX
-import ktfx.coroutines.onEditCommit
-import ktfx.scene.control.choiceBoxCellFactory
 import ktfx.scene.control.confirmAlert
 import ktfx.scene.control.infoAlert
 import java.net.URL
@@ -42,7 +41,7 @@ class EmployeeController : Controller(), Refreshable, Addable {
 
     @FXML lateinit var employeeTable: TableView<Employee>
     @FXML lateinit var nameColumn: TableColumn<Employee, String>
-    @FXML lateinit var fullAccessColumn: TableColumn<Employee, String>
+    @FXML lateinit var fullAccessColumn: TableColumn<Employee, Boolean>
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
@@ -55,15 +54,7 @@ class EmployeeController : Controller(), Refreshable, Addable {
         }
 
         nameColumn.setCellValueFactory { it.value.name.toProperty() }
-        fullAccessColumn.setCellValueFactory {
-            getString(if (it.value.fullAccess) R.string.yes else R.string.no).toProperty()
-        }
-        fullAccessColumn.choiceBoxCellFactory(*getStringArray(R.string.yes, R.string.no))
-        fullAccessColumn.onEditCommit { event ->
-            val result = event.newValue == getString(R.string.yes)
-            transaction { Employees.find { name.equal(event.rowValue.name) }.projection { fullAccess }.update(result) }
-            event.rowValue.fullAccess = result
-        }
+        fullAccessColumn.doneCell { fullAccess }
         refresh()
     }
 

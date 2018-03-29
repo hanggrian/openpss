@@ -182,10 +182,9 @@ class CustomerController : Controller(), Refreshable, Addable {
             when {
                 Customers.find { name.equal(it) }.isNotEmpty() ->
                     errorAlert(getString(R.string.name_taken)).showAndWait()
-                else -> {
-                    val customer = Customer.new(it.tidy())
-                    customer.id = Customers.insert(customer)
-                    customerList.items.add(0, customer)
+                else -> Customer.new(it.tidy()).let {
+                    it.id = Customers.insert(it)
+                    customerList.items.add(it)
                     customerList.selectionModel.selectFirst()
                 }
             }

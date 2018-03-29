@@ -11,15 +11,15 @@ import com.hendraanggrian.openpss.db.schema.Plate
 import com.hendraanggrian.openpss.db.schema.Receipt
 import com.hendraanggrian.openpss.time.PATTERN_DATE
 import com.hendraanggrian.openpss.ui.Resourced
-import com.hendraanggrian.openpss.util.excessPriceCellValueFactory
+import com.hendraanggrian.openpss.util.excessPriceCell
 import com.hendraanggrian.openpss.util.getResourceString
-import com.hendraanggrian.openpss.util.minPriceCellValueFactory
-import com.hendraanggrian.openpss.util.minQtyCellValueFactory
-import com.hendraanggrian.openpss.util.priceCellValueFactory
-import com.hendraanggrian.openpss.util.qtyCellValueFactory
-import com.hendraanggrian.openpss.util.titleCellValueFactory
-import com.hendraanggrian.openpss.util.totalCellValueFactory
-import com.hendraanggrian.openpss.util.typeCellValueFactory
+import com.hendraanggrian.openpss.util.minPriceCell
+import com.hendraanggrian.openpss.util.minQtyCell
+import com.hendraanggrian.openpss.util.priceCell
+import com.hendraanggrian.openpss.util.qtyCell
+import com.hendraanggrian.openpss.util.titleCell
+import com.hendraanggrian.openpss.util.totalCell
+import com.hendraanggrian.openpss.util.typeCell
 import javafx.beans.property.DoubleProperty
 import javafx.beans.property.ObjectProperty
 import javafx.beans.property.SimpleDoubleProperty
@@ -101,28 +101,28 @@ class ReceiptDialog(
             } col 1 row 2
             label(getString(R.string.plate)) col 0 row 3
             plateTable = receiptTableView({ AddPlateDialog(this@ReceiptDialog) }) {
-                column<String>(getString(R.string.type)) { typeCellValueFactory() }
-                column<String>(getString(R.string.title)) { titleCellValueFactory() }
-                column<String>(getString(R.string.qty)) { qtyCellValueFactory(numberConverter) }
-                column<String>(getString(R.string.price)) { priceCellValueFactory(moneyConverter) }
-                column<String>(getString(R.string.total)) { totalCellValueFactory(moneyConverter) }
+                column<String>(getString(R.string.type)) { typeCell() }
+                column<String>(getString(R.string.title)) { titleCell() }
+                column<String>(getString(R.string.qty)) { qtyCell(numberConverter) }
+                column<String>(getString(R.string.price)) { priceCell(moneyConverter) }
+                column<String>(getString(R.string.total)) { totalCell(moneyConverter) }
             } col 1 row 3
             label(getString(R.string.offset)) col 0 row 4
             offsetTable = receiptTableView({ AddOffsetDialog(this@ReceiptDialog) }) {
-                column<String>(getString(R.string.type)) { typeCellValueFactory() }
-                column<String>(getString(R.string.title)) { titleCellValueFactory() }
-                column<String>(getString(R.string.qty)) { qtyCellValueFactory(numberConverter) }
-                column<String>(getString(R.string.min_qty)) { minQtyCellValueFactory(numberConverter) }
-                column<String>(getString(R.string.min_price)) { minPriceCellValueFactory(moneyConverter) }
-                column<String>(getString(R.string.excess_price)) { excessPriceCellValueFactory(moneyConverter) }
-                column<String>(getString(R.string.total)) { totalCellValueFactory(moneyConverter) }
+                column<String>(getString(R.string.type)) { typeCell() }
+                column<String>(getString(R.string.title)) { titleCell() }
+                column<String>(getString(R.string.qty)) { qtyCell(numberConverter) }
+                column<String>(getString(R.string.min_qty)) { minQtyCell(numberConverter) }
+                column<String>(getString(R.string.min_price)) { minPriceCell(moneyConverter) }
+                column<String>(getString(R.string.excess_price)) { excessPriceCell(moneyConverter) }
+                column<String>(getString(R.string.total)) { totalCell(moneyConverter) }
             } col 1 row 4
             label(getString(R.string.others)) col 0 row 5
             otherTable = receiptTableView({ AddOtherDialog(this@ReceiptDialog) }) {
-                column<String>(getString(R.string.title)) { titleCellValueFactory() }
-                column<String>(getString(R.string.qty)) { qtyCellValueFactory(numberConverter) }
-                column<String>(getString(R.string.price)) { priceCellValueFactory(moneyConverter) }
-                column<String>(getString(R.string.total)) { totalCellValueFactory(moneyConverter) }
+                column<String>(getString(R.string.title)) { titleCell() }
+                column<String>(getString(R.string.qty)) { qtyCell(numberConverter) }
+                column<String>(getString(R.string.price)) { priceCell(moneyConverter) }
+                column<String>(getString(R.string.total)) { totalCell(moneyConverter) }
             } col 1 row 5
             totalProperty.bind(doubleBindingOf(plateTable.items, offsetTable.items, otherTable.items) {
                 plateTable.items.sumByDouble { it.total } +
@@ -147,8 +147,8 @@ class ReceiptDialog(
                 plateTable.items,
                 offsetTable.items,
                 otherTable.items,
-                noteArea.text,
-                totalProperty.value
+                totalProperty.value,
+                noteArea.text
             )
         }
     }
@@ -160,10 +160,10 @@ class ReceiptDialog(
         heightPref = 96
         columnResizePolicy = CONSTRAINED_RESIZE_POLICY
         columns(columnsBuilder)
-        columns.forEachIndexed { i, column ->
-            val minWidth = 384.0 / columns.size
-            column.minWidth = when (i) {
-                1 -> 256.0
+        columns.forEach {
+            val minWidth = 768.0 / columns.size
+            it.minWidth = when (it.text) {
+                getString(R.string.title) -> 256.0
                 else -> minWidth
             }
         }

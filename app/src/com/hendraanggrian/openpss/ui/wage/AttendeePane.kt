@@ -151,7 +151,7 @@ class AttendeePane(
                 }
             }
             menuItem(getString(R.string.edit)) {
-                disableProperty().bind(listView.selectionModel.selectedItems.emptyBinding())
+                bindDisable()
                 onAction {
                     DateTimeDialog(this@AttendeePane, getString(R.string.edit_record),
                         listView.selectionModel.selectedItem)
@@ -163,7 +163,7 @@ class AttendeePane(
                 }
             }
             menuItem(getString(R.string.delete)) {
-                disableProperty().bind(listView.selectionModel.selectedItems.emptyBinding())
+                bindDisable()
                 onAction { listView.items.remove(listView.selectionModel.selectedItem) }
             }
             separatorMenuItem()
@@ -196,6 +196,8 @@ class AttendeePane(
             graphicTextGap = width - graphicWidth - padding.left - padding.right - labelWidth
         }
     }
+
+    private fun MenuItem.bindDisable() = disableProperty().bind(listView.selectionModel.selectedItems.emptyBinding())
 }
 
 @Suppress("NOTHING_TO_INLINE")

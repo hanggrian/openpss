@@ -4,6 +4,7 @@ import com.hendraanggrian.openpss.db.Document
 import com.hendraanggrian.openpss.db.Order
 import com.hendraanggrian.openpss.db.Priced
 import com.hendraanggrian.openpss.db.SplitPriced
+import com.hendraanggrian.openpss.db.Totaled
 import com.hendraanggrian.openpss.db.Typed
 import com.hendraanggrian.openpss.db.dbDateTime
 import kotlinx.nosql.Id
@@ -68,11 +69,11 @@ data class Receipt(
     var plates: List<Plate>,
     var offsets: List<Offset>,
     var others: List<Other>,
-    var total: Double,
-    var note: String,
+    override var total: Double,
     var payments: List<Payment>,
+    var note: String,
     var printed: Boolean
-) : Document<Receipts> {
+) : Document<Receipts>, Totaled {
 
     override lateinit var id: Id<String, Receipts>
 
@@ -86,9 +87,9 @@ data class Receipt(
             plates: List<Plate>,
             offsets: List<Offset>,
             others: List<Other>,
-            note: String,
-            total: Double
-        ): Receipt = Receipt(employeeId, customerId, dateTime, plates, offsets, others, total, note, listOf(), false)
+            total: Double,
+            note: String
+        ): Receipt = Receipt(employeeId, customerId, dateTime, plates, offsets, others, total, listOf(), note, false)
     }
 }
 

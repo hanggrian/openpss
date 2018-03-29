@@ -141,16 +141,15 @@ class ReceiptDialog(
         okButton { disableProperty().bind(customerProperty.isNull or totalProperty.lessEq(0)) }
         setResultConverter {
             if (it == CANCEL) null else Receipt.new(
+                employee.id,
+                customerProperty.value.id,
                 dateTime,
                 plateTable.items,
                 offsetTable.items,
                 otherTable.items,
                 noteArea.text,
                 totalProperty.value
-            ).apply {
-                employeeId = employee.id
-                customerId = customerProperty.value.id
-            }
+            )
         }
     }
 

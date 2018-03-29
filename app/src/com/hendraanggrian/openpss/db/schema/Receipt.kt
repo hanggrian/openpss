@@ -1,9 +1,8 @@
 package com.hendraanggrian.openpss.db.schema
 
 import com.hendraanggrian.openpss.db.Document
-import com.hendraanggrian.openpss.db.OrderListColumn
-import com.hendraanggrian.openpss.db.Priced
 import com.hendraanggrian.openpss.db.Order
+import com.hendraanggrian.openpss.db.Priced
 import com.hendraanggrian.openpss.db.SplitPriced
 import com.hendraanggrian.openpss.db.Typed
 import com.hendraanggrian.openpss.db.dbDateTime
@@ -30,20 +29,29 @@ object Receipts : DocumentSchema<Receipt>("receipts", Receipt::class) {
     val payments = PaymentColumn()
     val printed = boolean("printed")
 
-    class PlateColumn : OrderListColumn<Plate, Receipts>("plates", Plate::class) {
+    class PlateColumn : ListColumn<Plate, Receipts>("plates", Plate::class) {
         val type = string("type")
+        val title = string("title")
+        val qty = integer("qty")
         val price = double("price")
+        val total = double("total")
     }
 
-    class OffsetColumn : OrderListColumn<Offset, Receipts>("offsets", Offset::class) {
+    class OffsetColumn : ListColumn<Offset, Receipts>("offsets", Offset::class) {
         val type = string("type")
+        val title = string("title")
+        val qty = integer("qty")
         val minQty = integer("min_qty")
         val minPrice = double("min_price")
         val excessPrice = double("excess_price")
+        val total = double("total")
     }
 
-    class OtherColumn : OrderListColumn<Other, Receipts>("others", Other::class) {
+    class OtherColumn : ListColumn<Other, Receipts>("others", Other::class) {
+        val title = string("title")
+        val qty = integer("qty")
         val price = double("price")
+        val total = double("total")
     }
 
     class PaymentColumn : ListColumn<Payment, Receipts>("payments", Payment::class) {
@@ -54,6 +62,8 @@ object Receipts : DocumentSchema<Receipt>("receipts", Receipt::class) {
 }
 
 data class Receipt(
+    val employeeId: Id<String, Employees>,
+    val customerId: Id<String, Customers>,
     val dateTime: DateTime,
     var plates: List<Plate>,
     var offsets: List<Offset>,
@@ -65,20 +75,20 @@ data class Receipt(
 ) : Document<Receipts> {
 
     override lateinit var id: Id<String, Receipts>
-    lateinit var employeeId: Id<String, Employees>
-    lateinit var customerId: Id<String, Customers>
 
     fun isPaid(): Boolean = payments.sumByDouble { it.value } >= total
 
     companion object {
         fun new(
+            employeeId: Id<String, Employees>,
+            customerId: Id<String, Customers>,
             dateTime: DateTime,
             plates: List<Plate>,
             offsets: List<Offset>,
             others: List<Other>,
             note: String,
             total: Double
-        ): Receipt = Receipt(dateTime, plates, offsets, others, total, note, listOf(), false)
+        ): Receipt = Receipt(employeeId, customerId, dateTime, plates, offsets, others, total, note, listOf(), false)
     }
 }
 

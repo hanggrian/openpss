@@ -27,11 +27,5 @@ object DatabaseSpec : Spek({
                 error(e.message.toString())
             }
         }
-        /*transaction {
-            val id = PlateOrders.insert(PlateOrder(null, 10, 100.0, 1000.0))
-            it("should return id") {
-                assertNotNull(id)
-            }
-        }*/
     }
 })

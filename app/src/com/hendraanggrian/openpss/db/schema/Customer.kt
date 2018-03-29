@@ -2,6 +2,7 @@ package com.hendraanggrian.openpss.db.schema
 
 import com.hendraanggrian.openpss.db.NamedDocument
 import com.hendraanggrian.openpss.db.NamedDocumentSchema
+import com.hendraanggrian.openpss.db.Typed
 import com.hendraanggrian.openpss.db.dbDate
 import javafx.collections.ObservableList
 import kotlinx.nosql.Id
@@ -39,9 +40,9 @@ data class Customer(
 }
 
 data class Contact(
-    var type: String,
+    override var type: String,
     var value: String
-) {
+) : Typed {
     companion object {
         private const val TYPE_EMAIL = "email"
         private const val TYPE_PHONE = "phone"

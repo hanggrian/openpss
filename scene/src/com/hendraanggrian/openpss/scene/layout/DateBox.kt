@@ -20,8 +20,6 @@ import ktfx.layouts.LayoutManager
 import ktfx.layouts._HBox
 import ktfx.layouts.button
 import ktfx.layouts.datePicker
-import ktfx.scene.layout.spacings
-import ktfx.scene.layout.widthMax
 import org.joda.time.LocalDate
 import org.joda.time.LocalDate.now
 
@@ -41,7 +39,7 @@ open class DateBox(prefill: LocalDate = now()) : _HBox() {
 
     init {
         alignment = CENTER
-        spacings = 8
+        spacing = 8.0
 
         previousButton = button(graphic = ImageView(R.image.btn_previous)) {
             onAction { picker.value = picker.value.minusDays(1) }
@@ -49,7 +47,7 @@ open class DateBox(prefill: LocalDate = now()) : _HBox() {
         picker = datePicker {
             value = prefill.toJava()
             isEditable = false
-            widthMax = 116
+            maxWidth = 116.0
         }
         dateProperty.bind(bindingOf(picker.valueProperty()) { picker.value.toJoda() })
         nextButton = button(graphic = ImageView(R.image.btn_next)) {

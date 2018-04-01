@@ -16,7 +16,7 @@ import ktfx.layouts.passwordField
 import ktfx.scene.control.cancelButton
 import ktfx.scene.control.icon
 import ktfx.scene.control.okButton
-import ktfx.scene.layout.gaps
+import ktfx.scene.layout.gap
 
 class ResetPasswordDialog(resourced: Resourced) : Dialog<String>(), Resourced by resourced {
 
@@ -30,7 +30,7 @@ class ResetPasswordDialog(resourced: Resourced) : Dialog<String>(), Resourced by
         graphic = ImageView(R.image.ic_password)
 
         dialogPane.content = gridPane {
-            gaps = 8
+            gap = 8.0
             label(getString(R.string.password)) col 0 row 0
             changePasswordField = passwordField { promptText = getString(R.string.password) } col 1 row 0
             label(getString(R.string.change_password)) col 0 row 1

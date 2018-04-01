@@ -19,7 +19,7 @@ import ktfx.layouts.label
 import ktfx.scene.control.cancelButton
 import ktfx.scene.control.dialog
 import ktfx.scene.control.okButton
-import ktfx.scene.layout.gaps
+import ktfx.scene.layout.gap
 import org.joda.time.LocalTime
 import java.net.URL
 import java.util.ResourceBundle
@@ -40,7 +40,7 @@ class WageRecessController : SimpleTableController<Recess, Recesses>(Recesses) {
         lateinit var startBox: TimeBox
         lateinit var endBox: TimeBox
         dialogPane.content = gridPane {
-            gaps = 8
+            gap = 8.0
             label(getString(R.string.start)) col 0 row 0
             startBox = timeBox() col 1 row 0
             label(getString(R.string.end)) col 0 row 1

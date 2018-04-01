@@ -48,8 +48,7 @@ import ktfx.scene.control.customButton
 import ktfx.scene.control.errorAlert
 import ktfx.scene.control.icon
 import ktfx.scene.control.infoAlert
-import ktfx.scene.layout.gaps
-import ktfx.scene.layout.widthPref
+import ktfx.scene.layout.gap
 
 class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced {
 
@@ -68,7 +67,7 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced 
         graphic = ImageView(R.image.ic_launcher)
         isResizable = false
         dialogPane.content = gridPane {
-            gaps = 8
+            gap = 8.0
             label(getString(R.string.language)) col 0 row 0
             choiceBox(Language.values().toObservableList()) {
                 maxWidth = Double.MAX_VALUE
@@ -81,12 +80,12 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced 
                         later { infoAlert(getString(R.string.please_restart)).showAndWait().ifPresent { exit() } }
                     }
                 }
-            } col 1 row 0 colSpan 2
+            } col 1 row 0 colStretch 2
             label(getString(R.string.employee)) col 0 row 1
             employeeField = textField {
                 promptText = getString(R.string.employee)
                 textProperty().bindBidirectional(ConfigFile.employee)
-            } col 1 row 1 colSpan 2
+            } col 1 row 1 colStretch 2
             label(getString(R.string.password)) col 0 row 2
             anchorPane {
                 passwordField1 = passwordField { promptText = getString(R.string.password) }
@@ -109,16 +108,16 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced 
             } col 2 row 2
         }
         dialogPane.expandableContent = gridPane {
-            gaps = 8
+            gap = 8.0
             label(getString(R.string.server_host_port)) col 0 row 0
             serverHostField = hostField {
                 promptText = getString(R.string.ip_address)
-                widthPref = 128
+                prefWidth = 128.0
                 textProperty().bindBidirectional(MongoFile.host)
             } col 1 row 0
             serverPortField = intField {
                 promptText = getString(R.string.port)
-                widthPref = 64
+                prefWidth = 64.0
                 textProperty().bindBidirectional(MongoFile.port)
                 if (value == 0) text = defaultPort().toString()
             } col 2 row 0
@@ -126,18 +125,18 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced 
             serverUserField = textField {
                 promptText = getString(R.string.server_user)
                 textProperty().bindBidirectional(MongoFile.user)
-            } col 1 row 1 colSpan 2
+            } col 1 row 1 colStretch 2
             label(getString(R.string.server_password)) col 0 row 2
             serverPasswordField = passwordField {
                 promptText = getString(R.string.server_password)
                 textProperty().bindBidirectional(MongoFile.password)
-            } col 1 row 2 colSpan 2
+            } col 1 row 2 colStretch 2
             hbox {
                 alignment = CENTER_RIGHT
                 hyperlink(getString(R.string.about)) {
                     onAction { AboutDialog(this@LoginDialog).showAndWait() }
-                } marginLeft 8
-            } col 0 row 3 colSpan 3
+                } marginLeft 8.0
+            } col 0 row 3 colStretch 3
         }
         cancelButton()
         customButton(getString(R.string.login), OK_DONE) {

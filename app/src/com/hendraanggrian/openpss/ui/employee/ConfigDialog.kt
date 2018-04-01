@@ -20,7 +20,6 @@ import ktfx.scene.control.closeButton
 import ktfx.scene.control.graphicIcon
 import ktfx.scene.control.headerTitle
 import ktfx.scene.control.textFieldCellFactory
-import ktfx.scene.layout.spacings
 
 class ConfigDialog(resourced: Resourced) : Dialog<Unit>(), Resourced by resourced {
 
@@ -28,7 +27,7 @@ class ConfigDialog(resourced: Resourced) : Dialog<Unit>(), Resourced by resource
         headerTitle = getString(R.string.config)
         graphicIcon = ImageView(R.image.ic_config)
         dialogPane.content = vbox {
-            spacings = 8
+            spacing = 8.0
             label(getString(R.string.config_detail))
             tableView(transaction { Configs.find().toObservableList() }!!) {
                 isEditable = true

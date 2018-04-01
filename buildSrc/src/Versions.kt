@@ -5,7 +5,7 @@ const val coroutinesVersion = "0.22.5"
 const val rVersion = "0.8"
 const val buildconfigVersion = "0.12"
 const val packrVersion = "0.3"
-const val ktfxVersion = "0.2.4"
+const val ktfxVersion = "0.2.5"
 const val commonsLangVersion = "3.7"
 const val poiVersion = "3.17"
 

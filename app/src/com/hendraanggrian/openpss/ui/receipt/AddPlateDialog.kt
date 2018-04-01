@@ -27,7 +27,7 @@ import ktfx.scene.control.cancelButton
 import ktfx.scene.control.graphicIcon
 import ktfx.scene.control.headerTitle
 import ktfx.scene.control.okButton
-import ktfx.scene.layout.gaps
+import ktfx.scene.layout.gap
 
 class AddPlateDialog(resourced: Resourced) : Dialog<Plate>(), Resourced by resourced {
 
@@ -40,7 +40,7 @@ class AddPlateDialog(resourced: Resourced) : Dialog<Plate>(), Resourced by resou
         headerTitle = getString(R.string.add_plate)
         graphicIcon = ImageView(R.image.ic_plate)
         dialogPane.content = gridPane {
-            gaps = 8
+            gap = 8.0
             label(getString(R.string.type)) col 0 row 0
             typeChoice = choiceBox(transaction { PlatePrices.find().toObservableList() }!!) {
                 valueProperty().listener { _, _, plate ->

@@ -17,7 +17,7 @@ import ktfx.scene.control.cancelButton
 import ktfx.scene.control.graphicIcon
 import ktfx.scene.control.headerTitle
 import ktfx.scene.control.okButton
-import ktfx.scene.layout.gaps
+import ktfx.scene.layout.gap
 import org.joda.time.DateTime
 import org.joda.time.DateTime.now
 
@@ -34,7 +34,7 @@ class DateTimeDialog(
         headerTitle = title
         graphicIcon = ImageView(R.image.ic_date)
         dialogPane.content = gridPane {
-            gaps = 8
+            gap = 8.0
             dateBox = dateBox(prefill.toLocalDate()) row 0 col 1
             button("-$WORKING_HOURS") {
                 onAction { repeat(WORKING_HOURS) { timeBox.previousButton.fire() } }

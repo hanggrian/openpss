@@ -27,7 +27,7 @@ import ktfx.scene.control.cancelButton
 import ktfx.scene.control.graphicIcon
 import ktfx.scene.control.headerTitle
 import ktfx.scene.control.okButton
-import ktfx.scene.layout.gaps
+import ktfx.scene.layout.gap
 
 class AddOffsetDialog(resourced: Resourced) : Dialog<Offset>(), Resourced by resourced {
 
@@ -42,7 +42,7 @@ class AddOffsetDialog(resourced: Resourced) : Dialog<Offset>(), Resourced by res
         headerTitle = getString(R.string.add_offset)
         graphicIcon = ImageView(R.image.ic_offset)
         dialogPane.content = gridPane {
-            gaps = 8
+            gap = 8.0
             label(getString(R.string.type)) col 0 row 0
             typeChoice = choiceBox(transaction { OffsetPrices.find().toObservableList() }!!) {
                 valueProperty().listener { _, _, offset ->

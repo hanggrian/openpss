@@ -30,8 +30,7 @@ import ktfx.listeners.cellFactory
 import ktfx.scene.control.closeButton
 import ktfx.scene.control.customButton
 import ktfx.scene.control.icon
-import ktfx.scene.layout.heightPref
-import ktfx.scene.layout.paddings
+import ktfx.scene.layout.paddingAll
 
 class AboutDialog(resourced: Resourced) : Dialog<Unit>(), Resourced by resourced {
 
@@ -41,7 +40,7 @@ class AboutDialog(resourced: Resourced) : Dialog<Unit>(), Resourced by resourced
         icon = Image(R.image.menu_about)
         title = getString(R.string.about)
         dialogPane.content = hbox {
-            paddings = 48
+            paddingAll = 48.0
             imageView(Image(R.image.logo_launcher))
             vbox {
                 alignment = CENTER_LEFT
@@ -51,33 +50,33 @@ class AboutDialog(resourced: Resourced) : Dialog<Unit>(), Resourced by resourced
                 }
                 text("${getString(R.string.version)} $VERSION") {
                     font = loadFont(getResourceString(R.font.opensans_regular), 12.0)
-                } marginTop 2
+                } marginTop 2.0
                 text(getString(R.string.about_notice)) {
                     font = loadFont(getResourceString(R.font.opensans_bold), 12.0)
-                } marginTop 20
+                } marginTop 20.0
                 textFlow {
                     text("${getString(R.string.powered_by)}  ") {
                         font = loadFont(getResourceString(R.font.opensans_bold), 12.0)
                     }
                     text("JavaFX") { font = loadFont(getResourceString(R.font.opensans_regular), 12.0) }
-                } marginTop 4
+                } marginTop 4.0
                 textFlow {
                     text("${getString(R.string.author)}  ") {
                         font = loadFont(getResourceString(R.font.opensans_bold), 12.0)
                     }
                     text("Hendra Anggrian") { font = loadFont(getResourceString(R.font.opensans_regular), 12.0) }
-                } marginTop 4
+                } marginTop 4.0
                 hbox {
                     button("GitHub") { onAction { browseUrl(WEBSITE) } }
                     button(getString(R.string.check_for_updates)) {
                         onAction { browseUrl("$WEBSITE/releases") }
-                    } marginLeft 8
-                } marginTop 20
-            } marginLeft 48
+                    } marginLeft 8.0
+                } marginTop 20.0
+            } marginLeft 48.0
         }
         dialogPane.expandableContent = hbox {
             licenseList = ktfx.layouts.listView {
-                heightPref = 256
+                prefHeight = 256.0
                 items = License.values().toObservableList()
                 cellFactory {
                     onUpdate { license, empty ->
@@ -90,7 +89,7 @@ class AboutDialog(resourced: Resourced) : Dialog<Unit>(), Resourced by resourced
             }
             titledPane(getString(R.string.open_source_software), licenseList) { isCollapsible = false }
             titledPane(getString(R.string.license), ktfx.layouts.textArea {
-                heightPref = 256
+                prefHeight = 256.0
                 isEditable = false
                 textProperty().bind(stringBindingOf(licenseList.selectionModel.selectedIndexProperty()) {
                     licenseList.selectionModel.selectedItem?.content ?: getString(R.string.select_license)

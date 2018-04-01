@@ -45,9 +45,8 @@ import ktfx.layouts.separatorMenuItem
 import ktfx.layouts.vbox
 import ktfx.listeners.cellFactory
 import ktfx.scene.input.isDelete
-import ktfx.scene.layout.gaps
-import ktfx.scene.layout.paddings
-import ktfx.scene.layout.widthPref
+import ktfx.scene.layout.gap
+import ktfx.scene.layout.paddingAll
 import org.joda.time.DateTime
 import kotlin.math.absoluteValue
 
@@ -66,27 +65,27 @@ class AttendeePane(
         isCollapsible = false
         content = vbox {
             gridPane {
-                gaps = 4
-                paddings = 8
+                gap = 4.0
+                paddingAll = 8.0
                 attendee.role?.let { role ->
-                    label(getString(R.string.role)) col 0 row 0 marginRight 4
-                    label(role) col 1 row 0 colSpan 2
+                    label(getString(R.string.role)) col 0 row 0 marginRight 4.0
+                    label(role) col 1 row 0 colStretch 2
                 }
-                label(getString(R.string.income)) col 0 row 1 marginRight 4
+                label(getString(R.string.income)) col 0 row 1 marginRight 4.0
                 intField {
-                    widthPref = 88
+                    prefWidth = 88.0
                     promptText = getString(R.string.income)
                     valueProperty.bindBidirectional(attendee.dailyProperty)
                 } col 1 row 1
                 label("@${getString(R.string.day)}") { font = Font.font(9.0) } col 2 row 1
-                label(getString(R.string.overtime)) col 0 row 2 marginRight 4
+                label(getString(R.string.overtime)) col 0 row 2 marginRight 4.0
                 intField {
-                    widthPref = 88
+                    prefWidth = 88.0
                     promptText = getString(R.string.overtime)
                     valueProperty.bindBidirectional(attendee.hourlyOvertimeProperty)
                 } col 1 row 2
                 label("@${getString(R.string.hour)}") { font = Font.font(9.0) } col 2 row 2
-                label(getString(R.string.recess)) col 0 row 3 marginRight 4
+                label(getString(R.string.recess)) col 0 row 3 marginRight 4.0
                 vbox {
                     transaction {
                         Recesses.find().forEach { recess ->
@@ -96,13 +95,13 @@ class AttendeePane(
                                     listView.forceRefresh()
                                 }
                                 isSelected = true
-                            } marginTop if (children.size > 1) 4 else 0
+                            } marginTop if (children.size > 1) 4.0 else 0.0
                         }
                     }
-                } col 1 row 3 colSpan 2
+                } col 1 row 3 colStretch 2
             }
             listView = listView(attendee.attendances) {
-                widthPref = 128
+                prefWidth = 128.0
                 cellFactory {
                     onUpdate { dateTime, empty ->
                         clear()

@@ -55,8 +55,7 @@ import ktfx.scene.control.dialog
 import ktfx.scene.control.errorAlert
 import ktfx.scene.control.inputDialog
 import ktfx.scene.control.okButton
-import ktfx.scene.layout.gaps
-import ktfx.scene.layout.sizeMax
+import ktfx.scene.layout.gap
 import java.net.URL
 import java.util.ResourceBundle
 import kotlin.math.ceil
@@ -77,7 +76,7 @@ class CustomerController : Controller(), Refreshable, Addable {
 
     private lateinit var customerList: ListView<Customer>
     private val noteLabelGraphic = button(graphic = ImageView(R.image.btn_edit)) {
-        sizeMax = 24
+        setMaxSize(24.0, 24.0)
         onAction {
             inputDialog(getString(R.string.edit_customer), ImageView(R.image.ic_user), customer!!.note) {
                 contentText = getString(R.string.note)
@@ -107,7 +106,7 @@ class CustomerController : Controller(), Refreshable, Addable {
                         lateinit var typeChoice: ChoiceBox<String>
                         lateinit var contactField: TextField
                         dialogPane.content = gridPane {
-                            gaps = 8
+                            gap = 8.0
                             label(getString(R.string.type)) col 0 row 0
                             typeChoice = choiceBox(Contact.listTypes()) col 1 row 0
                             label(getString(R.string.contact)) col 0 row 1

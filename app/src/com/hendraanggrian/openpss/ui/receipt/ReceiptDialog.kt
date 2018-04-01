@@ -57,8 +57,7 @@ import ktfx.scene.control.graphicIcon
 import ktfx.scene.control.headerTitle
 import ktfx.scene.control.okButton
 import ktfx.scene.input.isDelete
-import ktfx.scene.layout.gaps
-import ktfx.scene.layout.heightPref
+import ktfx.scene.layout.gap
 import org.joda.time.DateTime
 
 class ReceiptDialog(
@@ -83,7 +82,7 @@ class ReceiptDialog(
         headerTitle = getString(R.string.add_receipt)
         graphicIcon = ImageView(R.image.ic_receipt)
         dialogPane.content = gridPane {
-            gaps = 8
+            gap = 8.0
             label(getString(R.string.employee)) col 0 row 0
             label(employee.name) {
                 font = loadFont(getResourceString(R.font.opensans_bold), 13.0)
@@ -130,7 +129,7 @@ class ReceiptDialog(
                     otherTable.items.sumByDouble { it.total }
             })
             label(getString(R.string.note)) col 0 row 6
-            noteArea = textArea { heightPref = 48 } col 1 row 6
+            noteArea = textArea { prefHeight = 48.0 } col 1 row 6
             label(getString(R.string.total)) col 0 row 7
             label {
                 font = loadFont(getResourceString(R.font.opensans_bold), 13.0)
@@ -157,7 +156,7 @@ class ReceiptDialog(
         newAddDialog: () -> Dialog<S>,
         columnsBuilder: TableColumnsBuilder<S>.() -> Unit
     ): TableView<S> = tableView {
-        heightPref = 96
+        prefHeight = 96.0
         columnResizePolicy = CONSTRAINED_RESIZE_POLICY
         columns(columnsBuilder)
         columns.forEach {

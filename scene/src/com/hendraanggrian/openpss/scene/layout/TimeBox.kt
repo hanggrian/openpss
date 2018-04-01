@@ -20,8 +20,6 @@ import ktfx.layouts.LayoutManager
 import ktfx.layouts._HBox
 import ktfx.layouts.button
 import ktfx.layouts.label
-import ktfx.scene.layout.spacings
-import ktfx.scene.layout.widthMax
 import org.joda.time.LocalTime
 import org.joda.time.LocalTime.MIDNIGHT
 
@@ -43,7 +41,7 @@ open class TimeBox(prefill: LocalTime = MIDNIGHT) : _HBox() {
 
     init {
         alignment = CENTER
-        spacings = 8
+        spacing = 8.0
 
         previousButton = button(graphic = ImageView(R.image.btn_previous)) {
             onAction {
@@ -57,7 +55,7 @@ open class TimeBox(prefill: LocalTime = MIDNIGHT) : _HBox() {
             }
         }
         hourField = intField {
-            widthMax = 48
+            maxWidth = 48.0
             alignment = CENTER
             valueProperty.listener { _, oldValue, value ->
                 if (value !in 0 until 24) hourField.value = oldValue.toInt()
@@ -65,7 +63,7 @@ open class TimeBox(prefill: LocalTime = MIDNIGHT) : _HBox() {
         }
         label(":") { alignment = CENTER }
         minuteField = intField {
-            widthMax = 48
+            maxWidth = 48.0
             alignment = CENTER
             valueProperty.listener { _, oldValue, value ->
                 if (value !in 0 until 60) minuteField.value = oldValue.toInt()

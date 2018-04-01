@@ -6,12 +6,11 @@ import javafx.scene.Node
 import javafx.scene.layout.Region
 import ktfx.layouts.LayoutDsl
 import ktfx.layouts.LayoutManager
-import ktfx.scene.layout.widthMin
 
 class Gap(width: Int = 48) : Region() {
 
     init {
-        widthMin = width
+        minWidth = width.toDouble()
     }
 }
 

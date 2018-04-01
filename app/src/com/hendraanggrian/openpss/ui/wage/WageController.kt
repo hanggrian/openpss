@@ -49,10 +49,8 @@ import ktfx.scene.control.cancelButton
 import ktfx.scene.control.dialog
 import ktfx.scene.control.errorAlert
 import ktfx.scene.control.okButton
-import ktfx.scene.layout.gaps
-import ktfx.scene.layout.size
+import ktfx.scene.layout.gap
 import ktfx.stage.fileChooser
-import ktfx.stage.setSizeMin
 import ktfx.stage.stage
 import java.net.URL
 import java.util.ResourceBundle
@@ -108,7 +106,7 @@ class WageController : Controller() {
         lateinit var recessChoice: ChoiceBox<*>
         lateinit var roleChoice: ChoiceBox<*>
         dialogPane.content = gridPane {
-            gaps = 8
+            gap = 8.0
             label(getString(R.string.recess)) col 0 row 0
             transaction {
                 recessChoice = choiceBox(mutableObservableListOf(getString(R.string.all),
@@ -137,7 +135,7 @@ class WageController : Controller() {
         scrollPane.content = borderPane {
             prefWidthProperty().bind(scrollPane.widthProperty())
             prefHeightProperty().bind(scrollPane.heightProperty())
-            center = ktfx.layouts.progressIndicator { size = 128 }
+            center = ktfx.layouts.progressIndicator { setMaxSize(128.0, 128.0) }
         }
         flowPane.children.clear()
         launch {
@@ -188,7 +186,8 @@ class WageController : Controller() {
         stage(getString(R.string.record)) {
             val loader = FXMLLoader(getResource(R.layout.controller_wage_record), resources)
             scene = Scene(loader.pane)
-            setSizeMin(1000, 650)
+            minWidth = 1000.0
+            minHeight = 650.0
             loader.controller.addExtra(EXTRA_ATTENDEES, attendees)
         }.showAndWait()
     }

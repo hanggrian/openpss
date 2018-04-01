@@ -24,7 +24,6 @@ import ktfx.scene.control.cancelButton
 import ktfx.scene.control.graphicIcon
 import ktfx.scene.control.headerTitle
 import ktfx.scene.control.okButton
-import ktfx.scene.layout.heightPref
 import kotlin.text.RegexOption.IGNORE_CASE
 
 class SearchCustomerDialog(resourced: Resourced) : Dialog<Customer>(), Resourced by resourced {
@@ -42,7 +41,7 @@ class SearchCustomerDialog(resourced: Resourced) : Dialog<Customer>(), Resourced
         dialogPane.content = vbox {
             textField = textField { promptText = getString(R.string.customer) }
             listView = listView<Customer> {
-                heightPref = 252
+                prefHeight = 252.0
                 itemsProperty().bind(bindingOf(textField.textProperty()) {
                     transaction {
                         when {
@@ -63,7 +62,7 @@ class SearchCustomerDialog(resourced: Resourced) : Dialog<Customer>(), Resourced
                         close()
                     }
                 }
-            } marginTop 8
+            } marginTop 8.0
         }
         cancelButton()
         okButton {

@@ -18,7 +18,7 @@ import ktfx.layouts.textField
 import ktfx.scene.control.cancelButton
 import ktfx.scene.control.headerTitle
 import ktfx.scene.control.okButton
-import ktfx.scene.layout.gaps
+import ktfx.scene.layout.gap
 
 class AddOtherDialog(resourced: Resourced) : Dialog<Other>(), Resourced by resourced {
 
@@ -29,7 +29,7 @@ class AddOtherDialog(resourced: Resourced) : Dialog<Other>(), Resourced by resou
     init {
         headerTitle = getString(R.string.add_other)
         dialogPane.content = gridPane {
-            gaps = 8
+            gap = 8.0
             label(getString(R.string.title)) col 0 row 0
             titleField = textField { promptText = getString(R.string.title) } col 1 row 0
             label(getString(R.string.qty)) col 0 row 1

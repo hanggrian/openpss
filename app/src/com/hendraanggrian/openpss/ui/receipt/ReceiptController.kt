@@ -1,6 +1,7 @@
 package com.hendraanggrian.openpss.ui.receipt
 
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.db.andQueryBuilder
 import com.hendraanggrian.openpss.db.schema.Customer
 import com.hendraanggrian.openpss.db.schema.Customers
 import com.hendraanggrian.openpss.db.schema.Employee
@@ -14,7 +15,7 @@ import com.hendraanggrian.openpss.db.schema.Receipts
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.scene.control.CountBox
 import com.hendraanggrian.openpss.scene.layout.DateBox
-import com.hendraanggrian.openpss.time.PATTERN_DATETIME
+import com.hendraanggrian.openpss.time.PATTERN_DATETIME_EXTENDED
 import com.hendraanggrian.openpss.ui.Addable
 import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.Refreshable
@@ -30,10 +31,12 @@ import com.hendraanggrian.openpss.util.qtyCell
 import com.hendraanggrian.openpss.util.titleCell
 import com.hendraanggrian.openpss.util.totalCell
 import com.hendraanggrian.openpss.util.typeCell
+import javafx.beans.property.SimpleObjectProperty
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
 import javafx.scene.Node
 import javafx.scene.Scene
+import javafx.scene.control.Button
 import javafx.scene.control.ChoiceBox
 import javafx.scene.control.Label
 import javafx.scene.control.MenuItem
@@ -43,7 +46,6 @@ import javafx.scene.control.Tab
 import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
 import javafx.scene.control.TableView.CONSTRAINED_RESIZE_POLICY
-import javafx.scene.control.TextField
 import javafx.stage.Modality.APPLICATION_MODAL
 import javafx.util.Callback
 import kotlinx.nosql.equal
@@ -69,7 +71,7 @@ import kotlin.math.ceil
 
 class ReceiptController : Controller(), Refreshable, Addable {
 
-    @FXML lateinit var customerField: TextField
+    @FXML lateinit var customerButton: Button
     @FXML lateinit var countBox: CountBox
     @FXML lateinit var statusBox: ChoiceBox<String>
     @FXML lateinit var allDateRadio: RadioButton
@@ -107,11 +109,16 @@ class ReceiptController : Controller(), Refreshable, Addable {
     @FXML lateinit var noteLabel: Label
     @FXML lateinit var coverLabel: Label
 
+    private val customerProperty = SimpleObjectProperty<Customer>()
     private lateinit var receiptTable: TableView<Receipt>
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
         refresh()
+
+        customerButton.textProperty().bind(stringBindingOf(customerProperty) {
+            customerProperty.value?.toString() ?: getString(R.string.search_customer)
+        })
 
         countBox.desc = getString(R.string.items)
         statusBox.items = listOf(R.string.any, R.string.unpaid, R.string.paid).map { getString(it) }.toObservableList()
@@ -137,13 +144,14 @@ class ReceiptController : Controller(), Refreshable, Addable {
     }
 
     override fun refresh() = receiptPagination.pageFactoryProperty()
-        .bind(bindingOf(customerField.textProperty(), countBox.countProperty) {
+        .bind(bindingOf(customerProperty, countBox.countProperty, statusBox.valueProperty(),
+            allDateRadio.selectedProperty(), pickDateRadio.selectedProperty(), dateBox.dateProperty) {
             Callback<Int, Node> { page ->
                 receiptTable = tableView {
                     columnResizePolicy = CONSTRAINED_RESIZE_POLICY
                     columns {
                         column<String>(getString(R.string.date)) {
-                            setCellValueFactory { it.value.dateTime.toString(PATTERN_DATETIME).toProperty() }
+                            setCellValueFactory { it.value.dateTime.toString(PATTERN_DATETIME_EXTENDED).toProperty() }
                         }
                         column<Employee>(getString(R.string.employee)) {
                             setCellValueFactory {
@@ -156,7 +164,7 @@ class ReceiptController : Controller(), Refreshable, Addable {
                             }
                         }
                         column<String>(getString(R.string.total)) { totalCell() }
-                        column<Boolean>(getString(R.string.paid)) { doneCell { isPaid() } }
+                        column<Boolean>(getString(R.string.paid)) { doneCell { paid } }
                         column<Boolean>(getString(R.string.print)) { doneCell { printed } }
                     }
                     contextMenu {
@@ -175,12 +183,18 @@ class ReceiptController : Controller(), Refreshable, Addable {
                     }
                     later {
                         transaction {
-                            val receipts = Receipts.find()/*when {
-                                customerField.text.isBlank() -> Customers.find()
-                                else -> Receipts.find {
-                                    name.matches(customerField.text.toRegex(IGNORE_CASE).toPattern())
+                            val receipts = Receipts.find {
+                                andQueryBuilder {
+                                    if (customerProperty.value != null)
+                                        append(customerId.equal(customerProperty.value.id))
+                                    when (statusBox.value) {
+                                        getString(R.string.paid) -> append(paid.equal(true))
+                                        getString(R.string.unpaid) -> append(paid.equal(false))
+                                    }
+                                    if (pickDateRadio.isSelected)
+                                        append(dateTime.matches(dateBox.date.toString().toPattern()))
                                 }
-                            }*/
+                            }
                             receiptPagination.pageCount = ceil(receipts.count() / countBox.count.toDouble()).toInt()
                             items = receipts.skip(countBox.count * page).take(countBox.count).toMutableObservableList()
                         }
@@ -205,6 +219,8 @@ class ReceiptController : Controller(), Refreshable, Addable {
             receiptTable.selectionModel.selectFirst()
         }
     }
+
+    @FXML fun selectCustomer() = customerProperty.set(SearchCustomerDialog(this).showAndWait().orElse(null))
 
     @FXML fun platePrice() = stage(getString(R.string.plate_price)) {
         initModality(APPLICATION_MODAL)

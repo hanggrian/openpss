@@ -45,7 +45,8 @@
     <SplitPane orientation="VERTICAL" dividerPositions="0.7" VBox.vgrow="ALWAYS">
         <VBox>
             <ToolBar>
-                <TextField fx:id="customerField" promptText="%search_customer"/>
+                <Button mnemonicParsing="false" fx:id="customerButton" onAction="#selectCustomer"
+                        text="%select_customer"/>
                 <CountBox fx:id="countBox"/>
                 <ChoiceBox fx:id="statusBox"/>
                 <Gap HBox.hgrow="ALWAYS"/>

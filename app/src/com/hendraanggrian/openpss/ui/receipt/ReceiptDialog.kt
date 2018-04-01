@@ -154,7 +154,6 @@ class ReceiptDialog(
                 plateTable.items,
                 offsetTable.items,
                 otherTable.items,
-                totalProperty.value,
                 noteArea.text
             )
         }

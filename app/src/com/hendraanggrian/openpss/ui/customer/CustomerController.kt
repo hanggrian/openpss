@@ -2,6 +2,7 @@ package com.hendraanggrian.openpss.ui.customer
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.collections.isNotEmpty
+import com.hendraanggrian.openpss.db.andQueryBuilder
 import com.hendraanggrian.openpss.db.schema.Contact
 import com.hendraanggrian.openpss.db.schema.Customer
 import com.hendraanggrian.openpss.db.schema.Customers
@@ -58,8 +59,8 @@ import ktfx.scene.control.okButton
 import ktfx.scene.layout.gap
 import java.net.URL
 import java.util.ResourceBundle
+import java.util.regex.Pattern.CASE_INSENSITIVE
 import kotlin.math.ceil
-import kotlin.text.RegexOption.IGNORE_CASE
 
 class CustomerController : Controller(), Refreshable, Addable {
 
@@ -154,10 +155,10 @@ class CustomerController : Controller(), Refreshable, Addable {
                 customerList = listView {
                     later {
                         transaction {
-                            val customers = when {
-                                customerField.text.isBlank() -> Customers.find()
-                                else -> Customers.find {
-                                    name.matches(customerField.text.toRegex(IGNORE_CASE).toPattern())
+                            val customers = Customers.find {
+                                andQueryBuilder {
+                                    if (customerField.text.isNotBlank())
+                                        append(name.matches(customerField.text.toPattern(CASE_INSENSITIVE)))
                                 }
                             }
                             customerPagination.pageCount = ceil(customers.count() / countBox.count.toDouble()).toInt()

@@ -69,9 +69,6 @@ class SearchCustomerDialog(resourced: Resourced) : Dialog<Customer>(), Resourced
             disableProperty().bind(listView.selectionModel.selectedItemProperty().isNull)
         }
         later { textField.requestFocus() }
-        setResultConverter {
-            if (it == OK) listView.selectionModel.selectedItem
-            else null
-        }
+        setResultConverter { if (it == OK) listView.selectionModel.selectedItem else null }
     }
 }

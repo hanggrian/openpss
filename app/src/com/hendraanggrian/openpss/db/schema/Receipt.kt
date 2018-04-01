@@ -25,9 +25,9 @@ object Receipts : DocumentSchema<Receipt>("receipts", Receipt::class) {
     val plates = PlateColumn()
     val offsets = OffsetColumn()
     val others = OtherColumn()
-    val total = double("total")
     val note = string("note")
     val payments = PaymentColumn()
+    val paid = double("paid")
     val printed = boolean("printed")
 
     class PlateColumn : ListColumn<Plate, Receipts>("plates", Plate::class) {
@@ -69,15 +69,16 @@ data class Receipt(
     var plates: List<Plate>,
     var offsets: List<Offset>,
     var others: List<Other>,
-    override var total: Double,
-    var payments: List<Payment>,
     var note: String,
+    var payments: List<Payment>,
+    var paid: Boolean,
     var printed: Boolean
 ) : Document<Receipts>, Totaled {
 
     override lateinit var id: Id<String, Receipts>
 
-    fun isPaid(): Boolean = payments.sumByDouble { it.value } >= total
+    override val total: Double
+        get() = plates.sumByDouble { it.total } + offsets.sumByDouble { it.total } + others.sumByDouble { it.total }
 
     companion object {
         fun new(
@@ -87,9 +88,8 @@ data class Receipt(
             plates: List<Plate>,
             offsets: List<Offset>,
             others: List<Other>,
-            total: Double,
             note: String
-        ): Receipt = Receipt(employeeId, customerId, dateTime, plates, offsets, others, total, listOf(), note, false)
+        ): Receipt = Receipt(employeeId, customerId, dateTime, plates, offsets, others, note, listOf(), false, false)
     }
 }
 

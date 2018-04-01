@@ -1,7 +1,9 @@
 package com.hendraanggrian.openpss.ui
 
 import com.hendraanggrian.openpss.db.schema.Employee
+import com.hendraanggrian.openpss.db.schema.Employees
 import javafx.fxml.Initializable
+import kotlinx.nosql.Id
 import java.net.URL
 import java.util.ResourceBundle
 
@@ -22,9 +24,9 @@ open class Controller : Initializable, Resourced {
         this.resources = resources
     }
 
-    val employeeName: String get() = _employee.name
-
-    val isFullAccess: Boolean get() = _employee.fullAccess
+    inline val employeeName: String get() = _employee.name
+    inline val isFullAccess: Boolean get() = _employee.fullAccess
+    inline val employeeId: Id<String, Employees> get() = _employee.id
 
     /** Register extra [value] with [key]. */
     fun addExtra(key: String, value: Any): Controller {

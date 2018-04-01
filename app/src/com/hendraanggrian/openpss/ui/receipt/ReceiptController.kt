@@ -1,7 +1,6 @@
 package com.hendraanggrian.openpss.ui.receipt
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.converters.MoneyStringConverter
 import com.hendraanggrian.openpss.db.schema.Customer
 import com.hendraanggrian.openpss.db.schema.Customers
 import com.hendraanggrian.openpss.db.schema.Employee
@@ -47,7 +46,6 @@ import javafx.scene.control.TableView.CONSTRAINED_RESIZE_POLICY
 import javafx.scene.control.TextField
 import javafx.stage.Modality.APPLICATION_MODAL
 import javafx.util.Callback
-import javafx.util.converter.NumberStringConverter
 import kotlinx.nosql.equal
 import kotlinx.nosql.id
 import ktfx.application.later
@@ -110,8 +108,6 @@ class ReceiptController : Controller(), Refreshable, Addable {
     @FXML lateinit var coverLabel: Label
 
     private lateinit var receiptTable: TableView<Receipt>
-    private val moneyConverter = MoneyStringConverter()
-    private val numberConverter = NumberStringConverter()
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
@@ -124,26 +120,27 @@ class ReceiptController : Controller(), Refreshable, Addable {
 
         plateTypeColumn.typeCell()
         plateTitleColumn.titleCell()
-        plateQtyColumn.qtyCell(numberConverter)
-        platePriceColumn.priceCell(moneyConverter)
-        plateTotalColumn.totalCell(moneyConverter)
+        plateQtyColumn.qtyCell()
+        platePriceColumn.priceCell()
+        plateTotalColumn.totalCell()
         offsetTypeColumn.typeCell()
         offsetTitleColumn.titleCell()
-        offsetQtyColumn.qtyCell(numberConverter)
-        offsetMinQtyColumn.minQtyCell(numberConverter)
-        offsetMinPriceColumn.minPriceCell(moneyConverter)
-        offsetExcessPriceColumn.excessPriceCell(moneyConverter)
-        offsetTotalColumn.totalCell(moneyConverter)
+        offsetQtyColumn.qtyCell()
+        offsetMinQtyColumn.minQtyCell()
+        offsetMinPriceColumn.minPriceCell()
+        offsetExcessPriceColumn.excessPriceCell()
+        offsetTotalColumn.totalCell()
         otherTitleColumn.titleCell()
-        otherQtyColumn.qtyCell(numberConverter)
-        otherPriceColumn.priceCell(moneyConverter)
-        otherTotalColumn.totalCell(moneyConverter)
+        otherQtyColumn.qtyCell()
+        otherPriceColumn.priceCell()
+        otherTotalColumn.totalCell()
     }
 
     override fun refresh() = receiptPagination.pageFactoryProperty()
         .bind(bindingOf(customerField.textProperty(), countBox.countProperty) {
             Callback<Int, Node> { page ->
                 receiptTable = tableView {
+                    columnResizePolicy = CONSTRAINED_RESIZE_POLICY
                     columns {
                         column<String>(getString(R.string.date)) {
                             setCellValueFactory { it.value.dateTime.toString(PATTERN_DATETIME).toProperty() }
@@ -158,15 +155,16 @@ class ReceiptController : Controller(), Refreshable, Addable {
                                 transaction { Customers.find { id.equal(it.value.customerId) }.single().toProperty() }
                             }
                         }
-                        column<String>(getString(R.string.total)) { totalCell(moneyConverter) }
+                        column<String>(getString(R.string.total)) { totalCell() }
                         column<Boolean>(getString(R.string.paid)) { doneCell { isPaid() } }
                         column<Boolean>(getString(R.string.print)) { doneCell { printed } }
                     }
-                    columnResizePolicy = CONSTRAINED_RESIZE_POLICY
                     contextMenu {
                         menuItem(getString(R.string.edit)) {
                             bindDisable()
                             onAction {
+                                ReceiptDialog(this@ReceiptController, receiptTable.selectionModel.selectedItem)
+                                    .showAndWait()
                             }
                         }
                         menuItem(getString(R.string.delete)) {
@@ -200,7 +198,7 @@ class ReceiptController : Controller(), Refreshable, Addable {
             }
         })
 
-    override fun add() = ReceiptDialog(this, _employee).showAndWait().ifPresent {
+    override fun add() = ReceiptDialog(this).showAndWait().ifPresent {
         transaction {
             it.id = Receipts.insert(it)
             receiptTable.items.add(it)

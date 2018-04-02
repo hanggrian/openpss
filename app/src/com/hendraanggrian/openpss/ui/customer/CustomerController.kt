@@ -2,7 +2,7 @@ package com.hendraanggrian.openpss.ui.customer
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.collections.isNotEmpty
-import com.hendraanggrian.openpss.db.andQueryBuilder
+import com.hendraanggrian.openpss.db.buildQuery
 import com.hendraanggrian.openpss.db.schema.Contact
 import com.hendraanggrian.openpss.db.schema.Customer
 import com.hendraanggrian.openpss.db.schema.Customers
@@ -156,9 +156,9 @@ class CustomerController : Controller(), Refreshable, Addable {
                     later {
                         transaction {
                             val customers = Customers.find {
-                                andQueryBuilder {
+                                buildQuery {
                                     if (customerField.text.isNotBlank())
-                                        append(name.matches(customerField.text.toPattern(CASE_INSENSITIVE)))
+                                        and(name.matches(customerField.text.toPattern(CASE_INSENSITIVE)))
                                 }
                             }
                             customerPagination.pageCount = ceil(customers.count() / countBox.count.toDouble()).toInt()

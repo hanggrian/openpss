@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.ui.receipt
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.db.andQueryBuilder
+import com.hendraanggrian.openpss.db.buildQuery
 import com.hendraanggrian.openpss.db.schema.Customer
 import com.hendraanggrian.openpss.db.schema.Customers
 import com.hendraanggrian.openpss.db.schema.Employee
@@ -63,6 +63,7 @@ import ktfx.coroutines.onAction
 import ktfx.layouts.columns
 import ktfx.layouts.contextMenu
 import ktfx.layouts.menuItem
+import ktfx.layouts.separatorMenuItem
 import ktfx.layouts.tableView
 import ktfx.stage.stage
 import java.net.URL
@@ -168,6 +169,8 @@ class ReceiptController : Controller(), Refreshable, Addable {
                         column<Boolean>(getString(R.string.print)) { doneCell { printed } }
                     }
                     contextMenu {
+                        menuItem(getString(R.string.add)) { onAction { this@ReceiptController.add() } }
+                        separatorMenuItem()
                         menuItem(getString(R.string.edit)) {
                             bindDisable()
                             onAction {
@@ -178,21 +181,25 @@ class ReceiptController : Controller(), Refreshable, Addable {
                         menuItem(getString(R.string.delete)) {
                             bindDisable()
                             onAction {
+                                receiptTable.selectionModel.selectedItem.let {
+                                    transaction { Receipts.find { id.equal(it.id.value) }.remove() }
+                                    receiptTable.items.remove(it)
+                                }
                             }
                         }
                     }
                     later {
                         transaction {
                             val receipts = Receipts.find {
-                                andQueryBuilder {
+                                buildQuery {
                                     if (customerProperty.value != null)
-                                        append(customerId.equal(customerProperty.value.id))
+                                        and(customerId.equal(customerProperty.value.id))
                                     when (statusBox.value) {
-                                        getString(R.string.paid) -> append(paid.equal(true))
-                                        getString(R.string.unpaid) -> append(paid.equal(false))
+                                        getString(R.string.paid) -> and(paid.equal(true))
+                                        getString(R.string.unpaid) -> and(paid.equal(false))
                                     }
                                     if (pickDateRadio.isSelected)
-                                        append(dateTime.matches(dateBox.date.toString().toPattern()))
+                                        and(dateTime.matches(dateBox.date.toString().toPattern()))
                                 }
                             }
                             receiptPagination.pageCount = ceil(receipts.count() / countBox.count.toDouble()).toInt()

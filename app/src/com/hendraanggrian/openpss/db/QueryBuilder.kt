@@ -6,27 +6,26 @@ import kotlinx.nosql.Query
 import kotlinx.nosql.query.NoQuery
 import kotlinx.nosql.query.OrQuery
 
-interface QueryBuilder : Builder<Query> {
+interface QueryBuilder {
 
-    fun append(target: Query)
+    fun and(target: Query)
+
+    fun or(target: Query)
 }
 
-private abstract class _QueryBuilder : QueryBuilder {
+@Suppress("ClassName")
+private class _QueryBuilder : QueryBuilder, Builder<Query> {
     private var source: Query? = null
 
-    abstract fun newInstance(source: Query, target: Query): Query
+    override fun and(target: Query) = setOrCreate(target) { AndQuery(it, target) }
 
-    override fun append(target: Query) {
-        source = source?.let { newInstance(it, target) } ?: target
-    }
+    override fun or(target: Query) = setOrCreate(target) { OrQuery(it, target) }
 
     override fun build(): Query = source ?: NoQuery
+
+    private inline fun setOrCreate(target: Query, creator: (Query) -> Query) {
+        source = source?.let { creator(it) } ?: target
+    }
 }
 
-fun andQueryBuilder(builder: QueryBuilder.() -> Unit): Query = object : _QueryBuilder() {
-    override fun newInstance(source: Query, target: Query): Query = AndQuery(source, target)
-}.apply(builder).build()
-
-fun orQueryBuilder(builder: QueryBuilder.() -> Unit): Query = object : _QueryBuilder() {
-    override fun newInstance(source: Query, target: Query): Query = OrQuery(source, target)
-}.apply(builder).build()
+fun buildQuery(builder: QueryBuilder.() -> Unit) = _QueryBuilder().apply(builder).build()

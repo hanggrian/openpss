@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.hendraanggrian.openpss.scene.control.FileField?>
-<?import com.hendraanggrian.openpss.scene.control.Gap?>
+<?import com.hendraanggrian.openpss.scene.control.Space?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
@@ -16,7 +16,7 @@
                 </ImageView>
             </graphic>
         </Button>
-        <Gap/>
+        <Space/>
         <Button fx:id="readButton" mnemonicParsing="false" onAction="#read" text="%read">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
@@ -31,7 +31,7 @@
                 </ImageView>
             </graphic>
         </Button>
-        <Gap HBox.hgrow="ALWAYS"/>
+        <Space HBox.hgrow="ALWAYS"/>
         <Button mnemonicParsing="false" onAction="#recess" text="%recess">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">

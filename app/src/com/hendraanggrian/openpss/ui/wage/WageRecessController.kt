@@ -8,12 +8,12 @@ import com.hendraanggrian.openpss.scene.layout.TimeBox
 import com.hendraanggrian.openpss.scene.layout.timeBox
 import com.hendraanggrian.openpss.time.PATTERN_TIME
 import com.hendraanggrian.openpss.ui.SimpleTableController
+import com.hendraanggrian.openpss.util.stringCell
 import javafx.fxml.FXML
 import javafx.scene.control.ButtonType.OK
 import javafx.scene.control.TableColumn
 import javafx.scene.image.ImageView
 import ktfx.beans.binding.booleanBindingOf
-import ktfx.beans.property.toProperty
 import ktfx.layouts.gridPane
 import ktfx.layouts.label
 import ktfx.scene.control.cancelButton
@@ -31,8 +31,8 @@ class WageRecessController : SimpleTableController<Recess, Recesses>(Recesses) {
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
-        startColumn.setCellValueFactory { it.value.start.toString(PATTERN_TIME).toProperty() }
-        endColumn.setCellValueFactory { it.value.end.toString(PATTERN_TIME).toProperty() }
+        startColumn.stringCell { start.toString(PATTERN_TIME) }
+        endColumn.stringCell { end.toString(PATTERN_TIME) }
     }
 
     override fun add() = dialog<Pair<LocalTime, LocalTime>>(getString(R.string.add_reccess),

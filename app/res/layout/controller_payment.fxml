@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.hendraanggrian.openpss.scene.layout.DateBox?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.VBox?>
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.hendraanggrian.openpss.ui.payment.PaymentController">
+    <ToolBar stylesheets="@../style/toolbar_main.css">
+        <!--suppress JavaFxEventHandler -->
+        <Button mnemonicParsing="false" onAction="#refresh" text="%refresh">
+            <graphic>
+                <ImageView pickOnBounds="true" preserveRatio="true">
+                    <Image url="@/image/stud_refresh.png"/>
+                </ImageView>
+            </graphic>
+        </Button>
+    </ToolBar>
+    <ToolBar>
+        <DateBox fx:id="dateBox"/>
+    </ToolBar>
+    <TableView fx:id="paymentTable" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="idColumn" text="%id"/>
+            <TableColumn fx:id="dateColumn" text="%date"/>
+            <TableColumn fx:id="employeeColumn" text="%employee"/>
+            <TableColumn fx:id="valueColumn" text="%value"/>
+        </columns>
+        <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+        </columnResizePolicy>
+    </TableView>
+</VBox>

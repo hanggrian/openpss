@@ -11,11 +11,11 @@ import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.main.ResetPasswordDialog
 import com.hendraanggrian.openpss.util.doneCell
+import com.hendraanggrian.openpss.util.stringCell
 import com.hendraanggrian.openpss.util.tidy
+import com.hendraanggrian.openpss.util.yesNoAlert
 import javafx.fxml.FXML
 import javafx.scene.control.Button
-import javafx.scene.control.ButtonType.NO
-import javafx.scene.control.ButtonType.YES
 import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
 import kotlinx.coroutines.experimental.delay
@@ -24,10 +24,8 @@ import kotlinx.nosql.equal
 import kotlinx.nosql.mongodb.MongoDBSession
 import kotlinx.nosql.update
 import ktfx.application.exit
-import ktfx.beans.property.toProperty
 import ktfx.collections.toMutableObservableList
 import ktfx.coroutines.FX
-import ktfx.scene.control.confirmAlert
 import ktfx.scene.control.infoAlert
 import java.net.URL
 import java.util.ResourceBundle
@@ -53,7 +51,7 @@ class EmployeeController : Controller(), Refreshable, Addable {
             configButton.isDisable = !isFullAccess
         }
 
-        nameColumn.setCellValueFactory { it.value.name.toProperty() }
+        nameColumn.stringCell { name }
         fullAccessColumn.doneCell(128) { fullAccess }
         refresh()
     }
@@ -97,16 +95,13 @@ class EmployeeController : Controller(), Refreshable, Addable {
                 exit()
             }
         }
-    ) = confirmAlert(getString(R.string.are_you_sure), YES, NO)
-        .showAndWait()
-        .filter { it == YES }
-        .ifPresent {
-            employeeTable.selectionModel.selectedItem.let { employee ->
-                transaction { confirmedAction(employee) }
-                when {
-                    employee.name != employeeName -> refresh()
-                    else -> isNotSelfAction()
-                }
+    ) = yesNoAlert(getString(R.string.are_you_sure)) {
+        employeeTable.selectionModel.selectedItem.let { employee ->
+            transaction { confirmedAction(employee) }
+            when {
+                employee.name != employeeName -> refresh()
+                else -> isNotSelfAction()
             }
         }
+    }
 }

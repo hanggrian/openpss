@@ -3,9 +3,9 @@ package com.hendraanggrian.openpss.ui.wage.readers
 import com.hendraanggrian.openpss.ui.wage.Attendee
 import java.io.File
 
-object DummyReader : Reader() {
+object TestReader : Reader() {
 
-    override val name: String get() = "Dummy"
+    override val name: String get() = "Test"
 
     override val extensions: Array<String> get() = arrayOf("*.*")
 

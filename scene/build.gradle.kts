@@ -5,8 +5,8 @@ import org.jetbrains.kotlin.gradle.dsl.Coroutines
 import org.jetbrains.kotlin.gradle.dsl.Coroutines.*
 import org.gradle.language.base.plugins.LifecycleBasePlugin.*
 
-group = "$releaseGroup.$releaseArtifact.scene"
-version = releaseVersion
+group = "$RELEASE_GROUP.$RELEASE_ARTIFACT.scene"
+version = RELEASE_VERSION
 
 plugins {
     `java-library`
@@ -31,15 +31,15 @@ kotlin.experimental.coroutines = ENABLE
 val ktlint by configurations.creating
 
 dependencies {
-    compile(kotlin("stdlib", kotlinVersion))
-    compile(kotlinx("coroutines-javafx", coroutinesVersion))
-    compile(hendraanggrian("ktfx-layouts", ktfxVersion, "ktfx"))
-    compile(hendraanggrian("ktfx-listeners", ktfxVersion, "ktfx"))
-    compile(hendraanggrian("ktfx-coroutines", ktfxVersion, "ktfx"))
+    compile(kotlin("stdlib", VERSION_KOTLIN))
+    compile(kotlinx("coroutines-javafx", VERSION_COROUTINES))
+    compile(hendraanggrian("ktfx-layouts", VERSION_KTFX, "ktfx"))
+    compile(hendraanggrian("ktfx-listeners", VERSION_KTFX, "ktfx"))
+    compile(hendraanggrian("ktfx-coroutines", VERSION_KTFX, "ktfx"))
     compile(jodaTime())
     compile(commonsValidator())
 
-    testImplementation(kotlin("test", kotlinVersion))
+    testImplementation(kotlin("test", VERSION_KOTLIN))
     testImplementation(testFX("core"))
     testImplementation(testFX("junit"))
 
@@ -73,8 +73,8 @@ tasks {
 
     withType<ShadowJar> {
         destinationDir = buildDir.resolve("release")
-        baseName = "$releaseArtifact-scene"
-        version = releaseVersion
+        baseName = "$RELEASE_ARTIFACT-scene"
+        version = RELEASE_VERSION
         classifier = null
     }
 }

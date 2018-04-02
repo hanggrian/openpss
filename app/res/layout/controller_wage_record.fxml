@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<?import com.hendraanggrian.openpss.scene.control.Gap?>
+<?import com.hendraanggrian.openpss.scene.control.Space?>
 <?import com.hendraanggrian.openpss.scene.layout.TimeBox?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
@@ -16,7 +16,7 @@
                 </ImageView>
             </graphic>
         </Button>
-        <Gap/>
+        <Space/>
         <Button mnemonicParsing="false" fx:id="lockStartButton" onAction="#lockStart"
                 text="%lock_start_time">
             <graphic>
@@ -33,7 +33,7 @@
                 </ImageView>
             </graphic>
         </Button>
-        <Gap HBox.hgrow="ALWAYS"/>
+        <Space HBox.hgrow="ALWAYS"/>
         <Button mnemonicParsing="false" onAction="#screenshot" text="%screenshot">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
@@ -50,9 +50,9 @@
                 </ImageView>
             </graphic>
         </SplitMenuButton>
-        <Gap/>
+        <Space/>
         <TimeBox fx:id="timeBox"/>
-        <Gap HBox.hgrow="ALWAYS"/>
+        <Space HBox.hgrow="ALWAYS"/>
         <Label fx:id="totalLabel"/>
     </ToolBar>
     <TreeTableView fx:id="recordTable" VBox.vgrow="ALWAYS">

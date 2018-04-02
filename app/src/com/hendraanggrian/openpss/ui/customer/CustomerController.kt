@@ -14,7 +14,9 @@ import com.hendraanggrian.openpss.ui.Addable
 import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.util.getResourceString
+import com.hendraanggrian.openpss.util.stringCell
 import com.hendraanggrian.openpss.util.tidy
+import com.hendraanggrian.openpss.util.yesNoAlert
 import javafx.fxml.FXML
 import javafx.scene.Node
 import javafx.scene.control.ButtonType.OK
@@ -37,7 +39,6 @@ import ktfx.beans.binding.bindingOf
 import ktfx.beans.binding.booleanBindingOf
 import ktfx.beans.binding.or
 import ktfx.beans.binding.stringBindingOf
-import ktfx.beans.property.toProperty
 import ktfx.collections.emptyObservableList
 import ktfx.collections.toMutableObservableList
 import ktfx.collections.toObservableList
@@ -51,12 +52,12 @@ import ktfx.layouts.listView
 import ktfx.layouts.menuItem
 import ktfx.layouts.textField
 import ktfx.scene.control.cancelButton
-import ktfx.scene.control.confirmAlert
 import ktfx.scene.control.dialog
 import ktfx.scene.control.errorAlert
 import ktfx.scene.control.inputDialog
 import ktfx.scene.control.okButton
 import ktfx.scene.layout.gap
+import ktfx.scene.layout.maxSize
 import java.net.URL
 import java.util.ResourceBundle
 import java.util.regex.Pattern.CASE_INSENSITIVE
@@ -77,7 +78,7 @@ class CustomerController : Controller(), Refreshable, Addable {
 
     private lateinit var customerList: ListView<Customer>
     private val noteLabelGraphic = button(graphic = ImageView(R.image.btn_edit)) {
-        setMaxSize(24.0, 24.0)
+        maxSize = 24.0
         onAction {
             inputDialog(getString(R.string.edit_customer), ImageView(R.image.ic_user), customer!!.note) {
                 contentText = getString(R.string.note)
@@ -135,7 +136,7 @@ class CustomerController : Controller(), Refreshable, Addable {
                     })
                 }
                 onAction {
-                    confirmAlert(getString(R.string.delete_contact)).showAndWait().ifPresent {
+                    yesNoAlert(getString(R.string.delete_contact)) {
                         transaction {
                             Customers.find { id.equal(customer!!.id) }.projection { contacts }
                                 .update(customer!!.contacts - contact!!)
@@ -145,8 +146,8 @@ class CustomerController : Controller(), Refreshable, Addable {
                 }
             }
         }
-        typeColumn.setCellValueFactory { it.value.type.toProperty() }
-        contactColumn.setCellValueFactory { it.value.value.toProperty() }
+        typeColumn.stringCell { type }
+        contactColumn.stringCell { value }
     }
 
     override fun refresh() = customerPagination.pageFactoryProperty()

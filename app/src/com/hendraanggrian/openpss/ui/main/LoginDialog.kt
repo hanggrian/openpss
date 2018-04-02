@@ -43,8 +43,8 @@ import ktfx.layouts.passwordField
 import ktfx.layouts.textField
 import ktfx.layouts.toggleButton
 import ktfx.layouts.tooltip
+import ktfx.scene.control.button
 import ktfx.scene.control.cancelButton
-import ktfx.scene.control.customButton
 import ktfx.scene.control.errorAlert
 import ktfx.scene.control.icon
 import ktfx.scene.control.infoAlert
@@ -139,7 +139,7 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced 
             } col 0 row 3 colStretch 3
         }
         cancelButton()
-        customButton(getString(R.string.login), OK_DONE) {
+        button(getString(R.string.login), OK_DONE) {
             disableProperty().bind(employeeField.textProperty().isEmpty
                 or passwordField1.textProperty().isEmpty
                 or !serverHostField.validProperty

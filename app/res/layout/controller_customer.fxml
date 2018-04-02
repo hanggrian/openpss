@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <?import com.hendraanggrian.openpss.scene.control.CountBox?>
-<?import com.hendraanggrian.openpss.scene.control.Gap?>
+<?import com.hendraanggrian.openpss.scene.control.Space?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.Image?>
@@ -26,7 +26,7 @@
                 </ImageView>
             </graphic>
         </Button>
-        <Gap/>
+        <Space/>
     </ToolBar>
     <SplitPane dividerPositions="0.5" VBox.vgrow="ALWAYS">
         <VBox>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <?import com.hendraanggrian.openpss.scene.control.CountBox?>
-<?import com.hendraanggrian.openpss.scene.control.Gap?>
+<?import com.hendraanggrian.openpss.scene.control.Space?>
 <?import com.hendraanggrian.openpss.scene.layout.DateBox?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
@@ -26,7 +26,7 @@
                 </ImageView>
             </graphic>
         </Button>
-        <Gap HBox.hgrow="ALWAYS"/>
+        <Space HBox.hgrow="ALWAYS"/>
         <Button mnemonicParsing="false" onAction="#platePrice" text="%plate_price">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
@@ -49,7 +49,7 @@
                         text="%select_customer"/>
                 <CountBox fx:id="countBox"/>
                 <ChoiceBox fx:id="statusBox"/>
-                <Gap HBox.hgrow="ALWAYS"/>
+                <Space HBox.hgrow="ALWAYS"/>
                 <fx:define>
                     <ToggleGroup fx:id="pickDateGroup"/>
                 </fx:define>
@@ -113,6 +113,13 @@
                         </columnResizePolicy>
                     </TableView>
                 </Tab>
+                <Tab fx:id="noteTab" closable="false" text="%note">
+                    <Label fx:id="noteLabel">
+                        <padding>
+                            <Insets topRightBottomLeft="8"/>
+                        </padding>
+                    </Label>
+                </Tab>
                 <Tab fx:id="paymentTab" closable="false" text="%payment">
                     <TableView fx:id="paymentTable">
                         <columns>
@@ -124,13 +131,6 @@
                             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
                         </columnResizePolicy>
                     </TableView>
-                </Tab>
-                <Tab fx:id="noteTab" closable="false" text="%note">
-                    <Label fx:id="noteLabel">
-                        <padding>
-                            <Insets topRightBottomLeft="8"/>
-                        </padding>
-                    </Label>
                 </Tab>
             </TabPane>
             <Label fx:id="coverLabel" alignment="CENTER" text="%select_receipt" style="-fx-background-color: #f4f4f4;"

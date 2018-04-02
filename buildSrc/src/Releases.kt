@@ -1,6 +1,6 @@
-const val releaseGroup = "com.hendraanggrian"
-const val releaseArtifact = "openpss"
-const val releaseName = "OpenPSS"
-const val releaseDebug = true
-const val releaseVersion = "0.13"
-const val releaseWebsite = "https://github.com/hendraanggrian/$releaseArtifact"
+const val RELEASE_GROUP = "com.hendraanggrian"
+const val RELEASE_ARTIFACT = "openpss"
+const val RELEASE_NAME = "OpenPSS"
+const val RELEASE_DEBUG = true
+const val RELEASE_VERSION = "0.13"
+const val RELEASE_WEBSITE = "https://github.com/hendraanggrian/$RELEASE_ARTIFACT"

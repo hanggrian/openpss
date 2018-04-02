@@ -22,7 +22,9 @@ import kotlinx.nosql.update
 import ktfx.application.launch
 import ktfx.scene.control.infoAlert
 import ktfx.stage.icon
+import ktfx.stage.setMinSize
 import org.apache.log4j.BasicConfigurator.configure
+import java.util.Optional
 import java.util.ResourceBundle
 
 class App : Application(), Resourced {
@@ -48,8 +50,7 @@ class App : Application(), Resourced {
                 val loader = FXMLLoader(getResource(R.layout.controller_main), resources)
                 title = APP_NAME
                 scene = Scene(loader.pane)
-                minWidth = 1000.0
-                minHeight = 650.0
+                setMinSize(1000.0, 650.0)
                 loader.controller._employee = employee
             }.show()
 

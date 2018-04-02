@@ -6,7 +6,7 @@ import com.hendraanggrian.openpss.db.Priced
 import com.hendraanggrian.openpss.db.SplitPriced
 import com.hendraanggrian.openpss.db.Totaled
 import com.hendraanggrian.openpss.db.Typed
-import com.hendraanggrian.openpss.db.dbDateTime
+import com.hendraanggrian.openpss.ui.DateTimed
 import kotlinx.nosql.Id
 import kotlinx.nosql.ListColumn
 import kotlinx.nosql.boolean
@@ -26,7 +26,6 @@ object Receipts : DocumentSchema<Receipt>("receipts", Receipt::class) {
     val offsets = OffsetColumn()
     val others = OtherColumn()
     val note = string("note")
-    val payments = PaymentColumn()
     val paid = double("paid")
     val printed = boolean("printed")
 
@@ -54,26 +53,19 @@ object Receipts : DocumentSchema<Receipt>("receipts", Receipt::class) {
         val price = double("price")
         val total = double("total")
     }
-
-    class PaymentColumn : ListColumn<Payment, Receipts>("payments", Payment::class) {
-        val employeeId = id("employee_id", Employees)
-        val value = double("value")
-        val dateTime = dateTime("date_time")
-    }
 }
 
 data class Receipt(
     val employeeId: Id<String, Employees>,
     val customerId: Id<String, Customers>,
-    val dateTime: DateTime,
+    override val dateTime: DateTime,
     var plates: List<Plate>,
     var offsets: List<Offset>,
     var others: List<Other>,
     var note: String,
-    var payments: List<Payment>,
     var paid: Boolean,
     var printed: Boolean
-) : Document<Receipts>, Totaled {
+) : Document<Receipts>, DateTimed, Totaled {
 
     override lateinit var id: Id<String, Receipts>
 
@@ -89,7 +81,7 @@ data class Receipt(
             offsets: List<Offset>,
             others: List<Other>,
             note: String
-        ): Receipt = Receipt(employeeId, customerId, dateTime, plates, offsets, others, note, listOf(), false, false)
+        ): Receipt = Receipt(employeeId, customerId, dateTime, plates, offsets, others, note, false, false)
     }
 }
 
@@ -150,17 +142,5 @@ data class Other(
             price: Double,
             total: Double = qty * price
         ): Other = Other(title, qty, price, total)
-    }
-}
-
-data class Payment(
-    var value: Double,
-    val dateTime: DateTime
-) {
-
-    lateinit var employeeId: Id<String, Employees>
-
-    companion object {
-        fun new(value: Double): Payment = Payment(value, dbDateTime)
     }
 }

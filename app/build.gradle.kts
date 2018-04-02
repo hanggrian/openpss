@@ -13,8 +13,8 @@ import org.junit.platform.gradle.plugin.FiltersExtension
 import org.junit.platform.gradle.plugin.EnginesExtension
 import org.junit.platform.gradle.plugin.JUnitPlatformExtension
 
-group = "$releaseGroup.$releaseArtifact"
-version = releaseVersion
+group = "$RELEASE_GROUP.$RELEASE_ARTIFACT"
+version = RELEASE_VERSION
 
 plugins {
     java
@@ -46,16 +46,16 @@ val ktlint by configurations.creating
 
 dependencies {
     implementation(project(":scene"))
-    implementation(kotlin("stdlib", kotlinVersion))
-    implementation(kotlin("nosql-mongodb", nosqlVersion))
-    implementation(hendraanggrian("ktfx", ktfxVersion, "ktfx"))
-    implementation(apache("commons-lang3", commonsLangVersion))
-    implementation(apache("poi-ooxml", poiVersion))
+    implementation(kotlin("stdlib", VERSION_KOTLIN))
+    implementation(kotlin("nosql-mongodb", VERSION_NOSQL))
+    implementation(hendraanggrian("ktfx", VERSION_KTFX, "ktfx"))
+    implementation(apache("commons-lang3", VERSION_COMMONS_LANG))
+    implementation(apache("poi-ooxml", VERSION_POI))
     implementation(guava())
     implementation(log4j12())
 
-    testImplementation(kotlin("test", kotlinVersion))
-    testImplementation(kotlin("reflect", kotlinVersion))
+    testImplementation(kotlin("test", VERSION_KOTLIN))
+    testImplementation(kotlin("reflect", VERSION_KOTLIN))
     testImplementation(spek("api")) {
         exclude("org.jetbrains.kotlin")
     }
@@ -74,10 +74,10 @@ tasks {
         lowercase = true
     }
     withType<BuildConfigTask> {
-        appName = releaseName
-        debug = releaseDebug
-        field("ARTIFACT", releaseArtifact)
-        field("WEBSITE", releaseWebsite)
+        appName = RELEASE_NAME
+        debug = RELEASE_DEBUG
+        field("ARTIFACT", RELEASE_ARTIFACT)
+        field("WEBSITE", RELEASE_WEBSITE)
     }
 
     "ktlint"(JavaExec::class) {
@@ -103,22 +103,22 @@ tasks {
     withType<ShadowJar> {
         destinationDir = buildDir.resolve("release")
         manifest.attributes(mapOf("Main-Class" to application.mainClassName))
-        baseName = releaseArtifact
-        version = releaseVersion
+        baseName = RELEASE_ARTIFACT
+        version = RELEASE_VERSION
         classifier = null
     }
     withType<PackTask> {
         dependsOn("installDist")
 
         classpath(*buildDir.resolve("install/app/lib").listFiles() ?: emptyArray())
-        executable = releaseName
+        executable = RELEASE_NAME
         mainClass = application.mainClassName
         vmArgs("Xmx2G")
         resources("res", "../scene/sceneres")
-        outputName = releaseName
+        outputName = RELEASE_NAME
 
-        iconDir = rootProject.projectDir.resolve("art").resolve("$releaseName.icns")
-        bundleId = releaseGroup
+        iconDir = rootProject.projectDir.resolve("art").resolve("$RELEASE_NAME.icns")
+        bundleId = RELEASE_GROUP
         verbose = true
         openOnDone = true
     }

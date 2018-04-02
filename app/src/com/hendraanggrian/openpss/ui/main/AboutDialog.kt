@@ -27,8 +27,8 @@ import ktfx.layouts.textFlow
 import ktfx.layouts.titledPane
 import ktfx.layouts.vbox
 import ktfx.listeners.cellFactory
+import ktfx.scene.control.button
 import ktfx.scene.control.closeButton
-import ktfx.scene.control.customButton
 import ktfx.scene.control.icon
 import ktfx.scene.layout.paddingAll
 
@@ -96,7 +96,7 @@ class AboutDialog(resourced: Resourced) : Dialog<Unit>(), Resourced by resourced
                 })
             }) { isCollapsible = false }
         }
-        customButton("Homepage", CANCEL_CLOSE) {
+        button("Homepage", CANCEL_CLOSE) {
             visibleProperty().bind(dialogPane.expandedProperty() and
                 booleanBindingOf(licenseList.selectionModel.selectedIndexProperty()) {
                     licenseList.selectionModel.selectedItem != null

@@ -6,10 +6,10 @@ import com.hendraanggrian.openpss.db.NamedDocument
 import com.hendraanggrian.openpss.db.NamedDocumentSchema
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.ui.SimpleTableController
+import com.hendraanggrian.openpss.util.stringCell
 import javafx.fxml.FXML
 import javafx.scene.control.TableColumn
 import kotlinx.nosql.equal
-import ktfx.beans.property.toProperty
 import ktfx.scene.control.errorAlert
 import ktfx.scene.control.inputDialog
 import java.net.URL
@@ -24,7 +24,7 @@ abstract class PriceController<D : NamedDocument<S>, S : NamedDocumentSchema<D>>
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
-        nameColumn.setCellValueFactory { it.value.name.toProperty() }
+        nameColumn.stringCell { name }
     }
 
     override fun add() = inputDialog(title = getString(when {

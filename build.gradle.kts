@@ -9,10 +9,10 @@ buildscript {
         maven("https://oss.sonatype.org/content/repositories/snapshots") // required for packr
     }
     dependencies {
-        classpath(kotlin("gradle-plugin", kotlinVersion))
-        classpath(hendraanggrian("r", rVersion))
-        classpath(hendraanggrian("buildconfig", buildconfigVersion))
-        classpath(hendraanggrian("packr", packrVersion))
+        classpath(kotlin("gradle-plugin", VERSION_KOTLIN))
+        classpath(hendraanggrian("r", VERSION_R))
+        classpath(hendraanggrian("buildconfig", VERSION_BUILDCONFIG))
+        classpath(hendraanggrian("packr", VERSION_PACKR))
         classpath(shadow())
         classpath(junitPlatform("gradle-plugin"))
     }
@@ -33,6 +33,6 @@ tasks {
         delete(buildDir)
     }
     "wrapper"(Wrapper::class) {
-        gradleVersion = "4.6"
+        gradleVersion = VERSION_GRADLE
     }
 }

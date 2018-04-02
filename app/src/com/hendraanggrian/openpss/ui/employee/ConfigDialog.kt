@@ -4,12 +4,12 @@ import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.db.schema.Configs
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.ui.Resourced
+import com.hendraanggrian.openpss.util.stringCell
 import javafx.scene.control.Dialog
 import javafx.scene.control.TableView.CONSTRAINED_RESIZE_POLICY
 import javafx.scene.image.ImageView
 import kotlinx.nosql.equal
 import kotlinx.nosql.update
-import ktfx.beans.property.toProperty
 import ktfx.collections.toObservableList
 import ktfx.coroutines.onEditCommit
 import ktfx.layouts.columns
@@ -33,9 +33,9 @@ class ConfigDialog(resourced: Resourced) : Dialog<Unit>(), Resourced by resource
                 isEditable = true
                 columnResizePolicy = CONSTRAINED_RESIZE_POLICY
                 columns {
-                    column<String>(getString(R.string.key)) { setCellValueFactory { transaction { it.value.key }.toProperty() } }
+                    column<String>(getString(R.string.key)) { stringCell { transaction { key }!! } }
                     column<String>(getString(R.string.value)) {
-                        setCellValueFactory { transaction { it.value.value }.toProperty() }
+                        stringCell { transaction { value }!! }
                         textFieldCellFactory()
                         onEditCommit {
                             transaction {

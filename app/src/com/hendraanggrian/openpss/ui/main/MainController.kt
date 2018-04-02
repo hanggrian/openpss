@@ -5,7 +5,7 @@ import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.customer.CustomerController
 import com.hendraanggrian.openpss.ui.employee.EmployeeController
 import com.hendraanggrian.openpss.ui.receipt.ReceiptController
-import com.hendraanggrian.openpss.ui.report.ReportController
+import com.hendraanggrian.openpss.ui.payment.PaymentController
 import com.hendraanggrian.openpss.ui.wage.WageController
 import javafx.event.ActionEvent
 import javafx.fxml.FXML
@@ -37,7 +37,7 @@ class MainController : Controller() {
     @FXML lateinit var tabPane: TabPane
     @FXML lateinit var customerController: CustomerController
     @FXML lateinit var receiptController: ReceiptController
-    @FXML lateinit var reportController: ReportController
+    @FXML lateinit var paymentController: PaymentController
     @FXML lateinit var wageController: WageController
     @FXML lateinit var employeeController: EmployeeController
 
@@ -60,12 +60,12 @@ class MainController : Controller() {
 
         later {
             employeeLabel.text = employeeName
-            controllers = listOf(customerController, receiptController, reportController, wageController,
+            controllers = listOf(customerController, receiptController, paymentController, wageController,
                 employeeController)
             controllers.forEach {
                 it._employee = _employee
                 when (it) {
-                    reportController, wageController, employeeController -> controllers.indexOf(it).let { index ->
+                    paymentController, wageController, employeeController -> controllers.indexOf(it).let { index ->
                         navigateMenu.items[index].isDisable = !isFullAccess
                         tabPane.tabs[index].isDisable = !isFullAccess
                     }

@@ -2,9 +2,9 @@ package com.hendraanggrian.openpss.ui.wage
 
 import com.hendraanggrian.openpss.BuildConfig.DEBUG
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.currencyConverter
 import com.hendraanggrian.openpss.io.WageContentFolder
 import com.hendraanggrian.openpss.io.WageFile
-import com.hendraanggrian.openpss.currencyConverter
 import com.hendraanggrian.openpss.numberConverter
 import com.hendraanggrian.openpss.scene.layout.TimeBox
 import com.hendraanggrian.openpss.time.PATTERN_DATE
@@ -15,6 +15,7 @@ import com.hendraanggrian.openpss.ui.DateDialog
 import com.hendraanggrian.openpss.ui.wage.Record.Companion.getDummy
 import com.hendraanggrian.openpss.util.getResourceString
 import com.hendraanggrian.openpss.util.openFile
+import com.hendraanggrian.openpss.util.stringCell
 import com.sun.javafx.scene.control.skin.TreeTableViewSkin
 import com.sun.javafx.scene.control.skin.VirtualFlow
 import javafx.fxml.FXML
@@ -34,13 +35,12 @@ import ktfx.beans.binding.booleanBindingOf
 import ktfx.beans.binding.or
 import ktfx.beans.binding.stringBindingOf
 import ktfx.beans.property.asObservable
-import ktfx.beans.property.toProperty
 import ktfx.collections.emptyBinding
 import ktfx.coroutines.onAction
 import ktfx.layouts.label
 import ktfx.layouts.menuItem
 import ktfx.listeners.cellFactory
-import ktfx.scene.control.customButton
+import ktfx.scene.control.button
 import ktfx.scene.control.infoAlert
 import ktfx.scene.snapshot
 import java.net.URL
@@ -85,7 +85,7 @@ class WageRecordController : Controller() {
         recordTable.root = TreeItem(getDummy(this))
         recordTable.isShowRoot = false
 
-        nameColumn.setCellValueFactory { it.value.value.displayedName.toProperty() }
+        nameColumn.stringCell { displayedName }
         startColumn.setCellValueFactory { it.value.value.displayedStart }
         endColumn.setCellValueFactory { it.value.value.displayedEnd }
         dailyColumn.setCellValueFactory { it.value.value.dailyProperty.asObservable() }
@@ -201,7 +201,7 @@ class WageRecordController : Controller() {
             recordTable.root.children.size + recordTable.root.children.sumBy { it.children.size })
         togglePrintMode(false, printStylesheet)
         infoAlert(getString(R.string.screenshot_finished)) {
-            customButton(getString(R.string.open_folder), CANCEL_CLOSE)
+            button(getString(R.string.open_folder), CANCEL_CLOSE)
         }.showAndWait()
             .filter { it.buttonData == CANCEL_CLOSE }
             .ifPresent { openFile(WageContentFolder) }

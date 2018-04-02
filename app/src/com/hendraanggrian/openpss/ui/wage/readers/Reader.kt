@@ -26,6 +26,6 @@ abstract class Reader {
     override fun toString(): String = name
 
     companion object {
-        fun listAll(): ObservableList<Any> = observableListOf(EClockingReader, Separator(), DummyReader)
+        fun listAll(): ObservableList<Any> = observableListOf(EClockingReader, Separator(), TestReader)
     }
 }

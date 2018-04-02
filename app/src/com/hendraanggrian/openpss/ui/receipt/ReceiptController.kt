@@ -4,11 +4,11 @@ import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.db.buildQuery
 import com.hendraanggrian.openpss.db.schema.Customer
 import com.hendraanggrian.openpss.db.schema.Customers
-import com.hendraanggrian.openpss.db.schema.Employee
 import com.hendraanggrian.openpss.db.schema.Employees
 import com.hendraanggrian.openpss.db.schema.Offset
 import com.hendraanggrian.openpss.db.schema.Other
 import com.hendraanggrian.openpss.db.schema.Payment
+import com.hendraanggrian.openpss.db.schema.Payments
 import com.hendraanggrian.openpss.db.schema.Plate
 import com.hendraanggrian.openpss.db.schema.Receipt
 import com.hendraanggrian.openpss.db.schema.Receipts
@@ -21,16 +21,13 @@ import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.controller
 import com.hendraanggrian.openpss.ui.pane
+import com.hendraanggrian.openpss.util.currencyCell
 import com.hendraanggrian.openpss.util.doneCell
-import com.hendraanggrian.openpss.util.excessPriceCell
+import com.hendraanggrian.openpss.util.getNullable
 import com.hendraanggrian.openpss.util.getResource
-import com.hendraanggrian.openpss.util.minPriceCell
-import com.hendraanggrian.openpss.util.minQtyCell
-import com.hendraanggrian.openpss.util.priceCell
-import com.hendraanggrian.openpss.util.qtyCell
-import com.hendraanggrian.openpss.util.titleCell
-import com.hendraanggrian.openpss.util.totalCell
-import com.hendraanggrian.openpss.util.typeCell
+import com.hendraanggrian.openpss.util.numberCell
+import com.hendraanggrian.openpss.util.stringCell
+import com.hendraanggrian.openpss.util.yesNoAlert
 import javafx.beans.property.SimpleObjectProperty
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
@@ -101,14 +98,14 @@ class ReceiptController : Controller(), Refreshable, Addable {
     @FXML lateinit var otherQtyColumn: TableColumn<Other, String>
     @FXML lateinit var otherPriceColumn: TableColumn<Other, String>
     @FXML lateinit var otherTotalColumn: TableColumn<Other, String>
+    @FXML lateinit var noteTab: Tab
+    @FXML lateinit var noteLabel: Label
+    @FXML lateinit var coverLabel: Label
     @FXML lateinit var paymentTab: Tab
     @FXML lateinit var paymentTable: TableView<Payment>
     @FXML lateinit var paymentEmployeeColumn: TableColumn<Payment, String>
     @FXML lateinit var paymentDateTimeColumn: TableColumn<Payment, String>
     @FXML lateinit var paymentValueColumn: TableColumn<Payment, String>
-    @FXML lateinit var noteTab: Tab
-    @FXML lateinit var noteLabel: Label
-    @FXML lateinit var coverLabel: Label
 
     private val customerProperty = SimpleObjectProperty<Customer>()
     private lateinit var receiptTable: TableView<Receipt>
@@ -126,22 +123,22 @@ class ReceiptController : Controller(), Refreshable, Addable {
         statusBox.selectionModel.selectFirst()
         pickDateRadio.graphic.disableProperty().bind(!pickDateRadio.selectedProperty())
 
-        plateTypeColumn.typeCell()
-        plateTitleColumn.titleCell()
-        plateQtyColumn.qtyCell()
-        platePriceColumn.priceCell()
-        plateTotalColumn.totalCell()
-        offsetTypeColumn.typeCell()
-        offsetTitleColumn.titleCell()
-        offsetQtyColumn.qtyCell()
-        offsetMinQtyColumn.minQtyCell()
-        offsetMinPriceColumn.minPriceCell()
-        offsetExcessPriceColumn.excessPriceCell()
-        offsetTotalColumn.totalCell()
-        otherTitleColumn.titleCell()
-        otherQtyColumn.qtyCell()
-        otherPriceColumn.priceCell()
-        otherTotalColumn.totalCell()
+        plateTypeColumn.stringCell { type }
+        plateTitleColumn.stringCell { title }
+        plateQtyColumn.numberCell { qty }
+        platePriceColumn.currencyCell { price }
+        plateTotalColumn.currencyCell { total }
+        offsetTypeColumn.stringCell { type }
+        offsetTitleColumn.stringCell { title }
+        offsetQtyColumn.numberCell { qty }
+        offsetMinQtyColumn.numberCell { minQty }
+        offsetMinPriceColumn.currencyCell { minPrice }
+        offsetExcessPriceColumn.currencyCell { excessPrice }
+        offsetTotalColumn.currencyCell { total }
+        otherTitleColumn.stringCell { title }
+        otherQtyColumn.numberCell { qty }
+        otherPriceColumn.currencyCell { price }
+        otherTotalColumn.currencyCell { total }
     }
 
     override fun refresh() = receiptPagination.pageFactoryProperty()
@@ -151,20 +148,17 @@ class ReceiptController : Controller(), Refreshable, Addable {
                 receiptTable = tableView {
                     columnResizePolicy = CONSTRAINED_RESIZE_POLICY
                     columns {
+                        column<String>(getString(R.string.id)) { stringCell { id } }
                         column<String>(getString(R.string.date)) {
-                            setCellValueFactory { it.value.dateTime.toString(PATTERN_DATETIME_EXTENDED).toProperty() }
+                            stringCell { dateTime.toString(PATTERN_DATETIME_EXTENDED) }
                         }
-                        column<Employee>(getString(R.string.employee)) {
-                            setCellValueFactory {
-                                transaction { Employees.find { id.equal(it.value.employeeId) }.single().toProperty() }
-                            }
+                        column<String>(getString(R.string.employee)) {
+                            stringCell { transaction { Employees.find { id.equal(employeeId) }.single() }!! }
                         }
-                        column<Customer>(getString(R.string.customer)) {
-                            setCellValueFactory {
-                                transaction { Customers.find { id.equal(it.value.customerId) }.single().toProperty() }
-                            }
+                        column<String>(getString(R.string.customer)) {
+                            stringCell { transaction { Customers.find { id.equal(customerId) }.single() }!! }
                         }
-                        column<String>(getString(R.string.total)) { totalCell() }
+                        column<String>(getString(R.string.total)) { currencyCell { total } }
                         column<Boolean>(getString(R.string.paid)) { doneCell { paid } }
                         column<Boolean>(getString(R.string.print)) { doneCell { printed } }
                     }
@@ -181,9 +175,11 @@ class ReceiptController : Controller(), Refreshable, Addable {
                         menuItem(getString(R.string.delete)) {
                             bindDisable()
                             onAction {
-                                receiptTable.selectionModel.selectedItem.let {
-                                    transaction { Receipts.find { id.equal(it.id.value) }.remove() }
-                                    receiptTable.items.remove(it)
+                                yesNoAlert(getString(R.string.are_you_sure)) {
+                                    receiptTable.selectionModel.selectedItem.let {
+                                        transaction { Receipts.find { id.equal(it.id.value) }.remove() }
+                                        receiptTable.items.remove(it)
+                                    }
                                 }
                             }
                         }
@@ -210,10 +206,12 @@ class ReceiptController : Controller(), Refreshable, Addable {
                 plateTable.bindTable(plateTab) { plates }
                 offsetTable.bindTable(offsetTab) { offsets }
                 otherTable.bindTable(otherTab) { others }
-                paymentTable.bindTable(paymentTab) { payments }
                 noteLabel.textProperty().bind(stringBindingOf(receiptTable.selectionModel.selectedItemProperty()) {
                     receipt?.note ?: ""
                 })
+                paymentTable.bindTable(paymentTab) {
+                    transaction { Payments.find { employeeId.equal(this@bindTable.employeeId) }.toList() }!!
+                }
                 coverLabel.visibleProperty().bind(receiptTable.selectionModel.selectedItemProperty().isNull)
                 receiptTable
             }
@@ -227,7 +225,7 @@ class ReceiptController : Controller(), Refreshable, Addable {
         }
     }
 
-    @FXML fun selectCustomer() = customerProperty.set(SearchCustomerDialog(this).showAndWait().orElse(null))
+    @FXML fun selectCustomer() = customerProperty.set(SearchCustomerDialog(this).showAndWait().getNullable())
 
     @FXML fun platePrice() = stage(getString(R.string.plate_price)) {
         initModality(APPLICATION_MODAL)

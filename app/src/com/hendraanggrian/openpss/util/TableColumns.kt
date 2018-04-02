@@ -4,11 +4,6 @@ package com.hendraanggrian.openpss.util
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.currencyConverter
-import com.hendraanggrian.openpss.db.Order
-import com.hendraanggrian.openpss.db.Priced
-import com.hendraanggrian.openpss.db.SplitPriced
-import com.hendraanggrian.openpss.db.Totaled
-import com.hendraanggrian.openpss.db.Typed
 import com.hendraanggrian.openpss.numberConverter
 import javafx.geometry.Pos.CENTER
 import javafx.geometry.Pos.CENTER_RIGHT
@@ -39,38 +34,15 @@ fun <T> TableColumn<T, Boolean>.doneCell(size: Int = 64, target: T.() -> Boolean
     }
 }
 
-inline fun <T : Typed> TableColumn<T, String>.typeCell() =
-    setCellValueFactory { it.value.type.toProperty() }
+inline fun <T> TableColumn<T, String>.stringCell(noinline target: T.() -> Any) =
+    setCellValueFactory { it.value.target().let { it as? String ?: it.toString() }.toProperty() }
 
-inline fun <T : Order> TableColumn<T, String>.titleCell() =
-    setCellValueFactory { it.value.title.toProperty() }
-
-inline fun <T : Order> TableColumn<T, String>.qtyCell() {
+inline fun <T> TableColumn<T, String>.numberCell(noinline target: T.() -> Int) {
     style = labeledStyle { alignment = CENTER_RIGHT }
-    setCellValueFactory { numberConverter.toString(it.value.qty).toProperty() }
+    setCellValueFactory { numberConverter.toString(it.value.target()).toProperty() }
 }
 
-inline fun <T : Totaled> TableColumn<T, String>.totalCell() {
+inline fun <T> TableColumn<T, String>.currencyCell(noinline target: T.() -> Double) {
     style = labeledStyle { alignment = CENTER_RIGHT }
-    setCellValueFactory { currencyConverter.toString(it.value.total).toProperty() }
-}
-
-inline fun <T : Priced> TableColumn<T, String>.priceCell() {
-    style = labeledStyle { alignment = CENTER_RIGHT }
-    setCellValueFactory { currencyConverter.toString(it.value.price).toProperty() }
-}
-
-inline fun <T : SplitPriced> TableColumn<T, String>.minQtyCell() {
-    style = labeledStyle { alignment = CENTER_RIGHT }
-    setCellValueFactory { numberConverter.toString(it.value.minQty).toProperty() }
-}
-
-inline fun <T : SplitPriced> TableColumn<T, String>.minPriceCell() {
-    style = labeledStyle { alignment = CENTER_RIGHT }
-    setCellValueFactory { currencyConverter.toString(it.value.minPrice).toProperty() }
-}
-
-inline fun <T : SplitPriced> TableColumn<T, String>.excessPriceCell() {
-    style = labeledStyle { alignment = CENTER_RIGHT }
-    setCellValueFactory { currencyConverter.toString(it.value.excessPrice).toProperty() }
+    setCellValueFactory { currencyConverter.toString(it.value.target()).toProperty() }
 }

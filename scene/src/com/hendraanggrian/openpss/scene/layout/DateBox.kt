@@ -57,11 +57,19 @@ open class DateBox(prefill: LocalDate = now()) : _HBox() {
 }
 
 inline fun dateBox(
+    prefill: LocalDate = now()
+): DateBox = dateBox(prefill) { }
+
+inline fun dateBox(
     prefill: LocalDate = now(),
-    noinline init: ((@LayoutDsl DateBox).() -> Unit)? = null
-): DateBox = DateBox(prefill).apply { init?.invoke(this) }
+    init: (@LayoutDsl DateBox).() -> Unit
+): DateBox = DateBox(prefill).apply(init)
+
+inline fun LayoutManager<Node>.dateBox(
+    prefill: LocalDate = now()
+): DateBox = dateBox(prefill) { }
 
 inline fun LayoutManager<Node>.dateBox(
     prefill: LocalDate = now(),
-    noinline init: ((@LayoutDsl DateBox).() -> Unit)? = null
+    init: (@LayoutDsl DateBox).() -> Unit
 ): DateBox = com.hendraanggrian.openpss.scene.layout.dateBox(prefill, init).add()

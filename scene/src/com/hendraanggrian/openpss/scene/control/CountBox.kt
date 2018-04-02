@@ -31,10 +31,14 @@ open class CountBox : ChoiceBox<Int>() {
     }
 }
 
-inline fun itemCountBox(
-    noinline init: ((@LayoutDsl CountBox).() -> Unit)? = null
-): CountBox = CountBox().apply { init?.invoke(this) }
+inline fun countBox(): CountBox = countBox { }
 
-inline fun LayoutManager<Node>.itemCountBox(
-    noinline init: ((@LayoutDsl CountBox).() -> Unit)? = null
-): CountBox = com.hendraanggrian.openpss.scene.control.itemCountBox(init).add()
+inline fun countBox(
+    init: (@LayoutDsl CountBox).() -> Unit
+): CountBox = CountBox().apply(init)
+
+inline fun LayoutManager<Node>.countBox(): CountBox = countBox { }
+
+inline fun LayoutManager<Node>.countBox(
+    init: (@LayoutDsl CountBox).() -> Unit
+): CountBox = com.hendraanggrian.openpss.scene.control.countBox(init).add()

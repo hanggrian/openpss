@@ -2,6 +2,7 @@ package com.hendraanggrian.openpss.ui.wage.readers
 
 import com.hendraanggrian.openpss.ui.wage.Attendee
 import javafx.collections.ObservableList
+import javafx.scene.control.Separator
 import javafx.stage.FileChooser
 import ktfx.collections.observableListOf
 import java.io.File
@@ -25,6 +26,6 @@ abstract class Reader {
     override fun toString(): String = name
 
     companion object {
-        fun listAll(): ObservableList<Reader> = observableListOf(EClockingReader)
+        fun listAll(): ObservableList<Any> = observableListOf(EClockingReader, Separator(), DummyReader)
     }
 }

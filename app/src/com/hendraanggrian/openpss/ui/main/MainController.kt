@@ -5,6 +5,7 @@ import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.customer.CustomerController
 import com.hendraanggrian.openpss.ui.employee.EmployeeController
 import com.hendraanggrian.openpss.ui.receipt.ReceiptController
+import com.hendraanggrian.openpss.ui.report.ReportController
 import com.hendraanggrian.openpss.ui.wage.WageController
 import javafx.event.ActionEvent
 import javafx.fxml.FXML
@@ -32,11 +33,11 @@ class MainController : Controller() {
     @FXML lateinit var addCustomerItem: MenuItem
     @FXML lateinit var quitItem: MenuItem
     @FXML lateinit var navigateMenu: Menu
-
     @FXML lateinit var employeeLabel: Label
     @FXML lateinit var tabPane: TabPane
     @FXML lateinit var customerController: CustomerController
     @FXML lateinit var receiptController: ReceiptController
+    @FXML lateinit var reportController: ReportController
     @FXML lateinit var wageController: WageController
     @FXML lateinit var employeeController: EmployeeController
 
@@ -59,12 +60,15 @@ class MainController : Controller() {
 
         later {
             employeeLabel.text = employeeName
-            controllers = listOf(customerController, receiptController, wageController, employeeController)
+            controllers = listOf(customerController, receiptController, reportController, wageController,
+                employeeController)
             controllers.forEach {
                 it._employee = _employee
-                if (it == wageController || it == employeeController) controllers.indexOf(it).let { index ->
-                    navigateMenu.items[index].isDisable = !isFullAccess
-                    tabPane.tabs[index].isDisable = !isFullAccess
+                when (it) {
+                    reportController, wageController, employeeController -> controllers.indexOf(it).let { index ->
+                        navigateMenu.items[index].isDisable = !isFullAccess
+                        tabPane.tabs[index].isDisable = !isFullAccess
+                    }
                 }
             }
         }

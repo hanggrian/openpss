@@ -14,10 +14,14 @@ class Gap(width: Int = 48) : Region() {
     }
 }
 
+inline fun gap(): Gap = gap { }
+
 inline fun gap(
-    noinline init: ((@LayoutDsl Gap).() -> Unit)? = null
-): Gap = Gap().apply { init?.invoke(this) }
+    init: (@LayoutDsl Gap).() -> Unit
+): Gap = Gap().apply(init)
+
+inline fun LayoutManager<Node>.gap(): Gap = gap { }
 
 inline fun LayoutManager<Node>.gap(
-    noinline init: ((@LayoutDsl Gap).() -> Unit)? = null
+    init: (@LayoutDsl Gap).() -> Unit
 ): Gap = com.hendraanggrian.openpss.scene.control.gap(init).add()

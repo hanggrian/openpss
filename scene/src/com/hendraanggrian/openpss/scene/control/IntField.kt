@@ -30,10 +30,14 @@ open class IntField : TextField() {
     }
 }
 
+inline fun intField(): IntField = intField { }
+
 inline fun intField(
-    noinline init: ((@LayoutDsl IntField).() -> Unit)? = null
-): IntField = IntField().apply { init?.invoke(this) }
+    init: (@LayoutDsl IntField).() -> Unit
+): IntField = IntField().apply(init)
+
+inline fun LayoutManager<Node>.intField(): IntField = intField { }
 
 inline fun LayoutManager<Node>.intField(
-    noinline init: ((@LayoutDsl IntField).() -> Unit)? = null
+    init: (@LayoutDsl IntField).() -> Unit
 ): IntField = com.hendraanggrian.openpss.scene.control.intField(init).add()

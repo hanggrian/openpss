@@ -25,10 +25,14 @@ open class HostField : TextField() {
     }
 }
 
+inline fun hostField(): HostField = hostField { }
+
 inline fun hostField(
-    noinline init: ((@LayoutDsl HostField).() -> Unit)? = null
-): HostField = HostField().apply { init?.invoke(this) }
+    init: (@LayoutDsl HostField).() -> Unit
+): HostField = HostField().apply(init)
+
+inline fun LayoutManager<Node>.hostField(): HostField = hostField { }
 
 inline fun LayoutManager<Node>.hostField(
-    noinline init: ((@LayoutDsl HostField).() -> Unit)? = null
+    init: (@LayoutDsl HostField).() -> Unit
 ): HostField = com.hendraanggrian.openpss.scene.control.hostField(init).add()

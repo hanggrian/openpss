@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.*?>
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.hendraanggrian.openpss.ui.customer.CustomerController">
-    <ToolBar stylesheets="@../style/toolbar.css">
+    <ToolBar stylesheets="@../style/toolbar_main.css">
         <!--suppress JavaFxEventHandler -->
         <Button mnemonicParsing="false" onAction="#refresh" text="%refresh">
             <graphic>

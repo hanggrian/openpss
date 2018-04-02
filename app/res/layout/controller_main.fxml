@@ -24,6 +24,7 @@
             </fx:define>
             <RadioMenuItem mnemonicParsing="false" toggleGroup="$navigateGroup" onAction="#navigate" text="%customer"/>
             <RadioMenuItem mnemonicParsing="false" toggleGroup="$navigateGroup" onAction="#navigate" text="%receipt"/>
+            <RadioMenuItem mnemonicParsing="false" toggleGroup="$navigateGroup" onAction="#navigate" text="%report"/>
             <RadioMenuItem mnemonicParsing="false" toggleGroup="$navigateGroup" onAction="#navigate" text="%wage"/>
             <RadioMenuItem mnemonicParsing="false" toggleGroup="$navigateGroup" onAction="#navigate" text="%employee"/>
         </Menu>
@@ -48,6 +49,10 @@
             <Tab closable="false" text="%receipt">
                 <!--suppress ALL -->
                 <fx:include fx:id="receipt" source="controller_receipt.fxml"/>
+            </Tab>
+            <Tab closable="false" text="%report">
+                <!--suppress ALL -->
+                <fx:include fx:id="report" source="controller_report.fxml"/>
             </Tab>
             <Tab closable="false" text="%wage">
                 <!--suppress ALL -->

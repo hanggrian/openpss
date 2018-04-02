@@ -11,6 +11,7 @@ import com.hendraanggrian.openpss.ui.controller
 import com.hendraanggrian.openpss.ui.pane
 import com.hendraanggrian.openpss.ui.wage.WageRecordController.Companion.EXTRA_ATTENDEES
 import com.hendraanggrian.openpss.ui.wage.readers.Reader
+import com.hendraanggrian.openpss.util.get
 import com.hendraanggrian.openpss.util.getResource
 import com.hendraanggrian.openpss.util.openFile
 import javafx.fxml.FXML
@@ -60,7 +61,7 @@ class WageController : Controller() {
     @FXML lateinit var disableRecessButton: Button
     @FXML lateinit var readButton: Button
     @FXML lateinit var processButton: Button
-    @FXML lateinit var readerChoiceBox: ChoiceBox<Reader>
+    @FXML lateinit var readerChoiceBox: ChoiceBox<Any>
     @FXML lateinit var fileField: FileField
     @FXML lateinit var employeeCountLabel: Label
     @FXML lateinit var scrollPane: ScrollPane
@@ -95,7 +96,8 @@ class WageController : Controller() {
 
     @FXML fun history() = openFile(WageFolder)
 
-    @FXML fun browse() = fileChooser(ExtensionFilter(getString(R.string.input_file), *readerChoiceBox.value.extensions))
+    @FXML fun browse() = fileChooser(
+        ExtensionFilter(getString(R.string.input_file), *readerChoiceBox.get<Reader>().extensions))
         .showOpenDialog(fileField.scene.window)
         ?.run { fileField.text = absolutePath }
 
@@ -140,7 +142,7 @@ class WageController : Controller() {
         flowPane.children.clear()
         launch {
             try {
-                readerChoiceBox.value.read(fileField.file).forEach { attendee ->
+                readerChoiceBox.get<Reader>().read(fileField.file).forEach { attendee ->
                     attendee.mergeDuplicates()
                     launch(FX) {
                         flowPane.children += attendeePane(this@WageController, attendee) {

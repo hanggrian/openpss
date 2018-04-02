@@ -40,10 +40,14 @@ open class DoubleField : TextField() {
     }
 }
 
+inline fun doubleField(): DoubleField = doubleField { }
+
 inline fun doubleField(
-    noinline init: ((@LayoutDsl DoubleField).() -> Unit)? = null
-): DoubleField = DoubleField().apply { init?.invoke(this) }
+    init: (@LayoutDsl DoubleField).() -> Unit
+): DoubleField = DoubleField().apply(init)
+
+inline fun LayoutManager<Node>.doubleField(): DoubleField = doubleField { }
 
 inline fun LayoutManager<Node>.doubleField(
-    noinline init: ((@LayoutDsl DoubleField).() -> Unit)? = null
+    init: (@LayoutDsl DoubleField).() -> Unit
 ): DoubleField = com.hendraanggrian.openpss.scene.control.doubleField(init).add()

@@ -44,11 +44,19 @@ open class FileField(scope: Scope = FILE) : TextField() {
 }
 
 inline fun fileField(
+    scope: Scope = FILE
+): FileField = fileField(scope) { }
+
+inline fun fileField(
     scope: Scope = FILE,
-    noinline init: ((@LayoutDsl FileField).() -> Unit)? = null
-): FileField = FileField(scope).apply { init?.invoke(this) }
+    init: (@LayoutDsl FileField).() -> Unit
+): FileField = FileField(scope).apply(init)
+
+inline fun LayoutManager<Node>.fileField(
+    scope: Scope = FILE
+): FileField = fileField(scope) { }
 
 inline fun LayoutManager<Node>.fileField(
     scope: Scope = FILE,
-    noinline init: ((@LayoutDsl FileField).() -> Unit)? = null
+    init: (@LayoutDsl FileField).() -> Unit
 ): FileField = com.hendraanggrian.openpss.scene.control.fileField(scope, init).add()

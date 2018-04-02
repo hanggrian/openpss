@@ -95,11 +95,19 @@ open class TimeBox(prefill: LocalTime = MIDNIGHT) : _HBox() {
 }
 
 inline fun timeBox(
+    prefill: LocalTime = MIDNIGHT
+): TimeBox = timeBox(prefill) { }
+
+inline fun timeBox(
     prefill: LocalTime = MIDNIGHT,
-    noinline init: ((@LayoutDsl TimeBox).() -> Unit)? = null
-): TimeBox = TimeBox(prefill).apply { init?.invoke(this) }
+    init: (@LayoutDsl TimeBox).() -> Unit
+): TimeBox = TimeBox(prefill).apply(init)
+
+inline fun LayoutManager<Node>.timeBox(
+    prefill: LocalTime = MIDNIGHT
+): TimeBox = timeBox(prefill) { }
 
 inline fun LayoutManager<Node>.timeBox(
     prefill: LocalTime = MIDNIGHT,
-    noinline init: ((@LayoutDsl TimeBox).() -> Unit)? = null
+    init: (@LayoutDsl TimeBox).() -> Unit
 ): TimeBox = com.hendraanggrian.openpss.scene.layout.timeBox(prefill, init).add()

@@ -105,7 +105,9 @@ class Record(
     }
 
     fun isNode(): Boolean = index == INDEX_NODE
+
     fun isTotal(): Boolean = index == INDEX_TOTAL
+
     fun isChild(): Boolean = index >= 0
 
     val displayedName: String

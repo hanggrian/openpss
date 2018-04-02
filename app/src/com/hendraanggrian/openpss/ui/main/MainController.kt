@@ -4,8 +4,8 @@ import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.customer.CustomerController
 import com.hendraanggrian.openpss.ui.employee.EmployeeController
-import com.hendraanggrian.openpss.ui.receipt.ReceiptController
 import com.hendraanggrian.openpss.ui.payment.PaymentController
+import com.hendraanggrian.openpss.ui.receipt.ReceiptController
 import com.hendraanggrian.openpss.ui.wage.WageController
 import javafx.event.ActionEvent
 import javafx.fxml.FXML
@@ -17,6 +17,7 @@ import javafx.scene.control.RadioMenuItem
 import javafx.scene.control.TabPane
 import javafx.scene.input.KeyCode.C
 import javafx.scene.input.KeyCode.Q
+import javafx.scene.input.KeyCode.R
 import javafx.scene.input.KeyCode.getKeyCode
 import javafx.scene.input.KeyCombination.SHORTCUT_DOWN
 import ktfx.application.exit
@@ -31,6 +32,7 @@ class MainController : Controller() {
 
     @FXML lateinit var menuBar: MenuBar
     @FXML lateinit var addCustomerItem: MenuItem
+    @FXML lateinit var addReceiptItem: MenuItem
     @FXML lateinit var quitItem: MenuItem
     @FXML lateinit var navigateMenu: Menu
     @FXML lateinit var employeeLabel: Label
@@ -47,10 +49,9 @@ class MainController : Controller() {
         super.initialize(location, resources)
         menuBar.isUseSystemMenuBar = IS_OS_MAC
         addCustomerItem.accelerator = C + SHORTCUT_DOWN
+        addReceiptItem.accelerator = R + SHORTCUT_DOWN
         quitItem.accelerator = Q + SHORTCUT_DOWN
-        navigateMenu.items.forEachIndexed { index, item ->
-            item.accelerator = getKeyCode("${index + 1}") + SHORTCUT_DOWN
-        }
+        navigateMenu.items.forEachIndexed { i, item -> item.accelerator = getKeyCode("${i + 1}") + SHORTCUT_DOWN }
 
         updateNavigateMenu(tabPane.selectionModel.selectedIndex)
         tabPane.selectionModel.selectedIndexProperty().listener { _, _, index ->
@@ -74,7 +75,10 @@ class MainController : Controller() {
         }
     }
 
-    @FXML fun addCustomer() = customerController.add()
+    @FXML fun add(event: ActionEvent) = when (event.source) {
+        addCustomerItem -> customerController.addCustomer()
+        else -> receiptController.addReceipt()
+    }
 
     @FXML fun quit() = exit()
 

@@ -18,11 +18,18 @@
                 </ImageView>
             </graphic>
         </Button>
-        <!--suppress JavaFxEventHandler -->
-        <Button mnemonicParsing="false" onAction="#add" text="%add_receipt">
+        <Button mnemonicParsing="false" onAction="#addReceipt" text="%add_receipt">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
                     <Image url="@/image/stud_add_receipt.png"/>
+                </ImageView>
+            </graphic>
+        </Button>
+        <Space/>
+        <Button mnemonicParsing="false" fx:id="addPaymentButton" onAction="#addPayment" text="%add_payment">
+            <graphic>
+                <ImageView pickOnBounds="true" preserveRatio="true">
+                    <Image url="@/image/stud_payment.png"/>
                 </ImageView>
             </graphic>
         </Button>
@@ -123,8 +130,8 @@
                 <Tab fx:id="paymentTab" closable="false" text="%payment">
                     <TableView fx:id="paymentTable">
                         <columns>
-                            <TableColumn fx:id="paymentEmployeeColumn" text="%employee"/>
                             <TableColumn fx:id="paymentDateTimeColumn" text="%date"/>
+                            <TableColumn fx:id="paymentEmployeeColumn" text="%employee"/>
                             <TableColumn fx:id="paymentValueColumn" text="%value"/>
                         </columns>
                         <columnResizePolicy>

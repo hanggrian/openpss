@@ -1,17 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <?import javafx.scene.control.*?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.hendraanggrian.openpss.ui.main.MainController">
     <MenuBar fx:id="menuBar">
         <Menu mnemonicParsing="false" text="File">
-            <MenuItem fx:id="addCustomerItem" mnemonicParsing="false" onAction="#addCustomer" text="%add_customer">
+            <MenuItem fx:id="addCustomerItem" mnemonicParsing="false" onAction="#add" text="%add_customer">
                 <graphic>
                     <ImageView pickOnBounds="true" preserveRatio="true">
                         <Image url="@/image/menu_user.png"/>
+                    </ImageView>
+                </graphic>
+            </MenuItem>
+            <MenuItem fx:id="addReceiptItem" mnemonicParsing="false" onAction="#add" text="%add_receipt">
+                <graphic>
+                    <ImageView pickOnBounds="true" preserveRatio="true">
+                        <Image url="@/image/menu_receipt.png"/>
                     </ImageView>
                 </graphic>
             </MenuItem>

@@ -27,14 +27,13 @@ import java.util.ResourceBundle
  */
 abstract class SimpleTableController<D : Document<S>, S : DocumentSchema<D>>(
     protected val schema: S
-) : Controller(), Refreshable, Addable {
+) : Controller(), Refreshable {
 
     @FXML lateinit var deleteButton: Button
     @FXML lateinit var table: TableView<D>
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
-        refresh()
         later {
             deleteButton.disableProperty().bind(table.selectionModel.selectedItemProperty().isNull or
                 !isFullAccess.toProperty())
@@ -44,6 +43,8 @@ abstract class SimpleTableController<D : Document<S>, S : DocumentSchema<D>>(
     override fun refresh() {
         table.items = transaction { schema.find().toMutableObservableList() }
     }
+
+    @FXML abstract fun add()
 
     @FXML fun delete() = yesNoAlert(getString(R.string.are_you_sure)) {
         table.selectionModel.selectedItem.let {

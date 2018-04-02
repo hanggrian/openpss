@@ -1,6 +1,8 @@
 package com.hendraanggrian.openpss.ui.payment
 
 import com.hendraanggrian.openpss.db.schema.Payment
+import com.hendraanggrian.openpss.db.schema.Payments
+import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.scene.layout.DateBox
 import com.hendraanggrian.openpss.time.PATTERN_DATETIME_EXTENDED
 import com.hendraanggrian.openpss.ui.Controller
@@ -9,6 +11,8 @@ import com.hendraanggrian.openpss.util.stringCell
 import javafx.fxml.FXML
 import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
+import ktfx.collections.toMutableObservableList
+import ktfx.coroutines.listener
 import java.net.URL
 import java.util.ResourceBundle
 
@@ -23,12 +27,14 @@ class PaymentController : Controller(), Refreshable {
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
-
+        dateBox.dateProperty.listener { refresh() }
         idColumn.stringCell { id }
         dateColumn.stringCell { dateTime.toString(PATTERN_DATETIME_EXTENDED) }
     }
 
     override fun refresh() {
-
+        paymentTable.items = transaction {
+            Payments.find { dateTime.matches(dateBox.date.toString().toPattern()) }.toMutableObservableList()
+        }
     }
 }

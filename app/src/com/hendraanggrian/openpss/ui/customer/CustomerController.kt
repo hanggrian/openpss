@@ -10,7 +10,6 @@ import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.scene.control.CountBox
 import com.hendraanggrian.openpss.time.PATTERN_DATE
 import com.hendraanggrian.openpss.ui.AddUserDialog
-import com.hendraanggrian.openpss.ui.Addable
 import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.util.getResourceString
@@ -63,7 +62,7 @@ import java.util.ResourceBundle
 import java.util.regex.Pattern.CASE_INSENSITIVE
 import kotlin.math.ceil
 
-class CustomerController : Controller(), Refreshable, Addable {
+class CustomerController : Controller(), Refreshable {
 
     @FXML lateinit var customerField: TextField
     @FXML lateinit var countBox: CountBox
@@ -93,7 +92,6 @@ class CustomerController : Controller(), Refreshable, Addable {
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
-        refresh()
 
         countBox.desc = getString(R.string.items)
         nameLabel.font = loadFont(getResourceString(R.font.opensans_bold), 24.0)
@@ -178,7 +176,7 @@ class CustomerController : Controller(), Refreshable, Addable {
             }
         })
 
-    override fun add() = AddUserDialog(this, getString(R.string.add_customer)).showAndWait().ifPresent {
+    @FXML fun addCustomer() = AddUserDialog(this, getString(R.string.add_customer)).showAndWait().ifPresent {
         transaction {
             when {
                 Customers.find { name.equal(it) }.isNotEmpty() ->

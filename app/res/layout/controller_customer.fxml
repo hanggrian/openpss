@@ -18,8 +18,7 @@
                 </ImageView>
             </graphic>
         </Button>
-        <!--suppress JavaFxEventHandler -->
-        <Button mnemonicParsing="false" onAction="#add" text="%add">
+        <Button mnemonicParsing="false" onAction="#addCustomer" text="%add">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
                     <Image url="@/image/stud_add_user.png"/>

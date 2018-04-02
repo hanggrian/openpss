@@ -6,7 +6,6 @@ import com.hendraanggrian.openpss.db.schema.Employee.Companion.DEFAULT_PASSWORD
 import com.hendraanggrian.openpss.db.schema.Employees
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.ui.AddUserDialog
-import com.hendraanggrian.openpss.ui.Addable
 import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.main.ResetPasswordDialog
@@ -30,7 +29,7 @@ import ktfx.scene.control.infoAlert
 import java.net.URL
 import java.util.ResourceBundle
 
-class EmployeeController : Controller(), Refreshable, Addable {
+class EmployeeController : Controller(), Refreshable {
 
     @FXML lateinit var fullAccessButton: Button
     @FXML lateinit var resetPasswordButton: Button
@@ -53,14 +52,13 @@ class EmployeeController : Controller(), Refreshable, Addable {
 
         nameColumn.stringCell { name }
         fullAccessColumn.doneCell(128) { fullAccess }
-        refresh()
     }
 
     override fun refresh() {
         employeeTable.items = transaction { Employees.find().toMutableObservableList() }
     }
 
-    override fun add() = AddUserDialog(this, getString(R.string.add_employee)).showAndWait().ifPresent { name ->
+    @FXML fun addEmployee() = AddUserDialog(this, getString(R.string.add_employee)).showAndWait().ifPresent { name ->
         val employee = Employee.new(name.tidy())
         employee.id = transaction { Employees.insert(employee) }!!
         employeeTable.items.add(employee)

@@ -16,7 +16,6 @@ import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.scene.control.CountBox
 import com.hendraanggrian.openpss.scene.layout.DateBox
 import com.hendraanggrian.openpss.time.PATTERN_DATETIME_EXTENDED
-import com.hendraanggrian.openpss.ui.Addable
 import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.controller
@@ -67,8 +66,9 @@ import java.net.URL
 import java.util.ResourceBundle
 import kotlin.math.ceil
 
-class ReceiptController : Controller(), Refreshable, Addable {
+class ReceiptController : Controller(), Refreshable {
 
+    @FXML lateinit var addPaymentButton: Button
     @FXML lateinit var customerButton: Button
     @FXML lateinit var countBox: CountBox
     @FXML lateinit var statusBox: ChoiceBox<String>
@@ -103,8 +103,8 @@ class ReceiptController : Controller(), Refreshable, Addable {
     @FXML lateinit var coverLabel: Label
     @FXML lateinit var paymentTab: Tab
     @FXML lateinit var paymentTable: TableView<Payment>
-    @FXML lateinit var paymentEmployeeColumn: TableColumn<Payment, String>
     @FXML lateinit var paymentDateTimeColumn: TableColumn<Payment, String>
+    @FXML lateinit var paymentEmployeeColumn: TableColumn<Payment, String>
     @FXML lateinit var paymentValueColumn: TableColumn<Payment, String>
 
     private val customerProperty = SimpleObjectProperty<Customer>()
@@ -112,7 +112,6 @@ class ReceiptController : Controller(), Refreshable, Addable {
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
-        refresh()
 
         customerButton.textProperty().bind(stringBindingOf(customerProperty) {
             customerProperty.value?.toString() ?: getString(R.string.search_customer)
@@ -122,6 +121,8 @@ class ReceiptController : Controller(), Refreshable, Addable {
         statusBox.items = listOf(R.string.any, R.string.unpaid, R.string.paid).map { getString(it) }.toObservableList()
         statusBox.selectionModel.selectFirst()
         pickDateRadio.graphic.disableProperty().bind(!pickDateRadio.selectedProperty())
+
+        paymentTable.contextMenu { menuItem(getString(R.string.add)) { onAction {addPayment() } } }
 
         plateTypeColumn.stringCell { type }
         plateTitleColumn.stringCell { title }
@@ -163,7 +164,7 @@ class ReceiptController : Controller(), Refreshable, Addable {
                         column<Boolean>(getString(R.string.print)) { doneCell { printed } }
                     }
                     contextMenu {
-                        menuItem(getString(R.string.add)) { onAction { this@ReceiptController.add() } }
+                        menuItem(getString(R.string.add)) { onAction { addReceipt() } }
                         separatorMenuItem()
                         menuItem(getString(R.string.edit)) {
                             bindDisable()
@@ -203,6 +204,7 @@ class ReceiptController : Controller(), Refreshable, Addable {
                         }
                     }
                 }
+                addPaymentButton.disableProperty().bind(receiptTable.selectionModel.selectedItemProperty().isNull)
                 plateTable.bindTable(plateTab) { plates }
                 offsetTable.bindTable(offsetTab) { offsets }
                 otherTable.bindTable(otherTab) { others }
@@ -217,12 +219,15 @@ class ReceiptController : Controller(), Refreshable, Addable {
             }
         })
 
-    override fun add() = ReceiptDialog(this).showAndWait().ifPresent {
+    @FXML fun addReceipt() = ReceiptDialog(this).showAndWait().ifPresent {
         transaction {
             it.id = Receipts.insert(it)
             receiptTable.items.add(it)
             receiptTable.selectionModel.selectFirst()
         }
+    }
+
+    @FXML fun addPayment() = AddPaymentDialog(this@ReceiptController).showAndWait().ifPresent {
     }
 
     @FXML fun selectCustomer() = customerProperty.set(SearchCustomerDialog(this).showAndWait().getNullable())

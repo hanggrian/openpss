@@ -22,6 +22,7 @@ open class Controller : Initializable, Resourced {
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         this.resources = resources
+        if (this is Refreshable) refresh()
     }
 
     inline val employeeName: String get() = _employee.name

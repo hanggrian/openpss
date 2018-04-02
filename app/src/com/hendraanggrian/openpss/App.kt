@@ -24,7 +24,6 @@ import ktfx.scene.control.infoAlert
 import ktfx.stage.icon
 import ktfx.stage.setMinSize
 import org.apache.log4j.BasicConfigurator.configure
-import java.util.Optional
 import java.util.ResourceBundle
 
 class App : Application(), Resourced {

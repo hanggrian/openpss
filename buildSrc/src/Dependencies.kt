@@ -7,14 +7,14 @@ fun DependencyHandler.kotlinx(module: String, version: String? = null) =
 fun DependencyHandler.apache(module: String, version: String) = "org.apache.${module.split("-")[0]}:$module:$version"
 fun DependencyHandler.commonsValidator() = "commons-validator:commons-validator:$VERSION_COMMONS_VALIDATOR"
 
-fun DependencyHandler.guava() = "com.google.guava:guava:$VERSION_GUAVA-jre"
-
 fun DependencyHandler.hendraanggrian(module: String, version: String, repo: String? = null) =
     "com.hendraanggrian${repo?.let { ".$it" } ?: ""}:$module:$version"
 
 inline val PluginDependenciesSpec.r get() = id("r")
 inline val PluginDependenciesSpec.buildconfig get() = id("buildconfig")
 inline val PluginDependenciesSpec.packr get() = id("packr")
+
+fun DependencyHandler.guava() = "com.google.guava:guava:$VERSION_GUAVA-jre"
 
 fun DependencyHandler.jodaTime() = "joda-time:joda-time:$VERSION_JODA"
 

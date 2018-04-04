@@ -122,7 +122,7 @@ class ReceiptController : Controller(), Refreshable {
         statusBox.selectionModel.selectFirst()
         pickDateRadio.graphic.disableProperty().bind(!pickDateRadio.selectedProperty())
 
-        paymentTable.contextMenu { menuItem(getString(R.string.add)) { onAction {addPayment() } } }
+        paymentTable.contextMenu { menuItem(getString(R.string.add)) { onAction { addPayment() } } }
 
         plateTypeColumn.stringCell { type }
         plateTitleColumn.stringCell { title }

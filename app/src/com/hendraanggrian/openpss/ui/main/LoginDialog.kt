@@ -1,8 +1,8 @@
 package com.hendraanggrian.openpss.ui.main
 
+import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.BuildConfig.APP_NAME
 import com.hendraanggrian.openpss.BuildConfig.DEBUG
-import com.hendraanggrian.openpss.Language
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.db.login
 import com.hendraanggrian.openpss.io.properties.ConfigFile
@@ -29,7 +29,6 @@ import ktfx.beans.binding.`when`
 import ktfx.beans.binding.or
 import ktfx.beans.binding.otherwise
 import ktfx.beans.binding.then
-import ktfx.collections.toObservableList
 import ktfx.coroutines.FX
 import ktfx.coroutines.listener
 import ktfx.coroutines.onAction
@@ -43,12 +42,14 @@ import ktfx.layouts.passwordField
 import ktfx.layouts.textField
 import ktfx.layouts.toggleButton
 import ktfx.layouts.tooltip
+import ktfx.listeners.converter
 import ktfx.scene.control.button
 import ktfx.scene.control.cancelButton
 import ktfx.scene.control.errorAlert
 import ktfx.scene.control.icon
 import ktfx.scene.control.infoAlert
 import ktfx.scene.layout.gap
+import java.util.Locale
 
 class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced {
 
@@ -69,11 +70,14 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced 
         dialogPane.content = gridPane {
             gap = 8.0
             label(getString(R.string.language)) col 0 row 0
-            choiceBox(Language.values().toObservableList()) {
+            choiceBox(App.supportedLocales) {
                 maxWidth = Double.MAX_VALUE
-                selectionModel.select(Language.find(ConfigFile.language.value))
-                valueProperty().listener(CommonPool) { _, _, language ->
-                    ConfigFile.language.set(language.code)
+                selectionModel.select(Locale(ConfigFile.language.value))
+                converter {
+                    toString { it!!.getDisplayLanguage(it) }
+                }
+                valueProperty().listener(CommonPool) { _, _, locale ->
+                    ConfigFile.language.set(locale.language)
                     ConfigFile.save()
                     launch(FX) {
                         close()

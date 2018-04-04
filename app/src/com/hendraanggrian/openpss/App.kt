@@ -13,6 +13,7 @@ import com.hendraanggrian.openpss.ui.main.ResetPasswordDialog
 import com.hendraanggrian.openpss.ui.pane
 import com.hendraanggrian.openpss.utils.getResource
 import javafx.application.Application
+import javafx.collections.ObservableList
 import javafx.fxml.FXMLLoader
 import javafx.scene.Scene
 import javafx.scene.image.Image
@@ -20,10 +21,12 @@ import javafx.stage.Stage
 import kotlinx.nosql.equal
 import kotlinx.nosql.update
 import ktfx.application.launch
+import ktfx.collections.observableListOf
 import ktfx.scene.control.infoAlert
 import ktfx.stage.icon
 import ktfx.stage.setMinSize
 import org.apache.log4j.BasicConfigurator.configure
+import java.util.Locale
 import java.util.ResourceBundle
 import java.util.ResourceBundle.getBundle
 
@@ -31,13 +34,15 @@ class App : Application(), Resourced {
 
     companion object {
         @JvmStatic fun main(args: Array<String>) = launch<App>(*args)
+
+        inline val supportedLocales: ObservableList<Locale> get() = observableListOf(Locale("en"), Locale("in"))
     }
 
     override lateinit var resources: ResourceBundle
 
     override fun init() {
         if (DEBUG) configure()
-        resources = getBundle("string", Language.find(ConfigFile.language.value).toLocale())
+        resources = getBundle("string", Locale(ConfigFile.language.value))
     }
 
     override fun start(stage: Stage) {

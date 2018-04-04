@@ -76,8 +76,8 @@ class MainController : Controller() {
     }
 
     @FXML fun add(event: ActionEvent) = when (event.source) {
-        addCustomerItem -> customerController.addCustomer()
-        else -> receiptController.addReceipt()
+        addCustomerItem -> customerController.selectRun { addCustomer() }
+        else -> receiptController.selectRun { addReceipt() }
     }
 
     @FXML fun quit() = exit()
@@ -88,5 +88,10 @@ class MainController : Controller() {
 
     private fun updateNavigateMenu(index: Int) = navigateMenu.items.forEachIndexed { i, item ->
         (item as RadioMenuItem).isSelected = index == i
+    }
+
+    private fun <T : Controller> T.selectRun(run: T.() -> Unit) {
+        tabPane.selectionModel.select(controllers.indexOf(this))
+        run(run)
     }
 }

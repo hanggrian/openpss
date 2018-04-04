@@ -12,7 +12,7 @@
         <Button mnemonicParsing="false" onAction="#refresh" text="%refresh">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/stud_refresh.png"/>
+                    <Image url="@/image/toolbar_refresh.png"/>
                 </ImageView>
             </graphic>
         </Button>

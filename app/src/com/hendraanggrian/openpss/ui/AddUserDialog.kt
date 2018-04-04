@@ -21,7 +21,7 @@ class AddUserDialog(resourced: Resourced, header: String) : TextInputDialog(), R
                 it.buttonData != OK_DONE -> null
                 editor.text.isName() -> editor.text.clean()
                 else -> {
-                    errorAlert(getString(R.string.complete_name_not_found)).showAndWait()
+                    errorAlert(getString(R.string.complete_name_is_required)).showAndWait()
                     null
                 }
             }

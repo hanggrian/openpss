@@ -10,7 +10,7 @@
         <Button mnemonicParsing="false" onAction="#refresh" text="%refresh">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/stud_refresh.png"/>
+                    <Image url="@/image/toolbar_refresh.png"/>
                 </ImageView>
             </graphic>
         </Button>
@@ -18,14 +18,14 @@
         <Button mnemonicParsing="false" onAction="#add" text="%add">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/stud_add.png"/>
+                    <Image url="@/image/toolbar_add.png"/>
                 </ImageView>
             </graphic>
         </Button>
         <Button mnemonicParsing="false" fx:id="deleteButton" onAction="#delete" text="%delete">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/stud_delete.png"/>
+                    <Image url="@/image/toolbar_delete.png"/>
                 </ImageView>
             </graphic>
         </Button>

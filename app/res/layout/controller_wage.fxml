@@ -12,7 +12,7 @@
         <Button fx:id="disableRecessButton" mnemonicParsing="false" onAction="#disableRecess" text="%disable_recess">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/stud_recess_off.png"/>
+                    <Image url="@/image/toolbar_recess_off.png"/>
                 </ImageView>
             </graphic>
         </Button>
@@ -20,14 +20,14 @@
         <Button fx:id="readButton" mnemonicParsing="false" onAction="#read" text="%read">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/stud_read.png"/>
+                    <Image url="@/image/toolbar_read.png"/>
                 </ImageView>
             </graphic>
         </Button>
         <Button fx:id="processButton" mnemonicParsing="false" onAction="#process" text="%process">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/stud_process.png"/>
+                    <Image url="@/image/toolbar_process.png"/>
                 </ImageView>
             </graphic>
         </Button>
@@ -35,14 +35,14 @@
         <Button mnemonicParsing="false" onAction="#recess" text="%recess">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/stud_recess.png"/>
+                    <Image url="@/image/toolbar_recess.png"/>
                 </ImageView>
             </graphic>
         </Button>
         <Button mnemonicParsing="false" onAction="#history" text="%history">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/stud_history.png"/>
+                    <Image url="@/image/toolbar_history.png"/>
                 </ImageView>
             </graphic>
         </Button>

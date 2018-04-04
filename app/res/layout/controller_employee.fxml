@@ -12,14 +12,14 @@
         <Button mnemonicParsing="false" onAction="#refresh" text="%refresh">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/stud_refresh.png"/>
+                    <Image url="@/image/toolbar_refresh.png"/>
                 </ImageView>
             </graphic>
         </Button>
         <Button mnemonicParsing="false" onAction="#addEmployee" text="%add">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/stud_add_user.png"/>
+                    <Image url="@/image/toolbar_add_user.png"/>
                 </ImageView>
             </graphic>
         </Button>
@@ -28,7 +28,7 @@
                 text="%full_access">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/stud_full_access.png"/>
+                    <Image url="@/image/toolbar_full_access.png"/>
                 </ImageView>
             </graphic>
         </Button>
@@ -36,14 +36,14 @@
                 text="%reset_password">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/stud_reset_password.png"/>
+                    <Image url="@/image/toolbar_reset_password.png"/>
                 </ImageView>
             </graphic>
         </Button>
         <Button mnemonicParsing="false" fx:id="deleteButton" onAction="#delete" text="%delete">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/stud_delete.png"/>
+                    <Image url="@/image/toolbar_delete.png"/>
                 </ImageView>
             </graphic>
         </Button>
@@ -51,7 +51,7 @@
         <Button mnemonicParsing="false" fx:id="configButton" onAction="#config" text="%config">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/stud_config.png"/>
+                    <Image url="@/image/toolbar_config.png"/>
                 </ImageView>
             </graphic>
         </Button>

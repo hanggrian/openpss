@@ -26,7 +26,7 @@ object Receipts : DocumentSchema<Receipt>("receipts", Receipt::class) {
     val offsets = OffsetColumn()
     val others = OtherColumn()
     val note = string("note")
-    val paid = double("paid")
+    val paid = boolean("paid")
     val printed = boolean("printed")
 
     class PlateColumn : ListColumn<Plate, Receipts>("plates", Plate::class) {

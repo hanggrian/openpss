@@ -17,8 +17,7 @@ import com.hendraanggrian.openpss.utils.stringCell
 import com.hendraanggrian.openpss.utils.yesNoAlert
 import javafx.fxml.FXML
 import javafx.scene.Node
-import javafx.scene.control.ButtonType.OK
-import javafx.scene.control.ChoiceBox
+import javafx.scene.control.Button
 import javafx.scene.control.Label
 import javafx.scene.control.ListView
 import javafx.scene.control.Pagination
@@ -35,26 +34,17 @@ import kotlinx.nosql.update
 import ktfx.application.later
 import ktfx.beans.binding.bindingOf
 import ktfx.beans.binding.booleanBindingOf
-import ktfx.beans.binding.or
 import ktfx.beans.binding.stringBindingOf
 import ktfx.collections.emptyObservableList
 import ktfx.collections.toMutableObservableList
 import ktfx.collections.toObservableList
 import ktfx.coroutines.onAction
 import ktfx.layouts.button
-import ktfx.layouts.choiceBox
 import ktfx.layouts.contextMenu
-import ktfx.layouts.gridPane
-import ktfx.layouts.label
 import ktfx.layouts.listView
 import ktfx.layouts.menuItem
-import ktfx.layouts.textField
-import ktfx.scene.control.cancelButton
-import ktfx.scene.control.dialog
 import ktfx.scene.control.errorAlert
 import ktfx.scene.control.inputDialog
-import ktfx.scene.control.okButton
-import ktfx.scene.layout.gap
 import ktfx.scene.layout.maxSize
 import java.net.URL
 import java.util.ResourceBundle
@@ -63,6 +53,7 @@ import kotlin.math.ceil
 
 class CustomerController : Controller(), Refreshable {
 
+    @FXML lateinit var addContactButton: Button
     @FXML lateinit var customerField: TextField
     @FXML lateinit var countBox: CountBox
     @FXML lateinit var customerPagination: Pagination
@@ -99,33 +90,7 @@ class CustomerController : Controller(), Refreshable {
             if (noteLabel.isHover) noteLabelGraphic else null
         })
         contactTable.contextMenu {
-            menuItem(getString(R.string.add)) {
-                onAction {
-                    dialog<Contact>(getString(R.string.add_contact), ImageView(R.image.ic_contact)) {
-                        lateinit var typeChoice: ChoiceBox<String>
-                        lateinit var contactField: TextField
-                        dialogPane.content = gridPane {
-                            gap = 8.0
-                            label(getString(R.string.type)) col 0 row 0
-                            typeChoice = choiceBox(Contact.listTypes()) col 1 row 0
-                            label(getString(R.string.contact)) col 0 row 1
-                            contactField = textField { promptText = getString(R.string.contact) } col 1 row 1
-                        }
-                        cancelButton()
-                        okButton {
-                            disableProperty().bind(typeChoice.valueProperty().isNull or
-                                contactField.textProperty().isEmpty)
-                        }
-                        setResultConverter { if (it == OK) Contact(typeChoice.value, contactField.text) else null }
-                    }.showAndWait().ifPresent { contact ->
-                        transaction {
-                            Customers.find { id.equal(customer!!.id) }.projection { contacts }
-                                .update(customer!!.contacts + contact)
-                            reload(customer!!)
-                        }
-                    }
-                }
-            }
+            menuItem(getString(R.string.add)) { onAction { addContact() } }
             menuItem(getString(R.string.delete)) {
                 later {
                     disableProperty().bind(booleanBindingOf(contactTable.selectionModel.selectedItemProperty()) {
@@ -164,6 +129,7 @@ class CustomerController : Controller(), Refreshable {
                         }
                     }
                 }
+                addContactButton.disableProperty().bind(customerList.selectionModel.selectedItemProperty().isNull)
                 nameLabel.bindLabel { customer?.name ?: "" }
                 sinceLabel.bindLabel { customer?.since?.toString(PATTERN_DATE) ?: "" }
                 noteLabel.bindLabel { customer?.note ?: "" }
@@ -189,15 +155,24 @@ class CustomerController : Controller(), Refreshable {
         }
     }
 
+    @FXML fun addContact() = AddContactDialog(this).showAndWait().ifPresent {
+        transaction {
+            Customers.find { id.equal(customer!!.id) }.projection { contacts }.update(customer!!.contacts + it)
+            reload(customer!!)
+        }
+    }
+
     private inline val customer: Customer? get() = customerList.selectionModel.selectedItem
 
     private inline val contact: Contact? get() = contactTable.selectionModel.selectedItem
 
-    private fun MongoDBSession.reload(customer: Customer) = customerList.items.indexOf(customer).let { index ->
-        customerList.items[customerList.items.indexOf(customer)] = Customers.find { id.equal(customer.id) }.single()
-        customerList.selectionModel.select(index)
-    }
-
     private fun Label.bindLabel(target: () -> String) = textProperty()
         .bind(stringBindingOf(customerList.selectionModel.selectedItemProperty()) { target() })
+
+    private fun MongoDBSession.reload(customer: Customer) = customerList.run {
+        items.indexOf(customer).let { index ->
+            items[items.indexOf(customer)] = Customers.find { id.equal(customer.id) }.single()
+            selectionModel.select(index)
+        }
+    }
 }

@@ -73,9 +73,7 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced 
             choiceBox(App.supportedLocales) {
                 maxWidth = Double.MAX_VALUE
                 selectionModel.select(Locale(ConfigFile.language.value))
-                converter {
-                    toString { it!!.getDisplayLanguage(it) }
-                }
+                converter { toString { it!!.getDisplayLanguage(it) } }
                 valueProperty().listener(CommonPool) { _, _, locale ->
                     ConfigFile.language.set(locale.language)
                     ConfigFile.save()

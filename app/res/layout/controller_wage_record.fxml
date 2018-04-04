@@ -12,7 +12,7 @@
         <Button mnemonicParsing="false" onAction="#empty" text="%empty_daily_income">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/stud_clear_date.png"/>
+                    <Image url="@/image/toolbar_clear_date.png"/>
                 </ImageView>
             </graphic>
         </Button>
@@ -21,7 +21,7 @@
                 text="%lock_start_time">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/stud_lock_start.png"/>
+                    <Image url="@/image/toolbar_lock_start.png"/>
                 </ImageView>
             </graphic>
         </Button>
@@ -29,7 +29,7 @@
                 text="%lock_end_time">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/stud_lock_end.png"/>
+                    <Image url="@/image/toolbar_lock_end.png"/>
                 </ImageView>
             </graphic>
         </Button>
@@ -37,7 +37,7 @@
         <Button mnemonicParsing="false" onAction="#screenshot" text="%screenshot">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/stud_snapshot.png"/>
+                    <Image url="@/image/toolbar_snapshot.png"/>
                 </ImageView>
             </graphic>
         </Button>

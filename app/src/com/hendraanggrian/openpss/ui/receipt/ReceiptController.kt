@@ -12,6 +12,7 @@ import com.hendraanggrian.openpss.db.schema.Payments
 import com.hendraanggrian.openpss.db.schema.Plate
 import com.hendraanggrian.openpss.db.schema.Receipt
 import com.hendraanggrian.openpss.db.schema.Receipts
+import com.hendraanggrian.openpss.db.schema.calculateDue
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.scene.control.CountBox
 import com.hendraanggrian.openpss.scene.layout.DateBox
@@ -46,6 +47,8 @@ import javafx.stage.Modality.APPLICATION_MODAL
 import javafx.util.Callback
 import kotlinx.nosql.equal
 import kotlinx.nosql.id
+import kotlinx.nosql.mongodb.MongoDBSession
+import kotlinx.nosql.update
 import ktfx.application.later
 import ktfx.beans.binding.bindingOf
 import ktfx.beans.binding.or
@@ -69,6 +72,7 @@ import kotlin.math.ceil
 class ReceiptController : Controller(), Refreshable {
 
     @FXML lateinit var addPaymentButton: Button
+    @FXML lateinit var printButton: Button
     @FXML lateinit var customerButton: Button
     @FXML lateinit var countBox: CountBox
     @FXML lateinit var statusBox: ChoiceBox<String>
@@ -106,6 +110,7 @@ class ReceiptController : Controller(), Refreshable {
     @FXML lateinit var paymentDateTimeColumn: TableColumn<Payment, String>
     @FXML lateinit var paymentEmployeeColumn: TableColumn<Payment, String>
     @FXML lateinit var paymentValueColumn: TableColumn<Payment, String>
+    @FXML lateinit var paymentMethodColumn: TableColumn<Payment, String>
 
     private val customerProperty = SimpleObjectProperty<Customer>()
     private lateinit var receiptTable: TableView<Receipt>
@@ -140,6 +145,10 @@ class ReceiptController : Controller(), Refreshable {
         otherQtyColumn.numberCell { qty }
         otherPriceColumn.currencyCell { price }
         otherTotalColumn.currencyCell { total }
+        paymentDateTimeColumn.stringCell { dateTime.toString(PATTERN_DATETIME_EXTENDED) }
+        paymentEmployeeColumn.stringCell { transaction { Employees.find { id.equal(employeeId) }.single() }!! }
+        paymentValueColumn.currencyCell { value }
+        paymentMethodColumn.stringCell { getTransferDisplayText(this@ReceiptController) }
     }
 
     override fun refresh() = receiptPagination.pageFactoryProperty()
@@ -205,6 +214,7 @@ class ReceiptController : Controller(), Refreshable {
                     }
                 }
                 addPaymentButton.disableProperty().bind(receiptTable.selectionModel.selectedItemProperty().isNull)
+                printButton.disableProperty().bind(receiptTable.selectionModel.selectedItemProperty().isNull)
                 plateTable.bindTable(plateTab) { plates }
                 offsetTable.bindTable(offsetTab) { offsets }
                 otherTable.bindTable(otherTab) { others }
@@ -227,7 +237,17 @@ class ReceiptController : Controller(), Refreshable {
         }
     }
 
-    @FXML fun addPayment() = AddPaymentDialog(this@ReceiptController).showAndWait().ifPresent {
+    @FXML fun addPayment() = AddPaymentDialog(this, receipt!!).showAndWait().ifPresent {
+        transaction {
+            it.id = Payments.insert(it)
+            if (calculateDue(receipt!!) == 0.0)
+                Receipts.find { id.equal(receipt!!.id) }.projection { paid }.update(true)
+            reload(receipt!!)
+        }
+    }
+
+    @FXML fun print() = PrintReceiptDialog(this, receipt!!).showAndWait().ifPresent {
+        
     }
 
     @FXML fun selectCustomer() = customerProperty.set(SearchCustomerDialog(this).showAndWait().getNullable())
@@ -265,5 +285,12 @@ class ReceiptController : Controller(), Refreshable {
     private fun MenuItem.bindDisable() = later {
         disableProperty().bind(receiptTable.selectionModel.selectedItems.emptyBinding() or
             !isFullAccess.toProperty())
+    }
+
+    private fun MongoDBSession.reload(receipt: Receipt) = receiptTable.run {
+        items.indexOf(receipt).let { index ->
+            items[items.indexOf(receipt)] = Receipts.find { id.equal(receipt.id) }.single()
+            selectionModel.select(index)
+        }
     }
 }

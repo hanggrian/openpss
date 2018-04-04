@@ -14,14 +14,14 @@
         <Button mnemonicParsing="false" onAction="#refresh" text="%refresh">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/stud_refresh.png"/>
+                    <Image url="@/image/toolbar_refresh.png"/>
                 </ImageView>
             </graphic>
         </Button>
         <Button mnemonicParsing="false" onAction="#addReceipt" text="%add_receipt">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/stud_add_receipt.png"/>
+                    <Image url="@/image/toolbar_add_receipt.png"/>
                 </ImageView>
             </graphic>
         </Button>
@@ -29,7 +29,14 @@
         <Button mnemonicParsing="false" fx:id="addPaymentButton" onAction="#addPayment" text="%add_payment">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/stud_payment.png"/>
+                    <Image url="@/image/toolbar_payment.png"/>
+                </ImageView>
+            </graphic>
+        </Button>
+        <Button mnemonicParsing="false" fx:id="printButton" onAction="#print" text="%print">
+            <graphic>
+                <ImageView pickOnBounds="true" preserveRatio="true">
+                    <Image url="@/image/toolbar_print.png"/>
                 </ImageView>
             </graphic>
         </Button>
@@ -37,14 +44,14 @@
         <Button mnemonicParsing="false" onAction="#platePrice" text="%plate_price">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/stud_plate.png"/>
+                    <Image url="@/image/toolbar_price_plate.png"/>
                 </ImageView>
             </graphic>
         </Button>
         <Button mnemonicParsing="false" onAction="#offsetPrice" text="%offset_price">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/stud_offset.png"/>
+                    <Image url="@/image/toolbar_price_offset.png"/>
                 </ImageView>
             </graphic>
         </Button>
@@ -133,6 +140,7 @@
                             <TableColumn fx:id="paymentDateTimeColumn" text="%date"/>
                             <TableColumn fx:id="paymentEmployeeColumn" text="%employee"/>
                             <TableColumn fx:id="paymentValueColumn" text="%value"/>
+                            <TableColumn fx:id="paymentMethodColumn" text="%value"/>
                         </columns>
                         <columnResizePolicy>
                             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>

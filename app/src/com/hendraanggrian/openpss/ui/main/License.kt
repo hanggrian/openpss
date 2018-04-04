@@ -1,6 +1,6 @@
 package com.hendraanggrian.openpss.ui.main
 
-import com.hendraanggrian.openpss.util.getResourceAsStream
+import com.hendraanggrian.openpss.utils.getResourceAsStream
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.util.stream.Collectors

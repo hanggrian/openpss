@@ -4,8 +4,8 @@ import com.hendraanggrian.openpss.BuildConfig.VERSION
 import com.hendraanggrian.openpss.BuildConfig.WEBSITE
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.ui.Resourced
-import com.hendraanggrian.openpss.util.browseUrl
-import com.hendraanggrian.openpss.util.getResourceString
+import com.hendraanggrian.openpss.utils.browseUrl
+import com.hendraanggrian.openpss.utils.getResourceString
 import javafx.event.ActionEvent.ACTION
 import javafx.geometry.Pos.CENTER_LEFT
 import javafx.scene.control.ButtonBar.ButtonData.CANCEL_CLOSE

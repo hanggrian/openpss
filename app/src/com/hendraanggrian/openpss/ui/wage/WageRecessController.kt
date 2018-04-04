@@ -8,7 +8,7 @@ import com.hendraanggrian.openpss.scene.layout.TimeBox
 import com.hendraanggrian.openpss.scene.layout.timeBox
 import com.hendraanggrian.openpss.time.PATTERN_TIME
 import com.hendraanggrian.openpss.ui.SimpleTableController
-import com.hendraanggrian.openpss.util.stringCell
+import com.hendraanggrian.openpss.utils.stringCell
 import javafx.fxml.FXML
 import javafx.scene.control.ButtonType.OK
 import javafx.scene.control.TableColumn

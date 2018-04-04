@@ -12,10 +12,9 @@ import com.hendraanggrian.openpss.time.PATTERN_DATE
 import com.hendraanggrian.openpss.ui.AddUserDialog
 import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.Refreshable
-import com.hendraanggrian.openpss.util.getResourceString
-import com.hendraanggrian.openpss.util.stringCell
-import com.hendraanggrian.openpss.util.tidy
-import com.hendraanggrian.openpss.util.yesNoAlert
+import com.hendraanggrian.openpss.utils.getResourceString
+import com.hendraanggrian.openpss.utils.stringCell
+import com.hendraanggrian.openpss.utils.yesNoAlert
 import javafx.fxml.FXML
 import javafx.scene.Node
 import javafx.scene.control.ButtonType.OK
@@ -181,7 +180,7 @@ class CustomerController : Controller(), Refreshable {
             when {
                 Customers.find { name.equal(it) }.isNotEmpty() ->
                     errorAlert(getString(R.string.name_taken)).showAndWait()
-                else -> Customer.new(it.tidy()).let {
+                else -> Customer.new(it).let {
                     it.id = Customers.insert(it)
                     customerList.items.add(it)
                     customerList.selectionModel.selectFirst()

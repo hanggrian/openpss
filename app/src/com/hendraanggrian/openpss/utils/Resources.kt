@@ -1,6 +1,6 @@
 @file:Suppress("NOTHING_TO_INLINE")
 
-package com.hendraanggrian.openpss.util
+package com.hendraanggrian.openpss.utils
 
 import com.hendraanggrian.openpss.App
 import javafx.scene.paint.Color

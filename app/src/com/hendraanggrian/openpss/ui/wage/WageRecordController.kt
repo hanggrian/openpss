@@ -13,9 +13,9 @@ import com.hendraanggrian.openpss.time.PATTERN_TIME
 import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.DateDialog
 import com.hendraanggrian.openpss.ui.wage.Record.Companion.getDummy
-import com.hendraanggrian.openpss.util.getResourceString
-import com.hendraanggrian.openpss.util.openFile
-import com.hendraanggrian.openpss.util.stringCell
+import com.hendraanggrian.openpss.utils.getResourceString
+import com.hendraanggrian.openpss.utils.openFile
+import com.hendraanggrian.openpss.utils.stringCell
 import com.sun.javafx.scene.control.skin.TreeTableViewSkin
 import com.sun.javafx.scene.control.skin.VirtualFlow
 import javafx.fxml.FXML

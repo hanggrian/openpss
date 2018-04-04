@@ -4,7 +4,7 @@ import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.db.schema.Configs
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.ui.Resourced
-import com.hendraanggrian.openpss.util.stringCell
+import com.hendraanggrian.openpss.utils.stringCell
 import javafx.scene.control.Dialog
 import javafx.scene.control.TableView.CONSTRAINED_RESIZE_POLICY
 import javafx.scene.image.ImageView

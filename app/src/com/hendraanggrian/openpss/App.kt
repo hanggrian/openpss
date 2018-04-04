@@ -11,7 +11,7 @@ import com.hendraanggrian.openpss.ui.controller
 import com.hendraanggrian.openpss.ui.main.LoginDialog
 import com.hendraanggrian.openpss.ui.main.ResetPasswordDialog
 import com.hendraanggrian.openpss.ui.pane
-import com.hendraanggrian.openpss.util.getResource
+import com.hendraanggrian.openpss.utils.getResource
 import javafx.application.Application
 import javafx.fxml.FXMLLoader
 import javafx.scene.Scene
@@ -25,6 +25,7 @@ import ktfx.stage.icon
 import ktfx.stage.setMinSize
 import org.apache.log4j.BasicConfigurator.configure
 import java.util.ResourceBundle
+import java.util.ResourceBundle.getBundle
 
 class App : Application(), Resourced {
 
@@ -36,7 +37,7 @@ class App : Application(), Resourced {
 
     override fun init() {
         if (DEBUG) configure()
-        resources = Language.find(ConfigFile.language.value).resources
+        resources = getBundle("string", Language.find(ConfigFile.language.value).toLocale())
     }
 
     override fun start(stage: Stage) {

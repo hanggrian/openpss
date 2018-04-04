@@ -1,6 +1,6 @@
 package com.hendraanggrian.openpss
 
-import com.hendraanggrian.openpss.util.round
+import com.hendraanggrian.openpss.utils.round
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.given
 import org.jetbrains.spek.api.dsl.it

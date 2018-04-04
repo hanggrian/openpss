@@ -1,4 +1,4 @@
-package com.hendraanggrian.openpss.util
+package com.hendraanggrian.openpss.utils
 
 import java.lang.Double.isInfinite
 import java.math.BigDecimal

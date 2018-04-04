@@ -5,7 +5,7 @@ import com.hendraanggrian.openpss.time.FlexibleInterval
 import com.hendraanggrian.openpss.time.PATTERN_DATETIME
 import com.hendraanggrian.openpss.time.START_OF_TIME
 import com.hendraanggrian.openpss.ui.Resourced
-import com.hendraanggrian.openpss.util.round
+import com.hendraanggrian.openpss.utils.round
 import javafx.beans.property.BooleanProperty
 import javafx.beans.property.DoubleProperty
 import javafx.beans.property.ObjectProperty

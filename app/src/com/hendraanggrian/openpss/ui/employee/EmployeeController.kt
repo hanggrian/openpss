@@ -9,10 +9,9 @@ import com.hendraanggrian.openpss.ui.AddUserDialog
 import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.main.ResetPasswordDialog
-import com.hendraanggrian.openpss.util.doneCell
-import com.hendraanggrian.openpss.util.stringCell
-import com.hendraanggrian.openpss.util.tidy
-import com.hendraanggrian.openpss.util.yesNoAlert
+import com.hendraanggrian.openpss.utils.doneCell
+import com.hendraanggrian.openpss.utils.stringCell
+import com.hendraanggrian.openpss.utils.yesNoAlert
 import javafx.fxml.FXML
 import javafx.scene.control.Button
 import javafx.scene.control.TableColumn
@@ -58,8 +57,8 @@ class EmployeeController : Controller(), Refreshable {
         employeeTable.items = transaction { Employees.find().toMutableObservableList() }
     }
 
-    @FXML fun addEmployee() = AddUserDialog(this, getString(R.string.add_employee)).showAndWait().ifPresent { name ->
-        val employee = Employee.new(name.tidy())
+    @FXML fun addEmployee() = AddUserDialog(this, getString(R.string.add_employee)).showAndWait().ifPresent {
+        val employee = Employee.new(it)
         employee.id = transaction { Employees.insert(employee) }!!
         employeeTable.items.add(employee)
         employeeTable.selectionModel.select(employee)

@@ -1,4 +1,6 @@
-package com.hendraanggrian.openpss.util
+@file:Suppress("NOTHING_TO_INLINE")
+
+package com.hendraanggrian.openpss.utils
 
 import ktfx.scene.control.errorAlert
 import java.awt.Desktop.getDesktop
@@ -16,6 +18,6 @@ fun openFile(file: File) {
     if (ensureDesktopAvailable()) getDesktop().open(file)
 }
 
-private fun ensureDesktopAvailable(): Boolean = isDesktopSupported().also {
+private inline fun ensureDesktopAvailable(): Boolean = isDesktopSupported().also {
     if (!it) errorAlert("Desktop isn't supported!").show()
 }

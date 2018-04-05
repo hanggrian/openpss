@@ -69,7 +69,7 @@ class AttendeePane(
                 paddingAll = 8.0
                 attendee.role?.let { role ->
                     label(getString(R.string.role)) col 0 row 0 marginRight 4.0
-                    label(role) col 1 row 0 colStretch 2
+                    label(role) col 1 row 0 colSpans 2
                 }
                 label(getString(R.string.income)) col 0 row 1 marginRight 4.0
                 intField {
@@ -98,13 +98,14 @@ class AttendeePane(
                             } marginTop if (children.size > 1) 4.0 else 0.0
                         }
                     }
-                } col 1 row 3 colStretch 2
+                } col 1 row 3 colSpans 2
             }
             listView = listView(attendee.attendances) {
                 prefWidth = 128.0
                 cellFactory {
+                    text = null
+                    graphic = null
                     onUpdate { dateTime, empty ->
-                        clear()
                         if (dateTime != null && !empty) graphic = ktfx.layouts.hbox {
                             val index = listView.items.indexOf(dateTime)
                             alignment = if (index % 2 == 0) BOTTOM_CENTER else TOP_CENTER

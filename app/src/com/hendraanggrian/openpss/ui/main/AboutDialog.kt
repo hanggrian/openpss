@@ -22,7 +22,9 @@ import ktfx.layouts.button
 import ktfx.layouts.hbox
 import ktfx.layouts.imageView
 import ktfx.layouts.label
+import ktfx.layouts.listView
 import ktfx.layouts.text
+import ktfx.layouts.textArea
 import ktfx.layouts.textFlow
 import ktfx.layouts.titledPane
 import ktfx.layouts.vbox
@@ -45,8 +47,8 @@ class AboutDialog(resourced: Resourced) : Dialog<Unit>(), Resourced by resourced
             vbox {
                 alignment = CENTER_LEFT
                 textFlow {
-                    text("Open ") { font = loadFont(getResourceString(R.font.opensans_bold), 24.0) }
-                    text("Printing Sales System") { font = loadFont(getResourceString(R.font.opensans_light), 24.0) }
+                    "Open " { font = loadFont(getResourceString(R.font.opensans_bold), 24.0) }
+                    "Printing Sales System" { font = loadFont(getResourceString(R.font.opensans_light), 24.0) }
                 }
                 text("${getString(R.string.version)} $VERSION") {
                     font = loadFont(getResourceString(R.font.opensans_regular), 12.0)
@@ -55,16 +57,16 @@ class AboutDialog(resourced: Resourced) : Dialog<Unit>(), Resourced by resourced
                     font = loadFont(getResourceString(R.font.opensans_bold), 12.0)
                 } marginTop 20.0
                 textFlow {
-                    text("${getString(R.string.powered_by)}  ") {
+                    "${getString(R.string.powered_by)}  " {
                         font = loadFont(getResourceString(R.font.opensans_bold), 12.0)
                     }
-                    text("JavaFX") { font = loadFont(getResourceString(R.font.opensans_regular), 12.0) }
+                    "JavaFX" { font = loadFont(getResourceString(R.font.opensans_regular), 12.0) }
                 } marginTop 4.0
                 textFlow {
-                    text("${getString(R.string.author)}  ") {
+                    "${getString(R.string.author)}  " {
                         font = loadFont(getResourceString(R.font.opensans_bold), 12.0)
                     }
-                    text("Hendra Anggrian") { font = loadFont(getResourceString(R.font.opensans_regular), 12.0) }
+                    "Hendra Anggrian" { font = loadFont(getResourceString(R.font.opensans_regular), 12.0) }
                 } marginTop 4.0
                 hbox {
                     button("GitHub") { onAction { browseUrl(WEBSITE) } }
@@ -75,27 +77,36 @@ class AboutDialog(resourced: Resourced) : Dialog<Unit>(), Resourced by resourced
             } marginLeft 48.0
         }
         dialogPane.expandableContent = hbox {
-            licenseList = ktfx.layouts.listView {
-                prefHeight = 256.0
-                items = License.values().toObservableList()
-                cellFactory {
-                    onUpdate { license, empty ->
-                        if (license != null && !empty) graphic = ktfx.layouts.vbox {
-                            label(license.repo) { font = loadFont(getResourceString(R.font.opensans_regular), 12.0) }
-                            label(license.owner) { font = loadFont(getResourceString(R.font.opensans_bold), 12.0) }
+            titledPane(getString(R.string.open_source_software)) {
+                isCollapsible = false
+                licenseList = listView {
+                    prefHeight = 256.0
+                    items = License.values().toObservableList()
+                    cellFactory {
+                        onUpdate { license, empty ->
+                            if (license != null && !empty) graphic = ktfx.layouts.vbox {
+                                label(license.repo) {
+                                    font = loadFont(getResourceString(R.font.opensans_regular), 12.0)
+                                }
+                                label(license.owner) {
+                                    font = loadFont(getResourceString(R.font.opensans_bold), 12.0)
+                                }
+                            }
                         }
                     }
                 }
             }
-            titledPane(getString(R.string.open_source_software), licenseList) { isCollapsible = false }
-            titledPane(getString(R.string.license), ktfx.layouts.textArea {
-                prefHeight = 256.0
-                isEditable = false
-                text = getString(R.string.select_license)
-                licenseList.selectionModel.selectedItemProperty().listener { _, _, license ->
-                    text = license?.getContent() ?: getString(R.string.select_license)
+            titledPane(getString(R.string.license)) {
+                isCollapsible = false
+                textArea {
+                    prefHeight = 256.0
+                    isEditable = false
+                    text = getString(R.string.select_license)
+                    licenseList.selectionModel.selectedItemProperty().listener { _, _, license ->
+                        text = license?.getContent() ?: getString(R.string.select_license)
+                    }
                 }
-            }) { isCollapsible = false }
+            }
         }
         button("Homepage", CANCEL_CLOSE) {
             visibleProperty().bind(dialogPane.expandedProperty() and

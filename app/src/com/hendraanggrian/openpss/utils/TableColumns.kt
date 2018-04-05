@@ -25,7 +25,8 @@ fun <T> TableColumn<T, Boolean>.doneCell(size: Int = 64, target: T.() -> Boolean
     setCellValueFactory { it.value.target().toProperty() }
     cellFactory {
         onUpdate { done, empty ->
-            clear()
+            text = null
+            graphic = null
             if (done != null && !empty) graphic = imageView(Image(when {
                 done -> R.image.btn_done_yes
                 else -> R.image.btn_done_no

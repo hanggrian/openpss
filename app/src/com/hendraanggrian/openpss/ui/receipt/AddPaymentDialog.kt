@@ -56,11 +56,11 @@ class AddPaymentDialog(controller: Controller, receipt: Receipt) : Dialog<Paymen
             label(getString(R.string.employee)) row 0 col 0
             label(controller.employeeName) {
                 font = loadFont(getResourceString(R.font.opensans_bold), 13.0)
-            } row 0 col 1 colStretch 2
+            } row 0 col 1 colSpans 2
             label(getString(R.string.remaining)) row 1 col 0
             label(currencyConverter.toString(remaining)) {
                 font = loadFont(getResourceString(R.font.opensans_bold), 13.0)
-            } row 1 col 1 colStretch 2
+            } row 1 col 1 colSpans 2
             label(getString(R.string.value)) row 2 col 0
             valueField = doubleField { promptText = getString(R.string.payment) } row 2 col 1
             button(graphic = ImageView(R.image.btn_match_remaining)) {
@@ -70,9 +70,9 @@ class AddPaymentDialog(controller: Controller, receipt: Receipt) : Dialog<Paymen
             label(getString(R.string.payment_method)) row 3 col 0
             methodChoice = choiceBox(values().toObservableList()) {
                 converter { toString { it!!.getDisplayText(this@AddPaymentDialog) } }
-            } row 3 col 1 colStretch 2
-            label(getString(R.string.transfer_id)) { bindDisable() } row 4 col 0
-            transferField = textField { bindDisable() } row 4 col 1 colStretch 2
+            } row 3 col 1 colSpans 2
+            label(getString(R.string.transfer_reference)) { bindDisable() } row 4 col 0
+            transferField = textField { bindDisable() } row 4 col 1 colSpans 2
         }
         cancelButton()
         okButton {

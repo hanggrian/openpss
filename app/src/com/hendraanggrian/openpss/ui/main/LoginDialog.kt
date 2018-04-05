@@ -82,12 +82,12 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced 
                         later { infoAlert(getString(R.string.please_restart)).showAndWait().ifPresent { exit() } }
                     }
                 }
-            } col 1 row 0 colStretch 2
+            } col 1 row 0 colSpans 2
             label(getString(R.string.employee)) col 0 row 1
             employeeField = textField {
                 promptText = getString(R.string.employee)
                 textProperty().bindBidirectional(ConfigFile.employee)
-            } col 1 row 1 colStretch 2
+            } col 1 row 1 colSpans 2
             label(getString(R.string.password)) col 0 row 2
             anchorPane {
                 passwordField1 = passwordField { promptText = getString(R.string.password) }
@@ -127,18 +127,18 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced 
             serverUserField = textField {
                 promptText = getString(R.string.server_user)
                 textProperty().bindBidirectional(MongoFile.user)
-            } col 1 row 1 colStretch 2
+            } col 1 row 1 colSpans 2
             label(getString(R.string.server_password)) col 0 row 2
             serverPasswordField = passwordField {
                 promptText = getString(R.string.server_password)
                 textProperty().bindBidirectional(MongoFile.password)
-            } col 1 row 2 colStretch 2
+            } col 1 row 2 colSpans 2
             hbox {
                 alignment = CENTER_RIGHT
                 hyperlink(getString(R.string.about)) {
                     onAction { AboutDialog(this@LoginDialog).showAndWait() }
                 } marginLeft 8.0
-            } col 0 row 3 colStretch 3
+            } col 0 row 3 colSpans 3
         }
         cancelButton()
         button(getString(R.string.login), OK_DONE) {

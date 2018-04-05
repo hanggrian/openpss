@@ -6,7 +6,7 @@ const val VERSION_COROUTINES = "0.22.5"
 const val VERSION_R = "0.8"
 const val VERSION_BUILDCONFIG = "0.12"
 const val VERSION_PACKR = "0.3"
-const val VERSION_KTFX = "0.2.6"
+const val VERSION_KTFX = "0.2.7"
 const val VERSION_COMMONS_LANG = "3.7"
 const val VERSION_POI = "3.17"
 

@@ -1,6 +1,7 @@
 package com.hendraanggrian.openpss.ui.main
 
 import com.hendraanggrian.openpss.utils.getResourceAsStream
+import kotlinx.coroutines.experimental.async
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.util.stream.Collectors
@@ -43,8 +44,9 @@ enum class License(val owner: String, val repo: String, val homepage: String) {
         "Log4j12",
         "https://www.slf4j.org");
 
-    val content: String
-        get() = getResourceAsStream("/license/${name.toLowerCase()}.txt").use {
-            return BufferedReader(InputStreamReader(it)).lines().collect(Collectors.joining("\n"))
+    suspend fun getContent(): String = async {
+        getResourceAsStream("/license/${name.toLowerCase()}.txt").use {
+            BufferedReader(InputStreamReader(it)).lines().collect(Collectors.joining("\n"))
         }
+    }.await()
 }

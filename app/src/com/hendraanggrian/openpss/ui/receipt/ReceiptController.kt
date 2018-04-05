@@ -247,7 +247,6 @@ class ReceiptController : Controller(), Refreshable {
     }
 
     @FXML fun print() = PrintReceiptDialog(this, receipt!!).showAndWait().ifPresent {
-        
     }
 
     @FXML fun selectCustomer() = customerProperty.set(SearchCustomerDialog(this).showAndWait().getNullable())

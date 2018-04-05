@@ -15,8 +15,8 @@ import javafx.scene.image.Image
 import javafx.scene.text.Font.loadFont
 import ktfx.beans.binding.and
 import ktfx.beans.binding.booleanBindingOf
-import ktfx.beans.binding.stringBindingOf
 import ktfx.collections.toObservableList
+import ktfx.coroutines.listener
 import ktfx.coroutines.onAction
 import ktfx.layouts.button
 import ktfx.layouts.hbox
@@ -91,9 +91,10 @@ class AboutDialog(resourced: Resourced) : Dialog<Unit>(), Resourced by resourced
             titledPane(getString(R.string.license), ktfx.layouts.textArea {
                 prefHeight = 256.0
                 isEditable = false
-                textProperty().bind(stringBindingOf(licenseList.selectionModel.selectedIndexProperty()) {
-                    licenseList.selectionModel.selectedItem?.content ?: getString(R.string.select_license)
-                })
+                text = getString(R.string.select_license)
+                licenseList.selectionModel.selectedItemProperty().listener { _, _, license ->
+                    text = license?.getContent() ?: getString(R.string.select_license)
+                }
             }) { isCollapsible = false }
         }
         button("Homepage", CANCEL_CLOSE) {

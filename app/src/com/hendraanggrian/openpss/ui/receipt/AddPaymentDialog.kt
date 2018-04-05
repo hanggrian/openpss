@@ -63,7 +63,7 @@ class AddPaymentDialog(controller: Controller, receipt: Receipt) : Dialog<Paymen
             } row 1 col 1 colStretch 2
             label(getString(R.string.value)) row 2 col 0
             valueField = doubleField { promptText = getString(R.string.payment) } row 2 col 1
-            button(graphic = ImageView(R.image.btn_ceiling)) {
+            button(graphic = ImageView(R.image.btn_match_remaining)) {
                 tooltip(getString(R.string.match_remaining))
                 onAction { valueField.value = remaining }
             } row 2 col 2

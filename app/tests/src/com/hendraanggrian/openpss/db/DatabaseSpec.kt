@@ -1,7 +1,5 @@
-package com.hendraanggrian.openpss
+package com.hendraanggrian.openpss.db
 
-import com.hendraanggrian.openpss.db.dbDateTime
-import com.hendraanggrian.openpss.db.login
 import com.hendraanggrian.openpss.db.schema.Employee
 import com.hendraanggrian.openpss.io.properties.MongoFile
 import kotlinx.coroutines.experimental.runBlocking

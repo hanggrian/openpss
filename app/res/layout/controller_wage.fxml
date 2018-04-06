@@ -73,11 +73,8 @@
                 <Tooltip text="%browse_file"/>
             </tooltip>
         </Button>
-        <Label fx:id="employeeCountLabel" text="Label">
-            <HBox.margin>
-                <Insets left="8.0"/>
-            </HBox.margin>
-        </Label>
+        <Space/>
+        <Label fx:id="employeeCountLabel" text="Label"/>
     </ToolBar>
     <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" vbarPolicy="ALWAYS" VBox.vgrow="ALWAYS">
         <FlowPane fx:id="flowPane"/>

@@ -18,6 +18,14 @@
                 </ImageView>
             </graphic>
         </Button>
+        <Space/>
+        <Button mnemonicParsing="false" fx:id="seeReceiptButton" onAction="#seeReceipt" text="%see_receipt">
+            <graphic>
+                <ImageView pickOnBounds="true" preserveRatio="true">
+                    <Image url="@/image/toolbar_receipt.png"/>
+                </ImageView>
+            </graphic>
+        </Button>
     </ToolBar>
     <ToolBar>
         <DateBox fx:id="dateBox"/>
@@ -40,7 +48,7 @@
     <TableView fx:id="paymentTable" VBox.vgrow="ALWAYS">
         <columns>
             <TableColumn fx:id="idColumn" text="%id"/>
-            <TableColumn fx:id="dateColumn" text="%date"/>
+            <TableColumn fx:id="timeColumn" text="%time"/>
             <TableColumn fx:id="employeeColumn" text="%employee"/>
             <TableColumn fx:id="valueColumn" text="%value"/>
             <TableColumn fx:id="methodColumn" text="%payment_method"/>

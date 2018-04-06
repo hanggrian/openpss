@@ -11,13 +11,15 @@ import com.hendraanggrian.openpss.db.schema.PaymentMethod.TRANSFER
 import com.hendraanggrian.openpss.db.schema.Payments
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.scene.layout.DateBox
-import com.hendraanggrian.openpss.time.PATTERN_DATETIME_EXTENDED
+import com.hendraanggrian.openpss.time.PATTERN_TIME
 import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.Refreshable
+import com.hendraanggrian.openpss.ui.main.MainController
 import com.hendraanggrian.openpss.utils.currencyCell
 import com.hendraanggrian.openpss.utils.getResourceString
 import com.hendraanggrian.openpss.utils.stringCell
 import javafx.fxml.FXML
+import javafx.scene.control.Button
 import javafx.scene.control.Label
 import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
@@ -30,6 +32,11 @@ import java.util.ResourceBundle
 
 class PaymentController : Controller(), Refreshable {
 
+    companion object {
+        const val EXTRA_MAIN_CONTROLLER = "EXTRA_MAIN_CONTROLLER"
+    }
+
+    @FXML lateinit var seeReceiptButton: Button
     @FXML lateinit var dateBox: DateBox
     @FXML lateinit var totalCashLabel1: Label
     @FXML lateinit var totalCashLabel2: Label
@@ -39,13 +46,14 @@ class PaymentController : Controller(), Refreshable {
     @FXML lateinit var totalAllLabel2: Label
     @FXML lateinit var paymentTable: TableView<Payment>
     @FXML lateinit var idColumn: TableColumn<Payment, String>
-    @FXML lateinit var dateColumn: TableColumn<Payment, String>
+    @FXML lateinit var timeColumn: TableColumn<Payment, String>
     @FXML lateinit var employeeColumn: TableColumn<Payment, String>
     @FXML lateinit var valueColumn: TableColumn<Payment, String>
     @FXML lateinit var methodColumn: TableColumn<Payment, String>
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
+        seeReceiptButton.bindToolbarButton()
         dateBox.dateProperty.listener { refresh() }
         loadFont(getResourceString(R.font.opensans_bold), 13.0).let { bold ->
             totalAllLabel1.font = bold
@@ -60,7 +68,7 @@ class PaymentController : Controller(), Refreshable {
                     currencyConverter.fromString(totalTransferLabel2.text).toDouble())
             })
         idColumn.stringCell { id }
-        dateColumn.stringCell { dateTime.toString(PATTERN_DATETIME_EXTENDED) }
+        timeColumn.stringCell { dateTime.toString(PATTERN_TIME) }
         employeeColumn.stringCell { transaction { findById(Employees, employeeId).single() }!! }
         valueColumn.currencyCell { value }
         methodColumn.stringCell { getMethodDisplayText(this@PaymentController) }
@@ -72,10 +80,17 @@ class PaymentController : Controller(), Refreshable {
         }
     }
 
+    @FXML fun seeReceipt() {
+        getExtra<MainController>(EXTRA_MAIN_CONTROLLER).tabPane.selectionModel.select(1)
+    }
+
     private fun Label.bindTotal(method: PaymentMethod) = textProperty().bind(
         stringBindingOf(paymentTable.itemsProperty()) {
             currencyConverter.toString(paymentTable.items
                 .filter { it.method == method }
                 .sumByDouble { it.value })
         })
+
+    private fun Button.bindToolbarButton() = disableProperty()
+        .bind(paymentTable.selectionModel.selectedItemProperty().isNull)
 }

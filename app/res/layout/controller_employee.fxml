@@ -16,6 +16,7 @@
                 </ImageView>
             </graphic>
         </Button>
+        <Space/>
         <Button mnemonicParsing="false" onAction="#addEmployee" text="%add">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
@@ -23,7 +24,6 @@
                 </ImageView>
             </graphic>
         </Button>
-        <Space/>
         <Button mnemonicParsing="false" fx:id="fullAccessButton" onAction="#fullAccess"
                 text="%full_access">
             <graphic>

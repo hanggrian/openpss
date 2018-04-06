@@ -5,6 +5,7 @@ import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.customer.CustomerController
 import com.hendraanggrian.openpss.ui.employee.EmployeeController
 import com.hendraanggrian.openpss.ui.payment.PaymentController
+import com.hendraanggrian.openpss.ui.payment.PaymentController.Companion.EXTRA_MAIN_CONTROLLER
 import com.hendraanggrian.openpss.ui.receipt.ReceiptController
 import com.hendraanggrian.openpss.ui.wage.WageController
 import javafx.event.ActionEvent
@@ -71,6 +72,7 @@ class MainController : Controller() {
                         tabPane.tabs[index].isDisable = !isFullAccess
                     }
                 }
+                paymentController.addExtra(EXTRA_MAIN_CONTROLLER, this)
             }
         }
     }

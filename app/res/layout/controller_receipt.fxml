@@ -18,6 +18,7 @@
                 </ImageView>
             </graphic>
         </Button>
+        <Space/>
         <Button mnemonicParsing="false" onAction="#addReceipt" text="%add_receipt">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
@@ -25,7 +26,6 @@
                 </ImageView>
             </graphic>
         </Button>
-        <Space/>
         <Button mnemonicParsing="false" fx:id="addPaymentButton" onAction="#addPayment" text="%add_payment">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
@@ -44,14 +44,14 @@
         <Button mnemonicParsing="false" onAction="#platePrice" text="%plate_price">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/toolbar_price_plate.png"/>
+                    <Image url="@/image/toolbar_plate.png"/>
                 </ImageView>
             </graphic>
         </Button>
         <Button mnemonicParsing="false" onAction="#offsetPrice" text="%offset_price">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/toolbar_price_offset.png"/>
+                    <Image url="@/image/toolbar_offset.png"/>
                 </ImageView>
             </graphic>
         </Button>

@@ -3,6 +3,7 @@ package com.hendraanggrian.openpss.ui.receipt
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.currencyConverter
 import com.hendraanggrian.openpss.db.dbDateTime
+import com.hendraanggrian.openpss.db.findById
 import com.hendraanggrian.openpss.db.schema.Customer
 import com.hendraanggrian.openpss.db.schema.Customers
 import com.hendraanggrian.openpss.db.schema.Employee
@@ -31,8 +32,6 @@ import javafx.scene.control.TableView.CONSTRAINED_RESIZE_POLICY
 import javafx.scene.control.TextArea
 import javafx.scene.image.ImageView
 import javafx.scene.text.Font.loadFont
-import kotlinx.nosql.equal
-import kotlinx.nosql.id
 import ktfx.application.later
 import ktfx.beans.binding.doubleBindingOf
 import ktfx.beans.binding.lessEq
@@ -48,7 +47,6 @@ import ktfx.layouts.columns
 import ktfx.layouts.contextMenu
 import ktfx.layouts.gridPane
 import ktfx.layouts.label
-import ktfx.layouts.menuItem
 import ktfx.layouts.separatorMenuItem
 import ktfx.layouts.tableView
 import ktfx.layouts.textArea
@@ -71,11 +69,11 @@ class ReceiptDialog(
     private lateinit var noteArea: TextArea
 
     private val employee: Employee = transaction {
-        Employees.find { id.equal(prefill?.employeeId ?: controller.employeeId) }.single()
+        findById(Employees, prefill?.employeeId ?: controller.employeeId).single()
     }!!
     private val dateTime: DateTime = prefill?.dateTime ?: dbDateTime
     private val customerProperty: ObjectProperty<Customer> = SimpleObjectProperty(when {
-        isEdit() -> transaction { Customers.find { id.equal(prefill!!.customerId) }.single() }
+        isEdit() -> transaction { findById(Customers, prefill!!.customerId).single() }
         else -> null
     })
     private val totalProperty: DoubleProperty = SimpleDoubleProperty(prefill?.total ?: 0.0)
@@ -171,15 +169,15 @@ class ReceiptDialog(
             }
         }
         contextMenu {
-            menuItem(getString(R.string.add)) {
+            (getString(R.string.add)) {
                 onAction { newAddDialog().showAndWait().ifPresent { this@tableView.items.add(it) } }
             }
             separatorMenuItem()
-            menuItem(getString(R.string.delete)) {
+            (getString(R.string.delete)) {
                 later { disableProperty().bind(this@tableView.selectionModel.selectedItemProperty().isNull) }
                 onAction { this@tableView.items.remove(this@tableView.selectionModel.selectedItem) }
             }
-            menuItem(getString(R.string.clear)) {
+            (getString(R.string.clear)) {
                 later { disableProperty().bind(this@tableView.items.emptyBinding()) }
                 onAction { this@tableView.items.clear() }
             }

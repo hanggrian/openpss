@@ -9,14 +9,6 @@
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.hendraanggrian.openpss.ui.wage.WageController">
     <ToolBar stylesheets="@../style/toolbar_button.css">
-        <Button fx:id="disableRecessButton" mnemonicParsing="false" onAction="#disableRecess" text="%disable_recess">
-            <graphic>
-                <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/toolbar_recess_off.png"/>
-                </ImageView>
-            </graphic>
-        </Button>
-        <Space/>
         <Button fx:id="readButton" mnemonicParsing="false" onAction="#read" text="%read">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
@@ -28,6 +20,21 @@
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
                     <Image url="@/image/toolbar_process.png"/>
+                </ImageView>
+            </graphic>
+        </Button>
+        <Space/>
+        <Button fx:id="disableRecessButton" mnemonicParsing="false" onAction="#disableRecess" text="%disable_recess">
+            <graphic>
+                <ImageView pickOnBounds="true" preserveRatio="true">
+                    <Image url="@/image/toolbar_recess_off.png"/>
+                </ImageView>
+            </graphic>
+        </Button>
+        <Button fx:id="autoAddButton" mnemonicParsing="false" onAction="#autoAdd" text="%auto_add">
+            <graphic>
+                <ImageView pickOnBounds="true" preserveRatio="true">
+                    <Image url="@/image/toolbar_auto_add.png"/>
                 </ImageView>
             </graphic>
         </Button>

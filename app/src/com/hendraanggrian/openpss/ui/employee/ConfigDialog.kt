@@ -33,8 +33,8 @@ class ConfigDialog(resourced: Resourced) : Dialog<Unit>(), Resourced by resource
                 isEditable = true
                 columnResizePolicy = CONSTRAINED_RESIZE_POLICY
                 columns {
-                    column<String>(getString(R.string.key)) { stringCell { transaction { key }!! } }
-                    column<String>(getString(R.string.value)) {
+                    getString(R.string.key)<String> { stringCell { transaction { key }!! } }
+                    getString(R.string.value)<String> {
                         stringCell { transaction { value }!! }
                         textFieldCellFactory()
                         onEditCommit {

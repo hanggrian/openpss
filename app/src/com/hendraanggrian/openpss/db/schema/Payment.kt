@@ -35,9 +35,13 @@ data class Payment(
 
     override lateinit var id: Id<String, Payments>
 
-    fun getTransferDisplayText(resourced: Resourced): String = when (transfer) {
-        null -> CASH.getDisplayText(resourced)
-        else -> "${TRANSFER.getDisplayText(resourced)} - $transfer"
+    val method: PaymentMethod get() = if (transfer == null) CASH else TRANSFER
+
+    fun getMethodDisplayText(resourced: Resourced): String = method.getDisplayText(resourced).let {
+        return when (method) {
+            CASH -> it
+            else -> "$it - $transfer"
+        }
     }
 
     companion object {

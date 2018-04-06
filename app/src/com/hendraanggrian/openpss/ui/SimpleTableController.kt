@@ -2,13 +2,12 @@ package com.hendraanggrian.openpss.ui
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.db.Document
+import com.hendraanggrian.openpss.db.findByDoc
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.utils.yesNoAlert
 import javafx.fxml.FXML
 import javafx.scene.control.Button
 import javafx.scene.control.TableView
-import kotlinx.nosql.equal
-import kotlinx.nosql.id
 import kotlinx.nosql.mongodb.DocumentSchema
 import ktfx.application.later
 import ktfx.beans.binding.or
@@ -48,7 +47,7 @@ abstract class SimpleTableController<D : Document<S>, S : DocumentSchema<D>>(
 
     @FXML fun delete() = yesNoAlert(getString(R.string.are_you_sure)) {
         table.selectionModel.selectedItem.let {
-            transaction { schema.find { id.equal(it.id.value) }.remove() }
+            transaction { findByDoc(schema, it).remove() }
             table.items.remove(it)
         }
     }

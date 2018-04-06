@@ -3,6 +3,7 @@ package com.hendraanggrian.openpss.ui.customer
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.collections.isNotEmpty
 import com.hendraanggrian.openpss.db.buildQuery
+import com.hendraanggrian.openpss.db.findByDoc
 import com.hendraanggrian.openpss.db.schema.Contact
 import com.hendraanggrian.openpss.db.schema.Customer
 import com.hendraanggrian.openpss.db.schema.Customers
@@ -28,7 +29,6 @@ import javafx.scene.image.ImageView
 import javafx.scene.text.Font.loadFont
 import javafx.util.Callback
 import kotlinx.nosql.equal
-import kotlinx.nosql.id
 import kotlinx.nosql.mongodb.MongoDBSession
 import kotlinx.nosql.update
 import ktfx.application.later
@@ -42,7 +42,6 @@ import ktfx.coroutines.onAction
 import ktfx.layouts.button
 import ktfx.layouts.contextMenu
 import ktfx.layouts.listView
-import ktfx.layouts.menuItem
 import ktfx.scene.control.errorAlert
 import ktfx.scene.control.inputDialog
 import ktfx.scene.layout.maxSize
@@ -73,7 +72,7 @@ class CustomerController : Controller(), Refreshable {
                 contentText = getString(R.string.note)
             }.showAndWait().ifPresent { note ->
                 transaction {
-                    Customers.find { id.equal(customer!!.id) }.projection { this.note }.update(note)
+                    findByDoc(Customers, customer!!).projection { this.note }.update(note)
                     reload(customer!!)
                 }
             }
@@ -90,8 +89,8 @@ class CustomerController : Controller(), Refreshable {
             if (noteLabel.isHover) noteLabelGraphic else null
         })
         contactTable.contextMenu {
-            menuItem(getString(R.string.add)) { onAction { addContact() } }
-            menuItem(getString(R.string.delete)) {
+            (getString(R.string.add)) { onAction { addContact() } }
+            (getString(R.string.delete)) {
                 later {
                     disableProperty().bind(booleanBindingOf(contactTable.selectionModel.selectedItemProperty()) {
                         contact == null || !isFullAccess
@@ -100,7 +99,7 @@ class CustomerController : Controller(), Refreshable {
                 onAction {
                     yesNoAlert(getString(R.string.delete_contact)) {
                         transaction {
-                            Customers.find { id.equal(customer!!.id) }.projection { contacts }
+                            findByDoc(Customers, customer!!).projection { contacts }
                                 .update(customer!!.contacts - contact!!)
                             reload(customer!!)
                         }
@@ -157,7 +156,7 @@ class CustomerController : Controller(), Refreshable {
 
     @FXML fun addContact() = AddContactDialog(this).showAndWait().ifPresent {
         transaction {
-            Customers.find { id.equal(customer!!.id) }.projection { contacts }.update(customer!!.contacts + it)
+            findByDoc(Customers, customer!!).projection { contacts }.update(customer!!.contacts + it)
             reload(customer!!)
         }
     }
@@ -171,7 +170,7 @@ class CustomerController : Controller(), Refreshable {
 
     private fun MongoDBSession.reload(customer: Customer) = customerList.run {
         items.indexOf(customer).let { index ->
-            items[items.indexOf(customer)] = Customers.find { id.equal(customer.id) }.single()
+            items[items.indexOf(customer)] = findByDoc(Customers, customer).single()
             selectionModel.select(index)
         }
     }

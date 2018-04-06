@@ -2,6 +2,8 @@ package com.hendraanggrian.openpss.ui.receipt
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.db.buildQuery
+import com.hendraanggrian.openpss.db.findByDoc
+import com.hendraanggrian.openpss.db.findById
 import com.hendraanggrian.openpss.db.schema.Customer
 import com.hendraanggrian.openpss.db.schema.Customers
 import com.hendraanggrian.openpss.db.schema.Employees
@@ -46,7 +48,6 @@ import javafx.scene.control.TableView.CONSTRAINED_RESIZE_POLICY
 import javafx.stage.Modality.APPLICATION_MODAL
 import javafx.util.Callback
 import kotlinx.nosql.equal
-import kotlinx.nosql.id
 import kotlinx.nosql.mongodb.MongoDBSession
 import kotlinx.nosql.update
 import ktfx.application.later
@@ -61,7 +62,6 @@ import ktfx.collections.toObservableList
 import ktfx.coroutines.onAction
 import ktfx.layouts.columns
 import ktfx.layouts.contextMenu
-import ktfx.layouts.menuItem
 import ktfx.layouts.separatorMenuItem
 import ktfx.layouts.tableView
 import ktfx.stage.stage
@@ -127,7 +127,7 @@ class ReceiptController : Controller(), Refreshable {
         statusBox.selectionModel.selectFirst()
         pickDateRadio.graphic.disableProperty().bind(!pickDateRadio.selectedProperty())
 
-        paymentTable.contextMenu { menuItem(getString(R.string.add)) { onAction { addPayment() } } }
+        paymentTable.contextMenu { (getString(R.string.add)) { onAction { addPayment() } } }
 
         plateTypeColumn.stringCell { type }
         plateTitleColumn.stringCell { title }
@@ -146,9 +146,9 @@ class ReceiptController : Controller(), Refreshable {
         otherPriceColumn.currencyCell { price }
         otherTotalColumn.currencyCell { total }
         paymentDateTimeColumn.stringCell { dateTime.toString(PATTERN_DATETIME_EXTENDED) }
-        paymentEmployeeColumn.stringCell { transaction { Employees.find { id.equal(employeeId) }.single() }!! }
+        paymentEmployeeColumn.stringCell { transaction { findById(Employees, employeeId).single() }!! }
         paymentValueColumn.currencyCell { value }
-        paymentMethodColumn.stringCell { getTransferDisplayText(this@ReceiptController) }
+        paymentMethodColumn.stringCell { getMethodDisplayText(this@ReceiptController) }
     }
 
     override fun refresh() = receiptPagination.pageFactoryProperty()
@@ -158,36 +158,34 @@ class ReceiptController : Controller(), Refreshable {
                 receiptTable = tableView {
                     columnResizePolicy = CONSTRAINED_RESIZE_POLICY
                     columns {
-                        column<String>(getString(R.string.id)) { stringCell { id } }
-                        column<String>(getString(R.string.date)) {
-                            stringCell { dateTime.toString(PATTERN_DATETIME_EXTENDED) }
+                        getString(R.string.id)<String> { stringCell { id } }
+                        getString(R.string.date)<String> { stringCell { dateTime.toString(PATTERN_DATETIME_EXTENDED) } }
+                        getString(R.string.employee)<String> {
+                            stringCell { transaction { findById(Employees, employeeId).single() }!! }
                         }
-                        column<String>(getString(R.string.employee)) {
-                            stringCell { transaction { Employees.find { id.equal(employeeId) }.single() }!! }
+                        getString(R.string.customer)<String> {
+                            stringCell { transaction { findById(Customers, customerId).single() }!! }
                         }
-                        column<String>(getString(R.string.customer)) {
-                            stringCell { transaction { Customers.find { id.equal(customerId) }.single() }!! }
-                        }
-                        column<String>(getString(R.string.total)) { currencyCell { total } }
-                        column<Boolean>(getString(R.string.paid)) { doneCell { paid } }
-                        column<Boolean>(getString(R.string.print)) { doneCell { printed } }
+                        getString(R.string.total)<String> { currencyCell { total } }
+                        getString(R.string.paid)<Boolean> { doneCell { paid } }
+                        getString(R.string.print)<Boolean> { doneCell { printed } }
                     }
                     contextMenu {
-                        menuItem(getString(R.string.add)) { onAction { addReceipt() } }
+                        (getString(R.string.add)) { onAction { addReceipt() } }
                         separatorMenuItem()
-                        menuItem(getString(R.string.edit)) {
+                        (getString(R.string.edit)) {
                             bindDisable()
                             onAction {
                                 ReceiptDialog(this@ReceiptController, receiptTable.selectionModel.selectedItem)
                                     .showAndWait()
                             }
                         }
-                        menuItem(getString(R.string.delete)) {
+                        (getString(R.string.delete)) {
                             bindDisable()
                             onAction {
                                 yesNoAlert(getString(R.string.are_you_sure)) {
                                     receiptTable.selectionModel.selectedItem.let {
-                                        transaction { Receipts.find { id.equal(it.id.value) }.remove() }
+                                        transaction { findByDoc(Receipts, it).remove() }
                                         receiptTable.items.remove(it)
                                     }
                                 }
@@ -241,7 +239,7 @@ class ReceiptController : Controller(), Refreshable {
         transaction {
             it.id = Payments.insert(it)
             if (calculateDue(receipt!!) == 0.0)
-                Receipts.find { id.equal(receipt!!.id) }.projection { paid }.update(true)
+                findByDoc(Receipts, receipt!!).projection { paid }.update(true)
             reload(receipt!!)
         }
     }
@@ -288,7 +286,7 @@ class ReceiptController : Controller(), Refreshable {
 
     private fun MongoDBSession.reload(receipt: Receipt) = receiptTable.run {
         items.indexOf(receipt).let { index ->
-            items[items.indexOf(receipt)] = Receipts.find { id.equal(receipt.id) }.single()
+            items[items.indexOf(receipt)] = findByDoc(Receipts, receipt).single()
             selectionModel.select(index)
         }
     }

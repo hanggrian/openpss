@@ -40,7 +40,6 @@ import ktfx.layouts.gridPane
 import ktfx.layouts.imageView
 import ktfx.layouts.label
 import ktfx.layouts.listView
-import ktfx.layouts.menuItem
 import ktfx.layouts.separatorMenuItem
 import ktfx.layouts.vbox
 import ktfx.listeners.cellFactory
@@ -138,7 +137,7 @@ class AttendeePane(
             }
         }
         contextMenu {
-            menuItem(getString(R.string.add)) {
+            (getString(R.string.add)) {
                 onAction {
                     val prefill = listView.selectionModel.selectedItem ?: DateTime.now()
                     DateTimeDialog(this@AttendeePane, getString(R.string.add_record),
@@ -150,7 +149,7 @@ class AttendeePane(
                         }
                 }
             }
-            menuItem(getString(R.string.edit)) {
+            (getString(R.string.edit)) {
                 bindDisable()
                 onAction {
                     DateTimeDialog(this@AttendeePane, getString(R.string.edit_record),
@@ -162,16 +161,16 @@ class AttendeePane(
                         }
                 }
             }
-            menuItem(getString(R.string.delete)) {
+            (getString(R.string.delete)) {
                 bindDisable()
                 onAction { listView.items.remove(listView.selectionModel.selectedItem) }
             }
             separatorMenuItem()
-            menuItem(getString(R.string.revert)) { onAction { attendee.attendances.revert() } }
+            (getString(R.string.revert)) { onAction { attendee.attendances.revert() } }
             separatorMenuItem()
-            deleteMenu = menuItem("${getString(R.string.delete)} ${attendee.name}")
-            deleteOthersMenu = menuItem(getString(R.string.delete_others))
-            deleteToTheRightMenu = menuItem(getString(R.string.delete_employees_to_the_right))
+            deleteMenu = "${getString(R.string.delete)} ${attendee.name}"()
+            deleteOthersMenu = getString(R.string.delete_others)()
+            deleteToTheRightMenu = getString(R.string.delete_employees_to_the_right)()
         }
         contentDisplay = RIGHT
         graphic = imageView {

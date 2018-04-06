@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.hendraanggrian.openpss.scene.control.Space?>
 <?import com.hendraanggrian.openpss.scene.layout.DateBox?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.*?>
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.hendraanggrian.openpss.ui.payment.PaymentController">
     <ToolBar stylesheets="@../style/toolbar_button.css">
@@ -19,6 +21,21 @@
     </ToolBar>
     <ToolBar>
         <DateBox fx:id="dateBox"/>
+        <Space HBox.hgrow="ALWAYS"/>
+        <Label fx:id="totalCashLabel1" text="%cash"/>
+        <Label fx:id="totalCashLabel2"/>
+        <Label fx:id="totalTransferLabel1" text="%transfer">
+            <HBox.margin>
+                <Insets left="16"/>
+            </HBox.margin>
+        </Label>
+        <Label fx:id="totalTransferLabel2"/>
+        <Label fx:id="totalAllLabel1" text="%total">
+            <HBox.margin>
+                <Insets left="16"/>
+            </HBox.margin>
+        </Label>
+        <Label fx:id="totalAllLabel2" text="%total"/>
     </ToolBar>
     <TableView fx:id="paymentTable" VBox.vgrow="ALWAYS">
         <columns>

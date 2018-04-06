@@ -60,9 +60,10 @@ import java.util.ResourceBundle
 
 class WageController : Controller() {
 
-    @FXML lateinit var disableRecessButton: Button
     @FXML lateinit var readButton: Button
     @FXML lateinit var processButton: Button
+    @FXML lateinit var disableRecessButton: Button
+    @FXML lateinit var autoAddButton: Button
     @FXML lateinit var readerChoiceBox: ChoiceBox<Any>
     @FXML lateinit var fileField: FileField
     @FXML lateinit var employeeCountLabel: Label
@@ -74,7 +75,8 @@ class WageController : Controller() {
         readerChoiceBox.items = Reader.listAll()
         if (readerChoiceBox.items.isNotEmpty()) readerChoiceBox.selectionModel.selectFirst()
 
-        disableRecessButton.disableProperty().bind(flowPane.children.emptyBinding())
+        disableRecessButton.bindToolbarButton()
+        autoAddButton.bindToolbarButton()
         employeeCountLabel.textProperty().bind(stringBindingOf(flowPane.children) {
             "${flowPane.children.size} ${getString(R.string.employee)}"
         })
@@ -88,20 +90,65 @@ class WageController : Controller() {
         later { flowPane.prefWrapLengthProperty().bind(fileField.scene.widthProperty()) }
     }
 
-    @FXML fun recess() = stage(getString(R.string.recess)) {
-        val loader = FXMLLoader(getResource(R.layout.controller_wage_recess), resources)
-        initModality(APPLICATION_MODAL)
-        scene = Scene(loader.pane)
-        isResizable = false
-        loader.controller._employee = _employee
-    }.showAndWait()
+    @FXML fun read() {
+        scrollPane.content = borderPane {
+            prefWidthProperty().bind(scrollPane.widthProperty())
+            prefHeightProperty().bind(scrollPane.heightProperty())
+            center = ktfx.layouts.progressIndicator { maxSize = 128.0 }
+        }
+        flowPane.children.clear()
+        launch {
+            try {
+                readerChoiceBox.get<Reader>().read(fileField.file).forEach { attendee ->
+                    attendee.mergeDuplicates()
+                    launch(FX) {
+                        flowPane.children += attendeePane(this@WageController, attendee) {
+                            deleteMenu.onAction {
+                                flowPane.children -= this@attendeePane
+                                bindProcessButton()
+                            }
+                            deleteOthersMenu.disableProperty().bind(flowPane.children.sizeBinding() lessEq 1)
+                            deleteOthersMenu.onAction {
+                                flowPane.children -= flowPane.children.toMutableList().apply {
+                                    remove(this@attendeePane)
+                                }
+                                bindProcessButton()
+                            }
+                            deleteToTheRightMenu.disableProperty().bind(booleanBindingOf(flowPane.children) {
+                                flowPane.children.indexOf(this@attendeePane) == flowPane.children.lastIndex
+                            })
+                            deleteToTheRightMenu.onAction {
+                                flowPane.children -= flowPane.children.toList().takeLast(
+                                    flowPane.children.lastIndex - flowPane.children.indexOf(this@attendeePane))
+                                bindProcessButton()
+                            }
+                        }
+                    }
+                }
+                launch(FX) {
+                    scrollPane.content = flowPane
+                    bindProcessButton()
+                }
+            } catch (e: Exception) {
+                if (DEBUG) e.printStackTrace()
+                launch(FX) {
+                    scrollPane.content = flowPane
+                    bindProcessButton()
+                    errorAlert(e.message.toString()).showAndWait()
+                }
+            }
+        }
+    }
 
-    @FXML fun history() = openFile(WageFolder)
-
-    @FXML fun browse() = fileChooser(
-        ExtensionFilter(getString(R.string.input_file), *readerChoiceBox.get<Reader>().extensions))
-        .showOpenDialog(fileField.scene.window)
-        ?.run { fileField.text = absolutePath }
+    @FXML fun process() {
+        attendees.forEach { it.saveWage() }
+        stage(getString(R.string.record)) {
+            val loader = FXMLLoader(getResource(R.layout.controller_wage_record), resources)
+            scene = Scene(loader.pane)
+            setMinSize(1000.0, 650.0)
+            loader.controller.addExtra(EXTRA_ATTENDEES, attendees)
+        }.showAndWait()
+    }
 
     @FXML fun disableRecess() = dialog<Pair<Any, Any>>(
         getString(R.string.disable_recess),
@@ -135,72 +182,32 @@ class WageController : Controller() {
         }
     }
 
-    @FXML fun read() {
-        scrollPane.content = borderPane {
-            prefWidthProperty().bind(scrollPane.widthProperty())
-            prefHeightProperty().bind(scrollPane.heightProperty())
-            center = ktfx.layouts.progressIndicator { maxSize = 128.0 }
-        }
-        flowPane.children.clear()
-        launch {
-            try {
-                readerChoiceBox.get<Reader>().read(fileField.file).forEach { attendee ->
-                    attendee.mergeDuplicates()
-                    launch(FX) {
-                        flowPane.children += attendeePane(this@WageController, attendee) {
-                            deleteMenu.onAction {
-                                flowPane.children -= this@attendeePane
-                                rebindProcessButton()
-                            }
-                            deleteOthersMenu.disableProperty().bind(flowPane.children.sizeBinding() lessEq 1)
-                            deleteOthersMenu.onAction {
-                                flowPane.children -= flowPane.children.toMutableList().apply {
-                                    remove(this@attendeePane)
-                                }
-                                rebindProcessButton()
-                            }
-                            deleteToTheRightMenu.disableProperty().bind(booleanBindingOf(flowPane.children) {
-                                flowPane.children.indexOf(this@attendeePane) == flowPane.children.lastIndex
-                            })
-                            deleteToTheRightMenu.onAction {
-                                flowPane.children -= flowPane.children.toList().takeLast(
-                                    flowPane.children.lastIndex - flowPane.children.indexOf(this@attendeePane))
-                                rebindProcessButton()
-                            }
-                        }
-                    }
-                }
-                launch(FX) {
-                    scrollPane.content = flowPane
-                    rebindProcessButton()
-                }
-            } catch (e: Exception) {
-                if (DEBUG) e.printStackTrace()
-                launch(FX) {
-                    scrollPane.content = flowPane
-                    rebindProcessButton()
-                    errorAlert(e.message.toString()).showAndWait()
-                }
-            }
-        }
+    @FXML fun autoAdd() {
     }
 
-    @FXML fun process() {
-        attendees.forEach { it.saveWage() }
-        stage(getString(R.string.record)) {
-            val loader = FXMLLoader(getResource(R.layout.controller_wage_record), resources)
-            scene = Scene(loader.pane)
-            setMinSize(1000.0, 650.0)
-            loader.controller.addExtra(EXTRA_ATTENDEES, attendees)
-        }.showAndWait()
-    }
+    @FXML fun recess() = stage(getString(R.string.recess)) {
+        val loader = FXMLLoader(getResource(R.layout.controller_wage_recess), resources)
+        initModality(APPLICATION_MODAL)
+        scene = Scene(loader.pane)
+        isResizable = false
+        loader.controller._employee = _employee
+    }.showAndWait()
+
+    @FXML fun history() = openFile(WageFolder)
+
+    @FXML fun browse() = fileChooser(
+        ExtensionFilter(getString(R.string.input_file), *readerChoiceBox.get<Reader>().extensions))
+        .showOpenDialog(fileField.scene.window)
+        ?.run { fileField.text = absolutePath }
 
     private inline val attendeePanes: List<AttendeePane> get() = flowPane.children.map { (it as AttendeePane) }
 
     private inline val attendees: List<Attendee> get() = attendeePanes.map { it.attendee }
 
+    private fun Button.bindToolbarButton() = disableProperty().bind(flowPane.children.emptyBinding())
+
     /** As attendees are populated, process button need to be rebinded according to new requirements. */
-    private fun rebindProcessButton() = processButton.disableProperty().bind(flowPane.children.emptyBinding() or
+    private fun bindProcessButton() = processButton.disableProperty().bind(flowPane.children.emptyBinding() or
         booleanBindingOf(flowPane.children, *flowPane.children
             .map { (it as TitledPane).content }
             .map { (it as Pane).children[1] as ListView<*> }

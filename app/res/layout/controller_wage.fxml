@@ -31,13 +31,6 @@
                 </ImageView>
             </graphic>
         </Button>
-        <Button fx:id="autoAddButton" mnemonicParsing="false" onAction="#autoAdd" text="%auto_add">
-            <graphic>
-                <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/toolbar_auto_add.png"/>
-                </ImageView>
-            </graphic>
-        </Button>
         <Space HBox.hgrow="ALWAYS"/>
         <Button mnemonicParsing="false" onAction="#recess" text="%recess">
             <graphic>

@@ -13,14 +13,13 @@ import com.hendraanggrian.openpss.scene.control.DoubleField
 import com.hendraanggrian.openpss.scene.control.doubleField
 import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.Resourced
-import com.hendraanggrian.openpss.utils.getResourceString
+import com.hendraanggrian.openpss.utils.getFont
 import javafx.scene.Node
 import javafx.scene.control.ButtonType.CANCEL
 import javafx.scene.control.ChoiceBox
 import javafx.scene.control.Dialog
 import javafx.scene.control.TextField
 import javafx.scene.image.ImageView
-import javafx.scene.text.Font.loadFont
 import ktfx.beans.binding.eq
 import ktfx.beans.binding.greater
 import ktfx.beans.binding.lessEq
@@ -55,11 +54,11 @@ class AddPaymentDialog(controller: Controller, receipt: Receipt) : Dialog<Paymen
             gap = 8.0
             label(getString(R.string.employee)) row 0 col 0
             label(controller.employeeName) {
-                font = loadFont(getResourceString(R.font.opensans_bold), 13.0)
+                font = getFont(R.font.opensans_bold)
             } row 0 col 1 colSpans 2
             label(getString(R.string.remaining)) row 1 col 0
             label(currencyConverter.toString(remaining)) {
-                font = loadFont(getResourceString(R.font.opensans_bold), 13.0)
+                font = getFont(R.font.opensans_bold)
             } row 1 col 1 colSpans 2
             label(getString(R.string.value)) row 2 col 0
             valueField = doubleField { promptText = getString(R.string.payment) } row 2 col 1

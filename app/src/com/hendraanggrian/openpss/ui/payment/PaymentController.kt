@@ -16,14 +16,13 @@ import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.main.MainController
 import com.hendraanggrian.openpss.utils.currencyCell
-import com.hendraanggrian.openpss.utils.getResourceString
+import com.hendraanggrian.openpss.utils.getFont
 import com.hendraanggrian.openpss.utils.stringCell
 import javafx.fxml.FXML
 import javafx.scene.control.Button
 import javafx.scene.control.Label
 import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
-import javafx.scene.text.Font.loadFont
 import ktfx.beans.binding.stringBindingOf
 import ktfx.collections.toMutableObservableList
 import ktfx.coroutines.listener
@@ -55,11 +54,9 @@ class PaymentController : Controller(), Refreshable {
         super.initialize(location, resources)
         seeReceiptButton.bindToolbarButton()
         dateBox.dateProperty.listener { refresh() }
-        loadFont(getResourceString(R.font.opensans_bold), 13.0).let { bold ->
-            totalAllLabel1.font = bold
-            totalCashLabel1.font = bold
-            totalTransferLabel1.font = bold
-        }
+        totalAllLabel1.font = getFont(R.font.opensans_bold)
+        totalCashLabel1.font = getFont(R.font.opensans_bold)
+        totalTransferLabel1.font = getFont(R.font.opensans_bold)
         totalCashLabel2.bindTotal(CASH)
         totalTransferLabel2.bindTotal(TRANSFER)
         totalAllLabel2.textProperty().bind(

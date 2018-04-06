@@ -17,7 +17,7 @@ import com.hendraanggrian.openpss.time.PATTERN_DATE
 import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.Resourced
 import com.hendraanggrian.openpss.utils.currencyCell
-import com.hendraanggrian.openpss.utils.getResourceString
+import com.hendraanggrian.openpss.utils.getFont
 import com.hendraanggrian.openpss.utils.numberCell
 import com.hendraanggrian.openpss.utils.stringCell
 import javafx.beans.property.DoubleProperty
@@ -31,7 +31,6 @@ import javafx.scene.control.TableView
 import javafx.scene.control.TableView.CONSTRAINED_RESIZE_POLICY
 import javafx.scene.control.TextArea
 import javafx.scene.image.ImageView
-import javafx.scene.text.Font.loadFont
 import ktfx.application.later
 import ktfx.beans.binding.doubleBindingOf
 import ktfx.beans.binding.lessEq
@@ -84,13 +83,9 @@ class ReceiptDialog(
         dialogPane.content = gridPane {
             gap = 8.0
             label(getString(R.string.employee)) col 0 row 0
-            label(employee.name) {
-                font = loadFont(getResourceString(R.font.opensans_bold), 13.0)
-            } col 1 row 0
+            label(employee.name) { font = getFont(R.font.opensans_bold) } col 1 row 0
             label(getString(R.string.date)) col 0 row 1
-            label(dateTime.toString(PATTERN_DATE)) {
-                font = loadFont(getResourceString(R.font.opensans_bold), 13.0)
-            } col 1 row 1
+            label(dateTime.toString(PATTERN_DATE)) { font = getFont(R.font.opensans_bold) } col 1 row 1
             label(getString(R.string.customer)) col 0 row 2
             button {
                 isDisable = isEdit()
@@ -133,7 +128,7 @@ class ReceiptDialog(
             noteArea = textArea { prefHeight = 48.0 } col 1 row 6
             label(getString(R.string.total)) col 0 row 7
             label {
-                font = loadFont(getResourceString(R.font.opensans_bold), 13.0)
+                font = getFont(R.font.opensans_bold)
                 textProperty().bind(stringBindingOf(totalProperty) { currencyConverter.toString(totalProperty.value) })
             } col 1 row 7
         }

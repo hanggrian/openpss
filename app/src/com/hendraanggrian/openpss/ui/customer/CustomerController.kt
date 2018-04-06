@@ -13,7 +13,7 @@ import com.hendraanggrian.openpss.time.PATTERN_DATE
 import com.hendraanggrian.openpss.ui.AddUserDialog
 import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.Refreshable
-import com.hendraanggrian.openpss.utils.getResourceString
+import com.hendraanggrian.openpss.utils.getFont
 import com.hendraanggrian.openpss.utils.stringCell
 import com.hendraanggrian.openpss.utils.yesNoAlert
 import javafx.fxml.FXML
@@ -26,7 +26,6 @@ import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
 import javafx.scene.control.TextField
 import javafx.scene.image.ImageView
-import javafx.scene.text.Font.loadFont
 import javafx.util.Callback
 import kotlinx.nosql.equal
 import kotlinx.nosql.mongodb.MongoDBSession
@@ -83,8 +82,8 @@ class CustomerController : Controller(), Refreshable {
         super.initialize(location, resources)
 
         countBox.desc = getString(R.string.items)
-        nameLabel.font = loadFont(getResourceString(R.font.opensans_bold), 24.0)
-        sinceLabel.font = loadFont(getResourceString(R.font.opensans_regular), 12.0)
+        nameLabel.font = getFont(R.font.opensans_bold, 24)
+        sinceLabel.font = getFont(R.font.opensans_regular, 12)
         noteLabel.graphicProperty().bind(bindingOf<Node>(noteLabel.hoverProperty()) {
             if (noteLabel.isHover) noteLabelGraphic else null
         })

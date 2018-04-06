@@ -34,6 +34,7 @@ import ktfx.coroutines.listener
 import ktfx.coroutines.onAction
 import ktfx.coroutines.onKeyPressed
 import ktfx.layouts.LayoutDsl
+import ktfx.layouts.button
 import ktfx.layouts.checkBox
 import ktfx.layouts.contextMenu
 import ktfx.layouts.gridPane
@@ -47,6 +48,7 @@ import ktfx.scene.input.isDelete
 import ktfx.scene.layout.gap
 import ktfx.scene.layout.paddingAll
 import org.joda.time.DateTime
+import org.joda.time.DateTime.now
 import kotlin.math.absoluteValue
 
 class AttendeePane(
@@ -58,7 +60,7 @@ class AttendeePane(
     lateinit var deleteMenu: MenuItem
     lateinit var deleteOthersMenu: MenuItem
     lateinit var deleteToTheRightMenu: MenuItem
-    private lateinit var listView: ListView<DateTime>
+    private lateinit var attendanceList: ListView<DateTime>
 
     init {
         isCollapsible = false
@@ -91,7 +93,7 @@ class AttendeePane(
                             recessChecks += checkBox(recess.toString()) {
                                 selectedProperty().listener { _, _, selected ->
                                     if (selected) attendee.recesses += recess else attendee.recesses -= recess
-                                    listView.forceRefresh()
+                                    attendanceList.forceRefresh()
                                 }
                                 isSelected = true
                             } marginTop if (children.size > 1) 4.0 else 0.0
@@ -99,12 +101,13 @@ class AttendeePane(
                     }
                 } col 1 row 3 colSpans 2
             }
-            listView = listView(attendee.attendances) {
+            attendanceList = listView(attendee.attendances) {
                 prefWidth = 128.0
+                maxHeight = 352.0 // just enough for 7 days attendance
                 cellFactory {
-                    text = null
-                    graphic = null
                     onUpdate { dateTime, empty ->
+                        text = null
+                        graphic = null
                         if (dateTime != null && !empty) graphic = ktfx.layouts.hbox {
                             val index = listView.items.indexOf(dateTime)
                             alignment = if (index % 2 == 0) BOTTOM_CENTER else TOP_CENTER
@@ -135,17 +138,29 @@ class AttendeePane(
                         items.remove(selectionModel.selectedItem)
                 }
             }
-        }
-        contextMenu {
-            (getString(R.string.add)) {
+            button(getString(R.string.add)) {
+                maxWidth = Double.MAX_VALUE
                 onAction {
-                    val prefill = listView.selectionModel.selectedItem ?: DateTime.now()
                     DateTimeDialog(this@AttendeePane, getString(R.string.add_record),
-                        prefill.minusMinutes(prefill.minuteOfHour))
+                        now().run { minusMinutes(minuteOfHour) })
                         .showAndWait()
                         .ifPresent {
-                            listView.items.add(it)
-                            listView.items.sort()
+                            attendanceList.items.add(it)
+                            attendanceList.items.sort()
+                        }
+                }
+            }
+        }
+        contextMenu {
+            (getString(R.string.clone)) {
+                bindDisable()
+                onAction {
+                    DateTimeDialog(this@AttendeePane, getString(R.string.add_record),
+                        attendanceList.selectionModel.selectedItem.run { minusMinutes(minuteOfHour) })
+                        .showAndWait()
+                        .ifPresent {
+                            attendanceList.items.add(it)
+                            attendanceList.items.sort()
                         }
                 }
             }
@@ -153,17 +168,17 @@ class AttendeePane(
                 bindDisable()
                 onAction {
                     DateTimeDialog(this@AttendeePane, getString(R.string.edit_record),
-                        listView.selectionModel.selectedItem)
+                        attendanceList.selectionModel.selectedItem)
                         .showAndWait()
                         .ifPresent {
-                            listView.items[listView.selectionModel.selectedIndex] = it
-                            listView.items.sort()
+                            attendanceList.items[attendanceList.selectionModel.selectedIndex] = it
+                            attendanceList.items.sort()
                         }
                 }
             }
             (getString(R.string.delete)) {
                 bindDisable()
-                onAction { listView.items.remove(listView.selectionModel.selectedItem) }
+                onAction { attendanceList.items.remove(attendanceList.selectionModel.selectedItem) }
             }
             separatorMenuItem()
             (getString(R.string.revert)) { onAction { attendee.attendances.revert() } }
@@ -196,7 +211,8 @@ class AttendeePane(
         }
     }
 
-    private fun MenuItem.bindDisable() = disableProperty().bind(listView.selectionModel.selectedItems.emptyBinding())
+    private fun MenuItem.bindDisable() = disableProperty()
+        .bind(attendanceList.selectionModel.selectedItems.emptyBinding())
 }
 
 @Suppress("NOTHING_TO_INLINE")

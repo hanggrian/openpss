@@ -13,7 +13,8 @@ import com.hendraanggrian.openpss.time.PATTERN_TIME
 import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.DateDialog
 import com.hendraanggrian.openpss.ui.wage.Record.Companion.getDummy
-import com.hendraanggrian.openpss.utils.getResourceString
+import com.hendraanggrian.openpss.utils.getFont
+import com.hendraanggrian.openpss.utils.getResource
 import com.hendraanggrian.openpss.utils.openFile
 import com.hendraanggrian.openpss.utils.stringCell
 import com.sun.javafx.scene.control.skin.TreeTableViewSkin
@@ -29,7 +30,6 @@ import javafx.scene.control.TreeItem
 import javafx.scene.control.TreeTableColumn
 import javafx.scene.control.TreeTableView
 import javafx.scene.layout.VBox
-import javafx.scene.text.Font.loadFont
 import ktfx.application.later
 import ktfx.beans.binding.booleanBindingOf
 import ktfx.beans.binding.or
@@ -57,7 +57,8 @@ class WageRecordController : Controller() {
     @FXML lateinit var toolbar2: ToolBar
     @FXML lateinit var undoButton: SplitMenuButton
     @FXML lateinit var timeBox: TimeBox
-    @FXML lateinit var totalLabel: Label
+    @FXML lateinit var totalLabel1: Label
+    @FXML lateinit var totalLabel2: Label
     @FXML lateinit var lockStartButton: Button
     @FXML lateinit var lockEndButton: Button
     @FXML lateinit var recordTable: TreeTableView<Record>
@@ -79,7 +80,7 @@ class WageRecordController : Controller() {
                     recordTable.selectionModel.selectedItems?.any { !it.value.isChild() } ?: true
                 })
         }
-        totalLabel.font = loadFont(getResourceString(R.font.opensans_bold), 13.0)
+        totalLabel1.font = getFont(R.font.opensans_bold)
 
         recordTable.selectionModel.selectionMode = MULTIPLE
         recordTable.root = TreeItem(getDummy(this))
@@ -101,10 +102,10 @@ class WageRecordController : Controller() {
                         dailyIncomeColumn, overtimeIncomeColumn, totalColumn -> currencyConverter.toString(any as Number)
                         else -> any.toString()
                     }) {
-                        font = loadFont(getResourceString(when {
+                        font = getFont(when {
                             treeTableRow.treeItem?.value?.isTotal() ?: true -> R.font.opensans_bold
                             else -> R.font.opensans_regular
-                        }), 13.0)
+                        })
                     }
                 }
             }
@@ -123,11 +124,11 @@ class WageRecordController : Controller() {
                     children += TreeItem(total)
                 }
             }
-            totalLabel.textProperty().bind(
+            totalLabel2.textProperty().bind(
                 stringBindingOf(*records.filter { it.isChild() }.map { it.totalProperty }.toTypedArray()) {
-                    "${getString(R.string.total)} ${currencyConverter.toString(records
+                    currencyConverter.toString(records
                         .filter { it.isTotal() }
-                        .sumByDouble { it.totalProperty.value })}"
+                        .sumByDouble { it.totalProperty.value })
                 })
         }
     }
@@ -187,7 +188,7 @@ class WageRecordController : Controller() {
             undoable.append()
         }
 
-    @FXML fun screenshot() = getResourceString(R.style.treetableview_print).let { printStylesheet ->
+    @FXML fun screenshot() = getResource(R.style.treetableview_print).toExternalForm().let { printStylesheet ->
         togglePrintMode(true, printStylesheet)
         recordTable.scrollTo(0)
         val flow = (recordTable.skin as TreeTableViewSkin<*>).children[1] as VirtualFlow<*>

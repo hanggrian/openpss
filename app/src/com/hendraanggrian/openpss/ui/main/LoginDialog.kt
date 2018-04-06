@@ -12,8 +12,8 @@ import com.hendraanggrian.openpss.scene.control.IntField
 import com.hendraanggrian.openpss.scene.control.hostField
 import com.hendraanggrian.openpss.scene.control.intField
 import com.hendraanggrian.openpss.ui.Resourced
+import com.hendraanggrian.openpss.utils.onActionFilter
 import com.mongodb.ServerAddress.defaultPort
-import javafx.event.ActionEvent.ACTION
 import javafx.geometry.Pos.CENTER_RIGHT
 import javafx.scene.control.ButtonBar.ButtonData.OK_DONE
 import javafx.scene.control.Dialog
@@ -148,27 +148,24 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced 
                 or serverPortField.textProperty().isEmpty
                 or serverUserField.textProperty().isEmpty
                 or serverPasswordField.textProperty().isEmpty)
-            addEventFilter(ACTION) {
-                it.consume()
-                launch {
-                    ConfigFile.save()
-                    MongoFile.save()
-                    try {
-                        val employee = login(
-                            serverHostField.text,
-                            serverPortField.value,
-                            serverUserField.text,
-                            serverPasswordField.text,
-                            employeeField.text,
-                            passwordField1.text)
-                        launch(FX) {
-                            result = employee
-                            close()
-                        }
-                    } catch (e: Exception) {
-                        if (DEBUG) e.printStackTrace()
-                        launch(FX) { errorAlert(e.message.toString()).showAndWait() }
+            onActionFilter(CommonPool) {
+                ConfigFile.save()
+                MongoFile.save()
+                try {
+                    val employee = login(
+                        serverHostField.text,
+                        serverPortField.value,
+                        serverUserField.text,
+                        serverPasswordField.text,
+                        employeeField.text,
+                        passwordField1.text)
+                    launch(FX) {
+                        result = employee
+                        close()
                     }
+                } catch (e: Exception) {
+                    if (DEBUG) e.printStackTrace()
+                    launch(FX) { errorAlert(e.message.toString()).showAndWait() }
                 }
             }
         }

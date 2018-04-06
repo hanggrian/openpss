@@ -53,7 +53,8 @@
         <Space/>
         <TimeBox fx:id="timeBox"/>
         <Space HBox.hgrow="ALWAYS"/>
-        <Label fx:id="totalLabel"/>
+        <Label fx:id="totalLabel1" text="%total"/>
+        <Label fx:id="totalLabel2"/>
     </ToolBar>
     <TreeTableView fx:id="recordTable" VBox.vgrow="ALWAYS">
         <columns>

@@ -5,14 +5,13 @@ import com.hendraanggrian.openpss.BuildConfig.WEBSITE
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.ui.Resourced
 import com.hendraanggrian.openpss.utils.browseUrl
-import com.hendraanggrian.openpss.utils.getResourceString
-import javafx.event.ActionEvent.ACTION
+import com.hendraanggrian.openpss.utils.getFont
+import com.hendraanggrian.openpss.utils.onActionFilter
 import javafx.geometry.Pos.CENTER_LEFT
 import javafx.scene.control.ButtonBar.ButtonData.CANCEL_CLOSE
 import javafx.scene.control.Dialog
 import javafx.scene.control.ListView
 import javafx.scene.image.Image
-import javafx.scene.text.Font.loadFont
 import ktfx.beans.binding.and
 import ktfx.beans.binding.booleanBindingOf
 import ktfx.collections.toObservableList
@@ -47,26 +46,26 @@ class AboutDialog(resourced: Resourced) : Dialog<Unit>(), Resourced by resourced
             vbox {
                 alignment = CENTER_LEFT
                 textFlow {
-                    "Open " { font = loadFont(getResourceString(R.font.opensans_bold), 24.0) }
-                    "Printing Sales System" { font = loadFont(getResourceString(R.font.opensans_light), 24.0) }
+                    "Open " { font = getFont(R.font.opensans_bold, 24) }
+                    "Printing Sales System" { font = getFont(R.font.opensans_light, 24) }
                 }
                 text("${getString(R.string.version)} $VERSION") {
-                    font = loadFont(getResourceString(R.font.opensans_regular), 12.0)
+                    font = getFont(R.font.opensans_regular, 12)
                 } marginTop 2.0
                 text(getString(R.string.about_notice)) {
-                    font = loadFont(getResourceString(R.font.opensans_bold), 12.0)
+                    font = getFont(R.font.opensans_bold, 12)
                 } marginTop 20.0
                 textFlow {
                     "${getString(R.string.powered_by)}  " {
-                        font = loadFont(getResourceString(R.font.opensans_bold), 12.0)
+                        font = getFont(R.font.opensans_bold, 12)
                     }
-                    "JavaFX" { font = loadFont(getResourceString(R.font.opensans_regular), 12.0) }
+                    "JavaFX" { font = getFont(R.font.opensans_regular, 12) }
                 } marginTop 4.0
                 textFlow {
                     "${getString(R.string.author)}  " {
-                        font = loadFont(getResourceString(R.font.opensans_bold), 12.0)
+                        font = getFont(R.font.opensans_bold, 12)
                     }
-                    "Hendra Anggrian" { font = loadFont(getResourceString(R.font.opensans_regular), 12.0) }
+                    "Hendra Anggrian" { font = getFont(R.font.opensans_regular, 12) }
                 } marginTop 4.0
                 hbox {
                     button("GitHub") { onAction { browseUrl(WEBSITE) } }
@@ -86,10 +85,10 @@ class AboutDialog(resourced: Resourced) : Dialog<Unit>(), Resourced by resourced
                         onUpdate { license, empty ->
                             if (license != null && !empty) graphic = ktfx.layouts.vbox {
                                 label(license.repo) {
-                                    font = loadFont(getResourceString(R.font.opensans_regular), 12.0)
+                                    font = getFont(R.font.opensans_regular, 12)
                                 }
                                 label(license.owner) {
-                                    font = loadFont(getResourceString(R.font.opensans_bold), 12.0)
+                                    font = getFont(R.font.opensans_bold, 12)
                                 }
                             }
                         }
@@ -113,10 +112,7 @@ class AboutDialog(resourced: Resourced) : Dialog<Unit>(), Resourced by resourced
                 booleanBindingOf(licenseList.selectionModel.selectedIndexProperty()) {
                     licenseList.selectionModel.selectedItem != null
                 })
-            addEventFilter(ACTION) {
-                it.consume()
-                browseUrl(licenseList.selectionModel.selectedItem.homepage)
-            }
+            onActionFilter { browseUrl(licenseList.selectionModel.selectedItem.homepage) }
         }
         closeButton()
     }

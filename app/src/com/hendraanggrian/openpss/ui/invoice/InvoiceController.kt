@@ -1,26 +1,27 @@
-package com.hendraanggrian.openpss.ui.receipt
+package com.hendraanggrian.openpss.ui.invoice
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.db.buildQuery
 import com.hendraanggrian.openpss.db.findByDoc
 import com.hendraanggrian.openpss.db.findById
-import com.hendraanggrian.openpss.db.schema.Customer
-import com.hendraanggrian.openpss.db.schema.Customers
-import com.hendraanggrian.openpss.db.schema.Employees
-import com.hendraanggrian.openpss.db.schema.Offset
-import com.hendraanggrian.openpss.db.schema.Other
-import com.hendraanggrian.openpss.db.schema.Payment
-import com.hendraanggrian.openpss.db.schema.Payments
-import com.hendraanggrian.openpss.db.schema.Plate
-import com.hendraanggrian.openpss.db.schema.Receipt
-import com.hendraanggrian.openpss.db.schema.Receipts
-import com.hendraanggrian.openpss.db.schema.calculateDue
+import com.hendraanggrian.openpss.db.schemas.Customer
+import com.hendraanggrian.openpss.db.schemas.Customers
+import com.hendraanggrian.openpss.db.schemas.Employees
+import com.hendraanggrian.openpss.db.schemas.Invoice
+import com.hendraanggrian.openpss.db.schemas.Invoices
+import com.hendraanggrian.openpss.db.schemas.Offset
+import com.hendraanggrian.openpss.db.schemas.Other
+import com.hendraanggrian.openpss.db.schemas.Payment
+import com.hendraanggrian.openpss.db.schemas.Payments
+import com.hendraanggrian.openpss.db.schemas.Plate
+import com.hendraanggrian.openpss.db.schemas.calculateDue
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.scene.control.CountBox
 import com.hendraanggrian.openpss.scene.layout.DateBox
 import com.hendraanggrian.openpss.time.PATTERN_DATETIME_EXTENDED
 import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.Refreshable
+import com.hendraanggrian.openpss.ui.SeeInvoiceDialog
 import com.hendraanggrian.openpss.ui.controller
 import com.hendraanggrian.openpss.ui.pane
 import com.hendraanggrian.openpss.utils.currencyCell
@@ -69,7 +70,7 @@ import java.net.URL
 import java.util.ResourceBundle
 import kotlin.math.ceil
 
-class ReceiptController : Controller(), Refreshable {
+class InvoiceController : Controller(), Refreshable {
 
     @FXML lateinit var addPaymentButton: Button
     @FXML lateinit var printButton: Button
@@ -80,7 +81,7 @@ class ReceiptController : Controller(), Refreshable {
     @FXML lateinit var allDateRadio: RadioButton
     @FXML lateinit var pickDateRadio: RadioButton
     @FXML lateinit var dateBox: DateBox
-    @FXML lateinit var receiptPagination: Pagination
+    @FXML lateinit var invoicePagination: Pagination
     @FXML lateinit var plateTab: Tab
     @FXML lateinit var plateTable: TableView<Plate>
     @FXML lateinit var plateTypeColumn: TableColumn<Plate, String>
@@ -114,7 +115,7 @@ class ReceiptController : Controller(), Refreshable {
     @FXML lateinit var paymentMethodColumn: TableColumn<Payment, String>
 
     private val customerProperty = SimpleObjectProperty<Customer>()
-    private lateinit var receiptTable: TableView<Receipt>
+    private lateinit var invoiceTable: TableView<Invoice>
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
@@ -150,14 +151,14 @@ class ReceiptController : Controller(), Refreshable {
         paymentDateTimeColumn.stringCell { dateTime.toString(PATTERN_DATETIME_EXTENDED) }
         paymentEmployeeColumn.stringCell { transaction { findById(Employees, employeeId).single() }!! }
         paymentValueColumn.currencyCell { value }
-        paymentMethodColumn.stringCell { getMethodDisplayText(this@ReceiptController) }
+        paymentMethodColumn.stringCell { getMethodDisplayText(this@InvoiceController) }
     }
 
-    override fun refresh() = receiptPagination.pageFactoryProperty()
+    override fun refresh() = invoicePagination.pageFactoryProperty()
         .bind(bindingOf(customerProperty, countBox.countProperty, statusBox.valueProperty(),
             allDateRadio.selectedProperty(), pickDateRadio.selectedProperty(), dateBox.dateProperty) {
             Callback<Int, Node> { page ->
-                receiptTable = tableView {
+                invoiceTable = tableView {
                     columnResizePolicy = CONSTRAINED_RESIZE_POLICY
                     columns {
                         getString(R.string.id)<String> { stringCell { id } }
@@ -173,12 +174,12 @@ class ReceiptController : Controller(), Refreshable {
                         getString(R.string.print)<Boolean> { doneCell { printed } }
                     }
                     contextMenu {
-                        (getString(R.string.add)) { onAction { addReceipt() } }
+                        (getString(R.string.add)) { onAction { addInvoice() } }
                         separatorMenuItem()
                         (getString(R.string.edit)) {
                             bindDisable()
                             onAction {
-                                ReceiptDialog(this@ReceiptController, receiptTable.selectionModel.selectedItem)
+                                InvoiceDialog(this@InvoiceController, invoiceTable.selectionModel.selectedItem)
                                     .showAndWait()
                             }
                         }
@@ -186,9 +187,9 @@ class ReceiptController : Controller(), Refreshable {
                             bindDisable()
                             onAction {
                                 yesNoAlert(getString(R.string.are_you_sure)) {
-                                    receiptTable.selectionModel.selectedItem.let {
-                                        transaction { findByDoc(Receipts, it).remove() }
-                                        receiptTable.items.remove(it)
+                                    invoiceTable.selectionModel.selectedItem.let {
+                                        transaction { findByDoc(Invoices, it).remove() }
+                                        invoiceTable.items.remove(it)
                                     }
                                 }
                             }
@@ -196,7 +197,7 @@ class ReceiptController : Controller(), Refreshable {
                     }
                     later {
                         transaction {
-                            val receipts = Receipts.find {
+                            val invoices = Invoices.find {
                                 buildQuery {
                                     if (customerProperty.value != null)
                                         and(customerId.equal(customerProperty.value.id))
@@ -208,46 +209,45 @@ class ReceiptController : Controller(), Refreshable {
                                         and(dateTime.matches(dateBox.date.toString().toPattern()))
                                 }
                             }
-                            receiptPagination.pageCount = ceil(receipts.count() / countBox.count.toDouble()).toInt()
-                            items = receipts.skip(countBox.count * page).take(countBox.count).toMutableObservableList()
+                            invoicePagination.pageCount = ceil(invoices.count() / countBox.count.toDouble()).toInt()
+                            items = invoices.skip(countBox.count * page).take(countBox.count).toMutableObservableList()
                         }
                     }
                 }
-                addPaymentButton.disableProperty().bind(receiptTable.selectionModel.selectedItemProperty().isNull)
-                printButton.disableProperty().bind(receiptTable.selectionModel.selectedItemProperty().isNull)
+                addPaymentButton.disableProperty().bind(invoiceTable.selectionModel.selectedItemProperty().isNull)
+                printButton.disableProperty().bind(invoiceTable.selectionModel.selectedItemProperty().isNull)
                 plateTable.bindTable(plateTab) { plates }
                 offsetTable.bindTable(offsetTab) { offsets }
                 otherTable.bindTable(otherTab) { others }
-                noteLabel.textProperty().bind(stringBindingOf(receiptTable.selectionModel.selectedItemProperty()) {
-                    receipt?.note ?: ""
+                noteLabel.textProperty().bind(stringBindingOf(invoiceTable.selectionModel.selectedItemProperty()) {
+                    invoice?.note ?: ""
                 })
                 paymentTable.bindTable(paymentTab) {
                     transaction { Payments.find { employeeId.equal(this@bindTable.employeeId) }.toList() }!!
                 }
-                coverLabel.visibleProperty().bind(receiptTable.selectionModel.selectedItemProperty().isNull)
-                receiptTable
+                coverLabel.visibleProperty().bind(invoiceTable.selectionModel.selectedItemProperty().isNull)
+                invoiceTable
             }
         })
 
-    @FXML fun addReceipt() = ReceiptDialog(this).showAndWait().ifPresent {
+    @FXML fun addInvoice() = InvoiceDialog(this).showAndWait().ifPresent {
         transaction {
-            it.id = Receipts.insert(it)
-            receiptTable.items.add(it)
-            receiptTable.selectionModel.selectFirst()
+            it.id = Invoices.insert(it)
+            invoiceTable.items.add(it)
+            invoiceTable.selectionModel.selectFirst()
         }
     }
 
-    @FXML fun addPayment() = AddPaymentDialog(this, receipt!!).showAndWait().ifPresent {
+    @FXML fun addPayment() = AddPaymentDialog(this, invoice!!).showAndWait().ifPresent {
         transaction {
             it.id = Payments.insert(it)
-            if (calculateDue(receipt!!) == 0.0)
-                findByDoc(Receipts, receipt!!).projection { paid }.update(true)
-            reload(receipt!!)
+            if (calculateDue(invoice!!) == 0.0)
+                findByDoc(Invoices, invoice!!).projection { paid }.update(true)
+            reload(invoice!!)
         }
     }
 
-    @FXML fun print() = PrintReceiptDialog(this, receipt!!).showAndWait().ifPresent {
-    }
+    @FXML fun print() = SeeInvoiceDialog(this, invoice!!).show()
 
     @FXML fun selectCustomer() = SearchCustomerDialog(this).showAndWait().ifPresent { customerProperty.set(it) }
 
@@ -269,11 +269,11 @@ class ReceiptController : Controller(), Refreshable {
         loader.controller._employee = _employee
     }.showAndWait()
 
-    private inline val receipt: Receipt? get() = receiptTable.selectionModel.selectedItem
+    private inline val invoice: Invoice? get() = invoiceTable.selectionModel.selectedItem
 
-    private fun <S> TableView<S>.bindTable(tab: Tab, target: Receipt.() -> List<S>) {
-        itemsProperty().bind(bindingOf(receiptTable.selectionModel.selectedItemProperty()) {
-            receipt?.target()?.toObservableList() ?: emptyObservableList()
+    private fun <S> TableView<S>.bindTable(tab: Tab, target: Invoice.() -> List<S>) {
+        itemsProperty().bind(bindingOf(invoiceTable.selectionModel.selectedItemProperty()) {
+            invoice?.target()?.toObservableList() ?: emptyObservableList()
         })
         tab.graphicProperty().bind(bindingOf(itemsProperty()) {
             when {
@@ -284,13 +284,13 @@ class ReceiptController : Controller(), Refreshable {
     }
 
     private fun MenuItem.bindDisable() = later {
-        disableProperty().bind(receiptTable.selectionModel.selectedItems.emptyBinding() or
+        disableProperty().bind(invoiceTable.selectionModel.selectedItems.emptyBinding() or
             !isFullAccess.toProperty())
     }
 
-    private fun MongoDBSession.reload(receipt: Receipt) = receiptTable.run {
-        items.indexOf(receipt).let { index ->
-            items[items.indexOf(receipt)] = findByDoc(Receipts, receipt).single()
+    private fun MongoDBSession.reload(invoice: Invoice) = invoiceTable.run {
+        items.indexOf(invoice).let { index ->
+            items[items.indexOf(invoice)] = findByDoc(Invoices, invoice).single()
             selectionModel.select(index)
         }
     }

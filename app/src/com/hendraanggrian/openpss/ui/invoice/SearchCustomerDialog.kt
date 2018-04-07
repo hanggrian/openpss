@@ -1,8 +1,8 @@
-package com.hendraanggrian.openpss.ui.receipt
+package com.hendraanggrian.openpss.ui.invoice
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.db.schema.Customer
-import com.hendraanggrian.openpss.db.schema.Customers
+import com.hendraanggrian.openpss.db.schemas.Customer
+import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.ui.Resourced
 import javafx.scene.control.ButtonType.OK

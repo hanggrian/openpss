@@ -1,4 +1,4 @@
-package com.hendraanggrian.openpss.db.schema
+package com.hendraanggrian.openpss.db.schemas
 
 import com.hendraanggrian.openpss.db.Document
 import com.hendraanggrian.openpss.time.PATTERN_TIME

@@ -1,9 +1,9 @@
-package com.hendraanggrian.openpss.ui.receipt
+package com.hendraanggrian.openpss.ui.invoice
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.db.schema.Offset
-import com.hendraanggrian.openpss.db.schema.OffsetPrice
-import com.hendraanggrian.openpss.db.schema.OffsetPrices
+import com.hendraanggrian.openpss.db.schemas.Offset
+import com.hendraanggrian.openpss.db.schemas.OffsetPrice
+import com.hendraanggrian.openpss.db.schemas.OffsetPrices
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.scene.control.DoubleField
 import com.hendraanggrian.openpss.scene.control.IntField

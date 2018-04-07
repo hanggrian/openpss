@@ -4,9 +4,9 @@ import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.collections.isNotEmpty
 import com.hendraanggrian.openpss.db.buildQuery
 import com.hendraanggrian.openpss.db.findByDoc
-import com.hendraanggrian.openpss.db.schema.Contact
-import com.hendraanggrian.openpss.db.schema.Customer
-import com.hendraanggrian.openpss.db.schema.Customers
+import com.hendraanggrian.openpss.db.schemas.Contact
+import com.hendraanggrian.openpss.db.schemas.Customer
+import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.scene.control.CountBox
 import com.hendraanggrian.openpss.time.PATTERN_DATE

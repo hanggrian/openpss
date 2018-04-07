@@ -1,7 +1,7 @@
-package com.hendraanggrian.openpss.ui.receipt
+package com.hendraanggrian.openpss.ui.invoice
 
-import com.hendraanggrian.openpss.db.schema.OffsetPrice
-import com.hendraanggrian.openpss.db.schema.OffsetPrices
+import com.hendraanggrian.openpss.db.schemas.OffsetPrice
+import com.hendraanggrian.openpss.db.schemas.OffsetPrices
 import com.hendraanggrian.openpss.db.transaction
 import javafx.fxml.FXML
 import javafx.scene.control.TableColumn

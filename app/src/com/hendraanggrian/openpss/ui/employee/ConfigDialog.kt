@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.ui.employee
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.db.schema.Configs
+import com.hendraanggrian.openpss.db.schemas.Configs
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.ui.Resourced
 import com.hendraanggrian.openpss.utils.stringCell
@@ -30,6 +30,7 @@ class ConfigDialog(resourced: Resourced) : Dialog<Unit>(), Resourced by resource
             spacing = 8.0
             label(getString(R.string.config_detail))
             tableView(transaction { Configs.find().toObservableList() }!!) {
+                prefWidth = 480.0
                 isEditable = true
                 columnResizePolicy = CONSTRAINED_RESIZE_POLICY
                 columns {

@@ -3,18 +3,19 @@ package com.hendraanggrian.openpss.ui.payment
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.currencyConverter
 import com.hendraanggrian.openpss.db.findById
-import com.hendraanggrian.openpss.db.schema.Employees
-import com.hendraanggrian.openpss.db.schema.Payment
-import com.hendraanggrian.openpss.db.schema.PaymentMethod
-import com.hendraanggrian.openpss.db.schema.PaymentMethod.CASH
-import com.hendraanggrian.openpss.db.schema.PaymentMethod.TRANSFER
-import com.hendraanggrian.openpss.db.schema.Payments
+import com.hendraanggrian.openpss.db.schemas.Employees
+import com.hendraanggrian.openpss.db.schemas.Invoices
+import com.hendraanggrian.openpss.db.schemas.Payment
+import com.hendraanggrian.openpss.db.schemas.PaymentMethod
+import com.hendraanggrian.openpss.db.schemas.PaymentMethod.CASH
+import com.hendraanggrian.openpss.db.schemas.PaymentMethod.TRANSFER
+import com.hendraanggrian.openpss.db.schemas.Payments
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.scene.layout.DateBox
 import com.hendraanggrian.openpss.time.PATTERN_TIME
 import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.Refreshable
-import com.hendraanggrian.openpss.ui.main.MainController
+import com.hendraanggrian.openpss.ui.SeeInvoiceDialog
 import com.hendraanggrian.openpss.utils.currencyCell
 import com.hendraanggrian.openpss.utils.getFont
 import com.hendraanggrian.openpss.utils.stringCell
@@ -31,11 +32,7 @@ import java.util.ResourceBundle
 
 class PaymentController : Controller(), Refreshable {
 
-    companion object {
-        const val EXTRA_MAIN_CONTROLLER = "EXTRA_MAIN_CONTROLLER"
-    }
-
-    @FXML lateinit var seeReceiptButton: Button
+    @FXML lateinit var seeInvoiceButton: Button
     @FXML lateinit var dateBox: DateBox
     @FXML lateinit var totalCashLabel1: Label
     @FXML lateinit var totalCashLabel2: Label
@@ -52,7 +49,7 @@ class PaymentController : Controller(), Refreshable {
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
-        seeReceiptButton.bindToolbarButton()
+        seeInvoiceButton.bindToolbarButton()
         dateBox.dateProperty.listener { refresh() }
         totalAllLabel1.font = getFont(R.font.opensans_bold)
         totalCashLabel1.font = getFont(R.font.opensans_bold)
@@ -77,9 +74,10 @@ class PaymentController : Controller(), Refreshable {
         }
     }
 
-    @FXML fun seeReceipt() {
-        getExtra<MainController>(EXTRA_MAIN_CONTROLLER).tabPane.selectionModel.select(1)
-    }
+    @FXML fun seeInvoice() = SeeInvoiceDialog(this, transaction { findById(Invoices, payment.invoiceId).single() }!!)
+        .show()
+
+    private val payment: Payment get() = paymentTable.selectionModel.selectedItem
 
     private fun Label.bindTotal(method: PaymentMethod) = textProperty().bind(
         stringBindingOf(paymentTable.itemsProperty()) {

@@ -2,9 +2,9 @@ package com.hendraanggrian.openpss.ui.wage
 
 import com.hendraanggrian.openpss.collections.RevertibleObservableList
 import com.hendraanggrian.openpss.collections.isEmpty
-import com.hendraanggrian.openpss.db.schema.Recess
-import com.hendraanggrian.openpss.db.schema.Wage
-import com.hendraanggrian.openpss.db.schema.Wages
+import com.hendraanggrian.openpss.db.schemas.Recess
+import com.hendraanggrian.openpss.db.schemas.Wage
+import com.hendraanggrian.openpss.db.schemas.Wages
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.time.START_OF_TIME
 import com.hendraanggrian.openpss.ui.Resourced

@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.ui.wage
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.db.schema.Recesses
+import com.hendraanggrian.openpss.db.schemas.Recesses
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.ui.Resourced
 import javafx.scene.control.ButtonType.OK

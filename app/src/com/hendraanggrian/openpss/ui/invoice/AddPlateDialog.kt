@@ -1,9 +1,9 @@
-package com.hendraanggrian.openpss.ui.receipt
+package com.hendraanggrian.openpss.ui.invoice
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.db.schema.Plate
-import com.hendraanggrian.openpss.db.schema.PlatePrice
-import com.hendraanggrian.openpss.db.schema.PlatePrices
+import com.hendraanggrian.openpss.db.schemas.Plate
+import com.hendraanggrian.openpss.db.schemas.PlatePrice
+import com.hendraanggrian.openpss.db.schemas.PlatePrices
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.scene.control.DoubleField
 import com.hendraanggrian.openpss.scene.control.IntField

@@ -2,13 +2,13 @@
 
 package com.hendraanggrian.openpss
 
-import com.hendraanggrian.openpss.db.schema.Config
-import com.hendraanggrian.openpss.db.schema.Configs
+import com.hendraanggrian.openpss.db.schemas.Config.Companion.KEY_CURRENCY_COUNTRY
+import com.hendraanggrian.openpss.db.schemas.Config.Companion.KEY_CURRENCY_LANGUAGE
+import com.hendraanggrian.openpss.db.schemas.findConfig
 import com.hendraanggrian.openpss.db.transaction
 import javafx.util.StringConverter
 import javafx.util.converter.CurrencyStringConverter
 import javafx.util.converter.NumberStringConverter
-import kotlinx.nosql.equal
 import java.util.Locale
 import java.util.WeakHashMap
 
@@ -26,10 +26,10 @@ val numberConverter: NumberStringConverter get() = getOrStore { NumberStringConv
 val currencyConverter: CurrencyStringConverter
     get() = getOrStore {
         CurrencyStringConverter(transaction {
-            val language = Configs.find { key.equal(Config.KEY_CURRENCY_LANGUAGE) }.singleOrNull()?.value
-            val country = Configs.find { key.equal(Config.KEY_CURRENCY_COUNTRY) }.singleOrNull()?.value
+            val language = findConfig(KEY_CURRENCY_LANGUAGE)
+            val country = findConfig(KEY_CURRENCY_COUNTRY)
             when {
-                language != null && country != null -> Locale(language, country)
+                language.isNotBlank() && country.isNotBlank() -> Locale(language, country)
                 else -> Locale.getDefault()
             }
         })

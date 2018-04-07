@@ -1,7 +1,7 @@
-package com.hendraanggrian.openpss.ui.receipt
+package com.hendraanggrian.openpss.ui.invoice
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.db.schema.Other
+import com.hendraanggrian.openpss.db.schemas.Other
 import com.hendraanggrian.openpss.scene.control.DoubleField
 import com.hendraanggrian.openpss.scene.control.IntField
 import com.hendraanggrian.openpss.scene.control.doubleField

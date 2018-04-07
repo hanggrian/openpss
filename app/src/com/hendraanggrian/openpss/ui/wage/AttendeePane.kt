@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.ui.wage
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.db.schema.Recesses
+import com.hendraanggrian.openpss.db.schemas.Recesses
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.scene.control.intField
 import com.hendraanggrian.openpss.time.FlexibleInterval

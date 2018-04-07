@@ -1,17 +1,17 @@
-package com.hendraanggrian.openpss.ui.receipt
+package com.hendraanggrian.openpss.ui.invoice
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.currencyConverter
 import com.hendraanggrian.openpss.db.dbDateTime
 import com.hendraanggrian.openpss.db.findById
-import com.hendraanggrian.openpss.db.schema.Customer
-import com.hendraanggrian.openpss.db.schema.Customers
-import com.hendraanggrian.openpss.db.schema.Employee
-import com.hendraanggrian.openpss.db.schema.Employees
-import com.hendraanggrian.openpss.db.schema.Offset
-import com.hendraanggrian.openpss.db.schema.Other
-import com.hendraanggrian.openpss.db.schema.Plate
-import com.hendraanggrian.openpss.db.schema.Receipt
+import com.hendraanggrian.openpss.db.schemas.Customer
+import com.hendraanggrian.openpss.db.schemas.Customers
+import com.hendraanggrian.openpss.db.schemas.Employee
+import com.hendraanggrian.openpss.db.schemas.Employees
+import com.hendraanggrian.openpss.db.schemas.Invoice
+import com.hendraanggrian.openpss.db.schemas.Offset
+import com.hendraanggrian.openpss.db.schemas.Other
+import com.hendraanggrian.openpss.db.schemas.Plate
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.time.PATTERN_DATE
 import com.hendraanggrian.openpss.ui.Controller
@@ -57,10 +57,10 @@ import ktfx.scene.input.isDelete
 import ktfx.scene.layout.gap
 import org.joda.time.DateTime
 
-class ReceiptDialog(
+class InvoiceDialog(
     controller: Controller,
-    private val prefill: Receipt? = null
-) : Dialog<Receipt>(), Resourced by controller {
+    private val prefill: Invoice? = null
+) : Dialog<Invoice>(), Resourced by controller {
 
     private lateinit var plateTable: TableView<Plate>
     private lateinit var offsetTable: TableView<Offset>
@@ -78,8 +78,8 @@ class ReceiptDialog(
     private val totalProperty: DoubleProperty = SimpleDoubleProperty(prefill?.total ?: 0.0)
 
     init {
-        headerTitle = getString(if (!isEdit()) R.string.add_receipt else R.string.edit_receipt)
-        graphicIcon = ImageView(R.image.ic_receipt)
+        headerTitle = getString(if (!isEdit()) R.string.add_invoice else R.string.edit_invoice)
+        graphicIcon = ImageView(R.image.ic_invoice)
         dialogPane.content = gridPane {
             gap = 8.0
             label(getString(R.string.employee)) col 0 row 0
@@ -92,10 +92,10 @@ class ReceiptDialog(
                 textProperty().bind(stringBindingOf(customerProperty) {
                     customerProperty.value?.toString() ?: getString(R.string.search_customer)
                 })
-                setOnAction { SearchCustomerDialog(this@ReceiptDialog).showAndWait().ifPresent { customerProperty.set(it) } }
+                setOnAction { SearchCustomerDialog(this@InvoiceDialog).showAndWait().ifPresent { customerProperty.set(it) } }
             } col 1 row 2
             label(getString(R.string.plate)) col 0 row 3
-            plateTable = receiptTableView({ AddPlateDialog(this@ReceiptDialog) }) {
+            plateTable = invoiceTableView({ AddPlateDialog(this@InvoiceDialog) }) {
                 column<String>(getString(R.string.type)) { stringCell { type } }
                 column<String>(getString(R.string.title)) { stringCell { title } }
                 column<String>(getString(R.string.qty)) { numberCell { qty } }
@@ -103,7 +103,7 @@ class ReceiptDialog(
                 column<String>(getString(R.string.total)) { currencyCell { total } }
             } col 1 row 3
             label(getString(R.string.offset)) col 0 row 4
-            offsetTable = receiptTableView({ AddOffsetDialog(this@ReceiptDialog) }) {
+            offsetTable = invoiceTableView({ AddOffsetDialog(this@InvoiceDialog) }) {
                 column<String>(getString(R.string.type)) { stringCell { type } }
                 column<String>(getString(R.string.title)) { stringCell { title } }
                 column<String>(getString(R.string.qty)) { numberCell { qty } }
@@ -113,7 +113,7 @@ class ReceiptDialog(
                 column<String>(getString(R.string.total)) { currencyCell { total } }
             } col 1 row 4
             label(getString(R.string.others)) col 0 row 5
-            otherTable = receiptTableView({ AddOtherDialog(this@ReceiptDialog) }) {
+            otherTable = invoiceTableView({ AddOtherDialog(this@InvoiceDialog) }) {
                 column<String>(getString(R.string.title)) { stringCell { title } }
                 column<String>(getString(R.string.qty)) { numberCell { qty } }
                 column<String>(getString(R.string.price)) { currencyCell { price } }
@@ -135,7 +135,7 @@ class ReceiptDialog(
         cancelButton()
         okButton { disableProperty().bind(customerProperty.isNull or totalProperty.lessEq(0)) }
         setResultConverter {
-            if (it == CANCEL) null else Receipt.new(
+            if (it == CANCEL) null else Invoice.new(
                 employee.id,
                 customerProperty.value.id,
                 dateTime,
@@ -149,7 +149,7 @@ class ReceiptDialog(
 
     private fun isEdit(): Boolean = prefill != null
 
-    private fun <S> LayoutManager<Node>.receiptTableView(
+    private fun <S> LayoutManager<Node>.invoiceTableView(
         newAddDialog: () -> Dialog<S>,
         columnsBuilder: TableColumnsBuilder<S>.() -> Unit
     ): TableView<S> = tableView {

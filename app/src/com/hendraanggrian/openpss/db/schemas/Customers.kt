@@ -1,4 +1,4 @@
-package com.hendraanggrian.openpss.db.schema
+package com.hendraanggrian.openpss.db.schemas
 
 import com.hendraanggrian.openpss.db.NamedDocument
 import com.hendraanggrian.openpss.db.NamedDocumentSchema

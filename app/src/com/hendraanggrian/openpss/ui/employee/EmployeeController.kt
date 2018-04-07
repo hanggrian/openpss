@@ -1,9 +1,9 @@
 package com.hendraanggrian.openpss.ui.employee
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.db.schema.Employee
-import com.hendraanggrian.openpss.db.schema.Employee.Companion.DEFAULT_PASSWORD
-import com.hendraanggrian.openpss.db.schema.Employees
+import com.hendraanggrian.openpss.db.schemas.Employee
+import com.hendraanggrian.openpss.db.schemas.Employee.Companion.DEFAULT_PASSWORD
+import com.hendraanggrian.openpss.db.schemas.Employees
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.ui.AddUserDialog
 import com.hendraanggrian.openpss.ui.Controller

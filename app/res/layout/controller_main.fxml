@@ -14,10 +14,10 @@
                     </ImageView>
                 </graphic>
             </MenuItem>
-            <MenuItem fx:id="addReceiptItem" mnemonicParsing="false" onAction="#add" text="%add_receipt">
+            <MenuItem fx:id="addInvoiceItem" mnemonicParsing="false" onAction="#add" text="%add_invoice">
                 <graphic>
                     <ImageView pickOnBounds="true" preserveRatio="true">
-                        <Image url="@/image/menu_receipt.png"/>
+                        <Image url="@/image/menu_invoice.png"/>
                     </ImageView>
                 </graphic>
             </MenuItem>
@@ -29,7 +29,7 @@
                 <ToggleGroup fx:id="navigateGroup"/>
             </fx:define>
             <RadioMenuItem mnemonicParsing="false" toggleGroup="$navigateGroup" onAction="#navigate" text="%customer"/>
-            <RadioMenuItem mnemonicParsing="false" toggleGroup="$navigateGroup" onAction="#navigate" text="%receipt"/>
+            <RadioMenuItem mnemonicParsing="false" toggleGroup="$navigateGroup" onAction="#navigate" text="%invoice"/>
             <RadioMenuItem mnemonicParsing="false" toggleGroup="$navigateGroup" onAction="#navigate" text="%payment"/>
             <RadioMenuItem mnemonicParsing="false" toggleGroup="$navigateGroup" onAction="#navigate" text="%wage"/>
             <RadioMenuItem mnemonicParsing="false" toggleGroup="$navigateGroup" onAction="#navigate" text="%employee"/>
@@ -52,9 +52,9 @@
                 <!--suppress ALL -->
                 <fx:include fx:id="customer" source="controller_customer.fxml"/>
             </Tab>
-            <Tab closable="false" text="%receipt">
+            <Tab closable="false" text="%invoice">
                 <!--suppress ALL -->
-                <fx:include fx:id="receipt" source="controller_receipt.fxml"/>
+                <fx:include fx:id="invoice" source="controller_invoice.fxml"/>
             </Tab>
             <Tab closable="false" text="%payment">
                 <!--suppress ALL -->

@@ -1,4 +1,4 @@
-package com.hendraanggrian.openpss.db.schema
+package com.hendraanggrian.openpss.db.schemas
 
 import com.hendraanggrian.openpss.db.Document
 import com.hendraanggrian.openpss.db.Order
@@ -18,7 +18,7 @@ import kotlinx.nosql.mongodb.DocumentSchema
 import kotlinx.nosql.string
 import org.joda.time.DateTime
 
-object Receipts : DocumentSchema<Receipt>("receipts", Receipt::class) {
+object Invoices : DocumentSchema<Invoice>("invoices", Invoice::class) {
     val employeeId = id("employee_id", Employees)
     val customerId = id("customer_id", Customers)
     val dateTime = dateTime("date_time")
@@ -29,7 +29,7 @@ object Receipts : DocumentSchema<Receipt>("receipts", Receipt::class) {
     val paid = boolean("paid")
     val printed = boolean("printed")
 
-    class PlateColumn : ListColumn<Plate, Receipts>("plates", Plate::class) {
+    class PlateColumn : ListColumn<Plate, Invoices>("plates", Plate::class) {
         val type = string("type")
         val title = string("title")
         val qty = integer("qty")
@@ -37,7 +37,7 @@ object Receipts : DocumentSchema<Receipt>("receipts", Receipt::class) {
         val total = double("total")
     }
 
-    class OffsetColumn : ListColumn<Offset, Receipts>("offsets", Offset::class) {
+    class OffsetColumn : ListColumn<Offset, Invoices>("offsets", Offset::class) {
         val type = string("type")
         val title = string("title")
         val qty = integer("qty")
@@ -47,7 +47,7 @@ object Receipts : DocumentSchema<Receipt>("receipts", Receipt::class) {
         val total = double("total")
     }
 
-    class OtherColumn : ListColumn<Other, Receipts>("others", Other::class) {
+    class OtherColumn : ListColumn<Other, Invoices>("others", Other::class) {
         val title = string("title")
         val qty = integer("qty")
         val price = double("price")
@@ -55,7 +55,7 @@ object Receipts : DocumentSchema<Receipt>("receipts", Receipt::class) {
     }
 }
 
-data class Receipt(
+data class Invoice(
     val employeeId: Id<String, Employees>,
     val customerId: Id<String, Customers>,
     override val dateTime: DateTime,
@@ -65,9 +65,9 @@ data class Receipt(
     var note: String,
     var paid: Boolean,
     var printed: Boolean
-) : Document<Receipts>, DateTimed, Totaled {
+) : Document<Invoices>, DateTimed, Totaled {
 
-    override lateinit var id: Id<String, Receipts>
+    override lateinit var id: Id<String, Invoices>
 
     override val total: Double
         get() = plates.sumByDouble { it.total } + offsets.sumByDouble { it.total } + others.sumByDouble { it.total }
@@ -81,7 +81,7 @@ data class Receipt(
             offsets: List<Offset>,
             others: List<Other>,
             note: String
-        ): Receipt = Receipt(employeeId, customerId, dateTime, plates, offsets, others, note, false, false)
+        ): Invoice = Invoice(employeeId, customerId, dateTime, plates, offsets, others, note, false, false)
     }
 }
 

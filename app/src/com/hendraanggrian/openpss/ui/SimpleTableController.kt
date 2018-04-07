@@ -19,9 +19,9 @@ import java.util.ResourceBundle
 /**
  * Base controller for editing DAO in simple table with refresh, add, and delete button.
  *
- * @see [com.hendraanggrian.openpss.ui.receipt.PriceController]
- * @see [com.hendraanggrian.openpss.ui.receipt.PlatePriceController]
- * @see [com.hendraanggrian.openpss.ui.receipt.OffsetPriceController]
+ * @see [com.hendraanggrian.openpss.ui.invoice.PriceController]
+ * @see [com.hendraanggrian.openpss.ui.invoice.PlatePriceController]
+ * @see [com.hendraanggrian.openpss.ui.invoice.OffsetPriceController]
  * @see [com.hendraanggrian.openpss.ui.wage.WageRecessController]
  */
 abstract class SimpleTableController<D : Document<S>, S : DocumentSchema<D>>(

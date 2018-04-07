@@ -3,17 +3,17 @@ package com.hendraanggrian.openpss.db
 import com.hendraanggrian.openpss.BuildConfig.ARTIFACT
 import com.hendraanggrian.openpss.BuildConfig.DEBUG
 import com.hendraanggrian.openpss.collections.isEmpty
-import com.hendraanggrian.openpss.db.schema.Config
-import com.hendraanggrian.openpss.db.schema.Configs
-import com.hendraanggrian.openpss.db.schema.Customers
-import com.hendraanggrian.openpss.db.schema.Employee
-import com.hendraanggrian.openpss.db.schema.Employees
-import com.hendraanggrian.openpss.db.schema.OffsetPrices
-import com.hendraanggrian.openpss.db.schema.Payments
-import com.hendraanggrian.openpss.db.schema.PlatePrices
-import com.hendraanggrian.openpss.db.schema.Receipts
-import com.hendraanggrian.openpss.db.schema.Recesses
-import com.hendraanggrian.openpss.db.schema.Wages
+import com.hendraanggrian.openpss.db.schemas.Config
+import com.hendraanggrian.openpss.db.schemas.Configs
+import com.hendraanggrian.openpss.db.schemas.Customers
+import com.hendraanggrian.openpss.db.schemas.Employee
+import com.hendraanggrian.openpss.db.schemas.Employees
+import com.hendraanggrian.openpss.db.schemas.OffsetPrices
+import com.hendraanggrian.openpss.db.schemas.Payments
+import com.hendraanggrian.openpss.db.schemas.PlatePrices
+import com.hendraanggrian.openpss.db.schemas.Invoices
+import com.hendraanggrian.openpss.db.schemas.Recesses
+import com.hendraanggrian.openpss.db.schemas.Wages
 import com.mongodb.MongoClientOptions.Builder
 import com.mongodb.MongoCredential.createCredential
 import com.mongodb.MongoException
@@ -30,7 +30,7 @@ import org.joda.time.LocalTime
 import java.util.Date
 
 private lateinit var DB: MongoDB
-private val TABLES = arrayOf(Configs, Customers, Employees, OffsetPrices, Payments, PlatePrices, Receipts, Recesses,
+private val TABLES = arrayOf(Configs, Customers, Employees, Invoices, OffsetPrices, Payments, PlatePrices, Recesses,
     Wages)
 
 /**

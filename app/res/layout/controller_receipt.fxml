@@ -59,8 +59,13 @@
     <SplitPane orientation="VERTICAL" dividerPositions="0.7" VBox.vgrow="ALWAYS">
         <VBox>
             <ToolBar>
-                <Button mnemonicParsing="false" fx:id="customerButton" onAction="#selectCustomer"
-                        text="%select_customer"/>
+                <SplitMenuButton mnemonicParsing="false" fx:id="customerButton" onAction="#selectCustomer"
+                                 text="%select_customer">
+                    <items>
+                        <MenuItem mnemonicParsing="false" fx:id="customerButtonItem" onAction="#clearCustomer"
+                                  text="%clear"/>
+                    </items>
+                </SplitMenuButton>
                 <CountBox fx:id="countBox"/>
                 <ChoiceBox fx:id="statusBox"/>
                 <Space HBox.hgrow="ALWAYS"/>

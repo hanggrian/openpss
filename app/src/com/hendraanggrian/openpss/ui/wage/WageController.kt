@@ -69,7 +69,7 @@ class WageController : Controller() {
 
         if (DEBUG) {
             fileField.text = "/Users/hendraanggrian/Downloads/Absen 2-24-18.xlsx"
-            readButton.fire()
+            // readButton.fire()
         }
         later { flowPane.prefWrapLengthProperty().bind(fileField.scene.widthProperty()) }
     }

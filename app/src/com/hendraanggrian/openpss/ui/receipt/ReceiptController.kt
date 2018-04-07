@@ -25,7 +25,6 @@ import com.hendraanggrian.openpss.ui.controller
 import com.hendraanggrian.openpss.ui.pane
 import com.hendraanggrian.openpss.utils.currencyCell
 import com.hendraanggrian.openpss.utils.doneCell
-import com.hendraanggrian.openpss.utils.getNullable
 import com.hendraanggrian.openpss.utils.getResource
 import com.hendraanggrian.openpss.utils.numberCell
 import com.hendraanggrian.openpss.utils.stringCell
@@ -41,6 +40,7 @@ import javafx.scene.control.Label
 import javafx.scene.control.MenuItem
 import javafx.scene.control.Pagination
 import javafx.scene.control.RadioButton
+import javafx.scene.control.SplitMenuButton
 import javafx.scene.control.Tab
 import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
@@ -73,7 +73,8 @@ class ReceiptController : Controller(), Refreshable {
 
     @FXML lateinit var addPaymentButton: Button
     @FXML lateinit var printButton: Button
-    @FXML lateinit var customerButton: Button
+    @FXML lateinit var customerButton: SplitMenuButton
+    @FXML lateinit var customerButtonItem: MenuItem
     @FXML lateinit var countBox: CountBox
     @FXML lateinit var statusBox: ChoiceBox<String>
     @FXML lateinit var allDateRadio: RadioButton
@@ -121,6 +122,7 @@ class ReceiptController : Controller(), Refreshable {
         customerButton.textProperty().bind(stringBindingOf(customerProperty) {
             customerProperty.value?.toString() ?: getString(R.string.search_customer)
         })
+        customerButtonItem.disableProperty().bind(customerProperty.isNull)
 
         countBox.desc = getString(R.string.items)
         statusBox.items = listOf(R.string.any, R.string.unpaid, R.string.paid).map { getString(it) }.toObservableList()
@@ -247,7 +249,9 @@ class ReceiptController : Controller(), Refreshable {
     @FXML fun print() = PrintReceiptDialog(this, receipt!!).showAndWait().ifPresent {
     }
 
-    @FXML fun selectCustomer() = customerProperty.set(SearchCustomerDialog(this).showAndWait().getNullable())
+    @FXML fun selectCustomer() = SearchCustomerDialog(this).showAndWait().ifPresent { customerProperty.set(it) }
+
+    @FXML fun clearCustomer() = customerProperty.set(null)
 
     @FXML fun platePrice() = stage(getString(R.string.plate_price)) {
         initModality(APPLICATION_MODAL)

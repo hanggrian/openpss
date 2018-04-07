@@ -14,6 +14,7 @@ import ktfx.coroutines.FX
 import ktfx.scene.control.confirmAlert
 import kotlin.coroutines.experimental.CoroutineContext
 
+/** Can't use `ktfx-coroutines` because by the time `consume` is called in coroutine context, it is already too late. */
 fun Node.onActionFilter(
     context: CoroutineContext = FX,
     action: suspend CoroutineScope.() -> Unit

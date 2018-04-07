@@ -195,9 +195,7 @@ class AttendeePane(
                     else -> R.image.btn_clear_inactive
                 })
             })
-            eventFilter(type = MOUSE_CLICKED) {
-                deleteMenu.fire()
-            }
+            eventFilter(type = MOUSE_CLICKED) { deleteMenu.fire() }
         }
         launch(FX) {
             delay(200)

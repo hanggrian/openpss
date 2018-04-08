@@ -56,15 +56,11 @@ class AboutDialog(resourced: Resourced) : Dialog<Unit>(), Resourced by resourced
                     font = getFont(R.font.opensans_bold, 12)
                 } marginTop 20.0
                 textFlow {
-                    "${getString(R.string.powered_by)}  " {
-                        font = getFont(R.font.opensans_bold, 12)
-                    }
+                    "${getString(R.string.powered_by)}  " { font = getFont(R.font.opensans_bold, 12) }
                     "JavaFX" { font = getFont(R.font.opensans_regular, 12) }
                 } marginTop 4.0
                 textFlow {
-                    "${getString(R.string.author)}  " {
-                        font = getFont(R.font.opensans_bold, 12)
-                    }
+                    "${getString(R.string.author)}  " { font = getFont(R.font.opensans_bold, 12) }
                     "Hendra Anggrian" { font = getFont(R.font.opensans_regular, 12) }
                 } marginTop 4.0
                 hbox {
@@ -84,12 +80,8 @@ class AboutDialog(resourced: Resourced) : Dialog<Unit>(), Resourced by resourced
                     cellFactory {
                         onUpdate { license, empty ->
                             if (license != null && !empty) graphic = ktfx.layouts.vbox {
-                                label(license.repo) {
-                                    font = getFont(R.font.opensans_regular, 12)
-                                }
-                                label(license.owner) {
-                                    font = getFont(R.font.opensans_bold, 12)
-                                }
+                                label(license.repo) { font = getFont(R.font.opensans_regular, 12) }
+                                label(license.owner) { font = getFont(R.font.opensans_bold, 12) }
                             }
                         }
                     }

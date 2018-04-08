@@ -9,11 +9,8 @@ import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.schemas.Employees
 import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.db.schemas.Invoices
-import com.hendraanggrian.openpss.db.schemas.Offset
-import com.hendraanggrian.openpss.db.schemas.Other
 import com.hendraanggrian.openpss.db.schemas.Payment
 import com.hendraanggrian.openpss.db.schemas.Payments
-import com.hendraanggrian.openpss.db.schemas.Plate
 import com.hendraanggrian.openpss.db.schemas.calculateDue
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.scene.control.CountBox
@@ -27,7 +24,6 @@ import com.hendraanggrian.openpss.ui.pane
 import com.hendraanggrian.openpss.utils.currencyCell
 import com.hendraanggrian.openpss.utils.doneCell
 import com.hendraanggrian.openpss.utils.getResource
-import com.hendraanggrian.openpss.utils.numberCell
 import com.hendraanggrian.openpss.utils.stringCell
 import com.hendraanggrian.openpss.utils.yesNoAlert
 import javafx.beans.property.SimpleObjectProperty
@@ -42,7 +38,6 @@ import javafx.scene.control.MenuItem
 import javafx.scene.control.Pagination
 import javafx.scene.control.RadioButton
 import javafx.scene.control.SplitMenuButton
-import javafx.scene.control.Tab
 import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
 import javafx.scene.control.TableView.CONSTRAINED_RESIZE_POLICY
@@ -73,7 +68,7 @@ import kotlin.math.ceil
 class InvoiceController : Controller(), Refreshable {
 
     @FXML lateinit var addPaymentButton: Button
-    @FXML lateinit var printButton: Button
+    @FXML lateinit var seeInvoiceButton: Button
     @FXML lateinit var customerButton: SplitMenuButton
     @FXML lateinit var customerButtonItem: MenuItem
     @FXML lateinit var countBox: CountBox
@@ -82,37 +77,12 @@ class InvoiceController : Controller(), Refreshable {
     @FXML lateinit var pickDateRadio: RadioButton
     @FXML lateinit var dateBox: DateBox
     @FXML lateinit var invoicePagination: Pagination
-    @FXML lateinit var plateTab: Tab
-    @FXML lateinit var plateTable: TableView<Plate>
-    @FXML lateinit var plateTypeColumn: TableColumn<Plate, String>
-    @FXML lateinit var plateTitleColumn: TableColumn<Plate, String>
-    @FXML lateinit var plateQtyColumn: TableColumn<Plate, String>
-    @FXML lateinit var platePriceColumn: TableColumn<Plate, String>
-    @FXML lateinit var plateTotalColumn: TableColumn<Plate, String>
-    @FXML lateinit var offsetTab: Tab
-    @FXML lateinit var offsetTable: TableView<Offset>
-    @FXML lateinit var offsetTypeColumn: TableColumn<Offset, String>
-    @FXML lateinit var offsetTitleColumn: TableColumn<Offset, String>
-    @FXML lateinit var offsetQtyColumn: TableColumn<Offset, String>
-    @FXML lateinit var offsetMinQtyColumn: TableColumn<Offset, String>
-    @FXML lateinit var offsetMinPriceColumn: TableColumn<Offset, String>
-    @FXML lateinit var offsetExcessPriceColumn: TableColumn<Offset, String>
-    @FXML lateinit var offsetTotalColumn: TableColumn<Offset, String>
-    @FXML lateinit var otherTab: Tab
-    @FXML lateinit var otherTable: TableView<Other>
-    @FXML lateinit var otherTitleColumn: TableColumn<Other, String>
-    @FXML lateinit var otherQtyColumn: TableColumn<Other, String>
-    @FXML lateinit var otherPriceColumn: TableColumn<Other, String>
-    @FXML lateinit var otherTotalColumn: TableColumn<Other, String>
-    @FXML lateinit var noteTab: Tab
-    @FXML lateinit var noteLabel: Label
-    @FXML lateinit var coverLabel: Label
-    @FXML lateinit var paymentTab: Tab
     @FXML lateinit var paymentTable: TableView<Payment>
     @FXML lateinit var paymentDateTimeColumn: TableColumn<Payment, String>
     @FXML lateinit var paymentEmployeeColumn: TableColumn<Payment, String>
     @FXML lateinit var paymentValueColumn: TableColumn<Payment, String>
     @FXML lateinit var paymentMethodColumn: TableColumn<Payment, String>
+    @FXML lateinit var coverLabel: Label
 
     private val customerProperty = SimpleObjectProperty<Customer>()
     private lateinit var invoiceTable: TableView<Invoice>
@@ -131,23 +101,6 @@ class InvoiceController : Controller(), Refreshable {
         pickDateRadio.graphic.disableProperty().bind(!pickDateRadio.selectedProperty())
 
         paymentTable.contextMenu { (getString(R.string.add)) { onAction { addPayment() } } }
-
-        plateTypeColumn.stringCell { type }
-        plateTitleColumn.stringCell { title }
-        plateQtyColumn.numberCell { qty }
-        platePriceColumn.currencyCell { price }
-        plateTotalColumn.currencyCell { total }
-        offsetTypeColumn.stringCell { type }
-        offsetTitleColumn.stringCell { title }
-        offsetQtyColumn.numberCell { qty }
-        offsetMinQtyColumn.numberCell { minQty }
-        offsetMinPriceColumn.currencyCell { minPrice }
-        offsetExcessPriceColumn.currencyCell { excessPrice }
-        offsetTotalColumn.currencyCell { total }
-        otherTitleColumn.stringCell { title }
-        otherQtyColumn.numberCell { qty }
-        otherPriceColumn.currencyCell { price }
-        otherTotalColumn.currencyCell { total }
         paymentDateTimeColumn.stringCell { dateTime.toString(PATTERN_DATETIME_EXTENDED) }
         paymentEmployeeColumn.stringCell { transaction { findById(Employees, employeeId).single() }!! }
         paymentValueColumn.currencyCell { value }
@@ -214,17 +167,12 @@ class InvoiceController : Controller(), Refreshable {
                         }
                     }
                 }
-                addPaymentButton.disableProperty().bind(invoiceTable.selectionModel.selectedItemProperty().isNull)
-                printButton.disableProperty().bind(invoiceTable.selectionModel.selectedItemProperty().isNull)
-                plateTable.bindTable(plateTab) { plates }
-                offsetTable.bindTable(offsetTab) { offsets }
-                otherTable.bindTable(otherTab) { others }
-                noteLabel.textProperty().bind(stringBindingOf(invoiceTable.selectionModel.selectedItemProperty()) {
-                    invoice?.note ?: ""
+                addPaymentButton.bindDisable()
+                seeInvoiceButton.bindDisable()
+                paymentTable.itemsProperty().bind(bindingOf(invoiceTable.selectionModel.selectedItemProperty()) {
+                    if (invoice == null) emptyObservableList()
+                    else transaction { Payments.find { invoiceId.equal(invoice!!.id) }.toObservableList() }!!
                 })
-                paymentTable.bindTable(paymentTab) {
-                    transaction { Payments.find { employeeId.equal(this@bindTable.employeeId) }.toList() }!!
-                }
                 coverLabel.visibleProperty().bind(invoiceTable.selectionModel.selectedItemProperty().isNull)
                 invoiceTable
             }
@@ -247,7 +195,7 @@ class InvoiceController : Controller(), Refreshable {
         }
     }
 
-    @FXML fun print() = SeeInvoiceDialog(this, invoice!!).show()
+    @FXML fun seeInvoice() = SeeInvoiceDialog(this, invoice!!).show()
 
     @FXML fun selectCustomer() = SearchCustomerDialog(this).showAndWait().ifPresent { customerProperty.set(it) }
 
@@ -271,17 +219,7 @@ class InvoiceController : Controller(), Refreshable {
 
     private inline val invoice: Invoice? get() = invoiceTable.selectionModel.selectedItem
 
-    private fun <S> TableView<S>.bindTable(tab: Tab, target: Invoice.() -> List<S>) {
-        itemsProperty().bind(bindingOf(invoiceTable.selectionModel.selectedItemProperty()) {
-            invoice?.target()?.toObservableList() ?: emptyObservableList()
-        })
-        tab.graphicProperty().bind(bindingOf(itemsProperty()) {
-            when {
-                items.isEmpty() -> null
-                else -> Label(items.size.toString())
-            }
-        })
-    }
+    private fun Button.bindDisable() = disableProperty().bind(invoiceTable.selectionModel.selectedItemProperty().isNull)
 
     private fun MenuItem.bindDisable() = later {
         disableProperty().bind(invoiceTable.selectionModel.selectedItems.emptyBinding() or

@@ -84,7 +84,7 @@ class MainController : Controller() {
 
     @FXML fun navigate(event: ActionEvent) = tabPane.selectionModel.select(navigateMenu.items.indexOf(event.source))
 
-    @FXML fun about() = AboutDialog(this).showAndWait().get()
+    @FXML fun about() = AboutDialog(this).show()
 
     private fun updateNavigateMenu(index: Int) = navigateMenu.items.forEachIndexed { i, item ->
         (item as RadioMenuItem).isSelected = index == i

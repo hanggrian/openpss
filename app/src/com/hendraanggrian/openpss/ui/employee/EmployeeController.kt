@@ -16,14 +16,11 @@ import javafx.fxml.FXML
 import javafx.scene.control.Button
 import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
-import kotlinx.coroutines.experimental.delay
-import kotlinx.coroutines.experimental.launch
 import kotlinx.nosql.equal
 import kotlinx.nosql.mongodb.MongoDBSession
 import kotlinx.nosql.update
 import ktfx.application.exit
 import ktfx.collections.toMutableObservableList
-import ktfx.coroutines.FX
 import ktfx.scene.control.infoAlert
 import java.net.URL
 import java.util.ResourceBundle
@@ -33,7 +30,6 @@ class EmployeeController : Controller(), Refreshable {
     @FXML lateinit var fullAccessButton: Button
     @FXML lateinit var resetPasswordButton: Button
     @FXML lateinit var deleteButton: Button
-    @FXML lateinit var configButton: Button
 
     @FXML lateinit var employeeTable: TableView<Employee>
     @FXML lateinit var nameColumn: TableColumn<Employee, String>
@@ -43,10 +39,6 @@ class EmployeeController : Controller(), Refreshable {
         super.initialize(location, resources)
         arrayOf(fullAccessButton, resetPasswordButton, deleteButton).forEach {
             it.disableProperty().bind(employeeTable.selectionModel.selectedItemProperty().isNull)
-        }
-        launch(FX) {
-            delay(500)
-            configButton.isDisable = !isFullAccess
         }
 
         nameColumn.stringCell { name }
@@ -82,8 +74,6 @@ class EmployeeController : Controller(), Refreshable {
     @FXML fun delete() = confirm({ employee ->
         Employees.find { name.equal(employee.name) }.remove()
     })
-
-    @FXML fun config() = ConfigDialog(this).showAndWait().get()
 
     private fun confirm(
         confirmedAction: MongoDBSession.(Employee) -> Unit,

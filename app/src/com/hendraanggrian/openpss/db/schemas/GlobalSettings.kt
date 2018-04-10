@@ -36,4 +36,4 @@ data class GlobalSetting(
 }
 
 @Suppress("NOTHING_TO_INLINE")
-inline fun MongoDBSession.findConfig(key: String): String = GlobalSettings.find { this.key.equal(key) }.single().value
+inline fun MongoDBSession.findGlobalSettings(key: String): String = GlobalSettings.find { this.key.equal(key) }.single().value

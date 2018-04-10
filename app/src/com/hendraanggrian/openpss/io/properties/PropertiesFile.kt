@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.io.properties
 
 import com.hendraanggrian.openpss.io.MainFolder
-import javafx.beans.property.StringProperty
+import javafx.beans.property.Property
 import kotlinx.coroutines.experimental.async
 import ktfx.beans.property.toProperty
 import ktfx.coroutines.listener
@@ -20,8 +20,8 @@ import kotlin.reflect.KProperty
 abstract class PropertiesFile(name: String) : File(MainFolder, ".$name") {
 
     /** Properties reference to get, set, and finally save into this file. */
-    private val properties = Properties()
-    private val cache = WeakHashMap<String, StringProperty>()
+    protected val properties = Properties()
+    protected val cache = WeakHashMap<String, Property<*>>()
 
     init {
         @Suppress("LeakingThis") if (!exists()) createNewFile()
@@ -32,14 +32,20 @@ abstract class PropertiesFile(name: String) : File(MainFolder, ".$name") {
         outputStream().use { properties.store(it, comments) }
     }.await()
 
-    operator fun Any?.getValue(thisRef: Any?, property: KProperty<*>): StringProperty {
+    @Suppress("UNCHECKED_CAST")
+    protected inline operator fun <reified T, R : Property<T>> T.getValue(thisRef: Any?, property: KProperty<*>): R {
         val key = property.name.toLowerCase()
         var value = cache[key]
         if (value == null) {
-            value = properties.getProperty(key, this as? String ?: "").toProperty()
+            val propertyString = properties.getProperty(key, toString())!!
+            value = when (T::class) {
+                String::class -> propertyString.toProperty()
+                Boolean::class -> propertyString.toBoolean().toProperty()
+                else -> propertyString.toProperty()
+            }
             cache[key] = value
         }
-        value.listener { _, _, newValue -> properties.setProperty(key, newValue) }
-        return value
+        value.listener { _, _, newValue -> properties.setProperty(key, newValue.toString()) }
+        return value as R
     }
 }

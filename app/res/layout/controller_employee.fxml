@@ -48,13 +48,6 @@
             </graphic>
         </Button>
         <Space HBox.hgrow="ALWAYS"/>
-        <Button mnemonicParsing="false" fx:id="configButton" onAction="#config" text="%config">
-            <graphic>
-                <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/toolbar_config.png"/>
-                </ImageView>
-            </graphic>
-        </Button>
     </ToolBar>
     <TableView fx:id="employeeTable" editable="true" VBox.vgrow="ALWAYS">
         <columns>

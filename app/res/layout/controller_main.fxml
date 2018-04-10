@@ -22,6 +22,8 @@
                 </graphic>
             </MenuItem>
             <SeparatorMenuItem/>
+            <MenuItem fx:id="settingsItem" mnemonicParsing="false" onAction="#settings" text="%settings"/>
+            <SeparatorMenuItem/>
             <MenuItem fx:id="quitItem" mnemonicParsing="false" onAction="#quit" text="%quit"/>
         </Menu>
         <Menu mnemonicParsing="false" fx:id="navigateMenu" text="%navigate">

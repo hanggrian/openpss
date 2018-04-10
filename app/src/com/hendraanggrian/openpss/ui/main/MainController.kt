@@ -16,6 +16,7 @@ import javafx.scene.control.MenuItem
 import javafx.scene.control.RadioMenuItem
 import javafx.scene.control.TabPane
 import javafx.scene.input.KeyCode.C
+import javafx.scene.input.KeyCode.COMMA
 import javafx.scene.input.KeyCode.Q
 import javafx.scene.input.KeyCode.R
 import javafx.scene.input.KeyCode.getKeyCode
@@ -34,6 +35,7 @@ class MainController : Controller() {
     @FXML lateinit var addCustomerItem: MenuItem
     @FXML lateinit var addInvoiceItem: MenuItem
     @FXML lateinit var quitItem: MenuItem
+    @FXML lateinit var settingsItem: MenuItem
     @FXML lateinit var navigateMenu: Menu
     @FXML lateinit var employeeLabel: Label
     @FXML lateinit var tabPane: TabPane
@@ -50,6 +52,7 @@ class MainController : Controller() {
         menuBar.isUseSystemMenuBar = IS_OS_MAC
         addCustomerItem.accelerator = C + SHORTCUT_DOWN
         addInvoiceItem.accelerator = R + SHORTCUT_DOWN
+        settingsItem.accelerator = COMMA + SHORTCUT_DOWN
         quitItem.accelerator = Q + SHORTCUT_DOWN
         navigateMenu.items.forEachIndexed { i, item -> item.accelerator = getKeyCode("${i + 1}") + SHORTCUT_DOWN }
 
@@ -79,6 +82,8 @@ class MainController : Controller() {
         addCustomerItem -> customerController.selectRun { addCustomer() }
         else -> invoiceController.selectRun { addInvoice() }
     }
+
+    @FXML fun settings() = SettingsDialog(this, isFullAccess).showAndWait().get()
 
     @FXML fun quit() = exit()
 

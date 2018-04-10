@@ -3,16 +3,16 @@ package com.hendraanggrian.openpss.ui
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.currencyConverter
 import com.hendraanggrian.openpss.db.findById
-import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_INVOICE_SUBTITLE1
-import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_INVOICE_SUBTITLE2
-import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_INVOICE_SUBTITLE3
-import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_INVOICE_TITLE
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.db.schemas.Employees
+import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_INVOICE_SUBTITLE1
+import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_INVOICE_SUBTITLE2
+import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_INVOICE_SUBTITLE3
+import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_INVOICE_TITLE
 import com.hendraanggrian.openpss.db.schemas.Invoice
-import com.hendraanggrian.openpss.db.schemas.findConfig
+import com.hendraanggrian.openpss.db.schemas.findGlobalSettings
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.numberConverter
 import com.hendraanggrian.openpss.time.PATTERN_DATETIME_EXTENDED
@@ -55,10 +55,10 @@ class SeeInvoiceDialog(resourced: Resourced, invoice: Invoice) : Dialog<Unit>(),
 
     init {
         transaction {
-            invoiceTitle = findConfig(KEY_INVOICE_TITLE)
-            invoiceSubtitle1 = findConfig(KEY_INVOICE_SUBTITLE1)
-            invoiceSubtitle2 = findConfig(KEY_INVOICE_SUBTITLE2)
-            invoiceSubtitle3 = findConfig(KEY_INVOICE_SUBTITLE3)
+            invoiceTitle = findGlobalSettings(KEY_INVOICE_TITLE)
+            invoiceSubtitle1 = findGlobalSettings(KEY_INVOICE_SUBTITLE1)
+            invoiceSubtitle2 = findGlobalSettings(KEY_INVOICE_SUBTITLE2)
+            invoiceSubtitle3 = findGlobalSettings(KEY_INVOICE_SUBTITLE3)
             employee = findById(Employees, invoice.employeeId).single()
             customer = findById(Customers, invoice.customerId).single()
         }

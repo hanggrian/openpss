@@ -1,12 +1,12 @@
 package com.hendraanggrian.openpss.db.schemas
 
-import com.hendraanggrian.openpss.db.Priced
 import com.hendraanggrian.openpss.db.NamedDocument
 import com.hendraanggrian.openpss.db.NamedDocumentSchema
+import com.hendraanggrian.openpss.db.Priced
 import kotlinx.nosql.Id
 import kotlinx.nosql.double
 
-object PlatePrices : NamedDocumentSchema<PlatePrice>("plates", PlatePrice::class) {
+object PlatePrices : NamedDocumentSchema<PlatePrice>("plate_prices", PlatePrice::class) {
     val price = double("price")
 }
 

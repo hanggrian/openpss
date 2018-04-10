@@ -3,10 +3,8 @@ package com.hendraanggrian.openpss.io.properties
 import javafx.beans.property.StringProperty
 
 /** User manually configurable settings file. */
-class SettingsFile : PropertiesFile("settings") {
+object SettingsFile : PropertiesFile("settings") {
 
-    override val pairs: Array<Pair<String, Any>>
-        get() = arrayOf("invoice_search_customer" to false)
-
-    val employee: StringProperty by this
+    val INVOICE_SHOW_CUSTOMER: StringProperty by true
+    inline val invoiceShowCustomer: Boolean get() = INVOICE_SHOW_CUSTOMER.value.toBoolean()
 }

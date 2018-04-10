@@ -71,10 +71,10 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced 
             label(getString(R.string.language)) col 0 row 0
             choiceBox(App.supportedLocales) {
                 maxWidth = Double.MAX_VALUE
-                selectionModel.select(Locale(LoginFile.language.value))
+                selectionModel.select(Locale(LoginFile.LANGUAGE.value))
                 converter { toString { it!!.getDisplayLanguage(it) } }
                 valueProperty().listener(CommonPool) { _, _, locale ->
-                    LoginFile.language.set(locale.language)
+                    LoginFile.LANGUAGE.set(locale.language)
                     LoginFile.save()
                     launch(FX) {
                         close()
@@ -85,7 +85,7 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced 
             label(getString(R.string.employee)) col 0 row 1
             employeeField = textField {
                 promptText = getString(R.string.employee)
-                textProperty().bindBidirectional(LoginFile.employee)
+                textProperty().bindBidirectional(LoginFile.EMPLOYEE)
             } col 1 row 1 colSpans 2
             label(getString(R.string.password)) col 0 row 2
             anchorPane {
@@ -114,23 +114,23 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced 
             serverHostField = hostField {
                 promptText = getString(R.string.ip_address)
                 prefWidth = 128.0
-                textProperty().bindBidirectional(LoginFile.host)
+                textProperty().bindBidirectional(LoginFile.DB_HOST)
             } col 1 row 0
             serverPortField = intField {
                 promptText = getString(R.string.port)
                 prefWidth = 64.0
-                textProperty().bindBidirectional(LoginFile.port)
+                textProperty().bindBidirectional(LoginFile.DB_PORT)
                 if (value == 0) text = defaultPort().toString()
             } col 2 row 0
             label(getString(R.string.server_user)) col 0 row 1
             serverUserField = textField {
                 promptText = getString(R.string.server_user)
-                textProperty().bindBidirectional(LoginFile.user)
+                textProperty().bindBidirectional(LoginFile.DB_USER)
             } col 1 row 1 colSpans 2
             label(getString(R.string.server_password)) col 0 row 2
             serverPasswordField = passwordField {
                 promptText = getString(R.string.server_password)
-                textProperty().bindBidirectional(LoginFile.password)
+                textProperty().bindBidirectional(LoginFile.DB_PASSWORD)
             } col 1 row 2 colSpans 2
             hbox {
                 alignment = CENTER_RIGHT
@@ -169,7 +169,7 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced 
         }
         later {
             if (employeeField.text.isBlank()) employeeField.requestFocus() else passwordField1.requestFocus()
-            dialogPane.isExpanded = !LoginFile.isMongoValid()
+            dialogPane.isExpanded = !LoginFile.isDbValid()
             if (DEBUG) passwordField1.text = "Test"
         }
     }

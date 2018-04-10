@@ -7,6 +7,8 @@ import ktfx.beans.property.toProperty
 import ktfx.coroutines.listener
 import java.io.File
 import java.util.Properties
+import java.util.WeakHashMap
+import kotlin.reflect.KProperty
 
 /**
  * Represents a file of [Properties] that acts as local settings.
@@ -15,28 +17,29 @@ import java.util.Properties
  * Since it is hidden, some systems will misrepresent file name as extension.
  * To avoid this issue, use an unusual name that is not a known file extension.
  */
-@Suppress("LeakingThis")
-abstract class PropertiesFile(
-    name: String,
-    private val map: MutableMap<String, StringProperty> = mutableMapOf()
-) : File(MainFolder, ".$name"), MutableMap<String, StringProperty> by map {
-
-    abstract val pairs: Array<Pair<String, Any>>
+abstract class PropertiesFile(name: String) : File(MainFolder, ".$name") {
 
     /** Properties reference to get, set, and finally save into this file. */
     private val properties = Properties()
+    private val cache = WeakHashMap<String, StringProperty>()
 
     init {
-        if (!exists()) createNewFile()
+        @Suppress("LeakingThis") if (!exists()) createNewFile()
         inputStream().use { properties.load(it) }
-        pairs.forEach { (key, value) ->
-            val valueProperty = properties.getProperty(key, value.toString()).toProperty()
-            valueProperty.listener { _, _, newValue -> properties.setProperty(key, newValue) }
-            map[key] = valueProperty
-        }
     }
 
-    suspend fun save(comments: String? = null): Unit = async {
+    suspend fun save(comments: String? = null) = async {
         outputStream().use { properties.store(it, comments) }
     }.await()
+
+    operator fun Any?.getValue(thisRef: Any?, property: KProperty<*>): StringProperty {
+        val key = property.name.toLowerCase()
+        var value = cache[key]
+        if (value == null) {
+            value = properties.getProperty(key, this as? String ?: "").toProperty()
+            cache[key] = value
+        }
+        value.listener { _, _, newValue -> properties.setProperty(key, newValue) }
+        return value
+    }
 }

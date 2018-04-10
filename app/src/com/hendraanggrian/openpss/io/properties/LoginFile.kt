@@ -3,30 +3,19 @@ package com.hendraanggrian.openpss.io.properties
 import javafx.beans.property.StringProperty
 import java.util.Locale.US
 
-/** Properties file for general settings that aren't manually configurable by user. */
+/** Properties file for general settings that aren't manually configurable by dbUser. */
 object LoginFile : PropertiesFile("login") {
 
-    override val pairs: Array<Pair<String, Any>>
-        get() = arrayOf(
-            "employee" to "",
-            "language" to US.language,
+    val EMPLOYEE: StringProperty by null
+    val LANGUAGE: StringProperty by US.language
 
-            "host" to "",
-            "port" to "",
-            "user" to "",
-            "password" to ""
-        )
+    val DB_HOST: StringProperty by null
+    val DB_PORT: StringProperty by null
+    val DB_USER: StringProperty by null
+    val DB_PASSWORD: StringProperty by null
 
-    val employee: StringProperty by this
-    val language: StringProperty by this
-
-    val host: StringProperty by this
-    val port: StringProperty by this
-    val user: StringProperty by this
-    val password: StringProperty by this
-
-    fun isMongoValid(): Boolean = host.value.isNotBlank() &&
-        port.value.isNotBlank() &&
-        user.value.isNotBlank() &&
-        password.value.isNotBlank()
+    fun isDbValid(): Boolean = DB_HOST.value.isNotBlank() &&
+        DB_PORT.value.isNotBlank() &&
+        DB_USER.value.isNotBlank() &&
+        DB_PASSWORD.value.isNotBlank()
 }

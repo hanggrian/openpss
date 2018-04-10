@@ -1,13 +1,13 @@
 package com.hendraanggrian.openpss.db.schemas
 
-import com.hendraanggrian.openpss.db.SplitPriced
 import com.hendraanggrian.openpss.db.NamedDocument
 import com.hendraanggrian.openpss.db.NamedDocumentSchema
+import com.hendraanggrian.openpss.db.SplitPriced
 import kotlinx.nosql.Id
 import kotlinx.nosql.double
 import kotlinx.nosql.integer
 
-object OffsetPrices : NamedDocumentSchema<OffsetPrice>("offsets", OffsetPrice::class) {
+object OffsetPrices : NamedDocumentSchema<OffsetPrice>("offset_prices", OffsetPrice::class) {
     val minQty = integer("min_qty")
     val minPrice = double("min_price")
     val excessPrice = double("excess_price")

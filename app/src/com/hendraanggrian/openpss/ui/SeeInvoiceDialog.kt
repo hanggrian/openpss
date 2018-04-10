@@ -3,10 +3,10 @@ package com.hendraanggrian.openpss.ui
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.currencyConverter
 import com.hendraanggrian.openpss.db.findById
-import com.hendraanggrian.openpss.db.schemas.Setting.Companion.KEY_INVOICE_SUBTITLE1
-import com.hendraanggrian.openpss.db.schemas.Setting.Companion.KEY_INVOICE_SUBTITLE2
-import com.hendraanggrian.openpss.db.schemas.Setting.Companion.KEY_INVOICE_SUBTITLE3
-import com.hendraanggrian.openpss.db.schemas.Setting.Companion.KEY_INVOICE_TITLE
+import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_INVOICE_SUBTITLE1
+import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_INVOICE_SUBTITLE2
+import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_INVOICE_SUBTITLE3
+import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_INVOICE_TITLE
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.schemas.Employee

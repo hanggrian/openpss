@@ -7,17 +7,17 @@ import kotlinx.nosql.mongodb.DocumentSchema
 import kotlinx.nosql.mongodb.MongoDBSession
 import kotlinx.nosql.string
 
-object Settings : DocumentSchema<Setting>("settings", Setting::class) {
+object GlobalSettings : DocumentSchema<GlobalSetting>("global_settings", GlobalSetting::class) {
     val key = string("key")
     val value = string("value")
 }
 
-data class Setting(
+data class GlobalSetting(
     val key: String,
     var value: String
-) : Document<Settings> {
+) : Document<GlobalSettings> {
 
-    override lateinit var id: Id<String, Settings>
+    override lateinit var id: Id<String, GlobalSettings>
 
     companion object {
         const val KEY_CURRENCY_LANGUAGE = "currency_language"
@@ -31,9 +31,9 @@ data class Setting(
             KEY_CURRENCY_LANGUAGE, KEY_CURRENCY_COUNTRY,
             KEY_INVOICE_TITLE, KEY_INVOICE_SUBTITLE1, KEY_INVOICE_SUBTITLE2, KEY_INVOICE_SUBTITLE3)
 
-        fun new(key: String): Setting = Setting(key, "")
+        fun new(key: String): GlobalSetting = GlobalSetting(key, "")
     }
 }
 
 @Suppress("NOTHING_TO_INLINE")
-inline fun MongoDBSession.findConfig(key: String): String = Settings.find { this.key.equal(key) }.single().value
+inline fun MongoDBSession.findConfig(key: String): String = GlobalSettings.find { this.key.equal(key) }.single().value

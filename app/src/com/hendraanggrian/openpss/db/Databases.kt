@@ -3,16 +3,16 @@ package com.hendraanggrian.openpss.db
 import com.hendraanggrian.openpss.BuildConfig.ARTIFACT
 import com.hendraanggrian.openpss.BuildConfig.DEBUG
 import com.hendraanggrian.openpss.collections.isEmpty
-import com.hendraanggrian.openpss.db.schemas.Setting
-import com.hendraanggrian.openpss.db.schemas.Settings
 import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.db.schemas.Employees
+import com.hendraanggrian.openpss.db.schemas.Invoices
 import com.hendraanggrian.openpss.db.schemas.OffsetPrices
 import com.hendraanggrian.openpss.db.schemas.Payments
 import com.hendraanggrian.openpss.db.schemas.PlatePrices
-import com.hendraanggrian.openpss.db.schemas.Invoices
 import com.hendraanggrian.openpss.db.schemas.Recesses
+import com.hendraanggrian.openpss.db.schemas.GlobalSetting
+import com.hendraanggrian.openpss.db.schemas.GlobalSettings
 import com.hendraanggrian.openpss.db.schemas.Wages
 import com.mongodb.MongoClientOptions.Builder
 import com.mongodb.MongoCredential.createCredential
@@ -30,7 +30,7 @@ import org.joda.time.LocalTime
 import java.util.Date
 
 private lateinit var DB: MongoDB
-private val TABLES = arrayOf(Settings, Customers, Employees, Invoices, OffsetPrices, Payments, PlatePrices, Recesses,
+private val TABLES = arrayOf(GlobalSettings, Customers, Employees, Invoices, OffsetPrices, Payments, PlatePrices, Recesses,
     Wages)
 
 /**
@@ -62,8 +62,8 @@ suspend fun login(
     var employee: Employee? = null
     transaction {
         // check first time installation
-        Setting.listKeys().forEach {
-            if (Settings.find { key.equal(it) }.isEmpty()) Settings.insert(Setting.new(it))
+        GlobalSetting.listKeys().forEach {
+            if (GlobalSettings.find { key.equal(it) }.isEmpty()) GlobalSettings.insert(GlobalSetting.new(it))
         }
         // add default employee
         if (Employees.find { name.equal(Employee.BACKDOOR.name) }.isEmpty()) Employees.insert(Employee.BACKDOOR)

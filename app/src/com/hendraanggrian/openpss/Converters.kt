@@ -2,8 +2,8 @@
 
 package com.hendraanggrian.openpss
 
-import com.hendraanggrian.openpss.db.schemas.Setting.Companion.KEY_CURRENCY_COUNTRY
-import com.hendraanggrian.openpss.db.schemas.Setting.Companion.KEY_CURRENCY_LANGUAGE
+import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_CURRENCY_COUNTRY
+import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_CURRENCY_LANGUAGE
 import com.hendraanggrian.openpss.db.schemas.findConfig
 import com.hendraanggrian.openpss.db.transaction
 import javafx.util.StringConverter

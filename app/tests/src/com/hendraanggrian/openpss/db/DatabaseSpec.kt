@@ -13,11 +13,11 @@ import org.junit.runner.RunWith
 @RunWith(JUnitPlatform::class)
 object DatabaseSpec : Spek({
 
-    if (LoginFile.isMongoValid()) given("a database") {
+    if (LoginFile.isDbValid()) given("a database") {
         configure()
         runBlocking {
             try {
-                login(LoginFile.host.value, LoginFile.port.value.toInt(), LoginFile.user.value, LoginFile.password.value, Employee.BACKDOOR.name, Employee.BACKDOOR.password)
+                login(LoginFile.DB_HOST.value, LoginFile.DB_PORT.value.toInt(), LoginFile.DB_USER.value, LoginFile.DB_PASSWORD.value, Employee.BACKDOOR.name, Employee.BACKDOOR.password)
                 it("should return correct date") {
                     println(dbDateTime)
                 }

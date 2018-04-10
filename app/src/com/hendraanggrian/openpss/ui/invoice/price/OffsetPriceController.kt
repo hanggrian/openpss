@@ -1,4 +1,4 @@
-package com.hendraanggrian.openpss.ui.invoice
+package com.hendraanggrian.openpss.ui.invoice.price
 
 import com.hendraanggrian.openpss.db.schemas.OffsetPrice
 import com.hendraanggrian.openpss.db.schemas.OffsetPrices

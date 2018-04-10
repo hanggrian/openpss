@@ -13,6 +13,7 @@ import com.hendraanggrian.openpss.scene.control.DoubleField
 import com.hendraanggrian.openpss.scene.control.doubleField
 import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.Resourced
+import com.hendraanggrian.openpss.utils.getColor
 import com.hendraanggrian.openpss.utils.getFont
 import javafx.scene.Node
 import javafx.scene.control.ButtonType.CANCEL
@@ -20,10 +21,12 @@ import javafx.scene.control.ChoiceBox
 import javafx.scene.control.Dialog
 import javafx.scene.control.TextField
 import javafx.scene.image.ImageView
+import ktfx.beans.binding.bindingOf
 import ktfx.beans.binding.eq
 import ktfx.beans.binding.greater
 import ktfx.beans.binding.lessEq
 import ktfx.beans.binding.or
+import ktfx.beans.binding.stringBindingOf
 import ktfx.collections.toObservableList
 import ktfx.coroutines.listener
 import ktfx.coroutines.onAction
@@ -66,12 +69,25 @@ class AddPaymentDialog(controller: Controller, invoice: Invoice) : Dialog<Paymen
                 tooltip(getString(R.string.match_remaining))
                 onAction { valueField.value = remaining }
             } row 2 col 2
-            label(getString(R.string.payment_method)) row 3 col 0
+            label(getString(R.string.remaining)) row 3 col 0
+            label {
+                font = getFont(R.font.opensans_bold)
+                textProperty().bind(stringBindingOf(valueField.valueProperty) {
+                    currencyConverter.toString(remaining - valueField.value)
+                })
+                textFillProperty().bind(bindingOf(valueField.valueProperty) {
+                    getColor(when {
+                        remaining - valueField.value == 0.0 -> R.color.teal
+                        else -> R.color.red
+                    })
+                })
+            } row 3 col 1 colSpans 2
+            label(getString(R.string.payment_method)) row 6 col 0
             methodChoice = choiceBox(values().toObservableList()) {
                 converter { toString { it!!.getDisplayText(this@AddPaymentDialog) } }
-            } row 3 col 1 colSpans 2
-            label(getString(R.string.transfer_reference)) { bindDisable() } row 4 col 0
-            transferField = textField { bindDisable() } row 4 col 1 colSpans 2
+            } row 6 col 1 colSpans 2
+            label(getString(R.string.transfer_reference)) { bindDisable() } row 7 col 0
+            transferField = textField { bindDisable() } row 7 col 1 colSpans 2
         }
         valueField.requestFocus()
         cancelButton()

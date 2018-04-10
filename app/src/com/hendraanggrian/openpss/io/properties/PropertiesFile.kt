@@ -21,7 +21,7 @@ abstract class PropertiesFile(
     private val map: MutableMap<String, StringProperty> = mutableMapOf()
 ) : File(MainFolder, ".$name"), MutableMap<String, StringProperty> by map {
 
-    abstract val pairs: Array<Pair<String, String>>
+    abstract val pairs: Array<Pair<String, Any>>
 
     /** Properties reference to get, set, and finally save into this file. */
     private val properties = Properties()
@@ -30,7 +30,7 @@ abstract class PropertiesFile(
         if (!exists()) createNewFile()
         inputStream().use { properties.load(it) }
         pairs.forEach { (key, value) ->
-            val valueProperty = properties.getProperty(key, value).toProperty()
+            val valueProperty = properties.getProperty(key, value.toString()).toProperty()
             valueProperty.listener { _, _, newValue -> properties.setProperty(key, newValue) }
             map[key] = valueProperty
         }

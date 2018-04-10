@@ -5,8 +5,7 @@ import com.hendraanggrian.openpss.BuildConfig.APP_NAME
 import com.hendraanggrian.openpss.BuildConfig.DEBUG
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.db.login
-import com.hendraanggrian.openpss.io.properties.ConfigFile
-import com.hendraanggrian.openpss.io.properties.MongoFile
+import com.hendraanggrian.openpss.io.properties.LoginFile
 import com.hendraanggrian.openpss.scene.control.HostField
 import com.hendraanggrian.openpss.scene.control.IntField
 import com.hendraanggrian.openpss.scene.control.hostField
@@ -72,11 +71,11 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced 
             label(getString(R.string.language)) col 0 row 0
             choiceBox(App.supportedLocales) {
                 maxWidth = Double.MAX_VALUE
-                selectionModel.select(Locale(ConfigFile.language.value))
+                selectionModel.select(Locale(LoginFile.language.value))
                 converter { toString { it!!.getDisplayLanguage(it) } }
                 valueProperty().listener(CommonPool) { _, _, locale ->
-                    ConfigFile.language.set(locale.language)
-                    ConfigFile.save()
+                    LoginFile.language.set(locale.language)
+                    LoginFile.save()
                     launch(FX) {
                         close()
                         later { infoAlert(getString(R.string.please_restart)).showAndWait().ifPresent { exit() } }
@@ -86,7 +85,7 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced 
             label(getString(R.string.employee)) col 0 row 1
             employeeField = textField {
                 promptText = getString(R.string.employee)
-                textProperty().bindBidirectional(ConfigFile.employee)
+                textProperty().bindBidirectional(LoginFile.employee)
             } col 1 row 1 colSpans 2
             label(getString(R.string.password)) col 0 row 2
             anchorPane {
@@ -115,23 +114,23 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced 
             serverHostField = hostField {
                 promptText = getString(R.string.ip_address)
                 prefWidth = 128.0
-                textProperty().bindBidirectional(MongoFile.host)
+                textProperty().bindBidirectional(LoginFile.host)
             } col 1 row 0
             serverPortField = intField {
                 promptText = getString(R.string.port)
                 prefWidth = 64.0
-                textProperty().bindBidirectional(MongoFile.port)
+                textProperty().bindBidirectional(LoginFile.port)
                 if (value == 0) text = defaultPort().toString()
             } col 2 row 0
             label(getString(R.string.server_user)) col 0 row 1
             serverUserField = textField {
                 promptText = getString(R.string.server_user)
-                textProperty().bindBidirectional(MongoFile.user)
+                textProperty().bindBidirectional(LoginFile.user)
             } col 1 row 1 colSpans 2
             label(getString(R.string.server_password)) col 0 row 2
             serverPasswordField = passwordField {
                 promptText = getString(R.string.server_password)
-                textProperty().bindBidirectional(MongoFile.password)
+                textProperty().bindBidirectional(LoginFile.password)
             } col 1 row 2 colSpans 2
             hbox {
                 alignment = CENTER_RIGHT
@@ -149,8 +148,7 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced 
                 or serverUserField.textProperty().isEmpty
                 or serverPasswordField.textProperty().isEmpty)
             onActionFilter(CommonPool) {
-                ConfigFile.save()
-                MongoFile.save()
+                LoginFile.save()
                 try {
                     val employee = login(
                         serverHostField.text,
@@ -171,7 +169,7 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced 
         }
         later {
             if (employeeField.text.isBlank()) employeeField.requestFocus() else passwordField1.requestFocus()
-            dialogPane.isExpanded = !MongoFile.isValid()
+            dialogPane.isExpanded = !LoginFile.isMongoValid()
             if (DEBUG) passwordField1.text = "Test"
         }
     }

@@ -1,4 +1,4 @@
-package com.hendraanggrian.openpss.ui.invoice
+package com.hendraanggrian.openpss.ui.invoice.price
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.collections.isNotEmpty

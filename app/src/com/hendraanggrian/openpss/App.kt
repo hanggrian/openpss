@@ -5,7 +5,7 @@ import com.hendraanggrian.openpss.BuildConfig.DEBUG
 import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.db.schemas.Employees
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.io.properties.ConfigFile
+import com.hendraanggrian.openpss.io.properties.LoginFile
 import com.hendraanggrian.openpss.ui.Resourced
 import com.hendraanggrian.openpss.ui.controller
 import com.hendraanggrian.openpss.ui.main.LoginDialog
@@ -42,7 +42,7 @@ class App : Application(), Resourced {
 
     override fun init() {
         if (DEBUG) configure()
-        resources = getBundle("string", Locale(ConfigFile.language.value))
+        resources = getBundle("string", Locale(LoginFile.language.value))
     }
 
     override fun start(stage: Stage) {

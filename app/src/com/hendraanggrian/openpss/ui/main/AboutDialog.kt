@@ -1,5 +1,6 @@
 package com.hendraanggrian.openpss.ui.main
 
+import com.hendraanggrian.openpss.BuildConfig.FULL_NAME
 import com.hendraanggrian.openpss.BuildConfig.VERSION
 import com.hendraanggrian.openpss.BuildConfig.WEBSITE
 import com.hendraanggrian.openpss.R
@@ -46,8 +47,8 @@ class AboutDialog(resourced: Resourced) : Dialog<Unit>(), Resourced by resourced
             vbox {
                 alignment = CENTER_LEFT
                 textFlow {
-                    "Open " { font = getFont(R.font.opensans_bold, 24) }
-                    "Printing Sales System" { font = getFont(R.font.opensans_light, 24) }
+                    "${FULL_NAME.substringBefore(' ')} " { font = getFont(R.font.opensans_bold, 24) }
+                    (FULL_NAME.substringAfter(' ')) { font = getFont(R.font.opensans_light, 24) }
                 }
                 text("${getString(R.string.version)} $VERSION") {
                     font = getFont(R.font.opensans_regular, 12)

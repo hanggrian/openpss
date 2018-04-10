@@ -76,6 +76,7 @@ tasks {
     withType<BuildConfigTask> {
         appName = RELEASE_NAME
         debug = RELEASE_DEBUG
+        field("FULL_NAME", RELEASE_FULL_NAME)
         field("ARTIFACT", RELEASE_ARTIFACT)
         field("WEBSITE", RELEASE_WEBSITE)
     }

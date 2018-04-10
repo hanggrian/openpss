@@ -18,6 +18,7 @@ import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.SeeInvoiceDialog
 import com.hendraanggrian.openpss.utils.currencyCell
 import com.hendraanggrian.openpss.utils.getFont
+import com.hendraanggrian.openpss.utils.isDoubleClick
 import com.hendraanggrian.openpss.utils.stringCell
 import javafx.fxml.FXML
 import javafx.scene.control.Button
@@ -27,6 +28,9 @@ import javafx.scene.control.TableView
 import ktfx.beans.binding.stringBindingOf
 import ktfx.collections.toMutableObservableList
 import ktfx.coroutines.listener
+import ktfx.coroutines.onAction
+import ktfx.coroutines.onMouseClicked
+import ktfx.layouts.contextMenu
 import java.net.URL
 import java.util.ResourceBundle
 
@@ -41,7 +45,7 @@ class PaymentController : Controller(), Refreshable {
     @FXML lateinit var totalAllLabel1: Label
     @FXML lateinit var totalAllLabel2: Label
     @FXML lateinit var paymentTable: TableView<Payment>
-    @FXML lateinit var idColumn: TableColumn<Payment, String>
+    @FXML lateinit var noColumn: TableColumn<Payment, String>
     @FXML lateinit var timeColumn: TableColumn<Payment, String>
     @FXML lateinit var employeeColumn: TableColumn<Payment, String>
     @FXML lateinit var valueColumn: TableColumn<Payment, String>
@@ -61,7 +65,9 @@ class PaymentController : Controller(), Refreshable {
                 currencyConverter.toString(currencyConverter.fromString(totalCashLabel2.text).toDouble() +
                     currencyConverter.fromString(totalTransferLabel2.text).toDouble())
             })
-        idColumn.stringCell { id }
+        paymentTable.onMouseClicked { if (it.isDoubleClick()) seeInvoice() }
+        paymentTable.contextMenu { onAction { (getString(R.string.see_invoice)) { seeInvoice() } } }
+        noColumn.stringCell { id }
         timeColumn.stringCell { dateTime.toString(PATTERN_TIME) }
         employeeColumn.stringCell { transaction { findById(Employees, employeeId).single() }!! }
         valueColumn.currencyCell { value }

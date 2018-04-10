@@ -31,7 +31,6 @@ import javafx.scene.layout.CornerRadii
 import javafx.scene.layout.Priority.ALWAYS
 import javafx.scene.layout.Region
 import javafx.scene.paint.Color.WHITE
-import javafx.scene.shape.Line
 import javafx.stage.Modality.NONE
 import ktfx.layouts.LayoutManager
 import ktfx.layouts.gridPane
@@ -70,26 +69,27 @@ class SeeInvoiceDialog(resourced: Resourced, invoice: Invoice) : Dialog<Unit>(),
             maxWidth()
             alignment = CENTER
             background = Background(BackgroundFill(WHITE, CornerRadii.EMPTY, Insets.EMPTY))
-            optionalLabel(invoiceTitle, R.font.opensans_bold)
-            optionalLabel(invoiceSubtitle1, R.font.opensans_regular)
-            optionalLabel(invoiceSubtitle2, R.font.opensans_regular)
-            optionalLabel(invoiceSubtitle3, R.font.opensans_regular)
-            straightLine()
+            if (invoiceTitle.isNotBlank()) boldLabel(invoiceTitle)
+            if (invoiceSubtitle1.isNotBlank()) regularLabel(invoiceSubtitle1)
+            if (invoiceSubtitle2.isNotBlank()) regularLabel(invoiceSubtitle2)
+            if (invoiceSubtitle3.isNotBlank()) regularLabel(invoiceSubtitle3)
+            line(endX = MAX_WIDTH)
             vbox {
                 alignment = CENTER
-                boldLabel(invoice.id.toString())
                 regularLabel(invoice.dateTime.toString(PATTERN_DATETIME_EXTENDED))
                 gridPane {
                     maxWidth()
                     hgap = 8.0
-                    regularLabel(getString(R.string.customer)) row 0 col 0
-                    boldLabel(customer.name) row 0 col 1
-                    regularLabel(customer.id.toString()) row 1 col 1
+                    regularLabel(getString(R.string.id)) row 0 col 0
+                    boldLabel(invoice.no.toString()) row 0 col 1
+                    regularLabel(getString(R.string.customer)) row 1 col 0
+                    boldLabel(customer.name) row 1 col 1
+                    regularLabel(customer.id.toString()) row 2 col 1
                 }
             }
             invoice.plates.run {
                 if (isNotEmpty()) {
-                    straightLine()
+                    line(endX = MAX_WIDTH)
                     vbox {
                         maxWidth()
                         boldLabel(getString(R.string.plate))
@@ -108,7 +108,7 @@ class SeeInvoiceDialog(resourced: Resourced, invoice: Invoice) : Dialog<Unit>(),
             }
             invoice.offsets.run {
                 if (isNotEmpty()) {
-                    straightLine()
+                    line(endX = MAX_WIDTH)
                     vbox {
                         maxWidth()
                         boldLabel(getString(R.string.offset))
@@ -126,7 +126,7 @@ class SeeInvoiceDialog(resourced: Resourced, invoice: Invoice) : Dialog<Unit>(),
             }
             invoice.others.run {
                 if (isNotEmpty()) {
-                    straightLine()
+                    line(endX = MAX_WIDTH)
                     vbox {
                         maxWidth()
                         boldLabel(getString(R.string.others))
@@ -143,14 +143,14 @@ class SeeInvoiceDialog(resourced: Resourced, invoice: Invoice) : Dialog<Unit>(),
                     }
                 }
             }
-            straightLine()
+            line(endX = MAX_WIDTH)
             hbox {
                 maxWidth()
                 alignment = CENTER_RIGHT
                 boldLabel("${getString(R.string.total)} ${currencyConverter.toString(invoice.total)}")
             }
             if (invoice.note.isNotBlank()) {
-                straightLine()
+                line(endX = MAX_WIDTH)
                 vbox {
                     maxWidth()
                     boldLabel(getString(R.string.note))
@@ -191,12 +191,6 @@ class SeeInvoiceDialog(resourced: Resourced, invoice: Invoice) : Dialog<Unit>(),
         private fun Region.halfWidth() {
             minWidth = MAX_WIDTH / 2
             maxWidth = MAX_WIDTH / 2
-        }
-
-        private fun LayoutManager<Node>.straightLine(): Line = line(endX = MAX_WIDTH)
-
-        private fun LayoutManager<Node>.optionalLabel(text: String, fontRes: String) {
-            if (text.isNotBlank()) label(text) { font = getFont(fontRes) }
         }
 
         private fun LayoutManager<Node>.regularLabel(text: String): Label = label(text) {

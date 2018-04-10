@@ -6,6 +6,7 @@ import com.hendraanggrian.openpss.db.Priced
 import com.hendraanggrian.openpss.db.SplitPriced
 import com.hendraanggrian.openpss.db.Totaled
 import com.hendraanggrian.openpss.db.Typed
+import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.ui.DateTimed
 import kotlinx.nosql.Id
 import kotlinx.nosql.ListColumn
@@ -19,6 +20,7 @@ import kotlinx.nosql.string
 import org.joda.time.DateTime
 
 object Invoices : DocumentSchema<Invoice>("invoices", Invoice::class) {
+    val no = integer("no")
     val employeeId = id("employee_id", Employees)
     val customerId = id("customer_id", Customers)
     val dateTime = dateTime("date_time")
@@ -30,17 +32,17 @@ object Invoices : DocumentSchema<Invoice>("invoices", Invoice::class) {
     val printed = boolean("printed")
 
     class PlateColumn : ListColumn<Plate, Invoices>("plates", Plate::class) {
-        val type = string("type")
         val title = string("title")
         val qty = integer("qty")
+        val type = string("type")
         val price = double("price")
         val total = double("total")
     }
 
     class OffsetColumn : ListColumn<Offset, Invoices>("offsets", Offset::class) {
-        val type = string("type")
         val title = string("title")
         val qty = integer("qty")
+        val type = string("type")
         val minQty = integer("min_qty")
         val minPrice = double("min_price")
         val excessPrice = double("excess_price")
@@ -56,6 +58,7 @@ object Invoices : DocumentSchema<Invoice>("invoices", Invoice::class) {
 }
 
 data class Invoice(
+    val no: Int,
     val employeeId: Id<String, Employees>,
     val customerId: Id<String, Customers>,
     override val dateTime: DateTime,
@@ -81,32 +84,34 @@ data class Invoice(
             offsets: List<Offset>,
             others: List<Other>,
             note: String
-        ): Invoice = Invoice(employeeId, customerId, dateTime, plates, offsets, others, note, false, false)
+        ): Invoice = Invoice(
+            transaction { Invoices.find().lastOrNull()?.no ?: 0 }!! + 1,
+            employeeId, customerId, dateTime, plates, offsets, others, note, false, false)
     }
 }
 
 data class Plate(
-    override var type: String,
     override var title: String,
     override var qty: Int,
+    override var type: String,
     override var price: Double,
     override var total: Double
 ) : Typed, Order, Priced {
 
     companion object {
         fun new(
-            type: String,
             title: String,
             qty: Int,
+            type: String,
             price: Double
-        ): Plate = Plate(type, title, qty, price, qty * price)
+        ): Plate = Plate(title, qty, type, price, qty * price)
     }
 }
 
 data class Offset(
-    override var type: String,
     override var title: String,
     override var qty: Int,
+    override var type: String,
     override var minQty: Int,
     override var minPrice: Double,
     override var excessPrice: Double,
@@ -115,16 +120,24 @@ data class Offset(
 
     companion object {
         fun new(
-            type: String,
             title: String,
+            qty: Int,
+            type: String,
+            minQty: Int,
+            minPrice: Double,
+            excessPrice: Double
+        ): Offset = Offset(title, qty, type, minQty, minPrice, excessPrice,
+            calculateTotal(qty, minQty, minPrice, excessPrice))
+
+        fun calculateTotal(
             qty: Int,
             minQty: Int,
             minPrice: Double,
             excessPrice: Double
-        ): Offset = Offset(type, title, qty, minQty, minPrice, excessPrice, when {
+        ): Double = when {
             qty <= minQty -> minPrice
             else -> minPrice + ((qty - minQty) * excessPrice)
-        })
+        }
     }
 }
 
@@ -139,8 +152,7 @@ data class Other(
         fun new(
             title: String,
             qty: Int,
-            price: Double,
-            total: Double = qty * price
-        ): Other = Other(title, qty, price, total)
+            price: Double
+        ): Other = Other(title, qty, price, qty * price)
     }
 }

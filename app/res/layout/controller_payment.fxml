@@ -47,7 +47,7 @@
     </ToolBar>
     <TableView fx:id="paymentTable" VBox.vgrow="ALWAYS">
         <columns>
-            <TableColumn fx:id="idColumn" text="%id"/>
+            <TableColumn fx:id="noColumn" text="%id"/>
             <TableColumn fx:id="timeColumn" text="%time"/>
             <TableColumn fx:id="employeeColumn" text="%employee"/>
             <TableColumn fx:id="valueColumn" text="%value"/>

@@ -24,6 +24,7 @@ import com.hendraanggrian.openpss.ui.pane
 import com.hendraanggrian.openpss.utils.currencyCell
 import com.hendraanggrian.openpss.utils.doneCell
 import com.hendraanggrian.openpss.utils.getResource
+import com.hendraanggrian.openpss.utils.isDoubleClick
 import com.hendraanggrian.openpss.utils.stringCell
 import com.hendraanggrian.openpss.utils.yesNoAlert
 import javafx.beans.property.SimpleObjectProperty
@@ -56,6 +57,7 @@ import ktfx.collections.emptyObservableList
 import ktfx.collections.toMutableObservableList
 import ktfx.collections.toObservableList
 import ktfx.coroutines.onAction
+import ktfx.coroutines.onMouseClicked
 import ktfx.layouts.columns
 import ktfx.layouts.contextMenu
 import ktfx.layouts.separatorMenuItem
@@ -114,7 +116,7 @@ class InvoiceController : Controller(), Refreshable {
                 invoiceTable = tableView {
                     columnResizePolicy = CONSTRAINED_RESIZE_POLICY
                     columns {
-                        getString(R.string.id)<String> { stringCell { id } }
+                        getString(R.string.id)<String> { stringCell { no } }
                         getString(R.string.date)<String> { stringCell { dateTime.toString(PATTERN_DATETIME_EXTENDED) } }
                         getString(R.string.employee)<String> {
                             stringCell { transaction { findById(Employees, employeeId).single() }!! }
@@ -126,9 +128,11 @@ class InvoiceController : Controller(), Refreshable {
                         getString(R.string.paid)<Boolean> { doneCell { paid } }
                         getString(R.string.print)<Boolean> { doneCell { printed } }
                     }
+                    onMouseClicked { if (it.isDoubleClick()) seeInvoice() }
                     contextMenu {
                         (getString(R.string.add)) { onAction { addInvoice() } }
                         separatorMenuItem()
+                        (getString(R.string.see_invoice)) { onAction { seeInvoice() } }
                         (getString(R.string.edit)) {
                             bindDisable()
                             onAction {

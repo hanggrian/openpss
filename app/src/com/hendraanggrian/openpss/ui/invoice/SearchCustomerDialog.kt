@@ -5,13 +5,13 @@ import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.ui.Resourced
+import com.hendraanggrian.openpss.utils.isDoubleClick
 import javafx.scene.control.ButtonType.OK
 import javafx.scene.control.Dialog
 import javafx.scene.control.ListView
 import javafx.scene.control.TextField
 import javafx.scene.image.ImageView
 import javafx.scene.input.KeyCode.ENTER
-import javafx.scene.input.MouseButton.PRIMARY
 import ktfx.application.later
 import ktfx.beans.binding.bindingOf
 import ktfx.collections.toMutableObservableList
@@ -51,7 +51,7 @@ class SearchCustomerDialog(resourced: Resourced) : Dialog<Customer>(), Resourced
                     }
                 })
                 onMouseClicked {
-                    if (selectionModel.selectedItem != null && it.button == PRIMARY && it.clickCount == 2) {
+                    if (selectionModel.selectedItem != null && it.isDoubleClick()) {
                         result = selectionModel.selectedItem
                         close()
                     }

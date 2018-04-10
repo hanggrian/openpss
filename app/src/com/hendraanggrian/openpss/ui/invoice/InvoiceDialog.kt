@@ -16,6 +16,9 @@ import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.time.PATTERN_DATE
 import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.Resourced
+import com.hendraanggrian.openpss.ui.invoice.order.AddOffsetDialog
+import com.hendraanggrian.openpss.ui.invoice.order.AddOtherDialog
+import com.hendraanggrian.openpss.ui.invoice.order.AddPlateDialog
 import com.hendraanggrian.openpss.utils.currencyCell
 import com.hendraanggrian.openpss.utils.getFont
 import com.hendraanggrian.openpss.utils.numberCell
@@ -92,32 +95,35 @@ class InvoiceDialog(
                 textProperty().bind(stringBindingOf(customerProperty) {
                     customerProperty.value?.toString() ?: getString(R.string.search_customer)
                 })
-                setOnAction { SearchCustomerDialog(this@InvoiceDialog).showAndWait().ifPresent { customerProperty.set(it) } }
+                onAction {
+                    SearchCustomerDialog(this@InvoiceDialog).showAndWait().ifPresent { customerProperty.set(it) }
+                }
+                if (!isEdit()) fire()
             } col 1 row 2
             label(getString(R.string.plate)) col 0 row 3
             plateTable = invoiceTableView({ AddPlateDialog(this@InvoiceDialog) }) {
-                column<String>(getString(R.string.type)) { stringCell { type } }
-                column<String>(getString(R.string.title)) { stringCell { title } }
-                column<String>(getString(R.string.qty)) { numberCell { qty } }
-                column<String>(getString(R.string.price)) { currencyCell { price } }
-                column<String>(getString(R.string.total)) { currencyCell { total } }
+                getString(R.string.type)<String> { stringCell { type } }
+                getString(R.string.title)<String> { stringCell { title } }
+                getString(R.string.qty)<String> { numberCell { qty } }
+                getString(R.string.price)<String> { currencyCell { price } }
+                getString(R.string.total)<String> { currencyCell { total } }
             } col 1 row 3
             label(getString(R.string.offset)) col 0 row 4
             offsetTable = invoiceTableView({ AddOffsetDialog(this@InvoiceDialog) }) {
-                column<String>(getString(R.string.type)) { stringCell { type } }
-                column<String>(getString(R.string.title)) { stringCell { title } }
-                column<String>(getString(R.string.qty)) { numberCell { qty } }
-                column<String>(getString(R.string.min_qty)) { numberCell { minQty } }
-                column<String>(getString(R.string.min_price)) { currencyCell { minPrice } }
-                column<String>(getString(R.string.excess_price)) { currencyCell { excessPrice } }
-                column<String>(getString(R.string.total)) { currencyCell { total } }
+                getString(R.string.type)<String> { stringCell { type } }
+                getString(R.string.title)<String> { stringCell { title } }
+                getString(R.string.qty)<String> { numberCell { qty } }
+                getString(R.string.min_qty)<String> { numberCell { minQty } }
+                getString(R.string.min_price)<String> { currencyCell { minPrice } }
+                getString(R.string.excess_price)<String> { currencyCell { excessPrice } }
+                getString(R.string.total)<String> { currencyCell { total } }
             } col 1 row 4
             label(getString(R.string.others)) col 0 row 5
             otherTable = invoiceTableView({ AddOtherDialog(this@InvoiceDialog) }) {
-                column<String>(getString(R.string.title)) { stringCell { title } }
-                column<String>(getString(R.string.qty)) { numberCell { qty } }
-                column<String>(getString(R.string.price)) { currencyCell { price } }
-                column<String>(getString(R.string.total)) { currencyCell { total } }
+                getString(R.string.title)<String> { stringCell { title } }
+                getString(R.string.qty)<String> { numberCell { qty } }
+                getString(R.string.price)<String> { currencyCell { price } }
+                getString(R.string.total)<String> { currencyCell { total } }
             } col 1 row 5
             totalProperty.bind(doubleBindingOf(plateTable.items, offsetTable.items, otherTable.items) {
                 plateTable.items.sumByDouble { it.total } +

@@ -2,11 +2,11 @@ package com.hendraanggrian.openpss.ui.invoice
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.currencyConverter
+import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.db.schemas.Payment
 import com.hendraanggrian.openpss.db.schemas.PaymentMethod
 import com.hendraanggrian.openpss.db.schemas.PaymentMethod.CASH
 import com.hendraanggrian.openpss.db.schemas.PaymentMethod.values
-import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.db.schemas.calculateDue
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.scene.control.DoubleField
@@ -73,6 +73,7 @@ class AddPaymentDialog(controller: Controller, invoice: Invoice) : Dialog<Paymen
             label(getString(R.string.transfer_reference)) { bindDisable() } row 4 col 0
             transferField = textField { bindDisable() } row 4 col 1 colSpans 2
         }
+        valueField.requestFocus()
         cancelButton()
         okButton {
             val binding = !valueField.validProperty or

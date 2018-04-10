@@ -12,7 +12,6 @@ import com.hendraanggrian.openpss.scene.control.hostField
 import com.hendraanggrian.openpss.scene.control.intField
 import com.hendraanggrian.openpss.ui.Resourced
 import com.hendraanggrian.openpss.utils.onActionFilter
-import com.mongodb.ServerAddress.defaultPort
 import javafx.geometry.Pos.CENTER_RIGHT
 import javafx.scene.control.ButtonBar.ButtonData.OK_DONE
 import javafx.scene.control.Dialog
@@ -71,10 +70,10 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced 
             label(getString(R.string.language)) col 0 row 0
             choiceBox(App.supportedLocales) {
                 maxWidth = Double.MAX_VALUE
-                selectionModel.select(Locale(LoginFile.LANGUAGE.value))
+                selectionModel.select(Locale(LoginFile.LANGUAGE))
                 converter { toString { it!!.getDisplayLanguage(it) } }
                 valueProperty().listener(CommonPool) { _, _, locale ->
-                    LoginFile.LANGUAGE.set(locale.language)
+                    LoginFile.LANGUAGE = locale.language
                     LoginFile.save()
                     launch(FX) {
                         close()
@@ -83,9 +82,9 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced 
                 }
             } col 1 row 0 colSpans 2
             label(getString(R.string.employee)) col 0 row 1
-            employeeField = textField {
+            employeeField = textField(LoginFile.EMPLOYEE) {
                 promptText = getString(R.string.employee)
-                textProperty().bindBidirectional(LoginFile.EMPLOYEE)
+                textProperty().listener { _, _, newValue -> LoginFile.EMPLOYEE = newValue }
             } col 1 row 1 colSpans 2
             label(getString(R.string.password)) col 0 row 2
             anchorPane {
@@ -112,25 +111,27 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced 
             gap = 8.0
             label(getString(R.string.server_host_port)) col 0 row 0
             serverHostField = hostField {
+                text = LoginFile.DB_HOST
                 promptText = getString(R.string.ip_address)
                 prefWidth = 128.0
-                textProperty().bindBidirectional(LoginFile.DB_HOST)
+                textProperty().listener { _, _, newValue -> LoginFile.DB_HOST = newValue }
             } col 1 row 0
             serverPortField = intField {
+                value = LoginFile.DB_PORT
                 promptText = getString(R.string.port)
                 prefWidth = 64.0
-                textProperty().bindBidirectional(LoginFile.DB_PORT)
-                if (value == 0) text = defaultPort().toString()
+                valueProperty.listener { _, _, newValue -> LoginFile.DB_PORT = newValue.toInt() }
             } col 2 row 0
             label(getString(R.string.server_user)) col 0 row 1
-            serverUserField = textField {
+            serverUserField = textField(LoginFile.DB_USER) {
                 promptText = getString(R.string.server_user)
-                textProperty().bindBidirectional(LoginFile.DB_USER)
+                textProperty().listener { _, _, newValue -> LoginFile.DB_USER = newValue }
             } col 1 row 1 colSpans 2
             label(getString(R.string.server_password)) col 0 row 2
             serverPasswordField = passwordField {
+                text = LoginFile.DB_PASSWORD
                 promptText = getString(R.string.server_password)
-                textProperty().bindBidirectional(LoginFile.DB_PASSWORD)
+                textProperty().listener { _, _, newValue -> LoginFile.DB_PASSWORD = newValue }
             } col 1 row 2 colSpans 2
             hbox {
                 alignment = CENTER_RIGHT

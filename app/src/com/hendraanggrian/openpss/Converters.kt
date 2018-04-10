@@ -26,8 +26,8 @@ val numberConverter: NumberStringConverter get() = getOrStore { NumberStringConv
 val currencyConverter: CurrencyStringConverter
     get() = getOrStore {
         CurrencyStringConverter(transaction {
-            val language = findGlobalSettings(KEY_CURRENCY_LANGUAGE)
-            val country = findGlobalSettings(KEY_CURRENCY_COUNTRY)
+            val language = findGlobalSettings(KEY_CURRENCY_LANGUAGE).single().value
+            val country = findGlobalSettings(KEY_CURRENCY_COUNTRY).single().value
             when {
                 language.isNotBlank() && country.isNotBlank() -> Locale(language, country)
                 else -> Locale.getDefault()

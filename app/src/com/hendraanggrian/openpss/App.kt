@@ -42,7 +42,7 @@ class App : Application(), Resourced {
 
     override fun init() {
         if (DEBUG) configure()
-        resources = getBundle("string", Locale(LoginFile.LANGUAGE.value))
+        resources = getBundle("string", Locale(LoginFile.LANGUAGE))
     }
 
     override fun start(stage: Stage) {

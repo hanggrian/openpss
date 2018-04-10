@@ -55,10 +55,10 @@ class SeeInvoiceDialog(resourced: Resourced, invoice: Invoice) : Dialog<Unit>(),
 
     init {
         transaction {
-            invoiceTitle = findGlobalSettings(KEY_INVOICE_TITLE)
-            invoiceSubtitle1 = findGlobalSettings(KEY_INVOICE_SUBTITLE1)
-            invoiceSubtitle2 = findGlobalSettings(KEY_INVOICE_SUBTITLE2)
-            invoiceSubtitle3 = findGlobalSettings(KEY_INVOICE_SUBTITLE3)
+            invoiceTitle = findGlobalSettings(KEY_INVOICE_TITLE).single().value
+            invoiceSubtitle1 = findGlobalSettings(KEY_INVOICE_SUBTITLE1).single().value
+            invoiceSubtitle2 = findGlobalSettings(KEY_INVOICE_SUBTITLE2).single().value
+            invoiceSubtitle3 = findGlobalSettings(KEY_INVOICE_SUBTITLE3).single().value
             employee = findById(Employees, invoice.employeeId).single()
             customer = findById(Customers, invoice.customerId).single()
         }

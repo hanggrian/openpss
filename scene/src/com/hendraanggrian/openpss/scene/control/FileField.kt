@@ -19,7 +19,7 @@ import ktfx.layouts.LayoutManager
 import java.io.File
 
 /** Field that display file or directory path. */
-open class FileField(scope: Scope = FILE) : TextField() {
+open class FileField @JvmOverloads constructor(scope: Scope = FILE) : TextField() {
 
     val fileProperty: ObjectProperty<File> = SimpleObjectProperty<File>()
     val file: File by fileProperty

@@ -13,6 +13,7 @@ import com.hendraanggrian.openpss.db.schemas.Offset
 import com.hendraanggrian.openpss.db.schemas.Other
 import com.hendraanggrian.openpss.db.schemas.Plate
 import com.hendraanggrian.openpss.db.transaction
+import com.hendraanggrian.openpss.io.properties.SettingsFile.INVOICE_QUICK_SELECT_CUSTOMER
 import com.hendraanggrian.openpss.time.PATTERN_DATE
 import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.Resourced
@@ -98,7 +99,7 @@ class InvoiceDialog(
                 onAction {
                     SearchCustomerDialog(this@InvoiceDialog).showAndWait().ifPresent { customerProperty.set(it) }
                 }
-                if (!isEdit()) fire()
+                if (INVOICE_QUICK_SELECT_CUSTOMER && !isEdit()) fire()
             } col 1 row 2
             label(getString(R.string.plate)) col 0 row 3
             plateTable = invoiceTableView({ AddPlateDialog(this@InvoiceDialog) }) {

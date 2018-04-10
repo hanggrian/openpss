@@ -1,13 +1,9 @@
 package com.hendraanggrian.openpss.io.properties
 
 import com.hendraanggrian.openpss.io.MainFolder
-import javafx.beans.property.Property
 import kotlinx.coroutines.experimental.async
-import ktfx.beans.property.toProperty
-import ktfx.coroutines.listener
 import java.io.File
 import java.util.Properties
-import java.util.WeakHashMap
 import kotlin.reflect.KProperty
 
 /**
@@ -20,8 +16,7 @@ import kotlin.reflect.KProperty
 abstract class PropertiesFile(name: String) : File(MainFolder, ".$name") {
 
     /** Properties reference to get, set, and finally save into this file. */
-    protected val properties = Properties()
-    protected val cache = WeakHashMap<String, Property<*>>()
+    private val properties = Properties()
 
     init {
         @Suppress("LeakingThis") if (!exists()) createNewFile()
@@ -32,20 +27,18 @@ abstract class PropertiesFile(name: String) : File(MainFolder, ".$name") {
         outputStream().use { properties.store(it, comments) }
     }.await()
 
-    @Suppress("UNCHECKED_CAST")
-    protected inline operator fun <reified T, R : Property<T>> T.getValue(thisRef: Any?, property: KProperty<*>): R {
-        val key = property.name.toLowerCase()
-        var value = cache[key]
-        if (value == null) {
-            val propertyString = properties.getProperty(key, toString())!!
-            value = when (T::class) {
-                String::class -> propertyString.toProperty()
-                Boolean::class -> propertyString.toBoolean().toProperty()
-                else -> propertyString.toProperty()
-            }
-            cache[key] = value
+    protected operator fun <T> T.getValue(thisRef: Any?, property: KProperty<*>): T {
+        val value = properties.getProperty(property.key, toString())!!
+        @Suppress("UNCHECKED_CAST") return when (this) {
+            is Boolean -> value.toBoolean() as T
+            is Int -> value.toInt() as T
+            else -> value as T
         }
-        value.listener { _, _, newValue -> properties.setProperty(key, newValue.toString()) }
-        return value as R
     }
+
+    protected operator fun <T> T.setValue(thisRef: Any?, property: KProperty<*>, value: T) {
+        properties.setProperty(property.key, value.toString())
+    }
+
+    private val KProperty<*>.key: String get() = name.toLowerCase()
 }

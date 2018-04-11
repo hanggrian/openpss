@@ -27,7 +27,7 @@
             <RadioMenuItem mnemonicParsing="false" toggleGroup="$navigateGroup" onAction="#navigate" text="%customer">
                 <graphic>
                     <ImageView pickOnBounds="true" preserveRatio="true">
-                        <Image url="@/image/menu_user.png"/>
+                        <Image url="@/image/menu_customer.png"/>
                     </ImageView>
                 </graphic>
             </RadioMenuItem>
@@ -71,30 +71,55 @@
         </Menu>
     </MenuBar>
     <AnchorPane VBox.vgrow="ALWAYS">
-        <TabPane VBox.vgrow="ALWAYS" fx:id="tabPane" tabClosingPolicy="UNAVAILABLE"
+        <TabPane stylesheets="@../style/tabpane_main.css" fx:id="tabPane" tabClosingPolicy="UNAVAILABLE"
                  AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0"
                  AnchorPane.topAnchor="0">
             <Tab closable="false" text="%customer">
+                <graphic>
+                    <ImageView pickOnBounds="true" preserveRatio="true">
+                        <Image url="@/image/menu_customer.png"/>
+                    </ImageView>
+                </graphic>
                 <!--suppress ALL -->
                 <fx:include fx:id="customer" source="controller_customer.fxml"/>
             </Tab>
             <Tab closable="false" text="%invoice">
+                <graphic>
+                    <ImageView pickOnBounds="true" preserveRatio="true">
+                        <Image url="@/image/menu_invoice.png"/>
+                    </ImageView>
+                </graphic>
                 <!--suppress ALL -->
                 <fx:include fx:id="invoice" source="controller_invoice.fxml"/>
             </Tab>
             <Tab closable="false" text="%payment">
+                <graphic>
+                    <ImageView pickOnBounds="true" preserveRatio="true">
+                        <Image url="@/image/menu_payment.png"/>
+                    </ImageView>
+                </graphic>
                 <!--suppress ALL -->
                 <fx:include fx:id="payment" source="controller_payment.fxml"/>
             </Tab>
             <Tab closable="false" text="%wage">
+                <graphic>
+                    <ImageView pickOnBounds="true" preserveRatio="true">
+                        <Image url="@/image/menu_wage.png"/>
+                    </ImageView>
+                </graphic>
                 <!--suppress ALL -->
                 <fx:include fx:id="wage" source="controller_wage.fxml"/>
             </Tab>
             <Tab closable="false" text="%employee">
+                <graphic>
+                    <ImageView pickOnBounds="true" preserveRatio="true">
+                        <Image url="@/image/menu_employee.png"/>
+                    </ImageView>
+                </graphic>
                 <!--suppress ALL -->
                 <fx:include fx:id="employee" source="controller_employee.fxml"/>
             </Tab>
         </TabPane>
-        <Label fx:id="employeeLabel" AnchorPane.rightAnchor="8" AnchorPane.topAnchor="8"/>
+        <Label fx:id="employeeLabel" AnchorPane.rightAnchor="10" AnchorPane.topAnchor="10"/>
     </AnchorPane>
 </VBox>

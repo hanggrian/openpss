@@ -1,5 +1,6 @@
 package com.hendraanggrian.openpss.ui.main
 
+import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.customer.CustomerController
@@ -7,6 +8,7 @@ import com.hendraanggrian.openpss.ui.employee.EmployeeController
 import com.hendraanggrian.openpss.ui.invoice.InvoiceController
 import com.hendraanggrian.openpss.ui.payment.PaymentController
 import com.hendraanggrian.openpss.ui.wage.WageController
+import com.hendraanggrian.openpss.utils.getFont
 import javafx.event.ActionEvent
 import javafx.fxml.FXML
 import javafx.scene.control.Label
@@ -15,10 +17,10 @@ import javafx.scene.control.MenuBar
 import javafx.scene.control.MenuItem
 import javafx.scene.control.RadioMenuItem
 import javafx.scene.control.TabPane
+import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyCode.C
 import javafx.scene.input.KeyCode.COMMA
 import javafx.scene.input.KeyCode.Q
-import javafx.scene.input.KeyCode.R
 import javafx.scene.input.KeyCode.getKeyCode
 import javafx.scene.input.KeyCombination.SHORTCUT_DOWN
 import ktfx.application.exit
@@ -51,7 +53,7 @@ class MainController : Controller() {
         super.initialize(location, resources)
         menuBar.isUseSystemMenuBar = IS_OS_MAC
         addCustomerItem.accelerator = C + SHORTCUT_DOWN
-        addInvoiceItem.accelerator = R + SHORTCUT_DOWN
+        addInvoiceItem.accelerator = KeyCode.R + SHORTCUT_DOWN
         settingsItem.accelerator = COMMA + SHORTCUT_DOWN
         quitItem.accelerator = Q + SHORTCUT_DOWN
         navigateMenu.items.forEachIndexed { i, item -> item.accelerator = getKeyCode("${i + 1}") + SHORTCUT_DOWN }
@@ -64,6 +66,7 @@ class MainController : Controller() {
 
         later {
             employeeLabel.text = employeeName
+            employeeLabel.font = getFont(R.font.opensans_bold)
             controllers = listOf(customerController, invoiceController, paymentController, wageController,
                 employeeController)
             controllers.forEach {

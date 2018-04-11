@@ -18,7 +18,6 @@ import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.SeeInvoiceDialog
 import com.hendraanggrian.openpss.utils.currencyCell
 import com.hendraanggrian.openpss.utils.getFont
-import com.hendraanggrian.openpss.utils.isDoubleClick
 import com.hendraanggrian.openpss.utils.stringCell
 import javafx.fxml.FXML
 import javafx.scene.control.Button
@@ -31,6 +30,7 @@ import ktfx.coroutines.listener
 import ktfx.coroutines.onAction
 import ktfx.coroutines.onMouseClicked
 import ktfx.layouts.contextMenu
+import ktfx.scene.input.isDoubleClick
 import java.net.URL
 import java.util.ResourceBundle
 

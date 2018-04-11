@@ -9,7 +9,7 @@ import com.hendraanggrian.openpss.ui.controller
 import com.hendraanggrian.openpss.ui.pane
 import com.hendraanggrian.openpss.ui.wage.WageRecordController.Companion.EXTRA_ATTENDEES
 import com.hendraanggrian.openpss.ui.wage.readers.Reader
-import com.hendraanggrian.openpss.utils.get
+import com.hendraanggrian.openpss.ui.get
 import com.hendraanggrian.openpss.utils.getResource
 import com.hendraanggrian.openpss.utils.openFile
 import javafx.fxml.FXML

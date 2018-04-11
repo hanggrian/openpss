@@ -25,6 +25,7 @@ import ktfx.beans.binding.bindingOf
 import ktfx.beans.binding.stringBindingOf
 import ktfx.beans.value.eq
 import ktfx.beans.value.greater
+import ktfx.beans.value.isBlank
 import ktfx.beans.value.lessEq
 import ktfx.beans.value.or
 import ktfx.collections.toObservableList
@@ -65,7 +66,7 @@ class AddPaymentDialog(controller: Controller, invoice: Invoice) : Dialog<Paymen
             } row 1 col 1 colSpans 2
             label(getString(R.string.payment)) row 2 col 0
             valueField = doubleField { promptText = getString(R.string.payment) } row 2 col 1
-            button(graphic = ImageView(R.image.btn_match_remaining)) {
+            button(graphic = ImageView(R.image.btn_match_receivable)) {
                 tooltip(getString(R.string.match_receivable))
                 onAction { valueField.value = receivable }
             } row 2 col 2
@@ -103,7 +104,7 @@ class AddPaymentDialog(controller: Controller, invoice: Invoice) : Dialog<Paymen
             methodChoice.selectionModel.selectedItemProperty().listener { _, _, method ->
                 disableProperty().bind(when (method) {
                     CASH -> binding
-                    else -> binding or transferField.textProperty().isEmpty
+                    else -> binding or transferField.textProperty().isBlank()
                 })
             }
         }

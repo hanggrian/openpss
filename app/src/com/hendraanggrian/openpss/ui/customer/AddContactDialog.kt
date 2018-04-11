@@ -8,6 +8,7 @@ import javafx.scene.control.ChoiceBox
 import javafx.scene.control.Dialog
 import javafx.scene.control.TextField
 import javafx.scene.image.ImageView
+import ktfx.beans.value.isBlank
 import ktfx.beans.value.or
 import ktfx.layouts.choiceBox
 import ktfx.layouts.gridPane
@@ -37,7 +38,7 @@ class AddContactDialog(resourced: Resourced) : Dialog<Contact>(), Resourced by r
         cancelButton()
         okButton {
             disableProperty().bind(typeChoice.valueProperty().isNull or
-                contactField.textProperty().isEmpty)
+                contactField.textProperty().isBlank())
         }
         setResultConverter { if (it == OK) Contact(typeChoice.value, contactField.text) else null }
     }

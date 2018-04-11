@@ -27,7 +27,7 @@
         <Button fx:id="disableRecessButton" mnemonicParsing="false" onAction="#disableRecess" text="%disable_recess">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/toolbar_recess_off.png"/>
+                    <Image url="@/image/toolbar_recess_disable.png"/>
                 </ImageView>
             </graphic>
         </Button>

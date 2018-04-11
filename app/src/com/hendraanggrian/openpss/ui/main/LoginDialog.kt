@@ -11,7 +11,7 @@ import com.hendraanggrian.openpss.scene.control.IntField
 import com.hendraanggrian.openpss.scene.control.hostField
 import com.hendraanggrian.openpss.scene.control.intField
 import com.hendraanggrian.openpss.ui.Resourced
-import com.hendraanggrian.openpss.utils.onActionFilter
+import com.hendraanggrian.openpss.ui.onActionFilter
 import javafx.geometry.Pos.CENTER_RIGHT
 import javafx.scene.control.ButtonBar.ButtonData.OK_DONE
 import javafx.scene.control.Dialog
@@ -26,6 +26,7 @@ import ktfx.application.later
 import ktfx.beans.binding.`when`
 import ktfx.beans.binding.otherwise
 import ktfx.beans.binding.then
+import ktfx.beans.value.isBlank
 import ktfx.beans.value.or
 import ktfx.coroutines.FX
 import ktfx.coroutines.listener
@@ -99,7 +100,7 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced 
                 tooltip(getString(R.string.see_password))
                 graphic = ktfx.layouts.imageView {
                     imageProperty().bind(`when`(this@toggleButton.selectedProperty())
-                        then Image(R.image.btn_visibility) otherwise Image(R.image.btn_visibility_off))
+                        then Image(R.image.btn_visibility_on) otherwise Image(R.image.btn_visibility_off))
                 }
                 selectedProperty().listener { _, _, selected ->
                     passwordField1.isVisible = !selected
@@ -142,12 +143,12 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced 
         }
         cancelButton()
         button(getString(R.string.login), OK_DONE) {
-            disableProperty().bind(employeeField.textProperty().isEmpty
-                or passwordField1.textProperty().isEmpty
+            disableProperty().bind(employeeField.textProperty().isBlank()
+                or passwordField1.textProperty().isBlank()
                 or !serverHostField.validProperty
-                or serverPortField.textProperty().isEmpty
-                or serverUserField.textProperty().isEmpty
-                or serverPasswordField.textProperty().isEmpty)
+                or serverPortField.textProperty().isBlank()
+                or serverUserField.textProperty().isBlank()
+                or serverPasswordField.textProperty().isBlank())
             onActionFilter(CommonPool) {
                 LoginFile.save()
                 try {

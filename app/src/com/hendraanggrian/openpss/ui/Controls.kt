@@ -1,6 +1,6 @@
 @file:Suppress("NOTHING_TO_INLINE")
 
-package com.hendraanggrian.openpss.utils
+package com.hendraanggrian.openpss.ui
 
 import javafx.event.ActionEvent.ACTION
 import javafx.scene.Node

@@ -11,7 +11,7 @@ import com.hendraanggrian.openpss.io.properties.SettingsFile.INVOICE_QUICK_SELEC
 import com.hendraanggrian.openpss.ui.Resourced
 import com.hendraanggrian.openpss.utils.getColor
 import com.hendraanggrian.openpss.utils.getFont
-import com.hendraanggrian.openpss.utils.onActionFilter
+import com.hendraanggrian.openpss.ui.onActionFilter
 import javafx.geometry.Pos.CENTER
 import javafx.scene.control.Dialog
 import javafx.scene.control.TextArea

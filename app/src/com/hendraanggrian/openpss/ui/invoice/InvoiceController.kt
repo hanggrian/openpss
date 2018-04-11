@@ -24,9 +24,8 @@ import com.hendraanggrian.openpss.ui.pane
 import com.hendraanggrian.openpss.utils.currencyCell
 import com.hendraanggrian.openpss.utils.doneCell
 import com.hendraanggrian.openpss.utils.getResource
-import com.hendraanggrian.openpss.utils.isDoubleClick
 import com.hendraanggrian.openpss.utils.stringCell
-import com.hendraanggrian.openpss.utils.yesNoAlert
+import com.hendraanggrian.openpss.ui.yesNoAlert
 import javafx.beans.property.SimpleObjectProperty
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
@@ -62,6 +61,7 @@ import ktfx.layouts.columns
 import ktfx.layouts.contextMenu
 import ktfx.layouts.separatorMenuItem
 import ktfx.layouts.tableView
+import ktfx.scene.input.isDoubleClick
 import ktfx.stage.stage
 import java.net.URL
 import java.util.ResourceBundle

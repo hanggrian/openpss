@@ -9,6 +9,7 @@ import com.hendraanggrian.openpss.ui.Resourced
 import javafx.beans.value.ObservableBooleanValue
 import javafx.beans.value.ObservableStringValue
 import ktfx.beans.binding.stringBindingOf
+import ktfx.beans.value.isBlank
 import ktfx.beans.value.lessEq
 import ktfx.beans.value.or
 import ktfx.layouts._GridPane
@@ -31,7 +32,7 @@ class AddOtherDialog(resourced: Resourced) : AddOrderDialog<Other>(
         }
 
     override val disableBinding: ObservableBooleanValue
-        get() = titleField.textProperty().isEmpty or
+        get() = titleField.textProperty().isBlank() or
             qtyField.valueProperty.lessEq(0) or
             priceField.valueProperty.lessEq(0)
 

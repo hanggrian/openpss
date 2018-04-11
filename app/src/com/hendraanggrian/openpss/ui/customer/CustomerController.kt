@@ -15,7 +15,7 @@ import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.utils.getFont
 import com.hendraanggrian.openpss.utils.stringCell
-import com.hendraanggrian.openpss.utils.yesNoAlert
+import com.hendraanggrian.openpss.ui.yesNoAlert
 import javafx.fxml.FXML
 import javafx.scene.Node
 import javafx.scene.control.Button
@@ -67,7 +67,7 @@ class CustomerController : Controller(), Refreshable {
     private val noteLabelGraphic = button(graphic = ImageView(R.image.btn_edit)) {
         maxSize = 24.0
         onAction {
-            inputDialog(getString(R.string.edit_customer), ImageView(R.image.ic_user), customer!!.note) {
+            inputDialog(getString(R.string.edit_customer), ImageView(R.image.ic_customer), customer!!.note) {
                 contentText = getString(R.string.note)
             }.showAndWait().ifPresent { note ->
                 transaction {
@@ -139,7 +139,7 @@ class CustomerController : Controller(), Refreshable {
             }
         })
 
-    @FXML fun addCustomer() = AddUserDialog(this, getString(R.string.add_customer)).showAndWait().ifPresent {
+    @FXML fun addCustomer() = AddUserDialog(this, R.string.add_customer, R.image.ic_customer).showAndWait().ifPresent {
         transaction {
             when {
                 Customers.find { name.equal(it) }.isNotEmpty() ->

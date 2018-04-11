@@ -1,0 +1,7 @@
+.tab-pane > .tab-header-area > .headers-region > .tab {
+    -fx-padding: 4px 8px 4px 8px;
+}
+
+.tab-pane > .tab-header-area > .headers-region > .tab:selected .focus-indicator {
+    -fx-border-width: 0px;
+}

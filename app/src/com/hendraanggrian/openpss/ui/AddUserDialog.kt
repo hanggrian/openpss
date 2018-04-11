@@ -10,11 +10,15 @@ import ktfx.scene.control.errorAlert
 import ktfx.scene.control.graphicIcon
 import ktfx.scene.control.headerTitle
 
-class AddUserDialog(resourced: Resourced, header: String) : TextInputDialog(), Resourced by resourced {
+class AddUserDialog(
+    resourced: Resourced,
+    headerId: String,
+    graphicId: String
+) : TextInputDialog(), Resourced by resourced {
 
     init {
-        headerTitle = header
-        graphicIcon = ImageView(R.image.ic_user)
+        headerTitle = getString(headerId)
+        graphicIcon = ImageView(graphicId)
         contentText = getString(R.string.name)
         setResultConverter {
             when {

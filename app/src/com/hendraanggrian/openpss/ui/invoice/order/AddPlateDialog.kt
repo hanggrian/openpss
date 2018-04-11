@@ -13,6 +13,7 @@ import javafx.beans.value.ObservableBooleanValue
 import javafx.beans.value.ObservableStringValue
 import javafx.scene.control.ChoiceBox
 import ktfx.beans.binding.stringBindingOf
+import ktfx.beans.value.isBlank
 import ktfx.beans.value.lessEq
 import ktfx.beans.value.or
 import ktfx.collections.toObservableList
@@ -47,7 +48,7 @@ class AddPlateDialog(resourced: Resourced) : AddOrderDialog<Plate>(
 
     override val disableBinding: ObservableBooleanValue
         get() = typeChoice.valueProperty().isNull or
-            titleField.textProperty().isEmpty or
+            titleField.textProperty().isBlank() or
             qtyField.valueProperty.lessEq(0) or
             priceField.valueProperty.lessEq(0)
 

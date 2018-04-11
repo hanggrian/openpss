@@ -15,6 +15,7 @@ import javafx.beans.value.ObservableBooleanValue
 import javafx.beans.value.ObservableStringValue
 import javafx.scene.control.ChoiceBox
 import ktfx.beans.binding.stringBindingOf
+import ktfx.beans.value.isBlank
 import ktfx.beans.value.lessEq
 import ktfx.beans.value.or
 import ktfx.collections.toObservableList
@@ -59,7 +60,7 @@ class AddOffsetDialog(resourced: Resourced) : AddOrderDialog<Offset>(
 
     override val disableBinding: ObservableBooleanValue
         get() = typeChoice.valueProperty().isNull or
-            titleField.textProperty().isEmpty or
+            titleField.textProperty().isBlank() or
             qtyField.valueProperty.lessEq(0) or
             minQtyField.valueProperty.lessEq(0) or
             minPriceField.valueProperty.lessEq(0) or

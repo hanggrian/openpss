@@ -3,49 +3,52 @@ package com.hendraanggrian.openpss.ui.main
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_CURRENCY_COUNTRY
 import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_CURRENCY_LANGUAGE
-import com.hendraanggrian.openpss.db.schemas.GlobalSettings
+import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_INVOICE_HEADERS
 import com.hendraanggrian.openpss.db.schemas.findGlobalSettings
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.io.properties.SettingsFile
+import com.hendraanggrian.openpss.io.properties.SettingsFile.INVOICE_QUICK_SELECT_CUSTOMER
 import com.hendraanggrian.openpss.ui.Resourced
+import com.hendraanggrian.openpss.utils.getColor
 import com.hendraanggrian.openpss.utils.getFont
 import com.hendraanggrian.openpss.utils.onActionFilter
-import com.hendraanggrian.openpss.utils.stringCell
 import javafx.geometry.Pos.CENTER
-import javafx.scene.control.CheckBox
 import javafx.scene.control.Dialog
-import javafx.scene.control.TableView.CONSTRAINED_RESIZE_POLICY
+import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
 import javafx.scene.image.ImageView
-import kotlinx.nosql.equal
 import kotlinx.nosql.update
 import ktfx.beans.binding.and
+import ktfx.beans.binding.bindingOf
+import ktfx.beans.binding.stringBindingOf
 import ktfx.beans.property.toProperty
-import ktfx.collections.toObservableList
 import ktfx.coroutines.listener
-import ktfx.coroutines.onEditCommit
 import ktfx.layouts.checkBox
-import ktfx.layouts.columns
 import ktfx.layouts.gridPane
 import ktfx.layouts.label
-import ktfx.layouts.tableView
+import ktfx.layouts.textArea
 import ktfx.layouts.textField
 import ktfx.layouts.vbox
 import ktfx.scene.control.cancelButton
 import ktfx.scene.control.graphicIcon
 import ktfx.scene.control.headerTitle
 import ktfx.scene.control.okButton
-import ktfx.scene.control.textFieldCellFactory
 import ktfx.scene.layout.gap
+import java.util.Currency
+import java.util.Locale
 
 class SettingsDialog(resourced: Resourced, showGlobalSettings: Boolean) : Dialog<Unit>(), Resourced by resourced {
 
-    private var isLocalChanged = false.toProperty()
-    private lateinit var invoiceCheck: CheckBox
+    private companion object {
+        const val CURRENCY_INVALID = "-"
+        const val INVOICE_HEADERS_DIVIDER = "|"
+    }
 
+    private var isLocalChanged = false.toProperty()
     private var isGlobalChanged = false.toProperty()
     private lateinit var languageField: TextField
     private lateinit var countryField: TextField
+    private lateinit var invoiceHeadersArea: TextArea
 
     init {
         headerTitle = getString(R.string.settings)
@@ -54,29 +57,11 @@ class SettingsDialog(resourced: Resourced, showGlobalSettings: Boolean) : Dialog
             spacing = 8.0
             label(getString(R.string.local_settings)) { font = getFont(R.font.opensans_bold, 16) }
             label(getString(R.string.invoice)) { font = getFont(R.font.opensans_bold) }
-            invoiceCheck = checkBox(getString(R.string.quick_select_customer_when_adding_invoice)) {
-                isSelected = SettingsFile.INVOICE_QUICK_SELECT_CUSTOMER
-                selectedProperty().listener { isLocalChanged.set(true) }
-            }
-        }
-        if (showGlobalSettings) dialogPane.expandableContent = vbox {
-            tableView(transaction { GlobalSettings.find().toObservableList() }!!) {
-                prefWidth = 480.0
-                isEditable = true
-                columnResizePolicy = CONSTRAINED_RESIZE_POLICY
-                columns {
-                    getString(R.string.key)<String> { stringCell { transaction { key }!! } }
-                    getString(R.string.value)<String> {
-                        stringCell { transaction { value }!! }
-                        textFieldCellFactory()
-                        onEditCommit {
-                            transaction {
-                                GlobalSettings.find { key.equal(it.rowValue.key) }.projection { value }
-                                    .update(it.newValue)
-                                it.rowValue.value = it.newValue
-                            }
-                        }
-                    }
+            checkBox(getString(R.string.quick_select_customer_when_adding_invoice)) {
+                isSelected = INVOICE_QUICK_SELECT_CUSTOMER
+                selectedProperty().listener { _, _, value ->
+                    isLocalChanged.set(true)
+                    INVOICE_QUICK_SELECT_CUSTOMER = value
                 }
             }
         }
@@ -86,7 +71,7 @@ class SettingsDialog(resourced: Resourced, showGlobalSettings: Boolean) : Dialog
             gridPane {
                 gap = 8.0
                 transaction {
-                    label("Currency") row 0 col 0
+                    label(R.string.currency) row 0 col 0
                     languageField = textField(findGlobalSettings(KEY_CURRENCY_LANGUAGE).single().value) {
                         promptText = "xx"
                         maxWidth = 48.0
@@ -99,11 +84,30 @@ class SettingsDialog(resourced: Resourced, showGlobalSettings: Boolean) : Dialog
                         alignment = CENTER
                         textProperty().listener { isGlobalChanged.set(true) }
                     } row 0 col 2
-                    label("Invoice header") row 1 col 0
-                    textField() row 1 col 1 colSpans 2
-                    textField() row 2 col 1 colSpans 2
-                    textField() row 3 col 1 colSpans 2
-                    textField() row 4 col 1 colSpans 2
+                    label {
+                        font = getFont(R.font.opensans_bold)
+                        textProperty().bind(stringBindingOf(languageField.textProperty(), countryField.textProperty()) {
+                            try {
+                                Currency.getInstance(Locale(languageField.text, countryField.text)).symbol
+                            } catch (e: Exception) {
+                                CURRENCY_INVALID
+                            }
+                        })
+                        textFillProperty().bind(bindingOf(textProperty()) {
+                            getColor(if (text == CURRENCY_INVALID) R.color.red else R.color.teal)
+                        })
+                    } row 0 col 3
+                    label(R.string.invoice_headers) row 1 col 0
+                    invoiceHeadersArea = textArea(findGlobalSettings(KEY_INVOICE_HEADERS).single().valueList
+                        .joinToString("\n").trim()) {
+                        maxHeight = 64.0
+                        textProperty().listener { _, oldValue, value ->
+                            when (INVOICE_HEADERS_DIVIDER) {
+                                in value -> text = oldValue
+                                else -> isGlobalChanged.set(true)
+                            }
+                        }
+                    } row 1 col 1 colSpans 3
                 }
             }
         }
@@ -111,13 +115,12 @@ class SettingsDialog(resourced: Resourced, showGlobalSettings: Boolean) : Dialog
         okButton {
             disableProperty().bind(!isLocalChanged and !isGlobalChanged)
             onActionFilter {
-                if (isLocalChanged.value) SettingsFile.run {
-                    INVOICE_QUICK_SELECT_CUSTOMER = invoiceCheck.isSelected
-                    save()
-                }
+                if (isLocalChanged.value) SettingsFile.save()
                 if (isGlobalChanged.value) transaction {
                     findGlobalSettings(KEY_CURRENCY_LANGUAGE).projection { value }.update(languageField.text)
                     findGlobalSettings(KEY_CURRENCY_COUNTRY).projection { value }.update(countryField.text)
+                    findGlobalSettings(KEY_INVOICE_HEADERS).projection { value }
+                        .update(invoiceHeadersArea.text.trim().replace("\n", "|"))
                 }
                 close()
             }

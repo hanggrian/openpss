@@ -40,5 +40,5 @@ abstract class PropertiesFile(name: String) : File(MainFolder, ".$name") {
         properties.setProperty(property.key, value.toString())
     }
 
-    private val KProperty<*>.key: String get() = name.toLowerCase()
+    private inline val KProperty<*>.key: String get() = name.toLowerCase()
 }

@@ -7,10 +7,7 @@ import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.db.schemas.Employees
-import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_INVOICE_SUBTITLE1
-import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_INVOICE_SUBTITLE2
-import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_INVOICE_SUBTITLE3
-import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_INVOICE_TITLE
+import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_INVOICE_HEADERS
 import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.db.schemas.findGlobalSettings
 import com.hendraanggrian.openpss.db.transaction
@@ -46,19 +43,13 @@ import ktfx.scene.control.headerTitle
 
 class SeeInvoiceDialog(resourced: Resourced, invoice: Invoice) : Dialog<Unit>(), Resourced by resourced {
 
-    private lateinit var invoiceTitle: String
-    private lateinit var invoiceSubtitle1: String
-    private lateinit var invoiceSubtitle2: String
-    private lateinit var invoiceSubtitle3: String
+    private lateinit var invoiceHeaders: List<String>
     private lateinit var customer: Customer
     private lateinit var employee: Employee
 
     init {
         transaction {
-            invoiceTitle = findGlobalSettings(KEY_INVOICE_TITLE).single().value
-            invoiceSubtitle1 = findGlobalSettings(KEY_INVOICE_SUBTITLE1).single().value
-            invoiceSubtitle2 = findGlobalSettings(KEY_INVOICE_SUBTITLE2).single().value
-            invoiceSubtitle3 = findGlobalSettings(KEY_INVOICE_SUBTITLE3).single().value
+            invoiceHeaders = findGlobalSettings(KEY_INVOICE_HEADERS).single().valueList
             employee = findById(Employees, invoice.employeeId).single()
             customer = findById(Customers, invoice.customerId).single()
         }
@@ -69,10 +60,12 @@ class SeeInvoiceDialog(resourced: Resourced, invoice: Invoice) : Dialog<Unit>(),
             maxWidth()
             alignment = CENTER
             background = Background(BackgroundFill(WHITE, CornerRadii.EMPTY, Insets.EMPTY))
-            if (invoiceTitle.isNotBlank()) boldLabel(invoiceTitle)
-            if (invoiceSubtitle1.isNotBlank()) regularLabel(invoiceSubtitle1)
-            if (invoiceSubtitle2.isNotBlank()) regularLabel(invoiceSubtitle2)
-            if (invoiceSubtitle3.isNotBlank()) regularLabel(invoiceSubtitle3)
+            invoiceHeaders.forEachIndexed { index, s ->
+                when (index) {
+                    0 -> boldLabel(s)
+                    else -> regularLabel(s)
+                }
+            }
             line(endX = MAX_WIDTH)
             vbox {
                 alignment = CENTER

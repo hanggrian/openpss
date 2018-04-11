@@ -48,7 +48,7 @@ class AddPaymentDialog(controller: Controller, invoice: Invoice) : Dialog<Paymen
     private lateinit var valueField: DoubleField
     private lateinit var methodChoice: ChoiceBox<PaymentMethod>
     private lateinit var transferField: TextField
-    private val remaining = transaction { calculateDue(invoice) }!!
+    private val receivable = transaction { calculateDue(invoice) }!!
 
     init {
         headerTitle = getString(R.string.add_payment)
@@ -59,25 +59,30 @@ class AddPaymentDialog(controller: Controller, invoice: Invoice) : Dialog<Paymen
             label(controller.employeeName) {
                 font = getFont(R.font.opensans_bold)
             } row 0 col 1 colSpans 2
-            label(getString(R.string.remaining)) row 1 col 0
-            label(currencyConverter.toString(remaining)) {
+            label(getString(R.string.receivable)) row 1 col 0
+            label(currencyConverter.toString(receivable)) {
                 font = getFont(R.font.opensans_bold)
             } row 1 col 1 colSpans 2
-            label(getString(R.string.value)) row 2 col 0
+            label(getString(R.string.payment)) row 2 col 0
             valueField = doubleField { promptText = getString(R.string.payment) } row 2 col 1
             button(graphic = ImageView(R.image.btn_match_remaining)) {
-                tooltip(getString(R.string.match_remaining))
-                onAction { valueField.value = remaining }
+                tooltip(getString(R.string.match_receivable))
+                onAction { valueField.value = receivable }
             } row 2 col 2
             label(getString(R.string.remaining)) row 3 col 0
             label {
                 font = getFont(R.font.opensans_bold)
                 textProperty().bind(stringBindingOf(valueField.valueProperty) {
-                    currencyConverter.toString(remaining - valueField.value)
+                    (receivable - valueField.value).let { remaining ->
+                        when (remaining) {
+                            0.0 -> getString(R.string.paid)
+                            else -> currencyConverter.toString(remaining)
+                        }
+                    }
                 })
                 textFillProperty().bind(bindingOf(valueField.valueProperty) {
                     getColor(when {
-                        remaining - valueField.value == 0.0 -> R.color.teal
+                        receivable - valueField.value == 0.0 -> R.color.teal
                         else -> R.color.red
                     })
                 })
@@ -94,7 +99,7 @@ class AddPaymentDialog(controller: Controller, invoice: Invoice) : Dialog<Paymen
         okButton {
             val binding = !valueField.validProperty or
                 valueField.valueProperty.lessEq(0) or
-                valueField.valueProperty.greater(remaining)
+                valueField.valueProperty.greater(receivable)
             methodChoice.selectionModel.selectedItemProperty().listener { _, _, method ->
                 disableProperty().bind(when (method) {
                     CASH -> binding

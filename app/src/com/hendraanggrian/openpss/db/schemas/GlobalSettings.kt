@@ -20,17 +20,15 @@ data class GlobalSetting(
 
     override lateinit var id: Id<String, GlobalSettings>
 
+    inline val valueList: List<String> get() = value.split("|")
+
     companion object {
         const val KEY_CURRENCY_LANGUAGE = "currency_language"
         const val KEY_CURRENCY_COUNTRY = "currency_country"
-        const val KEY_INVOICE_TITLE = "invoice_title"
-        const val KEY_INVOICE_SUBTITLE1 = "invoice_subtitle1"
-        const val KEY_INVOICE_SUBTITLE2 = "invoice_subtitle2"
-        const val KEY_INVOICE_SUBTITLE3 = "invoice_subtitle3"
+        const val KEY_INVOICE_HEADERS = "invoice_headers"
 
         fun listKeys(): List<String> = listOf(
-            KEY_CURRENCY_LANGUAGE, KEY_CURRENCY_COUNTRY,
-            KEY_INVOICE_TITLE, KEY_INVOICE_SUBTITLE1, KEY_INVOICE_SUBTITLE2, KEY_INVOICE_SUBTITLE3)
+            KEY_CURRENCY_LANGUAGE, KEY_CURRENCY_COUNTRY, KEY_INVOICE_HEADERS)
 
         fun new(key: String): GlobalSetting = GlobalSetting(key, "")
     }

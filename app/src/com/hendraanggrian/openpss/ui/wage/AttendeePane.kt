@@ -26,7 +26,7 @@ import javafx.scene.text.Font
 import kotlinx.coroutines.experimental.delay
 import kotlinx.coroutines.experimental.launch
 import ktfx.beans.binding.bindingOf
-import ktfx.collections.emptyBinding
+import ktfx.collections.isEmpty
 import ktfx.collections.sort
 import ktfx.coroutines.FX
 import ktfx.coroutines.eventFilter
@@ -210,7 +210,7 @@ class AttendeePane(
     }
 
     private fun MenuItem.bindDisable() = disableProperty()
-        .bind(attendanceList.selectionModel.selectedItems.emptyBinding())
+        .bind(attendanceList.selectionModel.selectedItems.isEmpty)
 }
 
 @Suppress("NOTHING_TO_INLINE")

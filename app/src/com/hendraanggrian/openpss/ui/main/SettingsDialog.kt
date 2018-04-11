@@ -18,10 +18,10 @@ import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
 import javafx.scene.image.ImageView
 import kotlinx.nosql.update
-import ktfx.beans.binding.and
 import ktfx.beans.binding.bindingOf
 import ktfx.beans.binding.stringBindingOf
 import ktfx.beans.property.toProperty
+import ktfx.beans.value.and
 import ktfx.coroutines.listener
 import ktfx.layouts.checkBox
 import ktfx.layouts.gridPane
@@ -71,7 +71,7 @@ class SettingsDialog(resourced: Resourced, showGlobalSettings: Boolean) : Dialog
             gridPane {
                 gap = 8.0
                 transaction {
-                    label(R.string.currency) row 0 col 0
+                    label(getString(R.string.currency)) row 0 col 0
                     languageField = textField(findGlobalSettings(KEY_CURRENCY_LANGUAGE).single().value) {
                         promptText = "xx"
                         maxWidth = 48.0
@@ -97,10 +97,10 @@ class SettingsDialog(resourced: Resourced, showGlobalSettings: Boolean) : Dialog
                             getColor(if (text == CURRENCY_INVALID) R.color.red else R.color.teal)
                         })
                     } row 0 col 3
-                    label(R.string.invoice_headers) row 1 col 0
+                    label(getString(R.string.invoice_headers)) row 1 col 0
                     invoiceHeadersArea = textArea(findGlobalSettings(KEY_INVOICE_HEADERS).single().valueList
                         .joinToString("\n").trim()) {
-                        maxHeight = 64.0
+                        setMaxSize(256.0, 88.0)
                         textProperty().listener { _, oldValue, value ->
                             when (INVOICE_HEADERS_DIVIDER) {
                                 in value -> text = oldValue

@@ -49,11 +49,11 @@ import kotlinx.nosql.mongodb.MongoDBSession
 import kotlinx.nosql.update
 import ktfx.application.later
 import ktfx.beans.binding.bindingOf
-import ktfx.beans.binding.or
 import ktfx.beans.binding.stringBindingOf
 import ktfx.beans.property.toProperty
-import ktfx.collections.emptyBinding
+import ktfx.beans.value.or
 import ktfx.collections.emptyObservableList
+import ktfx.collections.isEmpty
 import ktfx.collections.toMutableObservableList
 import ktfx.collections.toObservableList
 import ktfx.coroutines.onAction
@@ -226,8 +226,7 @@ class InvoiceController : Controller(), Refreshable {
     private fun Button.bindDisable() = disableProperty().bind(invoiceTable.selectionModel.selectedItemProperty().isNull)
 
     private fun MenuItem.bindDisable() = later {
-        disableProperty().bind(invoiceTable.selectionModel.selectedItems.emptyBinding() or
-            !isFullAccess.toProperty())
+        disableProperty().bind(invoiceTable.selectionModel.selectedItems.isEmpty or !isFullAccess.toProperty())
     }
 
     private fun MongoDBSession.reload(invoice: Invoice) = invoiceTable.run {

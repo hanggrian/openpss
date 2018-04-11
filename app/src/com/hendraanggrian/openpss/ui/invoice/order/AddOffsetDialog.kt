@@ -14,9 +14,9 @@ import com.hendraanggrian.openpss.ui.Resourced
 import javafx.beans.value.ObservableBooleanValue
 import javafx.beans.value.ObservableStringValue
 import javafx.scene.control.ChoiceBox
-import ktfx.beans.binding.lessEq
-import ktfx.beans.binding.or
 import ktfx.beans.binding.stringBindingOf
+import ktfx.beans.value.lessEq
+import ktfx.beans.value.or
 import ktfx.collections.toObservableList
 import ktfx.coroutines.listener
 import ktfx.layouts._GridPane

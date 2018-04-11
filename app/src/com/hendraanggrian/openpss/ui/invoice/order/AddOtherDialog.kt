@@ -8,9 +8,9 @@ import com.hendraanggrian.openpss.scene.control.doubleField
 import com.hendraanggrian.openpss.ui.Resourced
 import javafx.beans.value.ObservableBooleanValue
 import javafx.beans.value.ObservableStringValue
-import ktfx.beans.binding.lessEq
-import ktfx.beans.binding.or
 import ktfx.beans.binding.stringBindingOf
+import ktfx.beans.value.lessEq
+import ktfx.beans.value.or
 import ktfx.layouts._GridPane
 import ktfx.layouts.label
 

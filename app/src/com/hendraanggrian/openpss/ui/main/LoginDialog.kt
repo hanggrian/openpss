@@ -24,9 +24,9 @@ import kotlinx.coroutines.experimental.launch
 import ktfx.application.exit
 import ktfx.application.later
 import ktfx.beans.binding.`when`
-import ktfx.beans.binding.or
 import ktfx.beans.binding.otherwise
 import ktfx.beans.binding.then
+import ktfx.beans.value.or
 import ktfx.coroutines.FX
 import ktfx.coroutines.listener
 import ktfx.coroutines.onAction

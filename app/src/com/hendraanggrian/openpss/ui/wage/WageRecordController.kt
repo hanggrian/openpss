@@ -32,10 +32,10 @@ import javafx.scene.control.TreeTableView
 import javafx.scene.layout.VBox
 import ktfx.application.later
 import ktfx.beans.binding.booleanBindingOf
-import ktfx.beans.binding.or
 import ktfx.beans.binding.stringBindingOf
 import ktfx.beans.property.asObservable
-import ktfx.collections.emptyBinding
+import ktfx.beans.value.or
+import ktfx.collections.isEmpty
 import ktfx.coroutines.onAction
 import ktfx.layouts.label
 import ktfx.layouts.menuItem
@@ -73,7 +73,7 @@ class WageRecordController : Controller() {
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
-        undoButton.disableProperty().bind(undoButton.items.emptyBinding())
+        undoButton.disableProperty().bind(undoButton.items.isEmpty)
         arrayOf(lockStartButton, lockEndButton).forEach {
             it.disableProperty().bind(recordTable.selectionModel.selectedItemProperty().isNull or
                 booleanBindingOf(recordTable.selectionModel.selectedItemProperty()) {

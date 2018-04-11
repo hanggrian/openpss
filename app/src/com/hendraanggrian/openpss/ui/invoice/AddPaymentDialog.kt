@@ -22,11 +22,11 @@ import javafx.scene.control.Dialog
 import javafx.scene.control.TextField
 import javafx.scene.image.ImageView
 import ktfx.beans.binding.bindingOf
-import ktfx.beans.binding.eq
-import ktfx.beans.binding.greater
-import ktfx.beans.binding.lessEq
-import ktfx.beans.binding.or
 import ktfx.beans.binding.stringBindingOf
+import ktfx.beans.value.eq
+import ktfx.beans.value.greater
+import ktfx.beans.value.lessEq
+import ktfx.beans.value.or
 import ktfx.collections.toObservableList
 import ktfx.coroutines.listener
 import ktfx.coroutines.onAction

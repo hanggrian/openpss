@@ -37,10 +37,10 @@ import javafx.scene.control.TextArea
 import javafx.scene.image.ImageView
 import ktfx.application.later
 import ktfx.beans.binding.doubleBindingOf
-import ktfx.beans.binding.lessEq
-import ktfx.beans.binding.or
 import ktfx.beans.binding.stringBindingOf
-import ktfx.collections.emptyBinding
+import ktfx.beans.value.lessEq
+import ktfx.beans.value.or
+import ktfx.collections.isEmpty
 import ktfx.coroutines.onAction
 import ktfx.coroutines.onKeyPressed
 import ktfx.layouts.LayoutManager
@@ -180,7 +180,7 @@ class InvoiceDialog(
                 onAction { this@tableView.items.remove(this@tableView.selectionModel.selectedItem) }
             }
             (getString(R.string.clear)) {
-                later { disableProperty().bind(this@tableView.items.emptyBinding()) }
+                later { disableProperty().bind(this@tableView.items.isEmpty) }
                 onAction { this@tableView.items.clear() }
             }
         }

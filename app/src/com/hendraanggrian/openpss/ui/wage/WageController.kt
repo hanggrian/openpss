@@ -28,11 +28,11 @@ import javafx.stage.Modality.APPLICATION_MODAL
 import kotlinx.coroutines.experimental.launch
 import ktfx.application.later
 import ktfx.beans.binding.booleanBindingOf
-import ktfx.beans.binding.lessEq
-import ktfx.beans.binding.or
 import ktfx.beans.binding.stringBindingOf
-import ktfx.collections.emptyBinding
-import ktfx.collections.sizeBinding
+import ktfx.beans.value.lessEq
+import ktfx.beans.value.or
+import ktfx.collections.isEmpty
+import ktfx.collections.size
 import ktfx.coroutines.FX
 import ktfx.coroutines.onAction
 import ktfx.layouts.borderPane
@@ -65,7 +65,7 @@ class WageController : Controller() {
             "${flowPane.children.size} ${getString(R.string.employee)}"
         })
         readButton.disableProperty().bind(fileField.validProperty)
-        processButton.disableProperty().bind(flowPane.children.emptyBinding())
+        processButton.disableProperty().bind(flowPane.children.isEmpty)
 
         if (DEBUG) {
             fileField.text = "/Users/hendraanggrian/Downloads/Absen 2-24-18.xlsx"
@@ -91,7 +91,7 @@ class WageController : Controller() {
                                 flowPane.children -= this@attendeePane
                                 bindProcessButton()
                             }
-                            deleteOthersMenu.disableProperty().bind(flowPane.children.sizeBinding() lessEq 1)
+                            deleteOthersMenu.disableProperty().bind(flowPane.children.size() lessEq 1)
                             deleteOthersMenu.onAction {
                                 flowPane.children -= flowPane.children.toMutableList().apply {
                                     remove(this@attendeePane)
@@ -161,10 +161,10 @@ class WageController : Controller() {
 
     private inline val attendees: List<Attendee> get() = attendeePanes.map { it.attendee }
 
-    private fun Button.bindToolbarButton() = disableProperty().bind(flowPane.children.emptyBinding())
+    private fun Button.bindToolbarButton() = disableProperty().bind(flowPane.children.isEmpty)
 
     /** As attendees are populated, process button need to be rebinded according to new requirements. */
-    private fun bindProcessButton() = processButton.disableProperty().bind(flowPane.children.emptyBinding() or
+    private fun bindProcessButton() = processButton.disableProperty().bind(flowPane.children.isEmpty or
         booleanBindingOf(flowPane.children, *flowPane.children
             .map { (it as TitledPane).content }
             .map { (it as Pane).children[1] as ListView<*> }

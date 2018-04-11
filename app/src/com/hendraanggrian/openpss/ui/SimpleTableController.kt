@@ -10,8 +10,8 @@ import javafx.scene.control.Button
 import javafx.scene.control.TableView
 import kotlinx.nosql.mongodb.DocumentSchema
 import ktfx.application.later
-import ktfx.beans.binding.or
 import ktfx.beans.property.toProperty
+import ktfx.beans.value.or
 import ktfx.collections.toMutableObservableList
 import java.net.URL
 import java.util.ResourceBundle

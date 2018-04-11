@@ -8,7 +8,7 @@ import javafx.scene.control.ChoiceBox
 import javafx.scene.control.Dialog
 import javafx.scene.control.TextField
 import javafx.scene.image.ImageView
-import ktfx.beans.binding.or
+import ktfx.beans.value.or
 import ktfx.layouts.choiceBox
 import ktfx.layouts.gridPane
 import ktfx.layouts.label

@@ -7,22 +7,16 @@
       fx:controller="com.hendraanggrian.openpss.ui.main.MainController">
     <MenuBar fx:id="menuBar">
         <Menu mnemonicParsing="false" text="File">
-            <MenuItem fx:id="addCustomerItem" mnemonicParsing="false" onAction="#add" text="%add_customer">
-                <graphic>
-                    <ImageView pickOnBounds="true" preserveRatio="true">
-                        <Image url="@/image/menu_user.png"/>
-                    </ImageView>
-                </graphic>
-            </MenuItem>
-            <MenuItem fx:id="addInvoiceItem" mnemonicParsing="false" onAction="#add" text="%add_invoice">
-                <graphic>
-                    <ImageView pickOnBounds="true" preserveRatio="true">
-                        <Image url="@/image/menu_invoice.png"/>
-                    </ImageView>
-                </graphic>
-            </MenuItem>
+            <MenuItem fx:id="addCustomerItem" mnemonicParsing="false" onAction="#add" text="%add_customer"/>
+            <MenuItem fx:id="addInvoiceItem" mnemonicParsing="false" onAction="#add" text="%add_invoice"/>
             <SeparatorMenuItem/>
-            <MenuItem fx:id="settingsItem" mnemonicParsing="false" onAction="#settings" text="%settings"/>
+            <MenuItem fx:id="settingsItem" mnemonicParsing="false" onAction="#settings" text="%settings">
+                <graphic>
+                    <ImageView pickOnBounds="true" preserveRatio="true">
+                        <Image url="@/image/menu_settings.png"/>
+                    </ImageView>
+                </graphic>
+            </MenuItem>
             <SeparatorMenuItem/>
             <MenuItem fx:id="quitItem" mnemonicParsing="false" onAction="#quit" text="%quit"/>
         </Menu>
@@ -30,11 +24,41 @@
             <fx:define>
                 <ToggleGroup fx:id="navigateGroup"/>
             </fx:define>
-            <RadioMenuItem mnemonicParsing="false" toggleGroup="$navigateGroup" onAction="#navigate" text="%customer"/>
-            <RadioMenuItem mnemonicParsing="false" toggleGroup="$navigateGroup" onAction="#navigate" text="%invoice"/>
-            <RadioMenuItem mnemonicParsing="false" toggleGroup="$navigateGroup" onAction="#navigate" text="%payment"/>
-            <RadioMenuItem mnemonicParsing="false" toggleGroup="$navigateGroup" onAction="#navigate" text="%wage"/>
-            <RadioMenuItem mnemonicParsing="false" toggleGroup="$navigateGroup" onAction="#navigate" text="%employee"/>
+            <RadioMenuItem mnemonicParsing="false" toggleGroup="$navigateGroup" onAction="#navigate" text="%customer">
+                <graphic>
+                    <ImageView pickOnBounds="true" preserveRatio="true">
+                        <Image url="@/image/menu_user.png"/>
+                    </ImageView>
+                </graphic>
+            </RadioMenuItem>
+            <RadioMenuItem mnemonicParsing="false" toggleGroup="$navigateGroup" onAction="#navigate" text="%invoice">
+                <graphic>
+                    <ImageView pickOnBounds="true" preserveRatio="true">
+                        <Image url="@/image/menu_invoice.png"/>
+                    </ImageView>
+                </graphic>
+            </RadioMenuItem>
+            <RadioMenuItem mnemonicParsing="false" toggleGroup="$navigateGroup" onAction="#navigate" text="%payment">
+                <graphic>
+                    <ImageView pickOnBounds="true" preserveRatio="true">
+                        <Image url="@/image/menu_payment.png"/>
+                    </ImageView>
+                </graphic>
+            </RadioMenuItem>
+            <RadioMenuItem mnemonicParsing="false" toggleGroup="$navigateGroup" onAction="#navigate" text="%wage">
+                <graphic>
+                    <ImageView pickOnBounds="true" preserveRatio="true">
+                        <Image url="@/image/menu_wage.png"/>
+                    </ImageView>
+                </graphic>
+            </RadioMenuItem>
+            <RadioMenuItem mnemonicParsing="false" toggleGroup="$navigateGroup" onAction="#navigate" text="%employee">
+                <graphic>
+                    <ImageView pickOnBounds="true" preserveRatio="true">
+                        <Image url="@/image/menu_employee.png"/>
+                    </ImageView>
+                </graphic>
+            </RadioMenuItem>
         </Menu>
         <Menu mnemonicParsing="false" text="%help">
             <MenuItem mnemonicParsing="false" onAction="#about" text="%about">

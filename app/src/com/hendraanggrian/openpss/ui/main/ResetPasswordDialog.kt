@@ -8,8 +8,8 @@ import javafx.scene.control.PasswordField
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import ktfx.application.later
-import ktfx.beans.binding.neq
-import ktfx.beans.binding.or
+import ktfx.beans.value.neq
+import ktfx.beans.value.or
 import ktfx.layouts.gridPane
 import ktfx.layouts.label
 import ktfx.layouts.passwordField
@@ -40,7 +40,7 @@ class ResetPasswordDialog(resourced: Resourced) : Dialog<String>(), Resourced by
         okButton {
             disableProperty().bind(changePasswordField.textProperty().isEmpty
                 or confirmPasswordField.textProperty().isEmpty
-                or (changePasswordField.textProperty() neq confirmPasswordField.textProperty()))
+                or changePasswordField.textProperty().neq(confirmPasswordField.textProperty()))
         }
         setResultConverter { if (it == OK) changePasswordField.text else null }
         later { changePasswordField.requestFocus() }

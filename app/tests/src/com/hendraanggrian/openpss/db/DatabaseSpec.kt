@@ -17,7 +17,7 @@ object DatabaseSpec : Spek({
         configure()
         runBlocking {
             try {
-                login(LoginFile.DB_HOST.value, LoginFile.DB_PORT.value.toInt(), LoginFile.DB_USER.value, LoginFile.DB_PASSWORD.value, Employee.BACKDOOR.name, Employee.BACKDOOR.password)
+                login(LoginFile.DB_HOST, LoginFile.DB_PORT, LoginFile.DB_USER, LoginFile.DB_PASSWORD, Employee.BACKDOOR.name, Employee.BACKDOOR.password)
                 it("should return correct date") {
                     println(dbDateTime)
                 }

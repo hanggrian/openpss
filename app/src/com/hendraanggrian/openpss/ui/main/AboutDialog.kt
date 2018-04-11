@@ -13,8 +13,8 @@ import javafx.scene.control.ButtonBar.ButtonData.CANCEL_CLOSE
 import javafx.scene.control.Dialog
 import javafx.scene.control.ListView
 import javafx.scene.image.Image
-import ktfx.beans.binding.and
 import ktfx.beans.binding.booleanBindingOf
+import ktfx.beans.value.and
 import ktfx.collections.toObservableList
 import ktfx.coroutines.listener
 import ktfx.coroutines.onAction

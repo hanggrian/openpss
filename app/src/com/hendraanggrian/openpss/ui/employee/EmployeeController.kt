@@ -9,7 +9,7 @@ import com.hendraanggrian.openpss.ui.AddUserDialog
 import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.main.ResetPasswordDialog
-import com.hendraanggrian.openpss.ui.yesNoAlert
+import com.hendraanggrian.openpss.utils.yesNoAlert
 import com.hendraanggrian.openpss.utils.doneCell
 import com.hendraanggrian.openpss.utils.stringCell
 import javafx.fxml.FXML
@@ -66,7 +66,7 @@ class EmployeeController : Controller(), Refreshable {
         ResetPasswordDialog(this).showAndWait().ifPresent { newPassword ->
             transaction {
                 Employees.find { name.equal(employeeName) }.projection { password }.update(newPassword)
-                infoAlert(getString(R.string.change_password_successful)).showAndWait()
+                infoAlert(getString(R.string.change_password_successful)).show()
             }
         }
     }
@@ -78,9 +78,7 @@ class EmployeeController : Controller(), Refreshable {
     private fun confirm(
         confirmedAction: MongoDBSession.(Employee) -> Unit,
         isNotSelfAction: () -> Unit = {
-            infoAlert(getString(R.string.please_restart)).showAndWait().ifPresent {
-                exit()
-            }
+            infoAlert(getString(R.string.please_restart)).showAndWait().ifPresent { exit() }
         }
     ) = yesNoAlert {
         employeeTable.selectionModel.selectedItem.let { employee ->

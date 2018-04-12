@@ -7,7 +7,7 @@ import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.ui.Resourced
 import com.hendraanggrian.openpss.utils.browseUrl
 import com.hendraanggrian.openpss.utils.getFont
-import com.hendraanggrian.openpss.ui.onActionFilter
+import com.hendraanggrian.openpss.utils.onActionFilter
 import javafx.geometry.Pos.CENTER_LEFT
 import javafx.scene.control.ButtonBar.ButtonData.CANCEL_CLOSE
 import javafx.scene.control.Dialog

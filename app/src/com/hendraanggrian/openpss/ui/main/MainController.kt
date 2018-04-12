@@ -7,6 +7,7 @@ import com.hendraanggrian.openpss.ui.customer.CustomerController
 import com.hendraanggrian.openpss.ui.employee.EmployeeController
 import com.hendraanggrian.openpss.ui.invoice.InvoiceController
 import com.hendraanggrian.openpss.ui.payment.PaymentController
+import com.hendraanggrian.openpss.ui.report.ReportController
 import com.hendraanggrian.openpss.ui.wage.WageController
 import com.hendraanggrian.openpss.utils.getFont
 import javafx.event.ActionEvent
@@ -44,6 +45,7 @@ class MainController : Controller() {
     @FXML lateinit var customerController: CustomerController
     @FXML lateinit var invoiceController: InvoiceController
     @FXML lateinit var paymentController: PaymentController
+    @FXML lateinit var reportController: ReportController
     @FXML lateinit var wageController: WageController
     @FXML lateinit var employeeController: EmployeeController
 
@@ -67,15 +69,16 @@ class MainController : Controller() {
         later {
             employeeLabel.text = employeeName
             employeeLabel.font = getFont(R.font.opensans_bold)
-            controllers = listOf(customerController, invoiceController, paymentController, wageController,
-                employeeController)
+            controllers = listOf(customerController, invoiceController, paymentController, reportController,
+                wageController, employeeController)
             controllers.forEach {
                 it._employee = _employee
                 when (it) {
-                    paymentController, wageController, employeeController -> controllers.indexOf(it).let { index ->
-                        navigateMenu.items[index].isDisable = !isFullAccess
-                        tabPane.tabs[index].isDisable = !isFullAccess
-                    }
+                    paymentController, reportController, wageController, employeeController ->
+                        controllers.indexOf(it).let { index ->
+                            navigateMenu.items[index].isDisable = !isFullAccess
+                            tabPane.tabs[index].isDisable = !isFullAccess
+                        }
                 }
             }
         }

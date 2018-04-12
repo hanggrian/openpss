@@ -3,7 +3,7 @@
 package com.hendraanggrian.openpss.utils
 
 /** Remove trailing and double whitespaces. */
-inline fun String.clean(): String = replace(Regex("\\s+"), " ").trim()
+inline fun String.clean(): String = replace("\\s+".toRegex(), " ").trim()
 
 /** Capitalize words from a sentence. */
 inline fun String.capitalizeAll(): String = split(" ").joinToString(" ") { it.capitalize() }

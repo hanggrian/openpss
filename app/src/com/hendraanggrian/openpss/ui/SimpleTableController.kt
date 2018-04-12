@@ -1,8 +1,9 @@
 package com.hendraanggrian.openpss.ui
 
 import com.hendraanggrian.openpss.db.Document
-import com.hendraanggrian.openpss.db.findByDoc
+import com.hendraanggrian.openpss.utils.findByDoc
 import com.hendraanggrian.openpss.db.transaction
+import com.hendraanggrian.openpss.utils.yesNoAlert
 import javafx.fxml.FXML
 import javafx.scene.control.Button
 import javafx.scene.control.TableView

@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.ui.wage
 
 import com.hendraanggrian.openpss.collections.RevertibleObservableList
-import com.hendraanggrian.openpss.collections.isEmpty
+import com.hendraanggrian.openpss.utils.isEmpty
 import com.hendraanggrian.openpss.db.schemas.Recess
 import com.hendraanggrian.openpss.db.schemas.Wage
 import com.hendraanggrian.openpss.db.schemas.Wages

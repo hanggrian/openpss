@@ -113,7 +113,7 @@ class Record(
     val displayedName: String
         get() = when {
             isNode() -> attendee.toString()
-            isChild() -> attendee.recesses.getOrNull(index)?.toString() ?: ""
+            isChild() -> attendee.recesses.getOrNull(index)?.toString().orEmpty()
             isTotal() -> ""
             else -> throw UnsupportedOperationException()
         }
@@ -122,7 +122,7 @@ class Record(
         get() = SimpleStringProperty().apply {
             bind(stringBindingOf(startProperty, dailyEmptyProperty) {
                 when {
-                    isNode() -> attendee.role ?: ""
+                    isNode() -> attendee.role.orEmpty()
                     isChild() -> start.toString(PATTERN_DATETIME).let { if (isDailyEmpty) "($it)" else it }
                     isTotal() -> ""
                     else -> throw UnsupportedOperationException()

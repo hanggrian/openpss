@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.ui.invoice.price
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.collections.isNotEmpty
+import com.hendraanggrian.openpss.utils.isNotEmpty
 import com.hendraanggrian.openpss.db.NamedDocument
 import com.hendraanggrian.openpss.db.NamedDocumentSchema
 import com.hendraanggrian.openpss.db.transaction
@@ -35,8 +35,7 @@ abstract class PriceController<D : NamedDocument<S>, S : NamedDocumentSchema<D>>
     }.showAndWait().ifPresent { name ->
         transaction @Suppress("IMPLICIT_CAST_TO_ANY") {
             when {
-                schema.find { this.name.equal(name) }.isNotEmpty() ->
-                    errorAlert(getString(R.string.name_taken)).showAndWait()
+                schema.find { this.name.equal(name) }.isNotEmpty() -> errorAlert(getString(R.string.name_taken)).show()
                 else -> {
                     val price = newPrice(name)
                     price.id = schema.insert(price)

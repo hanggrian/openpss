@@ -45,6 +45,13 @@
                     </ImageView>
                 </graphic>
             </RadioMenuItem>
+            <RadioMenuItem mnemonicParsing="false" toggleGroup="$navigateGroup" onAction="#navigate" text="%report">
+                <graphic>
+                    <ImageView pickOnBounds="true" preserveRatio="true">
+                        <Image url="@/image/menu_report.png"/>
+                    </ImageView>
+                </graphic>
+            </RadioMenuItem>
             <RadioMenuItem mnemonicParsing="false" toggleGroup="$navigateGroup" onAction="#navigate" text="%wage">
                 <graphic>
                     <ImageView pickOnBounds="true" preserveRatio="true">
@@ -100,6 +107,15 @@
                 </graphic>
                 <!--suppress ALL -->
                 <fx:include fx:id="payment" source="controller_payment.fxml"/>
+            </Tab>
+            <Tab closable="false" text="%report">
+                <graphic>
+                    <ImageView pickOnBounds="true" preserveRatio="true">
+                        <Image url="@/image/menu_report.png"/>
+                    </ImageView>
+                </graphic>
+                <!--suppress ALL -->
+                <fx:include fx:id="report" source="controller_report.fxml"/>
             </Tab>
             <Tab closable="false" text="%wage">
                 <graphic>

@@ -2,7 +2,7 @@ package com.hendraanggrian.openpss.db
 
 import com.hendraanggrian.openpss.BuildConfig.ARTIFACT
 import com.hendraanggrian.openpss.BuildConfig.DEBUG
-import com.hendraanggrian.openpss.collections.isEmpty
+import com.hendraanggrian.openpss.utils.isEmpty
 import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.db.schemas.Employees

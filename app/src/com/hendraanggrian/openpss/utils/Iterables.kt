@@ -1,6 +1,6 @@
 @file:Suppress("NOTHING_TO_INLINE")
 
-package com.hendraanggrian.openpss.collections
+package com.hendraanggrian.openpss.utils
 
 inline fun <T> Iterable<T>.isEmpty(): Boolean = count() == 0
 

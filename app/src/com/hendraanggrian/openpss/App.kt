@@ -7,11 +7,11 @@ import com.hendraanggrian.openpss.db.schemas.Employees
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.io.properties.LoginFile
 import com.hendraanggrian.openpss.ui.Resourced
-import com.hendraanggrian.openpss.ui.controller
 import com.hendraanggrian.openpss.ui.main.LoginDialog
 import com.hendraanggrian.openpss.ui.main.ResetPasswordDialog
-import com.hendraanggrian.openpss.ui.pane
+import com.hendraanggrian.openpss.utils.controller
 import com.hendraanggrian.openpss.utils.getResource
+import com.hendraanggrian.openpss.utils.pane
 import javafx.application.Application
 import javafx.collections.ObservableList
 import javafx.fxml.FXMLLoader
@@ -62,7 +62,7 @@ class App : Application(), Resourced {
             if (employee.firstTimeLogin) ResetPasswordDialog(this).showAndWait().ifPresent { newPassword ->
                 transaction {
                     Employees.find { name.equal(employee.name) }.projection { password }.update(newPassword)
-                    infoAlert(getString(R.string.change_password_successful)).showAndWait()
+                    infoAlert(getString(R.string.change_password_successful)).show()
                 }
             }
         }

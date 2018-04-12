@@ -5,11 +5,11 @@ import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.io.WageFolder
 import com.hendraanggrian.openpss.scene.control.FileField
 import com.hendraanggrian.openpss.ui.Controller
-import com.hendraanggrian.openpss.ui.controller
-import com.hendraanggrian.openpss.ui.pane
+import com.hendraanggrian.openpss.utils.controller
+import com.hendraanggrian.openpss.utils.get
+import com.hendraanggrian.openpss.utils.pane
 import com.hendraanggrian.openpss.ui.wage.WageRecordController.Companion.EXTRA_ATTENDEES
 import com.hendraanggrian.openpss.ui.wage.readers.Reader
-import com.hendraanggrian.openpss.ui.get
 import com.hendraanggrian.openpss.utils.getResource
 import com.hendraanggrian.openpss.utils.openFile
 import javafx.fxml.FXML
@@ -118,7 +118,7 @@ class WageController : Controller() {
                 launch(FX) {
                     scrollPane.content = flowPane
                     bindProcessButton()
-                    errorAlert(e.message.toString()).showAndWait()
+                    errorAlert(e.message.toString()).show()
                 }
             }
         }

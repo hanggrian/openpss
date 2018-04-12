@@ -1,9 +1,7 @@
 package com.hendraanggrian.openpss.ui.customer
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.collections.isNotEmpty
 import com.hendraanggrian.openpss.db.buildQuery
-import com.hendraanggrian.openpss.db.findByDoc
 import com.hendraanggrian.openpss.db.schemas.Contact
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Customers
@@ -13,9 +11,12 @@ import com.hendraanggrian.openpss.time.PATTERN_DATE
 import com.hendraanggrian.openpss.ui.AddUserDialog
 import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.Refreshable
-import com.hendraanggrian.openpss.ui.yesNoAlert
+import com.hendraanggrian.openpss.utils.findByDoc
 import com.hendraanggrian.openpss.utils.getFont
+import com.hendraanggrian.openpss.utils.isNotEmpty
+import com.hendraanggrian.openpss.utils.matches
 import com.hendraanggrian.openpss.utils.stringCell
+import com.hendraanggrian.openpss.utils.yesNoAlert
 import javafx.fxml.FXML
 import javafx.scene.Node
 import javafx.scene.control.Button
@@ -27,7 +28,6 @@ import javafx.scene.control.TableView
 import javafx.scene.control.TextField
 import javafx.scene.image.ImageView
 import javafx.util.Callback
-import kotlinx.nosql.equal
 import kotlinx.nosql.mongodb.MongoDBSession
 import kotlinx.nosql.update
 import ktfx.application.later
@@ -80,7 +80,6 @@ class CustomerController : Controller(), Refreshable {
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
-
         countBox.desc = getString(R.string.items)
         nameLabel.font = getFont(R.font.opensans_bold, 24)
         sinceLabel.font = getFont(R.font.opensans_regular, 12)
@@ -119,18 +118,19 @@ class CustomerController : Controller(), Refreshable {
                             val customers = Customers.find {
                                 buildQuery {
                                     if (customerField.text.isNotBlank())
-                                        and(name.matches(customerField.text.toPattern(CASE_INSENSITIVE)))
+                                        and(name.matches(customerField.text, CASE_INSENSITIVE))
                                 }
                             }
                             customerPagination.pageCount = ceil(customers.count() / countBox.count.toDouble()).toInt()
                             items = customers.skip(countBox.count * page).take(countBox.count).toMutableObservableList()
                         }
                     }
+                    contextMenu { (getString(R.string.add)) { onAction { addCustomer() } } }
                 }
                 addContactButton.disableProperty().bind(customerList.selectionModel.selectedItemProperty().isNull)
-                nameLabel.bindLabel { customer?.name ?: "" }
-                sinceLabel.bindLabel { customer?.since?.toString(PATTERN_DATE) ?: "" }
-                noteLabel.bindLabel { customer?.note ?: "" }
+                nameLabel.bindLabel { customer?.name.orEmpty() }
+                sinceLabel.bindLabel { customer?.since?.toString(PATTERN_DATE).orEmpty() }
+                noteLabel.bindLabel { customer?.note.orEmpty() }
                 contactTable.itemsProperty().bind(bindingOf(customerList.selectionModel.selectedItemProperty()) {
                     customer?.contacts?.toObservableList() ?: emptyObservableList()
                 })
@@ -142,8 +142,8 @@ class CustomerController : Controller(), Refreshable {
     @FXML fun addCustomer() = AddUserDialog(this, R.string.add_customer, R.image.ic_customer).showAndWait().ifPresent {
         transaction {
             when {
-                Customers.find { name.equal(it) }.isNotEmpty() ->
-                    errorAlert(getString(R.string.name_taken)).showAndWait()
+                Customers.find { name.matches("^$it$", CASE_INSENSITIVE) }.isNotEmpty() ->
+                    errorAlert(getString(R.string.name_taken)).show()
                 else -> Customer.new(it).let {
                     it.id = Customers.insert(it)
                     customerList.items.add(it)

@@ -1,8 +1,9 @@
 @file:Suppress("NOTHING_TO_INLINE")
 
-package com.hendraanggrian.openpss.ui
+package com.hendraanggrian.openpss.utils
 
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.ui.Resourced
 import javafx.event.ActionEvent.ACTION
 import javafx.scene.Node
 import javafx.scene.control.ButtonType.NO

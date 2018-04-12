@@ -11,7 +11,7 @@ import com.hendraanggrian.openpss.scene.control.IntField
 import com.hendraanggrian.openpss.scene.control.hostField
 import com.hendraanggrian.openpss.scene.control.intField
 import com.hendraanggrian.openpss.ui.Resourced
-import com.hendraanggrian.openpss.ui.onActionFilter
+import com.hendraanggrian.openpss.utils.onActionFilter
 import javafx.geometry.Pos.CENTER_RIGHT
 import javafx.scene.control.ButtonBar.ButtonData.OK_DONE
 import javafx.scene.control.Dialog
@@ -165,7 +165,7 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced 
                     }
                 } catch (e: Exception) {
                     if (DEBUG) e.printStackTrace()
-                    launch(FX) { errorAlert(e.message.toString()).showAndWait() }
+                    launch(FX) { errorAlert(e.message.toString()).show() }
                 }
             }
         }

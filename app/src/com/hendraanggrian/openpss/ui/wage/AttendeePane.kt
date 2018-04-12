@@ -8,7 +8,7 @@ import com.hendraanggrian.openpss.time.FlexibleInterval
 import com.hendraanggrian.openpss.time.PATTERN_DATETIME_EXTENDED
 import com.hendraanggrian.openpss.ui.DateTimeDialog
 import com.hendraanggrian.openpss.ui.Resourced
-import com.hendraanggrian.openpss.ui.forceRefresh
+import com.hendraanggrian.openpss.utils.forceRefresh
 import com.hendraanggrian.openpss.utils.getColor
 import com.hendraanggrian.openpss.utils.round
 import javafx.geometry.Pos.BOTTOM_CENTER

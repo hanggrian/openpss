@@ -2,7 +2,7 @@ package com.hendraanggrian.openpss.ui.payment
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.currencyConverter
-import com.hendraanggrian.openpss.db.findById
+import com.hendraanggrian.openpss.utils.findById
 import com.hendraanggrian.openpss.db.schemas.Employees
 import com.hendraanggrian.openpss.db.schemas.Invoices
 import com.hendraanggrian.openpss.db.schemas.Payment

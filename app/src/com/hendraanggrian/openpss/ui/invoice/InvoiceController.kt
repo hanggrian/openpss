@@ -2,8 +2,6 @@ package com.hendraanggrian.openpss.ui.invoice
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.db.buildQuery
-import com.hendraanggrian.openpss.db.findByDoc
-import com.hendraanggrian.openpss.db.findById
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.schemas.Employees
@@ -19,13 +17,16 @@ import com.hendraanggrian.openpss.time.PATTERN_DATETIME_EXTENDED
 import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.SeeInvoiceDialog
-import com.hendraanggrian.openpss.ui.controller
-import com.hendraanggrian.openpss.ui.pane
-import com.hendraanggrian.openpss.ui.yesNoAlert
+import com.hendraanggrian.openpss.utils.controller
 import com.hendraanggrian.openpss.utils.currencyCell
 import com.hendraanggrian.openpss.utils.doneCell
+import com.hendraanggrian.openpss.utils.findByDoc
+import com.hendraanggrian.openpss.utils.findById
 import com.hendraanggrian.openpss.utils.getResource
+import com.hendraanggrian.openpss.utils.matches
+import com.hendraanggrian.openpss.utils.pane
 import com.hendraanggrian.openpss.utils.stringCell
+import com.hendraanggrian.openpss.utils.yesNoAlert
 import javafx.beans.property.SimpleObjectProperty
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
@@ -145,7 +146,10 @@ class InvoiceController : Controller(), Refreshable {
                             onAction {
                                 yesNoAlert {
                                     invoiceTable.selectionModel.selectedItem.let {
-                                        transaction { findByDoc(Invoices, it).remove() }
+                                        transaction {
+                                            findByDoc(Invoices, it).remove()
+                                            Payments.find { invoiceId.equal(it.id) }.remove()
+                                        }
                                         invoiceTable.items.remove(it)
                                     }
                                 }
@@ -156,14 +160,12 @@ class InvoiceController : Controller(), Refreshable {
                         transaction {
                             val invoices = Invoices.find {
                                 buildQuery {
-                                    if (customerProperty.value != null)
-                                        and(customerId.equal(customerProperty.value.id))
+                                    if (customerProperty.value != null) and(customerId.equal(customerProperty.value.id))
                                     when (statusBox.value) {
                                         getString(R.string.paid) -> and(paid.equal(true))
                                         getString(R.string.unpaid) -> and(paid.equal(false))
                                     }
-                                    if (pickDateRadio.isSelected)
-                                        and(dateTime.matches(dateBox.date.toString().toPattern()))
+                                    if (pickDateRadio.isSelected) and(dateTime.matches(dateBox.date.toString()))
                                 }
                             }
                             invoicePagination.pageCount = ceil(invoices.count() / countBox.count.toDouble()).toInt()

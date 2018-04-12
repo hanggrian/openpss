@@ -1,7 +1,8 @@
 @file:Suppress("NOTHING_TO_INLINE")
 
-package com.hendraanggrian.openpss.db
+package com.hendraanggrian.openpss.utils
 
+import com.hendraanggrian.openpss.db.Document
 import kotlinx.nosql.DocumentSchemaQueryWrapper
 import kotlinx.nosql.Id
 import kotlinx.nosql.equal

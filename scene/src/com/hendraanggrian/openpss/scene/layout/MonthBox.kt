@@ -23,6 +23,8 @@ import ktfx.layouts.choiceBox
 import org.joda.time.YearMonth
 import org.joda.time.YearMonth.now
 import java.text.DateFormatSymbols.getInstance
+import java.util.Locale
+import java.util.Locale.getDefault
 
 open class MonthBox(prefill: YearMonth = now()) : _HBox() {
 
@@ -36,8 +38,10 @@ open class MonthBox(prefill: YearMonth = now()) : _HBox() {
     var previousButton: Button
     var nextButton: Button
 
-    val monthProperty: ObjectProperty<YearMonth> = SimpleObjectProperty()
-    val month: YearMonth by monthProperty
+    val valueProperty: ObjectProperty<YearMonth> = SimpleObjectProperty()
+    val value: YearMonth by valueProperty
+
+    var locale: Locale = getDefault()
 
     init {
         spacing = 8.0
@@ -55,7 +59,7 @@ open class MonthBox(prefill: YearMonth = now()) : _HBox() {
                 }
             }
         }
-        monthBox = choiceBox(getInstance().months.take(12).toObservableList()) {
+        monthBox = choiceBox(getInstance(locale).months.take(12).toObservableList()) {
             selectionModel.select(prefill.monthOfYear - 1)
         }
         yearBox = choiceBox((YEAR_START until YEAR_END).toObservableList()) {
@@ -80,7 +84,7 @@ open class MonthBox(prefill: YearMonth = now()) : _HBox() {
         nextButton.disableProperty().bind(monthBox.selectionModel.selectedIndexProperty().eq(11)
             and yearBox.valueProperty().eq(YEAR_END))
 
-        monthProperty.bind(bindingOf(monthBox.selectionModel.selectedIndexProperty(), yearBox.valueProperty()) {
+        valueProperty.bind(bindingOf(monthBox.selectionModel.selectedIndexProperty(), yearBox.valueProperty()) {
             YearMonth(yearBox.value, monthBox.selectionModel.selectedIndex + 1)
         })
     }

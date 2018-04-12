@@ -5,13 +5,13 @@ import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.io.WageFolder
 import com.hendraanggrian.openpss.scene.control.FileField
 import com.hendraanggrian.openpss.ui.Controller
-import com.hendraanggrian.openpss.utils.controller
-import com.hendraanggrian.openpss.utils.get
-import com.hendraanggrian.openpss.utils.pane
 import com.hendraanggrian.openpss.ui.wage.WageRecordController.Companion.EXTRA_ATTENDEES
 import com.hendraanggrian.openpss.ui.wage.readers.Reader
+import com.hendraanggrian.openpss.utils.controller
+import com.hendraanggrian.openpss.utils.get
 import com.hendraanggrian.openpss.utils.getResource
 import com.hendraanggrian.openpss.utils.openFile
+import com.hendraanggrian.openpss.utils.pane
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
 import javafx.scene.Scene
@@ -83,7 +83,7 @@ class WageController : Controller() {
         flowPane.children.clear()
         launch {
             try {
-                readerChoiceBox.get<Reader>().read(fileField.file).forEach { attendee ->
+                readerChoiceBox.get<Reader>().read(fileField.value).forEach { attendee ->
                     attendee.mergeDuplicates()
                     launch(FX) {
                         flowPane.children += attendeePane(this@WageController, attendee) {
@@ -134,13 +134,7 @@ class WageController : Controller() {
         }.showAndWait()
     }
 
-    @FXML fun disableRecess() = DisableRecessDialog(this, attendees).showAndWait().ifPresent { (recess, role) ->
-        attendeePanes.filter {
-            if (role is String) it.attendee.role == role else it.attendee == role as Attendee
-        }.map { it.recessChecks }.forEach {
-            (if (recess is String) it else it.filter { it.text == recess.toString() }).forEach { it.isSelected = false }
-        }
-    }
+    @FXML fun disableRecess() = DisableRecessDialog(this, attendeePanes).show()
 
     @FXML fun recess() = stage(getString(R.string.recess)) {
         val loader = FXMLLoader(getResource(R.layout.controller_wage_recess), resources)

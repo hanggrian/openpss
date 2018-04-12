@@ -36,8 +36,8 @@ open class TimeBox(prefill: LocalTime = MIDNIGHT) : _HBox() {
     var nextButton: Button
     private var onOverlap: ((Boolean) -> Unit)? = null
 
-    val timeProperty: ObjectProperty<LocalTime> = SimpleObjectProperty()
-    val time: LocalTime by timeProperty
+    val valueProperty: ObjectProperty<LocalTime> = SimpleObjectProperty()
+    val value: LocalTime by valueProperty
 
     init {
         alignment = CENTER
@@ -81,7 +81,7 @@ open class TimeBox(prefill: LocalTime = MIDNIGHT) : _HBox() {
             }
         }
 
-        timeProperty.bind(bindingOf(hourField.valueProperty, minuteField.valueProperty) {
+        valueProperty.bind(bindingOf(hourField.valueProperty, minuteField.valueProperty) {
             LocalTime(hourField.value, minuteField.value)
         })
 

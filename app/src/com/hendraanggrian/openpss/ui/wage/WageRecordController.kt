@@ -141,11 +141,11 @@ class WageRecordController : Controller() {
             .map { it.value }
             .forEach { record ->
                 val initial = record.startProperty.value
-                if (initial.toLocalTime() < timeBox.time) {
-                    record.startProperty.set(record.cloneStart(timeBox.time))
+                if (initial.toLocalTime() < timeBox.value) {
+                    record.startProperty.set(record.cloneStart(timeBox.value))
                     undoable.name = when {
                         undoable.name == null -> "${record.attendee.name} ${initial.toString(PATTERN_DATETIME)} -> " +
-                            timeBox.time.toString(PATTERN_TIME)
+                            timeBox.value.toString(PATTERN_TIME)
                         else -> getString(R.string.multiple_lock_start_time)
                     }
                     undoable.addAction { record.startProperty.set(initial) }
@@ -160,11 +160,11 @@ class WageRecordController : Controller() {
             .map { it.value }
             .forEach { record ->
                 val initial = record.endProperty.value
-                if (initial.toLocalTime() > timeBox.time) {
-                    record.endProperty.set(record.cloneEnd(timeBox.time))
+                if (initial.toLocalTime() > timeBox.value) {
+                    record.endProperty.set(record.cloneEnd(timeBox.value))
                     undoable.name = when {
                         undoable.name == null -> "${record.attendee.name} ${initial.toString(PATTERN_DATETIME)} -> " +
-                            timeBox.time.toString(PATTERN_TIME)
+                            timeBox.value.toString(PATTERN_TIME)
                         else -> getString(R.string.multiple_lock_end_time)
                     }
                     undoable.addAction { record.endProperty.set(initial) }

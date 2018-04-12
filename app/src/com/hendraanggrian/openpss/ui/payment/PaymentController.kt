@@ -54,7 +54,7 @@ class PaymentController : Controller(), Refreshable {
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
         seeInvoiceButton.bindToolbarButton()
-        dateBox.dateProperty.listener { refresh() }
+        dateBox.valueProperty.listener { refresh() }
         totalAllLabel1.font = getFont(R.font.opensans_bold)
         totalCashLabel1.font = getFont(R.font.opensans_bold)
         totalTransferLabel1.font = getFont(R.font.opensans_bold)
@@ -76,7 +76,7 @@ class PaymentController : Controller(), Refreshable {
 
     override fun refresh() {
         paymentTable.items = transaction {
-            Payments.find { dateTime.matches(dateBox.date.toString().toPattern()) }.toMutableObservableList()
+            Payments.find { dateTime.matches(dateBox.value.toString().toPattern()) }.toMutableObservableList()
         }
     }
 

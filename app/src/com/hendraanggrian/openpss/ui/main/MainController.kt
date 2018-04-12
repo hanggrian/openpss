@@ -8,6 +8,7 @@ import com.hendraanggrian.openpss.ui.employee.EmployeeController
 import com.hendraanggrian.openpss.ui.invoice.InvoiceController
 import com.hendraanggrian.openpss.ui.payment.PaymentController
 import com.hendraanggrian.openpss.ui.report.ReportController
+import com.hendraanggrian.openpss.ui.report.ReportController.Companion.EXTRA_MAIN_CONTROLLER
 import com.hendraanggrian.openpss.ui.wage.WageController
 import com.hendraanggrian.openpss.utils.getFont
 import javafx.event.ActionEvent
@@ -81,12 +82,13 @@ class MainController : Controller() {
                         }
                 }
             }
+            reportController.addExtra(EXTRA_MAIN_CONTROLLER, this)
         }
     }
 
     @FXML fun add(event: ActionEvent) = when (event.source) {
-        addCustomerItem -> customerController.selectRun { addCustomer() }
-        else -> invoiceController.selectRun { addInvoice() }
+        addCustomerItem -> select(customerController) { addCustomer() }
+        else -> select(invoiceController) { addInvoice() }
     }
 
     @FXML fun settings() = SettingsDialog(this, isFullAccess).showAndWait().get()
@@ -97,12 +99,12 @@ class MainController : Controller() {
 
     @FXML fun about() = AboutDialog(this).show()
 
-    private fun updateNavigateMenu(index: Int) = navigateMenu.items.forEachIndexed { i, item ->
-        (item as RadioMenuItem).isSelected = index == i
+    fun <T : Controller> select(controller: T, run: T.() -> Unit) {
+        tabPane.selectionModel.select(controllers.indexOf(controller))
+        controller.run(run)
     }
 
-    private fun <T : Controller> T.selectRun(run: T.() -> Unit) {
-        tabPane.selectionModel.select(controllers.indexOf(this))
-        run(run)
+    private fun updateNavigateMenu(index: Int) = navigateMenu.items.forEachIndexed { i, item ->
+        (item as RadioMenuItem).isSelected = index == i
     }
 }

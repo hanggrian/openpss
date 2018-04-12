@@ -21,18 +21,18 @@ import java.io.File
 /** Field that display file or directory path. */
 open class FileField @JvmOverloads constructor(scope: Scope = FILE) : TextField() {
 
-    val fileProperty: ObjectProperty<File> = SimpleObjectProperty<File>()
-    val file: File by fileProperty
+    val valueProperty: ObjectProperty<File> = SimpleObjectProperty<File>()
+    val value: File by valueProperty
 
     val validProperty: BooleanProperty = SimpleBooleanProperty()
     val isValid: Boolean by validProperty
 
     init {
-        fileProperty.bind(bindingOf(textProperty()) { File(text) })
+        valueProperty.bind(bindingOf(textProperty()) { File(text) })
         validProperty.bind(booleanBindingOf(textProperty()) {
-            !file.exists() || when (scope) {
-                FILE -> !file.isFile
-                FOLDER -> !file.isDirectory
+            !value.exists() || when (scope) {
+                FILE -> !value.isFile
+                FOLDER -> !value.isDirectory
                 else -> false
             }
         })

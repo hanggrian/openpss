@@ -112,7 +112,7 @@ class InvoiceController : Controller(), Refreshable {
 
     override fun refresh() = invoicePagination.pageFactoryProperty()
         .bind(bindingOf(customerProperty, countBox.countProperty, statusBox.valueProperty(),
-            allDateRadio.selectedProperty(), pickDateRadio.selectedProperty(), dateBox.dateProperty) {
+            allDateRadio.selectedProperty(), pickDateRadio.selectedProperty(), dateBox.valueProperty) {
             Callback<Int, Node> { page ->
                 invoiceTable = tableView {
                     columnResizePolicy = CONSTRAINED_RESIZE_POLICY
@@ -165,7 +165,7 @@ class InvoiceController : Controller(), Refreshable {
                                         getString(R.string.paid) -> and(paid.equal(true))
                                         getString(R.string.unpaid) -> and(paid.equal(false))
                                     }
-                                    if (pickDateRadio.isSelected) and(dateTime.matches(dateBox.date.toString()))
+                                    if (pickDateRadio.isSelected) and(dateTime.matches(dateBox.value.toString()))
                                 }
                             }
                             invoicePagination.pageCount = ceil(invoices.count() / countBox.count.toDouble()).toInt()

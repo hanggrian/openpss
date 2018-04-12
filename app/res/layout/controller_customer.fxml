@@ -25,6 +25,7 @@
                 </ImageView>
             </graphic>
         </Button>
+        <Space/>
         <Button mnemonicParsing="false" fx:id="addContactButton" onAction="#addContact" text="%add_contact">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">

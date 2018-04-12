@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<?import com.hendraanggrian.openpss.scene.control.CountBox?>
-<?import com.hendraanggrian.openpss.scene.control.Space?>
+<?import com.hendraanggrian.openpss.scene.control.*?>
 <?import com.hendraanggrian.openpss.scene.layout.DateBox?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
@@ -26,6 +25,7 @@
                 </ImageView>
             </graphic>
         </Button>
+        <Space/>
         <Button mnemonicParsing="false" fx:id="addPaymentButton" onAction="#addPayment" text="%add_payment">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">

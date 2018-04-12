@@ -28,6 +28,6 @@ class DateDialog(
         later { dateBox.requestFocus() }
         cancelButton()
         okButton()
-        setResultConverter { if (it != OK) null else dateBox.dateProperty.value }
+        setResultConverter { if (it != OK) null else dateBox.valueProperty.value }
     }
 }

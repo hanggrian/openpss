@@ -34,8 +34,8 @@ open class DateBox(prefill: LocalDate = now()) : _HBox() {
     var previousButton: Button
     var nextButton: Button
 
-    val dateProperty: ObjectProperty<LocalDate> = SimpleObjectProperty()
-    val date: LocalDate by dateProperty
+    val valueProperty: ObjectProperty<LocalDate> = SimpleObjectProperty()
+    val value: LocalDate by valueProperty
 
     init {
         alignment = CENTER
@@ -53,7 +53,7 @@ open class DateBox(prefill: LocalDate = now()) : _HBox() {
             onAction { picker.value = picker.value.plusDays(1) }
         }
 
-        dateProperty.bind(bindingOf(picker.valueProperty()) { picker.value.toJoda() })
+        valueProperty.bind(bindingOf(picker.valueProperty()) { picker.value.toJoda() })
     }
 }
 

@@ -48,11 +48,11 @@ class WageRecessController : SimpleTableController<Recess, Recesses>(Recesses) {
         }
         cancelButton()
         okButton {
-            disableProperty().bind(booleanBindingOf(startBox.timeProperty, endBox.timeProperty) {
-                startBox.time >= endBox.time
+            disableProperty().bind(booleanBindingOf(startBox.valueProperty, endBox.valueProperty) {
+                startBox.value >= endBox.value
             })
         }
-        setResultConverter { if (it == OK) startBox.time to endBox.time else null }
+        setResultConverter { if (it == OK) startBox.value to endBox.value else null }
     }.showAndWait().ifPresent { (start, end) ->
         val recess = Recess(start, end)
         recess.id = transaction { Recesses.insert(recess) }!!

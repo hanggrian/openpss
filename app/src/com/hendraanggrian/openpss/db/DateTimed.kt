@@ -1,4 +1,4 @@
-package com.hendraanggrian.openpss.ui
+package com.hendraanggrian.openpss.db
 
 import org.joda.time.DateTime
 

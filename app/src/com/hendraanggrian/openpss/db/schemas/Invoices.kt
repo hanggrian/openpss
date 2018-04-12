@@ -7,7 +7,7 @@ import com.hendraanggrian.openpss.db.SplitPriced
 import com.hendraanggrian.openpss.db.Totaled
 import com.hendraanggrian.openpss.db.Typed
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.ui.DateTimed
+import com.hendraanggrian.openpss.db.DateTimed
 import kotlinx.nosql.Id
 import kotlinx.nosql.ListColumn
 import kotlinx.nosql.boolean

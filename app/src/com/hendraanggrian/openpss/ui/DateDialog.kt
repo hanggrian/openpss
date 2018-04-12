@@ -15,14 +15,14 @@ import org.joda.time.LocalDate.now
 
 class DateDialog(
     resourced: Resourced,
-    title: String,
+    headerId: String,
     prefill: LocalDate = now()
 ) : Dialog<LocalDate>(), Resourced by resourced {
 
     private val dateBox = dateBox(prefill)
 
     init {
-        headerTitle = title
+        headerTitle = getString(headerId)
         graphicIcon = ImageView(R.image.ic_date)
         dialogPane.content = dateBox
         later { dateBox.requestFocus() }

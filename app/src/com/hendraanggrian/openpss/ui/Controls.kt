@@ -2,6 +2,7 @@
 
 package com.hendraanggrian.openpss.ui
 
+import com.hendraanggrian.openpss.R
 import javafx.event.ActionEvent.ACTION
 import javafx.scene.Node
 import javafx.scene.control.ButtonType.NO
@@ -23,14 +24,18 @@ fun Node.onActionFilter(
     launch(context) { action() }
 }
 
-inline fun yesNoAlert(contentText: String, noinline action: () -> Unit) = confirmAlert(contentText, YES, NO)
+inline fun Resourced.yesNoAlert(
+    contentTextId: String = R.string.are_you_sure,
+    noinline action: () -> Unit
+) = confirmAlert(getString(contentTextId), YES, NO)
     .showAndWait()
     .filter { it == YES }
     .ifPresent { action() }
 
-inline fun <T> ListView<T>.forceRefresh() = items.let {
+inline fun <T> ListView<T>.forceRefresh() {
+    val temp = items
     items = null
-    items = it
+    items = temp
 }
 
 @Suppress("UNCHECKED_CAST")

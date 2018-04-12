@@ -23,7 +23,7 @@ import org.joda.time.DateTime.now
 
 class DateTimeDialog(
     resourced: Resourced,
-    title: String,
+    headerId: String,
     prefill: DateTime = now()
 ) : Dialog<DateTime>(), Resourced by resourced {
 
@@ -31,7 +31,7 @@ class DateTimeDialog(
     private lateinit var timeBox: TimeBox
 
     init {
-        headerTitle = title
+        headerTitle = getString(headerId)
         graphicIcon = ImageView(R.image.ic_date)
         dialogPane.content = gridPane {
             gap = 8.0

@@ -1,6 +1,5 @@
 package com.hendraanggrian.openpss.ui
 
-import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.db.Document
 import com.hendraanggrian.openpss.db.findByDoc
 import com.hendraanggrian.openpss.db.transaction
@@ -44,7 +43,7 @@ abstract class SimpleTableController<D : Document<S>, S : DocumentSchema<D>>(
 
     @FXML abstract fun add()
 
-    @FXML fun delete() = yesNoAlert(getString(R.string.are_you_sure)) {
+    @FXML fun delete() = yesNoAlert {
         table.selectionModel.selectedItem.let {
             transaction { findByDoc(schema, it).remove() }
             table.items.remove(it)

@@ -13,9 +13,9 @@ import com.hendraanggrian.openpss.time.PATTERN_DATE
 import com.hendraanggrian.openpss.ui.AddUserDialog
 import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.Refreshable
+import com.hendraanggrian.openpss.ui.yesNoAlert
 import com.hendraanggrian.openpss.utils.getFont
 import com.hendraanggrian.openpss.utils.stringCell
-import com.hendraanggrian.openpss.ui.yesNoAlert
 import javafx.fxml.FXML
 import javafx.scene.Node
 import javafx.scene.control.Button
@@ -96,7 +96,7 @@ class CustomerController : Controller(), Refreshable {
                     })
                 }
                 onAction {
-                    yesNoAlert(getString(R.string.delete_contact)) {
+                    yesNoAlert(R.string.delete_contact) {
                         transaction {
                             findByDoc(Customers, customer!!).projection { contacts }
                                 .update(customer!!.contacts - contact!!)

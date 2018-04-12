@@ -176,21 +176,21 @@ class SeeInvoiceDialog(resourced: Resourced, invoice: Invoice) : Dialog<Unit>(),
     private companion object {
         const val MAX_WIDTH = 285.0 // equivalent to 7.5cm
 
-        private fun Region.maxWidth() {
+        fun Region.maxWidth() {
             minWidth = MAX_WIDTH
             maxWidth = MAX_WIDTH
         }
 
-        private fun Region.halfWidth() {
+        fun Region.halfWidth() {
             minWidth = MAX_WIDTH / 2
             maxWidth = MAX_WIDTH / 2
         }
 
-        private fun LayoutManager<Node>.regularLabel(text: String): Label = label(text) {
+        fun LayoutManager<Node>.regularLabel(text: String): Label = label(text) {
             font = getFont(R.font.opensans_regular)
         }
 
-        private fun LayoutManager<Node>.boldLabel(text: String): Label = label(text) {
+        fun LayoutManager<Node>.boldLabel(text: String): Label = label(text) {
             font = getFont(R.font.opensans_bold)
         }
     }

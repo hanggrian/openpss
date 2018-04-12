@@ -173,7 +173,7 @@ class WageRecordController : Controller() {
         undoable.append()
     }
 
-    @FXML fun empty() = DateDialog(this, getString(R.string.empty_daily_income))
+    @FXML fun empty() = DateDialog(this, R.string.empty_daily_income)
         .showAndWait()
         .ifPresent { date ->
             val undoable = Undoable()

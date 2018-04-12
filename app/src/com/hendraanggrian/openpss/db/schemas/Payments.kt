@@ -5,7 +5,7 @@ import com.hendraanggrian.openpss.db.Document
 import com.hendraanggrian.openpss.db.dbDateTime
 import com.hendraanggrian.openpss.db.schemas.PaymentMethod.CASH
 import com.hendraanggrian.openpss.db.schemas.PaymentMethod.TRANSFER
-import com.hendraanggrian.openpss.ui.DateTimed
+import com.hendraanggrian.openpss.db.DateTimed
 import com.hendraanggrian.openpss.ui.Resourced
 import kotlinx.nosql.Id
 import kotlinx.nosql.dateTime

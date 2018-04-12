@@ -141,8 +141,7 @@ class AttendeePane(
             button(getString(R.string.add)) {
                 maxWidth = Double.MAX_VALUE
                 onAction {
-                    DateTimeDialog(this@AttendeePane, getString(R.string.add_record),
-                        now().run { minusMinutes(minuteOfHour) })
+                    DateTimeDialog(this@AttendeePane, R.string.add_record, now().run { minusMinutes(minuteOfHour) })
                         .showAndWait()
                         .ifPresent {
                             attendanceList.items.add(it)
@@ -155,8 +154,8 @@ class AttendeePane(
             (getString(R.string.clone)) {
                 bindDisable()
                 onAction {
-                    DateTimeDialog(this@AttendeePane, getString(R.string.add_record),
-                        attendanceList.selectionModel.selectedItem.run { minusMinutes(minuteOfHour) })
+                    DateTimeDialog(this@AttendeePane, R.string.add_record, attendanceList.selectionModel.selectedItem
+                        .run { minusMinutes(minuteOfHour) })
                         .showAndWait()
                         .ifPresent {
                             attendanceList.items.add(it)
@@ -167,7 +166,7 @@ class AttendeePane(
             (getString(R.string.edit)) {
                 bindDisable()
                 onAction {
-                    DateTimeDialog(this@AttendeePane, getString(R.string.edit_record),
+                    DateTimeDialog(this@AttendeePane, R.string.edit_record,
                         attendanceList.selectionModel.selectedItem)
                         .showAndWait()
                         .ifPresent {

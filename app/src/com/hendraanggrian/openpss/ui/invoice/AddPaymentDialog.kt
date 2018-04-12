@@ -2,6 +2,7 @@ package com.hendraanggrian.openpss.ui.invoice
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.currencyConverter
+import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.db.schemas.Payment
 import com.hendraanggrian.openpss.db.schemas.PaymentMethod
@@ -11,7 +12,6 @@ import com.hendraanggrian.openpss.db.schemas.calculateDue
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.scene.control.DoubleField
 import com.hendraanggrian.openpss.scene.control.doubleField
-import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.Resourced
 import com.hendraanggrian.openpss.utils.getColor
 import com.hendraanggrian.openpss.utils.getFont
@@ -44,7 +44,11 @@ import ktfx.scene.control.headerTitle
 import ktfx.scene.control.okButton
 import ktfx.scene.layout.gap
 
-class AddPaymentDialog(controller: Controller, invoice: Invoice) : Dialog<Payment>(), Resourced by controller {
+class AddPaymentDialog(
+    resourced: Resourced,
+    employee: Employee,
+    invoice: Invoice
+) : Dialog<Payment>(), Resourced by resourced {
 
     private lateinit var valueField: DoubleField
     private lateinit var methodChoice: ChoiceBox<PaymentMethod>
@@ -57,7 +61,7 @@ class AddPaymentDialog(controller: Controller, invoice: Invoice) : Dialog<Paymen
         dialogPane.content = gridPane {
             gap = 8.0
             label(getString(R.string.employee)) row 0 col 0
-            label(controller.employeeName) {
+            label(employee.name) {
                 font = getFont(R.font.opensans_bold)
             } row 0 col 1 colSpans 2
             label(getString(R.string.receivable)) row 1 col 0
@@ -112,7 +116,7 @@ class AddPaymentDialog(controller: Controller, invoice: Invoice) : Dialog<Paymen
         setResultConverter {
             when (it) {
                 CANCEL -> null
-                else -> Payment.new(invoice.id, controller.employeeId, valueField.value,
+                else -> Payment.new(invoice.id, employee.id, valueField.value,
                     when (methodChoice.selectionModel.selectedItem) {
                         CASH -> null
                         else -> transferField.text

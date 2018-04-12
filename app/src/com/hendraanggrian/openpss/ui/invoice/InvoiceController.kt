@@ -21,11 +21,11 @@ import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.SeeInvoiceDialog
 import com.hendraanggrian.openpss.ui.controller
 import com.hendraanggrian.openpss.ui.pane
+import com.hendraanggrian.openpss.ui.yesNoAlert
 import com.hendraanggrian.openpss.utils.currencyCell
 import com.hendraanggrian.openpss.utils.doneCell
 import com.hendraanggrian.openpss.utils.getResource
 import com.hendraanggrian.openpss.utils.stringCell
-import com.hendraanggrian.openpss.ui.yesNoAlert
 import javafx.beans.property.SimpleObjectProperty
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
@@ -143,7 +143,7 @@ class InvoiceController : Controller(), Refreshable {
                         (getString(R.string.delete)) {
                             bindDisable()
                             onAction {
-                                yesNoAlert(getString(R.string.are_you_sure)) {
+                                yesNoAlert {
                                     invoiceTable.selectionModel.selectedItem.let {
                                         transaction { findByDoc(Invoices, it).remove() }
                                         invoiceTable.items.remove(it)
@@ -190,7 +190,7 @@ class InvoiceController : Controller(), Refreshable {
         }
     }
 
-    @FXML fun addPayment() = AddPaymentDialog(this, invoice!!).showAndWait().ifPresent {
+    @FXML fun addPayment() = AddPaymentDialog(this, _employee, invoice!!).showAndWait().ifPresent {
         transaction {
             it.id = Payments.insert(it)
             if (calculateDue(invoice!!) == 0.0)

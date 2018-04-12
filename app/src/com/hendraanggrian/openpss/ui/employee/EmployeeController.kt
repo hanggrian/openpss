@@ -9,9 +9,9 @@ import com.hendraanggrian.openpss.ui.AddUserDialog
 import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.main.ResetPasswordDialog
+import com.hendraanggrian.openpss.ui.yesNoAlert
 import com.hendraanggrian.openpss.utils.doneCell
 import com.hendraanggrian.openpss.utils.stringCell
-import com.hendraanggrian.openpss.ui.yesNoAlert
 import javafx.fxml.FXML
 import javafx.scene.control.Button
 import javafx.scene.control.TableColumn
@@ -82,7 +82,7 @@ class EmployeeController : Controller(), Refreshable {
                 exit()
             }
         }
-    ) = yesNoAlert(getString(R.string.are_you_sure)) {
+    ) = yesNoAlert {
         employeeTable.selectionModel.selectedItem.let { employee ->
             transaction { confirmedAction(employee) }
             when {

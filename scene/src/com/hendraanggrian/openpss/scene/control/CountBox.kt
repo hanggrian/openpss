@@ -23,7 +23,7 @@ open class CountBox : ChoiceBox<Int>() {
     init {
         items = observableListOf(20, 30, 40, 50)
         converter {
-            fromString { s -> s.toInt() }
+            fromString { it.toInt() }
             toString { "$it $desc" }
         }
         selectionModel.selectFirst()

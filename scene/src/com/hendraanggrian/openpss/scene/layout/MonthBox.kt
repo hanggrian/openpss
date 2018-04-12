@@ -20,11 +20,12 @@ import ktfx.layouts.LayoutManager
 import ktfx.layouts._HBox
 import ktfx.layouts.button
 import ktfx.layouts.choiceBox
+import ktfx.listeners.converter
 import org.joda.time.YearMonth
 import org.joda.time.YearMonth.now
 import java.text.DateFormatSymbols.getInstance
 import java.util.Locale
-import java.util.Locale.getDefault
+import java.util.Locale.US
 
 open class MonthBox(prefill: YearMonth = now()) : _HBox() {
 
@@ -33,7 +34,7 @@ open class MonthBox(prefill: YearMonth = now()) : _HBox() {
         const val YEAR_END = 2050
     }
 
-    lateinit var monthBox: ChoiceBox<String>
+    lateinit var monthBox: ChoiceBox<Int>
     lateinit var yearBox: ChoiceBox<Int>
     var previousButton: Button
     var nextButton: Button
@@ -41,39 +42,36 @@ open class MonthBox(prefill: YearMonth = now()) : _HBox() {
     val valueProperty: ObjectProperty<YearMonth> = SimpleObjectProperty()
     val value: YearMonth by valueProperty
 
-    var locale: Locale = getDefault()
-
     init {
         spacing = 8.0
 
         previousButton = button(graphic = ImageView(R.image.btn_previous)) {
             onAction {
-                monthBox.selectionModel.run {
-                    when (selectedIndex) {
-                        0 -> {
-                            select(11)
-                            yearBox.value = yearBox.value - 1
-                        }
-                        else -> select(selectedIndex - 1)
+                monthBox.value = when (monthBox.value) {
+                    0 -> {
+                        yearBox.value = yearBox.value - 1
+                        11
                     }
+                    else -> monthBox.value - 1
                 }
             }
         }
-        monthBox = choiceBox(getInstance(locale).months.take(12).toObservableList()) {
-            selectionModel.select(prefill.monthOfYear - 1)
+        monthBox = choiceBox((0 until 12).toObservableList()) {
+            value = prefill.monthOfYear - 1
         }
+        setLocale(US)
         yearBox = choiceBox((YEAR_START until YEAR_END).toObservableList()) {
             value = items.single { it == prefill.year }
         }
         nextButton = button(graphic = ImageView(R.image.btn_next)) {
             onAction {
                 monthBox.selectionModel.run {
-                    when (selectedIndex) {
+                    monthBox.value = when (monthBox.value) {
                         11 -> {
-                            select(0)
                             yearBox.value = yearBox.value + 1
+                            0
                         }
-                        else -> select(selectedIndex + 1)
+                        else -> monthBox.value + 1
                     }
                 }
             }
@@ -87,6 +85,13 @@ open class MonthBox(prefill: YearMonth = now()) : _HBox() {
         valueProperty.bind(bindingOf(monthBox.selectionModel.selectedIndexProperty(), yearBox.valueProperty()) {
             YearMonth(yearBox.value, monthBox.selectionModel.selectedIndex + 1)
         })
+    }
+
+    fun setLocale(locale: Locale) = getInstance(locale).let { symbols ->
+        monthBox.converter {
+            fromString { symbols.months.indexOf(it) }
+            toString { symbols.months[it!!] }
+        }
     }
 }
 

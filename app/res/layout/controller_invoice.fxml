@@ -29,7 +29,7 @@
         <Button mnemonicParsing="false" fx:id="addPaymentButton" onAction="#addPayment" text="%add_payment">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/toolbar_payment.png"/>
+                    <Image url="@/image/toolbar_add_payment.png"/>
                 </ImageView>
             </graphic>
         </Button>

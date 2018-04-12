@@ -2,7 +2,6 @@ package com.hendraanggrian.openpss.ui.payment
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.currencyConverter
-import com.hendraanggrian.openpss.utils.findById
 import com.hendraanggrian.openpss.db.schemas.Employees
 import com.hendraanggrian.openpss.db.schemas.Invoices
 import com.hendraanggrian.openpss.db.schemas.Payment
@@ -17,6 +16,7 @@ import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.SeeInvoiceDialog
 import com.hendraanggrian.openpss.utils.currencyCell
+import com.hendraanggrian.openpss.utils.findById
 import com.hendraanggrian.openpss.utils.getFont
 import com.hendraanggrian.openpss.utils.stringCell
 import javafx.fxml.FXML
@@ -66,7 +66,7 @@ class PaymentController : Controller(), Refreshable {
                     currencyConverter.fromString(totalTransferLabel2.text).toDouble())
             })
         paymentTable.onMouseClicked { if (it.isDoubleClick()) seeInvoice() }
-        paymentTable.contextMenu { onAction { (getString(R.string.see_invoice)) { seeInvoice() } } }
+        paymentTable.contextMenu { (getString(R.string.see_invoice)) { onAction { seeInvoice() } } }
         noColumn.stringCell { id }
         timeColumn.stringCell { dateTime.toString(PATTERN_TIME) }
         employeeColumn.stringCell { transaction { findById(Employees, employeeId).single() }!! }
@@ -83,7 +83,10 @@ class PaymentController : Controller(), Refreshable {
     @FXML fun seeInvoice() = SeeInvoiceDialog(this, transaction { findById(Invoices, payment.invoiceId).single() }!!)
         .show()
 
-    private val payment: Payment get() = paymentTable.selectionModel.selectedItem
+    private fun Button.bindToolbarButton() = disableProperty()
+        .bind(paymentTable.selectionModel.selectedItemProperty().isNull)
+
+    private inline val payment: Payment get() = paymentTable.selectionModel.selectedItem
 
     private fun Label.bindTotal(method: PaymentMethod) = textProperty().bind(
         stringBindingOf(paymentTable.itemsProperty()) {
@@ -91,7 +94,4 @@ class PaymentController : Controller(), Refreshable {
                 .filter { it.method == method }
                 .sumByDouble { it.value })
         })
-
-    private fun Button.bindToolbarButton() = disableProperty()
-        .bind(paymentTable.selectionModel.selectedItemProperty().isNull)
 }

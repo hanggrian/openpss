@@ -1,20 +1,38 @@
 package com.hendraanggrian.openpss.ui.report
 
+import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.currencyConverter
-import com.hendraanggrian.openpss.scene.layout.DateBox
+import com.hendraanggrian.openpss.db.schemas.PaymentMethod.CASH
+import com.hendraanggrian.openpss.db.schemas.PaymentMethod.TRANSFER
+import com.hendraanggrian.openpss.db.schemas.Payments
+import com.hendraanggrian.openpss.db.transaction
+import com.hendraanggrian.openpss.scene.layout.MonthBox
 import com.hendraanggrian.openpss.time.PATTERN_DATE
 import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.Refreshable
+import com.hendraanggrian.openpss.ui.main.MainController
+import com.hendraanggrian.openpss.utils.matches
 import com.hendraanggrian.openpss.utils.stringCell
 import javafx.fxml.FXML
+import javafx.scene.control.Button
 import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
+import ktfx.collections.toObservableList
+import ktfx.coroutines.onAction
+import ktfx.coroutines.onMouseClicked
+import ktfx.layouts.contextMenu
+import ktfx.scene.input.isDoubleClick
 import java.net.URL
 import java.util.ResourceBundle
 
 class ReportController : Controller(), Refreshable {
 
-    @FXML lateinit var dateBox: DateBox
+    companion object {
+        const val EXTRA_MAIN_CONTROLLER = "EXTRA_MAIN_CONTROLLER"
+    }
+
+    @FXML lateinit var seePaymentsButton: Button
+    @FXML lateinit var monthBox: MonthBox
     @FXML lateinit var reportTable: TableView<Report>
     @FXML lateinit var dateColumn: TableColumn<Report, String>
     @FXML lateinit var cashColumn: TableColumn<Report, String>
@@ -23,6 +41,9 @@ class ReportController : Controller(), Refreshable {
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
+        seePaymentsButton.bindToolbarButton()
+        reportTable.onMouseClicked { if (it.isDoubleClick()) seePayments() }
+        reportTable.contextMenu { (getString(R.string.see_payments)) { onAction { seePayments() } } }
         dateColumn.stringCell { date.toString(PATTERN_DATE) }
         cashColumn.stringCell { currencyConverter.toString(cash) }
         transferColumn.stringCell { currencyConverter.toString(transfer) }
@@ -30,6 +51,28 @@ class ReportController : Controller(), Refreshable {
     }
 
     override fun refresh() {
-        // reportTable.items = transaction { Payments.find { dateTime.matches(dateBox.date.toString()) }.map {  } }
+        reportTable.items = transaction {
+            Payments.find { dateTime.matches(monthBox.month.toString()) }
+                .groupBy { it.dateTime.toLocalDate() }
+                .let { map ->
+                    map.keys.map { dateTime ->
+                        val payments = map[dateTime]!!
+                        Report(dateTime,
+                            payments.filter { it.method == CASH }.sumByDouble { it.value },
+                            payments.filter { it.method == TRANSFER }.sumByDouble { it.value })
+                    }
+                }
+                .toObservableList()
+        }
     }
+
+    @FXML fun seePayments() = getExtra<MainController>(EXTRA_MAIN_CONTROLLER).run {
+        tabPane.selectionModel.select(2)
+        //paymentController.dateBox.date = report.date
+    }
+
+    private inline val report: Report get() = reportTable.selectionModel.selectedItem
+
+    private fun Button.bindToolbarButton() = disableProperty()
+        .bind(reportTable.selectionModel.selectedItemProperty().isNull)
 }

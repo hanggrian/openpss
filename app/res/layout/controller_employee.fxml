@@ -20,7 +20,7 @@
         <Button mnemonicParsing="false" onAction="#addEmployee" text="%add">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/toolbar_add_user.png"/>
+                    <Image url="@/image/toolbar_add_customer.png"/>
                 </ImageView>
             </graphic>
         </Button>

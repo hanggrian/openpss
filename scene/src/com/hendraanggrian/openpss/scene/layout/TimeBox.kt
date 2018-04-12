@@ -45,8 +45,8 @@ open class TimeBox(prefill: LocalTime = MIDNIGHT) : _HBox() {
 
         previousButton = button(graphic = ImageView(R.image.btn_previous)) {
             onAction {
-                hourField.value = when {
-                    hourField.value == 0 -> {
+                hourField.value = when (hourField.value) {
+                    0 -> {
                         onOverlap?.invoke(false)
                         23
                     }
@@ -71,8 +71,8 @@ open class TimeBox(prefill: LocalTime = MIDNIGHT) : _HBox() {
         }
         nextButton = button(graphic = ImageView(R.image.btn_next)) {
             onAction {
-                hourField.value = when {
-                    hourField.value == 23 -> {
+                hourField.value = when (hourField.value) {
+                    23 -> {
                         onOverlap?.invoke(true)
                         0
                     }

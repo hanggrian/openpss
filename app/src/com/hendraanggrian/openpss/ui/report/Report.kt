@@ -7,6 +7,5 @@ data class Report(
     val cash: Double,
     val transfer: Double
 ) {
-
     val total: Double get() = cash + transfer
 }

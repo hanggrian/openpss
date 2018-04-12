@@ -49,10 +49,11 @@ open class DateBox(prefill: LocalDate = now()) : _HBox() {
             isEditable = false
             maxWidth = 116.0
         }
-        dateProperty.bind(bindingOf(picker.valueProperty()) { picker.value.toJoda() })
         nextButton = button(graphic = ImageView(R.image.btn_next)) {
             onAction { picker.value = picker.value.plusDays(1) }
         }
+
+        dateProperty.bind(bindingOf(picker.valueProperty()) { picker.value.toJoda() })
     }
 }
 

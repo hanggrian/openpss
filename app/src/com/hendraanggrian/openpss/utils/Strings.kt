@@ -9,4 +9,4 @@ inline fun String.clean(): String = replace(Regex("\\s+"), " ").trim()
 inline fun String.capitalizeAll(): String = split(" ").joinToString(" ") { it.capitalize() }
 
 /** User's name must be at least 2 words. */
-inline fun String.isName(): Boolean = split(" ").size > 1
+inline fun String.isName(): Boolean = split(" ").let { it.size > 1 && it.all { it.isNotEmpty() } }

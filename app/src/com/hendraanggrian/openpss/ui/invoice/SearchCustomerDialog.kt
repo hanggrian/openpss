@@ -14,6 +14,7 @@ import javafx.scene.input.KeyCode.ENTER
 import ktfx.application.later
 import ktfx.beans.binding.bindingOf
 import ktfx.collections.toMutableObservableList
+import ktfx.coroutines.listener
 import ktfx.coroutines.onKeyPressed
 import ktfx.coroutines.onMouseClicked
 import ktfx.layouts.listView
@@ -27,9 +28,8 @@ import ktfx.scene.input.isDoubleClick
 import kotlin.text.RegexOption.IGNORE_CASE
 
 class SearchCustomerDialog(resourced: Resourced) : Dialog<Customer>(), Resourced by resourced {
-
-    companion object {
-        private const val ITEMS_PER_PAGE = 10
+    private companion object {
+        const val ITEMS_PER_PAGE = 10
     }
 
     private lateinit var textField: TextField
@@ -50,6 +50,7 @@ class SearchCustomerDialog(resourced: Resourced) : Dialog<Customer>(), Resourced
                         }.take(ITEMS_PER_PAGE).toMutableObservableList()
                     }
                 })
+                itemsProperty().listener { _, _, value -> if (value.isNotEmpty()) selectionModel.selectFirst() }
                 onMouseClicked {
                     if (selectionModel.selectedItem != null && it.isDoubleClick()) {
                         result = selectionModel.selectedItem
@@ -65,9 +66,7 @@ class SearchCustomerDialog(resourced: Resourced) : Dialog<Customer>(), Resourced
             } marginTop 8.0
         }
         cancelButton()
-        okButton {
-            disableProperty().bind(listView.selectionModel.selectedItemProperty().isNull)
-        }
+        okButton { disableProperty().bind(listView.selectionModel.selectedItemProperty().isNull) }
         later { textField.requestFocus() }
         setResultConverter { if (it == OK) listView.selectionModel.selectedItem else null }
     }

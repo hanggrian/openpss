@@ -9,6 +9,7 @@ import com.hendraanggrian.openpss.ui.invoice.InvoiceController
 import com.hendraanggrian.openpss.ui.payment.PaymentController
 import com.hendraanggrian.openpss.ui.report.ReportController
 import com.hendraanggrian.openpss.ui.report.ReportController.Companion.EXTRA_MAIN_CONTROLLER
+import com.hendraanggrian.openpss.ui.schedule.ScheduleController
 import com.hendraanggrian.openpss.ui.wage.WageController
 import com.hendraanggrian.openpss.utils.getFont
 import javafx.event.ActionEvent
@@ -45,6 +46,7 @@ class MainController : Controller() {
     @FXML lateinit var tabPane: TabPane
     @FXML lateinit var customerController: CustomerController
     @FXML lateinit var invoiceController: InvoiceController
+    @FXML lateinit var scheduleController: ScheduleController
     @FXML lateinit var paymentController: PaymentController
     @FXML lateinit var reportController: ReportController
     @FXML lateinit var wageController: WageController
@@ -70,8 +72,8 @@ class MainController : Controller() {
         later {
             employeeLabel.text = employeeName
             employeeLabel.font = getFont(R.font.opensans_bold)
-            controllers = listOf(customerController, invoiceController, paymentController, reportController,
-                wageController, employeeController)
+            controllers = listOf(customerController, invoiceController, scheduleController,
+                paymentController, reportController, wageController, employeeController)
             controllers.forEach {
                 it._employee = _employee
                 when (it) {

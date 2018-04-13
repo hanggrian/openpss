@@ -28,8 +28,9 @@ object Invoices : DocumentSchema<Invoice>("invoices", Invoice::class) {
     val offsets = OffsetColumn()
     val others = OtherColumn()
     val note = string("note")
-    val paid = boolean("paid")
     val printed = boolean("printed")
+    val paid = boolean("paid")
+    val done = boolean("done")
 
     class PlateColumn : ListColumn<Plate, Invoices>("plates", Plate::class) {
         val title = string("title")
@@ -66,8 +67,9 @@ data class Invoice(
     var offsets: List<Offset>,
     var others: List<Other>,
     var note: String,
+    var printed: Boolean,
     var paid: Boolean,
-    var printed: Boolean
+    var done: Boolean
 ) : Document<Invoices>, DateTimed, Totaled {
 
     override lateinit var id: Id<String, Invoices>
@@ -86,7 +88,7 @@ data class Invoice(
             note: String
         ): Invoice = Invoice(
             transaction { Invoices.find().lastOrNull()?.no ?: 0 }!! + 1,
-            employeeId, customerId, dateTime, plates, offsets, others, note, false, false)
+            employeeId, customerId, dateTime, plates, offsets, others, note, false, false, false)
     }
 }
 

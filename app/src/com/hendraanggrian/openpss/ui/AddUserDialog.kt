@@ -32,7 +32,7 @@ class AddUserDialog(
             val name = editor.text.clean()
             if (name.split(" ").any { it.firstOrNull().let { it == null || it.isLowerCase() } })
                 return@setResultConverter when
-                (warningAlert(getString(R.string.name_doesnt_start_with_uppercase_letter_continue), YES, NO)
+                (warningAlert(getString(R.string.name_doesnt_start_with_uppercase_letter_add_anyway), YES, NO)
                     .showAndWait().get()) {
                     YES -> name
                     else -> null

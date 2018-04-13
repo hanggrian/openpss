@@ -2,8 +2,6 @@ package com.hendraanggrian.openpss.ui.report
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.currencyConverter
-import com.hendraanggrian.openpss.db.schemas.PaymentMethod.CASH
-import com.hendraanggrian.openpss.db.schemas.PaymentMethod.TRANSFER
 import com.hendraanggrian.openpss.db.schemas.Payments
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.io.properties.LoginFile
@@ -19,7 +17,6 @@ import javafx.fxml.FXML
 import javafx.scene.control.Button
 import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
-import ktfx.collections.toObservableList
 import ktfx.coroutines.listener
 import ktfx.coroutines.onAction
 import ktfx.coroutines.onMouseClicked
@@ -57,19 +54,7 @@ class ReportController : Controller(), Refreshable {
     }
 
     override fun refresh() {
-        reportTable.items = transaction {
-            Payments.find { dateTime.matches(monthBox.value.toString()) }
-                .groupBy { it.dateTime.toLocalDate() }
-                .let { map ->
-                    map.keys.map { dateTime ->
-                        val payments = map[dateTime]!!
-                        Report(dateTime,
-                            payments.filter { it.method == CASH }.sumByDouble { it.value },
-                            payments.filter { it.method == TRANSFER }.sumByDouble { it.value })
-                    }
-                }
-                .toObservableList()
-        }
+        reportTable.items = transaction { Report.from(Payments.find { dateTime.matches(monthBox.value.toString()) }) }
     }
 
     @FXML fun seePayments() = getExtra<MainController>(EXTRA_MAIN_CONTROLLER).let {

@@ -67,7 +67,7 @@
                     </items>
                 </SplitMenuButton>
                 <CountBox fx:id="countBox"/>
-                <ChoiceBox fx:id="statusBox"/>
+                <ChoiceBox fx:id="statusChoice"/>
                 <Space HBox.hgrow="ALWAYS"/>
                 <fx:define>
                     <ToggleGroup fx:id="pickDateGroup"/>

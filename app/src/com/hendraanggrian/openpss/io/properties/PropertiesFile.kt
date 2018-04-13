@@ -23,9 +23,7 @@ abstract class PropertiesFile(name: String) : File(MainFolder, ".$name") {
         inputStream().use { properties.load(it) }
     }
 
-    suspend fun save(comments: String? = null) = async {
-        outputStream().use { properties.store(it, comments) }
-    }.await()
+    suspend fun save(comments: String? = null) = async { outputStream().use { properties.store(it, comments) } }.await()
 
     protected operator fun <T> T.getValue(thisRef: Any?, property: KProperty<*>): T {
         val value = properties.getProperty(property.key, toString())!!

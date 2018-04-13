@@ -3,6 +3,8 @@
 package com.hendraanggrian.openpss.scene.layout
 
 import com.hendraanggrian.openpss.scene.R
+import com.hendraanggrian.openpss.scene.control.IntField
+import com.hendraanggrian.openpss.scene.control.intField
 import javafx.beans.property.ObjectProperty
 import javafx.beans.property.SimpleObjectProperty
 import javafx.scene.Node
@@ -10,8 +12,6 @@ import javafx.scene.control.Button
 import javafx.scene.control.ChoiceBox
 import javafx.scene.image.ImageView
 import ktfx.beans.binding.bindingOf
-import ktfx.beans.value.and
-import ktfx.beans.value.eq
 import ktfx.beans.value.getValue
 import ktfx.collections.toObservableList
 import ktfx.coroutines.onAction
@@ -28,13 +28,8 @@ import java.util.Locale
 
 open class MonthBox(prefill: YearMonth = now()) : _HBox() {
 
-    private companion object {
-        const val YEAR_START = 2018
-        const val YEAR_END = 2050
-    }
-
     lateinit var monthBox: ChoiceBox<Int>
-    lateinit var yearBox: ChoiceBox<Int>
+    lateinit var yearField: IntField
     var previousButton: Button
     var nextButton: Button
 
@@ -50,7 +45,7 @@ open class MonthBox(prefill: YearMonth = now()) : _HBox() {
             onAction {
                 monthBox.value = when (monthBox.value) {
                     0 -> {
-                        yearBox.value = yearBox.value - 1
+                        yearField.value = yearField.value - 1
                         11
                     }
                     else -> monthBox.value - 1
@@ -64,14 +59,15 @@ open class MonthBox(prefill: YearMonth = now()) : _HBox() {
                 fromString { months.indexOf(it) }
             }
         }
-        yearBox = choiceBox((YEAR_START until YEAR_END).toObservableList()) {
-            value = items.single { it == prefill.year }
+        yearField = intField {
+            maxWidth = 64.0
+            value = prefill.year
         }
         nextButton = button(graphic = ImageView(R.image.btn_next)) {
             onAction {
                 monthBox.value = when (monthBox.value) {
                     11 -> {
-                        yearBox.value = yearBox.value + 1
+                        yearField.value = yearField.value + 1
                         0
                     }
                     else -> monthBox.value + 1
@@ -79,13 +75,8 @@ open class MonthBox(prefill: YearMonth = now()) : _HBox() {
             }
         }
 
-        previousButton.disableProperty().bind(monthBox.selectionModel.selectedIndexProperty().eq(0)
-            and yearBox.valueProperty().eq(YEAR_START))
-        nextButton.disableProperty().bind(monthBox.selectionModel.selectedIndexProperty().eq(11)
-            and yearBox.valueProperty().eq(YEAR_END))
-
-        valueProperty.bind(bindingOf(monthBox.selectionModel.selectedIndexProperty(), yearBox.valueProperty()) {
-            YearMonth(yearBox.value, monthBox.value + 1)
+        valueProperty.bind(bindingOf(monthBox.selectionModel.selectedIndexProperty(), yearField.valueProperty) {
+            YearMonth(yearField.value, monthBox.value + 1)
         })
     }
 

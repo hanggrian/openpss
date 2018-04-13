@@ -74,7 +74,7 @@ class InvoiceController : Controller(), Refreshable {
     @FXML lateinit var customerButton: SplitMenuButton
     @FXML lateinit var customerButtonItem: MenuItem
     @FXML lateinit var countBox: CountBox
-    @FXML lateinit var statusBox: ChoiceBox<String>
+    @FXML lateinit var statusChoice: ChoiceBox<String>
     @FXML lateinit var allDateRadio: RadioButton
     @FXML lateinit var pickDateRadio: RadioButton
     @FXML lateinit var dateBox: DateBox
@@ -98,8 +98,8 @@ class InvoiceController : Controller(), Refreshable {
         customerButtonItem.disableProperty().bind(customerProperty.isNull)
 
         countBox.desc = getString(R.string.items)
-        statusBox.items = listOf(R.string.any, R.string.unpaid, R.string.paid).map { getString(it) }.toObservableList()
-        statusBox.selectionModel.selectFirst()
+        statusChoice.items = listOf(R.string.any, R.string.unpaid, R.string.paid).map { getString(it) }.toObservableList()
+        statusChoice.selectionModel.selectFirst()
         pickDateRadio.graphic.disableProperty().bind(!pickDateRadio.selectedProperty())
 
         paymentTable.contextMenu { (getString(R.string.add)) { onAction { addPayment() } } }
@@ -110,7 +110,7 @@ class InvoiceController : Controller(), Refreshable {
     }
 
     override fun refresh() = invoicePagination.pageFactoryProperty()
-        .bind(bindingOf(customerProperty, countBox.countProperty, statusBox.valueProperty(),
+        .bind(bindingOf(customerProperty, countBox.countProperty, statusChoice.valueProperty(),
             allDateRadio.selectedProperty(), pickDateRadio.selectedProperty(), dateBox.valueProperty) {
             Callback<Int, Node> { page ->
                 invoiceTable = tableView {
@@ -125,8 +125,9 @@ class InvoiceController : Controller(), Refreshable {
                             stringCell { transaction { findById(Customers, customerId).single() }!! }
                         }
                         getString(R.string.total)<String> { currencyCell { total } }
-                        getString(R.string.paid)<Boolean> { doneCell { paid } }
                         getString(R.string.print)<Boolean> { doneCell { printed } }
+                        getString(R.string.paid)<Boolean> { doneCell { paid } }
+                        getString(R.string.done)<Boolean> { doneCell { done } }
                     }
                     onMouseClicked { if (it.isDoubleClick()) seeInvoice() }
                     contextMenu {
@@ -158,7 +159,7 @@ class InvoiceController : Controller(), Refreshable {
                             val invoices = Invoices.find {
                                 buildQuery {
                                     if (customerProperty.value != null) and(customerId.equal(customerProperty.value.id))
-                                    when (statusBox.value) {
+                                    when (statusChoice.value) {
                                         getString(R.string.paid) -> and(paid.equal(true))
                                         getString(R.string.unpaid) -> and(paid.equal(false))
                                     }

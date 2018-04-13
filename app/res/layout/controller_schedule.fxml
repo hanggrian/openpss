@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.VBox?>
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.hendraanggrian.openpss.ui.schedule.ScheduleController">
+    <ToolBar stylesheets="@../style/toolbar_button.css">
+        <!--suppress JavaFxEventHandler -->
+        <Button mnemonicParsing="false" onAction="#refresh" text="%refresh">
+            <graphic>
+                <ImageView pickOnBounds="true" preserveRatio="true">
+                    <Image url="@/image/toolbar_refresh.png"/>
+                </ImageView>
+            </graphic>
+        </Button>
+    </ToolBar>
+    <ToolBar>
+        <ChoiceBox fx:id="typeChoice"/>
+    </ToolBar>
+    <TableView fx:id="scheduleTable" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="typeColumn" text="%type"/>
+            <TableColumn fx:id="titleColumn" text="%title"/>
+        </columns>
+        <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+        </columnResizePolicy>
+    </TableView>
+</VBox>

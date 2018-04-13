@@ -17,7 +17,7 @@
             </graphic>
         </Button>
         <Space/>
-        <Button mnemonicParsing="false" onAction="#addEmployee" text="%add">
+        <Button mnemonicParsing="false" onAction="#addEmployee" text="%add_employee">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
                     <Image url="@/image/toolbar_add_customer.png"/>

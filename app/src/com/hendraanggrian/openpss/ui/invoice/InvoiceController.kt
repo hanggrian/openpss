@@ -53,7 +53,6 @@ import ktfx.beans.binding.stringBindingOf
 import ktfx.beans.property.toProperty
 import ktfx.beans.value.or
 import ktfx.collections.emptyObservableList
-import ktfx.collections.isEmpty
 import ktfx.collections.toMutableObservableList
 import ktfx.collections.toObservableList
 import ktfx.coroutines.onAction
@@ -137,7 +136,7 @@ class InvoiceController : Controller(), Refreshable {
                         (getString(R.string.edit)) {
                             bindDisable()
                             onAction {
-                                InvoiceDialog(this@InvoiceController, invoiceTable.selectionModel.selectedItem)
+                                InvoiceDialog(this@InvoiceController, _employee, invoice!!)
                                     .showAndWait()
                             }
                         }
@@ -145,13 +144,11 @@ class InvoiceController : Controller(), Refreshable {
                             bindDisable()
                             onAction {
                                 yesNoAlert {
-                                    invoiceTable.selectionModel.selectedItem.let {
-                                        transaction {
-                                            findByDoc(Invoices, it).remove()
-                                            Payments.find { invoiceId.equal(it.id) }.remove()
-                                        }
-                                        invoiceTable.items.remove(it)
+                                    transaction {
+                                        findByDoc(Invoices, invoice!!).remove()
+                                        Payments.find { invoiceId.equal(invoice!!.id) }.remove()
                                     }
+                                    invoiceTable.items.remove(invoice)
                                 }
                             }
                         }
@@ -184,7 +181,7 @@ class InvoiceController : Controller(), Refreshable {
             }
         })
 
-    @FXML fun addInvoice() = InvoiceDialog(this).showAndWait().ifPresent {
+    @FXML fun addInvoice() = InvoiceDialog(this, _employee).showAndWait().ifPresent {
         transaction {
             it.id = Invoices.insert(it)
             invoiceTable.items.add(it)
@@ -228,7 +225,7 @@ class InvoiceController : Controller(), Refreshable {
     private fun Button.bindDisable() = disableProperty().bind(invoiceTable.selectionModel.selectedItemProperty().isNull)
 
     private fun MenuItem.bindDisable() = later {
-        disableProperty().bind(invoiceTable.selectionModel.selectedItems.isEmpty or !isFullAccess.toProperty())
+        disableProperty().bind(invoiceTable.selectionModel.selectedItemProperty().isNull or !isFullAccess.toProperty())
     }
 
     private fun MongoDBSession.reload(invoice: Invoice) = invoiceTable.run {

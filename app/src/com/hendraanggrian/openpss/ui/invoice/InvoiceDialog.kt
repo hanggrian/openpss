@@ -3,7 +3,6 @@ package com.hendraanggrian.openpss.ui.invoice
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.currencyConverter
 import com.hendraanggrian.openpss.db.dbDateTime
-import com.hendraanggrian.openpss.utils.findById
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.schemas.Employee
@@ -15,12 +14,12 @@ import com.hendraanggrian.openpss.db.schemas.Plate
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.io.properties.SettingsFile.INVOICE_QUICK_SELECT_CUSTOMER
 import com.hendraanggrian.openpss.time.PATTERN_DATE
-import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.Resourced
 import com.hendraanggrian.openpss.ui.invoice.order.AddOffsetDialog
 import com.hendraanggrian.openpss.ui.invoice.order.AddOtherDialog
 import com.hendraanggrian.openpss.ui.invoice.order.AddPlateDialog
 import com.hendraanggrian.openpss.utils.currencyCell
+import com.hendraanggrian.openpss.utils.findById
 import com.hendraanggrian.openpss.utils.getFont
 import com.hendraanggrian.openpss.utils.numberCell
 import com.hendraanggrian.openpss.utils.stringCell
@@ -62,9 +61,10 @@ import ktfx.scene.layout.gap
 import org.joda.time.DateTime
 
 class InvoiceDialog(
-    controller: Controller,
+    resourced: Resourced,
+    employee: Employee,
     private val prefill: Invoice? = null
-) : Dialog<Invoice>(), Resourced by controller {
+) : Dialog<Invoice>(), Resourced by resourced {
 
     private lateinit var plateTable: TableView<Plate>
     private lateinit var offsetTable: TableView<Offset>
@@ -72,7 +72,7 @@ class InvoiceDialog(
     private lateinit var noteArea: TextArea
 
     private val employee: Employee = transaction {
-        findById(Employees, prefill?.employeeId ?: controller.employeeId).single()
+        findById(Employees, prefill?.employeeId ?: employee.id).single()
     }!!
     private val dateTime: DateTime = prefill?.dateTime ?: dbDateTime
     private val customerProperty: ObjectProperty<Customer> = SimpleObjectProperty(when {

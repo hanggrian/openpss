@@ -25,7 +25,6 @@ import org.joda.time.YearMonth
 import org.joda.time.YearMonth.now
 import java.text.DateFormatSymbols.getInstance
 import java.util.Locale
-import java.util.Locale.US
 
 open class MonthBox(prefill: YearMonth = now()) : _HBox() {
 
@@ -41,6 +40,8 @@ open class MonthBox(prefill: YearMonth = now()) : _HBox() {
 
     val valueProperty: ObjectProperty<YearMonth> = SimpleObjectProperty()
     val value: YearMonth by valueProperty
+
+    private var months: Array<String> = getInstance().months
 
     init {
         spacing = 8.0
@@ -58,21 +59,22 @@ open class MonthBox(prefill: YearMonth = now()) : _HBox() {
         }
         monthBox = choiceBox((0 until 12).toObservableList()) {
             value = prefill.monthOfYear - 1
+            converter {
+                toString { months[it!!] }
+                fromString { months.indexOf(it) }
+            }
         }
-        setLocale(US)
         yearBox = choiceBox((YEAR_START until YEAR_END).toObservableList()) {
             value = items.single { it == prefill.year }
         }
         nextButton = button(graphic = ImageView(R.image.btn_next)) {
             onAction {
-                monthBox.selectionModel.run {
-                    monthBox.value = when (monthBox.value) {
-                        11 -> {
-                            yearBox.value = yearBox.value + 1
-                            0
-                        }
-                        else -> monthBox.value + 1
+                monthBox.value = when (monthBox.value) {
+                    11 -> {
+                        yearBox.value = yearBox.value + 1
+                        0
                     }
+                    else -> monthBox.value + 1
                 }
             }
         }
@@ -83,14 +85,15 @@ open class MonthBox(prefill: YearMonth = now()) : _HBox() {
             and yearBox.valueProperty().eq(YEAR_END))
 
         valueProperty.bind(bindingOf(monthBox.selectionModel.selectedIndexProperty(), yearBox.valueProperty()) {
-            YearMonth(yearBox.value, monthBox.selectionModel.selectedIndex + 1)
+            YearMonth(yearBox.value, monthBox.value + 1)
         })
     }
 
-    fun setLocale(locale: Locale) = getInstance(locale).let { symbols ->
+    fun setLocale(locale: Locale) {
+        months = getInstance(locale).months
         monthBox.converter {
-            fromString { symbols.months.indexOf(it) }
-            toString { symbols.months[it!!] }
+            fromString { months.indexOf(it) }
+            toString { months[it!!] }
         }
     }
 }

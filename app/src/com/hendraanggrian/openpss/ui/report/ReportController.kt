@@ -19,7 +19,6 @@ import javafx.fxml.FXML
 import javafx.scene.control.Button
 import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
-import ktfx.application.later
 import ktfx.collections.toObservableList
 import ktfx.coroutines.listener
 import ktfx.coroutines.onAction
@@ -47,6 +46,7 @@ class ReportController : Controller(), Refreshable {
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
         seePaymentsButton.bindToolbarButton()
+        monthBox.setLocale(Locale(LoginFile.LANGUAGE))
         monthBox.valueProperty.listener { refresh() }
         reportTable.onMouseClicked { if (it.isDoubleClick()) seePayments() }
         reportTable.contextMenu { (getString(R.string.see_payments)) { onAction { seePayments() } } }
@@ -54,8 +54,6 @@ class ReportController : Controller(), Refreshable {
         cashColumn.stringCell { currencyConverter.toString(cash) }
         transferColumn.stringCell { currencyConverter.toString(transfer) }
         totalColumn.stringCell { currencyConverter.toString(total) }
-
-        later { monthBox.setLocale(Locale(LoginFile.LANGUAGE)) }
     }
 
     override fun refresh() {

@@ -220,7 +220,7 @@ class InvoiceController : Controller(), Refreshable {
 
     private fun MongoDBSession.reload(invoice: Invoice) = invoiceTable.run {
         items.indexOf(invoice).let { index ->
-            items[items.indexOf(invoice)] = findByDoc(Invoices, invoice).single()
+            items[index] = findByDoc(Invoices, invoice).single()
             selectionModel.select(index)
         }
     }

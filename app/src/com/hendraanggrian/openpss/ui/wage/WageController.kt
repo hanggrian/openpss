@@ -18,11 +18,8 @@ import javafx.scene.Scene
 import javafx.scene.control.Button
 import javafx.scene.control.ChoiceBox
 import javafx.scene.control.Label
-import javafx.scene.control.ListView
 import javafx.scene.control.ScrollPane
-import javafx.scene.control.TitledPane
 import javafx.scene.layout.FlowPane
-import javafx.scene.layout.Pane
 import javafx.stage.FileChooser.ExtensionFilter
 import javafx.stage.Modality.APPLICATION_MODAL
 import kotlinx.coroutines.experimental.launch
@@ -160,9 +157,6 @@ class WageController : Controller() {
     /** As attendees are populated, process button need to be rebinded according to new requirements. */
     private fun bindProcessButton() = processButton.disableProperty().bind(flowPane.children.isEmpty or
         booleanBindingOf(flowPane.children, *flowPane.children
-            .map { (it as TitledPane).content }
-            .map { (it as Pane).children[1] as ListView<*> }
-            .map { it.items }.toTypedArray()) {
-            attendees.any { it.attendances.size % 2 != 0 }
-        })
+            .map { (it as AttendeePane).attendanceList.items }
+            .toTypedArray()) { attendees.any { it.attendances.size % 2 != 0 } })
 }

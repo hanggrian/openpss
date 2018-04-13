@@ -34,7 +34,6 @@ import ktfx.coroutines.listener
 import ktfx.coroutines.onAction
 import ktfx.coroutines.onKeyPressed
 import ktfx.layouts.LayoutDsl
-import ktfx.layouts.button
 import ktfx.layouts.checkBox
 import ktfx.layouts.contextMenu
 import ktfx.layouts.gridPane
@@ -60,7 +59,7 @@ class AttendeePane(
     lateinit var deleteMenu: MenuItem
     lateinit var deleteOthersMenu: MenuItem
     lateinit var deleteToTheRightMenu: MenuItem
-    private lateinit var attendanceList: ListView<DateTime>
+    lateinit var attendanceList: ListView<DateTime>
 
     init {
         isCollapsible = false
@@ -138,8 +137,9 @@ class AttendeePane(
                         items.remove(selectionModel.selectedItem)
                 }
             }
-            button(getString(R.string.add)) {
-                maxWidth = Double.MAX_VALUE
+        }
+        contextMenu {
+            (getString(R.string.add)) {
                 onAction {
                     DateTimeDialog(this@AttendeePane, R.string.add_record, now().run { minusMinutes(minuteOfHour) })
                         .showAndWait()
@@ -149,8 +149,6 @@ class AttendeePane(
                         }
                 }
             }
-        }
-        contextMenu {
             (getString(R.string.clone)) {
                 bindDisable()
                 onAction {

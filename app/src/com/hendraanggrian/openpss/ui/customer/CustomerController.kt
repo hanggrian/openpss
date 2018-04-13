@@ -180,7 +180,7 @@ class CustomerController : Controller(), Refreshable {
 
     private fun MongoDBSession.reload(customer: Customer) = customerList.run {
         items.indexOf(customer).let { index ->
-            items[items.indexOf(customer)] = findByDoc(Customers, customer).single()
+            items[index] = findByDoc(Customers, customer).single()
             selectionModel.select(index)
         }
     }

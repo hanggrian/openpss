@@ -5,7 +5,7 @@ import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.db.schemas.Employee.Companion.DEFAULT_PASSWORD
 import com.hendraanggrian.openpss.db.schemas.Employees
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.ui.AddUserDialog
+import com.hendraanggrian.openpss.ui.UserDialog
 import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.main.ResetPasswordDialog
@@ -49,7 +49,7 @@ class EmployeeController : Controller(), Refreshable {
         employeeTable.items = transaction { Employees.find().toMutableObservableList() }
     }
 
-    @FXML fun addEmployee() = AddUserDialog(this, R.string.add_employee, R.image.ic_employee).showAndWait().ifPresent {
+    @FXML fun addEmployee() = UserDialog(this, R.string.add_employee, R.image.ic_employee).showAndWait().ifPresent {
         val employee = Employee.new(it)
         employee.id = transaction { Employees.insert(employee) }!!
         employeeTable.items.add(employee)

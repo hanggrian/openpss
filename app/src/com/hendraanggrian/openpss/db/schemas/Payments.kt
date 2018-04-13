@@ -1,11 +1,9 @@
 package com.hendraanggrian.openpss.db.schemas
 
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.db.DateTimed
 import com.hendraanggrian.openpss.db.Document
 import com.hendraanggrian.openpss.db.dbDateTime
-import com.hendraanggrian.openpss.db.schemas.PaymentMethod.CASH
-import com.hendraanggrian.openpss.db.schemas.PaymentMethod.TRANSFER
-import com.hendraanggrian.openpss.db.DateTimed
 import com.hendraanggrian.openpss.ui.Resourced
 import kotlinx.nosql.Id
 import kotlinx.nosql.dateTime
@@ -33,17 +31,6 @@ data class Payment(
     val transfer: String?
 ) : Document<Payments>, DateTimed {
 
-    override lateinit var id: Id<String, Payments>
-
-    val method: PaymentMethod get() = if (transfer == null) CASH else TRANSFER
-
-    fun getMethodDisplayText(resourced: Resourced): String = method.getDisplayText(resourced).let {
-        return when (method) {
-            CASH -> it
-            else -> "$it - $transfer"
-        }
-    }
-
     companion object {
         fun new(
             invoiceId: Id<String, Invoices>,
@@ -52,15 +39,26 @@ data class Payment(
             transfer: String?
         ): Payment = Payment(invoiceId, employeeId, dbDateTime, value, transfer)
     }
-}
 
-enum class PaymentMethod {
-    CASH, TRANSFER;
+    override lateinit var id: Id<String, Payments>
 
-    fun getDisplayText(resourced: Resourced): String = resourced.getString(when (this) {
-        CASH -> R.string.cash
-        else -> R.string.transfer
-    })
+    val method: Method get() = if (transfer == null) Method.CASH else Method.TRANSFER
+
+    fun getMethodText(resourced: Resourced): String = method.getText(resourced).let {
+        return when (method) {
+            Method.CASH -> it
+            else -> "$it - $transfer"
+        }
+    }
+
+    enum class Method {
+        CASH, TRANSFER;
+
+        fun getText(resourced: Resourced): String = resourced.getString(when (this) {
+            CASH -> R.string.cash
+            else -> R.string.transfer
+        })
+    }
 }
 
 @Suppress("NOTHING_TO_INLINE")

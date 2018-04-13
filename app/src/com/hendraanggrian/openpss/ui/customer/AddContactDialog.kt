@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.ui.customer
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.db.schemas.Contact
+import com.hendraanggrian.openpss.db.schemas.Customer.Contact
 import com.hendraanggrian.openpss.ui.Resourced
 import javafx.scene.control.ButtonType.OK
 import javafx.scene.control.ChoiceBox

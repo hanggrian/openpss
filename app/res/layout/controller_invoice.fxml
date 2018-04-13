@@ -26,17 +26,32 @@
             </graphic>
         </Button>
         <Space/>
-        <Button mnemonicParsing="false" fx:id="addPaymentButton" onAction="#addPayment" text="%add_payment">
-            <graphic>
-                <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/toolbar_add_payment.png"/>
-                </ImageView>
-            </graphic>
-        </Button>
         <Button mnemonicParsing="false" fx:id="seeInvoiceButton" onAction="#seeInvoice" text="%see_invoice">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
                     <Image url="@/image/toolbar_invoice.png"/>
+                </ImageView>
+            </graphic>
+        </Button>
+        <Button mnemonicParsing="false" fx:id="editInvoiceButton" onAction="#editInvoice" text="%edit_invoice">
+            <graphic>
+                <ImageView pickOnBounds="true" preserveRatio="true">
+                    <Image url="@/image/toolbar_edit.png"/>
+                </ImageView>
+            </graphic>
+        </Button>
+        <Button mnemonicParsing="false" fx:id="deleteInvoiceButton" onAction="#deleteInvoice" text="%delete_invoice">
+            <graphic>
+                <ImageView pickOnBounds="true" preserveRatio="true">
+                    <Image url="@/image/toolbar_delete2.png"/>
+                </ImageView>
+            </graphic>
+        </Button>
+        <Space/>
+        <Button mnemonicParsing="false" fx:id="addPaymentButton" onAction="#addPayment" text="%add_payment">
+            <graphic>
+                <ImageView pickOnBounds="true" preserveRatio="true">
+                    <Image url="@/image/toolbar_add_payment.png"/>
                 </ImageView>
             </graphic>
         </Button>
@@ -56,8 +71,8 @@
             </graphic>
         </Button>
     </ToolBar>
-    <SplitPane orientation="VERTICAL" dividerPositions="0.7" VBox.vgrow="ALWAYS">
-        <VBox>
+    <SplitPane fx:id="splitPane" orientation="VERTICAL" dividerPositions="0.8" VBox.vgrow="ALWAYS">
+        <VBox fx:id="invoicePane">
             <ToolBar>
                 <SplitMenuButton mnemonicParsing="false" fx:id="customerButton" onAction="#selectCustomer"
                                  text="%select_customer">
@@ -86,7 +101,7 @@
             </ToolBar>
             <Pagination fx:id="invoicePagination" style="-fx-page-information-alignment: right;" VBox.vgrow="ALWAYS"/>
         </VBox>
-        <AnchorPane>
+        <AnchorPane fx:id="paymentPane">
             <TableView fx:id="paymentTable" prefHeight="-NaN" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0"
                        AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
                 <columns>

@@ -5,9 +5,9 @@ import com.hendraanggrian.openpss.currencyConverter
 import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.db.schemas.Payment
-import com.hendraanggrian.openpss.db.schemas.PaymentMethod
-import com.hendraanggrian.openpss.db.schemas.PaymentMethod.CASH
-import com.hendraanggrian.openpss.db.schemas.PaymentMethod.values
+import com.hendraanggrian.openpss.db.schemas.Payment.Method
+import com.hendraanggrian.openpss.db.schemas.Payment.Method.CASH
+import com.hendraanggrian.openpss.db.schemas.Payment.Method.values
 import com.hendraanggrian.openpss.db.schemas.calculateDue
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.scene.control.DoubleField
@@ -51,7 +51,7 @@ class AddPaymentDialog(
 ) : Dialog<Payment>(), Resourced by resourced {
 
     private lateinit var valueField: DoubleField
-    private lateinit var methodChoice: ChoiceBox<PaymentMethod>
+    private lateinit var methodChoice: ChoiceBox<Method>
     private lateinit var transferField: TextField
     private val receivable = transaction { calculateDue(invoice) }!!
 
@@ -94,7 +94,7 @@ class AddPaymentDialog(
             } row 3 col 1 colSpans 2
             label(getString(R.string.payment_method)) row 6 col 0
             methodChoice = choiceBox(values().toObservableList()) {
-                converter { toString { it!!.getDisplayText(this@AddPaymentDialog) } }
+                converter { toString { it!!.getText(this@AddPaymentDialog) } }
             } row 6 col 1 colSpans 2
             label(getString(R.string.transfer_reference)) { bindDisable() } row 7 col 0
             transferField = textField { bindDisable() } row 7 col 1 colSpans 2

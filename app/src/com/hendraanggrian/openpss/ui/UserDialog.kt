@@ -14,16 +14,18 @@ import ktfx.scene.control.graphicIcon
 import ktfx.scene.control.headerTitle
 import ktfx.scene.control.warningAlert
 
-class AddUserDialog(
+class UserDialog(
     resourced: Resourced,
     headerId: String,
-    graphicId: String
+    graphicId: String,
+    prefill: String = ""
 ) : TextInputDialog(), Resourced by resourced {
 
     init {
         headerTitle = getString(headerId)
         graphicIcon = ImageView(graphicId)
         contentText = getString(R.string.name)
+        editor.text = prefill
         dialogPane.lookupButton(OK).disableProperty().bind(booleanBindingOf(editor.textProperty()) {
             !editor.text.isName()
         })

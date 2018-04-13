@@ -18,11 +18,15 @@ class ScheduleController : Controller(), Refreshable {
     @FXML lateinit var typeChoice: ChoiceBox<String>
     @FXML lateinit var scheduleTable: TableView<Schedule>
     @FXML lateinit var typeColumn: TableColumn<Schedule, String>
+    @FXML lateinit var employeeColumn: TableColumn<Schedule, String>
+    @FXML lateinit var customerColumn: TableColumn<Schedule, String>
     @FXML lateinit var titleColumn: TableColumn<Schedule, String>
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
         typeColumn.stringCell { type }
+        employeeColumn.stringCell { employee }
+        customerColumn.stringCell { customer }
         titleColumn.stringCell { title }
     }
 

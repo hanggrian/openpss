@@ -17,7 +17,7 @@ object Customers : NamedDocumentSchema<Customer>("customers", Customer::class) {
     val since = date("since")
     val contacts = ContactColumn()
 
-    class ContactColumn : ListColumn<Contact, Customers>("contacts", Contact::class) {
+    class ContactColumn : ListColumn<Customer.Contact, Customers>("contacts", Customer.Contact::class) {
         val type = string("type")
         val value = string("value")
     }
@@ -30,23 +30,23 @@ data class Customer(
     var contacts: List<Contact>
 ) : NamedDocument<Customers> {
 
+    companion object {
+        fun new(name: String): Customer = Customer(name, "", dbDate, listOf())
+    }
+
     override lateinit var id: Id<String, Customers>
 
     override fun toString(): String = name
 
-    companion object {
-        fun new(name: String): Customer = Customer(name, "", dbDate, listOf())
-    }
-}
+    data class Contact(
+        override var type: String,
+        var value: String
+    ) : Typed {
+        companion object {
+            private const val TYPE_EMAIL = "email"
+            private const val TYPE_PHONE = "phone"
 
-data class Contact(
-    override var type: String,
-    var value: String
-) : Typed {
-    companion object {
-        private const val TYPE_EMAIL = "email"
-        private const val TYPE_PHONE = "phone"
-
-        fun listTypes(): ObservableList<String> = observableListOf(TYPE_EMAIL, TYPE_PHONE)
+            fun listTypes(): ObservableList<String> = observableListOf(TYPE_EMAIL, TYPE_PHONE)
+        }
     }
 }

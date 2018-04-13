@@ -1,8 +1,8 @@
 package com.hendraanggrian.openpss.ui.report
 
 import com.hendraanggrian.openpss.db.schemas.Payment
-import com.hendraanggrian.openpss.db.schemas.PaymentMethod.CASH
-import com.hendraanggrian.openpss.db.schemas.PaymentMethod.TRANSFER
+import com.hendraanggrian.openpss.db.schemas.Payment.Method.CASH
+import com.hendraanggrian.openpss.db.schemas.Payment.Method.TRANSFER
 import javafx.collections.ObservableList
 import ktfx.collections.toObservableList
 import org.joda.time.LocalDate

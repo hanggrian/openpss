@@ -22,6 +22,8 @@
     <TableView fx:id="scheduleTable" VBox.vgrow="ALWAYS">
         <columns>
             <TableColumn fx:id="typeColumn" text="%type"/>
+            <TableColumn fx:id="employeeColumn" text="%employee"/>
+            <TableColumn fx:id="customerColumn" text="%customer"/>
             <TableColumn fx:id="titleColumn" text="%title"/>
         </columns>
         <columnResizePolicy>

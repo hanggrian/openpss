@@ -39,9 +39,11 @@ import javafx.scene.control.MenuItem
 import javafx.scene.control.Pagination
 import javafx.scene.control.RadioButton
 import javafx.scene.control.SplitMenuButton
+import javafx.scene.control.SplitPane
 import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
 import javafx.scene.control.TableView.CONSTRAINED_RESIZE_POLICY
+import javafx.scene.layout.Pane
 import javafx.stage.Modality.APPLICATION_MODAL
 import javafx.util.Callback
 import kotlinx.nosql.equal
@@ -50,16 +52,12 @@ import kotlinx.nosql.update
 import ktfx.application.later
 import ktfx.beans.binding.bindingOf
 import ktfx.beans.binding.stringBindingOf
-import ktfx.beans.property.toProperty
-import ktfx.beans.value.or
+import ktfx.beans.binding.times
 import ktfx.collections.emptyObservableList
 import ktfx.collections.toMutableObservableList
 import ktfx.collections.toObservableList
-import ktfx.coroutines.onAction
 import ktfx.coroutines.onMouseClicked
 import ktfx.layouts.columns
-import ktfx.layouts.contextMenu
-import ktfx.layouts.separatorMenuItem
 import ktfx.layouts.tableView
 import ktfx.scene.input.isDoubleClick
 import ktfx.stage.stage
@@ -69,8 +67,9 @@ import kotlin.math.ceil
 
 class InvoiceController : Controller(), Refreshable {
 
-    @FXML lateinit var addPaymentButton: Button
     @FXML lateinit var seeInvoiceButton: Button
+    @FXML lateinit var editInvoiceButton: Button
+    @FXML lateinit var addPaymentButton: Button
     @FXML lateinit var customerButton: SplitMenuButton
     @FXML lateinit var customerButtonItem: MenuItem
     @FXML lateinit var countBox: CountBox
@@ -78,6 +77,9 @@ class InvoiceController : Controller(), Refreshable {
     @FXML lateinit var allDateRadio: RadioButton
     @FXML lateinit var pickDateRadio: RadioButton
     @FXML lateinit var dateBox: DateBox
+    @FXML lateinit var splitPane: SplitPane
+    @FXML lateinit var invoicePane: Pane
+    @FXML lateinit var paymentPane: Pane
     @FXML lateinit var invoicePagination: Pagination
     @FXML lateinit var paymentTable: TableView<Payment>
     @FXML lateinit var paymentDateTimeColumn: TableColumn<Payment, String>
@@ -91,6 +93,8 @@ class InvoiceController : Controller(), Refreshable {
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
+        invoicePane.minHeightProperty().bind(splitPane.heightProperty() * 0.5)
+        paymentPane.minHeightProperty().bind(splitPane.heightProperty() * 0.2)
 
         customerButton.textProperty().bind(stringBindingOf(customerProperty) {
             customerProperty.value?.toString() ?: getString(R.string.search_customer)
@@ -102,11 +106,10 @@ class InvoiceController : Controller(), Refreshable {
         statusChoice.selectionModel.selectFirst()
         pickDateRadio.graphic.disableProperty().bind(!pickDateRadio.selectedProperty())
 
-        paymentTable.contextMenu { (getString(R.string.add)) { onAction { addPayment() } } }
         paymentDateTimeColumn.stringCell { dateTime.toString(PATTERN_DATETIME_EXTENDED) }
         paymentEmployeeColumn.stringCell { transaction { findById(Employees, employeeId).single() }!! }
         paymentValueColumn.currencyCell { value }
-        paymentMethodColumn.stringCell { getMethodDisplayText(this@InvoiceController) }
+        paymentMethodColumn.stringCell { getMethodText(this@InvoiceController) }
     }
 
     override fun refresh() = invoicePagination.pageFactoryProperty()
@@ -130,30 +133,6 @@ class InvoiceController : Controller(), Refreshable {
                         getString(R.string.done)<Boolean> { doneCell { done } }
                     }
                     onMouseClicked { if (it.isDoubleClick()) seeInvoice() }
-                    contextMenu {
-                        (getString(R.string.add)) { onAction { addInvoice() } }
-                        separatorMenuItem()
-                        (getString(R.string.see_invoice)) { onAction { seeInvoice() } }
-                        (getString(R.string.edit)) {
-                            bindDisable()
-                            onAction {
-                                InvoiceDialog(this@InvoiceController, _employee, invoice!!)
-                                    .showAndWait()
-                            }
-                        }
-                        (getString(R.string.delete)) {
-                            bindDisable()
-                            onAction {
-                                yesNoAlert {
-                                    transaction {
-                                        findByDoc(Invoices, invoice!!).remove()
-                                        Payments.find { invoiceId.equal(invoice!!.id) }.remove()
-                                    }
-                                    invoiceTable.items.remove(invoice)
-                                }
-                            }
-                        }
-                    }
                     later {
                         transaction {
                             val invoices = Invoices.find {
@@ -171,8 +150,9 @@ class InvoiceController : Controller(), Refreshable {
                         }
                     }
                 }
-                addPaymentButton.bindDisable()
                 seeInvoiceButton.bindDisable()
+                editInvoiceButton.bindDisable()
+                addPaymentButton.bindDisable()
                 paymentTable.itemsProperty().bind(bindingOf(invoiceTable.selectionModel.selectedItemProperty()) {
                     if (invoice == null) emptyObservableList()
                     else transaction { Payments.find { invoiceId.equal(invoice!!.id) }.toObservableList() }!!
@@ -190,6 +170,21 @@ class InvoiceController : Controller(), Refreshable {
         }
     }
 
+    @FXML fun seeInvoice() = SeeInvoiceDialog(this, invoice!!).show()
+
+    @FXML fun editInvoice() = InvoiceDialog(this@InvoiceController, _employee, invoice!!)
+        .showAndWait()
+        .ifPresent {
+        }
+
+    @FXML fun deleteInvoice() = yesNoAlert {
+        transaction {
+            findByDoc(Invoices, invoice!!).remove()
+            Payments.find { invoiceId.equal(invoice!!.id) }.remove()
+        }
+        invoiceTable.items.remove(invoice)
+    }
+
     @FXML fun addPayment() = AddPaymentDialog(this, _employee, invoice!!).showAndWait().ifPresent {
         transaction {
             it.id = Payments.insert(it)
@@ -198,8 +193,6 @@ class InvoiceController : Controller(), Refreshable {
             reload(invoice!!)
         }
     }
-
-    @FXML fun seeInvoice() = SeeInvoiceDialog(this, invoice!!).show()
 
     @FXML fun selectCustomer() = SearchCustomerDialog(this).showAndWait().ifPresent { customerProperty.set(it) }
 
@@ -224,10 +217,6 @@ class InvoiceController : Controller(), Refreshable {
     private inline val invoice: Invoice? get() = invoiceTable.selectionModel.selectedItem
 
     private fun Button.bindDisable() = disableProperty().bind(invoiceTable.selectionModel.selectedItemProperty().isNull)
-
-    private fun MenuItem.bindDisable() = later {
-        disableProperty().bind(invoiceTable.selectionModel.selectedItemProperty().isNull or !isFullAccess.toProperty())
-    }
 
     private fun MongoDBSession.reload(invoice: Invoice) = invoiceTable.run {
         items.indexOf(invoice).let { index ->

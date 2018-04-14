@@ -17,6 +17,7 @@ import com.hendraanggrian.openpss.utils.isNotEmpty
 import com.hendraanggrian.openpss.utils.matches
 import com.hendraanggrian.openpss.utils.stringCell
 import com.hendraanggrian.openpss.utils.yesNoAlert
+import javafx.beans.binding.BooleanBinding
 import javafx.fxml.FXML
 import javafx.scene.Node
 import javafx.scene.control.Button
@@ -99,12 +100,11 @@ class CustomerController : Controller(), Refreshable {
                     }
                 }
                 later {
-                    editNameButton.bindToolbarButton(true)
-                    editNoteButton.bindToolbarButton(false)
-                    addContactButton.bindToolbarButton(false)
-                    deleteContactButton.disableProperty()
-                        .bind(contactTable.selectionModel.selectedItemProperty().isNull or
-                            !isFullAccess.toReadOnlyProperty())
+                    editNameButton.disableProperty().bind(customerSelectedBinding or !isFullAccess.toReadOnlyProperty())
+                    editNoteButton.disableProperty().bind(customerSelectedBinding)
+                    addContactButton.disableProperty().bind(customerSelectedBinding)
+                    deleteContactButton.disableProperty().bind(contactSelectedBinding or
+                        !isFullAccess.toReadOnlyProperty())
                 }
                 nameLabel.bindLabel { customer?.name.orEmpty() }
                 sinceLabel.bindLabel { customer?.since?.toString(PATTERN_DATE).orEmpty() }
@@ -165,15 +165,13 @@ class CustomerController : Controller(), Refreshable {
 
     private inline val customer: Customer? get() = customerList.selectionModel.selectedItem
 
+    private inline val customerSelectedBinding: BooleanBinding
+        get() = customerList.selectionModel.selectedItemProperty().isNull
+
     private inline val contact: Contact? get() = contactTable.selectionModel.selectedItem
 
-    private fun Button.bindToolbarButton(requireFullAccess: Boolean) {
-        val binding = customerList.selectionModel.selectedItemProperty().isNull
-        disableProperty().bind(when {
-            requireFullAccess -> binding or !isFullAccess.toReadOnlyProperty()
-            else -> binding
-        })
-    }
+    private inline val contactSelectedBinding: BooleanBinding
+        get() = contactTable.selectionModel.selectedItemProperty().isNull
 
     private fun Label.bindLabel(target: () -> String) = textProperty()
         .bind(stringBindingOf(customerList.selectionModel.selectedItemProperty()) { target() })

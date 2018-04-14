@@ -8,10 +8,10 @@ import com.hendraanggrian.openpss.scene.layout.MonthBox
 import com.hendraanggrian.openpss.time.PATTERN_DATE
 import com.hendraanggrian.openpss.time.toJava
 import com.hendraanggrian.openpss.ui.FinancialController
-import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.main.MainController
 import com.hendraanggrian.openpss.utils.matches
 import com.hendraanggrian.openpss.utils.stringCell
+import javafx.beans.binding.BooleanBinding
 import javafx.collections.ObservableList
 import javafx.fxml.FXML
 import javafx.scene.control.Button
@@ -24,7 +24,7 @@ import java.net.URL
 import java.util.Locale
 import java.util.ResourceBundle
 
-class ReportController : FinancialController<Report>(), Refreshable {
+class ReportController : FinancialController<Report>() {
 
     companion object {
         const val EXTRA_MAIN_CONTROLLER = "EXTRA_MAIN_CONTROLLER"
@@ -40,7 +40,7 @@ class ReportController : FinancialController<Report>(), Refreshable {
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
-        seePaymentsButton.bindToolbarButton()
+        seePaymentsButton.disableProperty().bind(reportSelectedBinding)
         monthBox.setLocale(Locale(LoginFile.LANGUAGE))
         monthBox.valueProperty.listener { refresh() }
         reportTable.onMouseClicked { if (it.isDoubleClick()) seePayments() }
@@ -64,8 +64,8 @@ class ReportController : FinancialController<Report>(), Refreshable {
         it.select(it.paymentController) { dateBox.picker.value = report.date.toJava() }
     }
 
-    private fun Button.bindToolbarButton() = disableProperty()
-        .bind(reportTable.selectionModel.selectedItemProperty().isNull)
-
     private inline val report: Report get() = reportTable.selectionModel.selectedItem
+
+    private inline val reportSelectedBinding: BooleanBinding
+        get() = reportTable.selectionModel.selectedItemProperty().isNull
 }

@@ -57,7 +57,7 @@ class WageController : Controller() {
         readerChoiceBox.items = Reader.listAll()
         if (readerChoiceBox.items.isNotEmpty()) readerChoiceBox.selectionModel.selectFirst()
 
-        disableRecessButton.bindToolbarButton()
+        disableRecessButton.disableProperty().bind(flowPane.children.isEmpty)
         employeeCountLabel.textProperty().bind(stringBindingOf(flowPane.children) {
             "${flowPane.children.size} ${getString(R.string.employee)}"
         })
@@ -65,8 +65,8 @@ class WageController : Controller() {
         processButton.disableProperty().bind(flowPane.children.isEmpty)
 
         if (DEBUG) {
-            fileField.text = "/Users/hendraanggrian/Downloads/Absen 2-24-18.xlsx"
-            // readButton.fire()
+            fileField.text = "/Users/hendraanggrian/Downloads/Absen 4-13-18.xlsx"
+            readButton.fire()
         }
         later { flowPane.prefWrapLengthProperty().bind(fileField.scene.widthProperty()) }
     }
@@ -151,8 +151,6 @@ class WageController : Controller() {
     private inline val attendeePanes: List<AttendeePane> get() = flowPane.children.map { (it as AttendeePane) }
 
     private inline val attendees: List<Attendee> get() = attendeePanes.map { it.attendee }
-
-    private fun Button.bindToolbarButton() = disableProperty().bind(flowPane.children.isEmpty)
 
     /** As attendees are populated, process button need to be rebinded according to new requirements. */
     private fun bindProcessButton() = processButton.disableProperty().bind(flowPane.children.isEmpty or

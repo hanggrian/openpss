@@ -7,7 +7,7 @@ import javafx.scene.control.Dialog
 import javafx.scene.control.TextArea
 import javafx.scene.image.ImageView
 import ktfx.beans.value.isBlank
-import ktfx.layouts.hbox
+import ktfx.layouts.gridPane
 import ktfx.layouts.textArea
 import ktfx.scene.control.cancelButton
 import ktfx.scene.control.graphicIcon
@@ -21,11 +21,13 @@ class EditNoteDialog(resourced: Resourced, prefill: String) : Dialog<String>(), 
     init {
         headerTitle = getString(R.string.edit_note)
         graphicIcon = ImageView(R.image.ic_note)
-        dialogPane.content = hbox {
+        dialogPane.content = gridPane {
             noteArea = textArea { text = prefill } marginAll 8.0
         }
         cancelButton()
-        okButton { disableProperty().bind(noteArea.textProperty().isBlank()) }
+        okButton {
+            disableProperty().bind(noteArea.textProperty().isBlank())
+        }
         setResultConverter {
             when (it) {
                 CANCEL -> null

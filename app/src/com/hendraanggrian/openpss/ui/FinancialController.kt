@@ -11,7 +11,7 @@ import ktfx.beans.binding.stringBindingOf
 import java.net.URL
 import java.util.ResourceBundle
 
-abstract class FinancialController<T> : Controller() {
+abstract class FinancialController<T> : Controller(), Refreshable {
 
     abstract val table: TableView<T>
 

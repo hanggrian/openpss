@@ -5,13 +5,14 @@ import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.db.schemas.Employee.Companion.DEFAULT_PASSWORD
 import com.hendraanggrian.openpss.db.schemas.Employees
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.ui.UserDialog
 import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.Refreshable
+import com.hendraanggrian.openpss.ui.UserDialog
 import com.hendraanggrian.openpss.ui.main.ResetPasswordDialog
-import com.hendraanggrian.openpss.utils.yesNoAlert
 import com.hendraanggrian.openpss.utils.doneCell
 import com.hendraanggrian.openpss.utils.stringCell
+import com.hendraanggrian.openpss.utils.yesNoAlert
+import javafx.beans.binding.BooleanBinding
 import javafx.fxml.FXML
 import javafx.scene.control.Button
 import javafx.scene.control.TableColumn
@@ -37,10 +38,9 @@ class EmployeeController : Controller(), Refreshable {
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
-        arrayOf(fullAccessButton, resetPasswordButton, deleteButton).forEach {
-            it.disableProperty().bind(employeeTable.selectionModel.selectedItemProperty().isNull)
-        }
-
+        fullAccessButton.disableProperty().bind(employeeSelectedBinding)
+        resetPasswordButton.disableProperty().bind(employeeSelectedBinding)
+        deleteButton.disableProperty().bind(employeeSelectedBinding)
         nameColumn.stringCell { name }
         fullAccessColumn.doneCell(128) { fullAccess }
     }
@@ -81,7 +81,7 @@ class EmployeeController : Controller(), Refreshable {
             infoAlert(getString(R.string.please_restart)).showAndWait().ifPresent { exit() }
         }
     ) = yesNoAlert {
-        employeeTable.selectionModel.selectedItem.let { employee ->
+        employee!!.let { employee ->
             transaction { confirmedAction(employee) }
             when {
                 employee.name != employeeName -> refresh()
@@ -89,4 +89,9 @@ class EmployeeController : Controller(), Refreshable {
             }
         }
     }
+
+    private val employee: Employee? get() = employeeTable.selectionModel.selectedItem
+
+    private val employeeSelectedBinding: BooleanBinding
+        get() = employeeTable.selectionModel.selectedItemProperty().isNull
 }

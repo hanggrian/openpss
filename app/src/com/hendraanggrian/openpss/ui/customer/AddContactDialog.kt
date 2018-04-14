@@ -37,9 +37,13 @@ class AddContactDialog(resourced: Resourced) : Dialog<Contact>(), Resourced by r
         }
         cancelButton()
         okButton {
-            disableProperty().bind(typeChoice.valueProperty().isNull or
-                contactField.textProperty().isBlank())
+            disableProperty().bind(typeChoice.valueProperty().isNull or contactField.textProperty().isBlank())
         }
-        setResultConverter { if (it == OK) Contact(typeChoice.value, contactField.text) else null }
+        setResultConverter {
+            when (it) {
+                OK -> Contact(typeChoice.value, contactField.text)
+                else -> null
+            }
+        }
     }
 }

@@ -10,11 +10,11 @@ import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.scene.layout.DateBox
 import com.hendraanggrian.openpss.time.PATTERN_TIME
 import com.hendraanggrian.openpss.ui.FinancialController
-import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.SeeInvoiceDialog
 import com.hendraanggrian.openpss.utils.currencyCell
 import com.hendraanggrian.openpss.utils.findById
 import com.hendraanggrian.openpss.utils.stringCell
+import javafx.beans.binding.BooleanBinding
 import javafx.collections.ObservableList
 import javafx.fxml.FXML
 import javafx.scene.control.Button
@@ -27,7 +27,7 @@ import ktfx.scene.input.isDoubleClick
 import java.net.URL
 import java.util.ResourceBundle
 
-class PaymentController : FinancialController<Payment>(), Refreshable {
+class PaymentController : FinancialController<Payment>() {
 
     @FXML lateinit var seeInvoiceButton: Button
     @FXML lateinit var dateBox: DateBox
@@ -40,10 +40,10 @@ class PaymentController : FinancialController<Payment>(), Refreshable {
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
-        seeInvoiceButton.bindToolbarButton()
+        seeInvoiceButton.disableProperty().bind(paymentSelectedBinding)
         dateBox.valueProperty.listener { refresh() }
         paymentTable.onMouseClicked { if (it.isDoubleClick()) seeInvoice() }
-        noColumn.stringCell { id }
+        noColumn.stringCell { transaction { findById(Invoices, invoiceId).single().no }!! }
         timeColumn.stringCell { dateTime.toString(PATTERN_TIME) }
         employeeColumn.stringCell { transaction { findById(Employees, employeeId).single() }!! }
         valueColumn.currencyCell { value }
@@ -67,8 +67,8 @@ class PaymentController : FinancialController<Payment>(), Refreshable {
     @FXML fun seeInvoice() = SeeInvoiceDialog(this, transaction { findById(Invoices, payment.invoiceId).single() }!!)
         .show()
 
-    private fun Button.bindToolbarButton() = disableProperty()
-        .bind(paymentTable.selectionModel.selectedItemProperty().isNull)
-
     private inline val payment: Payment get() = paymentTable.selectionModel.selectedItem
+
+    private inline val paymentSelectedBinding: BooleanBinding
+        get() = paymentTable.selectionModel.selectedItemProperty().isNull
 }

@@ -27,6 +27,7 @@ import com.hendraanggrian.openpss.utils.matches
 import com.hendraanggrian.openpss.utils.pane
 import com.hendraanggrian.openpss.utils.stringCell
 import com.hendraanggrian.openpss.utils.yesNoAlert
+import javafx.beans.binding.BooleanBinding
 import javafx.beans.property.SimpleObjectProperty
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
@@ -53,6 +54,8 @@ import ktfx.application.later
 import ktfx.beans.binding.bindingOf
 import ktfx.beans.binding.stringBindingOf
 import ktfx.beans.binding.times
+import ktfx.beans.property.toReadOnlyProperty
+import ktfx.beans.value.or
 import ktfx.collections.emptyObservableList
 import ktfx.collections.toMutableObservableList
 import ktfx.collections.toObservableList
@@ -69,6 +72,7 @@ class InvoiceController : Controller(), Refreshable {
 
     @FXML lateinit var seeInvoiceButton: Button
     @FXML lateinit var editInvoiceButton: Button
+    @FXML lateinit var deleteInvoiceButton: Button
     @FXML lateinit var addPaymentButton: Button
     @FXML lateinit var customerButton: SplitMenuButton
     @FXML lateinit var customerButtonItem: MenuItem
@@ -150,9 +154,12 @@ class InvoiceController : Controller(), Refreshable {
                         }
                     }
                 }
-                seeInvoiceButton.bindDisable()
-                editInvoiceButton.bindDisable()
-                addPaymentButton.bindDisable()
+                later {
+                    seeInvoiceButton.disableProperty().bind(invoiceSelectedBinding)
+                    editInvoiceButton.disableProperty().bind(invoiceSelectedBinding or !isFullAccess.toReadOnlyProperty())
+                    deleteInvoiceButton.disableProperty().bind(invoiceSelectedBinding or !isFullAccess.toReadOnlyProperty())
+                    addPaymentButton.disableProperty().bind(invoiceSelectedBinding)
+                }
                 paymentTable.itemsProperty().bind(bindingOf(invoiceTable.selectionModel.selectedItemProperty()) {
                     if (invoice == null) emptyObservableList()
                     else transaction { Payments.find { invoiceId.equal(invoice!!.id) }.toObservableList() }!!
@@ -188,8 +195,7 @@ class InvoiceController : Controller(), Refreshable {
     @FXML fun addPayment() = AddPaymentDialog(this, _employee, invoice!!).showAndWait().ifPresent {
         transaction {
             it.id = Payments.insert(it)
-            if (calculateDue(invoice!!) == 0.0)
-                findByDoc(Invoices, invoice!!).projection { paid }.update(true)
+            if (calculateDue(invoice!!) == 0.0) findByDoc(Invoices, invoice!!).projection { paid }.update(true)
             reload(invoice!!)
         }
     }
@@ -216,7 +222,8 @@ class InvoiceController : Controller(), Refreshable {
 
     private inline val invoice: Invoice? get() = invoiceTable.selectionModel.selectedItem
 
-    private fun Button.bindDisable() = disableProperty().bind(invoiceTable.selectionModel.selectedItemProperty().isNull)
+    private inline val invoiceSelectedBinding: BooleanBinding
+        get() = invoiceTable.selectionModel.selectedItemProperty().isNull
 
     private fun MongoDBSession.reload(invoice: Invoice) = invoiceTable.run {
         items.indexOf(invoice).let { index ->

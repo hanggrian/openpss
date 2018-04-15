@@ -43,7 +43,6 @@ import ktfx.collections.isEmpty
 import ktfx.coroutines.onAction
 import ktfx.coroutines.onKeyPressed
 import ktfx.layouts.LayoutManager
-import ktfx.layouts.TableColumnsBuilder
 import ktfx.layouts.button
 import ktfx.layouts.columns
 import ktfx.layouts.contextMenu
@@ -79,7 +78,7 @@ class InvoiceDialog(
         isEdit() -> transaction { findById(Customers, prefill!!.customerId).single() }
         else -> null
     })
-    private val totalProperty: DoubleProperty = SimpleDoubleProperty(prefill?.total ?: 0.0)
+    private val totalProperty: DoubleProperty = SimpleDoubleProperty()
 
     init {
         headerTitle = getString(if (!isEdit()) R.string.add_invoice else R.string.edit_invoice)
@@ -103,28 +102,37 @@ class InvoiceDialog(
             } col 1 row 2
             label(getString(R.string.plate)) col 0 row 3
             plateTable = invoiceTableView({ AddPlateDialog(this@InvoiceDialog) }) {
-                getString(R.string.type)<String> { stringCell { type } }
-                getString(R.string.title)<String> { stringCell { title } }
-                getString(R.string.qty)<String> { numberCell { qty } }
-                getString(R.string.price)<String> { currencyCell { price } }
-                getString(R.string.total)<String> { currencyCell { total } }
+                columns {
+                    getString(R.string.type)<String> { stringCell { type } }
+                    getString(R.string.title)<String> { stringCell { title } }
+                    getString(R.string.qty)<String> { numberCell { qty } }
+                    getString(R.string.price)<String> { currencyCell { price } }
+                    getString(R.string.total)<String> { currencyCell { total } }
+                }
+                if (isEdit()) items.addAll(prefill!!.plates)
             } col 1 row 3
             label(getString(R.string.offset)) col 0 row 4
             offsetTable = invoiceTableView({ AddOffsetDialog(this@InvoiceDialog) }) {
-                getString(R.string.type)<String> { stringCell { type } }
-                getString(R.string.title)<String> { stringCell { title } }
-                getString(R.string.qty)<String> { numberCell { qty } }
-                getString(R.string.min_qty)<String> { numberCell { minQty } }
-                getString(R.string.min_price)<String> { currencyCell { minPrice } }
-                getString(R.string.excess_price)<String> { currencyCell { excessPrice } }
-                getString(R.string.total)<String> { currencyCell { total } }
+                columns {
+                    getString(R.string.type)<String> { stringCell { type } }
+                    getString(R.string.title)<String> { stringCell { title } }
+                    getString(R.string.qty)<String> { numberCell { qty } }
+                    getString(R.string.min_qty)<String> { numberCell { minQty } }
+                    getString(R.string.min_price)<String> { currencyCell { minPrice } }
+                    getString(R.string.excess_price)<String> { currencyCell { excessPrice } }
+                    getString(R.string.total)<String> { currencyCell { total } }
+                }
+                if (isEdit()) items.addAll(prefill!!.offsets)
             } col 1 row 4
             label(getString(R.string.others)) col 0 row 5
             otherTable = invoiceTableView({ AddOtherDialog(this@InvoiceDialog) }) {
-                getString(R.string.title)<String> { stringCell { title } }
-                getString(R.string.qty)<String> { numberCell { qty } }
-                getString(R.string.price)<String> { currencyCell { price } }
-                getString(R.string.total)<String> { currencyCell { total } }
+                columns {
+                    getString(R.string.title)<String> { stringCell { title } }
+                    getString(R.string.qty)<String> { numberCell { qty } }
+                    getString(R.string.price)<String> { currencyCell { price } }
+                    getString(R.string.total)<String> { currencyCell { total } }
+                }
+                if (isEdit()) items.addAll(prefill!!.others)
             } col 1 row 5
             totalProperty.bind(doubleBindingOf(plateTable.items, offsetTable.items, otherTable.items) {
                 plateTable.items.sumByDouble { it.total } +
@@ -132,7 +140,10 @@ class InvoiceDialog(
                     otherTable.items.sumByDouble { it.total }
             })
             label(getString(R.string.note)) col 0 row 6
-            noteArea = textArea { prefHeight = 48.0 } col 1 row 6
+            noteArea = textArea {
+                prefHeight = 48.0
+                text = prefill!!.note
+            } col 1 row 6
             label(getString(R.string.total)) col 0 row 7
             label {
                 font = getFont(R.font.opensans_bold)
@@ -158,11 +169,11 @@ class InvoiceDialog(
 
     private fun <S> LayoutManager<Node>.invoiceTableView(
         newAddDialog: () -> Dialog<S>,
-        columnsBuilder: TableColumnsBuilder<S>.() -> Unit
+        init: TableView<S>.() -> Unit
     ): TableView<S> = tableView {
         prefHeight = 96.0
         columnResizePolicy = CONSTRAINED_RESIZE_POLICY
-        columns(columnsBuilder)
+        init()
         columns.forEach {
             val minWidth = 768.0 / columns.size
             it.minWidth = when (it.text) {

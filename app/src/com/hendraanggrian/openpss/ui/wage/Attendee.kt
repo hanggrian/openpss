@@ -1,7 +1,6 @@
 package com.hendraanggrian.openpss.ui.wage
 
 import com.hendraanggrian.openpss.collections.RevertibleObservableList
-import com.hendraanggrian.openpss.utils.isEmpty
 import com.hendraanggrian.openpss.db.schemas.Recess
 import com.hendraanggrian.openpss.db.schemas.Wage
 import com.hendraanggrian.openpss.db.schemas.Wages
@@ -10,6 +9,7 @@ import com.hendraanggrian.openpss.time.START_OF_TIME
 import com.hendraanggrian.openpss.ui.Resourced
 import com.hendraanggrian.openpss.ui.wage.Record.Companion.INDEX_NODE
 import com.hendraanggrian.openpss.ui.wage.Record.Companion.INDEX_TOTAL
+import com.hendraanggrian.openpss.utils.isEmpty
 import com.hendraanggrian.openpss.utils.round
 import javafx.beans.property.IntegerProperty
 import javafx.beans.property.SimpleIntegerProperty

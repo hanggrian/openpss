@@ -32,7 +32,7 @@ data class Employee(
     companion object {
         const val DEFAULT_PASSWORD = "1234"
 
-        val BACKDOOR: Employee = Employee.new("Test", "Test")
+        val BACKDOOR: Employee = Employee("Test", "Test", true)
 
         fun new(
             name: String,

@@ -55,13 +55,7 @@ class DateTimeDialog(
         cancelButton()
         okButton()
         setResultConverter {
-            if (it != OK) null else DateTime(
-                dateBox.value.year,
-                dateBox.value.monthOfYear,
-                dateBox.value.dayOfMonth,
-                timeBox.value.hourOfDay,
-                timeBox.value.minuteOfHour
-            )
+            if (it != OK) null else dateBox.value.toDateTime(timeBox.value)
         }
     }
 }

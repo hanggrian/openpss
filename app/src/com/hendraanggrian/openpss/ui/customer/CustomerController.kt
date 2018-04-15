@@ -3,7 +3,7 @@ package com.hendraanggrian.openpss.ui.customer
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.db.buildQuery
 import com.hendraanggrian.openpss.db.schemas.Customer
-import com.hendraanggrian.openpss.db.schemas.Customer.Contact
+import com.hendraanggrian.openpss.db.schemas.Customer.ContactType.PHONE
 import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.scene.control.CountBox
@@ -28,6 +28,7 @@ import javafx.scene.control.SplitPane
 import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
 import javafx.scene.control.TextField
+import javafx.scene.image.ImageView
 import javafx.scene.layout.Pane
 import javafx.util.Callback
 import kotlinx.nosql.mongodb.MongoDBSession
@@ -38,11 +39,10 @@ import ktfx.beans.binding.stringBindingOf
 import ktfx.beans.binding.times
 import ktfx.beans.property.toReadOnlyProperty
 import ktfx.beans.value.or
-import ktfx.collections.emptyObservableList
 import ktfx.collections.toMutableObservableList
-import ktfx.collections.toObservableList
 import ktfx.layouts.listView
 import ktfx.scene.control.errorAlert
+import ktfx.scene.control.inputDialog
 import java.net.URL
 import java.util.ResourceBundle
 import java.util.regex.Pattern.CASE_INSENSITIVE
@@ -51,6 +51,7 @@ import kotlin.math.ceil
 class CustomerController : Controller(), Refreshable {
 
     @FXML lateinit var editNameButton: Button
+    @FXML lateinit var editAddressButton: Button
     @FXML lateinit var editNoteButton: Button
     @FXML lateinit var addContactButton: Button
     @FXML lateinit var deleteContactButton: Button
@@ -61,11 +62,16 @@ class CustomerController : Controller(), Refreshable {
     @FXML lateinit var detailPane: Pane
     @FXML lateinit var customerPagination: Pagination
     @FXML lateinit var nameLabel: Label
-    @FXML lateinit var sinceLabel: Label
-    @FXML lateinit var noteLabel: Label
+    @FXML lateinit var sinceLabel1: Label
+    @FXML lateinit var sinceLabel2: Label
+    @FXML lateinit var addressLabel1: Label
+    @FXML lateinit var addressLabel2: Label
+    @FXML lateinit var noteLabel1: Label
+    @FXML lateinit var noteLabel2: Label
+    @FXML lateinit var contactLabel: Label
     @FXML lateinit var contactTable: TableView<Contact>
     @FXML lateinit var typeColumn: TableColumn<Contact, String>
-    @FXML lateinit var contactColumn: TableColumn<Contact, String>
+    @FXML lateinit var valueColumn: TableColumn<Contact, String>
     @FXML lateinit var coverLabel: Label
 
     private lateinit var customerList: ListView<Customer>
@@ -77,9 +83,12 @@ class CustomerController : Controller(), Refreshable {
 
         countBox.desc = getString(R.string.items)
         nameLabel.font = getFont(R.font.opensans_bold, 24)
-        sinceLabel.font = getFont(R.font.opensans_regular, 12)
-        typeColumn.stringCell { type }
-        contactColumn.stringCell { value }
+        sinceLabel1.font = getFont(R.font.opensans_bold)
+        addressLabel1.font = getFont(R.font.opensans_bold)
+        noteLabel1.font = getFont(R.font.opensans_bold)
+        contactLabel.font = getFont(R.font.opensans_bold)
+        typeColumn.stringCell { type.asString(this@CustomerController) }
+        valueColumn.stringCell { value }
     }
 
     override fun refresh() = customerPagination.pageFactoryProperty()
@@ -101,16 +110,18 @@ class CustomerController : Controller(), Refreshable {
                 }
                 later {
                     editNameButton.disableProperty().bind(customerSelectedBinding or !isFullAccess.toReadOnlyProperty())
+                    editAddressButton.disableProperty().bind(customerSelectedBinding)
                     editNoteButton.disableProperty().bind(customerSelectedBinding)
                     addContactButton.disableProperty().bind(customerSelectedBinding)
                     deleteContactButton.disableProperty().bind(contactSelectedBinding or
                         !isFullAccess.toReadOnlyProperty())
                 }
                 nameLabel.bindLabel { customer?.name.orEmpty() }
-                sinceLabel.bindLabel { customer?.since?.toString(PATTERN_DATE).orEmpty() }
-                noteLabel.bindLabel { customer?.note.orEmpty() }
+                sinceLabel2.bindLabel { customer?.since?.toString(PATTERN_DATE).orEmpty() }
+                addressLabel2.bindLabel { customer?.address.orEmpty() }
+                noteLabel2.bindLabel { customer?.note.orEmpty() }
                 contactTable.itemsProperty().bind(bindingOf(customerList.selectionModel.selectedItemProperty()) {
-                    customer?.contacts?.toObservableList() ?: emptyObservableList()
+                    Contact.listAll(customer)
                 })
                 coverLabel.visibleProperty().bind(customerList.selectionModel.selectedItemProperty().isNull)
                 customerList
@@ -127,7 +138,7 @@ class CustomerController : Controller(), Refreshable {
                     else -> Customer.new(it).let {
                         it.id = Customers.insert(it)
                         customerList.items.add(it)
-                        customerList.selectionModel.selectFirst()
+                        customerList.selectionModel.select(customerList.items.lastIndex)
                     }
                 }
             }
@@ -142,7 +153,18 @@ class CustomerController : Controller(), Refreshable {
             }
         }
 
-    @FXML fun editNote() = EditNoteDialog(this, customer!!.note).showAndWait().ifPresent {
+    @FXML fun editAddress() = inputDialog(getString(R.string.edit_address), ImageView(R.image.ic_customer)) {
+        contentText = getString(R.string.address)
+    }.showAndWait().ifPresent {
+        transaction {
+            findByDoc(Customers, customer!!).projection { address }.update(it)
+            reload(customer!!)
+        }
+    }
+
+    @FXML fun editNote() = inputDialog(getString(R.string.edit_note), ImageView(R.image.ic_customer)) {
+        contentText = getString(R.string.note)
+    }.showAndWait().ifPresent {
         transaction {
             findByDoc(Customers, customer!!).projection { note }.update(it)
             reload(customer!!)
@@ -151,14 +173,31 @@ class CustomerController : Controller(), Refreshable {
 
     @FXML fun addContact() = AddContactDialog(this).showAndWait().ifPresent {
         transaction {
-            findByDoc(Customers, customer!!).projection { contacts }.update(customer!!.contacts + it)
+            val (type, value) = it
+            findByDoc(Customers, customer!!).projection {
+                when (type) {
+                    PHONE -> phones
+                    else -> emails
+                }
+            }.update(when (type) {
+                PHONE -> customer!!.phones
+                else -> customer!!.emails
+            } + value)
             reload(customer!!)
         }
     }
 
     @FXML fun deleteContact() = yesNoAlert(R.string.delete_contact) {
         transaction {
-            findByDoc(Customers, customer!!).projection { contacts }.update(customer!!.contacts - contact!!)
+            findByDoc(Customers, customer!!).projection {
+                when (contact!!.type) {
+                    PHONE -> phones
+                    else -> emails
+                }
+            }.update(when (contact!!.type) {
+                PHONE -> customer!!.phones
+                else -> customer!!.emails
+            } - contact!!.value)
             reload(customer!!)
         }
     }

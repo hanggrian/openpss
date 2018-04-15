@@ -26,7 +26,7 @@
             </graphic>
         </Button>
         <Space/>
-        <Button mnemonicParsing="false" fx:id="seeInvoiceButton" onAction="#seeInvoice" text="%see_invoice">
+        <Button mnemonicParsing="false" fx:id="viewInvoiceButton" onAction="#viewInvoice" text="%view_invoice">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
                     <Image url="@/image/toolbar_invoice.png"/>
@@ -43,7 +43,7 @@
         <Button mnemonicParsing="false" fx:id="deleteInvoiceButton" onAction="#deleteInvoice" text="%delete_invoice">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/toolbar_delete2.png"/>
+                    <Image url="@/image/toolbar_delete.png"/>
                 </ImageView>
             </graphic>
         </Button>
@@ -52,6 +52,13 @@
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
                     <Image url="@/image/toolbar_add_payment.png"/>
+                </ImageView>
+            </graphic>
+        </Button>
+        <Button mnemonicParsing="false" fx:id="deletePaymentButton" onAction="#deletePayment" text="%delete_payment">
+            <graphic>
+                <ImageView pickOnBounds="true" preserveRatio="true">
+                    <Image url="@/image/toolbar_delete2.png"/>
                 </ImageView>
             </graphic>
         </Button>

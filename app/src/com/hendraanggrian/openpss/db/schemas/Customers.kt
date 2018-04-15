@@ -1,52 +1,47 @@
 package com.hendraanggrian.openpss.db.schemas
 
+import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.db.NamedDocument
 import com.hendraanggrian.openpss.db.NamedDocumentSchema
-import com.hendraanggrian.openpss.db.Typed
 import com.hendraanggrian.openpss.db.dbDate
-import javafx.collections.ObservableList
+import com.hendraanggrian.openpss.ui.Resourced
 import kotlinx.nosql.Id
-import kotlinx.nosql.ListColumn
 import kotlinx.nosql.date
+import kotlinx.nosql.listOfString
 import kotlinx.nosql.string
-import ktfx.collections.observableListOf
 import org.joda.time.LocalDate
 
 object Customers : NamedDocumentSchema<Customer>("customers", Customer::class) {
-    val note = string("note")
     val since = date("since")
-    val contacts = ContactColumn()
-
-    class ContactColumn : ListColumn<Customer.Contact, Customers>("contacts", Customer.Contact::class) {
-        val type = string("type")
-        val value = string("value")
-    }
+    val address = string("address")
+    val note = string("note")
+    val phones = listOfString("phones")
+    val emails = listOfString("emails")
 }
 
 data class Customer(
     override var name: String,
-    var note: String,
     val since: LocalDate,
-    var contacts: List<Contact>
+    val address: String,
+    var note: String,
+    var phones: List<String>,
+    var emails: List<String>
 ) : NamedDocument<Customers> {
 
     companion object {
-        fun new(name: String): Customer = Customer(name, "", dbDate, listOf())
+        fun new(name: String): Customer = Customer(name, dbDate, "", "", listOf(), listOf())
     }
 
     override lateinit var id: Id<String, Customers>
 
     override fun toString(): String = name
 
-    data class Contact(
-        override var type: String,
-        var value: String
-    ) : Typed {
-        companion object {
-            private const val TYPE_EMAIL = "email"
-            private const val TYPE_PHONE = "phone"
+    enum class ContactType {
+        PHONE, EMAIL;
 
-            fun listTypes(): ObservableList<String> = observableListOf(TYPE_EMAIL, TYPE_PHONE)
-        }
+        fun asString(resourced: Resourced): String = resourced.getString(when (this) {
+            PHONE -> R.string.phone
+            EMAIL -> R.string.email
+        })
     }
 }

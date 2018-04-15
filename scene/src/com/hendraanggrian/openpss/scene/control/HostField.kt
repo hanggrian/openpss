@@ -14,7 +14,7 @@ import ktfx.layouts.LayoutManager
 import org.apache.commons.validator.routines.InetAddressValidator.getInstance
 
 /** Field that display IP address. */
-open class HostField() : TextField() {
+open class HostField : TextField() {
 
     val validProperty: BooleanProperty = SimpleBooleanProperty()
     val isValid: Boolean by validProperty

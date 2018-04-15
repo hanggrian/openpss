@@ -33,6 +33,13 @@
                 </ImageView>
             </graphic>
         </Button>
+        <Button mnemonicParsing="false" fx:id="editAddressButton" onAction="#editAddress" text="%edit_address">
+            <graphic>
+                <ImageView pickOnBounds="true" preserveRatio="true">
+                    <Image url="@/image/toolbar_address.png"/>
+                </ImageView>
+            </graphic>
+        </Button>
         <Button mnemonicParsing="false" fx:id="editNoteButton" onAction="#editNote" text="%edit_note">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
@@ -63,38 +70,50 @@
             </ToolBar>
             <Pagination fx:id="customerPagination" style="-fx-page-information-alignment: right;" VBox.vgrow="ALWAYS"/>
         </VBox>
-        <AnchorPane fx:id="detailPane">
-            <VBox AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0"
-                  AnchorPane.topAnchor="0">
-                <Label fx:id="nameLabel" maxWidth="1.7976931348623157E308">
-                    <VBox.margin>
-                        <Insets left="8" right="8" top="8"/>
-                    </VBox.margin>
-                </Label>
-                <Label fx:id="sinceLabel" maxWidth="1.7976931348623157E308">
-                    <VBox.margin>
-                        <Insets left="8" right="8"/>
-                    </VBox.margin>
-                </Label>
-                <Label fx:id="noteLabel" maxWidth="1.7976931348623157E308">
-                    <VBox.margin>
-                        <Insets topRightBottomLeft="8"/>
-                    </VBox.margin>
-                </Label>
-                <TableView fx:id="contactTable" VBox.vgrow="ALWAYS">
-                    <columns>
-                        <TableColumn fx:id="typeColumn" editable="false" prefWidth="120" text="%type"/>
-                        <TableColumn fx:id="contactColumn" prefWidth="120" text="%contact"/>
-                    </columns>
-                    <columnResizePolicy>
-                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
-                    </columnResizePolicy>
-                </TableView>
-            </VBox>
+        <GridPane fx:id="detailPane" hgap="8" vgap="8">
+            <columnConstraints>
+                <ColumnConstraints hgrow="NEVER"/>
+                <ColumnConstraints hgrow="ALWAYS"/>
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints vgrow="NEVER"/>
+                <RowConstraints vgrow="NEVER"/>
+                <RowConstraints vgrow="NEVER"/>
+                <RowConstraints vgrow="NEVER"/>
+                <RowConstraints vgrow="ALWAYS"/>
+            </rowConstraints>
+            <padding>
+                <Insets topRightBottomLeft="8"/>
+            </padding>
+            <Label fx:id="nameLabel" maxWidth="1.7976931348623157E308"
+                   GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.columnSpan="2"/>
+            <Label fx:id="sinceLabel1" text="%since"
+                   GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+            <Label fx:id="sinceLabel2" maxWidth="1.7976931348623157E308"
+                   GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+            <Label fx:id="addressLabel1" text="%address"
+                   GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+            <Label fx:id="addressLabel2" maxWidth="1.7976931348623157E308"
+                   GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+            <Label fx:id="noteLabel1" text="%note"
+                   GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+            <Label fx:id="noteLabel2" maxWidth="1.7976931348623157E308"
+                   GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+            <Label fx:id="contactLabel" text="%contact"
+                   GridPane.rowIndex="4" GridPane.columnIndex="0" GridPane.valignment="TOP"/>
+            <TableView fx:id="contactTable"
+                       GridPane.rowIndex="4" GridPane.columnIndex="1">
+                <columns>
+                    <TableColumn fx:id="typeColumn" text="%type"/>
+                    <TableColumn fx:id="valueColumn" text="%value"/>
+                </columns>
+                <columnResizePolicy>
+                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                </columnResizePolicy>
+            </TableView>
             <Label fx:id="coverLabel" alignment="CENTER" text="%select_customer" style="-fx-background-color: #f4f4f4;"
                    maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
-                   AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0"
-                   AnchorPane.topAnchor="0"/>
-        </AnchorPane>
+                   GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.rowSpan="5" GridPane.columnSpan="2"/>
+        </GridPane>
     </SplitPane>
 </VBox>

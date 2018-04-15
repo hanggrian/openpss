@@ -12,7 +12,7 @@
         <Button mnemonicParsing="false" onAction="#empty" text="%disable_daily_income">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/toolbar_clear_date.png"/>
+                    <Image url="@/image/toolbar_disable_daily_income.png"/>
                 </ImageView>
             </graphic>
         </Button>

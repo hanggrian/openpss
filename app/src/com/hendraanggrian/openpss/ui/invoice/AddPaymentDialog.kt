@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.ui.invoice
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.currencyConverter
+import com.hendraanggrian.openpss.utils.currencyConverter
 import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.db.schemas.Payment
@@ -94,7 +94,7 @@ class AddPaymentDialog(
             } row 3 col 1 colSpans 2
             label(getString(R.string.payment_method)) row 6 col 0
             methodChoice = choiceBox(values().toObservableList()) {
-                converter { toString { it!!.getText(this@AddPaymentDialog) } }
+                converter { toString { it!!.asString(this@AddPaymentDialog) } }
             } row 6 col 1 colSpans 2
             label(getString(R.string.transfer_reference)) { bindDisable() } row 7 col 0
             transferField = textField { bindDisable() } row 7 col 1 colSpans 2

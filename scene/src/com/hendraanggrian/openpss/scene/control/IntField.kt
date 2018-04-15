@@ -13,7 +13,7 @@ import ktfx.layouts.LayoutDsl
 import ktfx.layouts.LayoutManager
 import ktfx.listeners.bindBidirectional
 
-open class IntField() : TextField() {
+open class IntField : TextField() {
 
     val valueProperty: IntegerProperty = SimpleIntegerProperty()
     var value: Int by valueProperty

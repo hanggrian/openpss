@@ -2,10 +2,10 @@ package com.hendraanggrian.openpss.ui.wage
 
 import com.hendraanggrian.openpss.BuildConfig.DEBUG
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.currencyConverter
+import com.hendraanggrian.openpss.utils.currencyConverter
 import com.hendraanggrian.openpss.io.WageContentFolder
 import com.hendraanggrian.openpss.io.WageFile
-import com.hendraanggrian.openpss.numberConverter
+import com.hendraanggrian.openpss.utils.numberConverter
 import com.hendraanggrian.openpss.scene.layout.TimeBox
 import com.hendraanggrian.openpss.time.PATTERN_DATE
 import com.hendraanggrian.openpss.time.PATTERN_DATETIME

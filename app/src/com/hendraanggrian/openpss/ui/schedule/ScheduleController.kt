@@ -31,6 +31,6 @@ class ScheduleController : Controller(), Refreshable {
     }
 
     override fun refresh() {
-        scheduleTable.items = transaction { Schedule.from(Invoices.find { done.equal(false) }) }
+        scheduleTable.items = transaction { Schedule.listAll(Invoices.find { done.equal(false) }) }
     }
 }

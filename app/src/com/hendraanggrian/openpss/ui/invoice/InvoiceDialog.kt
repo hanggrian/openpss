@@ -1,7 +1,6 @@
 package com.hendraanggrian.openpss.ui.invoice
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.currencyConverter
 import com.hendraanggrian.openpss.db.dbDateTime
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Customers
@@ -19,6 +18,7 @@ import com.hendraanggrian.openpss.ui.invoice.order.AddOffsetDialog
 import com.hendraanggrian.openpss.ui.invoice.order.AddOtherDialog
 import com.hendraanggrian.openpss.ui.invoice.order.AddPlateDialog
 import com.hendraanggrian.openpss.utils.currencyCell
+import com.hendraanggrian.openpss.utils.currencyConverter
 import com.hendraanggrian.openpss.utils.findById
 import com.hendraanggrian.openpss.utils.getFont
 import com.hendraanggrian.openpss.utils.numberCell
@@ -61,8 +61,8 @@ import org.joda.time.DateTime
 
 class InvoiceDialog(
     resourced: Resourced,
-    employee: Employee,
-    private val prefill: Invoice? = null
+    private val prefill: Invoice? = null,
+    employee: Employee? = prefill?.let { transaction { findById(Employees, prefill.employeeId).single() } }
 ) : Dialog<Invoice>(), Resourced by resourced {
 
     private lateinit var plateTable: TableView<Plate>
@@ -70,9 +70,6 @@ class InvoiceDialog(
     private lateinit var otherTable: TableView<Other>
     private lateinit var noteArea: TextArea
 
-    private val employee: Employee = transaction {
-        findById(Employees, prefill?.employeeId ?: employee.id).single()
-    }!!
     private val dateTime: DateTime = prefill?.dateTime ?: dbDateTime
     private val customerProperty: ObjectProperty<Customer> = SimpleObjectProperty(when {
         isEdit() -> transaction { findById(Customers, prefill!!.customerId).single() }
@@ -86,7 +83,7 @@ class InvoiceDialog(
         dialogPane.content = gridPane {
             gap = 8.0
             label(getString(R.string.employee)) col 0 row 0
-            label(employee.name) { font = getFont(R.font.opensans_bold) } col 1 row 0
+            label(employee!!.name) { font = getFont(R.font.opensans_bold) } col 1 row 0
             label(getString(R.string.date)) col 0 row 1
             label(dateTime.toString(PATTERN_DATE)) { font = getFont(R.font.opensans_bold) } col 1 row 1
             label(getString(R.string.customer)) col 0 row 2
@@ -142,7 +139,7 @@ class InvoiceDialog(
             label(getString(R.string.note)) col 0 row 6
             noteArea = textArea {
                 prefHeight = 48.0
-                text = prefill!!.note
+                if (isEdit()) text = prefill!!.note
             } col 1 row 6
             label(getString(R.string.total)) col 0 row 7
             label {
@@ -153,15 +150,26 @@ class InvoiceDialog(
         cancelButton()
         okButton { disableProperty().bind(customerProperty.isNull or totalProperty.lessEq(0)) }
         setResultConverter {
-            if (it == CANCEL) null else Invoice.new(
-                employee.id,
-                customerProperty.value.id,
-                dateTime,
-                plateTable.items,
-                offsetTable.items,
-                otherTable.items,
-                noteArea.text
-            )
+            when (it) {
+                CANCEL -> null
+                else -> when {
+                    isEdit() -> prefill!!.apply {
+                        plates = plateTable.items
+                        offsets = offsetTable.items
+                        others = otherTable.items
+                        note = noteArea.text
+                    }
+                    else -> Invoice.new(
+                        employee!!.id,
+                        customerProperty.value.id,
+                        dateTime,
+                        plateTable.items,
+                        offsetTable.items,
+                        otherTable.items,
+                        noteArea.text
+                    )
+                }
+            }
         }
     }
 

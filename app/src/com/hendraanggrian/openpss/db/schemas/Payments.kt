@@ -44,7 +44,7 @@ data class Payment(
 
     val method: Method get() = if (transfer == null) Method.CASH else Method.TRANSFER
 
-    fun getMethodText(resourced: Resourced): String = method.getText(resourced).let {
+    fun getMethodText(resourced: Resourced): String = method.asString(resourced).let {
         return when (method) {
             Method.CASH -> it
             else -> "$it - $transfer"
@@ -54,9 +54,9 @@ data class Payment(
     enum class Method {
         CASH, TRANSFER;
 
-        fun getText(resourced: Resourced): String = resourced.getString(when (this) {
+        fun asString(resourced: Resourced): String = resourced.getString(when (this) {
             CASH -> R.string.cash
-            else -> R.string.transfer
+            TRANSFER -> R.string.transfer
         })
     }
 }

@@ -97,7 +97,7 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced 
                 passwordField1.textProperty().bindBidirectional(passwordField2.textProperty())
             } col 1 row 2
             toggleButton {
-                tooltip(getString(R.string.see_password))
+                tooltip(getString(R.string.view_password))
                 graphic = ktfx.layouts.imageView {
                     imageProperty().bind(`when`(this@toggleButton.selectedProperty())
                         then Image(R.image.btn_visibility_on) otherwise Image(R.image.btn_visibility_off))
@@ -172,7 +172,7 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced 
         later {
             if (employeeField.text.isBlank()) employeeField.requestFocus() else passwordField1.requestFocus()
             dialogPane.isExpanded = !LoginFile.isDbValid()
-            if (DEBUG) passwordField1.text = "Test"
+            if (DEBUG) passwordField1.text = "hendraganteng"
         }
     }
 }

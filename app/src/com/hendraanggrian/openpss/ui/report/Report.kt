@@ -15,7 +15,7 @@ data class Report(
     val total: Double get() = cash + transfer
 
     companion object {
-        fun from(payments: Iterable<Payment>): ObservableList<Report> = payments
+        fun listAll(payments: Iterable<Payment>): ObservableList<Report> = payments
             .groupBy { it.dateTime.toLocalDate() }
             .flatMap { (dateTime, payments) ->
                 listOf(Report(dateTime,

@@ -67,9 +67,9 @@ data class Invoice(
     var offsets: List<Offset>,
     var others: List<Other>,
     var note: String,
-    var printed: Boolean,
-    var paid: Boolean,
-    var done: Boolean
+    val printed: Boolean,
+    val paid: Boolean,
+    val done: Boolean
 ) : Document<Invoices>, DateTimed, Totaled {
 
     override lateinit var id: Id<String, Invoices>

@@ -2,18 +2,18 @@ package com.hendraanggrian.openpss.db
 
 import com.hendraanggrian.openpss.BuildConfig.ARTIFACT
 import com.hendraanggrian.openpss.BuildConfig.DEBUG
-import com.hendraanggrian.openpss.utils.isEmpty
 import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.db.schemas.Employees
+import com.hendraanggrian.openpss.db.schemas.GlobalSetting
+import com.hendraanggrian.openpss.db.schemas.GlobalSettings
 import com.hendraanggrian.openpss.db.schemas.Invoices
 import com.hendraanggrian.openpss.db.schemas.OffsetPrices
 import com.hendraanggrian.openpss.db.schemas.Payments
 import com.hendraanggrian.openpss.db.schemas.PlatePrices
 import com.hendraanggrian.openpss.db.schemas.Recesses
-import com.hendraanggrian.openpss.db.schemas.GlobalSetting
-import com.hendraanggrian.openpss.db.schemas.GlobalSettings
 import com.hendraanggrian.openpss.db.schemas.Wages
+import com.hendraanggrian.openpss.utils.isEmpty
 import com.mongodb.MongoClientOptions.Builder
 import com.mongodb.MongoCredential.createCredential
 import com.mongodb.MongoException
@@ -34,7 +34,7 @@ private val TABLES = arrayOf(GlobalSettings, Customers, Employees, Invoices, Off
     Wages)
 
 /**
- * A failed transaction will most likely throw an exception instance of [MongoException].
+ * A failed transaction will most likely throw an exception instance listAll [MongoException].
  * This function will safely execute a transaction and display an error message on JavaFX if it throws those exceptions.
  *
  * @see [kotlinx.nosql.mongodb.MongoDB.withSession]
@@ -85,12 +85,12 @@ private suspend fun connect(host: String, port: Int, user: String, password: Str
 }.await()
 
 /** Date and time new server. */
-val dbDateTime: DateTime @Throws(Exception::class) get() = DateTime(evalDate)
+val dbDateTime: DateTime get() = DateTime(evalDate)
 
 /** Local date new server. */
-val dbDate: LocalDate @Throws(Exception::class) get() = LocalDate.fromDateFields(evalDate)
+val dbDate: LocalDate get() = LocalDate.fromDateFields(evalDate)
 
 /** Local time new server. */
-val dbTime: LocalTime @Throws(Exception::class) get() = LocalTime.fromDateFields(evalDate)
+val dbTime: LocalTime get() = LocalTime.fromDateFields(evalDate)
 
 private val evalDate: Date get() = DB.db.doEval("new Date()").getDate("retval")

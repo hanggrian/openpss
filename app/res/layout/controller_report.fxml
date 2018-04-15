@@ -19,7 +19,7 @@
             </graphic>
         </Button>
         <Space/>
-        <Button mnemonicParsing="false" fx:id="seePaymentsButton" onAction="#seePayments" text="%see_payments">
+        <Button mnemonicParsing="false" fx:id="viewPaymentsButton" onAction="#viewPayments" text="%view_payments">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
                     <Image url="@/image/toolbar_payment.png"/>

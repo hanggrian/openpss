@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.ui
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.currencyConverter
+import com.hendraanggrian.openpss.utils.currencyConverter
 import com.hendraanggrian.openpss.utils.findById
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Customers
@@ -11,7 +11,7 @@ import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_INVOICE
 import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.db.schemas.findGlobalSettings
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.numberConverter
+import com.hendraanggrian.openpss.utils.numberConverter
 import com.hendraanggrian.openpss.time.PATTERN_DATETIME_EXTENDED
 import com.hendraanggrian.openpss.utils.getFont
 import javafx.geometry.Insets
@@ -41,7 +41,7 @@ import ktfx.scene.control.closeButton
 import ktfx.scene.control.graphicIcon
 import ktfx.scene.control.headerTitle
 
-class SeeInvoiceDialog(resourced: Resourced, invoice: Invoice) : Dialog<Unit>(), Resourced by resourced {
+class ViewInvoiceDialog(resourced: Resourced, invoice: Invoice) : Dialog<Unit>(), Resourced by resourced {
 
     private lateinit var invoiceHeaders: List<String>
     private lateinit var customer: Customer
@@ -54,7 +54,7 @@ class SeeInvoiceDialog(resourced: Resourced, invoice: Invoice) : Dialog<Unit>(),
             customer = findById(Customers, invoice.customerId).single()
         }
         initModality(NONE)
-        headerTitle = getString(R.string.see_invoice)
+        headerTitle = getString(R.string.view_invoice)
         graphicIcon = ImageView(R.image.ic_invoice)
         dialogPane.content = vbox {
             maxWidth()

@@ -34,8 +34,8 @@ class ResetPasswordDialog(resourced: Resourced) : Dialog<String>(), Resourced by
             gap = 8.0
             label(getString(R.string.password)) col 0 row 0
             changePasswordField = passwordField { promptText = getString(R.string.password) } col 1 row 0
-            label(getString(R.string.change_password)) col 0 row 1
-            confirmPasswordField = passwordField { promptText = getString(R.string.change_password) } col 1 row 1
+            label(getString(R.string.confirm_password)) col 0 row 1
+            confirmPasswordField = passwordField { promptText = getString(R.string.confirm_password) } col 1 row 1
         }
         cancelButton()
         okButton {

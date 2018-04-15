@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.ui.invoice.order
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.currencyConverter
+import com.hendraanggrian.openpss.utils.currencyConverter
 import com.hendraanggrian.openpss.db.schemas.Other
 import com.hendraanggrian.openpss.scene.control.DoubleField
 import com.hendraanggrian.openpss.scene.control.doubleField

@@ -10,7 +10,7 @@ import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.scene.layout.DateBox
 import com.hendraanggrian.openpss.time.PATTERN_TIME
 import com.hendraanggrian.openpss.ui.FinancialController
-import com.hendraanggrian.openpss.ui.SeeInvoiceDialog
+import com.hendraanggrian.openpss.ui.ViewInvoiceDialog
 import com.hendraanggrian.openpss.utils.currencyCell
 import com.hendraanggrian.openpss.utils.findById
 import com.hendraanggrian.openpss.utils.stringCell
@@ -29,7 +29,7 @@ import java.util.ResourceBundle
 
 class PaymentController : FinancialController<Payment>() {
 
-    @FXML lateinit var seeInvoiceButton: Button
+    @FXML lateinit var viewInvoiceButton: Button
     @FXML lateinit var dateBox: DateBox
     @FXML lateinit var paymentTable: TableView<Payment>
     @FXML lateinit var noColumn: TableColumn<Payment, String>
@@ -40,9 +40,9 @@ class PaymentController : FinancialController<Payment>() {
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
-        seeInvoiceButton.disableProperty().bind(paymentSelectedBinding)
+        viewInvoiceButton.disableProperty().bind(paymentSelectedBinding)
         dateBox.valueProperty.listener { refresh() }
-        paymentTable.onMouseClicked { if (it.isDoubleClick()) seeInvoice() }
+        paymentTable.onMouseClicked { if (it.isDoubleClick()) viewInvoice() }
         noColumn.stringCell { transaction { findById(Invoices, invoiceId).single().no }!! }
         timeColumn.stringCell { dateTime.toString(PATTERN_TIME) }
         employeeColumn.stringCell { transaction { findById(Employees, employeeId).single() }!! }
@@ -64,7 +64,7 @@ class PaymentController : FinancialController<Payment>() {
         }
     }
 
-    @FXML fun seeInvoice() = SeeInvoiceDialog(this, transaction { findById(Invoices, payment.invoiceId).single() }!!)
+    @FXML fun viewInvoice() = ViewInvoiceDialog(this, transaction { findById(Invoices, payment.invoiceId).single() }!!)
         .show()
 
     private inline val payment: Payment get() = paymentTable.selectionModel.selectedItem

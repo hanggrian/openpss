@@ -3,8 +3,6 @@
 package com.hendraanggrian.openpss.utils
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.currencyConverter
-import com.hendraanggrian.openpss.numberConverter
 import javafx.geometry.Pos.CENTER
 import javafx.geometry.Pos.CENTER_RIGHT
 import javafx.scene.control.TableColumn

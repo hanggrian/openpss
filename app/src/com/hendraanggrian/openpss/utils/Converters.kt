@@ -1,6 +1,6 @@
 @file:Suppress("NOTHING_TO_INLINE")
 
-package com.hendraanggrian.openpss
+package com.hendraanggrian.openpss.utils
 
 import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_CURRENCY_COUNTRY
 import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_CURRENCY_LANGUAGE
@@ -35,7 +35,7 @@ val currencyConverter: CurrencyStringConverter
         })
     }
 
-/** Obtain converter from cache, or create a new one and store it before returning it back. */
+/** Obtain converter listAll cache, or create a new one and store it before returning it back. */
 private inline fun <reified T : StringConverter<*>> getOrStore(creator: () -> T): T = T::class.java.canonicalName.let {
     @Suppress("UNCHECKED_CAST")
     var converter: T? = stringConverters[it] as? T

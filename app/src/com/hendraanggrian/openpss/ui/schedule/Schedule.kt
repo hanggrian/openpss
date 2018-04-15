@@ -16,7 +16,7 @@ data class Schedule(
 ) {
     companion object {
         /** Invoices that aren't done yet. */
-        fun from(invoices: Iterable<Invoice>): ObservableList<Schedule> = invoices
+        fun listAll(invoices: Iterable<Invoice>): ObservableList<Schedule> = invoices
             .groupBy {
                 transaction {
                     findById(Employees, it.employeeId).single().name to findById(Customers, it.customerId).single().name

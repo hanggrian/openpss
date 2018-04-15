@@ -1,6 +1,5 @@
 package com.hendraanggrian.openpss.ui.report
 
-import com.hendraanggrian.openpss.currencyConverter
 import com.hendraanggrian.openpss.db.schemas.Payments
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.io.properties.LoginFile
@@ -9,6 +8,7 @@ import com.hendraanggrian.openpss.time.PATTERN_DATE
 import com.hendraanggrian.openpss.time.toJava
 import com.hendraanggrian.openpss.ui.FinancialController
 import com.hendraanggrian.openpss.ui.main.MainController
+import com.hendraanggrian.openpss.utils.currencyConverter
 import com.hendraanggrian.openpss.utils.matches
 import com.hendraanggrian.openpss.utils.stringCell
 import javafx.beans.binding.BooleanBinding
@@ -30,7 +30,7 @@ class ReportController : FinancialController<Report>() {
         const val EXTRA_MAIN_CONTROLLER = "EXTRA_MAIN_CONTROLLER"
     }
 
-    @FXML lateinit var seePaymentsButton: Button
+    @FXML lateinit var viewPaymentsButton: Button
     @FXML lateinit var monthBox: MonthBox
     @FXML lateinit var reportTable: TableView<Report>
     @FXML lateinit var dateColumn: TableColumn<Report, String>
@@ -40,10 +40,10 @@ class ReportController : FinancialController<Report>() {
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
-        seePaymentsButton.disableProperty().bind(reportSelectedBinding)
+        viewPaymentsButton.disableProperty().bind(reportSelectedBinding)
         monthBox.setLocale(Locale(LoginFile.LANGUAGE))
         monthBox.valueProperty.listener { refresh() }
-        reportTable.onMouseClicked { if (it.isDoubleClick()) seePayments() }
+        reportTable.onMouseClicked { if (it.isDoubleClick()) viewPayments() }
         dateColumn.stringCell { date.toString(PATTERN_DATE) }
         cashColumn.stringCell { currencyConverter.toString(cash) }
         transferColumn.stringCell { currencyConverter.toString(transfer) }
@@ -57,10 +57,10 @@ class ReportController : FinancialController<Report>() {
     override fun ObservableList<Report>.getTransferCash(): Double = sumByDouble { it.transfer }
 
     override fun refresh() {
-        reportTable.items = transaction { Report.from(Payments.find { dateTime.matches(monthBox.value.toString()) }) }
+        reportTable.items = transaction { Report.listAll(Payments.find { dateTime.matches(monthBox.value.toString()) }) }
     }
 
-    @FXML fun seePayments() = getExtra<MainController>(EXTRA_MAIN_CONTROLLER).let {
+    @FXML fun viewPayments() = getExtra<MainController>(EXTRA_MAIN_CONTROLLER).let {
         it.select(it.paymentController) { dateBox.picker.value = report.date.toJava() }
     }
 

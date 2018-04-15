@@ -32,7 +32,7 @@ class Record(
     val startProperty: ObjectProperty<DateTime>,
     val endProperty: ObjectProperty<DateTime>,
 
-    val dailyEmptyProperty: BooleanProperty = SimpleBooleanProperty(),
+    val dailyDisabledProperty: BooleanProperty = SimpleBooleanProperty(),
 
     val dailyProperty: DoubleProperty = SimpleDoubleProperty(),
     val overtimeProperty: DoubleProperty = SimpleDoubleProperty(),
@@ -45,7 +45,7 @@ class Record(
 
     var start: DateTime by startProperty
     var end: DateTime by endProperty
-    var isDailyEmpty: Boolean by dailyEmptyProperty
+    var isDailyDisabled: Boolean by dailyDisabledProperty
     var daily: Double by dailyProperty
     var overtime: Double by overtimeProperty
     var dailyIncome: Double by dailyIncomeProperty
@@ -66,7 +66,7 @@ class Record(
     }
 
     init {
-        dailyEmptyProperty.set(false)
+        dailyDisabledProperty.set(false)
         if (isNode()) {
             dailyProperty.set(0.0)
             overtimeProperty.set(0.0)
@@ -75,8 +75,8 @@ class Record(
             totalProperty.set(0.0)
         }
         if (isChild()) {
-            dailyProperty.bind(doubleBindingOf(startProperty, endProperty, dailyEmptyProperty) {
-                if (isDailyEmpty) 0.0 else {
+            dailyProperty.bind(doubleBindingOf(startProperty, endProperty, dailyDisabledProperty) {
+                if (isDailyDisabled) 0.0 else {
                     val hours = workingHours
                     when {
                         hours <= WORKING_HOURS -> hours.round()
@@ -120,10 +120,10 @@ class Record(
 
     val displayedStart: StringProperty
         get() = SimpleStringProperty().apply {
-            bind(stringBindingOf(startProperty, dailyEmptyProperty) {
+            bind(stringBindingOf(startProperty, dailyDisabledProperty) {
                 when {
                     isNode() -> attendee.role.orEmpty()
-                    isChild() -> start.toString(PATTERN_DATETIME).let { if (isDailyEmpty) "($it)" else it }
+                    isChild() -> start.toString(PATTERN_DATETIME).let { if (isDailyDisabled) "($it)" else it }
                     isTotal() -> ""
                     else -> throw UnsupportedOperationException()
                 }
@@ -132,11 +132,11 @@ class Record(
 
     val displayedEnd: StringProperty
         get() = SimpleStringProperty().apply {
-            bind(stringBindingOf(endProperty, dailyEmptyProperty) {
+            bind(stringBindingOf(endProperty, dailyDisabledProperty) {
                 when {
                     isNode() -> "${attendee.attendances.size / 2} ${getString(R.string.day)}"
-                    isChild() -> end.toString(PATTERN_DATETIME).let { if (isDailyEmpty) "($it)" else it }
-                    isTotal() -> "TOTAL"
+                    isChild() -> end.toString(PATTERN_DATETIME).let { if (isDailyDisabled) "($it)" else it }
+                    isTotal() -> getString(R.string.total)
                     else -> throw UnsupportedOperationException()
                 }
             })

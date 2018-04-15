@@ -68,8 +68,8 @@ suspend fun login(
         // add default employee
         if (Employees.find { name.equal(Employee.BACKDOOR.name) }.isEmpty()) Employees.insert(Employee.BACKDOOR)
         // check login credentials
-        employee = checkNotNull(Employees.find { name.equal(employeeName) }.singleOrNull()) { "Employee not found!" }
-        check(employee!!.password == employeePassword) { "Invalid password!" }
+        employee = checkNotNull(Employees.find { name.equal(employeeName) }.singleOrNull()) { "Employee not found" }
+        check(employee!!.password == employeePassword) { "Invalid password" }
     }
     employee!!.clearPassword()
     return employee!!

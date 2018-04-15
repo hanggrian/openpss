@@ -173,17 +173,17 @@ class WageRecordController : Controller() {
         undoable.append()
     }
 
-    @FXML fun empty() = DateDialog(this, R.string.empty_daily_income)
+    @FXML fun empty() = DateDialog(this, R.string.disable_daily_income)
         .showAndWait()
         .ifPresent { date ->
             val undoable = Undoable()
             records.filter { it.startProperty.value.toLocalDate() == date }
                 .forEach { record ->
-                    val initial = record.dailyEmptyProperty.value
-                    record.dailyEmptyProperty.set(!initial)
-                    if (undoable.name == null) undoable.name = "${getString(R.string.daily_emptied)} " +
+                    val initial = record.dailyDisabledProperty.value
+                    record.dailyDisabledProperty.set(!initial)
+                    if (undoable.name == null) undoable.name = "${getString(R.string.daily_disabled)} " +
                         record.startProperty.value.toString(PATTERN_DATE)
-                    undoable.addAction { record.dailyEmptyProperty.set(initial) }
+                    undoable.addAction { record.dailyDisabledProperty.set(initial) }
                 }
             undoable.append()
         }

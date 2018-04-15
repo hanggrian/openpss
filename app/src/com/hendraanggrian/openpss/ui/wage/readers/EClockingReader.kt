@@ -42,21 +42,12 @@ object EClockingReader : Reader() {
                         val dept = row.getCell(CELL_DEPT).stringCellValue
                         val name = row.getCell(CELL_NAME).stringCellValue
                         val no = row.getCell(CELL_NO).numericCellValue.toInt()
-                        val date = LocalDate(row.getCell(CELL_DATE).dateCellValue)
+                        val date = LocalDate.fromDateFields(row.getCell(CELL_DATE).dateCellValue)
                         multimap.putAll(Attendee(no, name, dept), (CELL_RECORD_START until CELL_RECORD_END)
                             .map { row.getCell(it) }
                             .filter { it.cellTypeEnum == NUMERIC }
                             .map {
-                                val attendance = date.toDateTime(LocalTime(it.dateCellValue))
-                                /*if (name == "Yoyo") {
-                                    println("date $date")
-                                    println("attendance $attendance")
-                                    println("attendance fix ${when {
-                                        IS_OS_WINDOWS -> attendance.plusMinutes(18)
-                                        IS_OS_MAC -> attendance.minusMinutes(7)
-                                        else -> attendance
-                                    }}")
-                                }*/
+                                val attendance = date.toDateTime(LocalTime.fromDateFields(it.dateCellValue))
                                 when {
                                     IS_OS_WINDOWS -> attendance.plusMinutes(18)
                                     IS_OS_MAC -> attendance.minusMinutes(7)

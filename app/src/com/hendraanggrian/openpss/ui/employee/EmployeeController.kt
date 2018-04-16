@@ -7,14 +7,15 @@ import com.hendraanggrian.openpss.db.schemas.Employees
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.Refreshable
+import com.hendraanggrian.openpss.ui.Selectable
 import com.hendraanggrian.openpss.ui.UserDialog
 import com.hendraanggrian.openpss.ui.main.ResetPasswordDialog
 import com.hendraanggrian.openpss.utils.doneCell
 import com.hendraanggrian.openpss.utils.stringCell
 import com.hendraanggrian.openpss.utils.yesNoAlert
-import javafx.beans.binding.BooleanBinding
 import javafx.fxml.FXML
 import javafx.scene.control.Button
+import javafx.scene.control.SelectionModel
 import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
 import kotlinx.nosql.equal
@@ -26,7 +27,7 @@ import ktfx.scene.control.infoAlert
 import java.net.URL
 import java.util.ResourceBundle
 
-class EmployeeController : Controller(), Refreshable {
+class EmployeeController : Controller(), Refreshable, Selectable<Employee> {
 
     @FXML lateinit var fullAccessButton: Button
     @FXML lateinit var resetPasswordButton: Button
@@ -38,9 +39,9 @@ class EmployeeController : Controller(), Refreshable {
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
-        fullAccessButton.disableProperty().bind(employeeSelectedBinding)
-        resetPasswordButton.disableProperty().bind(employeeSelectedBinding)
-        deleteButton.disableProperty().bind(employeeSelectedBinding)
+        fullAccessButton.disableProperty().bind(!selectedBinding)
+        resetPasswordButton.disableProperty().bind(!selectedBinding)
+        deleteButton.disableProperty().bind(!selectedBinding)
         nameColumn.stringCell { name }
         fullAccessColumn.doneCell(128) { fullAccess }
     }
@@ -48,6 +49,8 @@ class EmployeeController : Controller(), Refreshable {
     override fun refresh() {
         employeeTable.items = transaction { Employees.find().toMutableObservableList() }
     }
+
+    override val selectionModel: SelectionModel<Employee> get() = employeeTable.selectionModel
 
     @FXML fun addEmployee() = UserDialog(this, R.string.add_employee, R.image.ic_employee).showAndWait().ifPresent {
         val employee = Employee.new(it)
@@ -81,17 +84,12 @@ class EmployeeController : Controller(), Refreshable {
             infoAlert(getString(R.string.please_restart)).showAndWait().ifPresent { exit() }
         }
     ) = yesNoAlert {
-        employee!!.let { employee ->
-            transaction { confirmedAction(employee) }
+        selected!!.let {
+            transaction { confirmedAction(it) }
             when {
-                employee.name != employeeName -> refresh()
+                it.name != employeeName -> refresh()
                 else -> isNotSelfAction()
             }
         }
     }
-
-    private val employee: Employee? get() = employeeTable.selectionModel.selectedItem
-
-    private val employeeSelectedBinding: BooleanBinding
-        get() = employeeTable.selectionModel.selectedItemProperty().isNull
 }

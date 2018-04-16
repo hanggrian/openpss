@@ -11,7 +11,6 @@ import com.hendraanggrian.openpss.ui.main.MainController
 import com.hendraanggrian.openpss.utils.currencyConverter
 import com.hendraanggrian.openpss.utils.matches
 import com.hendraanggrian.openpss.utils.stringCell
-import javafx.beans.binding.BooleanBinding
 import javafx.collections.ObservableList
 import javafx.fxml.FXML
 import javafx.scene.control.Button
@@ -40,7 +39,7 @@ class ReportController : FinancialController<Report>() {
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
-        viewPaymentsButton.disableProperty().bind(reportSelectedBinding)
+        viewPaymentsButton.disableProperty().bind(!selectedBinding)
         monthBox.setLocale(Locale(LoginFile.LANGUAGE))
         monthBox.valueProperty.listener { refresh() }
         reportTable.onMouseClicked { if (it.isDoubleClick()) viewPayments() }
@@ -61,11 +60,6 @@ class ReportController : FinancialController<Report>() {
     }
 
     @FXML fun viewPayments() = getExtra<MainController>(EXTRA_MAIN_CONTROLLER).let {
-        it.select(it.paymentController) { dateBox.picker.value = report.date.toJava() }
+        it.select(it.paymentController) { dateBox.picker.value = this@ReportController.selected!!.date.toJava() }
     }
-
-    private inline val report: Report get() = reportTable.selectionModel.selectedItem
-
-    private inline val reportSelectedBinding: BooleanBinding
-        get() = reportTable.selectionModel.selectedItemProperty().isNull
 }

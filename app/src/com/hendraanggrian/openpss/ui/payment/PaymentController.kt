@@ -14,7 +14,6 @@ import com.hendraanggrian.openpss.ui.ViewInvoiceDialog
 import com.hendraanggrian.openpss.utils.currencyCell
 import com.hendraanggrian.openpss.utils.findById
 import com.hendraanggrian.openpss.utils.stringCell
-import javafx.beans.binding.BooleanBinding
 import javafx.collections.ObservableList
 import javafx.fxml.FXML
 import javafx.scene.control.Button
@@ -40,7 +39,7 @@ class PaymentController : FinancialController<Payment>() {
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
-        viewInvoiceButton.disableProperty().bind(paymentSelectedBinding)
+        viewInvoiceButton.disableProperty().bind(!selectedBinding)
         dateBox.valueProperty.listener { refresh() }
         paymentTable.onMouseClicked { if (it.isDoubleClick()) viewInvoice() }
         noColumn.stringCell { transaction { findById(Invoices, invoiceId).single().no }!! }
@@ -64,11 +63,6 @@ class PaymentController : FinancialController<Payment>() {
         }
     }
 
-    @FXML fun viewInvoice() = ViewInvoiceDialog(this, transaction { findById(Invoices, payment.invoiceId).single() }!!)
-        .show()
-
-    private inline val payment: Payment get() = paymentTable.selectionModel.selectedItem
-
-    private inline val paymentSelectedBinding: BooleanBinding
-        get() = paymentTable.selectionModel.selectedItemProperty().isNull
+    @FXML fun viewInvoice() = ViewInvoiceDialog(this,
+        transaction { findById(Invoices, selected!!.invoiceId).single() }!!).show()
 }

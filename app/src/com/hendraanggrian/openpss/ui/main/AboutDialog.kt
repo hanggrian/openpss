@@ -5,6 +5,7 @@ import com.hendraanggrian.openpss.BuildConfig.VERSION
 import com.hendraanggrian.openpss.BuildConfig.WEBSITE
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.ui.Resourced
+import com.hendraanggrian.openpss.ui.Selectable
 import com.hendraanggrian.openpss.utils.browseUrl
 import com.hendraanggrian.openpss.utils.getFont
 import com.hendraanggrian.openpss.utils.onActionFilter
@@ -12,8 +13,8 @@ import javafx.geometry.Pos.CENTER_LEFT
 import javafx.scene.control.ButtonBar.ButtonData.CANCEL_CLOSE
 import javafx.scene.control.Dialog
 import javafx.scene.control.ListView
+import javafx.scene.control.SelectionModel
 import javafx.scene.image.Image
-import ktfx.beans.binding.booleanBindingOf
 import ktfx.beans.value.and
 import ktfx.collections.toObservableList
 import ktfx.coroutines.listener
@@ -34,7 +35,7 @@ import ktfx.scene.control.closeButton
 import ktfx.scene.control.icon
 import ktfx.scene.layout.paddingAll
 
-class AboutDialog(resourced: Resourced) : Dialog<Unit>(), Resourced by resourced {
+class AboutDialog(resourced: Resourced) : Dialog<Unit>(), Resourced by resourced, Selectable<License> {
 
     private lateinit var licenseList: ListView<License>
 
@@ -101,12 +102,11 @@ class AboutDialog(resourced: Resourced) : Dialog<Unit>(), Resourced by resourced
             }
         }
         button("Homepage", CANCEL_CLOSE) {
-            visibleProperty().bind(dialogPane.expandedProperty() and
-                booleanBindingOf(licenseList.selectionModel.selectedIndexProperty()) {
-                    licenseList.selectionModel.selectedItem != null
-                })
-            onActionFilter { browseUrl(licenseList.selectionModel.selectedItem.homepage) }
+            visibleProperty().bind(dialogPane.expandedProperty() and selectedBinding)
+            onActionFilter { browseUrl(selected!!.homepage) }
         }
         closeButton()
     }
+
+    override val selectionModel: SelectionModel<License> get() = licenseList.selectionModel
 }

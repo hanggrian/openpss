@@ -5,9 +5,11 @@ import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.ui.Resourced
+import com.hendraanggrian.openpss.ui.Selectable
 import javafx.scene.control.ButtonType.OK
 import javafx.scene.control.Dialog
 import javafx.scene.control.ListView
+import javafx.scene.control.SelectionModel
 import javafx.scene.control.TextField
 import javafx.scene.image.ImageView
 import javafx.scene.input.KeyCode.ENTER
@@ -27,20 +29,22 @@ import ktfx.scene.control.okButton
 import ktfx.scene.input.isDoubleClick
 import kotlin.text.RegexOption.IGNORE_CASE
 
-class SearchCustomerDialog(resourced: Resourced) : Dialog<Customer>(), Resourced by resourced {
+class SearchCustomerDialog(resourced: Resourced) : Dialog<Customer>(), Resourced by resourced,
+    Selectable<Customer> {
+
     private companion object {
         const val ITEMS_PER_PAGE = 10
     }
 
     private lateinit var textField: TextField
-    private lateinit var listView: ListView<Customer>
+    private lateinit var customerList: ListView<Customer>
 
     init {
         headerTitle = getString(R.string.search_customer)
         graphicIcon = ImageView(R.image.ic_customer)
         dialogPane.content = vbox {
             textField = textField { promptText = getString(R.string.customer) }
-            listView = listView<Customer> {
+            customerList = listView<Customer> {
                 prefHeight = 252.0
                 itemsProperty().bind(bindingOf(textField.textProperty()) {
                     transaction {
@@ -52,22 +56,24 @@ class SearchCustomerDialog(resourced: Resourced) : Dialog<Customer>(), Resourced
                 })
                 itemsProperty().listener { _, _, value -> if (value.isNotEmpty()) selectionModel.selectFirst() }
                 onMouseClicked {
-                    if (selectionModel.selectedItem != null && it.isDoubleClick()) {
-                        result = selectionModel.selectedItem
+                    if (selected != null && it.isDoubleClick()) {
+                        result = selected
                         close()
                     }
                 }
                 onKeyPressed {
-                    if (selectionModel.selectedItem != null && it.code == ENTER) {
-                        result = selectionModel.selectedItem
+                    if (selected != null && it.code == ENTER) {
+                        result = selected
                         close()
                     }
                 }
             } marginTop 8.0
         }
         cancelButton()
-        okButton { disableProperty().bind(listView.selectionModel.selectedItemProperty().isNull) }
+        okButton { disableProperty().bind(!selectedBinding) }
         later { textField.requestFocus() }
-        setResultConverter { if (it == OK) listView.selectionModel.selectedItem else null }
+        setResultConverter { if (it == OK) selected else null }
     }
+
+    override val selectionModel: SelectionModel<Customer> get() = customerList.selectionModel
 }

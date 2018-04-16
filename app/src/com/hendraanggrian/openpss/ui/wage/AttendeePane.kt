@@ -11,6 +11,7 @@ import com.hendraanggrian.openpss.ui.Resourced
 import com.hendraanggrian.openpss.utils.forceRefresh
 import com.hendraanggrian.openpss.utils.getColor
 import com.hendraanggrian.openpss.utils.round
+import javafx.beans.binding.BooleanBinding
 import javafx.geometry.Pos.BOTTOM_CENTER
 import javafx.geometry.Pos.TOP_CENTER
 import javafx.scene.control.CheckBox
@@ -26,13 +27,13 @@ import javafx.scene.text.Font
 import kotlinx.coroutines.experimental.delay
 import kotlinx.coroutines.experimental.launch
 import ktfx.beans.binding.bindingOf
-import ktfx.collections.isEmpty
 import ktfx.collections.sort
 import ktfx.coroutines.FX
 import ktfx.coroutines.eventFilter
 import ktfx.coroutines.listener
 import ktfx.coroutines.onAction
 import ktfx.coroutines.onKeyPressed
+import ktfx.coroutines.onMouseClicked
 import ktfx.layouts.LayoutDsl
 import ktfx.layouts.checkBox
 import ktfx.layouts.contextMenu
@@ -44,6 +45,7 @@ import ktfx.layouts.separatorMenuItem
 import ktfx.layouts.vbox
 import ktfx.listeners.cellFactory
 import ktfx.scene.input.isDelete
+import ktfx.scene.input.isDoubleClick
 import ktfx.scene.layout.gap
 import ktfx.scene.layout.paddingAll
 import org.joda.time.DateTime
@@ -132,50 +134,23 @@ class AttendeePane(
                         }
                     }
                 }
-                onKeyPressed {
-                    if (it.code.isDelete() && selectionModel.selectedItem != null)
-                        items.remove(selectionModel.selectedItem)
-                }
+                onKeyPressed { if (it.code.isDelete() && attendance != null) items.remove(attendance) }
+                onMouseClicked { if (it.isDoubleClick() && attendance != null) editAttendance() }
             }
         }
         contextMenu {
-            (getString(R.string.add)) {
-                onAction {
-                    DateTimeDialog(this@AttendeePane, R.string.add_record, now().run { minusMinutes(minuteOfHour) })
-                        .showAndWait()
-                        .ifPresent {
-                            attendanceList.items.add(it)
-                            attendanceList.items.sort()
-                        }
-                }
-            }
+            (getString(R.string.add)) { onAction { addAttendance() } }
             (getString(R.string.clone)) {
-                bindDisable()
-                onAction {
-                    DateTimeDialog(this@AttendeePane, R.string.add_record, attendanceList.selectionModel.selectedItem
-                        .run { minusMinutes(minuteOfHour) })
-                        .showAndWait()
-                        .ifPresent {
-                            attendanceList.items.add(it)
-                            attendanceList.items.sort()
-                        }
-                }
+                disableProperty().bind(attendanceSelectedBinding)
+                onAction { cloneAttendance() }
             }
             (getString(R.string.edit)) {
-                bindDisable()
-                onAction {
-                    DateTimeDialog(this@AttendeePane, R.string.edit_record,
-                        attendanceList.selectionModel.selectedItem)
-                        .showAndWait()
-                        .ifPresent {
-                            attendanceList.items[attendanceList.selectionModel.selectedIndex] = it
-                            attendanceList.items.sort()
-                        }
-                }
+                disableProperty().bind(attendanceSelectedBinding)
+                onAction { editAttendance() }
             }
             (getString(R.string.delete)) {
-                bindDisable()
-                onAction { attendanceList.items.remove(attendanceList.selectionModel.selectedItem) }
+                disableProperty().bind(attendanceSelectedBinding)
+                onAction { attendanceList.items.remove(attendance) }
             }
             separatorMenuItem()
             (getString(R.string.revert)) { onAction { attendee.attendances.revert() } }
@@ -206,8 +181,33 @@ class AttendeePane(
         }
     }
 
-    private fun MenuItem.bindDisable() = disableProperty()
-        .bind(attendanceList.selectionModel.selectedItems.isEmpty)
+    private fun addAttendance() = DateTimeDialog(this@AttendeePane, R.string.add_record,
+        now().run { minusMinutes(minuteOfHour) })
+        .showAndWait()
+        .ifPresent {
+            attendanceList.items.add(it)
+            attendanceList.items.sort()
+        }
+
+    private fun cloneAttendance() = DateTimeDialog(this@AttendeePane, R.string.add_record,
+        attendance!!.run { minusMinutes(minuteOfHour) })
+        .showAndWait()
+        .ifPresent {
+            attendanceList.items.add(it)
+            attendanceList.items.sort()
+        }
+
+    private fun editAttendance() = DateTimeDialog(this@AttendeePane, R.string.edit_record, attendance!!)
+        .showAndWait()
+        .ifPresent {
+            attendanceList.items[attendanceList.selectionModel.selectedIndex] = it
+            attendanceList.items.sort()
+        }
+
+    private inline val attendance: DateTime? get() = attendanceList.selectionModel.selectedItem
+
+    private inline val attendanceSelectedBinding: BooleanBinding
+        get() = attendanceList.selectionModel.selectedItemProperty().isNull
 }
 
 @Suppress("NOTHING_TO_INLINE")

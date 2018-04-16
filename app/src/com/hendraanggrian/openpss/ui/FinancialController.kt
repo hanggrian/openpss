@@ -6,12 +6,13 @@ import com.hendraanggrian.openpss.utils.getFont
 import javafx.collections.ObservableList
 import javafx.fxml.FXML
 import javafx.scene.control.Label
+import javafx.scene.control.SelectionModel
 import javafx.scene.control.TableView
 import ktfx.beans.binding.stringBindingOf
 import java.net.URL
 import java.util.ResourceBundle
 
-abstract class FinancialController<T> : Controller(), Refreshable {
+abstract class FinancialController<T> : Controller(), Refreshable, Selectable<T> {
 
     abstract val table: TableView<T>
 
@@ -43,4 +44,6 @@ abstract class FinancialController<T> : Controller(), Refreshable {
                     currencyConverter.fromString(totalTransferLabel2.text).toDouble())
             })
     }
+
+    override val selectionModel: SelectionModel<T> get() = table.selectionModel
 }

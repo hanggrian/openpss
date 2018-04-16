@@ -10,6 +10,8 @@ import com.hendraanggrian.openpss.scene.control.CountBox
 import com.hendraanggrian.openpss.time.PATTERN_DATE
 import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.Refreshable
+import com.hendraanggrian.openpss.ui.Selectable
+import com.hendraanggrian.openpss.ui.Selectable2
 import com.hendraanggrian.openpss.ui.UserDialog
 import com.hendraanggrian.openpss.utils.findByDoc
 import com.hendraanggrian.openpss.utils.getFont
@@ -17,13 +19,13 @@ import com.hendraanggrian.openpss.utils.isNotEmpty
 import com.hendraanggrian.openpss.utils.matches
 import com.hendraanggrian.openpss.utils.stringCell
 import com.hendraanggrian.openpss.utils.yesNoAlert
-import javafx.beans.binding.BooleanBinding
 import javafx.fxml.FXML
 import javafx.scene.Node
 import javafx.scene.control.Button
 import javafx.scene.control.Label
 import javafx.scene.control.ListView
 import javafx.scene.control.Pagination
+import javafx.scene.control.SelectionModel
 import javafx.scene.control.SplitPane
 import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
@@ -48,7 +50,7 @@ import java.util.ResourceBundle
 import java.util.regex.Pattern.CASE_INSENSITIVE
 import kotlin.math.ceil
 
-class CustomerController : Controller(), Refreshable {
+class CustomerController : Controller(), Refreshable, Selectable<Customer>, Selectable2<Contact> {
 
     @FXML lateinit var editNameButton: Button
     @FXML lateinit var editAddressButton: Button
@@ -109,24 +111,27 @@ class CustomerController : Controller(), Refreshable {
                     }
                 }
                 later {
-                    editNameButton.disableProperty().bind(customerSelectedBinding or !isFullAccess.toReadOnlyProperty())
-                    editAddressButton.disableProperty().bind(customerSelectedBinding)
-                    editNoteButton.disableProperty().bind(customerSelectedBinding)
-                    addContactButton.disableProperty().bind(customerSelectedBinding)
-                    deleteContactButton.disableProperty().bind(contactSelectedBinding or
-                        !isFullAccess.toReadOnlyProperty())
+                    editNameButton.disableProperty().bind(!selectedBinding or !isFullAccess.toReadOnlyProperty())
+                    editAddressButton.disableProperty().bind(!selectedBinding)
+                    editNoteButton.disableProperty().bind(!selectedBinding)
+                    addContactButton.disableProperty().bind(!selectedBinding)
+                    deleteContactButton.disableProperty().bind(!selectedBinding2 or !isFullAccess.toReadOnlyProperty())
                 }
-                nameLabel.bindLabel { customer?.name.orEmpty() }
-                sinceLabel2.bindLabel { customer?.since?.toString(PATTERN_DATE).orEmpty() }
-                addressLabel2.bindLabel { customer?.address.orEmpty() }
-                noteLabel2.bindLabel { customer?.note.orEmpty() }
+                nameLabel.bindLabel { selected?.name.orEmpty() }
+                sinceLabel2.bindLabel { selected?.since?.toString(PATTERN_DATE).orEmpty() }
+                addressLabel2.bindLabel { selected?.address.orEmpty() }
+                noteLabel2.bindLabel { selected?.note.orEmpty() }
                 contactTable.itemsProperty().bind(bindingOf(customerList.selectionModel.selectedItemProperty()) {
-                    Contact.listAll(customer)
+                    Contact.listAll(selected)
                 })
                 coverLabel.visibleProperty().bind(customerList.selectionModel.selectedItemProperty().isNull)
                 customerList
             }
         })
+
+    override val selectionModel: SelectionModel<Customer> get() = customerList.selectionModel
+
+    override val selectionModel2: SelectionModel<Contact> get() = contactTable.selectionModel
 
     @FXML fun addCustomer() = UserDialog(this, R.string.add_customer, R.image.ic_customer)
         .showAndWait()
@@ -144,12 +149,12 @@ class CustomerController : Controller(), Refreshable {
             }
         }
 
-    @FXML fun editName() = UserDialog(this, R.string.edit_name, R.image.ic_customer, customer!!.name)
+    @FXML fun editName() = UserDialog(this, R.string.edit_name, R.image.ic_customer, selected!!.name)
         .showAndWait()
         .ifPresent {
             transaction {
-                findByDoc(Customers, customer!!).projection { name }.update(it)
-                reload(customer!!)
+                findByDoc(Customers, selected!!).projection { name }.update(it)
+                reload(selected!!)
             }
         }
 
@@ -157,8 +162,8 @@ class CustomerController : Controller(), Refreshable {
         contentText = getString(R.string.address)
     }.showAndWait().ifPresent {
         transaction {
-            findByDoc(Customers, customer!!).projection { address }.update(it)
-            reload(customer!!)
+            findByDoc(Customers, selected!!).projection { address }.update(it)
+            reload(selected!!)
         }
     }
 
@@ -166,51 +171,41 @@ class CustomerController : Controller(), Refreshable {
         contentText = getString(R.string.note)
     }.showAndWait().ifPresent {
         transaction {
-            findByDoc(Customers, customer!!).projection { note }.update(it)
-            reload(customer!!)
+            findByDoc(Customers, selected!!).projection { note }.update(it)
+            reload(selected!!)
         }
     }
 
     @FXML fun addContact() = AddContactDialog(this).showAndWait().ifPresent {
         transaction {
             val (type, value) = it
-            findByDoc(Customers, customer!!).projection {
+            findByDoc(Customers, selected!!).projection {
                 when (type) {
                     PHONE -> phones
                     else -> emails
                 }
             }.update(when (type) {
-                PHONE -> customer!!.phones
-                else -> customer!!.emails
+                PHONE -> selected!!.phones
+                else -> selected!!.emails
             } + value)
-            reload(customer!!)
+            reload(selected!!)
         }
     }
 
     @FXML fun deleteContact() = yesNoAlert(R.string.delete_contact) {
         transaction {
-            findByDoc(Customers, customer!!).projection {
-                when (contact!!.type) {
+            findByDoc(Customers, selected!!).projection {
+                when (selected2!!.type) {
                     PHONE -> phones
                     else -> emails
                 }
-            }.update(when (contact!!.type) {
-                PHONE -> customer!!.phones
-                else -> customer!!.emails
-            } - contact!!.value)
-            reload(customer!!)
+            }.update(when (selected2!!.type) {
+                PHONE -> selected!!.phones
+                else -> selected!!.emails
+            } - selected2!!.value)
+            reload(selected!!)
         }
     }
-
-    private inline val customer: Customer? get() = customerList.selectionModel.selectedItem
-
-    private inline val customerSelectedBinding: BooleanBinding
-        get() = customerList.selectionModel.selectedItemProperty().isNull
-
-    private inline val contact: Contact? get() = contactTable.selectionModel.selectedItem
-
-    private inline val contactSelectedBinding: BooleanBinding
-        get() = contactTable.selectionModel.selectedItemProperty().isNull
 
     private fun Label.bindLabel(target: () -> String) = textProperty()
         .bind(stringBindingOf(customerList.selectionModel.selectedItemProperty()) { target() })

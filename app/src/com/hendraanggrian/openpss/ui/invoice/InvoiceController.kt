@@ -1,7 +1,6 @@
 package com.hendraanggrian.openpss.ui.invoice
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.R.string.invoice
 import com.hendraanggrian.openpss.db.buildQuery
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Customers
@@ -142,7 +141,7 @@ class InvoiceController : Controller(), Refreshable, Selectable<Invoice>, Select
                         getString(R.string.paid)<Boolean> { doneCell { paid } }
                         getString(R.string.done)<Boolean> { doneCell { done } }
                     }
-                    onMouseClicked { if (it.isDoubleClick() && invoice != null) viewInvoice() }
+                    onMouseClicked { if (it.isDoubleClick() && selected != null) viewInvoice() }
                     later {
                         transaction {
                             val invoices = Invoices.find {
@@ -219,7 +218,6 @@ class InvoiceController : Controller(), Refreshable, Selectable<Invoice>, Select
 
     @FXML fun deletePayment() = yesNoAlert {
         transaction {
-
         }
     }
 

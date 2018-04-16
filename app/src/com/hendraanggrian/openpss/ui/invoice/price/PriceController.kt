@@ -1,22 +1,25 @@
 package com.hendraanggrian.openpss.ui.invoice.price
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.utils.isNotEmpty
-import com.hendraanggrian.openpss.db.NamedDocument
-import com.hendraanggrian.openpss.db.NamedDocumentSchema
+import com.hendraanggrian.openpss.db.Document
+import com.hendraanggrian.openpss.db.Named
+import com.hendraanggrian.openpss.db.NamedSchema
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.ui.SimpleTableController
+import com.hendraanggrian.openpss.utils.isNotEmpty
 import com.hendraanggrian.openpss.utils.stringCell
 import javafx.fxml.FXML
 import javafx.scene.control.TableColumn
 import kotlinx.nosql.equal
+import kotlinx.nosql.mongodb.DocumentSchema
 import ktfx.scene.control.errorAlert
 import ktfx.scene.control.inputDialog
 import java.net.URL
 import java.util.ResourceBundle
 
-abstract class PriceController<D : NamedDocument<S>, S : NamedDocumentSchema<D>>(schema: S)
-    : SimpleTableController<D, S>(schema) {
+abstract class PriceController<D, S>(schema: S) : SimpleTableController<D, S>(schema)
+    where D : Document<S>, D : Named,
+          S : DocumentSchema<D>, S : NamedSchema {
 
     abstract fun newPrice(name: String): D
 

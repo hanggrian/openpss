@@ -1,12 +1,15 @@
 package com.hendraanggrian.openpss.db.schemas
 
-import com.hendraanggrian.openpss.db.NamedDocument
-import com.hendraanggrian.openpss.db.NamedDocumentSchema
+import com.hendraanggrian.openpss.db.Document
+import com.hendraanggrian.openpss.db.Named
+import com.hendraanggrian.openpss.db.NamedSchema
 import kotlinx.nosql.Id
 import kotlinx.nosql.boolean
+import kotlinx.nosql.mongodb.DocumentSchema
 import kotlinx.nosql.string
 
-object Employees : NamedDocumentSchema<Employee>("employees", Employee::class) {
+object Employees : DocumentSchema<Employee>("employees", Employee::class), NamedSchema {
+    override val name = string("name")
     val password = string("password")
     val fullAccess = boolean("full_access")
 }
@@ -15,7 +18,7 @@ data class Employee(
     override var name: String,
     var password: String,
     var fullAccess: Boolean
-) : NamedDocument<Employees> {
+) : Document<Employees>, Named {
 
     override lateinit var id: Id<String, Employees>
 

@@ -1,19 +1,22 @@
 package com.hendraanggrian.openpss.db.schemas
 
-import com.hendraanggrian.openpss.db.NamedDocument
-import com.hendraanggrian.openpss.db.NamedDocumentSchema
-import com.hendraanggrian.openpss.db.Priced
+import com.hendraanggrian.openpss.db.Document
+import com.hendraanggrian.openpss.db.Named
+import com.hendraanggrian.openpss.db.NamedSchema
 import kotlinx.nosql.Id
 import kotlinx.nosql.double
+import kotlinx.nosql.mongodb.DocumentSchema
+import kotlinx.nosql.string
 
-object PlatePrices : NamedDocumentSchema<PlatePrice>("plate_prices", PlatePrice::class) {
+object PlatePrices : DocumentSchema<PlatePrice>("plate_prices", PlatePrice::class), NamedSchema {
+    override val name = string("name")
     val price = double("price")
 }
 
 data class PlatePrice(
     override var name: String,
-    override var price: Double
-) : NamedDocument<PlatePrices>, Priced {
+    var price: Double
+) : Document<PlatePrices>, Named {
 
     override lateinit var id: Id<String, PlatePrices>
 

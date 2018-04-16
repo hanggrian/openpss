@@ -1,12 +1,6 @@
 package com.hendraanggrian.openpss.db.schemas
 
-import com.hendraanggrian.openpss.db.DateTimed
 import com.hendraanggrian.openpss.db.Document
-import com.hendraanggrian.openpss.db.Order
-import com.hendraanggrian.openpss.db.Priced
-import com.hendraanggrian.openpss.db.SplitPriced
-import com.hendraanggrian.openpss.db.Totaled
-import com.hendraanggrian.openpss.db.Typed
 import com.hendraanggrian.openpss.db.transaction
 import kotlinx.nosql.Id
 import kotlinx.nosql.ListColumn
@@ -62,7 +56,7 @@ data class Invoice(
     val no: Int,
     val employeeId: Id<String, Employees>,
     val customerId: Id<String, Customers>,
-    override val dateTime: DateTime,
+    val dateTime: DateTime,
     var plates: List<Plate>,
     var offsets: List<Offset>,
     var others: List<Other>,
@@ -70,11 +64,11 @@ data class Invoice(
     val printed: Boolean,
     val paid: Boolean,
     val done: Boolean
-) : Document<Invoices>, DateTimed, Totaled {
+) : Document<Invoices> {
 
     override lateinit var id: Id<String, Invoices>
 
-    override val total: Double
+    val total: Double
         get() = plates.sumByDouble { it.total } + offsets.sumByDouble { it.total } + others.sumByDouble { it.total }
 
     companion object {
@@ -93,12 +87,12 @@ data class Invoice(
 }
 
 data class Plate(
-    override var title: String,
-    override var qty: Int,
-    override var type: String,
-    override var price: Double,
-    override var total: Double
-) : Typed, Order, Priced {
+    var title: String,
+    var qty: Int,
+    var type: String,
+    var price: Double,
+    var total: Double
+) {
 
     companion object {
         fun new(
@@ -111,14 +105,14 @@ data class Plate(
 }
 
 data class Offset(
-    override var title: String,
-    override var qty: Int,
-    override var type: String,
-    override var minQty: Int,
-    override var minPrice: Double,
-    override var excessPrice: Double,
-    override var total: Double
-) : Typed, Order, SplitPriced {
+    var title: String,
+    var qty: Int,
+    var type: String,
+    var minQty: Int,
+    var minPrice: Double,
+    var excessPrice: Double,
+    var total: Double
+) {
 
     companion object {
         fun new(
@@ -144,11 +138,11 @@ data class Offset(
 }
 
 data class Other(
-    override var title: String,
-    override var qty: Int,
-    override var price: Double,
-    override var total: Double
-) : Order, Priced {
+    var title: String,
+    var qty: Int,
+    var price: Double,
+    var total: Double
+) {
 
     companion object {
         fun new(

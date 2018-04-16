@@ -1,7 +1,6 @@
 package com.hendraanggrian.openpss.db.schemas
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.db.DateTimed
 import com.hendraanggrian.openpss.db.Document
 import com.hendraanggrian.openpss.db.dbDateTime
 import com.hendraanggrian.openpss.ui.Resourced
@@ -26,10 +25,10 @@ object Payments : DocumentSchema<Payment>("payments", Payment::class) {
 data class Payment(
     var invoiceId: Id<String, Invoices>,
     var employeeId: Id<String, Employees>,
-    override val dateTime: DateTime,
+    val dateTime: DateTime,
     var value: Double,
     val transfer: String?
-) : Document<Payments>, DateTimed {
+) : Document<Payments> {
 
     companion object {
         fun new(

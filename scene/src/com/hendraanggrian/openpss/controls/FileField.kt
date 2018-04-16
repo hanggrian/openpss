@@ -1,10 +1,10 @@
 @file:Suppress("NOTHING_TO_INLINE", "UNUSED")
 
-package com.hendraanggrian.openpss.scene.control
+package com.hendraanggrian.openpss.controls
 
-import com.hendraanggrian.openpss.scene.control.FileField.Scope
-import com.hendraanggrian.openpss.scene.control.FileField.Scope.FILE
-import com.hendraanggrian.openpss.scene.control.FileField.Scope.FOLDER
+import com.hendraanggrian.openpss.controls.FileField.Scope
+import com.hendraanggrian.openpss.controls.FileField.Scope.FILE
+import com.hendraanggrian.openpss.controls.FileField.Scope.FOLDER
 import javafx.beans.property.BooleanProperty
 import javafx.beans.property.ObjectProperty
 import javafx.beans.property.SimpleBooleanProperty
@@ -59,4 +59,4 @@ inline fun LayoutManager<Node>.fileField(
 inline fun LayoutManager<Node>.fileField(
     scope: Scope = FILE,
     init: (@LayoutDsl FileField).() -> Unit
-): FileField = com.hendraanggrian.openpss.scene.control.fileField(scope, init).add()
+): FileField = com.hendraanggrian.openpss.controls.fileField(scope, init).add()

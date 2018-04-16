@@ -1,6 +1,6 @@
 @file:Suppress("NOTHING_TO_INLINE", "UNUSED")
 
-package com.hendraanggrian.openpss.scene.control
+package com.hendraanggrian.openpss.controls
 
 import javafx.beans.property.IntegerProperty
 import javafx.beans.property.SimpleIntegerProperty
@@ -41,4 +41,4 @@ inline fun LayoutManager<Node>.countBox(): CountBox = countBox { }
 
 inline fun LayoutManager<Node>.countBox(
     init: (@LayoutDsl CountBox).() -> Unit
-): CountBox = com.hendraanggrian.openpss.scene.control.countBox(init).add()
+): CountBox = com.hendraanggrian.openpss.controls.countBox(init).add()

@@ -1,7 +1,8 @@
-package com.hendraanggrian.openpss.ui
+package com.hendraanggrian.openpss.controls
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.scene.layout.dateBox
+import com.hendraanggrian.openpss.layouts.dateBox
+import com.hendraanggrian.openpss.ui.Resourced
 import javafx.scene.control.ButtonType.OK
 import javafx.scene.control.Dialog
 import javafx.scene.image.ImageView

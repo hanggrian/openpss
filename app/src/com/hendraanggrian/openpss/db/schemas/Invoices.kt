@@ -1,8 +1,8 @@
 package com.hendraanggrian.openpss.db.schemas
 
 import com.hendraanggrian.openpss.db.Document
-import com.hendraanggrian.openpss.db.SimpleTotaled
-import com.hendraanggrian.openpss.db.Totaled
+import com.hendraanggrian.openpss.db.SimpleOrder
+import com.hendraanggrian.openpss.db.Order
 import com.hendraanggrian.openpss.db.transaction
 import kotlinx.nosql.Id
 import kotlinx.nosql.ListColumn
@@ -62,7 +62,7 @@ data class Invoice(
     var note: String,
     val printed: Boolean,
     val paid: Boolean,
-    val done: Boolean
+    val done:Boolean
 ) : Document<Invoices> {
 
     override lateinit var id: Id<String, Invoices>
@@ -86,11 +86,11 @@ data class Invoice(
 }
 
 data class Plate(
-    val title: String,
+    override val title: String,
     override val qty: Int,
     val type: String,
     override val price: Double
-) : SimpleTotaled {
+) : SimpleOrder {
 
     companion object {
         fun new(
@@ -103,13 +103,13 @@ data class Plate(
 }
 
 data class Offset(
-    val title: String,
-    val qty: Int,
+    override val title: String,
+    override val qty: Int,
     val type: String,
     val minQty: Int,
     val minPrice: Double,
     val excessPrice: Double
-) : Totaled {
+) : Order {
 
     override val total: Double
         get() = when {
@@ -130,10 +130,10 @@ data class Offset(
 }
 
 data class Other(
-    val title: String,
+    override val title: String,
     override val qty: Int,
     override val price: Double
-) : SimpleTotaled {
+) : SimpleOrder {
 
     companion object {
         fun new(

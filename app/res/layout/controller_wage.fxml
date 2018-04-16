@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.hendraanggrian.openpss.scene.control.FileField?>
-<?import com.hendraanggrian.openpss.scene.control.Space?>
+<?import com.hendraanggrian.openpss.controls.FileField?>
+<?import com.hendraanggrian.openpss.controls.Space?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>

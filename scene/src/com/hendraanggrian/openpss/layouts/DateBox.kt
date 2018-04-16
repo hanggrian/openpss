@@ -1,6 +1,6 @@
 @file:Suppress("NOTHING_TO_INLINE", "UNUSED")
 
-package com.hendraanggrian.openpss.scene.layout
+package com.hendraanggrian.openpss.layouts
 
 import com.hendraanggrian.openpss.scene.R
 import com.hendraanggrian.openpss.time.toJava
@@ -73,4 +73,4 @@ inline fun LayoutManager<Node>.dateBox(
 inline fun LayoutManager<Node>.dateBox(
     prefill: LocalDate = now(),
     init: (@LayoutDsl DateBox).() -> Unit
-): DateBox = com.hendraanggrian.openpss.scene.layout.dateBox(prefill, init).add()
+): DateBox = com.hendraanggrian.openpss.layouts.dateBox(prefill, init).add()

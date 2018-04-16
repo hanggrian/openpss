@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<?import com.hendraanggrian.openpss.scene.control.Space?>
-<?import com.hendraanggrian.openpss.scene.layout.TimeBox?>
+<?import com.hendraanggrian.openpss.controls.Space?>
+<?import com.hendraanggrian.openpss.layouts.TimeBox?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.hendraanggrian.openpss.ui.wage.WageRecordController" fx:id="root">
+      fx:controller="com.hendraanggrian.openpss.ui.wage.record.WageRecordController" fx:id="root">
     <ToolBar fx:id="toolbar1" stylesheets="@../style/toolbar_button.css">
         <Button mnemonicParsing="false" onAction="#empty" text="%disable_daily_income">
             <graphic>
@@ -56,7 +56,7 @@
         <Label fx:id="totalLabel1" text="%total"/>
         <Label fx:id="totalLabel2"/>
     </ToolBar>
-    <TreeTableView fx:id="recordTable" VBox.vgrow="ALWAYS">
+    <TreeTableView fx:id="recordTable" showRoot="false" VBox.vgrow="ALWAYS">
         <columns>
             <TreeTableColumn fx:id="nameColumn" sortable="false" text="%name"/>
             <TreeTableColumn fx:id="startColumn" sortable="false" resizable="false" text="%start"

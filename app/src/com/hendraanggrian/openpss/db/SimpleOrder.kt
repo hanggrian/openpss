@@ -1,8 +1,6 @@
 package com.hendraanggrian.openpss.db
 
-interface SimpleTotaled : Totaled {
-
-    val qty: Int
+interface SimpleOrder : Order {
 
     val price: Double
 

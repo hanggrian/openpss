@@ -1,4 +1,4 @@
-package com.hendraanggrian.openpss.ui.wage
+package com.hendraanggrian.openpss.ui.wage.record
 
 /** Defines an execution that can be undone. */
 data class Undoable(

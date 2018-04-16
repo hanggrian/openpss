@@ -6,10 +6,10 @@ import com.hendraanggrian.openpss.BuildConfig.DEBUG
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.db.login
 import com.hendraanggrian.openpss.io.properties.LoginFile
-import com.hendraanggrian.openpss.scene.control.HostField
-import com.hendraanggrian.openpss.scene.control.IntField
-import com.hendraanggrian.openpss.scene.control.hostField
-import com.hendraanggrian.openpss.scene.control.intField
+import com.hendraanggrian.openpss.controls.HostField
+import com.hendraanggrian.openpss.controls.IntField
+import com.hendraanggrian.openpss.controls.hostField
+import com.hendraanggrian.openpss.controls.intField
 import com.hendraanggrian.openpss.ui.Resourced
 import com.hendraanggrian.openpss.utils.onActionFilter
 import javafx.geometry.Pos.CENTER_RIGHT

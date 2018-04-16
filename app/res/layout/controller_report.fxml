@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.hendraanggrian.openpss.scene.control.Space?>
-<?import com.hendraanggrian.openpss.scene.layout.MonthBox?>
+<?import com.hendraanggrian.openpss.controls.Space?>
+<?import com.hendraanggrian.openpss.layouts.MonthBox?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.Image?>

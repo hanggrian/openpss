@@ -1,20 +1,22 @@
-package com.hendraanggrian.openpss.ui.wage
+package com.hendraanggrian.openpss.ui.wage.record
 
 import com.hendraanggrian.openpss.BuildConfig.DEBUG
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.utils.currencyConverter
 import com.hendraanggrian.openpss.io.WageContentFolder
 import com.hendraanggrian.openpss.io.WageFile
-import com.hendraanggrian.openpss.utils.numberConverter
-import com.hendraanggrian.openpss.scene.layout.TimeBox
+import com.hendraanggrian.openpss.controls.UncollapsibleTreeItem
+import com.hendraanggrian.openpss.layouts.TimeBox
 import com.hendraanggrian.openpss.time.PATTERN_DATE
 import com.hendraanggrian.openpss.time.PATTERN_DATETIME
 import com.hendraanggrian.openpss.time.PATTERN_TIME
 import com.hendraanggrian.openpss.ui.Controller
-import com.hendraanggrian.openpss.ui.DateDialog
-import com.hendraanggrian.openpss.ui.wage.Record.Companion.getDummy
+import com.hendraanggrian.openpss.controls.DateDialog
+import com.hendraanggrian.openpss.ui.wage.Attendee
+import com.hendraanggrian.openpss.ui.wage.record.Record.Companion.getDummy
+import com.hendraanggrian.openpss.utils.currencyConverter
 import com.hendraanggrian.openpss.utils.getFont
 import com.hendraanggrian.openpss.utils.getResource
+import com.hendraanggrian.openpss.utils.numberConverter
 import com.hendraanggrian.openpss.utils.openFile
 import com.hendraanggrian.openpss.utils.stringCell
 import com.sun.javafx.scene.control.skin.TreeTableViewSkin
@@ -82,9 +84,26 @@ class WageRecordController : Controller() {
         }
         totalLabel1.font = getFont(R.font.opensans_bold)
 
-        recordTable.selectionModel.selectionMode = MULTIPLE
-        recordTable.root = TreeItem(getDummy(this))
-        recordTable.isShowRoot = false
+        recordTable.run {
+            selectionModel.selectionMode = MULTIPLE
+            root = TreeItem(getDummy(this@WageRecordController))
+            columns.forEach {
+                it.cellFactory {
+                    onUpdate { any, empty ->
+                        if (any != null && !empty) graphic = label(when (it) {
+                            dailyColumn, overtimeColumn -> numberConverter.toString(any as Number)
+                            dailyIncomeColumn, overtimeIncomeColumn, totalColumn -> currencyConverter.toString(any as Number)
+                            else -> any.toString()
+                        }) {
+                            font = getFont(when {
+                                treeTableRow.treeItem?.value?.isTotal() ?: true -> R.font.opensans_bold
+                                else -> R.font.opensans_regular
+                            })
+                        }
+                    }
+                }
+            }
+        }
 
         nameColumn.stringCell { displayedName }
         startColumn.setCellValueFactory { it.value.value.displayedStart }
@@ -94,32 +113,13 @@ class WageRecordController : Controller() {
         overtimeColumn.setCellValueFactory { it.value.value.overtimeProperty.asObservable() }
         overtimeIncomeColumn.setCellValueFactory { it.value.value.overtimeIncomeProperty.asObservable() }
         totalColumn.setCellValueFactory { it.value.value.totalProperty.asObservable() }
-        recordTable.columns.forEach {
-            it.cellFactory {
-                onUpdate { any, empty ->
-                    if (any != null && !empty) graphic = label(when (it) {
-                        dailyColumn, overtimeColumn -> numberConverter.toString(any as Number)
-                        dailyIncomeColumn, overtimeIncomeColumn, totalColumn -> currencyConverter.toString(any as Number)
-                        else -> any.toString()
-                    }) {
-                        font = getFont(when {
-                            treeTableRow.treeItem?.value?.isTotal() ?: true -> R.font.opensans_bold
-                            else -> R.font.opensans_regular
-                        })
-                    }
-                }
-            }
-        }
 
         later {
             getExtra<List<Attendee>>(EXTRA_ATTENDEES).forEach { attendee ->
                 val node = attendee.toNodeRecord(this)
                 val childs = attendee.toChildRecords(this)
                 val total = attendee.toTotalRecords(this, childs)
-                recordTable.root.children += TreeItem(node).apply {
-                    isExpanded = true
-                    // uncollapsible
-                    expandedProperty().addListener { _, _, expanded -> if (!expanded) isExpanded = true }
+                recordTable.root.children += UncollapsibleTreeItem(node).apply {
                     children += childs.map { TreeItem(it) }.toTypedArray()
                     children += TreeItem(total)
                 }

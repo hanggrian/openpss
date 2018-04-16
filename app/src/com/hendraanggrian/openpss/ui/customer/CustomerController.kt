@@ -6,13 +6,13 @@ import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Customer.ContactType.PHONE
 import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.scene.control.CountBox
+import com.hendraanggrian.openpss.controls.CountBox
 import com.hendraanggrian.openpss.time.PATTERN_DATE
 import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.Selectable
 import com.hendraanggrian.openpss.ui.Selectable2
-import com.hendraanggrian.openpss.ui.UserDialog
+import com.hendraanggrian.openpss.controls.UserDialog
 import com.hendraanggrian.openpss.utils.findByDoc
 import com.hendraanggrian.openpss.utils.getFont
 import com.hendraanggrian.openpss.utils.isNotEmpty

@@ -1,9 +1,9 @@
 package com.hendraanggrian.openpss.ui.invoice.order
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.db.Totaled
-import com.hendraanggrian.openpss.scene.control.IntField
-import com.hendraanggrian.openpss.scene.control.intField
+import com.hendraanggrian.openpss.db.Order
+import com.hendraanggrian.openpss.controls.IntField
+import com.hendraanggrian.openpss.controls.intField
 import com.hendraanggrian.openpss.ui.Resourced
 import com.hendraanggrian.openpss.utils.currencyConverter
 import com.hendraanggrian.openpss.utils.getFont
@@ -25,7 +25,7 @@ import ktfx.scene.control.okButton
 import ktfx.scene.layout.gap
 
 @Suppress("LeakingThis")
-abstract class AddOrderDialog<T : Totaled>(
+abstract class AddOrderDialog<T : Order>(
     resourced: Resourced,
     titleId: String,
     graphicId: String? = null

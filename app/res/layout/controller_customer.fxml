@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<?import com.hendraanggrian.openpss.scene.control.CountBox?>
-<?import com.hendraanggrian.openpss.scene.control.Space?>
+<?import com.hendraanggrian.openpss.controls.CountBox?>
+<?import com.hendraanggrian.openpss.controls.Space?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>

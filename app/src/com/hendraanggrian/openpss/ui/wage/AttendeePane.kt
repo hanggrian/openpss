@@ -3,10 +3,10 @@ package com.hendraanggrian.openpss.ui.wage
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.db.schemas.Recesses
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.scene.control.intField
+import com.hendraanggrian.openpss.controls.intField
 import com.hendraanggrian.openpss.time.FlexibleInterval
 import com.hendraanggrian.openpss.time.PATTERN_DATETIME_EXTENDED
-import com.hendraanggrian.openpss.ui.DateTimeDialog
+import com.hendraanggrian.openpss.controls.DateTimeDialog
 import com.hendraanggrian.openpss.ui.Resourced
 import com.hendraanggrian.openpss.utils.forceRefresh
 import com.hendraanggrian.openpss.utils.getColor

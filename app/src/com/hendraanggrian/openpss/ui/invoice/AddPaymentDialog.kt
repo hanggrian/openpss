@@ -10,8 +10,8 @@ import com.hendraanggrian.openpss.db.schemas.Payment.Method.CASH
 import com.hendraanggrian.openpss.db.schemas.Payment.Method.values
 import com.hendraanggrian.openpss.db.schemas.calculateDue
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.scene.control.DoubleField
-import com.hendraanggrian.openpss.scene.control.doubleField
+import com.hendraanggrian.openpss.controls.DoubleField
+import com.hendraanggrian.openpss.controls.doubleField
 import com.hendraanggrian.openpss.ui.Resourced
 import com.hendraanggrian.openpss.utils.getColor
 import com.hendraanggrian.openpss.utils.getFont

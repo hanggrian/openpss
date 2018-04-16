@@ -5,8 +5,8 @@ import com.hendraanggrian.openpss.db.schemas.Plate
 import com.hendraanggrian.openpss.db.schemas.PlatePrice
 import com.hendraanggrian.openpss.db.schemas.PlatePrices
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.scene.control.DoubleField
-import com.hendraanggrian.openpss.scene.control.doubleField
+import com.hendraanggrian.openpss.controls.DoubleField
+import com.hendraanggrian.openpss.controls.doubleField
 import com.hendraanggrian.openpss.ui.Resourced
 import javafx.beans.Observable
 import javafx.beans.value.ObservableBooleanValue

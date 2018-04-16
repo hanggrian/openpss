@@ -1,10 +1,10 @@
 @file:Suppress("NOTHING_TO_INLINE", "UNUSED")
 
-package com.hendraanggrian.openpss.scene.layout
+package com.hendraanggrian.openpss.layouts
 
 import com.hendraanggrian.openpss.scene.R
-import com.hendraanggrian.openpss.scene.control.IntField
-import com.hendraanggrian.openpss.scene.control.intField
+import com.hendraanggrian.openpss.controls.IntField
+import com.hendraanggrian.openpss.controls.intField
 import javafx.beans.property.ObjectProperty
 import javafx.beans.property.SimpleObjectProperty
 import javafx.scene.Node
@@ -105,4 +105,4 @@ inline fun LayoutManager<Node>.monthBox(
 inline fun LayoutManager<Node>.monthBox(
     prefill: YearMonth = now(),
     init: (@LayoutDsl MonthBox).() -> Unit
-): MonthBox = com.hendraanggrian.openpss.scene.layout.monthBox(prefill, init).add()
+): MonthBox = com.hendraanggrian.openpss.layouts.monthBox(prefill, init).add()

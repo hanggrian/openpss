@@ -1,6 +1,6 @@
 @file:Suppress("NOTHING_TO_INLINE", "UNUSED")
 
-package com.hendraanggrian.openpss.scene.control
+package com.hendraanggrian.openpss.controls
 
 import javafx.beans.property.IntegerProperty
 import javafx.beans.property.SimpleIntegerProperty
@@ -40,4 +40,4 @@ inline fun LayoutManager<Node>.intField(): IntField = intField { }
 
 inline fun LayoutManager<Node>.intField(
     init: (@LayoutDsl IntField).() -> Unit
-): IntField = com.hendraanggrian.openpss.scene.control.intField(init).add()
+): IntField = com.hendraanggrian.openpss.controls.intField(init).add()

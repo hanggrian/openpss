@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.hendraanggrian.openpss.controls.Space?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -15,19 +16,28 @@
                 </ImageView>
             </graphic>
         </Button>
+        <Space/>
+        <Button mnemonicParsing="false" fx:id="doneButton" onAction="#done" text="%done">
+            <graphic>
+                <ImageView pickOnBounds="true" preserveRatio="true">
+                    <Image url="@/image/toolbar_done.png"/>
+                </ImageView>
+            </graphic>
+        </Button>
     </ToolBar>
-    <ToolBar>
-        <ChoiceBox fx:id="typeChoice"/>
-    </ToolBar>
-    <TableView fx:id="scheduleTable" VBox.vgrow="ALWAYS">
+    <TreeTableView fx:id="scheduleTable" showRoot="false" VBox.vgrow="ALWAYS">
         <columns>
-            <TableColumn fx:id="typeColumn" text="%type"/>
-            <TableColumn fx:id="employeeColumn" text="%employee"/>
-            <TableColumn fx:id="customerColumn" text="%customer"/>
-            <TableColumn fx:id="titleColumn" text="%title"/>
+            <TreeTableColumn fx:id="orderColumn"/>
+            <TreeTableColumn fx:id="titleColumn" text="%title"/>
+            <TreeTableColumn fx:id="qtyColumn" text="%qty"/>
+            <!--TreeTableColumn fx:id="typeColumn" text="%type"/>
+            <TreeTableColumn fx:id="employeeColumn" text="%employee"/>
+            <TreeTableColumn fx:id="customerColumn" text="%customer"/>
+            <TreeTableColumn fx:id="qtyColumn" text="%qty"/>
+            <TreeTableColumn fx:id="descriptionColumn" text="%description"/-->
         </columns>
         <columnResizePolicy>
-            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+            <TreeTableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
         </columnResizePolicy>
-    </TableView>
+    </TreeTableView>
 </VBox>

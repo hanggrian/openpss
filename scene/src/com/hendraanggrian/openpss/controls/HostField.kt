@@ -1,6 +1,6 @@
 @file:Suppress("NOTHING_TO_INLINE", "UNUSED")
 
-package com.hendraanggrian.openpss.scene.control
+package com.hendraanggrian.openpss.controls
 
 import javafx.beans.property.BooleanProperty
 import javafx.beans.property.SimpleBooleanProperty
@@ -35,4 +35,4 @@ inline fun LayoutManager<Node>.hostField(): HostField = hostField { }
 
 inline fun LayoutManager<Node>.hostField(
     init: (@LayoutDsl HostField).() -> Unit
-): HostField = com.hendraanggrian.openpss.scene.control.hostField(init).add()
+): HostField = com.hendraanggrian.openpss.controls.hostField(init).add()

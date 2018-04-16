@@ -1,6 +1,10 @@
 package com.hendraanggrian.openpss.db
 
-interface Totaled {
+interface Order {
+
+    val title: String
+
+    val qty: Int
 
     val total: Double
 }

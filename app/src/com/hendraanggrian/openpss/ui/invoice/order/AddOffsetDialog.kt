@@ -5,10 +5,10 @@ import com.hendraanggrian.openpss.db.schemas.Offset
 import com.hendraanggrian.openpss.db.schemas.OffsetPrice
 import com.hendraanggrian.openpss.db.schemas.OffsetPrices
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.scene.control.DoubleField
-import com.hendraanggrian.openpss.scene.control.IntField
-import com.hendraanggrian.openpss.scene.control.doubleField
-import com.hendraanggrian.openpss.scene.control.intField
+import com.hendraanggrian.openpss.controls.DoubleField
+import com.hendraanggrian.openpss.controls.IntField
+import com.hendraanggrian.openpss.controls.doubleField
+import com.hendraanggrian.openpss.controls.intField
 import com.hendraanggrian.openpss.ui.Resourced
 import javafx.beans.Observable
 import javafx.beans.value.ObservableBooleanValue

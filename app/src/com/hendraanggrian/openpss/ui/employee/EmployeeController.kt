@@ -8,7 +8,7 @@ import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.Selectable
-import com.hendraanggrian.openpss.ui.UserDialog
+import com.hendraanggrian.openpss.controls.UserDialog
 import com.hendraanggrian.openpss.ui.main.ResetPasswordDialog
 import com.hendraanggrian.openpss.utils.doneCell
 import com.hendraanggrian.openpss.utils.stringCell

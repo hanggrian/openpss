@@ -7,10 +7,10 @@ import com.hendraanggrian.openpss.db.schemas.Payment.Method.CASH
 import com.hendraanggrian.openpss.db.schemas.Payment.Method.TRANSFER
 import com.hendraanggrian.openpss.db.schemas.Payments
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.scene.layout.DateBox
+import com.hendraanggrian.openpss.layouts.DateBox
 import com.hendraanggrian.openpss.time.PATTERN_TIME
 import com.hendraanggrian.openpss.ui.FinancialController
-import com.hendraanggrian.openpss.ui.ViewInvoiceDialog
+import com.hendraanggrian.openpss.controls.ViewInvoiceDialog
 import com.hendraanggrian.openpss.utils.currencyCell
 import com.hendraanggrian.openpss.utils.findById
 import com.hendraanggrian.openpss.utils.stringCell

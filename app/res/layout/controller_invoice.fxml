@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<?import com.hendraanggrian.openpss.scene.control.*?>
-<?import com.hendraanggrian.openpss.scene.layout.DateBox?>
+<?import com.hendraanggrian.openpss.controls.*?>
+<?import com.hendraanggrian.openpss.layouts.DateBox?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>

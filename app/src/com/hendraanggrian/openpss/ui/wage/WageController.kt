@@ -3,9 +3,9 @@ package com.hendraanggrian.openpss.ui.wage
 import com.hendraanggrian.openpss.BuildConfig.DEBUG
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.io.WageFolder
-import com.hendraanggrian.openpss.scene.control.FileField
+import com.hendraanggrian.openpss.controls.FileField
 import com.hendraanggrian.openpss.ui.Controller
-import com.hendraanggrian.openpss.ui.wage.WageRecordController.Companion.EXTRA_ATTENDEES
+import com.hendraanggrian.openpss.ui.wage.record.WageRecordController.Companion.EXTRA_ATTENDEES
 import com.hendraanggrian.openpss.ui.wage.readers.Reader
 import com.hendraanggrian.openpss.utils.controller
 import com.hendraanggrian.openpss.utils.get

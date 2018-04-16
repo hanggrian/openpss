@@ -1,11 +1,12 @@
-package com.hendraanggrian.openpss.ui
+package com.hendraanggrian.openpss.controls
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.scene.layout.DateBox
-import com.hendraanggrian.openpss.scene.layout.TimeBox
-import com.hendraanggrian.openpss.scene.layout.dateBox
-import com.hendraanggrian.openpss.scene.layout.timeBox
-import com.hendraanggrian.openpss.ui.wage.Record.Companion.WORKING_HOURS
+import com.hendraanggrian.openpss.layouts.DateBox
+import com.hendraanggrian.openpss.layouts.TimeBox
+import com.hendraanggrian.openpss.layouts.dateBox
+import com.hendraanggrian.openpss.layouts.timeBox
+import com.hendraanggrian.openpss.ui.Resourced
+import com.hendraanggrian.openpss.ui.wage.record.Record.Companion.WORKING_HOURS
 import javafx.scene.control.ButtonType.OK
 import javafx.scene.control.Dialog
 import javafx.scene.image.ImageView

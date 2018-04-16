@@ -11,14 +11,14 @@ import com.hendraanggrian.openpss.db.schemas.Payment
 import com.hendraanggrian.openpss.db.schemas.Payments
 import com.hendraanggrian.openpss.db.schemas.calculateDue
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.scene.control.CountBox
-import com.hendraanggrian.openpss.scene.layout.DateBox
+import com.hendraanggrian.openpss.controls.CountBox
+import com.hendraanggrian.openpss.layouts.DateBox
 import com.hendraanggrian.openpss.time.PATTERN_DATETIME_EXTENDED
 import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.Selectable
 import com.hendraanggrian.openpss.ui.Selectable2
-import com.hendraanggrian.openpss.ui.ViewInvoiceDialog
+import com.hendraanggrian.openpss.controls.ViewInvoiceDialog
 import com.hendraanggrian.openpss.utils.controller
 import com.hendraanggrian.openpss.utils.currencyCell
 import com.hendraanggrian.openpss.utils.doneCell
@@ -59,6 +59,7 @@ import ktfx.beans.binding.times
 import ktfx.beans.property.toReadOnlyProperty
 import ktfx.beans.value.or
 import ktfx.collections.emptyObservableList
+import ktfx.collections.observableListOf
 import ktfx.collections.toMutableObservableList
 import ktfx.collections.toObservableList
 import ktfx.coroutines.onMouseClicked
@@ -109,10 +110,10 @@ class InvoiceController : Controller(), Refreshable, Selectable<Invoice>, Select
         customerButtonItem.disableProperty().bind(customerProperty.isNull)
 
         countBox.desc = getString(R.string.items)
-        statusChoice.items = listOf(R.string.any, R.string.unpaid, R.string.paid)
-            .map { getString(it) }
-            .toObservableList()
-        statusChoice.selectionModel.selectFirst()
+        statusChoice.run {
+            items = observableListOf(getString(R.string.any), getString(R.string.unpaid), getString(R.string.paid))
+            selectionModel.selectFirst()
+        }
         pickDateRadio.graphic.disableProperty().bind(!pickDateRadio.selectedProperty())
 
         paymentDateTimeColumn.stringCell { dateTime.toString(PATTERN_DATETIME_EXTENDED) }

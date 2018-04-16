@@ -1,4 +1,4 @@
-package com.hendraanggrian.openpss.ui
+package com.hendraanggrian.openpss.controls
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.utils.currencyConverter
@@ -13,6 +13,7 @@ import com.hendraanggrian.openpss.db.schemas.findGlobalSettings
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.utils.numberConverter
 import com.hendraanggrian.openpss.time.PATTERN_DATETIME_EXTENDED
+import com.hendraanggrian.openpss.ui.Resourced
 import com.hendraanggrian.openpss.utils.getFont
 import javafx.geometry.Insets
 import javafx.geometry.Pos.CENTER

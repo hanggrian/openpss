@@ -1,6 +1,6 @@
 @file:Suppress("NOTHING_TO_INLINE", "UNUSED")
 
-package com.hendraanggrian.openpss.scene.control
+package com.hendraanggrian.openpss.controls
 
 import javafx.scene.Node
 import javafx.scene.layout.Region
@@ -24,4 +24,4 @@ inline fun LayoutManager<Node>.space(): Space = space { }
 
 inline fun LayoutManager<Node>.space(
     init: (@LayoutDsl Space).() -> Unit
-): Space = com.hendraanggrian.openpss.scene.control.space(init).add()
+): Space = com.hendraanggrian.openpss.controls.space(init).add()

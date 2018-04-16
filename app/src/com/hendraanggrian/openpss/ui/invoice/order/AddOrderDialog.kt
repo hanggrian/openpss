@@ -1,16 +1,19 @@
 package com.hendraanggrian.openpss.ui.invoice.order
 
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.db.Totaled
 import com.hendraanggrian.openpss.scene.control.IntField
 import com.hendraanggrian.openpss.scene.control.intField
 import com.hendraanggrian.openpss.ui.Resourced
+import com.hendraanggrian.openpss.utils.currencyConverter
 import com.hendraanggrian.openpss.utils.getFont
+import javafx.beans.Observable
 import javafx.beans.value.ObservableBooleanValue
-import javafx.beans.value.ObservableStringValue
 import javafx.scene.control.ButtonType
 import javafx.scene.control.Dialog
 import javafx.scene.control.TextField
 import javafx.scene.image.ImageView
+import ktfx.beans.binding.stringBindingOf
 import ktfx.layouts._GridPane
 import ktfx.layouts.gridPane
 import ktfx.layouts.label
@@ -22,7 +25,7 @@ import ktfx.scene.control.okButton
 import ktfx.scene.layout.gap
 
 @Suppress("LeakingThis")
-abstract class AddOrderDialog<T>(
+abstract class AddOrderDialog<T : Totaled>(
     resourced: Resourced,
     titleId: String,
     graphicId: String? = null
@@ -30,7 +33,7 @@ abstract class AddOrderDialog<T>(
 
     abstract fun _GridPane.onLayout()
 
-    abstract val titleBinding: ObservableStringValue
+    abstract val titleBindingDependencies: Array<Observable>
 
     abstract val disableBinding: ObservableBooleanValue
 
@@ -53,7 +56,9 @@ abstract class AddOrderDialog<T>(
                 label(getString(R.string.total)) col 0 row totalRow
                 label {
                     font = getFont(R.font.opensans_bold)
-                    textProperty().bind(titleBinding)
+                    textProperty().bind(stringBindingOf(*titleBindingDependencies) {
+                        currencyConverter.toString(newInstance().total)
+                    })
                 } col 1 row totalRow
             }
         }

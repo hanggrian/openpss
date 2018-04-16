@@ -1,6 +1,8 @@
 package com.hendraanggrian.openpss.db.schemas
 
 import com.hendraanggrian.openpss.db.Document
+import com.hendraanggrian.openpss.db.SimpleTotaled
+import com.hendraanggrian.openpss.db.Totaled
 import com.hendraanggrian.openpss.db.transaction
 import kotlinx.nosql.Id
 import kotlinx.nosql.ListColumn
@@ -31,7 +33,6 @@ object Invoices : DocumentSchema<Invoice>("invoices", Invoice::class) {
         val qty = integer("qty")
         val type = string("type")
         val price = double("price")
-        val total = double("total")
     }
 
     class OffsetColumn : ListColumn<Offset, Invoices>("offsets", Offset::class) {
@@ -41,14 +42,12 @@ object Invoices : DocumentSchema<Invoice>("invoices", Invoice::class) {
         val minQty = integer("min_qty")
         val minPrice = double("min_price")
         val excessPrice = double("excess_price")
-        val total = double("total")
     }
 
     class OtherColumn : ListColumn<Other, Invoices>("others", Other::class) {
         val title = string("title")
         val qty = integer("qty")
         val price = double("price")
-        val total = double("total")
     }
 }
 
@@ -87,12 +86,11 @@ data class Invoice(
 }
 
 data class Plate(
-    var title: String,
-    var qty: Int,
-    var type: String,
-    var price: Double,
-    var total: Double
-) {
+    val title: String,
+    override val qty: Int,
+    val type: String,
+    override val price: Double
+) : SimpleTotaled {
 
     companion object {
         fun new(
@@ -100,19 +98,24 @@ data class Plate(
             qty: Int,
             type: String,
             price: Double
-        ): Plate = Plate(title, qty, type, price, qty * price)
+        ): Plate = Plate(title, qty, type, price)
     }
 }
 
 data class Offset(
-    var title: String,
-    var qty: Int,
-    var type: String,
-    var minQty: Int,
-    var minPrice: Double,
-    var excessPrice: Double,
-    var total: Double
-) {
+    val title: String,
+    val qty: Int,
+    val type: String,
+    val minQty: Int,
+    val minPrice: Double,
+    val excessPrice: Double
+) : Totaled {
+
+    override val total: Double
+        get() = when {
+            qty <= minQty -> minPrice
+            else -> minPrice + ((qty - minQty) * excessPrice)
+        }
 
     companion object {
         fun new(
@@ -122,33 +125,21 @@ data class Offset(
             minQty: Int,
             minPrice: Double,
             excessPrice: Double
-        ): Offset = Offset(title, qty, type, minQty, minPrice, excessPrice,
-            calculateTotal(qty, minQty, minPrice, excessPrice))
-
-        fun calculateTotal(
-            qty: Int,
-            minQty: Int,
-            minPrice: Double,
-            excessPrice: Double
-        ): Double = when {
-            qty <= minQty -> minPrice
-            else -> minPrice + ((qty - minQty) * excessPrice)
-        }
+        ): Offset = Offset(title, qty, type, minQty, minPrice, excessPrice)
     }
 }
 
 data class Other(
-    var title: String,
-    var qty: Int,
-    var price: Double,
-    var total: Double
-) {
+    val title: String,
+    override val qty: Int,
+    override val price: Double
+) : SimpleTotaled {
 
     companion object {
         fun new(
             title: String,
             qty: Int,
             price: Double
-        ): Other = Other(title, qty, price, qty * price)
+        ): Other = Other(title, qty, price)
     }
 }

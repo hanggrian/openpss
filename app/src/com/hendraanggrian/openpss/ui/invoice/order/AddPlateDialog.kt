@@ -1,7 +1,6 @@
 package com.hendraanggrian.openpss.ui.invoice.order
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.utils.currencyConverter
 import com.hendraanggrian.openpss.db.schemas.Plate
 import com.hendraanggrian.openpss.db.schemas.PlatePrice
 import com.hendraanggrian.openpss.db.schemas.PlatePrices
@@ -9,10 +8,9 @@ import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.scene.control.DoubleField
 import com.hendraanggrian.openpss.scene.control.doubleField
 import com.hendraanggrian.openpss.ui.Resourced
+import javafx.beans.Observable
 import javafx.beans.value.ObservableBooleanValue
-import javafx.beans.value.ObservableStringValue
 import javafx.scene.control.ChoiceBox
-import ktfx.beans.binding.stringBindingOf
 import ktfx.beans.value.isBlank
 import ktfx.beans.value.lessEq
 import ktfx.beans.value.or
@@ -41,10 +39,8 @@ class AddPlateDialog(resourced: Resourced) : AddOrderDialog<Plate>(
         priceField = doubleField { promptText = getString(R.string.price) } col 1 row 3
     }
 
-    override val titleBinding: ObservableStringValue
-        get() = stringBindingOf(qtyField.valueProperty, priceField.valueProperty) {
-            currencyConverter.toString(qtyField.value * priceField.value)
-        }
+    override val titleBindingDependencies: Array<Observable>
+        get() = arrayOf(qtyField.valueProperty, priceField.valueProperty)
 
     override val disableBinding: ObservableBooleanValue
         get() = typeChoice.valueProperty().isNull or
@@ -55,6 +51,6 @@ class AddPlateDialog(resourced: Resourced) : AddOrderDialog<Plate>(
     override fun newInstance(): Plate = Plate.new(
         titleField.text,
         qtyField.value,
-        typeChoice.value.name,
+        typeChoice.value?.name ?: "",
         priceField.value)
 }

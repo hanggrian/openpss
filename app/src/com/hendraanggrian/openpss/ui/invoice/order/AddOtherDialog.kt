@@ -1,14 +1,12 @@
 package com.hendraanggrian.openpss.ui.invoice.order
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.utils.currencyConverter
 import com.hendraanggrian.openpss.db.schemas.Other
 import com.hendraanggrian.openpss.scene.control.DoubleField
 import com.hendraanggrian.openpss.scene.control.doubleField
 import com.hendraanggrian.openpss.ui.Resourced
+import javafx.beans.Observable
 import javafx.beans.value.ObservableBooleanValue
-import javafx.beans.value.ObservableStringValue
-import ktfx.beans.binding.stringBindingOf
 import ktfx.beans.value.isBlank
 import ktfx.beans.value.lessEq
 import ktfx.beans.value.or
@@ -26,10 +24,8 @@ class AddOtherDialog(resourced: Resourced) : AddOrderDialog<Other>(
         priceField = doubleField { promptText = getString(R.string.price) } col 1 row 2
     }
 
-    override val titleBinding: ObservableStringValue
-        get() = stringBindingOf(qtyField.valueProperty, priceField.valueProperty) {
-            currencyConverter.toString(qtyField.value * priceField.value)
-        }
+    override val titleBindingDependencies: Array<Observable>
+        get() = arrayOf(qtyField.valueProperty, priceField.valueProperty)
 
     override val disableBinding: ObservableBooleanValue
         get() = titleField.textProperty().isBlank() or

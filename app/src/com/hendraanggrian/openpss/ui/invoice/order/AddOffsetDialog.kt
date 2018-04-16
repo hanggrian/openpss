@@ -1,7 +1,6 @@
 package com.hendraanggrian.openpss.ui.invoice.order
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.utils.currencyConverter
 import com.hendraanggrian.openpss.db.schemas.Offset
 import com.hendraanggrian.openpss.db.schemas.OffsetPrice
 import com.hendraanggrian.openpss.db.schemas.OffsetPrices
@@ -11,10 +10,9 @@ import com.hendraanggrian.openpss.scene.control.IntField
 import com.hendraanggrian.openpss.scene.control.doubleField
 import com.hendraanggrian.openpss.scene.control.intField
 import com.hendraanggrian.openpss.ui.Resourced
+import javafx.beans.Observable
 import javafx.beans.value.ObservableBooleanValue
-import javafx.beans.value.ObservableStringValue
 import javafx.scene.control.ChoiceBox
-import ktfx.beans.binding.stringBindingOf
 import ktfx.beans.value.isBlank
 import ktfx.beans.value.lessEq
 import ktfx.beans.value.or
@@ -51,12 +49,9 @@ class AddOffsetDialog(resourced: Resourced) : AddOrderDialog<Offset>(
         excessPriceField = doubleField { promptText = getString(R.string.excess_price) } col 1 row 5
     }
 
-    override val titleBinding: ObservableStringValue
-        get() = stringBindingOf(qtyField.valueProperty, minQtyField.valueProperty, minPriceField.valueProperty,
-            excessPriceField.valueProperty) {
-            currencyConverter.toString(Offset.calculateTotal(qtyField.value, minQtyField.value, minPriceField.value,
-                excessPriceField.value))
-        }
+    override val titleBindingDependencies: Array<Observable>
+        get() = arrayOf(qtyField.valueProperty, minQtyField.valueProperty, minPriceField.valueProperty,
+            excessPriceField.valueProperty)
 
     override val disableBinding: ObservableBooleanValue
         get() = typeChoice.valueProperty().isNull or
@@ -69,7 +64,7 @@ class AddOffsetDialog(resourced: Resourced) : AddOrderDialog<Offset>(
     override fun newInstance(): Offset = Offset.new(
         titleField.text,
         qtyField.value,
-        typeChoice.value.name,
+        typeChoice.value?.name ?: "",
         minQtyField.value,
         minPriceField.value,
         excessPriceField.value)

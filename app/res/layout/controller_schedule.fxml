@@ -30,11 +30,7 @@
             <TreeTableColumn fx:id="orderColumn"/>
             <TreeTableColumn fx:id="titleColumn" text="%title"/>
             <TreeTableColumn fx:id="qtyColumn" text="%qty"/>
-            <!--TreeTableColumn fx:id="typeColumn" text="%type"/>
-            <TreeTableColumn fx:id="employeeColumn" text="%employee"/>
-            <TreeTableColumn fx:id="customerColumn" text="%customer"/>
-            <TreeTableColumn fx:id="qtyColumn" text="%qty"/>
-            <TreeTableColumn fx:id="descriptionColumn" text="%description"/-->
+            <TreeTableColumn fx:id="typeColumn" text="%type"/>
         </columns>
         <columnResizePolicy>
             <TreeTableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>

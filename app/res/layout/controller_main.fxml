@@ -152,6 +152,6 @@
                 <fx:include fx:id="employee" source="controller_employee.fxml"/>
             </Tab>
         </TabPane>
-        <Label fx:id="employeeLabel" AnchorPane.rightAnchor="10" AnchorPane.topAnchor="10"/>
+        <Label fx:id="employeeLabel" AnchorPane.rightAnchor="12" AnchorPane.topAnchor="12"/>
     </AnchorPane>
 </VBox>

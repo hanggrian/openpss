@@ -1,6 +1,8 @@
 package com.hendraanggrian.openpss.ui.invoice
 
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.controls.CountBox
+import com.hendraanggrian.openpss.controls.ViewInvoiceDialog
 import com.hendraanggrian.openpss.db.buildQuery
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Customers
@@ -11,14 +13,12 @@ import com.hendraanggrian.openpss.db.schemas.Payment
 import com.hendraanggrian.openpss.db.schemas.Payments
 import com.hendraanggrian.openpss.db.schemas.calculateDue
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.controls.CountBox
 import com.hendraanggrian.openpss.layouts.DateBox
 import com.hendraanggrian.openpss.time.PATTERN_DATETIME_EXTENDED
 import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.Selectable
 import com.hendraanggrian.openpss.ui.Selectable2
-import com.hendraanggrian.openpss.controls.ViewInvoiceDialog
 import com.hendraanggrian.openpss.utils.controller
 import com.hendraanggrian.openpss.utils.currencyCell
 import com.hendraanggrian.openpss.utils.doneCell
@@ -212,13 +212,16 @@ class InvoiceController : Controller(), Refreshable, Selectable<Invoice>, Select
     @FXML fun addPayment() = AddPaymentDialog(this, _employee, selected!!).showAndWait().ifPresent {
         transaction {
             Payments.insert(it)
-            if (calculateDue(selected!!) <= 0.0) findByDoc(Invoices, selected!!).projection { paid }.update(true)
+            updatePaymentStatus()
             reload(selected!!)
         }
     }
 
     @FXML fun deletePayment() = yesNoAlert {
         transaction {
+            findById(Payments, selected2!!.id).remove()
+            updatePaymentStatus()
+            reload(selected!!)
         }
     }
 
@@ -241,6 +244,10 @@ class InvoiceController : Controller(), Refreshable, Selectable<Invoice>, Select
         isResizable = false
         loader.controller._employee = _employee
     }.showAndWait()
+
+    private fun MongoDBSession.updatePaymentStatus() = findByDoc(Invoices, selected!!)
+        .projection { Invoices.paid }
+        .update(calculateDue(selected!!) <= 0.0)
 
     private fun MongoDBSession.reload(invoice: Invoice) = invoiceTable.run {
         items.indexOf(invoice).let { index ->

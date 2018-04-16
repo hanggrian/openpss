@@ -3,6 +3,8 @@ package com.hendraanggrian.openpss.ui
 import javafx.beans.binding.BooleanBinding
 import javafx.beans.property.ReadOnlyObjectProperty
 import javafx.scene.control.SelectionModel
+import javafx.scene.control.TreeItem
+import javafx.scene.control.TreeTableView.TreeTableViewSelectionModel
 
 /** To avoid repetitive code, this interface contains common operation of selection model. */
 interface Selectable<T> {
@@ -26,4 +28,15 @@ interface Selectable2<T> {
     val selectedProperty2: ReadOnlyObjectProperty<T> get() = selectionModel2.selectedItemProperty()
 
     val selectedBinding2: BooleanBinding get() = selectedProperty2.isNotNull
+}
+
+interface TreeSelectable<T> {
+
+    val selectionModel: TreeTableViewSelectionModel<T>
+
+    val selected: TreeItem<T>? get() = selectionModel.selectedItem
+
+    val selectedProperty: ReadOnlyObjectProperty<TreeItem<T>> get() = selectionModel.selectedItemProperty()
+
+    val selectedBinding: BooleanBinding get() = selectedProperty.isNotNull
 }

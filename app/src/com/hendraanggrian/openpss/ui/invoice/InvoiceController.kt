@@ -78,7 +78,7 @@ class InvoiceController : Controller(), Refreshable, Selectable<Invoice>, Select
     @FXML lateinit var deleteInvoiceButton: Button
     @FXML lateinit var addPaymentButton: Button
     @FXML lateinit var deletePaymentButton: Button
-    @FXML lateinit var customerButton: SplitMenuButton
+    @FXML lateinit var searchButton: SplitMenuButton
     @FXML lateinit var customerButtonItem: MenuItem
     @FXML lateinit var statusChoice: ChoiceBox<String>
     @FXML lateinit var allDateRadio: RadioButton
@@ -103,7 +103,7 @@ class InvoiceController : Controller(), Refreshable, Selectable<Invoice>, Select
         invoicePane.minHeightProperty().bind(splitPane.heightProperty() * 0.5)
         paymentPane.minHeightProperty().bind(splitPane.heightProperty() * 0.2)
 
-        customerButton.textProperty().bind(stringBindingOf(customerProperty) {
+        searchButton.textProperty().bind(stringBindingOf(customerProperty) {
             customerProperty.value?.toString() ?: getString(R.string.search_customer)
         })
         customerButtonItem.disableProperty().bind(customerProperty.isNull)

@@ -9,6 +9,9 @@ import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.io.properties.SettingsFile
 import com.hendraanggrian.openpss.io.properties.SettingsFile.CUSTOMER_PAGINATION_ITEMS
 import com.hendraanggrian.openpss.io.properties.SettingsFile.INVOICE_PAGINATION_ITEMS
+import com.hendraanggrian.openpss.io.properties.SettingsFile.INVOICE_QUICK_SELECT_CUSTOMER
+import com.hendraanggrian.openpss.io.properties.SettingsFile.WAGE_READER
+import com.hendraanggrian.openpss.readers.Reader
 import com.hendraanggrian.openpss.ui.Resourced
 import com.hendraanggrian.openpss.utils.getColor
 import com.hendraanggrian.openpss.utils.getFont
@@ -21,6 +24,8 @@ import javafx.scene.control.Dialog
 import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
 import javafx.scene.image.ImageView
+import javafx.scene.layout.HBox
+import javafx.scene.layout.VBox
 import kotlinx.nosql.update
 import ktfx.beans.binding.bindingOf
 import ktfx.beans.binding.stringBindingOf
@@ -30,6 +35,8 @@ import ktfx.collections.observableListOf
 import ktfx.coroutines.listener
 import ktfx.layouts.LayoutDsl
 import ktfx.layouts.LayoutManager
+import ktfx.layouts._HBox
+import ktfx.layouts._VBox
 import ktfx.layouts.checkBox
 import ktfx.layouts.choiceBox
 import ktfx.layouts.gridPane
@@ -60,6 +67,7 @@ class SettingsDialog(resourced: Resourced, showGlobalSettings: Boolean) : Dialog
     private lateinit var customerPaginationChoice: ChoiceBox<Int>
     private lateinit var invoicePaginationChoice: ChoiceBox<Int>
     private lateinit var invoiceHeadersArea: TextArea
+    private lateinit var wageReaderChoice: ChoiceBox<Any>
 
     private lateinit var languageField: TextField
     private lateinit var countryField: TextField
@@ -68,43 +76,48 @@ class SettingsDialog(resourced: Resourced, showGlobalSettings: Boolean) : Dialog
         headerTitle = getString(R.string.settings)
         graphicIcon = ImageView(R.image.ic_settings)
         dialogPane.content = vbox {
-            spacing = 8.0
-            label(getString(R.string.local_settings)) { font = getFont(R.font.opensans_bold, 16) }
-            label(getString(R.string.customer)) { font = getFont(R.font.opensans_bold) }
-            hbox {
-                alignment = CENTER_LEFT
-                spacing = 8.0
-                label(getString(R.string.items_per_page))
-                customerPaginationChoice = paginationChoice(CUSTOMER_PAGINATION_ITEMS) {
-                    valueProperty().listener { _, _, value ->
-                        isLocalChanged.set(true)
-                        SettingsFile.CUSTOMER_PAGINATION_ITEMS = value
+            spacing = 16.0
+            settingsGroup(R.string.customer) {
+                settingsItem(R.string.items_per_page) {
+                    customerPaginationChoice = paginationChoice(CUSTOMER_PAGINATION_ITEMS) {
+                        valueProperty().listener { _, _, value ->
+                            isLocalChanged.set(true)
+                            CUSTOMER_PAGINATION_ITEMS = value
+                        }
                     }
                 }
             }
-            label(getString(R.string.invoice)) { font = getFont(R.font.opensans_bold) }
-            hbox {
-                alignment = CENTER_LEFT
-                spacing = 8.0
-                label(getString(R.string.items_per_page))
-                invoicePaginationChoice = paginationChoice(INVOICE_PAGINATION_ITEMS) {
-                    valueProperty().listener { _, _, value ->
+            settingsGroup(R.string.invoice) {
+                settingsItem(R.string.items_per_page) {
+                    invoicePaginationChoice = paginationChoice(INVOICE_PAGINATION_ITEMS) {
+                        valueProperty().listener { _, _, value ->
+                            isLocalChanged.set(true)
+                            INVOICE_PAGINATION_ITEMS = value
+                        }
+                    }
+                }
+                checkBox(getString(R.string.quick_select_customer_when_adding_invoice)) {
+                    isSelected = SettingsFile.INVOICE_QUICK_SELECT_CUSTOMER
+                    selectedProperty().listener { _, _, value ->
                         isLocalChanged.set(true)
-                        SettingsFile.INVOICE_PAGINATION_ITEMS = value
+                        INVOICE_QUICK_SELECT_CUSTOMER = value
                     }
                 }
             }
-            checkBox(getString(R.string.quick_select_customer_when_adding_invoice)) {
-                isSelected = SettingsFile.INVOICE_QUICK_SELECT_CUSTOMER
-                selectedProperty().listener { _, _, value ->
-                    isLocalChanged.set(true)
-                    SettingsFile.INVOICE_QUICK_SELECT_CUSTOMER = value
+            settingsGroup(R.string.wage) {
+                settingsItem {
+                    label(getString(R.string.reader))
+                    wageReaderChoice = choiceBox(Reader.listAll()) {
+                        value = Reader.of(WAGE_READER)
+                        valueProperty().listener { _, _, value ->
+                            isLocalChanged.set(true)
+                            WAGE_READER = (value as Reader).name
+                        }
+                    }
                 }
             }
         }
-        if (showGlobalSettings) dialogPane.expandableContent = vbox {
-            spacing = 8.0
-            label(getString(R.string.global_settings)) { font = getFont(R.font.opensans_bold, 16) }
+        if (showGlobalSettings) dialogPane.expandableContent = settingsGroup(R.string.global_settings) {
             gridPane {
                 gap = 8.0
                 transaction {
@@ -164,7 +177,29 @@ class SettingsDialog(resourced: Resourced, showGlobalSettings: Boolean) : Dialog
         }
     }
 
-    private fun LayoutManager<Node>.paginationChoice(
+    private inline fun settingsGroup(titleId: String, init: (@LayoutDsl _VBox).() -> Unit): VBox =
+        vbox {
+            spacing = 4.0
+            label(getString(titleId)) { font = getFont(R.font.opensans_bold) }
+            init()
+        }
+
+    private inline fun LayoutManager<Node>.settingsGroup(titleId: String, init: (@LayoutDsl _VBox).() -> Unit): VBox =
+        vbox {
+            spacing = 4.0
+            label(getString(titleId)) { font = getFont(R.font.opensans_bold) }
+            init()
+        }
+
+    private inline fun LayoutManager<Node>.settingsItem(labelId: String? = null, init: (@LayoutDsl _HBox).() -> Unit): HBox =
+        hbox {
+            alignment = CENTER_LEFT
+            spacing = 8.0
+            if (labelId != null) label(getString(labelId))
+            init()
+        }
+
+    private inline fun LayoutManager<Node>.paginationChoice(
         prefill: Int,
         init: (@LayoutDsl ChoiceBox<Int>).() -> Unit
     ): ChoiceBox<Int> = choiceBox(observableListOf(20, 30, 40, 50)) {

@@ -81,7 +81,7 @@
     <SplitPane fx:id="splitPane" orientation="VERTICAL" dividerPositions="0.8" VBox.vgrow="ALWAYS">
         <VBox fx:id="invoicePane">
             <ToolBar>
-                <SplitMenuButton mnemonicParsing="false" fx:id="customerButton" onAction="#selectCustomer"
+                <SplitMenuButton mnemonicParsing="false" fx:id="searchButton" onAction="#selectCustomer"
                                  text="%select_customer">
                     <items>
                         <MenuItem mnemonicParsing="false" fx:id="customerButtonItem" onAction="#clearCustomer"

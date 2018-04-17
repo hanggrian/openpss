@@ -2,13 +2,13 @@ package com.hendraanggrian.openpss.ui.wage
 
 import com.hendraanggrian.openpss.BuildConfig.DEBUG
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.io.WageFolder
 import com.hendraanggrian.openpss.controls.FileField
+import com.hendraanggrian.openpss.io.WageFolder
+import com.hendraanggrian.openpss.io.properties.SettingsFile.WAGE_READER
+import com.hendraanggrian.openpss.readers.Reader
 import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.wage.record.WageRecordController.Companion.EXTRA_ATTENDEES
-import com.hendraanggrian.openpss.ui.wage.readers.Reader
 import com.hendraanggrian.openpss.utils.controller
-import com.hendraanggrian.openpss.utils.get
 import com.hendraanggrian.openpss.utils.getResource
 import com.hendraanggrian.openpss.utils.openFile
 import com.hendraanggrian.openpss.utils.pane
@@ -16,7 +16,6 @@ import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
 import javafx.scene.Scene
 import javafx.scene.control.Button
-import javafx.scene.control.ChoiceBox
 import javafx.scene.control.Label
 import javafx.scene.control.ScrollPane
 import javafx.scene.layout.FlowPane
@@ -46,7 +45,6 @@ class WageController : Controller() {
     @FXML lateinit var readButton: Button
     @FXML lateinit var processButton: Button
     @FXML lateinit var disableRecessButton: Button
-    @FXML lateinit var readerChoiceBox: ChoiceBox<Any>
     @FXML lateinit var fileField: FileField
     @FXML lateinit var employeeCountLabel: Label
     @FXML lateinit var scrollPane: ScrollPane
@@ -54,9 +52,6 @@ class WageController : Controller() {
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
-        readerChoiceBox.items = Reader.listAll()
-        if (readerChoiceBox.items.isNotEmpty()) readerChoiceBox.selectionModel.selectFirst()
-
         disableRecessButton.disableProperty().bind(flowPane.children.isEmpty)
         employeeCountLabel.textProperty().bind(stringBindingOf(flowPane.children) {
             "${flowPane.children.size} ${getString(R.string.employee)}"
@@ -80,7 +75,7 @@ class WageController : Controller() {
         flowPane.children.clear()
         launch {
             try {
-                readerChoiceBox.get<Reader>().read(fileField.value).forEach { attendee ->
+                Reader.of(WAGE_READER).read(fileField.value).forEach { attendee ->
                     attendee.mergeDuplicates()
                     launch(FX) {
                         flowPane.children += attendeePane(this@WageController, attendee) {
@@ -144,7 +139,7 @@ class WageController : Controller() {
     @FXML fun history() = openFile(WageFolder)
 
     @FXML fun browse() = fileChooser(
-        ExtensionFilter(getString(R.string.input_file), *readerChoiceBox.get<Reader>().extensions))
+        ExtensionFilter(getString(R.string.input_file), *Reader.of(WAGE_READER).extensions))
         .showOpenDialog(fileField.scene.window)
         ?.run { fileField.text = absolutePath }
 

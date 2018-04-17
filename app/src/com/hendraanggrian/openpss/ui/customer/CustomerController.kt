@@ -45,7 +45,6 @@ import ktfx.collections.toMutableObservableList
 import ktfx.layouts.listView
 import ktfx.scene.control.errorAlert
 import ktfx.scene.control.inputDialog
-import ktfx.scene.layout.paddingLeft
 import java.net.URL
 import java.util.ResourceBundle
 import java.util.regex.Pattern.CASE_INSENSITIVE

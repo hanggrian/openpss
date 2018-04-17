@@ -1,4 +1,4 @@
-package com.hendraanggrian.openpss.ui.wage.readers
+package com.hendraanggrian.openpss.readers
 
 import com.hendraanggrian.openpss.ui.wage.Attendee
 import java.io.File

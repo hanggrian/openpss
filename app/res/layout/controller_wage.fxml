@@ -48,14 +48,8 @@
         </Button>
     </ToolBar>
     <ToolBar>
-        <Label text="%reader"/>
-        <ChoiceBox fx:id="readerChoiceBox"/>
-        <Label text="%input_file">
-            <HBox.margin>
-                <Insets left="8.0"/>
-            </HBox.margin>
-        </Label>
-        <FileField fx:id="fileField" promptText="%input_file" HBox.hgrow="ALWAYS"/>
+        <FileField stylesheets="@../style/textfield_file.css" fx:id="fileField" promptText="%input_file"
+                   prefWidth="512"/>
         <Button mnemonicParsing="false" onAction="#browse">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
@@ -66,7 +60,7 @@
                 <Tooltip text="%browse_file"/>
             </tooltip>
         </Button>
-        <Space/>
+        <Space HBox.hgrow="ALWAYS"/>
         <Label fx:id="employeeCountLabel" text="Label"/>
     </ToolBar>
     <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" vbarPolicy="ALWAYS" VBox.vgrow="ALWAYS">

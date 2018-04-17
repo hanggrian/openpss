@@ -6,6 +6,7 @@ import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.ui.Resourced
 import com.hendraanggrian.openpss.ui.Selectable
+import com.hendraanggrian.openpss.utils.getResource
 import javafx.scene.control.ButtonType.OK
 import javafx.scene.control.Dialog
 import javafx.scene.control.ListView
@@ -36,21 +37,24 @@ class SearchCustomerDialog(resourced: Resourced) : Dialog<Customer>(), Resourced
         const val ITEMS_PER_PAGE = 10
     }
 
-    private lateinit var textField: TextField
+    private lateinit var searchField: TextField
     private lateinit var customerList: ListView<Customer>
 
     init {
         headerTitle = getString(R.string.search_customer)
         graphicIcon = ImageView(R.image.ic_customer)
         dialogPane.content = vbox {
-            textField = textField { promptText = getString(R.string.customer) }
+            searchField = textField {
+                promptText = getString(R.string.customer)
+                stylesheets += getResource(R.style.textfield_search).toExternalForm()
+            }
             customerList = listView<Customer> {
                 prefHeight = 252.0
-                itemsProperty().bind(bindingOf(textField.textProperty()) {
+                itemsProperty().bind(bindingOf(searchField.textProperty()) {
                     transaction {
                         when {
-                            textField.text.isEmpty() -> Customers.find()
-                            else -> Customers.find { name.matches(textField.text.toRegex(IGNORE_CASE).toPattern()) }
+                            searchField.text.isEmpty() -> Customers.find()
+                            else -> Customers.find { name.matches(searchField.text.toRegex(IGNORE_CASE).toPattern()) }
                         }.take(ITEMS_PER_PAGE).toMutableObservableList()
                     }
                 })
@@ -71,7 +75,7 @@ class SearchCustomerDialog(resourced: Resourced) : Dialog<Customer>(), Resourced
         }
         cancelButton()
         okButton { disableProperty().bind(!selectedBinding) }
-        later { textField.requestFocus() }
+        later { searchField.requestFocus() }
         setResultConverter { if (it == OK) selected else null }
     }
 

@@ -1,4 +1,4 @@
-package com.hendraanggrian.openpss.ui.wage.readers
+package com.hendraanggrian.openpss.readers
 
 import com.hendraanggrian.openpss.ui.wage.Attendee
 import javafx.collections.ObservableList
@@ -27,5 +27,7 @@ abstract class Reader {
 
     companion object {
         fun listAll(): ObservableList<Any> = observableListOf(EClockingReader, Separator(), TestReader)
+
+        fun of(name: String): Reader = listAll().single { (it as? Reader)?.name == name } as Reader
     }
 }

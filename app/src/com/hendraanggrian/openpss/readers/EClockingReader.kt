@@ -1,4 +1,4 @@
-package com.hendraanggrian.openpss.ui.wage.readers
+package com.hendraanggrian.openpss.readers
 
 import com.google.common.collect.LinkedHashMultimap.create
 import com.hendraanggrian.openpss.ui.wage.Attendee

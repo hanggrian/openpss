@@ -39,11 +39,9 @@ class ResetPasswordDialog(resourced: Resourced) : Dialog<String>(), Resourced by
             confirmPasswordField = passwordField { promptText = getString(R.string.confirm_password) } col 1 row 1
         }
         cancelButton()
-        okButton {
-            disableProperty().bind(changePasswordField.textProperty().isBlank()
-                or confirmPasswordField.textProperty().isBlank()
-                or changePasswordField.textProperty().neq(confirmPasswordField.textProperty()))
-        }
+        okButton().disableProperty().bind(changePasswordField.textProperty().isBlank()
+            or confirmPasswordField.textProperty().isBlank()
+            or changePasswordField.textProperty().neq(confirmPasswordField.textProperty()))
         setResultConverter { if (it == OK) changePasswordField.text else null }
         later { changePasswordField.requestFocus() }
     }

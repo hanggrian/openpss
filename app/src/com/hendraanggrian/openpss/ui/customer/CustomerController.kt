@@ -59,6 +59,7 @@ class CustomerController : Controller(), Refreshable, Selectable<Customer>, Sele
     @FXML lateinit var addContactButton: Button
     @FXML lateinit var deleteContactButton: Button
     @FXML lateinit var searchField: TextField
+    @FXML lateinit var clearSearchButton: Button
     @FXML lateinit var splitPane: SplitPane
     @FXML lateinit var customerPane: Pane
     @FXML lateinit var detailPane: Pane
@@ -80,6 +81,7 @@ class CustomerController : Controller(), Refreshable, Selectable<Customer>, Sele
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
+        clearSearchButton.disableProperty().bind(searchField.textProperty().isEmpty)
         customerPane.minWidthProperty().bind(splitPane.widthProperty() * 0.3)
         detailPane.minWidthProperty().bind(splitPane.widthProperty() * 0.3)
         nameLabel.font = getFont(R.font.opensans_bold, 24)
@@ -158,23 +160,25 @@ class CustomerController : Controller(), Refreshable, Selectable<Customer>, Sele
             }
         }
 
-    @FXML fun editAddress() = inputDialog(getString(R.string.edit_address), ImageView(R.image.ic_customer)) {
-        contentText = getString(R.string.address)
-    }.showAndWait().ifPresent {
-        transaction {
-            findByDoc(Customers, selected!!).projection { address }.update(it)
-            reload(selected!!)
+    @FXML fun editAddress() =
+        inputDialog(getString(R.string.edit_address), ImageView(R.image.ic_customer), selected!!.address) {
+            contentText = getString(R.string.address)
+        }.showAndWait().ifPresent {
+            transaction {
+                findByDoc(Customers, selected!!).projection { address }.update(it)
+                reload(selected!!)
+            }
         }
-    }
 
-    @FXML fun editNote() = inputDialog(getString(R.string.edit_note), ImageView(R.image.ic_customer)) {
-        contentText = getString(R.string.note)
-    }.showAndWait().ifPresent {
-        transaction {
-            findByDoc(Customers, selected!!).projection { note }.update(it)
-            reload(selected!!)
+    @FXML fun editNote() =
+        inputDialog(getString(R.string.edit_note), ImageView(R.image.ic_customer), selected!!.note) {
+            contentText = getString(R.string.note)
+        }.showAndWait().ifPresent {
+            transaction {
+                findByDoc(Customers, selected!!).projection { note }.update(it)
+                reload(selected!!)
+            }
         }
-    }
 
     @FXML fun addContact() = AddContactDialog(this).showAndWait().ifPresent {
         transaction {
@@ -206,6 +210,8 @@ class CustomerController : Controller(), Refreshable, Selectable<Customer>, Sele
             reload(selected!!)
         }
     }
+
+    @FXML fun clearSearch() = searchField.clear()
 
     private fun Label.bindLabel(target: () -> String) = textProperty()
         .bind(stringBindingOf(customerList.selectionModel.selectedItemProperty()) { target() })

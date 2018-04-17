@@ -41,7 +41,7 @@ class ReportController : FinancialController<Report>() {
         viewPaymentsButton.disableProperty().bind(!selectedBinding)
         monthBox.setLocale(Locale(LoginFile.LANGUAGE))
         monthBox.valueProperty.listener { refresh() }
-        reportTable.onMouseClicked { if (it.isDoubleClick()) viewPayments() }
+        reportTable.onMouseClicked { if (it.isDoubleClick() && selected != null) viewPayments() }
         dateColumn.stringCell { date.toString(PATTERN_DATE) }
         cashColumn.stringCell { currencyConverter.toString(cash) }
         transferColumn.stringCell { currencyConverter.toString(transfer) }
@@ -58,7 +58,7 @@ class ReportController : FinancialController<Report>() {
         reportTable.items = transaction { Report.listAll(Payments.find { dateTime.matches(monthBox.value) }) }
     }
 
-    @FXML fun viewPayments() = getExtra<MainController>(EXTRA_MAIN_CONTROLLER).let {
-        it.select(it.paymentController) { dateBox.picker.value = this@ReportController.selected!!.date.toJava() }
+    @FXML fun viewPayments() = getExtra<MainController>(EXTRA_MAIN_CONTROLLER).run {
+        select(paymentController) { dateBox.picker.value = this@ReportController.selected!!.date.toJava() }
     }
 }

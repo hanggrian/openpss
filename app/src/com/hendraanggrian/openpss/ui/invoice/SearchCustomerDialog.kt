@@ -61,7 +61,7 @@ class SearchCustomerDialog(resourced: Resourced) : Dialog<Customer>(), Resourced
                 })
                 itemsProperty().listener { _, _, value -> if (value.isNotEmpty()) selectionModel.selectFirst() }
                 onMouseClicked {
-                    if (selected != null && it.isDoubleClick()) {
+                    if (it.isDoubleClick() && selected != null) {
                         result = selected
                         close()
                     }
@@ -75,7 +75,7 @@ class SearchCustomerDialog(resourced: Resourced) : Dialog<Customer>(), Resourced
             } marginTop 8.0
         }
         cancelButton()
-        okButton { disableProperty().bind(!selectedBinding) }
+        okButton().disableProperty().bind(!selectedBinding)
         later { searchField.requestFocus() }
         setResultConverter { if (it == OK) selected else null }
     }

@@ -2,7 +2,6 @@ package com.hendraanggrian.openpss.ui.customer
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.db.schemas.Customer.ContactType
-import com.hendraanggrian.openpss.db.schemas.Customer.ContactType.PHONE
 import com.hendraanggrian.openpss.db.schemas.Customer.ContactType.values
 import com.hendraanggrian.openpss.ui.Resourced
 import com.hendraanggrian.openpss.utils.REGEX_PHONE
@@ -24,7 +23,7 @@ import ktfx.scene.control.graphicIcon
 import ktfx.scene.control.headerTitle
 import ktfx.scene.control.okButton
 import ktfx.scene.layout.gap
-import org.apache.commons.validator.routines.EmailValidator.getInstance
+import org.apache.commons.validator.routines.EmailValidator
 
 class AddContactDialog(resourced: Resourced) : Dialog<Pair<ContactType, String>>(), Resourced by resourced {
 
@@ -45,15 +44,13 @@ class AddContactDialog(resourced: Resourced) : Dialog<Pair<ContactType, String>>
             contactField = textField { promptText = getString(R.string.contact) } col 1 row 1
         }
         cancelButton()
-        okButton {
-            disableProperty().bind(booleanBindingOf(typeChoice.valueProperty(), contactField.textProperty()) {
-                when (typeChoice.value) {
-                    null -> true
-                    PHONE -> contactField.text.isBlank() || !contactField.text.matches(REGEX_PHONE)
-                    else -> contactField.text.isBlank() || !getInstance().isValid(contactField.text)
-                }
-            })
-        }
+        okButton().disableProperty().bind(booleanBindingOf(typeChoice.valueProperty(), contactField.textProperty()) {
+            when (typeChoice.value) {
+                null -> true
+                ContactType.PHONE -> contactField.text.isBlank() || !contactField.text.matches(REGEX_PHONE)
+                else -> contactField.text.isBlank() || !EmailValidator.getInstance().isValid(contactField.text)
+            }
+        })
         setResultConverter {
             when (it) {
                 OK -> typeChoice.value to contactField.text

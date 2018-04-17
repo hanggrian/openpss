@@ -74,7 +74,7 @@ abstract class AddOrderDialog<T : Order>(
         }
         titleField.requestFocus()
         cancelButton()
-        okButton { disableProperty().bind(disableBinding) }
+        okButton().disableProperty().bind(disableBinding)
         setResultConverter { if (it == ButtonType.CANCEL) null else newInstance() }
     }
 }

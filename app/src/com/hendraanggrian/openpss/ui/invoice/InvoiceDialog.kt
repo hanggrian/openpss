@@ -151,7 +151,7 @@ class InvoiceDialog(
             } col 1 row 7
         }
         cancelButton()
-        okButton { disableProperty().bind(customerProperty.isNull or totalProperty.lessEq(0)) }
+        okButton().disableProperty().bind(customerProperty.isNull or totalProperty.lessEq(0))
         setResultConverter {
             when (it) {
                 CANCEL -> null

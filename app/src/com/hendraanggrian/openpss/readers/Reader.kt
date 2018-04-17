@@ -28,6 +28,6 @@ abstract class Reader {
     companion object {
         fun listAll(): ObservableList<Any> = observableListOf(EClockingReader, Separator(), TestReader)
 
-        fun of(name: String): Reader = listAll().single { (it as? Reader)?.name == name } as Reader
+        fun of(name: String): Reader = listOf(EClockingReader, TestReader).single { it.name == name }
     }
 }

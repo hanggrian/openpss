@@ -59,7 +59,8 @@
             </tooltip>
         </Button>
         <Space HBox.hgrow="ALWAYS"/>
-        <Label fx:id="employeeCountLabel" text="Label"/>
+        <Label fx:id="employeeCountLabel1" text="%employee"/>
+        <Label fx:id="employeeCountLabel2"/>
     </ToolBar>
     <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" vbarPolicy="ALWAYS" VBox.vgrow="ALWAYS">
         <FlowPane fx:id="flowPane"/>

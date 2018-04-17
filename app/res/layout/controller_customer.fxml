@@ -67,6 +67,16 @@
             <ToolBar>
                 <TextField styleClass="search-textfield" fx:id="searchField" promptText="%search_customer"
                            HBox.hgrow="ALWAYS"/>
+                <Button mnemonicParsing="false" fx:id="clearSearchButton" onAction="#clearSearch">
+                    <graphic>
+                        <ImageView pickOnBounds="true" preserveRatio="true">
+                            <Image url="@/image/btn_clear_inactive.png"/>
+                        </ImageView>
+                    </graphic>
+                    <tooltip>
+                        <Tooltip text="%clear"/>
+                    </tooltip>
+                </Button>
             </ToolBar>
             <Pagination fx:id="customerPagination" style="-fx-page-information-alignment: right;" VBox.vgrow="ALWAYS"/>
         </VBox>

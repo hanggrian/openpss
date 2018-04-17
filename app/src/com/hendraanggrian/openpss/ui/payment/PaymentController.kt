@@ -42,7 +42,7 @@ class PaymentController : FinancialController<Payment>() {
         super.initialize(location, resources)
         viewInvoiceButton.disableProperty().bind(!selectedBinding)
         dateBox.valueProperty.listener { refresh() }
-        paymentTable.onMouseClicked { if (it.isDoubleClick()) viewInvoice() }
+        paymentTable.onMouseClicked { if (it.isDoubleClick() && selected != null) viewInvoice() }
         noColumn.stringCell { transaction { findById(Invoices, invoiceId).single().no }!! }
         timeColumn.stringCell { dateTime.toString(PATTERN_TIME) }
         employeeColumn.stringCell { transaction { findById(Employees, employeeId).single() }!! }

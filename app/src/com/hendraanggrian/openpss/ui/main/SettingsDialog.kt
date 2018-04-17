@@ -79,8 +79,8 @@ class SettingsDialog(resourced: Resourced, showGlobalSettings: Boolean) : Dialog
         graphicIcon = ImageView(R.image.ic_settings)
         dialogPane.content = vbox {
             spacing = 16.0
-            settingsGroup(R.string.customer) {
-                settingsItem(R.string.items_per_page) {
+            group(R.string.customer) {
+                item(R.string.items_per_page) {
                     customerPaginationChoice = paginationChoice(CUSTOMER_PAGINATION_ITEMS) {
                         valueProperty().listener { _, _, value ->
                             isLocalChanged.set(true)
@@ -89,8 +89,8 @@ class SettingsDialog(resourced: Resourced, showGlobalSettings: Boolean) : Dialog
                     }
                 }
             }
-            settingsGroup(R.string.invoice) {
-                settingsItem(R.string.items_per_page) {
+            group(R.string.invoice) {
+                item(R.string.items_per_page) {
                     invoicePaginationChoice = paginationChoice(INVOICE_PAGINATION_ITEMS) {
                         valueProperty().listener { _, _, value ->
                             isLocalChanged.set(true)
@@ -106,8 +106,8 @@ class SettingsDialog(resourced: Resourced, showGlobalSettings: Boolean) : Dialog
                     }
                 }
             }
-            settingsGroup(R.string.wage) {
-                settingsItem {
+            group(R.string.wage) {
+                item {
                     label(getString(R.string.reader))
                     wageReaderChoice = choiceBox(Reader.listAll()) {
                         value = Reader.of(WAGE_READER)
@@ -119,7 +119,7 @@ class SettingsDialog(resourced: Resourced, showGlobalSettings: Boolean) : Dialog
                 }
             }
         }
-        if (showGlobalSettings) dialogPane.expandableContent = settingsGroup(R.string.global_settings) {
+        if (showGlobalSettings) dialogPane.expandableContent = group(R.string.global_settings) {
             gridPane {
                 gap = 8.0
                 transaction {
@@ -179,21 +179,21 @@ class SettingsDialog(resourced: Resourced, showGlobalSettings: Boolean) : Dialog
         }
     }
 
-    private inline fun settingsGroup(titleId: String, init: (@LayoutDsl _VBox).() -> Unit): VBox =
+    private inline fun group(titleId: String, init: (@LayoutDsl _VBox).() -> Unit): VBox =
         vbox {
             spacing = 4.0
             label(getString(titleId)) { font = getFont(R.font.opensans_bold) }
             init()
         }
 
-    private inline fun LayoutManager<Node>.settingsGroup(titleId: String, init: (@LayoutDsl _VBox).() -> Unit): VBox =
+    private inline fun LayoutManager<Node>.group(titleId: String, init: (@LayoutDsl _VBox).() -> Unit): VBox =
         vbox {
             spacing = 4.0
             label(getString(titleId)) { font = getFont(R.font.opensans_bold) }
             init()
         }
 
-    private inline fun LayoutManager<Node>.settingsItem(labelId: String? = null, init: (@LayoutDsl _HBox).() -> Unit): HBox =
+    private inline fun LayoutManager<Node>.item(labelId: String? = null, init: (@LayoutDsl _HBox).() -> Unit): HBox =
         hbox {
             alignment = CENTER_LEFT
             spacing = 8.0

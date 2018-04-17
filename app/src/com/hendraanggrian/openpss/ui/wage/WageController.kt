@@ -9,6 +9,7 @@ import com.hendraanggrian.openpss.readers.Reader
 import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.wage.record.WageRecordController.Companion.EXTRA_ATTENDEES
 import com.hendraanggrian.openpss.utils.controller
+import com.hendraanggrian.openpss.utils.getFont
 import com.hendraanggrian.openpss.utils.getResource
 import com.hendraanggrian.openpss.utils.openFile
 import com.hendraanggrian.openpss.utils.pane
@@ -25,7 +26,6 @@ import javafx.stage.Modality.APPLICATION_MODAL
 import kotlinx.coroutines.experimental.launch
 import ktfx.application.later
 import ktfx.beans.binding.booleanBindingOf
-import ktfx.beans.binding.stringBindingOf
 import ktfx.beans.value.lessEq
 import ktfx.beans.value.or
 import ktfx.collections.isEmpty
@@ -47,16 +47,16 @@ class WageController : Controller() {
     @FXML lateinit var processButton: Button
     @FXML lateinit var disableRecessButton: Button
     @FXML lateinit var fileField: FileField
-    @FXML lateinit var employeeCountLabel: Label
+    @FXML lateinit var employeeCountLabel1: Label
+    @FXML lateinit var employeeCountLabel2: Label
     @FXML lateinit var scrollPane: ScrollPane
     @FXML lateinit var flowPane: FlowPane
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
         disableRecessButton.disableProperty().bind(flowPane.children.isEmpty)
-        employeeCountLabel.textProperty().bind(stringBindingOf(flowPane.children) {
-            "${flowPane.children.size} ${getString(R.string.employee)}"
-        })
+        employeeCountLabel1.font = getFont(R.font.opensans_bold)
+        employeeCountLabel2.textProperty().bind(flowPane.children.size().asString())
         readButton.disableProperty().bind(fileField.validProperty)
         processButton.disableProperty().bind(flowPane.children.isEmpty)
 

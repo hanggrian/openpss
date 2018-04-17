@@ -29,6 +29,7 @@ abstract class PropertiesFile(name: String) : File(MainFolder, ".$name") {
         val value = properties.getProperty(property.key, toString())!!
         @Suppress("UNCHECKED_CAST") return when (this) {
             is Boolean -> value.toBoolean() as T
+            is Double -> value.toDouble() as T
             is Int -> value.toInt() as T
             else -> value as T
         }

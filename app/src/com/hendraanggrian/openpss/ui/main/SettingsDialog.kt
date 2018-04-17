@@ -7,7 +7,7 @@ import com.hendraanggrian.openpss.db.schemas.GlobalSettings.KEY_INVOICE_HEADERS
 import com.hendraanggrian.openpss.db.schemas.findGlobalSettings
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.io.properties.SettingsFile
-import com.hendraanggrian.openpss.io.properties.SettingsFile.INVOICE_QUICK_SELECT_CUSTOMER
+import com.hendraanggrian.openpss.io.properties.SettingsFile.CUSTOMER_PAGINATION_ITEMS
 import com.hendraanggrian.openpss.ui.Resourced
 import com.hendraanggrian.openpss.utils.getColor
 import com.hendraanggrian.openpss.utils.getFont
@@ -26,6 +26,8 @@ import ktfx.coroutines.listener
 import ktfx.layouts.checkBox
 import ktfx.layouts.gridPane
 import ktfx.layouts.label
+import ktfx.layouts.slider
+import ktfx.layouts.tabPane
 import ktfx.layouts.textArea
 import ktfx.layouts.textField
 import ktfx.layouts.vbox
@@ -53,17 +55,29 @@ class SettingsDialog(resourced: Resourced, showGlobalSettings: Boolean) : Dialog
     init {
         headerTitle = getString(R.string.settings)
         graphicIcon = ImageView(R.image.ic_settings)
+        dialogPane.content = tabPane {
+            (getString(R.string.customer)) {
+                slider(1.0, 50.0, CUSTOMER_PAGINATION_ITEMS.toDouble()) {
+
+                }
+            }
+            (getString(R.string.invoice)) {
+                checkBox(getString(R.string.quick_select_customer_when_adding_invoice)) {
+                    isSelected = SettingsFile.INVOICE_QUICK_SELECT_CUSTOMER
+                    selectedProperty().listener { _, _, value ->
+                        isLocalChanged.set(true)
+                        SettingsFile.INVOICE_QUICK_SELECT_CUSTOMER = value
+                    }
+                }
+            }
+        }
         dialogPane.content = vbox {
             spacing = 8.0
             label(getString(R.string.local_settings)) { font = getFont(R.font.opensans_bold, 16) }
+            label(getString(R.string.customer)) { font = getFont(R.font.opensans_bold) }
+
             label(getString(R.string.invoice)) { font = getFont(R.font.opensans_bold) }
-            checkBox(getString(R.string.quick_select_customer_when_adding_invoice)) {
-                isSelected = INVOICE_QUICK_SELECT_CUSTOMER
-                selectedProperty().listener { _, _, value ->
-                    isLocalChanged.set(true)
-                    INVOICE_QUICK_SELECT_CUSTOMER = value
-                }
-            }
+
         }
         if (showGlobalSettings) dialogPane.expandableContent = vbox {
             spacing = 8.0

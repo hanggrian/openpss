@@ -3,7 +3,7 @@ package com.hendraanggrian.openpss.io.properties
 import com.mongodb.ServerAddress.defaultPort
 import java.util.Locale.US
 
-/** Properties file for general settings that aren't manually configurable by dbUser. */
+/** Properties file for login settings that aren't manually configurable by user. */
 object LoginFile : PropertiesFile("login") {
 
     var EMPLOYEE: String by ""

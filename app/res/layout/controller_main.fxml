@@ -85,7 +85,7 @@
         </Menu>
     </MenuBar>
     <AnchorPane VBox.vgrow="ALWAYS">
-        <TabPane stylesheets="@../style/tabpane_main.css" fx:id="tabPane" tabClosingPolicy="UNAVAILABLE"
+        <TabPane styleClass="main-tabpane" fx:id="tabPane" tabClosingPolicy="UNAVAILABLE"
                  AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0"
                  AnchorPane.topAnchor="0">
             <Tab closable="false" text="%customer">

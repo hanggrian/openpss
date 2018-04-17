@@ -2,3 +2,33 @@
     -fx-accent: #009688;
     -fx-focus-color: #009688;
 }
+
+.main-tabpane > .tab-header-area > .headers-region > .tab {
+    -fx-padding: 5px 20px 5px 20px;
+}
+
+.main-tabpane > .tab-header-area > .headers-region > .tab:selected .focus-indicator {
+    -fx-border-width: 0;
+}
+
+.search-field {
+  -fx-background-image: url('../image/text_search_inactive.png');
+  -fx-background-repeat: no-repeat;
+  -fx-background-position: left center;
+  -fx-padding: 5px 8px 5px 24px;
+}
+
+.search-field:focused {
+  -fx-background-image: url('../image/text_search_active.png');
+}
+
+.file-textfield {
+  -fx-background-image: url('../image/text_file_inactive.png');
+  -fx-background-repeat: no-repeat;
+  -fx-background-position: left center;
+  -fx-padding: 5px 8px 5px 24px;
+}
+
+.file-textfield:focused {
+  -fx-background-image: url('../image/text_file_active.png');
+}

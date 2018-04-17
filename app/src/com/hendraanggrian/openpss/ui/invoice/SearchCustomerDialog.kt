@@ -6,7 +6,6 @@ import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.ui.Resourced
 import com.hendraanggrian.openpss.ui.Selectable
-import com.hendraanggrian.openpss.utils.getResource
 import com.hendraanggrian.openpss.utils.style
 import javafx.scene.control.ButtonType.OK
 import javafx.scene.control.Dialog
@@ -48,7 +47,7 @@ class SearchCustomerDialog(resourced: Resourced) : Dialog<Customer>(), Resourced
         dialogPane.content = vbox {
             searchField = textField {
                 promptText = getString(R.string.customer)
-                stylesheets += getResource(R.style.textfield_search).toExternalForm()
+                styleClass += "search-textfield"
             }
             customerList = listView<Customer> {
                 prefHeight = 252.0

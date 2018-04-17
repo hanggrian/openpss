@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.*?>
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.hendraanggrian.openpss.ui.customer.CustomerController">
-    <ToolBar stylesheets="@../style/toolbar_button.css">
+    <ToolBar stylesheets="@../style/toolbar_buttons.css">
         <!--suppress JavaFxEventHandler -->
         <Button mnemonicParsing="false" onAction="#refresh" text="%refresh">
             <graphic>
@@ -65,8 +65,8 @@
     <SplitPane fx:id="splitPane" dividerPositions="0.3" VBox.vgrow="ALWAYS">
         <VBox fx:id="customerPane">
             <ToolBar>
-                <TextField stylesheets="@../style/textfield_search.css" fx:id="searchField"
-                           promptText="%search_customer" HBox.hgrow="ALWAYS"/>
+                <TextField styleClass="search-textfield" fx:id="searchField" promptText="%search_customer"
+                           HBox.hgrow="ALWAYS"/>
             </ToolBar>
             <Pagination fx:id="customerPagination" style="-fx-page-information-alignment: right;" VBox.vgrow="ALWAYS"/>
         </VBox>

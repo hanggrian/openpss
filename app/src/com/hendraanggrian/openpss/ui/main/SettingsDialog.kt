@@ -1,9 +1,9 @@
 package com.hendraanggrian.openpss.ui.main
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_CURRENCY_COUNTRY
-import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_CURRENCY_LANGUAGE
-import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_INVOICE_HEADERS
+import com.hendraanggrian.openpss.db.schemas.GlobalSettings.KEY_CURRENCY_COUNTRY
+import com.hendraanggrian.openpss.db.schemas.GlobalSettings.KEY_CURRENCY_LANGUAGE
+import com.hendraanggrian.openpss.db.schemas.GlobalSettings.KEY_INVOICE_HEADERS
 import com.hendraanggrian.openpss.db.schemas.findGlobalSettings
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.io.properties.SettingsFile

@@ -11,6 +11,15 @@ import kotlinx.nosql.string
 object GlobalSettings : DocumentSchema<GlobalSetting>("global_settings", GlobalSetting::class) {
     val key = string("key")
     val value = string("value")
+
+    const val KEY_CURRENCY_LANGUAGE = "currency_language"
+    const val KEY_CURRENCY_COUNTRY = "currency_country"
+    const val KEY_INVOICE_HEADERS = "invoice_headers"
+
+    fun listKeys(): List<String> = listOf(
+        KEY_CURRENCY_LANGUAGE, KEY_CURRENCY_COUNTRY, KEY_INVOICE_HEADERS)
+
+    fun new(key: String): GlobalSetting = GlobalSetting(key, "")
 }
 
 data class GlobalSetting(
@@ -21,17 +30,6 @@ data class GlobalSetting(
     override lateinit var id: Id<String, GlobalSettings>
 
     inline val valueList: List<String> get() = value.split("|")
-
-    companion object {
-        const val KEY_CURRENCY_LANGUAGE = "currency_language"
-        const val KEY_CURRENCY_COUNTRY = "currency_country"
-        const val KEY_INVOICE_HEADERS = "invoice_headers"
-
-        fun listKeys(): List<String> = listOf(
-            KEY_CURRENCY_LANGUAGE, KEY_CURRENCY_COUNTRY, KEY_INVOICE_HEADERS)
-
-        fun new(key: String): GlobalSetting = GlobalSetting(key, "")
-    }
 }
 
 @Suppress("NOTHING_TO_INLINE")

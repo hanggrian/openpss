@@ -152,7 +152,7 @@ class InvoiceController : Controller(), Refreshable, Selectable<Invoice>, Select
                                         getString(R.string.paid) -> and(paid.equal(true))
                                         getString(R.string.unpaid) -> and(paid.equal(false))
                                     }
-                                    if (pickDateRadio.isSelected) and(dateTime.matches(dateBox.value.toString()))
+                                    if (pickDateRadio.isSelected) and(dateTime.matches(dateBox.value))
                                 }
                             }
                             invoicePagination.pageCount = ceil(invoices.count() / countBox.count.toDouble()).toInt()

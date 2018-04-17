@@ -7,11 +7,21 @@ import kotlinx.nosql.Id
 import kotlinx.nosql.boolean
 import kotlinx.nosql.mongodb.DocumentSchema
 import kotlinx.nosql.string
+import org.apache.poi.poifs.crypt.Decryptor.DEFAULT_PASSWORD
 
 object Employees : DocumentSchema<Employee>("employees", Employee::class), NamedSchema {
     override val name = string("name")
     val password = string("password")
     val fullAccess = boolean("full_access")
+
+    const val DEFAULT_PASSWORD = "1234"
+
+    val BACKDOOR: Employee = Employee("Test", "hendraganteng", true)
+
+    fun new(
+        name: String,
+        password: String = DEFAULT_PASSWORD
+    ): Employee = Employee(name, password, false)
 }
 
 data class Employee(
@@ -31,15 +41,4 @@ data class Employee(
     }
 
     override fun toString(): String = name
-
-    companion object {
-        const val DEFAULT_PASSWORD = "1234"
-
-        val BACKDOOR: Employee = Employee("Test", "hendraganteng", true)
-
-        fun new(
-            name: String,
-            password: String = DEFAULT_PASSWORD
-        ): Employee = Employee(name, password, false)
-    }
 }

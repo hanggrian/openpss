@@ -7,6 +7,7 @@ import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.db.schemas.Employees
 import com.hendraanggrian.openpss.db.schemas.Invoice
+import com.hendraanggrian.openpss.db.schemas.Invoices
 import com.hendraanggrian.openpss.db.schemas.Offset
 import com.hendraanggrian.openpss.db.schemas.Other
 import com.hendraanggrian.openpss.db.schemas.Plate
@@ -159,7 +160,7 @@ class InvoiceDialog(
                         others = otherTable.items
                         note = noteArea.text
                     }
-                    else -> Invoice.new(
+                    else -> Invoices.new(
                         employee!!.id,
                         customerProperty.value.id,
                         dateTime,

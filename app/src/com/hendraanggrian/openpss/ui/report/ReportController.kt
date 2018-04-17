@@ -11,7 +11,6 @@ import com.hendraanggrian.openpss.ui.main.MainController
 import com.hendraanggrian.openpss.utils.currencyConverter
 import com.hendraanggrian.openpss.utils.matches
 import com.hendraanggrian.openpss.utils.stringCell
-import javafx.collections.ObservableList
 import javafx.fxml.FXML
 import javafx.scene.control.Button
 import javafx.scene.control.TableColumn
@@ -51,12 +50,12 @@ class ReportController : FinancialController<Report>() {
 
     override val table: TableView<Report> get() = reportTable
 
-    override fun ObservableList<Report>.getTotalCash(): Double = sumByDouble { it.cash }
+    override fun List<Report>.getTotalCash(): Double = sumByDouble { it.cash }
 
-    override fun ObservableList<Report>.getTransferCash(): Double = sumByDouble { it.transfer }
+    override fun List<Report>.getTransferCash(): Double = sumByDouble { it.transfer }
 
     override fun refresh() {
-        reportTable.items = transaction { Report.listAll(Payments.find { dateTime.matches(monthBox.value.toString()) }) }
+        reportTable.items = transaction { Report.listAll(Payments.find { dateTime.matches(monthBox.value) }) }
     }
 
     @FXML fun viewPayments() = getExtra<MainController>(EXTRA_MAIN_CONTROLLER).let {

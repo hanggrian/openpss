@@ -5,7 +5,6 @@ import com.hendraanggrian.openpss.BuildConfig.DEBUG
 import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.db.schemas.Employees
-import com.hendraanggrian.openpss.db.schemas.GlobalSetting
 import com.hendraanggrian.openpss.db.schemas.GlobalSettings
 import com.hendraanggrian.openpss.db.schemas.Invoices
 import com.hendraanggrian.openpss.db.schemas.OffsetPrices
@@ -62,11 +61,11 @@ suspend fun login(
     var employee: Employee? = null
     transaction {
         // check first time installation
-        GlobalSetting.listKeys().forEach {
-            if (GlobalSettings.find { key.equal(it) }.isEmpty()) GlobalSettings.insert(GlobalSetting.new(it))
+        GlobalSettings.listKeys().forEach {
+            if (GlobalSettings.find { key.equal(it) }.isEmpty()) GlobalSettings.insert(GlobalSettings.new(it))
         }
         // add default employee
-        if (Employees.find { name.equal(Employee.BACKDOOR.name) }.isEmpty()) Employees.insert(Employee.BACKDOOR)
+        if (Employees.find { name.equal(Employees.BACKDOOR.name) }.isEmpty()) Employees.insert(Employees.BACKDOOR)
         // check login credentials
         employee = checkNotNull(Employees.find { name.equal(employeeName) }.singleOrNull()) { "Employee not found" }
         check(employee!!.password == employeePassword) { "Invalid password" }

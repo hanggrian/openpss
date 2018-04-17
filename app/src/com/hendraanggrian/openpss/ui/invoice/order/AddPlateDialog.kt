@@ -1,12 +1,13 @@
 package com.hendraanggrian.openpss.ui.invoice.order
 
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.controls.DoubleField
+import com.hendraanggrian.openpss.controls.doubleField
+import com.hendraanggrian.openpss.db.schemas.Invoices
 import com.hendraanggrian.openpss.db.schemas.Plate
 import com.hendraanggrian.openpss.db.schemas.PlatePrice
 import com.hendraanggrian.openpss.db.schemas.PlatePrices
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.controls.DoubleField
-import com.hendraanggrian.openpss.controls.doubleField
 import com.hendraanggrian.openpss.ui.Resourced
 import javafx.beans.Observable
 import javafx.beans.value.ObservableBooleanValue
@@ -48,7 +49,7 @@ class AddPlateDialog(resourced: Resourced) : AddOrderDialog<Plate>(
             qtyField.valueProperty.lessEq(0) or
             priceField.valueProperty.lessEq(0)
 
-    override fun newInstance(): Plate = Plate.new(
+    override fun newInstance(): Plate = Invoices.Plates.new(
         titleField.text,
         qtyField.value,
         typeChoice.value?.name ?: "",

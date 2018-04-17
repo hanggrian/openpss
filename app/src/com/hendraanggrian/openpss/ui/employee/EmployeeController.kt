@@ -1,14 +1,14 @@
 package com.hendraanggrian.openpss.ui.employee
 
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.controls.UserDialog
 import com.hendraanggrian.openpss.db.schemas.Employee
-import com.hendraanggrian.openpss.db.schemas.Employee.Companion.DEFAULT_PASSWORD
 import com.hendraanggrian.openpss.db.schemas.Employees
+import com.hendraanggrian.openpss.db.schemas.Employees.DEFAULT_PASSWORD
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.Selectable
-import com.hendraanggrian.openpss.controls.UserDialog
 import com.hendraanggrian.openpss.ui.main.ResetPasswordDialog
 import com.hendraanggrian.openpss.utils.doneCell
 import com.hendraanggrian.openpss.utils.stringCell
@@ -53,7 +53,7 @@ class EmployeeController : Controller(), Refreshable, Selectable<Employee> {
     override val selectionModel: SelectionModel<Employee> get() = employeeTable.selectionModel
 
     @FXML fun addEmployee() = UserDialog(this, R.string.add_employee, R.image.ic_employee).showAndWait().ifPresent {
-        val employee = Employee.new(it)
+        val employee = Employees.new(it)
         employee.id = transaction { Employees.insert(employee) }!!
         employeeTable.items.add(employee)
         employeeTable.selectionModel.select(employee)

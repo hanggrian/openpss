@@ -1,14 +1,15 @@
 package com.hendraanggrian.openpss.ui.invoice.order
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.db.schemas.Offset
-import com.hendraanggrian.openpss.db.schemas.OffsetPrice
-import com.hendraanggrian.openpss.db.schemas.OffsetPrices
-import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.controls.DoubleField
 import com.hendraanggrian.openpss.controls.IntField
 import com.hendraanggrian.openpss.controls.doubleField
 import com.hendraanggrian.openpss.controls.intField
+import com.hendraanggrian.openpss.db.schemas.Invoices
+import com.hendraanggrian.openpss.db.schemas.Offset
+import com.hendraanggrian.openpss.db.schemas.OffsetPrice
+import com.hendraanggrian.openpss.db.schemas.OffsetPrices
+import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.ui.Resourced
 import javafx.beans.Observable
 import javafx.beans.value.ObservableBooleanValue
@@ -61,7 +62,7 @@ class AddOffsetDialog(resourced: Resourced) : AddOrderDialog<Offset>(
             minPriceField.valueProperty.lessEq(0) or
             excessPriceField.valueProperty.lessEq(0)
 
-    override fun newInstance(): Offset = Offset.new(
+    override fun newInstance(): Offset = Invoices.Offsets.new(
         titleField.text,
         qtyField.value,
         typeChoice.value?.name ?: "",

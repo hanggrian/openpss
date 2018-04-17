@@ -65,8 +65,10 @@ class MainController : Controller() {
 
         updateNavigateMenu(tabPane.selectionModel.selectedIndex)
         tabPane.selectionModel.selectedIndexProperty().listener { _, _, index ->
-            updateNavigateMenu(index.toInt())
-            (controllers[index.toInt()] as? Refreshable)?.refresh()
+            index.toInt().let {
+                updateNavigateMenu(it)
+                (controllers[it] as? Refreshable)?.refresh()
+            }
         }
 
         later {

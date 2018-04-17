@@ -20,6 +20,8 @@ object Customers : DocumentSchema<Customer>("customers", Customer::class), Named
     val note = string("note")
     val phones = listOfString("phones")
     val emails = listOfString("emails")
+
+    fun new(name: String): Customer = Customer(name, dbDate, "", "", listOf(), listOf())
 }
 
 data class Customer(
@@ -30,10 +32,6 @@ data class Customer(
     var phones: List<String>,
     var emails: List<String>
 ) : Document<Customers>, Named {
-
-    companion object {
-        fun new(name: String): Customer = Customer(name, dbDate, "", "", listOf(), listOf())
-    }
 
     override lateinit var id: Id<String, Customers>
 

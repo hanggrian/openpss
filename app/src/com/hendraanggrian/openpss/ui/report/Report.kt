@@ -3,6 +3,7 @@ package com.hendraanggrian.openpss.ui.report
 import com.hendraanggrian.openpss.db.schemas.Payment
 import com.hendraanggrian.openpss.db.schemas.Payment.Method.CASH
 import com.hendraanggrian.openpss.db.schemas.Payment.Method.TRANSFER
+import com.hendraanggrian.openpss.db.schemas.Payments.gather
 import javafx.collections.ObservableList
 import ktfx.collections.toObservableList
 import org.joda.time.LocalDate
@@ -18,9 +19,7 @@ data class Report(
         fun listAll(payments: Iterable<Payment>): ObservableList<Report> = payments
             .groupBy { it.dateTime.toLocalDate() }
             .flatMap { (dateTime, payments) ->
-                listOf(Report(dateTime,
-                    payments.filter { it.method == CASH }.sumByDouble { it.value },
-                    payments.filter { it.method == TRANSFER }.sumByDouble { it.value }))
+                listOf(Report(dateTime, gather(payments, CASH), gather(payments, TRANSFER)))
             }
             .toObservableList()
     }

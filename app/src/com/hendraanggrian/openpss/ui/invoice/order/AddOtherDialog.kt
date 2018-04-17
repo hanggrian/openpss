@@ -1,9 +1,10 @@
 package com.hendraanggrian.openpss.ui.invoice.order
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.db.schemas.Other
 import com.hendraanggrian.openpss.controls.DoubleField
 import com.hendraanggrian.openpss.controls.doubleField
+import com.hendraanggrian.openpss.db.schemas.Invoices
+import com.hendraanggrian.openpss.db.schemas.Other
 import com.hendraanggrian.openpss.ui.Resourced
 import javafx.beans.Observable
 import javafx.beans.value.ObservableBooleanValue
@@ -32,7 +33,7 @@ class AddOtherDialog(resourced: Resourced) : AddOrderDialog<Other>(
             qtyField.valueProperty.lessEq(0) or
             priceField.valueProperty.lessEq(0)
 
-    override fun newInstance(): Other = Other.new(
+    override fun newInstance(): Other = Invoices.Others.new(
         titleField.text,
         qtyField.value,
         priceField.value)

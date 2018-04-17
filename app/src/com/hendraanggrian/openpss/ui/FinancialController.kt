@@ -3,7 +3,6 @@ package com.hendraanggrian.openpss.ui
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.utils.currencyConverter
 import com.hendraanggrian.openpss.utils.getFont
-import javafx.collections.ObservableList
 import javafx.fxml.FXML
 import javafx.scene.control.Label
 import javafx.scene.control.SelectionModel
@@ -16,9 +15,9 @@ abstract class FinancialController<T> : Controller(), Refreshable, Selectable<T>
 
     abstract val table: TableView<T>
 
-    abstract fun ObservableList<T>.getTotalCash(): Double
+    abstract fun List<T>.getTotalCash(): Double
 
-    abstract fun ObservableList<T>.getTransferCash(): Double
+    abstract fun List<T>.getTransferCash(): Double
 
     @FXML lateinit var totalCashLabel1: Label
     @FXML lateinit var totalCashLabel2: Label

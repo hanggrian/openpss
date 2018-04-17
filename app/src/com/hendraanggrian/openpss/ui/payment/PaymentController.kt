@@ -1,20 +1,21 @@
 package com.hendraanggrian.openpss.ui.payment
 
+import com.hendraanggrian.openpss.controls.ViewInvoiceDialog
 import com.hendraanggrian.openpss.db.schemas.Employees
 import com.hendraanggrian.openpss.db.schemas.Invoices
 import com.hendraanggrian.openpss.db.schemas.Payment
 import com.hendraanggrian.openpss.db.schemas.Payment.Method.CASH
 import com.hendraanggrian.openpss.db.schemas.Payment.Method.TRANSFER
 import com.hendraanggrian.openpss.db.schemas.Payments
+import com.hendraanggrian.openpss.db.schemas.Payments.gather
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.layouts.DateBox
 import com.hendraanggrian.openpss.time.PATTERN_TIME
 import com.hendraanggrian.openpss.ui.FinancialController
-import com.hendraanggrian.openpss.controls.ViewInvoiceDialog
 import com.hendraanggrian.openpss.utils.currencyCell
 import com.hendraanggrian.openpss.utils.findById
+import com.hendraanggrian.openpss.utils.matches
 import com.hendraanggrian.openpss.utils.stringCell
-import javafx.collections.ObservableList
 import javafx.fxml.FXML
 import javafx.scene.control.Button
 import javafx.scene.control.TableColumn
@@ -51,15 +52,13 @@ class PaymentController : FinancialController<Payment>() {
 
     override val table: TableView<Payment> get() = paymentTable
 
-    override fun ObservableList<Payment>.getTotalCash(): Double = filter { it.method == CASH }
-        .sumByDouble { it.value }
+    override fun List<Payment>.getTotalCash(): Double = gather(this, CASH)
 
-    override fun ObservableList<Payment>.getTransferCash(): Double = filter { it.method == TRANSFER }
-        .sumByDouble { it.value }
+    override fun List<Payment>.getTransferCash(): Double = gather(this, TRANSFER)
 
     override fun refresh() {
         paymentTable.items = transaction {
-            Payments.find { dateTime.matches(dateBox.value.toString().toPattern()) }.toMutableObservableList()
+            Payments.find { dateTime.matches(dateBox.value) }.toMutableObservableList()
         }
     }
 

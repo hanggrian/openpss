@@ -1,18 +1,19 @@
 package com.hendraanggrian.openpss.ui.invoice
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.utils.currencyConverter
+import com.hendraanggrian.openpss.controls.DoubleField
+import com.hendraanggrian.openpss.controls.doubleField
 import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.db.schemas.Payment
 import com.hendraanggrian.openpss.db.schemas.Payment.Method
 import com.hendraanggrian.openpss.db.schemas.Payment.Method.CASH
 import com.hendraanggrian.openpss.db.schemas.Payment.Method.values
+import com.hendraanggrian.openpss.db.schemas.Payments
 import com.hendraanggrian.openpss.db.schemas.calculateDue
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.controls.DoubleField
-import com.hendraanggrian.openpss.controls.doubleField
 import com.hendraanggrian.openpss.ui.Resourced
+import com.hendraanggrian.openpss.utils.currencyConverter
 import com.hendraanggrian.openpss.utils.getColor
 import com.hendraanggrian.openpss.utils.getFont
 import javafx.scene.Node
@@ -116,7 +117,7 @@ class AddPaymentDialog(
         setResultConverter {
             when (it) {
                 CANCEL -> null
-                else -> Payment.new(invoice.id, employee.id, valueField.value,
+                else -> Payments.new(invoice.id, employee.id, valueField.value,
                     when (methodChoice.selectionModel.selectedItem) {
                         CASH -> null
                         else -> transferField.text

@@ -1,13 +1,13 @@
 package com.hendraanggrian.openpss.ui.customer
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.controls.CountBox
 import com.hendraanggrian.openpss.controls.UserDialog
 import com.hendraanggrian.openpss.db.buildQuery
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Customer.ContactType.PHONE
 import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.transaction
+import com.hendraanggrian.openpss.io.properties.SettingsFile.CUSTOMER_PAGINATION_ITEMS
 import com.hendraanggrian.openpss.time.PATTERN_DATE
 import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.Refreshable
@@ -45,6 +45,7 @@ import ktfx.collections.toMutableObservableList
 import ktfx.layouts.listView
 import ktfx.scene.control.errorAlert
 import ktfx.scene.control.inputDialog
+import ktfx.scene.layout.paddingLeft
 import java.net.URL
 import java.util.ResourceBundle
 import java.util.regex.Pattern.CASE_INSENSITIVE
@@ -57,8 +58,7 @@ class CustomerController : Controller(), Refreshable, Selectable<Customer>, Sele
     @FXML lateinit var editNoteButton: Button
     @FXML lateinit var addContactButton: Button
     @FXML lateinit var deleteContactButton: Button
-    @FXML lateinit var customerField: TextField
-    @FXML lateinit var countBox: CountBox
+    @FXML lateinit var searchField: TextField
     @FXML lateinit var splitPane: SplitPane
     @FXML lateinit var customerPane: Pane
     @FXML lateinit var detailPane: Pane
@@ -82,8 +82,6 @@ class CustomerController : Controller(), Refreshable, Selectable<Customer>, Sele
         super.initialize(location, resources)
         customerPane.minWidthProperty().bind(splitPane.widthProperty() * 0.3)
         detailPane.minWidthProperty().bind(splitPane.widthProperty() * 0.3)
-
-        countBox.desc = getString(R.string.items)
         nameLabel.font = getFont(R.font.opensans_bold, 24)
         sinceLabel1.font = getFont(R.font.opensans_bold)
         addressLabel1.font = getFont(R.font.opensans_bold)
@@ -93,41 +91,43 @@ class CustomerController : Controller(), Refreshable, Selectable<Customer>, Sele
         valueColumn.stringCell { value }
     }
 
-    override fun refresh() = customerPagination.pageFactoryProperty()
-        .bind(bindingOf(customerField.textProperty(), countBox.countProperty) {
-            Callback<Int, Node> { page ->
-                customerList = listView {
-                    later {
-                        transaction {
-                            val customers = Customers.find {
-                                buildQuery {
-                                    if (customerField.text.isNotBlank())
-                                        and(name.matches(customerField.text, CASE_INSENSITIVE))
-                                }
+    override fun refresh() = customerPagination.pageFactoryProperty().bind(bindingOf(searchField.textProperty()) {
+        Callback<Int, Node> { page ->
+            customerList = listView {
+                later {
+                    transaction {
+                        val customers = Customers.find {
+                            buildQuery {
+                                if (searchField.text.isNotBlank())
+                                    and(name.matches(searchField.text, CASE_INSENSITIVE))
                             }
-                            customerPagination.pageCount = ceil(customers.count() / countBox.count.toDouble()).toInt()
-                            items = customers.skip(countBox.count * page).take(countBox.count).toMutableObservableList()
                         }
+                        customerPagination.pageCount =
+                            ceil(customers.count() / CUSTOMER_PAGINATION_ITEMS.toDouble()).toInt()
+                        items = customers
+                            .skip(CUSTOMER_PAGINATION_ITEMS * page)
+                            .take(CUSTOMER_PAGINATION_ITEMS).toMutableObservableList()
                     }
                 }
-                later {
-                    editNameButton.disableProperty().bind(!selectedBinding or !isFullAccess.toReadOnlyProperty())
-                    editAddressButton.disableProperty().bind(!selectedBinding)
-                    editNoteButton.disableProperty().bind(!selectedBinding)
-                    addContactButton.disableProperty().bind(!selectedBinding)
-                    deleteContactButton.disableProperty().bind(!selectedBinding2 or !isFullAccess.toReadOnlyProperty())
-                }
-                nameLabel.bindLabel { selected?.name.orEmpty() }
-                sinceLabel2.bindLabel { selected?.since?.toString(PATTERN_DATE).orEmpty() }
-                addressLabel2.bindLabel { selected?.address.orEmpty() }
-                noteLabel2.bindLabel { selected?.note.orEmpty() }
-                contactTable.itemsProperty().bind(bindingOf(customerList.selectionModel.selectedItemProperty()) {
-                    Contact.listAll(selected)
-                })
-                coverLabel.visibleProperty().bind(customerList.selectionModel.selectedItemProperty().isNull)
-                customerList
             }
-        })
+            later {
+                editNameButton.disableProperty().bind(!selectedBinding or !isFullAccess.toReadOnlyProperty())
+                editAddressButton.disableProperty().bind(!selectedBinding)
+                editNoteButton.disableProperty().bind(!selectedBinding)
+                addContactButton.disableProperty().bind(!selectedBinding)
+                deleteContactButton.disableProperty().bind(!selectedBinding2 or !isFullAccess.toReadOnlyProperty())
+            }
+            nameLabel.bindLabel { selected?.name.orEmpty() }
+            sinceLabel2.bindLabel { selected?.since?.toString(PATTERN_DATE).orEmpty() }
+            addressLabel2.bindLabel { selected?.address.orEmpty() }
+            noteLabel2.bindLabel { selected?.note.orEmpty() }
+            contactTable.itemsProperty().bind(bindingOf(customerList.selectionModel.selectedItemProperty()) {
+                Contact.listAll(selected)
+            })
+            coverLabel.visibleProperty().bind(customerList.selectionModel.selectedItemProperty().isNull)
+            customerList
+        }
+    })
 
     override val selectionModel: SelectionModel<Customer> get() = customerList.selectionModel
 

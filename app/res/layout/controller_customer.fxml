@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<?import com.hendraanggrian.openpss.controls.CountBox?>
 <?import com.hendraanggrian.openpss.controls.Space?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
@@ -66,8 +65,8 @@
     <SplitPane fx:id="splitPane" dividerPositions="0.3" VBox.vgrow="ALWAYS">
         <VBox fx:id="customerPane">
             <ToolBar>
-                <TextField fx:id="customerField" promptText="%search_customer" HBox.hgrow="ALWAYS"/>
-                <CountBox fx:id="countBox"/>
+                <TextField stylesheets="@../style/textfield_search.css" fx:id="searchField"
+                           promptText="%search_customer" HBox.hgrow="ALWAYS"/>
             </ToolBar>
             <Pagination fx:id="customerPagination" style="-fx-page-information-alignment: right;" VBox.vgrow="ALWAYS"/>
         </VBox>

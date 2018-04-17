@@ -1,0 +1,10 @@
+.text-field {
+  -fx-background-image: url('../image/text_search_inactive.png');
+  -fx-background-repeat: no-repeat;
+  -fx-background-position: left center;
+  -fx-padding: 5px 8px 5px 24px;
+}
+
+.text-field:focused {
+  -fx-background-image: url('../image/text_search_active.png');
+}

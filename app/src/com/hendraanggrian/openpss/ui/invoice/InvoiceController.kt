@@ -1,7 +1,6 @@
 package com.hendraanggrian.openpss.ui.invoice
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.controls.CountBox
 import com.hendraanggrian.openpss.controls.ViewInvoiceDialog
 import com.hendraanggrian.openpss.db.buildQuery
 import com.hendraanggrian.openpss.db.schemas.Customer
@@ -13,6 +12,7 @@ import com.hendraanggrian.openpss.db.schemas.Payment
 import com.hendraanggrian.openpss.db.schemas.Payments
 import com.hendraanggrian.openpss.db.schemas.calculateDue
 import com.hendraanggrian.openpss.db.transaction
+import com.hendraanggrian.openpss.io.properties.SettingsFile.INVOICE_PAGINATION_ITEMS
 import com.hendraanggrian.openpss.layouts.DateBox
 import com.hendraanggrian.openpss.time.PATTERN_DATETIME_EXTENDED
 import com.hendraanggrian.openpss.ui.Controller
@@ -80,7 +80,6 @@ class InvoiceController : Controller(), Refreshable, Selectable<Invoice>, Select
     @FXML lateinit var deletePaymentButton: Button
     @FXML lateinit var customerButton: SplitMenuButton
     @FXML lateinit var customerButtonItem: MenuItem
-    @FXML lateinit var countBox: CountBox
     @FXML lateinit var statusChoice: ChoiceBox<String>
     @FXML lateinit var allDateRadio: RadioButton
     @FXML lateinit var pickDateRadio: RadioButton
@@ -109,7 +108,6 @@ class InvoiceController : Controller(), Refreshable, Selectable<Invoice>, Select
         })
         customerButtonItem.disableProperty().bind(customerProperty.isNull)
 
-        countBox.desc = getString(R.string.items)
         statusChoice.run {
             items = observableListOf(getString(R.string.any), getString(R.string.unpaid), getString(R.string.paid))
             selectionModel.selectFirst()
@@ -122,59 +120,62 @@ class InvoiceController : Controller(), Refreshable, Selectable<Invoice>, Select
         paymentMethodColumn.stringCell { getMethodText(this@InvoiceController) }
     }
 
-    override fun refresh() = invoicePagination.pageFactoryProperty()
-        .bind(bindingOf(customerProperty, countBox.countProperty, statusChoice.valueProperty(),
-            allDateRadio.selectedProperty(), pickDateRadio.selectedProperty(), dateBox.valueProperty) {
-            Callback<Int, Node> { page ->
-                invoiceTable = tableView {
-                    columnResizePolicy = CONSTRAINED_RESIZE_POLICY
-                    columns {
-                        getString(R.string.id)<String> { stringCell { no } }
-                        getString(R.string.date)<String> { stringCell { dateTime.toString(PATTERN_DATETIME_EXTENDED) } }
-                        getString(R.string.employee)<String> {
-                            stringCell { transaction { findById(Employees, employeeId).single() }!! }
-                        }
-                        getString(R.string.customer)<String> {
-                            stringCell { transaction { findById(Customers, customerId).single() }!! }
-                        }
-                        getString(R.string.total)<String> { currencyCell { total } }
-                        getString(R.string.print)<Boolean> { doneCell { printed } }
-                        getString(R.string.paid)<Boolean> { doneCell { paid } }
-                        getString(R.string.done)<Boolean> { doneCell { done } }
+    override fun refresh() = invoicePagination.pageFactoryProperty().bind(bindingOf(customerProperty,
+        statusChoice.valueProperty(), allDateRadio.selectedProperty(), pickDateRadio.selectedProperty(),
+        dateBox.valueProperty) {
+        Callback<Int, Node> { page ->
+            invoiceTable = tableView {
+                columnResizePolicy = CONSTRAINED_RESIZE_POLICY
+                columns {
+                    getString(R.string.id)<String> { stringCell { no } }
+                    getString(R.string.date)<String> { stringCell { dateTime.toString(PATTERN_DATETIME_EXTENDED) } }
+                    getString(R.string.employee)<String> {
+                        stringCell { transaction { findById(Employees, employeeId).single() }!! }
                     }
-                    onMouseClicked { if (it.isDoubleClick() && selected != null) viewInvoice() }
-                    later {
-                        transaction {
-                            val invoices = Invoices.find {
-                                buildQuery {
-                                    if (customerProperty.value != null) and(customerId.equal(customerProperty.value.id))
-                                    when (statusChoice.value) {
-                                        getString(R.string.paid) -> and(paid.equal(true))
-                                        getString(R.string.unpaid) -> and(paid.equal(false))
-                                    }
-                                    if (pickDateRadio.isSelected) and(dateTime.matches(dateBox.value))
-                                }
-                            }
-                            invoicePagination.pageCount = ceil(invoices.count() / countBox.count.toDouble()).toInt()
-                            items = invoices.skip(countBox.count * page).take(countBox.count).toMutableObservableList()
-                        }
+                    getString(R.string.customer)<String> {
+                        stringCell { transaction { findById(Customers, customerId).single() }!! }
                     }
+                    getString(R.string.total)<String> { currencyCell { total } }
+                    getString(R.string.print)<Boolean> { doneCell { printed } }
+                    getString(R.string.paid)<Boolean> { doneCell { paid } }
+                    getString(R.string.done)<Boolean> { doneCell { done } }
                 }
+                onMouseClicked { if (it.isDoubleClick() && selected != null) viewInvoice() }
                 later {
-                    viewInvoiceButton.disableProperty().bind(!selectedBinding)
-                    editInvoiceButton.disableProperty().bind(!selectedBinding or !isFullAccess.toReadOnlyProperty())
-                    deleteInvoiceButton.disableProperty().bind(!selectedBinding or !isFullAccess.toReadOnlyProperty())
-                    addPaymentButton.disableProperty().bind(!selectedBinding)
-                    deletePaymentButton.disableProperty().bind(!selectedBinding2 or !isFullAccess.toReadOnlyProperty())
+                    transaction {
+                        val invoices = Invoices.find {
+                            buildQuery {
+                                if (customerProperty.value != null) and(customerId.equal(customerProperty.value.id))
+                                when (statusChoice.value) {
+                                    getString(R.string.paid) -> and(paid.equal(true))
+                                    getString(R.string.unpaid) -> and(paid.equal(false))
+                                }
+                                if (pickDateRadio.isSelected) and(dateTime.matches(dateBox.value))
+                            }
+                        }
+                        invoicePagination.pageCount =
+                            ceil(invoices.count() / INVOICE_PAGINATION_ITEMS.toDouble()).toInt()
+                        items = invoices
+                            .skip(INVOICE_PAGINATION_ITEMS * page)
+                            .take(INVOICE_PAGINATION_ITEMS).toMutableObservableList()
+                    }
                 }
-                paymentTable.itemsProperty().bind(bindingOf(invoiceTable.selectionModel.selectedItemProperty()) {
-                    if (selected == null) emptyObservableList()
-                    else transaction { Payments.find { invoiceId.equal(selected!!.id) }.toObservableList() }!!
-                })
-                coverLabel.visibleProperty().bind(invoiceTable.selectionModel.selectedItemProperty().isNull)
-                invoiceTable
             }
-        })
+            later {
+                viewInvoiceButton.disableProperty().bind(!selectedBinding)
+                editInvoiceButton.disableProperty().bind(!selectedBinding or !isFullAccess.toReadOnlyProperty())
+                deleteInvoiceButton.disableProperty().bind(!selectedBinding or !isFullAccess.toReadOnlyProperty())
+                addPaymentButton.disableProperty().bind(!selectedBinding)
+                deletePaymentButton.disableProperty().bind(!selectedBinding2 or !isFullAccess.toReadOnlyProperty())
+            }
+            paymentTable.itemsProperty().bind(bindingOf(invoiceTable.selectionModel.selectedItemProperty()) {
+                if (selected == null) emptyObservableList()
+                else transaction { Payments.find { invoiceId.equal(selected!!.id) }.toObservableList() }!!
+            })
+            coverLabel.visibleProperty().bind(invoiceTable.selectionModel.selectedItemProperty().isNull)
+            invoiceTable
+        }
+    })
 
     override val selectionModel: SelectionModel<Invoice> get() = invoiceTable.selectionModel
 

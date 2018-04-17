@@ -8,11 +8,15 @@ import com.hendraanggrian.openpss.db.schemas.findGlobalSettings
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.io.properties.SettingsFile
 import com.hendraanggrian.openpss.io.properties.SettingsFile.CUSTOMER_PAGINATION_ITEMS
+import com.hendraanggrian.openpss.io.properties.SettingsFile.INVOICE_PAGINATION_ITEMS
 import com.hendraanggrian.openpss.ui.Resourced
 import com.hendraanggrian.openpss.utils.getColor
 import com.hendraanggrian.openpss.utils.getFont
 import com.hendraanggrian.openpss.utils.onActionFilter
 import javafx.geometry.Pos.CENTER
+import javafx.geometry.Pos.CENTER_LEFT
+import javafx.scene.Node
+import javafx.scene.control.ChoiceBox
 import javafx.scene.control.Dialog
 import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
@@ -22,15 +26,19 @@ import ktfx.beans.binding.bindingOf
 import ktfx.beans.binding.stringBindingOf
 import ktfx.beans.property.toProperty
 import ktfx.beans.value.and
+import ktfx.collections.observableListOf
 import ktfx.coroutines.listener
+import ktfx.layouts.LayoutDsl
+import ktfx.layouts.LayoutManager
 import ktfx.layouts.checkBox
+import ktfx.layouts.choiceBox
 import ktfx.layouts.gridPane
+import ktfx.layouts.hbox
 import ktfx.layouts.label
-import ktfx.layouts.slider
-import ktfx.layouts.tabPane
 import ktfx.layouts.textArea
 import ktfx.layouts.textField
 import ktfx.layouts.vbox
+import ktfx.listeners.converter
 import ktfx.scene.control.cancelButton
 import ktfx.scene.control.graphicIcon
 import ktfx.scene.control.headerTitle
@@ -48,36 +56,51 @@ class SettingsDialog(resourced: Resourced, showGlobalSettings: Boolean) : Dialog
 
     private var isLocalChanged = false.toProperty()
     private var isGlobalChanged = false.toProperty()
+
+    private lateinit var customerPaginationChoice: ChoiceBox<Int>
+    private lateinit var invoicePaginationChoice: ChoiceBox<Int>
+    private lateinit var invoiceHeadersArea: TextArea
+
     private lateinit var languageField: TextField
     private lateinit var countryField: TextField
-    private lateinit var invoiceHeadersArea: TextArea
 
     init {
         headerTitle = getString(R.string.settings)
         graphicIcon = ImageView(R.image.ic_settings)
-        dialogPane.content = tabPane {
-            (getString(R.string.customer)) {
-                slider(1.0, 50.0, CUSTOMER_PAGINATION_ITEMS.toDouble()) {
-
-                }
-            }
-            (getString(R.string.invoice)) {
-                checkBox(getString(R.string.quick_select_customer_when_adding_invoice)) {
-                    isSelected = SettingsFile.INVOICE_QUICK_SELECT_CUSTOMER
-                    selectedProperty().listener { _, _, value ->
-                        isLocalChanged.set(true)
-                        SettingsFile.INVOICE_QUICK_SELECT_CUSTOMER = value
-                    }
-                }
-            }
-        }
         dialogPane.content = vbox {
             spacing = 8.0
             label(getString(R.string.local_settings)) { font = getFont(R.font.opensans_bold, 16) }
             label(getString(R.string.customer)) { font = getFont(R.font.opensans_bold) }
-
+            hbox {
+                alignment = CENTER_LEFT
+                spacing = 8.0
+                label(getString(R.string.items_per_page))
+                customerPaginationChoice = paginationChoice(CUSTOMER_PAGINATION_ITEMS) {
+                    valueProperty().listener { _, _, value ->
+                        isLocalChanged.set(true)
+                        SettingsFile.CUSTOMER_PAGINATION_ITEMS = value
+                    }
+                }
+            }
             label(getString(R.string.invoice)) { font = getFont(R.font.opensans_bold) }
-
+            hbox {
+                alignment = CENTER_LEFT
+                spacing = 8.0
+                label(getString(R.string.items_per_page))
+                invoicePaginationChoice = paginationChoice(INVOICE_PAGINATION_ITEMS) {
+                    valueProperty().listener { _, _, value ->
+                        isLocalChanged.set(true)
+                        SettingsFile.INVOICE_PAGINATION_ITEMS = value
+                    }
+                }
+            }
+            checkBox(getString(R.string.quick_select_customer_when_adding_invoice)) {
+                isSelected = SettingsFile.INVOICE_QUICK_SELECT_CUSTOMER
+                selectedProperty().listener { _, _, value ->
+                    isLocalChanged.set(true)
+                    SettingsFile.INVOICE_QUICK_SELECT_CUSTOMER = value
+                }
+            }
         }
         if (showGlobalSettings) dialogPane.expandableContent = vbox {
             spacing = 8.0
@@ -139,5 +162,17 @@ class SettingsDialog(resourced: Resourced, showGlobalSettings: Boolean) : Dialog
                 close()
             }
         }
+    }
+
+    private fun LayoutManager<Node>.paginationChoice(
+        prefill: Int,
+        init: (@LayoutDsl ChoiceBox<Int>).() -> Unit
+    ): ChoiceBox<Int> = choiceBox(observableListOf(20, 30, 40, 50)) {
+        converter {
+            fromString { it.toInt() }
+            toString { "$it ${getString(R.string.items)}" }
+        }
+        value = prefill
+        init()
     }
 }

@@ -3,6 +3,7 @@ package com.hendraanggrian.openpss.controls
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.layouts.dateBox
 import com.hendraanggrian.openpss.ui.Resourced
+import com.hendraanggrian.openpss.utils.style
 import javafx.scene.control.ButtonType.OK
 import javafx.scene.control.Dialog
 import javafx.scene.image.ImageView
@@ -23,6 +24,7 @@ class DateDialog(
     private val dateBox = dateBox(prefill)
 
     init {
+        style()
         headerTitle = getString(headerId)
         graphicIcon = ImageView(R.image.ic_date)
         dialogPane.content = dateBox

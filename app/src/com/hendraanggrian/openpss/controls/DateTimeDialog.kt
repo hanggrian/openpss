@@ -7,6 +7,7 @@ import com.hendraanggrian.openpss.layouts.dateBox
 import com.hendraanggrian.openpss.layouts.timeBox
 import com.hendraanggrian.openpss.ui.Resourced
 import com.hendraanggrian.openpss.ui.wage.record.Record.Companion.WORKING_HOURS
+import com.hendraanggrian.openpss.utils.style
 import javafx.scene.control.ButtonType.OK
 import javafx.scene.control.Dialog
 import javafx.scene.image.ImageView
@@ -32,6 +33,7 @@ class DateTimeDialog(
     private lateinit var timeBox: TimeBox
 
     init {
+        style()
         headerTitle = getString(headerId)
         graphicIcon = ImageView(R.image.ic_date)
         dialogPane.content = gridPane {

@@ -7,6 +7,7 @@ import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.ui.Resourced
 import com.hendraanggrian.openpss.ui.Selectable
 import com.hendraanggrian.openpss.utils.getResource
+import com.hendraanggrian.openpss.utils.style
 import javafx.scene.control.ButtonType.OK
 import javafx.scene.control.Dialog
 import javafx.scene.control.ListView
@@ -41,6 +42,7 @@ class SearchCustomerDialog(resourced: Resourced) : Dialog<Customer>(), Resourced
     private lateinit var customerList: ListView<Customer>
 
     init {
+        style()
         headerTitle = getString(R.string.search_customer)
         graphicIcon = ImageView(R.image.ic_customer)
         dialogPane.content = vbox {

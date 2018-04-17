@@ -9,6 +9,7 @@ import com.hendraanggrian.openpss.ui.Selectable
 import com.hendraanggrian.openpss.utils.browseUrl
 import com.hendraanggrian.openpss.utils.getFont
 import com.hendraanggrian.openpss.utils.onActionFilter
+import com.hendraanggrian.openpss.utils.style
 import javafx.geometry.Pos.CENTER_LEFT
 import javafx.scene.control.ButtonBar.ButtonData.CANCEL_CLOSE
 import javafx.scene.control.Dialog
@@ -40,6 +41,7 @@ class AboutDialog(resourced: Resourced) : Dialog<Unit>(), Resourced by resourced
     private lateinit var licenseList: ListView<License>
 
     init {
+        style()
         icon = Image(R.image.menu_about)
         title = getString(R.string.about)
         dialogPane.content = hbox {

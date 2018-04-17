@@ -16,6 +16,7 @@ import com.hendraanggrian.openpss.ui.Resourced
 import com.hendraanggrian.openpss.utils.getColor
 import com.hendraanggrian.openpss.utils.getFont
 import com.hendraanggrian.openpss.utils.onActionFilter
+import com.hendraanggrian.openpss.utils.style
 import javafx.geometry.Pos.CENTER
 import javafx.geometry.Pos.CENTER_LEFT
 import javafx.scene.Node
@@ -73,6 +74,7 @@ class SettingsDialog(resourced: Resourced, showGlobalSettings: Boolean) : Dialog
     private lateinit var countryField: TextField
 
     init {
+        style()
         headerTitle = getString(R.string.settings)
         graphicIcon = ImageView(R.image.ic_settings)
         dialogPane.content = vbox {

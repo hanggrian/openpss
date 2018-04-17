@@ -5,6 +5,7 @@ import com.hendraanggrian.openpss.db.schemas.Recesses
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.ui.Resourced
 import com.hendraanggrian.openpss.utils.onActionFilter
+import com.hendraanggrian.openpss.utils.style
 import javafx.scene.control.ChoiceBox
 import javafx.scene.control.Dialog
 import javafx.scene.control.Separator
@@ -30,6 +31,7 @@ class DisableRecessDialog(
     private lateinit var roleChoice: ChoiceBox<*>
 
     init {
+        style()
         headerTitle = getString(R.string.disable_recess)
         graphicIcon = ImageView(R.image.ic_time)
         dialogPane.content = gridPane {

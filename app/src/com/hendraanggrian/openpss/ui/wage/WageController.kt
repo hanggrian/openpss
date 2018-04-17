@@ -12,6 +12,7 @@ import com.hendraanggrian.openpss.utils.controller
 import com.hendraanggrian.openpss.utils.getResource
 import com.hendraanggrian.openpss.utils.openFile
 import com.hendraanggrian.openpss.utils.pane
+import com.hendraanggrian.openpss.utils.style
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
 import javafx.scene.Scene
@@ -110,7 +111,7 @@ class WageController : Controller() {
                 launch(FX) {
                     scrollPane.content = flowPane
                     bindProcessButton()
-                    errorAlert(e.message.toString()).show()
+                    errorAlert(e.message.toString()) { style() }.show()
                 }
             }
         }
@@ -120,7 +121,7 @@ class WageController : Controller() {
         attendees.forEach { it.saveWage() }
         stage(getString(R.string.record)) {
             val loader = FXMLLoader(getResource(R.layout.controller_wage_record), resources)
-            scene = Scene(loader.pane)
+            scene = Scene(loader.pane).apply { style() }
             setMinSize(1000.0, 650.0)
             loader.controller.addExtra(EXTRA_ATTENDEES, attendees)
         }.showAndWait()
@@ -131,7 +132,7 @@ class WageController : Controller() {
     @FXML fun recess() = stage(getString(R.string.recess)) {
         val loader = FXMLLoader(getResource(R.layout.controller_wage_recess), resources)
         initModality(APPLICATION_MODAL)
-        scene = Scene(loader.pane)
+        scene = Scene(loader.pane).apply { style() }
         isResizable = false
         loader.controller._employee = _employee
     }.showAndWait()

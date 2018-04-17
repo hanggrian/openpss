@@ -2,15 +2,15 @@ package com.hendraanggrian.openpss.ui.wage.record
 
 import com.hendraanggrian.openpss.BuildConfig.DEBUG
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.controls.DateDialog
+import com.hendraanggrian.openpss.controls.UncollapsibleTreeItem
 import com.hendraanggrian.openpss.io.WageContentFolder
 import com.hendraanggrian.openpss.io.WageFile
-import com.hendraanggrian.openpss.controls.UncollapsibleTreeItem
 import com.hendraanggrian.openpss.layouts.TimeBox
 import com.hendraanggrian.openpss.time.PATTERN_DATE
 import com.hendraanggrian.openpss.time.PATTERN_DATETIME
 import com.hendraanggrian.openpss.time.PATTERN_TIME
 import com.hendraanggrian.openpss.ui.Controller
-import com.hendraanggrian.openpss.controls.DateDialog
 import com.hendraanggrian.openpss.ui.wage.Attendee
 import com.hendraanggrian.openpss.ui.wage.record.Record.Companion.getDummy
 import com.hendraanggrian.openpss.utils.currencyConverter
@@ -19,6 +19,7 @@ import com.hendraanggrian.openpss.utils.getResource
 import com.hendraanggrian.openpss.utils.numberConverter
 import com.hendraanggrian.openpss.utils.openFile
 import com.hendraanggrian.openpss.utils.stringCell
+import com.hendraanggrian.openpss.utils.style
 import com.sun.javafx.scene.control.skin.TreeTableViewSkin
 import com.sun.javafx.scene.control.skin.VirtualFlow
 import javafx.fxml.FXML
@@ -202,6 +203,7 @@ class WageRecordController : Controller() {
             recordTable.root.children.size + recordTable.root.children.sumBy { it.children.size })
         togglePrintMode(false, printStylesheet)
         infoAlert(getString(R.string.screenshot_finished)) {
+            style()
             button(getString(R.string.open_folder), CANCEL_CLOSE)
         }.showAndWait()
             .filter { it.buttonData == CANCEL_CLOSE }

@@ -16,6 +16,7 @@ import com.hendraanggrian.openpss.ui.Resourced
 import com.hendraanggrian.openpss.utils.currencyConverter
 import com.hendraanggrian.openpss.utils.getColor
 import com.hendraanggrian.openpss.utils.getFont
+import com.hendraanggrian.openpss.utils.style
 import javafx.scene.Node
 import javafx.scene.control.ButtonType.CANCEL
 import javafx.scene.control.ChoiceBox
@@ -57,6 +58,7 @@ class AddPaymentDialog(
     private val receivable = transaction { calculateDue(invoice) }!!
 
     init {
+        style()
         headerTitle = getString(R.string.add_payment)
         graphicIcon = ImageView(R.image.ic_payment)
         dialogPane.content = gridPane {
@@ -86,7 +88,7 @@ class AddPaymentDialog(
                         }
                     }
                 })
-                textFillProperty().bind(bindingOf(valueField.valueProperty) {
+                textFillProperty().bind(bindingOf(textProperty()) {
                     getColor(when {
                         receivable - valueField.value == 0.0 -> R.color.teal
                         else -> R.color.red

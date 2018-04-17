@@ -1,8 +1,6 @@
 package com.hendraanggrian.openpss.controls
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.utils.currencyConverter
-import com.hendraanggrian.openpss.utils.findById
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.schemas.Employee
@@ -11,10 +9,13 @@ import com.hendraanggrian.openpss.db.schemas.GlobalSettings.KEY_INVOICE_HEADERS
 import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.db.schemas.findGlobalSettings
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.utils.numberConverter
 import com.hendraanggrian.openpss.time.PATTERN_DATETIME_EXTENDED
 import com.hendraanggrian.openpss.ui.Resourced
+import com.hendraanggrian.openpss.utils.currencyConverter
+import com.hendraanggrian.openpss.utils.findById
 import com.hendraanggrian.openpss.utils.getFont
+import com.hendraanggrian.openpss.utils.numberConverter
+import com.hendraanggrian.openpss.utils.style
 import javafx.geometry.Insets
 import javafx.geometry.Pos.CENTER
 import javafx.geometry.Pos.CENTER_RIGHT
@@ -49,6 +50,7 @@ class ViewInvoiceDialog(resourced: Resourced, invoice: Invoice) : Dialog<Unit>()
     private lateinit var employee: Employee
 
     init {
+        style()
         transaction {
             invoiceHeaders = findGlobalSettings(KEY_INVOICE_HEADERS).single().valueList
             employee = findById(Employees, invoice.employeeId).single()

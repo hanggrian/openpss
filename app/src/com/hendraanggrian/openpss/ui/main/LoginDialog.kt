@@ -4,14 +4,15 @@ import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.BuildConfig.APP_NAME
 import com.hendraanggrian.openpss.BuildConfig.DEBUG
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.db.login
-import com.hendraanggrian.openpss.io.properties.LoginFile
 import com.hendraanggrian.openpss.controls.HostField
 import com.hendraanggrian.openpss.controls.IntField
 import com.hendraanggrian.openpss.controls.hostField
 import com.hendraanggrian.openpss.controls.intField
+import com.hendraanggrian.openpss.db.login
+import com.hendraanggrian.openpss.io.properties.LoginFile
 import com.hendraanggrian.openpss.ui.Resourced
 import com.hendraanggrian.openpss.utils.onActionFilter
+import com.hendraanggrian.openpss.utils.style
 import javafx.geometry.Pos.CENTER_RIGHT
 import javafx.scene.control.ButtonBar.ButtonData.OK_DONE
 import javafx.scene.control.Dialog
@@ -61,6 +62,7 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced 
     private lateinit var serverPasswordField: PasswordField
 
     init {
+        style()
         icon = Image(R.image.ic_launcher)
         title = APP_NAME
         headerText = getString(R.string.login)
@@ -78,7 +80,11 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced 
                     LoginFile.save()
                     launch(FX) {
                         close()
-                        later { infoAlert(getString(R.string.please_restart)).showAndWait().ifPresent { exit() } }
+                        later {
+                            infoAlert(getString(R.string.please_restart)) {
+                                dialogPane.scene.style()
+                            }.showAndWait().ifPresent { exit() }
+                        }
                     }
                 }
             } col 1 row 0 colSpans 2
@@ -165,7 +171,7 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced 
                     }
                 } catch (e: Exception) {
                     if (DEBUG) e.printStackTrace()
-                    launch(FX) { errorAlert(e.message.toString()).show() }
+                    launch(FX) { errorAlert(e.message.toString()) { dialogPane.scene.style() }.show() }
                 }
             }
         }

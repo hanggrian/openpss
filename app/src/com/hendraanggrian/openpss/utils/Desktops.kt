@@ -19,5 +19,5 @@ fun openFile(file: File) {
 }
 
 private inline fun ensureDesktopAvailable(): Boolean = isDesktopSupported().also {
-    if (!it) errorAlert("Desktop isn't supported!").show()
+    if (!it) errorAlert("Desktop isn't supported!") { style() }.show()
 }

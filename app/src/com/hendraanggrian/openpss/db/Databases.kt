@@ -13,6 +13,7 @@ import com.hendraanggrian.openpss.db.schemas.PlatePrices
 import com.hendraanggrian.openpss.db.schemas.Recesses
 import com.hendraanggrian.openpss.db.schemas.Wages
 import com.hendraanggrian.openpss.utils.isEmpty
+import com.hendraanggrian.openpss.utils.style
 import com.mongodb.MongoClientOptions.Builder
 import com.mongodb.MongoCredential.createCredential
 import com.mongodb.MongoException
@@ -43,6 +44,7 @@ fun <R> transaction(statement: MongoDBSession.() -> R): R? = try {
 } catch (e: MongoException) {
     if (DEBUG) e.printStackTrace()
     errorAlert(e.message.toString()) {
+        style()
         headerText = "Connection closed. Please sign in again."
     }.showAndWait().ifPresent { exit() }
     null

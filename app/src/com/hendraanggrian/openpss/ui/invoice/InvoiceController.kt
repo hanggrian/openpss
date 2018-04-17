@@ -28,6 +28,7 @@ import com.hendraanggrian.openpss.utils.getResource
 import com.hendraanggrian.openpss.utils.matches
 import com.hendraanggrian.openpss.utils.pane
 import com.hendraanggrian.openpss.utils.stringCell
+import com.hendraanggrian.openpss.utils.style
 import com.hendraanggrian.openpss.utils.yesNoAlert
 import javafx.beans.property.SimpleObjectProperty
 import javafx.fxml.FXML
@@ -233,7 +234,7 @@ class InvoiceController : Controller(), Refreshable, Selectable<Invoice>, Select
     @FXML fun platePrice() = stage(getString(R.string.plate_price)) {
         initModality(APPLICATION_MODAL)
         val loader = FXMLLoader(getResource(R.layout.controller_price_plate), resources)
-        scene = Scene(loader.pane)
+        scene = Scene(loader.pane).apply { style() }
         isResizable = false
         loader.controller._employee = _employee
     }.showAndWait()
@@ -241,7 +242,7 @@ class InvoiceController : Controller(), Refreshable, Selectable<Invoice>, Select
     @FXML fun offsetPrice() = stage(getString(R.string.offset_price)) {
         initModality(APPLICATION_MODAL)
         val loader = FXMLLoader(getResource(R.layout.controller_price_offset), resources)
-        scene = Scene(loader.pane)
+        scene = Scene(loader.pane).apply { style() }
         isResizable = false
         loader.controller._employee = _employee
     }.showAndWait()

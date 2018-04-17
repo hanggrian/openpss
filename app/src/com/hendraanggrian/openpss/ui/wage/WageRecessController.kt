@@ -9,6 +9,7 @@ import com.hendraanggrian.openpss.layouts.timeBox
 import com.hendraanggrian.openpss.time.PATTERN_TIME
 import com.hendraanggrian.openpss.ui.SimpleTableController
 import com.hendraanggrian.openpss.utils.stringCell
+import com.hendraanggrian.openpss.utils.style
 import javafx.fxml.FXML
 import javafx.scene.control.ButtonType.OK
 import javafx.scene.control.TableColumn
@@ -39,6 +40,7 @@ class WageRecessController : SimpleTableController<Recess, Recesses>(Recesses) {
         ImageView(R.image.ic_time)) {
         lateinit var startBox: TimeBox
         lateinit var endBox: TimeBox
+        style()
         dialogPane.content = gridPane {
             gap = 8.0
             label(getString(R.string.start)) col 0 row 0

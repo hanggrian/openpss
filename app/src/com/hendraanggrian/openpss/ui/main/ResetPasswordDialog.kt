@@ -2,6 +2,7 @@ package com.hendraanggrian.openpss.ui.main
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.ui.Resourced
+import com.hendraanggrian.openpss.utils.style
 import javafx.scene.control.ButtonType.OK
 import javafx.scene.control.Dialog
 import javafx.scene.control.PasswordField
@@ -25,11 +26,11 @@ class ResetPasswordDialog(resourced: Resourced) : Dialog<String>(), Resourced by
     private lateinit var confirmPasswordField: PasswordField
 
     init {
+        style()
         icon = Image(R.image.ic_launcher)
         title = getString(R.string.change_password)
         headerText = getString(R.string.change_password)
         graphic = ImageView(R.image.ic_password)
-
         dialogPane.content = gridPane {
             gap = 8.0
             label(getString(R.string.password)) col 0 row 0

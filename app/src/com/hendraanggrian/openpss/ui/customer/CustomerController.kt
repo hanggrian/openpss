@@ -18,6 +18,7 @@ import com.hendraanggrian.openpss.utils.getFont
 import com.hendraanggrian.openpss.utils.isNotEmpty
 import com.hendraanggrian.openpss.utils.matches
 import com.hendraanggrian.openpss.utils.stringCell
+import com.hendraanggrian.openpss.utils.style
 import com.hendraanggrian.openpss.utils.yesNoAlert
 import javafx.fxml.FXML
 import javafx.scene.Node
@@ -138,7 +139,7 @@ class CustomerController : Controller(), Refreshable, Selectable<Customer>, Sele
             transaction {
                 when {
                     Customers.find { name.matches("^$it$", CASE_INSENSITIVE) }.isNotEmpty() ->
-                        errorAlert(getString(R.string.name_taken)).show()
+                        errorAlert(getString(R.string.name_taken)) { style() }.show()
                     else -> Customers.new(it).let {
                         it.id = Customers.insert(it)
                         customerList.items.add(it)

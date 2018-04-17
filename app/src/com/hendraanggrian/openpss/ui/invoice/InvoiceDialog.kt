@@ -24,6 +24,7 @@ import com.hendraanggrian.openpss.utils.findById
 import com.hendraanggrian.openpss.utils.getFont
 import com.hendraanggrian.openpss.utils.numberCell
 import com.hendraanggrian.openpss.utils.stringCell
+import com.hendraanggrian.openpss.utils.style
 import javafx.beans.property.DoubleProperty
 import javafx.beans.property.ObjectProperty
 import javafx.beans.property.SimpleDoubleProperty
@@ -79,6 +80,7 @@ class InvoiceDialog(
     private val totalProperty: DoubleProperty = SimpleDoubleProperty()
 
     init {
+        style()
         headerTitle = getString(if (!isEdit()) R.string.add_invoice else R.string.edit_invoice)
         graphicIcon = ImageView(R.image.ic_invoice)
         dialogPane.content = gridPane {

@@ -28,7 +28,7 @@ fun Node.onActionFilter(
 inline fun Resourced.yesNoAlert(
     contentTextId: String = R.string.are_you_sure,
     noinline action: () -> Unit
-) = confirmAlert(getString(contentTextId), YES, NO)
+) = confirmAlert(getString(contentTextId), YES, NO) { style() }
     .showAndWait()
     .filter { it == YES }
     .ifPresent { action() }

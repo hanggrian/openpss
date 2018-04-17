@@ -1,18 +1,21 @@
 package com.hendraanggrian.openpss.ui.invoice.order
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.db.Order
 import com.hendraanggrian.openpss.controls.IntField
 import com.hendraanggrian.openpss.controls.intField
+import com.hendraanggrian.openpss.db.Order
 import com.hendraanggrian.openpss.ui.Resourced
 import com.hendraanggrian.openpss.utils.currencyConverter
+import com.hendraanggrian.openpss.utils.getColor
 import com.hendraanggrian.openpss.utils.getFont
+import com.hendraanggrian.openpss.utils.style
 import javafx.beans.Observable
 import javafx.beans.value.ObservableBooleanValue
 import javafx.scene.control.ButtonType
 import javafx.scene.control.Dialog
 import javafx.scene.control.TextField
 import javafx.scene.image.ImageView
+import ktfx.beans.binding.bindingOf
 import ktfx.beans.binding.stringBindingOf
 import ktfx.layouts._GridPane
 import ktfx.layouts.gridPane
@@ -43,6 +46,7 @@ abstract class AddOrderDialog<T : Order>(
     protected lateinit var qtyField: IntField
 
     init {
+        style()
         headerTitle = getString(titleId)
         graphicId?.let { graphicIcon = ImageView(it) }
         dialogPane.content = gridPane {
@@ -58,6 +62,12 @@ abstract class AddOrderDialog<T : Order>(
                     font = getFont(R.font.opensans_bold)
                     textProperty().bind(stringBindingOf(*titleBindingDependencies) {
                         currencyConverter.toString(newInstance().total)
+                    })
+                    textFillProperty().bind(bindingOf(textProperty()) {
+                        getColor(when {
+                            newInstance().total > 0 -> R.color.teal
+                            else -> R.color.red
+                        })
                     })
                 } col 1 row totalRow
             }

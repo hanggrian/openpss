@@ -6,6 +6,7 @@ import com.hendraanggrian.openpss.db.schemas.Customer.ContactType.PHONE
 import com.hendraanggrian.openpss.db.schemas.Customer.ContactType.values
 import com.hendraanggrian.openpss.ui.Resourced
 import com.hendraanggrian.openpss.utils.REGEX_PHONE
+import com.hendraanggrian.openpss.utils.style
 import javafx.scene.control.ButtonType.OK
 import javafx.scene.control.ChoiceBox
 import javafx.scene.control.Dialog
@@ -31,6 +32,7 @@ class AddContactDialog(resourced: Resourced) : Dialog<Pair<ContactType, String>>
     private lateinit var contactField: TextField
 
     init {
+        style()
         headerTitle = getString(R.string.add_contact)
         graphicIcon = ImageView(R.image.ic_contact)
         dialogPane.content = gridPane {

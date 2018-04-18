@@ -10,4 +10,6 @@ inline fun Scene.style() {
     stylesheets += getResource(R.style.openpss).toExternalForm()
 }
 
-inline fun Dialog<*>.style() = dialogPane.scene.style()
+inline fun Dialog<*>.style() {
+    dialogPane.stylesheets += getResource(R.style.openpss).toExternalForm()
+}

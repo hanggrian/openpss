@@ -2,6 +2,7 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import com.hendraanggrian.buildconfig.BuildConfigTask
 import com.hendraanggrian.packr.PackTask
 import com.hendraanggrian.r.RTask
+import org.gradle.api.JavaVersion.VERSION_1_10
 import org.gradle.api.plugins.ExtensionAware
 import org.gradle.jvm.tasks.Jar
 import org.gradle.kotlin.dsl.configure
@@ -28,13 +29,15 @@ plugins {
     `junit-platform`
 }
 
-java.sourceSets {
-    "main" {
-        java.srcDir("src")
-        resources.srcDir("res")
-    }
-    "test" {
-        java.srcDir("tests/src")
+java {
+    sourceSets {
+        "main" {
+            java.srcDir("src")
+            resources.srcDir("res")
+        }
+        "test" {
+            java.srcDir("tests/src")
+        }
     }
 }
 

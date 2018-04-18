@@ -99,7 +99,7 @@
                    GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.columnSpan="2"/>
             <Label fx:id="idLabel1" text="%id"
                    GridPane.rowIndex="1" GridPane.columnIndex="0"/>
-            <Label fx:id="idLabel2" maxWidth="1.7976931348623157E308"
+            <Label fx:id="idLabel2" maxWidth="1.7976931348623157E308" style="-fx-font-weight: bold;"
                    GridPane.rowIndex="1" GridPane.columnIndex="1"/>
             <Label fx:id="sinceLabel1" text="%since"
                    GridPane.rowIndex="2" GridPane.columnIndex="0"/>

@@ -20,8 +20,6 @@ import com.hendraanggrian.openpss.utils.numberConverter
 import com.hendraanggrian.openpss.utils.openFile
 import com.hendraanggrian.openpss.utils.stringCell
 import com.hendraanggrian.openpss.utils.style
-import com.sun.javafx.scene.control.skin.TreeTableViewSkin
-import com.sun.javafx.scene.control.skin.VirtualFlow
 import javafx.fxml.FXML
 import javafx.scene.control.Button
 import javafx.scene.control.ButtonBar.ButtonData.CANCEL_CLOSE
@@ -32,6 +30,8 @@ import javafx.scene.control.ToolBar
 import javafx.scene.control.TreeItem
 import javafx.scene.control.TreeTableColumn
 import javafx.scene.control.TreeTableView
+import javafx.scene.control.skin.TreeTableViewSkin
+import javafx.scene.control.skin.VirtualFlow
 import javafx.scene.layout.VBox
 import ktfx.application.later
 import ktfx.beans.binding.booleanBindingOf

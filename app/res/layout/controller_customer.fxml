@@ -80,7 +80,7 @@
             </ToolBar>
             <Pagination fx:id="customerPagination" style="-fx-page-information-alignment: right;" VBox.vgrow="ALWAYS"/>
         </VBox>
-        <GridPane fx:id="detailPane" hgap="8" vgap="8">
+        <GridPane hgap="8" vgap="8">
             <columnConstraints>
                 <ColumnConstraints hgrow="NEVER"/>
                 <ColumnConstraints hgrow="ALWAYS"/>
@@ -97,22 +97,26 @@
             </padding>
             <Label fx:id="nameLabel" maxWidth="1.7976931348623157E308"
                    GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.columnSpan="2"/>
-            <Label fx:id="sinceLabel1" text="%since"
+            <Label fx:id="idLabel1" text="%id"
                    GridPane.rowIndex="1" GridPane.columnIndex="0"/>
-            <Label fx:id="sinceLabel2" maxWidth="1.7976931348623157E308"
+            <Label fx:id="idLabel2" maxWidth="1.7976931348623157E308"
                    GridPane.rowIndex="1" GridPane.columnIndex="1"/>
-            <Label fx:id="addressLabel1" text="%address"
+            <Label fx:id="sinceLabel1" text="%since"
                    GridPane.rowIndex="2" GridPane.columnIndex="0"/>
-            <Label fx:id="addressLabel2" maxWidth="1.7976931348623157E308"
+            <Label fx:id="sinceLabel2" maxWidth="1.7976931348623157E308"
                    GridPane.rowIndex="2" GridPane.columnIndex="1"/>
-            <Label fx:id="noteLabel1" text="%note"
+            <Label fx:id="addressLabel1" text="%address"
                    GridPane.rowIndex="3" GridPane.columnIndex="0"/>
-            <Label fx:id="noteLabel2" maxWidth="1.7976931348623157E308"
+            <Label fx:id="addressLabel2" maxWidth="1.7976931348623157E308"
                    GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+            <Label fx:id="noteLabel1" text="%note"
+                   GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+            <Label fx:id="noteLabel2" maxWidth="1.7976931348623157E308"
+                   GridPane.rowIndex="4" GridPane.columnIndex="1"/>
             <Label fx:id="contactLabel" text="%contact"
-                   GridPane.rowIndex="4" GridPane.columnIndex="0" GridPane.valignment="TOP"/>
+                   GridPane.rowIndex="5" GridPane.columnIndex="0" GridPane.valignment="TOP"/>
             <TableView fx:id="contactTable"
-                       GridPane.rowIndex="4" GridPane.columnIndex="1">
+                       GridPane.rowIndex="5" GridPane.columnIndex="1">
                 <columns>
                     <TableColumn fx:id="typeColumn" text="%type"/>
                     <TableColumn fx:id="valueColumn" text="%value"/>
@@ -123,7 +127,7 @@
             </TableView>
             <Label fx:id="coverLabel" alignment="CENTER" text="%select_customer" style="-fx-background-color: #f4f4f4;"
                    maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
-                   GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.rowSpan="5" GridPane.columnSpan="2"/>
+                   GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.rowSpan="6" GridPane.columnSpan="2"/>
         </GridPane>
     </SplitPane>
 </VBox>

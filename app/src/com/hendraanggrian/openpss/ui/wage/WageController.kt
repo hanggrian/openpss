@@ -61,7 +61,7 @@ class WageController : Controller() {
         processButton.disableProperty().bind(flowPane.children.isEmpty)
 
         if (DEBUG) {
-            fileField.text = "/Users/hendraanggrian/Downloads/Absen 4-13-18.xlsx"
+            fileField.text = "/Users/hendraanggrian/Downloads/Absen 2-24-18.xlsx"
             readButton.fire()
         }
         later { flowPane.prefWrapLengthProperty().bind(fileField.scene.widthProperty()) }
@@ -142,7 +142,10 @@ class WageController : Controller() {
     @FXML fun browse() = fileChooser(
         ExtensionFilter(getString(R.string.input_file), *Reader.of(WAGE_READER).extensions))
         .showOpenDialog(fileField.scene.window)
-        ?.run { fileField.text = absolutePath }
+        ?.run {
+            fileField.text = absolutePath
+            fileField.requestFocus()
+        }
 
     private inline val attendeePanes: List<AttendeePane> get() = flowPane.children.map { (it as AttendeePane) }
 

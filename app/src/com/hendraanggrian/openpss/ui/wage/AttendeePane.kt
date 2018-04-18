@@ -1,15 +1,16 @@
 package com.hendraanggrian.openpss.ui.wage
 
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.controls.DateTimeDialog
+import com.hendraanggrian.openpss.controls.intField
 import com.hendraanggrian.openpss.db.schemas.Recesses
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.controls.intField
 import com.hendraanggrian.openpss.time.FlexibleInterval
 import com.hendraanggrian.openpss.time.PATTERN_DATETIME_EXTENDED
-import com.hendraanggrian.openpss.controls.DateTimeDialog
 import com.hendraanggrian.openpss.ui.Resourced
 import com.hendraanggrian.openpss.utils.forceRefresh
 import com.hendraanggrian.openpss.utils.getColor
+import com.hendraanggrian.openpss.utils.getFont
 import com.hendraanggrian.openpss.utils.round
 import javafx.beans.binding.BooleanBinding
 import javafx.geometry.Pos.BOTTOM_CENTER
@@ -23,7 +24,7 @@ import javafx.scene.image.Image
 import javafx.scene.input.MouseEvent.MOUSE_CLICKED
 import javafx.scene.layout.Priority.ALWAYS
 import javafx.scene.layout.StackPane
-import javafx.scene.text.Font
+import javafx.scene.text.Font.font
 import kotlinx.coroutines.experimental.delay
 import kotlinx.coroutines.experimental.launch
 import ktfx.beans.binding.bindingOf
@@ -66,6 +67,7 @@ class AttendeePane(
     init {
         isCollapsible = false
         content = vbox {
+            isFillWidth = true
             gridPane {
                 gap = 4.0
                 paddingAll = 8.0
@@ -75,18 +77,18 @@ class AttendeePane(
                 }
                 label(getString(R.string.income)) col 0 row 1 marginRight 4.0
                 intField {
-                    prefWidth = 88.0
+                    prefWidth = 80.0
                     promptText = getString(R.string.income)
                     valueProperty.bindBidirectional(attendee.dailyProperty)
                 } col 1 row 1
-                label("@${getString(R.string.day)}") { font = Font.font(9.0) } col 2 row 1
+                label("@${getString(R.string.day)}") { font = font(10.0) } col 2 row 1
                 label(getString(R.string.overtime)) col 0 row 2 marginRight 4.0
                 intField {
-                    prefWidth = 88.0
+                    prefWidth = 80.0
                     promptText = getString(R.string.overtime)
                     valueProperty.bindBidirectional(attendee.hourlyOvertimeProperty)
                 } col 1 row 2
-                label("@${getString(R.string.hour)}") { font = Font.font(9.0) } col 2 row 2
+                label("@${getString(R.string.hour)}") { font = font(10.0) } col 2 row 2
                 label(getString(R.string.recess)) col 0 row 3 marginRight 4.0
                 vbox {
                     transaction {
@@ -117,7 +119,10 @@ class AttendeePane(
                             } hpriority ALWAYS
                             if (alignment == BOTTOM_CENTER) listView.items.getOrNull(index + 1).let { nextItem ->
                                 when (nextItem) {
-                                    null -> itemLabel.textFill = getColor(R.color.red)
+                                    null -> itemLabel.run {
+                                        font = getFont(R.font.opensans_bold)
+                                        textFill = getColor(R.color.red)
+                                    }
                                     else -> {
                                         val interval = FlexibleInterval.of(dateTime, nextItem)
                                         var minutes = interval.minutes
@@ -127,7 +132,11 @@ class AttendeePane(
                                                 minutes -= interval.overlap(it)?.toDuration()?.toStandardMinutes()
                                                     ?.minutes?.absoluteValue ?: 0
                                             }
-                                        label((minutes / 60.0).round().toString()) { font = Font.font(9.0) }
+                                        val hours = (minutes / 60.0).round()
+                                        label(hours.toString()) {
+                                            font = font(10.0)
+                                            if (hours > 12) textFill = getColor(R.color.red)
+                                        }
                                     }
                                 }
                             }
@@ -140,6 +149,7 @@ class AttendeePane(
         }
         contextMenu {
             (getString(R.string.add)) { onAction { addAttendance() } }
+            separatorMenuItem()
             (getString(R.string.clone)) {
                 disableProperty().bind(attendanceSelectedBinding)
                 onAction { cloneAttendance() }

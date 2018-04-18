@@ -62,9 +62,10 @@ class CustomerController : Controller(), Refreshable, Selectable<Customer>, Sele
     @FXML lateinit var clearSearchButton: Button
     @FXML lateinit var splitPane: SplitPane
     @FXML lateinit var customerPane: Pane
-    @FXML lateinit var detailPane: Pane
     @FXML lateinit var customerPagination: Pagination
     @FXML lateinit var nameLabel: Label
+    @FXML lateinit var idLabel1: Label
+    @FXML lateinit var idLabel2: Label
     @FXML lateinit var sinceLabel1: Label
     @FXML lateinit var sinceLabel2: Label
     @FXML lateinit var addressLabel1: Label
@@ -82,9 +83,9 @@ class CustomerController : Controller(), Refreshable, Selectable<Customer>, Sele
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
         clearSearchButton.disableProperty().bind(searchField.textProperty().isEmpty)
-        customerPane.minWidthProperty().bind(splitPane.widthProperty() * 0.3)
-        detailPane.minWidthProperty().bind(splitPane.widthProperty() * 0.3)
+        customerPane.minWidthProperty().bind(splitPane.widthProperty() * 0.25)
         nameLabel.font = getFont(R.font.opensans_bold, 24)
+        idLabel1.font = getFont(R.font.opensans_bold)
         sinceLabel1.font = getFont(R.font.opensans_bold)
         addressLabel1.font = getFont(R.font.opensans_bold)
         noteLabel1.font = getFont(R.font.opensans_bold)
@@ -120,6 +121,7 @@ class CustomerController : Controller(), Refreshable, Selectable<Customer>, Sele
                 deleteContactButton.disableProperty().bind(!selectedBinding2 or !isFullAccess.toReadOnlyProperty())
             }
             nameLabel.bindLabel { selected?.name.orEmpty() }
+            idLabel2.bindLabel { selected?.id?.toString().orEmpty() }
             sinceLabel2.bindLabel { selected?.since?.toString(PATTERN_DATE).orEmpty() }
             addressLabel2.bindLabel { selected?.address.orEmpty() }
             noteLabel2.bindLabel { selected?.note.orEmpty() }

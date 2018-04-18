@@ -189,12 +189,10 @@ class ViewInvoiceDialog(resourced: Resourced, invoice: Invoice) : Dialog<Unit>()
             maxWidth = MAX_WIDTH / 2
         }
 
-        fun LayoutManager<Node>.regularLabel(text: String): Label = label(text) {
-            font = getFont(R.font.opensans_regular)
-        }
+        fun LayoutManager<Node>.regularLabel(text: String): Label = label(text)
 
         fun LayoutManager<Node>.boldLabel(text: String): Label = label(text) {
-            font = getFont(R.font.opensans_bold)
+            font = getFont(R.font.sf_pro_text_bold)
         }
     }
 }

@@ -10,6 +10,7 @@ import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.TreeSelectable
 import com.hendraanggrian.openpss.utils.findById
+import com.hendraanggrian.openpss.utils.getFont
 import com.hendraanggrian.openpss.utils.stringCell
 import javafx.fxml.FXML
 import javafx.scene.control.Button
@@ -47,10 +48,9 @@ class ScheduleController : Controller(), Refreshable, TreeSelectable<Schedule> {
                     onUpdate { any, empty ->
                         graphic = null
                         if (any != null && !empty) graphic = label(any.toString()) {
-                            font = com.hendraanggrian.openpss.utils.getFont(when {
-                                treeTableRow.treeItem?.value?.isNode() ?: true -> R.font.opensans_bold
-                                else -> R.font.opensans_regular
-                            })
+                            if (treeTableRow.treeItem?.value?.isNode() == true) {
+                                font = getFont(R.font.sf_pro_text_bold)
+                            }
                         }
                     }
                 }

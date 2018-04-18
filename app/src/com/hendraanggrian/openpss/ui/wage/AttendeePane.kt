@@ -120,7 +120,7 @@ class AttendeePane(
                             if (alignment == BOTTOM_CENTER) listView.items.getOrNull(index + 1).let { nextItem ->
                                 when (nextItem) {
                                     null -> itemLabel.run {
-                                        font = getFont(R.font.opensans_bold)
+                                        font = getFont(R.font.sf_pro_text_bold)
                                         textFill = getColor(R.color.red)
                                     }
                                     else -> {

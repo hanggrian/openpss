@@ -137,7 +137,7 @@ class SettingsDialog(resourced: Resourced, showGlobalSettings: Boolean) : Dialog
                         textProperty().listener { isGlobalChanged.set(true) }
                     } row 0 col 2
                     label {
-                        font = getFont(R.font.opensans_bold)
+                        font = getFont(R.font.sf_pro_text_bold)
                         textProperty().bind(stringBindingOf(languageField.textProperty(), countryField.textProperty()) {
                             try {
                                 Currency.getInstance(Locale(languageField.text, countryField.text)).symbol
@@ -182,14 +182,14 @@ class SettingsDialog(resourced: Resourced, showGlobalSettings: Boolean) : Dialog
     private inline fun group(titleId: String, init: (@LayoutDsl _VBox).() -> Unit): VBox =
         vbox {
             spacing = 4.0
-            label(getString(titleId)) { font = getFont(R.font.opensans_bold) }
+            label(getString(titleId)) { font = getFont(R.font.sf_pro_text_bold) }
             init()
         }
 
     private inline fun LayoutManager<Node>.group(titleId: String, init: (@LayoutDsl _VBox).() -> Unit): VBox =
         vbox {
             spacing = 4.0
-            label(getString(titleId)) { font = getFont(R.font.opensans_bold) }
+            label(getString(titleId)) { font = getFont(R.font.sf_pro_text_bold) }
             init()
         }
 

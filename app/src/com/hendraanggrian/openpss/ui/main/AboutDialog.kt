@@ -16,6 +16,7 @@ import javafx.scene.control.Dialog
 import javafx.scene.control.ListView
 import javafx.scene.control.SelectionModel
 import javafx.scene.image.Image
+import javafx.scene.text.Font.font
 import ktfx.beans.value.and
 import ktfx.collections.toObservableList
 import ktfx.coroutines.listener
@@ -50,22 +51,22 @@ class AboutDialog(resourced: Resourced) : Dialog<Unit>(), Resourced by resourced
             vbox {
                 alignment = CENTER_LEFT
                 textFlow {
-                    "${FULL_NAME.substringBefore(' ')} " { font = getFont(R.font.opensans_bold, 24) }
-                    (FULL_NAME.substringAfter(' ')) { font = getFont(R.font.opensans_light, 24) }
+                    "${FULL_NAME.substringBefore(' ')} " { font = getFont(R.font.sf_pro_text_bold, 24) }
+                    (FULL_NAME.substringAfter(' ')) { font = getFont(R.font.sf_pro_text_light, 24) }
                 }
                 text("${getString(R.string.version)} $VERSION") {
-                    font = getFont(R.font.opensans_regular, 12)
+                    font = font(12.0)
                 } marginTop 2.0
                 text(getString(R.string.about_notice)) {
-                    font = getFont(R.font.opensans_bold, 12)
+                    font = getFont(R.font.sf_pro_text_bold, 12)
                 } marginTop 20.0
                 textFlow {
-                    "${getString(R.string.powered_by)}  " { font = getFont(R.font.opensans_bold, 12) }
-                    "JavaFX" { font = getFont(R.font.opensans_regular, 12) }
+                    "${getString(R.string.powered_by)}  " { font = getFont(R.font.sf_pro_text_bold, 12) }
+                    "JavaFX" { font = font(12.0) }
                 } marginTop 4.0
                 textFlow {
-                    "${getString(R.string.author)}  " { font = getFont(R.font.opensans_bold, 12) }
-                    "Hendra Anggrian" { font = getFont(R.font.opensans_regular, 12) }
+                    "${getString(R.string.author)}  " { font = getFont(R.font.sf_pro_text_bold, 12) }
+                    "Hendra Anggrian" { font = font(12.0) }
                 } marginTop 4.0
                 hbox {
                     button("GitHub") { onAction { browseUrl(WEBSITE) } }
@@ -84,8 +85,8 @@ class AboutDialog(resourced: Resourced) : Dialog<Unit>(), Resourced by resourced
                     cellFactory {
                         onUpdate { license, empty ->
                             if (license != null && !empty) graphic = ktfx.layouts.vbox {
-                                label(license.repo) { font = getFont(R.font.opensans_regular, 12) }
-                                label(license.owner) { font = getFont(R.font.opensans_bold, 12) }
+                                label(license.repo) { font = font(12.0) }
+                                label(license.owner) { font = getFont(R.font.sf_pro_text_bold, 12) }
                             }
                         }
                     }

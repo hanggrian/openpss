@@ -83,7 +83,7 @@ class WageRecordController : Controller() {
                     recordTable.selectionModel.selectedItems?.any { !it.value.isChild() } ?: true
                 })
         }
-        totalLabel1.font = getFont(R.font.opensans_bold)
+        totalLabel1.font = getFont(R.font.sf_pro_text_bold)
 
         recordTable.run {
             selectionModel.selectionMode = MULTIPLE
@@ -96,10 +96,9 @@ class WageRecordController : Controller() {
                             dailyIncomeColumn, overtimeIncomeColumn, totalColumn -> currencyConverter.toString(any as Number)
                             else -> any.toString()
                         }) {
-                            font = getFont(when {
-                                treeTableRow.treeItem?.value?.isTotal() ?: true -> R.font.opensans_bold
-                                else -> R.font.opensans_regular
-                            })
+                            if (treeTableRow.treeItem?.value?.isTotal() == true) {
+                                font = getFont(R.font.sf_pro_text_bold)
+                            }
                         }
                     }
                 }

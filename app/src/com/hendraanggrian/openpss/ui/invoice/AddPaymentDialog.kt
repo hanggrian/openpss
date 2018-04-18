@@ -65,11 +65,11 @@ class AddPaymentDialog(
             gap = 8.0
             label(getString(R.string.employee)) row 0 col 0
             label(employee.name) {
-                font = getFont(R.font.opensans_bold)
+                font = getFont(R.font.sf_pro_text_bold)
             } row 0 col 1 colSpans 2
             label(getString(R.string.receivable)) row 1 col 0
             label(currencyConverter.toString(receivable)) {
-                font = getFont(R.font.opensans_bold)
+                font = getFont(R.font.sf_pro_text_bold)
             } row 1 col 1 colSpans 2
             label(getString(R.string.payment)) row 2 col 0
             valueField = doubleField { promptText = getString(R.string.payment) } row 2 col 1
@@ -79,7 +79,7 @@ class AddPaymentDialog(
             } row 2 col 2
             label(getString(R.string.remaining)) row 3 col 0
             label {
-                font = getFont(R.font.opensans_bold)
+                font = getFont(R.font.sf_pro_text_bold)
                 textProperty().bind(stringBindingOf(valueField.valueProperty) {
                     (receivable - valueField.value).let { remaining ->
                         when (remaining) {

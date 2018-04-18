@@ -84,12 +84,12 @@ class CustomerController : Controller(), Refreshable, Selectable<Customer>, Sele
         super.initialize(location, resources)
         clearSearchButton.disableProperty().bind(searchField.textProperty().isEmpty)
         customerPane.minWidthProperty().bind(splitPane.widthProperty() * 0.25)
-        nameLabel.font = getFont(R.font.opensans_bold, 24)
-        idLabel1.font = getFont(R.font.opensans_bold)
-        sinceLabel1.font = getFont(R.font.opensans_bold)
-        addressLabel1.font = getFont(R.font.opensans_bold)
-        noteLabel1.font = getFont(R.font.opensans_bold)
-        contactLabel.font = getFont(R.font.opensans_bold)
+        nameLabel.font = getFont(R.font.sf_pro_text_bold, 24)
+        idLabel1.font = getFont(R.font.sf_pro_text_bold)
+        sinceLabel1.font = getFont(R.font.sf_pro_text_bold)
+        addressLabel1.font = getFont(R.font.sf_pro_text_bold)
+        noteLabel1.font = getFont(R.font.sf_pro_text_bold)
+        contactLabel.font = getFont(R.font.sf_pro_text_bold)
         typeColumn.stringCell { type.asString(this@CustomerController) }
         valueColumn.stringCell { value }
     }

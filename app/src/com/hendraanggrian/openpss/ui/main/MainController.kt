@@ -73,7 +73,7 @@ class MainController : Controller() {
 
         later {
             employeeLabel.text = employeeName
-            employeeLabel.font = getFont(R.font.opensans_bold)
+            employeeLabel.font = getFont(R.font.sf_pro_text_bold)
             controllers = listOf(customerController, scheduleController, invoiceController,
                 paymentController, reportController, wageController, employeeController)
             controllers.forEach {

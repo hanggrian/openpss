@@ -55,7 +55,7 @@ class WageController : Controller() {
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
         disableRecessButton.disableProperty().bind(flowPane.children.isEmpty)
-        employeeCountLabel1.font = getFont(R.font.opensans_bold)
+        employeeCountLabel1.font = getFont(R.font.sf_pro_text_bold)
         employeeCountLabel2.textProperty().bind(flowPane.children.size().asString())
         readButton.disableProperty().bind(fileField.validProperty)
         processButton.disableProperty().bind(flowPane.children.isEmpty)

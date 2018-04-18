@@ -28,9 +28,9 @@ abstract class FinancialController<T> : Controller(), Refreshable, Selectable<T>
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
-        totalAllLabel1.font = getFont(R.font.opensans_bold)
-        totalCashLabel1.font = getFont(R.font.opensans_bold)
-        totalTransferLabel1.font = getFont(R.font.opensans_bold)
+        totalAllLabel1.font = getFont(R.font.sf_pro_text_bold)
+        totalCashLabel1.font = getFont(R.font.sf_pro_text_bold)
+        totalTransferLabel1.font = getFont(R.font.sf_pro_text_bold)
         totalCashLabel2.textProperty().bind(stringBindingOf(table.itemsProperty()) {
             currencyConverter.toString(table.items.getTotalCash())
         })

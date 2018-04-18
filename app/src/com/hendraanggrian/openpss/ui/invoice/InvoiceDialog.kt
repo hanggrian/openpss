@@ -86,9 +86,9 @@ class InvoiceDialog(
         dialogPane.content = gridPane {
             gap = 8.0
             label(getString(R.string.employee)) col 0 row 0
-            label(employee!!.name) { font = getFont(R.font.opensans_bold) } col 1 row 0
+            label(employee!!.name) { font = getFont(R.font.sf_pro_text_bold) } col 1 row 0
             label(getString(R.string.date)) col 0 row 1
-            label(dateTime.toString(PATTERN_DATE)) { font = getFont(R.font.opensans_bold) } col 1 row 1
+            label(dateTime.toString(PATTERN_DATE)) { font = getFont(R.font.sf_pro_text_bold) } col 1 row 1
             label(getString(R.string.customer)) col 0 row 2
             button {
                 isDisable = isEdit()
@@ -146,7 +146,7 @@ class InvoiceDialog(
             } col 1 row 6
             label(getString(R.string.total)) col 0 row 7
             label {
-                font = getFont(R.font.opensans_bold)
+                font = getFont(R.font.sf_pro_text_bold)
                 textProperty().bind(stringBindingOf(totalProperty) { currencyConverter.toString(totalProperty.value) })
             } col 1 row 7
         }

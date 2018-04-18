@@ -7,7 +7,7 @@ import javafx.scene.Scene
 import javafx.scene.control.Dialog
 
 inline fun Scene.style() {
-    stylesheets += getResource(R.style.root).toExternalForm()
+    stylesheets += getResource(R.style.openpss).toExternalForm()
 }
 
 inline fun Dialog<*>.style() = dialogPane.scene.style()

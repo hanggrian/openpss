@@ -59,7 +59,7 @@ abstract class AddOrderDialog<T : Order>(
             (children.size / 2).let { totalRow ->
                 label(getString(R.string.total)) col 0 row totalRow
                 label {
-                    font = getFont(R.font.opensans_bold)
+                    font = getFont(R.font.sf_pro_text_bold)
                     textProperty().bind(stringBindingOf(*titleBindingDependencies) {
                         currencyConverter.toString(newInstance().total)
                     })

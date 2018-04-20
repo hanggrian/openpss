@@ -164,6 +164,7 @@ class CustomerController : Controller(), Refreshable, Selectable<Customer>, Sele
 
     @FXML fun editAddress() =
         inputDialog(getString(R.string.edit_address), ImageView(R.image.ic_customer), selected!!.address) {
+            style()
             contentText = getString(R.string.address)
         }.showAndWait().ifPresent {
             transaction {
@@ -174,6 +175,7 @@ class CustomerController : Controller(), Refreshable, Selectable<Customer>, Sele
 
     @FXML fun editNote() =
         inputDialog(getString(R.string.edit_note), ImageView(R.image.ic_customer), selected!!.note) {
+            style()
             contentText = getString(R.string.note)
         }.showAndWait().ifPresent {
             transaction {

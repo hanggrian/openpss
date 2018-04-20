@@ -10,7 +10,6 @@ import com.hendraanggrian.openpss.time.PATTERN_DATETIME_EXTENDED
 import com.hendraanggrian.openpss.ui.Resourced
 import com.hendraanggrian.openpss.utils.forceRefresh
 import com.hendraanggrian.openpss.utils.getColor
-import com.hendraanggrian.openpss.utils.getFont
 import com.hendraanggrian.openpss.utils.round
 import javafx.beans.binding.BooleanBinding
 import javafx.geometry.Pos.BOTTOM_CENTER
@@ -119,10 +118,7 @@ class AttendeePane(
                             } hpriority ALWAYS
                             if (alignment == BOTTOM_CENTER) listView.items.getOrNull(index + 1).let { nextItem ->
                                 when (nextItem) {
-                                    null -> itemLabel.run {
-                                        font = getFont(R.font.sf_pro_text_bold)
-                                        textFill = getColor(R.color.red)
-                                    }
+                                    null -> itemLabel.textFill = getColor(R.color.red)
                                     else -> {
                                         val interval = FlexibleInterval.of(dateTime, nextItem)
                                         var minutes = interval.minutes

@@ -1,6 +1,7 @@
 .root {
     -fx-accent: #009688;
     -fx-focus-color: #009688;
+    -fx-default-button: #009688;
 }
 
 .split-pane *.split-pane-divider {

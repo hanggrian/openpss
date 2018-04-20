@@ -70,7 +70,7 @@ class EmployeeController : Controller(), Refreshable, Selectable<Employee> {
         ResetPasswordDialog(this).showAndWait().ifPresent { newPassword ->
             transaction {
                 Employees.find { name.equal(employeeName) }.projection { password }.update(newPassword)
-                infoAlert(getString(R.string.change_password_successful)) { style() }.show()
+                infoAlert(getString(R.string.successfully_changed_password)) { style() }.show()
             }
         }
     }

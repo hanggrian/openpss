@@ -33,10 +33,11 @@ class ResetPasswordDialog(resourced: Resourced) : Dialog<String>(), Resourced by
         graphic = ImageView(R.image.ic_password)
         dialogPane.content = gridPane {
             gap = 8.0
-            label(getString(R.string.password)) col 0 row 0
-            changePasswordField = passwordField { promptText = getString(R.string.password) } col 1 row 0
-            label(getString(R.string.confirm_password)) col 0 row 1
-            confirmPasswordField = passwordField { promptText = getString(R.string.confirm_password) } col 1 row 1
+            label(R.string.new_employee_must_assign_new_password_this_will_only_occur_once) col 0 row 0 colSpans 2
+            label(getString(R.string.password)) col 0 row 1
+            changePasswordField = passwordField { promptText = getString(R.string.password) } col 1 row 1
+            label(getString(R.string.confirm_password)) col 0 row 2
+            confirmPasswordField = passwordField { promptText = getString(R.string.confirm_password) } col 1 row 2
         }
         cancelButton()
         okButton().disableProperty().bind(changePasswordField.textProperty().isBlank()

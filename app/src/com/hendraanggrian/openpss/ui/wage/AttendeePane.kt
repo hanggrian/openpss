@@ -8,16 +8,16 @@ import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.time.FlexibleInterval
 import com.hendraanggrian.openpss.time.PATTERN_DATETIME_EXTENDED
 import com.hendraanggrian.openpss.ui.Resourced
+import com.hendraanggrian.openpss.ui.Selectable
 import com.hendraanggrian.openpss.utils.forceRefresh
 import com.hendraanggrian.openpss.utils.getColor
 import com.hendraanggrian.openpss.utils.round
-import javafx.beans.binding.BooleanBinding
-import javafx.geometry.Pos.BOTTOM_CENTER
-import javafx.geometry.Pos.TOP_CENTER
+import javafx.geometry.Pos.CENTER
 import javafx.scene.control.CheckBox
 import javafx.scene.control.ContentDisplay.RIGHT
 import javafx.scene.control.ListView
 import javafx.scene.control.MenuItem
+import javafx.scene.control.SelectionModel
 import javafx.scene.control.TitledPane
 import javafx.scene.image.Image
 import javafx.scene.input.MouseEvent.MOUSE_CLICKED
@@ -55,7 +55,7 @@ import kotlin.math.absoluteValue
 class AttendeePane(
     resourced: Resourced,
     val attendee: Attendee
-) : TitledPane(attendee.toString(), null), Resourced by resourced {
+) : TitledPane(attendee.toString(), null), Resourced by resourced, Selectable<DateTime> {
 
     val recessChecks: MutableList<CheckBox> = mutableListOf()
     lateinit var deleteMenu: MenuItem
@@ -111,12 +111,11 @@ class AttendeePane(
                         text = null
                         graphic = null
                         if (dateTime != null && !empty) graphic = ktfx.layouts.hbox {
-                            val index = listView.items.indexOf(dateTime)
-                            alignment = if (index % 2 == 0) BOTTOM_CENTER else TOP_CENTER
+                            alignment = CENTER
                             val itemLabel = label(dateTime.toString(PATTERN_DATETIME_EXTENDED)) {
                                 maxWidth = Double.MAX_VALUE
                             } hpriority ALWAYS
-                            if (alignment == BOTTOM_CENTER) listView.items.getOrNull(index + 1).let { nextItem ->
+                            if (index % 2 == 0) listView.items.getOrNull(index + 1).let { nextItem ->
                                 when (nextItem) {
                                     null -> itemLabel.textFill = getColor(R.color.red)
                                     else -> {
@@ -132,31 +131,31 @@ class AttendeePane(
                                         label(hours.toString()) {
                                             font = font(10.0)
                                             if (hours > 12) textFill = getColor(R.color.red)
-                                        }
+                                        } marginLeft 8.0
                                     }
                                 }
                             }
                         }
                     }
                 }
-                onKeyPressed { if (it.code.isDelete() && attendance != null) items.remove(attendance) }
-                onMouseClicked { if (it.isDoubleClick() && attendance != null) editAttendance() }
+                onKeyPressed { if (it.code.isDelete() && selected != null) items.remove(selected) }
+                onMouseClicked { if (it.isDoubleClick() && selected != null) editAttendance() }
             }
         }
         contextMenu {
             (getString(R.string.add)) { onAction { addAttendance() } }
             separatorMenuItem()
             (getString(R.string.clone)) {
-                disableProperty().bind(attendanceSelectedBinding)
+                disableProperty().bind(!selectedBinding)
                 onAction { cloneAttendance() }
             }
             (getString(R.string.edit)) {
-                disableProperty().bind(attendanceSelectedBinding)
+                disableProperty().bind(!selectedBinding)
                 onAction { editAttendance() }
             }
             (getString(R.string.delete)) {
-                disableProperty().bind(attendanceSelectedBinding)
-                onAction { attendanceList.items.remove(attendance) }
+                disableProperty().bind(!selectedBinding)
+                onAction { attendanceList.items.remove(selected) }
             }
             separatorMenuItem()
             (getString(R.string.revert)) { onAction { attendee.attendances.revert() } }
@@ -176,7 +175,7 @@ class AttendeePane(
             eventFilter(type = MOUSE_CLICKED) { deleteMenu.fire() }
         }
         launch(FX) {
-            delay(200)
+            delay(250)
             applyCss()
             layout()
             val titleRegion = lookup(".title")
@@ -187,33 +186,36 @@ class AttendeePane(
         }
     }
 
+    override val selectionModel: SelectionModel<DateTime> get() = attendanceList.selectionModel
+
     private fun addAttendance() = DateTimeDialog(this@AttendeePane, R.string.add_record,
         now().run { minusMinutes(minuteOfHour) })
         .showAndWait()
         .ifPresent {
-            attendanceList.items.add(it)
-            attendanceList.items.sort()
+            attendanceList.run {
+                items.add(it)
+                items.sort()
+            }
         }
 
     private fun cloneAttendance() = DateTimeDialog(this@AttendeePane, R.string.add_record,
-        attendance!!.run { minusMinutes(minuteOfHour) })
+        selected!!.run { minusMinutes(minuteOfHour) })
         .showAndWait()
         .ifPresent {
-            attendanceList.items.add(it)
-            attendanceList.items.sort()
+            attendanceList.run {
+                items.add(it)
+                items.sort()
+            }
         }
 
-    private fun editAttendance() = DateTimeDialog(this@AttendeePane, R.string.edit_record, attendance!!)
+    private fun editAttendance() = DateTimeDialog(this@AttendeePane, R.string.edit_record, selected!!)
         .showAndWait()
         .ifPresent {
-            attendanceList.items[attendanceList.selectionModel.selectedIndex] = it
-            attendanceList.items.sort()
+            attendanceList.run {
+                items[attendanceList.selectionModel.selectedIndex] = it
+                items.sort()
+            }
         }
-
-    private inline val attendance: DateTime? get() = attendanceList.selectionModel.selectedItem
-
-    private inline val attendanceSelectedBinding: BooleanBinding
-        get() = attendanceList.selectionModel.selectedItemProperty().isNull
 }
 
 @Suppress("NOTHING_TO_INLINE")

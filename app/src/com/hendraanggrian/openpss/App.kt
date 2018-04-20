@@ -63,7 +63,7 @@ class App : Application(), Resourced {
             if (employee.firstTimeLogin) ResetPasswordDialog(this).showAndWait().ifPresent { newPassword ->
                 transaction {
                     Employees.find { name.equal(employee.name) }.projection { password }.update(newPassword)
-                    infoAlert(getString(R.string.change_password_successful)) { style() }.show()
+                    infoAlert(getString(R.string.successfully_changed_password)) { style() }.show()
                 }
             }
         }

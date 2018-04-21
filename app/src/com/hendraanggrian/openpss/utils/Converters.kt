@@ -17,7 +17,7 @@ import java.util.WeakHashMap
  * To avoid creating the same instances over and over again, we cache those converters in this weak map for reuse,
  * using its class name as key.
  */
-private val stringConverters = WeakHashMap<String, StringConverter<*>>()
+val stringConverters = WeakHashMap<String, StringConverter<*>>()
 
 /** Number decimal string converter. */
 val numberConverter: NumberStringConverter get() = getOrStore { NumberStringConverter() }

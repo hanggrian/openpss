@@ -16,6 +16,7 @@ import com.hendraanggrian.openpss.ui.Resourced
 import com.hendraanggrian.openpss.utils.getColor
 import com.hendraanggrian.openpss.utils.getFont
 import com.hendraanggrian.openpss.utils.onActionFilter
+import com.hendraanggrian.openpss.utils.stringConverters
 import com.hendraanggrian.openpss.utils.style
 import javafx.geometry.Pos.CENTER
 import javafx.geometry.Pos.CENTER_LEFT
@@ -173,6 +174,7 @@ class SettingsDialog(resourced: Resourced, showGlobalSettings: Boolean) : Dialog
                     findGlobalSettings(KEY_CURRENCY_COUNTRY).projection { value }.update(countryField.text)
                     findGlobalSettings(KEY_INVOICE_HEADERS).projection { value }
                         .update(invoiceHeadersArea.text.trim().replace("\n", "|"))
+                    stringConverters.clear()
                 }
                 close()
             }

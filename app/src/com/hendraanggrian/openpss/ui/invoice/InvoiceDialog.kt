@@ -21,6 +21,7 @@ import com.hendraanggrian.openpss.ui.invoice.order.AddPlateDialog
 import com.hendraanggrian.openpss.utils.currencyCell
 import com.hendraanggrian.openpss.utils.currencyConverter
 import com.hendraanggrian.openpss.utils.findById
+import com.hendraanggrian.openpss.utils.getColor
 import com.hendraanggrian.openpss.utils.getFont
 import com.hendraanggrian.openpss.utils.numberCell
 import com.hendraanggrian.openpss.utils.stringCell
@@ -37,8 +38,12 @@ import javafx.scene.control.TableView.CONSTRAINED_RESIZE_POLICY
 import javafx.scene.control.TextArea
 import javafx.scene.image.ImageView
 import ktfx.application.later
+import ktfx.beans.binding.`when`
 import ktfx.beans.binding.doubleBindingOf
+import ktfx.beans.binding.otherwise
 import ktfx.beans.binding.stringBindingOf
+import ktfx.beans.binding.then
+import ktfx.beans.value.greater
 import ktfx.beans.value.lessEq
 import ktfx.beans.value.or
 import ktfx.collections.isEmpty
@@ -148,6 +153,9 @@ class InvoiceDialog(
             label {
                 font = getFont(R.font.sf_pro_text_bold)
                 textProperty().bind(stringBindingOf(totalProperty) { currencyConverter.toString(totalProperty.value) })
+                textFillProperty().bind(`when`(totalProperty greater 0)
+                    then getColor(R.color.teal)
+                    otherwise getColor(R.color.red))
             } col 1 row 7
         }
         cancelButton()
@@ -193,15 +201,15 @@ class InvoiceDialog(
             }
         }
         contextMenu {
-            (getString(R.string.add)) {
+            getString(R.string.add)(ImageView(R.image.menu_add)) {
                 onAction { newAddDialog().showAndWait().ifPresent { this@tableView.items.add(it) } }
             }
             separatorMenuItem()
-            (getString(R.string.delete)) {
+            getString(R.string.delete)(ImageView(R.image.menu_delete)) {
                 later { disableProperty().bind(this@tableView.selectionModel.selectedItemProperty().isNull) }
                 onAction { this@tableView.items.remove(this@tableView.selectionModel.selectedItem) }
             }
-            (getString(R.string.clear)) {
+            getString(R.string.clear)(ImageView(R.image.menu_clear)) {
                 later { disableProperty().bind(this@tableView.items.isEmpty) }
                 onAction { this@tableView.items.clear() }
             }

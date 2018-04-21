@@ -20,6 +20,7 @@ import javafx.scene.control.MenuItem
 import javafx.scene.control.SelectionModel
 import javafx.scene.control.TitledPane
 import javafx.scene.image.Image
+import javafx.scene.image.ImageView
 import javafx.scene.input.MouseEvent.MOUSE_CLICKED
 import javafx.scene.layout.Priority.ALWAYS
 import javafx.scene.layout.StackPane
@@ -143,22 +144,26 @@ class AttendeePane(
             }
         }
         contextMenu {
-            (getString(R.string.add)) { onAction { addAttendance() } }
+            getString(R.string.add)(ImageView(R.image.menu_add)) {
+                onAction { addAttendance() }
+            }
             separatorMenuItem()
-            (getString(R.string.clone)) {
+            getString(R.string.copy)(ImageView(R.image.menu_copy)) {
                 disableProperty().bind(!selectedBinding)
                 onAction { cloneAttendance() }
             }
-            (getString(R.string.edit)) {
+            getString(R.string.edit)(ImageView(R.image.menu_edit)) {
                 disableProperty().bind(!selectedBinding)
                 onAction { editAttendance() }
             }
-            (getString(R.string.delete)) {
+            getString(R.string.delete)(ImageView(R.image.menu_delete)) {
                 disableProperty().bind(!selectedBinding)
                 onAction { attendanceList.items.remove(selected) }
             }
             separatorMenuItem()
-            (getString(R.string.revert)) { onAction { attendee.attendances.revert() } }
+            getString(R.string.revert)(ImageView(R.image.menu_revert)) {
+                onAction { attendee.attendances.revert() }
+            }
             separatorMenuItem()
             deleteMenu = "${getString(R.string.delete)} ${attendee.name}"()
             deleteOthersMenu = getString(R.string.delete_others)()

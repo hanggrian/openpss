@@ -48,13 +48,13 @@ kotlin.experimental.coroutines = ENABLE
 val ktlint by configurations.creating
 
 dependencies {
-    implementation(project(":scene"))
-    implementation(kotlin("stdlib", VERSION_KOTLIN))
+    compile(kotlin("stdlib", VERSION_KOTLIN))
+    compile(project(":core-fx"))
     implementation(kotlin("nosql-mongodb", VERSION_NOSQL))
     implementation(hendraanggrian("ktfx", VERSION_KTFX, "ktfx"))
     implementation(apache("commons-lang3", VERSION_COMMONS_LANG))
     implementation(apache("poi-ooxml", VERSION_POI))
-    implementation(guava())
+    implementation(google("guava", VERSION_GUAVA))
     implementation(log4j12())
 
     testImplementation(kotlin("test", VERSION_KOTLIN))

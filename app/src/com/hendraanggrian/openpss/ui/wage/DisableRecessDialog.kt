@@ -3,7 +3,7 @@ package com.hendraanggrian.openpss.ui.wage
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.db.schemas.Recesses
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.ui.Resourced
+import com.hendraanggrian.openpss.core.fx.Resourced
 import com.hendraanggrian.openpss.utils.onActionFilter
 import com.hendraanggrian.openpss.utils.style
 import javafx.scene.control.ChoiceBox

@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.controls
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.ui.Resourced
+import com.hendraanggrian.openpss.core.fx.Resourced
 import com.hendraanggrian.openpss.utils.clean
 import com.hendraanggrian.openpss.utils.isName
 import com.hendraanggrian.openpss.utils.style

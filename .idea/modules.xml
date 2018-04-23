@@ -10,6 +10,15 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/buildSrc.iml" filepath="$PROJECT_DIR$/.idea/modules/buildSrc.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/buildSrc_main.iml" filepath="$PROJECT_DIR$/.idea/modules/buildSrc_main.iml" group="buildSrc" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/buildSrc_test.iml" filepath="$PROJECT_DIR$/.idea/modules/buildSrc_test.iml" group="buildSrc" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/core/core.iml" filepath="$PROJECT_DIR$/.idea/modules/core/core.iml" group="core" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/core-fx/core-fx.iml" filepath="$PROJECT_DIR$/.idea/modules/core-fx/core-fx.iml" group="core-fx" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/core-fx/core-fx_main.iml" filepath="$PROJECT_DIR$/.idea/modules/core-fx/core-fx_main.iml" group="core-fx" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/core-fx/core-fx_test.iml" filepath="$PROJECT_DIR$/.idea/modules/core-fx/core-fx_test.iml" group="core-fx" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/core/core_main.iml" filepath="$PROJECT_DIR$/.idea/modules/core/core_main.iml" group="core" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/core/core_test.iml" filepath="$PROJECT_DIR$/.idea/modules/core/core_test.iml" group="core" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/installer/installer.iml" filepath="$PROJECT_DIR$/.idea/modules/installer/installer.iml" group="installer" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/installer/installer_main.iml" filepath="$PROJECT_DIR$/.idea/modules/installer/installer_main.iml" group="installer" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/installer/installer_test.iml" filepath="$PROJECT_DIR$/.idea/modules/installer/installer_test.iml" group="installer" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/manager.iml" filepath="$PROJECT_DIR$/.idea/modules/manager.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/openpss.iml" filepath="$PROJECT_DIR$/.idea/modules/openpss.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/scene/scene.iml" filepath="$PROJECT_DIR$/.idea/modules/scene/scene.iml" group="scene" />

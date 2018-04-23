@@ -10,6 +10,9 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/buildSrc" />
+            <option value="$PROJECT_DIR$/core" />
+            <option value="$PROJECT_DIR$/core-fx" />
+            <option value="$PROJECT_DIR$/installer" />
             <option value="$PROJECT_DIR$/scene" />
           </set>
         </option>

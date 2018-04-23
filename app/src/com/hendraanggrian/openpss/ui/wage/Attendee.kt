@@ -5,8 +5,8 @@ import com.hendraanggrian.openpss.db.schemas.Recess
 import com.hendraanggrian.openpss.db.schemas.Wage
 import com.hendraanggrian.openpss.db.schemas.Wages
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.time.START_OF_TIME
-import com.hendraanggrian.openpss.ui.Resourced
+import com.hendraanggrian.openpss.core.START_OF_TIME
+import com.hendraanggrian.openpss.core.fx.Resourced
 import com.hendraanggrian.openpss.ui.wage.record.Record
 import com.hendraanggrian.openpss.ui.wage.record.Record.Companion.INDEX_NODE
 import com.hendraanggrian.openpss.ui.wage.record.Record.Companion.INDEX_TOTAL

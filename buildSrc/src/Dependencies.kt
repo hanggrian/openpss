@@ -7,8 +7,14 @@ fun DependencyHandler.kotlinx(module: String, version: String? = null) =
 fun DependencyHandler.apache(module: String, version: String) = "org.apache.${module.split("-")[0]}:$module:$version"
 fun DependencyHandler.commonsValidator() = "commons-validator:commons-validator:$VERSION_COMMONS_VALIDATOR"
 
+fun DependencyHandler.square(module: String, version: String, repo: String? = null) =
+    optionalRepo("com.squareup", module, version, repo)
+
+fun DependencyHandler.google(module: String, version: String, repo: String? = null) =
+    optionalRepo("com.google", module, version, repo ?: module)
+
 fun DependencyHandler.hendraanggrian(module: String, version: String, repo: String? = null) =
-    "com.hendraanggrian${repo?.let { ".$it" }.orEmpty()}:$module:$version"
+    optionalRepo("com.hendraanggrian", module, version, repo)
 
 inline val PluginDependenciesSpec.r get() = id("r")
 inline val PluginDependenciesSpec.buildconfig get() = id("buildconfig")
@@ -31,3 +37,10 @@ fun DependencyHandler.spek(module: String) = "org.jetbrains.spek:spek-$module:$V
 fun DependencyHandler.testFX(module: String) = "org.testfx:testfx-$module:$VERSION_TESTFX"
 
 fun DependencyHandler.ktlint() = "com.github.shyiko:ktlint:$VERSION_KTLINT"
+
+private fun optionalRepo(
+    group: String,
+    module: String,
+    version: String,
+    repo: String?
+) = "$group${repo?.let { ".$it" }.orEmpty()}:$module:$version"

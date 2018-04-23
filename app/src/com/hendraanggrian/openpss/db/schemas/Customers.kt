@@ -5,7 +5,7 @@ import com.hendraanggrian.openpss.db.Document
 import com.hendraanggrian.openpss.db.Named
 import com.hendraanggrian.openpss.db.NamedSchema
 import com.hendraanggrian.openpss.db.dbDate
-import com.hendraanggrian.openpss.ui.Resourced
+import com.hendraanggrian.openpss.core.fx.Resourced
 import kotlinx.nosql.Id
 import kotlinx.nosql.date
 import kotlinx.nosql.listOfString

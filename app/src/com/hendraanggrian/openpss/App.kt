@@ -6,7 +6,7 @@ import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.db.schemas.Employees
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.io.properties.LoginFile
-import com.hendraanggrian.openpss.ui.Resourced
+import com.hendraanggrian.openpss.core.fx.Resourced
 import com.hendraanggrian.openpss.ui.main.LoginDialog
 import com.hendraanggrian.openpss.ui.main.ResetPasswordDialog
 import com.hendraanggrian.openpss.utils.controller
@@ -14,7 +14,6 @@ import com.hendraanggrian.openpss.utils.getResource
 import com.hendraanggrian.openpss.utils.pane
 import com.hendraanggrian.openpss.utils.style
 import javafx.application.Application
-import javafx.collections.ObservableList
 import javafx.fxml.FXMLLoader
 import javafx.scene.Scene
 import javafx.scene.image.Image
@@ -22,7 +21,6 @@ import javafx.stage.Stage
 import kotlinx.nosql.equal
 import kotlinx.nosql.update
 import ktfx.application.launch
-import ktfx.collections.observableListOf
 import ktfx.scene.control.infoAlert
 import ktfx.stage.icon
 import ktfx.stage.setMinSize
@@ -35,8 +33,6 @@ class App : Application(), Resourced {
 
     companion object {
         @JvmStatic fun main(args: Array<String>) = launch<App>(*args)
-
-        inline val supportedLocales: ObservableList<Locale> get() = observableListOf(Locale("en"), Locale("in"))
     }
 
     override lateinit var resources: ResourceBundle

@@ -32,11 +32,11 @@ val ktlint by configurations.creating
 
 dependencies {
     compile(kotlin("stdlib", VERSION_KOTLIN))
+    compile(project(":core"))
     compile(kotlinx("coroutines-javafx", VERSION_COROUTINES))
     compile(hendraanggrian("ktfx-layouts", VERSION_KTFX, "ktfx"))
     compile(hendraanggrian("ktfx-listeners", VERSION_KTFX, "ktfx"))
     compile(hendraanggrian("ktfx-coroutines", VERSION_KTFX, "ktfx"))
-    compile(jodaTime())
     compile(commonsValidator())
 
     testImplementation(kotlin("test", VERSION_KOTLIN))

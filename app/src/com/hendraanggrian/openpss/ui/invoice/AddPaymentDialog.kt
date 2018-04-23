@@ -12,7 +12,7 @@ import com.hendraanggrian.openpss.db.schemas.Payment.Method.values
 import com.hendraanggrian.openpss.db.schemas.Payments
 import com.hendraanggrian.openpss.db.schemas.calculateDue
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.ui.Resourced
+import com.hendraanggrian.openpss.core.fx.Resourced
 import com.hendraanggrian.openpss.utils.currencyConverter
 import com.hendraanggrian.openpss.utils.getColor
 import com.hendraanggrian.openpss.utils.getFont
@@ -26,10 +26,7 @@ import javafx.scene.image.ImageView
 import ktfx.beans.binding.bindingOf
 import ktfx.beans.binding.stringBindingOf
 import ktfx.beans.value.eq
-import ktfx.beans.value.greater
 import ktfx.beans.value.isBlank
-import ktfx.beans.value.lessEq
-import ktfx.beans.value.or
 import ktfx.collections.toObservableList
 import ktfx.coroutines.listener
 import ktfx.coroutines.onAction

@@ -3,7 +3,7 @@ package com.hendraanggrian.openpss.ui.wage
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.layouts.TimeBox
 import com.hendraanggrian.openpss.layouts.timeBox
-import com.hendraanggrian.openpss.ui.Resourced
+import com.hendraanggrian.openpss.core.fx.Resourced
 import com.hendraanggrian.openpss.utils.style
 import javafx.scene.control.ButtonType
 import javafx.scene.control.Dialog

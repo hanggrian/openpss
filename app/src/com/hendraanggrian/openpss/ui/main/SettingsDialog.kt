@@ -12,7 +12,7 @@ import com.hendraanggrian.openpss.io.properties.SettingsFile.INVOICE_PAGINATION_
 import com.hendraanggrian.openpss.io.properties.SettingsFile.INVOICE_QUICK_SELECT_CUSTOMER
 import com.hendraanggrian.openpss.io.properties.SettingsFile.WAGE_READER
 import com.hendraanggrian.openpss.readers.Reader
-import com.hendraanggrian.openpss.ui.Resourced
+import com.hendraanggrian.openpss.core.fx.Resourced
 import com.hendraanggrian.openpss.utils.getColor
 import com.hendraanggrian.openpss.utils.getFont
 import com.hendraanggrian.openpss.utils.onActionFilter

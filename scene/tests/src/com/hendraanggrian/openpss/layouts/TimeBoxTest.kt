@@ -1,6 +1,7 @@
 package com.hendraanggrian.openpss.layouts
 
 import com.hendraanggrian.openpss.scene.NodeTest
+import com.hendraanggrian.openpss.scene.layouts.TimeBox
 import org.joda.time.LocalTime
 import org.junit.Test
 import kotlin.test.assertEquals

@@ -8,7 +8,7 @@ import com.hendraanggrian.openpss.db.schemas.Customer.ContactType.PHONE
 import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.io.properties.SettingsFile.CUSTOMER_PAGINATION_ITEMS
-import com.hendraanggrian.openpss.time.PATTERN_DATE
+import com.hendraanggrian.openpss.core.PATTERN_DATE
 import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.Selectable

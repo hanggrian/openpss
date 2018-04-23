@@ -2,9 +2,9 @@ package com.hendraanggrian.openpss.ui.wage.record
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.time.FlexibleInterval
-import com.hendraanggrian.openpss.time.PATTERN_DATETIME
-import com.hendraanggrian.openpss.time.START_OF_TIME
-import com.hendraanggrian.openpss.ui.Resourced
+import com.hendraanggrian.openpss.core.PATTERN_DATETIME
+import com.hendraanggrian.openpss.core.START_OF_TIME
+import com.hendraanggrian.openpss.core.fx.Resourced
 import com.hendraanggrian.openpss.ui.wage.Attendee
 import com.hendraanggrian.openpss.utils.round
 import javafx.beans.property.BooleanProperty

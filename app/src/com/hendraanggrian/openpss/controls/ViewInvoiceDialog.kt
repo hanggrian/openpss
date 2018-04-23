@@ -9,8 +9,8 @@ import com.hendraanggrian.openpss.db.schemas.GlobalSettings.KEY_INVOICE_HEADERS
 import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.db.schemas.findGlobalSettings
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.time.PATTERN_DATETIME_EXTENDED
-import com.hendraanggrian.openpss.ui.Resourced
+import com.hendraanggrian.openpss.core.PATTERN_DATETIME_EXTENDED
+import com.hendraanggrian.openpss.core.fx.Resourced
 import com.hendraanggrian.openpss.utils.currencyConverter
 import com.hendraanggrian.openpss.utils.findById
 import com.hendraanggrian.openpss.utils.getFont

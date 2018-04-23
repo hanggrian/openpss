@@ -7,9 +7,9 @@ import com.hendraanggrian.openpss.controls.UncollapsibleTreeItem
 import com.hendraanggrian.openpss.io.WageContentFolder
 import com.hendraanggrian.openpss.io.WageFile
 import com.hendraanggrian.openpss.layouts.TimeBox
-import com.hendraanggrian.openpss.time.PATTERN_DATE
-import com.hendraanggrian.openpss.time.PATTERN_DATETIME
-import com.hendraanggrian.openpss.time.PATTERN_TIME
+import com.hendraanggrian.openpss.core.PATTERN_DATE
+import com.hendraanggrian.openpss.core.PATTERN_DATETIME
+import com.hendraanggrian.openpss.core.PATTERN_TIME
 import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.wage.Attendee
 import com.hendraanggrian.openpss.ui.wage.record.Record.Companion.getDummy

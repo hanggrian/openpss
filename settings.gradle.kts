@@ -10,3 +10,9 @@ include(":app")
  * Controls and layouts that are not in fxml (programmatic) should not be in this module in favor of smaller non-executable jar size.
  */
 include(":scene")
+
+include(":installer")
+
+include(":core")
+
+include(":core-fx")

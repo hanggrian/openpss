@@ -3,7 +3,7 @@ package com.hendraanggrian.openpss.db.schemas
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.db.Document
 import com.hendraanggrian.openpss.db.dbDateTime
-import com.hendraanggrian.openpss.ui.Resourced
+import com.hendraanggrian.openpss.core.fx.Resourced
 import kotlinx.nosql.Id
 import kotlinx.nosql.dateTime
 import kotlinx.nosql.double

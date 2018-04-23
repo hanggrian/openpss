@@ -5,11 +5,10 @@ import com.hendraanggrian.openpss.controls.DoubleField
 import com.hendraanggrian.openpss.controls.doubleField
 import com.hendraanggrian.openpss.db.schemas.Invoices
 import com.hendraanggrian.openpss.db.schemas.Other
-import com.hendraanggrian.openpss.ui.Resourced
+import com.hendraanggrian.openpss.core.fx.Resourced
 import javafx.beans.Observable
 import javafx.beans.value.ObservableBooleanValue
 import ktfx.beans.value.isBlank
-import ktfx.beans.value.lessEq
 import ktfx.beans.value.or
 import ktfx.layouts._GridPane
 import ktfx.layouts.label

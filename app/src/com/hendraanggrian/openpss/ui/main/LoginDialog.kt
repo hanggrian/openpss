@@ -1,6 +1,5 @@
 package com.hendraanggrian.openpss.ui.main
 
-import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.BuildConfig.APP_NAME
 import com.hendraanggrian.openpss.BuildConfig.DEBUG
 import com.hendraanggrian.openpss.R
@@ -8,9 +7,10 @@ import com.hendraanggrian.openpss.controls.HostField
 import com.hendraanggrian.openpss.controls.IntField
 import com.hendraanggrian.openpss.controls.hostField
 import com.hendraanggrian.openpss.controls.intField
+import com.hendraanggrian.openpss.core.SUPPORTED_LOCALES
 import com.hendraanggrian.openpss.db.login
 import com.hendraanggrian.openpss.io.properties.LoginFile
-import com.hendraanggrian.openpss.ui.Resourced
+import com.hendraanggrian.openpss.core.fx.Resourced
 import com.hendraanggrian.openpss.utils.onActionFilter
 import com.hendraanggrian.openpss.utils.style
 import javafx.geometry.Pos.CENTER_RIGHT
@@ -29,6 +29,7 @@ import ktfx.beans.binding.otherwise
 import ktfx.beans.binding.then
 import ktfx.beans.value.isBlank
 import ktfx.beans.value.or
+import ktfx.collections.toObservableList
 import ktfx.coroutines.FX
 import ktfx.coroutines.listener
 import ktfx.coroutines.onAction
@@ -71,7 +72,7 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced 
         dialogPane.content = gridPane {
             gap = 8.0
             label(getString(R.string.language)) col 0 row 0
-            choiceBox(App.supportedLocales) {
+            choiceBox(SUPPORTED_LOCALES.toObservableList()) {
                 maxWidth = Double.MAX_VALUE
                 selectionModel.select(Locale(LoginFile.LANGUAGE))
                 converter { toString { it!!.getDisplayLanguage(it) } }

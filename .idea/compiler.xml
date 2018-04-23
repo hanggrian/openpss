@@ -10,8 +10,12 @@
       <module name="common_test" target="1.8" />
       <module name="control_main" target="1.8" />
       <module name="control_test" target="1.8" />
-      <module name="core_main" target="1.9" />
-      <module name="core_test" target="1.9" />
+      <module name="core-fx_main" target="1.8" />
+      <module name="core-fx_test" target="1.8" />
+      <module name="core_main" target="1.8" />
+      <module name="core_test" target="1.8" />
+      <module name="installer_main" target="1.8" />
+      <module name="installer_test" target="1.8" />
       <module name="javafx_main" target="1.8" />
       <module name="javafx_test" target="1.8" />
       <module name="scene_main" target="1.8" />

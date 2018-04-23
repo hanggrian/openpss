@@ -10,7 +10,7 @@ import com.hendraanggrian.openpss.db.schemas.Payments
 import com.hendraanggrian.openpss.db.schemas.Payments.gather
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.layouts.DateBox
-import com.hendraanggrian.openpss.time.PATTERN_TIME
+import com.hendraanggrian.openpss.core.PATTERN_TIME
 import com.hendraanggrian.openpss.ui.FinancialController
 import com.hendraanggrian.openpss.utils.currencyCell
 import com.hendraanggrian.openpss.utils.findById

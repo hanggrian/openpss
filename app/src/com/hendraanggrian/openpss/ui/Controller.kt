@@ -1,5 +1,6 @@
 package com.hendraanggrian.openpss.ui
 
+import com.hendraanggrian.openpss.core.fx.Resourced
 import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.db.schemas.Employees
 import javafx.fxml.Initializable

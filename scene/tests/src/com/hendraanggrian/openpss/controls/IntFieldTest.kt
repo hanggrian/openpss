@@ -1,6 +1,7 @@
 package com.hendraanggrian.openpss.controls
 
 import com.hendraanggrian.openpss.scene.NodeTest
+import com.hendraanggrian.openpss.scene.controls.IntField
 import org.junit.Test
 import kotlin.test.assertEquals
 

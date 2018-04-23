@@ -4,7 +4,7 @@ import com.hendraanggrian.openpss.BuildConfig.FULL_NAME
 import com.hendraanggrian.openpss.BuildConfig.VERSION
 import com.hendraanggrian.openpss.BuildConfig.WEBSITE
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.ui.Resourced
+import com.hendraanggrian.openpss.core.fx.Resourced
 import com.hendraanggrian.openpss.ui.Selectable
 import com.hendraanggrian.openpss.utils.browseUrl
 import com.hendraanggrian.openpss.utils.getFont

@@ -5,7 +5,7 @@ import com.hendraanggrian.openpss.layouts.DateBox
 import com.hendraanggrian.openpss.layouts.TimeBox
 import com.hendraanggrian.openpss.layouts.dateBox
 import com.hendraanggrian.openpss.layouts.timeBox
-import com.hendraanggrian.openpss.ui.Resourced
+import com.hendraanggrian.openpss.core.fx.Resourced
 import com.hendraanggrian.openpss.ui.wage.record.Record.Companion.WORKING_HOURS
 import com.hendraanggrian.openpss.utils.style
 import javafx.scene.control.ButtonType.OK

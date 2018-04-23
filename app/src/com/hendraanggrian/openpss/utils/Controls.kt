@@ -3,7 +3,7 @@
 package com.hendraanggrian.openpss.utils
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.ui.Resourced
+import com.hendraanggrian.openpss.core.fx.Resourced
 import javafx.event.ActionEvent.ACTION
 import javafx.scene.Node
 import javafx.scene.control.ButtonType.NO

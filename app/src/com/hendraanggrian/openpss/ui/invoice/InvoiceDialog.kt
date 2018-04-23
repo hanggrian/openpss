@@ -13,8 +13,8 @@ import com.hendraanggrian.openpss.db.schemas.Other
 import com.hendraanggrian.openpss.db.schemas.Plate
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.io.properties.SettingsFile.INVOICE_QUICK_SELECT_CUSTOMER
-import com.hendraanggrian.openpss.time.PATTERN_DATE
-import com.hendraanggrian.openpss.ui.Resourced
+import com.hendraanggrian.openpss.core.PATTERN_DATE
+import com.hendraanggrian.openpss.core.fx.Resourced
 import com.hendraanggrian.openpss.ui.invoice.order.AddOffsetDialog
 import com.hendraanggrian.openpss.ui.invoice.order.AddOtherDialog
 import com.hendraanggrian.openpss.ui.invoice.order.AddPlateDialog

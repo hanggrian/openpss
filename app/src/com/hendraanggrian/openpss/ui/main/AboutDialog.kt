@@ -1,5 +1,6 @@
 package com.hendraanggrian.openpss.ui.main
 
+import com.hendraanggrian.openpss.BuildConfig.DEBUG
 import com.hendraanggrian.openpss.BuildConfig.FULL_NAME
 import com.hendraanggrian.openpss.BuildConfig.USER
 import com.hendraanggrian.openpss.BuildConfig.VERSION
@@ -13,22 +14,29 @@ import com.hendraanggrian.openpss.utils.getFont
 import com.hendraanggrian.openpss.utils.onActionFilter
 import com.hendraanggrian.openpss.utils.style
 import javafx.geometry.Pos.CENTER_LEFT
+import javafx.scene.control.Button
 import javafx.scene.control.ButtonBar.ButtonData.CANCEL_CLOSE
+import javafx.scene.control.ButtonType.CANCEL
 import javafx.scene.control.Dialog
 import javafx.scene.control.ListView
-import javafx.scene.control.ProgressBar
+import javafx.scene.control.ProgressIndicator
 import javafx.scene.control.SelectionModel
 import javafx.scene.image.Image
 import javafx.scene.text.Font.font
+import kotlinx.coroutines.experimental.launch
+import ktfx.application.later
 import ktfx.beans.value.and
 import ktfx.collections.toObservableList
+import ktfx.coroutines.FX
 import ktfx.coroutines.listener
 import ktfx.coroutines.onAction
 import ktfx.layouts.button
 import ktfx.layouts.hbox
+import ktfx.layouts.hyperlink
 import ktfx.layouts.imageView
 import ktfx.layouts.label
 import ktfx.layouts.listView
+import ktfx.layouts.progressIndicator
 import ktfx.layouts.text
 import ktfx.layouts.textArea
 import ktfx.layouts.textFlow
@@ -37,11 +45,17 @@ import ktfx.layouts.vbox
 import ktfx.listeners.cellFactory
 import ktfx.scene.control.button
 import ktfx.scene.control.closeButton
+import ktfx.scene.control.errorAlert
 import ktfx.scene.control.icon
+import ktfx.scene.control.infoAlert
+import ktfx.scene.layout.maxSize
 import ktfx.scene.layout.paddingAll
+import java.util.concurrent.TimeUnit.SECONDS
 
 class AboutDialog(resourced: Resourced) : Dialog<Unit>(), Resourced by resourced, Selectable<License> {
 
+    private lateinit var checkUpdateButton: Button
+    private lateinit var checkUpdateProgress: ProgressIndicator
     private lateinit var licenseList: ListView<License>
 
     init {
@@ -71,14 +85,57 @@ class AboutDialog(resourced: Resourced) : Dialog<Unit>(), Resourced by resourced
                 } marginTop 4.0
                 hbox {
                     button("GitHub") { onAction { browseUrl(WEBSITE) } }
-                    button(getString(R.string.check_for_updates)) {
+                    checkUpdateButton = button(getString(R.string.check_for_updates)) {
                         onAction {
                             isDisable = true
-                            graphic = ProgressBar()
-                            GitHubApi.create().getLatestRelease()
-                            // browseUrl("$WEBSITE/releases")
+                            checkUpdateProgress.isVisible = true
+                            launch {
+                                try {
+                                    val release = GitHubApi.create().getLatestRelease().get(10, SECONDS)
+                                    launch(FX) {
+                                        when {
+                                            release.isNewer() -> infoAlert(
+                                                title = getString(R.string.openpss_is_available, release.name),
+                                                buttonTypes = *arrayOf(CANCEL)
+                                            ) {
+                                                style()
+                                                dialogPane.content = ktfx.layouts.vbox {
+                                                    release.assets.forEach { asset ->
+                                                        hyperlink(asset.name) {
+                                                            onAction {
+                                                                browseUrl(asset.downloadUrl)
+                                                                close()
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }.show()
+                                            else -> infoAlert(
+                                                getString(R.string.you_re_up_to_date),
+                                                contentText = getString(
+                                                    R.string.openpss_is_currently_the_newest_version_available, VERSION)
+                                            ) { style() }.show()
+                                        }
+                                        isDisable = false
+                                        checkUpdateProgress.isVisible = false
+                                    }
+                                } catch (e: Exception) {
+                                    if (DEBUG) e.printStackTrace()
+                                    launch(FX) {
+                                        errorAlert(getString(R.string.no_internet_connection)).show()
+                                        isDisable = false
+                                        checkUpdateProgress.isVisible = false
+                                    }
+                                }
+                            }
                         }
                     } marginLeft 8.0
+                    later {
+                        checkUpdateProgress = progressIndicator {
+                            maxSize = checkUpdateButton.height
+                            isVisible = false
+                        } marginLeft 8.0
+                    }
                 } marginTop 20.0
             } marginLeft 48.0
         }

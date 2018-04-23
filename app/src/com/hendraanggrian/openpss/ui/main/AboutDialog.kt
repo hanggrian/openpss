@@ -1,9 +1,11 @@
 package com.hendraanggrian.openpss.ui.main
 
 import com.hendraanggrian.openpss.BuildConfig.FULL_NAME
+import com.hendraanggrian.openpss.BuildConfig.USER
 import com.hendraanggrian.openpss.BuildConfig.VERSION
 import com.hendraanggrian.openpss.BuildConfig.WEBSITE
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.api.GitHubApi
 import com.hendraanggrian.openpss.ui.Resourced
 import com.hendraanggrian.openpss.ui.Selectable
 import com.hendraanggrian.openpss.utils.browseUrl
@@ -14,6 +16,7 @@ import javafx.geometry.Pos.CENTER_LEFT
 import javafx.scene.control.ButtonBar.ButtonData.CANCEL_CLOSE
 import javafx.scene.control.Dialog
 import javafx.scene.control.ListView
+import javafx.scene.control.ProgressBar
 import javafx.scene.control.SelectionModel
 import javafx.scene.image.Image
 import javafx.scene.text.Font.font
@@ -57,21 +60,24 @@ class AboutDialog(resourced: Resourced) : Dialog<Unit>(), Resourced by resourced
                 text("${getString(R.string.version)} $VERSION") {
                     font = font(12.0)
                 } marginTop 2.0
-                text(getString(R.string.about_notice)) {
-                    font = getFont(R.font.sf_pro_text_bold, 12)
-                } marginTop 20.0
+                text(getString(R.string.built_with_open_source_software_expand_to_see_licenses)) marginTop 20.0
                 textFlow {
                     "${getString(R.string.powered_by)}  " { font = getFont(R.font.sf_pro_text_bold, 12) }
                     "JavaFX" { font = font(12.0) }
                 } marginTop 4.0
                 textFlow {
                     "${getString(R.string.author)}  " { font = getFont(R.font.sf_pro_text_bold, 12) }
-                    "Hendra Anggrian" { font = font(12.0) }
+                    USER { font = font(12.0) }
                 } marginTop 4.0
                 hbox {
                     button("GitHub") { onAction { browseUrl(WEBSITE) } }
                     button(getString(R.string.check_for_updates)) {
-                        onAction { browseUrl("$WEBSITE/releases") }
+                        onAction {
+                            isDisable = true
+                            graphic = ProgressBar()
+                            GitHubApi.create().getLatestRelease()
+                            // browseUrl("$WEBSITE/releases")
+                        }
                     } marginLeft 8.0
                 } marginTop 20.0
             } marginLeft 48.0

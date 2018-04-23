@@ -1,6 +1,6 @@
 package com.hendraanggrian.openpss.readers
 
-import com.google.common.collect.LinkedHashMultimap.create
+import com.google.common.collect.LinkedHashMultimap
 import com.hendraanggrian.openpss.ui.wage.Attendee
 import kotlinx.coroutines.experimental.async
 import org.apache.commons.lang3.SystemUtils.IS_OS_MAC
@@ -31,7 +31,7 @@ object EClockingReader : Reader() {
     override val extensions: Array<String> = arrayOf("*.xlsx")
 
     override suspend fun read(file: File): Collection<Attendee> = async {
-        val multimap = create<Attendee, DateTime>()
+        val multimap = LinkedHashMultimap.create<Attendee, DateTime>()
         file.inputStream().use {
             XSSFWorkbook(it).use {
                 it.getSheetAt(SHEET_RAW_ATTENDANCE_LOGS)

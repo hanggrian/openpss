@@ -8,30 +8,21 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
-import retrofit2.http.Path
 
 interface GitHubApi {
 
-    @GET(PATH)
-    fun getReleases()
-
-    @GET("$PATH/{id}")
-    fun getRelease(@Path("id") id: Int)
-
-    @GET("$PATH/latest")
-    fun getLatestReleases()
+    @GET("repos/$USER/$ARTIFACT/releases/latest")
+    fun getLatestRelease(): LatestRelease
 
     companion object {
         private const val END_POINT = "https://api.github.com"
-        private const val PATH = "repos/$USER/$ARTIFACT/releases"
 
         fun create(): GitHubApi = Retrofit.Builder()
-            .client(OkHttpClient.Builder().addInterceptor { chain ->
-                val newRequest = chain.request()
+            .client(OkHttpClient.Builder().addInterceptor {
+                it.proceed(it.request()
                     .newBuilder()
                     .addHeader("Accept", "application/json")
-                    .build()
-                chain.proceed(newRequest)
+                    .build())
             }.build())
             .baseUrl(END_POINT)
             .addConverterFactory(GsonConverterFactory.create(GsonBuilder()

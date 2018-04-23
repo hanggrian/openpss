@@ -93,7 +93,7 @@ class ViewInvoiceDialog(resourced: Resourced, invoice: Invoice) : Dialog<Unit>()
                             regularLabel(it.title)
                             hbox {
                                 maxWidth()
-                                regularLabel("  ${it.type} ${numberConverter.toString(it.qty)} x " +
+                                regularLabel("  ${it.machine} ${numberConverter.toString(it.qty)} x " +
                                     currencyConverter.toString(it.price))
                                 region() hpriority ALWAYS
                                 regularLabel(currencyConverter.toString(it.total))
@@ -112,7 +112,7 @@ class ViewInvoiceDialog(resourced: Resourced, invoice: Invoice) : Dialog<Unit>()
                             regularLabel(it.title)
                             hbox {
                                 maxWidth()
-                                regularLabel("  ${it.type} ${numberConverter.toString(it.qty)}")
+                                regularLabel("  ${it.machine} ${numberConverter.toString(it.qty)}")
                                 region() hpriority ALWAYS
                                 regularLabel(currencyConverter.toString(it.total))
                             }

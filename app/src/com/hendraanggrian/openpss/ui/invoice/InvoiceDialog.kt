@@ -108,7 +108,7 @@ class InvoiceDialog(
             label(getString(R.string.plate)) col 0 row 3
             plateTable = invoiceTableView({ AddPlateDialog(this@InvoiceDialog) }) {
                 columns {
-                    getString(R.string.type)<String> { stringCell { type } }
+                    getString(R.string.machine)<String> { stringCell { machine } }
                     getString(R.string.title)<String> { stringCell { title } }
                     getString(R.string.qty)<String> { numberCell { qty } }
                     getString(R.string.price)<String> { currencyCell { price } }
@@ -119,7 +119,7 @@ class InvoiceDialog(
             label(getString(R.string.offset)) col 0 row 4
             offsetTable = invoiceTableView({ AddOffsetDialog(this@InvoiceDialog) }) {
                 columns {
-                    getString(R.string.type)<String> { stringCell { type } }
+                    getString(R.string.machine)<String> { stringCell { machine } }
                     getString(R.string.title)<String> { stringCell { title } }
                     getString(R.string.qty)<String> { numberCell { qty } }
                     getString(R.string.min_qty)<String> { numberCell { minQty } }

@@ -43,7 +43,7 @@ object Invoices : DocumentSchema<Invoice>("invoices", Invoice::class) {
     class Plates : ListColumn<Plate, Invoices>("plates", Plate::class) {
         val title = string("title")
         val qty = integer("qty")
-        val type = string("type")
+        val machine = string("machine")
         val price = double("price")
 
         companion object {
@@ -59,7 +59,7 @@ object Invoices : DocumentSchema<Invoice>("invoices", Invoice::class) {
     class Offsets : ListColumn<Offset, Invoices>("offsets", Offset::class) {
         val title = string("title")
         val qty = integer("qty")
-        val type = string("type")
+        val machine = string("machine")
         val minQty = integer("min_qty")
         val minPrice = double("min_price")
         val excessPrice = double("excess_price")
@@ -114,14 +114,14 @@ data class Invoice(
 data class Plate(
     override val title: String,
     override val qty: Int,
-    val type: String,
+    val machine: String,
     override val price: Double
 ) : SimpleOrder
 
 data class Offset(
     override val title: String,
     override val qty: Int,
-    val type: String,
+    val machine: String,
     val minQty: Int,
     val minPrice: Double,
     val excessPrice: Double

@@ -7,10 +7,13 @@
       fx:controller="com.hendraanggrian.openpss.ui.main.MainController">
     <MenuBar fx:id="menuBar">
         <Menu mnemonicParsing="false" text="File">
-            <MenuItem fx:id="addCustomerItem" mnemonicParsing="false" onAction="#add" text="%add_customer"/>
-            <MenuItem fx:id="addInvoiceItem" mnemonicParsing="false" onAction="#add" text="%add_invoice"/>
+            <MenuItem fx:id="addCustomerItem" mnemonicParsing="false" onAction="#add" text="%add_customer"
+                      accelerator="SHORTCUT+N"/>
+            <MenuItem fx:id="addInvoiceItem" mnemonicParsing="false" onAction="#add" text="%add_invoice"
+                      accelerator="SHORTCUT+I"/>
             <SeparatorMenuItem/>
-            <MenuItem fx:id="settingsItem" mnemonicParsing="false" onAction="#settings" text="%settings">
+            <MenuItem fx:id="settingsItem" mnemonicParsing="false" onAction="#settings" text="%settings"
+                      accelerator="SHORTCUT+,">
                 <graphic>
                     <ImageView pickOnBounds="true" preserveRatio="true">
                         <Image url="@/image/menu_settings.png"/>
@@ -18,7 +21,7 @@
                 </graphic>
             </MenuItem>
             <SeparatorMenuItem/>
-            <MenuItem fx:id="quitItem" mnemonicParsing="false" onAction="#quit" text="%quit"/>
+            <MenuItem fx:id="quitItem" mnemonicParsing="false" onAction="#quit" text="%quit" accelerator="SHORTCUT+Q"/>
         </Menu>
         <Menu mnemonicParsing="false" fx:id="navigateMenu" text="%navigate">
             <fx:define>

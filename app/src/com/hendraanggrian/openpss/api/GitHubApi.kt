@@ -9,6 +9,7 @@ import retrofit2.adapter.guava.GuavaCallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 
+/** As seen in `https://developer.github.com/v3/`. */
 interface GitHubApi {
 
     @GET("repos/$USER/$ARTIFACT/releases/latest")

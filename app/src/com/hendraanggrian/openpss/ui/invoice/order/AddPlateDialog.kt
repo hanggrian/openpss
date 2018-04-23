@@ -26,12 +26,12 @@ class AddPlateDialog(resourced: Resourced) : AddOrderDialog<Plate>(
     R.string.add_plate,
     R.image.ic_plate
 ) {
-    private lateinit var typeChoice: ChoiceBox<PlatePrice>
+    private lateinit var machineChoice: ChoiceBox<PlatePrice>
     private lateinit var priceField: DoubleField
 
     override fun _GridPane.onLayout() {
-        label(getString(R.string.type)) col 0 row 2
-        typeChoice = choiceBox(transaction { PlatePrices.find().toObservableList() }!!) {
+        label(getString(R.string.machine)) col 0 row 2
+        machineChoice = choiceBox(transaction { PlatePrices.find().toObservableList() }!!) {
             valueProperty().listener { _, _, plate ->
                 priceField.value = plate.price
             }
@@ -44,7 +44,7 @@ class AddPlateDialog(resourced: Resourced) : AddOrderDialog<Plate>(
         get() = arrayOf(qtyField.valueProperty, priceField.valueProperty)
 
     override val disableBinding: ObservableBooleanValue
-        get() = typeChoice.valueProperty().isNull or
+        get() = machineChoice.valueProperty().isNull or
             titleField.textProperty().isBlank() or
             qtyField.valueProperty.lessEq(0) or
             priceField.valueProperty.lessEq(0)
@@ -52,6 +52,6 @@ class AddPlateDialog(resourced: Resourced) : AddOrderDialog<Plate>(
     override fun newInstance(): Plate = Invoices.Plates.new(
         titleField.text,
         qtyField.value,
-        typeChoice.value?.name ?: "",
+        machineChoice.value?.name ?: "",
         priceField.value)
 }

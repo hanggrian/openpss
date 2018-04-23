@@ -28,14 +28,14 @@ class AddOffsetDialog(resourced: Resourced) : AddOrderDialog<Offset>(
     R.string.add_offset,
     R.image.ic_offset
 ) {
-    private lateinit var typeChoice: ChoiceBox<OffsetPrice>
+    private lateinit var machineChoice: ChoiceBox<OffsetPrice>
     private lateinit var minQtyField: IntField
     private lateinit var minPriceField: DoubleField
     private lateinit var excessPriceField: DoubleField
 
     override fun _GridPane.onLayout() {
-        label(getString(R.string.type)) col 0 row 2
-        typeChoice = choiceBox(transaction { OffsetPrices.find().toObservableList() }!!) {
+        label(getString(R.string.machine)) col 0 row 2
+        machineChoice = choiceBox(transaction { OffsetPrices.find().toObservableList() }!!) {
             valueProperty().listener { _, _, offset ->
                 minQtyField.value = offset.minQty
                 minPriceField.value = offset.minPrice
@@ -55,7 +55,7 @@ class AddOffsetDialog(resourced: Resourced) : AddOrderDialog<Offset>(
             excessPriceField.valueProperty)
 
     override val disableBinding: ObservableBooleanValue
-        get() = typeChoice.valueProperty().isNull or
+        get() = machineChoice.valueProperty().isNull or
             titleField.textProperty().isBlank() or
             qtyField.valueProperty.lessEq(0) or
             minQtyField.valueProperty.lessEq(0) or
@@ -65,7 +65,7 @@ class AddOffsetDialog(resourced: Resourced) : AddOrderDialog<Offset>(
     override fun newInstance(): Offset = Invoices.Offsets.new(
         titleField.text,
         qtyField.value,
-        typeChoice.value?.name ?: "",
+        machineChoice.value?.name ?: "",
         minQtyField.value,
         minPriceField.value,
         excessPriceField.value)

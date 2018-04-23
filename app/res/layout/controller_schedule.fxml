@@ -27,10 +27,10 @@
     </ToolBar>
     <TreeTableView fx:id="scheduleTable" showRoot="false" VBox.vgrow="ALWAYS">
         <columns>
-            <TreeTableColumn fx:id="orderColumn"/>
-            <TreeTableColumn fx:id="titleColumn" text="%title"/>
-            <TreeTableColumn fx:id="qtyColumn" text="%qty"/>
-            <TreeTableColumn fx:id="typeColumn" text="%type"/>
+            <TreeTableColumn fx:id="typeColumn" sortable="false" text="%type"/>
+            <TreeTableColumn fx:id="titleColumn" sortable="false" text="%title"/>
+            <TreeTableColumn fx:id="qtyColumn" sortable="false" text="%qty"/>
+            <TreeTableColumn fx:id="machineColumn" sortable="false" text="%machine"/>
         </columns>
         <columnResizePolicy>
             <TreeTableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>

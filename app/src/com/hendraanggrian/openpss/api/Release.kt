@@ -3,6 +3,7 @@ package com.hendraanggrian.openpss.api
 import com.google.gson.annotations.SerializedName
 import com.hendraanggrian.openpss.BuildConfig.VERSION
 
+/** As seen in `https://developer.github.com/v3/repos/releases/`. */
 data class Release(
     val name: String,
     val assets: List<Asset>

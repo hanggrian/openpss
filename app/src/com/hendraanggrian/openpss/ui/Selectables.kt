@@ -2,6 +2,7 @@ package com.hendraanggrian.openpss.ui
 
 import javafx.beans.binding.BooleanBinding
 import javafx.beans.property.ReadOnlyObjectProperty
+import javafx.collections.ObservableList
 import javafx.scene.control.SelectionModel
 import javafx.scene.control.TreeItem
 import javafx.scene.control.TreeTableView.TreeTableViewSelectionModel
@@ -35,6 +36,8 @@ interface TreeSelectable<T> {
     val selectionModel: TreeTableViewSelectionModel<T>
 
     val selected: TreeItem<T>? get() = selectionModel.selectedItem
+
+    val selecteds: ObservableList<TreeItem<T>> get() = selectionModel.selectedItems
 
     val selectedProperty: ReadOnlyObjectProperty<TreeItem<T>> get() = selectionModel.selectedItemProperty()
 

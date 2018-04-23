@@ -10,10 +10,10 @@ import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.TreeSelectable
 import com.hendraanggrian.openpss.utils.findById
-import com.hendraanggrian.openpss.utils.getFont
 import com.hendraanggrian.openpss.utils.stringCell
 import javafx.fxml.FXML
 import javafx.scene.control.Button
+import javafx.scene.control.SelectionMode.MULTIPLE
 import javafx.scene.control.TreeItem
 import javafx.scene.control.TreeTableColumn
 import javafx.scene.control.TreeTableView
@@ -22,8 +22,7 @@ import kotlinx.nosql.equal
 import kotlinx.nosql.update
 import ktfx.application.later
 import ktfx.beans.binding.booleanBindingOf
-import ktfx.layouts.label
-import ktfx.listeners.cellFactory
+import ktfx.coroutines.listener
 import java.net.URL
 import java.util.ResourceBundle
 
@@ -43,15 +42,12 @@ class ScheduleController : Controller(), Refreshable, TreeSelectable<Schedule> {
         })
         scheduleTable.run {
             root = TreeItem()
-            columns.forEach {
-                it.cellFactory {
-                    onUpdate { any, empty ->
-                        graphic = null
-                        if (any != null && !empty) graphic = label(any.toString()) {
-                            if (treeTableRow.treeItem?.value?.isNode() == true) {
-                                font = getFont(R.font.sf_pro_text_bold)
-                            }
-                        }
+            selectionModel.run {
+                selectionMode = MULTIPLE
+                selectedItemProperty().listener { _, _, value ->
+                    if (value != null) when {
+                        value.children.isEmpty() -> selectAll(value.parent)
+                        else -> selectAll(value)
                     }
                 }
             }
@@ -66,19 +62,21 @@ class ScheduleController : Controller(), Refreshable, TreeSelectable<Schedule> {
         scheduleTable.root.children.run {
             clear()
             transaction {
-                Invoices.find { done.equal(false) }.forEach {
-                    addAll(UncollapsibleTreeItem(Schedule(it.id, it.dateTime.toString(PATTERN_DATETIME_EXTENDED),
-                        findById(Customers, it.customerId).single().name)).apply {
-                        it.plates.forEach {
+                Invoices.find { done.equal(false) }.forEach { invoice ->
+                    addAll(UncollapsibleTreeItem(
+                        Schedule(invoice.id, invoice.dateTime.toString(PATTERN_DATETIME_EXTENDED),
+                            findById(Customers, invoice.customerId).single().name)).apply {
+                        invoice.plates.forEach {
                             children += TreeItem<Schedule>(
-                                Schedule(null, getString(R.string.plate), it.title, it.qty, it.type))
+                                Schedule(invoice.id, getString(R.string.plate), it.title, it.qty, it.type))
                         }
-                        it.offsets.forEach {
+                        invoice.offsets.forEach {
                             children += TreeItem<Schedule>(
-                                Schedule(null, getString(R.string.offset), it.title, it.qty, it.type))
+                                Schedule(invoice.id, getString(R.string.offset), it.title, it.qty, it.type))
                         }
-                        it.others.forEach {
-                            children += TreeItem<Schedule>(Schedule(null, getString(R.string.others), it.title, it.qty))
+                        invoice.others.forEach {
+                            children += TreeItem<Schedule>(
+                                Schedule(invoice.id, getString(R.string.others), it.title, it.qty))
                         }
                     })
                 }
@@ -91,5 +89,10 @@ class ScheduleController : Controller(), Refreshable, TreeSelectable<Schedule> {
     @FXML fun done() {
         transaction { findById(Invoices, selected!!.value.invoiceId!!).projection { done }.update(true) }
         refresh()
+    }
+
+    private fun <S> TreeTableView.TreeTableViewSelectionModel<S>.selectAll(parent: TreeItem<S>) {
+        select(parent)
+        parent.children.forEach { select(it) }
     }
 }

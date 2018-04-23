@@ -1,12 +1,12 @@
 const val VERSION_GRADLE = "4.7"
-const val VERSION_KOTLIN = "1.2.31"
+const val VERSION_KOTLIN = "1.2.40"
 const val VERSION_NOSQL = "0.1-SNAPSHOT"
 const val VERSION_COROUTINES = "0.22.5"
 
 const val VERSION_R = "0.8"
 const val VERSION_BUILDCONFIG = "0.12"
 const val VERSION_PACKR = "0.3"
-const val VERSION_KTFX = "0.2.9"
+const val VERSION_KTFX = "0.2.10"
 const val VERSION_COMMONS_LANG = "3.7"
 const val VERSION_POI = "3.17"
 

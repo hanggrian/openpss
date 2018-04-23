@@ -1,6 +1,5 @@
 package com.hendraanggrian.openpss.ui.main
 
-import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.customer.CustomerController
@@ -11,7 +10,6 @@ import com.hendraanggrian.openpss.ui.report.ReportController
 import com.hendraanggrian.openpss.ui.report.ReportController.Companion.EXTRA_MAIN_CONTROLLER
 import com.hendraanggrian.openpss.ui.schedule.ScheduleController
 import com.hendraanggrian.openpss.ui.wage.WageController
-import com.hendraanggrian.openpss.utils.getFont
 import javafx.event.ActionEvent
 import javafx.fxml.FXML
 import javafx.scene.control.Label
@@ -74,7 +72,6 @@ class MainController : Controller() {
 
         later {
             employeeLabel.text = employeeName
-            employeeLabel.font = getFont(R.font.sf_pro_text_bold)
             controllers = listOf(customerController, scheduleController, invoiceController,
                 paymentController, reportController, wageController, employeeController)
             controllers.forEach {

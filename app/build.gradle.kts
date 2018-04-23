@@ -51,10 +51,13 @@ dependencies {
     implementation(project(":scene"))
     implementation(kotlin("stdlib", VERSION_KOTLIN))
     implementation(kotlin("nosql-mongodb", VERSION_NOSQL))
+    implementation(square("retrofit", VERSION_RETROFIT, "retrofit2"))
+    implementation(square("converter-gson", VERSION_RETROFIT, "retrofit2"))
+    implementation(google("gson", VERSION_GSON, "code.gson"))
+    implementation(google("guava", VERSION_GUAVA, "guava"))
     implementation(hendraanggrian("ktfx", VERSION_KTFX, "ktfx"))
     implementation(apache("commons-lang3", VERSION_COMMONS_LANG))
     implementation(apache("poi-ooxml", VERSION_POI))
-    implementation(guava())
     implementation(log4j12())
 
     testImplementation(kotlin("test", VERSION_KOTLIN))
@@ -79,6 +82,7 @@ tasks {
     withType<BuildConfigTask> {
         appName = RELEASE_NAME
         debug = RELEASE_DEBUG
+        field("USER", RELEASE_USER)
         field("FULL_NAME", RELEASE_FULL_NAME)
         field("ARTIFACT", RELEASE_ARTIFACT)
         field("WEBSITE", RELEASE_WEBSITE)

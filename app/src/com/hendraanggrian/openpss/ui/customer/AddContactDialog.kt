@@ -1,8 +1,7 @@
 package com.hendraanggrian.openpss.ui.customer
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.db.schemas.Customer.ContactType
-import com.hendraanggrian.openpss.db.schemas.Customer.ContactType.values
+import com.hendraanggrian.openpss.db.schemas.Customer.Contact
 import com.hendraanggrian.openpss.ui.Resourced
 import com.hendraanggrian.openpss.utils.REGEX_PHONE
 import com.hendraanggrian.openpss.utils.style
@@ -12,12 +11,10 @@ import javafx.scene.control.Dialog
 import javafx.scene.control.TextField
 import javafx.scene.image.ImageView
 import ktfx.beans.binding.booleanBindingOf
-import ktfx.collections.toObservableList
 import ktfx.layouts.choiceBox
 import ktfx.layouts.gridPane
 import ktfx.layouts.label
 import ktfx.layouts.textField
-import ktfx.listeners.converter
 import ktfx.scene.control.cancelButton
 import ktfx.scene.control.graphicIcon
 import ktfx.scene.control.headerTitle
@@ -25,9 +22,9 @@ import ktfx.scene.control.okButton
 import ktfx.scene.layout.gap
 import org.apache.commons.validator.routines.EmailValidator
 
-class AddContactDialog(resourced: Resourced) : Dialog<Pair<ContactType, String>>(), Resourced by resourced {
+class AddContactDialog(resourced: Resourced) : Dialog<Pair<Contact, String>>(), Resourced by resourced {
 
-    private lateinit var typeChoice: ChoiceBox<ContactType>
+    private lateinit var typeChoice: ChoiceBox<Contact>
     private lateinit var contactField: TextField
 
     init {
@@ -37,9 +34,7 @@ class AddContactDialog(resourced: Resourced) : Dialog<Pair<ContactType, String>>
         dialogPane.content = gridPane {
             gap = 8.0
             label(getString(R.string.type)) col 0 row 0
-            typeChoice = choiceBox(values().toObservableList()) {
-                converter { toString { it!!.asString(this@AddContactDialog) } }
-            } col 1 row 0
+            typeChoice = choiceBox(Contact.listAll(this@AddContactDialog)) col 1 row 0
             label(getString(R.string.contact)) col 0 row 1
             contactField = textField { promptText = getString(R.string.contact) } col 1 row 1
         }
@@ -47,7 +42,7 @@ class AddContactDialog(resourced: Resourced) : Dialog<Pair<ContactType, String>>
         okButton().disableProperty().bind(booleanBindingOf(typeChoice.valueProperty(), contactField.textProperty()) {
             when (typeChoice.value) {
                 null -> true
-                ContactType.PHONE -> contactField.text.isBlank() || !contactField.text.matches(REGEX_PHONE)
+                is Contact.Phone -> contactField.text.isBlank() || !contactField.text.matches(REGEX_PHONE)
                 else -> contactField.text.isBlank() || !EmailValidator.getInstance().isValid(contactField.text)
             }
         })

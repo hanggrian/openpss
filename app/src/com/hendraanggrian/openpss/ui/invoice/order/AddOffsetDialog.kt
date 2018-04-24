@@ -5,6 +5,7 @@ import com.hendraanggrian.openpss.controls.DoubleField
 import com.hendraanggrian.openpss.controls.IntField
 import com.hendraanggrian.openpss.controls.doubleField
 import com.hendraanggrian.openpss.controls.intField
+import com.hendraanggrian.openpss.db.OffsetOrder
 import com.hendraanggrian.openpss.db.schemas.Invoices
 import com.hendraanggrian.openpss.db.schemas.Offset
 import com.hendraanggrian.openpss.db.schemas.OffsetPrice
@@ -27,8 +28,9 @@ class AddOffsetDialog(resourced: Resourced) : AddOrderDialog<Offset>(
     resourced,
     R.string.add_offset,
     R.image.ic_offset
-) {
+), OffsetOrder {
     private lateinit var machineChoice: ChoiceBox<OffsetPrice>
+    private lateinit var techniqueChoice: ChoiceBox<Offset.Technique>
     private lateinit var minQtyField: IntField
     private lateinit var minPriceField: DoubleField
     private lateinit var excessPriceField: DoubleField
@@ -42,17 +44,21 @@ class AddOffsetDialog(resourced: Resourced) : AddOrderDialog<Offset>(
                 excessPriceField.value = offset.excessPrice
             }
         } col 1 row 2
-        label(getString(R.string.min_qty)) col 0 row 3
-        minQtyField = intField { promptText = getString(R.string.min_qty) } col 1 row 3
-        label(getString(R.string.min_price)) col 0 row 4
-        minPriceField = doubleField { promptText = getString(R.string.min_price) } col 1 row 4
-        label(getString(R.string.excess_price)) col 0 row 5
-        excessPriceField = doubleField { promptText = getString(R.string.excess_price) } col 1 row 5
+        label(getString(R.string.technique)) col 0 row 3
+        techniqueChoice = choiceBox(Offset.Technique.values().toObservableList()) {
+            selectionModel.selectFirst()
+        } col 1 row 3
+        label(getString(R.string.min_qty)) col 0 row 4
+        minQtyField = intField { promptText = getString(R.string.min_qty) } col 1 row 4
+        label(getString(R.string.min_price)) col 0 row 5
+        minPriceField = doubleField { promptText = getString(R.string.min_price) } col 1 row 5
+        label(getString(R.string.excess_price)) col 0 row 6
+        excessPriceField = doubleField { promptText = getString(R.string.excess_price) } col 1 row 6
     }
 
-    override val titleBindingDependencies: Array<Observable>
-        get() = arrayOf(qtyField.valueProperty, minQtyField.valueProperty, minPriceField.valueProperty,
-            excessPriceField.valueProperty)
+    override val totalBindingDependencies: Array<Observable>
+        get() = arrayOf(qtyField.valueProperty, techniqueChoice.valueProperty(), minQtyField.valueProperty,
+            minPriceField.valueProperty, excessPriceField.valueProperty)
 
     override val disableBinding: ObservableBooleanValue
         get() = machineChoice.valueProperty().isNull or
@@ -65,8 +71,19 @@ class AddOffsetDialog(resourced: Resourced) : AddOrderDialog<Offset>(
     override fun newInstance(): Offset = Invoices.Offsets.new(
         titleField.text,
         qtyField.value,
-        machineChoice.value?.name ?: "",
+        machineChoice.value.name,
+        techniqueChoice.value.name,
         minQtyField.value,
         minPriceField.value,
         excessPriceField.value)
+
+    override val tech: Offset.Technique get() = techniqueChoice.value
+
+    override val qty: Int get() = qtyField.value
+
+    override val minQty: Int get() = minQtyField.value
+
+    override val minPrice: Double get() = minPriceField.value
+
+    override val excessPrice: Double get() = excessPriceField.value
 }

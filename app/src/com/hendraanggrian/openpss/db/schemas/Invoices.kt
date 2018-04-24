@@ -1,9 +1,16 @@
 package com.hendraanggrian.openpss.db.schemas
 
+import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.db.Document
+import com.hendraanggrian.openpss.db.OffsetOrder
 import com.hendraanggrian.openpss.db.Order
 import com.hendraanggrian.openpss.db.SimpleOrder
+import com.hendraanggrian.openpss.db.Titled
 import com.hendraanggrian.openpss.db.transaction
+import com.hendraanggrian.openpss.ui.Listable
+import com.hendraanggrian.openpss.ui.Resourced
+import com.hendraanggrian.openpss.ui.StringResource
+import javafx.collections.ObservableList
 import kotlinx.nosql.Id
 import kotlinx.nosql.ListColumn
 import kotlinx.nosql.boolean
@@ -13,6 +20,7 @@ import kotlinx.nosql.id
 import kotlinx.nosql.integer
 import kotlinx.nosql.mongodb.DocumentSchema
 import kotlinx.nosql.string
+import ktfx.collections.observableListOf
 import org.joda.time.DateTime
 
 object Invoices : DocumentSchema<Invoice>("invoices", Invoice::class) {
@@ -50,9 +58,9 @@ object Invoices : DocumentSchema<Invoice>("invoices", Invoice::class) {
             fun new(
                 title: String,
                 qty: Int,
-                type: String,
+                machine: String,
                 price: Double
-            ): Plate = Plate(title, qty, type, price)
+            ): Plate = Plate(title, qty, machine, price)
         }
     }
 
@@ -60,6 +68,7 @@ object Invoices : DocumentSchema<Invoice>("invoices", Invoice::class) {
         val title = string("title")
         val qty = integer("qty")
         val machine = string("machine")
+        val technique = string("technique")
         val minQty = integer("min_qty")
         val minPrice = double("min_price")
         val excessPrice = double("excess_price")
@@ -68,11 +77,12 @@ object Invoices : DocumentSchema<Invoice>("invoices", Invoice::class) {
             fun new(
                 title: String,
                 qty: Int,
-                type: String,
+                machine: String,
+                technique: String,
                 minQty: Int,
                 minPrice: Double,
                 excessPrice: Double
-            ): Offset = Offset(title, qty, type, minQty, minPrice, excessPrice)
+            ): Offset = Offset(title, qty, machine, technique, minQty, minPrice, excessPrice)
         }
     }
 
@@ -107,8 +117,9 @@ data class Invoice(
 
     override lateinit var id: Id<String, Invoices>
 
-    val total: Double
-        get() = plates.sumByDouble { it.total } + offsets.sumByDouble { it.total } + others.sumByDouble { it.total }
+    val total: Double get() = plates.sum() + offsets.sum() + others.sum()
+
+    private fun List<Order>.sum() = sumByDouble { it.total }
 }
 
 data class Plate(
@@ -116,26 +127,41 @@ data class Plate(
     override val qty: Int,
     val machine: String,
     override val price: Double
-) : SimpleOrder
+) : Titled, SimpleOrder
 
 data class Offset(
     override val title: String,
     override val qty: Int,
     val machine: String,
-    val minQty: Int,
-    val minPrice: Double,
-    val excessPrice: Double
-) : Order {
+    val technique: String,
+    override val minQty: Int,
+    override val minPrice: Double,
+    override val excessPrice: Double
+) : Titled, OffsetOrder {
 
-    override val total: Double
-        get() = when {
-            qty <= minQty -> minPrice
-            else -> minPrice + ((qty - minQty) * excessPrice)
+    override val tech: Technique get() = Technique.valueOf(technique)
+
+    sealed class Tech(resourced: Resourced, id: String) : StringResource(resourced.getString(id)) {
+        companion object : Listable<Tech> {
+            override fun listAll(resourced: Resourced): ObservableList<Tech> = observableListOf(
+                OneSideTech(resourced),
+                TwoSideSameTech(resourced),
+                TwoSideDifferentSideTech(resourced))
         }
+
+        class OneSideTech(resourced: Resourced) : Tech(resourced, R.string.time)
+        class TwoSideSameTech(resourced: Resourced) : Tech(resourced, R.string.time)
+        class TwoSideDifferentSideTech(resourced: Resourced) : Tech(resourced, R.string.time)
+    }
+
+    enum class Technique {
+
+        ONE_SIDE, TWO_SIDE_SAME, TWO_SIDE_DIFFERENT
+    }
 }
 
 data class Other(
     override val title: String,
     override val qty: Int,
     override val price: Double
-) : SimpleOrder
+) : Titled, SimpleOrder

@@ -3,6 +3,7 @@ package com.hendraanggrian.openpss.ui.invoice.order
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.controls.DoubleField
 import com.hendraanggrian.openpss.controls.doubleField
+import com.hendraanggrian.openpss.db.SimpleOrder
 import com.hendraanggrian.openpss.db.schemas.Invoices
 import com.hendraanggrian.openpss.db.schemas.Other
 import com.hendraanggrian.openpss.ui.Resourced
@@ -17,7 +18,7 @@ import ktfx.layouts.label
 class AddOtherDialog(resourced: Resourced) : AddOrderDialog<Other>(
     resourced,
     R.string.add_other
-) {
+), SimpleOrder {
     private lateinit var priceField: DoubleField
 
     override fun _GridPane.onLayout() {
@@ -25,7 +26,7 @@ class AddOtherDialog(resourced: Resourced) : AddOrderDialog<Other>(
         priceField = doubleField { promptText = getString(R.string.price) } col 1 row 2
     }
 
-    override val titleBindingDependencies: Array<Observable>
+    override val totalBindingDependencies: Array<Observable>
         get() = arrayOf(qtyField.valueProperty, priceField.valueProperty)
 
     override val disableBinding: ObservableBooleanValue
@@ -37,4 +38,8 @@ class AddOtherDialog(resourced: Resourced) : AddOrderDialog<Other>(
         titleField.text,
         qtyField.value,
         priceField.value)
+
+    override val qty: Int get() = qtyField.value
+
+    override val price: Double get() = priceField.value
 }

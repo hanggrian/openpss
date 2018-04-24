@@ -3,6 +3,7 @@ package com.hendraanggrian.openpss.ui.invoice.order
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.controls.DoubleField
 import com.hendraanggrian.openpss.controls.doubleField
+import com.hendraanggrian.openpss.db.SimpleOrder
 import com.hendraanggrian.openpss.db.schemas.Invoices
 import com.hendraanggrian.openpss.db.schemas.Plate
 import com.hendraanggrian.openpss.db.schemas.PlatePrice
@@ -25,7 +26,7 @@ class AddPlateDialog(resourced: Resourced) : AddOrderDialog<Plate>(
     resourced,
     R.string.add_plate,
     R.image.ic_plate
-) {
+), SimpleOrder {
     private lateinit var machineChoice: ChoiceBox<PlatePrice>
     private lateinit var priceField: DoubleField
 
@@ -40,7 +41,7 @@ class AddPlateDialog(resourced: Resourced) : AddOrderDialog<Plate>(
         priceField = doubleField { promptText = getString(R.string.price) } col 1 row 3
     }
 
-    override val titleBindingDependencies: Array<Observable>
+    override val totalBindingDependencies: Array<Observable>
         get() = arrayOf(qtyField.valueProperty, priceField.valueProperty)
 
     override val disableBinding: ObservableBooleanValue
@@ -52,6 +53,10 @@ class AddPlateDialog(resourced: Resourced) : AddOrderDialog<Plate>(
     override fun newInstance(): Plate = Invoices.Plates.new(
         titleField.text,
         qtyField.value,
-        machineChoice.value?.name ?: "",
+        machineChoice.value.name,
         priceField.value)
+
+    override val qty: Int get() = qtyField.value
+
+    override val price: Double get() = priceField.value
 }

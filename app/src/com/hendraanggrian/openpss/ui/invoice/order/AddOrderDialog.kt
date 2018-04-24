@@ -4,6 +4,7 @@ import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.controls.IntField
 import com.hendraanggrian.openpss.controls.intField
 import com.hendraanggrian.openpss.db.Order
+import com.hendraanggrian.openpss.db.Titled
 import com.hendraanggrian.openpss.ui.Resourced
 import com.hendraanggrian.openpss.utils.currencyConverter
 import com.hendraanggrian.openpss.utils.getColor
@@ -28,15 +29,15 @@ import ktfx.scene.control.okButton
 import ktfx.scene.layout.gap
 
 @Suppress("LeakingThis")
-abstract class AddOrderDialog<T : Order>(
+abstract class AddOrderDialog<T : Titled>(
     resourced: Resourced,
     titleId: String,
     graphicId: String? = null
-) : Dialog<T>(), Resourced by resourced {
+) : Dialog<T>(), Resourced by resourced, Order {
 
     abstract fun _GridPane.onLayout()
 
-    abstract val titleBindingDependencies: Array<Observable>
+    abstract val totalBindingDependencies: Array<Observable>
 
     abstract val disableBinding: ObservableBooleanValue
 
@@ -60,12 +61,12 @@ abstract class AddOrderDialog<T : Order>(
                 label(getString(R.string.total)) col 0 row totalRow
                 label {
                     font = getFont(R.font.sf_pro_text_bold)
-                    textProperty().bind(stringBindingOf(*titleBindingDependencies) {
-                        currencyConverter.toString(newInstance().total)
+                    textProperty().bind(stringBindingOf(*totalBindingDependencies) {
+                        currencyConverter.toString(total)
                     })
                     textFillProperty().bind(bindingOf(textProperty()) {
                         getColor(when {
-                            newInstance().total > 0 -> R.color.teal
+                            total > 0 -> R.color.teal
                             else -> R.color.red
                         })
                     })

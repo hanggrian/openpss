@@ -5,12 +5,16 @@ import com.hendraanggrian.openpss.db.Document
 import com.hendraanggrian.openpss.db.Named
 import com.hendraanggrian.openpss.db.NamedSchema
 import com.hendraanggrian.openpss.db.dbDate
+import com.hendraanggrian.openpss.ui.Listable
 import com.hendraanggrian.openpss.ui.Resourced
+import com.hendraanggrian.openpss.ui.StringResource
+import javafx.collections.ObservableList
 import kotlinx.nosql.Id
 import kotlinx.nosql.date
 import kotlinx.nosql.listOfString
 import kotlinx.nosql.mongodb.DocumentSchema
 import kotlinx.nosql.string
+import ktfx.collections.observableListOf
 import org.joda.time.LocalDate
 
 object Customers : DocumentSchema<Customer>("customers", Customer::class), NamedSchema {
@@ -37,12 +41,14 @@ data class Customer(
 
     override fun toString(): String = name
 
-    enum class ContactType {
-        PHONE, EMAIL;
+    sealed class Contact(resourced: Resourced, id: String) : StringResource(resourced, id) {
+        companion object : Listable<Contact> {
+            override fun listAll(resourced: Resourced): ObservableList<Contact> = observableListOf(
+                Phone(resourced),
+                Email(resourced))
+        }
 
-        fun asString(resourced: Resourced): String = resourced.getString(when (this) {
-            PHONE -> R.string.phone
-            EMAIL -> R.string.email
-        })
+        class Phone(resourced: Resourced) : Contact(resourced, R.string.phone)
+        class Email(resourced: Resourced) : Contact(resourced, R.string.email)
     }
 }

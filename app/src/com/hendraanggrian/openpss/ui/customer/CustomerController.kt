@@ -4,7 +4,7 @@ import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.controls.UserDialog
 import com.hendraanggrian.openpss.db.buildQuery
 import com.hendraanggrian.openpss.db.schemas.Customer
-import com.hendraanggrian.openpss.db.schemas.Customer.ContactType.PHONE
+import com.hendraanggrian.openpss.db.schemas.Customer.Contact
 import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.io.properties.SettingsFile.CUSTOMER_PAGINATION_ITEMS
@@ -42,7 +42,9 @@ import ktfx.beans.binding.stringBindingOf
 import ktfx.beans.binding.times
 import ktfx.beans.property.toReadOnlyProperty
 import ktfx.beans.value.or
+import ktfx.collections.emptyObservableList
 import ktfx.collections.toMutableObservableList
+import ktfx.collections.toObservableList
 import ktfx.layouts.listView
 import ktfx.scene.control.errorAlert
 import ktfx.scene.control.inputDialog
@@ -51,7 +53,7 @@ import java.util.ResourceBundle
 import java.util.regex.Pattern.CASE_INSENSITIVE
 import kotlin.math.ceil
 
-class CustomerController : Controller(), Refreshable, Selectable<Customer>, Selectable2<Contact> {
+class CustomerController : Controller(), Refreshable, Selectable<Customer>, Selectable2<Pair<Contact, String>> {
 
     @FXML lateinit var editNameButton: Button
     @FXML lateinit var editAddressButton: Button
@@ -73,9 +75,9 @@ class CustomerController : Controller(), Refreshable, Selectable<Customer>, Sele
     @FXML lateinit var noteLabel1: Label
     @FXML lateinit var noteLabel2: Label
     @FXML lateinit var contactLabel: Label
-    @FXML lateinit var contactTable: TableView<Contact>
-    @FXML lateinit var typeColumn: TableColumn<Contact, String>
-    @FXML lateinit var valueColumn: TableColumn<Contact, String>
+    @FXML lateinit var contactTable: TableView<Pair<Contact, String>>
+    @FXML lateinit var typeColumn: TableColumn<Pair<Contact, String>, String>
+    @FXML lateinit var valueColumn: TableColumn<Pair<Contact, String>, String>
     @FXML lateinit var coverLabel: Label
 
     private lateinit var customerList: ListView<Customer>
@@ -90,8 +92,8 @@ class CustomerController : Controller(), Refreshable, Selectable<Customer>, Sele
         addressLabel1.font = getFont(R.font.sf_pro_text_bold)
         noteLabel1.font = getFont(R.font.sf_pro_text_bold)
         contactLabel.font = getFont(R.font.sf_pro_text_bold)
-        typeColumn.stringCell { type.asString(this@CustomerController) }
-        valueColumn.stringCell { value }
+        typeColumn.stringCell { first.toString() }
+        valueColumn.stringCell { second }
     }
 
     override fun refresh() = customerPagination.pageFactoryProperty().bind(bindingOf(searchField.textProperty()) {
@@ -126,7 +128,11 @@ class CustomerController : Controller(), Refreshable, Selectable<Customer>, Sele
             addressLabel2.bindLabel { selected?.address.orEmpty() }
             noteLabel2.bindLabel { selected?.note.orEmpty() }
             contactTable.itemsProperty().bind(bindingOf(customerList.selectionModel.selectedItemProperty()) {
-                Contact.listAll(selected)
+                when (selected) {
+                    null -> emptyObservableList()
+                    else -> (selected!!.phones.map { Pair(Contact.Phone(this), it) } +
+                        selected!!.emails.map { Pair(Contact.Email(this), it) }).toObservableList()
+                }
             })
             coverLabel.visibleProperty().bind(customerList.selectionModel.selectedItemProperty().isNull)
             customerList
@@ -135,7 +141,7 @@ class CustomerController : Controller(), Refreshable, Selectable<Customer>, Sele
 
     override val selectionModel: SelectionModel<Customer> get() = customerList.selectionModel
 
-    override val selectionModel2: SelectionModel<Contact> get() = contactTable.selectionModel
+    override val selectionModel2: SelectionModel<Pair<Contact, String>> get() = contactTable.selectionModel
 
     @FXML fun addCustomer() = UserDialog(this, R.string.add_customer, R.image.ic_customer)
         .showAndWait()
@@ -189,11 +195,11 @@ class CustomerController : Controller(), Refreshable, Selectable<Customer>, Sele
             val (type, value) = it
             findByDoc(Customers, selected!!).projection {
                 when (type) {
-                    PHONE -> phones
+                    is Contact.Phone -> phones
                     else -> emails
                 }
             }.update(when (type) {
-                PHONE -> selected!!.phones
+                is Contact.Phone -> selected!!.phones
                 else -> selected!!.emails
             } + value)
             reload(selected!!)
@@ -203,14 +209,14 @@ class CustomerController : Controller(), Refreshable, Selectable<Customer>, Sele
     @FXML fun deleteContact() = yesNoAlert(R.string.delete_contact) {
         transaction {
             findByDoc(Customers, selected!!).projection {
-                when (selected2!!.type) {
-                    PHONE -> phones
+                when (selected2!!.first) {
+                    is Contact.Phone -> phones
                     else -> emails
                 }
-            }.update(when (selected2!!.type) {
-                PHONE -> selected!!.phones
+            }.update(when (selected2!!.first) {
+                is Contact.Phone -> selected!!.phones
                 else -> selected!!.emails
-            } - selected2!!.value)
+            } - selected2!!.second)
             reload(selected!!)
         }
     }

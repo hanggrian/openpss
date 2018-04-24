@@ -5,24 +5,23 @@ import com.hendraanggrian.openpss.db.Document
 import com.hendraanggrian.openpss.db.Named
 import com.hendraanggrian.openpss.db.NamedSchema
 import com.hendraanggrian.openpss.db.dbDate
-import com.hendraanggrian.openpss.resources.Listable
-import com.hendraanggrian.openpss.resources.Resourced
-import com.hendraanggrian.openpss.resources.StringResource
-import javafx.collections.ObservableList
+import com.hendraanggrian.openpss.resources.StringResource2
+import com.hendraanggrian.openpss.util.enumValueOfId
+import com.hendraanggrian.openpss.util.id
 import kotlinx.nosql.Id
 import kotlinx.nosql.ListColumn
 import kotlinx.nosql.date
 import kotlinx.nosql.integer
 import kotlinx.nosql.mongodb.DocumentSchema
+import kotlinx.nosql.nullableString
 import kotlinx.nosql.string
-import ktfx.collections.observableListOf
 import org.joda.time.LocalDate
 
 object Customers : DocumentSchema<Customer>("customers", Customer::class), NamedSchema {
     override val name = string("name")
     val since = date("since")
-    val address = string("address")
-    val note = string("note")
+    val address = nullableString("address")
+    val note = nullableString("note")
     val contacts = Contacts()
 
     class Contacts : ListColumn<Customer.Contact, Invoices>("contacts", Customer.Contact::class) {
@@ -34,12 +33,12 @@ object Customers : DocumentSchema<Customer>("customers", Customer::class), Named
 data class Customer(
     override var name: String,
     val since: LocalDate,
-    val address: String,
-    var note: String,
+    val address: String?,
+    var note: String?,
     var contacts: List<Contact>
 ) : Document<Customers>, Named {
     companion object {
-        fun new(name: String): Customer = Customer(name, dbDate, "", "", listOf())
+        fun new(name: String): Customer = Customer(name, dbDate, null, null, listOf())
     }
 
     override lateinit var id: Id<String, Customers>
@@ -51,18 +50,18 @@ data class Customer(
         val value: String
     ) {
         companion object {
-            fun new(type: Type, value: String): Customer.Contact = Customer.Contact(type.toString(), value)
+            fun new(type: Type, value: String): Contact = Contact(type.id, value)
         }
 
-        sealed class Type(resourced: Resourced, id: String) : StringResource(resourced, id) {
-            companion object : Listable<Type> {
-                override fun listAll(resourced: Resourced): ObservableList<Type> = observableListOf(
-                    Phone(resourced),
-                    Email(resourced))
-            }
+        val typedType: Type get() = enumValueOfId(type)
 
-            class Phone(resourced: Resourced) : Type(resourced, R.string.phone)
-            class Email(resourced: Resourced) : Type(resourced, R.string.email)
+        enum class Type : StringResource2 {
+            PHONE {
+                override val textId: String = R.string.phone
+            },
+            EMAIL {
+                override val textId: String = R.string.email
+            };
         }
     }
 }

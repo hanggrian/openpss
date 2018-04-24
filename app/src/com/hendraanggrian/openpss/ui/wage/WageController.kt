@@ -5,8 +5,8 @@ import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.controls.FileField
 import com.hendraanggrian.openpss.io.WageFolder
 import com.hendraanggrian.openpss.io.properties.SettingsFile.WAGE_READER
-import com.hendraanggrian.openpss.ui.wage.readers.Reader
 import com.hendraanggrian.openpss.ui.Controller
+import com.hendraanggrian.openpss.ui.wage.readers.Reader
 import com.hendraanggrian.openpss.ui.wage.record.WageRecordController.Companion.EXTRA_ATTENDEES
 import com.hendraanggrian.openpss.util.controller
 import com.hendraanggrian.openpss.util.getFont
@@ -61,7 +61,7 @@ class WageController : Controller() {
         processButton.disableProperty().bind(flowPane.children.isEmpty)
 
         if (DEBUG) {
-            fileField.text = "/Users/hendraanggrian/Downloads/Absen 4-13-18.xlsx"
+            // fileField.text = "/Users/hendraanggrian/Downloads/Absen 4-13-18.xlsx"
             readButton.fire()
         }
         later { flowPane.prefWrapLengthProperty().bind(fileField.scene.widthProperty()) }

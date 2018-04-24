@@ -11,10 +11,12 @@ import javafx.scene.control.Dialog
 import javafx.scene.control.TextField
 import javafx.scene.image.ImageView
 import ktfx.beans.binding.booleanBindingOf
+import ktfx.collections.toObservableList
 import ktfx.layouts.choiceBox
 import ktfx.layouts.gridPane
 import ktfx.layouts.label
 import ktfx.layouts.textField
+import ktfx.listeners.converter
 import ktfx.scene.control.cancelButton
 import ktfx.scene.control.graphicIcon
 import ktfx.scene.control.headerTitle
@@ -34,7 +36,9 @@ class AddContactDialog(resourced: Resourced) : Dialog<Customer.Contact>(), Resou
         dialogPane.content = gridPane {
             gap = 8.0
             label(getString(R.string.type)) col 0 row 0
-            typeChoice = choiceBox(Customer.Contact.Type.listAll(this@AddContactDialog)) col 1 row 0
+            typeChoice = choiceBox(Customer.Contact.Type.values().toObservableList()) {
+                converter { toString { it!!.toString(this@AddContactDialog) } }
+            } col 1 row 0
             label(getString(R.string.contact)) col 0 row 1
             contactField = textField { promptText = getString(R.string.contact) } col 1 row 1
         }
@@ -42,7 +46,7 @@ class AddContactDialog(resourced: Resourced) : Dialog<Customer.Contact>(), Resou
         okButton().disableProperty().bind(booleanBindingOf(typeChoice.valueProperty(), contactField.textProperty()) {
             when (typeChoice.value) {
                 null -> true
-                is Customer.Contact.Type.Phone -> contactField.text.isBlank() || !contactField.text.matches(REGEX_PHONE)
+                Customer.Contact.Type.PHONE -> contactField.text.isBlank() || !contactField.text.matches(REGEX_PHONE)
                 else -> contactField.text.isBlank() || !EmailValidator.getInstance().isValid(contactField.text)
             }
         })

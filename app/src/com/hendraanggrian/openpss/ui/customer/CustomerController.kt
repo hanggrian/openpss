@@ -7,11 +7,11 @@ import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.io.properties.SettingsFile.CUSTOMER_PAGINATION_ITEMS
-import com.hendraanggrian.openpss.util.PATTERN_DATE
 import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.Selectable
 import com.hendraanggrian.openpss.ui.Selectable2
+import com.hendraanggrian.openpss.util.PATTERN_DATE
 import com.hendraanggrian.openpss.util.findByDoc
 import com.hendraanggrian.openpss.util.getFont
 import com.hendraanggrian.openpss.util.isNotEmpty
@@ -22,6 +22,7 @@ import com.hendraanggrian.openpss.util.yesNoAlert
 import javafx.fxml.FXML
 import javafx.scene.Node
 import javafx.scene.control.Button
+import javafx.scene.control.ButtonType.OK
 import javafx.scene.control.Label
 import javafx.scene.control.ListView
 import javafx.scene.control.Pagination
@@ -40,6 +41,7 @@ import ktfx.beans.binding.bindingOf
 import ktfx.beans.binding.stringBindingOf
 import ktfx.beans.binding.times
 import ktfx.beans.property.toReadOnlyProperty
+import ktfx.beans.value.isBlank
 import ktfx.beans.value.or
 import ktfx.collections.emptyObservableList
 import ktfx.collections.toMutableObservableList
@@ -91,7 +93,7 @@ class CustomerController : Controller(), Refreshable, Selectable<Customer>, Sele
         addressLabel1.font = getFont(R.font.sf_pro_text_bold)
         noteLabel1.font = getFont(R.font.sf_pro_text_bold)
         contactLabel.font = getFont(R.font.sf_pro_text_bold)
-        typeColumn.stringCell { type }
+        typeColumn.stringCell { typedType.toString(this@CustomerController) }
         valueColumn.stringCell { value }
     }
 
@@ -124,8 +126,8 @@ class CustomerController : Controller(), Refreshable, Selectable<Customer>, Sele
             nameLabel.bindLabel { selected?.name.orEmpty() }
             idLabel2.bindLabel { selected?.id?.toString().orEmpty() }
             sinceLabel2.bindLabel { selected?.since?.toString(PATTERN_DATE).orEmpty() }
-            addressLabel2.bindLabel { selected?.address.orEmpty() }
-            noteLabel2.bindLabel { selected?.note.orEmpty() }
+            addressLabel2.bindLabel { selected?.address ?: "-" }
+            noteLabel2.bindLabel { selected?.note ?: "-" }
             contactTable.itemsProperty().bind(bindingOf(customerList.selectionModel.selectedItemProperty()) {
                 selected?.contacts?.toObservableList() ?: emptyObservableList()
             })
@@ -164,9 +166,10 @@ class CustomerController : Controller(), Refreshable, Selectable<Customer>, Sele
         }
 
     @FXML fun editAddress() =
-        inputDialog(getString(R.string.edit_address), ImageView(R.image.ic_customer), selected!!.address) {
+        inputDialog(getString(R.string.edit_address), ImageView(R.image.ic_customer), selected!!.address ?: "") {
             style()
             contentText = getString(R.string.address)
+            dialogPane.lookupButton(OK).disableProperty().bind(editor.textProperty().isBlank())
         }.showAndWait().ifPresent {
             transaction {
                 findByDoc(Customers, selected!!).projection { address }.update(it)
@@ -175,9 +178,10 @@ class CustomerController : Controller(), Refreshable, Selectable<Customer>, Sele
         }
 
     @FXML fun editNote() =
-        inputDialog(getString(R.string.edit_note), ImageView(R.image.ic_customer), selected!!.note) {
+        inputDialog(getString(R.string.edit_note), ImageView(R.image.ic_customer), selected!!.note ?: "") {
             style()
             contentText = getString(R.string.note)
+            dialogPane.lookupButton(OK).disableProperty().bind(editor.textProperty().isBlank())
         }.showAndWait().ifPresent {
             transaction {
                 findByDoc(Customers, selected!!).projection { note }.update(it)

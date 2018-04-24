@@ -6,9 +6,9 @@ import com.hendraanggrian.openpss.db.Named
 import com.hendraanggrian.openpss.db.NamedSchema
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.ui.SimpleTableController
-import com.hendraanggrian.openpss.utils.isNotEmpty
-import com.hendraanggrian.openpss.utils.stringCell
-import com.hendraanggrian.openpss.utils.style
+import com.hendraanggrian.openpss.util.isNotEmpty
+import com.hendraanggrian.openpss.util.stringCell
+import com.hendraanggrian.openpss.util.style
 import javafx.fxml.FXML
 import javafx.scene.control.TableColumn
 import kotlinx.nosql.equal

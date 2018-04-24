@@ -14,8 +14,6 @@ object OffsetPrices : DocumentSchema<OffsetPrice>("offset_prices", OffsetPrice::
     val minQty = integer("min_qty")
     val minPrice = double("min_price")
     val excessPrice = double("excess_price")
-
-    fun new(name: String): OffsetPrice = OffsetPrice(name, 1000, 0.0, 0.0)
 }
 
 data class OffsetPrice(
@@ -24,6 +22,9 @@ data class OffsetPrice(
     var minPrice: Double,
     var excessPrice: Double
 ) : Document<OffsetPrices>, Named {
+    companion object {
+        fun new(name: String): OffsetPrice = OffsetPrice(name, 1000, 0.0, 0.0)
+    }
 
     override lateinit var id: Id<String, OffsetPrices>
 

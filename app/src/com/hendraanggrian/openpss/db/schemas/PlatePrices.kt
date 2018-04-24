@@ -11,14 +11,15 @@ import kotlinx.nosql.string
 object PlatePrices : DocumentSchema<PlatePrice>("plate_prices", PlatePrice::class), NamedSchema {
     override val name = string("name")
     val price = double("price")
-
-    fun new(name: String): PlatePrice = PlatePrice(name, 0.0)
 }
 
 data class PlatePrice(
     override var name: String,
     var price: Double
 ) : Document<PlatePrices>, Named {
+    companion object {
+        fun new(name: String): PlatePrice = PlatePrice(name, 0.0)
+    }
 
     override lateinit var id: Id<String, PlatePrices>
 

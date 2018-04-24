@@ -3,9 +3,9 @@ package com.hendraanggrian.openpss.ui.wage
 import com.hendraanggrian.openpss.db.schemas.Recess
 import com.hendraanggrian.openpss.db.schemas.Recesses
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.time.PATTERN_TIME
+import com.hendraanggrian.openpss.util.PATTERN_TIME
 import com.hendraanggrian.openpss.ui.SimpleTableController
-import com.hendraanggrian.openpss.utils.stringCell
+import com.hendraanggrian.openpss.util.stringCell
 import javafx.fxml.FXML
 import javafx.scene.control.TableColumn
 import java.net.URL

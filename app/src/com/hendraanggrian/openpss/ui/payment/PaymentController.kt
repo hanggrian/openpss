@@ -7,15 +7,14 @@ import com.hendraanggrian.openpss.db.schemas.Payment
 import com.hendraanggrian.openpss.db.schemas.Payment.Method.CASH
 import com.hendraanggrian.openpss.db.schemas.Payment.Method.TRANSFER
 import com.hendraanggrian.openpss.db.schemas.Payments
-import com.hendraanggrian.openpss.db.schemas.Payments.gather
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.layouts.DateBox
-import com.hendraanggrian.openpss.time.PATTERN_TIME
+import com.hendraanggrian.openpss.util.PATTERN_TIME
 import com.hendraanggrian.openpss.ui.FinancialController
-import com.hendraanggrian.openpss.utils.currencyCell
-import com.hendraanggrian.openpss.utils.findById
-import com.hendraanggrian.openpss.utils.matches
-import com.hendraanggrian.openpss.utils.stringCell
+import com.hendraanggrian.openpss.util.currencyCell
+import com.hendraanggrian.openpss.util.findById
+import com.hendraanggrian.openpss.util.matches
+import com.hendraanggrian.openpss.util.stringCell
 import javafx.fxml.FXML
 import javafx.scene.control.Button
 import javafx.scene.control.TableColumn
@@ -52,9 +51,9 @@ class PaymentController : FinancialController<Payment>() {
 
     override val table: TableView<Payment> get() = paymentTable
 
-    override fun List<Payment>.getTotalCash(): Double = gather(this, CASH)
+    override fun List<Payment>.getTotalCash(): Double = Payment.gather(this, CASH)
 
-    override fun List<Payment>.getTransferCash(): Double = gather(this, TRANSFER)
+    override fun List<Payment>.getTransferCash(): Double = Payment.gather(this, TRANSFER)
 
     override fun refresh() {
         paymentTable.items = transaction {

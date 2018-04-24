@@ -4,9 +4,9 @@ import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.ui.Resourced
+import com.hendraanggrian.openpss.resources.Resourced
 import com.hendraanggrian.openpss.ui.Selectable
-import com.hendraanggrian.openpss.utils.style
+import com.hendraanggrian.openpss.util.style
 import javafx.scene.control.ButtonType.OK
 import javafx.scene.control.Dialog
 import javafx.scene.control.ListView

@@ -1,8 +1,8 @@
 package com.hendraanggrian.openpss.ui
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.utils.currencyConverter
-import com.hendraanggrian.openpss.utils.getFont
+import com.hendraanggrian.openpss.util.currencyConverter
+import com.hendraanggrian.openpss.util.getFont
 import javafx.fxml.FXML
 import javafx.scene.control.Label
 import javafx.scene.control.SelectionModel

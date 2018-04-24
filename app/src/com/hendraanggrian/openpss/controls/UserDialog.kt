@@ -1,10 +1,10 @@
 package com.hendraanggrian.openpss.controls
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.ui.Resourced
-import com.hendraanggrian.openpss.utils.clean
-import com.hendraanggrian.openpss.utils.isName
-import com.hendraanggrian.openpss.utils.style
+import com.hendraanggrian.openpss.resources.Resourced
+import com.hendraanggrian.openpss.util.clean
+import com.hendraanggrian.openpss.util.isName
+import com.hendraanggrian.openpss.util.style
 import javafx.scene.control.ButtonBar.ButtonData.OK_DONE
 import javafx.scene.control.ButtonType.NO
 import javafx.scene.control.ButtonType.OK

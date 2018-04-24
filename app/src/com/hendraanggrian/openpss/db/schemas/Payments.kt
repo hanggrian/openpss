@@ -3,7 +3,7 @@ package com.hendraanggrian.openpss.db.schemas
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.db.Document
 import com.hendraanggrian.openpss.db.dbDateTime
-import com.hendraanggrian.openpss.ui.Resourced
+import com.hendraanggrian.openpss.resources.Resourced
 import kotlinx.nosql.Id
 import kotlinx.nosql.dateTime
 import kotlinx.nosql.double
@@ -20,17 +20,6 @@ object Payments : DocumentSchema<Payment>("payments", Payment::class) {
     val dateTime = dateTime("date_time")
     val value = double("value")
     val transfer = nullableString("transfer")
-
-    fun new(
-        invoiceId: Id<String, Invoices>,
-        employeeId: Id<String, Employees>,
-        value: Double,
-        transfer: String?
-    ): Payment = Payment(invoiceId, employeeId, dbDateTime, value, transfer)
-
-    fun gather(payments: List<Payment>, method: Payment.Method) = payments
-        .filter { it.method == method }
-        .sumByDouble { it.value }
 }
 
 data class Payment(
@@ -40,6 +29,18 @@ data class Payment(
     var value: Double,
     val transfer: String?
 ) : Document<Payments> {
+    companion object {
+        fun new(
+            invoiceId: Id<String, Invoices>,
+            employeeId: Id<String, Employees>,
+            value: Double,
+            transfer: String?
+        ): Payment = Payment(invoiceId, employeeId, dbDateTime, value, transfer)
+
+        fun gather(payments: List<Payment>, method: Payment.Method) = payments
+            .filter { it.method == method }
+            .sumByDouble { it.value }
+    }
 
     override lateinit var id: Id<String, Payments>
 

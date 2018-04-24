@@ -56,5 +56,5 @@ class OffsetPriceController : PriceController<OffsetPrice, OffsetPrices>(OffsetP
         }
     }
 
-    override fun newPrice(name: String): OffsetPrice = OffsetPrices.new(name)
+    override fun newPrice(name: String): OffsetPrice = OffsetPrice.new(name)
 }

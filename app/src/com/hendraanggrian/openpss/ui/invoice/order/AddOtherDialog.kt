@@ -4,9 +4,8 @@ import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.controls.DoubleField
 import com.hendraanggrian.openpss.controls.doubleField
 import com.hendraanggrian.openpss.db.SimpleOrder
-import com.hendraanggrian.openpss.db.schemas.Invoices
-import com.hendraanggrian.openpss.db.schemas.Other
-import com.hendraanggrian.openpss.ui.Resourced
+import com.hendraanggrian.openpss.db.schemas.Invoice
+import com.hendraanggrian.openpss.resources.Resourced
 import javafx.beans.Observable
 import javafx.beans.value.ObservableBooleanValue
 import ktfx.beans.value.isBlank
@@ -15,7 +14,7 @@ import ktfx.beans.value.or
 import ktfx.layouts._GridPane
 import ktfx.layouts.label
 
-class AddOtherDialog(resourced: Resourced) : AddOrderDialog<Other>(
+class AddOtherDialog(resourced: Resourced) : AddOrderDialog<Invoice.Other>(
     resourced,
     R.string.add_other
 ), SimpleOrder {
@@ -34,7 +33,7 @@ class AddOtherDialog(resourced: Resourced) : AddOrderDialog<Other>(
             qtyField.valueProperty.lessEq(0) or
             priceField.valueProperty.lessEq(0)
 
-    override fun newInstance(): Other = Invoices.Others.new(
+    override fun newInstance(): Invoice.Other = Invoice.Other.new(
         titleField.text,
         qtyField.value,
         priceField.value)

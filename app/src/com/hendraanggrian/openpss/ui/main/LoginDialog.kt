@@ -10,9 +10,9 @@ import com.hendraanggrian.openpss.controls.hostField
 import com.hendraanggrian.openpss.controls.intField
 import com.hendraanggrian.openpss.db.login
 import com.hendraanggrian.openpss.io.properties.LoginFile
-import com.hendraanggrian.openpss.ui.Resourced
-import com.hendraanggrian.openpss.utils.onActionFilter
-import com.hendraanggrian.openpss.utils.style
+import com.hendraanggrian.openpss.resources.Resourced
+import com.hendraanggrian.openpss.util.onActionFilter
+import com.hendraanggrian.openpss.util.style
 import javafx.geometry.Pos.CENTER_RIGHT
 import javafx.scene.control.ButtonBar.ButtonData.OK_DONE
 import javafx.scene.control.Dialog

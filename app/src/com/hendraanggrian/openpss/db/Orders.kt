@@ -1,6 +1,6 @@
 package com.hendraanggrian.openpss.db
 
-import com.hendraanggrian.openpss.db.schemas.Offset
+import com.hendraanggrian.openpss.db.schemas.Invoice
 
 interface Order {
 
@@ -18,7 +18,7 @@ interface SimpleOrder : Order {
 
 interface OffsetOrder : Order {
 
-    val tech: Offset.Technique
+    val tech: Invoice.Offset.Technique
 
     val minQty: Int
 
@@ -28,9 +28,9 @@ interface OffsetOrder : Order {
 
     override val total: Double
         get() = when (tech) {
-            Offset.Technique.ONE_SIDE -> calculateSide(qty, minQty, minPrice, excessPrice)
-            Offset.Technique.TWO_SIDE_SAME -> calculateSide(qty * 2, minQty, minPrice, excessPrice)
-            Offset.Technique.TWO_SIDE_DIFFERENT -> calculateSide(qty, minQty, minPrice, excessPrice) * 2
+            Invoice.Offset.Technique.ONE_SIDE -> calculateSide(qty, minQty, minPrice, excessPrice)
+            Invoice.Offset.Technique.TWO_SIDE_SAME -> calculateSide(qty * 2, minQty, minPrice, excessPrice)
+            Invoice.Offset.Technique.TWO_SIDE_DIFFERENT -> calculateSide(qty, minQty, minPrice, excessPrice) * 2
         }
 
     private fun calculateSide(qty: Int, minQty: Int, minPrice: Double, excessPrice: Double) = when {

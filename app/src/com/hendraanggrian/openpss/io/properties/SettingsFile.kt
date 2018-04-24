@@ -1,6 +1,6 @@
 package com.hendraanggrian.openpss.io.properties
 
-import com.hendraanggrian.openpss.readers.EClockingReader
+import com.hendraanggrian.openpss.ui.wage.readers.EClockingReader
 
 /** User manually configurable settings file. */
 object SettingsFile : PropertiesFile("settings") {

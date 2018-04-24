@@ -6,12 +6,11 @@ import com.hendraanggrian.openpss.controls.IntField
 import com.hendraanggrian.openpss.controls.doubleField
 import com.hendraanggrian.openpss.controls.intField
 import com.hendraanggrian.openpss.db.OffsetOrder
-import com.hendraanggrian.openpss.db.schemas.Invoices
-import com.hendraanggrian.openpss.db.schemas.Offset
+import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.db.schemas.OffsetPrice
 import com.hendraanggrian.openpss.db.schemas.OffsetPrices
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.ui.Resourced
+import com.hendraanggrian.openpss.resources.Resourced
 import javafx.beans.Observable
 import javafx.beans.value.ObservableBooleanValue
 import javafx.scene.control.ChoiceBox
@@ -24,13 +23,13 @@ import ktfx.layouts._GridPane
 import ktfx.layouts.choiceBox
 import ktfx.layouts.label
 
-class AddOffsetDialog(resourced: Resourced) : AddOrderDialog<Offset>(
+class AddOffsetDialog(resourced: Resourced) : AddOrderDialog<Invoice.Offset>(
     resourced,
     R.string.add_offset,
     R.image.ic_offset
 ), OffsetOrder {
     private lateinit var machineChoice: ChoiceBox<OffsetPrice>
-    private lateinit var techniqueChoice: ChoiceBox<Offset.Technique>
+    private lateinit var techniqueChoice: ChoiceBox<Invoice.Offset.Technique>
     private lateinit var minQtyField: IntField
     private lateinit var minPriceField: DoubleField
     private lateinit var excessPriceField: DoubleField
@@ -45,7 +44,7 @@ class AddOffsetDialog(resourced: Resourced) : AddOrderDialog<Offset>(
             }
         } col 1 row 2
         label(getString(R.string.technique)) col 0 row 3
-        techniqueChoice = choiceBox(Offset.Technique.values().toObservableList()) {
+        techniqueChoice = choiceBox(Invoice.Offset.Technique.values().toObservableList()) {
             selectionModel.selectFirst()
         } col 1 row 3
         label(getString(R.string.min_qty)) col 0 row 4
@@ -68,7 +67,7 @@ class AddOffsetDialog(resourced: Resourced) : AddOrderDialog<Offset>(
             minPriceField.valueProperty.lessEq(0) or
             excessPriceField.valueProperty.lessEq(0)
 
-    override fun newInstance(): Offset = Invoices.Offsets.new(
+    override fun newInstance(): Invoice.Offset = Invoice.Offset.new(
         titleField.text,
         qtyField.value,
         machineChoice.value.name,
@@ -77,7 +76,7 @@ class AddOffsetDialog(resourced: Resourced) : AddOrderDialog<Offset>(
         minPriceField.value,
         excessPriceField.value)
 
-    override val tech: Offset.Technique get() = techniqueChoice.value
+    override val tech: Invoice.Offset.Technique get() = techniqueChoice.value
 
     override val qty: Int get() = qtyField.value
 

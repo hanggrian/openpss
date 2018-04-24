@@ -4,12 +4,11 @@ import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.controls.DoubleField
 import com.hendraanggrian.openpss.controls.doubleField
 import com.hendraanggrian.openpss.db.SimpleOrder
-import com.hendraanggrian.openpss.db.schemas.Invoices
-import com.hendraanggrian.openpss.db.schemas.Plate
+import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.db.schemas.PlatePrice
 import com.hendraanggrian.openpss.db.schemas.PlatePrices
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.ui.Resourced
+import com.hendraanggrian.openpss.resources.Resourced
 import javafx.beans.Observable
 import javafx.beans.value.ObservableBooleanValue
 import javafx.scene.control.ChoiceBox
@@ -22,7 +21,7 @@ import ktfx.layouts._GridPane
 import ktfx.layouts.choiceBox
 import ktfx.layouts.label
 
-class AddPlateDialog(resourced: Resourced) : AddOrderDialog<Plate>(
+class AddPlateDialog(resourced: Resourced) : AddOrderDialog<Invoice.Plate>(
     resourced,
     R.string.add_plate,
     R.image.ic_plate
@@ -50,7 +49,7 @@ class AddPlateDialog(resourced: Resourced) : AddOrderDialog<Plate>(
             qtyField.valueProperty.lessEq(0) or
             priceField.valueProperty.lessEq(0)
 
-    override fun newInstance(): Plate = Invoices.Plates.new(
+    override fun newInstance(): Invoice.Plate = Invoice.Plate.new(
         titleField.text,
         qtyField.value,
         machineChoice.value.name,

@@ -1,12 +1,12 @@
 package com.hendraanggrian.openpss.ui.wage.record
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.time.FlexibleInterval
-import com.hendraanggrian.openpss.time.PATTERN_DATETIME
-import com.hendraanggrian.openpss.time.START_OF_TIME
-import com.hendraanggrian.openpss.ui.Resourced
+import com.hendraanggrian.openpss.ui.wage.FlexibleInterval
+import com.hendraanggrian.openpss.util.PATTERN_DATETIME
+import com.hendraanggrian.openpss.util.START_OF_TIME
+import com.hendraanggrian.openpss.resources.Resourced
 import com.hendraanggrian.openpss.ui.wage.Attendee
-import com.hendraanggrian.openpss.utils.round
+import com.hendraanggrian.openpss.util.round
 import javafx.beans.property.BooleanProperty
 import javafx.beans.property.DoubleProperty
 import javafx.beans.property.ObjectProperty

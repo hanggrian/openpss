@@ -9,14 +9,13 @@ import com.hendraanggrian.openpss.db.schemas.Payment
 import com.hendraanggrian.openpss.db.schemas.Payment.Method
 import com.hendraanggrian.openpss.db.schemas.Payment.Method.CASH
 import com.hendraanggrian.openpss.db.schemas.Payment.Method.values
-import com.hendraanggrian.openpss.db.schemas.Payments
 import com.hendraanggrian.openpss.db.schemas.calculateDue
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.ui.Resourced
-import com.hendraanggrian.openpss.utils.currencyConverter
-import com.hendraanggrian.openpss.utils.getColor
-import com.hendraanggrian.openpss.utils.getFont
-import com.hendraanggrian.openpss.utils.style
+import com.hendraanggrian.openpss.resources.Resourced
+import com.hendraanggrian.openpss.util.currencyConverter
+import com.hendraanggrian.openpss.util.getColor
+import com.hendraanggrian.openpss.util.getFont
+import com.hendraanggrian.openpss.util.style
 import javafx.scene.Node
 import javafx.scene.control.ButtonType.CANCEL
 import javafx.scene.control.ChoiceBox
@@ -119,7 +118,7 @@ class AddPaymentDialog(
         setResultConverter {
             when (it) {
                 CANCEL -> null
-                else -> Payments.new(invoice.id, employee.id, valueField.value,
+                else -> Payment.new(invoice.id, employee.id, valueField.value,
                     when (methodChoice.selectionModel.selectedItem) {
                         CASH -> null
                         else -> transferField.text

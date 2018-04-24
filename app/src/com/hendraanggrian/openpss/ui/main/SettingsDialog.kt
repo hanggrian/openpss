@@ -1,9 +1,9 @@
 package com.hendraanggrian.openpss.ui.main
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.db.schemas.GlobalSettings.KEY_CURRENCY_COUNTRY
-import com.hendraanggrian.openpss.db.schemas.GlobalSettings.KEY_CURRENCY_LANGUAGE
-import com.hendraanggrian.openpss.db.schemas.GlobalSettings.KEY_INVOICE_HEADERS
+import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_CURRENCY_COUNTRY
+import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_CURRENCY_LANGUAGE
+import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_INVOICE_HEADERS
 import com.hendraanggrian.openpss.db.schemas.findGlobalSettings
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.io.properties.SettingsFile
@@ -11,13 +11,13 @@ import com.hendraanggrian.openpss.io.properties.SettingsFile.CUSTOMER_PAGINATION
 import com.hendraanggrian.openpss.io.properties.SettingsFile.INVOICE_PAGINATION_ITEMS
 import com.hendraanggrian.openpss.io.properties.SettingsFile.INVOICE_QUICK_SELECT_CUSTOMER
 import com.hendraanggrian.openpss.io.properties.SettingsFile.WAGE_READER
-import com.hendraanggrian.openpss.readers.Reader
-import com.hendraanggrian.openpss.ui.Resourced
-import com.hendraanggrian.openpss.utils.getColor
-import com.hendraanggrian.openpss.utils.getFont
-import com.hendraanggrian.openpss.utils.onActionFilter
-import com.hendraanggrian.openpss.utils.stringConverters
-import com.hendraanggrian.openpss.utils.style
+import com.hendraanggrian.openpss.ui.wage.readers.Reader
+import com.hendraanggrian.openpss.resources.Resourced
+import com.hendraanggrian.openpss.util.clearConverters
+import com.hendraanggrian.openpss.util.getColor
+import com.hendraanggrian.openpss.util.getFont
+import com.hendraanggrian.openpss.util.onActionFilter
+import com.hendraanggrian.openpss.util.style
 import javafx.geometry.Pos.CENTER
 import javafx.geometry.Pos.CENTER_LEFT
 import javafx.scene.Node
@@ -174,7 +174,7 @@ class SettingsDialog(resourced: Resourced, showGlobalSettings: Boolean) : Dialog
                     findGlobalSettings(KEY_CURRENCY_COUNTRY).projection { value }.update(countryField.text)
                     findGlobalSettings(KEY_INVOICE_HEADERS).projection { value }
                         .update(invoiceHeadersArea.text.trim().replace("\n", "|"))
-                    stringConverters.clear()
+                    clearConverters()
                 }
                 close()
             }

@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.ui.schedule
 
 import com.hendraanggrian.openpss.db.schemas.Invoices
-import com.hendraanggrian.openpss.utils.numberConverter
+import com.hendraanggrian.openpss.util.numberConverter
 import kotlinx.nosql.Id
 
 data class Schedule(

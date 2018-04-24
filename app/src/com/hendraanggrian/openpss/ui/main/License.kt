@@ -1,6 +1,6 @@
 package com.hendraanggrian.openpss.ui.main
 
-import com.hendraanggrian.openpss.utils.getResourceAsStream
+import com.hendraanggrian.openpss.util.getResourceAsStream
 import kotlinx.coroutines.experimental.async
 import java.io.BufferedReader
 import java.io.InputStreamReader

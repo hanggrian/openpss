@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.db.schemas
 
 import com.hendraanggrian.openpss.db.Document
-import com.hendraanggrian.openpss.time.PATTERN_TIME
+import com.hendraanggrian.openpss.util.PATTERN_TIME
 import kotlinx.nosql.Id
 import kotlinx.nosql.mongodb.DocumentSchema
 import kotlinx.nosql.time

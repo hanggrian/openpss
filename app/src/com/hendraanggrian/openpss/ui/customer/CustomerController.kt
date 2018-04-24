@@ -7,18 +7,18 @@ import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.io.properties.SettingsFile.CUSTOMER_PAGINATION_ITEMS
-import com.hendraanggrian.openpss.time.PATTERN_DATE
+import com.hendraanggrian.openpss.util.PATTERN_DATE
 import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.Selectable
 import com.hendraanggrian.openpss.ui.Selectable2
-import com.hendraanggrian.openpss.utils.findByDoc
-import com.hendraanggrian.openpss.utils.getFont
-import com.hendraanggrian.openpss.utils.isNotEmpty
-import com.hendraanggrian.openpss.utils.matches
-import com.hendraanggrian.openpss.utils.stringCell
-import com.hendraanggrian.openpss.utils.style
-import com.hendraanggrian.openpss.utils.yesNoAlert
+import com.hendraanggrian.openpss.util.findByDoc
+import com.hendraanggrian.openpss.util.getFont
+import com.hendraanggrian.openpss.util.isNotEmpty
+import com.hendraanggrian.openpss.util.matches
+import com.hendraanggrian.openpss.util.stringCell
+import com.hendraanggrian.openpss.util.style
+import com.hendraanggrian.openpss.util.yesNoAlert
 import javafx.fxml.FXML
 import javafx.scene.Node
 import javafx.scene.control.Button
@@ -145,7 +145,7 @@ class CustomerController : Controller(), Refreshable, Selectable<Customer>, Sele
                 when {
                     Customers.find { name.matches("^$it$", CASE_INSENSITIVE) }.isNotEmpty() ->
                         errorAlert(getString(R.string.name_taken)) { style() }.show()
-                    else -> Customers.new(it).let {
+                    else -> Customer.new(it).let {
                         it.id = Customers.insert(it)
                         customerList.items.add(it)
                         customerList.selectionModel.select(customerList.items.lastIndex)

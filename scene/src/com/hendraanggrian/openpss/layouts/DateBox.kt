@@ -3,8 +3,8 @@
 package com.hendraanggrian.openpss.layouts
 
 import com.hendraanggrian.openpss.scene.R
-import com.hendraanggrian.openpss.time.toJava
-import com.hendraanggrian.openpss.time.toJoda
+import com.hendraanggrian.openpss.util.toJava
+import com.hendraanggrian.openpss.util.toJoda
 import javafx.beans.property.ObjectProperty
 import javafx.beans.property.SimpleObjectProperty
 import javafx.geometry.Pos.CENTER

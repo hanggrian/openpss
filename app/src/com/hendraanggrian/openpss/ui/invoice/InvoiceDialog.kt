@@ -7,25 +7,21 @@ import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.db.schemas.Employees
 import com.hendraanggrian.openpss.db.schemas.Invoice
-import com.hendraanggrian.openpss.db.schemas.Invoices
-import com.hendraanggrian.openpss.db.schemas.Offset
-import com.hendraanggrian.openpss.db.schemas.Other
-import com.hendraanggrian.openpss.db.schemas.Plate
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.io.properties.SettingsFile.INVOICE_QUICK_SELECT_CUSTOMER
-import com.hendraanggrian.openpss.time.PATTERN_DATE
-import com.hendraanggrian.openpss.ui.Resourced
+import com.hendraanggrian.openpss.util.PATTERN_DATE
+import com.hendraanggrian.openpss.resources.Resourced
 import com.hendraanggrian.openpss.ui.invoice.order.AddOffsetDialog
 import com.hendraanggrian.openpss.ui.invoice.order.AddOtherDialog
 import com.hendraanggrian.openpss.ui.invoice.order.AddPlateDialog
-import com.hendraanggrian.openpss.utils.currencyCell
-import com.hendraanggrian.openpss.utils.currencyConverter
-import com.hendraanggrian.openpss.utils.findById
-import com.hendraanggrian.openpss.utils.getColor
-import com.hendraanggrian.openpss.utils.getFont
-import com.hendraanggrian.openpss.utils.numberCell
-import com.hendraanggrian.openpss.utils.stringCell
-import com.hendraanggrian.openpss.utils.style
+import com.hendraanggrian.openpss.util.currencyCell
+import com.hendraanggrian.openpss.util.currencyConverter
+import com.hendraanggrian.openpss.util.findById
+import com.hendraanggrian.openpss.util.getColor
+import com.hendraanggrian.openpss.util.getFont
+import com.hendraanggrian.openpss.util.numberCell
+import com.hendraanggrian.openpss.util.stringCell
+import com.hendraanggrian.openpss.util.style
 import javafx.beans.property.DoubleProperty
 import javafx.beans.property.ObjectProperty
 import javafx.beans.property.SimpleDoubleProperty
@@ -72,9 +68,9 @@ class InvoiceDialog(
     employee: Employee? = prefill?.let { transaction { findById(Employees, prefill.employeeId).single() } }
 ) : Dialog<Invoice>(), Resourced by resourced {
 
-    private lateinit var plateTable: TableView<Plate>
-    private lateinit var offsetTable: TableView<Offset>
-    private lateinit var otherTable: TableView<Other>
+    private lateinit var plateTable: TableView<Invoice.Plate>
+    private lateinit var offsetTable: TableView<Invoice.Offset>
+    private lateinit var otherTable: TableView<Invoice.Other>
     private lateinit var noteArea: TextArea
 
     private val dateTime: DateTime = prefill?.dateTime ?: dbDateTime
@@ -106,7 +102,7 @@ class InvoiceDialog(
                 if (INVOICE_QUICK_SELECT_CUSTOMER && !isEdit()) fire()
             } col 1 row 2
             label(getString(R.string.plate)) col 0 row 3
-            plateTable = invoiceTableView({ AddPlateDialog(this@InvoiceDialog) }) {
+            plateTable = invoiceTableView<Invoice.Plate>({ AddPlateDialog(this@InvoiceDialog) }) {
                 columns {
                     getString(R.string.machine)<String> { stringCell { machine } }
                     getString(R.string.title)<String> { stringCell { title } }
@@ -117,7 +113,7 @@ class InvoiceDialog(
                 if (isEdit()) items.addAll(prefill!!.plates)
             } col 1 row 3
             label(getString(R.string.offset)) col 0 row 4
-            offsetTable = invoiceTableView({ AddOffsetDialog(this@InvoiceDialog) }) {
+            offsetTable = invoiceTableView<Invoice.Offset>({ AddOffsetDialog(this@InvoiceDialog) }) {
                 columns {
                     getString(R.string.machine)<String> { stringCell { machine } }
                     getString(R.string.title)<String> { stringCell { title } }
@@ -130,7 +126,7 @@ class InvoiceDialog(
                 if (isEdit()) items.addAll(prefill!!.offsets)
             } col 1 row 4
             label(getString(R.string.others)) col 0 row 5
-            otherTable = invoiceTableView({ AddOtherDialog(this@InvoiceDialog) }) {
+            otherTable = invoiceTableView<Invoice.Other>({ AddOtherDialog(this@InvoiceDialog) }) {
                 columns {
                     getString(R.string.title)<String> { stringCell { title } }
                     getString(R.string.qty)<String> { numberCell { qty } }
@@ -170,7 +166,7 @@ class InvoiceDialog(
                         others = otherTable.items
                         note = noteArea.text
                     }
-                    else -> Invoices.new(
+                    else -> Invoice.new(
                         employee!!.id,
                         customerProperty.value.id,
                         dateTime,

@@ -7,9 +7,9 @@ import com.hendraanggrian.openpss.db.Order
 import com.hendraanggrian.openpss.db.SimpleOrder
 import com.hendraanggrian.openpss.db.Titled
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.ui.Listable
-import com.hendraanggrian.openpss.ui.Resourced
-import com.hendraanggrian.openpss.ui.StringResource
+import com.hendraanggrian.openpss.resources.Listable
+import com.hendraanggrian.openpss.resources.Resourced
+import com.hendraanggrian.openpss.resources.StringResource
 import javafx.collections.ObservableList
 import kotlinx.nosql.Id
 import kotlinx.nosql.ListColumn
@@ -36,35 +36,14 @@ object Invoices : DocumentSchema<Invoice>("invoices", Invoice::class) {
     val paid = boolean("paid")
     val done = boolean("done")
 
-    fun new(
-        employeeId: Id<String, Employees>,
-        customerId: Id<String, Customers>,
-        dateTime: DateTime,
-        plates: List<Plate>,
-        offsets: List<Offset>,
-        others: List<Other>,
-        note: String
-    ): Invoice = Invoice(
-        transaction { Invoices.find().lastOrNull()?.no ?: 0 }!! + 1,
-        employeeId, customerId, dateTime, plates, offsets, others, note, false, false, false)
-
-    class Plates : ListColumn<Plate, Invoices>("plates", Plate::class) {
+    class Plates : ListColumn<Invoice.Plate, Invoices>("plates", Invoice.Plate::class) {
         val title = string("title")
         val qty = integer("qty")
         val machine = string("machine")
         val price = double("price")
-
-        companion object {
-            fun new(
-                title: String,
-                qty: Int,
-                machine: String,
-                price: Double
-            ): Plate = Plate(title, qty, machine, price)
-        }
     }
 
-    class Offsets : ListColumn<Offset, Invoices>("offsets", Offset::class) {
+    class Offsets : ListColumn<Invoice.Offset, Invoices>("offsets", Invoice.Offset::class) {
         val title = string("title")
         val qty = integer("qty")
         val machine = string("machine")
@@ -72,32 +51,12 @@ object Invoices : DocumentSchema<Invoice>("invoices", Invoice::class) {
         val minQty = integer("min_qty")
         val minPrice = double("min_price")
         val excessPrice = double("excess_price")
-
-        companion object {
-            fun new(
-                title: String,
-                qty: Int,
-                machine: String,
-                technique: String,
-                minQty: Int,
-                minPrice: Double,
-                excessPrice: Double
-            ): Offset = Offset(title, qty, machine, technique, minQty, minPrice, excessPrice)
-        }
     }
 
-    class Others : ListColumn<Other, Invoices>("others", Other::class) {
+    class Others : ListColumn<Invoice.Other, Invoices>("others", Invoice.Other::class) {
         val title = string("title")
         val qty = integer("qty")
         val price = double("price")
-
-        companion object {
-            fun new(
-                title: String,
-                qty: Int,
-                price: Double
-            ): Other = Other(title, qty, price)
-        }
     }
 }
 
@@ -114,54 +73,95 @@ data class Invoice(
     val paid: Boolean,
     val done: Boolean
 ) : Document<Invoices> {
+    companion object {
+        fun new(
+            employeeId: Id<String, Employees>,
+            customerId: Id<String, Customers>,
+            dateTime: DateTime,
+            plates: List<Plate>,
+            offsets: List<Offset>,
+            others: List<Other>,
+            note: String
+        ): Invoice = Invoice(
+            transaction { Invoices.find().lastOrNull()?.no ?: 0 }!! + 1,
+            employeeId, customerId, dateTime, plates, offsets, others, note, false, false, false)
+    }
 
     override lateinit var id: Id<String, Invoices>
 
     val total: Double get() = plates.sum() + offsets.sum() + others.sum()
 
     private fun List<Order>.sum() = sumByDouble { it.total }
-}
 
-data class Plate(
-    override val title: String,
-    override val qty: Int,
-    val machine: String,
-    override val price: Double
-) : Titled, SimpleOrder
+    data class Plate(
+        override val title: String,
+        override val qty: Int,
+        val machine: String,
+        override val price: Double
+    ) : Titled, SimpleOrder {
+        companion object {
+            fun new(
+                title: String,
+                qty: Int,
+                machine: String,
+                price: Double
+            ): Plate = Plate(title, qty, machine, price)
+        }
+    }
 
-data class Offset(
-    override val title: String,
-    override val qty: Int,
-    val machine: String,
-    val technique: String,
-    override val minQty: Int,
-    override val minPrice: Double,
-    override val excessPrice: Double
-) : Titled, OffsetOrder {
-
-    override val tech: Technique get() = Technique.valueOf(technique)
-
-    sealed class Tech(resourced: Resourced, id: String) : StringResource(resourced.getString(id)) {
-        companion object : Listable<Tech> {
-            override fun listAll(resourced: Resourced): ObservableList<Tech> = observableListOf(
-                OneSideTech(resourced),
-                TwoSideSameTech(resourced),
-                TwoSideDifferentSideTech(resourced))
+    data class Offset(
+        override val title: String,
+        override val qty: Int,
+        val machine: String,
+        val technique: String,
+        override val minQty: Int,
+        override val minPrice: Double,
+        override val excessPrice: Double
+    ) : Titled, OffsetOrder {
+        companion object {
+            fun new(
+                title: String,
+                qty: Int,
+                machine: String,
+                technique: String,
+                minQty: Int,
+                minPrice: Double,
+                excessPrice: Double
+            ): Offset = Offset(title, qty, machine, technique, minQty, minPrice, excessPrice)
         }
 
-        class OneSideTech(resourced: Resourced) : Tech(resourced, R.string.time)
-        class TwoSideSameTech(resourced: Resourced) : Tech(resourced, R.string.time)
-        class TwoSideDifferentSideTech(resourced: Resourced) : Tech(resourced, R.string.time)
+        override val tech: Invoice.Offset.Technique get() = Technique.valueOf(technique)
+
+        sealed class Tech(resourced: Resourced, id: String) : StringResource(resourced.getString(id)) {
+            companion object : Listable<Tech> {
+                override fun listAll(resourced: Resourced): ObservableList<Tech> = observableListOf(
+                    OneSideTech(resourced),
+                    TwoSideSameTech(resourced),
+                    TwoSideDifferentSideTech(resourced))
+            }
+
+            class OneSideTech(resourced: Resourced) : Tech(resourced, R.string.time)
+            class TwoSideSameTech(resourced: Resourced) : Tech(resourced, R.string.time)
+            class TwoSideDifferentSideTech(resourced: Resourced) : Tech(resourced, R.string.time)
+        }
+
+        enum class Technique {
+
+            ONE_SIDE, TWO_SIDE_SAME, TWO_SIDE_DIFFERENT
+        }
     }
 
-    enum class Technique {
-
-        ONE_SIDE, TWO_SIDE_SAME, TWO_SIDE_DIFFERENT
+    data class Other(
+        override val title: String,
+        override val qty: Int,
+        override val price: Double
+    ) : Titled, SimpleOrder {
+        companion object {
+            fun new(
+                title: String,
+                qty: Int,
+                price: Double
+            ): Invoice.Other = Invoice.Other(title, qty, price)
+        }
     }
 }
-
-data class Other(
-    override val title: String,
-    override val qty: Int,
-    override val price: Double
-) : Titled, SimpleOrder

@@ -2,6 +2,7 @@ package com.hendraanggrian.openpss.ui
 
 import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.db.schemas.Employees
+import com.hendraanggrian.openpss.resources.Resourced
 import javafx.fxml.Initializable
 import kotlinx.nosql.Id
 import java.net.URL

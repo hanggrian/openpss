@@ -3,9 +3,9 @@ package com.hendraanggrian.openpss.ui.wage
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.db.schemas.Recesses
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.ui.Resourced
-import com.hendraanggrian.openpss.utils.onActionFilter
-import com.hendraanggrian.openpss.utils.style
+import com.hendraanggrian.openpss.resources.Resourced
+import com.hendraanggrian.openpss.util.onActionFilter
+import com.hendraanggrian.openpss.util.style
 import javafx.scene.control.ChoiceBox
 import javafx.scene.control.Dialog
 import javafx.scene.control.Separator

@@ -5,6 +5,7 @@ import com.hendraanggrian.openpss.BuildConfig.DEBUG
 import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.db.schemas.Employees
+import com.hendraanggrian.openpss.db.schemas.GlobalSetting
 import com.hendraanggrian.openpss.db.schemas.GlobalSettings
 import com.hendraanggrian.openpss.db.schemas.Invoices
 import com.hendraanggrian.openpss.db.schemas.OffsetPrices
@@ -12,8 +13,8 @@ import com.hendraanggrian.openpss.db.schemas.Payments
 import com.hendraanggrian.openpss.db.schemas.PlatePrices
 import com.hendraanggrian.openpss.db.schemas.Recesses
 import com.hendraanggrian.openpss.db.schemas.Wages
-import com.hendraanggrian.openpss.utils.isEmpty
-import com.hendraanggrian.openpss.utils.style
+import com.hendraanggrian.openpss.util.isEmpty
+import com.hendraanggrian.openpss.util.style
 import com.mongodb.MongoClientOptions.Builder
 import com.mongodb.MongoCredential.createCredential
 import com.mongodb.MongoException
@@ -63,11 +64,11 @@ suspend fun login(
     var employee: Employee? = null
     transaction {
         // check first time installation
-        GlobalSettings.listKeys().forEach {
-            if (GlobalSettings.find { key.equal(it) }.isEmpty()) GlobalSettings.insert(GlobalSettings.new(it))
+        GlobalSetting.listKeys().forEach {
+            if (GlobalSettings.find { key.equal(it) }.isEmpty()) GlobalSettings.insert(GlobalSetting.new(it))
         }
         // add default employee
-        if (Employees.find { name.equal(Employees.BACKDOOR.name) }.isEmpty()) Employees.insert(Employees.BACKDOOR)
+        if (Employees.find { name.equal(Employee.BACKDOOR.name) }.isEmpty()) Employees.insert(Employee.BACKDOOR)
         // check login credentials
         employee = checkNotNull(Employees.find { name.equal(employeeName) }.singleOrNull()) { "Employee not found" }
         check(employee!!.password == employeePassword) { "Invalid password" }

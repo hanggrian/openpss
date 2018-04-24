@@ -4,7 +4,6 @@ import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.controls.UserDialog
 import com.hendraanggrian.openpss.db.buildQuery
 import com.hendraanggrian.openpss.db.schemas.Customer
-import com.hendraanggrian.openpss.db.schemas.Customer.Contact
 import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.io.properties.SettingsFile.CUSTOMER_PAGINATION_ITEMS
@@ -53,7 +52,7 @@ import java.util.ResourceBundle
 import java.util.regex.Pattern.CASE_INSENSITIVE
 import kotlin.math.ceil
 
-class CustomerController : Controller(), Refreshable, Selectable<Customer>, Selectable2<Pair<Contact, String>> {
+class CustomerController : Controller(), Refreshable, Selectable<Customer>, Selectable2<Customer.Contact> {
 
     @FXML lateinit var editNameButton: Button
     @FXML lateinit var editAddressButton: Button
@@ -75,9 +74,9 @@ class CustomerController : Controller(), Refreshable, Selectable<Customer>, Sele
     @FXML lateinit var noteLabel1: Label
     @FXML lateinit var noteLabel2: Label
     @FXML lateinit var contactLabel: Label
-    @FXML lateinit var contactTable: TableView<Pair<Contact, String>>
-    @FXML lateinit var typeColumn: TableColumn<Pair<Contact, String>, String>
-    @FXML lateinit var valueColumn: TableColumn<Pair<Contact, String>, String>
+    @FXML lateinit var contactTable: TableView<Customer.Contact>
+    @FXML lateinit var typeColumn: TableColumn<Customer.Contact, String>
+    @FXML lateinit var valueColumn: TableColumn<Customer.Contact, String>
     @FXML lateinit var coverLabel: Label
 
     private lateinit var customerList: ListView<Customer>
@@ -92,8 +91,8 @@ class CustomerController : Controller(), Refreshable, Selectable<Customer>, Sele
         addressLabel1.font = getFont(R.font.sf_pro_text_bold)
         noteLabel1.font = getFont(R.font.sf_pro_text_bold)
         contactLabel.font = getFont(R.font.sf_pro_text_bold)
-        typeColumn.stringCell { first.toString() }
-        valueColumn.stringCell { second }
+        typeColumn.stringCell { type }
+        valueColumn.stringCell { value }
     }
 
     override fun refresh() = customerPagination.pageFactoryProperty().bind(bindingOf(searchField.textProperty()) {
@@ -128,11 +127,7 @@ class CustomerController : Controller(), Refreshable, Selectable<Customer>, Sele
             addressLabel2.bindLabel { selected?.address.orEmpty() }
             noteLabel2.bindLabel { selected?.note.orEmpty() }
             contactTable.itemsProperty().bind(bindingOf(customerList.selectionModel.selectedItemProperty()) {
-                when (selected) {
-                    null -> emptyObservableList()
-                    else -> (selected!!.phones.map { Pair(Contact.Phone(this), it) } +
-                        selected!!.emails.map { Pair(Contact.Email(this), it) }).toObservableList()
-                }
+                selected?.contacts?.toObservableList() ?: emptyObservableList()
             })
             coverLabel.visibleProperty().bind(customerList.selectionModel.selectedItemProperty().isNull)
             customerList
@@ -141,7 +136,7 @@ class CustomerController : Controller(), Refreshable, Selectable<Customer>, Sele
 
     override val selectionModel: SelectionModel<Customer> get() = customerList.selectionModel
 
-    override val selectionModel2: SelectionModel<Pair<Contact, String>> get() = contactTable.selectionModel
+    override val selectionModel2: SelectionModel<Customer.Contact> get() = contactTable.selectionModel
 
     @FXML fun addCustomer() = UserDialog(this, R.string.add_customer, R.image.ic_customer)
         .showAndWait()
@@ -192,31 +187,14 @@ class CustomerController : Controller(), Refreshable, Selectable<Customer>, Sele
 
     @FXML fun addContact() = AddContactDialog(this).showAndWait().ifPresent {
         transaction {
-            val (type, value) = it
-            findByDoc(Customers, selected!!).projection {
-                when (type) {
-                    is Contact.Phone -> phones
-                    else -> emails
-                }
-            }.update(when (type) {
-                is Contact.Phone -> selected!!.phones
-                else -> selected!!.emails
-            } + value)
+            findByDoc(Customers, selected!!).projection { contacts }.update(selected!!.contacts + it)
             reload(selected!!)
         }
     }
 
     @FXML fun deleteContact() = yesNoAlert(R.string.delete_contact) {
         transaction {
-            findByDoc(Customers, selected!!).projection {
-                when (selected2!!.first) {
-                    is Contact.Phone -> phones
-                    else -> emails
-                }
-            }.update(when (selected2!!.first) {
-                is Contact.Phone -> selected!!.phones
-                else -> selected!!.emails
-            } - selected2!!.second)
+            findByDoc(Customers, selected!!).projection { contacts }.update(selected!!.contacts - selected2!!)
             reload(selected!!)
         }
     }

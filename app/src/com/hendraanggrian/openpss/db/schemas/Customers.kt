@@ -10,8 +10,9 @@ import com.hendraanggrian.openpss.ui.Resourced
 import com.hendraanggrian.openpss.ui.StringResource
 import javafx.collections.ObservableList
 import kotlinx.nosql.Id
+import kotlinx.nosql.ListColumn
 import kotlinx.nosql.date
-import kotlinx.nosql.listOfString
+import kotlinx.nosql.integer
 import kotlinx.nosql.mongodb.DocumentSchema
 import kotlinx.nosql.string
 import ktfx.collections.observableListOf
@@ -22,10 +23,21 @@ object Customers : DocumentSchema<Customer>("customers", Customer::class), Named
     val since = date("since")
     val address = string("address")
     val note = string("note")
-    val phones = listOfString("phones")
-    val emails = listOfString("emails")
+    val contacts = Contacts()
 
-    fun new(name: String): Customer = Customer(name, dbDate, "", "", listOf(), listOf())
+    fun new(name: String): Customer = Customer(name, dbDate, "", "", listOf())
+
+    class Contacts : ListColumn<Customer.Contact, Invoices>("contacts", Customer.Contact::class) {
+        val type = string("type")
+        val value = integer("value")
+
+        companion object {
+            fun new(
+                type: Customer.Contact.Type,
+                value: String
+            ): Customer.Contact = Customer.Contact(type.toString(), value)
+        }
+    }
 }
 
 data class Customer(
@@ -33,22 +45,27 @@ data class Customer(
     val since: LocalDate,
     val address: String,
     var note: String,
-    var phones: List<String>,
-    var emails: List<String>
+    var contacts: List<Contact>
 ) : Document<Customers>, Named {
 
     override lateinit var id: Id<String, Customers>
 
     override fun toString(): String = name
 
-    sealed class Contact(resourced: Resourced, id: String) : StringResource(resourced, id) {
-        companion object : Listable<Contact> {
-            override fun listAll(resourced: Resourced): ObservableList<Contact> = observableListOf(
-                Phone(resourced),
-                Email(resourced))
-        }
+    data class Contact(
+        val type: String,
+        val value: String
+    ) {
 
-        class Phone(resourced: Resourced) : Contact(resourced, R.string.phone)
-        class Email(resourced: Resourced) : Contact(resourced, R.string.email)
+        sealed class Type(resourced: Resourced, id: String) : StringResource(resourced, id) {
+            companion object : Listable<Type> {
+                override fun listAll(resourced: Resourced): ObservableList<Type> = observableListOf(
+                    Phone(resourced),
+                    Email(resourced))
+            }
+
+            class Phone(resourced: Resourced) : Type(resourced, R.string.phone)
+            class Email(resourced: Resourced) : Type(resourced, R.string.email)
+        }
     }
 }

@@ -22,6 +22,7 @@ import ktfx.coroutines.listener
 import ktfx.layouts._GridPane
 import ktfx.layouts.choiceBox
 import ktfx.layouts.label
+import ktfx.listeners.converter
 
 class AddOffsetDialog(resourced: Resourced) : AddOrderDialog<Invoice.Offset>(
     resourced,
@@ -45,6 +46,7 @@ class AddOffsetDialog(resourced: Resourced) : AddOrderDialog<Invoice.Offset>(
         } col 1 row 2
         label(getString(R.string.technique)) col 0 row 3
         techniqueChoice = choiceBox(Invoice.Offset.Technique.values().toObservableList()) {
+            converter { toString { it!!.toString(this@AddOffsetDialog) } }
             selectionModel.selectFirst()
         } col 1 row 3
         label(getString(R.string.min_qty)) col 0 row 4
@@ -71,12 +73,12 @@ class AddOffsetDialog(resourced: Resourced) : AddOrderDialog<Invoice.Offset>(
         titleField.text,
         qtyField.value,
         machineChoice.value.name,
-        techniqueChoice.value.name,
+        techniqueChoice.value,
         minQtyField.value,
         minPriceField.value,
         excessPriceField.value)
 
-    override val tech: Invoice.Offset.Technique get() = techniqueChoice.value
+    override val typedTechnique: Invoice.Offset.Technique get() = techniqueChoice.value
 
     override val qty: Int get() = qtyField.value
 

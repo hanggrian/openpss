@@ -17,7 +17,7 @@ import java.util.WeakHashMap
  * To avoid creating the same instances over and over again, we cache those converters in this weak map for reuse,
  * using its class name as key.
  */
-private val stringConverters = WeakHashMap<String, StringConverter<*>>()
+private val stringConverters: MutableMap<String, StringConverter<*>> = WeakHashMap<String, StringConverter<*>>()
 
 /** Number decimal string converter. */
 val numberConverter: NumberStringConverter get() = getOrStore { NumberStringConverter() }
@@ -38,12 +38,5 @@ val currencyConverter: CurrencyStringConverter
 fun clearConverters() = stringConverters.clear()
 
 /** Obtain converter listAll cache, or create a new one and store it before returning it back. */
-private inline fun <reified T : StringConverter<*>> getOrStore(creator: () -> T): T = T::class.java.canonicalName.let {
-    @Suppress("UNCHECKED_CAST")
-    var converter: T? = stringConverters[it] as? T
-    if (converter == null) {
-        converter = creator()
-        stringConverters[it] = converter
-    }
-    return converter
-}
+private inline fun <reified T : StringConverter<*>> getOrStore(defaultValue: () -> T): T =
+    stringConverters.getOrPut(T::class.java.canonicalName) { defaultValue() } as T

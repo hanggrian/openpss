@@ -9,8 +9,8 @@ import com.hendraanggrian.openpss.db.schemas.Payment.Method.TRANSFER
 import com.hendraanggrian.openpss.db.schemas.Payments
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.layouts.DateBox
-import com.hendraanggrian.openpss.util.PATTERN_TIME
 import com.hendraanggrian.openpss.ui.FinancialController
+import com.hendraanggrian.openpss.util.PATTERN_TIME
 import com.hendraanggrian.openpss.util.currencyCell
 import com.hendraanggrian.openpss.util.findById
 import com.hendraanggrian.openpss.util.matches
@@ -46,7 +46,7 @@ class PaymentController : FinancialController<Payment>() {
         timeColumn.stringCell { dateTime.toString(PATTERN_TIME) }
         employeeColumn.stringCell { transaction { findById(Employees, employeeId).single() }!! }
         valueColumn.currencyCell { value }
-        methodColumn.stringCell { getMethodText(this@PaymentController) }
+        methodColumn.stringCell { typedMethod.toString(this@PaymentController) }
     }
 
     override val table: TableView<Payment> get() = paymentTable

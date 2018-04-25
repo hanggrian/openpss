@@ -83,9 +83,20 @@
             <ToolBar>
                 <SplitMenuButton mnemonicParsing="false" fx:id="searchButton" onAction="#selectCustomer"
                                  text="%select_customer">
+                    <graphic>
+                        <ImageView>
+                            <Image url="@/image/btn_user.png"/>
+                        </ImageView>
+                    </graphic>
                     <items>
                         <MenuItem mnemonicParsing="false" fx:id="customerButtonItem" onAction="#clearCustomer"
-                                  text="%clear"/>
+                                  text="%clear">
+                            <graphic>
+                                <ImageView>
+                                    <Image url="@/image/menu_clear.png"/>
+                                </ImageView>
+                            </graphic>
+                        </MenuItem>
                     </items>
                 </SplitMenuButton>
                 <ChoiceBox fx:id="statusChoice"/>

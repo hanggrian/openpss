@@ -96,7 +96,7 @@ class AddPaymentDialog(
             } row 3 col 1 colSpans 2
             label(getString(R.string.payment_method)) row 6 col 0
             methodChoice = choiceBox(values().toObservableList()) {
-                converter { toString { it!!.asString(this@AddPaymentDialog) } }
+                converter { toString { it!!.toString(this@AddPaymentDialog) } }
             } row 6 col 1 colSpans 2
             label(getString(R.string.transfer_reference)) { bindDisable() } row 7 col 0
             transferField = textField { bindDisable() } row 7 col 1 colSpans 2
@@ -118,7 +118,7 @@ class AddPaymentDialog(
         setResultConverter {
             when (it) {
                 CANCEL -> null
-                else -> Payment.new(invoice.id, employee.id, valueField.value,
+                else -> Payment.new(invoice.id, employee.id, methodChoice.value, valueField.value,
                     when (methodChoice.selectionModel.selectedItem) {
                         CASH -> null
                         else -> transferField.text

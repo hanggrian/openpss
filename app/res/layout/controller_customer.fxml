@@ -67,20 +67,25 @@
             <ToolBar>
                 <TextField styleClass="search-textfield" fx:id="searchField" promptText="%search_customer"
                            HBox.hgrow="ALWAYS"/>
-                <Button mnemonicParsing="false" fx:id="clearSearchButton" onAction="#clearSearch">
+                <MenuButton mnemonicParsing="false">
                     <graphic>
                         <ImageView pickOnBounds="true" preserveRatio="true">
-                            <Image url="@/image/btn_clear_inactive.png"/>
+                            <Image url="@/image/btn_filter.png"/>
                         </ImageView>
                     </graphic>
                     <tooltip>
                         <Tooltip text="%clear"/>
                     </tooltip>
-                </Button>
+                    <items>
+                        <CheckMenuItem mnemonicParsing="false" fx:id="filterNameItem" text="%name" selected="true"/>
+                        <CheckMenuItem mnemonicParsing="false" fx:id="filterAddressItem" text="%address"/>
+                        <CheckMenuItem mnemonicParsing="false" fx:id="filterNoteItem" text="%note"/>
+                    </items>
+                </MenuButton>
             </ToolBar>
             <Pagination fx:id="customerPagination" style="-fx-page-information-alignment: right;" VBox.vgrow="ALWAYS"/>
         </VBox>
-        <GridPane hgap="8" vgap="8">
+        <GridPane hgap="16" vgap="16">
             <columnConstraints>
                 <ColumnConstraints hgrow="NEVER"/>
                 <ColumnConstraints hgrow="ALWAYS"/>
@@ -93,28 +98,33 @@
                 <RowConstraints vgrow="ALWAYS"/>
             </rowConstraints>
             <padding>
-                <Insets topRightBottomLeft="8"/>
+                <Insets topRightBottomLeft="16"/>
             </padding>
             <Label fx:id="nameLabel" maxWidth="1.7976931348623157E308"
-                   GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.columnSpan="2"/>
-            <Label fx:id="idLabel1" text="%id"
-                   GridPane.rowIndex="1" GridPane.columnIndex="0"/>
-            <Label fx:id="idLabel2" maxWidth="1.7976931348623157E308" style="-fx-font-weight: bold;"
+                   GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+            <ImageView fx:id="idImage" GridPane.rowIndex="1" GridPane.columnIndex="0">
+                <Image url="@/image/btn_user.png"/>
+            </ImageView>
+            <Label fx:id="idLabel" maxWidth="1.7976931348623157E308" style="-fx-font-weight: bold;"
                    GridPane.rowIndex="1" GridPane.columnIndex="1"/>
-            <Label fx:id="sinceLabel1" text="%since"
-                   GridPane.rowIndex="2" GridPane.columnIndex="0"/>
-            <Label fx:id="sinceLabel2" maxWidth="1.7976931348623157E308"
+            <ImageView fx:id="sinceImage" GridPane.rowIndex="2" GridPane.columnIndex="0">
+                <Image url="@/image/btn_date.png"/>
+            </ImageView>
+            <Label fx:id="sinceLabel" maxWidth="1.7976931348623157E308"
                    GridPane.rowIndex="2" GridPane.columnIndex="1"/>
-            <Label fx:id="addressLabel1" text="%address"
-                   GridPane.rowIndex="3" GridPane.columnIndex="0"/>
-            <Label fx:id="addressLabel2" maxWidth="1.7976931348623157E308"
+            <ImageView fx:id="addressImage" GridPane.rowIndex="3" GridPane.columnIndex="0">
+                <Image url="@/image/btn_address.png"/>
+            </ImageView>
+            <Label fx:id="addressLabel" maxWidth="1.7976931348623157E308"
                    GridPane.rowIndex="3" GridPane.columnIndex="1"/>
-            <Label fx:id="noteLabel1" text="%note"
-                   GridPane.rowIndex="4" GridPane.columnIndex="0"/>
-            <Label fx:id="noteLabel2" maxWidth="1.7976931348623157E308"
+            <ImageView fx:id="noteImage" GridPane.rowIndex="4" GridPane.columnIndex="0">
+                <Image url="@/image/btn_note.png"/>
+            </ImageView>
+            <Label fx:id="noteLabel" maxWidth="1.7976931348623157E308"
                    GridPane.rowIndex="4" GridPane.columnIndex="1"/>
-            <Label fx:id="contactLabel" text="%contact"
-                   GridPane.rowIndex="5" GridPane.columnIndex="0" GridPane.valignment="TOP"/>
+            <ImageView fx:id="contactImage" GridPane.rowIndex="5" GridPane.columnIndex="0" GridPane.valignment="TOP">
+                <Image url="@/image/btn_contact.png"/>
+            </ImageView>
             <TableView fx:id="contactTable"
                        GridPane.rowIndex="5" GridPane.columnIndex="1">
                 <columns>

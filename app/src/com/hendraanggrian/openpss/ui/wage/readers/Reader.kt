@@ -4,7 +4,7 @@ import com.hendraanggrian.openpss.ui.wage.Attendee
 import javafx.collections.ObservableList
 import javafx.scene.control.Separator
 import javafx.stage.FileChooser
-import ktfx.collections.observableListOf
+import ktfx.collections.toMutableObservableList
 import java.io.File
 
 /** A file readers that generates collection of [Attendee] given input file. */
@@ -26,8 +26,10 @@ abstract class Reader {
     override fun toString(): String = name
 
     companion object {
-        fun listAll(): ObservableList<Any> = observableListOf(EClockingReader, Separator(), TestReader)
+        private val READERS: List<Reader> get() = listOf(EClockingReader, TestReader)
 
-        fun of(name: String): Reader = listOf(EClockingReader, TestReader).single { it.name == name }
+        fun listAll(): ObservableList<Any> = READERS.toMutableObservableList<Any>().apply { add(1, Separator()) }
+
+        fun of(name: String): Reader = READERS.single { it.name == name }
     }
 }

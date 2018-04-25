@@ -14,11 +14,11 @@ import com.hendraanggrian.openpss.db.schemas.calculateDue
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.io.properties.SettingsFile.INVOICE_PAGINATION_ITEMS
 import com.hendraanggrian.openpss.layouts.DateBox
-import com.hendraanggrian.openpss.util.PATTERN_DATETIME_EXTENDED
 import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.Selectable
 import com.hendraanggrian.openpss.ui.Selectable2
+import com.hendraanggrian.openpss.util.PATTERN_DATETIME_EXTENDED
 import com.hendraanggrian.openpss.util.controller
 import com.hendraanggrian.openpss.util.currencyCell
 import com.hendraanggrian.openpss.util.doneCell
@@ -118,7 +118,7 @@ class InvoiceController : Controller(), Refreshable, Selectable<Invoice>, Select
         paymentDateTimeColumn.stringCell { dateTime.toString(PATTERN_DATETIME_EXTENDED) }
         paymentEmployeeColumn.stringCell { transaction { findById(Employees, employeeId).single() }!! }
         paymentValueColumn.currencyCell { value }
-        paymentMethodColumn.stringCell { getMethodText(this@InvoiceController) }
+        paymentMethodColumn.stringCell { typedMethod.toString(this@InvoiceController) }
     }
 
     override fun refresh() = invoicePagination.pageFactoryProperty().bind(bindingOf(customerProperty,

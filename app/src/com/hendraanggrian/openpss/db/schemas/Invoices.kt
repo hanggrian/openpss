@@ -7,10 +7,9 @@ import com.hendraanggrian.openpss.db.Order
 import com.hendraanggrian.openpss.db.SimpleOrder
 import com.hendraanggrian.openpss.db.Titled
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.resources.Listable
-import com.hendraanggrian.openpss.resources.Resourced
-import com.hendraanggrian.openpss.resources.StringResource
-import javafx.collections.ObservableList
+import com.hendraanggrian.openpss.resources.StringResource2
+import com.hendraanggrian.openpss.util.enumValueOfId
+import com.hendraanggrian.openpss.util.id
 import kotlinx.nosql.Id
 import kotlinx.nosql.ListColumn
 import kotlinx.nosql.boolean
@@ -20,7 +19,6 @@ import kotlinx.nosql.id
 import kotlinx.nosql.integer
 import kotlinx.nosql.mongodb.DocumentSchema
 import kotlinx.nosql.string
-import ktfx.collections.observableListOf
 import org.joda.time.DateTime
 
 object Invoices : DocumentSchema<Invoice>("invoices", Invoice::class) {
@@ -123,31 +121,25 @@ data class Invoice(
                 title: String,
                 qty: Int,
                 machine: String,
-                technique: String,
+                technique: Technique,
                 minQty: Int,
                 minPrice: Double,
                 excessPrice: Double
-            ): Offset = Offset(title, qty, machine, technique, minQty, minPrice, excessPrice)
+            ): Offset = Offset(title, qty, machine, technique.id, minQty, minPrice, excessPrice)
         }
 
-        override val tech: Invoice.Offset.Technique get() = Technique.valueOf(technique)
+        override val typedTechnique: Technique get() = enumValueOfId(technique)
 
-        sealed class Tech(resourced: Resourced, id: String) : StringResource(resourced.getString(id)) {
-            companion object : Listable<Tech> {
-                override fun listAll(resourced: Resourced): ObservableList<Tech> = observableListOf(
-                    OneSideTech(resourced),
-                    TwoSideSameTech(resourced),
-                    TwoSideDifferentSideTech(resourced))
+        enum class Technique : StringResource2 {
+            ONE_SIDE {
+                override val resourceId: String = R.string._technique_one_side
+            },
+            TWO_SIDE_EQUAL {
+                override val resourceId: String = R.string._technique_two_side_equal
+            },
+            TWO_SIDE_DISTINCT {
+                override val resourceId: String = R.string._technique_two_side_distinct
             }
-
-            class OneSideTech(resourced: Resourced) : Tech(resourced, R.string.time)
-            class TwoSideSameTech(resourced: Resourced) : Tech(resourced, R.string.time)
-            class TwoSideDifferentSideTech(resourced: Resourced) : Tech(resourced, R.string.time)
-        }
-
-        enum class Technique {
-
-            ONE_SIDE, TWO_SIDE_SAME, TWO_SIDE_DIFFERENT
         }
     }
 

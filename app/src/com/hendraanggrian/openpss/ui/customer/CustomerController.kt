@@ -13,7 +13,6 @@ import com.hendraanggrian.openpss.ui.Selectable
 import com.hendraanggrian.openpss.ui.Selectable2
 import com.hendraanggrian.openpss.util.PATTERN_DATE
 import com.hendraanggrian.openpss.util.findByDoc
-import com.hendraanggrian.openpss.util.getFont
 import com.hendraanggrian.openpss.util.isNotEmpty
 import com.hendraanggrian.openpss.util.matches
 import com.hendraanggrian.openpss.util.stringCell
@@ -23,6 +22,7 @@ import javafx.fxml.FXML
 import javafx.scene.Node
 import javafx.scene.control.Button
 import javafx.scene.control.ButtonType.OK
+import javafx.scene.control.CheckMenuItem
 import javafx.scene.control.Label
 import javafx.scene.control.ListView
 import javafx.scene.control.Pagination
@@ -33,6 +33,7 @@ import javafx.scene.control.TableView
 import javafx.scene.control.TextField
 import javafx.scene.image.ImageView
 import javafx.scene.layout.Pane
+import javafx.scene.text.Font.font
 import javafx.util.Callback
 import kotlinx.nosql.mongodb.MongoDBSession
 import kotlinx.nosql.update
@@ -47,6 +48,7 @@ import ktfx.collections.emptyObservableList
 import ktfx.collections.toMutableObservableList
 import ktfx.collections.toObservableList
 import ktfx.layouts.listView
+import ktfx.layouts.tooltip
 import ktfx.scene.control.errorAlert
 import ktfx.scene.control.inputDialog
 import java.net.URL
@@ -62,20 +64,22 @@ class CustomerController : Controller(), Refreshable, Selectable<Customer>, Sele
     @FXML lateinit var addContactButton: Button
     @FXML lateinit var deleteContactButton: Button
     @FXML lateinit var searchField: TextField
-    @FXML lateinit var clearSearchButton: Button
+    @FXML lateinit var filterNameItem: CheckMenuItem
+    @FXML lateinit var filterAddressItem: CheckMenuItem
+    @FXML lateinit var filterNoteItem: CheckMenuItem
     @FXML lateinit var splitPane: SplitPane
     @FXML lateinit var customerPane: Pane
     @FXML lateinit var customerPagination: Pagination
     @FXML lateinit var nameLabel: Label
-    @FXML lateinit var idLabel1: Label
-    @FXML lateinit var idLabel2: Label
-    @FXML lateinit var sinceLabel1: Label
-    @FXML lateinit var sinceLabel2: Label
-    @FXML lateinit var addressLabel1: Label
-    @FXML lateinit var addressLabel2: Label
-    @FXML lateinit var noteLabel1: Label
-    @FXML lateinit var noteLabel2: Label
-    @FXML lateinit var contactLabel: Label
+    @FXML lateinit var idImage: ImageView
+    @FXML lateinit var idLabel: Label
+    @FXML lateinit var sinceImage: ImageView
+    @FXML lateinit var sinceLabel: Label
+    @FXML lateinit var addressImage: ImageView
+    @FXML lateinit var addressLabel: Label
+    @FXML lateinit var noteImage: ImageView
+    @FXML lateinit var noteLabel: Label
+    @FXML lateinit var contactImage: ImageView
     @FXML lateinit var contactTable: TableView<Customer.Contact>
     @FXML lateinit var typeColumn: TableColumn<Customer.Contact, String>
     @FXML lateinit var valueColumn: TableColumn<Customer.Contact, String>
@@ -85,27 +89,35 @@ class CustomerController : Controller(), Refreshable, Selectable<Customer>, Sele
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
-        clearSearchButton.disableProperty().bind(searchField.textProperty().isEmpty)
         customerPane.minWidthProperty().bind(splitPane.widthProperty() * 0.25)
-        nameLabel.font = getFont(R.font.sf_pro_text_bold, 24)
-        idLabel1.font = getFont(R.font.sf_pro_text_bold)
-        sinceLabel1.font = getFont(R.font.sf_pro_text_bold)
-        addressLabel1.font = getFont(R.font.sf_pro_text_bold)
-        noteLabel1.font = getFont(R.font.sf_pro_text_bold)
-        contactLabel.font = getFont(R.font.sf_pro_text_bold)
+        nameLabel.font = font(24.0)
+        idImage.tooltip(getString(R.string.id))
+        sinceImage.tooltip(getString(R.string.since))
+        addressImage.tooltip(getString(R.string.address))
+        noteImage.tooltip(getString(R.string.note))
+        contactImage.tooltip(getString(R.string.contact))
         typeColumn.stringCell { typedType.toString(this@CustomerController) }
         valueColumn.stringCell { value }
     }
 
-    override fun refresh() = customerPagination.pageFactoryProperty().bind(bindingOf(searchField.textProperty()) {
+    override fun refresh() = customerPagination.pageFactoryProperty().bind(bindingOf(
+        searchField.textProperty(),
+        filterNameItem.selectedProperty(),
+        filterAddressItem.selectedProperty(),
+        filterNoteItem.selectedProperty()
+    ) {
         Callback<Int, Node> { page ->
             customerList = listView {
                 later {
                     transaction {
                         val customers = Customers.find {
                             buildQuery {
-                                if (searchField.text.isNotBlank())
-                                    and(name.matches(searchField.text, CASE_INSENSITIVE))
+                                if (searchField.text.isNotBlank()) {
+                                    if (filterNameItem.isSelected) or(name.matches(searchField.text, CASE_INSENSITIVE))
+                                    if (filterAddressItem.isSelected)
+                                        or(address.matches(searchField.text, CASE_INSENSITIVE))
+                                    if (filterNoteItem.isSelected) or(note.matches(searchField.text, CASE_INSENSITIVE))
+                                }
                             }
                         }
                         customerPagination.pageCount =
@@ -124,10 +136,10 @@ class CustomerController : Controller(), Refreshable, Selectable<Customer>, Sele
                 deleteContactButton.disableProperty().bind(!selectedBinding2 or !isFullAccess.toReadOnlyProperty())
             }
             nameLabel.bindLabel { selected?.name.orEmpty() }
-            idLabel2.bindLabel { selected?.id?.toString().orEmpty() }
-            sinceLabel2.bindLabel { selected?.since?.toString(PATTERN_DATE).orEmpty() }
-            addressLabel2.bindLabel { selected?.address ?: "-" }
-            noteLabel2.bindLabel { selected?.note ?: "-" }
+            idLabel.bindLabel { selected?.id?.toString().orEmpty() }
+            sinceLabel.bindLabel { selected?.since?.toString(PATTERN_DATE).orEmpty() }
+            addressLabel.bindLabel { selected?.address ?: "-" }
+            noteLabel.bindLabel { selected?.note ?: "-" }
             contactTable.itemsProperty().bind(bindingOf(customerList.selectionModel.selectedItemProperty()) {
                 selected?.contacts?.toObservableList() ?: emptyObservableList()
             })

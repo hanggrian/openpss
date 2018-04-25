@@ -57,10 +57,10 @@ data class Customer(
 
         enum class Type : StringResource2 {
             PHONE {
-                override val textId: String = R.string.phone
+                override val resourceId: String = R.string.phone
             },
             EMAIL {
-                override val textId: String = R.string.email
+                override val resourceId: String = R.string.email
             };
         }
     }

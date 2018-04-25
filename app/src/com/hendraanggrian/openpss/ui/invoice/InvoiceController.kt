@@ -74,9 +74,9 @@ import kotlin.math.ceil
 
 class InvoiceController : Controller(), Refreshable, Selectable<Invoice>, Selectable2<Payment> {
 
-    @FXML lateinit var viewInvoiceButton: Button
     @FXML lateinit var editInvoiceButton: Button
     @FXML lateinit var deleteInvoiceButton: Button
+    @FXML lateinit var viewInvoiceButton: Button
     @FXML lateinit var addPaymentButton: Button
     @FXML lateinit var deletePaymentButton: Button
     @FXML lateinit var customerButton: SplitMenuButton
@@ -167,9 +167,9 @@ class InvoiceController : Controller(), Refreshable, Selectable<Invoice>, Select
                 }
             }
             later {
-                viewInvoiceButton.disableProperty().bind(!selectedBinding)
                 editInvoiceButton.disableProperty().bind(!selectedBinding or !isFullAccess.toReadOnlyProperty())
                 deleteInvoiceButton.disableProperty().bind(!selectedBinding or !isFullAccess.toReadOnlyProperty())
+                viewInvoiceButton.disableProperty().bind(!selectedBinding)
                 addPaymentButton.disableProperty().bind(!selectedBinding)
                 deletePaymentButton.disableProperty().bind(!selectedBinding2 or !isFullAccess.toReadOnlyProperty())
             }
@@ -194,8 +194,6 @@ class InvoiceController : Controller(), Refreshable, Selectable<Invoice>, Select
         }
     }
 
-    @FXML fun viewInvoice() = ViewInvoiceDialog(this, selected!!).show()
-
     @FXML fun editInvoice() = InvoiceDialog(this@InvoiceController, selected!!)
         .showAndWait()
         .ifPresent {
@@ -214,6 +212,8 @@ class InvoiceController : Controller(), Refreshable, Selectable<Invoice>, Select
         }
         invoiceTable.items.remove(selected)
     }
+
+    @FXML fun viewInvoice() = ViewInvoiceDialog(this, selected!!).show()
 
     @FXML fun addPayment() = AddPaymentDialog(this, _employee, selected!!).showAndWait().ifPresent {
         transaction {

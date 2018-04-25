@@ -20,7 +20,14 @@
         <Button mnemonicParsing="false" onAction="#addEmployee" text="%add_employee">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/toolbar_add_customer.png"/>
+                    <Image url="@/image/toolbar_add.png"/>
+                </ImageView>
+            </graphic>
+        </Button>
+        <Button mnemonicParsing="false" fx:id="deleteButton" onAction="#delete" text="%delete">
+            <graphic>
+                <ImageView pickOnBounds="true" preserveRatio="true">
+                    <Image url="@/image/toolbar_delete.png"/>
                 </ImageView>
             </graphic>
         </Button>
@@ -38,13 +45,6 @@
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
                     <Image url="@/image/toolbar_reset_password.png"/>
-                </ImageView>
-            </graphic>
-        </Button>
-        <Button mnemonicParsing="false" fx:id="deleteButton" onAction="#delete" text="%delete">
-            <graphic>
-                <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/toolbar_delete.png"/>
                 </ImageView>
             </graphic>
         </Button>

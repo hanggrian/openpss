@@ -20,11 +20,10 @@
         <Button mnemonicParsing="false" onAction="#addCustomer" text="%add_customer">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/toolbar_add_customer.png"/>
+                    <Image url="@/image/toolbar_add.png"/>
                 </ImageView>
             </graphic>
         </Button>
-        <Space/>
         <Button mnemonicParsing="false" fx:id="editNameButton" onAction="#editName" text="%edit_name">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
@@ -32,6 +31,7 @@
                 </ImageView>
             </graphic>
         </Button>
+        <Space/>
         <Button mnemonicParsing="false" fx:id="editAddressButton" onAction="#editAddress" text="%edit_address">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">

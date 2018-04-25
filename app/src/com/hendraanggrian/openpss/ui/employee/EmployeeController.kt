@@ -30,19 +30,18 @@ import java.util.ResourceBundle
 
 class EmployeeController : Controller(), Refreshable, Selectable<Employee> {
 
+    @FXML lateinit var deleteButton: Button
     @FXML lateinit var fullAccessButton: Button
     @FXML lateinit var resetPasswordButton: Button
-    @FXML lateinit var deleteButton: Button
-
     @FXML lateinit var employeeTable: TableView<Employee>
     @FXML lateinit var nameColumn: TableColumn<Employee, String>
     @FXML lateinit var fullAccessColumn: TableColumn<Employee, Boolean>
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
+        deleteButton.disableProperty().bind(!selectedBinding)
         fullAccessButton.disableProperty().bind(!selectedBinding)
         resetPasswordButton.disableProperty().bind(!selectedBinding)
-        deleteButton.disableProperty().bind(!selectedBinding)
         nameColumn.stringCell { name }
         fullAccessColumn.doneCell(128) { fullAccess }
     }
@@ -57,7 +56,7 @@ class EmployeeController : Controller(), Refreshable, Selectable<Employee> {
         val employee = Employee.new(it)
         employee.id = transaction { Employees.insert(employee) }!!
         employeeTable.items.add(employee)
-        employeeTable.selectionModel.select(employee)
+        selectionModel.select(employee)
     }
 
     @FXML fun fullAccess() = confirm({ employee ->

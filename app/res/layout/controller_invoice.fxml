@@ -21,15 +21,7 @@
         <Button mnemonicParsing="false" onAction="#addInvoice" text="%add_invoice">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/toolbar_add_invoice.png"/>
-                </ImageView>
-            </graphic>
-        </Button>
-        <Space/>
-        <Button mnemonicParsing="false" fx:id="viewInvoiceButton" onAction="#viewInvoice" text="%view_invoice">
-            <graphic>
-                <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/toolbar_invoice.png"/>
+                    <Image url="@/image/toolbar_add.png"/>
                 </ImageView>
             </graphic>
         </Button>
@@ -44,6 +36,14 @@
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
                     <Image url="@/image/toolbar_delete.png"/>
+                </ImageView>
+            </graphic>
+        </Button>
+        <Space/>
+        <Button mnemonicParsing="false" fx:id="viewInvoiceButton" onAction="#viewInvoice" text="%view_invoice">
+            <graphic>
+                <ImageView pickOnBounds="true" preserveRatio="true">
+                    <Image url="@/image/toolbar_invoice.png"/>
                 </ImageView>
             </graphic>
         </Button>

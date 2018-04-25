@@ -5,9 +5,9 @@ import com.hendraanggrian.openpss.controls.DateTimeDialog
 import com.hendraanggrian.openpss.controls.intField
 import com.hendraanggrian.openpss.db.schemas.Recesses
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.util.PATTERN_DATETIME_EXTENDED
 import com.hendraanggrian.openpss.resources.Resourced
 import com.hendraanggrian.openpss.ui.Selectable
+import com.hendraanggrian.openpss.util.PATTERN_DATETIME_EXTENDED
 import com.hendraanggrian.openpss.util.forceRefresh
 import com.hendraanggrian.openpss.util.getColor
 import com.hendraanggrian.openpss.util.round
@@ -172,8 +172,8 @@ class AttendeePane(
         graphic = imageView {
             imageProperty().bind(bindingOf(hoverProperty()) {
                 Image(when {
-                    isHover -> R.image.btn_clear_active
-                    else -> R.image.btn_clear_inactive
+                    isHover -> R.image.button_clear_active
+                    else -> R.image.button_clear_inactive
                 })
             })
             eventFilter(type = MOUSE_CLICKED) { deleteMenu.fire() }

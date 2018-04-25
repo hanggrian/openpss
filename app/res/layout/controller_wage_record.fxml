@@ -46,7 +46,7 @@
         <SplitMenuButton mnemonicParsing="false" fx:id="undoButton" onAction="#undo" text="%undo">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/btn_undo.png"/>
+                    <Image url="@/image/button_undo.png"/>
                 </ImageView>
             </graphic>
         </SplitMenuButton>

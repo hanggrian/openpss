@@ -7,8 +7,8 @@ import com.hendraanggrian.openpss.db.schemas.Employees
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.io.properties.LoginFile
 import com.hendraanggrian.openpss.resources.Resourced
-import com.hendraanggrian.openpss.ui.main.LoginDialog
 import com.hendraanggrian.openpss.ui.main.ChangePasswordDialog
+import com.hendraanggrian.openpss.ui.main.LoginDialog
 import com.hendraanggrian.openpss.util.controller
 import com.hendraanggrian.openpss.util.getResource
 import com.hendraanggrian.openpss.util.pane
@@ -47,7 +47,7 @@ class App : Application(), Resourced {
     }
 
     override fun start(stage: Stage) {
-        stage.icon = Image(R.image.logo_launcher)
+        stage.icon = Image(R.image.display_launcher)
 
         LoginDialog(this).showAndWait().filter { it is Employee }.ifPresent { employee ->
             employee as Employee

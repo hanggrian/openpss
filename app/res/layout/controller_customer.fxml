@@ -50,7 +50,7 @@
         <Button mnemonicParsing="false" fx:id="addContactButton" onAction="#addContact" text="%add_contact">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/toolbar_contact.png"/>
+                    <Image url="@/image/toolbar_add2.png"/>
                 </ImageView>
             </graphic>
         </Button>
@@ -70,7 +70,7 @@
                 <MenuButton mnemonicParsing="false">
                     <graphic>
                         <ImageView pickOnBounds="true" preserveRatio="true">
-                            <Image url="@/image/btn_filter.png"/>
+                            <Image url="@/image/button_filter.png"/>
                         </ImageView>
                     </graphic>
                     <tooltip>

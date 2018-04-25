@@ -63,10 +63,10 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced 
 
     init {
         style()
-        icon = Image(R.image.ic_launcher)
+        icon = Image(R.image.header_launcher)
         title = APP_NAME
         headerText = getString(R.string.login)
-        graphic = ImageView(R.image.ic_launcher)
+        graphic = ImageView(R.image.header_launcher)
         isResizable = false
         dialogPane.content = gridPane {
             gap = 8.0
@@ -106,7 +106,7 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced 
                 tooltip(getString(R.string.view_password))
                 graphic = ktfx.layouts.imageView {
                     imageProperty().bind(`when`(this@toggleButton.selectedProperty())
-                        then Image(R.image.btn_visibility_on) otherwise Image(R.image.btn_visibility_off))
+                        then Image(R.image.button_visibility_on) otherwise Image(R.image.button_visibility_off))
                 }
                 selectedProperty().listener { _, _, selected ->
                     passwordField1.isVisible = !selected

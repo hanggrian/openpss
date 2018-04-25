@@ -9,11 +9,11 @@ import com.hendraanggrian.openpss.db.schemas.Employees
 import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.io.properties.SettingsFile.INVOICE_QUICK_SELECT_CUSTOMER
-import com.hendraanggrian.openpss.util.PATTERN_DATE
 import com.hendraanggrian.openpss.resources.Resourced
 import com.hendraanggrian.openpss.ui.invoice.order.AddOffsetDialog
 import com.hendraanggrian.openpss.ui.invoice.order.AddOtherDialog
 import com.hendraanggrian.openpss.ui.invoice.order.AddPlateDialog
+import com.hendraanggrian.openpss.util.PATTERN_DATE
 import com.hendraanggrian.openpss.util.currencyCell
 import com.hendraanggrian.openpss.util.currencyConverter
 import com.hendraanggrian.openpss.util.findById
@@ -83,7 +83,7 @@ class InvoiceDialog(
     init {
         style()
         headerTitle = getString(if (!isEdit()) R.string.add_invoice else R.string.edit_invoice)
-        graphicIcon = ImageView(R.image.ic_invoice)
+        graphicIcon = ImageView(R.image.header_invoice)
         dialogPane.content = gridPane {
             gap = 8.0
             label(getString(R.string.employee)) col 0 row 0

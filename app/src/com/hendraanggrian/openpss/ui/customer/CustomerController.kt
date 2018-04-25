@@ -152,7 +152,7 @@ class CustomerController : Controller(), Refreshable, Selectable<Customer>, Sele
 
     override val selectionModel2: SelectionModel<Customer.Contact> get() = contactTable.selectionModel
 
-    @FXML fun addCustomer() = UserDialog(this, R.string.add_customer, R.image.ic_customer)
+    @FXML fun addCustomer() = UserDialog(this, R.string.add_customer, R.image.header_customer)
         .showAndWait()
         .ifPresent {
             transaction {
@@ -168,7 +168,7 @@ class CustomerController : Controller(), Refreshable, Selectable<Customer>, Sele
             }
         }
 
-    @FXML fun editName() = UserDialog(this, R.string.edit_name, R.image.ic_customer, selected!!.name)
+    @FXML fun editName() = UserDialog(this, R.string.edit_name, R.image.header_customer, selected!!.name)
         .showAndWait()
         .ifPresent {
             transaction {
@@ -178,7 +178,7 @@ class CustomerController : Controller(), Refreshable, Selectable<Customer>, Sele
         }
 
     @FXML fun editAddress() =
-        inputDialog(getString(R.string.edit_address), ImageView(R.image.ic_customer), selected!!.address ?: "") {
+        inputDialog(getString(R.string.edit_address), ImageView(R.image.header_customer), selected!!.address ?: "") {
             style()
             contentText = getString(R.string.address)
             dialogPane.lookupButton(OK).disableProperty().bind(editor.textProperty().isBlank())
@@ -190,7 +190,7 @@ class CustomerController : Controller(), Refreshable, Selectable<Customer>, Sele
         }
 
     @FXML fun editNote() =
-        inputDialog(getString(R.string.edit_note), ImageView(R.image.ic_customer), selected!!.note ?: "") {
+        inputDialog(getString(R.string.edit_note), ImageView(R.image.header_customer), selected!!.note ?: "") {
             style()
             contentText = getString(R.string.note)
             dialogPane.lookupButton(OK).disableProperty().bind(editor.textProperty().isBlank())

@@ -11,8 +11,8 @@ import com.hendraanggrian.openpss.io.properties.SettingsFile.CUSTOMER_PAGINATION
 import com.hendraanggrian.openpss.io.properties.SettingsFile.INVOICE_PAGINATION_ITEMS
 import com.hendraanggrian.openpss.io.properties.SettingsFile.INVOICE_QUICK_SELECT_CUSTOMER
 import com.hendraanggrian.openpss.io.properties.SettingsFile.WAGE_READER
-import com.hendraanggrian.openpss.ui.wage.readers.Reader
 import com.hendraanggrian.openpss.resources.Resourced
+import com.hendraanggrian.openpss.ui.wage.readers.Reader
 import com.hendraanggrian.openpss.util.clearConverters
 import com.hendraanggrian.openpss.util.getColor
 import com.hendraanggrian.openpss.util.getFont
@@ -77,7 +77,7 @@ class SettingsDialog(resourced: Resourced, showGlobalSettings: Boolean) : Dialog
     init {
         style()
         headerTitle = getString(R.string.settings)
-        graphicIcon = ImageView(R.image.ic_settings)
+        graphicIcon = ImageView(R.image.header_settings)
         dialogPane.content = vbox {
             spacing = 16.0
             group(R.string.customer) {

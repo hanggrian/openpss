@@ -28,7 +28,7 @@ class ChangePasswordDialog(resourced: Resourced) : Dialog<String>(), Resourced b
     init {
         style()
         headerTitle = getString(R.string.change_password)
-        graphicIcon = ImageView(R.image.ic_change_password)
+        graphicIcon = ImageView(R.image.header_change_password)
         dialogPane.content = gridPane {
             gap = 8.0
             label(R.string.new_employee_must_assign_new_password_this_will_only_occur_once) col 0 row 0 colSpans 2

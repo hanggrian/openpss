@@ -24,7 +24,7 @@ import ktfx.layouts.label
 class AddPlateDialog(resourced: Resourced) : AddOrderDialog<Invoice.Plate>(
     resourced,
     R.string.add_plate,
-    R.image.ic_plate
+    R.image.header_plate
 ), SimpleOrder {
     private lateinit var machineChoice: ChoiceBox<PlatePrice>
     private lateinit var priceField: DoubleField

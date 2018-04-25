@@ -9,8 +9,8 @@ import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_INVOICE
 import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.db.schemas.findGlobalSettings
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.util.PATTERN_DATETIME_EXTENDED
 import com.hendraanggrian.openpss.resources.Resourced
+import com.hendraanggrian.openpss.util.PATTERN_DATETIME_EXTENDED
 import com.hendraanggrian.openpss.util.currencyConverter
 import com.hendraanggrian.openpss.util.findById
 import com.hendraanggrian.openpss.util.getFont
@@ -58,7 +58,7 @@ class ViewInvoiceDialog(resourced: Resourced, invoice: Invoice) : Dialog<Unit>()
         }
         initModality(NONE)
         headerTitle = getString(R.string.view_invoice)
-        graphicIcon = ImageView(R.image.ic_invoice)
+        graphicIcon = ImageView(R.image.header_invoice)
         dialogPane.content = vbox {
             maxWidth()
             alignment = CENTER

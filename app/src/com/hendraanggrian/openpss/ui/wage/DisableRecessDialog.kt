@@ -33,7 +33,7 @@ class DisableRecessDialog(
     init {
         style()
         headerTitle = getString(R.string.disable_recess)
-        graphicIcon = ImageView(R.image.ic_time)
+        graphicIcon = ImageView(R.image.header_time)
         dialogPane.content = gridPane {
             gap = 8.0
             label(getString(R.string.recess)) col 0 row 0

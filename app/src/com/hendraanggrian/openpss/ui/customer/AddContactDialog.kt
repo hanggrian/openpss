@@ -32,7 +32,7 @@ class AddContactDialog(resourced: Resourced) : Dialog<Customer.Contact>(), Resou
     init {
         style()
         headerTitle = getString(R.string.add_contact)
-        graphicIcon = ImageView(R.image.ic_contact)
+        graphicIcon = ImageView(R.image.header_contact)
         dialogPane.content = gridPane {
             gap = 8.0
             label(getString(R.string.type)) col 0 row 0

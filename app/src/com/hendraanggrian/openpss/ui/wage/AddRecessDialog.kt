@@ -26,7 +26,7 @@ class AddRecessDialog(resourced: Resourced) : Dialog<Pair<LocalTime, LocalTime>>
     init {
         style()
         headerTitle = getString(R.string.add_reccess)
-        graphicIcon = ImageView(R.image.ic_time)
+        graphicIcon = ImageView(R.image.header_time)
         dialogPane.content = gridPane {
             gap = 8.0
             label(getString(R.string.start)) col 0 row 0

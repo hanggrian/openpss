@@ -53,7 +53,7 @@ class EmployeeController : Controller(), Refreshable, Selectable<Employee> {
 
     override val selectionModel: SelectionModel<Employee> get() = employeeTable.selectionModel
 
-    @FXML fun addEmployee() = UserDialog(this, R.string.add_employee, R.image.ic_employee).showAndWait().ifPresent {
+    @FXML fun addEmployee() = UserDialog(this, R.string.add_employee, R.image.header_employee).showAndWait().ifPresent {
         val employee = Employee.new(it)
         employee.id = transaction { Employees.insert(employee) }!!
         employeeTable.items.add(employee)

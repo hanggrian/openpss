@@ -51,7 +51,7 @@
         <Button mnemonicParsing="false" fx:id="addPaymentButton" onAction="#addPayment" text="%add_payment">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/toolbar_payment.png"/>
+                    <Image url="@/image/toolbar_add2.png"/>
                 </ImageView>
             </graphic>
         </Button>
@@ -79,13 +79,13 @@
         </Button>
     </ToolBar>
     <SplitPane fx:id="splitPane" orientation="VERTICAL" dividerPositions="0.8" VBox.vgrow="ALWAYS">
-        <VBox fx:id="invoicePane">
+        <VBox>
             <ToolBar>
-                <SplitMenuButton mnemonicParsing="false" fx:id="searchButton" onAction="#selectCustomer"
+                <SplitMenuButton mnemonicParsing="false" fx:id="customerButton" onAction="#selectCustomer"
                                  text="%select_customer">
                     <graphic>
                         <ImageView>
-                            <Image url="@/image/btn_customer.png"/>
+                            <Image url="@/image/button_customer.png"/>
                         </ImageView>
                     </graphic>
                     <items>
@@ -99,7 +99,27 @@
                         </MenuItem>
                     </items>
                 </SplitMenuButton>
-                <ChoiceBox fx:id="statusChoice"/>
+                <MenuButton mnemonicParsing="false" fx:id="paymentButton">
+                    <fx:define>
+                        <ToggleGroup fx:id="paymentGroup"/>
+                    </fx:define>
+                    <graphic>
+                        <ImageView pickOnBounds="true" preserveRatio="true">
+                            <Image url="@/image/button_payment.png"/>
+                        </ImageView>
+                    </graphic>
+                    <tooltip>
+                        <Tooltip text="%filter"/>
+                    </tooltip>
+                    <items>
+                        <RadioMenuItem mnemonicParsing="false" toggleGroup="$paymentGroup" fx:id="anyPaymentItem"
+                                       text="%any" selected="true"/>
+                        <RadioMenuItem mnemonicParsing="false" toggleGroup="$paymentGroup" fx:id="unpaidPaymentItem"
+                                       text="%unpaid"/>
+                        <RadioMenuItem mnemonicParsing="false" toggleGroup="$paymentGroup" fx:id="paidPaymentItem"
+                                       text="%paid"/>
+                    </items>
+                </MenuButton>
                 <Space HBox.hgrow="ALWAYS"/>
                 <fx:define>
                     <ToggleGroup fx:id="pickDateGroup"/>

@@ -6,9 +6,9 @@ import com.hendraanggrian.openpss.BuildConfig.USER
 import com.hendraanggrian.openpss.BuildConfig.VERSION
 import com.hendraanggrian.openpss.BuildConfig.WEBSITE
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.ui.main.github.GitHubApi
 import com.hendraanggrian.openpss.resources.Resourced
 import com.hendraanggrian.openpss.ui.Selectable
+import com.hendraanggrian.openpss.ui.main.github.GitHubApi
 import com.hendraanggrian.openpss.util.browseUrl
 import com.hendraanggrian.openpss.util.getFont
 import com.hendraanggrian.openpss.util.onActionFilter
@@ -64,7 +64,7 @@ class AboutDialog(resourced: Resourced) : Dialog<Unit>(), Resourced by resourced
         title = getString(R.string.about)
         dialogPane.content = hbox {
             paddingAll = 48.0
-            imageView(Image(R.image.logo_launcher))
+            imageView(Image(R.image.display_launcher))
             vbox {
                 alignment = CENTER_LEFT
                 textFlow {

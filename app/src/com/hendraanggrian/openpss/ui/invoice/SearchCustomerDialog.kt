@@ -43,7 +43,7 @@ class SearchCustomerDialog(resourced: Resourced) : Dialog<Customer>(), Resourced
     init {
         style()
         headerTitle = getString(R.string.search_customer)
-        graphicIcon = ImageView(R.image.ic_customer)
+        graphicIcon = ImageView(R.image.header_customer)
         dialogPane.content = vbox {
             searchField = textField {
                 promptText = getString(R.string.customer)

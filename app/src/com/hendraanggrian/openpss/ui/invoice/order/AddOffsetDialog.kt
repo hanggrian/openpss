@@ -27,7 +27,7 @@ import ktfx.listeners.converter
 class AddOffsetDialog(resourced: Resourced) : AddOrderDialog<Invoice.Offset>(
     resourced,
     R.string.add_offset,
-    R.image.ic_offset
+    R.image.header_offset
 ), OffsetOrder {
     private lateinit var machineChoice: ChoiceBox<OffsetPrice>
     private lateinit var techniqueChoice: ChoiceBox<Invoice.Offset.Technique>

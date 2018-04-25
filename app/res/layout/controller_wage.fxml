@@ -51,7 +51,7 @@
         <Button mnemonicParsing="false" onAction="#browse">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/btn_folder.png"/>
+                    <Image url="@/image/button_folder.png"/>
                 </ImageView>
             </graphic>
             <tooltip>

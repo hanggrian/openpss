@@ -36,11 +36,12 @@ import javafx.fxml.FXMLLoader
 import javafx.scene.Node
 import javafx.scene.Scene
 import javafx.scene.control.Button
-import javafx.scene.control.ChoiceBox
 import javafx.scene.control.Label
+import javafx.scene.control.MenuButton
 import javafx.scene.control.MenuItem
 import javafx.scene.control.Pagination
 import javafx.scene.control.RadioButton
+import javafx.scene.control.RadioMenuItem
 import javafx.scene.control.SelectionModel
 import javafx.scene.control.SplitMenuButton
 import javafx.scene.control.SplitPane
@@ -60,7 +61,6 @@ import ktfx.beans.binding.times
 import ktfx.beans.property.toReadOnlyProperty
 import ktfx.beans.value.or
 import ktfx.collections.emptyObservableList
-import ktfx.collections.observableListOf
 import ktfx.collections.toMutableObservableList
 import ktfx.collections.toObservableList
 import ktfx.coroutines.onMouseClicked
@@ -79,14 +79,16 @@ class InvoiceController : Controller(), Refreshable, Selectable<Invoice>, Select
     @FXML lateinit var deleteInvoiceButton: Button
     @FXML lateinit var addPaymentButton: Button
     @FXML lateinit var deletePaymentButton: Button
-    @FXML lateinit var searchButton: SplitMenuButton
+    @FXML lateinit var customerButton: SplitMenuButton
     @FXML lateinit var customerButtonItem: MenuItem
-    @FXML lateinit var statusChoice: ChoiceBox<String>
+    @FXML lateinit var paymentButton: MenuButton
+    @FXML lateinit var anyPaymentItem: RadioMenuItem
+    @FXML lateinit var unpaidPaymentItem: RadioMenuItem
+    @FXML lateinit var paidPaymentItem: RadioMenuItem
     @FXML lateinit var allDateRadio: RadioButton
     @FXML lateinit var pickDateRadio: RadioButton
     @FXML lateinit var dateBox: DateBox
     @FXML lateinit var splitPane: SplitPane
-    @FXML lateinit var invoicePane: Pane
     @FXML lateinit var paymentPane: Pane
     @FXML lateinit var invoicePagination: Pagination
     @FXML lateinit var paymentTable: TableView<Payment>
@@ -101,18 +103,22 @@ class InvoiceController : Controller(), Refreshable, Selectable<Invoice>, Select
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
-        invoicePane.minHeightProperty().bind(splitPane.heightProperty() * 0.5)
         paymentPane.minHeightProperty().bind(splitPane.heightProperty() * 0.2)
 
-        searchButton.textProperty().bind(stringBindingOf(customerProperty) {
+        customerButton.textProperty().bind(stringBindingOf(customerProperty) {
             customerProperty.value?.toString() ?: getString(R.string.search_customer)
         })
         customerButtonItem.disableProperty().bind(customerProperty.isNull)
-
-        statusChoice.run {
-            items = observableListOf(getString(R.string.any), getString(R.string.unpaid), getString(R.string.paid))
-            selectionModel.selectFirst()
-        }
+        paymentButton.textProperty().bind(stringBindingOf(
+            anyPaymentItem.selectedProperty(),
+            unpaidPaymentItem.selectedProperty(),
+            paidPaymentItem.selectedProperty()) {
+            getString(when {
+                unpaidPaymentItem.isSelected -> R.string.unpaid
+                paidPaymentItem.isSelected -> R.string.paid
+                else -> R.string.any
+            })
+        })
         pickDateRadio.graphic.disableProperty().bind(!pickDateRadio.selectedProperty())
 
         paymentDateTimeColumn.stringCell { dateTime.toString(PATTERN_DATETIME_EXTENDED) }
@@ -122,8 +128,8 @@ class InvoiceController : Controller(), Refreshable, Selectable<Invoice>, Select
     }
 
     override fun refresh() = invoicePagination.pageFactoryProperty().bind(bindingOf(customerProperty,
-        statusChoice.valueProperty(), allDateRadio.selectedProperty(), pickDateRadio.selectedProperty(),
-        dateBox.valueProperty) {
+        anyPaymentItem.selectedProperty(), unpaidPaymentItem.selectedProperty(), paidPaymentItem.selectedProperty(),
+        allDateRadio.selectedProperty(), pickDateRadio.selectedProperty(), dateBox.valueProperty) {
         Callback<Int, Node> { page ->
             invoiceTable = tableView {
                 columnResizePolicy = CONSTRAINED_RESIZE_POLICY
@@ -147,10 +153,8 @@ class InvoiceController : Controller(), Refreshable, Selectable<Invoice>, Select
                         val invoices = Invoices.find {
                             buildQuery {
                                 if (customerProperty.value != null) and(customerId.equal(customerProperty.value.id))
-                                when (statusChoice.value) {
-                                    getString(R.string.paid) -> and(paid.equal(true))
-                                    getString(R.string.unpaid) -> and(paid.equal(false))
-                                }
+                                if (unpaidPaymentItem.isSelected) and(paid.equal(false))
+                                if (paidPaymentItem.isSelected) and(paid.equal(true))
                                 if (pickDateRadio.isSelected) and(dateTime.matches(dateBox.value))
                             }
                         }

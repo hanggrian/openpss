@@ -132,13 +132,13 @@ data class Invoice(
 
         enum class Technique : StringResource2 {
             ONE_SIDE {
-                override val resourceId: String = R.string._technique_one_side
+                override val resourceId: String = R.string.one_side
             },
             TWO_SIDE_EQUAL {
-                override val resourceId: String = R.string._technique_two_side_equal
+                override val resourceId: String = R.string.two_side_equal
             },
             TWO_SIDE_DISTINCT {
-                override val resourceId: String = R.string._technique_two_side_distinct
+                override val resourceId: String = R.string.two_side_distinct
             }
         }
     }

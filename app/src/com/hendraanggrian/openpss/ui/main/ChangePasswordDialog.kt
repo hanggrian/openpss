@@ -6,7 +6,6 @@ import com.hendraanggrian.openpss.util.style
 import javafx.scene.control.ButtonType.OK
 import javafx.scene.control.Dialog
 import javafx.scene.control.PasswordField
-import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import ktfx.application.later
 import ktfx.beans.value.isBlank
@@ -16,21 +15,20 @@ import ktfx.layouts.gridPane
 import ktfx.layouts.label
 import ktfx.layouts.passwordField
 import ktfx.scene.control.cancelButton
-import ktfx.scene.control.icon
+import ktfx.scene.control.graphicIcon
+import ktfx.scene.control.headerTitle
 import ktfx.scene.control.okButton
 import ktfx.scene.layout.gap
 
-class ResetPasswordDialog(resourced: Resourced) : Dialog<String>(), Resourced by resourced {
+class ChangePasswordDialog(resourced: Resourced) : Dialog<String>(), Resourced by resourced {
 
     private lateinit var changePasswordField: PasswordField
     private lateinit var confirmPasswordField: PasswordField
 
     init {
         style()
-        icon = Image(R.image.ic_launcher)
-        title = getString(R.string.change_password)
-        headerText = getString(R.string.change_password)
-        graphic = ImageView(R.image.ic_password)
+        headerTitle = getString(R.string.change_password)
+        graphicIcon = ImageView(R.image.ic_change_password)
         dialogPane.content = gridPane {
             gap = 8.0
             label(R.string.new_employee_must_assign_new_password_this_will_only_occur_once) col 0 row 0 colSpans 2

@@ -17,23 +17,23 @@
 }
 
 .search-textfield {
-  -fx-background-image: url('../image/text_search_inactive.png');
+  -fx-background-image: url('../image/field_search_inactive.png');
   -fx-background-repeat: no-repeat;
   -fx-background-position: left center;
   -fx-padding: 5 8 5 24;
 }
 
 .search-textfield:focused {
-  -fx-background-image: url('../image/text_search_active.png');
+  -fx-background-image: url('../image/field_search_active.png');
 }
 
 .file-textfield {
-  -fx-background-image: url('../image/text_file_inactive.png');
+  -fx-background-image: url('../image/field_file_inactive.png');
   -fx-background-repeat: no-repeat;
   -fx-background-position: left center;
   -fx-padding: 5 8 5 24;
 }
 
 .file-textfield:focused {
-  -fx-background-image: url('../image/text_file_active.png');
+  -fx-background-image: url('../image/field_file_active.png');
 }

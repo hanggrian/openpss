@@ -89,7 +89,7 @@ class CustomerController : Controller(), Refreshable, Selectable<Customer>, Sele
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
-        customerPane.minWidthProperty().bind(splitPane.widthProperty() * 0.25)
+        customerPane.minWidthProperty().bind(splitPane.widthProperty() * 0.3)
         nameLabel.font = font(24.0)
         idImage.tooltip(getString(R.string.id))
         sinceImage.tooltip(getString(R.string.since))

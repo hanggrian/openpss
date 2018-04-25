@@ -8,7 +8,7 @@ import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.io.properties.LoginFile
 import com.hendraanggrian.openpss.resources.Resourced
 import com.hendraanggrian.openpss.ui.main.LoginDialog
-import com.hendraanggrian.openpss.ui.main.ResetPasswordDialog
+import com.hendraanggrian.openpss.ui.main.ChangePasswordDialog
 import com.hendraanggrian.openpss.util.controller
 import com.hendraanggrian.openpss.util.getResource
 import com.hendraanggrian.openpss.util.pane
@@ -60,7 +60,7 @@ class App : Application(), Resourced {
                 loader.controller._employee = employee
             }.show()
 
-            if (employee.firstTimeLogin) ResetPasswordDialog(this).showAndWait().ifPresent { newPassword ->
+            if (employee.firstTimeLogin) ChangePasswordDialog(this).showAndWait().ifPresent { newPassword ->
                 transaction {
                     Employees.find { name.equal(employee.name) }.projection { password }.update(newPassword)
                     infoAlert(getString(R.string.successfully_changed_password)) { style() }.show()

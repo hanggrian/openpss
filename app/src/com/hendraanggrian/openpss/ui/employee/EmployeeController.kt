@@ -9,7 +9,7 @@ import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.Selectable
-import com.hendraanggrian.openpss.ui.main.ResetPasswordDialog
+import com.hendraanggrian.openpss.ui.main.ChangePasswordDialog
 import com.hendraanggrian.openpss.util.doneCell
 import com.hendraanggrian.openpss.util.stringCell
 import com.hendraanggrian.openpss.util.style
@@ -67,7 +67,7 @@ class EmployeeController : Controller(), Refreshable, Selectable<Employee> {
     @FXML fun resetPassword() = confirm({ employee ->
         Employees.find { name.equal(employee.name) }.projection { password }.update(DEFAULT_PASSWORD)
     }) {
-        ResetPasswordDialog(this).showAndWait().ifPresent { newPassword ->
+        ChangePasswordDialog(this).showAndWait().ifPresent { newPassword ->
             transaction {
                 Employees.find { name.equal(employeeName) }.projection { password }.update(newPassword)
                 infoAlert(getString(R.string.successfully_changed_password)) { style() }.show()

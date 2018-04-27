@@ -18,21 +18,21 @@
             </graphic>
         </Button>
         <Space/>
-        <Button mnemonicParsing="false" onAction="#addInvoice" text="%add_invoice">
+        <Button mnemonicParsing="false" onAction="#addInvoice" text="%add">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
                     <Image url="@/image/toolbar_add.png"/>
                 </ImageView>
             </graphic>
         </Button>
-        <Button mnemonicParsing="false" fx:id="editInvoiceButton" onAction="#editInvoice" text="%edit_invoice">
+        <Button mnemonicParsing="false" fx:id="editInvoiceButton" onAction="#editInvoice" text="%edit">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
                     <Image url="@/image/toolbar_edit.png"/>
                 </ImageView>
             </graphic>
         </Button>
-        <Button mnemonicParsing="false" fx:id="deleteInvoiceButton" onAction="#deleteInvoice" text="%delete_invoice">
+        <Button mnemonicParsing="false" fx:id="deleteInvoiceButton" onAction="#deleteInvoice" text="%delete">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
                     <Image url="@/image/toolbar_delete.png"/>

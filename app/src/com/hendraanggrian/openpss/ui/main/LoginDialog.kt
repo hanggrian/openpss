@@ -143,7 +143,7 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced 
             hbox {
                 alignment = CENTER_RIGHT
                 hyperlink(getString(R.string.about)) {
-                    onAction { AboutDialog(this@LoginDialog).showAndWait() }
+                    onAction { AboutDialog(this@LoginDialog).show() }
                 } marginLeft 8.0
             } col 0 row 3 colSpans 3
         }

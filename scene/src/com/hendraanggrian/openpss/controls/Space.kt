@@ -7,7 +7,7 @@ import javafx.scene.layout.Region
 import ktfx.layouts.LayoutDsl
 import ktfx.layouts.LayoutManager
 
-class Space @JvmOverloads constructor(width: Int = 48) : Region() {
+class Space @JvmOverloads constructor(width: Int = 32) : Region() {
 
     init {
         minWidth = width.toDouble()

@@ -84,7 +84,7 @@ class MainController : Controller() {
         else -> select(invoiceController) { addInvoice() }
     }
 
-    @FXML fun settings() = SettingsDialog(this, isFullAccess).showAndWait().get()
+    @FXML fun settings() = SettingsDialog(this, isFullAccess).show()
 
     @FXML fun quit() = exit()
 

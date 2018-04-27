@@ -30,6 +30,7 @@ import java.util.ResourceBundle
 
 class EmployeeController : Controller(), Refreshable, Selectable<Employee> {
 
+    @FXML lateinit var editButton: Button
     @FXML lateinit var deleteButton: Button
     @FXML lateinit var fullAccessButton: Button
     @FXML lateinit var resetPasswordButton: Button
@@ -39,6 +40,7 @@ class EmployeeController : Controller(), Refreshable, Selectable<Employee> {
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
+        editButton.disableProperty().bind(!selectedBinding)
         deleteButton.disableProperty().bind(!selectedBinding)
         fullAccessButton.disableProperty().bind(!selectedBinding)
         resetPasswordButton.disableProperty().bind(!selectedBinding)
@@ -52,12 +54,20 @@ class EmployeeController : Controller(), Refreshable, Selectable<Employee> {
 
     override val selectionModel: SelectionModel<Employee> get() = employeeTable.selectionModel
 
-    @FXML fun addEmployee() = UserDialog(this, R.string.add_employee, R.image.header_employee).showAndWait().ifPresent {
+    @FXML fun add() = UserDialog(this, R.string.add_employee, R.image.header_employee).showAndWait().ifPresent {
         val employee = Employee.new(it)
         employee.id = transaction { Employees.insert(employee) }!!
         employeeTable.items.add(employee)
         selectionModel.select(employee)
     }
+
+    @FXML fun edit() = EditEmployeeDialog(this, _employee).showAndWait().ifPresent {
+
+    }
+
+    @FXML fun delete() = confirm({ employee ->
+        Employees.find { name.equal(employee.name) }.remove()
+    })
 
     @FXML fun fullAccess() = confirm({ employee ->
         Employees.find { name.equal(employee.name) }.projection { fullAccess }.update(!employee.fullAccess)
@@ -73,10 +83,6 @@ class EmployeeController : Controller(), Refreshable, Selectable<Employee> {
             }
         }
     }
-
-    @FXML fun delete() = confirm({ employee ->
-        Employees.find { name.equal(employee.name) }.remove()
-    })
 
     private fun confirm(
         confirmedAction: MongoDBSession.(Employee) -> Unit,

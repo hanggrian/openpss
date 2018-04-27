@@ -43,7 +43,7 @@ import ktfx.scene.control.closeButton
 import ktfx.scene.control.graphicIcon
 import ktfx.scene.control.headerTitle
 
-class ViewInvoiceDialog(resourced: Resourced, invoice: Invoice) : Dialog<Unit>(), Resourced by resourced {
+class ViewInvoiceDialog(resourced: Resourced, invoice: Invoice) : Dialog<Nothing>(), Resourced by resourced {
 
     private lateinit var invoiceHeaders: List<String>
     private lateinit var customer: Customer

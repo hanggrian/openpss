@@ -52,7 +52,7 @@ import ktfx.scene.layout.maxSize
 import ktfx.scene.layout.paddingAll
 import java.util.concurrent.TimeUnit.SECONDS
 
-class AboutDialog(resourced: Resourced) : Dialog<Unit>(), Resourced by resourced, Selectable<License> {
+class AboutDialog(resourced: Resourced) : Dialog<Nothing>(), Resourced by resourced, Selectable<License> {
 
     private lateinit var checkUpdateButton: Button
     private lateinit var checkUpdateProgress: ProgressIndicator

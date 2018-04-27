@@ -17,10 +17,17 @@
             </graphic>
         </Button>
         <Space/>
-        <Button mnemonicParsing="false" onAction="#addEmployee" text="%add_employee">
+        <Button mnemonicParsing="false" onAction="#add" text="%add">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
                     <Image url="@/image/toolbar_add.png"/>
+                </ImageView>
+            </graphic>
+        </Button>
+        <Button mnemonicParsing="false" fx:id="editButton" onAction="#edit" text="%edit">
+            <graphic>
+                <ImageView pickOnBounds="true" preserveRatio="true">
+                    <Image url="@/image/toolbar_edit.png"/>
                 </ImageView>
             </graphic>
         </Button>

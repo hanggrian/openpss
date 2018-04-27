@@ -25,7 +25,7 @@ import ktfx.scene.layout.gap
 class DisableRecessDialog(
     resourced: Resourced,
     private val attendeePanes: List<AttendeePane>
-) : Dialog<Unit>(), Resourced by resourced {
+) : Dialog<Nothing>(), Resourced by resourced {
 
     private lateinit var recessChoice: ChoiceBox<*>
     private lateinit var roleChoice: ChoiceBox<*>

@@ -56,7 +56,7 @@ import ktfx.scene.layout.gap
 import java.util.Currency
 import java.util.Locale
 
-class SettingsDialog(resourced: Resourced, showGlobalSettings: Boolean) : Dialog<Unit>(), Resourced by resourced {
+class SettingsDialog(resourced: Resourced, showGlobalSettings: Boolean) : Dialog<Nothing>(), Resourced by resourced {
 
     private companion object {
         const val CURRENCY_INVALID = "-"

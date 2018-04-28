@@ -11,6 +11,7 @@ import com.hendraanggrian.openpss.db.schemas.Invoices
 import com.hendraanggrian.openpss.db.schemas.Payment
 import com.hendraanggrian.openpss.db.schemas.Payments
 import com.hendraanggrian.openpss.db.schemas.calculateDue
+import com.hendraanggrian.openpss.db.schemas.isFullAccess
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.io.properties.SettingsFile.INVOICE_PAGINATION_ITEMS
 import com.hendraanggrian.openpss.layouts.DateBox
@@ -163,15 +164,16 @@ class InvoiceController : Controller(), Refreshable, Selectable<Invoice>, Select
                         items = invoices
                             .skip(INVOICE_PAGINATION_ITEMS * page)
                             .take(INVOICE_PAGINATION_ITEMS).toMutableObservableList()
+                        editInvoiceButton.disableProperty().bind(!selectedBinding or
+                            !isFullAccess(login).toReadOnlyProperty())
+                        deleteInvoiceButton.disableProperty().bind(!selectedBinding or
+                            !isFullAccess(login).toReadOnlyProperty())
+                        viewInvoiceButton.disableProperty().bind(!selectedBinding)
+                        addPaymentButton.disableProperty().bind(!selectedBinding)
+                        deletePaymentButton.disableProperty().bind(!selectedBinding2 or
+                            !isFullAccess(login).toReadOnlyProperty())
                     }
                 }
-            }
-            later {
-                editInvoiceButton.disableProperty().bind(!selectedBinding or !isFullAccess.toReadOnlyProperty())
-                deleteInvoiceButton.disableProperty().bind(!selectedBinding or !isFullAccess.toReadOnlyProperty())
-                viewInvoiceButton.disableProperty().bind(!selectedBinding)
-                addPaymentButton.disableProperty().bind(!selectedBinding)
-                deletePaymentButton.disableProperty().bind(!selectedBinding2 or !isFullAccess.toReadOnlyProperty())
             }
             paymentTable.itemsProperty().bind(bindingOf(invoiceTable.selectionModel.selectedItemProperty()) {
                 if (selected == null) emptyObservableList()
@@ -186,7 +188,7 @@ class InvoiceController : Controller(), Refreshable, Selectable<Invoice>, Select
 
     override val selectionModel2: SelectionModel<Payment> get() = paymentTable.selectionModel
 
-    @FXML fun addInvoice() = InvoiceDialog(this, employee = _employee).showAndWait().ifPresent {
+    @FXML fun addInvoice() = InvoiceDialog(this, employee = login).showAndWait().ifPresent {
         transaction {
             it.id = Invoices.insert(it)
             invoiceTable.items.add(it)
@@ -215,7 +217,7 @@ class InvoiceController : Controller(), Refreshable, Selectable<Invoice>, Select
 
     @FXML fun viewInvoice() = ViewInvoiceDialog(this, selected!!).show()
 
-    @FXML fun addPayment() = AddPaymentDialog(this, _employee, selected!!).showAndWait().ifPresent {
+    @FXML fun addPayment() = AddPaymentDialog(this, login, selected!!).showAndWait().ifPresent {
         transaction {
             Payments.insert(it)
             updatePaymentStatus()
@@ -240,7 +242,7 @@ class InvoiceController : Controller(), Refreshable, Selectable<Invoice>, Select
         val loader = FXMLLoader(getResource(R.layout.controller_price_plate), resources)
         scene = Scene(loader.pane).apply { style() }
         isResizable = false
-        loader.controller._employee = _employee
+        loader.controller.login = login
     }.showAndWait()
 
     @FXML fun offsetPrice() = stage(getString(R.string.offset_price)) {
@@ -248,7 +250,7 @@ class InvoiceController : Controller(), Refreshable, Selectable<Invoice>, Select
         val loader = FXMLLoader(getResource(R.layout.controller_price_offset), resources)
         scene = Scene(loader.pane).apply { style() }
         isResizable = false
-        loader.controller._employee = _employee
+        loader.controller.login = login
     }.showAndWait()
 
     private fun MongoDBSession.updatePaymentStatus() = findByDoc(Invoices, selected!!)

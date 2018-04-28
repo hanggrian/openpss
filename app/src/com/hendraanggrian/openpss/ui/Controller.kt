@@ -1,10 +1,8 @@
 package com.hendraanggrian.openpss.ui
 
 import com.hendraanggrian.openpss.db.schemas.Employee
-import com.hendraanggrian.openpss.db.schemas.Employees
 import com.hendraanggrian.openpss.resources.Resourced
 import javafx.fxml.Initializable
-import kotlinx.nosql.Id
 import java.net.URL
 import java.util.ResourceBundle
 
@@ -15,7 +13,7 @@ open class Controller : Initializable, Resourced {
      * Field name starts with underscore to avoid conflict with
      * [com.hendraanggrian.openpss.ui.employee.EmployeeController].
      */
-    lateinit var _employee: Employee
+    lateinit var login: Employee
 
     override lateinit var resources: ResourceBundle
 
@@ -25,10 +23,6 @@ open class Controller : Initializable, Resourced {
         this.resources = resources
         if (this is Refreshable) refresh()
     }
-
-    inline val employeeName: String get() = _employee.name
-    inline val isFullAccess: Boolean get() = _employee.fullAccess
-    inline val employeeId: Id<String, Employees> get() = _employee.id
 
     /** Register extra [value] with [key]. */
     fun addExtra(key: String, value: Any): Controller {

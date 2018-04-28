@@ -4,6 +4,7 @@ import com.hendraanggrian.openpss.BuildConfig.ARTIFACT
 import com.hendraanggrian.openpss.BuildConfig.DEBUG
 import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.schemas.Employee
+import com.hendraanggrian.openpss.db.schemas.EmployeeAccesses
 import com.hendraanggrian.openpss.db.schemas.Employees
 import com.hendraanggrian.openpss.db.schemas.GlobalSetting
 import com.hendraanggrian.openpss.db.schemas.GlobalSettings
@@ -31,8 +32,8 @@ import org.joda.time.LocalTime
 import java.util.Date
 
 private lateinit var DB: MongoDB
-private val TABLES = arrayOf(GlobalSettings, Customers, Employees, Invoices, OffsetPrices, Payments, PlatePrices, Recesses,
-    Wages)
+private val TABLES = arrayOf(GlobalSettings, Customers, Employees, EmployeeAccesses, Invoices, OffsetPrices, Payments,
+    PlatePrices, Recesses, Wages)
 
 /**
  * A failed transaction will most likely throw an exception instance listAll [MongoException].

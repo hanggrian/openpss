@@ -5,6 +5,7 @@ import com.hendraanggrian.openpss.controls.UserDialog
 import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.db.schemas.Employee.Companion.DEFAULT_PASSWORD
 import com.hendraanggrian.openpss.db.schemas.Employees
+import com.hendraanggrian.openpss.db.schemas.isFullAccess
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.Refreshable
@@ -23,6 +24,7 @@ import kotlinx.nosql.equal
 import kotlinx.nosql.mongodb.MongoDBSession
 import kotlinx.nosql.update
 import ktfx.application.exit
+import ktfx.application.later
 import ktfx.collections.toMutableObservableList
 import ktfx.scene.control.infoAlert
 import java.net.URL
@@ -45,7 +47,7 @@ class EmployeeController : Controller(), Refreshable, Selectable<Employee> {
         fullAccessButton.disableProperty().bind(!selectedBinding)
         resetPasswordButton.disableProperty().bind(!selectedBinding)
         nameColumn.stringCell { name }
-        fullAccessColumn.doneCell(128) { fullAccess }
+        later { fullAccessColumn.doneCell(128) { transaction { isFullAccess(login) }!! } }
     }
 
     override fun refresh() {
@@ -61,8 +63,7 @@ class EmployeeController : Controller(), Refreshable, Selectable<Employee> {
         selectionModel.select(employee)
     }
 
-    @FXML fun edit() = EditEmployeeDialog(this, _employee).showAndWait().ifPresent {
-
+    @FXML fun edit() = EditEmployeeDialog(this, login).showAndWait().ifPresent {
     }
 
     @FXML fun delete() = confirm({ employee ->
@@ -70,7 +71,7 @@ class EmployeeController : Controller(), Refreshable, Selectable<Employee> {
     })
 
     @FXML fun fullAccess() = confirm({ employee ->
-        Employees.find { name.equal(employee.name) }.projection { fullAccess }.update(!employee.fullAccess)
+        // Employees.find { name.equal(employee.name) }.projection { fullAccess }.update(!employee.fullAccess)
     })
 
     @FXML fun resetPassword() = confirm({ employee ->
@@ -78,7 +79,7 @@ class EmployeeController : Controller(), Refreshable, Selectable<Employee> {
     }) {
         ChangePasswordDialog(this).showAndWait().ifPresent { newPassword ->
             transaction {
-                Employees.find { name.equal(employeeName) }.projection { password }.update(newPassword)
+                // Employees.find { name.equal(employeeName) }.projection { password }.update(newPassword)
                 infoAlert(getString(R.string.successfully_changed_password)) { style() }.show()
             }
         }
@@ -93,7 +94,7 @@ class EmployeeController : Controller(), Refreshable, Selectable<Employee> {
         selected!!.let {
             transaction { confirmedAction(it) }
             when {
-                it.name != employeeName -> refresh()
+                it.name != login.name -> refresh()
                 else -> isNotSelfAction()
             }
         }

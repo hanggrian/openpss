@@ -57,7 +57,7 @@ class App : Application(), Resourced {
                 title = if (DEBUG) "$APP_NAME [DEBUG]" else APP_NAME
                 scene = Scene(loader.pane).apply { style() }
                 setMinSize(1000.0, 650.0)
-                loader.controller._employee = employee
+                loader.controller.login = employee
             }.show()
 
             if (employee.firstTimeLogin) ChangePasswordDialog(this).showAndWait().ifPresent { newPassword ->

@@ -134,7 +134,7 @@ class WageController : Controller() {
         initModality(APPLICATION_MODAL)
         scene = Scene(loader.pane).apply { style() }
         isResizable = false
-        loader.controller._employee = _employee
+        loader.controller.login = login
     }.showAndWait()
 
     @FXML fun history() = openFile(WageFolder)

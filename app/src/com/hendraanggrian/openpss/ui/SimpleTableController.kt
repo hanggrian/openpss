@@ -1,8 +1,9 @@
 package com.hendraanggrian.openpss.ui
 
 import com.hendraanggrian.openpss.db.Document
-import com.hendraanggrian.openpss.util.findByDoc
+import com.hendraanggrian.openpss.db.schemas.isFullAccess
 import com.hendraanggrian.openpss.db.transaction
+import com.hendraanggrian.openpss.util.findByDoc
 import com.hendraanggrian.openpss.util.yesNoAlert
 import javafx.fxml.FXML
 import javafx.scene.control.Button
@@ -33,8 +34,10 @@ abstract class SimpleTableController<D : Document<S>, S : DocumentSchema<D>>(
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
         later {
-            deleteButton.disableProperty().bind(table.selectionModel.selectedItemProperty().isNull or
-                !isFullAccess.toProperty())
+            transaction {
+                deleteButton.disableProperty().bind(table.selectionModel.selectedItemProperty().isNull or
+                    !isFullAccess(login).toProperty())
+            }
         }
     }
 

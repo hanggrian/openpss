@@ -5,6 +5,7 @@ import com.hendraanggrian.openpss.controls.UserDialog
 import com.hendraanggrian.openpss.db.buildQuery
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Customers
+import com.hendraanggrian.openpss.db.schemas.isFullAccess
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.io.properties.SettingsFile.CUSTOMER_PAGINATION_ITEMS
 import com.hendraanggrian.openpss.ui.Controller
@@ -125,15 +126,15 @@ class CustomerController : Controller(), Refreshable, Selectable<Customer>, Sele
                         items = customers
                             .skip(CUSTOMER_PAGINATION_ITEMS * page)
                             .take(CUSTOMER_PAGINATION_ITEMS).toMutableObservableList()
+                        editNameButton.disableProperty().bind(!selectedBinding or
+                            !isFullAccess(login).toReadOnlyProperty())
+                        editAddressButton.disableProperty().bind(!selectedBinding)
+                        editNoteButton.disableProperty().bind(!selectedBinding)
+                        addContactButton.disableProperty().bind(!selectedBinding)
+                        deleteContactButton.disableProperty().bind(!selectedBinding2 or
+                            !isFullAccess(login).toReadOnlyProperty())
                     }
                 }
-            }
-            later {
-                editNameButton.disableProperty().bind(!selectedBinding or !isFullAccess.toReadOnlyProperty())
-                editAddressButton.disableProperty().bind(!selectedBinding)
-                editNoteButton.disableProperty().bind(!selectedBinding)
-                addContactButton.disableProperty().bind(!selectedBinding)
-                deleteContactButton.disableProperty().bind(!selectedBinding2 or !isFullAccess.toReadOnlyProperty())
             }
             nameLabel.bindLabel { selected?.name.orEmpty() }
             idLabel.bindLabel { selected?.id?.toString().orEmpty() }

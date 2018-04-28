@@ -1,5 +1,7 @@
 package com.hendraanggrian.openpss.ui.main
 
+import com.hendraanggrian.openpss.db.schemas.isFullAccess
+import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.customer.CustomerController
@@ -62,19 +64,10 @@ class MainController : Controller() {
         }
 
         later {
-            employeeLabel.text = employeeName
+            employeeLabel.text = login.name
             controllers = listOf(customerController, scheduleController, invoiceController,
                 paymentController, reportController, wageController, employeeController)
-            controllers.forEach {
-                it._employee = _employee
-                when (it) {
-                    paymentController, reportController, wageController, employeeController ->
-                        controllers.indexOf(it).let { index ->
-                            navigateMenu.items[index].isDisable = !isFullAccess
-                            tabPane.tabs[index].isDisable = !isFullAccess
-                        }
-                }
-            }
+            controllers.forEach { it.login = login }
             reportController.addExtra(EXTRA_MAIN_CONTROLLER, this)
         }
     }
@@ -84,7 +77,7 @@ class MainController : Controller() {
         else -> select(invoiceController) { addInvoice() }
     }
 
-    @FXML fun settings() = SettingsDialog(this, isFullAccess).show()
+    @FXML fun settings() = SettingsDialog(this, transaction { isFullAccess(login) }!!).show()
 
     @FXML fun quit() = exit()
 

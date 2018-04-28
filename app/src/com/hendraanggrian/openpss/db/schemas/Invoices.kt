@@ -7,7 +7,7 @@ import com.hendraanggrian.openpss.db.Order
 import com.hendraanggrian.openpss.db.SimpleOrder
 import com.hendraanggrian.openpss.db.Titled
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.resources.StringResource2
+import com.hendraanggrian.openpss.resources.StringResource
 import com.hendraanggrian.openpss.util.enumValueOfId
 import com.hendraanggrian.openpss.util.id
 import kotlinx.nosql.Id
@@ -81,7 +81,7 @@ data class Invoice(
             others: List<Other>,
             note: String
         ): Invoice = Invoice(
-            transaction { Invoices.find().lastOrNull()?.no ?: 0 }!! + 1,
+            transaction { Invoices.find().lastOrNull()?.no ?: 0 } + 1,
             employeeId, customerId, dateTime, plates, offsets, others, note, false, false, false)
     }
 
@@ -130,7 +130,7 @@ data class Invoice(
 
         override val typedTechnique: Technique get() = enumValueOfId(technique)
 
-        enum class Technique : StringResource2 {
+        enum class Technique : StringResource {
             ONE_SIDE {
                 override val resourceId: String = R.string.one_side
             },

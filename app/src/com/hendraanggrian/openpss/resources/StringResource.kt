@@ -1,6 +1,6 @@
 package com.hendraanggrian.openpss.resources
 
-interface StringResource2 {
+interface StringResource {
 
     val resourceId: String
 

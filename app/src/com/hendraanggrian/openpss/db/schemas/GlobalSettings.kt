@@ -1,11 +1,8 @@
 package com.hendraanggrian.openpss.db.schemas
 
 import com.hendraanggrian.openpss.db.Document
-import kotlinx.nosql.DocumentSchemaQueryWrapper
 import kotlinx.nosql.Id
-import kotlinx.nosql.equal
 import kotlinx.nosql.mongodb.DocumentSchema
-import kotlinx.nosql.mongodb.MongoDBSession
 import kotlinx.nosql.string
 
 object GlobalSettings : DocumentSchema<GlobalSetting>("global_settings", GlobalSetting::class) {
@@ -32,8 +29,3 @@ data class GlobalSetting(
 
     inline val valueList: List<String> get() = value.split("|")
 }
-
-@Suppress("NOTHING_TO_INLINE")
-inline fun MongoDBSession.findGlobalSettings(
-    key: String
-): DocumentSchemaQueryWrapper<GlobalSettings, String, GlobalSetting> = GlobalSettings.find { this.key.equal(key) }

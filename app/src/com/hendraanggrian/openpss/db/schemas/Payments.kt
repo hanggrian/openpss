@@ -3,16 +3,14 @@ package com.hendraanggrian.openpss.db.schemas
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.db.Document
 import com.hendraanggrian.openpss.db.dbDateTime
-import com.hendraanggrian.openpss.resources.StringResource2
+import com.hendraanggrian.openpss.resources.StringResource
 import com.hendraanggrian.openpss.util.enumValueOfId
 import com.hendraanggrian.openpss.util.id
 import kotlinx.nosql.Id
 import kotlinx.nosql.dateTime
 import kotlinx.nosql.double
-import kotlinx.nosql.equal
 import kotlinx.nosql.id
 import kotlinx.nosql.mongodb.DocumentSchema
-import kotlinx.nosql.mongodb.MongoDBSession
 import kotlinx.nosql.nullableString
 import kotlinx.nosql.string
 import org.joda.time.DateTime
@@ -52,7 +50,7 @@ data class Payment(
 
     val typedMethod: Method get() = enumValueOfId(method)
 
-    enum class Method : StringResource2 {
+    enum class Method : StringResource {
         CASH {
             override val resourceId: String = R.string.cash
         },
@@ -61,7 +59,3 @@ data class Payment(
         };
     }
 }
-
-@Suppress("NOTHING_TO_INLINE")
-inline fun MongoDBSession.calculateDue(invoice: Invoice): Double =
-    invoice.total - Payments.find { invoiceId.equal(invoice.id) }.sumByDouble { it.value }

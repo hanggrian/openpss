@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.ui.wage.record
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.ui.wage.FlexibleInterval
+import com.hendraanggrian.openpss.ui.wage.IntervalWrapper
 import com.hendraanggrian.openpss.util.PATTERN_DATETIME
 import com.hendraanggrian.openpss.util.START_OF_TIME
 import com.hendraanggrian.openpss.resources.Resourced
@@ -151,7 +151,7 @@ class Record(
 
     private val workingHours: Double
         get() {
-            val interval = FlexibleInterval.of(start, end)
+            val interval = IntervalWrapper.of(start, end)
             var minutes = interval.minutes
             attendee.recesses
                 .map { it.getInterval(start) }

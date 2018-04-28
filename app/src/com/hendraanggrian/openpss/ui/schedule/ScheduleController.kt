@@ -5,11 +5,10 @@ import com.hendraanggrian.openpss.controls.UncollapsibleTreeItem
 import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.schemas.Invoices
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.util.PATTERN_DATETIME_EXTENDED
 import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.TreeSelectable
-import com.hendraanggrian.openpss.util.findById
+import com.hendraanggrian.openpss.util.PATTERN_DATETIME_EXTENDED
 import com.hendraanggrian.openpss.util.stringCell
 import javafx.fxml.FXML
 import javafx.scene.control.Button
@@ -61,9 +60,9 @@ class ScheduleController : Controller(), Refreshable, TreeSelectable<Schedule> {
         scheduleTable.root.children.run {
             clear()
             transaction {
-                Invoices.find { done.equal(false) }.forEach { invoice ->
+                Invoices.find { it.done.equal(false) }.forEach { invoice ->
                     addAll(UncollapsibleTreeItem(
-                        Schedule(invoice.id, findById(Customers, invoice.customerId).single().name, "", "",
+                        Schedule(invoice.id, Customers.findById(invoice.customerId).single().name, "", "",
                             invoice.dateTime.toString(PATTERN_DATETIME_EXTENDED))).apply {
                         invoice.plates.forEach {
                             children += TreeItem<Schedule>(
@@ -86,7 +85,7 @@ class ScheduleController : Controller(), Refreshable, TreeSelectable<Schedule> {
     override val selectionModel: TreeTableViewSelectionModel<Schedule> get() = scheduleTable.selectionModel
 
     @FXML fun done() {
-        transaction { findById(Invoices, selected!!.value.invoiceId!!).projection { done }.update(true) }
+        transaction { Invoices.findById(selected!!.value.invoiceId!!).projection { done }.update(true) }
         refresh()
     }
 

@@ -3,7 +3,6 @@ package com.hendraanggrian.openpss.ui.customer
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.resources.Resourced
-import com.hendraanggrian.openpss.util.REGEX_PHONE
 import com.hendraanggrian.openpss.util.style
 import javafx.scene.control.ButtonType.OK
 import javafx.scene.control.ChoiceBox
@@ -25,6 +24,12 @@ import ktfx.scene.layout.gap
 import org.apache.commons.validator.routines.EmailValidator
 
 class AddContactDialog(resourced: Resourced) : Dialog<Customer.Contact>(), Resourced by resourced {
+    companion object {
+        /** Taken from `android.util.Patterns`, but instead use `kotlin.Regex`. */
+        private val REGEX_PHONE = Regex("(\\+[0-9]+[\\- \\.]*)?" +
+            "(\\([0-9]+\\)[\\- \\.]*)?" +
+            "([0-9][0-9\\- \\.]+[0-9])")
+    }
 
     private lateinit var typeChoice: ChoiceBox<Customer.Contact.Type>
     private lateinit var contactField: TextField

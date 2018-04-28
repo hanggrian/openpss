@@ -9,10 +9,10 @@ import java.io.Serializable
  * An [Interval] wrapper where start time may be bigger than end time, making the time difference value negative.
  * Such behavior is currently unsupported with [Interval] constructor.
  */
-class FlexibleInterval private constructor(
+class IntervalWrapper private constructor(
     private val isReverse: Boolean,
     private val interval: Interval
-) : ReadableInterval by interval, Serializable {
+) : ReadableInterval by interval, Serializable by interval {
 
     val minutes: Int
         get() {
@@ -26,8 +26,8 @@ class FlexibleInterval private constructor(
     fun overlap(other: Interval): Interval? = interval.overlap(other)
 
     companion object {
-        fun of(start: ReadableInstant, end: ReadableInstant): FlexibleInterval = (start > end).let { isReverse ->
-            return FlexibleInterval(isReverse, when (isReverse) {
+        fun of(start: ReadableInstant, end: ReadableInstant): IntervalWrapper = (start > end).let { isReverse ->
+            return IntervalWrapper(isReverse, when (isReverse) {
                 true -> Interval(end, start)
                 else -> Interval(start, end)
             })

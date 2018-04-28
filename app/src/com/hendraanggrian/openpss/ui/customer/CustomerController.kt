@@ -2,10 +2,9 @@ package com.hendraanggrian.openpss.ui.customer
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.controls.UserDialog
-import com.hendraanggrian.openpss.db.buildQuery
+import com.hendraanggrian.openpss.db.SessionWrapper
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Customers
-import com.hendraanggrian.openpss.db.schemas.isFullAccess
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.io.properties.SettingsFile.CUSTOMER_PAGINATION_ITEMS
 import com.hendraanggrian.openpss.ui.Controller
@@ -13,7 +12,6 @@ import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.Selectable
 import com.hendraanggrian.openpss.ui.Selectable2
 import com.hendraanggrian.openpss.util.PATTERN_DATE
-import com.hendraanggrian.openpss.util.findByDoc
 import com.hendraanggrian.openpss.util.isNotEmpty
 import com.hendraanggrian.openpss.util.matches
 import com.hendraanggrian.openpss.util.stringCell
@@ -36,7 +34,6 @@ import javafx.scene.image.ImageView
 import javafx.scene.layout.Pane
 import javafx.scene.text.Font.font
 import javafx.util.Callback
-import kotlinx.nosql.mongodb.MongoDBSession
 import kotlinx.nosql.update
 import ktfx.application.later
 import ktfx.beans.binding.bindingOf
@@ -111,14 +108,12 @@ class CustomerController : Controller(), Refreshable, Selectable<Customer>, Sele
             customerList = listView {
                 later {
                     transaction {
-                        val customers = Customers.find {
-                            buildQuery {
-                                if (searchField.text.isNotBlank()) {
-                                    if (filterNameItem.isSelected) or(name.matches(searchField.text, CASE_INSENSITIVE))
-                                    if (filterAddressItem.isSelected)
-                                        or(address.matches(searchField.text, CASE_INSENSITIVE))
-                                    if (filterNoteItem.isSelected) or(note.matches(searchField.text, CASE_INSENSITIVE))
-                                }
+                        val customers = Customers.findWithBuilder {
+                            if (searchField.text.isNotBlank()) {
+                                if (filterNameItem.isSelected) or(it.name.matches(searchField.text, CASE_INSENSITIVE))
+                                if (filterAddressItem.isSelected)
+                                    or(it.address.matches(searchField.text, CASE_INSENSITIVE))
+                                if (filterNoteItem.isSelected) or(it.note.matches(searchField.text, CASE_INSENSITIVE))
                             }
                         }
                         customerPagination.pageCount =
@@ -127,12 +122,12 @@ class CustomerController : Controller(), Refreshable, Selectable<Customer>, Sele
                             .skip(CUSTOMER_PAGINATION_ITEMS * page)
                             .take(CUSTOMER_PAGINATION_ITEMS).toMutableObservableList()
                         editNameButton.disableProperty().bind(!selectedBinding or
-                            !isFullAccess(login).toReadOnlyProperty())
+                            !login.isFullAccess().toReadOnlyProperty())
                         editAddressButton.disableProperty().bind(!selectedBinding)
                         editNoteButton.disableProperty().bind(!selectedBinding)
                         addContactButton.disableProperty().bind(!selectedBinding)
                         deleteContactButton.disableProperty().bind(!selectedBinding2 or
-                            !isFullAccess(login).toReadOnlyProperty())
+                            !login.isFullAccess().toReadOnlyProperty())
                     }
                 }
             }
@@ -158,7 +153,7 @@ class CustomerController : Controller(), Refreshable, Selectable<Customer>, Sele
         .ifPresent {
             transaction {
                 when {
-                    Customers.find { name.matches("^$it$", CASE_INSENSITIVE) }.isNotEmpty() ->
+                    Customers.find { it.name.matches("^$it$", CASE_INSENSITIVE) }.isNotEmpty() ->
                         errorAlert(getString(R.string.name_taken)) { style() }.show()
                     else -> Customer.new(it).let {
                         it.id = Customers.insert(it)
@@ -173,7 +168,7 @@ class CustomerController : Controller(), Refreshable, Selectable<Customer>, Sele
         .showAndWait()
         .ifPresent {
             transaction {
-                findByDoc(Customers, selected!!).projection { name }.update(it)
+                Customers.findByDoc(selected!!).projection { name }.update(it)
                 reload(selected!!)
             }
         }
@@ -185,7 +180,7 @@ class CustomerController : Controller(), Refreshable, Selectable<Customer>, Sele
             dialogPane.lookupButton(OK).disableProperty().bind(editor.textProperty().isBlank())
         }.showAndWait().ifPresent {
             transaction {
-                findByDoc(Customers, selected!!).projection { address }.update(it)
+                Customers.findByDoc(selected!!).projection { address }.update(it)
                 reload(selected!!)
             }
         }
@@ -197,21 +192,21 @@ class CustomerController : Controller(), Refreshable, Selectable<Customer>, Sele
             dialogPane.lookupButton(OK).disableProperty().bind(editor.textProperty().isBlank())
         }.showAndWait().ifPresent {
             transaction {
-                findByDoc(Customers, selected!!).projection { note }.update(it)
+                Customers.findByDoc(selected!!).projection { note }.update(it)
                 reload(selected!!)
             }
         }
 
     @FXML fun addContact() = AddContactDialog(this).showAndWait().ifPresent {
         transaction {
-            findByDoc(Customers, selected!!).projection { contacts }.update(selected!!.contacts + it)
+            Customers.findByDoc(selected!!).projection { contacts }.update(selected!!.contacts + it)
             reload(selected!!)
         }
     }
 
     @FXML fun deleteContact() = yesNoAlert(R.string.delete_contact) {
         transaction {
-            findByDoc(Customers, selected!!).projection { contacts }.update(selected!!.contacts - selected2!!)
+            Customers.findByDoc(selected!!).projection { contacts }.update(selected!!.contacts - selected2!!)
             reload(selected!!)
         }
     }
@@ -221,9 +216,9 @@ class CustomerController : Controller(), Refreshable, Selectable<Customer>, Sele
     private fun Label.bindLabel(target: () -> String) = textProperty()
         .bind(stringBindingOf(customerList.selectionModel.selectedItemProperty()) { target() })
 
-    private fun MongoDBSession.reload(customer: Customer) = customerList.run {
+    private fun SessionWrapper.reload(customer: Customer) = customerList.run {
         items.indexOf(customer).let { index ->
-            items[index] = findByDoc(Customers, customer).single()
+            items[index] = Customers.findByDoc(customer).single()
             selectionModel.select(index)
         }
     }

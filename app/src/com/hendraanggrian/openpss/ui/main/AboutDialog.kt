@@ -71,17 +71,15 @@ class AboutDialog(resourced: Resourced) : Dialog<Nothing>(), Resourced by resour
                     "${FULL_NAME.substringBefore(' ')} " { font = getFont(R.font.sf_pro_text_bold, 24) }
                     (FULL_NAME.substringAfter(' ')) { font = getFont(R.font.sf_pro_text_light, 24) }
                 }
-                text("${getString(R.string.version)} $VERSION") {
-                    font = font(12.0)
-                } marginTop 2.0
+                text("${getString(R.string.version)} $VERSION") { font = font(12.0) } marginTop 2.0
                 text(getString(R.string.built_with_open_source_software_expand_to_see_licenses)) marginTop 20.0
                 textFlow {
-                    "${getString(R.string.powered_by)}  " { font = getFont(R.font.sf_pro_text_bold, 12) }
-                    "JavaFX" { font = font(12.0) }
+                    "${getString(R.string.powered_by)} " { font = font(12.0) }
+                    "JavaFX" { font = getFont(R.font.sf_pro_text_bold, 12) }
                 } marginTop 4.0
                 textFlow {
-                    "${getString(R.string.author)}  " { font = getFont(R.font.sf_pro_text_bold, 12) }
-                    USER { font = font(12.0) }
+                    "${getString(R.string.author)} " { font = font(12.0) }
+                    USER { font = getFont(R.font.sf_pro_text_bold, 12) }
                 } marginTop 4.0
                 hbox {
                     button("GitHub") { onAction { browseUrl(WEBSITE) } }

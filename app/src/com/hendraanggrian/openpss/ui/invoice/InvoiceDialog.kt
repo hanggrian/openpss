@@ -16,7 +16,6 @@ import com.hendraanggrian.openpss.ui.invoice.order.AddPlateDialog
 import com.hendraanggrian.openpss.util.PATTERN_DATE
 import com.hendraanggrian.openpss.util.currencyCell
 import com.hendraanggrian.openpss.util.currencyConverter
-import com.hendraanggrian.openpss.util.findById
 import com.hendraanggrian.openpss.util.getColor
 import com.hendraanggrian.openpss.util.getFont
 import com.hendraanggrian.openpss.util.numberCell
@@ -65,7 +64,7 @@ import org.joda.time.DateTime
 class InvoiceDialog(
     resourced: Resourced,
     private val prefill: Invoice? = null,
-    employee: Employee? = prefill?.let { transaction { findById(Employees, prefill.employeeId).single() } }
+    employee: Employee? = prefill?.let { transaction { Employees.findById(prefill.employeeId).single() } }
 ) : Dialog<Invoice>(), Resourced by resourced {
 
     private lateinit var plateTable: TableView<Invoice.Plate>
@@ -75,7 +74,7 @@ class InvoiceDialog(
 
     private val dateTime: DateTime = prefill?.dateTime ?: dbDateTime
     private val customerProperty: ObjectProperty<Customer> = SimpleObjectProperty(when {
-        isEdit() -> transaction { findById(Customers, prefill!!.customerId).single() }
+        isEdit() -> transaction { Customers.findById(prefill!!.customerId).single() }
         else -> null
     })
     private val totalProperty: DoubleProperty = SimpleDoubleProperty()

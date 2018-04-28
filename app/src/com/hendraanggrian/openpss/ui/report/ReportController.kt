@@ -4,13 +4,13 @@ import com.hendraanggrian.openpss.db.schemas.Payments
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.io.properties.LoginFile
 import com.hendraanggrian.openpss.layouts.MonthBox
-import com.hendraanggrian.openpss.util.PATTERN_DATE
-import com.hendraanggrian.openpss.util.toJava
 import com.hendraanggrian.openpss.ui.FinancialController
 import com.hendraanggrian.openpss.ui.main.MainController
+import com.hendraanggrian.openpss.util.PATTERN_DATE
 import com.hendraanggrian.openpss.util.currencyConverter
 import com.hendraanggrian.openpss.util.matches
 import com.hendraanggrian.openpss.util.stringCell
+import com.hendraanggrian.openpss.util.toJava
 import javafx.fxml.FXML
 import javafx.scene.control.Button
 import javafx.scene.control.TableColumn
@@ -55,7 +55,7 @@ class ReportController : FinancialController<Report>() {
     override fun List<Report>.getTransferCash(): Double = sumByDouble { it.transfer }
 
     override fun refresh() {
-        reportTable.items = transaction { Report.listAll(Payments.find { dateTime.matches(monthBox.value) }) }
+        reportTable.items = transaction { Report.listAll(Payments.find { it.dateTime.matches(monthBox.value) }) }
     }
 
     @FXML fun viewPayments() = getExtra<MainController>(EXTRA_MAIN_CONTROLLER).run {

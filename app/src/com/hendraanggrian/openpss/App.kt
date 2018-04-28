@@ -62,7 +62,7 @@ class App : Application(), Resourced {
 
             if (employee.firstTimeLogin) ChangePasswordDialog(this).showAndWait().ifPresent { newPassword ->
                 transaction {
-                    Employees.find { name.equal(employee.name) }.projection { password }.update(newPassword)
+                    Employees.find { it.name.equal(employee.name) }.projection { password }.update(newPassword)
                     infoAlert(getString(R.string.successfully_changed_password)) { style() }.show()
                 }
             }

@@ -14,7 +14,7 @@ interface QueryBuilder {
 }
 
 @Suppress("ClassName")
-private class _QueryBuilder : QueryBuilder, Builder<Query> {
+class _QueryBuilder : QueryBuilder, Builder<Query> {
     private var source: Query? = null
 
     override fun and(target: Query) = setOrCreate(target) { AndQuery(it, target) }
@@ -27,5 +27,3 @@ private class _QueryBuilder : QueryBuilder, Builder<Query> {
         source = source?.let { creator(it) } ?: target
     }
 }
-
-fun buildQuery(builder: QueryBuilder.() -> Unit) = _QueryBuilder().apply(builder).build()

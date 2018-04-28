@@ -12,7 +12,6 @@ import com.hendraanggrian.openpss.layouts.DateBox
 import com.hendraanggrian.openpss.ui.FinancialController
 import com.hendraanggrian.openpss.util.PATTERN_TIME
 import com.hendraanggrian.openpss.util.currencyCell
-import com.hendraanggrian.openpss.util.findById
 import com.hendraanggrian.openpss.util.matches
 import com.hendraanggrian.openpss.util.stringCell
 import javafx.fxml.FXML
@@ -42,9 +41,9 @@ class PaymentController : FinancialController<Payment>() {
         viewInvoiceButton.disableProperty().bind(!selectedBinding)
         dateBox.valueProperty.listener { refresh() }
         paymentTable.onMouseClicked { if (it.isDoubleClick() && selected != null) viewInvoice() }
-        noColumn.stringCell { transaction { findById(Invoices, invoiceId).single().no }!! }
+        noColumn.stringCell { transaction { Invoices.findById(invoiceId).single().no } }
         timeColumn.stringCell { dateTime.toString(PATTERN_TIME) }
-        employeeColumn.stringCell { transaction { findById(Employees, employeeId).single() }!! }
+        employeeColumn.stringCell { transaction { Employees.findById(employeeId).single() } }
         valueColumn.currencyCell { value }
         methodColumn.stringCell { typedMethod.toString(this@PaymentController) }
     }
@@ -57,10 +56,10 @@ class PaymentController : FinancialController<Payment>() {
 
     override fun refresh() {
         paymentTable.items = transaction {
-            Payments.find { dateTime.matches(dateBox.value) }.toMutableObservableList()
+            Payments.find { it.dateTime.matches(dateBox.value) }.toMutableObservableList()
         }
     }
 
     @FXML fun viewInvoice() = ViewInvoiceDialog(this,
-        transaction { findById(Invoices, selected!!.invoiceId).single() }!!).show()
+        transaction { Invoices.findById(selected!!.invoiceId).single() }).show()
 }

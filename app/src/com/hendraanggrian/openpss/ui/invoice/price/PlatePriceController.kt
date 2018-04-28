@@ -24,11 +24,11 @@ class PlatePriceController : PriceController<PlatePrice, PlatePrices>(PlatePrice
         priceColumn.textFieldCellFactory {
             fromString { it.toDoubleOrNull() ?: 0.0 }
         }
-        priceColumn.onEditCommit {
+        priceColumn.onEditCommit { cell ->
             transaction {
-                PlatePrices.find { name.equal(it.rowValue.name) }.projection { price }.update(it.newValue)
+                PlatePrices.find { it.name.equal(cell.rowValue.name) }.projection { price }.update(cell.newValue)
             }
-            it.rowValue.price = it.newValue
+            cell.rowValue.price = cell.newValue
         }
     }
 

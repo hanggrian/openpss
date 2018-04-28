@@ -7,12 +7,10 @@ import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.db.schemas.Employees
 import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_INVOICE_HEADERS
 import com.hendraanggrian.openpss.db.schemas.Invoice
-import com.hendraanggrian.openpss.db.schemas.findGlobalSettings
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.resources.Resourced
 import com.hendraanggrian.openpss.util.PATTERN_DATETIME_EXTENDED
 import com.hendraanggrian.openpss.util.currencyConverter
-import com.hendraanggrian.openpss.util.findById
 import com.hendraanggrian.openpss.util.getFont
 import com.hendraanggrian.openpss.util.numberConverter
 import com.hendraanggrian.openpss.util.style
@@ -53,8 +51,8 @@ class ViewInvoiceDialog(resourced: Resourced, invoice: Invoice) : Dialog<Nothing
         style()
         transaction {
             invoiceHeaders = findGlobalSettings(KEY_INVOICE_HEADERS).single().valueList
-            employee = findById(Employees, invoice.employeeId).single()
-            customer = findById(Customers, invoice.customerId).single()
+            employee = Employees.findById(invoice.employeeId).single()
+            customer = Customers.findById(invoice.customerId).single()
         }
         initModality(NONE)
         headerTitle = getString(R.string.view_invoice)

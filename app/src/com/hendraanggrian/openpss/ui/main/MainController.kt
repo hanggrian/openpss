@@ -1,6 +1,5 @@
 package com.hendraanggrian.openpss.ui.main
 
-import com.hendraanggrian.openpss.db.schemas.isFullAccess
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.Refreshable
@@ -77,7 +76,7 @@ class MainController : Controller() {
         else -> select(invoiceController) { addInvoice() }
     }
 
-    @FXML fun settings() = SettingsDialog(this, transaction { isFullAccess(login) }!!).show()
+    @FXML fun settings() = SettingsDialog(this, transaction { login.isFullAccess() }).show()
 
     @FXML fun quit() = exit()
 

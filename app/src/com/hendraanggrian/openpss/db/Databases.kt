@@ -4,6 +4,7 @@ import com.hendraanggrian.openpss.BuildConfig.ARTIFACT
 import com.hendraanggrian.openpss.BuildConfig.DEBUG
 import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.schemas.Employee
+import com.hendraanggrian.openpss.db.schemas.EmployeeAccess
 import com.hendraanggrian.openpss.db.schemas.EmployeeAccesses
 import com.hendraanggrian.openpss.db.schemas.Employees
 import com.hendraanggrian.openpss.db.schemas.GlobalSetting
@@ -23,7 +24,6 @@ import com.mongodb.ServerAddress
 import kotlinx.coroutines.experimental.async
 import kotlinx.nosql.equal
 import kotlinx.nosql.mongodb.MongoDB
-import kotlinx.nosql.mongodb.MongoDBSession
 import ktfx.application.exit
 import ktfx.scene.control.errorAlert
 import org.joda.time.DateTime
@@ -41,15 +41,15 @@ private val TABLES = arrayOf(GlobalSettings, Customers, Employees, EmployeeAcces
  *
  * @see [kotlinx.nosql.mongodb.MongoDB.withSession]
  */
-fun <R> transaction(statement: MongoDBSession.() -> R): R? = try {
-    DB.withSession(statement)
+fun <R> transaction(statement: SessionWrapper.() -> R): R = try {
+    DB.withSession { SessionWrapper(this).statement() }
 } catch (e: MongoException) {
     if (DEBUG) e.printStackTrace()
     errorAlert(e.message.toString()) {
         style()
         headerText = "Connection closed. Please sign in again."
     }.showAndWait().ifPresent { exit() }
-    null
+    error("Connection closed. Please sign in again.")
 }
 
 @Throws(Exception::class)
@@ -65,13 +65,14 @@ suspend fun login(
     var employee: Employee? = null
     transaction {
         // check first time installation
-        GlobalSetting.listKeys().forEach {
-            if (GlobalSettings.find { key.equal(it) }.isEmpty()) GlobalSettings.insert(GlobalSetting.new(it))
+        GlobalSetting.listKeys().forEach { key ->
+            if (GlobalSettings.find { it.key.equal(key) }.isEmpty()) GlobalSettings += GlobalSetting.new(key)
         }
         // add default employee
-        if (Employees.find { name.equal(Employee.BACKDOOR.name) }.isEmpty()) Employees.insert(Employee.BACKDOOR)
+        if (Employees.find { it.name.equal(Employee.BACKDOOR.name) }.isEmpty())
+            EmployeeAccesses += EmployeeAccess(Employees.insert(Employee.BACKDOOR))
         // check login credentials
-        employee = checkNotNull(Employees.find { name.equal(employeeName) }.singleOrNull()) { "Employee not found" }
+        employee = checkNotNull(Employees.find { it.name.equal(employeeName) }.singleOrNull()) { "Employee not found" }
         check(employee!!.password == employeePassword) { "Invalid password" }
     }
     employee!!.clearPassword()

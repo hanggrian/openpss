@@ -4,11 +4,11 @@ import com.hendraanggrian.openpss.db.schemas.Recess
 import com.hendraanggrian.openpss.db.schemas.Wage
 import com.hendraanggrian.openpss.db.schemas.Wages
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.util.START_OF_TIME
 import com.hendraanggrian.openpss.resources.Resourced
 import com.hendraanggrian.openpss.ui.wage.record.Record
 import com.hendraanggrian.openpss.ui.wage.record.Record.Companion.INDEX_NODE
 import com.hendraanggrian.openpss.ui.wage.record.Record.Companion.INDEX_TOTAL
+import com.hendraanggrian.openpss.util.START_OF_TIME
 import com.hendraanggrian.openpss.util.isEmpty
 import com.hendraanggrian.openpss.util.round
 import javafx.beans.property.IntegerProperty
@@ -47,7 +47,7 @@ data class Attendee(
 
     init {
         transaction {
-            Wages.find { wageId.equal(id) }.singleOrNull()?.let { wage ->
+            Wages.find { it.wageId.equal(id) }.singleOrNull()?.let { wage ->
                 daily = wage.daily
                 hourlyOvertime = wage.hourlyOvertime
             }
@@ -56,8 +56,8 @@ data class Attendee(
 
     fun saveWage() {
         transaction @Suppress("IMPLICIT_CAST_TO_ANY") {
-            Wages.find { wageId.equal(id) }.let { wages ->
-                if (wages.isEmpty()) Wages.insert(Wage(id, daily, hourlyOvertime))
+            Wages.find { it.wageId.equal(id) }.let { wages ->
+                if (wages.isEmpty()) Wages += Wage(id, daily, hourlyOvertime)
                 else wages.single().let { wage ->
                     when {
                         wage.daily != daily && wage.hourlyOvertime != hourlyOvertime ->

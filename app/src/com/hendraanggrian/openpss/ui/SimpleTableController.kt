@@ -1,9 +1,7 @@
 package com.hendraanggrian.openpss.ui
 
 import com.hendraanggrian.openpss.db.Document
-import com.hendraanggrian.openpss.db.schemas.isFullAccess
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.util.findByDoc
 import com.hendraanggrian.openpss.util.yesNoAlert
 import javafx.fxml.FXML
 import javafx.scene.control.Button
@@ -36,7 +34,7 @@ abstract class SimpleTableController<D : Document<S>, S : DocumentSchema<D>>(
         later {
             transaction {
                 deleteButton.disableProperty().bind(table.selectionModel.selectedItemProperty().isNull or
-                    !isFullAccess(login).toProperty())
+                    !login.isFullAccess().toProperty())
             }
         }
     }
@@ -49,7 +47,7 @@ abstract class SimpleTableController<D : Document<S>, S : DocumentSchema<D>>(
 
     @FXML fun delete() = yesNoAlert {
         table.selectionModel.selectedItem.let {
-            transaction { findByDoc(schema, it).remove() }
+            transaction { schema.findByDoc(it).remove() }
             table.items.remove(it)
         }
     }

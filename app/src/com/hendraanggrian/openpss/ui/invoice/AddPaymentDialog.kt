@@ -9,7 +9,6 @@ import com.hendraanggrian.openpss.db.schemas.Payment
 import com.hendraanggrian.openpss.db.schemas.Payment.Method
 import com.hendraanggrian.openpss.db.schemas.Payment.Method.CASH
 import com.hendraanggrian.openpss.db.schemas.Payment.Method.values
-import com.hendraanggrian.openpss.db.schemas.calculateDue
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.resources.Resourced
 import com.hendraanggrian.openpss.util.currencyConverter
@@ -54,7 +53,7 @@ class AddPaymentDialog(
     private lateinit var valueField: DoubleField
     private lateinit var methodChoice: ChoiceBox<Method>
     private lateinit var transferField: TextField
-    private val receivable = transaction { calculateDue(invoice) }!!
+    private val receivable = transaction { invoice.calculateDue() }
 
     init {
         style()

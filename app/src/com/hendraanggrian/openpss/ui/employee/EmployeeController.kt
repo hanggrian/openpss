@@ -2,10 +2,10 @@ package com.hendraanggrian.openpss.ui.employee
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.controls.UserDialog
+import com.hendraanggrian.openpss.db.SessionWrapper
 import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.db.schemas.Employee.Companion.DEFAULT_PASSWORD
 import com.hendraanggrian.openpss.db.schemas.Employees
-import com.hendraanggrian.openpss.db.schemas.isFullAccess
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.Refreshable
@@ -21,7 +21,6 @@ import javafx.scene.control.SelectionModel
 import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
 import kotlinx.nosql.equal
-import kotlinx.nosql.mongodb.MongoDBSession
 import kotlinx.nosql.update
 import ktfx.application.exit
 import ktfx.application.later
@@ -47,7 +46,7 @@ class EmployeeController : Controller(), Refreshable, Selectable<Employee> {
         fullAccessButton.disableProperty().bind(!selectedBinding)
         resetPasswordButton.disableProperty().bind(!selectedBinding)
         nameColumn.stringCell { name }
-        later { fullAccessColumn.doneCell(128) { transaction { isFullAccess(login) }!! } }
+        later { fullAccessColumn.doneCell(128) { transaction { login.isFullAccess() } } }
     }
 
     override fun refresh() {
@@ -58,7 +57,7 @@ class EmployeeController : Controller(), Refreshable, Selectable<Employee> {
 
     @FXML fun add() = UserDialog(this, R.string.add_employee, R.image.header_employee).showAndWait().ifPresent {
         val employee = Employee.new(it)
-        employee.id = transaction { Employees.insert(employee) }!!
+        employee.id = transaction { Employees.insert(employee) }
         employeeTable.items.add(employee)
         selectionModel.select(employee)
     }
@@ -67,7 +66,7 @@ class EmployeeController : Controller(), Refreshable, Selectable<Employee> {
     }
 
     @FXML fun delete() = confirm({ employee ->
-        Employees.find { name.equal(employee.name) }.remove()
+        Employees.find { it.name.equal(employee.name) }.remove()
     })
 
     @FXML fun fullAccess() = confirm({ employee ->
@@ -75,7 +74,7 @@ class EmployeeController : Controller(), Refreshable, Selectable<Employee> {
     })
 
     @FXML fun resetPassword() = confirm({ employee ->
-        Employees.find { name.equal(employee.name) }.projection { password }.update(DEFAULT_PASSWORD)
+        Employees.find { it.name.equal(employee.name) }.projection { password }.update(DEFAULT_PASSWORD)
     }) {
         ChangePasswordDialog(this).showAndWait().ifPresent { newPassword ->
             transaction {
@@ -86,7 +85,7 @@ class EmployeeController : Controller(), Refreshable, Selectable<Employee> {
     }
 
     private fun confirm(
-        confirmedAction: MongoDBSession.(Employee) -> Unit,
+        confirmedAction: SessionWrapper.(Employee) -> Unit,
         isNotSelfAction: () -> Unit = {
             infoAlert(getString(R.string.please_restart)) { style() }.showAndWait().ifPresent { exit() }
         }

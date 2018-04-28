@@ -37,7 +37,7 @@ class AddOffsetDialog(resourced: Resourced) : AddOrderDialog<Invoice.Offset>(
 
     override fun _GridPane.onLayout() {
         label(getString(R.string.machine)) col 0 row 2
-        machineChoice = choiceBox(transaction { OffsetPrices.find().toObservableList() }!!) {
+        machineChoice = choiceBox(transaction { OffsetPrices.find().toObservableList() }) {
             valueProperty().listener { _, _, offset ->
                 minQtyField.value = offset.minQty
                 minPriceField.value = offset.minPrice

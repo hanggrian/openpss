@@ -119,7 +119,7 @@ class AttendeePane(
                                 when (nextItem) {
                                     null -> itemLabel.textFill = getColor(R.color.red)
                                     else -> {
-                                        val interval = FlexibleInterval.of(dateTime, nextItem)
+                                        val interval = IntervalWrapper.of(dateTime, nextItem)
                                         var minutes = interval.minutes
                                         attendee.recesses
                                             .map { it.getInterval(dateTime) }

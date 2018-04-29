@@ -20,7 +20,7 @@ data class Employee(
         const val DEFAULT_PASSWORD = "1234"
         val BACKDOOR: Employee = Employee("Test", "hendraganteng")
 
-        fun new(name: String, password: String = DEFAULT_PASSWORD): Employee = Employee(name, password)
+        fun new(name: String): Employee = Employee(name, DEFAULT_PASSWORD)
     }
 
     override lateinit var id: Id<String, Employees>

@@ -30,7 +30,7 @@ class ReportController : FinancialController<Report>() {
 
     @FXML lateinit var viewPaymentsButton: Button
     @FXML lateinit var monthBox: MonthBox
-    @FXML lateinit var reportTable: TableView<Report>
+    @FXML override lateinit var table: TableView<Report>
     @FXML lateinit var dateColumn: TableColumn<Report, String>
     @FXML lateinit var cashColumn: TableColumn<Report, String>
     @FXML lateinit var transferColumn: TableColumn<Report, String>
@@ -41,21 +41,19 @@ class ReportController : FinancialController<Report>() {
         viewPaymentsButton.disableProperty().bind(!selectedBinding)
         monthBox.setLocale(Locale(LoginFile.LANGUAGE))
         monthBox.valueProperty.listener { refresh() }
-        reportTable.onMouseClicked { if (it.isDoubleClick() && selected != null) viewPayments() }
+        table.onMouseClicked { if (it.isDoubleClick() && selected != null) viewPayments() }
         dateColumn.stringCell { date.toString(PATTERN_DATE) }
         cashColumn.stringCell { currencyConverter.toString(cash) }
         transferColumn.stringCell { currencyConverter.toString(transfer) }
         totalColumn.stringCell { currencyConverter.toString(total) }
     }
 
-    override val table: TableView<Report> get() = reportTable
+    override val List<Report>.totalCash get(): Double = sumByDouble { it.cash }
 
-    override fun List<Report>.getTotalCash(): Double = sumByDouble { it.cash }
-
-    override fun List<Report>.getTransferCash(): Double = sumByDouble { it.transfer }
+    override val List<Report>.totalTransfer get(): Double = sumByDouble { it.transfer }
 
     override fun refresh() {
-        reportTable.items = transaction { Report.listAll(Payments { it.dateTime.matches(monthBox.value) }) }
+        table.items = transaction { Report.listAll(Payments { it.dateTime.matches(monthBox.value) }) }
     }
 
     @FXML fun viewPayments() = getExtra<MainController>(EXTRA_MAIN_CONTROLLER).run {

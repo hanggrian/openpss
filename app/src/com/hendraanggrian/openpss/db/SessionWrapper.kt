@@ -39,14 +39,17 @@ class SessionWrapper(val session: MongoDBSession) :
         noinline query: (S) -> Query
     ): DocumentSchemaQueryWrapper<S, String, D> = session.run { return find(query) }
 
+    /** Realm-style find by id. */
     inline operator fun <S : DocumentSchema<D>, D : Document<S>> S.get(
         id: Id<String, S>
     ): DocumentSchemaQueryWrapper<S, String, D> = invoke { it.id.equal(id) }
 
+    /** Find by id associated with document. */
     inline operator fun <S : DocumentSchema<D>, D : Document<S>> S.get(
         document: D
     ): DocumentSchemaQueryWrapper<S, String, D> = get(document.id)
 
+    /** Build query for optional and/or query operation. */
     inline fun <S : DocumentSchema<D>, D : Document<S>> S.buildQuery(
         noinline builder: QueryBuilder.(S) -> Unit
     ): DocumentSchemaQueryWrapper<S, String, D> = invoke {

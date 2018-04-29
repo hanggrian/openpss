@@ -15,9 +15,9 @@ abstract class FinancialController<T> : Controller(), Refreshable, Selectable<T>
 
     abstract val table: TableView<T>
 
-    abstract fun List<T>.getTotalCash(): Double
+    abstract val List<T>.totalCash: Double
 
-    abstract fun List<T>.getTransferCash(): Double
+    abstract val List<T>.totalTransfer: Double
 
     @FXML lateinit var totalCashLabel1: Label
     @FXML lateinit var totalCashLabel2: Label
@@ -32,10 +32,10 @@ abstract class FinancialController<T> : Controller(), Refreshable, Selectable<T>
         totalCashLabel1.font = getFont(R.font.sf_pro_text_bold)
         totalTransferLabel1.font = getFont(R.font.sf_pro_text_bold)
         totalCashLabel2.textProperty().bind(stringBindingOf(table.itemsProperty()) {
-            currencyConverter.toString(table.items.getTotalCash())
+            currencyConverter.toString(table.items.totalCash)
         })
         totalTransferLabel2.textProperty().bind(stringBindingOf(table.itemsProperty()) {
-            currencyConverter.toString(table.items.getTransferCash())
+            currencyConverter.toString(table.items.totalTransfer)
         })
         totalAllLabel2.textProperty().bind(
             stringBindingOf(totalCashLabel2.textProperty(), totalTransferLabel2.textProperty()) {

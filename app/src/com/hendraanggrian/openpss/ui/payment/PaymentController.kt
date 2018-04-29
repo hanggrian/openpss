@@ -29,7 +29,7 @@ class PaymentController : FinancialController<Payment>() {
 
     @FXML lateinit var viewInvoiceButton: Button
     @FXML lateinit var dateBox: DateBox
-    @FXML lateinit var paymentTable: TableView<Payment>
+    @FXML override lateinit var table: TableView<Payment>
     @FXML lateinit var noColumn: TableColumn<Payment, String>
     @FXML lateinit var timeColumn: TableColumn<Payment, String>
     @FXML lateinit var employeeColumn: TableColumn<Payment, String>
@@ -40,7 +40,7 @@ class PaymentController : FinancialController<Payment>() {
         super.initialize(location, resources)
         viewInvoiceButton.disableProperty().bind(!selectedBinding)
         dateBox.valueProperty.listener { refresh() }
-        paymentTable.onMouseClicked { if (it.isDoubleClick() && selected != null) viewInvoice() }
+        table.onMouseClicked { if (it.isDoubleClick() && selected != null) viewInvoice() }
         noColumn.stringCell { transaction { Invoices[invoiceId].single().no } }
         timeColumn.stringCell { dateTime.toString(PATTERN_TIME) }
         employeeColumn.stringCell { transaction { Employees[employeeId].single() } }
@@ -48,18 +48,15 @@ class PaymentController : FinancialController<Payment>() {
         methodColumn.stringCell { typedMethod.toString(this@PaymentController) }
     }
 
-    override val table: TableView<Payment> get() = paymentTable
+    override val List<Payment>.totalCash get(): Double = Payment.gather(this, CASH)
 
-    override fun List<Payment>.getTotalCash(): Double = Payment.gather(this, CASH)
-
-    override fun List<Payment>.getTransferCash(): Double = Payment.gather(this, TRANSFER)
+    override val List<Payment>.totalTransfer get(): Double = Payment.gather(this, TRANSFER)
 
     override fun refresh() {
-        paymentTable.items = transaction {
-            Payments{ it.dateTime.matches(dateBox.value) }.toMutableObservableList()
+        table.items = transaction {
+            Payments { it.dateTime.matches(dateBox.value) }.toMutableObservableList()
         }
     }
 
-    @FXML fun viewInvoice() = ViewInvoiceDialog(this,
-        transaction { Invoices[selected!!.invoiceId].single() }).show()
+    @FXML fun viewInvoice() = ViewInvoiceDialog(this, transaction { Invoices[selected!!.invoiceId].single() }).show()
 }

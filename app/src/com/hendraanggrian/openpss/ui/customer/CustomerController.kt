@@ -121,13 +121,12 @@ class CustomerController : Controller(), Refreshable, Selectable<Customer>, Sele
                         items = customers
                             .skip(CUSTOMER_PAGINATION_ITEMS * page)
                             .take(CUSTOMER_PAGINATION_ITEMS).toMutableObservableList()
-                        editNameButton.disableProperty().bind(!selectedBinding or
-                            !login.isFullAccess().toReadOnlyProperty())
+                        val fullAccess = login.isFullAccess().toReadOnlyProperty()
+                        editNameButton.disableProperty().bind(!selectedBinding or !fullAccess)
                         editAddressButton.disableProperty().bind(!selectedBinding)
                         editNoteButton.disableProperty().bind(!selectedBinding)
                         addContactButton.disableProperty().bind(!selectedBinding)
-                        deleteContactButton.disableProperty().bind(!selectedBinding2 or
-                            !login.isFullAccess().toReadOnlyProperty())
+                        deleteContactButton.disableProperty().bind(!selectedBinding2 or !fullAccess)
                     }
                 }
             }

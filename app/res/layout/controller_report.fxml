@@ -45,7 +45,7 @@
         </Label>
         <Label fx:id="totalAllLabel2" text="%total"/>
     </ToolBar>
-    <TableView fx:id="reportTable" VBox.vgrow="ALWAYS">
+    <TableView fx:id="table" VBox.vgrow="ALWAYS">
         <columns>
             <TableColumn fx:id="dateColumn" text="%date"/>
             <TableColumn fx:id="cashColumn" text="%cash"/>

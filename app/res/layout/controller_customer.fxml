@@ -95,6 +95,7 @@
                 <RowConstraints vgrow="NEVER"/>
                 <RowConstraints vgrow="NEVER"/>
                 <RowConstraints vgrow="NEVER"/>
+                <RowConstraints vgrow="NEVER"/>
                 <RowConstraints vgrow="ALWAYS"/>
             </rowConstraints>
             <padding>
@@ -120,7 +121,7 @@
             <ImageView fx:id="contactImage" GridPane.rowIndex="5" GridPane.columnIndex="0" GridPane.valignment="TOP">
                 <Image url="@/image/text_contact.png"/>
             </ImageView>
-            <TableView fx:id="contactTable" GridPane.rowIndex="5" GridPane.columnIndex="1">
+            <TableView fx:id="contactTable" prefHeight="-NaN" GridPane.rowIndex="5" GridPane.columnIndex="1">
                 <columns>
                     <TableColumn fx:id="typeColumn" text="%type"/>
                     <TableColumn fx:id="valueColumn" text="%value"/>

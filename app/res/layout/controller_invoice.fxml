@@ -139,8 +139,9 @@
             <Pagination fx:id="invoicePagination" style="-fx-page-information-alignment: right;" VBox.vgrow="ALWAYS"/>
         </VBox>
         <AnchorPane fx:id="paymentPane">
-            <TableView fx:id="paymentTable" prefHeight="-NaN" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0"
-                       AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
+            <TableView fx:id="paymentTable" prefHeight="-NaN"
+                       AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0"
+                       AnchorPane.topAnchor="0">
                 <columns>
                     <TableColumn fx:id="paymentDateTimeColumn" text="%date"/>
                     <TableColumn fx:id="paymentEmployeeColumn" text="%employee"/>

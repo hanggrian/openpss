@@ -23,6 +23,7 @@ import kotlinx.nosql.equal
 import kotlinx.nosql.update
 import ktfx.application.launch
 import ktfx.collections.observableListOf
+import ktfx.layouts.scene
 import ktfx.scene.control.infoAlert
 import ktfx.stage.icon
 import ktfx.stage.setMinSize

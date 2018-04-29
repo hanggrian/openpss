@@ -159,14 +159,12 @@ class InvoiceController : Controller(), Refreshable, Selectable<Invoice>, Select
                         items = invoices
                             .skip(INVOICE_PAGINATION_ITEMS * page)
                             .take(INVOICE_PAGINATION_ITEMS).toMutableObservableList()
-                        editInvoiceButton.disableProperty().bind(!selectedBinding or
-                            !login.isFullAccess().toReadOnlyProperty())
-                        deleteInvoiceButton.disableProperty().bind(!selectedBinding or
-                            !login.isFullAccess().toReadOnlyProperty())
+                        val fullAccess = login.isFullAccess().toReadOnlyProperty()
+                        editInvoiceButton.disableProperty().bind(!selectedBinding or !fullAccess)
+                        deleteInvoiceButton.disableProperty().bind(!selectedBinding or !fullAccess)
                         viewInvoiceButton.disableProperty().bind(!selectedBinding)
                         addPaymentButton.disableProperty().bind(!selectedBinding)
-                        deletePaymentButton.disableProperty().bind(!selectedBinding2 or
-                            !login.isFullAccess().toReadOnlyProperty())
+                        deletePaymentButton.disableProperty().bind(!selectedBinding2 or !fullAccess)
                     }
                 }
             }

@@ -41,9 +41,9 @@ class PaymentController : FinancialController<Payment>() {
         viewInvoiceButton.disableProperty().bind(!selectedBinding)
         dateBox.valueProperty.listener { refresh() }
         paymentTable.onMouseClicked { if (it.isDoubleClick() && selected != null) viewInvoice() }
-        noColumn.stringCell { transaction { Invoices.findById(invoiceId).single().no } }
+        noColumn.stringCell { transaction { Invoices[invoiceId].single().no } }
         timeColumn.stringCell { dateTime.toString(PATTERN_TIME) }
-        employeeColumn.stringCell { transaction { Employees.findById(employeeId).single() } }
+        employeeColumn.stringCell { transaction { Employees[employeeId].single() } }
         valueColumn.currencyCell { value }
         methodColumn.stringCell { typedMethod.toString(this@PaymentController) }
     }
@@ -56,10 +56,10 @@ class PaymentController : FinancialController<Payment>() {
 
     override fun refresh() {
         paymentTable.items = transaction {
-            Payments.find { it.dateTime.matches(dateBox.value) }.toMutableObservableList()
+            Payments{ it.dateTime.matches(dateBox.value) }.toMutableObservableList()
         }
     }
 
     @FXML fun viewInvoice() = ViewInvoiceDialog(this,
-        transaction { Invoices.findById(selected!!.invoiceId).single() }).show()
+        transaction { Invoices[selected!!.invoiceId].single() }).show()
 }

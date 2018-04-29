@@ -35,31 +35,31 @@ class SessionWrapper(val session: MongoDBSession) :
     }
 
     /** Same with `MongoDBSession`'s `find` but moved schema instance from receiver to parameter. */
-    inline fun <S : DocumentSchema<D>, D : Document<S>> S.find(
+    inline operator fun <S : DocumentSchema<D>, D : Document<S>> S.invoke(
         noinline query: (S) -> Query
     ): DocumentSchemaQueryWrapper<S, String, D> = session.run { return find(query) }
 
-    inline fun <S : DocumentSchema<D>, D : Document<S>> S.findById(
+    inline operator fun <S : DocumentSchema<D>, D : Document<S>> S.get(
         id: Id<String, S>
-    ): DocumentSchemaQueryWrapper<S, String, D> = find { it.id.equal(id) }
+    ): DocumentSchemaQueryWrapper<S, String, D> = invoke { it.id.equal(id) }
 
-    inline fun <S : DocumentSchema<D>, D : Document<S>> S.findByDoc(
+    inline operator fun <S : DocumentSchema<D>, D : Document<S>> S.get(
         document: D
-    ): DocumentSchemaQueryWrapper<S, String, D> = findById(document.id)
+    ): DocumentSchemaQueryWrapper<S, String, D> = get(document.id)
 
-    inline fun <S : DocumentSchema<D>, D : Document<S>> S.findWithBuilder(
+    inline fun <S : DocumentSchema<D>, D : Document<S>> S.buildQuery(
         noinline builder: QueryBuilder.(S) -> Unit
-    ): DocumentSchemaQueryWrapper<S, String, D> = find {
-        _QueryBuilder().apply { builder(this@findWithBuilder) }.build()
+    ): DocumentSchemaQueryWrapper<S, String, D> = invoke {
+        _QueryBuilder().apply { builder(this@buildQuery) }.build()
     }
 
     inline fun Employee.isFullAccess(): Boolean =
-        EmployeeAccesses.find { it.employeeId.equal(id) }.isNotEmpty()
+        EmployeeAccesses { it.employeeId.equal(id) }.isNotEmpty()
 
     inline fun findGlobalSettings(
         key: String
-    ): DocumentSchemaQueryWrapper<GlobalSettings, String, GlobalSetting> = GlobalSettings.find { it.key.equal(key) }
+    ): DocumentSchemaQueryWrapper<GlobalSettings, String, GlobalSetting> = GlobalSettings { it.key.equal(key) }
 
     inline fun Invoice.calculateDue(): Double =
-        total - Payments.find { it.invoiceId.equal(id) }.sumByDouble { it.value }
+        total - Payments { it.invoiceId.equal(id) }.sumByDouble { it.value }
 }

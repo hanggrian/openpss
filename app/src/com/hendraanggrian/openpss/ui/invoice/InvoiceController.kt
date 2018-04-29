@@ -120,7 +120,7 @@ class InvoiceController : Controller(), Refreshable, Selectable<Invoice>, Select
         pickDateRadio.graphic.disableProperty().bind(!pickDateRadio.selectedProperty())
 
         paymentDateTimeColumn.stringCell { dateTime.toString(PATTERN_DATETIME_EXTENDED) }
-        paymentEmployeeColumn.stringCell { transaction { Employees.findById(employeeId).single() } }
+        paymentEmployeeColumn.stringCell { transaction { Employees[employeeId].single() } }
         paymentValueColumn.currencyCell { value }
         paymentMethodColumn.stringCell { typedMethod.toString(this@InvoiceController) }
     }
@@ -135,10 +135,10 @@ class InvoiceController : Controller(), Refreshable, Selectable<Invoice>, Select
                     getString(R.string.id)<String> { stringCell { no } }
                     getString(R.string.date)<String> { stringCell { dateTime.toString(PATTERN_DATETIME_EXTENDED) } }
                     getString(R.string.employee)<String> {
-                        stringCell { transaction { Employees.findById(employeeId).single() } }
+                        stringCell { transaction { Employees[employeeId].single() } }
                     }
                     getString(R.string.customer)<String> {
-                        stringCell { transaction { Customers.findById(customerId).single() } }
+                        stringCell { transaction { Customers[customerId].single() } }
                     }
                     getString(R.string.total)<String> { currencyCell { total } }
                     getString(R.string.print)<Boolean> { doneCell { printed } }
@@ -148,7 +148,7 @@ class InvoiceController : Controller(), Refreshable, Selectable<Invoice>, Select
                 onMouseClicked { if (it.isDoubleClick() && selected != null) viewInvoice() }
                 later {
                     transaction {
-                        val invoices = Invoices.findWithBuilder {
+                        val invoices = Invoices.buildQuery {
                             if (customerProperty.value != null) and(customerId.equal(customerProperty.value.id))
                             if (unpaidPaymentItem.isSelected) and(it.paid.equal(false))
                             if (paidPaymentItem.isSelected) and(it.paid.equal(true))
@@ -172,7 +172,7 @@ class InvoiceController : Controller(), Refreshable, Selectable<Invoice>, Select
             }
             paymentTable.itemsProperty().bind(bindingOf(invoiceTable.selectionModel.selectedItemProperty()) {
                 if (selected == null) emptyObservableList()
-                else transaction { Payments.find { invoiceId.equal(selected!!.id) }.toObservableList() }
+                else transaction { Payments { invoiceId.equal(selected!!.id) }.toObservableList() }
             })
             coverLabel.visibleProperty().bind(invoiceTable.selectionModel.selectedItemProperty().isNull)
             invoiceTable
@@ -195,7 +195,7 @@ class InvoiceController : Controller(), Refreshable, Selectable<Invoice>, Select
         .showAndWait()
         .ifPresent {
             transaction {
-                Invoices.findByDoc(it)
+                Invoices[it]
                     .projection { plates + offsets + others + note + paid }
                     .update(it.plates, it.offsets, it.others, it.note, it.calculateDue() <= 0.0)
                 reload(it)
@@ -204,8 +204,8 @@ class InvoiceController : Controller(), Refreshable, Selectable<Invoice>, Select
 
     @FXML fun deleteInvoice() = yesNoAlert {
         transaction {
-            Invoices.findByDoc(selected!!).remove()
-            Payments.find { invoiceId.equal(selected!!.id) }.remove()
+            Invoices[selected!!].remove()
+            Payments { invoiceId.equal(selected!!.id) }.remove()
         }
         invoiceTable.items.remove(selected)
     }
@@ -222,7 +222,7 @@ class InvoiceController : Controller(), Refreshable, Selectable<Invoice>, Select
 
     @FXML fun deletePayment() = yesNoAlert {
         transaction {
-            Payments.findById(selected2!!.id).remove()
+            Payments[selected2!!].remove()
             updatePaymentStatus()
             reload(selected!!)
         }
@@ -248,13 +248,13 @@ class InvoiceController : Controller(), Refreshable, Selectable<Invoice>, Select
         loader.controller.login = login
     }.showAndWait()
 
-    private fun SessionWrapper.updatePaymentStatus() = Invoices.findByDoc(selected!!)
+    private fun SessionWrapper.updatePaymentStatus() = Invoices[selected!!]
         .projection { Invoices.paid }
         .update(selected!!.calculateDue() <= 0.0)
 
     private fun SessionWrapper.reload(invoice: Invoice) = invoiceTable.run {
         items.indexOf(invoice).let { index ->
-            items[index] = Invoices.findByDoc(invoice).single()
+            items[index] = Invoices[invoice].single()
             selectionModel.select(index)
         }
     }

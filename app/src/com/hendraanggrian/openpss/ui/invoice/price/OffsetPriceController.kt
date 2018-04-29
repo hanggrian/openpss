@@ -28,7 +28,7 @@ class OffsetPriceController : PriceController<OffsetPrice, OffsetPrices>(OffsetP
         }
         minQtyColumn.onEditCommit { cell ->
             transaction {
-                OffsetPrices.find { it.name.equal(cell.rowValue.name) }.projection { minQty }.update(cell.newValue)
+                OffsetPrices { it.name.equal(cell.rowValue.name) }.projection { minQty }.update(cell.newValue)
             }
             cell.rowValue.minQty = cell.newValue
         }
@@ -39,7 +39,7 @@ class OffsetPriceController : PriceController<OffsetPrice, OffsetPrices>(OffsetP
         }
         minPriceColumn.onEditCommit { cell ->
             transaction {
-                OffsetPrices.find { it.name.equal(cell.rowValue.name) }.projection { minPrice }.update(cell.newValue)
+                OffsetPrices { it.name.equal(cell.rowValue.name) }.projection { minPrice }.update(cell.newValue)
             }
             cell.rowValue.minPrice = cell.newValue
         }
@@ -50,7 +50,7 @@ class OffsetPriceController : PriceController<OffsetPrice, OffsetPrices>(OffsetP
         }
         excessPriceColumn.onEditCommit { cell ->
             transaction {
-                OffsetPrices.find { it.name.equal(cell.rowValue.name) }.projection { excessPrice }.update(cell.newValue)
+                OffsetPrices { it.name.equal(cell.rowValue.name) }.projection { excessPrice }.update(cell.newValue)
             }
             cell.rowValue.excessPrice = cell.newValue
         }

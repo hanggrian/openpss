@@ -66,19 +66,19 @@ class EmployeeController : Controller(), Refreshable, Selectable<Employee> {
     }
 
     @FXML fun delete() = confirm({ employee ->
-        Employees.find { it.name.equal(employee.name) }.remove()
+        Employees { it.name.equal(employee.name) }.remove()
     })
 
     @FXML fun fullAccess() = confirm({ employee ->
-        // Employees.find { name.equal(employee.name) }.projection { fullAccess }.update(!employee.fullAccess)
+        // Employees { name.equal(employee.name) }.projection { fullAccess }.update(!employee.fullAccess)
     })
 
     @FXML fun resetPassword() = confirm({ employee ->
-        Employees.find { it.name.equal(employee.name) }.projection { password }.update(DEFAULT_PASSWORD)
+        Employees { it.name.equal(employee.name) }.projection { password }.update(DEFAULT_PASSWORD)
     }) {
         ChangePasswordDialog(this).showAndWait().ifPresent { newPassword ->
             transaction {
-                // Employees.find { name.equal(employeeName) }.projection { password }.update(newPassword)
+                // Employees { name.equal(employeeName) }.projection { password }.update(newPassword)
                 infoAlert(getString(R.string.successfully_changed_password)) { style() }.show()
             }
         }

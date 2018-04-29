@@ -66,13 +66,13 @@ suspend fun login(
     transaction {
         // check first time installation
         GlobalSetting.listKeys().forEach { key ->
-            if (GlobalSettings.find { it.key.equal(key) }.isEmpty()) GlobalSettings += GlobalSetting.new(key)
+            if (GlobalSettings { it.key.equal(key) }.isEmpty()) GlobalSettings += GlobalSetting.new(key)
         }
         // add default employee
-        if (Employees.find { it.name.equal(Employee.BACKDOOR.name) }.isEmpty())
+        if (Employees { it.name.equal(Employee.BACKDOOR.name) }.isEmpty())
             EmployeeAccesses += EmployeeAccess(Employees.insert(Employee.BACKDOOR))
         // check login credentials
-        employee = checkNotNull(Employees.find { it.name.equal(employeeName) }.singleOrNull()) { "Employee not found" }
+        employee = checkNotNull(Employees { it.name.equal(employeeName) }.singleOrNull()) { "Employee not found" }
         check(employee!!.password == employeePassword) { "Invalid password" }
     }
     employee!!.clearPassword()

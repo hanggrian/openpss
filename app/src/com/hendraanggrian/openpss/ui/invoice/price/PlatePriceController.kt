@@ -26,7 +26,7 @@ class PlatePriceController : PriceController<PlatePrice, PlatePrices>(PlatePrice
         }
         priceColumn.onEditCommit { cell ->
             transaction {
-                PlatePrices.find { it.name.equal(cell.rowValue.name) }.projection { price }.update(cell.newValue)
+                PlatePrices { it.name.equal(cell.rowValue.name) }.projection { price }.update(cell.newValue)
             }
             cell.rowValue.price = cell.newValue
         }

@@ -60,9 +60,9 @@ class ScheduleController : Controller(), Refreshable, TreeSelectable<Schedule> {
         scheduleTable.root.children.run {
             clear()
             transaction {
-                Invoices.find { it.done.equal(false) }.forEach { invoice ->
+                Invoices { it.done.equal(false) }.forEach { invoice ->
                     addAll(UncollapsibleTreeItem(
-                        Schedule(invoice.id, Customers.findById(invoice.customerId).single().name, "", "",
+                        Schedule(invoice.id, Customers[invoice.customerId].single().name, "", "",
                             invoice.dateTime.toString(PATTERN_DATETIME_EXTENDED))).apply {
                         invoice.plates.forEach {
                             children += TreeItem<Schedule>(
@@ -85,7 +85,7 @@ class ScheduleController : Controller(), Refreshable, TreeSelectable<Schedule> {
     override val selectionModel: TreeTableViewSelectionModel<Schedule> get() = scheduleTable.selectionModel
 
     @FXML fun done() {
-        transaction { Invoices.findById(selected!!.value.invoiceId!!).projection { done }.update(true) }
+        transaction { Invoices[selected!!.value.invoiceId!!].projection { done }.update(true) }
         refresh()
     }
 

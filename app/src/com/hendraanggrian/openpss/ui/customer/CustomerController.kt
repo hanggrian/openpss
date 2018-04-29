@@ -108,7 +108,7 @@ class CustomerController : Controller(), Refreshable, Selectable<Customer>, Sele
             customerList = listView {
                 later {
                     transaction {
-                        val customers = Customers.findWithBuilder {
+                        val customers = Customers.buildQuery {
                             if (searchField.text.isNotBlank()) {
                                 if (filterNameItem.isSelected) or(it.name.matches(searchField.text, CASE_INSENSITIVE))
                                 if (filterAddressItem.isSelected)
@@ -153,7 +153,7 @@ class CustomerController : Controller(), Refreshable, Selectable<Customer>, Sele
         .ifPresent {
             transaction {
                 when {
-                    Customers.find { it.name.matches("^$it$", CASE_INSENSITIVE) }.isNotEmpty() ->
+                    Customers { it.name.matches("^$it$", CASE_INSENSITIVE) }.isNotEmpty() ->
                         errorAlert(getString(R.string.name_taken)) { style() }.show()
                     else -> Customer.new(it).let {
                         it.id = Customers.insert(it)
@@ -168,7 +168,7 @@ class CustomerController : Controller(), Refreshable, Selectable<Customer>, Sele
         .showAndWait()
         .ifPresent {
             transaction {
-                Customers.findByDoc(selected!!).projection { name }.update(it)
+                Customers[selected!!].projection { name }.update(it)
                 reload(selected!!)
             }
         }
@@ -180,7 +180,7 @@ class CustomerController : Controller(), Refreshable, Selectable<Customer>, Sele
             dialogPane.lookupButton(OK).disableProperty().bind(editor.textProperty().isBlank())
         }.showAndWait().ifPresent {
             transaction {
-                Customers.findByDoc(selected!!).projection { address }.update(it)
+                Customers[selected!!].projection { address }.update(it)
                 reload(selected!!)
             }
         }
@@ -192,21 +192,21 @@ class CustomerController : Controller(), Refreshable, Selectable<Customer>, Sele
             dialogPane.lookupButton(OK).disableProperty().bind(editor.textProperty().isBlank())
         }.showAndWait().ifPresent {
             transaction {
-                Customers.findByDoc(selected!!).projection { note }.update(it)
+                Customers[selected!!].projection { note }.update(it)
                 reload(selected!!)
             }
         }
 
     @FXML fun addContact() = AddContactDialog(this).showAndWait().ifPresent {
         transaction {
-            Customers.findByDoc(selected!!).projection { contacts }.update(selected!!.contacts + it)
+            Customers[selected!!].projection { contacts }.update(selected!!.contacts + it)
             reload(selected!!)
         }
     }
 
     @FXML fun deleteContact() = yesNoAlert(R.string.delete_contact) {
         transaction {
-            Customers.findByDoc(selected!!).projection { contacts }.update(selected!!.contacts - selected2!!)
+            Customers[selected!!].projection { contacts }.update(selected!!.contacts - selected2!!)
             reload(selected!!)
         }
     }
@@ -218,7 +218,7 @@ class CustomerController : Controller(), Refreshable, Selectable<Customer>, Sele
 
     private fun SessionWrapper.reload(customer: Customer) = customerList.run {
         items.indexOf(customer).let { index ->
-            items[index] = Customers.findByDoc(customer).single()
+            items[index] = Customers[customer].single()
             selectionModel.select(index)
         }
     }

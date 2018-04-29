@@ -47,7 +47,7 @@ data class Attendee(
 
     init {
         transaction {
-            Wages.find { it.wageId.equal(id) }.singleOrNull()?.let { wage ->
+            Wages { it.wageId.equal(id) }.singleOrNull()?.let { wage ->
                 daily = wage.daily
                 hourlyOvertime = wage.hourlyOvertime
             }
@@ -56,7 +56,7 @@ data class Attendee(
 
     fun saveWage() {
         transaction @Suppress("IMPLICIT_CAST_TO_ANY") {
-            Wages.find { it.wageId.equal(id) }.let { wages ->
+            Wages { it.wageId.equal(id) }.let { wages ->
                 if (wages.isEmpty()) Wages += Wage(id, daily, hourlyOvertime)
                 else wages.single().let { wage ->
                     when {

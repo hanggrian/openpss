@@ -51,8 +51,8 @@ class ViewInvoiceDialog(resourced: Resourced, invoice: Invoice) : Dialog<Nothing
         style()
         transaction {
             invoiceHeaders = findGlobalSettings(KEY_INVOICE_HEADERS).single().valueList
-            employee = Employees.findById(invoice.employeeId).single()
-            customer = Customers.findById(invoice.customerId).single()
+            employee = Employees[invoice.employeeId].single()
+            customer = Customers[invoice.customerId].single()
         }
         initModality(NONE)
         headerTitle = getString(R.string.view_invoice)

@@ -55,7 +55,7 @@ class ReportController : FinancialController<Report>() {
     override fun List<Report>.getTransferCash(): Double = sumByDouble { it.transfer }
 
     override fun refresh() {
-        reportTable.items = transaction { Report.listAll(Payments.find { it.dateTime.matches(monthBox.value) }) }
+        reportTable.items = transaction { Report.listAll(Payments { it.dateTime.matches(monthBox.value) }) }
     }
 
     @FXML fun viewPayments() = getExtra<MainController>(EXTRA_MAIN_CONTROLLER).run {

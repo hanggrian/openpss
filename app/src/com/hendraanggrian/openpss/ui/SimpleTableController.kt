@@ -47,7 +47,7 @@ abstract class SimpleTableController<D : Document<S>, S : DocumentSchema<D>>(
 
     @FXML fun delete() = yesNoAlert {
         table.selectionModel.selectedItem.let {
-            transaction { schema.findByDoc(it).remove() }
+            transaction { schema[it].remove() }
             table.items.remove(it)
         }
     }

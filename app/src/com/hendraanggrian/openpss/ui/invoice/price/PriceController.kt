@@ -39,7 +39,7 @@ abstract class PriceController<D, S>(schema: S) : SimpleTableController<D, S>(sc
     }.showAndWait().ifPresent { name ->
         transaction @Suppress("IMPLICIT_CAST_TO_ANY") {
             when {
-                schema.find { it.name.equal(name) }.isNotEmpty() ->
+                schema { it.name.equal(name) }.isNotEmpty() ->
                     errorAlert(getString(R.string.name_taken)) { style() }.show()
                 else -> {
                     val price = newPrice(name)

@@ -11,20 +11,19 @@ import com.hendraanggrian.openpss.ui.main.ChangePasswordDialog
 import com.hendraanggrian.openpss.ui.main.LoginDialog
 import com.hendraanggrian.openpss.util.controller
 import com.hendraanggrian.openpss.util.getResource
+import com.hendraanggrian.openpss.util.getStyle
 import com.hendraanggrian.openpss.util.pane
-import com.hendraanggrian.openpss.util.style
 import javafx.application.Application
 import javafx.collections.ObservableList
 import javafx.fxml.FXMLLoader
-import javafx.scene.Scene
 import javafx.scene.image.Image
 import javafx.stage.Stage
 import kotlinx.nosql.equal
 import kotlinx.nosql.update
 import ktfx.application.launch
 import ktfx.collections.observableListOf
-import ktfx.layouts.scene
-import ktfx.scene.control.infoAlert
+import ktfx.layouts.styledScene
+import ktfx.scene.control.styledInfoAlert
 import ktfx.stage.icon
 import ktfx.stage.setMinSize
 import org.apache.log4j.BasicConfigurator.configure
@@ -56,7 +55,7 @@ class App : Application(), Resourced {
             stage.apply {
                 val loader = FXMLLoader(getResource(R.layout.controller_main), resources)
                 title = if (DEBUG) "$APP_NAME [DEBUG]" else APP_NAME
-                scene = Scene(loader.pane).apply { style() }
+                scene = styledScene(getStyle(R.style.openpss), loader.pane)
                 setMinSize(1000.0, 650.0)
                 loader.controller.login = employee
             }.show()
@@ -64,7 +63,7 @@ class App : Application(), Resourced {
             if (employee.firstTimeLogin) ChangePasswordDialog(this).showAndWait().ifPresent { newPassword ->
                 transaction {
                     Employees { it.name.equal(employee.name) }.projection { password }.update(newPassword)
-                    infoAlert(getString(R.string.successfully_changed_password)) { style() }.show()
+                    styledInfoAlert(getStyle(R.style.openpss), getString(R.string.successfully_changed_password)).show()
                 }
             }
         }

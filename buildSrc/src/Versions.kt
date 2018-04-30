@@ -9,7 +9,7 @@ const val VERSION_GUAVA = "24.1-jre"
 const val VERSION_R = "0.8"
 const val VERSION_BUILDCONFIG = "0.12"
 const val VERSION_PACKR = "0.3"
-const val VERSION_KTFX = "0.2.10"
+const val VERSION_KTFX = "0.3.0"
 const val VERSION_COMMONS_LANG = "3.7"
 const val VERSION_POI = "3.17"
 

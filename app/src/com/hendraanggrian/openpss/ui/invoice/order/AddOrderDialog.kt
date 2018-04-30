@@ -9,7 +9,7 @@ import com.hendraanggrian.openpss.resources.Resourced
 import com.hendraanggrian.openpss.util.currencyConverter
 import com.hendraanggrian.openpss.util.getColor
 import com.hendraanggrian.openpss.util.getFont
-import com.hendraanggrian.openpss.util.style
+import com.hendraanggrian.openpss.util.getStyle
 import javafx.beans.Observable
 import javafx.beans.value.ObservableBooleanValue
 import javafx.scene.control.ButtonType
@@ -47,30 +47,32 @@ abstract class AddOrderDialog<T : Titled>(
     protected lateinit var qtyField: IntField
 
     init {
-        style()
         headerTitle = getString(titleId)
         graphicId?.let { graphicIcon = ImageView(it) }
-        dialogPane.content = gridPane {
-            gap = 8.0
-            label(getString(R.string.title)) col 0 row 0
-            titleField = textField { promptText = getString(R.string.title) } col 1 row 0
-            label(getString(R.string.qty)) col 0 row 1
-            qtyField = intField { promptText = getString(R.string.qty) } col 1 row 1
-            onLayout()
-            (children.size / 2).let { totalRow ->
-                label(getString(R.string.total)) col 0 row totalRow
-                label {
-                    font = getFont(R.font.sf_pro_text_bold)
-                    textProperty().bind(stringBindingOf(*totalBindingDependencies) {
-                        currencyConverter.toString(total)
-                    })
-                    textFillProperty().bind(bindingOf(textProperty()) {
-                        getColor(when {
-                            total > 0 -> R.color.teal
-                            else -> R.color.red
+        dialogPane.run {
+            stylesheets += getStyle(R.style.openpss)
+            content = gridPane {
+                gap = 8.0
+                label(getString(R.string.title)) col 0 row 0
+                titleField = textField { promptText = getString(R.string.title) } col 1 row 0
+                label(getString(R.string.qty)) col 0 row 1
+                qtyField = intField { promptText = getString(R.string.qty) } col 1 row 1
+                onLayout()
+                (children.size / 2).let { totalRow ->
+                    label(getString(R.string.total)) col 0 row totalRow
+                    label {
+                        font = getFont(R.font.sf_pro_text_bold)
+                        textProperty().bind(stringBindingOf(*totalBindingDependencies) {
+                            currencyConverter.toString(total)
                         })
-                    })
-                } col 1 row totalRow
+                        textFillProperty().bind(bindingOf(textProperty()) {
+                            getColor(when {
+                                total > 0 -> R.color.teal
+                                else -> R.color.red
+                            })
+                        })
+                    } col 1 row totalRow
+                }
             }
         }
         titleField.requestFocus()

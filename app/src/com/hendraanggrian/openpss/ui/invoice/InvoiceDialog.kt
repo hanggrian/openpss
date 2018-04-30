@@ -18,9 +18,9 @@ import com.hendraanggrian.openpss.util.currencyCell
 import com.hendraanggrian.openpss.util.currencyConverter
 import com.hendraanggrian.openpss.util.getColor
 import com.hendraanggrian.openpss.util.getFont
+import com.hendraanggrian.openpss.util.getStyle
 import com.hendraanggrian.openpss.util.numberCell
 import com.hendraanggrian.openpss.util.stringCell
-import com.hendraanggrian.openpss.util.style
 import javafx.beans.property.DoubleProperty
 import javafx.beans.property.ObjectProperty
 import javafx.beans.property.SimpleDoubleProperty
@@ -80,78 +80,80 @@ class InvoiceDialog(
     private val totalProperty: DoubleProperty = SimpleDoubleProperty()
 
     init {
-        style()
         headerTitle = getString(if (!isEdit()) R.string.add_invoice else R.string.edit_invoice)
         graphicIcon = ImageView(R.image.header_invoice)
-        dialogPane.content = gridPane {
-            gap = 8.0
-            label(getString(R.string.employee)) col 0 row 0
-            label(employee!!.name) { font = getFont(R.font.sf_pro_text_bold) } col 1 row 0
-            label(getString(R.string.date)) col 0 row 1
-            label(dateTime.toString(PATTERN_DATE)) { font = getFont(R.font.sf_pro_text_bold) } col 1 row 1
-            label(getString(R.string.customer)) col 0 row 2
-            button {
-                isDisable = isEdit()
-                textProperty().bind(stringBindingOf(customerProperty) {
-                    customerProperty.value?.toString() ?: getString(R.string.search_customer)
+        dialogPane.run {
+            stylesheets += getStyle(R.style.openpss)
+            content = gridPane {
+                gap = 8.0
+                label(getString(R.string.employee)) col 0 row 0
+                label(employee!!.name) { font = getFont(R.font.sf_pro_text_bold) } col 1 row 0
+                label(getString(R.string.date)) col 0 row 1
+                label(dateTime.toString(PATTERN_DATE)) { font = getFont(R.font.sf_pro_text_bold) } col 1 row 1
+                label(getString(R.string.customer)) col 0 row 2
+                button {
+                    isDisable = isEdit()
+                    textProperty().bind(stringBindingOf(customerProperty) {
+                        customerProperty.value?.toString() ?: getString(R.string.search_customer)
+                    })
+                    onAction {
+                        SearchCustomerDialog(this@InvoiceDialog).showAndWait().ifPresent { customerProperty.set(it) }
+                    }
+                    if (INVOICE_QUICK_SELECT_CUSTOMER && !isEdit()) fire()
+                } col 1 row 2
+                label(getString(R.string.plate)) col 0 row 3
+                plateTable = invoiceTableView<Invoice.Plate>({ AddPlateDialog(this@InvoiceDialog) }) {
+                    columns {
+                        getString(R.string.machine)<String> { stringCell { machine } }
+                        getString(R.string.title)<String> { stringCell { title } }
+                        getString(R.string.qty)<String> { numberCell { qty } }
+                        getString(R.string.price)<String> { currencyCell { price } }
+                        getString(R.string.total)<String> { currencyCell { total } }
+                    }
+                    if (isEdit()) items.addAll(prefill!!.plates)
+                } col 1 row 3
+                label(getString(R.string.offset)) col 0 row 4
+                offsetTable = invoiceTableView<Invoice.Offset>({ AddOffsetDialog(this@InvoiceDialog) }) {
+                    columns {
+                        getString(R.string.machine)<String> { stringCell { machine } }
+                        getString(R.string.title)<String> { stringCell { title } }
+                        getString(R.string.qty)<String> { numberCell { qty } }
+                        getString(R.string.min_qty)<String> { numberCell { minQty } }
+                        getString(R.string.min_price)<String> { currencyCell { minPrice } }
+                        getString(R.string.excess_price)<String> { currencyCell { excessPrice } }
+                        getString(R.string.total)<String> { currencyCell { total } }
+                    }
+                    if (isEdit()) items.addAll(prefill!!.offsets)
+                } col 1 row 4
+                label(getString(R.string.others)) col 0 row 5
+                otherTable = invoiceTableView<Invoice.Other>({ AddOtherDialog(this@InvoiceDialog) }) {
+                    columns {
+                        getString(R.string.title)<String> { stringCell { title } }
+                        getString(R.string.qty)<String> { numberCell { qty } }
+                        getString(R.string.price)<String> { currencyCell { price } }
+                        getString(R.string.total)<String> { currencyCell { total } }
+                    }
+                    if (isEdit()) items.addAll(prefill!!.others)
+                } col 1 row 5
+                totalProperty.bind(doubleBindingOf(plateTable.items, offsetTable.items, otherTable.items) {
+                    plateTable.items.sumByDouble { it.total } +
+                        offsetTable.items.sumByDouble { it.total } +
+                        otherTable.items.sumByDouble { it.total }
                 })
-                onAction {
-                    SearchCustomerDialog(this@InvoiceDialog).showAndWait().ifPresent { customerProperty.set(it) }
-                }
-                if (INVOICE_QUICK_SELECT_CUSTOMER && !isEdit()) fire()
-            } col 1 row 2
-            label(getString(R.string.plate)) col 0 row 3
-            plateTable = invoiceTableView<Invoice.Plate>({ AddPlateDialog(this@InvoiceDialog) }) {
-                columns {
-                    getString(R.string.machine)<String> { stringCell { machine } }
-                    getString(R.string.title)<String> { stringCell { title } }
-                    getString(R.string.qty)<String> { numberCell { qty } }
-                    getString(R.string.price)<String> { currencyCell { price } }
-                    getString(R.string.total)<String> { currencyCell { total } }
-                }
-                if (isEdit()) items.addAll(prefill!!.plates)
-            } col 1 row 3
-            label(getString(R.string.offset)) col 0 row 4
-            offsetTable = invoiceTableView<Invoice.Offset>({ AddOffsetDialog(this@InvoiceDialog) }) {
-                columns {
-                    getString(R.string.machine)<String> { stringCell { machine } }
-                    getString(R.string.title)<String> { stringCell { title } }
-                    getString(R.string.qty)<String> { numberCell { qty } }
-                    getString(R.string.min_qty)<String> { numberCell { minQty } }
-                    getString(R.string.min_price)<String> { currencyCell { minPrice } }
-                    getString(R.string.excess_price)<String> { currencyCell { excessPrice } }
-                    getString(R.string.total)<String> { currencyCell { total } }
-                }
-                if (isEdit()) items.addAll(prefill!!.offsets)
-            } col 1 row 4
-            label(getString(R.string.others)) col 0 row 5
-            otherTable = invoiceTableView<Invoice.Other>({ AddOtherDialog(this@InvoiceDialog) }) {
-                columns {
-                    getString(R.string.title)<String> { stringCell { title } }
-                    getString(R.string.qty)<String> { numberCell { qty } }
-                    getString(R.string.price)<String> { currencyCell { price } }
-                    getString(R.string.total)<String> { currencyCell { total } }
-                }
-                if (isEdit()) items.addAll(prefill!!.others)
-            } col 1 row 5
-            totalProperty.bind(doubleBindingOf(plateTable.items, offsetTable.items, otherTable.items) {
-                plateTable.items.sumByDouble { it.total } +
-                    offsetTable.items.sumByDouble { it.total } +
-                    otherTable.items.sumByDouble { it.total }
-            })
-            label(getString(R.string.note)) col 0 row 6
-            noteArea = textArea {
-                prefHeight = 48.0
-                if (isEdit()) text = prefill!!.note
-            } col 1 row 6
-            label(getString(R.string.total)) col 0 row 7
-            label {
-                font = getFont(R.font.sf_pro_text_bold)
-                textProperty().bind(stringBindingOf(totalProperty) { currencyConverter.toString(totalProperty.value) })
-                textFillProperty().bind(`when`(totalProperty greater 0)
-                    then getColor(R.color.teal)
-                    otherwise getColor(R.color.red))
-            } col 1 row 7
+                label(getString(R.string.note)) col 0 row 6
+                noteArea = textArea {
+                    prefHeight = 48.0
+                    if (isEdit()) text = prefill!!.note
+                } col 1 row 6
+                label(getString(R.string.total)) col 0 row 7
+                label {
+                    font = getFont(R.font.sf_pro_text_bold)
+                    textProperty().bind(stringBindingOf(totalProperty) { currencyConverter.toString(totalProperty.value) })
+                    textFillProperty().bind(`when`(totalProperty greater 0)
+                        then getColor(R.color.teal)
+                        otherwise getColor(R.color.red))
+                } col 1 row 7
+            }
         }
         cancelButton()
         okButton().disableProperty().bind(customerProperty.isNull or totalProperty.lessEq(0))

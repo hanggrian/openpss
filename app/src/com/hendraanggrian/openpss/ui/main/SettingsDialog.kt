@@ -15,8 +15,8 @@ import com.hendraanggrian.openpss.ui.wage.readers.Reader
 import com.hendraanggrian.openpss.util.clearConverters
 import com.hendraanggrian.openpss.util.getColor
 import com.hendraanggrian.openpss.util.getFont
+import com.hendraanggrian.openpss.util.getStyle
 import com.hendraanggrian.openpss.util.onActionFilter
-import com.hendraanggrian.openpss.util.style
 import javafx.geometry.Pos.CENTER
 import javafx.geometry.Pos.CENTER_LEFT
 import javafx.scene.Node
@@ -74,92 +74,94 @@ class SettingsDialog(resourced: Resourced, showGlobalSettings: Boolean) : Dialog
     private lateinit var countryField: TextField
 
     init {
-        style()
         headerTitle = getString(R.string.settings)
         graphicIcon = ImageView(R.image.header_settings)
-        dialogPane.content = vbox {
-            spacing = 16.0
-            group(R.string.customer) {
-                item(R.string.items_per_page) {
-                    customerPaginationChoice = paginationChoice(CUSTOMER_PAGINATION_ITEMS) {
-                        valueProperty().listener { _, _, value ->
-                            isLocalChanged.set(true)
-                            CUSTOMER_PAGINATION_ITEMS = value
-                        }
-                    }
-                }
-            }
-            group(R.string.invoice) {
-                item(R.string.items_per_page) {
-                    invoicePaginationChoice = paginationChoice(INVOICE_PAGINATION_ITEMS) {
-                        valueProperty().listener { _, _, value ->
-                            isLocalChanged.set(true)
-                            INVOICE_PAGINATION_ITEMS = value
-                        }
-                    }
-                }
-                checkBox(getString(R.string.quick_select_customer_when_adding_invoice)) {
-                    isSelected = SettingsFile.INVOICE_QUICK_SELECT_CUSTOMER
-                    selectedProperty().listener { _, _, value ->
-                        isLocalChanged.set(true)
-                        INVOICE_QUICK_SELECT_CUSTOMER = value
-                    }
-                }
-            }
-            group(R.string.wage) {
-                item {
-                    label(getString(R.string.reader))
-                    wageReaderChoice = choiceBox(Reader.listAll()) {
-                        value = Reader.of(WAGE_READER)
-                        valueProperty().listener { _, _, value ->
-                            isLocalChanged.set(true)
-                            WAGE_READER = (value as Reader).name
-                        }
-                    }
-                }
-            }
-        }
-        if (showGlobalSettings) dialogPane.expandableContent = group(R.string.global_settings) {
-            gridPane {
-                gap = 8.0
-                transaction {
-                    label(getString(R.string.currency)) row 0 col 0
-                    languageField = textField(findGlobalSettings(KEY_CURRENCY_LANGUAGE).single().value) {
-                        promptText = "xx"
-                        maxWidth = 48.0
-                        alignment = CENTER
-                        textProperty().listener { isGlobalChanged.set(true) }
-                    } row 0 col 1
-                    countryField = textField(findGlobalSettings(KEY_CURRENCY_COUNTRY).single().value) {
-                        promptText = "XX"
-                        maxWidth = 48.0
-                        alignment = CENTER
-                        textProperty().listener { isGlobalChanged.set(true) }
-                    } row 0 col 2
-                    label {
-                        font = getFont(R.font.sf_pro_text_bold)
-                        textProperty().bind(stringBindingOf(languageField.textProperty(), countryField.textProperty()) {
-                            try {
-                                Currency.getInstance(Locale(languageField.text, countryField.text)).symbol
-                            } catch (e: Exception) {
-                                CURRENCY_INVALID
-                            }
-                        })
-                        textFillProperty().bind(bindingOf(textProperty()) {
-                            getColor(if (text == CURRENCY_INVALID) R.color.red else R.color.teal)
-                        })
-                    } row 0 col 3
-                    label(getString(R.string.invoice_headers)) row 1 col 0
-                    invoiceHeadersArea = textArea(findGlobalSettings(KEY_INVOICE_HEADERS).single().valueList
-                        .joinToString("\n").trim()) {
-                        setMaxSize(256.0, 88.0)
-                        textProperty().listener { _, oldValue, value ->
-                            when (INVOICE_HEADERS_DIVIDER) {
-                                in value -> text = oldValue
-                                else -> isGlobalChanged.set(true)
+        dialogPane.run {
+            stylesheets += getStyle(R.style.openpss)
+            content = vbox {
+                spacing = 16.0
+                group(R.string.customer) {
+                    item(R.string.items_per_page) {
+                        customerPaginationChoice = paginationChoice(CUSTOMER_PAGINATION_ITEMS) {
+                            valueProperty().listener { _, _, value ->
+                                isLocalChanged.set(true)
+                                CUSTOMER_PAGINATION_ITEMS = value
                             }
                         }
-                    } row 1 col 1 colSpans 3
+                    }
+                }
+                group(R.string.invoice) {
+                    item(R.string.items_per_page) {
+                        invoicePaginationChoice = paginationChoice(INVOICE_PAGINATION_ITEMS) {
+                            valueProperty().listener { _, _, value ->
+                                isLocalChanged.set(true)
+                                INVOICE_PAGINATION_ITEMS = value
+                            }
+                        }
+                    }
+                    checkBox(getString(R.string.quick_select_customer_when_adding_invoice)) {
+                        isSelected = SettingsFile.INVOICE_QUICK_SELECT_CUSTOMER
+                        selectedProperty().listener { _, _, value ->
+                            isLocalChanged.set(true)
+                            INVOICE_QUICK_SELECT_CUSTOMER = value
+                        }
+                    }
+                }
+                group(R.string.wage) {
+                    item {
+                        label(getString(R.string.reader))
+                        wageReaderChoice = choiceBox(Reader.listAll()) {
+                            value = Reader.of(WAGE_READER)
+                            valueProperty().listener { _, _, value ->
+                                isLocalChanged.set(true)
+                                WAGE_READER = (value as Reader).name
+                            }
+                        }
+                    }
+                }
+            }
+            if (showGlobalSettings) expandableContent = group(R.string.global_settings) {
+                gridPane {
+                    gap = 8.0
+                    transaction {
+                        label(getString(R.string.currency)) row 0 col 0
+                        languageField = textField(findGlobalSettings(KEY_CURRENCY_LANGUAGE).single().value) {
+                            promptText = "xx"
+                            maxWidth = 48.0
+                            alignment = CENTER
+                            textProperty().listener { isGlobalChanged.set(true) }
+                        } row 0 col 1
+                        countryField = textField(findGlobalSettings(KEY_CURRENCY_COUNTRY).single().value) {
+                            promptText = "XX"
+                            maxWidth = 48.0
+                            alignment = CENTER
+                            textProperty().listener { isGlobalChanged.set(true) }
+                        } row 0 col 2
+                        label {
+                            font = getFont(R.font.sf_pro_text_bold)
+                            textProperty().bind(stringBindingOf(languageField.textProperty(), countryField.textProperty()) {
+                                try {
+                                    Currency.getInstance(Locale(languageField.text, countryField.text)).symbol
+                                } catch (e: Exception) {
+                                    CURRENCY_INVALID
+                                }
+                            })
+                            textFillProperty().bind(bindingOf(textProperty()) {
+                                getColor(if (text == CURRENCY_INVALID) R.color.red else R.color.teal)
+                            })
+                        } row 0 col 3
+                        label(getString(R.string.invoice_headers)) row 1 col 0
+                        invoiceHeadersArea = textArea(findGlobalSettings(KEY_INVOICE_HEADERS).single().valueList
+                            .joinToString("\n").trim()) {
+                            setMaxSize(256.0, 88.0)
+                            textProperty().listener { _, oldValue, value ->
+                                when (INVOICE_HEADERS_DIVIDER) {
+                                    in value -> text = oldValue
+                                    else -> isGlobalChanged.set(true)
+                                }
+                            }
+                        } row 1 col 1 colSpans 3
+                    }
                 }
             }
         }
@@ -180,21 +182,21 @@ class SettingsDialog(resourced: Resourced, showGlobalSettings: Boolean) : Dialog
         }
     }
 
-    private inline fun group(titleId: String, init: (@LayoutDsl _VBox).() -> Unit): VBox =
+    private inline fun group(titleId: String, crossinline init: (@LayoutDsl _VBox).() -> Unit): VBox =
         vbox {
             spacing = 4.0
             label(getString(titleId)) { font = getFont(R.font.sf_pro_text_bold) }
             init()
         }
 
-    private inline fun LayoutManager<Node>.group(titleId: String, init: (@LayoutDsl _VBox).() -> Unit): VBox =
+    private inline fun LayoutManager<Node>.group(titleId: String, crossinline init: (@LayoutDsl _VBox).() -> Unit): VBox =
         vbox {
             spacing = 4.0
             label(getString(titleId)) { font = getFont(R.font.sf_pro_text_bold) }
             init()
         }
 
-    private inline fun LayoutManager<Node>.item(labelId: String? = null, init: (@LayoutDsl _HBox).() -> Unit): HBox =
+    private inline fun LayoutManager<Node>.item(labelId: String? = null, crossinline init: (@LayoutDsl _HBox).() -> Unit): HBox =
         hbox {
             alignment = CENTER_LEFT
             spacing = 8.0
@@ -204,7 +206,7 @@ class SettingsDialog(resourced: Resourced, showGlobalSettings: Boolean) : Dialog
 
     private inline fun LayoutManager<Node>.paginationChoice(
         prefill: Int,
-        init: (@LayoutDsl ChoiceBox<Int>).() -> Unit
+        crossinline init: (@LayoutDsl ChoiceBox<Int>).() -> Unit
     ): ChoiceBox<Int> = choiceBox(observableListOf(20, 30, 40, 50)) {
         converter {
             fromString { it.toInt() }

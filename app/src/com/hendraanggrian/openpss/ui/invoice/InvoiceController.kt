@@ -24,16 +24,15 @@ import com.hendraanggrian.openpss.util.controller
 import com.hendraanggrian.openpss.util.currencyCell
 import com.hendraanggrian.openpss.util.doneCell
 import com.hendraanggrian.openpss.util.getResource
+import com.hendraanggrian.openpss.util.getStyle
 import com.hendraanggrian.openpss.util.matches
 import com.hendraanggrian.openpss.util.pane
 import com.hendraanggrian.openpss.util.stringCell
-import com.hendraanggrian.openpss.util.style
 import com.hendraanggrian.openpss.util.yesNoAlert
 import javafx.beans.property.SimpleObjectProperty
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
 import javafx.scene.Node
-import javafx.scene.Scene
 import javafx.scene.control.Button
 import javafx.scene.control.Label
 import javafx.scene.control.MenuButton
@@ -63,6 +62,7 @@ import ktfx.collections.toMutableObservableList
 import ktfx.collections.toObservableList
 import ktfx.coroutines.onMouseClicked
 import ktfx.layouts.columns
+import ktfx.layouts.styledScene
 import ktfx.layouts.tableView
 import ktfx.scene.input.isDoubleClick
 import ktfx.stage.stage
@@ -233,7 +233,7 @@ class InvoiceController : Controller(), Refreshable, Selectable<Invoice>, Select
     @FXML fun platePrice() = stage(getString(R.string.plate_price)) {
         initModality(APPLICATION_MODAL)
         val loader = FXMLLoader(getResource(R.layout.controller_price_plate), resources)
-        scene = Scene(loader.pane).apply { style() }
+        scene = styledScene(getStyle(R.style.openpss), loader.pane)
         isResizable = false
         loader.controller.login = login
     }.showAndWait()
@@ -241,7 +241,7 @@ class InvoiceController : Controller(), Refreshable, Selectable<Invoice>, Select
     @FXML fun offsetPrice() = stage(getString(R.string.offset_price)) {
         initModality(APPLICATION_MODAL)
         val loader = FXMLLoader(getResource(R.layout.controller_price_offset), resources)
-        scene = Scene(loader.pane).apply { style() }
+        scene = styledScene(getStyle(R.style.openpss), loader.pane)
         isResizable = false
         loader.controller.login = login
     }.showAndWait()

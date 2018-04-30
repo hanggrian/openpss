@@ -2,6 +2,7 @@ package com.hendraanggrian.openpss.db
 
 import com.hendraanggrian.openpss.BuildConfig.ARTIFACT
 import com.hendraanggrian.openpss.BuildConfig.DEBUG
+import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.db.schemas.EmployeeAccess
@@ -15,8 +16,8 @@ import com.hendraanggrian.openpss.db.schemas.Payments
 import com.hendraanggrian.openpss.db.schemas.PlatePrices
 import com.hendraanggrian.openpss.db.schemas.Recesses
 import com.hendraanggrian.openpss.db.schemas.Wages
+import com.hendraanggrian.openpss.util.getStyle
 import com.hendraanggrian.openpss.util.isEmpty
-import com.hendraanggrian.openpss.util.style
 import com.mongodb.MongoClientOptions.Builder
 import com.mongodb.MongoCredential.createCredential
 import com.mongodb.MongoException
@@ -25,7 +26,7 @@ import kotlinx.coroutines.experimental.async
 import kotlinx.nosql.equal
 import kotlinx.nosql.mongodb.MongoDB
 import ktfx.application.exit
-import ktfx.scene.control.errorAlert
+import ktfx.scene.control.styledErrorAlert
 import org.joda.time.DateTime
 import org.joda.time.LocalDate
 import org.joda.time.LocalTime
@@ -41,12 +42,11 @@ private val TABLES = arrayOf(GlobalSettings, Customers, Employees, EmployeeAcces
  *
  * @see [kotlinx.nosql.mongodb.MongoDB.withSession]
  */
-fun <R> transaction(statement: SessionWrapper.() -> R): R = try {
+fun <T> transaction(statement: SessionWrapper.() -> T): T = try {
     DB.withSession { SessionWrapper(this).statement() }
 } catch (e: MongoException) {
     if (DEBUG) e.printStackTrace()
-    errorAlert(e.message.toString()) {
-        style()
+    styledErrorAlert(getStyle(R.style.openpss), e.message.toString()) {
         headerText = "Connection closed. Please sign in again."
     }.showAndWait().ifPresent { exit() }
     error("Connection closed. Please sign in again.")

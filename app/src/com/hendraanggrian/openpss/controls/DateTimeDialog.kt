@@ -7,7 +7,7 @@ import com.hendraanggrian.openpss.layouts.dateBox
 import com.hendraanggrian.openpss.layouts.timeBox
 import com.hendraanggrian.openpss.resources.Resourced
 import com.hendraanggrian.openpss.ui.wage.record.Record.Companion.WORKING_HOURS
-import com.hendraanggrian.openpss.util.style
+import com.hendraanggrian.openpss.util.getStyle
 import javafx.scene.control.ButtonType.OK
 import javafx.scene.control.Dialog
 import javafx.scene.image.ImageView
@@ -33,26 +33,28 @@ class DateTimeDialog(
     private lateinit var timeBox: TimeBox
 
     init {
-        style()
         headerTitle = getString(headerId)
         graphicIcon = ImageView(R.image.header_date)
-        dialogPane.content = gridPane {
-            gap = 8.0
-            dateBox = dateBox(prefill.toLocalDate()) row 0 col 1
-            button("-$WORKING_HOURS") {
-                onAction { repeat(WORKING_HOURS) { timeBox.previousButton.fire() } }
-            } row 1 col 0
-            timeBox = timeBox(prefill.toLocalTime()) {
-                setOnOverlap { plus ->
-                    dateBox.picker.value = when {
-                        plus -> dateBox.picker.value.plusDays(1)
-                        else -> dateBox.picker.value.minusDays(1)
+        dialogPane.run {
+            stylesheets += getStyle(R.style.openpss)
+            content = gridPane {
+                gap = 8.0
+                dateBox = dateBox(prefill.toLocalDate()) row 0 col 1
+                button("-$WORKING_HOURS") {
+                    onAction { repeat(WORKING_HOURS) { timeBox.previousButton.fire() } }
+                } row 1 col 0
+                timeBox = timeBox(prefill.toLocalTime()) {
+                    setOnOverlap { plus ->
+                        dateBox.picker.value = when {
+                            plus -> dateBox.picker.value.plusDays(1)
+                            else -> dateBox.picker.value.minusDays(1)
+                        }
                     }
-                }
-            } row 1 col 1
-            button("+$WORKING_HOURS") {
-                onAction { repeat(WORKING_HOURS) { timeBox.nextButton.fire() } }
-            } row 1 col 2
+                } row 1 col 1
+                button("+$WORKING_HOURS") {
+                    onAction { repeat(WORKING_HOURS) { timeBox.nextButton.fire() } }
+                } row 1 col 2
+            }
         }
         later { dateBox.requestFocus() }
         cancelButton()

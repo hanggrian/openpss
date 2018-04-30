@@ -12,8 +12,8 @@ import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.Selectable
 import com.hendraanggrian.openpss.ui.main.ChangePasswordDialog
 import com.hendraanggrian.openpss.util.doneCell
+import com.hendraanggrian.openpss.util.getStyle
 import com.hendraanggrian.openpss.util.stringCell
-import com.hendraanggrian.openpss.util.style
 import com.hendraanggrian.openpss.util.yesNoAlert
 import javafx.fxml.FXML
 import javafx.scene.control.Button
@@ -25,7 +25,7 @@ import kotlinx.nosql.update
 import ktfx.application.exit
 import ktfx.application.later
 import ktfx.collections.toMutableObservableList
-import ktfx.scene.control.infoAlert
+import ktfx.scene.control.styledInfoAlert
 import java.net.URL
 import java.util.ResourceBundle
 
@@ -79,7 +79,7 @@ class EmployeeController : Controller(), Refreshable, Selectable<Employee> {
         ChangePasswordDialog(this).showAndWait().ifPresent { newPassword ->
             transaction {
                 // Employees { name.equal(employeeName) }.projection { password }.update(newPassword)
-                infoAlert(getString(R.string.successfully_changed_password)) { style() }.show()
+                styledInfoAlert(getStyle(R.style.openpss), getString(R.string.successfully_changed_password)).show()
             }
         }
     }
@@ -87,7 +87,8 @@ class EmployeeController : Controller(), Refreshable, Selectable<Employee> {
     private fun confirm(
         confirmedAction: SessionWrapper.(Employee) -> Unit,
         isNotSelfAction: () -> Unit = {
-            infoAlert(getString(R.string.please_restart)) { style() }.showAndWait().ifPresent { exit() }
+            styledInfoAlert(getStyle(R.style.openpss), getString(R.string.please_restart)).showAndWait()
+                .ifPresent { exit() }
         }
     ) = yesNoAlert {
         selected!!.let {

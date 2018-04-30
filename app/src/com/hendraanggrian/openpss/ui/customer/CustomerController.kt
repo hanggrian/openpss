@@ -12,10 +12,10 @@ import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.Selectable
 import com.hendraanggrian.openpss.ui.Selectable2
 import com.hendraanggrian.openpss.util.PATTERN_DATE
+import com.hendraanggrian.openpss.util.getStyle
 import com.hendraanggrian.openpss.util.isNotEmpty
 import com.hendraanggrian.openpss.util.matches
 import com.hendraanggrian.openpss.util.stringCell
-import com.hendraanggrian.openpss.util.style
 import com.hendraanggrian.openpss.util.yesNoAlert
 import javafx.fxml.FXML
 import javafx.scene.Node
@@ -47,8 +47,8 @@ import ktfx.collections.toMutableObservableList
 import ktfx.collections.toObservableList
 import ktfx.layouts.listView
 import ktfx.layouts.tooltip
-import ktfx.scene.control.errorAlert
-import ktfx.scene.control.inputDialog
+import ktfx.scene.control.styledErrorAlert
+import ktfx.scene.control.styledInputDialog
 import java.net.URL
 import java.util.ResourceBundle
 import java.util.regex.Pattern.CASE_INSENSITIVE
@@ -153,7 +153,7 @@ class CustomerController : Controller(), Refreshable, Selectable<Customer>, Sele
             transaction {
                 when {
                     Customers { it.name.matches("^$it$", CASE_INSENSITIVE) }.isNotEmpty() ->
-                        errorAlert(getString(R.string.name_taken)) { style() }.show()
+                        styledErrorAlert(getStyle(R.style.openpss), getString(R.string.name_taken)).show()
                     else -> Customer.new(it).let {
                         it.id = Customers.insert(it)
                         customerList.items.add(it)
@@ -173,8 +173,8 @@ class CustomerController : Controller(), Refreshable, Selectable<Customer>, Sele
         }
 
     @FXML fun editAddress() =
-        inputDialog(getString(R.string.edit_address), ImageView(R.image.header_customer), selected!!.address ?: "") {
-            style()
+        styledInputDialog(getStyle(R.style.openpss), getString(R.string.edit_address),
+            ImageView(R.image.header_customer), selected!!.address ?: "") {
             contentText = getString(R.string.address)
             dialogPane.lookupButton(OK).disableProperty().bind(editor.textProperty().isBlank())
         }.showAndWait().ifPresent {
@@ -185,8 +185,8 @@ class CustomerController : Controller(), Refreshable, Selectable<Customer>, Sele
         }
 
     @FXML fun editNote() =
-        inputDialog(getString(R.string.edit_note), ImageView(R.image.header_customer), selected!!.note ?: "") {
-            style()
+        styledInputDialog(getStyle(R.style.openpss), getString(R.string.edit_note),
+            ImageView(R.image.header_customer), selected!!.note ?: "") {
             contentText = getString(R.string.note)
             dialogPane.lookupButton(OK).disableProperty().bind(editor.textProperty().isBlank())
         }.showAndWait().ifPresent {

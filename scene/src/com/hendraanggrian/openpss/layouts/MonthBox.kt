@@ -2,9 +2,9 @@
 
 package com.hendraanggrian.openpss.layouts
 
-import com.hendraanggrian.openpss.scene.R
 import com.hendraanggrian.openpss.controls.IntField
 import com.hendraanggrian.openpss.controls.intField
+import com.hendraanggrian.openpss.scene.R
 import javafx.beans.property.ObjectProperty
 import javafx.beans.property.SimpleObjectProperty
 import javafx.scene.Node
@@ -26,7 +26,7 @@ import org.joda.time.YearMonth.now
 import java.text.DateFormatSymbols.getInstance
 import java.util.Locale
 
-open class MonthBox(prefill: YearMonth = now()) : _HBox() {
+open class MonthBox(prefill: YearMonth = now()) : _HBox(8.0) {
 
     lateinit var monthBox: ChoiceBox<Int>
     lateinit var yearField: IntField
@@ -39,8 +39,6 @@ open class MonthBox(prefill: YearMonth = now()) : _HBox() {
     private var months: Array<String> = getInstance().months
 
     init {
-        spacing = 8.0
-
         previousButton = button(graphic = ImageView(R.image.btn_previous)) {
             onAction {
                 monthBox.value = when (monthBox.value) {

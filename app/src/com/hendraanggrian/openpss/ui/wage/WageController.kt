@@ -11,12 +11,11 @@ import com.hendraanggrian.openpss.ui.wage.record.WageRecordController.Companion.
 import com.hendraanggrian.openpss.util.controller
 import com.hendraanggrian.openpss.util.getFont
 import com.hendraanggrian.openpss.util.getResource
+import com.hendraanggrian.openpss.util.getStyle
 import com.hendraanggrian.openpss.util.openFile
 import com.hendraanggrian.openpss.util.pane
-import com.hendraanggrian.openpss.util.style
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
-import javafx.scene.Scene
 import javafx.scene.control.Button
 import javafx.scene.control.Label
 import javafx.scene.control.ScrollPane
@@ -33,7 +32,8 @@ import ktfx.collections.size
 import ktfx.coroutines.FX
 import ktfx.coroutines.onAction
 import ktfx.layouts.borderPane
-import ktfx.scene.control.errorAlert
+import ktfx.layouts.styledScene
+import ktfx.scene.control.styledErrorAlert
 import ktfx.scene.layout.maxSize
 import ktfx.stage.fileChooser
 import ktfx.stage.setMinSize
@@ -111,7 +111,7 @@ class WageController : Controller() {
                 launch(FX) {
                     scrollPane.content = flowPane
                     bindProcessButton()
-                    errorAlert(e.message.toString()) { style() }.show()
+                    styledErrorAlert(getStyle(R.style.openpss), e.message.toString()).show()
                 }
             }
         }
@@ -121,7 +121,7 @@ class WageController : Controller() {
         attendees.forEach { it.saveWage() }
         stage(getString(R.string.record)) {
             val loader = FXMLLoader(getResource(R.layout.controller_wage_record), resources)
-            scene = Scene(loader.pane).apply { style() }
+            scene = styledScene(getStyle(R.style.openpss), loader.pane)
             setMinSize(1000.0, 650.0)
             loader.controller.addExtra(EXTRA_ATTENDEES, attendees)
         }.showAndWait()
@@ -132,7 +132,7 @@ class WageController : Controller() {
     @FXML fun recess() = stage(getString(R.string.recess)) {
         val loader = FXMLLoader(getResource(R.layout.controller_wage_recess), resources)
         initModality(APPLICATION_MODAL)
-        scene = Scene(loader.pane).apply { style() }
+        scene = styledScene(getStyle(R.style.openpss), loader.pane)
         isResizable = false
         loader.controller.login = login
     }.showAndWait()

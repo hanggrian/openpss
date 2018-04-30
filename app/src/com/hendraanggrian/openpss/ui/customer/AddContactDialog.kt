@@ -3,7 +3,7 @@ package com.hendraanggrian.openpss.ui.customer
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.resources.Resourced
-import com.hendraanggrian.openpss.util.style
+import com.hendraanggrian.openpss.util.getStyle
 import javafx.scene.control.ButtonType.OK
 import javafx.scene.control.ChoiceBox
 import javafx.scene.control.Dialog
@@ -35,17 +35,19 @@ class AddContactDialog(resourced: Resourced) : Dialog<Customer.Contact>(), Resou
     private lateinit var contactField: TextField
 
     init {
-        style()
         headerTitle = getString(R.string.add_contact)
         graphicIcon = ImageView(R.image.header_contact)
-        dialogPane.content = gridPane {
-            gap = 8.0
-            label(getString(R.string.type)) col 0 row 0
-            typeChoice = choiceBox(Customer.Contact.Type.values().toObservableList()) {
-                converter { toString { it!!.toString(this@AddContactDialog) } }
-            } col 1 row 0
-            label(getString(R.string.contact)) col 0 row 1
-            contactField = textField { promptText = getString(R.string.contact) } col 1 row 1
+        dialogPane.run {
+            stylesheets += getStyle(R.style.openpss)
+            content = gridPane {
+                gap = 8.0
+                label(getString(R.string.type)) col 0 row 0
+                typeChoice = choiceBox(Customer.Contact.Type.values().toObservableList()) {
+                    converter { toString { it!!.toString(this@AddContactDialog) } }
+                } col 1 row 0
+                label(getString(R.string.contact)) col 0 row 1
+                contactField = textField { promptText = getString(R.string.contact) } col 1 row 1
+            }
         }
         cancelButton()
         okButton().disableProperty().bind(booleanBindingOf(typeChoice.valueProperty(), contactField.textProperty()) {

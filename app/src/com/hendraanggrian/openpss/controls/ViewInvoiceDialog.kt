@@ -12,8 +12,8 @@ import com.hendraanggrian.openpss.resources.Resourced
 import com.hendraanggrian.openpss.util.PATTERN_DATETIME_EXTENDED
 import com.hendraanggrian.openpss.util.currencyConverter
 import com.hendraanggrian.openpss.util.getFont
+import com.hendraanggrian.openpss.util.getStyle
 import com.hendraanggrian.openpss.util.numberConverter
-import com.hendraanggrian.openpss.util.style
 import javafx.geometry.Insets
 import javafx.geometry.Pos.CENTER
 import javafx.geometry.Pos.CENTER_RIGHT
@@ -36,8 +36,8 @@ import ktfx.layouts.label
 import ktfx.layouts.line
 import ktfx.layouts.region
 import ktfx.layouts.vbox
-import ktfx.scene.control.button
 import ktfx.scene.control.closeButton
+import ktfx.scene.control.customButton
 import ktfx.scene.control.graphicIcon
 import ktfx.scene.control.headerTitle
 
@@ -48,7 +48,6 @@ class ViewInvoiceDialog(resourced: Resourced, invoice: Invoice) : Dialog<Nothing
     private lateinit var employee: Employee
 
     init {
-        style()
         transaction {
             invoiceHeaders = findGlobalSettings(KEY_INVOICE_HEADERS).single().valueList
             employee = Employees[invoice.employeeId].single()
@@ -57,119 +56,122 @@ class ViewInvoiceDialog(resourced: Resourced, invoice: Invoice) : Dialog<Nothing
         initModality(NONE)
         headerTitle = getString(R.string.view_invoice)
         graphicIcon = ImageView(R.image.header_invoice)
-        dialogPane.content = vbox {
-            maxWidth()
-            alignment = CENTER
-            background = Background(BackgroundFill(WHITE, CornerRadii.EMPTY, Insets.EMPTY))
-            invoiceHeaders.forEachIndexed { index, s ->
-                when (index) {
-                    0 -> boldLabel(s)
-                    else -> regularLabel(s)
-                }
-            }
-            line(endX = MAX_WIDTH)
-            vbox {
-                alignment = CENTER
-                regularLabel(invoice.dateTime.toString(PATTERN_DATETIME_EXTENDED))
-                gridPane {
-                    maxWidth()
-                    hgap = 8.0
-                    regularLabel(getString(R.string.id)) row 0 col 0
-                    boldLabel(invoice.no.toString()) row 0 col 1
-                    regularLabel(getString(R.string.customer)) row 1 col 0
-                    boldLabel(customer.name) row 1 col 1
-                    regularLabel(customer.id.toString()) row 2 col 1
-                }
-            }
-            invoice.plates.run {
-                if (isNotEmpty()) {
-                    line(endX = MAX_WIDTH)
-                    vbox {
-                        maxWidth()
-                        boldLabel(getString(R.string.plate))
-                        forEach {
-                            regularLabel(it.title)
-                            hbox {
-                                maxWidth()
-                                regularLabel("  ${it.machine} ${numberConverter.toString(it.qty)} x " +
-                                    currencyConverter.toString(it.price))
-                                region() hpriority ALWAYS
-                                regularLabel(currencyConverter.toString(it.total))
-                            }
-                        }
-                    }
-                }
-            }
-            invoice.offsets.run {
-                if (isNotEmpty()) {
-                    line(endX = MAX_WIDTH)
-                    vbox {
-                        maxWidth()
-                        boldLabel(getString(R.string.offset))
-                        forEach {
-                            regularLabel(it.title)
-                            hbox {
-                                maxWidth()
-                                regularLabel("  ${it.machine} ${numberConverter.toString(it.qty)}")
-                                region() hpriority ALWAYS
-                                regularLabel(currencyConverter.toString(it.total))
-                            }
-                        }
-                    }
-                }
-            }
-            invoice.others.run {
-                if (isNotEmpty()) {
-                    line(endX = MAX_WIDTH)
-                    vbox {
-                        maxWidth()
-                        boldLabel(getString(R.string.others))
-                        forEach {
-                            regularLabel(it.title)
-                            hbox {
-                                maxWidth()
-                                regularLabel("  ${numberConverter.toString(it.qty)} x " +
-                                    currencyConverter.toString(it.price))
-                                region() hpriority ALWAYS
-                                regularLabel(currencyConverter.toString(it.total))
-                            }
-                        }
-                    }
-                }
-            }
-            line(endX = MAX_WIDTH)
-            hbox {
+        dialogPane.run {
+            stylesheets += getStyle(R.style.openpss)
+            content = vbox {
                 maxWidth()
-                alignment = CENTER_RIGHT
-                boldLabel("${getString(R.string.total)} ${currencyConverter.toString(invoice.total)}")
-            }
-            if (invoice.note.isNotBlank()) {
+                alignment = CENTER
+                background = Background(BackgroundFill(WHITE, CornerRadii.EMPTY, Insets.EMPTY))
+                invoiceHeaders.forEachIndexed { index, s ->
+                    when (index) {
+                        0 -> boldLabel(s)
+                        else -> regularLabel(s)
+                    }
+                }
                 line(endX = MAX_WIDTH)
                 vbox {
+                    alignment = CENTER
+                    regularLabel(invoice.dateTime.toString(PATTERN_DATETIME_EXTENDED))
+                    gridPane {
+                        maxWidth()
+                        hgap = 8.0
+                        regularLabel(getString(R.string.id)) row 0 col 0
+                        boldLabel(invoice.no.toString()) row 0 col 1
+                        regularLabel(getString(R.string.customer)) row 1 col 0
+                        boldLabel(customer.name) row 1 col 1
+                        regularLabel(customer.id.toString()) row 2 col 1
+                    }
+                }
+                invoice.plates.run {
+                    if (isNotEmpty()) {
+                        line(endX = MAX_WIDTH)
+                        vbox {
+                            maxWidth()
+                            boldLabel(getString(R.string.plate))
+                            forEach {
+                                regularLabel(it.title)
+                                hbox {
+                                    maxWidth()
+                                    regularLabel("  ${it.machine} ${numberConverter.toString(it.qty)} x " +
+                                        currencyConverter.toString(it.price))
+                                    region() hpriority ALWAYS
+                                    regularLabel(currencyConverter.toString(it.total))
+                                }
+                            }
+                        }
+                    }
+                }
+                invoice.offsets.run {
+                    if (isNotEmpty()) {
+                        line(endX = MAX_WIDTH)
+                        vbox {
+                            maxWidth()
+                            boldLabel(getString(R.string.offset))
+                            forEach {
+                                regularLabel(it.title)
+                                hbox {
+                                    maxWidth()
+                                    regularLabel("  ${it.machine} ${numberConverter.toString(it.qty)}")
+                                    region() hpriority ALWAYS
+                                    regularLabel(currencyConverter.toString(it.total))
+                                }
+                            }
+                        }
+                    }
+                }
+                invoice.others.run {
+                    if (isNotEmpty()) {
+                        line(endX = MAX_WIDTH)
+                        vbox {
+                            maxWidth()
+                            boldLabel(getString(R.string.others))
+                            forEach {
+                                regularLabel(it.title)
+                                hbox {
+                                    maxWidth()
+                                    regularLabel("  ${numberConverter.toString(it.qty)} x " +
+                                        currencyConverter.toString(it.price))
+                                    region() hpriority ALWAYS
+                                    regularLabel(currencyConverter.toString(it.total))
+                                }
+                            }
+                        }
+                    }
+                }
+                line(endX = MAX_WIDTH)
+                hbox {
                     maxWidth()
-                    boldLabel(getString(R.string.note))
-                    label(invoice.note)
+                    alignment = CENTER_RIGHT
+                    boldLabel("${getString(R.string.total)} ${currencyConverter.toString(invoice.total)}")
                 }
+                if (invoice.note.isNotBlank()) {
+                    line(endX = MAX_WIDTH)
+                    vbox {
+                        maxWidth()
+                        boldLabel(getString(R.string.note))
+                        label(invoice.note)
+                    }
+                }
+                hbox {
+                    vbox {
+                        halfWidth()
+                        alignment = CENTER
+                        boldLabel(getString(R.string.employee))
+                        region { prefHeight = 48.0 }
+                        regularLabel(employee.name)
+                    }
+                    vbox {
+                        halfWidth()
+                        alignment = CENTER
+                        boldLabel(getString(R.string.customer))
+                        region { prefHeight = 48.0 }
+                        regularLabel(customer.name.split(' ')[0])
+                    }
+                } marginTop 8.0
             }
-            hbox {
-                vbox {
-                    halfWidth()
-                    alignment = CENTER
-                    boldLabel(getString(R.string.employee))
-                    region { prefHeight = 48.0 }
-                    regularLabel(employee.name)
-                }
-                vbox {
-                    halfWidth()
-                    alignment = CENTER
-                    boldLabel(getString(R.string.customer))
-                    region { prefHeight = 48.0 }
-                    regularLabel(customer.name.split(' ')[0])
-                }
-            } marginTop 8.0
         }
         closeButton()
-        button(getString(R.string.print), OK_DONE) {
+        customButton(getString(R.string.print), OK_DONE) {
             isDisable = invoice.printed
         }
     }

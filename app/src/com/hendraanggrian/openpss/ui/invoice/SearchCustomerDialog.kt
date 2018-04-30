@@ -6,7 +6,7 @@ import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.resources.Resourced
 import com.hendraanggrian.openpss.ui.Selectable
-import com.hendraanggrian.openpss.util.style
+import com.hendraanggrian.openpss.util.getStyle
 import javafx.scene.control.ButtonType.OK
 import javafx.scene.control.Dialog
 import javafx.scene.control.ListView
@@ -21,7 +21,7 @@ import ktfx.coroutines.listener
 import ktfx.coroutines.onKeyPressed
 import ktfx.coroutines.onMouseClicked
 import ktfx.layouts.listView
-import ktfx.layouts.textField
+import ktfx.layouts.styledTextField
 import ktfx.layouts.vbox
 import ktfx.scene.control.cancelButton
 import ktfx.scene.control.graphicIcon
@@ -41,38 +41,39 @@ class SearchCustomerDialog(resourced: Resourced) : Dialog<Customer>(), Resourced
     private lateinit var customerList: ListView<Customer>
 
     init {
-        style()
         headerTitle = getString(R.string.search_customer)
         graphicIcon = ImageView(R.image.header_customer)
-        dialogPane.content = vbox {
-            searchField = textField {
-                promptText = getString(R.string.customer)
-                styleClass += "search-textfield"
+        dialogPane.run {
+            stylesheets += getStyle(R.style.openpss)
+            content = vbox {
+                searchField = styledTextField("search-textfield") {
+                    promptText = getString(R.string.customer)
+                }
+                customerList = listView<Customer> {
+                    prefHeight = 252.0
+                    itemsProperty().bind(bindingOf(searchField.textProperty()) {
+                        transaction {
+                            when {
+                                searchField.text.isEmpty() -> Customers.find()
+                                else -> Customers { it.name.matches(searchField.text.toRegex(IGNORE_CASE).toPattern()) }
+                            }.take(ITEMS_PER_PAGE).toMutableObservableList()
+                        }
+                    })
+                    itemsProperty().listener { _, _, value -> if (value.isNotEmpty()) selectionModel.selectFirst() }
+                    onMouseClicked {
+                        if (it.isDoubleClick() && selected != null) {
+                            result = selected
+                            close()
+                        }
+                    }
+                    onKeyPressed {
+                        if (selected != null && it.code == ENTER) {
+                            result = selected
+                            close()
+                        }
+                    }
+                } marginTop 8.0
             }
-            customerList = listView<Customer> {
-                prefHeight = 252.0
-                itemsProperty().bind(bindingOf(searchField.textProperty()) {
-                    transaction {
-                        when {
-                            searchField.text.isEmpty() -> Customers.find()
-                            else -> Customers { it.name.matches(searchField.text.toRegex(IGNORE_CASE).toPattern()) }
-                        }.take(ITEMS_PER_PAGE).toMutableObservableList()
-                    }
-                })
-                itemsProperty().listener { _, _, value -> if (value.isNotEmpty()) selectionModel.selectFirst() }
-                onMouseClicked {
-                    if (it.isDoubleClick() && selected != null) {
-                        result = selected
-                        close()
-                    }
-                }
-                onKeyPressed {
-                    if (selected != null && it.code == ENTER) {
-                        result = selected
-                        close()
-                    }
-                }
-            } marginTop 8.0
         }
         cancelButton()
         okButton().disableProperty().bind(!selectedBinding)

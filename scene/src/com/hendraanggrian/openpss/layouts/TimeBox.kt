@@ -2,9 +2,9 @@
 
 package com.hendraanggrian.openpss.layouts
 
-import com.hendraanggrian.openpss.scene.R
 import com.hendraanggrian.openpss.controls.IntField
 import com.hendraanggrian.openpss.controls.intField
+import com.hendraanggrian.openpss.scene.R
 import javafx.beans.property.ObjectProperty
 import javafx.beans.property.SimpleObjectProperty
 import javafx.geometry.Pos.CENTER
@@ -28,7 +28,7 @@ import org.joda.time.LocalTime.MIDNIGHT
  *
  * [TimeBox] width is deliberately measured to match [com.hendraanggrian.ui.scene.control.ForcedDatePicker]'s width.
  */
-open class TimeBox(prefill: LocalTime = MIDNIGHT) : _HBox() {
+open class TimeBox(prefill: LocalTime = MIDNIGHT) : _HBox(8.0) {
 
     lateinit var hourField: IntField
     lateinit var minuteField: IntField
@@ -41,7 +41,6 @@ open class TimeBox(prefill: LocalTime = MIDNIGHT) : _HBox() {
 
     init {
         alignment = CENTER
-        spacing = 8.0
 
         previousButton = button(graphic = ImageView(R.image.btn_previous)) {
             onAction {

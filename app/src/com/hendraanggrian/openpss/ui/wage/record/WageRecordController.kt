@@ -7,19 +7,19 @@ import com.hendraanggrian.openpss.controls.UncollapsibleTreeItem
 import com.hendraanggrian.openpss.io.WageContentFolder
 import com.hendraanggrian.openpss.io.WageFile
 import com.hendraanggrian.openpss.layouts.TimeBox
-import com.hendraanggrian.openpss.util.PATTERN_DATE
-import com.hendraanggrian.openpss.util.PATTERN_DATETIME
-import com.hendraanggrian.openpss.util.PATTERN_TIME
 import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.wage.Attendee
 import com.hendraanggrian.openpss.ui.wage.record.Record.Companion.getDummy
+import com.hendraanggrian.openpss.util.PATTERN_DATE
+import com.hendraanggrian.openpss.util.PATTERN_DATETIME
+import com.hendraanggrian.openpss.util.PATTERN_TIME
 import com.hendraanggrian.openpss.util.currencyConverter
 import com.hendraanggrian.openpss.util.getFont
 import com.hendraanggrian.openpss.util.getResource
+import com.hendraanggrian.openpss.util.getStyle
 import com.hendraanggrian.openpss.util.numberConverter
 import com.hendraanggrian.openpss.util.openFile
 import com.hendraanggrian.openpss.util.stringCell
-import com.hendraanggrian.openpss.util.style
 import com.sun.javafx.scene.control.skin.TreeTableViewSkin
 import com.sun.javafx.scene.control.skin.VirtualFlow
 import javafx.fxml.FXML
@@ -43,8 +43,8 @@ import ktfx.coroutines.onAction
 import ktfx.layouts.label
 import ktfx.layouts.menuItem
 import ktfx.listeners.cellFactory
-import ktfx.scene.control.button
-import ktfx.scene.control.infoAlert
+import ktfx.scene.control.customButton
+import ktfx.scene.control.styledInfoAlert
 import ktfx.scene.snapshot
 import java.net.URL
 import java.util.ResourceBundle
@@ -201,9 +201,8 @@ class WageRecordController : Controller() {
         } while (flow.lastVisibleCell.index + 1 <
             recordTable.root.children.size + recordTable.root.children.sumBy { it.children.size })
         togglePrintMode(false, printStylesheet)
-        infoAlert(getString(R.string.screenshot_finished)) {
-            style()
-            button(getString(R.string.open_folder), CANCEL_CLOSE)
+        styledInfoAlert(getStyle(R.style.openpss), getString(R.string.screenshot_finished)) {
+            customButton(getString(R.string.open_folder), CANCEL_CLOSE)
         }.showAndWait()
             .filter { it.buttonData == CANCEL_CLOSE }
             .ifPresent { openFile(WageContentFolder) }

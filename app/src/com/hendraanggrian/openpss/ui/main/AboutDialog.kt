@@ -11,8 +11,8 @@ import com.hendraanggrian.openpss.ui.Selectable
 import com.hendraanggrian.openpss.ui.main.github.GitHubApi
 import com.hendraanggrian.openpss.util.browseUrl
 import com.hendraanggrian.openpss.util.getFont
+import com.hendraanggrian.openpss.util.getStyle
 import com.hendraanggrian.openpss.util.onActionFilter
-import com.hendraanggrian.openpss.util.style
 import javafx.geometry.Pos.CENTER_LEFT
 import javafx.scene.control.Button
 import javafx.scene.control.ButtonBar.ButtonData.CANCEL_CLOSE
@@ -43,11 +43,11 @@ import ktfx.layouts.textFlow
 import ktfx.layouts.titledPane
 import ktfx.layouts.vbox
 import ktfx.listeners.cellFactory
-import ktfx.scene.control.button
 import ktfx.scene.control.closeButton
+import ktfx.scene.control.customButton
 import ktfx.scene.control.errorAlert
 import ktfx.scene.control.icon
-import ktfx.scene.control.infoAlert
+import ktfx.scene.control.styledInfoAlert
 import ktfx.scene.layout.maxSize
 import ktfx.scene.layout.paddingAll
 import java.util.concurrent.TimeUnit.SECONDS
@@ -59,83 +59,87 @@ class AboutDialog(resourced: Resourced) : Dialog<Nothing>(), Resourced by resour
     private lateinit var licenseList: ListView<License>
 
     init {
-        style()
         icon = Image(R.image.menu_about)
         title = getString(R.string.about)
-        dialogPane.content = hbox {
-            paddingAll = 48.0
-            imageView(Image(R.image.display_launcher))
-            vbox {
-                alignment = CENTER_LEFT
-                textFlow {
-                    "${FULL_NAME.substringBefore(' ')} " { font = getFont(R.font.sf_pro_text_bold, 24) }
-                    (FULL_NAME.substringAfter(' ')) { font = getFont(R.font.sf_pro_text_light, 24) }
-                }
-                text("${getString(R.string.version)} $VERSION") { font = font(12.0) } marginTop 2.0
-                text(getString(R.string.built_with_open_source_software_expand_to_see_licenses)) marginTop 20.0
-                textFlow {
-                    "${getString(R.string.powered_by)} " { font = font(12.0) }
-                    "JavaFX" { font = getFont(R.font.sf_pro_text_bold, 12) }
-                } marginTop 4.0
-                textFlow {
-                    "${getString(R.string.author)} " { font = font(12.0) }
-                    USER { font = getFont(R.font.sf_pro_text_bold, 12) }
-                } marginTop 4.0
-                hbox {
-                    button("GitHub") { onAction { browseUrl(WEBSITE) } }
-                    checkUpdateButton = button(getString(R.string.check_for_updates)) {
-                        onAction {
-                            isDisable = true
-                            checkUpdateProgress.isVisible = true
-                            launch {
-                                try {
-                                    val release = GitHubApi.create().getLatestRelease().get(10, SECONDS)
-                                    launch(FX) {
-                                        when {
-                                            release.isNewer() -> infoAlert(
-                                                title = getString(R.string.openpss_is_available, release.name),
-                                                buttonTypes = *arrayOf(CANCEL)
-                                            ) {
-                                                style()
-                                                dialogPane.content = ktfx.layouts.vbox {
-                                                    release.assets.forEach { asset ->
-                                                        hyperlink(asset.name) {
-                                                            onAction {
-                                                                browseUrl(asset.downloadUrl)
-                                                                close()
+        dialogPane.run {
+            stylesheets += getStyle(R.style.openpss)
+            content = hbox {
+                paddingAll = 48.0
+                imageView(Image(R.image.display_launcher))
+                vbox {
+                    alignment = CENTER_LEFT
+                    textFlow {
+                        "${FULL_NAME.substringBefore(' ')} " { font = getFont(R.font.sf_pro_text_bold, 24) }
+                        (FULL_NAME.substringAfter(' ')) { font = getFont(R.font.sf_pro_text_light, 24) }
+                    }
+                    text("${getString(R.string.version)} $VERSION") { font = font(12.0) } marginTop 2.0
+                    text(getString(R.string.built_with_open_source_software_expand_to_see_licenses)) marginTop 20.0
+                    textFlow {
+                        "${getString(R.string.powered_by)} " { font = font(12.0) }
+                        "JavaFX" { font = getFont(R.font.sf_pro_text_bold, 12) }
+                    } marginTop 4.0
+                    textFlow {
+                        "${getString(R.string.author)} " { font = font(12.0) }
+                        USER { font = getFont(R.font.sf_pro_text_bold, 12) }
+                    } marginTop 4.0
+                    hbox {
+                        button("GitHub") { onAction { browseUrl(WEBSITE) } }
+                        checkUpdateButton = button(getString(R.string.check_for_updates)) {
+                            onAction {
+                                isDisable = true
+                                checkUpdateProgress.isVisible = true
+                                launch {
+                                    try {
+                                        val release = GitHubApi.create().getLatestRelease().get(10, SECONDS)
+                                        launch(FX) {
+                                            when {
+                                                release.isNewer() -> styledInfoAlert(
+                                                    getStyle(R.style.openpss),
+                                                    title = getString(R.string.openpss_is_available, release.name),
+                                                    buttonTypes = *arrayOf(CANCEL)
+                                                ) {
+                                                    dialogPane.content = ktfx.layouts.vbox {
+                                                        release.assets.forEach { asset ->
+                                                            hyperlink(asset.name) {
+                                                                onAction {
+                                                                    browseUrl(asset.downloadUrl)
+                                                                    close()
+                                                                }
                                                             }
                                                         }
                                                     }
-                                                }
-                                            }.show()
-                                            else -> infoAlert(
-                                                getString(R.string.you_re_up_to_date),
-                                                contentText = getString(
-                                                    R.string.openpss_is_currently_the_newest_version_available, VERSION)
-                                            ) { style() }.show()
+                                                }.show()
+                                                else -> styledInfoAlert(
+                                                    getStyle(R.style.openpss),
+                                                    getString(R.string.you_re_up_to_date),
+                                                    contentText = getString(
+                                                        R.string.openpss_is_currently_the_newest_version_available,
+                                                        VERSION)
+                                                ).show()
+                                            }
+                                            isDisable = false
+                                            checkUpdateProgress.isVisible = false
                                         }
-                                        isDisable = false
-                                        checkUpdateProgress.isVisible = false
-                                    }
-                                } catch (e: Exception) {
-                                    if (DEBUG) e.printStackTrace()
-                                    launch(FX) {
-                                        errorAlert(getString(R.string.no_internet_connection)).show()
-                                        isDisable = false
-                                        checkUpdateProgress.isVisible = false
+                                    } catch (e: Exception) {
+                                        if (DEBUG) e.printStackTrace()
+                                        launch(FX) {
+                                            errorAlert(getString(R.string.no_internet_connection)).show()
+                                            isDisable = false
+                                            checkUpdateProgress.isVisible = false
+                                        }
                                     }
                                 }
                             }
-                        }
-                    } marginLeft 8.0
-                    later {
-                        checkUpdateProgress = progressIndicator {
-                            maxSize = checkUpdateButton.height
-                            isVisible = false
                         } marginLeft 8.0
-                    }
-                } marginTop 20.0
-            } marginLeft 48.0
+                        later {
+                            checkUpdateProgress = progressIndicator {
+                                maxSize = checkUpdateButton.height
+                                isVisible = false
+                            } marginLeft 8.0
+                        }
+                    } marginTop 20.0
+                } marginLeft 48.0
+            }
         }
         dialogPane.expandableContent = hbox {
             titledPane(getString(R.string.open_source_software)) {
@@ -165,7 +169,7 @@ class AboutDialog(resourced: Resourced) : Dialog<Nothing>(), Resourced by resour
                 }
             }
         }
-        button("Homepage", CANCEL_CLOSE) {
+        customButton("Homepage", CANCEL_CLOSE) {
             visibleProperty().bind(dialogPane.expandedProperty() and selectedBinding)
             onActionFilter { browseUrl(selected!!.homepage) }
         }

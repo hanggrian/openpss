@@ -4,8 +4,8 @@ import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.db.schemas.Recesses
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.resources.Resourced
+import com.hendraanggrian.openpss.util.getStyle
 import com.hendraanggrian.openpss.util.onActionFilter
-import com.hendraanggrian.openpss.util.style
 import javafx.scene.control.ChoiceBox
 import javafx.scene.control.Dialog
 import javafx.scene.control.Separator
@@ -31,23 +31,25 @@ class DisableRecessDialog(
     private lateinit var roleChoice: ChoiceBox<*>
 
     init {
-        style()
         headerTitle = getString(R.string.disable_recess)
         graphicIcon = ImageView(R.image.header_time)
-        dialogPane.content = gridPane {
-            gap = 8.0
-            label(getString(R.string.recess)) col 0 row 0
-            transaction {
-                recessChoice = choiceBox(mutableObservableListOf(getString(R.string.all),
+        dialogPane.run {
+            stylesheets += getStyle(R.style.openpss)
+            content = gridPane {
+                gap = 8.0
+                label(getString(R.string.recess)) col 0 row 0
+                transaction {
+                    recessChoice = choiceBox(mutableObservableListOf(getString(R.string.all),
+                        Separator(),
+                        *Recesses.find().toObservableList().toTypedArray())
+                    ) { selectionModel.selectFirst() } col 1 row 0
+                }
+                label(getString(R.string.employee)) col 0 row 1
+                roleChoice = choiceBox(mutableObservableListOf(
+                    *attendees.filter { it.role != null }.map { it.role!! }.distinct().toTypedArray(),
                     Separator(),
-                    *Recesses.find().toObservableList().toTypedArray())
-                ) { selectionModel.selectFirst() } col 1 row 0
+                    *attendees.toTypedArray())) col 1 row 1
             }
-            label(getString(R.string.employee)) col 0 row 1
-            roleChoice = choiceBox(mutableObservableListOf(
-                *attendees.filter { it.role != null }.map { it.role!! }.distinct().toTypedArray(),
-                Separator(),
-                *attendees.toTypedArray())) col 1 row 1
         }
         closeButton()
         applyButton {

@@ -2,7 +2,7 @@ package com.hendraanggrian.openpss.ui.main
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.resources.Resourced
-import com.hendraanggrian.openpss.util.style
+import com.hendraanggrian.openpss.util.getStyle
 import javafx.scene.control.ButtonType.OK
 import javafx.scene.control.Dialog
 import javafx.scene.control.PasswordField
@@ -26,16 +26,18 @@ class ChangePasswordDialog(resourced: Resourced) : Dialog<String>(), Resourced b
     private lateinit var confirmPasswordField: PasswordField
 
     init {
-        style()
         headerTitle = getString(R.string.change_password)
         graphicIcon = ImageView(R.image.header_change_password)
-        dialogPane.content = gridPane {
-            gap = 8.0
-            label(R.string.new_employee_must_assign_new_password_this_will_only_occur_once) col 0 row 0 colSpans 2
-            label(getString(R.string.password)) col 0 row 1
-            changePasswordField = passwordField { promptText = getString(R.string.password) } col 1 row 1
-            label(getString(R.string.confirm_password)) col 0 row 2
-            confirmPasswordField = passwordField { promptText = getString(R.string.confirm_password) } col 1 row 2
+        dialogPane.run {
+            stylesheets += getStyle(R.style.openpss)
+            content = gridPane {
+                gap = 8.0
+                label(R.string.new_employee_must_assign_new_password_this_will_only_occur_once) col 0 row 0 colSpans 2
+                label(getString(R.string.password)) col 0 row 1
+                changePasswordField = passwordField { promptText = getString(R.string.password) } col 1 row 1
+                label(getString(R.string.confirm_password)) col 0 row 2
+                confirmPasswordField = passwordField { promptText = getString(R.string.confirm_password) } col 1 row 2
+            }
         }
         cancelButton()
         okButton().disableProperty().bind(changePasswordField.textProperty().isBlank()

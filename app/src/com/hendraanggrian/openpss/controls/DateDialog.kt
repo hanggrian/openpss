@@ -3,7 +3,7 @@ package com.hendraanggrian.openpss.controls
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.layouts.dateBox
 import com.hendraanggrian.openpss.resources.Resourced
-import com.hendraanggrian.openpss.util.style
+import com.hendraanggrian.openpss.util.getStyle
 import javafx.scene.control.ButtonType.OK
 import javafx.scene.control.Dialog
 import javafx.scene.image.ImageView
@@ -24,9 +24,12 @@ class DateDialog(
     private val dateBox = dateBox(prefill)
 
     init {
-        style()
         headerTitle = getString(headerId)
         graphicIcon = ImageView(R.image.header_date)
+        dialogPane.run {
+            stylesheets += getStyle(R.style.openpss)
+            content = dateBox
+        }
         dialogPane.content = dateBox
         later { dateBox.requestFocus() }
         cancelButton()

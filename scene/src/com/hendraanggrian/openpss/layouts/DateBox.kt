@@ -28,7 +28,7 @@ import org.joda.time.LocalDate.now
  *
  * [DateBox] width is deliberately measured to match [com.hendraanggrian.scene.layout.TimeBox]'s width.
  */
-open class DateBox(prefill: LocalDate = now()) : _HBox() {
+open class DateBox(prefill: LocalDate = now()) : _HBox(8.0) {
 
     lateinit var picker: DatePicker
     var previousButton: Button
@@ -39,7 +39,6 @@ open class DateBox(prefill: LocalDate = now()) : _HBox() {
 
     init {
         alignment = CENTER
-        spacing = 8.0
 
         previousButton = button(graphic = ImageView(R.image.btn_previous)) {
             onAction { picker.value = picker.value.minusDays(1) }

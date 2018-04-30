@@ -2,7 +2,8 @@
 
 package com.hendraanggrian.openpss.util
 
-import ktfx.scene.control.errorAlert
+import com.hendraanggrian.openpss.R
+import ktfx.scene.control.styledErrorAlert
 import java.awt.Desktop.getDesktop
 import java.awt.Desktop.isDesktopSupported
 import java.io.File
@@ -19,5 +20,5 @@ fun openFile(file: File) {
 }
 
 private inline fun ensureDesktopAvailable(): Boolean = isDesktopSupported().also {
-    if (!it) errorAlert("Desktop isn't supported!") { style() }.show()
+    if (!it) styledErrorAlert(getStyle(R.style.openpss), "Desktop isn't supported!").show()
 }

@@ -13,7 +13,7 @@ import javafx.scene.control.ListView
 import kotlinx.coroutines.experimental.CoroutineScope
 import kotlinx.coroutines.experimental.launch
 import ktfx.coroutines.FX
-import ktfx.scene.control.confirmAlert
+import ktfx.scene.control.styledConfirmAlert
 import kotlin.coroutines.experimental.CoroutineContext
 
 /** Can't use `ktfx-coroutines` because by the time `consume` is called in coroutine context, it is already too late. */
@@ -28,7 +28,7 @@ fun Node.onActionFilter(
 inline fun Resourced.yesNoAlert(
     contentTextId: String = R.string.are_you_sure,
     noinline action: () -> Unit
-) = confirmAlert(getString(contentTextId), YES, NO) { style() }
+) = styledConfirmAlert(getStyle(R.style.openpss), getString(contentTextId), YES, NO)
     .showAndWait()
     .filter { it == YES }
     .ifPresent { action() }

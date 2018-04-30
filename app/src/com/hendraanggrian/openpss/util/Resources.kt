@@ -14,6 +14,8 @@ inline fun getResource(name: String): URL = App::class.java.getResource(name)
 
 inline fun getResourceAsStream(name: String): InputStream = App::class.java.getResourceAsStream(name)
 
+inline fun getStyle(name: String): String = getResource(name).toExternalForm()
+
 inline fun getFont(name: String, size: Int = 13): Font = loadFont(getResource(name).toExternalForm(), size.toDouble())
 
 inline fun getColor(name: String): Color = web(name)

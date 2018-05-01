@@ -61,7 +61,7 @@ data class Customer(
             },
             EMAIL {
                 override val resourceId: String = R.string.email
-            };
+            }
         }
     }
 }

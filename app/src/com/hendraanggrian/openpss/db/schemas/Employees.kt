@@ -3,6 +3,7 @@ package com.hendraanggrian.openpss.db.schemas
 import com.hendraanggrian.openpss.db.Document
 import com.hendraanggrian.openpss.db.Named
 import com.hendraanggrian.openpss.db.NamedSchema
+import com.hendraanggrian.openpss.resources.StringResource
 import kotlinx.nosql.Id
 import kotlinx.nosql.mongodb.DocumentSchema
 import kotlinx.nosql.string
@@ -34,4 +35,16 @@ data class Employee(
     }
 
     override fun toString(): String = name
+
+    enum class Asd : StringResource {
+        EMPLOYEE {
+            override val resourceId: String = ""
+        },
+        MANAGER {
+            override val resourceId: String = ""
+        },
+        OWNER {
+            override val resourceId: String = ""
+        }
+    }
 }

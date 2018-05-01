@@ -56,6 +56,6 @@ data class Payment(
         },
         TRANSFER {
             override val resourceId: String = R.string.transfer
-        };
+        }
     }
 }

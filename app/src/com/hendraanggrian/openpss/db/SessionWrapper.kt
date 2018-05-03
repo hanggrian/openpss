@@ -17,6 +17,7 @@ import kotlinx.nosql.equal
 import kotlinx.nosql.id
 import kotlinx.nosql.mongodb.DocumentSchema
 import kotlinx.nosql.mongodb.MongoDBSession
+import kotlinx.nosql.query.NoQuery
 
 /** Extended version of [MongoDBSession]. */
 @Suppress("NOTHING_TO_INLINE")
@@ -35,7 +36,7 @@ class SessionWrapper(val session: MongoDBSession) :
 
     /** Same with `MongoDBSession`'s `find` but moved schema instance from receiver to parameter. */
     inline operator fun <S : DocumentSchema<D>, D : Document<S>> S.invoke(
-        noinline query: (S) -> Query
+        noinline query: (S) -> Query = { NoQuery }
     ): DocumentSchemaQueryWrapper<S, String, D> = session.run { return find(query) }
 
     /** Realm-style find by id. */
@@ -47,6 +48,18 @@ class SessionWrapper(val session: MongoDBSession) :
     inline operator fun <S : DocumentSchema<D>, D : Document<S>> S.get(
         document: D
     ): DocumentSchemaQueryWrapper<S, String, D> = get(document.id)
+
+    inline operator fun <S : DocumentSchema<D>, D : Document<S>> S.minusAssign(
+        id: Id<String, S>
+    ) {
+        get(id).remove()
+    }
+
+    inline operator fun <S : DocumentSchema<D>, D : Document<S>> S.minusAssign(
+        document: D
+    ) {
+        get(document).remove()
+    }
 
     /** Build query for optional and/or query operation. */
     inline fun <S : DocumentSchema<D>, D : Document<S>> S.buildQuery(

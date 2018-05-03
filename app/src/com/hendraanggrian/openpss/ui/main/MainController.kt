@@ -40,13 +40,13 @@ class MainController : Controller() {
     @FXML lateinit var navigateMenu: Menu
     @FXML lateinit var employeeLabel: Label
     @FXML lateinit var tabPane: TabPane
-    @FXML lateinit var customerController: CustomerController
-    @FXML lateinit var scheduleController: ScheduleController
-    @FXML lateinit var invoiceController: InvoiceController
-    @FXML lateinit var paymentController: PaymentController
-    @FXML lateinit var reportController: ReportController
-    @FXML lateinit var wageController: WageController
-    @FXML lateinit var employeeController: EmployeeController
+    @Suppress("MemberVisibilityCanBePrivate") @FXML lateinit var customerController: CustomerController
+    @Suppress("MemberVisibilityCanBePrivate") @FXML lateinit var scheduleController: ScheduleController
+    @Suppress("MemberVisibilityCanBePrivate") @FXML lateinit var invoiceController: InvoiceController
+    @Suppress("MemberVisibilityCanBePrivate") @FXML lateinit var paymentController: PaymentController
+    @Suppress("MemberVisibilityCanBePrivate") @FXML lateinit var reportController: ReportController
+    @Suppress("MemberVisibilityCanBePrivate") @FXML lateinit var wageController: WageController
+    @Suppress("MemberVisibilityCanBePrivate") @FXML lateinit var employeeController: EmployeeController
 
     private lateinit var controllers: List<Controller>
 

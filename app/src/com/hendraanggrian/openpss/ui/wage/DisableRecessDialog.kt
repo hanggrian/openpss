@@ -41,7 +41,7 @@ class DisableRecessDialog(
                 transaction {
                     recessChoice = choiceBox(mutableObservableListOf(getString(R.string.all),
                         Separator(),
-                        *Recesses.find().toObservableList().toTypedArray())
+                        *Recesses().toObservableList().toTypedArray())
                     ) { selectionModel.selectFirst() } col 1 row 0
                 }
                 label(getString(R.string.employee)) col 0 row 1

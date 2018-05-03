@@ -41,14 +41,14 @@ abstract class SimpleTableController<D : Document<S>, S : DocumentSchema<D>>(
     }
 
     override fun refresh() {
-        table.items = transaction { schema.find().toMutableObservableList() }
+        table.items = transaction { schema().toMutableObservableList() }
     }
 
     @FXML abstract fun add()
 
     @FXML fun delete() = yesNoAlert {
         table.selectionModel.selectedItem.let {
-            transaction { schema[it].remove() }
+            transaction { schema -= it }
             table.items.remove(it)
         }
     }

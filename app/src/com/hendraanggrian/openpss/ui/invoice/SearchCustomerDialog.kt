@@ -54,7 +54,7 @@ class SearchCustomerDialog(resourced: Resourced) : Dialog<Customer>(), Resourced
                     itemsProperty().bind(bindingOf(searchField.textProperty()) {
                         transaction {
                             when {
-                                searchField.text.isEmpty() -> Customers.find()
+                                searchField.text.isEmpty() -> Customers()
                                 else -> Customers { it.name.matches(searchField.text.toRegex(IGNORE_CASE).toPattern()) }
                             }.take(ITEMS_PER_PAGE).toMutableObservableList()
                         }

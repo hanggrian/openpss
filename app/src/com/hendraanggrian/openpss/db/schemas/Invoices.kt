@@ -81,7 +81,7 @@ data class Invoice(
             others: List<Other>,
             note: String
         ): Invoice = Invoice(
-            transaction { Invoices.find().lastOrNull()?.no ?: 0 } + 1,
+            transaction { Invoices().lastOrNull()?.no ?: 0 } + 1,
             employeeId, customerId, dateTime, plates, offsets, others, note, false, false, false)
     }
 

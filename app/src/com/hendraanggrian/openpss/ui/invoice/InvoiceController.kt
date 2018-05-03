@@ -203,7 +203,7 @@ class InvoiceController : Controller(), Refreshable, Selectable<Invoice>, Select
 
     @FXML fun deleteInvoice() = yesNoAlert {
         transaction {
-            Invoices[selected!!].remove()
+            Invoices -= selected!!
             Payments { invoiceId.equal(selected!!.id) }.remove()
         }
         invoiceTable.items.remove(selected)
@@ -221,7 +221,7 @@ class InvoiceController : Controller(), Refreshable, Selectable<Invoice>, Select
 
     @FXML fun deletePayment() = yesNoAlert {
         transaction {
-            Payments[selected2!!].remove()
+            Payments -= selected2!!
             updatePaymentStatus()
             reload(selected!!)
         }

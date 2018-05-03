@@ -91,7 +91,7 @@ class AttendeePane(
                 label(getString(R.string.recess)) col 0 row 3 marginRight 4.0
                 vbox {
                     transaction {
-                        Recesses.find().forEach { recess ->
+                        Recesses().forEach { recess ->
                             recessChecks += checkBox(recess.toString()) {
                                 selectedProperty().listener { _, _, selected ->
                                     if (selected) attendee.recesses += recess else attendee.recesses -= recess

@@ -39,10 +39,10 @@
         </Button>
         <Space/>
     </ToolBar>
-    <TableView fx:id="employeeTable" editable="true" VBox.vgrow="ALWAYS">
+    <TableView fx:id="employeeTable" VBox.vgrow="ALWAYS">
         <columns>
-            <TableColumn fx:id="nameColumn" editable="false" text="%name"/>
-            <TableColumn fx:id="fullAccessColumn" text="%full_access"/>
+            <TableColumn fx:id="nameColumn" text="%name"/>
+            <TableColumn fx:id="roleColumn" text="%role"/>
         </columns>
         <columnResizePolicy>
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>

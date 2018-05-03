@@ -60,7 +60,7 @@ class App : Application(), Resourced {
                 loader.controller.login = employee
             }.show()
 
-            if (employee.firstTimeLogin) ChangePasswordDialog(this).showAndWait().ifPresent { newPassword ->
+            if (employee.isFirstTimeLogin) ChangePasswordDialog(this).showAndWait().ifPresent { newPassword ->
                 transaction {
                     Employees { it.name.equal(employee.name) }.projection { password }.update(newPassword)
                     styledInfoAlert(getStyle(R.style.openpss), getString(R.string.successfully_changed_password)).show()

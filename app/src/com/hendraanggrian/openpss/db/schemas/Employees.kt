@@ -29,11 +29,11 @@ data class Employee(
 
     override lateinit var id: Id<String, Employees>
 
-    var firstTimeLogin: Boolean = false
+    var isFirstTimeLogin: Boolean = false
 
     /** Password are unused after login, clear for better security. */
     fun clearPassword() {
-        firstTimeLogin = password == DEFAULT_PASSWORD
+        isFirstTimeLogin = password == DEFAULT_PASSWORD
         password = ""
     }
 

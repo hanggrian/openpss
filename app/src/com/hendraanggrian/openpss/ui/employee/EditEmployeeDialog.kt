@@ -51,7 +51,7 @@ class EditEmployeeDialog(resourced: Resourced, employee: Employee) : Dialog<Empl
                 nameField = textField(employee.name) {
                     textProperty().listener { changed.set(true) }
                 } col 1 row 0
-                label(getString(R.string.full_access)) col 0 row 1
+                label(getString(R.string.role)) col 0 row 1
                 roleChoice = choiceBox(values().toObservableList()) {
                     selectionModel.select(employee.typedRole)
                     valueProperty().listener { changed.set(true) }

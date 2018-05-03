@@ -31,7 +31,7 @@ class AddPlateDialog(resourced: Resourced) : AddOrderDialog<Invoice.Plate>(
 
     override fun _GridPane.onLayout() {
         label(getString(R.string.machine)) col 0 row 2
-        machineChoice = choiceBox(transaction { PlatePrices.find().toObservableList() }) {
+        machineChoice = choiceBox(transaction { PlatePrices().toObservableList() }) {
             valueProperty().listener { _, _, plate ->
                 priceField.value = plate.price
             }

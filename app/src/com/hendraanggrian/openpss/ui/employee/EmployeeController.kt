@@ -18,8 +18,6 @@ import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
 import kotlinx.coroutines.experimental.delay
 import kotlinx.coroutines.experimental.launch
-import kotlinx.nosql.equal
-import kotlinx.nosql.id
 import kotlinx.nosql.update
 import ktfx.beans.property.toReadOnlyProperty
 import ktfx.beans.value.or
@@ -30,6 +28,7 @@ import java.util.ResourceBundle
 
 class EmployeeController : Controller(), Refreshable, Selectable<Employee> {
 
+    @FXML lateinit var addButton: Button
     @FXML lateinit var editButton: Button
     @FXML lateinit var deleteButton: Button
     @FXML lateinit var employeeTable: TableView<Employee>
@@ -41,6 +40,7 @@ class EmployeeController : Controller(), Refreshable, Selectable<Employee> {
         launch(FX) {
             delay(100)
             transaction { login.isAtLeast(EXECUTIVE) }.toReadOnlyProperty().let {
+                addButton.disableProperty().bind(!it)
                 editButton.disableProperty().bind(!selectedBinding or !it)
                 deleteButton.disableProperty().bind(!selectedBinding or !it)
             }
@@ -49,8 +49,9 @@ class EmployeeController : Controller(), Refreshable, Selectable<Employee> {
         roleColumn.stringCell { typedRole.toString() }
     }
 
-    override fun refresh() {
-        employeeTable.items = transaction { Employees().toMutableObservableList() }
+    override fun refresh() = employeeTable.items.let {
+        it.clear()
+        it += transaction { Employees().toMutableObservableList().also { it -= Employee.BACKDOOR } }
     }
 
     override val selectionModel: SelectionModel<Employee> get() = employeeTable.selectionModel
@@ -63,11 +64,11 @@ class EmployeeController : Controller(), Refreshable, Selectable<Employee> {
             selectionModel.select(employee)
         }
 
-    @FXML fun edit() = EditEmployeeDialog(this, selected!!).showAndWait().ifPresent { employee ->
+    @FXML fun edit() = EditEmployeeDialog(this, selected!!).showAndWait().ifPresent {
         transaction {
-            Employees { it.id.equal(selected!!.id) }
+            Employees[selected!!.id]
                 .projection { name + password + role }
-                .update(employee.name, employee.password, employee.role)
+                .update(it.name, it.password, it.role)
         }
         refresh()
     }

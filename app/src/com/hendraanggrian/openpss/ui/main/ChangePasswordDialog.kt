@@ -32,7 +32,9 @@ class ChangePasswordDialog(resourced: Resourced) : Dialog<String>(), Resourced b
             stylesheets += getStyle(R.style.openpss)
             content = gridPane {
                 gap = 8.0
-                label(R.string.new_employee_must_assign_new_password_this_will_only_occur_once) col 0 row 0 colSpans 2
+                label {
+                    text = getString(R.string.new_employee_must_assign_new_password_this_will_only_occur_once)
+                } col 0 row 0 colSpans 2
                 label(getString(R.string.password)) col 0 row 1
                 changePasswordField = passwordField { promptText = getString(R.string.password) } col 1 row 1
                 label(getString(R.string.confirm_password)) col 0 row 2

@@ -6,6 +6,9 @@ import javafx.beans.binding.BooleanBinding
 import javafx.beans.property.StringProperty
 import ktfx.beans.binding.booleanBindingOf
 
+/** Reversed version of [String.orEmpty]. */
+inline fun String.orNull(): String? = if (isBlank()) null else this
+
 /** Remove trailing and double whitespaces. */
 inline fun String.clean(): String = replace("\\s+".toRegex(), " ").trim()
 

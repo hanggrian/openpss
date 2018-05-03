@@ -24,25 +24,10 @@
                 </ImageView>
             </graphic>
         </Button>
-        <Button mnemonicParsing="false" fx:id="editNameButton" onAction="#editName" text="%edit_name">
+        <Button mnemonicParsing="false" fx:id="editButton" onAction="#edit" text="%edit">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
                     <Image url="@/image/toolbar_edit.png"/>
-                </ImageView>
-            </graphic>
-        </Button>
-        <Space/>
-        <Button mnemonicParsing="false" fx:id="editAddressButton" onAction="#editAddress" text="%edit_address">
-            <graphic>
-                <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/toolbar_edit_address.png"/>
-                </ImageView>
-            </graphic>
-        </Button>
-        <Button mnemonicParsing="false" fx:id="editNoteButton" onAction="#editNote" text="%edit_note">
-            <graphic>
-                <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/toolbar_note.png"/>
                 </ImageView>
             </graphic>
         </Button>

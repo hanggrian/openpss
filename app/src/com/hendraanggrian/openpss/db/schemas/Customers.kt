@@ -33,7 +33,7 @@ object Customers : DocumentSchema<Customer>("customers", Customer::class), Named
 data class Customer(
     override var name: String,
     val since: LocalDate,
-    val address: String?,
+    var address: String?,
     var note: String?,
     var contacts: List<Contact>
 ) : Document<Customers>, Named {

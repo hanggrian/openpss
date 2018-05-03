@@ -21,7 +21,6 @@ import com.hendraanggrian.openpss.util.yesNoAlert
 import javafx.fxml.FXML
 import javafx.scene.Node
 import javafx.scene.control.Button
-import javafx.scene.control.ButtonType.OK
 import javafx.scene.control.CheckMenuItem
 import javafx.scene.control.Label
 import javafx.scene.control.ListView
@@ -41,7 +40,6 @@ import ktfx.beans.binding.bindingOf
 import ktfx.beans.binding.stringBindingOf
 import ktfx.beans.binding.times
 import ktfx.beans.property.toReadOnlyProperty
-import ktfx.beans.value.isBlank
 import ktfx.beans.value.or
 import ktfx.collections.emptyObservableList
 import ktfx.collections.toMutableObservableList
@@ -49,7 +47,6 @@ import ktfx.collections.toObservableList
 import ktfx.layouts.listView
 import ktfx.layouts.tooltip
 import ktfx.scene.control.styledErrorAlert
-import ktfx.scene.control.styledInputDialog
 import java.net.URL
 import java.util.ResourceBundle
 import java.util.regex.Pattern.CASE_INSENSITIVE
@@ -57,9 +54,7 @@ import kotlin.math.ceil
 
 class CustomerController : Controller(), Refreshable, Selectable<Customer>, Selectable2<Customer.Contact> {
 
-    @FXML lateinit var editNameButton: Button
-    @FXML lateinit var editAddressButton: Button
-    @FXML lateinit var editNoteButton: Button
+    @FXML lateinit var editButton: Button
     @FXML lateinit var addContactButton: Button
     @FXML lateinit var deleteContactButton: Button
     @FXML lateinit var searchField: TextField
@@ -123,9 +118,7 @@ class CustomerController : Controller(), Refreshable, Selectable<Customer>, Sele
                             .skip(CUSTOMER_PAGINATION_ITEMS * page)
                             .take(CUSTOMER_PAGINATION_ITEMS).toMutableObservableList()
                         val fullAccess = login.isAtLeast(MANAGER).toReadOnlyProperty()
-                        editNameButton.disableProperty().bind(!selectedBinding or !fullAccess)
-                        editAddressButton.disableProperty().bind(!selectedBinding)
-                        editNoteButton.disableProperty().bind(!selectedBinding)
+                        editButton.disableProperty().bind(!selectedBinding or !fullAccess)
                         addContactButton.disableProperty().bind(!selectedBinding)
                         deleteContactButton.disableProperty().bind(!selectedBinding2 or !fullAccess)
                     }
@@ -164,62 +157,36 @@ class CustomerController : Controller(), Refreshable, Selectable<Customer>, Sele
             }
         }
 
-    @FXML fun editName() = UserDialog(this, R.string.edit_name, R.image.header_customer, selected!!.name)
-        .showAndWait()
-        .ifPresent {
-            transaction {
-                Customers[selected!!].projection { name }.update(it)
-                reload(selected!!)
-            }
+    @FXML fun edit() = EditCustomerDialog(this, selected!!).showAndWait().ifPresent {
+        transaction {
+            Customers[selected!!.id]
+                .projection { name + address + note }
+                .update(it.name, it.address, it.note)
+            reload()
         }
-
-    @FXML fun editAddress() =
-        styledInputDialog(getStyle(R.style.openpss), getString(R.string.edit_address),
-            ImageView(R.image.header_customer), selected!!.address ?: "") {
-            contentText = getString(R.string.address)
-            dialogPane.lookupButton(OK).disableProperty().bind(editor.textProperty().isBlank())
-        }.showAndWait().ifPresent {
-            transaction {
-                Customers[selected!!].projection { address }.update(it)
-                reload(selected!!)
-            }
-        }
-
-    @FXML fun editNote() =
-        styledInputDialog(getStyle(R.style.openpss), getString(R.string.edit_note),
-            ImageView(R.image.header_customer), selected!!.note ?: "") {
-            contentText = getString(R.string.note)
-            dialogPane.lookupButton(OK).disableProperty().bind(editor.textProperty().isBlank())
-        }.showAndWait().ifPresent {
-            transaction {
-                Customers[selected!!].projection { note }.update(it)
-                reload(selected!!)
-            }
-        }
+    }
 
     @FXML fun addContact() = AddContactDialog(this).showAndWait().ifPresent {
         transaction {
             Customers[selected!!].projection { contacts }.update(selected!!.contacts + it)
-            reload(selected!!)
+            reload()
         }
     }
 
     @FXML fun deleteContact() = yesNoAlert(R.string.delete_contact) {
         transaction {
             Customers[selected!!].projection { contacts }.update(selected!!.contacts - selected2!!)
-            reload(selected!!)
+            reload()
         }
     }
-
-    @FXML fun clearSearch() = searchField.clear()
 
     private fun Label.bindLabel(target: () -> String) = textProperty()
         .bind(stringBindingOf(customerList.selectionModel.selectedItemProperty()) { target() })
 
-    private fun SessionWrapper.reload(customer: Customer) = customerList.run {
-        items.indexOf(customer).let { index ->
-            items[index] = Customers[customer].single()
-            selectionModel.select(index)
+    private fun SessionWrapper.reload() = customerList.run {
+        items.indexOf(selected!!).let { index ->
+            items[index] = Customers[selected!!].single()
+            selectionModel.clearAndSelect(index)
         }
     }
 }

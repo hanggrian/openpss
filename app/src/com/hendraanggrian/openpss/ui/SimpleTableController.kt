@@ -1,6 +1,7 @@
 package com.hendraanggrian.openpss.ui
 
 import com.hendraanggrian.openpss.db.Document
+import com.hendraanggrian.openpss.db.schemas.Employee.Role.MANAGER
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.util.yesNoAlert
 import javafx.fxml.FXML
@@ -34,7 +35,7 @@ abstract class SimpleTableController<D : Document<S>, S : DocumentSchema<D>>(
         later {
             transaction {
                 deleteButton.disableProperty().bind(table.selectionModel.selectedItemProperty().isNull or
-                    !login.isFullAccess().toProperty())
+                    !login.isAtLeast(MANAGER).toProperty())
             }
         }
     }

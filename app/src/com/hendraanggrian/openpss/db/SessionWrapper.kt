@@ -1,12 +1,11 @@
 package com.hendraanggrian.openpss.db
 
 import com.hendraanggrian.openpss.db.schemas.Employee
-import com.hendraanggrian.openpss.db.schemas.EmployeeAccesses
+import com.hendraanggrian.openpss.db.schemas.Employees
 import com.hendraanggrian.openpss.db.schemas.GlobalSetting
 import com.hendraanggrian.openpss.db.schemas.GlobalSettings
 import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.db.schemas.Payments
-import com.hendraanggrian.openpss.util.isNotEmpty
 import kotlinx.nosql.DocumentSchemaOperations
 import kotlinx.nosql.DocumentSchemaQueryWrapper
 import kotlinx.nosql.Id
@@ -56,8 +55,8 @@ class SessionWrapper(val session: MongoDBSession) :
         _QueryBuilder().apply { builder(this@buildQuery) }.build()
     }
 
-    inline fun Employee.isFullAccess(): Boolean =
-        EmployeeAccesses { it.employeeId.equal(id) }.isNotEmpty()
+    inline fun Employee.isAtLeast(role: Employee.Role): Boolean =
+        Employees[this].single().typedRole.accessLevel >= role.accessLevel
 
     inline fun findGlobalSettings(
         key: String

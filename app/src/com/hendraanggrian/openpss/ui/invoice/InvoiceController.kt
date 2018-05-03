@@ -5,6 +5,7 @@ import com.hendraanggrian.openpss.controls.ViewInvoiceDialog
 import com.hendraanggrian.openpss.db.SessionWrapper
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Customers
+import com.hendraanggrian.openpss.db.schemas.Employee.Role.MANAGER
 import com.hendraanggrian.openpss.db.schemas.Employees
 import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.db.schemas.Invoices
@@ -159,7 +160,7 @@ class InvoiceController : Controller(), Refreshable, Selectable<Invoice>, Select
                         items = invoices
                             .skip(INVOICE_PAGINATION_ITEMS * page)
                             .take(INVOICE_PAGINATION_ITEMS).toMutableObservableList()
-                        val fullAccess = login.isFullAccess().toReadOnlyProperty()
+                        val fullAccess = login.isAtLeast(MANAGER).toReadOnlyProperty()
                         editInvoiceButton.disableProperty().bind(!selectedBinding or !fullAccess)
                         deleteInvoiceButton.disableProperty().bind(!selectedBinding or !fullAccess)
                         viewInvoiceButton.disableProperty().bind(!selectedBinding)

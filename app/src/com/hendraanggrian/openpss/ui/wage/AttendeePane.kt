@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.ui.wage
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.controls.DateTimeDialog
+import com.hendraanggrian.openpss.controls.DateTimePopup
 import com.hendraanggrian.openpss.controls.intField
 import com.hendraanggrian.openpss.db.schemas.Recesses
 import com.hendraanggrian.openpss.db.transaction
@@ -149,7 +149,7 @@ class AttendeePane(
             separatorMenuItem()
             getString(R.string.copy)(ImageView(R.image.menu_copy)) {
                 disableProperty().bind(!selectedBinding)
-                onAction { cloneAttendance() }
+                onAction { copyAttendance() }
             }
             getString(R.string.edit)(ImageView(R.image.menu_edit)) {
                 disableProperty().bind(!selectedBinding)
@@ -192,34 +192,29 @@ class AttendeePane(
 
     override val selectionModel: SelectionModel<DateTime> get() = attendanceList.selectionModel
 
-    private fun addAttendance() = DateTimeDialog(this@AttendeePane, R.string.add_record,
-        now().run { minusMinutes(minuteOfHour) })
-        .showAndWait()
-        .ifPresent {
-            attendanceList.run {
-                items.add(it)
-                items.sort()
-            }
+    private fun addAttendance() = DateTimePopup(this, R.string.add_record, R.string.add,
+        now().run { minusMinutes(minuteOfHour) }).show(attendanceList) {
+        attendanceList.run {
+            items.add(it)
+            items.sort()
         }
+    }
 
-    private fun cloneAttendance() = DateTimeDialog(this@AttendeePane, R.string.add_record,
-        selected!!.run { minusMinutes(minuteOfHour) })
-        .showAndWait()
-        .ifPresent {
-            attendanceList.run {
-                items.add(it)
-                items.sort()
-            }
+    private fun copyAttendance() = DateTimePopup(this, R.string.add_record, R.string.add,
+        selected!!.run { minusMinutes(minuteOfHour) }).show(attendanceList) {
+        attendanceList.run {
+            items.add(it)
+            items.sort()
         }
+    }
 
-    private fun editAttendance() = DateTimeDialog(this@AttendeePane, R.string.edit_record, selected!!)
-        .showAndWait()
-        .ifPresent {
-            attendanceList.run {
-                items[attendanceList.selectionModel.selectedIndex] = it
-                items.sort()
-            }
+    private fun editAttendance() = DateTimePopup(this, R.string.edit_record, R.string.edit,
+        selected!!).show(attendanceList) {
+        attendanceList.run {
+            items[attendanceList.selectionModel.selectedIndex] = it
+            items.sort()
         }
+    }
 }
 
 @Suppress("NOTHING_TO_INLINE")

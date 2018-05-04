@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.ui.customer
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.controls.UserDialog
+import com.hendraanggrian.openpss.controls.UserPopup
 import com.hendraanggrian.openpss.db.SessionWrapper
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Customers
@@ -177,23 +177,21 @@ class CustomerController : SegmentedController(), Refreshable, Selectable<Custom
 
     override val selectionModel2: SelectionModel<Customer.Contact> get() = contactTable.selectionModel
 
-    fun add() = UserDialog(this, R.string.add_customer, R.image.header_customer)
-        .showAndWait()
-        .ifPresent {
-            transaction {
-                when {
-                    Customers { it.name.matches("^$it$", CASE_INSENSITIVE) }.isNotEmpty() ->
-                        styledErrorAlert(getStyle(R.style.openpss), getString(R.string.name_taken)).show()
-                    else -> Customer.new(it).let {
-                        it.id = Customers.insert(it)
-                        customerList.items.add(it)
-                        customerList.selectionModel.select(customerList.items.lastIndex)
-                    }
+    fun add() = UserPopup(this, R.string.add_customer).show(addButton) {
+        transaction {
+            when {
+                Customers { it.name.matches("^$it$", CASE_INSENSITIVE) }.isNotEmpty() ->
+                    styledErrorAlert(getStyle(R.style.openpss), getString(R.string.name_taken)).show()
+                else -> Customer.new(it).let {
+                    it.id = Customers.insert(it)
+                    customerList.items.add(it)
+                    customerList.selectionModel.select(customerList.items.lastIndex)
                 }
             }
         }
+    }
 
-    private fun edit() = EditCustomerDialog(this, selected!!).showAndWait().ifPresent {
+    private fun edit() = EditCustomerPopup(this, selected!!).show(editButton) {
         transaction {
             Customers[selected!!.id]
                 .projection { name + address + note }
@@ -202,7 +200,7 @@ class CustomerController : SegmentedController(), Refreshable, Selectable<Custom
         }
     }
 
-    @FXML fun addContact() = AddContactDialog(this).showAndWait().ifPresent {
+    @FXML fun addContact() = AddContactPopup(this).show(contactTable) {
         transaction {
             Customers[selected!!].projection { contacts }.update(selected!!.contacts + it)
             reload()

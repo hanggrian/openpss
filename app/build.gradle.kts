@@ -9,6 +9,7 @@ import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.kotlin
 import org.jetbrains.kotlin.gradle.dsl.Coroutines.*
 import org.gradle.language.base.plugins.LifecycleBasePlugin.*
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 import org.junit.platform.gradle.plugin.FiltersExtension
 import org.junit.platform.gradle.plugin.EnginesExtension
@@ -130,6 +131,10 @@ tasks {
         bundleId = RELEASE_GROUP
         verbose = true
         openOnDone = true
+    }
+
+    withType<KotlinCompile> {
+        kotlinOptions.jvmTarget = "1.8"
     }
 }
 

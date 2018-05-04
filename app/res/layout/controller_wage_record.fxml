@@ -28,7 +28,8 @@
         <Button mnemonicParsing="false" fx:id="lockEndButton" onAction="#lockEnd"
                 text="%lock_end_time"/>
         <Separator/>
-        <Button mnemonicParsing="false" onAction="#empty" text="%disable_daily_income"/>
+        <Button mnemonicParsing="false" fx:id="disableDailyIncomeButton" onAction="#disableDailyIncome"
+                text="%disable_daily_income"/>
         <Button mnemonicParsing="false" onAction="#screenshot" text="%screenshot"/>
         <Region HBox.hgrow="ALWAYS"/>
         <Label fx:id="totalLabel1" text="%total"/>

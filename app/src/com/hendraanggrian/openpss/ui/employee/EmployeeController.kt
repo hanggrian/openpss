@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.ui.employee
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.controls.UserDialog
+import com.hendraanggrian.openpss.controls.UserPopup
 import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.db.schemas.Employee.Role.EXECUTIVE
 import com.hendraanggrian.openpss.db.schemas.Employees
@@ -81,15 +81,14 @@ class EmployeeController : SegmentedController(), Refreshable, Selectable<Employ
 
     override val selectionModel: SelectionModel<Employee> get() = employeeTable.selectionModel
 
-    private fun add() = UserDialog(this, R.string.add_employee, R.image.header_employee, restrictiveInput = false)
-        .showAndWait().ifPresent {
-            val employee = Employee.new(it)
-            employee.id = transaction { Employees.insert(employee) }
-            employeeTable.items.add(employee)
-            selectionModel.select(employee)
-        }
+    private fun add() = UserPopup(this, R.string.add_employee, false).show(addButton) {
+        val employee = Employee.new(it)
+        employee.id = transaction { Employees.insert(employee) }
+        employeeTable.items.add(employee)
+        selectionModel.select(employee)
+    }
 
-    private fun edit() = EditEmployeeDialog(this, selected!!).showAndWait().ifPresent {
+    private fun edit() = EditEmployeePopup(this, selected!!).show(editButton) {
         transaction {
             Employees[selected!!.id]
                 .projection { name + password + role }

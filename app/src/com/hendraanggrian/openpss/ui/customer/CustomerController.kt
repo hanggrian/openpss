@@ -61,8 +61,6 @@ import kotlin.math.ceil
 
 class CustomerController : SegmentedController(), Refreshable, Selectable<Customer>, Selectable2<Customer.Contact> {
 
-    @FXML lateinit var addContactItem: MenuItem
-    @FXML lateinit var deleteContactItem: MenuItem
     @FXML lateinit var splitPane: SplitPane
     @FXML lateinit var customerPagination: Pagination
     @FXML lateinit var nameLabel: Label
@@ -78,6 +76,8 @@ class CustomerController : SegmentedController(), Refreshable, Selectable<Custom
     @FXML lateinit var contactTable: TableView<Customer.Contact>
     @FXML lateinit var typeColumn: TableColumn<Customer.Contact, String>
     @FXML lateinit var valueColumn: TableColumn<Customer.Contact, String>
+    @FXML lateinit var addContactItem: MenuItem
+    @FXML lateinit var deleteContactItem: MenuItem
     @FXML lateinit var coverLabel: Label
 
     private lateinit var refreshButton: Button

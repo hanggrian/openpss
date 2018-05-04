@@ -16,6 +16,7 @@ import com.hendraanggrian.openpss.util.openFile
 import com.hendraanggrian.openpss.util.pane
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
+import javafx.scene.Node
 import javafx.scene.control.Button
 import javafx.scene.control.Label
 import javafx.scene.control.ScrollPane
@@ -32,6 +33,8 @@ import ktfx.collections.size
 import ktfx.coroutines.FX
 import ktfx.coroutines.onAction
 import ktfx.layouts.borderPane
+import ktfx.layouts.button
+import ktfx.layouts.separator
 import ktfx.layouts.styledScene
 import ktfx.scene.control.styledErrorAlert
 import ktfx.scene.layout.maxSize
@@ -43,31 +46,54 @@ import java.util.ResourceBundle
 
 class WageController : SegmentedController() {
 
-    @FXML lateinit var readButton: Button
-    @FXML lateinit var processButton: Button
-    @FXML lateinit var disableRecessButton: Button
     @FXML lateinit var fileField: FileField
     @FXML lateinit var employeeCountLabel1: Label
     @FXML lateinit var employeeCountLabel2: Label
     @FXML lateinit var scrollPane: ScrollPane
     @FXML lateinit var flowPane: FlowPane
 
+    private lateinit var readButton: Button
+    private lateinit var processButton: Button
+    private lateinit var disableRecessButton: Button
+    override val leftSegment: List<Node> get() = listOf(readButton, processButton, separator(), disableRecessButton)
+
+    private lateinit var recessButton: Button
+    private lateinit var historyButton: Button
+    override val rightSegment: List<Node> get() = listOf(recessButton, historyButton)
+
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
-        disableRecessButton.disableProperty().bind(flowPane.children.isEmpty)
+        readButton = button(getString(R.string.read)) {
+            onAction { read() }
+            disableProperty().bind(fileField.validProperty)
+        }
+        processButton = button(getString(R.string.process)) {
+            onAction { process() }
+            disableProperty().bind(flowPane.children.isEmpty)
+        }
+        disableRecessButton = button(getString(R.string.disable_recess)) {
+            onAction { disableRecess() }
+            disableProperty().bind(flowPane.children.isEmpty)
+        }
+        recessButton = button(getString(R.string.recess)) { onAction { recess() } }
+        historyButton = button(getString(R.string.history)) { onAction { history() } }
         employeeCountLabel1.font = getFont(R.font.sf_pro_text_bold)
         employeeCountLabel2.textProperty().bind(flowPane.children.size().asString())
-        readButton.disableProperty().bind(fileField.validProperty)
-        processButton.disableProperty().bind(flowPane.children.isEmpty)
 
         if (DEBUG) {
             fileField.text = "/Users/hendraanggrian/Downloads/Absen 4-13-18.xlsx"
             // readButton.fire()
         }
-        later { flowPane.prefWrapLengthProperty().bind(fileField.scene.widthProperty()) }
+        later {
+            flowPane
+                .prefWrapLengthProperty()
+                .bind(fileField
+                    .scene
+                    .widthProperty()) // TODO: fix occasional NPE
+        }
     }
 
-    @FXML fun read() {
+    private fun read() {
         scrollPane.content = borderPane {
             prefWidthProperty().bind(scrollPane.widthProperty())
             prefHeightProperty().bind(scrollPane.heightProperty())
@@ -117,7 +143,7 @@ class WageController : SegmentedController() {
         }
     }
 
-    @FXML fun process() {
+    private fun process() {
         attendees.forEach { it.saveWage() }
         stage(getString(R.string.record)) {
             val loader = FXMLLoader(getResource(R.layout.controller_wage_record), resources)
@@ -127,9 +153,9 @@ class WageController : SegmentedController() {
         }.showAndWait()
     }
 
-    @FXML fun disableRecess() = DisableRecessDialog(this, attendeePanes).show()
+    private fun disableRecess() = DisableRecessDialog(this, attendeePanes).show()
 
-    @FXML fun recess() = stage(getString(R.string.recess)) {
+    private fun recess() = stage(getString(R.string.recess)) {
         val loader = FXMLLoader(getResource(R.layout.controller_wage_recess), resources)
         initModality(APPLICATION_MODAL)
         scene = styledScene(getStyle(R.style.openpss), loader.pane)
@@ -137,7 +163,7 @@ class WageController : SegmentedController() {
         loader.controller.login = login
     }.showAndWait()
 
-    @FXML fun history() = openFile(WageFolder)
+    private fun history() = openFile(WageFolder)
 
     @FXML fun browse() = fileChooser(
         ExtensionFilter(getString(R.string.input_file), *Reader.of(WAGE_READER).extensions))

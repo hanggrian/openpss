@@ -59,9 +59,9 @@ class PaymentController : FinancialController<Payment>() {
         viewInvoiceButton = button(graphic = ImageView(R.image.btn_invoice)) {
             tooltip(getString(R.string.view_invoice))
             onAction { viewInvoice() }
+            disableProperty().bind(!selectedBinding)
         }
         dateBox = dateBox()
-        viewInvoiceButton.disableProperty().bind(!selectedBinding)
         dateBox.valueProperty.listener { refresh() }
         table.onMouseClicked { if (it.isDoubleClick() && selected != null) viewInvoice() }
         noColumn.stringCell { transaction { Invoices[invoiceId].single().no } }

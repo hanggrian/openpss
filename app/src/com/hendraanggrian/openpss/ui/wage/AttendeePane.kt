@@ -172,8 +172,8 @@ class AttendeePane(
         graphic = imageView {
             imageProperty().bind(bindingOf(hoverProperty()) {
                 Image(when {
-                    isHover -> R.image.button_clear_active
-                    else -> R.image.button_clear_inactive
+                    isHover -> R.image.btn_clear_active
+                    else -> R.image.btn_clear_inactive
                 })
             })
             eventFilter(type = MOUSE_CLICKED) { deleteMenu.fire() }

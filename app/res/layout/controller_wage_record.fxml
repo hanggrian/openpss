@@ -1,58 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<?import com.hendraanggrian.openpss.controls.Space?>
 <?import com.hendraanggrian.openpss.layouts.TimeBox?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.hendraanggrian.openpss.ui.wage.record.WageRecordController" fx:id="root">
-    <ToolBar stylesheets="@../style/toolbar_buttons.css" fx:id="toolbar1">
-        <Button mnemonicParsing="false" onAction="#empty" text="%disable_daily_income">
+      fx:controller="com.hendraanggrian.openpss.ui.wage.record.WageRecordController"
+      fx:id="root">
+    <ToolBar fx:id="toolbar">
+        <SplitMenuButton mnemonicParsing="false" fx:id="undoButton" onAction="#undo">
+            <tooltip>
+                <Tooltip text="%undo"/>
+            </tooltip>
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/toolbar_disable_daily_income.png"/>
-                </ImageView>
-            </graphic>
-        </Button>
-        <Space/>
-        <Button mnemonicParsing="false" fx:id="lockStartButton" onAction="#lockStart"
-                text="%lock_start_time">
-            <graphic>
-                <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/toolbar_lock_start.png"/>
-                </ImageView>
-            </graphic>
-        </Button>
-        <Button mnemonicParsing="false" fx:id="lockEndButton" onAction="#lockEnd"
-                text="%lock_end_time">
-            <graphic>
-                <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/toolbar_lock_end.png"/>
-                </ImageView>
-            </graphic>
-        </Button>
-        <Space HBox.hgrow="ALWAYS"/>
-        <Button mnemonicParsing="false" onAction="#screenshot" text="%screenshot">
-            <graphic>
-                <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/toolbar_snapshot.png"/>
-                </ImageView>
-            </graphic>
-        </Button>
-    </ToolBar>
-    <ToolBar fx:id="toolbar2">
-        <SplitMenuButton mnemonicParsing="false" fx:id="undoButton" onAction="#undo" text="%undo">
-            <graphic>
-                <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/button_undo.png"/>
+                    <Image url="@/image/btn_undo.png"/>
                 </ImageView>
             </graphic>
         </SplitMenuButton>
-        <Space/>
+        <Separator/>
         <TimeBox fx:id="timeBox"/>
-        <Space HBox.hgrow="ALWAYS"/>
+        <Button mnemonicParsing="false" fx:id="lockStartButton" onAction="#lockStart"
+                text="%lock_start_time"/>
+        <Button mnemonicParsing="false" fx:id="lockEndButton" onAction="#lockEnd"
+                text="%lock_end_time"/>
+        <Separator/>
+        <Button mnemonicParsing="false" onAction="#empty" text="%disable_daily_income"/>
+        <Button mnemonicParsing="false" onAction="#screenshot" text="%screenshot"/>
+        <Region HBox.hgrow="ALWAYS"/>
         <Label fx:id="totalLabel1" text="%total"/>
         <Label fx:id="totalLabel2"/>
     </ToolBar>

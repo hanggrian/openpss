@@ -5,27 +5,36 @@
 <?import javafx.scene.layout.VBox?>
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.hendraanggrian.openpss.ui.wage.WageRecessController">
-    <ToolBar stylesheets="@../style/toolbar_buttons.css">
+    <ToolBar>
         <!--suppress JavaFxEventHandler -->
-        <Button mnemonicParsing="false" onAction="#refresh" text="%refresh">
+        <Button mnemonicParsing="false" onAction="#refresh">
+            <tooltip>
+                <Tooltip text="%refresh"/>
+            </tooltip>
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/toolbar_refresh.png"/>
+                    <Image url="@/image/btn_refresh.png"/>
                 </ImageView>
             </graphic>
         </Button>
         <!--suppress JavaFxEventHandler -->
-        <Button mnemonicParsing="false" onAction="#add" text="%add">
+        <Button mnemonicParsing="false" onAction="#add">
+            <tooltip>
+                <Tooltip text="%add"/>
+            </tooltip>
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/toolbar_add.png"/>
+                    <Image url="@/image/btn_add.png"/>
                 </ImageView>
             </graphic>
         </Button>
-        <Button mnemonicParsing="false" fx:id="deleteButton" onAction="#delete" text="%delete">
+        <Button mnemonicParsing="false" fx:id="deleteButton" onAction="#delete">
+            <tooltip>
+                <Tooltip text="%delete"/>
+            </tooltip>
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/toolbar_delete.png"/>
+                    <Image url="@/image/btn_delete.png"/>
                 </ImageView>
             </graphic>
         </Button>

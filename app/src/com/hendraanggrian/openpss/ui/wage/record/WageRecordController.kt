@@ -56,8 +56,7 @@ class WageRecordController : Controller() {
     }
 
     @FXML lateinit var root: VBox
-    @FXML lateinit var toolbar1: ToolBar
-    @FXML lateinit var toolbar2: ToolBar
+    @FXML lateinit var toolbar: ToolBar
     @FXML lateinit var undoButton: SplitMenuButton
     @FXML lateinit var timeBox: TimeBox
     @FXML lateinit var totalLabel1: Label
@@ -222,13 +221,11 @@ class WageRecordController : Controller() {
 
     private fun togglePrintMode(on: Boolean, printStylesheet: String) = when {
         on -> {
-            root.children -= toolbar1
-            root.children -= toolbar2
+            root.children -= toolbar
             recordTable.stylesheets += printStylesheet
         }
         else -> {
-            root.children.add(0, toolbar2)
-            root.children.add(0, toolbar1)
+            root.children.add(0, toolbar)
             recordTable.stylesheets -= printStylesheet
         }
     }

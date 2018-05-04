@@ -8,14 +8,6 @@
     -fx-padding: 0 1 0 1;
 }
 
-.main-tabpane > .tab-header-area > .headers-region > .tab {
-    -fx-padding: 5 20 5 20;
-}
-
-.main-tabpane > .tab-header-area > .headers-region > .tab:selected .focus-indicator {
-    -fx-border-width: 0;
-}
-
 .search-textfield {
   -fx-background-image: url('../image/field_search_inactive.png');
   -fx-background-repeat: no-repeat;

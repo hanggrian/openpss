@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<?import com.hendraanggrian.openpss.controls.*?>
 <?import com.hendraanggrian.openpss.layouts.DateBox?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
@@ -8,76 +7,6 @@
 <?import javafx.scene.layout.*?>
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.hendraanggrian.openpss.ui.invoice.InvoiceController">
-    <ToolBar stylesheets="@../style/toolbar_buttons.css">
-        <!--suppress JavaFxEventHandler -->
-        <Button mnemonicParsing="false" onAction="#refresh" text="%refresh">
-            <graphic>
-                <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/toolbar_refresh.png"/>
-                </ImageView>
-            </graphic>
-        </Button>
-        <Space/>
-        <Button mnemonicParsing="false" onAction="#addInvoice" text="%add">
-            <graphic>
-                <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/toolbar_add.png"/>
-                </ImageView>
-            </graphic>
-        </Button>
-        <Button mnemonicParsing="false" fx:id="editInvoiceButton" onAction="#editInvoice" text="%edit">
-            <graphic>
-                <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/toolbar_edit.png"/>
-                </ImageView>
-            </graphic>
-        </Button>
-        <Button mnemonicParsing="false" fx:id="deleteInvoiceButton" onAction="#deleteInvoice" text="%delete">
-            <graphic>
-                <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/toolbar_delete.png"/>
-                </ImageView>
-            </graphic>
-        </Button>
-        <Space/>
-        <Button mnemonicParsing="false" fx:id="viewInvoiceButton" onAction="#viewInvoice" text="%view_invoice">
-            <graphic>
-                <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/toolbar_invoice.png"/>
-                </ImageView>
-            </graphic>
-        </Button>
-        <Space/>
-        <Button mnemonicParsing="false" fx:id="addPaymentButton" onAction="#addPayment" text="%add_payment">
-            <graphic>
-                <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/toolbar_add2.png"/>
-                </ImageView>
-            </graphic>
-        </Button>
-        <Button mnemonicParsing="false" fx:id="deletePaymentButton" onAction="#deletePayment" text="%delete_payment">
-            <graphic>
-                <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/toolbar_delete2.png"/>
-                </ImageView>
-            </graphic>
-        </Button>
-        <Space HBox.hgrow="ALWAYS"/>
-        <Button mnemonicParsing="false" onAction="#platePrice" text="%plate_price">
-            <graphic>
-                <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/toolbar_plate.png"/>
-                </ImageView>
-            </graphic>
-        </Button>
-        <Button mnemonicParsing="false" onAction="#offsetPrice" text="%offset_price">
-            <graphic>
-                <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/toolbar_offset.png"/>
-                </ImageView>
-            </graphic>
-        </Button>
-    </ToolBar>
     <SplitPane fx:id="splitPane" orientation="VERTICAL" dividerPositions="0.8" VBox.vgrow="ALWAYS">
         <VBox>
             <ToolBar>
@@ -85,7 +14,7 @@
                                  text="%select_customer">
                     <graphic>
                         <ImageView>
-                            <Image url="@/image/button_customer.png"/>
+                            <Image url="@/image/btn_customer.png"/>
                         </ImageView>
                     </graphic>
                     <items>
@@ -105,7 +34,7 @@
                     </fx:define>
                     <graphic>
                         <ImageView pickOnBounds="true" preserveRatio="true">
-                            <Image url="@/image/button_payment.png"/>
+                            <Image url="@/image/btn_payment.png"/>
                         </ImageView>
                     </graphic>
                     <tooltip>
@@ -120,7 +49,7 @@
                                        text="%paid"/>
                     </items>
                 </MenuButton>
-                <Space HBox.hgrow="ALWAYS"/>
+                <Region HBox.hgrow="ALWAYS"/>
                 <fx:define>
                     <ToggleGroup fx:id="pickDateGroup"/>
                 </fx:define>
@@ -151,6 +80,27 @@
                 <columnResizePolicy>
                     <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
                 </columnResizePolicy>
+                <contextMenu>
+                    <ContextMenu>
+                        <items>
+                            <MenuItem mnemonicParsing="false" fx:id="addPaymentItem" onAction="#addPayment" text="%add">
+                                <graphic>
+                                    <ImageView>
+                                        <Image url="@/image/menu_add.png"/>
+                                    </ImageView>
+                                </graphic>
+                            </MenuItem>
+                            <MenuItem mnemonicParsing="false" fx:id="deletePaymentItem" onAction="#deletePayment"
+                                      text="%delete">
+                                <graphic>
+                                    <ImageView>
+                                        <Image url="@/image/menu_delete.png"/>
+                                    </ImageView>
+                                </graphic>
+                            </MenuItem>
+                        </items>
+                    </ContextMenu>
+                </contextMenu>
             </TableView>
             <Label fx:id="coverLabel" alignment="CENTER" text="%select_invoice" style="-fx-background-color: #f4f4f4;"
                    maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"

@@ -1,64 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.hendraanggrian.openpss.controls.FileField?>
-<?import com.hendraanggrian.openpss.controls.Space?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.hendraanggrian.openpss.ui.wage.WageController">
-    <ToolBar stylesheets="@../style/toolbar_buttons.css">
-        <Button fx:id="readButton" mnemonicParsing="false" onAction="#read" text="%read">
-            <graphic>
-                <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/toolbar_read.png"/>
-                </ImageView>
-            </graphic>
-        </Button>
-        <Button fx:id="processButton" mnemonicParsing="false" onAction="#process" text="%process">
-            <graphic>
-                <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/toolbar_process.png"/>
-                </ImageView>
-            </graphic>
-        </Button>
-        <Space/>
-        <Button fx:id="disableRecessButton" mnemonicParsing="false" onAction="#disableRecess" text="%disable_recess">
-            <graphic>
-                <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/toolbar_recess_disable.png"/>
-                </ImageView>
-            </graphic>
-        </Button>
-        <Space HBox.hgrow="ALWAYS"/>
-        <Button mnemonicParsing="false" onAction="#recess" text="%recess">
-            <graphic>
-                <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/toolbar_recess.png"/>
-                </ImageView>
-            </graphic>
-        </Button>
-        <Button mnemonicParsing="false" onAction="#history" text="%history">
-            <graphic>
-                <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/toolbar_history.png"/>
-                </ImageView>
-            </graphic>
-        </Button>
-    </ToolBar>
     <ToolBar>
         <FileField styleClass="file-textfield" fx:id="fileField" promptText="%input_file" prefWidth="512"/>
         <Button mnemonicParsing="false" onAction="#browse">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/button_folder.png"/>
+                    <Image url="@/image/btn_folder.png"/>
                 </ImageView>
             </graphic>
             <tooltip>
                 <Tooltip text="%browse_file"/>
             </tooltip>
         </Button>
-        <Space HBox.hgrow="ALWAYS"/>
+        <Region HBox.hgrow="ALWAYS"/>
         <Label fx:id="employeeCountLabel1" text="%employee"/>
         <Label fx:id="employeeCountLabel2"/>
     </ToolBar>

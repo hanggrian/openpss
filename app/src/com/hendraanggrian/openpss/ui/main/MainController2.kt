@@ -11,6 +11,7 @@ import javafx.scene.control.Toggle
 import javafx.scene.control.ToolBar
 import javafx.scene.layout.AnchorPane
 import javafx.scene.layout.Region
+import ktfx.application.later
 import ktfx.coroutines.listener
 import org.controlsfx.control.SegmentedButton
 import java.net.URL
@@ -26,8 +27,11 @@ class MainController2 : Controller() {
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
-        segmentedButton.toggleGroup.run {
-            selectedToggleProperty().listener { _, oldValue, value -> if (value == null) selectToggle(oldValue) }
+        segmentedButton.run {
+            toggleGroup.selectedToggleProperty().listener { _, oldValue, value ->
+                if (value == null) toggleGroup.selectToggle(oldValue)
+            }
+            later { buttons.first().fire() }
         }
     }
 
@@ -49,7 +53,6 @@ class MainController2 : Controller() {
             removeAll(filter { it != segmentedButton && it != leftRegion && it != rightRegion })
             controller.leftSegment.reversed().forEach { add(0, it) }
             controller.rightSegment.forEach { add(size, it) }
-
         }
     }
 }

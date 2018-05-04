@@ -47,6 +47,7 @@ import javafx.scene.control.SplitPane
 import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
 import javafx.scene.control.TableView.CONSTRAINED_RESIZE_POLICY
+import javafx.scene.image.ImageView
 import javafx.scene.layout.Pane
 import javafx.stage.Modality.APPLICATION_MODAL
 import javafx.util.Callback
@@ -61,10 +62,14 @@ import ktfx.beans.value.or
 import ktfx.collections.emptyObservableList
 import ktfx.collections.toMutableObservableList
 import ktfx.collections.toObservableList
+import ktfx.coroutines.onAction
 import ktfx.coroutines.onMouseClicked
+import ktfx.layouts.button
 import ktfx.layouts.columns
+import ktfx.layouts.separator
 import ktfx.layouts.styledScene
 import ktfx.layouts.tableView
+import ktfx.layouts.tooltip
 import ktfx.scene.input.isDoubleClick
 import ktfx.stage.stage
 import java.net.URL
@@ -73,11 +78,6 @@ import kotlin.math.ceil
 
 class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice>, Selectable2<Payment> {
 
-    @FXML lateinit var editInvoiceButton: Button
-    @FXML lateinit var deleteInvoiceButton: Button
-    @FXML lateinit var viewInvoiceButton: Button
-    @FXML lateinit var addPaymentButton: Button
-    @FXML lateinit var deletePaymentButton: Button
     @FXML lateinit var customerButton: SplitMenuButton
     @FXML lateinit var customerButtonItem: MenuItem
     @FXML lateinit var paymentButton: MenuButton
@@ -95,13 +95,49 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
     @FXML lateinit var paymentEmployeeColumn: TableColumn<Payment, String>
     @FXML lateinit var paymentValueColumn: TableColumn<Payment, String>
     @FXML lateinit var paymentMethodColumn: TableColumn<Payment, String>
+    @FXML lateinit var addPaymentItem: MenuItem
+    @FXML lateinit var deletePaymentItem: MenuItem
     @FXML lateinit var coverLabel: Label
+
+    private lateinit var refreshButton: Button
+    private lateinit var addButton: Button
+    private lateinit var editButton: Button
+    private lateinit var deleteButton: Button
+    private lateinit var viewInvoiceButton: Button
+    override val leftSegment: List<Node>
+        get() = listOf(refreshButton, separator(), addButton, editButton, deleteButton, separator(), viewInvoiceButton)
+
+    private lateinit var platePriceButton: Button
+    private lateinit var offsetPriceButton: Button
+    override val rightSegment: List<Node> get() = listOf(platePriceButton, offsetPriceButton)
 
     private val customerProperty = SimpleObjectProperty<Customer>()
     private lateinit var invoiceTable: TableView<Invoice>
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
+        refreshButton = button(graphic = ImageView(R.image.btn_refresh)) {
+            tooltip(getString(R.string.refresh))
+            onAction { refresh() }
+        }
+        addButton = button(graphic = ImageView(R.image.btn_add)) {
+            tooltip(getString(R.string.add_invoice))
+            onAction { addInvoice() }
+        }
+        editButton = button(graphic = ImageView(R.image.btn_edit)) {
+            tooltip(getString(R.string.edit_invoice))
+            onAction { editInvoice() }
+        }
+        deleteButton = button(graphic = ImageView(R.image.btn_delete)) {
+            tooltip(getString(R.string.delete_invoice))
+            onAction { deleteInvoice() }
+        }
+        viewInvoiceButton = button(graphic = ImageView(R.image.btn_invoice)) {
+            tooltip(getString(R.string.view_invoice))
+            onAction { viewInvoice() }
+        }
+        platePriceButton = button(getString(R.string.plate_price)) { onAction { platePrice() } }
+        offsetPriceButton = button(getString(R.string.offset_price)) { onAction { offsetPrice() } }
         paymentPane.minHeightProperty().bind(splitPane.heightProperty() * 0.2)
 
         customerButton.textProperty().bind(stringBindingOf(customerProperty) {
@@ -126,63 +162,65 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
         paymentMethodColumn.stringCell { typedMethod.toString(this@InvoiceController) }
     }
 
-    override fun refresh() = invoicePagination.pageFactoryProperty().bind(bindingOf(customerProperty,
-        anyPaymentItem.selectedProperty(), unpaidPaymentItem.selectedProperty(), paidPaymentItem.selectedProperty(),
-        allDateRadio.selectedProperty(), pickDateRadio.selectedProperty(), dateBox.valueProperty) {
-        Callback<Int, Node> { page ->
-            invoiceTable = tableView {
-                columnResizePolicy = CONSTRAINED_RESIZE_POLICY
-                columns {
-                    getString(R.string.id)<String> { stringCell { no } }
-                    getString(R.string.date)<String> { stringCell { dateTime.toString(PATTERN_DATETIME_EXTENDED) } }
-                    getString(R.string.employee)<String> {
-                        stringCell { transaction { Employees[employeeId].single() } }
-                    }
-                    getString(R.string.customer)<String> {
-                        stringCell { transaction { Customers[customerId].single() } }
-                    }
-                    getString(R.string.total)<String> { currencyCell { total } }
-                    getString(R.string.print)<Boolean> { doneCell { printed } }
-                    getString(R.string.paid)<Boolean> { doneCell { paid } }
-                    getString(R.string.done)<Boolean> { doneCell { done } }
-                }
-                onMouseClicked { if (it.isDoubleClick() && selected != null) viewInvoice() }
-                later {
-                    transaction {
-                        val invoices = Invoices.buildQuery {
-                            if (customerProperty.value != null) and(customerId.equal(customerProperty.value.id))
-                            if (unpaidPaymentItem.isSelected) and(it.paid.equal(false))
-                            if (paidPaymentItem.isSelected) and(it.paid.equal(true))
-                            if (pickDateRadio.isSelected) and(it.dateTime.matches(dateBox.value))
+    override fun refresh() = later {
+        invoicePagination.pageFactoryProperty().bind(bindingOf(customerProperty,
+            anyPaymentItem.selectedProperty(), unpaidPaymentItem.selectedProperty(), paidPaymentItem.selectedProperty(),
+            allDateRadio.selectedProperty(), pickDateRadio.selectedProperty(), dateBox.valueProperty) {
+            Callback<Int, Node> { page ->
+                invoiceTable = tableView {
+                    columnResizePolicy = CONSTRAINED_RESIZE_POLICY
+                    columns {
+                        getString(R.string.id)<String> { stringCell { no } }
+                        getString(R.string.date)<String> { stringCell { dateTime.toString(PATTERN_DATETIME_EXTENDED) } }
+                        getString(R.string.employee)<String> {
+                            stringCell { transaction { Employees[employeeId].single() } }
                         }
-                        invoicePagination.pageCount =
-                            ceil(invoices.count() / INVOICE_PAGINATION_ITEMS.toDouble()).toInt()
-                        items = invoices
-                            .skip(INVOICE_PAGINATION_ITEMS * page)
-                            .take(INVOICE_PAGINATION_ITEMS).toMutableObservableList()
-                        val fullAccess = login.isAtLeast(MANAGER).toReadOnlyProperty()
-                        editInvoiceButton.disableProperty().bind(!selectedBinding or !fullAccess)
-                        deleteInvoiceButton.disableProperty().bind(!selectedBinding or !fullAccess)
-                        viewInvoiceButton.disableProperty().bind(!selectedBinding)
-                        addPaymentButton.disableProperty().bind(!selectedBinding)
-                        deletePaymentButton.disableProperty().bind(!selectedBinding2 or !fullAccess)
+                        getString(R.string.customer)<String> {
+                            stringCell { transaction { Customers[customerId].single() } }
+                        }
+                        getString(R.string.total)<String> { currencyCell { total } }
+                        getString(R.string.print)<Boolean> { doneCell { printed } }
+                        getString(R.string.paid)<Boolean> { doneCell { paid } }
+                        getString(R.string.done)<Boolean> { doneCell { done } }
+                    }
+                    onMouseClicked { if (it.isDoubleClick() && selected != null) viewInvoice() }
+                    later {
+                        transaction {
+                            val invoices = Invoices.buildQuery {
+                                if (customerProperty.value != null) and(customerId.equal(customerProperty.value.id))
+                                if (unpaidPaymentItem.isSelected) and(it.paid.equal(false))
+                                if (paidPaymentItem.isSelected) and(it.paid.equal(true))
+                                if (pickDateRadio.isSelected) and(it.dateTime.matches(dateBox.value))
+                            }
+                            invoicePagination.pageCount =
+                                ceil(invoices.count() / INVOICE_PAGINATION_ITEMS.toDouble()).toInt()
+                            items = invoices
+                                .skip(INVOICE_PAGINATION_ITEMS * page)
+                                .take(INVOICE_PAGINATION_ITEMS).toMutableObservableList()
+                            val fullAccess = login.isAtLeast(MANAGER).toReadOnlyProperty()
+                            editButton.disableProperty().bind(!selectedBinding or !fullAccess)
+                            deleteButton.disableProperty().bind(!selectedBinding or !fullAccess)
+                            viewInvoiceButton.disableProperty().bind(!selectedBinding)
+                            addPaymentItem.disableProperty().bind(!selectedBinding)
+                            deletePaymentItem.disableProperty().bind(!selectedBinding2 or !fullAccess)
+                        }
                     }
                 }
+                paymentTable.itemsProperty().bind(bindingOf(invoiceTable.selectionModel.selectedItemProperty()) {
+                    if (selected == null) emptyObservableList()
+                    else transaction { Payments { invoiceId.equal(selected!!.id) }.toObservableList() }
+                })
+                coverLabel.visibleProperty().bind(invoiceTable.selectionModel.selectedItemProperty().isNull)
+                invoiceTable
             }
-            paymentTable.itemsProperty().bind(bindingOf(invoiceTable.selectionModel.selectedItemProperty()) {
-                if (selected == null) emptyObservableList()
-                else transaction { Payments { invoiceId.equal(selected!!.id) }.toObservableList() }
-            })
-            coverLabel.visibleProperty().bind(invoiceTable.selectionModel.selectedItemProperty().isNull)
-            invoiceTable
-        }
-    })
+        })
+    }
 
     override val selectionModel: SelectionModel<Invoice> get() = invoiceTable.selectionModel
 
     override val selectionModel2: SelectionModel<Payment> get() = paymentTable.selectionModel
 
-    @FXML fun addInvoice() = InvoiceDialog(this, employee = login).showAndWait().ifPresent {
+    fun addInvoice() = InvoiceDialog(this, employee = login).showAndWait().ifPresent {
         transaction {
             it.id = Invoices.insert(it)
             invoiceTable.items.add(it)
@@ -190,7 +228,7 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
         }
     }
 
-    @FXML fun editInvoice() = InvoiceDialog(this@InvoiceController, selected!!)
+    private fun editInvoice() = InvoiceDialog(this@InvoiceController, selected!!)
         .showAndWait()
         .ifPresent {
             transaction {
@@ -201,7 +239,7 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
             }
         }
 
-    @FXML fun deleteInvoice() = yesNoAlert {
+    private fun deleteInvoice() = yesNoAlert {
         transaction {
             Invoices -= selected!!
             Payments { invoiceId.equal(selected!!.id) }.remove()
@@ -231,7 +269,7 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
 
     @FXML fun clearCustomer() = customerProperty.set(null)
 
-    @FXML fun platePrice() = stage(getString(R.string.plate_price)) {
+    private fun platePrice() = stage(getString(R.string.plate_price)) {
         initModality(APPLICATION_MODAL)
         val loader = FXMLLoader(getResource(R.layout.controller_price_plate), resources)
         scene = styledScene(getStyle(R.style.openpss), loader.pane)
@@ -239,7 +277,7 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
         loader.controller.login = login
     }.showAndWait()
 
-    @FXML fun offsetPrice() = stage(getString(R.string.offset_price)) {
+    private fun offsetPrice() = stage(getString(R.string.offset_price)) {
         initModality(APPLICATION_MODAL)
         val loader = FXMLLoader(getResource(R.layout.controller_price_offset), resources)
         scene = styledScene(getStyle(R.style.openpss), loader.pane)

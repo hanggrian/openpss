@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.hendraanggrian.openpss.controls.Space?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.hendraanggrian.openpss.ui.report.ReportController">
     <ToolBar>
-        <Space HBox.hgrow="ALWAYS"/>
         <Label fx:id="totalCashLabel1" text="%cash"/>
         <Label fx:id="totalCashLabel2"/>
         <Label fx:id="totalTransferLabel1" text="%transfer">

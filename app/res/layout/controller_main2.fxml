@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.hendraanggrian.openpss.controls.Space?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import org.controlsfx.control.SegmentedButton?>
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.hendraanggrian.openpss.ui.main.MainController2"
+      alignment="CENTER">
+    <ToolBar>
+        <Space HBox.hgrow="ALWAYS"/>
+        <SegmentedButton fx:id="segmentedButton">
+            <buttons>
+                <ToggleButton mnemonicParsing="false" onAction="#navigate" text="%customer"
+                              userData="/layout/controller_customer.fxml"/>
+                <ToggleButton mnemonicParsing="false" onAction="#navigate" text="%schedule"
+                              userData="/layout/controller_schedule.fxml"/>
+                <ToggleButton mnemonicParsing="false" onAction="#navigate" text="%invoice"
+                              userData="/layout/controller_invoice.fxml"/>
+                <ToggleButton mnemonicParsing="false" onAction="#navigate" text="%payment"
+                              userData="/layout/controller_payment.fxml"/>
+                <ToggleButton mnemonicParsing="false" onAction="#navigate" text="%report"
+                              userData="/layout/controller_report.fxml"/>
+                <ToggleButton mnemonicParsing="false" onAction="#navigate" text="%wage"
+                              userData="/layout/controller_wage.fxml"/>
+                <ToggleButton mnemonicParsing="false" onAction="#navigate" text="%employee"
+                              userData="/layout/controller_employee.fxml"/>
+            </buttons>
+        </SegmentedButton>
+        <Space HBox.hgrow="ALWAYS"/>
+    </ToolBar>
+    <AnchorPane fx:id="containerPane" VBox.vgrow="ALWAYS"/>
+</VBox>

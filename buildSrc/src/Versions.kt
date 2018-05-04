@@ -13,6 +13,7 @@ const val VERSION_KTFX = "0.3.0"
 const val VERSION_COMMONS_LANG = "3.7"
 const val VERSION_POI = "3.17"
 
+internal const val VERSION_CONTROLSFX = "8.40.14"
 internal const val VERSION_COMMONS_VALIDATOR = "1.6"
 internal const val VERSION_JODA = "2.9.9"
 internal const val VERSION_LOG4J12 = "1.7.25"

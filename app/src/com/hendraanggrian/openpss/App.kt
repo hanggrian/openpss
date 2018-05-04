@@ -53,7 +53,7 @@ class App : Application(), Resourced {
             employee as Employee
 
             stage.apply {
-                val loader = FXMLLoader(getResource(R.layout.controller_main), resources)
+                val loader = FXMLLoader(getResource(R.layout.controller_main2), resources)
                 title = if (DEBUG) "$APP_NAME [DEBUG]" else APP_NAME
                 scene = styledScene(getStyle(R.style.openpss), loader.pane)
                 setMinSize(1000.0, 650.0)

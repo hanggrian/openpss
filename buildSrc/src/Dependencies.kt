@@ -4,6 +4,8 @@ import org.gradle.plugin.use.PluginDependenciesSpec
 fun DependencyHandler.kotlinx(module: String, version: String? = null) =
     "org.jetbrains.kotlinx:kotlinx-$module${version?.let { ":$it" }.orEmpty()}"
 
+fun DependencyHandler.controlsFX() = "org.controlsfx:controlsfx:$VERSION_CONTROLSFX"
+
 fun DependencyHandler.apache(module: String, version: String) = "org.apache.${module.split("-")[0]}:$module:$version"
 fun DependencyHandler.commonsValidator() = "commons-validator:commons-validator:$VERSION_COMMONS_VALIDATOR"
 

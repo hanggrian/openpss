@@ -3,6 +3,7 @@ package com.hendraanggrian.openpss.ui.customer
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.resources.Resourced
+import com.hendraanggrian.openpss.util.getStyle
 import com.hendraanggrian.openpss.util.isName
 import com.hendraanggrian.openpss.util.orNull
 import javafx.scene.control.ButtonType.CANCEL
@@ -29,14 +30,17 @@ class EditCustomerDialog(resourced: Resourced, customer: Customer) : Dialog<Cust
     init {
         headerTitle = getString(R.string.edit_customer)
         graphicIcon = ImageView(R.image.header_customer)
-        dialogPane.content = gridPane {
-            gap = 8.0
-            label(getString(R.string.name)) col 0 row 0
-            nameField = textField(customer.name) col 1 row 0
-            label(getString(R.string.address)) col 0 row 1
-            addressField = textField(customer.address.orEmpty()) col 1 row 1
-            label(getString(R.string.note)) col 0 row 2
-            noteArea = textArea(customer.note.orEmpty()) col 1 row 2
+        dialogPane.run {
+            stylesheets += getStyle(R.style.openpss)
+            content = gridPane {
+                gap = 8.0
+                label(getString(R.string.name)) col 0 row 0
+                nameField = textField(customer.name) col 1 row 0
+                label(getString(R.string.address)) col 0 row 1
+                addressField = textField(customer.address.orEmpty()) col 1 row 1
+                label(getString(R.string.note)) col 0 row 2
+                noteArea = textArea(customer.note.orEmpty()) col 1 row 2
+            }
         }
         cancelButton()
         okButton().disableProperty().bind(!nameField.textProperty().isName())

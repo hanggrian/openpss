@@ -6,16 +6,18 @@ import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.db.schemas.Employee.Role.EXECUTIVE
 import com.hendraanggrian.openpss.db.schemas.Employees
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.Refreshable
+import com.hendraanggrian.openpss.ui.SegmentedController
 import com.hendraanggrian.openpss.ui.Selectable
 import com.hendraanggrian.openpss.util.stringCell
 import com.hendraanggrian.openpss.util.yesNoAlert
 import javafx.fxml.FXML
+import javafx.scene.Node
 import javafx.scene.control.Button
 import javafx.scene.control.SelectionModel
 import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
+import javafx.scene.image.ImageView
 import kotlinx.coroutines.experimental.delay
 import kotlinx.coroutines.experimental.launch
 import kotlinx.nosql.update
@@ -23,20 +25,43 @@ import ktfx.beans.property.toReadOnlyProperty
 import ktfx.beans.value.or
 import ktfx.collections.toMutableObservableList
 import ktfx.coroutines.FX
+import ktfx.coroutines.onAction
+import ktfx.layouts.button
+import ktfx.layouts.separator
+import ktfx.layouts.tooltip
 import java.net.URL
 import java.util.ResourceBundle
 
-class EmployeeController : Controller(), Refreshable, Selectable<Employee> {
+class EmployeeController : SegmentedController(), Refreshable, Selectable<Employee> {
 
-    @FXML lateinit var addButton: Button
-    @FXML lateinit var editButton: Button
-    @FXML lateinit var deleteButton: Button
     @FXML lateinit var employeeTable: TableView<Employee>
     @FXML lateinit var nameColumn: TableColumn<Employee, String>
     @FXML lateinit var roleColumn: TableColumn<Employee, String>
 
+    private lateinit var refreshButton: Button
+    private lateinit var addButton: Button
+    private lateinit var editButton: Button
+    private lateinit var deleteButton: Button
+    override val leftSegment: List<Node> get() = listOf(refreshButton, separator(), addButton, editButton, deleteButton)
+
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
+        refreshButton = button(graphic = ImageView(R.image.btn_refresh)) {
+            tooltip(getString(R.string.refresh))
+            onAction { refresh() }
+        }
+        addButton = button(graphic = ImageView(R.image.btn_add)) {
+            tooltip(getString(R.string.add_employee))
+            onAction { add() }
+        }
+        editButton = button(graphic = ImageView(R.image.btn_edit)) {
+            tooltip(getString(R.string.edit_employee))
+            onAction { edit() }
+        }
+        deleteButton = button(graphic = ImageView(R.image.btn_delete)) {
+            tooltip(getString(R.string.delete))
+            onAction { delete() }
+        }
         launch(FX) {
             delay(100)
             transaction { login.isAtLeast(EXECUTIVE) }.toReadOnlyProperty().let {
@@ -56,7 +81,7 @@ class EmployeeController : Controller(), Refreshable, Selectable<Employee> {
 
     override val selectionModel: SelectionModel<Employee> get() = employeeTable.selectionModel
 
-    @FXML fun add() = UserDialog(this, R.string.add_employee, R.image.header_employee, restrictiveInput = false)
+    private fun add() = UserDialog(this, R.string.add_employee, R.image.header_employee, restrictiveInput = false)
         .showAndWait().ifPresent {
             val employee = Employee.new(it)
             employee.id = transaction { Employees.insert(employee) }
@@ -64,7 +89,7 @@ class EmployeeController : Controller(), Refreshable, Selectable<Employee> {
             selectionModel.select(employee)
         }
 
-    @FXML fun edit() = EditEmployeeDialog(this, selected!!).showAndWait().ifPresent {
+    private fun edit() = EditEmployeeDialog(this, selected!!).showAndWait().ifPresent {
         transaction {
             Employees[selected!!.id]
                 .projection { name + password + role }
@@ -73,7 +98,7 @@ class EmployeeController : Controller(), Refreshable, Selectable<Employee> {
         refresh()
     }
 
-    @FXML fun delete() = yesNoAlert {
+    private fun delete() = yesNoAlert {
         transaction { Employees -= selected!! }
         refresh()
     }

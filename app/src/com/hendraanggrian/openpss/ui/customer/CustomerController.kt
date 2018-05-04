@@ -8,8 +8,8 @@ import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.schemas.Employee.Role.MANAGER
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.io.properties.SettingsFile.CUSTOMER_PAGINATION_ITEMS
-import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.Refreshable
+import com.hendraanggrian.openpss.ui.SegmentedController
 import com.hendraanggrian.openpss.ui.Selectable
 import com.hendraanggrian.openpss.ui.Selectable2
 import com.hendraanggrian.openpss.util.PATTERN_DATE
@@ -24,6 +24,8 @@ import javafx.scene.control.Button
 import javafx.scene.control.CheckMenuItem
 import javafx.scene.control.Label
 import javafx.scene.control.ListView
+import javafx.scene.control.MenuButton
+import javafx.scene.control.MenuItem
 import javafx.scene.control.Pagination
 import javafx.scene.control.SelectionModel
 import javafx.scene.control.SplitPane
@@ -31,7 +33,6 @@ import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
 import javafx.scene.control.TextField
 import javafx.scene.image.ImageView
-import javafx.scene.layout.Pane
 import javafx.scene.text.Font.font
 import javafx.util.Callback
 import kotlinx.nosql.update
@@ -44,7 +45,13 @@ import ktfx.beans.value.or
 import ktfx.collections.emptyObservableList
 import ktfx.collections.toMutableObservableList
 import ktfx.collections.toObservableList
+import ktfx.coroutines.onAction
+import ktfx.layouts.button
+import ktfx.layouts.checkMenuItem
 import ktfx.layouts.listView
+import ktfx.layouts.menuButton
+import ktfx.layouts.separator
+import ktfx.layouts.styledTextField
 import ktfx.layouts.tooltip
 import ktfx.scene.control.styledErrorAlert
 import java.net.URL
@@ -52,17 +59,11 @@ import java.util.ResourceBundle
 import java.util.regex.Pattern.CASE_INSENSITIVE
 import kotlin.math.ceil
 
-class CustomerController : Controller(), Refreshable, Selectable<Customer>, Selectable2<Customer.Contact> {
+class CustomerController : SegmentedController(), Refreshable, Selectable<Customer>, Selectable2<Customer.Contact> {
 
-    @FXML lateinit var editButton: Button
-    @FXML lateinit var addContactButton: Button
-    @FXML lateinit var deleteContactButton: Button
-    @FXML lateinit var searchField: TextField
-    @FXML lateinit var filterNameItem: CheckMenuItem
-    @FXML lateinit var filterAddressItem: CheckMenuItem
-    @FXML lateinit var filterNoteItem: CheckMenuItem
+    @FXML lateinit var addContactItem: MenuItem
+    @FXML lateinit var deleteContactItem: MenuItem
     @FXML lateinit var splitPane: SplitPane
-    @FXML lateinit var customerPane: Pane
     @FXML lateinit var customerPagination: Pagination
     @FXML lateinit var nameLabel: Label
     @FXML lateinit var idImage: ImageView
@@ -79,11 +80,42 @@ class CustomerController : Controller(), Refreshable, Selectable<Customer>, Sele
     @FXML lateinit var valueColumn: TableColumn<Customer.Contact, String>
     @FXML lateinit var coverLabel: Label
 
+    private lateinit var refreshButton: Button
+    private lateinit var addButton: Button
+    private lateinit var editButton: Button
+    override val leftSegment: List<Node> get() = listOf(refreshButton, separator(), addButton, editButton)
+
+    private lateinit var searchField: TextField
+    private lateinit var filterMenu: MenuButton
+    private lateinit var filterNameItem: CheckMenuItem
+    private lateinit var filterAddressItem: CheckMenuItem
+    private lateinit var filterNoteItem: CheckMenuItem
+    override val rightSegment: List<Node> get() = listOf(searchField, filterMenu)
+
     private lateinit var customerList: ListView<Customer>
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
-        customerPane.minWidthProperty().bind(splitPane.widthProperty() * 0.3)
+        refreshButton = button(graphic = ImageView(R.image.btn_refresh)) {
+            tooltip(getString(R.string.refresh))
+            onAction { refresh() }
+        }
+        addButton = button(graphic = ImageView(R.image.btn_add)) {
+            tooltip(getString(R.string.add_customer))
+            onAction { add() }
+        }
+        editButton = button(graphic = ImageView(R.image.btn_edit)) {
+            tooltip(getString(R.string.edit_customer))
+            onAction { edit() }
+        }
+        searchField = styledTextField("search-textfield") { promptText = getString(R.string.search_customer) }
+        filterMenu = menuButton(graphic = ImageView(R.image.btn_filter)) {
+            tooltip(getString(R.string.filter))
+            filterNameItem = checkMenuItem(getString(R.string.name)) { isSelected = true }
+            filterAddressItem = checkMenuItem(getString(R.string.address))
+            filterNoteItem = checkMenuItem(getString(R.string.note))
+        }
+        customerPagination.minWidthProperty().bind(splitPane.widthProperty() * 0.3)
         nameLabel.font = font(24.0)
         idImage.tooltip(getString(R.string.id))
         sinceImage.tooltip(getString(R.string.since))
@@ -94,54 +126,58 @@ class CustomerController : Controller(), Refreshable, Selectable<Customer>, Sele
         valueColumn.stringCell { value }
     }
 
-    override fun refresh() = customerPagination.pageFactoryProperty().bind(bindingOf(
-        searchField.textProperty(),
-        filterNameItem.selectedProperty(),
-        filterAddressItem.selectedProperty(),
-        filterNoteItem.selectedProperty()
-    ) {
-        Callback<Int, Node> { page ->
-            customerList = listView {
-                later {
-                    transaction {
-                        val customers = Customers.buildQuery {
-                            if (searchField.text.isNotBlank()) {
-                                if (filterNameItem.isSelected) or(it.name.matches(searchField.text, CASE_INSENSITIVE))
-                                if (filterAddressItem.isSelected)
-                                    or(it.address.matches(searchField.text, CASE_INSENSITIVE))
-                                if (filterNoteItem.isSelected) or(it.note.matches(searchField.text, CASE_INSENSITIVE))
+    override fun refresh() {
+        later {
+            customerPagination.pageFactoryProperty().bind(bindingOf(
+                searchField.textProperty(),
+                filterNameItem.selectedProperty(),
+                filterAddressItem.selectedProperty(),
+                filterNoteItem.selectedProperty()
+            ) {
+                Callback<Int, Node> { page ->
+                    customerList = listView {
+                        later {
+                            transaction {
+                                val customers = Customers.buildQuery {
+                                    if (searchField.text.isNotBlank()) {
+                                        if (filterNameItem.isSelected) or(it.name.matches(searchField.text, CASE_INSENSITIVE))
+                                        if (filterAddressItem.isSelected)
+                                            or(it.address.matches(searchField.text, CASE_INSENSITIVE))
+                                        if (filterNoteItem.isSelected) or(it.note.matches(searchField.text, CASE_INSENSITIVE))
+                                    }
+                                }
+                                customerPagination.pageCount =
+                                    ceil(customers.count() / CUSTOMER_PAGINATION_ITEMS.toDouble()).toInt()
+                                items = customers
+                                    .skip(CUSTOMER_PAGINATION_ITEMS * page)
+                                    .take(CUSTOMER_PAGINATION_ITEMS).toMutableObservableList()
+                                val fullAccess = login.isAtLeast(MANAGER).toReadOnlyProperty()
+                                editButton.disableProperty().bind(!selectedBinding or !fullAccess)
+                                addContactItem.disableProperty().bind(!selectedBinding)
+                                deleteContactItem.disableProperty().bind(!selectedBinding2 or !fullAccess)
                             }
                         }
-                        customerPagination.pageCount =
-                            ceil(customers.count() / CUSTOMER_PAGINATION_ITEMS.toDouble()).toInt()
-                        items = customers
-                            .skip(CUSTOMER_PAGINATION_ITEMS * page)
-                            .take(CUSTOMER_PAGINATION_ITEMS).toMutableObservableList()
-                        val fullAccess = login.isAtLeast(MANAGER).toReadOnlyProperty()
-                        editButton.disableProperty().bind(!selectedBinding or !fullAccess)
-                        addContactButton.disableProperty().bind(!selectedBinding)
-                        deleteContactButton.disableProperty().bind(!selectedBinding2 or !fullAccess)
                     }
+                    nameLabel.bindLabel { selected?.name.orEmpty() }
+                    idLabel.bindLabel { selected?.id?.toString().orEmpty() }
+                    sinceLabel.bindLabel { selected?.since?.toString(PATTERN_DATE).orEmpty() }
+                    addressLabel.bindLabel { selected?.address ?: "-" }
+                    noteLabel.bindLabel { selected?.note ?: "-" }
+                    contactTable.itemsProperty().bind(bindingOf(customerList.selectionModel.selectedItemProperty()) {
+                        selected?.contacts?.toObservableList() ?: emptyObservableList()
+                    })
+                    coverLabel.visibleProperty().bind(customerList.selectionModel.selectedItemProperty().isNull)
+                    customerList
                 }
-            }
-            nameLabel.bindLabel { selected?.name.orEmpty() }
-            idLabel.bindLabel { selected?.id?.toString().orEmpty() }
-            sinceLabel.bindLabel { selected?.since?.toString(PATTERN_DATE).orEmpty() }
-            addressLabel.bindLabel { selected?.address ?: "-" }
-            noteLabel.bindLabel { selected?.note ?: "-" }
-            contactTable.itemsProperty().bind(bindingOf(customerList.selectionModel.selectedItemProperty()) {
-                selected?.contacts?.toObservableList() ?: emptyObservableList()
             })
-            coverLabel.visibleProperty().bind(customerList.selectionModel.selectedItemProperty().isNull)
-            customerList
         }
-    })
+    }
 
     override val selectionModel: SelectionModel<Customer> get() = customerList.selectionModel
 
     override val selectionModel2: SelectionModel<Customer.Contact> get() = contactTable.selectionModel
 
-    @FXML fun addCustomer() = UserDialog(this, R.string.add_customer, R.image.header_customer)
+    fun add() = UserDialog(this, R.string.add_customer, R.image.header_customer)
         .showAndWait()
         .ifPresent {
             transaction {
@@ -157,7 +193,7 @@ class CustomerController : Controller(), Refreshable, Selectable<Customer>, Sele
             }
         }
 
-    @FXML fun edit() = EditCustomerDialog(this, selected!!).showAndWait().ifPresent {
+    private fun edit() = EditCustomerDialog(this, selected!!).showAndWait().ifPresent {
         transaction {
             Customers[selected!!.id]
                 .projection { name + address + note }

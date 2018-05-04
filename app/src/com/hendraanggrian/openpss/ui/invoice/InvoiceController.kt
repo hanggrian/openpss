@@ -16,8 +16,8 @@ import com.hendraanggrian.openpss.db.schemas.Payments.invoiceId
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.io.properties.SettingsFile.INVOICE_PAGINATION_ITEMS
 import com.hendraanggrian.openpss.layouts.DateBox
-import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.Refreshable
+import com.hendraanggrian.openpss.ui.SegmentedController
 import com.hendraanggrian.openpss.ui.Selectable
 import com.hendraanggrian.openpss.ui.Selectable2
 import com.hendraanggrian.openpss.util.PATTERN_DATETIME_EXTENDED
@@ -71,7 +71,7 @@ import java.net.URL
 import java.util.ResourceBundle
 import kotlin.math.ceil
 
-class InvoiceController : Controller(), Refreshable, Selectable<Invoice>, Selectable2<Payment> {
+class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice>, Selectable2<Payment> {
 
     @FXML lateinit var editInvoiceButton: Button
     @FXML lateinit var deleteInvoiceButton: Button

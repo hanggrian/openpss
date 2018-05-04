@@ -1,39 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.hendraanggrian.openpss.controls.Space?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.VBox?>
-<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.hendraanggrian.openpss.ui.schedule.ScheduleController">
-    <ToolBar stylesheets="@../style/toolbar_buttons.css">
-        <!--suppress JavaFxEventHandler -->
-        <Button mnemonicParsing="false" onAction="#refresh" text="%refresh">
-            <graphic>
-                <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/toolbar_refresh.png"/>
-                </ImageView>
-            </graphic>
-        </Button>
-        <Space/>
-        <Button mnemonicParsing="false" fx:id="doneButton" onAction="#done" text="%done">
-            <graphic>
-                <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/toolbar_done.png"/>
-                </ImageView>
-            </graphic>
-        </Button>
-    </ToolBar>
-    <TreeTableView fx:id="scheduleTable" showRoot="false" VBox.vgrow="ALWAYS">
-        <columns>
-            <TreeTableColumn fx:id="typeColumn" sortable="false" text="%type"/>
-            <TreeTableColumn fx:id="titleColumn" sortable="false" text="%title"/>
-            <TreeTableColumn fx:id="qtyColumn" sortable="false" text="%qty"/>
-            <TreeTableColumn fx:id="machineColumn" sortable="false" text="%machine"/>
-        </columns>
-        <columnResizePolicy>
-            <TreeTableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
-        </columnResizePolicy>
-    </TreeTableView>
-</VBox>
+<TreeTableView xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+               fx:controller="com.hendraanggrian.openpss.ui.schedule.ScheduleController"
+               fx:id="scheduleTable" showRoot="false" VBox.vgrow="ALWAYS">
+    <columns>
+        <TreeTableColumn fx:id="typeColumn" sortable="false" text="%type"/>
+        <TreeTableColumn fx:id="titleColumn" sortable="false" text="%title"/>
+        <TreeTableColumn fx:id="qtyColumn" sortable="false" text="%qty"/>
+        <TreeTableColumn fx:id="machineColumn" sortable="false" text="%machine"/>
+    </columns>
+    <columnResizePolicy>
+        <TreeTableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+    </columnResizePolicy>
+</TreeTableView>

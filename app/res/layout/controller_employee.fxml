@@ -1,50 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<?import com.hendraanggrian.openpss.controls.Space?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.VBox?>
-<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.hendraanggrian.openpss.ui.employee.EmployeeController">
-    <ToolBar stylesheets="@../style/toolbar_buttons.css">
-        <!--suppress JavaFxEventHandler -->
-        <Button mnemonicParsing="false" onAction="#refresh" text="%refresh">
-            <graphic>
-                <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/toolbar_refresh.png"/>
-                </ImageView>
-            </graphic>
-        </Button>
-        <Space/>
-        <Button mnemonicParsing="false" fx:id="addButton" onAction="#add" text="%add">
-            <graphic>
-                <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/toolbar_add.png"/>
-                </ImageView>
-            </graphic>
-        </Button>
-        <Button mnemonicParsing="false" fx:id="editButton" onAction="#edit" text="%edit">
-            <graphic>
-                <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/toolbar_edit.png"/>
-                </ImageView>
-            </graphic>
-        </Button>
-        <Button mnemonicParsing="false" fx:id="deleteButton" onAction="#delete" text="%delete">
-            <graphic>
-                <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/toolbar_delete.png"/>
-                </ImageView>
-            </graphic>
-        </Button>
-    </ToolBar>
-    <TableView fx:id="employeeTable" VBox.vgrow="ALWAYS">
-        <columns>
-            <TableColumn fx:id="nameColumn" text="%name"/>
-            <TableColumn fx:id="roleColumn" text="%role"/>
-        </columns>
-        <columnResizePolicy>
-            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
-        </columnResizePolicy>
-    </TableView>
-</VBox>
+<TableView xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="com.hendraanggrian.openpss.ui.employee.EmployeeController"
+           fx:id="employeeTable" VBox.vgrow="ALWAYS">
+    <columns>
+        <TableColumn fx:id="nameColumn" text="%name"/>
+        <TableColumn fx:id="roleColumn" text="%role"/>
+    </columns>
+    <columnResizePolicy>
+        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+    </columnResizePolicy>
+</TableView>

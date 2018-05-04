@@ -5,7 +5,7 @@ import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.controls.FileField
 import com.hendraanggrian.openpss.io.WageFolder
 import com.hendraanggrian.openpss.io.properties.SettingsFile.WAGE_READER
-import com.hendraanggrian.openpss.ui.Controller
+import com.hendraanggrian.openpss.ui.SegmentedController
 import com.hendraanggrian.openpss.ui.wage.readers.Reader
 import com.hendraanggrian.openpss.ui.wage.record.WageRecordController.Companion.EXTRA_ATTENDEES
 import com.hendraanggrian.openpss.util.controller
@@ -41,7 +41,7 @@ import ktfx.stage.stage
 import java.net.URL
 import java.util.ResourceBundle
 
-class WageController : Controller() {
+class WageController : SegmentedController() {
 
     @FXML lateinit var readButton: Button
     @FXML lateinit var processButton: Button

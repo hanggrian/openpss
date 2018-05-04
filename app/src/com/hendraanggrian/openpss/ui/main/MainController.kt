@@ -73,7 +73,7 @@ class MainController : Controller() {
     }
 
     @FXML fun add(event: ActionEvent) = when (event.source) {
-        addCustomerItem -> select(customerController) { addCustomer() }
+        addCustomerItem -> select(customerController) { add() }
         else -> select(invoiceController) { addInvoice() }
     }
 

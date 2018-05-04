@@ -1,34 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.hendraanggrian.openpss.controls.Space?>
-<?import com.hendraanggrian.openpss.layouts.MonthBox?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.hendraanggrian.openpss.ui.report.ReportController">
-    <ToolBar stylesheets="@../style/toolbar_buttons.css">
-        <!--suppress JavaFxEventHandler -->
-        <Button mnemonicParsing="false" onAction="#refresh" text="%refresh">
-            <graphic>
-                <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/toolbar_refresh.png"/>
-                </ImageView>
-            </graphic>
-        </Button>
-        <Space/>
-        <Button mnemonicParsing="false" fx:id="viewPaymentsButton" onAction="#viewPayments" text="%view_payments">
-            <graphic>
-                <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/toolbar_payment.png"/>
-                </ImageView>
-            </graphic>
-        </Button>
-    </ToolBar>
     <ToolBar>
-        <MonthBox fx:id="monthBox"/>
         <Space HBox.hgrow="ALWAYS"/>
         <Label fx:id="totalCashLabel1" text="%cash"/>
         <Label fx:id="totalCashLabel2"/>

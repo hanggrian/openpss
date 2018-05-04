@@ -97,7 +97,7 @@ class InvoiceDialog(
                         customerProperty.value?.toString() ?: getString(R.string.search_customer)
                     })
                     onAction {
-                        SearchCustomerDialog(this@InvoiceDialog).showAndWait().ifPresent { customerProperty.set(it) }
+                        SearchCustomerPopup(this@InvoiceDialog).show(this@button) { customerProperty.set(it) }
                     }
                     if (INVOICE_QUICK_SELECT_CUSTOMER && !isEdit()) fire()
                 } col 1 row 2

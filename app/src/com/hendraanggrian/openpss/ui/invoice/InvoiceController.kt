@@ -265,7 +265,7 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
         }
     }
 
-    @FXML fun selectCustomer() = SearchCustomerDialog(this).showAndWait().ifPresent { customerProperty.set(it) }
+    @FXML fun selectCustomer() = SearchCustomerPopup(this).show(customerButton) { customerProperty.set(it) }
 
     @FXML fun clearCustomer() = customerProperty.set(null)
 

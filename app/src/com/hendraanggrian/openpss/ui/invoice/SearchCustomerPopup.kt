@@ -18,6 +18,7 @@ import ktfx.collections.toMutableObservableList
 import ktfx.coroutines.listener
 import ktfx.coroutines.onKeyPressed
 import ktfx.coroutines.onMouseClicked
+import ktfx.layouts.LayoutManager
 import ktfx.layouts.button
 import ktfx.layouts.listView
 import ktfx.layouts.styledTextField
@@ -50,15 +51,23 @@ class SearchCustomerPopup(resourced: Resourced) : Popup<Customer>(resourced, R.s
                 }
             })
             itemsProperty().listener { _, _, value -> if (value.isNotEmpty()) selectionModel.selectFirst() }
-            onMouseClicked { if (it.isDoubleClick() && selected != null) buttons.first().fire() }
-            onKeyPressed { if (it.code == ENTER && selected != null) buttons.first().fire() }
+            onMouseClicked {
+                if (it.isDoubleClick() && selected != null)
+                    (buttonBar.buttons.single() as Button).fire()
+            }
+            onKeyPressed {
+                if (it.code == ENTER && selected != null)
+                    (buttonBar.buttons.single() as Button).fire()
+            }
         } marginTop 8.0
     }
 
-    override val buttons: List<Button> = listOf(button(getString(R.string.select_customer)) {
-        isDefaultButton = true
-        disableProperty().bind(!selectedBinding)
-    })
+    override fun LayoutManager<Node>.buttons() {
+        button(getString(R.string.select_customer)) {
+            isDefaultButton = true
+            disableProperty().bind(!selectedBinding)
+        }
+    }
 
     override fun getResult(): Customer = selected!!
 

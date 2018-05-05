@@ -24,10 +24,9 @@ import ktfx.layouts.choiceBox
 import ktfx.layouts.label
 import ktfx.listeners.converter
 
-class AddOffsetDialog(resourced: Resourced) : AddOrderDialog<Invoice.Offset>(
+class AddOffsetPopup(resourced: Resourced) : AddOrderPopup<Invoice.Offset>(
     resourced,
-    R.string.add_offset,
-    R.image.header_offset
+    R.string.add_offset
 ), OffsetOrder {
     private lateinit var machineChoice: ChoiceBox<OffsetPrice>
     private lateinit var techniqueChoice: ChoiceBox<Invoice.Offset.Technique>
@@ -46,7 +45,7 @@ class AddOffsetDialog(resourced: Resourced) : AddOrderDialog<Invoice.Offset>(
         } col 1 row 2
         label(getString(R.string.technique)) col 0 row 3
         techniqueChoice = choiceBox(Invoice.Offset.Technique.values().toObservableList()) {
-            converter { toString { it!!.toString(this@AddOffsetDialog) } }
+            converter { toString { it!!.toString(this@AddOffsetPopup) } }
             selectionModel.selectFirst()
         } col 1 row 3
         label(getString(R.string.min_qty)) col 0 row 4

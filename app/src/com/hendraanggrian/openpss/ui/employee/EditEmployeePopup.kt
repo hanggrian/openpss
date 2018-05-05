@@ -16,6 +16,7 @@ import ktfx.beans.value.or
 import ktfx.collections.toObservableList
 import ktfx.coroutines.listener
 import ktfx.coroutines.onAction
+import ktfx.layouts.LayoutManager
 import ktfx.layouts.button
 import ktfx.layouts.choiceBox
 import ktfx.layouts.gridPane
@@ -54,10 +55,12 @@ class EditEmployeePopup(
         } col 1 row 2
     }
 
-    override val buttons: List<Button> = listOf(button(getString(R.string.edit)) {
-        isDefaultButton = true
-        disableProperty().bind(!changed or nameField.textProperty().isBlank())
-    })
+    override fun LayoutManager<Node>.buttons() {
+        button(getString(R.string.edit)) {
+            isDefaultButton = true
+            disableProperty().bind(!changed or nameField.textProperty().isBlank())
+        }
+    }
 
     override fun getResult(): Employee = employee.apply {
         name = nameField.text

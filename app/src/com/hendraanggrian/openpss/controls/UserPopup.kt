@@ -6,9 +6,9 @@ import com.hendraanggrian.openpss.util.clean
 import com.hendraanggrian.openpss.util.isName
 import com.hendraanggrian.openpss.util.validator
 import javafx.scene.Node
-import javafx.scene.control.Button
 import javafx.scene.control.TextField
 import ktfx.beans.value.isBlank
+import ktfx.layouts.LayoutManager
 import ktfx.layouts.button
 import ktfx.layouts.textField
 import org.controlsfx.validation.Severity.WARNING
@@ -29,13 +29,15 @@ class UserPopup(
         }
     }
 
-    override val buttons: List<Button> = listOf(button(getString(R.string.add)) {
-        isDefaultButton = true
-        disableProperty().bind(when {
-            restrictiveInput -> !nameField.textProperty().isName()
-            else -> nameField.textProperty().isBlank()
-        })
-    })
+    override fun LayoutManager<Node>.buttons() {
+        button(getString(R.string.add)) {
+            isDefaultButton = true
+            disableProperty().bind(when {
+                restrictiveInput -> !nameField.textProperty().isName()
+                else -> nameField.textProperty().isBlank()
+            })
+        }
+    }
 
     override fun getResult(): String = when {
         restrictiveInput -> nameField.text.clean()

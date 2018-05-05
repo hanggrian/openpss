@@ -5,11 +5,11 @@ import com.hendraanggrian.openpss.controls.Popup
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.resources.Resourced
 import javafx.scene.Node
-import javafx.scene.control.Button
 import javafx.scene.control.ChoiceBox
 import javafx.scene.control.TextField
 import ktfx.beans.binding.booleanBindingOf
 import ktfx.collections.toObservableList
+import ktfx.layouts.LayoutManager
 import ktfx.layouts.button
 import ktfx.layouts.choiceBox
 import ktfx.layouts.gridPane
@@ -41,16 +41,18 @@ class AddContactPopup(resourced: Resourced) : Popup<Customer.Contact>(resourced,
         contactField = textField { promptText = getString(R.string.contact) } col 1 row 1
     }
 
-    override val buttons: List<Button> = listOf(button(getString(R.string.add)) {
-        isDefaultButton = true
-        disableProperty().bind(booleanBindingOf(typeChoice.valueProperty(), contactField.textProperty()) {
-            when (typeChoice.value) {
-                null -> true
-                Customer.Contact.Type.PHONE -> contactField.text.isBlank() || !contactField.text.matches(REGEX_PHONE)
-                else -> contactField.text.isBlank() || !EmailValidator.getInstance().isValid(contactField.text)
-            }
-        })
-    })
+    override fun LayoutManager<Node>.buttons() {
+        button(getString(R.string.add)) {
+            isDefaultButton = true
+            disableProperty().bind(booleanBindingOf(typeChoice.valueProperty(), contactField.textProperty()) {
+                when (typeChoice.value) {
+                    null -> true
+                    Customer.Contact.Type.PHONE -> contactField.text.isBlank() || !contactField.text.matches(REGEX_PHONE)
+                    else -> contactField.text.isBlank() || !EmailValidator.getInstance().isValid(contactField.text)
+                }
+            })
+        }
+    }
 
     override fun getResult(): Customer.Contact = Customer.Contact.new(typeChoice.value, contactField.text)
 }

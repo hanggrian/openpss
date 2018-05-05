@@ -6,13 +6,13 @@ import com.hendraanggrian.openpss.db.schemas.Recesses
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.resources.Resourced
 import javafx.scene.Node
-import javafx.scene.control.Button
 import javafx.scene.control.ChoiceBox
 import javafx.scene.control.Separator
 import ktfx.beans.value.or
 import ktfx.collections.mutableObservableListOf
 import ktfx.collections.toObservableList
 import ktfx.coroutines.onAction
+import ktfx.layouts.LayoutManager
 import ktfx.layouts.button
 import ktfx.layouts.choiceBox
 import ktfx.layouts.gridPane
@@ -43,22 +43,24 @@ class DisableRecessPopup(
             *attendees.toTypedArray())) col 1 row 1
     }
 
-    override val buttons: List<Button> = listOf(button("Apply") {
-        disableProperty().bind(recessChoice.valueProperty().isNull or roleChoice.valueProperty().isNull)
-        onAction {
-            attendeePanes.filter {
-                when {
-                    roleChoice.value is String -> it.attendee.role == roleChoice.value
-                    else -> it.attendee == roleChoice.value as Attendee
+    override fun LayoutManager<Node>.buttons() {
+        button("Apply") {
+            disableProperty().bind(recessChoice.valueProperty().isNull or roleChoice.valueProperty().isNull)
+            onAction {
+                attendeePanes.filter {
+                    when {
+                        roleChoice.value is String -> it.attendee.role == roleChoice.value
+                        else -> it.attendee == roleChoice.value as Attendee
+                    }
+                }.map { it.recessChecks }.forEach {
+                    (when {
+                        recessChoice.value is String -> it
+                        else -> it.filter { it.text == recessChoice.value.toString() }
+                    }).forEach { it.isSelected = false }
                 }
-            }.map { it.recessChecks }.forEach {
-                (when {
-                    recessChoice.value is String -> it
-                    else -> it.filter { it.text == recessChoice.value.toString() }
-                }).forEach { it.isSelected = false }
             }
         }
-    })
+    }
 
     private inline val attendees: List<Attendee> get() = attendeePanes.map { it.attendee }
 }

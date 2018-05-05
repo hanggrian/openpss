@@ -5,9 +5,11 @@ import com.hendraanggrian.openpss.resources.Resourced
 import com.hendraanggrian.openpss.util.getColor
 import javafx.scene.Node
 import javafx.scene.control.Button
+import javafx.scene.control.ButtonBar
 import javafx.scene.text.Font
 import ktfx.application.later
 import ktfx.coroutines.onAction
+import ktfx.layouts.LayoutManager
 import ktfx.layouts.buttonBar
 import ktfx.layouts.label
 import ktfx.layouts.separator
@@ -22,9 +24,11 @@ abstract class Popup<out T>(resourced: Resourced, titleId: String) : PopOver(), 
 
     abstract val content: Node
 
-    abstract val buttons: List<Button>
+    abstract fun LayoutManager<Node>.buttons()
 
     open fun getResult(): T? = null
+
+    protected lateinit var buttonBar: ButtonBar
 
     init {
         contentNode = vbox(12.0) {
@@ -40,10 +44,8 @@ abstract class Popup<out T>(resourced: Resourced, titleId: String) : PopOver(), 
             // For popup with prefill
             later {
                 content.add()
-                buttonBar {
-                    this@Popup.buttons.forEach {
-                        it.add()
-                    }
+                buttonBar = buttonBar {
+                    buttons()
                 }
             }
         }
@@ -52,7 +54,7 @@ abstract class Popup<out T>(resourced: Resourced, titleId: String) : PopOver(), 
     fun show(node: Node, onAction: (T) -> Unit) {
         show(node)
         // Since content is later
-        buttons.single { it.isDefaultButton }.onAction {
+        buttonBar.buttons.map { it as Button }.single { it.isDefaultButton }.onAction {
             onAction(getResult()!!)
             hide()
         }

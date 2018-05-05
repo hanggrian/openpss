@@ -7,8 +7,8 @@ import com.hendraanggrian.openpss.layouts.timeBox
 import com.hendraanggrian.openpss.resources.Resourced
 import com.hendraanggrian.openpss.ui.wage.record.Record
 import javafx.scene.Node
-import javafx.scene.control.Button
 import ktfx.coroutines.onAction
+import ktfx.layouts.LayoutManager
 import ktfx.layouts.button
 import ktfx.layouts.gridPane
 import ktfx.scene.layout.gap
@@ -17,7 +17,7 @@ import org.joda.time.DateTime
 class DateTimePopup(
     resourced: Resourced,
     titleId: String,
-    defaultButtonTextId: String,
+    private val defaultButtonTextId: String,
     prefill: DateTime
 ) : Popup<DateTime>(resourced, titleId) {
 
@@ -43,7 +43,9 @@ class DateTimePopup(
         } row 1 col 2
     }
 
-    override val buttons: List<Button> = listOf(button(getString(defaultButtonTextId)) { isDefaultButton = true })
+    override fun LayoutManager<Node>.buttons() {
+        button(getString(defaultButtonTextId)) { isDefaultButton = true }
+    }
 
     override fun getResult(): DateTime = dateBox.value.toDateTime(timeBox.value)
 }

@@ -7,9 +7,9 @@ import com.hendraanggrian.openpss.resources.Resourced
 import com.hendraanggrian.openpss.util.isName
 import com.hendraanggrian.openpss.util.orNull
 import javafx.scene.Node
-import javafx.scene.control.Button
 import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
+import ktfx.layouts.LayoutManager
 import ktfx.layouts.button
 import ktfx.layouts.gridPane
 import ktfx.layouts.label
@@ -36,10 +36,12 @@ class EditCustomerPopup(
         noteArea = textArea(customer.note.orEmpty()) col 1 row 2
     }
 
-    override val buttons: List<Button> = listOf(button(getString(R.string.edit)) {
-        isDefaultButton = true
-        disableProperty().bind(!nameField.textProperty().isName())
-    })
+    override fun LayoutManager<Node>.buttons() {
+        button(getString(R.string.edit)) {
+            isDefaultButton = true
+            disableProperty().bind(!nameField.textProperty().isName())
+        }
+    }
 
     override fun getResult(): Customer = customer.apply {
         name = nameField.text

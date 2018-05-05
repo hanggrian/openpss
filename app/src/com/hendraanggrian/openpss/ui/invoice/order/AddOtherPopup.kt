@@ -14,7 +14,7 @@ import ktfx.beans.value.or
 import ktfx.layouts._GridPane
 import ktfx.layouts.label
 
-class AddOtherDialog(resourced: Resourced) : AddOrderDialog<Invoice.Other>(
+class AddOtherPopup(resourced: Resourced) : AddOrderPopup<Invoice.Other>(
     resourced,
     R.string.add_other
 ), SimpleOrder {

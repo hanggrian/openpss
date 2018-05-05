@@ -21,10 +21,9 @@ import ktfx.layouts._GridPane
 import ktfx.layouts.choiceBox
 import ktfx.layouts.label
 
-class AddPlateDialog(resourced: Resourced) : AddOrderDialog<Invoice.Plate>(
+class AddPlatePopup(resourced: Resourced) : AddOrderPopup<Invoice.Plate>(
     resourced,
-    R.string.add_plate,
-    R.image.header_plate
+    R.string.add_plate
 ), SimpleOrder {
     private lateinit var machineChoice: ChoiceBox<PlatePrice>
     private lateinit var priceField: DoubleField

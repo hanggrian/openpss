@@ -54,7 +54,7 @@ class ViewInvoiceDialog(resourced: Resourced, invoice: Invoice) : Dialog<Nothing
             customer = Customers[invoice.customerId].single()
         }
         initModality(NONE)
-        headerTitle = getString(R.string.view_invoice)
+        headerTitle = getString(R.string.invoice)
         graphicIcon = ImageView(R.image.header_invoice)
         dialogPane.run {
             stylesheets += getStyle(R.style.openpss)

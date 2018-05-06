@@ -23,6 +23,7 @@ java.sourceSets {
     }
     "test" {
         java.srcDir("tests/src")
+        resources.srcDir("tests/res")
     }
 }
 
@@ -33,6 +34,7 @@ val ktlint by configurations.creating
 dependencies {
     compile(kotlin("stdlib", VERSION_KOTLIN))
     compile(kotlinx("coroutines-javafx", VERSION_COROUTINES))
+    compile(controlsFX())
     compile(hendraanggrian("ktfx-layouts", VERSION_KTFX, "ktfx"))
     compile(hendraanggrian("ktfx-listeners", VERSION_KTFX, "ktfx"))
     compile(hendraanggrian("ktfx-coroutines", VERSION_KTFX, "ktfx"))

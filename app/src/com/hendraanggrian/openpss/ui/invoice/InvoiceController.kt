@@ -33,6 +33,7 @@ import com.hendraanggrian.openpss.util.yesNoAlert
 import javafx.beans.property.SimpleObjectProperty
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
+import javafx.geometry.Orientation.VERTICAL
 import javafx.scene.Node
 import javafx.scene.control.Button
 import javafx.scene.control.Label
@@ -104,12 +105,13 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
     private lateinit var editButton: Button
     private lateinit var deleteButton: Button
     private lateinit var viewInvoiceButton: Button
-    override val leftSegment: List<Node>
-        get() = listOf(refreshButton, separator(), addButton, editButton, deleteButton, separator(), viewInvoiceButton)
+    override val leftButtons: List<Node>
+        get() = listOf(refreshButton, separator(VERTICAL), addButton, editButton, deleteButton, separator(VERTICAL),
+            viewInvoiceButton)
 
     private lateinit var platePriceButton: Button
     private lateinit var offsetPriceButton: Button
-    override val rightSegment: List<Node> get() = listOf(platePriceButton, offsetPriceButton)
+    override val rightButtons: List<Node> get() = listOf(platePriceButton, offsetPriceButton)
 
     private val customerProperty = SimpleObjectProperty<Customer>()
     private lateinit var invoiceTable: TableView<Invoice>
@@ -133,7 +135,7 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
             onAction { deleteInvoice() }
         }
         viewInvoiceButton = button(graphic = ImageView(R.image.btn_invoice)) {
-            tooltip(getString(R.string.view_invoice))
+            tooltip(getString(R.string.view))
             onAction { viewInvoice() }
         }
         platePriceButton = button(getString(R.string.plate_price)) { onAction { platePrice() } }

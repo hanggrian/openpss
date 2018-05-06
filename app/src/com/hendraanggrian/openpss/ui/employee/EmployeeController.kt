@@ -12,6 +12,7 @@ import com.hendraanggrian.openpss.ui.Selectable
 import com.hendraanggrian.openpss.util.stringCell
 import com.hendraanggrian.openpss.util.yesNoAlert
 import javafx.fxml.FXML
+import javafx.geometry.Orientation.VERTICAL
 import javafx.scene.Node
 import javafx.scene.control.Button
 import javafx.scene.control.SelectionModel
@@ -42,7 +43,8 @@ class EmployeeController : SegmentedController(), Refreshable, Selectable<Employ
     private lateinit var addButton: Button
     private lateinit var editButton: Button
     private lateinit var deleteButton: Button
-    override val leftSegment: List<Node> get() = listOf(refreshButton, separator(), addButton, editButton, deleteButton)
+    override val leftButtons: List<Node>
+        get() = listOf(refreshButton, separator(VERTICAL), addButton, editButton, deleteButton)
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)

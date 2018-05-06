@@ -2,7 +2,6 @@ package com.hendraanggrian.openpss.ui.customer
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.controls.UserPopup
-import com.hendraanggrian.openpss.db.SessionWrapper
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.schemas.Employee.Role.MANAGER
@@ -19,6 +18,7 @@ import com.hendraanggrian.openpss.util.matches
 import com.hendraanggrian.openpss.util.stringCell
 import com.hendraanggrian.openpss.util.yesNoAlert
 import javafx.fxml.FXML
+import javafx.geometry.Orientation.VERTICAL
 import javafx.scene.Node
 import javafx.scene.control.Button
 import javafx.scene.control.CheckMenuItem
@@ -35,6 +35,8 @@ import javafx.scene.control.TextField
 import javafx.scene.image.ImageView
 import javafx.scene.text.Font.font
 import javafx.util.Callback
+import kotlinx.coroutines.experimental.delay
+import kotlinx.coroutines.experimental.launch
 import kotlinx.nosql.update
 import ktfx.application.later
 import ktfx.beans.binding.bindingOf
@@ -45,6 +47,7 @@ import ktfx.beans.value.or
 import ktfx.collections.emptyObservableList
 import ktfx.collections.toMutableObservableList
 import ktfx.collections.toObservableList
+import ktfx.coroutines.FX
 import ktfx.coroutines.onAction
 import ktfx.layouts.button
 import ktfx.layouts.checkMenuItem
@@ -83,14 +86,14 @@ class CustomerController : SegmentedController(), Refreshable, Selectable<Custom
     private lateinit var refreshButton: Button
     private lateinit var addButton: Button
     private lateinit var editButton: Button
-    override val leftSegment: List<Node> get() = listOf(refreshButton, separator(), addButton, editButton)
+    override val leftButtons: List<Node> get() = listOf(refreshButton, separator(VERTICAL), addButton, editButton)
 
     private lateinit var searchField: TextField
     private lateinit var filterMenu: MenuButton
     private lateinit var filterNameItem: CheckMenuItem
     private lateinit var filterAddressItem: CheckMenuItem
     private lateinit var filterNoteItem: CheckMenuItem
-    override val rightSegment: List<Node> get() = listOf(searchField, filterMenu)
+    override val rightButtons: List<Node> get() = listOf(searchField, filterMenu)
 
     private lateinit var customerList: ListView<Customer>
 
@@ -193,9 +196,7 @@ class CustomerController : SegmentedController(), Refreshable, Selectable<Custom
 
     private fun edit() = EditCustomerPopup(this, selected!!).show(editButton) {
         transaction {
-            Customers[selected!!.id]
-                .projection { name + address + note }
-                .update(it.name, it.address, it.note)
+            Customers[selected!!].projection { name + address + note }.update(it.name, it.address, it.note)
             reload()
         }
     }
@@ -217,10 +218,12 @@ class CustomerController : SegmentedController(), Refreshable, Selectable<Custom
     private fun Label.bindLabel(target: () -> String) = textProperty()
         .bind(stringBindingOf(customerList.selectionModel.selectedItemProperty()) { target() })
 
-    private fun SessionWrapper.reload() = customerList.run {
-        items.indexOf(selected!!).let { index ->
-            items[index] = Customers[selected!!].single()
-            selectionModel.clearAndSelect(index)
+    private fun reload() {
+        val index = selectedIndex
+        refresh()
+        launch(FX) {
+            delay(250)
+            reselect(index)
         }
     }
 }

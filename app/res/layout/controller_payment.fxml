@@ -1,37 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.hendraanggrian.openpss.ui.payment.PaymentController">
-    <ToolBar>
-        <Label fx:id="totalCashLabel1" text="%cash"/>
-        <Label fx:id="totalCashLabel2"/>
-        <Label fx:id="totalTransferLabel1" text="%transfer">
-            <HBox.margin>
-                <Insets left="16"/>
-            </HBox.margin>
-        </Label>
-        <Label fx:id="totalTransferLabel2"/>
-        <Label fx:id="totalAllLabel1" text="%total">
-            <HBox.margin>
-                <Insets left="16"/>
-            </HBox.margin>
-        </Label>
-        <Label fx:id="totalAllLabel2" text="%total"/>
-    </ToolBar>
-    <TableView fx:id="table" VBox.vgrow="ALWAYS">
-        <columns>
-            <TableColumn fx:id="noColumn" text="%id"/>
-            <TableColumn fx:id="timeColumn" text="%time"/>
-            <TableColumn fx:id="employeeColumn" text="%employee"/>
-            <TableColumn fx:id="valueColumn" text="%value"/>
-            <TableColumn fx:id="methodColumn" text="%payment_method"/>
-        </columns>
-        <columnResizePolicy>
-            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
-        </columnResizePolicy>
-    </TableView>
-</VBox>
+<TableView xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+           fx:controller="com.hendraanggrian.openpss.ui.payment.PaymentController"
+           fx:id="table" VBox.vgrow="ALWAYS">
+    <columns>
+        <TableColumn fx:id="noColumn" text="%id"/>
+        <TableColumn fx:id="timeColumn" text="%time"/>
+        <TableColumn fx:id="employeeColumn" text="%employee"/>
+        <TableColumn fx:id="valueColumn" text="%value"/>
+        <TableColumn fx:id="methodColumn" text="%payment_method"/>
+    </columns>
+    <columnResizePolicy>
+        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+    </columnResizePolicy>
+</TableView>

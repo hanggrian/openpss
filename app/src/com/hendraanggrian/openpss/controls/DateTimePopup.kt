@@ -44,7 +44,7 @@ class DateTimePopup(
     }
 
     override fun LayoutManager<Node>.buttons() {
-        button(getString(defaultButtonTextId)) { isDefaultButton = true }
+        defaultButton(defaultButtonTextId)
     }
 
     override fun getResult(): DateTime = dateBox.value.toDateTime(timeBox.value)

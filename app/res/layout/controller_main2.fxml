@@ -1,36 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
+<?import com.hendraanggrian.openpss.layouts.SegmentedTabPane?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import org.controlsfx.control.SegmentedButton?>
+<?import javafx.scene.layout.VBox?>
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.hendraanggrian.openpss.ui.main.MainController2"
-      alignment="CENTER">
-    <ToolBar fx:id="navigationBar">
-        <padding>
-            <Insets topRightBottomLeft="10"/>
-        </padding>
-        <Region fx:id="leftRegion" HBox.hgrow="ALWAYS"/>
-        <SegmentedButton fx:id="segmentedButton">
-            <buttons>
-                <ToggleButton mnemonicParsing="false" onAction="#navigate" text="%customer"
-                              userData="/layout/controller_customer.fxml"/>
-                <ToggleButton mnemonicParsing="false" onAction="#navigate" text="%schedule"
-                              userData="/layout/controller_schedule.fxml"/>
-                <ToggleButton mnemonicParsing="false" onAction="#navigate" text="%invoice"
-                              userData="/layout/controller_invoice.fxml"/>
-                <ToggleButton mnemonicParsing="false" onAction="#navigate" text="%payment"
-                              userData="/layout/controller_payment.fxml"/>
-                <ToggleButton mnemonicParsing="false" onAction="#navigate" text="%report"
-                              userData="/layout/controller_report.fxml"/>
-                <ToggleButton mnemonicParsing="false" onAction="#navigate" text="%wage"
-                              userData="/layout/controller_wage.fxml"/>
-                <ToggleButton mnemonicParsing="false" onAction="#navigate" text="%employee"
-                              userData="/layout/controller_employee.fxml"/>
-            </buttons>
-        </SegmentedButton>
-        <Region fx:id="rightRegion" HBox.hgrow="ALWAYS"/>
-    </ToolBar>
-    <AnchorPane fx:id="containerPane" VBox.vgrow="ALWAYS"/>
+      fx:controller="com.hendraanggrian.openpss.ui.main.MainController2">
+    <MenuBar/>
+    <SegmentedTabPane VBox.vgrow="ALWAYS" fx:id="pane">
+        <Tab closable="false" text="%customer">
+            <!--suppress ALL -->
+            <fx:include fx:id="customer" source="controller_customer.fxml"/>
+        </Tab>
+        <Tab closable="false" text="%schedule">
+            <!--suppress ALL -->
+            <fx:include fx:id="schedule" source="controller_schedule.fxml"/>
+        </Tab>
+        <Tab closable="false" text="%invoice">
+            <!--suppress ALL -->
+            <fx:include fx:id="invoice" source="controller_invoice.fxml"/>
+        </Tab>
+        <Tab closable="false" text="%finance">
+            <!--suppress ALL -->
+            <fx:include fx:id="finance" source="controller_finance.fxml"/>
+        </Tab>
+        <Tab closable="false" text="%wage">
+            <!--suppress ALL -->
+            <fx:include fx:id="wage" source="controller_wage.fxml"/>
+        </Tab>
+        <Tab closable="false" text="%employee">
+            <!--suppress ALL -->
+            <fx:include fx:id="employee" source="controller_employee.fxml"/>
+        </Tab>
+    </SegmentedTabPane>
 </VBox>

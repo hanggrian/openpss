@@ -11,6 +11,7 @@ import com.hendraanggrian.openpss.ui.TreeSelectable
 import com.hendraanggrian.openpss.util.PATTERN_DATETIME_EXTENDED
 import com.hendraanggrian.openpss.util.stringCell
 import javafx.fxml.FXML
+import javafx.geometry.Orientation.VERTICAL
 import javafx.scene.Node
 import javafx.scene.control.Button
 import javafx.scene.control.SelectionMode.MULTIPLE
@@ -41,7 +42,7 @@ class ScheduleController : SegmentedController(), Refreshable, TreeSelectable<Sc
 
     private lateinit var refreshButton: Button
     private lateinit var doneButton: Button
-    override val leftSegment: List<Node> get() = listOf(refreshButton, separator(), doneButton)
+    override val leftButtons: List<Node> get() = listOf(refreshButton, separator(VERTICAL), doneButton)
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)

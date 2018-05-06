@@ -44,7 +44,7 @@ class DisableRecessPopup(
     }
 
     override fun LayoutManager<Node>.buttons() {
-        button("Apply") {
+        button(getString(R.string.apply)) {
             disableProperty().bind(recessChoice.valueProperty().isNull or roleChoice.valueProperty().isNull)
             onAction {
                 attendeePanes.filter {

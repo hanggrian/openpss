@@ -5,7 +5,6 @@ import com.hendraanggrian.openpss.layouts.dateBox
 import com.hendraanggrian.openpss.resources.Resourced
 import javafx.scene.Node
 import ktfx.layouts.LayoutManager
-import ktfx.layouts.button
 import org.joda.time.LocalDate
 
 class DatePopup(
@@ -19,9 +18,7 @@ class DatePopup(
     override val content: Node = dateBox(prefill)
 
     override fun LayoutManager<Node>.buttons() {
-        button("OK") {
-            isDefaultButton = true
-        }
+        defaultButton()
     }
 
     override fun getResult(): LocalDate = dateBox.valueProperty.value

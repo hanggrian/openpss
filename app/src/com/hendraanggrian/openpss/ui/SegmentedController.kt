@@ -4,7 +4,7 @@ import javafx.scene.Node
 
 open class SegmentedController : Controller() {
 
-    open val leftSegment: List<Node> get() = emptyList()
+    open val leftButtons: List<Node> get() = emptyList()
 
-    open val rightSegment: List<Node> get() = emptyList()
+    open val rightButtons: List<Node> get() = emptyList()
 }

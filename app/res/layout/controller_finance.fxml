@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.hendraanggrian.openpss.layouts.HiddenTabPane?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<HiddenTabPane xmlns="http://javafx.com/javafx"
+               xmlns:fx="http://javafx.com/fxml"
+               fx:controller="com.hendraanggrian.openpss.ui.finance.FinanceController"
+               fx:id="tabPane">
+    <Tab closable="false" text="%daily">
+        <graphic>
+            <ImageView>
+                <Image url="@/image/btn_daily.png"/>
+            </ImageView>
+        </graphic>
+        <TableView fx:id="dailyTable">
+            <columns>
+                <TableColumn fx:id="dailyNoColumn" text="%id"/>
+                <TableColumn fx:id="dailyTimeColumn" text="%time"/>
+                <TableColumn fx:id="dailyEmployeeColumn" text="%employee"/>
+                <TableColumn fx:id="dailyValueColumn" text="%value"/>
+                <TableColumn fx:id="dailyMethodColumn" text="%payment_method"/>
+            </columns>
+            <columnResizePolicy>
+                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+            </columnResizePolicy>
+        </TableView>
+    </Tab>
+    <Tab closable="false" text="%monthly">
+        <graphic>
+            <ImageView>
+                <Image url="@/image/btn_monthly.png"/>
+            </ImageView>
+        </graphic>
+        <TableView fx:id="monthlyTable">
+            <columns>
+                <TableColumn fx:id="monthlyDateColumn" text="%date"/>
+                <TableColumn fx:id="monthlyCashColumn" text="%cash"/>
+                <TableColumn fx:id="monthlyTransferColumn" text="%transfer"/>
+                <TableColumn fx:id="monthlyTotalColumn" text="%total"/>
+            </columns>
+            <columnResizePolicy>
+                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+            </columnResizePolicy>
+        </TableView>
+    </Tab>
+</HiddenTabPane>

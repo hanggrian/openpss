@@ -9,7 +9,9 @@ import javafx.scene.control.ButtonBar
 import javafx.scene.text.Font
 import ktfx.application.later
 import ktfx.coroutines.onAction
+import ktfx.layouts.LayoutDsl
 import ktfx.layouts.LayoutManager
+import ktfx.layouts.button
 import ktfx.layouts.buttonBar
 import ktfx.layouts.label
 import ktfx.layouts.separator
@@ -24,11 +26,9 @@ abstract class Popup<out T>(resourced: Resourced, titleId: String) : PopOver(), 
 
     abstract val content: Node
 
-    abstract fun LayoutManager<Node>.buttons()
-
-    open fun getResult(): T? = null
-
     protected lateinit var buttonBar: ButtonBar
+    protected lateinit var cancelButton: Button
+    protected lateinit var defaultButton: Button
 
     init {
         contentNode = vbox(12.0) {
@@ -45,18 +45,38 @@ abstract class Popup<out T>(resourced: Resourced, titleId: String) : PopOver(), 
             later {
                 content.add()
                 buttonBar = buttonBar {
+                    cancelButton = button(getString(R.string.close)) {
+                        isCancelButton = true
+                        onAction { hide() }
+                    }
                     buttons()
                 }
             }
         }
     }
 
+    open fun getResult(): T? = null
+
+    open fun LayoutManager<Node>.buttons() {
+    }
+
     fun show(node: Node, onAction: (T) -> Unit) {
         show(node)
         // Since content is later
-        buttonBar.buttons.map { it as Button }.single { it.isDefaultButton }.onAction {
-            onAction(getResult()!!)
-            hide()
+        later {
+            buttonBar.buttons.map { it as Button }.single { it.isDefaultButton }.onAction {
+                onAction(getResult()!!)
+                hide()
+            }
         }
     }
+
+    @Suppress("NOTHING_TO_INLINE")
+    protected inline fun LayoutManager<Node>.defaultButton(
+        textId: String = R.string.ok,
+        noinline init: ((@LayoutDsl Button).() -> Unit)? = null
+    ): Button = button(getString(textId)) {
+        isDefaultButton = true
+        if (init != null) init()
+    }.also { defaultButton = it }
 }

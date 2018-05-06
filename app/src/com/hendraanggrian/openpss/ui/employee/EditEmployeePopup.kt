@@ -56,10 +56,7 @@ class EditEmployeePopup(
     }
 
     override fun LayoutManager<Node>.buttons() {
-        button(getString(R.string.edit)) {
-            isDefaultButton = true
-            disableProperty().bind(!changed or nameField.textProperty().isBlank())
-        }
+        defaultButton(R.string.edit).disableProperty().bind(!changed or nameField.textProperty().isBlank())
     }
 
     override fun getResult(): Employee = employee.apply {

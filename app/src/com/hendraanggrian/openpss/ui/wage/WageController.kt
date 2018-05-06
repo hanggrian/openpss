@@ -16,10 +16,12 @@ import com.hendraanggrian.openpss.util.openFile
 import com.hendraanggrian.openpss.util.pane
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
+import javafx.geometry.Orientation.VERTICAL
 import javafx.scene.Node
 import javafx.scene.control.Button
 import javafx.scene.control.Label
 import javafx.scene.control.ScrollPane
+import javafx.scene.image.ImageView
 import javafx.scene.layout.FlowPane
 import javafx.stage.FileChooser.ExtensionFilter
 import javafx.stage.Modality.APPLICATION_MODAL
@@ -36,6 +38,7 @@ import ktfx.layouts.borderPane
 import ktfx.layouts.button
 import ktfx.layouts.separator
 import ktfx.layouts.styledScene
+import ktfx.layouts.tooltip
 import ktfx.scene.control.styledErrorAlert
 import ktfx.scene.layout.maxSize
 import ktfx.stage.fileChooser
@@ -55,28 +58,38 @@ class WageController : SegmentedController() {
     private lateinit var readButton: Button
     private lateinit var processButton: Button
     private lateinit var disableRecessButton: Button
-    override val leftSegment: List<Node> get() = listOf(readButton, processButton, separator(), disableRecessButton)
+    override val leftButtons: List<Node>
+        get() = listOf(readButton, processButton, separator(VERTICAL), disableRecessButton)
 
     private lateinit var recessButton: Button
     private lateinit var historyButton: Button
-    override val rightSegment: List<Node> get() = listOf(recessButton, historyButton)
+    override val rightButtons: List<Node> get() = listOf(recessButton, historyButton)
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
-        readButton = button(getString(R.string.read)) {
+        readButton = button(graphic = ImageView(R.image.btn_attendee)) {
+            tooltip(getString(R.string.read))
             onAction { read() }
             disableProperty().bind(fileField.validProperty)
         }
-        processButton = button(getString(R.string.process)) {
+        processButton = button(graphic = ImageView(R.image.btn_process)) {
+            tooltip(getString(R.string.process))
             onAction { process() }
             disableProperty().bind(flowPane.children.isEmpty)
         }
-        disableRecessButton = button(getString(R.string.disable_recess)) {
+        disableRecessButton = button(graphic = ImageView(R.image.btn_disable_recess)) {
+            tooltip(getString(R.string.disable_recess))
             onAction { disableRecess() }
             disableProperty().bind(flowPane.children.isEmpty)
         }
-        recessButton = button(getString(R.string.recess)) { onAction { recess() } }
-        historyButton = button(getString(R.string.history)) { onAction { history() } }
+        recessButton = button(graphic = ImageView(R.image.btn_recess)) {
+            tooltip(getString(R.string.recess))
+            onAction { recess() }
+        }
+        historyButton = button(graphic = ImageView(R.image.btn_history)) {
+            tooltip(getString(R.string.history))
+            onAction { history() }
+        }
         employeeCountLabel1.font = getFont(R.font.sf_pro_text_bold)
         employeeCountLabel2.textProperty().bind(flowPane.children.size().asString())
 

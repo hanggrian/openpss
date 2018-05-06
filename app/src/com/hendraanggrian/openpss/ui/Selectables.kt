@@ -14,11 +14,15 @@ interface Selectable<T> {
 
     val selected: T? get() = selectionModel.selectedItem
 
+    val selectedIndex: Int get() = selectionModel.selectedIndex
+
     val selectedProperty: ReadOnlyObjectProperty<T> get() = selectionModel.selectedItemProperty()
 
     val selectedBinding: BooleanBinding get() = selectedProperty.isNotNull
 
     fun clearSelection() = selectionModel.clearSelection()
+
+    fun reselect(index: Int) = selectionModel.clearAndSelect(index)
 }
 
 /** Some components may have 2 selection models (e.g.: `CustomerController`, `InvoiceController`, etc.). */
@@ -28,11 +32,15 @@ interface Selectable2<T> {
 
     val selected2: T? get() = selectionModel2.selectedItem
 
+    val selectedIndex2: Int get() = selectionModel2.selectedIndex
+
     val selectedProperty2: ReadOnlyObjectProperty<T> get() = selectionModel2.selectedItemProperty()
 
     val selectedBinding2: BooleanBinding get() = selectedProperty2.isNotNull
 
     fun clearSelection2() = selectionModel2.clearSelection()
+
+    fun reselect2(index: Int) = selectionModel2.clearAndSelect(index)
 }
 
 interface TreeSelectable<T> {

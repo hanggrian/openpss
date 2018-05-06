@@ -10,7 +10,6 @@ import javafx.scene.Node
 import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
 import ktfx.layouts.LayoutManager
-import ktfx.layouts.button
 import ktfx.layouts.gridPane
 import ktfx.layouts.label
 import ktfx.layouts.textArea
@@ -37,10 +36,7 @@ class EditCustomerPopup(
     }
 
     override fun LayoutManager<Node>.buttons() {
-        button(getString(R.string.edit)) {
-            isDefaultButton = true
-            disableProperty().bind(!nameField.textProperty().isName())
-        }
+        defaultButton(R.string.edit).disableProperty().bind(!nameField.textProperty().isName())
     }
 
     override fun getResult(): Customer = customer.apply {

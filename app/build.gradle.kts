@@ -52,7 +52,6 @@ dependencies {
     implementation(project(":scene"))
     implementation(kotlin("stdlib", VERSION_KOTLIN))
     implementation(kotlin("nosql-mongodb", VERSION_NOSQL))
-    implementation(controlsFX())
     implementation(square("adapter-guava", VERSION_RETROFIT, "retrofit2"))
     implementation(square("converter-gson", VERSION_RETROFIT, "retrofit2"))
     implementation(google("gson", VERSION_GSON, "code.gson"))

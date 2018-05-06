@@ -18,7 +18,6 @@ import ktfx.beans.binding.bindingOf
 import ktfx.beans.binding.stringBindingOf
 import ktfx.layouts.LayoutManager
 import ktfx.layouts._GridPane
-import ktfx.layouts.button
 import ktfx.layouts.gridPane
 import ktfx.layouts.label
 import ktfx.layouts.textField
@@ -65,10 +64,7 @@ abstract class AddOrderPopup<out T : Titled>(
     }
 
     override fun LayoutManager<Node>.buttons() {
-        button(getString(R.string.add)) {
-            isDefaultButton = true
-            disableProperty().bind(disableBinding)
-        }
+        defaultButton(R.string.add).disableProperty().bind(disableBinding)
     }
 
     override fun getResult(): T = newInstance()

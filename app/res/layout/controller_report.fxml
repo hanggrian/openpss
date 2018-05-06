@@ -1,36 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.hendraanggrian.openpss.ui.report.ReportController">
-    <ToolBar>
-        <Label fx:id="totalCashLabel1" text="%cash"/>
-        <Label fx:id="totalCashLabel2"/>
-        <Label fx:id="totalTransferLabel1" text="%transfer">
-            <HBox.margin>
-                <Insets left="16"/>
-            </HBox.margin>
-        </Label>
-        <Label fx:id="totalTransferLabel2"/>
-        <Label fx:id="totalAllLabel1" text="%total">
-            <HBox.margin>
-                <Insets left="16"/>
-            </HBox.margin>
-        </Label>
-        <Label fx:id="totalAllLabel2" text="%total"/>
-    </ToolBar>
-    <TableView fx:id="table" VBox.vgrow="ALWAYS">
-        <columns>
-            <TableColumn fx:id="dateColumn" text="%date"/>
-            <TableColumn fx:id="cashColumn" text="%cash"/>
-            <TableColumn fx:id="transferColumn" text="%transfer"/>
-            <TableColumn fx:id="totalColumn" text="%total"/>
-        </columns>
-        <columnResizePolicy>
-            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
-        </columnResizePolicy>
-    </TableView>
-</VBox>
+<TableView xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+           fx:controller="com.hendraanggrian.openpss.ui.report.ReportController"
+           fx:id="table" VBox.vgrow="ALWAYS">
+    <columns>
+        <TableColumn fx:id="dateColumn" text="%date"/>
+        <TableColumn fx:id="cashColumn" text="%cash"/>
+        <TableColumn fx:id="transferColumn" text="%transfer"/>
+        <TableColumn fx:id="totalColumn" text="%total"/>
+    </columns>
+    <columnResizePolicy>
+        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+    </columnResizePolicy>
+</TableView>

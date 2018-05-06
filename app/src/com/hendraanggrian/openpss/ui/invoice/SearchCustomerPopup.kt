@@ -8,7 +8,6 @@ import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.resources.Resourced
 import com.hendraanggrian.openpss.ui.Selectable
 import javafx.scene.Node
-import javafx.scene.control.Button
 import javafx.scene.control.ListView
 import javafx.scene.control.SelectionModel
 import javafx.scene.control.TextField
@@ -19,7 +18,6 @@ import ktfx.coroutines.listener
 import ktfx.coroutines.onKeyPressed
 import ktfx.coroutines.onMouseClicked
 import ktfx.layouts.LayoutManager
-import ktfx.layouts.button
 import ktfx.layouts.listView
 import ktfx.layouts.styledTextField
 import ktfx.layouts.vbox
@@ -51,22 +49,13 @@ class SearchCustomerPopup(resourced: Resourced) : Popup<Customer>(resourced, R.s
                 }
             })
             itemsProperty().listener { _, _, value -> if (value.isNotEmpty()) selectionModel.selectFirst() }
-            onMouseClicked {
-                if (it.isDoubleClick() && selected != null)
-                    (buttonBar.buttons.single() as Button).fire()
-            }
-            onKeyPressed {
-                if (it.code == ENTER && selected != null)
-                    (buttonBar.buttons.single() as Button).fire()
-            }
+            onMouseClicked { if (it.isDoubleClick() && selected != null) defaultButton.fire() }
+            onKeyPressed { if (it.code == ENTER && selected != null) defaultButton.fire() }
         } marginTop 8.0
     }
 
     override fun LayoutManager<Node>.buttons() {
-        button(getString(R.string.select_customer)) {
-            isDefaultButton = true
-            disableProperty().bind(!selectedBinding)
-        }
+        defaultButton().disableProperty().bind(!selectedBinding)
     }
 
     override fun getResult(): Customer = selected!!

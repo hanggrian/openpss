@@ -9,7 +9,6 @@ import javafx.scene.Node
 import javafx.scene.control.TextField
 import ktfx.beans.value.isBlank
 import ktfx.layouts.LayoutManager
-import ktfx.layouts.button
 import ktfx.layouts.textField
 import org.controlsfx.validation.Severity.WARNING
 
@@ -30,13 +29,10 @@ class UserPopup(
     }
 
     override fun LayoutManager<Node>.buttons() {
-        button(getString(R.string.add)) {
-            isDefaultButton = true
-            disableProperty().bind(when {
-                restrictiveInput -> !nameField.textProperty().isName()
-                else -> nameField.textProperty().isBlank()
-            })
-        }
+        defaultButton(R.string.add).disableProperty().bind(when {
+            restrictiveInput -> !nameField.textProperty().isName()
+            else -> nameField.textProperty().isBlank()
+        })
     }
 
     override fun getResult(): String = when {

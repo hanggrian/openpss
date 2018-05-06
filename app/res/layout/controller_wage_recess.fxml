@@ -24,7 +24,7 @@
             </tooltip>
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/btn_add.png"/>
+                    <Image url="@/image/btn_add_light.png"/>
                 </ImageView>
             </graphic>
         </Button>

@@ -8,6 +8,24 @@
     -fx-padding: 0 1 0 1;
 }
 
+.display-label {
+    -fx-font-size: 18pt;
+    -fx-text-fill: #009688;
+}
+
+.default-button {
+    -fx-background-color: #009688;
+    -fx-text-fill: #FAFAFA;
+}
+
+.default-button:hover {
+    -fx-background-color: #4DB6AC;
+}
+
+.default-button:pressed {
+    -fx-background-color: #00796B;
+}
+
 .search-textfield {
   -fx-background-image: url('../image/field_search_inactive.png');
   -fx-background-repeat: no-repeat;

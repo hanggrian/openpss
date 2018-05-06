@@ -1,5 +1,6 @@
 package com.hendraanggrian.openpss.ui.invoice
 
+import com.hendraanggrian.openpss.App.Companion.STYLE_DEFAULT_BUTTON
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.controls.ViewInvoiceDialog
 import com.hendraanggrian.openpss.db.SessionWrapper
@@ -68,9 +69,9 @@ import ktfx.coroutines.onMouseClicked
 import ktfx.layouts.button
 import ktfx.layouts.columns
 import ktfx.layouts.separator
+import ktfx.layouts.styledButton
 import ktfx.layouts.styledScene
 import ktfx.layouts.tableView
-import ktfx.layouts.tooltip
 import ktfx.scene.input.isDoubleClick
 import ktfx.stage.stage
 import java.net.URL
@@ -118,24 +119,16 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
-        refreshButton = button(graphic = ImageView(R.image.btn_refresh)) {
-            tooltip(getString(R.string.refresh))
-            onAction { refresh() }
-        }
-        addButton = button(graphic = ImageView(R.image.btn_add)) {
-            tooltip(getString(R.string.add_invoice))
-            onAction { addInvoice() }
-        }
-        editButton = button(graphic = ImageView(R.image.btn_edit)) {
-            tooltip(getString(R.string.edit_invoice))
+        refreshButton = button(getString(R.string.refresh), ImageView(R.image.btn_refresh)) { onAction { refresh() } }
+        addButton = styledButton(STYLE_DEFAULT_BUTTON, getString(R.string.add_invoice),
+            ImageView(R.image.btn_add_dark)) { onAction { addInvoice() } }
+        editButton = button(getString(R.string.edit_invoice), ImageView(R.image.btn_edit)) {
             onAction { editInvoice() }
         }
-        deleteButton = button(graphic = ImageView(R.image.btn_delete)) {
-            tooltip(getString(R.string.delete_invoice))
+        deleteButton = button(getString(R.string.delete_invoice), ImageView(R.image.btn_delete)) {
             onAction { deleteInvoice() }
         }
-        viewInvoiceButton = button(graphic = ImageView(R.image.btn_invoice)) {
-            tooltip(getString(R.string.view))
+        viewInvoiceButton = button(getString(R.string.view), ImageView(R.image.btn_invoice)) {
             onAction { viewInvoice() }
         }
         platePriceButton = button(getString(R.string.plate_price)) { onAction { platePrice() } }

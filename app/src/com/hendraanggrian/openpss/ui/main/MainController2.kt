@@ -28,7 +28,6 @@ class MainController2 : Controller() {
     @Suppress("MemberVisibilityCanBePrivate") @FXML lateinit var employeeController: EmployeeController
 
     private lateinit var controllers: List<SegmentedController>
-    private var isFirstTime = true
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
@@ -37,10 +36,6 @@ class MainController2 : Controller() {
             val controller = controllers[value.toInt()]
             replaceButtons(controller)
             if (controller is Refreshable) controller.refresh()
-            if (controller is FinanceController && isFirstTime) {
-                controller.setup()
-                isFirstTime = false
-            }
         }
 
         later {

@@ -1,5 +1,6 @@
 package com.hendraanggrian.openpss.ui.schedule
 
+import com.hendraanggrian.openpss.App.Companion.STYLE_DEFAULT_BUTTON
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.controls.UncollapsibleTreeItem
 import com.hendraanggrian.openpss.db.schemas.Customers
@@ -28,7 +29,7 @@ import ktfx.coroutines.listener
 import ktfx.coroutines.onAction
 import ktfx.layouts.button
 import ktfx.layouts.separator
-import ktfx.layouts.tooltip
+import ktfx.layouts.styledButton
 import java.net.URL
 import java.util.ResourceBundle
 
@@ -46,12 +47,8 @@ class ScheduleController : SegmentedController(), Refreshable, TreeSelectable<Sc
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
-        refreshButton = button(graphic = ImageView(R.image.btn_refresh)) {
-            tooltip(getString(R.string.refresh))
-            onAction { refresh() }
-        }
-        doneButton = button(graphic = ImageView(R.image.btn_done)) {
-            tooltip(getString(R.string.done))
+        refreshButton = button(getString(R.string.refresh), ImageView(R.image.btn_refresh)) { onAction { refresh() } }
+        doneButton = styledButton(STYLE_DEFAULT_BUTTON, getString(R.string.done), ImageView(R.image.btn_done_dark)) {
             onAction { done() }
             disableProperty().bind(selecteds.isEmpty)
         }

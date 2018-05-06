@@ -1,5 +1,6 @@
 package com.hendraanggrian.openpss.ui.invoice
 
+import com.hendraanggrian.openpss.App.Companion.STYLE_SEARCH_TEXTFIELD
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.controls.Popup
 import com.hendraanggrian.openpss.db.schemas.Customer
@@ -35,7 +36,7 @@ class SearchCustomerPopup(resourced: Resourced) : Popup<Customer>(resourced, R.s
     private lateinit var customerList: ListView<Customer>
 
     override val content: Node = vbox {
-        searchField = styledTextField("search-textfield") {
+        searchField = styledTextField(STYLE_SEARCH_TEXTFIELD) {
             promptText = getString(R.string.customer)
         }
         customerList = listView<Customer> {

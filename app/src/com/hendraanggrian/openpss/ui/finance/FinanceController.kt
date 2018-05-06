@@ -1,5 +1,6 @@
 package com.hendraanggrian.openpss.ui.finance
 
+import com.hendraanggrian.openpss.App.Companion.STYLE_DEFAULT_BUTTON
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.controls.Popup
 import com.hendraanggrian.openpss.db.schemas.Payment
@@ -21,15 +22,12 @@ import javafx.scene.control.Tab
 import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
 import javafx.scene.image.ImageView
-import kotlinx.coroutines.experimental.delay
-import kotlinx.coroutines.experimental.launch
-import ktfx.coroutines.FX
 import ktfx.coroutines.onAction
 import ktfx.layouts.button
 import ktfx.layouts.gridPane
 import ktfx.layouts.label
 import ktfx.layouts.separator
-import ktfx.layouts.tooltip
+import ktfx.layouts.styledButton
 import ktfx.scene.layout.gap
 import java.net.URL
 import java.util.ResourceBundle
@@ -59,13 +57,10 @@ class FinanceController : SegmentedController(), Refreshable, Selectable<Tab> {
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
-        refreshButton = button(graphic = ImageView(R.image.btn_refresh)) {
-            tooltip(getString(R.string.refresh))
-            onAction { refresh() }
-        }
-        viewTotalButton = button(graphic = ImageView(R.image.btn_money)) {
-            tooltip(getString(R.string.view_total))
-            onAction { ViewTotalPopup(this@FinanceController).show(this@button) }
+        refreshButton = button(getString(R.string.refresh), ImageView(R.image.btn_refresh)) { onAction { refresh() } }
+        viewTotalButton = styledButton(STYLE_DEFAULT_BUTTON, getString(R.string.view_total),
+            ImageView(R.image.btn_money_dark)) {
+            onAction { ViewTotalPopup(this@FinanceController).show(this@styledButton) }
         }
         rightButtons as MutableList<Node> += tabPane.segmentedButton
     }
@@ -73,14 +68,6 @@ class FinanceController : SegmentedController(), Refreshable, Selectable<Tab> {
     override val selectionModel: SelectionModel<Tab> get() = tabPane.selectionModel
 
     override fun refresh() {
-    }
-
-    // fixes wrong graphics' coordinates
-    fun setup() = launch(FX) {
-        tabPane.segmentedButton.buttons.asReversed().forEach {
-            delay(250)
-            it.requestFocus()
-        }
     }
 
     val totalCash: Double

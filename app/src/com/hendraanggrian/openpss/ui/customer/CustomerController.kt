@@ -1,5 +1,7 @@
 package com.hendraanggrian.openpss.ui.customer
 
+import com.hendraanggrian.openpss.App.Companion.STYLE_DEFAULT_BUTTON
+import com.hendraanggrian.openpss.App.Companion.STYLE_SEARCH_TEXTFIELD
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.controls.UserPopup
 import com.hendraanggrian.openpss.db.schemas.Customer
@@ -33,7 +35,6 @@ import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
 import javafx.scene.control.TextField
 import javafx.scene.image.ImageView
-import javafx.scene.text.Font.font
 import javafx.util.Callback
 import kotlinx.coroutines.experimental.delay
 import kotlinx.coroutines.experimental.launch
@@ -54,6 +55,7 @@ import ktfx.layouts.checkMenuItem
 import ktfx.layouts.listView
 import ktfx.layouts.menuButton
 import ktfx.layouts.separator
+import ktfx.layouts.styledButton
 import ktfx.layouts.styledTextField
 import ktfx.layouts.tooltip
 import ktfx.scene.control.styledErrorAlert
@@ -99,19 +101,11 @@ class CustomerController : SegmentedController(), Refreshable, Selectable<Custom
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
-        refreshButton = button(graphic = ImageView(R.image.btn_refresh)) {
-            tooltip(getString(R.string.refresh))
-            onAction { refresh() }
-        }
-        addButton = button(graphic = ImageView(R.image.btn_add)) {
-            tooltip(getString(R.string.add_customer))
-            onAction { add() }
-        }
-        editButton = button(graphic = ImageView(R.image.btn_edit)) {
-            tooltip(getString(R.string.edit_customer))
-            onAction { edit() }
-        }
-        searchField = styledTextField("search-textfield") { promptText = getString(R.string.search_customer) }
+        refreshButton = button(getString(R.string.refresh), ImageView(R.image.btn_refresh)) { onAction { refresh() } }
+        addButton = styledButton(STYLE_DEFAULT_BUTTON, getString(R.string.add_customer),
+            ImageView(R.image.btn_add_dark)) { onAction { add() } }
+        editButton = button(getString(R.string.edit_customer), ImageView(R.image.btn_edit)) { onAction { edit() } }
+        searchField = styledTextField(STYLE_SEARCH_TEXTFIELD) { promptText = getString(R.string.search_customer) }
         filterMenu = menuButton(graphic = ImageView(R.image.btn_filter)) {
             tooltip(getString(R.string.filter))
             filterNameItem = checkMenuItem(getString(R.string.name)) { isSelected = true }
@@ -119,7 +113,6 @@ class CustomerController : SegmentedController(), Refreshable, Selectable<Custom
             filterNoteItem = checkMenuItem(getString(R.string.note))
         }
         customerPagination.minWidthProperty().bind(splitPane.widthProperty() * 0.3)
-        nameLabel.font = font(24.0)
         idImage.tooltip(getString(R.string.id))
         sinceImage.tooltip(getString(R.string.since))
         addressImage.tooltip(getString(R.string.address))

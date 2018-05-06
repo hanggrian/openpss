@@ -1,5 +1,6 @@
 package com.hendraanggrian.openpss.ui.employee
 
+import com.hendraanggrian.openpss.App.Companion.STYLE_DEFAULT_BUTTON
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.controls.UserPopup
 import com.hendraanggrian.openpss.db.schemas.Employee
@@ -29,7 +30,7 @@ import ktfx.coroutines.FX
 import ktfx.coroutines.onAction
 import ktfx.layouts.button
 import ktfx.layouts.separator
-import ktfx.layouts.tooltip
+import ktfx.layouts.styledButton
 import java.net.URL
 import java.util.ResourceBundle
 
@@ -48,22 +49,11 @@ class EmployeeController : SegmentedController(), Refreshable, Selectable<Employ
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
-        refreshButton = button(graphic = ImageView(R.image.btn_refresh)) {
-            tooltip(getString(R.string.refresh))
-            onAction { refresh() }
-        }
-        addButton = button(graphic = ImageView(R.image.btn_add)) {
-            tooltip(getString(R.string.add_employee))
-            onAction { add() }
-        }
-        editButton = button(graphic = ImageView(R.image.btn_edit)) {
-            tooltip(getString(R.string.edit_employee))
-            onAction { edit() }
-        }
-        deleteButton = button(graphic = ImageView(R.image.btn_delete)) {
-            tooltip(getString(R.string.delete))
-            onAction { delete() }
-        }
+        refreshButton = button(getString(R.string.refresh), ImageView(R.image.btn_refresh)) { onAction { refresh() } }
+        addButton = styledButton(STYLE_DEFAULT_BUTTON, getString(R.string.add_employee),
+            ImageView(R.image.btn_add_dark)) { onAction { add() } }
+        editButton = button(getString(R.string.edit_employee), ImageView(R.image.btn_edit)) { onAction { edit() } }
+        deleteButton = button(getString(R.string.delete), ImageView(R.image.btn_delete)) { onAction { delete() } }
         launch(FX) {
             delay(100)
             transaction { login.isAtLeast(EXECUTIVE) }.toReadOnlyProperty().let {

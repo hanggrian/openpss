@@ -1,5 +1,6 @@
 package com.hendraanggrian.openpss.ui.wage
 
+import com.hendraanggrian.openpss.App.Companion.STYLE_DEFAULT_BUTTON
 import com.hendraanggrian.openpss.BuildConfig.DEBUG
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.controls.FileField
@@ -37,8 +38,8 @@ import ktfx.coroutines.onAction
 import ktfx.layouts.borderPane
 import ktfx.layouts.button
 import ktfx.layouts.separator
+import ktfx.layouts.styledButton
 import ktfx.layouts.styledScene
-import ktfx.layouts.tooltip
 import ktfx.scene.control.styledErrorAlert
 import ktfx.scene.layout.maxSize
 import ktfx.stage.fileChooser
@@ -67,27 +68,23 @@ class WageController : SegmentedController() {
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
-        readButton = button(graphic = ImageView(R.image.btn_attendee)) {
-            tooltip(getString(R.string.read))
+        readButton = button(getString(R.string.read), ImageView(R.image.btn_attendee)) {
             onAction { read() }
             disableProperty().bind(fileField.validProperty)
         }
-        processButton = button(graphic = ImageView(R.image.btn_process)) {
-            tooltip(getString(R.string.process))
+        processButton = styledButton(STYLE_DEFAULT_BUTTON, getString(R.string.process),
+            ImageView(R.image.btn_process_dark)) {
             onAction { process() }
             disableProperty().bind(flowPane.children.isEmpty)
         }
-        disableRecessButton = button(graphic = ImageView(R.image.btn_disable_recess)) {
-            tooltip(getString(R.string.disable_recess))
+        disableRecessButton = button(getString(R.string.disable_recess), ImageView(R.image.btn_disable_recess)) {
             onAction { disableRecess() }
             disableProperty().bind(flowPane.children.isEmpty)
         }
-        recessButton = button(graphic = ImageView(R.image.btn_recess)) {
-            tooltip(getString(R.string.recess))
+        recessButton = button(getString(R.string.recess), ImageView(R.image.btn_recess)) {
             onAction { recess() }
         }
-        historyButton = button(graphic = ImageView(R.image.btn_history)) {
-            tooltip(getString(R.string.history))
+        historyButton = button(getString(R.string.history), ImageView(R.image.btn_history)) {
             onAction { history() }
         }
         employeeCountLabel1.font = getFont(R.font.sf_pro_text_bold)

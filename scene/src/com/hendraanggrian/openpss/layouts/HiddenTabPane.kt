@@ -1,11 +1,9 @@
 package com.hendraanggrian.openpss.layouts
 
 import com.hendraanggrian.openpss.scene.R
-import javafx.scene.control.ContentDisplay
 import javafx.scene.control.Tab
 import javafx.scene.control.TabPane
 import javafx.scene.control.ToggleButton
-import javafx.scene.control.Tooltip
 import javafx.scene.layout.Pane
 import ktfx.application.later
 import ktfx.coroutines.listener
@@ -18,6 +16,7 @@ class HiddenTabPane : TabPane() {
 
     init {
         stylesheets += javaClass.getResource(R.style.hiddentabpane).toExternalForm()
+        later { paddingTop = -(lookup(".tab-header-area") as Pane).height }
         segmentedButton.toggleGroup.run {
             selectedToggleProperty().listener { _, oldValue, value ->
                 when (value) {
@@ -39,14 +38,13 @@ class HiddenTabPane : TabPane() {
                 }
             }
         }
-        later { paddingTop = -(lookup(".tab-header-area") as Pane).height }
     }
 
     private fun populate(tabs: Collection<Tab>) {
         segmentedButton.buttons += tabs.map {
             when (it.graphic) {
                 null -> ToggleButton(it.text)
-                else -> ToggleButton(null, it.graphic).apply { tooltip = Tooltip(it.text) }
+                else -> ToggleButton(it.text, it.graphic)
             }
         }
     }

@@ -67,45 +67,54 @@
             </ToolBar>
             <Pagination fx:id="invoicePagination" style="-fx-page-information-alignment: right;" VBox.vgrow="ALWAYS"/>
         </VBox>
-        <AnchorPane fx:id="paymentPane">
-            <TableView fx:id="paymentTable" prefHeight="-NaN"
+        <VBox fx:id="paymentPane">
+            <Label styleClass="display-label" text="%payment">
+                <padding>
+                    <Insets left="16" top="8" bottom="8"/>
+                </padding>
+            </Label>
+            <AnchorPane VBox.vgrow="ALWAYS">
+                <TableView AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0"
+                           AnchorPane.topAnchor="0"
+                           fx:id="paymentTable" prefHeight="-NaN" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="paymentDateTimeColumn" text="%date"/>
+                        <TableColumn fx:id="paymentEmployeeColumn" text="%employee"/>
+                        <TableColumn fx:id="paymentValueColumn" text="%value"/>
+                        <TableColumn fx:id="paymentMethodColumn" text="%payment_method"/>
+                    </columns>
+                    <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                    </columnResizePolicy>
+                    <contextMenu>
+                        <ContextMenu>
+                            <items>
+                                <MenuItem mnemonicParsing="false" fx:id="addPaymentItem" onAction="#addPayment"
+                                          text="%add">
+                                    <graphic>
+                                        <ImageView>
+                                            <Image url="@/image/menu_add.png"/>
+                                        </ImageView>
+                                    </graphic>
+                                </MenuItem>
+                                <MenuItem mnemonicParsing="false" fx:id="deletePaymentItem" onAction="#deletePayment"
+                                          text="%delete">
+                                    <graphic>
+                                        <ImageView>
+                                            <Image url="@/image/menu_delete.png"/>
+                                        </ImageView>
+                                    </graphic>
+                                </MenuItem>
+                            </items>
+                        </ContextMenu>
+                    </contextMenu>
+                </TableView>
+                <Label fx:id="coverLabel" alignment="CENTER" text="%select_invoice"
+                       style="-fx-background-color: #f4f4f4;"
+                       maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
                        AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0"
-                       AnchorPane.topAnchor="0">
-                <columns>
-                    <TableColumn fx:id="paymentDateTimeColumn" text="%date"/>
-                    <TableColumn fx:id="paymentEmployeeColumn" text="%employee"/>
-                    <TableColumn fx:id="paymentValueColumn" text="%value"/>
-                    <TableColumn fx:id="paymentMethodColumn" text="%payment_method"/>
-                </columns>
-                <columnResizePolicy>
-                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
-                </columnResizePolicy>
-                <contextMenu>
-                    <ContextMenu>
-                        <items>
-                            <MenuItem mnemonicParsing="false" fx:id="addPaymentItem" onAction="#addPayment" text="%add">
-                                <graphic>
-                                    <ImageView>
-                                        <Image url="@/image/menu_add.png"/>
-                                    </ImageView>
-                                </graphic>
-                            </MenuItem>
-                            <MenuItem mnemonicParsing="false" fx:id="deletePaymentItem" onAction="#deletePayment"
-                                      text="%delete">
-                                <graphic>
-                                    <ImageView>
-                                        <Image url="@/image/menu_delete.png"/>
-                                    </ImageView>
-                                </graphic>
-                            </MenuItem>
-                        </items>
-                    </ContextMenu>
-                </contextMenu>
-            </TableView>
-            <Label fx:id="coverLabel" alignment="CENTER" text="%select_invoice" style="-fx-background-color: #f4f4f4;"
-                   maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
-                   AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0"
-                   AnchorPane.topAnchor="0"/>
-        </AnchorPane>
+                       AnchorPane.topAnchor="0"/>
+            </AnchorPane>
+        </VBox>
     </SplitPane>
 </VBox>

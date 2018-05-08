@@ -28,7 +28,7 @@ import org.joda.time.LocalDate.now
  *
  * [DateBox] width is deliberately measured to match [com.hendraanggrian.scene.layout.TimeBox]'s width.
  */
-open class DateBox(prefill: LocalDate = now()) : _HBox(8.0) {
+open class DateBox @JvmOverloads constructor(prefill: LocalDate = now()) : _HBox(8.0) {
 
     lateinit var picker: DatePicker
     var previousButton: Button

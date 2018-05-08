@@ -26,7 +26,7 @@ import ktfx.layouts.LayoutManager
  * When it doesn't, [AdaptableButton] will store its text as tooltip.
  */
 @DefaultProperty("graphic")
-class AdaptableButton(
+class AdaptableButton @JvmOverloads constructor(
     adaptableText: String,
     imageUrl: String? = null
 ) : Button(null, imageUrl?.let { ImageView(it) }) {

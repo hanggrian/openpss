@@ -28,7 +28,7 @@ import org.joda.time.LocalTime.MIDNIGHT
  *
  * [TimeBox] width is deliberately measured to match [com.hendraanggrian.ui.scene.control.ForcedDatePicker]'s width.
  */
-open class TimeBox(prefill: LocalTime = MIDNIGHT) : _HBox(8.0) {
+open class TimeBox @JvmOverloads constructor(prefill: LocalTime = MIDNIGHT) : _HBox(8.0) {
 
     lateinit var hourField: IntField
     lateinit var minuteField: IntField

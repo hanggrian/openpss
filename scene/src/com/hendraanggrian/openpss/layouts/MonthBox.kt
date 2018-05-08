@@ -26,7 +26,7 @@ import org.joda.time.YearMonth.now
 import java.text.DateFormatSymbols.getInstance
 import java.util.Locale
 
-open class MonthBox(prefill: YearMonth = now()) : _HBox(8.0) {
+open class MonthBox @JvmOverloads constructor(prefill: YearMonth = now()) : _HBox(8.0) {
 
     lateinit var monthBox: ChoiceBox<Int>
     lateinit var yearField: IntField

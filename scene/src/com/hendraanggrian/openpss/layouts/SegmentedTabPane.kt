@@ -1,48 +1,50 @@
 package com.hendraanggrian.openpss.layouts
 
-import javafx.beans.DefaultProperty
-import javafx.collections.ObservableList
-import javafx.geometry.Pos.CENTER_LEFT
-import javafx.geometry.Pos.CENTER_RIGHT
-import javafx.scene.Node
-import javafx.scene.control.SelectionModel
+import com.hendraanggrian.openpss.scene.R
+import com.hendraanggrian.openpss.util.adaptableText
 import javafx.scene.control.Tab
-import javafx.scene.layout.HBox
-import javafx.scene.layout.HBox.setHgrow
-import javafx.scene.layout.Priority.ALWAYS
-import ktfx.layouts._VBox
-import ktfx.layouts.hbox
-import ktfx.layouts.toolBar
-import ktfx.scene.layout.paddingAll
+import javafx.scene.control.TabPane
+import javafx.scene.control.ToggleButton
+import javafx.scene.layout.Pane
+import ktfx.application.later
+import ktfx.coroutines.listener
+import ktfx.scene.layout.paddingTop
+import org.controlsfx.control.SegmentedButton
 
-@DefaultProperty("tabs")
-class SegmentedTabPane : _VBox(0.0) {
+class SegmentedTabPane : TabPane() {
 
-    private val tabPane: HiddenTabPane = HiddenTabPane()
-    private lateinit var leftBar: HBox
-    private lateinit var rightBar: HBox
+    var header: SegmentedButton = SegmentedButton()
+    var isAdaptableText: Boolean = false
 
     init {
-        toolBar {
-            paddingAll = 16.0
-            leftBar = hbox(8.0) {
-                alignment = CENTER_LEFT
-                setHgrow(this, ALWAYS)
-            }
-            tabPane.segmentedButton.add()
-            rightBar = hbox(8.0) {
-                alignment = CENTER_RIGHT
-                setHgrow(this, ALWAYS)
+        stylesheets += javaClass.getResource(R.style.hiddentabpane).toExternalForm()
+        later { paddingTop = -(lookup(".tab-header-area") as Pane).height }
+        header.toggleGroup.run {
+            selectedToggleProperty().listener { _, oldValue, value ->
+                when (value) {
+                    null -> selectToggle(oldValue)
+                    else -> selectionModel.select(toggles.indexOf(value))
+                }
             }
         }
-        tabPane.add() vpriority ALWAYS
+        populate(tabs)
+        tabs.listener<Tab> { change ->
+            change.next()
+            when {
+                change.wasAdded() -> {
+                    populate(change.addedSubList)
+                    if (change.from == 0) header.buttons.first().isSelected = true
+                }
+                else -> header.buttons -= header.buttons.filter { it.text in change.addedSubList.map { it.text } }
+            }
+        }
     }
 
-    val leftButtons: ObservableList<Node> get() = leftBar.children
-
-    val rightButtons: ObservableList<Node> get() = rightBar.children
-
-    val tabs: ObservableList<Tab> get() = tabPane.tabs
-
-    val selectionModel: SelectionModel<Tab> get() = tabPane.selectionModel
+    private fun populate(tabs: Collection<Tab>) {
+        header.buttons += tabs.map {
+            ToggleButton(it.text, it.graphic).apply {
+                if (isAdaptableText) adaptableText()
+            }
+        }
+    }
 }

@@ -8,8 +8,8 @@ import com.hendraanggrian.openpss.db.schemas.Payment
 import com.hendraanggrian.openpss.db.schemas.Payment.Method.CASH
 import com.hendraanggrian.openpss.db.schemas.Payment.Method.TRANSFER
 import com.hendraanggrian.openpss.layouts.DateBox
-import com.hendraanggrian.openpss.layouts.HiddenTabPane
 import com.hendraanggrian.openpss.layouts.MonthBox
+import com.hendraanggrian.openpss.layouts.SegmentedTabPane
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.SegmentedController
 import com.hendraanggrian.openpss.ui.Selectable
@@ -24,12 +24,13 @@ import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
 import ktfx.coroutines.onAction
 import ktfx.layouts.separator
+import org.controlsfx.control.SegmentedButton
 import java.net.URL
 import java.util.ResourceBundle
 
 class FinanceController : SegmentedController(), Refreshable, Selectable<Tab> {
 
-    @FXML lateinit var tabPane: HiddenTabPane
+    @FXML lateinit var tabPane: SegmentedTabPane
 
     @FXML lateinit var dailyTable: TableView<Payment>
     @FXML lateinit var dailyNoColumn: TableColumn<Payment, String>
@@ -60,13 +61,14 @@ class FinanceController : SegmentedController(), Refreshable, Selectable<Tab> {
         dateBox = com.hendraanggrian.openpss.layouts.dateBox()
         monthBox = com.hendraanggrian.openpss.layouts.monthBox()
         viewTotalButton = styledAdaptableButton(STYLE_DEFAULT_BUTTON,
-            getString(R.string.view_total), R.image.btn_money_dark) {
+            getString(R.string.total), R.image.btn_money_dark) {
             onAction {
                 ViewTotalPopup(this@FinanceController, totalCash, totalTransfer).show(this@styledAdaptableButton)
             }
         }
-        leftButtons.addAll(tabPane.segmentedButton, separator(VERTICAL), refreshButton, viewTotalButton)
-        tabPane.segmentedButton.toggleGroup.run {
+        tabPane.header = SegmentedButton()
+        leftButtons.addAll(tabPane.header, separator(VERTICAL), refreshButton, viewTotalButton)
+        tabPane.header.toggleGroup.run {
             selectedToggleProperty().addListener { _, _, toggle ->
                 (rightButtons as MutableList).clear()
                 when (toggles.indexOf(toggle)) {

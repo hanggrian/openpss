@@ -1,12 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.hendraanggrian.openpss.layouts.HiddenTabPane?>
+<?import com.hendraanggrian.openpss.layouts.SegmentedTabPane?>
 <?import javafx.scene.control.*?>
-<HiddenTabPane xmlns="http://javafx.com/javafx"
-               xmlns:fx="http://javafx.com/fxml"
-               fx:controller="com.hendraanggrian.openpss.ui.finance.FinanceController"
-               fx:id="tabPane">
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<SegmentedTabPane xmlns="http://javafx.com/javafx"
+                  xmlns:fx="http://javafx.com/fxml"
+                  fx:controller="com.hendraanggrian.openpss.ui.finance.FinanceController"
+                  fx:id="tabPane" adaptableText="true">
     <Tab closable="false" text="%daily">
+        <graphic>
+            <ImageView>
+                <Image url="@/image/btn_daily_light.png"/>
+            </ImageView>
+        </graphic>
         <TableView fx:id="dailyTable">
             <columns>
                 <TableColumn fx:id="dailyNoColumn" text="%id"/>
@@ -21,6 +28,11 @@
         </TableView>
     </Tab>
     <Tab closable="false" text="%monthly">
+        <graphic>
+            <ImageView>
+                <Image url="@/image/btn_monthly_light.png"/>
+            </ImageView>
+        </graphic>
         <TableView fx:id="monthlyTable">
             <columns>
                 <TableColumn fx:id="monthlyDateColumn" text="%date"/>
@@ -33,4 +45,4 @@
             </columnResizePolicy>
         </TableView>
     </Tab>
-</HiddenTabPane>
+</SegmentedTabPane>

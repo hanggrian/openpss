@@ -45,6 +45,7 @@ import kotlinx.nosql.update
 import ktfx.application.later
 import ktfx.beans.binding.bindingOf
 import ktfx.beans.binding.stringBindingOf
+import ktfx.beans.binding.times
 import ktfx.beans.property.toReadOnlyProperty
 import ktfx.beans.value.or
 import ktfx.collections.emptyObservableList
@@ -104,14 +105,16 @@ class CustomerController : SegmentedController(), Refreshable, Selectable<Custom
         refreshButton = adaptableButton(getString(R.string.refresh), R.image.btn_refresh_light) {
             onAction { refresh() }
         }
-        addButton = styledAdaptableButton(STYLE_DEFAULT_BUTTON,
-            getString(R.string.add_customer), R.image.btn_add_dark) {
+        addButton = styledAdaptableButton(STYLE_DEFAULT_BUTTON, getString(R.string.add), R.image.btn_add_dark) {
             onAction { add() }
         }
-        editButton = adaptableButton(getString(R.string.edit_customer), R.image.btn_edit_light) {
+        editButton = adaptableButton(getString(R.string.edit), R.image.btn_edit_light) {
             onAction { edit() }
         }
-        searchField = styledTextField(STYLE_SEARCH_TEXTFIELD) { promptText = getString(R.string.search_customer) }
+        searchField = styledTextField(STYLE_SEARCH_TEXTFIELD) {
+            later { prefWidthProperty().bind(scene.widthProperty() * 0.1) }
+            promptText = getString(R.string.search)
+        }
         filterMenu = menuButton(graphic = ImageView(R.image.btn_filter_light)) {
             tooltip(getString(R.string.filter))
             filterNameItem = checkMenuItem(getString(R.string.name)) { isSelected = true }

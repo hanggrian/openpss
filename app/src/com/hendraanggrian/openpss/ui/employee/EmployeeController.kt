@@ -51,9 +51,10 @@ class EmployeeController : SegmentedController(), Refreshable, Selectable<Employ
         refreshButton = adaptableButton(getString(R.string.refresh), R.image.btn_refresh_light) {
             onAction { refresh() }
         }
-        addButton = styledAdaptableButton(STYLE_DEFAULT_BUTTON,
-            getString(R.string.add_employee), R.image.btn_add_dark) { onAction { add() } }
-        editButton = adaptableButton(getString(R.string.edit_employee), R.image.btn_edit_light) {
+        addButton = styledAdaptableButton(STYLE_DEFAULT_BUTTON, getString(R.string.add), R.image.btn_add_dark) {
+            onAction { add() }
+        }
+        editButton = adaptableButton(getString(R.string.edit), R.image.btn_edit_light) {
             onAction { edit() }
         }
         deleteButton = adaptableButton(getString(R.string.delete), R.image.btn_delete_light) {

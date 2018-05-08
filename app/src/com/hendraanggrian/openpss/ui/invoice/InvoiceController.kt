@@ -118,13 +118,13 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
         refreshButton = adaptableButton(getString(R.string.refresh), R.image.btn_refresh_light) {
             onAction { refresh() }
         }
-        addButton = styledAdaptableButton(STYLE_DEFAULT_BUTTON, getString(R.string.add_invoice), R.image.btn_add_dark) {
+        addButton = styledAdaptableButton(STYLE_DEFAULT_BUTTON, getString(R.string.add), R.image.btn_add_dark) {
             onAction { addInvoice() }
         }
-        editButton = adaptableButton(getString(R.string.edit_invoice), R.image.btn_edit_light) {
+        editButton = adaptableButton(getString(R.string.edit), R.image.btn_edit_light) {
             onAction { editInvoice() }
         }
-        deleteButton = adaptableButton(getString(R.string.delete_invoice), R.image.btn_delete_light) {
+        deleteButton = adaptableButton(getString(R.string.delete), R.image.btn_delete_light) {
             onAction { deleteInvoice() }
         }
         platePriceButton = adaptableButton(getString(R.string.plate_price), R.image.btn_plate_light) {

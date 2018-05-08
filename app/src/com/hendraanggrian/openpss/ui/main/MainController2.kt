@@ -12,6 +12,10 @@ import com.hendraanggrian.openpss.ui.report.ReportController
 import com.hendraanggrian.openpss.ui.schedule.ScheduleController
 import com.hendraanggrian.openpss.ui.wage.WageController
 import javafx.fxml.FXML
+import javafx.scene.control.MenuBar
+import javafx.scene.layout.AnchorPane
+import javafx.scene.layout.BorderPane
+import javafx.scene.layout.HBox
 import ktfx.application.later
 import ktfx.coroutines.listener
 import java.net.URL
@@ -19,7 +23,11 @@ import java.util.ResourceBundle
 
 class MainController2 : Controller() {
 
-    @FXML lateinit var pane: SegmentedTabPane
+    @FXML lateinit var menuBar: MenuBar
+    @FXML lateinit var navigationPane: BorderPane
+    @FXML lateinit var navigationLeftBox: HBox
+    @FXML lateinit var navigationRightBox: HBox
+    @FXML lateinit var tabPane: SegmentedTabPane
     @Suppress("MemberVisibilityCanBePrivate") @FXML lateinit var customerController: CustomerController
     @Suppress("MemberVisibilityCanBePrivate") @FXML lateinit var scheduleController: ScheduleController
     @Suppress("MemberVisibilityCanBePrivate") @FXML lateinit var invoiceController: InvoiceController
@@ -31,8 +39,12 @@ class MainController2 : Controller() {
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
+        navigationPane.center = tabPane.header
+        AnchorPane.setLeftAnchor(tabPane.header, 0.0)
+        AnchorPane.setRightAnchor(tabPane.header, 0.0)
+
         replaceButtons(customerController)
-        pane.selectionModel.selectedIndexProperty().listener { _, _, value ->
+        tabPane.selectionModel.selectedIndexProperty().listener { _, _, value ->
             val controller = controllers[value.toInt()]
             replaceButtons(controller)
             if (controller is Refreshable) controller.refresh()
@@ -48,11 +60,11 @@ class MainController2 : Controller() {
     }
 
     private fun replaceButtons(controller: SegmentedController) {
-        pane.leftButtons.let {
+        navigationLeftBox.children.let {
             it.clear()
             it += controller.leftButtons
         }
-        pane.rightButtons.let {
+        navigationRightBox.children.let {
             it.clear()
             it += controller.rightButtons
         }

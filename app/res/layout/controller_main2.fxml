@@ -2,11 +2,19 @@
 
 <?import com.hendraanggrian.openpss.layouts.SegmentedTabPane?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.*?>
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.hendraanggrian.openpss.ui.main.MainController2">
-    <MenuBar/>
-    <SegmentedTabPane VBox.vgrow="ALWAYS" fx:id="pane">
+    <MenuBar fx:id="menuBar"/>
+    <AnchorPane>
+        <BorderPane fx:id="navigationPane" AnchorPane.topAnchor="16" AnchorPane.bottomAnchor="16"
+                    AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0"/>
+        <HBox spacing="8" fx:id="navigationLeftBox"
+              AnchorPane.topAnchor="16" AnchorPane.bottomAnchor="16" AnchorPane.leftAnchor="16"/>
+        <HBox spacing="8" fx:id="navigationRightBox"
+              AnchorPane.topAnchor="16" AnchorPane.bottomAnchor="16" AnchorPane.rightAnchor="16"/>
+    </AnchorPane>
+    <SegmentedTabPane VBox.vgrow="ALWAYS" fx:id="tabPane">
         <Tab closable="false" text="%customer">
             <!--suppress ALL -->
             <fx:include fx:id="customer" source="controller_customer.fxml"/>

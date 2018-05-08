@@ -7,14 +7,11 @@
 <?import javafx.scene.layout.*?>
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.hendraanggrian.openpss.ui.invoice.InvoiceController">
-    <ToolBar>
-        <Label styleClass="display-label" text="%invoice">
-            <!--<graphic>
-                <ImageView>
-                    <Image url="@/image/btn_invoice_light.png"/>
-                </ImageView>
-            </graphic>-->
-        </Label>
+    <HBox alignment="CENTER" spacing="8">
+        <padding>
+            <Insets topRightBottomLeft="8"/>
+        </padding>
+        <Label styleClass="display-label" text="%invoice"/>
         <Region HBox.hgrow="ALWAYS"/>
         <SplitMenuButton mnemonicParsing="false" fx:id="customerButton" onAction="#selectCustomer"
                          text="%select_customer">
@@ -34,7 +31,7 @@
                 </MenuItem>
             </items>
         </SplitMenuButton>
-        <Separator/>
+        <Separator orientation="VERTICAL"/>
         <MenuButton mnemonicParsing="false" fx:id="paymentButton">
             <fx:define>
                 <ToggleGroup fx:id="paymentGroup"/>
@@ -56,7 +53,7 @@
                                text="%paid"/>
             </items>
         </MenuButton>
-        <Separator/>
+        <Separator orientation="VERTICAL"/>
         <fx:define>
             <ToggleGroup fx:id="pickDateGroup"/>
         </fx:define>
@@ -71,6 +68,6 @@
                 <DateBox fx:id="dateBox"/>
             </graphic>
         </RadioButton>
-    </ToolBar>
+    </HBox>
     <Pagination fx:id="invoicePagination" style="-fx-page-information-alignment: right;" VBox.vgrow="ALWAYS"/>
 </VBox>

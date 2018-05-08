@@ -7,7 +7,9 @@ import com.hendraanggrian.openpss.controls.styledAdaptableButton
 import com.hendraanggrian.openpss.db.schemas.Payment
 import com.hendraanggrian.openpss.db.schemas.Payment.Method.CASH
 import com.hendraanggrian.openpss.db.schemas.Payment.Method.TRANSFER
+import com.hendraanggrian.openpss.layouts.DateBox
 import com.hendraanggrian.openpss.layouts.HiddenTabPane
+import com.hendraanggrian.openpss.layouts.MonthBox
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.SegmentedController
 import com.hendraanggrian.openpss.ui.Selectable
@@ -43,9 +45,11 @@ class FinanceController : SegmentedController(), Refreshable, Selectable<Tab> {
     @FXML lateinit var monthlyTotalColumn: TableColumn<Report, String>
 
     private lateinit var refreshButton: Button
-    private lateinit var viewTotalButton: Button
-    override val leftButtons: List<Node> get() = listOf(refreshButton, separator(VERTICAL), viewTotalButton)
+    override val leftButtons: List<Node> = mutableListOf()
 
+    private lateinit var dateBox: DateBox
+    private lateinit var monthBox: MonthBox
+    private lateinit var viewTotalButton: Button
     override val rightButtons: List<Node> = mutableListOf()
 
     override fun initialize(location: URL, resources: ResourceBundle) {
@@ -53,13 +57,24 @@ class FinanceController : SegmentedController(), Refreshable, Selectable<Tab> {
         refreshButton = adaptableButton(getString(R.string.refresh), R.image.btn_refresh_light) {
             onAction { refresh() }
         }
+        dateBox = com.hendraanggrian.openpss.layouts.dateBox()
+        monthBox = com.hendraanggrian.openpss.layouts.monthBox()
         viewTotalButton = styledAdaptableButton(STYLE_DEFAULT_BUTTON,
             getString(R.string.view_total), R.image.btn_money_dark) {
             onAction {
                 ViewTotalPopup(this@FinanceController, totalCash, totalTransfer).show(this@styledAdaptableButton)
             }
         }
-        rightButtons as MutableList<Node> += tabPane.segmentedButton
+        leftButtons.addAll(tabPane.segmentedButton, separator(VERTICAL), refreshButton, viewTotalButton)
+        tabPane.segmentedButton.toggleGroup.run {
+            selectedToggleProperty().addListener { _, _, toggle ->
+                (rightButtons as MutableList).clear()
+                when (toggles.indexOf(toggle)) {
+                    0 -> rightButtons.addAll(dateBox)
+                    else -> rightButtons.addAll(monthBox)
+                }
+            }
+        }
     }
 
     override val selectionModel: SelectionModel<Tab> get() = tabPane.selectionModel
@@ -78,4 +93,9 @@ class FinanceController : SegmentedController(), Refreshable, Selectable<Tab> {
             0 -> Payment.gather(dailyTable.items, TRANSFER)
             else -> monthlyTable.items.sumByDouble { it.transfer }
         }
+
+    private fun List<Node>.addAll(vararg buttons: Node) {
+        this as MutableList
+        buttons.forEach { this += it }
+    }
 }

@@ -21,11 +21,15 @@ import ktfx.coroutines.listener
 import ktfx.layouts.LayoutDsl
 import ktfx.layouts.LayoutManager
 
+/**
+ * A button that will display text when the window have sufficient width.
+ * When it doesn't, [AdaptableButton] will store its text as tooltip.
+ */
 @DefaultProperty("graphic")
 class AdaptableButton(
     adaptableText: String,
     imageUrl: String? = null
-) : Button("", imageUrl?.let { ImageView(it) }) {
+) : Button(null, imageUrl?.let { ImageView(it) }) {
 
     private companion object {
         const val INIT_DELAY = 250

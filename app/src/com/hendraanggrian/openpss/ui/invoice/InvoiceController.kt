@@ -38,6 +38,7 @@ import javafx.beans.property.SimpleObjectProperty
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
 import javafx.geometry.Orientation.VERTICAL
+import javafx.geometry.Pos.CENTER
 import javafx.scene.Node
 import javafx.scene.control.Button
 import javafx.scene.control.MenuButton
@@ -50,7 +51,6 @@ import javafx.scene.control.SplitMenuButton
 import javafx.scene.control.TableView
 import javafx.scene.control.TableView.CONSTRAINED_RESIZE_POLICY
 import javafx.scene.image.ImageView
-import javafx.scene.layout.HBox.setHgrow
 import javafx.scene.layout.Priority.ALWAYS
 import javafx.stage.Modality.APPLICATION_MODAL
 import javafx.util.Callback
@@ -69,15 +69,16 @@ import ktfx.coroutines.onAction
 import ktfx.coroutines.onMouseClicked
 import ktfx.layouts.columns
 import ktfx.layouts.contextMenu
+import ktfx.layouts.hbox
 import ktfx.layouts.region
 import ktfx.layouts.separator
 import ktfx.layouts.splitPane
 import ktfx.layouts.styledLabel
 import ktfx.layouts.styledScene
 import ktfx.layouts.tableView
-import ktfx.layouts.toolBar
 import ktfx.layouts.vbox
 import ktfx.scene.input.isDoubleClick
+import ktfx.scene.layout.paddingAll
 import ktfx.stage.stage
 import java.net.URL
 import java.util.ResourceBundle
@@ -117,16 +118,21 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
         refreshButton = adaptableButton(getString(R.string.refresh), R.image.btn_refresh_light) {
             onAction { refresh() }
         }
-        addButton = styledAdaptableButton(STYLE_DEFAULT_BUTTON,
-            getString(R.string.add_invoice), R.image.btn_add_dark) { onAction { addInvoice() } }
+        addButton = styledAdaptableButton(STYLE_DEFAULT_BUTTON, getString(R.string.add_invoice), R.image.btn_add_dark) {
+            onAction { addInvoice() }
+        }
         editButton = adaptableButton(getString(R.string.edit_invoice), R.image.btn_edit_light) {
             onAction { editInvoice() }
         }
         deleteButton = adaptableButton(getString(R.string.delete_invoice), R.image.btn_delete_light) {
             onAction { deleteInvoice() }
         }
-        platePriceButton = adaptableButton(getString(R.string.plate_price)) { onAction { platePrice() } }
-        offsetPriceButton = adaptableButton(getString(R.string.offset_price)) { onAction { offsetPrice() } }
+        platePriceButton = adaptableButton(getString(R.string.plate_price), R.image.btn_plate_light) {
+            onAction { platePrice() }
+        }
+        offsetPriceButton = adaptableButton(getString(R.string.offset_price), R.image.btn_offset_light) {
+            onAction { offsetPrice() }
+        }
 
         customerButton.textProperty().bind(stringBindingOf(customerProperty) {
             customerProperty.value?.toString() ?: getString(R.string.search_customer)
@@ -183,10 +189,12 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
                         }
                     }
                     vbox {
-                        toolBar {
-                            styledLabel(STYLE_DISPLAY_LABEL, getString(R.string.payment)/*,
-                                ImageView(R.image.btn_payment_light)*/)
-                            region { setHgrow(this, ALWAYS) }
+                        hbox {
+                            alignment = CENTER
+                            paddingAll = 8.0
+                            spacing = 8.0
+                            styledLabel(STYLE_DISPLAY_LABEL, getString(R.string.payment))
+                            region() hpriority ALWAYS
                             styledAdaptableButton(STYLE_DEFAULT_BUTTON, getString(R.string.add_payment),
                                 R.image.btn_add_dark) {
                                 disableProperty().bind(!selectedBinding)

@@ -6,9 +6,7 @@ import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.db.schemas.Employees
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.io.properties.LoginFile
-import com.hendraanggrian.openpss.resources.Display.QHD
 import com.hendraanggrian.openpss.resources.Resourced
-import com.hendraanggrian.openpss.resources.minDisplay
 import com.hendraanggrian.openpss.ui.main.ChangePasswordDialog
 import com.hendraanggrian.openpss.ui.main.LoginDialog
 import com.hendraanggrian.openpss.util.controller
@@ -27,6 +25,7 @@ import ktfx.collections.observableListOf
 import ktfx.layouts.styledScene
 import ktfx.scene.control.styledInfoAlert
 import ktfx.stage.icon
+import ktfx.stage.setMinSize
 import org.apache.log4j.BasicConfigurator.configure
 import java.util.Locale
 import java.util.ResourceBundle
@@ -59,10 +58,10 @@ class App : Application(), Resourced {
             employee as Employee
 
             stage.apply {
-                val loader = FXMLLoader(getResource(R.layout.controller_main2), resources)
+                val loader = FXMLLoader(getResource(R.layout.controller_main), resources)
                 title = if (DEBUG) "$APP_NAME [DEBUG]" else APP_NAME
                 scene = styledScene(getStyle(R.style.openpss), loader.pane)
-                minDisplay = QHD
+                setMinSize(900.0, 600.0)
                 loader.controller.login = employee
             }.show()
 

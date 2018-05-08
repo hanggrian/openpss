@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.hendraanggrian.openpss.controls.FileField?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.hendraanggrian.openpss.ui.wage.WageController">
-    <ToolBar>
+    <HBox spacing="8">
+        <padding>
+            <Insets bottom="8" left="16" right="16"/>
+        </padding>
         <FileField styleClass="file-textfield" fx:id="fileField" promptText="%input_file" prefWidth="512"/>
         <Button mnemonicParsing="false" onAction="#browse">
             <graphic>
@@ -22,7 +26,7 @@
         <Region HBox.hgrow="ALWAYS"/>
         <Label fx:id="employeeCountLabel1" text="%employee"/>
         <Label fx:id="employeeCountLabel2"/>
-    </ToolBar>
+    </HBox>
     <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" vbarPolicy="ALWAYS" VBox.vgrow="ALWAYS">
         <FlowPane fx:id="flowPane"/>
     </ScrollPane>

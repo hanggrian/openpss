@@ -7,6 +7,7 @@ import com.hendraanggrian.openpss.controls.intField
 import com.hendraanggrian.openpss.scene.R
 import javafx.beans.property.ObjectProperty
 import javafx.beans.property.SimpleObjectProperty
+import javafx.geometry.Pos.CENTER
 import javafx.scene.Node
 import javafx.scene.control.Button
 import javafx.scene.control.ChoiceBox
@@ -26,7 +27,7 @@ import org.joda.time.YearMonth.now
 import java.text.DateFormatSymbols.getInstance
 import java.util.Locale
 
-open class MonthBox @JvmOverloads constructor(prefill: YearMonth = now()) : _HBox(8.0) {
+open class MonthBox @JvmOverloads constructor(prefill: YearMonth = now()) : _HBox(0.0) {
 
     lateinit var monthBox: ChoiceBox<Int>
     lateinit var yearField: IntField
@@ -36,7 +37,7 @@ open class MonthBox @JvmOverloads constructor(prefill: YearMonth = now()) : _HBo
     val valueProperty: ObjectProperty<YearMonth> = SimpleObjectProperty()
     val value: YearMonth by valueProperty
 
-    private var months: Array<String> = getInstance().months
+    private var months: Array<String> = getInstance().shortMonths
 
     init {
         previousButton = button(graphic = ImageView(R.image.btn_previous)) {
@@ -58,7 +59,8 @@ open class MonthBox @JvmOverloads constructor(prefill: YearMonth = now()) : _HBo
             }
         }
         yearField = intField {
-            maxWidth = 64.0
+            alignment = CENTER
+            maxWidth = 56.0
             value = prefill.year
         }
         nextButton = button(graphic = ImageView(R.image.btn_next)) {
@@ -79,7 +81,7 @@ open class MonthBox @JvmOverloads constructor(prefill: YearMonth = now()) : _HBo
     }
 
     fun setLocale(locale: Locale) {
-        months = getInstance(locale).months
+        months = getInstance(locale).shortMonths
         monthBox.converter {
             fromString { months.indexOf(it) }
             toString { months[it!!] }

@@ -112,7 +112,7 @@ class CustomerController : SegmentedController(), Refreshable, Selectable<Custom
             onAction { edit() }
         }
         searchField = styledTextField(STYLE_SEARCH_TEXTFIELD) {
-            later { prefWidthProperty().bind(scene.widthProperty() * 0.1) }
+            later { prefWidthProperty().bind(scene.widthProperty() * 0.12) }
             promptText = getString(R.string.search)
         }
         filterMenu = menuButton(graphic = ImageView(R.image.btn_filter_light)) {

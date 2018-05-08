@@ -51,7 +51,7 @@ class ReportController : FinancialController<Report>() {
 
     override fun view(item: Report) {
         getExtra<MainController>(EXTRA_MAIN_CONTROLLER).run {
-            select(paymentController) { dateBox.picker.value = item.date.toJava() }
+            // select(paymentController) { dateBox.picker.value = item.date.toJava() }
         }
     }
 

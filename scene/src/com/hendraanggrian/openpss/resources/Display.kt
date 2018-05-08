@@ -7,9 +7,7 @@ import ktfx.beans.value.getValue
 import ktfx.stage.setMinSize
 
 enum class Display(val widthProperty: DoubleProperty, val heightProperty: DoubleProperty) {
-    HQVGA(240.0, 160.0),
-    QHD(960.0, 540.0),
-    XGA_(1152.0, 864.0);
+    HQVGA(240.0, 160.0);
 
     constructor(width: Double, height: Double) : this(ReadOnlyDoubleWrapper(width), ReadOnlyDoubleWrapper(height))
 

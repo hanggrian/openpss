@@ -28,7 +28,7 @@ import org.joda.time.LocalDate.now
  *
  * [DateBox] width is deliberately measured to match [com.hendraanggrian.scene.layout.TimeBox]'s width.
  */
-open class DateBox @JvmOverloads constructor(prefill: LocalDate = now()) : _HBox(8.0) {
+open class DateBox @JvmOverloads constructor(prefill: LocalDate = now()) : _HBox(0.0) {
 
     lateinit var picker: DatePicker
     var previousButton: Button
@@ -38,12 +38,11 @@ open class DateBox @JvmOverloads constructor(prefill: LocalDate = now()) : _HBox
     val value: LocalDate by valueProperty
 
     init {
-        alignment = CENTER
-
         previousButton = button(graphic = ImageView(R.image.btn_previous)) {
             onAction { picker.value = picker.value.minusDays(1) }
         }
         picker = datePicker {
+            editor.alignment = CENTER
             value = prefill.toJava()
             isEditable = false
             maxWidth = 116.0

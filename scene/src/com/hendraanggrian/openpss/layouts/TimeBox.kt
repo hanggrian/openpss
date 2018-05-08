@@ -19,7 +19,6 @@ import ktfx.layouts.LayoutDsl
 import ktfx.layouts.LayoutManager
 import ktfx.layouts._HBox
 import ktfx.layouts.button
-import ktfx.layouts.label
 import org.joda.time.LocalTime
 import org.joda.time.LocalTime.MIDNIGHT
 
@@ -28,7 +27,7 @@ import org.joda.time.LocalTime.MIDNIGHT
  *
  * [TimeBox] width is deliberately measured to match [com.hendraanggrian.ui.scene.control.ForcedDatePicker]'s width.
  */
-open class TimeBox @JvmOverloads constructor(prefill: LocalTime = MIDNIGHT) : _HBox(8.0) {
+open class TimeBox @JvmOverloads constructor(prefill: LocalTime = MIDNIGHT) : _HBox(0.0) {
 
     lateinit var hourField: IntField
     lateinit var minuteField: IntField
@@ -40,8 +39,6 @@ open class TimeBox @JvmOverloads constructor(prefill: LocalTime = MIDNIGHT) : _H
     val value: LocalTime by valueProperty
 
     init {
-        alignment = CENTER
-
         previousButton = button(graphic = ImageView(R.image.btn_previous)) {
             onAction {
                 hourField.value = when (hourField.value) {
@@ -54,15 +51,14 @@ open class TimeBox @JvmOverloads constructor(prefill: LocalTime = MIDNIGHT) : _H
             }
         }
         hourField = intField {
-            maxWidth = 48.0
+            maxWidth = 58.0
             alignment = CENTER
             valueProperty.listener { _, oldValue, value ->
                 if (value !in 0 until 24) hourField.value = oldValue.toInt()
             }
         }
-        label(":") { alignment = CENTER }
         minuteField = intField {
-            maxWidth = 48.0
+            maxWidth = 58.0
             alignment = CENTER
             valueProperty.listener { _, oldValue, value ->
                 if (value !in 0 until 60) minuteField.value = oldValue.toInt()

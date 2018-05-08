@@ -7,6 +7,7 @@ import com.hendraanggrian.openpss.controls.styledAdaptableButton
 import com.hendraanggrian.openpss.db.schemas.Payment
 import com.hendraanggrian.openpss.db.schemas.Payment.Method.CASH
 import com.hendraanggrian.openpss.db.schemas.Payment.Method.TRANSFER
+import com.hendraanggrian.openpss.io.properties.LoginFile
 import com.hendraanggrian.openpss.layouts.DateBox
 import com.hendraanggrian.openpss.layouts.MonthBox
 import com.hendraanggrian.openpss.layouts.SegmentedTabPane
@@ -22,10 +23,12 @@ import javafx.scene.control.SelectionModel
 import javafx.scene.control.Tab
 import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
+import ktfx.coroutines.listener
 import ktfx.coroutines.onAction
 import ktfx.layouts.separator
 import org.controlsfx.control.SegmentedButton
 import java.net.URL
+import java.util.Locale
 import java.util.ResourceBundle
 
 class FinanceController : SegmentedController(), Refreshable, Selectable<Tab> {
@@ -59,7 +62,10 @@ class FinanceController : SegmentedController(), Refreshable, Selectable<Tab> {
             onAction { refresh() }
         }
         dateBox = com.hendraanggrian.openpss.layouts.dateBox()
-        monthBox = com.hendraanggrian.openpss.layouts.monthBox()
+        monthBox = com.hendraanggrian.openpss.layouts.monthBox {
+            setLocale(Locale(LoginFile.LANGUAGE))
+            valueProperty.listener { refresh() }
+        }
         viewTotalButton = styledAdaptableButton(STYLE_DEFAULT_BUTTON,
             getString(R.string.total), R.image.btn_money_dark) {
             onAction {

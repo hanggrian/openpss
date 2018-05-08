@@ -9,7 +9,7 @@
       fx:controller="com.hendraanggrian.openpss.ui.invoice.InvoiceController">
     <HBox alignment="CENTER" spacing="8">
         <padding>
-            <Insets topRightBottomLeft="8"/>
+            <Insets bottom="8" left="16" right="16"/>
         </padding>
         <Label styleClass="display-label" text="%invoice"/>
         <Region HBox.hgrow="ALWAYS"/>

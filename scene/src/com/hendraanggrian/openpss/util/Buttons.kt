@@ -1,6 +1,5 @@
 package com.hendraanggrian.openpss.util
 
-import com.hendraanggrian.openpss.resources.Display
 import javafx.scene.control.Labeled
 import javafx.scene.control.Tooltip
 import kotlinx.coroutines.experimental.delay
@@ -22,7 +21,8 @@ fun Labeled.adaptableText(adaptableText: String = text) {
 }
 
 private fun Labeled.init(adaptableText: String) {
-    val condition = `when`(scene.widthProperty() greaterEq Display.XGA_.width)
+    val condition = `when`(scene.widthProperty() greaterEq 1200
+    )
     textProperty().bind(condition then adaptableText otherwise "")
     tooltipProperty().bind(condition then null as Tooltip? otherwise Tooltip(adaptableText))
 }

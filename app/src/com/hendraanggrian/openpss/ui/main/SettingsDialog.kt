@@ -182,31 +182,28 @@ class SettingsDialog(resourced: Resourced, showGlobalSettings: Boolean) : Dialog
         }
     }
 
-    private inline fun group(titleId: String, crossinline init: (@LayoutDsl _VBox).() -> Unit): VBox =
-        vbox {
-            spacing = 4.0
-            label(getString(titleId)) { font = getFont(R.font.sf_pro_text_bold) }
-            init()
-        }
+    private fun group(titleId: String, init: (@LayoutDsl _VBox).() -> Unit): VBox = vbox {
+        spacing = 4.0
+        label(getString(titleId)) { font = getFont(R.font.sf_pro_text_bold) }
+        init()
+    }
 
-    private inline fun LayoutManager<Node>.group(titleId: String, crossinline init: (@LayoutDsl _VBox).() -> Unit): VBox =
-        vbox {
-            spacing = 4.0
-            label(getString(titleId)) { font = getFont(R.font.sf_pro_text_bold) }
-            init()
-        }
+    private fun LayoutManager<Node>.group(titleId: String, init: (@LayoutDsl _VBox).() -> Unit): VBox = vbox {
+        spacing = 4.0
+        label(getString(titleId)) { font = getFont(R.font.sf_pro_text_bold) }
+        init()
+    }
 
-    private inline fun LayoutManager<Node>.item(labelId: String? = null, crossinline init: (@LayoutDsl _HBox).() -> Unit): HBox =
-        hbox {
-            alignment = CENTER_LEFT
-            spacing = 8.0
-            if (labelId != null) label(getString(labelId))
-            init()
-        }
+    private fun LayoutManager<Node>.item(labelId: String? = null, init: (@LayoutDsl _HBox).() -> Unit): HBox = hbox {
+        alignment = CENTER_LEFT
+        spacing = 8.0
+        if (labelId != null) label(getString(labelId))
+        init()
+    }
 
-    private inline fun LayoutManager<Node>.paginationChoice(
+    private fun LayoutManager<Node>.paginationChoice(
         prefill: Int,
-        crossinline init: (@LayoutDsl ChoiceBox<Int>).() -> Unit
+        init: (@LayoutDsl ChoiceBox<Int>).() -> Unit
     ): ChoiceBox<Int> = choiceBox(observableListOf(20, 30, 40, 50)) {
         converter {
             fromString { it.toInt() }

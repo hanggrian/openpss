@@ -78,7 +78,7 @@ import ktfx.layouts.styledScene
 import ktfx.layouts.tableView
 import ktfx.layouts.vbox
 import ktfx.scene.input.isDoubleClick
-import ktfx.scene.layout.paddingAll
+import ktfx.scene.layout.updatePadding
 import ktfx.stage.stage
 import java.net.URL
 import java.util.ResourceBundle
@@ -191,8 +191,8 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
                     vbox {
                         hbox {
                             alignment = CENTER
-                            paddingAll = 8.0
                             spacing = 8.0
+                            updatePadding(8.0, 16.0, 8.0, 16.0)
                             styledLabel(STYLE_DISPLAY_LABEL, getString(R.string.payment))
                             region() hpriority ALWAYS
                             styledAdaptableButton(STYLE_DEFAULT_BUTTON, getString(R.string.add_payment),

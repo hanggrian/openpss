@@ -27,6 +27,9 @@ class SegmentedTabPane : TabPane() {
                 }
             }
         }
+        selectionModel.selectedIndexProperty().listener { _, _, value ->
+            if (header.buttons.isNotEmpty()) header.toggleGroup.selectToggle(header.buttons[value.toInt()])
+        }
         populate(tabs)
         tabs.listener<Tab> { change ->
             change.next()

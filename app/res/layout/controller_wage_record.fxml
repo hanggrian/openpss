@@ -17,7 +17,7 @@
             </tooltip>
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/btn_undo.png"/>
+                    <Image url="@/image/btn_undo_light.png"/>
                 </ImageView>
             </graphic>
         </SplitMenuButton>

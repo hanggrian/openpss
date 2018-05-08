@@ -1,4 +1,4 @@
-@file:Suppress("NOTHING_TO_INLINE", "UNUSED")
+@file:Suppress("NOTHING_TO_INLINE")
 
 package com.hendraanggrian.openpss.controls
 
@@ -40,14 +40,14 @@ open class DoubleField : TextField() {
     }
 }
 
-inline fun doubleField(): DoubleField = doubleField { }
+/** Creates a [DoubleField]. */
+fun doubleField(
+    init: ((@LayoutDsl DoubleField).() -> Unit)? = null
+): DoubleField = DoubleField().also {
+    init?.invoke(it)
+}
 
-inline fun doubleField(
-    init: (@LayoutDsl DoubleField).() -> Unit
-): DoubleField = DoubleField().apply(init)
-
-inline fun LayoutManager<Node>.doubleField(): DoubleField = doubleField { }
-
+/** Creates a [DoubleField] and add it to this [LayoutManager]. */
 inline fun LayoutManager<Node>.doubleField(
-    init: (@LayoutDsl DoubleField).() -> Unit
+    noinline init: ((@LayoutDsl DoubleField).() -> Unit)? = null
 ): DoubleField = com.hendraanggrian.openpss.controls.doubleField(init).add()

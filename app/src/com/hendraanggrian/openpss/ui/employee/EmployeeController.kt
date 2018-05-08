@@ -3,6 +3,8 @@ package com.hendraanggrian.openpss.ui.employee
 import com.hendraanggrian.openpss.App.Companion.STYLE_DEFAULT_BUTTON
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.controls.UserPopup
+import com.hendraanggrian.openpss.controls.adaptableButton
+import com.hendraanggrian.openpss.controls.styledAdaptableButton
 import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.db.schemas.Employee.Role.EXECUTIVE
 import com.hendraanggrian.openpss.db.schemas.Employees
@@ -19,7 +21,6 @@ import javafx.scene.control.Button
 import javafx.scene.control.SelectionModel
 import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
-import javafx.scene.image.ImageView
 import kotlinx.coroutines.experimental.delay
 import kotlinx.coroutines.experimental.launch
 import kotlinx.nosql.update
@@ -28,9 +29,7 @@ import ktfx.beans.value.or
 import ktfx.collections.toMutableObservableList
 import ktfx.coroutines.FX
 import ktfx.coroutines.onAction
-import ktfx.layouts.button
 import ktfx.layouts.separator
-import ktfx.layouts.styledButton
 import java.net.URL
 import java.util.ResourceBundle
 
@@ -49,11 +48,17 @@ class EmployeeController : SegmentedController(), Refreshable, Selectable<Employ
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
-        refreshButton = button(getString(R.string.refresh), ImageView(R.image.btn_refresh)) { onAction { refresh() } }
-        addButton = styledButton(STYLE_DEFAULT_BUTTON, getString(R.string.add_employee),
-            ImageView(R.image.btn_add_dark)) { onAction { add() } }
-        editButton = button(getString(R.string.edit_employee), ImageView(R.image.btn_edit)) { onAction { edit() } }
-        deleteButton = button(getString(R.string.delete), ImageView(R.image.btn_delete)) { onAction { delete() } }
+        refreshButton = adaptableButton(getString(R.string.refresh), R.image.btn_refresh_light) {
+            onAction { refresh() }
+        }
+        addButton = styledAdaptableButton(STYLE_DEFAULT_BUTTON,
+            getString(R.string.add_employee), R.image.btn_add_dark) { onAction { add() } }
+        editButton = adaptableButton(getString(R.string.edit_employee), R.image.btn_edit_light) {
+            onAction { edit() }
+        }
+        deleteButton = adaptableButton(getString(R.string.delete), R.image.btn_delete_light) {
+            onAction { delete() }
+        }
         launch(FX) {
             delay(100)
             transaction { login.isAtLeast(EXECUTIVE) }.toReadOnlyProperty().let {

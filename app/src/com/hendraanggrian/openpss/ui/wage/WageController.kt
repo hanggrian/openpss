@@ -4,6 +4,8 @@ import com.hendraanggrian.openpss.App.Companion.STYLE_DEFAULT_BUTTON
 import com.hendraanggrian.openpss.BuildConfig.DEBUG
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.controls.FileField
+import com.hendraanggrian.openpss.controls.adaptableButton
+import com.hendraanggrian.openpss.controls.styledAdaptableButton
 import com.hendraanggrian.openpss.io.WageFolder
 import com.hendraanggrian.openpss.io.properties.SettingsFile.WAGE_READER
 import com.hendraanggrian.openpss.ui.SegmentedController
@@ -22,7 +24,6 @@ import javafx.scene.Node
 import javafx.scene.control.Button
 import javafx.scene.control.Label
 import javafx.scene.control.ScrollPane
-import javafx.scene.image.ImageView
 import javafx.scene.layout.FlowPane
 import javafx.stage.FileChooser.ExtensionFilter
 import javafx.stage.Modality.APPLICATION_MODAL
@@ -36,9 +37,7 @@ import ktfx.collections.size
 import ktfx.coroutines.FX
 import ktfx.coroutines.onAction
 import ktfx.layouts.borderPane
-import ktfx.layouts.button
 import ktfx.layouts.separator
-import ktfx.layouts.styledButton
 import ktfx.layouts.styledScene
 import ktfx.scene.control.styledErrorAlert
 import ktfx.scene.layout.maxSize
@@ -68,23 +67,23 @@ class WageController : SegmentedController() {
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
-        readButton = button(getString(R.string.read), ImageView(R.image.btn_attendee)) {
+        readButton = adaptableButton(getString(R.string.read), R.image.btn_attendee_light) {
             onAction { read() }
             disableProperty().bind(fileField.validProperty)
         }
-        processButton = styledButton(STYLE_DEFAULT_BUTTON, getString(R.string.process),
-            ImageView(R.image.btn_process_dark)) {
+        processButton = styledAdaptableButton(
+            STYLE_DEFAULT_BUTTON, getString(R.string.process), R.image.btn_process_dark) {
             onAction { process() }
             disableProperty().bind(flowPane.children.isEmpty)
         }
-        disableRecessButton = button(getString(R.string.disable_recess), ImageView(R.image.btn_disable_recess)) {
+        disableRecessButton = adaptableButton(getString(R.string.disable_recess), R.image.btn_disable_recess_light) {
             onAction { disableRecess() }
             disableProperty().bind(flowPane.children.isEmpty)
         }
-        recessButton = button(getString(R.string.recess), ImageView(R.image.btn_recess)) {
+        recessButton = adaptableButton(getString(R.string.recess), R.image.btn_recess_light) {
             onAction { recess() }
         }
-        historyButton = button(getString(R.string.history), ImageView(R.image.btn_history)) {
+        historyButton = adaptableButton(getString(R.string.history), R.image.btn_history_light) {
             onAction { history() }
         }
         employeeCountLabel1.font = getFont(R.font.sf_pro_text_bold)

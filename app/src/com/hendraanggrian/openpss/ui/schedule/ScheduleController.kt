@@ -3,6 +3,8 @@ package com.hendraanggrian.openpss.ui.schedule
 import com.hendraanggrian.openpss.App.Companion.STYLE_DEFAULT_BUTTON
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.controls.UncollapsibleTreeItem
+import com.hendraanggrian.openpss.controls.adaptableButton
+import com.hendraanggrian.openpss.controls.styledAdaptableButton
 import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.schemas.Invoices
 import com.hendraanggrian.openpss.db.transaction
@@ -20,16 +22,13 @@ import javafx.scene.control.TreeItem
 import javafx.scene.control.TreeTableColumn
 import javafx.scene.control.TreeTableView
 import javafx.scene.control.TreeTableView.TreeTableViewSelectionModel
-import javafx.scene.image.ImageView
 import kotlinx.nosql.equal
 import kotlinx.nosql.update
 import ktfx.application.later
 import ktfx.collections.isEmpty
 import ktfx.coroutines.listener
 import ktfx.coroutines.onAction
-import ktfx.layouts.button
 import ktfx.layouts.separator
-import ktfx.layouts.styledButton
 import java.net.URL
 import java.util.ResourceBundle
 
@@ -47,8 +46,8 @@ class ScheduleController : SegmentedController(), Refreshable, TreeSelectable<Sc
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
-        refreshButton = button(getString(R.string.refresh), ImageView(R.image.btn_refresh)) { onAction { refresh() } }
-        doneButton = styledButton(STYLE_DEFAULT_BUTTON, getString(R.string.done), ImageView(R.image.btn_done_dark)) {
+        refreshButton = adaptableButton(getString(R.string.refresh), R.image.btn_refresh_light) { onAction { refresh() } }
+        doneButton = styledAdaptableButton(STYLE_DEFAULT_BUTTON, getString(R.string.done), R.image.btn_done_dark) {
             onAction { done() }
             disableProperty().bind(selecteds.isEmpty)
         }

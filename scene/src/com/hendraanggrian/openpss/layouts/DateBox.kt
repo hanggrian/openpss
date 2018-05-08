@@ -1,4 +1,4 @@
-@file:Suppress("NOTHING_TO_INLINE", "UNUSED")
+@file:Suppress("NOTHING_TO_INLINE")
 
 package com.hendraanggrian.openpss.layouts
 
@@ -56,20 +56,16 @@ open class DateBox(prefill: LocalDate = now()) : _HBox(8.0) {
     }
 }
 
-inline fun dateBox(
-    prefill: LocalDate = now()
-): DateBox = dateBox(prefill) { }
-
-inline fun dateBox(
+/** Creates a [DateBox]. */
+fun dateBox(
     prefill: LocalDate = now(),
-    init: (@LayoutDsl DateBox).() -> Unit
-): DateBox = DateBox(prefill).apply(init)
+    init: ((@LayoutDsl DateBox).() -> Unit)? = null
+): DateBox = DateBox(prefill).also {
+    init?.invoke(it)
+}
 
-inline fun LayoutManager<Node>.dateBox(
-    prefill: LocalDate = now()
-): DateBox = dateBox(prefill) { }
-
+/** Creates a [DateBox] and add it to this [LayoutManager]. */
 inline fun LayoutManager<Node>.dateBox(
     prefill: LocalDate = now(),
-    init: (@LayoutDsl DateBox).() -> Unit
+    noinline init: ((@LayoutDsl DateBox).() -> Unit)? = null
 ): DateBox = com.hendraanggrian.openpss.layouts.dateBox(prefill, init).add()

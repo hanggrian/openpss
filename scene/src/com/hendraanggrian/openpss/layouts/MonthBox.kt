@@ -87,20 +87,16 @@ open class MonthBox(prefill: YearMonth = now()) : _HBox(8.0) {
     }
 }
 
-inline fun monthBox(
-    prefill: YearMonth = now()
-): MonthBox = monthBox(prefill) { }
+/** Creates a [MonthBox]. */
+fun monthBox(
+    prefill: YearMonth = YearMonth.now(),
+    init: ((@LayoutDsl MonthBox).() -> Unit)? = null
+): MonthBox = MonthBox(prefill).also {
+    init?.invoke(it)
+}
 
-inline fun monthBox(
-    prefill: YearMonth = now(),
-    init: (@LayoutDsl MonthBox).() -> Unit
-): MonthBox = MonthBox(prefill).apply(init)
-
+/** Creates a [MonthBox] and add it to this [LayoutManager]. */
 inline fun LayoutManager<Node>.monthBox(
-    prefill: YearMonth = now()
-): MonthBox = monthBox(prefill) { }
-
-inline fun LayoutManager<Node>.monthBox(
-    prefill: YearMonth = now(),
-    init: (@LayoutDsl MonthBox).() -> Unit
+    prefill: YearMonth = YearMonth.now(),
+    noinline init: ((@LayoutDsl MonthBox).() -> Unit)? = null
 ): MonthBox = com.hendraanggrian.openpss.layouts.monthBox(prefill, init).add()

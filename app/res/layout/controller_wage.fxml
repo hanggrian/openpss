@@ -12,7 +12,7 @@
         <Button mnemonicParsing="false" onAction="#browse">
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/btn_folder.png"/>
+                    <Image url="@/image/btn_folder_light.png"/>
                 </ImageView>
             </graphic>
             <tooltip>

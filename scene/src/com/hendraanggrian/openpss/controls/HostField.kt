@@ -1,4 +1,4 @@
-@file:Suppress("NOTHING_TO_INLINE", "UNUSED")
+@file:Suppress("NOTHING_TO_INLINE")
 
 package com.hendraanggrian.openpss.controls
 
@@ -25,14 +25,14 @@ open class HostField : TextField() {
     }
 }
 
-inline fun hostField(): HostField = hostField { }
+/** Creates a [HostField]. */
+fun hostField(
+    init: ((@LayoutDsl HostField).() -> Unit)? = null
+): HostField = HostField().also {
+    init?.invoke(it)
+}
 
-inline fun hostField(
-    init: (@LayoutDsl HostField).() -> Unit
-): HostField = HostField().apply(init)
-
-inline fun LayoutManager<Node>.hostField(): HostField = hostField { }
-
+/** Creates a [HostField] and add it to this [LayoutManager]. */
 inline fun LayoutManager<Node>.hostField(
-    init: (@LayoutDsl HostField).() -> Unit
+    noinline init: ((@LayoutDsl HostField).() -> Unit)? = null
 ): HostField = com.hendraanggrian.openpss.controls.hostField(init).add()

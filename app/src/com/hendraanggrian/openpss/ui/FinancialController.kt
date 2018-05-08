@@ -40,11 +40,11 @@ abstract class FinancialController<T> : SegmentedController(), Refreshable, Sele
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
-        refreshButton = button(graphic = ImageView(R.image.btn_refresh)) {
+        refreshButton = button(graphic = ImageView(R.image.btn_refresh_light)) {
             tooltip(getString(R.string.refresh))
             onAction { refresh() }
         }
-        viewTotalButton = button(graphic = ImageView(R.image.btn_money)) {
+        viewTotalButton = button(graphic = ImageView(R.image.btn_money_dark)) {
             tooltip(getString(R.string.view_total))
             onAction { ViewTotalPopup(this@FinancialController).show(this@button) }
         }

@@ -32,6 +32,11 @@ import java.util.ResourceBundle
 
 class MainController : Controller() {
 
+    companion object {
+        const val MIN_WIDTH = 900.0
+        const val MIN_HEIGHT = 480.0
+    }
+
     @FXML lateinit var menuBar: MenuBar
     @FXML lateinit var addCustomerItem: MenuItem
     @FXML lateinit var addInvoiceItem: MenuItem

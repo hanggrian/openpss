@@ -106,7 +106,8 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced 
                     tooltip(getString(R.string.view_password))
                     graphic = ktfx.layouts.imageView {
                         imageProperty().bind(`when`(this@toggleButton.selectedProperty())
-                            then Image(R.image.btn_visibility_on) otherwise Image(R.image.btn_visibility_off))
+                            then Image(R.image.btn_visibility_on_light)
+                            otherwise Image(R.image.btn_visibility_off_light))
                     }
                     selectedProperty().listener { _, _, selected ->
                         passwordField1.isVisible = !selected

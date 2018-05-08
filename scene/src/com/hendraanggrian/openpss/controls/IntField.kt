@@ -1,4 +1,4 @@
-@file:Suppress("NOTHING_TO_INLINE", "UNUSED")
+@file:Suppress("NOTHING_TO_INLINE")
 
 package com.hendraanggrian.openpss.controls
 
@@ -30,14 +30,14 @@ open class IntField : TextField() {
     }
 }
 
-inline fun intField(): IntField = intField { }
+/** Creates a [IntField]. */
+fun intField(
+    init: ((@LayoutDsl IntField).() -> Unit)? = null
+): IntField = IntField().also {
+    init?.invoke(it)
+}
 
-inline fun intField(
-    init: (@LayoutDsl IntField).() -> Unit
-): IntField = IntField().apply(init)
-
-inline fun LayoutManager<Node>.intField(): IntField = intField { }
-
+/** Creates a [IntField] and add it to this [LayoutManager]. */
 inline fun LayoutManager<Node>.intField(
-    init: (@LayoutDsl IntField).() -> Unit
+    noinline init: ((@LayoutDsl IntField).() -> Unit)? = null
 ): IntField = com.hendraanggrian.openpss.controls.intField(init).add()

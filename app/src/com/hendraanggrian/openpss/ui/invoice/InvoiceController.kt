@@ -4,6 +4,8 @@ import com.hendraanggrian.openpss.App.Companion.STYLE_DEFAULT_BUTTON
 import com.hendraanggrian.openpss.App.Companion.STYLE_DISPLAY_LABEL
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.controls.ViewInvoiceDialog
+import com.hendraanggrian.openpss.controls.adaptableButton
+import com.hendraanggrian.openpss.controls.styledAdaptableButton
 import com.hendraanggrian.openpss.db.SessionWrapper
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Customers
@@ -23,7 +25,6 @@ import com.hendraanggrian.openpss.ui.SegmentedController
 import com.hendraanggrian.openpss.ui.Selectable
 import com.hendraanggrian.openpss.ui.Selectable2
 import com.hendraanggrian.openpss.util.PATTERN_DATETIME_EXTENDED
-import com.hendraanggrian.openpss.util.adaptableText
 import com.hendraanggrian.openpss.util.controller
 import com.hendraanggrian.openpss.util.currencyCell
 import com.hendraanggrian.openpss.util.doneCell
@@ -66,13 +67,11 @@ import ktfx.collections.toMutableObservableList
 import ktfx.collections.toObservableList
 import ktfx.coroutines.onAction
 import ktfx.coroutines.onMouseClicked
-import ktfx.layouts.button
 import ktfx.layouts.columns
 import ktfx.layouts.contextMenu
 import ktfx.layouts.region
 import ktfx.layouts.separator
 import ktfx.layouts.splitPane
-import ktfx.layouts.styledButton
 import ktfx.layouts.styledLabel
 import ktfx.layouts.styledScene
 import ktfx.layouts.tableView
@@ -80,7 +79,6 @@ import ktfx.layouts.toolBar
 import ktfx.layouts.vbox
 import ktfx.scene.input.isDoubleClick
 import ktfx.stage.stage
-import org.controlsfx.control.PopOver.ArrowLocation.BOTTOM_RIGHT
 import java.net.URL
 import java.util.ResourceBundle
 import kotlin.math.ceil
@@ -102,10 +100,8 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
     private lateinit var addButton: Button
     private lateinit var editButton: Button
     private lateinit var deleteButton: Button
-    private lateinit var viewInvoiceButton: Button
     override val leftButtons: List<Node>
-        get() = listOf(refreshButton, separator(VERTICAL), addButton, editButton, deleteButton, separator(VERTICAL),
-            viewInvoiceButton)
+        get() = listOf(refreshButton, separator(VERTICAL), addButton, editButton, deleteButton)
 
     private lateinit var platePriceButton: Button
     private lateinit var offsetPriceButton: Button
@@ -118,20 +114,19 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
-        refreshButton = button(getString(R.string.refresh), ImageView(R.image.btn_refresh)) { onAction { refresh() } }
-        addButton = styledButton(STYLE_DEFAULT_BUTTON, getString(R.string.add_invoice),
-            ImageView(R.image.btn_add_dark)) { onAction { addInvoice() } }
-        editButton = button(getString(R.string.edit_invoice), ImageView(R.image.btn_edit)) {
+        refreshButton = adaptableButton(getString(R.string.refresh), R.image.btn_refresh_light) {
+            onAction { refresh() }
+        }
+        addButton = styledAdaptableButton(STYLE_DEFAULT_BUTTON,
+            getString(R.string.add_invoice), R.image.btn_add_dark) { onAction { addInvoice() } }
+        editButton = adaptableButton(getString(R.string.edit_invoice), R.image.btn_edit_light) {
             onAction { editInvoice() }
         }
-        deleteButton = button(getString(R.string.delete_invoice), ImageView(R.image.btn_delete)) {
+        deleteButton = adaptableButton(getString(R.string.delete_invoice), R.image.btn_delete_light) {
             onAction { deleteInvoice() }
         }
-        viewInvoiceButton = button(getString(R.string.view), ImageView(R.image.btn_invoice)) {
-            onAction { viewInvoice() }
-        }
-        platePriceButton = button(getString(R.string.plate_price)) { onAction { platePrice() } }
-        offsetPriceButton = button(getString(R.string.offset_price)) { onAction { offsetPrice() } }
+        platePriceButton = adaptableButton(getString(R.string.plate_price)) { onAction { platePrice() } }
+        offsetPriceButton = adaptableButton(getString(R.string.offset_price)) { onAction { offsetPrice() } }
 
         customerButton.textProperty().bind(stringBindingOf(customerProperty) {
             customerProperty.value?.toString() ?: getString(R.string.search_customer)
@@ -180,19 +175,26 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
                             getString(R.string.done)<Boolean> { doneCell { done } }
                         }
                         onMouseClicked { if (it.isDoubleClick() && selected != null) viewInvoice() }
+                        contextMenu {
+                            getString(R.string.view)(ImageView(R.image.btn_invoice_light)) {
+                                later { disableProperty().bind(!selectedBinding) }
+                                onAction { viewInvoice() }
+                            }
+                        }
                     }
                     vbox {
                         toolBar {
-                            styledLabel(STYLE_DISPLAY_LABEL, getString(R.string.payment))
+                            styledLabel(STYLE_DISPLAY_LABEL, getString(R.string.payment)/*,
+                                ImageView(R.image.btn_payment_light)*/)
                             region { setHgrow(this, ALWAYS) }
-                            styledButton(STYLE_DEFAULT_BUTTON, graphic = ImageView(R.image.btn_add_dark)) {
+                            styledAdaptableButton(STYLE_DEFAULT_BUTTON, getString(R.string.add_payment),
+                                R.image.btn_add_dark) {
                                 disableProperty().bind(!selectedBinding)
-                                adaptableText(invoicePagination.scene, getString(R.string.add_payment))
                                 onAction { addPayment() }
                             }
-                            deletePaymentButton = button(graphic = ImageView(R.image.btn_delete)) {
+                            deletePaymentButton = adaptableButton(getString(R.string.delete_payment),
+                                R.image.btn_delete_light) {
                                 later { disableProperty().bind(!selectedBinding2) }
-                                adaptableText(invoicePagination.scene, getString(R.string.delete_payment))
                                 onAction { deletePayment() }
                             }
                         }
@@ -209,21 +211,6 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
                                 getString(R.string.value)<String> { stringCell { value } }
                                 getString(R.string.payment_method)<String> {
                                     stringCell { typedMethod.toString(this@InvoiceController) }
-                                }
-                            }
-                            contextMenu {
-                                getString(R.string.add)(ImageView(R.image.btn_add_light)) {
-                                    disableProperty().bind(!selectedBinding)
-                                    onAction { addPayment() }
-                                }
-                                getString(R.string.delete)(ImageView(R.image.btn_delete)) {
-                                    later {
-                                        transaction {
-                                            disableProperty().bind(!selectedBinding2 or
-                                                login.isAtLeast(MANAGER).toReadOnlyProperty())
-                                        }
-                                    }
-                                    onAction { deletePayment() }
                                 }
                             }
                             itemsProperty().bind(bindingOf(invoiceTable.selectionModel.selectedItemProperty()) {
@@ -249,7 +236,6 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
                             val fullAccess = login.isAtLeast(MANAGER).toReadOnlyProperty()
                             editButton.disableProperty().bind(!selectedBinding or !fullAccess)
                             deleteButton.disableProperty().bind(!selectedBinding or !fullAccess)
-                            viewInvoiceButton.disableProperty().bind(!selectedBinding)
                         }
                     }
                 }
@@ -316,7 +302,7 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
         scene = styledScene(getStyle(R.style.openpss), loader.pane)
         isResizable = false
         loader.controller.login = login
-    }.showAndWait()
+    }.show()
 
     private fun offsetPrice() = stage(getString(R.string.offset_price)) {
         initModality(APPLICATION_MODAL)
@@ -324,7 +310,7 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
         scene = styledScene(getStyle(R.style.openpss), loader.pane)
         isResizable = false
         loader.controller.login = login
-    }.showAndWait()
+    }.show()
 
     private fun SessionWrapper.updatePaymentStatus() = Invoices[selected!!]
         .projection { Invoices.paid }

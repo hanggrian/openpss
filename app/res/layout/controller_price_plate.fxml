@@ -13,7 +13,7 @@
             </tooltip>
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/btn_refresh.png"/>
+                    <Image url="@/image/btn_refresh_light.png"/>
                 </ImageView>
             </graphic>
         </Button>
@@ -34,7 +34,7 @@
             </tooltip>
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/btn_delete.png"/>
+                    <Image url="@/image/btn_delete_light.png"/>
                 </ImageView>
             </graphic>
         </Button>

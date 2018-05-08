@@ -62,7 +62,7 @@ class AddPaymentPopup(
         } row 1 col 1 colSpans 2
         label(getString(R.string.payment)) row 2 col 0
         valueField = doubleField { promptText = getString(R.string.payment) } row 2 col 1
-        button(graphic = ImageView(R.image.btn_match_receivable)) {
+        button(graphic = ImageView(R.image.btn_match_receivable_light)) {
             tooltip(getString(R.string.match_receivable))
             onAction { valueField.value = receivable }
         } row 2 col 2

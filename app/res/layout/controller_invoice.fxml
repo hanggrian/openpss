@@ -9,18 +9,18 @@
       fx:controller="com.hendraanggrian.openpss.ui.invoice.InvoiceController">
     <ToolBar>
         <Label styleClass="display-label" text="%invoice">
-            <graphic>
+            <!--<graphic>
                 <ImageView>
-                    <Image url="@/image/btn_invoice.png"/>
+                    <Image url="@/image/btn_invoice_light.png"/>
                 </ImageView>
-            </graphic>
+            </graphic>-->
         </Label>
         <Region HBox.hgrow="ALWAYS"/>
         <SplitMenuButton mnemonicParsing="false" fx:id="customerButton" onAction="#selectCustomer"
                          text="%select_customer">
             <graphic>
                 <ImageView>
-                    <Image url="@/image/btn_customer.png"/>
+                    <Image url="@/image/btn_customer_light.png"/>
                 </ImageView>
             </graphic>
             <items>
@@ -41,7 +41,7 @@
             </fx:define>
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/btn_payment.png"/>
+                    <Image url="@/image/btn_payment_light.png"/>
                 </ImageView>
             </graphic>
             <tooltip>

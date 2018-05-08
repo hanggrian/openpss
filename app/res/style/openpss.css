@@ -9,7 +9,7 @@
 }
 
 .display-label {
-    -fx-font-family: 'SF Pro Text Bold';
+    -fx-font-size: 14pt;
 }
 
 .default-button {

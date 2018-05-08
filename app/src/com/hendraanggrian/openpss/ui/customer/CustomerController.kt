@@ -4,11 +4,14 @@ import com.hendraanggrian.openpss.App.Companion.STYLE_DEFAULT_BUTTON
 import com.hendraanggrian.openpss.App.Companion.STYLE_SEARCH_TEXTFIELD
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.controls.UserPopup
+import com.hendraanggrian.openpss.controls.adaptableButton
+import com.hendraanggrian.openpss.controls.styledAdaptableButton
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.schemas.Employee.Role.MANAGER
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.io.properties.SettingsFile.CUSTOMER_PAGINATION_ITEMS
+import com.hendraanggrian.openpss.resources.Display.HQVGA
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.SegmentedController
 import com.hendraanggrian.openpss.ui.Selectable
@@ -42,7 +45,6 @@ import kotlinx.nosql.update
 import ktfx.application.later
 import ktfx.beans.binding.bindingOf
 import ktfx.beans.binding.stringBindingOf
-import ktfx.beans.binding.times
 import ktfx.beans.property.toReadOnlyProperty
 import ktfx.beans.value.or
 import ktfx.collections.emptyObservableList
@@ -50,12 +52,10 @@ import ktfx.collections.toMutableObservableList
 import ktfx.collections.toObservableList
 import ktfx.coroutines.FX
 import ktfx.coroutines.onAction
-import ktfx.layouts.button
 import ktfx.layouts.checkMenuItem
 import ktfx.layouts.listView
 import ktfx.layouts.menuButton
 import ktfx.layouts.separator
-import ktfx.layouts.styledButton
 import ktfx.layouts.styledTextField
 import ktfx.layouts.tooltip
 import ktfx.scene.control.styledErrorAlert
@@ -101,18 +101,24 @@ class CustomerController : SegmentedController(), Refreshable, Selectable<Custom
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
-        refreshButton = button(getString(R.string.refresh), ImageView(R.image.btn_refresh)) { onAction { refresh() } }
-        addButton = styledButton(STYLE_DEFAULT_BUTTON, getString(R.string.add_customer),
-            ImageView(R.image.btn_add_dark)) { onAction { add() } }
-        editButton = button(getString(R.string.edit_customer), ImageView(R.image.btn_edit)) { onAction { edit() } }
+        refreshButton = adaptableButton(getString(R.string.refresh), R.image.btn_refresh_light) {
+            onAction { refresh() }
+        }
+        addButton = styledAdaptableButton(STYLE_DEFAULT_BUTTON,
+            getString(R.string.add_customer), R.image.btn_add_dark) {
+            onAction { add() }
+        }
+        editButton = adaptableButton(getString(R.string.edit_customer), R.image.btn_edit_light) {
+            onAction { edit() }
+        }
         searchField = styledTextField(STYLE_SEARCH_TEXTFIELD) { promptText = getString(R.string.search_customer) }
-        filterMenu = menuButton(graphic = ImageView(R.image.btn_filter)) {
+        filterMenu = menuButton(graphic = ImageView(R.image.btn_filter_light)) {
             tooltip(getString(R.string.filter))
             filterNameItem = checkMenuItem(getString(R.string.name)) { isSelected = true }
             filterAddressItem = checkMenuItem(getString(R.string.address))
             filterNoteItem = checkMenuItem(getString(R.string.note))
         }
-        customerPagination.minWidthProperty().bind(splitPane.widthProperty() * 0.3)
+        customerPagination.minWidthProperty().bind(HQVGA.widthProperty)
         idImage.tooltip(getString(R.string.id))
         sinceImage.tooltip(getString(R.string.since))
         addressImage.tooltip(getString(R.string.address))
@@ -136,10 +142,12 @@ class CustomerController : SegmentedController(), Refreshable, Selectable<Custom
                             transaction {
                                 val customers = Customers.buildQuery {
                                     if (searchField.text.isNotBlank()) {
-                                        if (filterNameItem.isSelected) or(it.name.matches(searchField.text, CASE_INSENSITIVE))
+                                        if (filterNameItem.isSelected)
+                                            or(it.name.matches(searchField.text, CASE_INSENSITIVE))
                                         if (filterAddressItem.isSelected)
                                             or(it.address.matches(searchField.text, CASE_INSENSITIVE))
-                                        if (filterNoteItem.isSelected) or(it.note.matches(searchField.text, CASE_INSENSITIVE))
+                                        if (filterNoteItem.isSelected)
+                                            or(it.note.matches(searchField.text, CASE_INSENSITIVE))
                                     }
                                 }
                                 customerPagination.pageCount =

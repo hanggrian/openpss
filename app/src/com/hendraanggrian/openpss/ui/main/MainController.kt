@@ -6,6 +6,7 @@ import com.hendraanggrian.openpss.layouts.SegmentedTabPane
 import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.SegmentedController
+import com.hendraanggrian.openpss.ui.Selectable
 import com.hendraanggrian.openpss.ui.customer.CustomerController
 import com.hendraanggrian.openpss.ui.employee.EmployeeController
 import com.hendraanggrian.openpss.ui.finance.FinanceController
@@ -16,6 +17,8 @@ import javafx.event.ActionEvent
 import javafx.fxml.FXML
 import javafx.scene.control.MenuBar
 import javafx.scene.control.MenuItem
+import javafx.scene.control.SelectionModel
+import javafx.scene.control.Tab
 import javafx.scene.layout.AnchorPane
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.HBox
@@ -26,7 +29,7 @@ import org.apache.commons.lang3.SystemUtils.IS_OS_MAC
 import java.net.URL
 import java.util.ResourceBundle
 
-class MainController : Controller() {
+class MainController : Controller(), Selectable<Tab> {
 
     @FXML lateinit var menuBar: MenuBar
     @FXML lateinit var addCustomerItem: MenuItem
@@ -46,6 +49,8 @@ class MainController : Controller() {
 
     private lateinit var controllers: List<SegmentedController>
 
+    override val selectionModel: SelectionModel<Tab> get() = tabPane.selectionModel
+
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
         menuBar.isUseSystemMenuBar = IS_OS_MAC
@@ -54,7 +59,7 @@ class MainController : Controller() {
         AnchorPane.setRightAnchor(tabPane.header, 0.0)
 
         replaceButtons(customerController)
-        tabPane.selectionModel.selectedIndexProperty().listener { _, _, value ->
+        selectedIndexProperty.listener { _, _, value ->
             val controller = controllers[value.toInt()]
             replaceButtons(controller)
             if (controller is Refreshable) controller.refresh()
@@ -80,8 +85,8 @@ class MainController : Controller() {
 
     @FXML fun about() = AboutDialog(this).show()
 
-    fun <T : SegmentedController> select(controller: T, run: T.() -> Unit) {
-        tabPane.selectionModel.select(controllers.indexOf(controller))
+    private fun <T : SegmentedController> select(controller: T, run: T.() -> Unit) {
+        select(controllers.indexOf(controller))
         controller.run(run)
     }
 

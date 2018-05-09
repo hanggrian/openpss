@@ -182,21 +182,27 @@ class SettingsDialog(resourced: Resourced, showGlobalSettings: Boolean) : Dialog
         }
     }
 
-    private fun group(titleId: String, init: (@LayoutDsl _VBox).() -> Unit): VBox = vbox {
-        spacing = 4.0
+    private fun group(
+        titleId: String,
+        init: (@LayoutDsl _VBox).() -> Unit
+    ): VBox = vbox(4.0) {
         label(getString(titleId)) { font = getFont(R.font.sf_pro_text_bold) }
         init()
     }
 
-    private fun LayoutManager<Node>.group(titleId: String, init: (@LayoutDsl _VBox).() -> Unit): VBox = vbox {
-        spacing = 4.0
+    private fun LayoutManager<Node>.group(
+        titleId: String,
+        init: (@LayoutDsl _VBox).() -> Unit
+    ): VBox = vbox(4.0) {
         label(getString(titleId)) { font = getFont(R.font.sf_pro_text_bold) }
         init()
     }
 
-    private fun LayoutManager<Node>.item(labelId: String? = null, init: (@LayoutDsl _HBox).() -> Unit): HBox = hbox {
+    private fun LayoutManager<Node>.item(
+        labelId: String? = null,
+        init: (@LayoutDsl _HBox).() -> Unit
+    ): HBox = hbox(8.0) {
         alignment = CENTER_LEFT
-        spacing = 8.0
         if (labelId != null) label(getString(labelId))
         init()
     }

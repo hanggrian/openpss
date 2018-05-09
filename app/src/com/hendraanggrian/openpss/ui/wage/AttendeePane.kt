@@ -193,7 +193,7 @@ class AttendeePane(
     override val selectionModel: SelectionModel<DateTime> get() = attendanceList.selectionModel
 
     private fun addAttendance() = DateTimePopup(this, R.string.add_record, R.string.add,
-        now().run { minusMinutes(minuteOfHour) }).show(attendanceList) {
+        now().run { minusMinutes(minuteOfHour) }).showAt(attendanceList) {
         attendanceList.run {
             items.add(it)
             items.sort()
@@ -201,7 +201,7 @@ class AttendeePane(
     }
 
     private fun copyAttendance() = DateTimePopup(this, R.string.add_record, R.string.add,
-        selected!!.run { minusMinutes(minuteOfHour) }).show(attendanceList) {
+        selected!!.run { minusMinutes(minuteOfHour) }).showAt(attendanceList) {
         attendanceList.run {
             items.add(it)
             items.sort()
@@ -209,7 +209,7 @@ class AttendeePane(
     }
 
     private fun editAttendance() = DateTimePopup(this, R.string.edit_record, R.string.edit,
-        selected!!).show(attendanceList) {
+        selected!!).showAt(attendanceList) {
         attendanceList.run {
             items[attendanceList.selectionModel.selectedIndex] = it
             items.sort()

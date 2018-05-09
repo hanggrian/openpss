@@ -113,6 +113,9 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
     private lateinit var paymentTable: TableView<Payment>
     private lateinit var deletePaymentButton: Button
 
+    override val selectionModel: SelectionModel<Invoice> get() = invoiceTable.selectionModel
+    override val selectionModel2: SelectionModel<Payment> get() = paymentTable.selectionModel
+
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
         refreshButton = adaptableButton(getString(R.string.refresh), R.image.btn_refresh_light) {
@@ -251,10 +254,6 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
         })
     }
 
-    override val selectionModel: SelectionModel<Invoice> get() = invoiceTable.selectionModel
-
-    override val selectionModel2: SelectionModel<Payment> get() = paymentTable.selectionModel
-
     fun addInvoice() = InvoiceDialog(this, employee = login).showAndWait().ifPresent {
         transaction {
             it.id = Invoices.insert(it)
@@ -282,13 +281,13 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
         invoiceTable.items.remove(selected)
     }
 
-    @FXML fun selectCustomer() = SearchCustomerPopup(this).show(customerButton) { customerProperty.set(it) }
+    @FXML fun selectCustomer() = SearchCustomerPopup(this).showAt(customerButton) { customerProperty.set(it) }
 
     @FXML fun clearCustomer() = customerProperty.set(null)
 
     fun viewInvoice() = ViewInvoiceDialog(this, selected!!).show()
 
-    private fun addPayment() = AddPaymentPopup(this, login, selected!!).show(deletePaymentButton) {
+    private fun addPayment() = AddPaymentPopup(this, login, selected!!).showAt(deletePaymentButton) {
         transaction {
             Payments += it
             updatePaymentStatus()

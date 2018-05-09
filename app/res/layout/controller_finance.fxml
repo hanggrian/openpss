@@ -25,6 +25,13 @@
             <columnResizePolicy>
                 <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
             </columnResizePolicy>
+            <contextMenu>
+                <ContextMenu>
+                    <items>
+                        <MenuItem fx:id="viewInvoiceItem" mnemonicParsing="false" onAction="#viewInvoice" text="%view"/>
+                    </items>
+                </ContextMenu>
+            </contextMenu>
         </TableView>
     </Tab>
     <Tab closable="false" text="%monthly">
@@ -43,6 +50,14 @@
             <columnResizePolicy>
                 <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
             </columnResizePolicy>
+            <contextMenu>
+                <ContextMenu>
+                    <items>
+                        <MenuItem fx:id="viewPaymentsItem" mnemonicParsing="false" onAction="#viewPayments"
+                                  text="%view"/>
+                    </items>
+                </ContextMenu>
+            </contextMenu>
         </TableView>
     </Tab>
 </SegmentedTabPane>

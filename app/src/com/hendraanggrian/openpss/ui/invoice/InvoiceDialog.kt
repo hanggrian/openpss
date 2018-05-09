@@ -98,7 +98,7 @@ class InvoiceDialog(
                         customerProperty.value?.toString() ?: getString(R.string.search_customer)
                     })
                     onAction {
-                        SearchCustomerPopup(this@InvoiceDialog).show(this@button) { customerProperty.set(it) }
+                        SearchCustomerPopup(this@InvoiceDialog).showAt(this@button) { customerProperty.set(it) }
                     }
                     if (INVOICE_QUICK_SELECT_CUSTOMER && !isEdit()) fire()
                 } col 1 row 2
@@ -200,7 +200,7 @@ class InvoiceDialog(
         }
         contextMenu {
             getString(R.string.add)(ImageView(R.image.menu_add)) {
-                onAction { newAddOrderPopup().show(this@tableView) { this@tableView.items.add(it) } }
+                onAction { newAddOrderPopup().showAt(this@tableView) { this@tableView.items.add(it) } }
             }
             separatorMenuItem()
             getString(R.string.delete)(ImageView(R.image.menu_delete)) {

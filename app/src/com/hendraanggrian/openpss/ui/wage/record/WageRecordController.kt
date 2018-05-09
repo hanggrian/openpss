@@ -174,7 +174,7 @@ class WageRecordController : Controller() {
     }
 
     @FXML fun disableDailyIncome() = DatePopup(this, R.string.disable_daily_income)
-        .show(disableDailyIncomeButton) { date ->
+        .showAt(disableDailyIncomeButton) { date ->
             val undoable = Undoable()
             records.filter { it.startProperty.value.toLocalDate() == date }
                 .forEach { record ->

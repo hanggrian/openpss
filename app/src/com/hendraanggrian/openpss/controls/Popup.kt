@@ -7,6 +7,7 @@ import javafx.scene.Node
 import javafx.scene.control.Button
 import javafx.scene.control.ButtonBar
 import javafx.scene.text.Font
+import javafx.util.Duration.ZERO
 import ktfx.application.later
 import ktfx.coroutines.onAction
 import ktfx.layouts.LayoutDsl
@@ -60,8 +61,13 @@ abstract class Popup<out T>(resourced: Resourced, titleId: String) : PopOver(), 
     open fun LayoutManager<Node>.buttons() {
     }
 
-    fun show(node: Node, onAction: (T) -> Unit) {
+    fun showAt(node: Node) {
         show(node)
+        later { node.scene.window.setOnCloseRequest { hide(ZERO) } }
+    }
+
+    fun showAt(node: Node, onAction: (T) -> Unit) {
+        showAt(node)
         // Since content is later
         later {
             buttonBar.buttons.map { it as Button }.single { it.isDefaultButton }.onAction {

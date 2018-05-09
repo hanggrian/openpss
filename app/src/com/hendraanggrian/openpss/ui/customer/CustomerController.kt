@@ -100,6 +100,9 @@ class CustomerController : SegmentedController(), Refreshable, Selectable<Custom
 
     private lateinit var customerList: ListView<Customer>
 
+    override val selectionModel: SelectionModel<Customer> get() = customerList.selectionModel
+    override val selectionModel2: SelectionModel<Customer.Contact> get() = contactTable.selectionModel
+
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
         refreshButton = adaptableButton(getString(R.string.refresh), R.image.btn_refresh_light) {
@@ -180,11 +183,7 @@ class CustomerController : SegmentedController(), Refreshable, Selectable<Custom
         }
     }
 
-    override val selectionModel: SelectionModel<Customer> get() = customerList.selectionModel
-
-    override val selectionModel2: SelectionModel<Customer.Contact> get() = contactTable.selectionModel
-
-    fun add() = UserPopup(this, R.string.add_customer).show(addButton) {
+    fun add() = UserPopup(this, R.string.add_customer).showAt(addButton) {
         transaction {
             when {
                 Customers { it.name.matches("^$it$", CASE_INSENSITIVE) }.isNotEmpty() ->
@@ -198,14 +197,14 @@ class CustomerController : SegmentedController(), Refreshable, Selectable<Custom
         }
     }
 
-    private fun edit() = EditCustomerPopup(this, selected!!).show(editButton) {
+    private fun edit() = EditCustomerPopup(this, selected!!).showAt(editButton) {
         transaction {
             Customers[selected!!].projection { name + address + note }.update(it.name, it.address, it.note)
             reload()
         }
     }
 
-    @FXML fun addContact() = AddContactPopup(this).show(contactTable) {
+    @FXML fun addContact() = AddContactPopup(this).showAt(contactTable) {
         transaction {
             Customers[selected!!].projection { contacts }.update(selected!!.contacts + it)
             reload()

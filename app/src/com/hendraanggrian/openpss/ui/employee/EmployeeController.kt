@@ -46,6 +46,8 @@ class EmployeeController : SegmentedController(), Refreshable, Selectable<Employ
     override val leftButtons: List<Node>
         get() = listOf(refreshButton, separator(VERTICAL), addButton, editButton, deleteButton)
 
+    override val selectionModel: SelectionModel<Employee> get() = employeeTable.selectionModel
+
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
         refreshButton = adaptableButton(getString(R.string.refresh), R.image.btn_refresh_light) {
@@ -77,16 +79,14 @@ class EmployeeController : SegmentedController(), Refreshable, Selectable<Employ
         it += transaction { Employees().toMutableObservableList().also { it -= Employee.BACKDOOR } }
     }
 
-    override val selectionModel: SelectionModel<Employee> get() = employeeTable.selectionModel
-
-    private fun add() = UserPopup(this, R.string.add_employee, false).show(addButton) {
+    private fun add() = UserPopup(this, R.string.add_employee, false).showAt(addButton) {
         val employee = Employee.new(it)
         employee.id = transaction { Employees.insert(employee) }
         employeeTable.items.add(employee)
         selectionModel.select(employee)
     }
 
-    private fun edit() = EditEmployeePopup(this, selected!!).show(editButton) {
+    private fun edit() = EditEmployeePopup(this, selected!!).showAt(editButton) {
         transaction {
             Employees[selected!!.id]
                 .projection { name + password + role }

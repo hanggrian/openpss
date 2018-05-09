@@ -8,8 +8,6 @@ import com.hendraanggrian.openpss.controls.styledAdaptableButton
 import com.hendraanggrian.openpss.db.schemas.Employees
 import com.hendraanggrian.openpss.db.schemas.Invoices
 import com.hendraanggrian.openpss.db.schemas.Payment
-import com.hendraanggrian.openpss.db.schemas.Payment.Method.CASH
-import com.hendraanggrian.openpss.db.schemas.Payment.Method.TRANSFER
 import com.hendraanggrian.openpss.db.schemas.Payments
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.io.properties.LoginFile
@@ -70,7 +68,7 @@ class FinanceController : SegmentedController(), Refreshable,
     @FXML lateinit var monthlyTable: TableView<Report>
     @FXML lateinit var monthlyDateColumn: TableColumn<Report, String>
     @FXML lateinit var monthlyCashColumn: TableColumn<Report, String>
-    @FXML lateinit var monthlyTransferColumn: TableColumn<Report, String>
+    @FXML lateinit var monthlyOthersColumn: TableColumn<Report, String>
     @FXML lateinit var monthlyTotalColumn: TableColumn<Report, String>
     @FXML lateinit var viewPaymentsItem: MenuItem
 
@@ -93,9 +91,7 @@ class FinanceController : SegmentedController(), Refreshable,
         }
         viewTotalButton = styledAdaptableButton(STYLE_DEFAULT_BUTTON,
             getString(R.string.total), R.image.btn_money_dark) {
-            onAction {
-                ViewTotalPopup(this@FinanceController, totalCash, totalTransfer).show(this@styledAdaptableButton)
-            }
+            onAction { ViewTotalPopup(this@FinanceController, totalCash, totalOthers).show(this@styledAdaptableButton) }
         }
         leftButtons.addAll(tabPane.header, separator(VERTICAL), refreshButton, viewTotalButton)
         dateBox = dateBox {
@@ -125,7 +121,7 @@ class FinanceController : SegmentedController(), Refreshable,
 
         monthlyDateColumn.stringCell { date.toString(PATTERN_DATE) }
         monthlyCashColumn.stringCell { currencyConverter.toString(cash) }
-        monthlyTransferColumn.stringCell { currencyConverter.toString(transfer) }
+        monthlyOthersColumn.stringCell { currencyConverter.toString(others) }
         monthlyTotalColumn.stringCell { currencyConverter.toString(total) }
         viewPaymentsItem.disableProperty().bind(!selectedBinding3)
 
@@ -148,16 +144,16 @@ class FinanceController : SegmentedController(), Refreshable,
         dateBox.picker.value = selected3!!.date.toJava()
     }
 
-    val totalCash: Double
+    private val totalCash: Double
         get() = when (selectedIndex) {
-            0 -> Payment.gather(dailyTable.items, CASH)
+            0 -> Payment.gather(dailyTable.items)
             else -> monthlyTable.items.sumByDouble { it.cash }
         }
 
-    val totalTransfer: Double
+    private val totalOthers: Double
         get() = when (selectedIndex) {
-            0 -> Payment.gather(dailyTable.items, TRANSFER)
-            else -> monthlyTable.items.sumByDouble { it.transfer }
+            0 -> Payment.gather(dailyTable.items, false)
+            else -> monthlyTable.items.sumByDouble { it.others }
         }
 
     private fun List<Node>.addAll(vararg buttons: Node) {

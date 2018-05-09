@@ -47,7 +47,7 @@ class AddPaymentPopup(
 
     private lateinit var valueField: DoubleField
     private lateinit var methodChoice: ChoiceBox<Method>
-    private lateinit var transferField: TextField
+    private lateinit var referenceField: TextField
     private val receivable = transaction { invoice.calculateDue() }
 
     override val content: Node = gridPane {
@@ -89,8 +89,8 @@ class AddPaymentPopup(
             converter { toString { it!!.toString(this@AddPaymentPopup) } }
             selectionModel.selectFirst()
         } row 6 col 1 colSpans 2
-        label(getString(R.string.transfer_reference)) { bindDisable() } row 7 col 0
-        transferField = textField { bindDisable() } row 7 col 1 colSpans 2
+        label(getString(R.string.reference)) { bindDisable() } row 7 col 0
+        referenceField = textField { bindDisable() } row 7 col 1 colSpans 2
     }
 
     override fun LayoutManager<Node>.buttons() {
@@ -101,7 +101,7 @@ class AddPaymentPopup(
             methodChoice.selectionModel.selectedItemProperty().listener { _, _, method ->
                 disableProperty().bind(when (method) {
                     CASH -> binding
-                    else -> binding or transferField.textProperty().isBlank()
+                    else -> binding or referenceField.textProperty().isBlank()
                 })
             }
         }
@@ -110,7 +110,7 @@ class AddPaymentPopup(
     override fun getResult(): Payment = Payment.new(invoice.id, employee.id, methodChoice.value, valueField.value,
         when (methodChoice.selectionModel.selectedItem) {
             CASH -> null
-            else -> transferField.text
+            else -> referenceField.text
         })
 
     private fun Node.bindDisable() = disableProperty().bind(methodChoice.selectionModel.selectedItemProperty() eq CASH)

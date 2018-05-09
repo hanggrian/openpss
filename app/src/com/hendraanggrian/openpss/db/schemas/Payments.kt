@@ -21,7 +21,7 @@ object Payments : DocumentSchema<Payment>("payments", Payment::class) {
     val dateTime = dateTime("date_time")
     val method = string("method")
     val value = double("value")
-    val transfer = nullableString("transfer")
+    val reference = nullableString("reference")
 }
 
 data class Payment(
@@ -30,7 +30,7 @@ data class Payment(
     val dateTime: DateTime,
     val method: String,
     val value: Double,
-    val transfer: String?
+    val reference: String?
 ) : Document<Payments> {
     companion object {
         fun new(
@@ -38,11 +38,11 @@ data class Payment(
             employeeId: Id<String, Employees>,
             method: Method,
             value: Double,
-            transfer: String?
-        ): Payment = Payment(invoiceId, employeeId, dbDateTime, method.id, value, transfer)
+            reference: String?
+        ): Payment = Payment(invoiceId, employeeId, dbDateTime, method.id, value, reference)
 
-        fun gather(payments: List<Payment>, method: Payment.Method) = payments
-            .filter { it.typedMethod == method }
+        fun gather(payments: List<Payment>, isCash: Boolean = true) = payments
+            .filter { it.isCash() == isCash }
             .sumByDouble { it.value }
     }
 
@@ -50,12 +50,14 @@ data class Payment(
 
     val typedMethod: Method get() = enumValueOfId(method)
 
+    fun isCash(): Boolean = reference == null
+
     enum class Method : StringResource {
         CASH {
             override val resourceId: String = R.string.cash
         },
-        TRANSFER {
-            override val resourceId: String = R.string.transfer
+        OTHERS {
+            override val resourceId: String = R.string.others
         }
     }
 }

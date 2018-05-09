@@ -44,7 +44,7 @@
             <columns>
                 <TableColumn fx:id="monthlyDateColumn" text="%date"/>
                 <TableColumn fx:id="monthlyCashColumn" text="%cash"/>
-                <TableColumn fx:id="monthlyTransferColumn" text="%transfer"/>
+                <TableColumn fx:id="monthlyOthersColumn" text="%others"/>
                 <TableColumn fx:id="monthlyTotalColumn" text="%total"/>
             </columns>
             <columnResizePolicy>

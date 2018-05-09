@@ -1,6 +1,6 @@
 package com.hendraanggrian.openpss.ui.main
 
-import com.hendraanggrian.openpss.db.schemas.Employee
+import com.hendraanggrian.openpss.db.schemas.Employee.Role.MANAGER
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.layouts.SegmentedTabPane
 import com.hendraanggrian.openpss.ui.Controller
@@ -10,7 +10,6 @@ import com.hendraanggrian.openpss.ui.customer.CustomerController
 import com.hendraanggrian.openpss.ui.employee.EmployeeController
 import com.hendraanggrian.openpss.ui.finance.FinanceController
 import com.hendraanggrian.openpss.ui.invoice.InvoiceController
-import com.hendraanggrian.openpss.ui.report.ReportController
 import com.hendraanggrian.openpss.ui.schedule.ScheduleController
 import com.hendraanggrian.openpss.ui.wage.WageController
 import javafx.event.ActionEvent
@@ -38,12 +37,12 @@ class MainController : Controller() {
     @FXML lateinit var navigationLeftBox: HBox
     @FXML lateinit var navigationRightBox: HBox
     @FXML lateinit var tabPane: SegmentedTabPane
-    @Suppress("MemberVisibilityCanBePrivate") @FXML lateinit var customerController: CustomerController
-    @Suppress("MemberVisibilityCanBePrivate") @FXML lateinit var scheduleController: ScheduleController
-    @Suppress("MemberVisibilityCanBePrivate") @FXML lateinit var invoiceController: InvoiceController
-    @Suppress("MemberVisibilityCanBePrivate") @FXML lateinit var financeController: FinanceController
-    @Suppress("MemberVisibilityCanBePrivate") @FXML lateinit var wageController: WageController
-    @Suppress("MemberVisibilityCanBePrivate") @FXML lateinit var employeeController: EmployeeController
+    @FXML lateinit var customerController: CustomerController
+    @FXML lateinit var scheduleController: ScheduleController
+    @FXML lateinit var invoiceController: InvoiceController
+    @FXML lateinit var financeController: FinanceController
+    @FXML lateinit var wageController: WageController
+    @FXML lateinit var employeeController: EmployeeController
 
     private lateinit var controllers: List<SegmentedController>
 
@@ -66,7 +65,7 @@ class MainController : Controller() {
             controllers = listOf(customerController, scheduleController, invoiceController, financeController,
                 wageController, employeeController)
             controllers.forEach { it.login = login }
-            financeController.addExtra(ReportController.EXTRA_MAIN_CONTROLLER, this)
+            financeController.addExtra(FinanceController.EXTRA_MAIN_CONTROLLER, this)
         }
     }
 
@@ -75,7 +74,7 @@ class MainController : Controller() {
         else -> select(invoiceController) { addInvoice() }
     }
 
-    @FXML fun settings() = SettingsDialog(this, transaction { login.isAtLeast(Employee.Role.MANAGER) }).show()
+    @FXML fun settings() = SettingsDialog(this, transaction { login.isAtLeast(MANAGER) }).show()
 
     @FXML fun quit() = exit()
 

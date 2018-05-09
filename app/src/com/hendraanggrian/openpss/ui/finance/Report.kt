@@ -1,4 +1,4 @@
-package com.hendraanggrian.openpss.ui.report
+package com.hendraanggrian.openpss.ui.finance
 
 import com.hendraanggrian.openpss.db.schemas.Payment
 import com.hendraanggrian.openpss.db.schemas.Payment.Method.CASH

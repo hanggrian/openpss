@@ -128,7 +128,7 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced 
                     value = LoginFile.DB_PORT
                     promptText = getString(R.string.port)
                     prefWidth = 64.0
-                    valueProperty.listener { _, _, newValue -> LoginFile.DB_PORT = newValue.toInt() }
+                    valueProperty().listener { _, _, newValue -> LoginFile.DB_PORT = newValue.toInt() }
                 } col 2 row 0
                 label(getString(R.string.server_user)) col 0 row 1
                 serverUserField = textField(LoginFile.DB_USER) {
@@ -153,7 +153,7 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced 
         customButton(getString(R.string.login), OK_DONE) {
             disableProperty().bind(employeeField.textProperty().isBlank()
                 or passwordField1.textProperty().isBlank()
-                or !serverHostField.validProperty
+                or !serverHostField.validProperty()
                 or serverPortField.textProperty().isBlank()
                 or serverUserField.textProperty().isBlank()
                 or serverPasswordField.textProperty().isBlank())

@@ -16,7 +16,8 @@ import org.apache.commons.validator.routines.InetAddressValidator.getInstance
 /** Field that display IP address. */
 open class HostField : TextField() {
 
-    val validProperty: BooleanProperty = SimpleBooleanProperty()
+    private val validProperty = SimpleBooleanProperty()
+    fun validProperty(): BooleanProperty = validProperty
     val isValid: Boolean by validProperty
 
     init {

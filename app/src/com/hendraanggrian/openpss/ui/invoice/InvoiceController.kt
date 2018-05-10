@@ -3,8 +3,8 @@ package com.hendraanggrian.openpss.ui.invoice
 import com.hendraanggrian.openpss.App.Companion.STYLE_DEFAULT_BUTTON
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.controls.ViewInvoiceDialog
-import com.hendraanggrian.openpss.controls.adaptableButton
-import com.hendraanggrian.openpss.controls.styledAdaptableButton
+import com.hendraanggrian.openpss.controls.stretchableButton
+import com.hendraanggrian.openpss.controls.styledStretchableButton
 import com.hendraanggrian.openpss.db.SessionWrapper
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Customers
@@ -116,22 +116,22 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
-        refreshButton = adaptableButton(getString(R.string.refresh), R.image.btn_refresh_light) {
+        refreshButton = stretchableButton(getString(R.string.refresh), R.image.btn_refresh_light) {
             onAction { refresh() }
         }
-        addButton = styledAdaptableButton(STYLE_DEFAULT_BUTTON, getString(R.string.add), R.image.btn_add_dark) {
+        addButton = styledStretchableButton(STYLE_DEFAULT_BUTTON, getString(R.string.add), R.image.btn_add_dark) {
             onAction { addInvoice() }
         }
-        editButton = adaptableButton(getString(R.string.edit), R.image.btn_edit_light) {
+        editButton = stretchableButton(getString(R.string.edit), R.image.btn_edit_light) {
             onAction { editInvoice() }
         }
-        deleteButton = adaptableButton(getString(R.string.delete), R.image.btn_delete_light) {
+        deleteButton = stretchableButton(getString(R.string.delete), R.image.btn_delete_light) {
             onAction { deleteInvoice() }
         }
-        platePriceButton = adaptableButton(getString(R.string.plate_price), R.image.btn_plate_light) {
+        platePriceButton = stretchableButton(getString(R.string.plate_price), R.image.btn_plate_light) {
             onAction { platePrice() }
         }
-        offsetPriceButton = adaptableButton(getString(R.string.offset_price), R.image.btn_offset_light) {
+        offsetPriceButton = stretchableButton(getString(R.string.offset_price), R.image.btn_offset_light) {
             onAction { offsetPrice() }
         }
 
@@ -155,7 +155,7 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
     override fun refresh() = later {
         invoicePagination.pageFactoryProperty().bind(bindingOf(customerProperty,
             anyPaymentItem.selectedProperty(), unpaidPaymentItem.selectedProperty(), paidPaymentItem.selectedProperty(),
-            allDateRadio.selectedProperty(), pickDateRadio.selectedProperty(), dateBox.valueProperty) {
+            allDateRadio.selectedProperty(), pickDateRadio.selectedProperty(), dateBox.valueProperty()) {
             Callback<Int, Node> { page ->
                 splitPane {
                     orientation = VERTICAL
@@ -191,12 +191,12 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
                             spacing = 8.0
                             updatePadding(8.0, 16.0, 8.0, 16.0)
                             region() hpriority ALWAYS
-                            styledAdaptableButton(STYLE_DEFAULT_BUTTON, getString(R.string.add_payment),
+                            styledStretchableButton(STYLE_DEFAULT_BUTTON, getString(R.string.add_payment),
                                 R.image.btn_add_dark) {
                                 disableProperty().bind(!selectedBinding)
                                 onAction { addPayment() }
                             }
-                            deletePaymentButton = adaptableButton(getString(R.string.delete_payment),
+                            deletePaymentButton = stretchableButton(getString(R.string.delete_payment),
                                 R.image.btn_delete_light) {
                                 later { disableProperty().bind(!selectedBinding2) }
                                 onAction { deletePayment() }

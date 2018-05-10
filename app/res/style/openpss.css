@@ -1,3 +1,5 @@
+/* OVERRIDING */
+
 .root {
     -fx-accent: #009688;
     -fx-focus-color: #009688;
@@ -7,6 +9,8 @@
 .split-pane *.split-pane-divider {
     -fx-padding: 0 1 0 1;
 }
+
+/* CUSTOM STYLECLASSES */
 
 .display-label {
     -fx-font-size: 13pt;
@@ -45,4 +49,8 @@
 
 .file-textfield:focused {
   -fx-background-image: url('../image/field_file_active.png');
+}
+
+.borderless-titledpane > *.content {
+    -fx-border-color: transparent;
 }

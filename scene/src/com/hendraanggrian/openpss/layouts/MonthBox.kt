@@ -34,7 +34,8 @@ open class MonthBox @JvmOverloads constructor(prefill: YearMonth = now()) : _HBo
     var previousButton: Button
     var nextButton: Button
 
-    val valueProperty: ObjectProperty<YearMonth> = SimpleObjectProperty()
+    private val valueProperty = SimpleObjectProperty<YearMonth>()
+    fun valueProperty(): ObjectProperty<YearMonth> = valueProperty
     val value: YearMonth by valueProperty
 
     private var months: Array<String> = getInstance().shortMonths
@@ -75,7 +76,7 @@ open class MonthBox @JvmOverloads constructor(prefill: YearMonth = now()) : _HBo
             }
         }
 
-        valueProperty.bind(bindingOf(monthBox.selectionModel.selectedIndexProperty(), yearField.valueProperty) {
+        valueProperty.bind(bindingOf(monthBox.selectionModel.selectedIndexProperty(), yearField.valueProperty()) {
             YearMonth(yearField.value, monthBox.value + 1)
         })
     }

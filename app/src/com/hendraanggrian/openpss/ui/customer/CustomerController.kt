@@ -4,14 +4,13 @@ import com.hendraanggrian.openpss.App.Companion.STYLE_DEFAULT_BUTTON
 import com.hendraanggrian.openpss.App.Companion.STYLE_SEARCH_TEXTFIELD
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.controls.UserPopup
-import com.hendraanggrian.openpss.controls.adaptableButton
-import com.hendraanggrian.openpss.controls.styledAdaptableButton
+import com.hendraanggrian.openpss.controls.stretchableButton
+import com.hendraanggrian.openpss.controls.styledStretchableButton
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.schemas.Employee.Role.MANAGER
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.io.properties.SettingsFile.CUSTOMER_PAGINATION_ITEMS
-import com.hendraanggrian.openpss.resources.Display.HQVGA
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.SegmentedController
 import com.hendraanggrian.openpss.ui.Selectable
@@ -105,13 +104,13 @@ class CustomerController : SegmentedController(), Refreshable, Selectable<Custom
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
-        refreshButton = adaptableButton(getString(R.string.refresh), R.image.btn_refresh_light) {
+        refreshButton = stretchableButton(getString(R.string.refresh), R.image.btn_refresh_light) {
             onAction { refresh() }
         }
-        addButton = styledAdaptableButton(STYLE_DEFAULT_BUTTON, getString(R.string.add), R.image.btn_add_dark) {
+        addButton = styledStretchableButton(STYLE_DEFAULT_BUTTON, getString(R.string.add), R.image.btn_add_dark) {
             onAction { add() }
         }
-        editButton = adaptableButton(getString(R.string.edit), R.image.btn_edit_light) {
+        editButton = stretchableButton(getString(R.string.edit), R.image.btn_edit_light) {
             onAction { edit() }
         }
         searchField = styledTextField(STYLE_SEARCH_TEXTFIELD) {
@@ -124,7 +123,7 @@ class CustomerController : SegmentedController(), Refreshable, Selectable<Custom
             filterAddressItem = checkMenuItem(getString(R.string.address))
             filterNoteItem = checkMenuItem(getString(R.string.note))
         }
-        customerPagination.minWidthProperty().bind(HQVGA.widthProperty)
+        customerPagination.minWidthProperty().bind(240.toReadOnlyProperty())
         idImage.tooltip(getString(R.string.id))
         sinceImage.tooltip(getString(R.string.since))
         addressImage.tooltip(getString(R.string.address))

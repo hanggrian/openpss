@@ -15,10 +15,12 @@ import java.io.File
 /** Field that display file or directory path. */
 open class FileField @JvmOverloads constructor(scope: Scope = FILE) : TextField() {
 
-    val valueProperty: ObjectProperty<File> = SimpleObjectProperty<File>()
+    private val valueProperty = SimpleObjectProperty<File>()
+    fun valueProperty(): ObjectProperty<File> = valueProperty
     val value: File by valueProperty
 
-    val validProperty: BooleanProperty = SimpleBooleanProperty()
+    private val validProperty = SimpleBooleanProperty()
+    fun validProperty(): BooleanProperty = validProperty
     val isValid: Boolean by validProperty
 
     init {

@@ -40,13 +40,13 @@ class AddPlatePopup(resourced: Resourced) : AddOrderPopup<Invoice.Plate>(
     }
 
     override val totalBindingDependencies: Array<Observable>
-        get() = arrayOf(qtyField.valueProperty, priceField.valueProperty)
+        get() = arrayOf(qtyField.valueProperty(), priceField.valueProperty())
 
     override val disableBinding: ObservableBooleanValue
         get() = machineChoice.valueProperty().isNull or
             titleField.textProperty().isBlank() or
-            qtyField.valueProperty.lessEq(0) or
-            priceField.valueProperty.lessEq(0)
+            qtyField.valueProperty().lessEq(0) or
+            priceField.valueProperty().lessEq(0)
 
     override fun newInstance(): Invoice.Plate = Invoice.Plate.new(
         titleField.text,

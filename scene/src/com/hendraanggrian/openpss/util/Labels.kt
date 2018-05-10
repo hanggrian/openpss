@@ -10,19 +10,17 @@ import ktfx.beans.binding.then
 import ktfx.beans.value.greaterEq
 import ktfx.coroutines.FX
 
-fun Labeled.adaptableText(adaptableText: String = text) {
+fun Labeled.stretchableText(adaptableText: String? = text) {
     when (scene != null && scene.widthProperty() != null) {
-        true -> init(adaptableText)
+        true -> initStretchable(adaptableText)
         else -> launch(FX) {
             while (scene == null || scene.widthProperty() == null) delay(250)
-            init(adaptableText)
+            initStretchable(adaptableText)
         }
     }
 }
 
-private fun Labeled.init(adaptableText: String) {
-    val condition = `when`(scene.widthProperty() greaterEq 1200
-    )
-    textProperty().bind(condition then adaptableText otherwise "")
-    tooltipProperty().bind(condition then null as Tooltip? otherwise Tooltip(adaptableText))
+private fun Labeled.initStretchable(adaptableText: String?) = `when`(scene.widthProperty() greaterEq 1200).let {
+    textProperty().bind(it then adaptableText otherwise "")
+    tooltipProperty().bind(it then null as Tooltip? otherwise Tooltip(adaptableText))
 }

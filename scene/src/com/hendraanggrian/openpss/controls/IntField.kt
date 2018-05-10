@@ -15,7 +15,8 @@ import ktfx.listeners.bindBidirectional
 
 open class IntField : TextField() {
 
-    val valueProperty: IntegerProperty = SimpleIntegerProperty()
+    private val valueProperty = SimpleIntegerProperty()
+    fun valueProperty(): IntegerProperty = valueProperty
     var value: Int by valueProperty
 
     init {

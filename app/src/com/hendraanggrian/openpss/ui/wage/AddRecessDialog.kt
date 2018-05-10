@@ -37,7 +37,7 @@ class AddRecessDialog(resourced: Resourced) : Dialog<Pair<LocalTime, LocalTime>>
             }
         }
         cancelButton()
-        okButton().disableProperty().bind(booleanBindingOf(startBox.valueProperty, endBox.valueProperty) {
+        okButton().disableProperty().bind(booleanBindingOf(startBox.valueProperty(), endBox.valueProperty()) {
             startBox.value >= endBox.value
         })
         setResultConverter { if (it == ButtonType.OK) startBox.value to endBox.value else null }

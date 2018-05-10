@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.hendraanggrian.openpss.controls.FileField?>
+<?import com.hendraanggrian.openpss.controls.StretchableButton?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.Tooltip?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.layout.*?>
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.hendraanggrian.openpss.ui.wage.WageController">
@@ -16,18 +14,15 @@
         </padding>
         <FileField HBox.hgrow="ALWAYS" styleClass="file-textfield" fx:id="fileField" promptText="%input_file"
                    prefWidth="512"/>
-        <Button mnemonicParsing="false" onAction="#browse">
-            <graphic>
-                <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/btn_folder_light.png"/>
-                </ImageView>
-            </graphic>
-            <tooltip>
-                <Tooltip text="%browse_file"/>
-            </tooltip>
-        </Button>
+        <StretchableButton mnemonicParsing="false" onAction="#browse" stretchableText="%browse_file"
+                           graphicUrl="@/image/btn_folder_light.png"/>
     </HBox>
-    <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" vbarPolicy="ALWAYS" VBox.vgrow="ALWAYS">
-        <FlowPane fx:id="flowPane"/>
-    </ScrollPane>
+    <AnchorPane fx:id="anchorPane" VBox.vgrow="ALWAYS">
+        <TitledPane styleClass="borderless-titledpane" fx:id="titledPane" collapsible="false" AnchorPane.leftAnchor="0"
+                    AnchorPane.bottomAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
+            <ScrollPane hbarPolicy="NEVER">
+                <FlowPane fx:id="flowPane"/>
+            </ScrollPane>
+        </TitledPane>
+    </AnchorPane>
 </VBox>

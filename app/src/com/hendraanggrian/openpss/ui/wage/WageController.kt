@@ -4,8 +4,8 @@ import com.hendraanggrian.openpss.App.Companion.STYLE_DEFAULT_BUTTON
 import com.hendraanggrian.openpss.BuildConfig.DEBUG
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.controls.FileField
-import com.hendraanggrian.openpss.controls.adaptableButton
-import com.hendraanggrian.openpss.controls.styledAdaptableButton
+import com.hendraanggrian.openpss.controls.stretchableButton
+import com.hendraanggrian.openpss.controls.styledStretchableButton
 import com.hendraanggrian.openpss.io.WageFolder
 import com.hendraanggrian.openpss.io.properties.SettingsFile.WAGE_READER
 import com.hendraanggrian.openpss.ui.SegmentedController
@@ -21,13 +21,15 @@ import javafx.fxml.FXMLLoader
 import javafx.geometry.Orientation.VERTICAL
 import javafx.scene.Node
 import javafx.scene.control.Button
-import javafx.scene.control.ScrollPane
+import javafx.scene.control.TitledPane
+import javafx.scene.layout.AnchorPane
 import javafx.scene.layout.FlowPane
 import javafx.stage.FileChooser.ExtensionFilter
 import javafx.stage.Modality.APPLICATION_MODAL
 import kotlinx.coroutines.experimental.launch
 import ktfx.application.later
 import ktfx.beans.binding.booleanBindingOf
+import ktfx.beans.binding.stringBindingOf
 import ktfx.beans.value.lessEq
 import ktfx.beans.value.or
 import ktfx.collections.isEmpty
@@ -48,7 +50,8 @@ import java.util.ResourceBundle
 class WageController : SegmentedController() {
 
     @FXML lateinit var fileField: FileField
-    @FXML lateinit var scrollPane: ScrollPane
+    @FXML lateinit var anchorPane: AnchorPane
+    @FXML lateinit var titledPane: TitledPane
     @FXML lateinit var flowPane: FlowPane
 
     private lateinit var readButton: Button
@@ -63,45 +66,44 @@ class WageController : SegmentedController() {
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
-        readButton = adaptableButton(getString(R.string.read), R.image.btn_attendee_light) {
+        readButton = stretchableButton(getString(R.string.read), R.image.btn_attendee_light) {
             onAction { read() }
-            disableProperty().bind(fileField.validProperty)
+            disableProperty().bind(fileField.validProperty())
         }
-        processButton = styledAdaptableButton(
+        processButton = styledStretchableButton(
             STYLE_DEFAULT_BUTTON, getString(R.string.process), R.image.btn_process_dark) {
             onAction { process() }
             disableProperty().bind(flowPane.children.isEmpty)
         }
-        disableRecessButton = adaptableButton(getString(R.string.disable_recess), R.image.btn_disable_recess_light) {
+        disableRecessButton = stretchableButton(getString(R.string.disable_recess), R.image.btn_disable_recess_light) {
             onAction { disableRecess() }
             disableProperty().bind(flowPane.children.isEmpty)
         }
-        recessButton = adaptableButton(getString(R.string.recess), R.image.btn_recess_light) {
+        recessButton = stretchableButton(getString(R.string.recess), R.image.btn_recess_light) {
             onAction { recess() }
         }
-        historyButton = adaptableButton(getString(R.string.history), R.image.btn_history_light) {
+        historyButton = stretchableButton(getString(R.string.history), R.image.btn_history_light) {
             onAction { history() }
         }
+
+        titledPane.textProperty().bind(stringBindingOf(flowPane.children) {
+            "${flowPane.children.size} ${getString(R.string.employee)}"
+        })
 
         if (DEBUG) {
             fileField.text = "/Users/hendraanggrian/Downloads/Absen 4-13-18.xlsx"
             // readButton.fire()
         }
-        later {
-            flowPane
-                .prefWrapLengthProperty()
-                .bind(fileField
-                    .scene
-                    .widthProperty()) // TODO: fix occasional NPE
-        }
+        later { flowPane.prefWrapLengthProperty().bind(fileField.scene.widthProperty()) }
     }
 
     private fun read() {
-        scrollPane.content = borderPane {
-            prefWidthProperty().bind(scrollPane.widthProperty())
-            prefHeightProperty().bind(scrollPane.heightProperty())
+        val loadingPane = borderPane {
+            prefWidthProperty().bind(titledPane.widthProperty())
+            prefHeightProperty().bind(titledPane.heightProperty())
             center = ktfx.layouts.progressIndicator { maxSize = 128.0 }
         }
+        anchorPane.children += loadingPane
         flowPane.children.clear()
         launch {
             try {
@@ -132,13 +134,13 @@ class WageController : SegmentedController() {
                     }
                 }
                 launch(FX) {
-                    scrollPane.content = flowPane
+                    anchorPane.children -= loadingPane
                     bindProcessButton()
                 }
             } catch (e: Exception) {
                 if (DEBUG) e.printStackTrace()
                 launch(FX) {
-                    scrollPane.content = flowPane
+                    anchorPane.children -= loadingPane
                     bindProcessButton()
                     styledErrorAlert(getStyle(R.style.openpss), e.message.toString()).show()
                 }

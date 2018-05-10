@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.layouts
 
 import com.hendraanggrian.openpss.scene.R
-import com.hendraanggrian.openpss.util.adaptableText
+import com.hendraanggrian.openpss.util.stretchableText
 import javafx.scene.control.Tab
 import javafx.scene.control.TabPane
 import javafx.scene.control.ToggleButton
@@ -14,7 +14,7 @@ import org.controlsfx.control.SegmentedButton
 class SegmentedTabPane : TabPane() {
 
     var header: SegmentedButton = SegmentedButton()
-    var isAdaptableText: Boolean = false
+    var isTextStretchable: Boolean = false
 
     init {
         stylesheets += javaClass.getResource(R.style.hiddentabpane).toExternalForm()
@@ -45,9 +45,7 @@ class SegmentedTabPane : TabPane() {
 
     private fun populate(tabs: Collection<Tab>) {
         header.buttons += tabs.map {
-            ToggleButton(it.text, it.graphic).apply {
-                if (isAdaptableText) adaptableText()
-            }
+            ToggleButton(it.text, it.graphic).apply { if (isTextStretchable) stretchableText() }
         }
     }
 }

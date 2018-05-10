@@ -3,8 +3,8 @@ package com.hendraanggrian.openpss.ui.schedule
 import com.hendraanggrian.openpss.App.Companion.STYLE_DEFAULT_BUTTON
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.controls.UncollapsibleTreeItem
-import com.hendraanggrian.openpss.controls.adaptableButton
-import com.hendraanggrian.openpss.controls.styledAdaptableButton
+import com.hendraanggrian.openpss.controls.stretchableButton
+import com.hendraanggrian.openpss.controls.styledStretchableButton
 import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.schemas.Invoices
 import com.hendraanggrian.openpss.db.transaction
@@ -46,8 +46,8 @@ class ScheduleController : SegmentedController(), Refreshable, TreeSelectable<Sc
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
-        refreshButton = adaptableButton(getString(R.string.refresh), R.image.btn_refresh_light) { onAction { refresh() } }
-        doneButton = styledAdaptableButton(STYLE_DEFAULT_BUTTON, getString(R.string.done), R.image.btn_done_dark) {
+        refreshButton = stretchableButton(getString(R.string.refresh), R.image.btn_refresh_light) { onAction { refresh() } }
+        doneButton = styledStretchableButton(STYLE_DEFAULT_BUTTON, getString(R.string.done), R.image.btn_done_dark) {
             onAction { done() }
             disableProperty().bind(selecteds.isEmpty)
         }

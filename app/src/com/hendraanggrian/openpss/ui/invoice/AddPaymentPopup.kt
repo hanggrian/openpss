@@ -69,7 +69,7 @@ class AddPaymentPopup(
         label(getString(R.string.remaining)) row 3 col 0
         label {
             font = getFont(R.font.sf_pro_text_bold)
-            textProperty().bind(stringBindingOf(valueField.valueProperty) {
+            textProperty().bind(stringBindingOf(valueField.valueProperty()) {
                 (receivable - valueField.value).let { remaining ->
                     when (remaining) {
                         0.0 -> getString(R.string.paid)
@@ -95,9 +95,9 @@ class AddPaymentPopup(
 
     override fun LayoutManager<Node>.buttons() {
         defaultButton(R.string.ok) {
-            val binding = !valueField.validProperty or
-                valueField.valueProperty.lessEq(0) or
-                valueField.valueProperty.greater(receivable)
+            val binding = !valueField.validProperty() or
+                valueField.valueProperty().lessEq(0) or
+                valueField.valueProperty().greater(receivable)
             methodChoice.selectionModel.selectedItemProperty().listener { _, _, method ->
                 disableProperty().bind(when (method) {
                     CASH -> binding

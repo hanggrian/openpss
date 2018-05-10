@@ -18,10 +18,12 @@ import ktfx.listeners.bindBidirectional
 
 open class DoubleField : TextField() {
 
-    val valueProperty: DoubleProperty = SimpleDoubleProperty()
+    private val valueProperty = SimpleDoubleProperty()
+    fun valueProperty(): DoubleProperty = valueProperty
     var value: Double by valueProperty
 
-    val validProperty: BooleanProperty = SimpleBooleanProperty()
+    private val validProperty = SimpleBooleanProperty()
+    fun validProperty(): BooleanProperty = validProperty
     val isValid: Boolean by validProperty
 
     init {

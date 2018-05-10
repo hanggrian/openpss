@@ -21,5 +21,5 @@ class DatePopup(
         defaultButton()
     }
 
-    override fun getResult(): LocalDate = dateBox.valueProperty.value
+    override fun getResult(): LocalDate = dateBox.valueProperty().value
 }

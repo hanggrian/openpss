@@ -26,12 +26,12 @@ class AddOtherPopup(resourced: Resourced) : AddOrderPopup<Invoice.Other>(
     }
 
     override val totalBindingDependencies: Array<Observable>
-        get() = arrayOf(qtyField.valueProperty, priceField.valueProperty)
+        get() = arrayOf(qtyField.valueProperty(), priceField.valueProperty())
 
     override val disableBinding: ObservableBooleanValue
         get() = titleField.textProperty().isBlank() or
-            qtyField.valueProperty.lessEq(0) or
-            priceField.valueProperty.lessEq(0)
+            qtyField.valueProperty().lessEq(0) or
+            priceField.valueProperty().lessEq(0)
 
     override fun newInstance(): Invoice.Other = Invoice.Other.new(
         titleField.text,

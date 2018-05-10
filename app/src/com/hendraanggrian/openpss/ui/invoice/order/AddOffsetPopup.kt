@@ -57,16 +57,16 @@ class AddOffsetPopup(resourced: Resourced) : AddOrderPopup<Invoice.Offset>(
     }
 
     override val totalBindingDependencies: Array<Observable>
-        get() = arrayOf(qtyField.valueProperty, techniqueChoice.valueProperty(), minQtyField.valueProperty,
-            minPriceField.valueProperty, excessPriceField.valueProperty)
+        get() = arrayOf(qtyField.valueProperty(), techniqueChoice.valueProperty(), minQtyField.valueProperty(),
+            minPriceField.valueProperty(), excessPriceField.valueProperty())
 
     override val disableBinding: ObservableBooleanValue
         get() = machineChoice.valueProperty().isNull or
             titleField.textProperty().isBlank() or
-            qtyField.valueProperty.lessEq(0) or
-            minQtyField.valueProperty.lessEq(0) or
-            minPriceField.valueProperty.lessEq(0) or
-            excessPriceField.valueProperty.lessEq(0)
+            qtyField.valueProperty().lessEq(0) or
+            minQtyField.valueProperty().lessEq(0) or
+            minPriceField.valueProperty().lessEq(0) or
+            excessPriceField.valueProperty().lessEq(0)
 
     override fun newInstance(): Invoice.Offset = Invoice.Offset.new(
         titleField.text,

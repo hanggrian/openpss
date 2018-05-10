@@ -78,14 +78,14 @@ class AttendeePane(
                 intField {
                     prefWidth = 80.0
                     promptText = getString(R.string.income)
-                    valueProperty.bindBidirectional(attendee.dailyProperty)
+                    valueProperty().bindBidirectional(attendee.dailyProperty)
                 } col 1 row 1
                 label("@${getString(R.string.day)}") { font = font(10.0) } col 2 row 1
                 label(getString(R.string.overtime)) col 0 row 2 marginRight 4.0
                 intField {
                     prefWidth = 80.0
                     promptText = getString(R.string.overtime)
-                    valueProperty.bindBidirectional(attendee.hourlyOvertimeProperty)
+                    valueProperty().bindBidirectional(attendee.hourlyOvertimeProperty)
                 } col 1 row 2
                 label("@${getString(R.string.hour)}") { font = font(10.0) } col 2 row 2
                 label(getString(R.string.recess)) col 0 row 3 marginRight 4.0

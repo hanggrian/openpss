@@ -7,7 +7,7 @@
 <SegmentedTabPane xmlns="http://javafx.com/javafx"
                   xmlns:fx="http://javafx.com/fxml"
                   fx:controller="com.hendraanggrian.openpss.ui.finance.FinanceController"
-                  fx:id="tabPane" adaptableText="true">
+                  fx:id="tabPane" textStretchable="true">
     <Tab closable="false" text="%daily">
         <graphic>
             <ImageView>

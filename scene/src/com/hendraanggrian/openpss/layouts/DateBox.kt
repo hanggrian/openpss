@@ -34,7 +34,8 @@ open class DateBox @JvmOverloads constructor(prefill: LocalDate = now()) : _HBox
     var previousButton: Button
     var nextButton: Button
 
-    val valueProperty: ObjectProperty<LocalDate> = SimpleObjectProperty()
+    private val valueProperty = SimpleObjectProperty<LocalDate>()
+    fun valueProperty(): ObjectProperty<LocalDate> = valueProperty
     val value: LocalDate by valueProperty
 
     init {

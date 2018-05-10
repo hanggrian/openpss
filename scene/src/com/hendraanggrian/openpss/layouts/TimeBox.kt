@@ -35,7 +35,8 @@ open class TimeBox @JvmOverloads constructor(prefill: LocalTime = MIDNIGHT) : _H
     var nextButton: Button
     private var onOverlap: ((Boolean) -> Unit)? = null
 
-    val valueProperty: ObjectProperty<LocalTime> = SimpleObjectProperty()
+    private val valueProperty = SimpleObjectProperty<LocalTime>()
+    fun valueProperty(): ObjectProperty<LocalTime> = valueProperty
     val value: LocalTime by valueProperty
 
     init {
@@ -53,14 +54,14 @@ open class TimeBox @JvmOverloads constructor(prefill: LocalTime = MIDNIGHT) : _H
         hourField = intField {
             maxWidth = 58.0
             alignment = CENTER
-            valueProperty.listener { _, oldValue, value ->
+            valueProperty().listener { _, oldValue, value ->
                 if (value !in 0 until 24) hourField.value = oldValue.toInt()
             }
         }
         minuteField = intField {
             maxWidth = 58.0
             alignment = CENTER
-            valueProperty.listener { _, oldValue, value ->
+            valueProperty().listener { _, oldValue, value ->
                 if (value !in 0 until 60) minuteField.value = oldValue.toInt()
             }
         }
@@ -76,7 +77,7 @@ open class TimeBox @JvmOverloads constructor(prefill: LocalTime = MIDNIGHT) : _H
             }
         }
 
-        valueProperty.bind(bindingOf(hourField.valueProperty, minuteField.valueProperty) {
+        valueProperty.bind(bindingOf(hourField.valueProperty(), minuteField.valueProperty()) {
             LocalTime(hourField.value, minuteField.value)
         })
 

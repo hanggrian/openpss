@@ -3,8 +3,8 @@ package com.hendraanggrian.openpss.ui.employee
 import com.hendraanggrian.openpss.App.Companion.STYLE_DEFAULT_BUTTON
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.controls.UserPopup
-import com.hendraanggrian.openpss.controls.adaptableButton
-import com.hendraanggrian.openpss.controls.styledAdaptableButton
+import com.hendraanggrian.openpss.controls.stretchableButton
+import com.hendraanggrian.openpss.controls.styledStretchableButton
 import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.db.schemas.Employee.Role.EXECUTIVE
 import com.hendraanggrian.openpss.db.schemas.Employees
@@ -50,16 +50,16 @@ class EmployeeController : SegmentedController(), Refreshable, Selectable<Employ
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
-        refreshButton = adaptableButton(getString(R.string.refresh), R.image.btn_refresh_light) {
+        refreshButton = stretchableButton(getString(R.string.refresh), R.image.btn_refresh_light) {
             onAction { refresh() }
         }
-        addButton = styledAdaptableButton(STYLE_DEFAULT_BUTTON, getString(R.string.add), R.image.btn_add_dark) {
+        addButton = styledStretchableButton(STYLE_DEFAULT_BUTTON, getString(R.string.add), R.image.btn_add_dark) {
             onAction { add() }
         }
-        editButton = adaptableButton(getString(R.string.edit), R.image.btn_edit_light) {
+        editButton = stretchableButton(getString(R.string.edit), R.image.btn_edit_light) {
             onAction { edit() }
         }
-        deleteButton = adaptableButton(getString(R.string.delete), R.image.btn_delete_light) {
+        deleteButton = stretchableButton(getString(R.string.delete), R.image.btn_delete_light) {
             onAction { delete() }
         }
         launch(FX) {

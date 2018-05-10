@@ -3,8 +3,8 @@ package com.hendraanggrian.openpss.ui.finance
 import com.hendraanggrian.openpss.App.Companion.STYLE_DEFAULT_BUTTON
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.controls.ViewInvoiceDialog
-import com.hendraanggrian.openpss.controls.adaptableButton
-import com.hendraanggrian.openpss.controls.styledAdaptableButton
+import com.hendraanggrian.openpss.controls.stretchableButton
+import com.hendraanggrian.openpss.controls.styledStretchableButton
 import com.hendraanggrian.openpss.db.schemas.Employees
 import com.hendraanggrian.openpss.db.schemas.Invoices
 import com.hendraanggrian.openpss.db.schemas.Payment
@@ -99,20 +99,20 @@ class FinanceController : SegmentedController(), Refreshable,
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
-        refreshButton = adaptableButton(getString(R.string.refresh), R.image.btn_refresh_light) {
+        refreshButton = stretchableButton(getString(R.string.refresh), R.image.btn_refresh_light) {
             onAction { refresh() }
         }
-        viewTotalButton = styledAdaptableButton(STYLE_DEFAULT_BUTTON,
+        viewTotalButton = styledStretchableButton(STYLE_DEFAULT_BUTTON,
             getString(R.string.total), R.image.btn_money_dark) {
             onAction { viewTotal() }
         }
         leftButtons.addAll(tabPane.header, separator(VERTICAL), refreshButton, viewTotalButton)
         dateBox = dateBox {
-            valueProperty.listener { refresh() }
+            valueProperty().listener { refresh() }
         }
         monthBox = monthBox {
             setLocale(Locale(LoginFile.LANGUAGE))
-            valueProperty.listener { refresh() }
+            valueProperty().listener { refresh() }
         }
         tabPane.header.toggleGroup.run {
             selectedToggleProperty().addListener { _, _, toggle ->

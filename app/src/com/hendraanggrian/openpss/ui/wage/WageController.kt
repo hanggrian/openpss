@@ -103,7 +103,7 @@ class WageController : SegmentedController() {
         }.showAndWait()
     }
 
-    private fun disableRecess() = DisableRecessPopup(this, attendeePanes).show(disableRecessButton)
+    private fun disableRecess() = DisableRecessPopOver(this, attendeePanes).showAt(disableRecessButton)
 
     private fun recess() = stage(getString(R.string.recess)) {
         val loader = FXMLLoader(getResource(R.layout.controller_wage_recess), resources)

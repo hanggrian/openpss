@@ -279,13 +279,13 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
         invoiceTable.items.remove(selected)
     }
 
-    @FXML fun selectCustomer() = SearchCustomerPopup(this).showAt(customerButton) { customerProperty.set(it) }
+    @FXML fun selectCustomer() = SearchCustomerPopOver(this).showAt(customerButton) { customerProperty.set(it) }
 
     @FXML fun clearCustomer() = customerProperty.set(null)
 
     fun viewInvoice() = ViewInvoiceDialog(this, selected!!).show()
 
-    private fun addPayment() = AddPaymentPopup(this, login, selected!!).showAt(deletePaymentButton) {
+    private fun addPayment() = AddPaymentPopOver(this, login, selected!!).showAt(deletePaymentButton) {
         transaction {
             Payments += it
             updatePaymentStatus()

@@ -1,27 +1,26 @@
 package com.hendraanggrian.openpss.ui.finance
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.controls.Popup
+import com.hendraanggrian.openpss.controls.SimplePopOver
 import com.hendraanggrian.openpss.resources.Resourced
 import com.hendraanggrian.openpss.util.currencyConverter
 import com.hendraanggrian.openpss.util.getFont
 import javafx.geometry.HPos.RIGHT
-import javafx.scene.Node
 import ktfx.layouts.columnConstraints
 import ktfx.layouts.gridPane
 import ktfx.layouts.label
 
-class ViewTotalPopup(
+class ViewTotalPopOver(
     resourced: Resourced,
     private val cash: Double,
     private val credit: Double,
     private val debit: Double,
     private val cheque: Double,
     private val transfer: Double
-) : Popup<Nothing>(resourced, R.string.view_total) {
+) : SimplePopOver(resourced, R.string.view_total) {
 
-    override val content: Node
-        get() = gridPane {
+    init {
+        gridPane {
             columnConstraints {
                 constraints()
                 constraints { halignment = RIGHT }
@@ -45,4 +44,5 @@ class ViewTotalPopup(
                 font = getFont(R.font.sf_pro_text_bold)
             } col 1 row 5
         }
+    }
 }

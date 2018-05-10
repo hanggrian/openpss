@@ -17,8 +17,9 @@
                 </ImageView>
             </graphic>
         </Button>
+        <Separator/>
         <!--suppress JavaFxEventHandler -->
-        <Button mnemonicParsing="false" onAction="#add">
+        <Button mnemonicParsing="false" fx:id="addButton" onAction="#add">
             <tooltip>
                 <Tooltip text="%add"/>
             </tooltip>

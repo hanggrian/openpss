@@ -27,6 +27,7 @@ abstract class SimpleTableController<D : Document<S>, S : DocumentSchema<D>>(
     protected val schema: S
 ) : Controller(), Refreshable {
 
+    @FXML lateinit var addButton: Button
     @FXML lateinit var deleteButton: Button
     @FXML lateinit var table: TableView<D>
 

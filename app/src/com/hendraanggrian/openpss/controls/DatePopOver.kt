@@ -3,23 +3,15 @@ package com.hendraanggrian.openpss.controls
 import com.hendraanggrian.openpss.layouts.DateBox
 import com.hendraanggrian.openpss.layouts.dateBox
 import com.hendraanggrian.openpss.resources.Resourced
-import javafx.scene.Node
-import ktfx.layouts.LayoutManager
 import org.joda.time.LocalDate
 
-class DatePopup(
+class DatePopOver(
     resourced: Resourced,
     titleId: String,
     prefill: LocalDate = LocalDate.now()
-) : Popup<LocalDate>(resourced, titleId) {
+) : DefaultPopOver<LocalDate>(resourced, titleId) {
 
-    private val dateBox: DateBox get() = content as DateBox
-
-    override val content: Node = dateBox(prefill)
-
-    override fun LayoutManager<Node>.buttons() {
-        defaultButton()
-    }
+    private val dateBox: DateBox = dateBox(prefill)
 
     override fun getResult(): LocalDate = dateBox.valueProperty().value
 }

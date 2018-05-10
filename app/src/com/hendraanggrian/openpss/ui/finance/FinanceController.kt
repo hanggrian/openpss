@@ -163,8 +163,8 @@ class FinanceController : SegmentedController(), Refreshable,
         dateBox.picker.value = selected3!!.date.toJava()
     }
 
-    private fun viewTotal() = ViewTotalPopup(this, getTotal(CASH), getTotal(CREDIT_CARD), getTotal(DEBIT_CARD),
-        getTotal(CHEQUE), getTotal(TRANSFER)).show(viewTotalButton)
+    private fun viewTotal() = ViewTotalPopOver(this, getTotal(CASH), getTotal(CREDIT_CARD), getTotal(DEBIT_CARD),
+        getTotal(CHEQUE), getTotal(TRANSFER)).showAt(viewTotalButton)
 
     private fun getTotal(method: Method) = when (selectedIndex) {
         0 -> gather(dailyTable.items, method)

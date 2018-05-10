@@ -22,7 +22,7 @@ class WageRecessController : SimpleTableController<Recess, Recesses>(Recesses) {
         endColumn.stringCell { end.toString(PATTERN_TIME) }
     }
 
-    override fun add() = AddRecessDialog(this).showAndWait().ifPresent { (start, end) ->
+    override fun add() = AddRecessPopOver(this).showAt(addButton) { (start, end) ->
         val recess = Recess(start, end)
         recess.id = transaction { Recesses.insert(recess) }
         table.items.add(recess)

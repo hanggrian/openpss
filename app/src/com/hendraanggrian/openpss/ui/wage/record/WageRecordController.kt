@@ -2,7 +2,7 @@ package com.hendraanggrian.openpss.ui.wage.record
 
 import com.hendraanggrian.openpss.BuildConfig.DEBUG
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.controls.DatePopup
+import com.hendraanggrian.openpss.controls.DatePopOver
 import com.hendraanggrian.openpss.controls.UncollapsibleTreeItem
 import com.hendraanggrian.openpss.io.WageContentFolder
 import com.hendraanggrian.openpss.io.WageFile
@@ -173,7 +173,7 @@ class WageRecordController : Controller() {
         undoable.append()
     }
 
-    @FXML fun disableDailyIncome() = DatePopup(this, R.string.disable_daily_income)
+    @FXML fun disableDailyIncome() = DatePopOver(this, R.string.disable_daily_income)
         .showAt(disableDailyIncomeButton) { date ->
             val undoable = Undoable()
             records.filter { it.startProperty.value.toLocalDate() == date }

@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.ui.invoice
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.controls.Popup
+import com.hendraanggrian.openpss.controls.DefaultPopOver
 import com.hendraanggrian.openpss.db.dbDateTime
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Customers
@@ -11,9 +11,9 @@ import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.io.properties.SettingsFile.INVOICE_QUICK_SELECT_CUSTOMER
 import com.hendraanggrian.openpss.resources.Resourced
-import com.hendraanggrian.openpss.ui.invoice.order.AddOffsetPopup
-import com.hendraanggrian.openpss.ui.invoice.order.AddOtherPopup
-import com.hendraanggrian.openpss.ui.invoice.order.AddPlatePopup
+import com.hendraanggrian.openpss.ui.invoice.order.AddOffsetPopOver
+import com.hendraanggrian.openpss.ui.invoice.order.AddOtherPopOver
+import com.hendraanggrian.openpss.ui.invoice.order.AddPlatePopOver
 import com.hendraanggrian.openpss.util.PATTERN_DATE
 import com.hendraanggrian.openpss.util.currencyCell
 import com.hendraanggrian.openpss.util.currencyConverter
@@ -98,12 +98,12 @@ class InvoiceDialog(
                         customerProperty.value?.toString() ?: getString(R.string.search_customer)
                     })
                     onAction {
-                        SearchCustomerPopup(this@InvoiceDialog).showAt(this@button) { customerProperty.set(it) }
+                        SearchCustomerPopOver(this@InvoiceDialog).showAt(this@button) { customerProperty.set(it) }
                     }
                     if (INVOICE_QUICK_SELECT_CUSTOMER && !isEdit()) fire()
                 } col 1 row 2
                 label(getString(R.string.plate)) col 0 row 3
-                plateTable = invoiceTableView<Invoice.Plate>({ AddPlatePopup(this@InvoiceDialog) }) {
+                plateTable = invoiceTableView<Invoice.Plate>({ AddPlatePopOver(this@InvoiceDialog) }) {
                     columns {
                         getString(R.string.machine)<String> { stringCell { machine } }
                         getString(R.string.title)<String> { stringCell { title } }
@@ -114,7 +114,7 @@ class InvoiceDialog(
                     if (isEdit()) items.addAll(prefill!!.plates)
                 } col 1 row 3
                 label(getString(R.string.offset)) col 0 row 4
-                offsetTable = invoiceTableView<Invoice.Offset>({ AddOffsetPopup(this@InvoiceDialog) }) {
+                offsetTable = invoiceTableView<Invoice.Offset>({ AddOffsetPopOver(this@InvoiceDialog) }) {
                     columns {
                         getString(R.string.machine)<String> { stringCell { machine } }
                         getString(R.string.title)<String> { stringCell { title } }
@@ -127,7 +127,7 @@ class InvoiceDialog(
                     if (isEdit()) items.addAll(prefill!!.offsets)
                 } col 1 row 4
                 label(getString(R.string.others)) col 0 row 5
-                otherTable = invoiceTableView<Invoice.Other>({ AddOtherPopup(this@InvoiceDialog) }) {
+                otherTable = invoiceTableView<Invoice.Other>({ AddOtherPopOver(this@InvoiceDialog) }) {
                     columns {
                         getString(R.string.title)<String> { stringCell { title } }
                         getString(R.string.qty)<String> { numberCell { qty } }
@@ -185,7 +185,7 @@ class InvoiceDialog(
     private fun isEdit(): Boolean = prefill != null
 
     private fun <S> LayoutManager<Node>.invoiceTableView(
-        newAddOrderPopup: () -> Popup<S>,
+        newAddOrderPopOver: () -> DefaultPopOver<S>,
         init: TableView<S>.() -> Unit
     ): TableView<S> = tableView {
         prefHeight = 96.0
@@ -200,7 +200,7 @@ class InvoiceDialog(
         }
         contextMenu {
             getString(R.string.add)(ImageView(R.image.menu_add)) {
-                onAction { newAddOrderPopup().showAt(this@tableView) { this@tableView.items.add(it) } }
+                onAction { newAddOrderPopOver().showAt(this@tableView) { this@tableView.items.add(it) } }
             }
             separatorMenuItem()
             getString(R.string.delete)(ImageView(R.image.menu_delete)) {

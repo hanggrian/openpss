@@ -5,53 +5,37 @@ import com.hendraanggrian.openpss.controls.DoubleField
 import com.hendraanggrian.openpss.controls.doubleField
 import com.hendraanggrian.openpss.db.SimpleOrder
 import com.hendraanggrian.openpss.db.schemas.Invoice
-import com.hendraanggrian.openpss.db.schemas.PlatePrice
-import com.hendraanggrian.openpss.db.schemas.PlatePrices
-import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.resources.Resourced
 import javafx.beans.Observable
 import javafx.beans.value.ObservableBooleanValue
-import javafx.scene.control.ChoiceBox
 import ktfx.beans.value.isBlank
 import ktfx.beans.value.lessEq
 import ktfx.beans.value.or
-import ktfx.collections.toObservableList
-import ktfx.coroutines.listener
 import ktfx.layouts._GridPane
-import ktfx.layouts.choiceBox
 import ktfx.layouts.label
 
-class AddPlatePopup(resourced: Resourced) : AddOrderPopup<Invoice.Plate>(
+class AddOtherPopOver(resourced: Resourced) : AddOrderPopOver<Invoice.Other>(
     resourced,
-    R.string.add_plate
+    R.string.add_other
 ), SimpleOrder {
-    private lateinit var machineChoice: ChoiceBox<PlatePrice>
     private lateinit var priceField: DoubleField
 
     override fun _GridPane.onLayout() {
-        label(getString(R.string.machine)) col 0 row 2
-        machineChoice = choiceBox(transaction { PlatePrices().toObservableList() }) {
-            valueProperty().listener { _, _, plate ->
-                priceField.value = plate.price
-            }
-        } col 1 row 2
-        label(getString(R.string.price)) col 0 row 3
-        priceField = doubleField { promptText = getString(R.string.price) } col 1 row 3
+        label(getString(R.string.price)) col 0 row 2
+        priceField = doubleField { promptText = getString(R.string.price) } col 1 row 2
     }
 
     override val totalBindingDependencies: Array<Observable>
         get() = arrayOf(qtyField.valueProperty(), priceField.valueProperty())
 
     override val disableBinding: ObservableBooleanValue
-        get() = machineChoice.valueProperty().isNull or
-            titleField.textProperty().isBlank() or
+        get() = titleField.textProperty().isBlank() or
             qtyField.valueProperty().lessEq(0) or
             priceField.valueProperty().lessEq(0)
 
-    override fun newInstance(): Invoice.Plate = Invoice.Plate.new(
+    override fun newInstance(): Invoice.Other = Invoice.Other.new(
         titleField.text,
         qtyField.value,
-        machineChoice.value.name,
         priceField.value)
 
     override val qty: Int get() = qtyField.value

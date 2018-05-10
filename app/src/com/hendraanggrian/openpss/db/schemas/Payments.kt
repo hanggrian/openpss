@@ -56,8 +56,17 @@ data class Payment(
         CASH {
             override val resourceId: String = R.string.cash
         },
-        OTHERS {
-            override val resourceId: String = R.string.others
+        CREDIT_CARD {
+            override val resourceId: String = R.string.credit_card
+        },
+        DEBIT_CARD {
+            override val resourceId: String = R.string.debit_card
+        },
+        CHEQUE {
+            override val resourceId: String = R.string.cheque
+        },
+        TRANSFER {
+            override val resourceId: String = R.string.transfer
         }
     }
 }

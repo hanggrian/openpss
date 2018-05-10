@@ -164,19 +164,15 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
                     invoiceTable = tableView {
                         columnResizePolicy = CONSTRAINED_RESIZE_POLICY
                         columns {
-                            getString(R.string.id)<String> { stringCell { no } }
+                            getString(R.string.id)<String> { stringCell { no.toString() } }
                             getString(R.string.date)<String> {
                                 stringCell { dateTime.toString(PATTERN_DATETIME_EXTENDED) }
                             }
                             getString(R.string.employee)<String> {
-                                stringCell {
-                                    transaction { Employees[employeeId].single() }
-                                }
+                                stringCell { transaction { Employees[employeeId].single().toString() } }
                             }
                             getString(R.string.customer)<String> {
-                                stringCell {
-                                    transaction { Customers[customerId].single() }
-                                }
+                                stringCell { transaction { Customers[customerId].single().toString() } }
                             }
                             getString(R.string.total)<String> { currencyCell { total } }
                             getString(R.string.print)<Boolean> { doneCell { printed } }
@@ -217,11 +213,16 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
                                     stringCell { dateTime.toString(PATTERN_DATETIME_EXTENDED) }
                                 }
                                 getString(R.string.employee)<String> {
-                                    stringCell { transaction { Employees[employeeId].single() } }
+                                    stringCell { transaction { Employees[employeeId].single().toString() } }
                                 }
-                                getString(R.string.value)<String> { stringCell { value } }
+                                getString(R.string.value)<String> {
+                                    stringCell { value.toString() }
+                                }
                                 getString(R.string.payment_method)<String> {
                                     stringCell { typedMethod.toString(this@InvoiceController) }
+                                }
+                                getString(R.string.reference)<String> {
+                                    stringCell { reference }
                                 }
                             }
                             itemsProperty().bind(bindingOf(invoiceTable.selectionModel.selectedItemProperty()) {

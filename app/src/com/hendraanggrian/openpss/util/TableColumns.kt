@@ -33,8 +33,8 @@ fun <T> TableColumn<T, Boolean>.doneCell(size: Int = 64, target: T.() -> Boolean
     }
 }
 
-inline fun <T> TableColumn<T, String>.stringCell(noinline target: T.() -> Any) =
-    setCellValueFactory { it.value.target().let { it as? String ?: it.toString() }.toReadOnlyProperty() }
+inline fun <T> TableColumn<T, String>.stringCell(noinline target: T.() -> String?) =
+    setCellValueFactory { it.value.target().orEmpty().toReadOnlyProperty() }
 
 inline fun <T> TableColumn<T, String>.numberCell(noinline target: T.() -> Int) {
     style = labeledStyle { alignment = CENTER_RIGHT }

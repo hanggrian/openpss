@@ -63,6 +63,7 @@ class FinanceController : SegmentedController(), Refreshable,
     @FXML lateinit var dailyEmployeeColumn: TableColumn<Payment, String>
     @FXML lateinit var dailyValueColumn: TableColumn<Payment, String>
     @FXML lateinit var dailyMethodColumn: TableColumn<Payment, String>
+    @FXML lateinit var dailyReferenceColumn: TableColumn<Payment, String>
     @FXML lateinit var viewInvoiceItem: MenuItem
 
     @FXML lateinit var monthlyTable: TableView<Report>
@@ -112,11 +113,12 @@ class FinanceController : SegmentedController(), Refreshable,
             }
         }
 
-        dailyNoColumn.stringCell { transaction { Invoices[invoiceId].single().no } }
+        dailyNoColumn.stringCell { transaction { Invoices[invoiceId].single().no.toString() } }
         dailyTimeColumn.stringCell { dateTime.toString(PATTERN_TIME) }
-        dailyEmployeeColumn.stringCell { transaction { Employees[employeeId].single() } }
+        dailyEmployeeColumn.stringCell { transaction { Employees[employeeId].single().toString() } }
         dailyValueColumn.currencyCell { value }
         dailyMethodColumn.stringCell { typedMethod.toString(this@FinanceController) }
+        dailyReferenceColumn.stringCell { reference }
         viewInvoiceItem.disableProperty().bind(!selectedBinding2)
 
         monthlyDateColumn.stringCell { date.toString(PATTERN_DATE) }

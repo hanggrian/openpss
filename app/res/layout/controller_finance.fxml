@@ -21,6 +21,7 @@
                 <TableColumn fx:id="dailyEmployeeColumn" text="%employee"/>
                 <TableColumn fx:id="dailyValueColumn" text="%value"/>
                 <TableColumn fx:id="dailyMethodColumn" text="%payment_method"/>
+                <TableColumn fx:id="dailyReferenceColumn" text="%reference"/>
             </columns>
             <columnResizePolicy>
                 <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>

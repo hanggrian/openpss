@@ -3,7 +3,6 @@ package com.hendraanggrian.openpss.ui.wage
 import com.hendraanggrian.openpss.App.Companion.STYLE_DEFAULT_BUTTON
 import com.hendraanggrian.openpss.BuildConfig.DEBUG
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.controls.FileField
 import com.hendraanggrian.openpss.controls.stretchableButton
 import com.hendraanggrian.openpss.controls.styledStretchableButton
 import com.hendraanggrian.openpss.io.WageFolder
@@ -37,6 +36,7 @@ import ktfx.collections.size
 import ktfx.coroutines.FX
 import ktfx.coroutines.onAction
 import ktfx.layouts.borderPane
+import ktfx.layouts.label
 import ktfx.layouts.separator
 import ktfx.layouts.styledScene
 import ktfx.scene.control.styledErrorAlert
@@ -44,21 +44,21 @@ import ktfx.scene.layout.maxSize
 import ktfx.stage.fileChooser
 import ktfx.stage.setMinSize
 import ktfx.stage.stage
+import java.io.File
 import java.net.URL
 import java.util.ResourceBundle
 
 class WageController : SegmentedController() {
 
-    @FXML lateinit var fileField: FileField
     @FXML lateinit var anchorPane: AnchorPane
     @FXML lateinit var titledPane: TitledPane
     @FXML lateinit var flowPane: FlowPane
 
-    private lateinit var readButton: Button
+    private lateinit var browseButton: Button
     private lateinit var processButton: Button
     private lateinit var disableRecessButton: Button
     override val leftButtons: List<Node>
-        get() = listOf(readButton, processButton, separator(VERTICAL), disableRecessButton)
+        get() = listOf(browseButton, processButton, separator(VERTICAL), disableRecessButton)
 
     private lateinit var recessButton: Button
     private lateinit var historyButton: Button
@@ -66,9 +66,8 @@ class WageController : SegmentedController() {
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
-        readButton = stretchableButton(getString(R.string.read), R.image.btn_attendee_light) {
-            onAction { read() }
-            disableProperty().bind(fileField.validProperty())
+        browseButton = stretchableButton(getString(R.string.browse), R.image.btn_browse_light) {
+            onAction { browse() }
         }
         processButton = styledStretchableButton(
             STYLE_DEFAULT_BUTTON, getString(R.string.process), R.image.btn_process_dark) {
@@ -90,62 +89,8 @@ class WageController : SegmentedController() {
             "${flowPane.children.size} ${getString(R.string.employee)}"
         })
 
-        if (DEBUG) {
-            fileField.text = "/Users/hendraanggrian/Downloads/Absen 4-13-18.xlsx"
-            // readButton.fire()
-        }
-        later { flowPane.prefWrapLengthProperty().bind(fileField.scene.widthProperty()) }
-    }
-
-    private fun read() {
-        val loadingPane = borderPane {
-            prefWidthProperty().bind(titledPane.widthProperty())
-            prefHeightProperty().bind(titledPane.heightProperty())
-            center = ktfx.layouts.progressIndicator { maxSize = 128.0 }
-        }
-        anchorPane.children += loadingPane
-        flowPane.children.clear()
-        launch {
-            try {
-                Reader.of(WAGE_READER).read(fileField.value).forEach { attendee ->
-                    attendee.mergeDuplicates()
-                    launch(FX) {
-                        flowPane.children += attendeePane(this@WageController, attendee) {
-                            deleteMenu.onAction {
-                                flowPane.children -= this@attendeePane
-                                bindProcessButton()
-                            }
-                            deleteOthersMenu.disableProperty().bind(flowPane.children.size() lessEq 1)
-                            deleteOthersMenu.onAction {
-                                flowPane.children -= flowPane.children.toMutableList().apply {
-                                    remove(this@attendeePane)
-                                }
-                                bindProcessButton()
-                            }
-                            deleteToTheRightMenu.disableProperty().bind(booleanBindingOf(flowPane.children) {
-                                flowPane.children.indexOf(this@attendeePane) == flowPane.children.lastIndex
-                            })
-                            deleteToTheRightMenu.onAction {
-                                flowPane.children -= flowPane.children.toList().takeLast(
-                                    flowPane.children.lastIndex - flowPane.children.indexOf(this@attendeePane))
-                                bindProcessButton()
-                            }
-                        }
-                    }
-                }
-                launch(FX) {
-                    anchorPane.children -= loadingPane
-                    bindProcessButton()
-                }
-            } catch (e: Exception) {
-                if (DEBUG) e.printStackTrace()
-                launch(FX) {
-                    anchorPane.children -= loadingPane
-                    bindProcessButton()
-                    styledErrorAlert(getStyle(R.style.openpss), e.message.toString()).show()
-                }
-            }
-        }
+        later { flowPane.prefWrapLengthProperty().bind(flowPane.scene.widthProperty()) }
+        // if (DEBUG) read(File("/Users/hendraanggrian/Downloads/Absen 4-13-18.xlsx"))
     }
 
     private fun process() {
@@ -170,13 +115,66 @@ class WageController : SegmentedController() {
 
     private fun history() = openFile(WageFolder)
 
-    @FXML fun browse() = fileChooser(
+    private fun browse() = fileChooser(
         ExtensionFilter(getString(R.string.input_file), *Reader.of(WAGE_READER).extensions))
-        .showOpenDialog(fileField.scene.window)
-        ?.run {
-            fileField.text = absolutePath
-            fileField.requestFocus()
+        .showOpenDialog(anchorPane.scene.window)
+        ?.let { read(it) }
+
+    private fun read(file: File) {
+        titledPane.graphic = label("${file.absolutePath} -")
+        val loadingPane = borderPane {
+            prefWidthProperty().bind(titledPane.widthProperty())
+            prefHeightProperty().bind(titledPane.heightProperty())
+            center = ktfx.layouts.progressIndicator { maxSize = 128.0 }
         }
+        anchorPane.children += loadingPane
+        flowPane.children.clear()
+        launch {
+            try {
+                Reader.of(WAGE_READER).read(file).forEach { attendee ->
+                    attendee.mergeDuplicates()
+                    launch(FX) {
+                        flowPane.children += attendeePane(this@WageController, attendee) {
+                            deleteMenu.onAction {
+                                flowPane.children -= this@attendeePane
+                                bindProcessButton()
+                            }
+                            deleteOthersMenu.run {
+                                disableProperty().bind(flowPane.children.size() lessEq 1)
+                                onAction {
+                                    flowPane.children -= flowPane.children.toMutableList().apply {
+                                        remove(this@attendeePane)
+                                    }
+                                    bindProcessButton()
+                                }
+                            }
+                            deleteToTheRightMenu.run {
+                                disableProperty().bind(booleanBindingOf(flowPane.children) {
+                                    flowPane.children.indexOf(this@attendeePane) == flowPane.children.lastIndex
+                                })
+                                onAction {
+                                    flowPane.children -= flowPane.children.toList().takeLast(
+                                        flowPane.children.lastIndex - flowPane.children.indexOf(this@attendeePane))
+                                    bindProcessButton()
+                                }
+                            }
+                        }
+                    }
+                }
+                launch(FX) {
+                    anchorPane.children -= loadingPane
+                    bindProcessButton()
+                }
+            } catch (e: Exception) {
+                if (DEBUG) e.printStackTrace()
+                launch(FX) {
+                    anchorPane.children -= loadingPane
+                    bindProcessButton()
+                    styledErrorAlert(getStyle(R.style.openpss), e.message.toString()).show()
+                }
+            }
+        }
+    }
 
     private inline val attendeePanes: List<AttendeePane> get() = flowPane.children.map { (it as AttendeePane) }
 

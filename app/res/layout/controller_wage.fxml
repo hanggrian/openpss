@@ -1,28 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.hendraanggrian.openpss.controls.FileField?>
-<?import com.hendraanggrian.openpss.controls.StretchableButton?>
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.layout.*?>
-<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.hendraanggrian.openpss.ui.wage.WageController">
-    <HBox spacing="8">
-        <padding>
-            <Insets bottom="16" left="16" right="16"/>
-        </padding>
-        <FileField HBox.hgrow="ALWAYS" styleClass="file-textfield" fx:id="fileField" promptText="%input_file"
-                   prefWidth="512"/>
-        <StretchableButton mnemonicParsing="false" onAction="#browse" stretchableText="%browse_file"
-                           graphicUrl="@/image/btn_folder_light.png"/>
-    </HBox>
-    <AnchorPane fx:id="anchorPane" VBox.vgrow="ALWAYS">
-        <TitledPane styleClass="borderless-titledpane" fx:id="titledPane" collapsible="false" AnchorPane.leftAnchor="0"
-                    AnchorPane.bottomAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
-            <ScrollPane hbarPolicy="NEVER">
-                <FlowPane fx:id="flowPane"/>
-            </ScrollPane>
-        </TitledPane>
-    </AnchorPane>
-</VBox>
+<AnchorPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.hendraanggrian.openpss.ui.wage.WageController"
+            fx:id="anchorPane">
+    <TitledPane styleClass="borderless-titledpane" fx:id="titledPane" collapsible="false" AnchorPane.leftAnchor="0"
+                AnchorPane.bottomAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
+        <ScrollPane hbarPolicy="NEVER">
+            <FlowPane fx:id="flowPane"/>
+        </ScrollPane>
+    </TitledPane>
+</AnchorPane>

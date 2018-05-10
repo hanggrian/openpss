@@ -37,7 +37,6 @@ class App : Application(), Resourced {
         const val STYLE_DISPLAY_LABEL = "display-label"
         const val STYLE_DEFAULT_BUTTON = "default-button"
         const val STYLE_SEARCH_TEXTFIELD = "search-textfield"
-        const val STYLE_FILE_TEXTFIELD = "file-textfield"
 
         @JvmStatic fun main(args: Array<String>) = launch<App>(*args)
 

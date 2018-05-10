@@ -3,8 +3,6 @@ package com.hendraanggrian.openpss.ui.wage.readers
 import com.google.common.collect.LinkedHashMultimap
 import com.hendraanggrian.openpss.ui.wage.Attendee
 import kotlinx.coroutines.experimental.async
-import org.apache.commons.lang3.SystemUtils.IS_OS_MAC
-import org.apache.commons.lang3.SystemUtils.IS_OS_WINDOWS
 import org.apache.poi.ss.usermodel.CellType.NUMERIC
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import org.joda.time.DateTime
@@ -46,14 +44,7 @@ object EClockingReader : Reader() {
                         multimap.putAll(Attendee(no, name, dept), (CELL_RECORD_START until CELL_RECORD_END)
                             .map { row.getCell(it) }
                             .filter { it.cellTypeEnum == NUMERIC }
-                            .map {
-                                val attendance = date.toDateTime(LocalTime.fromDateFields(it.dateCellValue))
-                                when {
-                                    IS_OS_WINDOWS -> attendance.plusMinutes(18)
-                                    IS_OS_MAC -> attendance.minusMinutes(7)
-                                    else -> attendance
-                                }
-                            })
+                            .map { date.toDateTime(LocalTime.fromDateFields(it.dateCellValue)) })
                     }
             }
         }

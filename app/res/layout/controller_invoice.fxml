@@ -9,9 +9,8 @@
       fx:controller="com.hendraanggrian.openpss.ui.invoice.InvoiceController">
     <HBox alignment="CENTER" spacing="8">
         <padding>
-            <Insets bottom="8" left="16" right="16"/>
+            <Insets bottom="16" left="16" right="16"/>
         </padding>
-        <Label styleClass="display-label" text="%invoice"/>
         <Region HBox.hgrow="ALWAYS"/>
         <SplitMenuButton mnemonicParsing="false" fx:id="customerButton" onAction="#selectCustomer"
                          text="%select_customer">

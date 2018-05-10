@@ -12,7 +12,6 @@ import com.hendraanggrian.openpss.ui.SegmentedController
 import com.hendraanggrian.openpss.ui.wage.readers.Reader
 import com.hendraanggrian.openpss.ui.wage.record.WageRecordController.Companion.EXTRA_ATTENDEES
 import com.hendraanggrian.openpss.util.controller
-import com.hendraanggrian.openpss.util.getFont
 import com.hendraanggrian.openpss.util.getResource
 import com.hendraanggrian.openpss.util.getStyle
 import com.hendraanggrian.openpss.util.openFile
@@ -22,7 +21,6 @@ import javafx.fxml.FXMLLoader
 import javafx.geometry.Orientation.VERTICAL
 import javafx.scene.Node
 import javafx.scene.control.Button
-import javafx.scene.control.Label
 import javafx.scene.control.ScrollPane
 import javafx.scene.layout.FlowPane
 import javafx.stage.FileChooser.ExtensionFilter
@@ -50,8 +48,6 @@ import java.util.ResourceBundle
 class WageController : SegmentedController() {
 
     @FXML lateinit var fileField: FileField
-    @FXML lateinit var employeeCountLabel1: Label
-    @FXML lateinit var employeeCountLabel2: Label
     @FXML lateinit var scrollPane: ScrollPane
     @FXML lateinit var flowPane: FlowPane
 
@@ -86,8 +82,6 @@ class WageController : SegmentedController() {
         historyButton = adaptableButton(getString(R.string.history), R.image.btn_history_light) {
             onAction { history() }
         }
-        employeeCountLabel1.font = getFont(R.font.sf_pro_text_bold)
-        employeeCountLabel2.textProperty().bind(flowPane.children.size().asString())
 
         if (DEBUG) {
             fileField.text = "/Users/hendraanggrian/Downloads/Absen 4-13-18.xlsx"

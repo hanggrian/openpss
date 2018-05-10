@@ -8,6 +8,13 @@ import com.hendraanggrian.openpss.controls.styledAdaptableButton
 import com.hendraanggrian.openpss.db.schemas.Employees
 import com.hendraanggrian.openpss.db.schemas.Invoices
 import com.hendraanggrian.openpss.db.schemas.Payment
+import com.hendraanggrian.openpss.db.schemas.Payment.Companion.gather
+import com.hendraanggrian.openpss.db.schemas.Payment.Method
+import com.hendraanggrian.openpss.db.schemas.Payment.Method.CASH
+import com.hendraanggrian.openpss.db.schemas.Payment.Method.CHEQUE
+import com.hendraanggrian.openpss.db.schemas.Payment.Method.CREDIT_CARD
+import com.hendraanggrian.openpss.db.schemas.Payment.Method.DEBIT_CARD
+import com.hendraanggrian.openpss.db.schemas.Payment.Method.TRANSFER
 import com.hendraanggrian.openpss.db.schemas.Payments
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.io.properties.LoginFile
@@ -24,8 +31,8 @@ import com.hendraanggrian.openpss.ui.Selectable3
 import com.hendraanggrian.openpss.util.PATTERN_DATE
 import com.hendraanggrian.openpss.util.PATTERN_TIME
 import com.hendraanggrian.openpss.util.currencyCell
-import com.hendraanggrian.openpss.util.currencyConverter
 import com.hendraanggrian.openpss.util.matches
+import com.hendraanggrian.openpss.util.numberCell
 import com.hendraanggrian.openpss.util.stringCell
 import com.hendraanggrian.openpss.util.toJava
 import javafx.fxml.FXML
@@ -42,8 +49,10 @@ import ktfx.application.later
 import ktfx.collections.toMutableObservableList
 import ktfx.coroutines.listener
 import ktfx.coroutines.onAction
+import ktfx.coroutines.onMouseClicked
 import ktfx.layouts.pane
 import ktfx.layouts.separator
+import ktfx.scene.input.isDoubleClick
 import java.net.URL
 import java.util.Locale
 import java.util.ResourceBundle
@@ -69,7 +78,10 @@ class FinanceController : SegmentedController(), Refreshable,
     @FXML lateinit var monthlyTable: TableView<Report>
     @FXML lateinit var monthlyDateColumn: TableColumn<Report, String>
     @FXML lateinit var monthlyCashColumn: TableColumn<Report, String>
-    @FXML lateinit var monthlyOthersColumn: TableColumn<Report, String>
+    @FXML lateinit var monthlyCreditColumn: TableColumn<Report, String>
+    @FXML lateinit var monthlyDebitColumn: TableColumn<Report, String>
+    @FXML lateinit var monthlyChequeColumn: TableColumn<Report, String>
+    @FXML lateinit var monthlyTransferColumn: TableColumn<Report, String>
     @FXML lateinit var monthlyTotalColumn: TableColumn<Report, String>
     @FXML lateinit var viewPaymentsItem: MenuItem
 
@@ -92,7 +104,7 @@ class FinanceController : SegmentedController(), Refreshable,
         }
         viewTotalButton = styledAdaptableButton(STYLE_DEFAULT_BUTTON,
             getString(R.string.total), R.image.btn_money_dark) {
-            onAction { ViewTotalPopup(this@FinanceController, totalCash, totalOthers).show(this@styledAdaptableButton) }
+            onAction { viewTotal() }
         }
         leftButtons.addAll(tabPane.header, separator(VERTICAL), refreshButton, viewTotalButton)
         dateBox = dateBox {
@@ -113,19 +125,24 @@ class FinanceController : SegmentedController(), Refreshable,
             }
         }
 
-        dailyNoColumn.stringCell { transaction { Invoices[invoiceId].single().no.toString() } }
+        dailyNoColumn.numberCell { transaction { Invoices[invoiceId].single().no } }
         dailyTimeColumn.stringCell { dateTime.toString(PATTERN_TIME) }
         dailyEmployeeColumn.stringCell { transaction { Employees[employeeId].single().toString() } }
         dailyValueColumn.currencyCell { value }
         dailyMethodColumn.stringCell { typedMethod.toString(this@FinanceController) }
         dailyReferenceColumn.stringCell { reference }
         viewInvoiceItem.disableProperty().bind(!selectedBinding2)
+        dailyTable.onMouseClicked { if (it.isDoubleClick() && selected2 != null) viewInvoice() }
 
         monthlyDateColumn.stringCell { date.toString(PATTERN_DATE) }
-        monthlyCashColumn.stringCell { currencyConverter.toString(cash) }
-        monthlyOthersColumn.stringCell { currencyConverter.toString(others) }
-        monthlyTotalColumn.stringCell { currencyConverter.toString(total) }
+        monthlyCashColumn.currencyCell { valueMap[CASH]!! }
+        monthlyCreditColumn.currencyCell { valueMap[CREDIT_CARD]!! }
+        monthlyDebitColumn.currencyCell { valueMap[DEBIT_CARD]!! }
+        monthlyChequeColumn.currencyCell { valueMap[CHEQUE]!! }
+        monthlyTransferColumn.currencyCell { valueMap[TRANSFER]!! }
+        monthlyTotalColumn.currencyCell { total }
         viewPaymentsItem.disableProperty().bind(!selectedBinding3)
+        monthlyTable.onMouseClicked { if (it.isDoubleClick() && selected3 != null) viewPayments() }
 
         selectedProperty.listener { refresh() }
     }
@@ -146,17 +163,13 @@ class FinanceController : SegmentedController(), Refreshable,
         dateBox.picker.value = selected3!!.date.toJava()
     }
 
-    private val totalCash: Double
-        get() = when (selectedIndex) {
-            0 -> Payment.gather(dailyTable.items)
-            else -> monthlyTable.items.sumByDouble { it.cash }
-        }
+    private fun viewTotal() = ViewTotalPopup(this, getTotal(CASH), getTotal(CREDIT_CARD), getTotal(DEBIT_CARD),
+        getTotal(CHEQUE), getTotal(TRANSFER)).show(viewTotalButton)
 
-    private val totalOthers: Double
-        get() = when (selectedIndex) {
-            0 -> Payment.gather(dailyTable.items, false)
-            else -> monthlyTable.items.sumByDouble { it.others }
-        }
+    private fun getTotal(method: Method) = when (selectedIndex) {
+        0 -> gather(dailyTable.items, method)
+        else -> monthlyTable.items.sumByDouble { it.valueMap[method]!! }
+    }
 
     private fun List<Node>.addAll(vararg buttons: Node) {
         this as MutableList

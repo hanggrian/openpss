@@ -41,8 +41,8 @@ data class Payment(
             reference: String?
         ): Payment = Payment(invoiceId, employeeId, dbDateTime, method.id, value, reference)
 
-        fun gather(payments: List<Payment>, isCash: Boolean = true) = payments
-            .filter { it.isCash() == isCash }
+        fun gather(payments: List<Payment>, method: Method) = payments
+            .filter { it.typedMethod == method }
             .sumByDouble { it.value }
     }
 

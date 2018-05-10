@@ -1,7 +1,6 @@
 package com.hendraanggrian.openpss.ui.invoice
 
 import com.hendraanggrian.openpss.App.Companion.STYLE_DEFAULT_BUTTON
-import com.hendraanggrian.openpss.App.Companion.STYLE_DISPLAY_LABEL
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.controls.ViewInvoiceDialog
 import com.hendraanggrian.openpss.controls.adaptableButton
@@ -73,7 +72,6 @@ import ktfx.layouts.hbox
 import ktfx.layouts.region
 import ktfx.layouts.separator
 import ktfx.layouts.splitPane
-import ktfx.layouts.styledLabel
 import ktfx.layouts.styledScene
 import ktfx.layouts.tableView
 import ktfx.layouts.vbox
@@ -192,7 +190,6 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
                             alignment = CENTER
                             spacing = 8.0
                             updatePadding(8.0, 16.0, 8.0, 16.0)
-                            styledLabel(STYLE_DISPLAY_LABEL, getString(R.string.payment))
                             region() hpriority ALWAYS
                             styledAdaptableButton(STYLE_DEFAULT_BUTTON, getString(R.string.add_payment),
                                 R.image.btn_add_dark) {

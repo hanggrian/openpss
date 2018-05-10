@@ -6,10 +6,10 @@
                fx:controller="com.hendraanggrian.openpss.ui.schedule.ScheduleController"
                fx:id="scheduleTable" showRoot="false" VBox.vgrow="ALWAYS">
     <columns>
-        <TreeTableColumn fx:id="typeColumn" sortable="false" text="%type"/>
-        <TreeTableColumn fx:id="titleColumn" sortable="false" text="%title"/>
-        <TreeTableColumn fx:id="qtyColumn" sortable="false" text="%qty"/>
-        <TreeTableColumn fx:id="machineColumn" sortable="false" text="%machine"/>
+        <TreeTableColumn sortable="false" fx:id="typeColumn" text="%type"/>
+        <TreeTableColumn sortable="false" fx:id="titleColumn" text="%title"/>
+        <TreeTableColumn sortable="false" fx:id="qtyColumn" text="%qty"/>
+        <TreeTableColumn sortable="false" fx:id="machineColumn" text="%machine"/>
     </columns>
     <columnResizePolicy>
         <TreeTableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>

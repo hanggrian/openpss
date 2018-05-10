@@ -2,9 +2,9 @@
 
 <?import com.hendraanggrian.openpss.layouts.SegmentedTabPane?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.hendraanggrian.openpss.ui.main.MainController">
     <MenuBar fx:id="menuBar">
@@ -35,13 +35,13 @@
             </MenuItem>
         </Menu>
     </MenuBar>
-    <AnchorPane>
-        <BorderPane fx:id="navigationPane" AnchorPane.topAnchor="16" AnchorPane.bottomAnchor="16"
+    <AnchorPane styleClass="navigation-pane">
+        <BorderPane fx:id="navigationPane" AnchorPane.bottomAnchor="0" AnchorPane.topAnchor="0"
                     AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0"/>
-        <HBox spacing="8" fx:id="navigationLeftBox"
-              AnchorPane.topAnchor="16" AnchorPane.bottomAnchor="16" AnchorPane.leftAnchor="16"/>
-        <HBox spacing="8" fx:id="navigationRightBox"
-              AnchorPane.topAnchor="16" AnchorPane.bottomAnchor="16" AnchorPane.rightAnchor="16"/>
+        <HBox spacing="8" fx:id="navigationLeftBox" AnchorPane.bottomAnchor="0" AnchorPane.topAnchor="0"
+              AnchorPane.leftAnchor="0"/>
+        <HBox spacing="8" fx:id="navigationRightBox" AnchorPane.bottomAnchor="0" AnchorPane.topAnchor="0"
+              AnchorPane.rightAnchor="0"/>
     </AnchorPane>
     <SegmentedTabPane VBox.vgrow="ALWAYS" fx:id="tabPane">
         <Tab closable="false" text="%customer">

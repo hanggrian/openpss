@@ -12,6 +12,10 @@
 
 /* CUSTOM STYLECLASSES */
 
+.navigation-pane {
+    -fx-padding: 16 16 16 16;
+}
+
 .display-label {
     -fx-font-size: 13pt;
 }

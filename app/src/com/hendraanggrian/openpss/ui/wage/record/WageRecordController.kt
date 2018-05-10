@@ -25,14 +25,14 @@ import com.sun.javafx.scene.control.skin.VirtualFlow
 import javafx.fxml.FXML
 import javafx.scene.control.Button
 import javafx.scene.control.ButtonBar.ButtonData.CANCEL_CLOSE
-import javafx.scene.control.Label
 import javafx.scene.control.SelectionMode.MULTIPLE
 import javafx.scene.control.SplitMenuButton
-import javafx.scene.control.ToolBar
 import javafx.scene.control.TreeItem
 import javafx.scene.control.TreeTableColumn
 import javafx.scene.control.TreeTableView
+import javafx.scene.layout.HBox
 import javafx.scene.layout.VBox
+import javafx.stage.Stage
 import ktfx.application.later
 import ktfx.beans.binding.booleanBindingOf
 import ktfx.beans.binding.stringBindingOf
@@ -56,11 +56,9 @@ class WageRecordController : Controller() {
     }
 
     @FXML lateinit var root: VBox
-    @FXML lateinit var toolbar: ToolBar
+    @FXML lateinit var navigationBox: HBox
     @FXML lateinit var undoButton: SplitMenuButton
     @FXML lateinit var timeBox: TimeBox
-    @FXML lateinit var totalLabel1: Label
-    @FXML lateinit var totalLabel2: Label
     @FXML lateinit var lockStartButton: Button
     @FXML lateinit var lockEndButton: Button
     @FXML lateinit var disableDailyIncomeButton: Button
@@ -83,7 +81,6 @@ class WageRecordController : Controller() {
                     recordTable.selectionModel.selectedItems?.any { !it.value.isChild() } ?: true
                 })
         }
-        totalLabel1.font = getFont(R.font.sf_pro_text_bold)
 
         recordTable.run {
             selectionModel.selectionMode = MULTIPLE
@@ -124,11 +121,11 @@ class WageRecordController : Controller() {
                     children += TreeItem(total)
                 }
             }
-            totalLabel2.textProperty().bind(
+            (root.scene.window as Stage).titleProperty().bind(
                 stringBindingOf(*records.filter { it.isChild() }.map { it.totalProperty }.toTypedArray()) {
-                    currencyConverter.toString(records
+                    "${getString(R.string.record)} - ${currencyConverter.toString(records
                         .filter { it.isTotal() }
-                        .sumByDouble { it.totalProperty.value })
+                        .sumByDouble { it.totalProperty.value })}"
                 })
         }
     }
@@ -221,11 +218,11 @@ class WageRecordController : Controller() {
 
     private fun togglePrintMode(on: Boolean, printStylesheet: String) = when {
         on -> {
-            root.children -= toolbar
+            root.children -= navigationBox
             recordTable.stylesheets += printStylesheet
         }
         else -> {
-            root.children.add(0, toolbar)
+            root.children.add(0, navigationBox)
             recordTable.stylesheets -= printStylesheet
         }
     }

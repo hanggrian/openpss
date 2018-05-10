@@ -34,9 +34,11 @@ import java.util.ResourceBundle.getBundle
 class App : Application(), Resourced {
 
     companion object {
+        const val STYLE_NAVIGATION_PANE = "navigation-pane"
         const val STYLE_DISPLAY_LABEL = "display-label"
         const val STYLE_DEFAULT_BUTTON = "default-button"
         const val STYLE_SEARCH_TEXTFIELD = "search-textfield"
+        const val STYLE_BORDERLESS_TITLEDPANE = "borderless-titledpane"
 
         @JvmStatic fun main(args: Array<String>) = launch<App>(*args)
 

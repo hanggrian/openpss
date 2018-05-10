@@ -10,6 +10,7 @@ import javafx.scene.text.Font
 import javafx.util.Duration.ZERO
 import ktfx.application.later
 import ktfx.coroutines.onAction
+import ktfx.coroutines.onCloseRequest
 import ktfx.layouts.LayoutManager
 import ktfx.layouts.buttonBar
 import ktfx.layouts.label
@@ -48,6 +49,6 @@ open class SimplePopOver(resourced: Resourced, titleId: String) : PopOver(), Lay
 
     fun showAt(node: Node) {
         show(node)
-        later { node.scene.window.setOnCloseRequest { hide(ZERO) } }
+        later { node.scene.window.onCloseRequest { hide(ZERO) } }
     }
 }

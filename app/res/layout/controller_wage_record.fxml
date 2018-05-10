@@ -1,40 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 
+<?import com.hendraanggrian.openpss.controls.*?>
 <?import com.hendraanggrian.openpss.layouts.TimeBox?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.hendraanggrian.openpss.ui.wage.record.WageRecordController"
       fx:id="root">
-    <ToolBar fx:id="toolbar">
-        <SplitMenuButton mnemonicParsing="false" fx:id="undoButton" onAction="#undo">
-            <tooltip>
-                <Tooltip text="%undo"/>
-            </tooltip>
-            <graphic>
-                <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/btn_undo_light.png"/>
-                </ImageView>
-            </graphic>
-        </SplitMenuButton>
-        <Separator/>
+    <HBox fx:id="navigationBox" styleClass="navigation-pane" spacing="8">
+        <StretchableSplitMenuButton mnemonicParsing="false" fx:id="undoButton" onAction="#undo"
+                                    stretchableText="%undo" graphicUrl="@/image/btn_undo_light.png"/>
+        <Separator orientation="VERTICAL"/>
         <TimeBox fx:id="timeBox"/>
-        <Button mnemonicParsing="false" fx:id="lockStartButton" onAction="#lockStart"
-                text="%lock_start_time"/>
-        <Button mnemonicParsing="false" fx:id="lockEndButton" onAction="#lockEnd"
-                text="%lock_end_time"/>
-        <Separator/>
-        <Button mnemonicParsing="false" fx:id="disableDailyIncomeButton" onAction="#disableDailyIncome"
-                text="%disable_daily_income"/>
-        <Button mnemonicParsing="false" onAction="#screenshot" text="%screenshot"/>
-        <Region HBox.hgrow="ALWAYS"/>
-        <Label fx:id="totalLabel1" text="%total"/>
-        <Label fx:id="totalLabel2"/>
-    </ToolBar>
+        <StretchableButton mnemonicParsing="false" fx:id="lockStartButton" onAction="#lockStart"
+                           stretchableText="%lock_start_time" graphicUrl="@/image/btn_lock_start_light.png"/>
+        <StretchableButton mnemonicParsing="false" fx:id="lockEndButton" onAction="#lockEnd"
+                           stretchableText="%lock_end_time" graphicUrl="@/image/btn_lock_end_light.png"/>
+        <Separator orientation="VERTICAL"/>
+        <StretchableButton mnemonicParsing="false" fx:id="disableDailyIncomeButton" onAction="#disableDailyIncome"
+                           stretchableText="%disable_daily_income" graphicUrl="@/image/btn_disable_daily_light.png"/>
+        <StretchableButton mnemonicParsing="false" onAction="#screenshot"
+                           stretchableText="%screenshot" graphicUrl="@/image/btn_screenshot_light.png"/>
+    </HBox>
     <TreeTableView fx:id="recordTable" showRoot="false" VBox.vgrow="ALWAYS">
         <columns>
             <TreeTableColumn fx:id="nameColumn" sortable="false" text="%name"/>

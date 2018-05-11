@@ -21,6 +21,7 @@ import javafx.scene.control.Button
 import javafx.scene.control.SelectionModel
 import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
+import javafx.scene.image.ImageView
 import kotlinx.coroutines.experimental.delay
 import kotlinx.coroutines.experimental.launch
 import kotlinx.nosql.update
@@ -50,16 +51,17 @@ class EmployeeController : SegmentedController(), Refreshable, Selectable<Employ
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
-        refreshButton = stretchableButton(getString(R.string.refresh), R.image.btn_refresh_light) {
+        refreshButton = stretchableButton(getString(R.string.refresh), ImageView(R.image.btn_refresh_light)) {
             onAction { refresh() }
         }
-        addButton = styledStretchableButton(STYLE_DEFAULT_BUTTON, getString(R.string.add), R.image.btn_add_dark) {
+        addButton = styledStretchableButton(STYLE_DEFAULT_BUTTON, getString(R.string.add),
+            ImageView(R.image.btn_add_dark)) {
             onAction { add() }
         }
-        editButton = stretchableButton(getString(R.string.edit), R.image.btn_edit_light) {
+        editButton = stretchableButton(getString(R.string.edit), ImageView(R.image.btn_edit_light)) {
             onAction { edit() }
         }
-        deleteButton = stretchableButton(getString(R.string.delete), R.image.btn_delete_light) {
+        deleteButton = stretchableButton(getString(R.string.delete), ImageView(R.image.btn_delete_light)) {
             onAction { delete() }
         }
         launch(FX) {

@@ -3,25 +3,44 @@
 <?import com.hendraanggrian.openpss.controls.*?>
 <?import com.hendraanggrian.openpss.layouts.TimeBox?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.hendraanggrian.openpss.ui.wage.record.WageRecordController"
       fx:id="root">
     <HBox fx:id="navigationBox" styleClass="navigation-pane" spacing="8">
-        <StretchableSplitMenuButton mnemonicParsing="false" fx:id="undoButton" onAction="#undo"
-                                    stretchableText="%undo" graphicUrl="@/image/btn_undo_light.png"/>
+        <StretchableSplitMenuButton mnemonicParsing="false" fx:id="undoButton" onAction="#undo" stretchableText="%undo">
+            <ImageView>
+                <Image url="@/image/btn_undo_light.png"/>
+            </ImageView>
+        </StretchableSplitMenuButton>
         <Separator orientation="VERTICAL"/>
         <TimeBox fx:id="timeBox"/>
         <StretchableButton mnemonicParsing="false" fx:id="lockStartButton" onAction="#lockStart"
-                           stretchableText="%lock_start_time" graphicUrl="@/image/btn_lock_start_light.png"/>
+                           stretchableText="%lock_start_time">
+            <ImageView>
+                <Image url="@/image/btn_lock_start_light.png"/>
+            </ImageView>
+        </StretchableButton>
         <StretchableButton mnemonicParsing="false" fx:id="lockEndButton" onAction="#lockEnd"
-                           stretchableText="%lock_end_time" graphicUrl="@/image/btn_lock_end_light.png"/>
+                           stretchableText="%lock_end_time">
+            <ImageView>
+                <Image url="@/image/btn_lock_end_light.png"/>
+            </ImageView>
+        </StretchableButton>
         <Separator orientation="VERTICAL"/>
         <StretchableButton mnemonicParsing="false" fx:id="disableDailyIncomeButton" onAction="#disableDailyIncome"
-                           stretchableText="%disable_daily_income" graphicUrl="@/image/btn_disable_daily_light.png"/>
-        <StretchableButton mnemonicParsing="false" onAction="#screenshot"
-                           stretchableText="%screenshot" graphicUrl="@/image/btn_screenshot_light.png"/>
+                           stretchableText="%disable_daily_income">
+            <ImageView>
+                <Image url="@/image/btn_disable_daily_light.png"/>
+            </ImageView>
+        </StretchableButton>
+        <StretchableButton mnemonicParsing="false" onAction="#screenshot" stretchableText="%screenshot">
+            <ImageView>
+                <Image url="@/image/btn_screenshot_light.png"/>
+            </ImageView>
+        </StretchableButton>
     </HBox>
     <TreeTableView fx:id="recordTable" showRoot="false" VBox.vgrow="ALWAYS">
         <columns>

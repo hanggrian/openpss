@@ -21,6 +21,7 @@ import javafx.geometry.Orientation.VERTICAL
 import javafx.scene.Node
 import javafx.scene.control.Button
 import javafx.scene.control.TitledPane
+import javafx.scene.image.ImageView
 import javafx.scene.layout.AnchorPane
 import javafx.scene.layout.FlowPane
 import javafx.stage.FileChooser.ExtensionFilter
@@ -66,22 +67,23 @@ class WageController : SegmentedController() {
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
-        browseButton = stretchableButton(getString(R.string.browse), R.image.btn_browse_light) {
+        browseButton = stretchableButton(getString(R.string.browse), ImageView(R.image.btn_browse_light)) {
             onAction { browse() }
         }
         processButton = styledStretchableButton(
-            STYLE_DEFAULT_BUTTON, getString(R.string.process), R.image.btn_process_dark) {
+            STYLE_DEFAULT_BUTTON, getString(R.string.process), ImageView(R.image.btn_process_dark)) {
             onAction { process() }
             disableProperty().bind(flowPane.children.isEmpty)
         }
-        disableRecessButton = stretchableButton(getString(R.string.disable_recess), R.image.btn_disable_recess_light) {
+        disableRecessButton = stretchableButton(getString(R.string.disable_recess),
+            ImageView(R.image.btn_disable_recess_light)) {
             onAction { disableRecess() }
             disableProperty().bind(flowPane.children.isEmpty)
         }
-        recessButton = stretchableButton(getString(R.string.recess), R.image.btn_recess_light) {
+        recessButton = stretchableButton(getString(R.string.recess), ImageView(R.image.btn_recess_light)) {
             onAction { recess() }
         }
-        historyButton = stretchableButton(getString(R.string.history), R.image.btn_history_light) {
+        historyButton = stretchableButton(getString(R.string.history), ImageView(R.image.btn_history_light)) {
             onAction { history() }
         }
 

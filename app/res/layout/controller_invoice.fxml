@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
+<?import com.hendraanggrian.openpss.controls.PaginatedPane?>
 <?import com.hendraanggrian.openpss.layouts.DateBox?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
@@ -68,5 +69,5 @@
             </graphic>
         </RadioButton>
     </HBox>
-    <Pagination fx:id="invoicePagination" style="-fx-page-information-alignment: right;" VBox.vgrow="ALWAYS"/>
+    <PaginatedPane fx:id="invoicePagination" VBox.vgrow="ALWAYS"/>
 </VBox>

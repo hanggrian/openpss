@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
+<?import com.hendraanggrian.openpss.controls.PaginatedPane?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
@@ -7,7 +8,8 @@
 <SplitPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1"
            fx:controller="com.hendraanggrian.openpss.ui.customer.CustomerController"
            fx:id="splitPane" dividerPositions="0.3">
-    <Pagination fx:id="customerPagination" style="-fx-page-information-alignment: right;" VBox.vgrow="ALWAYS"/>
+    <PaginatedPane fx:id="customerPagination" VBox.vgrow="ALWAYS"
+                   count="26.5"/>
     <GridPane hgap="16" vgap="16">
         <columnConstraints>
             <ColumnConstraints hgrow="NEVER"/>

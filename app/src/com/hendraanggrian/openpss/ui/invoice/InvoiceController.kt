@@ -2,6 +2,7 @@ package com.hendraanggrian.openpss.ui.invoice
 
 import com.hendraanggrian.openpss.App.Companion.STYLE_DEFAULT_BUTTON
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.controls.PaginatedPane
 import com.hendraanggrian.openpss.controls.ViewInvoiceDialog
 import com.hendraanggrian.openpss.controls.stretchableButton
 import com.hendraanggrian.openpss.controls.styledStretchableButton
@@ -17,7 +18,6 @@ import com.hendraanggrian.openpss.db.schemas.Payment
 import com.hendraanggrian.openpss.db.schemas.Payments
 import com.hendraanggrian.openpss.db.schemas.Payments.invoiceId
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.io.properties.SettingsFile.INVOICE_PAGINATION_ITEMS
 import com.hendraanggrian.openpss.layouts.DateBox
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.SegmentedController
@@ -42,7 +42,6 @@ import javafx.scene.Node
 import javafx.scene.control.Button
 import javafx.scene.control.MenuButton
 import javafx.scene.control.MenuItem
-import javafx.scene.control.Pagination
 import javafx.scene.control.RadioButton
 import javafx.scene.control.RadioMenuItem
 import javafx.scene.control.SelectionModel
@@ -93,7 +92,7 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
     @FXML lateinit var allDateRadio: RadioButton
     @FXML lateinit var pickDateRadio: RadioButton
     @FXML lateinit var dateBox: DateBox
-    @FXML lateinit var invoicePagination: Pagination
+    @FXML lateinit var invoicePagination: PaginatedPane
 
     private lateinit var refreshButton: Button
     private lateinit var addButton: Button
@@ -116,22 +115,23 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
-        refreshButton = stretchableButton(getString(R.string.refresh), R.image.btn_refresh_light) {
+        refreshButton = stretchableButton(getString(R.string.refresh), ImageView(R.image.btn_refresh_light)) {
             onAction { refresh() }
         }
-        addButton = styledStretchableButton(STYLE_DEFAULT_BUTTON, getString(R.string.add), R.image.btn_add_dark) {
+        addButton = styledStretchableButton(STYLE_DEFAULT_BUTTON, getString(R.string.add),
+            ImageView(R.image.btn_add_dark)) {
             onAction { addInvoice() }
         }
-        editButton = stretchableButton(getString(R.string.edit), R.image.btn_edit_light) {
+        editButton = stretchableButton(getString(R.string.edit), ImageView(R.image.btn_edit_light)) {
             onAction { editInvoice() }
         }
-        deleteButton = stretchableButton(getString(R.string.delete), R.image.btn_delete_light) {
+        deleteButton = stretchableButton(getString(R.string.delete), ImageView(R.image.btn_delete_light)) {
             onAction { deleteInvoice() }
         }
-        platePriceButton = stretchableButton(getString(R.string.plate_price), R.image.btn_plate_light) {
+        platePriceButton = stretchableButton(getString(R.string.plate_price), ImageView(R.image.btn_plate_light)) {
             onAction { platePrice() }
         }
-        offsetPriceButton = stretchableButton(getString(R.string.offset_price), R.image.btn_offset_light) {
+        offsetPriceButton = stretchableButton(getString(R.string.offset_price), ImageView(R.image.btn_offset_light)) {
             onAction { offsetPrice() }
         }
 
@@ -153,10 +153,10 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
     }
 
     override fun refresh() = later {
-        invoicePagination.pageFactoryProperty().bind(bindingOf(customerProperty,
+        invoicePagination.contentFactoryProperty().bind(bindingOf(customerProperty,
             anyPaymentItem.selectedProperty(), unpaidPaymentItem.selectedProperty(), paidPaymentItem.selectedProperty(),
             allDateRadio.selectedProperty(), pickDateRadio.selectedProperty(), dateBox.valueProperty()) {
-            Callback<Int, Node> { page ->
+            Callback<Pair<Int, Int>, Node> { (page, count) ->
                 splitPane {
                     orientation = VERTICAL
                     invoiceTable = tableView {
@@ -192,12 +192,12 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
                             updatePadding(8.0, 16.0, 8.0, 16.0)
                             region() hpriority ALWAYS
                             styledStretchableButton(STYLE_DEFAULT_BUTTON, getString(R.string.add_payment),
-                                R.image.btn_add_dark) {
+                                ImageView(R.image.btn_add_dark)) {
                                 disableProperty().bind(!selectedBinding)
                                 onAction { addPayment() }
                             }
                             deletePaymentButton = stretchableButton(getString(R.string.delete_payment),
-                                R.image.btn_delete_light) {
+                                ImageView(R.image.btn_delete_light)) {
                                 later { disableProperty().bind(!selectedBinding2) }
                                 onAction { deletePayment() }
                             }
@@ -238,10 +238,10 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
                                 if (pickDateRadio.isSelected) and(it.dateTime.matches(dateBox.value))
                             }
                             invoicePagination.pageCount =
-                                ceil(invoices.count() / INVOICE_PAGINATION_ITEMS.toDouble()).toInt()
+                                ceil(invoices.count() / count.toDouble()).toInt()
                             invoiceTable.items = invoices
-                                .skip(INVOICE_PAGINATION_ITEMS * page)
-                                .take(INVOICE_PAGINATION_ITEMS).toMutableObservableList()
+                                .skip(count * page)
+                                .take(count).toMutableObservableList()
                             val fullAccess = login.isAtLeast(MANAGER).toReadOnlyProperty()
                             editButton.disableProperty().bind(!selectedBinding or !fullAccess)
                             deleteButton.disableProperty().bind(!selectedBinding or !fullAccess)

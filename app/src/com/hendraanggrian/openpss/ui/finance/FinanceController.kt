@@ -44,6 +44,7 @@ import javafx.scene.control.SelectionModel
 import javafx.scene.control.Tab
 import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
+import javafx.scene.image.ImageView
 import javafx.scene.layout.Pane
 import ktfx.application.later
 import ktfx.collections.toMutableObservableList
@@ -99,11 +100,11 @@ class FinanceController : SegmentedController(), Refreshable,
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
-        refreshButton = stretchableButton(getString(R.string.refresh), R.image.btn_refresh_light) {
+        refreshButton = stretchableButton(getString(R.string.refresh), ImageView(R.image.btn_refresh_light)) {
             onAction { refresh() }
         }
-        viewTotalButton = styledStretchableButton(STYLE_DEFAULT_BUTTON,
-            getString(R.string.total), R.image.btn_money_dark) {
+        viewTotalButton = styledStretchableButton(STYLE_DEFAULT_BUTTON, getString(R.string.total),
+            ImageView(R.image.btn_money_dark)) {
             onAction { viewTotal() }
         }
         leftButtons.addAll(tabPane.header, separator(VERTICAL), refreshButton, viewTotalButton)

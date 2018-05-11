@@ -4,13 +4,13 @@ import com.hendraanggrian.openpss.App.Companion.STYLE_DEFAULT_BUTTON
 import com.hendraanggrian.openpss.App.Companion.STYLE_SEARCH_TEXTFIELD
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.controls.InputUserPopOver
+import com.hendraanggrian.openpss.controls.PaginatedPane
 import com.hendraanggrian.openpss.controls.stretchableButton
 import com.hendraanggrian.openpss.controls.styledStretchableButton
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.schemas.Employee.Role.MANAGER
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.io.properties.SettingsFile.CUSTOMER_PAGINATION_ITEMS
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.SegmentedController
 import com.hendraanggrian.openpss.ui.Selectable
@@ -30,7 +30,6 @@ import javafx.scene.control.Label
 import javafx.scene.control.ListView
 import javafx.scene.control.MenuButton
 import javafx.scene.control.MenuItem
-import javafx.scene.control.Pagination
 import javafx.scene.control.SelectionModel
 import javafx.scene.control.SplitPane
 import javafx.scene.control.TableColumn
@@ -67,7 +66,7 @@ import kotlin.math.ceil
 class CustomerController : SegmentedController(), Refreshable, Selectable<Customer>, Selectable2<Customer.Contact> {
 
     @FXML lateinit var splitPane: SplitPane
-    @FXML lateinit var customerPagination: Pagination
+    @FXML lateinit var customerPagination: PaginatedPane
     @FXML lateinit var nameLabel: Label
     @FXML lateinit var idImage: ImageView
     @FXML lateinit var idLabel: Label
@@ -104,13 +103,14 @@ class CustomerController : SegmentedController(), Refreshable, Selectable<Custom
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
-        refreshButton = stretchableButton(getString(R.string.refresh), R.image.btn_refresh_light) {
+        refreshButton = stretchableButton(getString(R.string.refresh), ImageView(R.image.btn_refresh_light)) {
             onAction { refresh() }
         }
-        addButton = styledStretchableButton(STYLE_DEFAULT_BUTTON, getString(R.string.add), R.image.btn_add_dark) {
+        addButton = styledStretchableButton(STYLE_DEFAULT_BUTTON, getString(R.string.add),
+            ImageView(R.image.btn_add_dark)) {
             onAction { add() }
         }
-        editButton = stretchableButton(getString(R.string.edit), R.image.btn_edit_light) {
+        editButton = stretchableButton(getString(R.string.edit), ImageView(R.image.btn_edit_light)) {
             onAction { edit() }
         }
         searchField = styledTextField(STYLE_SEARCH_TEXTFIELD) {
@@ -135,13 +135,13 @@ class CustomerController : SegmentedController(), Refreshable, Selectable<Custom
 
     override fun refresh() {
         later {
-            customerPagination.pageFactoryProperty().bind(bindingOf(
+            customerPagination.contentFactoryProperty().bind(bindingOf(
                 searchField.textProperty(),
                 filterNameItem.selectedProperty(),
                 filterAddressItem.selectedProperty(),
                 filterNoteItem.selectedProperty()
             ) {
-                Callback<Int, Node> { page ->
+                Callback<Pair<Int, Int>, Node> { (page, count) ->
                     customerList = listView {
                         later {
                             transaction {
@@ -155,11 +155,10 @@ class CustomerController : SegmentedController(), Refreshable, Selectable<Custom
                                             or(it.note.matches(searchField.text, CASE_INSENSITIVE))
                                     }
                                 }
-                                customerPagination.pageCount =
-                                    ceil(customers.count() / CUSTOMER_PAGINATION_ITEMS.toDouble()).toInt()
+                                customerPagination.pageCount = ceil(customers.count() / count.toDouble()).toInt()
                                 items = customers
-                                    .skip(CUSTOMER_PAGINATION_ITEMS * page)
-                                    .take(CUSTOMER_PAGINATION_ITEMS).toMutableObservableList()
+                                    .skip(count * page)
+                                    .take(count).toMutableObservableList()
                                 val fullAccess = login.isAtLeast(MANAGER).toReadOnlyProperty()
                                 editButton.disableProperty().bind(!selectedBinding or !fullAccess)
                                 addContactItem.disableProperty().bind(!selectedBinding)

@@ -6,8 +6,6 @@ import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_CURRENC
 import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_INVOICE_HEADERS
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.io.properties.SettingsFile
-import com.hendraanggrian.openpss.io.properties.SettingsFile.CUSTOMER_PAGINATION_ITEMS
-import com.hendraanggrian.openpss.io.properties.SettingsFile.INVOICE_PAGINATION_ITEMS
 import com.hendraanggrian.openpss.io.properties.SettingsFile.INVOICE_QUICK_SELECT_CUSTOMER
 import com.hendraanggrian.openpss.io.properties.SettingsFile.WAGE_READER
 import com.hendraanggrian.openpss.resources.Resourced
@@ -32,7 +30,6 @@ import ktfx.beans.binding.bindingOf
 import ktfx.beans.binding.stringBindingOf
 import ktfx.beans.property.toProperty
 import ktfx.beans.value.and
-import ktfx.collections.observableListOf
 import ktfx.coroutines.listener
 import ktfx.layouts.LayoutDsl
 import ktfx.layouts.LayoutManager
@@ -46,7 +43,6 @@ import ktfx.layouts.label
 import ktfx.layouts.textArea
 import ktfx.layouts.textField
 import ktfx.layouts.vbox
-import ktfx.listeners.converter
 import ktfx.scene.control.cancelButton
 import ktfx.scene.control.graphicIcon
 import ktfx.scene.control.headerTitle
@@ -80,25 +76,7 @@ class SettingsDialog(resourced: Resourced, showGlobalSettings: Boolean) : Dialog
             stylesheets += getStyle(R.style.openpss)
             content = vbox {
                 spacing = 16.0
-                group(R.string.customer) {
-                    item(R.string.items_per_page) {
-                        customerPaginationChoice = paginationChoice(CUSTOMER_PAGINATION_ITEMS) {
-                            valueProperty().listener { _, _, value ->
-                                isLocalChanged.set(true)
-                                CUSTOMER_PAGINATION_ITEMS = value
-                            }
-                        }
-                    }
-                }
                 group(R.string.invoice) {
-                    item(R.string.items_per_page) {
-                        invoicePaginationChoice = paginationChoice(INVOICE_PAGINATION_ITEMS) {
-                            valueProperty().listener { _, _, value ->
-                                isLocalChanged.set(true)
-                                INVOICE_PAGINATION_ITEMS = value
-                            }
-                        }
-                    }
                     checkBox(getString(R.string.quick_select_customer_when_adding_invoice)) {
                         isSelected = SettingsFile.INVOICE_QUICK_SELECT_CUSTOMER
                         selectedProperty().listener { _, _, value ->
@@ -204,18 +182,6 @@ class SettingsDialog(resourced: Resourced, showGlobalSettings: Boolean) : Dialog
     ): HBox = hbox(8.0) {
         alignment = CENTER_LEFT
         if (labelId != null) label(getString(labelId))
-        init()
-    }
-
-    private fun LayoutManager<Node>.paginationChoice(
-        prefill: Int,
-        init: (@LayoutDsl ChoiceBox<Int>).() -> Unit
-    ): ChoiceBox<Int> = choiceBox(observableListOf(20, 30, 40, 50)) {
-        converter {
-            fromString { it.toInt() }
-            toString { "$it ${getString(R.string.items)}" }
-        }
-        value = prefill
         init()
     }
 }

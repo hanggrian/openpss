@@ -6,19 +6,18 @@ import javafx.beans.DefaultProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.beans.property.StringProperty
 import javafx.scene.Node
-import javafx.scene.control.SplitMenuButton
+import javafx.scene.control.ToggleButton
 
 @DefaultProperty("graphic")
-class StretchableSplitMenuButton @JvmOverloads constructor(
+class StretchableToggleButton @JvmOverloads constructor(
     stretchableText: String? = null,
     graphic: Node? = null
-) : SplitMenuButton(), StretchableLabeled {
+) : ToggleButton(null, graphic), StretchableLabeled {
 
     private val stretchableTextProperty = SimpleStringProperty()
     override fun stretchableTextProperty(): StringProperty = stretchableTextProperty
 
     init {
         initialize(stretchableText)
-        setGraphic(graphic)
     }
 }

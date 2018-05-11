@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.layouts
 
+import com.hendraanggrian.openpss.controls.StretchableToggleButton
 import com.hendraanggrian.openpss.scene.R
-import com.hendraanggrian.openpss.util.stretchableText
 import javafx.scene.control.Tab
 import javafx.scene.control.TabPane
 import javafx.scene.control.ToggleButton
@@ -17,7 +17,7 @@ class SegmentedTabPane : TabPane() {
     var isTextStretchable: Boolean = false
 
     init {
-        stylesheets += javaClass.getResource(R.style.hiddentabpane).toExternalForm()
+        stylesheets += javaClass.getResource(R.style.segmentedtabpane).toExternalForm()
         later { paddingTop = -(lookup(".tab-header-area") as Pane).height }
         header.toggleGroup.run {
             selectedToggleProperty().listener { _, oldValue, value ->
@@ -45,7 +45,10 @@ class SegmentedTabPane : TabPane() {
 
     private fun populate(tabs: Collection<Tab>) {
         header.buttons += tabs.map {
-            ToggleButton(it.text, it.graphic).apply { if (isTextStretchable) stretchableText() }
+            when {
+                isTextStretchable -> StretchableToggleButton(it.text, it.graphic)
+                else -> ToggleButton(it.text, it.graphic)
+            }
         }
     }
 }

@@ -22,6 +22,7 @@ import javafx.scene.control.TreeItem
 import javafx.scene.control.TreeTableColumn
 import javafx.scene.control.TreeTableView
 import javafx.scene.control.TreeTableView.TreeTableViewSelectionModel
+import javafx.scene.image.ImageView
 import kotlinx.nosql.equal
 import kotlinx.nosql.update
 import ktfx.application.later
@@ -46,8 +47,11 @@ class ScheduleController : SegmentedController(), Refreshable, TreeSelectable<Sc
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
-        refreshButton = stretchableButton(getString(R.string.refresh), R.image.btn_refresh_light) { onAction { refresh() } }
-        doneButton = styledStretchableButton(STYLE_DEFAULT_BUTTON, getString(R.string.done), R.image.btn_done_dark) {
+        refreshButton = stretchableButton(getString(R.string.refresh), ImageView(R.image.btn_refresh_light)) {
+            onAction { refresh() }
+        }
+        doneButton = styledStretchableButton(STYLE_DEFAULT_BUTTON, getString(R.string.done),
+            ImageView(R.image.btn_done_dark)) {
             onAction { done() }
             disableProperty().bind(selecteds.isEmpty)
         }

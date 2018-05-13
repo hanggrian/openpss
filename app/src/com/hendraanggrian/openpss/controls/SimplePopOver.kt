@@ -5,10 +5,11 @@ import com.hendraanggrian.openpss.resources.Resourced
 import com.hendraanggrian.openpss.util.getColor
 import javafx.scene.Node
 import javafx.scene.control.Button
+import javafx.scene.control.ListView
+import javafx.scene.control.TableView
 import javafx.scene.layout.Pane
 import javafx.scene.text.Font
 import javafx.util.Duration.ZERO
-import ktfx.application.later
 import ktfx.coroutines.onAction
 import ktfx.coroutines.onCloseRequest
 import ktfx.layouts.LayoutManager
@@ -48,7 +49,17 @@ open class SimplePopOver(
     }
 
     fun showAt(node: Node) {
-        show(node)
-        later { node.scene.window.onCloseRequest { hide(ZERO) } }
+        node.scene.window.onCloseRequest { hide(ZERO) }
+        val selectedIndex = (node as? TableView<*>)?.selectionModel?.selectedIndex
+            ?: (node as? ListView<*>)?.selectionModel?.selectedIndex
+            ?: -1
+        when (selectedIndex) {
+            -1 -> show(node)
+            else -> node.localToScreen(node.boundsInLocal).let {
+                show(node.scene.window,
+                    it.minX + it.width,
+                    it.minY + selectedIndex * 22.0 + (0 until selectedIndex).sumByDouble { 2.0 })
+            }
+        }
     }
 }

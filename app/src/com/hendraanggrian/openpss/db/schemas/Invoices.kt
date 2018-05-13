@@ -92,25 +92,25 @@ data class Invoice(
     private fun List<Order>.sum() = sumByDouble { it.total }
 
     data class Plate(
+        val machine: String,
         override val title: String,
         override val qty: Int,
-        val machine: String,
         override val price: Double
     ) : Titled, SimpleOrder {
         companion object {
             fun new(
+                machine: String,
                 title: String,
                 qty: Int,
-                machine: String,
                 price: Double
-            ): Plate = Plate(title, qty, machine, price)
+            ): Plate = Plate(machine, title, qty, price)
         }
     }
 
     data class Offset(
+        val machine: String,
         override val title: String,
         override val qty: Int,
-        val machine: String,
         val technique: String,
         override val minQty: Int,
         override val minPrice: Double,
@@ -118,14 +118,14 @@ data class Invoice(
     ) : Titled, OffsetOrder {
         companion object {
             fun new(
+                machine: String,
                 title: String,
                 qty: Int,
-                machine: String,
                 technique: Technique,
                 minQty: Int,
                 minPrice: Double,
                 excessPrice: Double
-            ): Offset = Offset(title, qty, machine, technique.id, minQty, minPrice, excessPrice)
+            ): Offset = Offset(machine, title, qty, technique.id, minQty, minPrice, excessPrice)
         }
 
         override val typedTechnique: Technique get() = enumValueOfId(technique)

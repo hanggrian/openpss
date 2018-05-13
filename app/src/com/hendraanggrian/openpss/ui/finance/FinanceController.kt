@@ -2,7 +2,7 @@ package com.hendraanggrian.openpss.ui.finance
 
 import com.hendraanggrian.openpss.App.Companion.STYLE_DEFAULT_BUTTON
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.controls.ViewInvoiceDialog
+import com.hendraanggrian.openpss.controls.ViewInvoicePopOver
 import com.hendraanggrian.openpss.controls.stretchableButton
 import com.hendraanggrian.openpss.controls.styledStretchableButton
 import com.hendraanggrian.openpss.db.schemas.Employees
@@ -157,7 +157,8 @@ class FinanceController : SegmentedController(), Refreshable,
         }
     }
 
-    @FXML fun viewInvoice() = ViewInvoiceDialog(this, transaction { Invoices[selected2!!.invoiceId].single() }).show()
+    @FXML fun viewInvoice() = ViewInvoicePopOver(this, transaction { Invoices[selected2!!.invoiceId].single() })
+        .showAt(dailyTable)
 
     @FXML fun viewPayments() {
         selectFirst()

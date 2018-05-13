@@ -69,9 +69,9 @@ class AddOffsetPopOver(resourced: Resourced) : AddOrderPopOver<Invoice.Offset>(
             excessPriceField.valueProperty().lessEq(0)
 
     override fun newInstance(): Invoice.Offset = Invoice.Offset.new(
+        machineChoice.value.name,
         titleField.text,
         qtyField.value,
-        machineChoice.value.name,
         techniqueChoice.value,
         minQtyField.value,
         minPriceField.value,

@@ -3,7 +3,7 @@ package com.hendraanggrian.openpss.ui.invoice
 import com.hendraanggrian.openpss.App.Companion.STYLE_DEFAULT_BUTTON
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.controls.PaginatedPane
-import com.hendraanggrian.openpss.controls.ViewInvoiceDialog
+import com.hendraanggrian.openpss.controls.ViewInvoicePopOver
 import com.hendraanggrian.openpss.controls.stretchableButton
 import com.hendraanggrian.openpss.controls.styledStretchableButton
 import com.hendraanggrian.openpss.db.SessionWrapper
@@ -83,15 +83,15 @@ import kotlin.math.ceil
 
 class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice>, Selectable2<Payment> {
 
+    @FXML lateinit var allDateRadio: RadioButton
+    @FXML lateinit var pickDateRadio: RadioButton
+    @FXML lateinit var dateBox: DateBox
     @FXML lateinit var customerButton: SplitMenuButton
     @FXML lateinit var customerButtonItem: MenuItem
     @FXML lateinit var paymentButton: MenuButton
     @FXML lateinit var anyPaymentItem: RadioMenuItem
     @FXML lateinit var unpaidPaymentItem: RadioMenuItem
     @FXML lateinit var paidPaymentItem: RadioMenuItem
-    @FXML lateinit var allDateRadio: RadioButton
-    @FXML lateinit var pickDateRadio: RadioButton
-    @FXML lateinit var dateBox: DateBox
     @FXML lateinit var invoicePagination: PaginatedPane
 
     private lateinit var refreshButton: Button
@@ -149,7 +149,7 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
                 else -> R.string.any
             })
         })
-        pickDateRadio.graphic.disableProperty().bind(!pickDateRadio.selectedProperty())
+        pickDateRadio.graphic.visibleProperty().bind(pickDateRadio.selectedProperty())
     }
 
     override fun refresh() = later {
@@ -283,7 +283,7 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
 
     @FXML fun clearCustomer() = customerProperty.set(null)
 
-    fun viewInvoice() = ViewInvoiceDialog(this, selected!!).show()
+    fun viewInvoice() = ViewInvoicePopOver(this, selected!!).showAt(invoiceTable)
 
     private fun addPayment() = AddPaymentPopOver(this, login, selected!!).showAt(deletePaymentButton) {
         transaction {

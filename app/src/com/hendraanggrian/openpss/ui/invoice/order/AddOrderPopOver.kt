@@ -1,8 +1,8 @@
 package com.hendraanggrian.openpss.ui.invoice.order
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.controls.IntField
 import com.hendraanggrian.openpss.controls.DefaultPopOver
+import com.hendraanggrian.openpss.controls.IntField
 import com.hendraanggrian.openpss.controls.intField
 import com.hendraanggrian.openpss.db.Order
 import com.hendraanggrian.openpss.db.Titled

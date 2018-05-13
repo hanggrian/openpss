@@ -4,6 +4,7 @@ import com.hendraanggrian.openpss.App.Companion.STYLE_DEFAULT_BUTTON
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.controls.UncollapsibleTreeItem
 import com.hendraanggrian.openpss.controls.stretchableButton
+import com.hendraanggrian.openpss.controls.stretchableToggleButton
 import com.hendraanggrian.openpss.controls.styledStretchableButton
 import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.schemas.Invoices
@@ -18,6 +19,7 @@ import javafx.geometry.Orientation.VERTICAL
 import javafx.scene.Node
 import javafx.scene.control.Button
 import javafx.scene.control.SelectionMode.MULTIPLE
+import javafx.scene.control.ToggleButton
 import javafx.scene.control.TreeItem
 import javafx.scene.control.TreeTableColumn
 import javafx.scene.control.TreeTableView
@@ -45,6 +47,9 @@ class ScheduleController : SegmentedController(), Refreshable, TreeSelectable<Sc
     private lateinit var doneButton: Button
     override val leftButtons: List<Node> get() = listOf(refreshButton, separator(VERTICAL), doneButton)
 
+    private lateinit var historyToggle: ToggleButton
+    override val rightButtons: List<Node> get() = listOf(historyToggle)
+
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
         refreshButton = stretchableButton(getString(R.string.refresh), ImageView(R.image.btn_refresh_light)) {
@@ -54,6 +59,9 @@ class ScheduleController : SegmentedController(), Refreshable, TreeSelectable<Sc
             ImageView(R.image.btn_done_dark)) {
             onAction { done() }
             disableProperty().bind(selecteds.isEmpty)
+        }
+        historyToggle = stretchableToggleButton(R.string.history, ImageView(R.image.btn_history_light)) {
+            selectedProperty().listener { refresh() }
         }
         scheduleTable.run {
             root = TreeItem()
@@ -78,7 +86,10 @@ class ScheduleController : SegmentedController(), Refreshable, TreeSelectable<Sc
         scheduleTable.root.children.run {
             clear()
             transaction {
-                Invoices { it.done.equal(false) }.forEach { invoice ->
+                when (historyToggle.isSelected) {
+                    true -> Invoices { it.done.equal(true) }.take(20)
+                    else -> Invoices { it.done.equal(false) }
+                }.forEach { invoice ->
                     addAll(UncollapsibleTreeItem(
                         Schedule(invoice.id, Customers[invoice.customerId].single().name, "", "",
                             invoice.dateTime.toString(PATTERN_DATETIME_EXTENDED))).apply {

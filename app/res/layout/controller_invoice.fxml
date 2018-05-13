@@ -13,6 +13,20 @@
             <Insets bottom="16" left="16" right="16"/>
         </padding>
         <Region HBox.hgrow="ALWAYS"/>
+        <fx:define>
+            <ToggleGroup fx:id="pickDateGroup"/>
+        </fx:define>
+        <RadioButton fx:id="allDateRadio" mnemonicParsing="false" toggleGroup="$pickDateGroup"
+                     text="%all_date"/>
+        <RadioButton fx:id="pickDateRadio" mnemonicParsing="false" toggleGroup="$pickDateGroup"
+                     text="%pick_date" selected="true" contentDisplay="RIGHT">
+            <HBox.margin>
+                <Insets left="8"/>
+            </HBox.margin>
+            <graphic>
+                <DateBox fx:id="dateBox"/>
+            </graphic>
+        </RadioButton>
         <SplitMenuButton mnemonicParsing="false" fx:id="customerButton" onAction="#selectCustomer"
                          text="%select_customer">
             <graphic>
@@ -31,7 +45,6 @@
                 </MenuItem>
             </items>
         </SplitMenuButton>
-        <Separator orientation="VERTICAL"/>
         <MenuButton mnemonicParsing="false" fx:id="paymentButton">
             <fx:define>
                 <ToggleGroup fx:id="paymentGroup"/>
@@ -53,21 +66,6 @@
                                text="%paid"/>
             </items>
         </MenuButton>
-        <Separator orientation="VERTICAL"/>
-        <fx:define>
-            <ToggleGroup fx:id="pickDateGroup"/>
-        </fx:define>
-        <RadioButton fx:id="allDateRadio" mnemonicParsing="false" toggleGroup="$pickDateGroup"
-                     text="%all_date"/>
-        <RadioButton fx:id="pickDateRadio" mnemonicParsing="false" toggleGroup="$pickDateGroup"
-                     text="%pick_date" selected="true" contentDisplay="RIGHT">
-            <HBox.margin>
-                <Insets left="8"/>
-            </HBox.margin>
-            <graphic>
-                <DateBox fx:id="dateBox"/>
-            </graphic>
-        </RadioButton>
     </HBox>
     <PaginatedPane fx:id="invoicePagination" VBox.vgrow="ALWAYS"/>
 </VBox>

@@ -5,19 +5,17 @@ import com.hendraanggrian.openpss.resources.Resourced
 import javafx.scene.Node
 import javafx.scene.control.Button
 import ktfx.coroutines.onAction
-import ktfx.layouts.LayoutManager
 import org.controlsfx.control.PopOver
 
 /** [PopOver] with default button and return type. */
 abstract class DefaultPopOver<out T>(resourced: Resourced, titleId: String) : SimplePopOver(resourced, titleId) {
 
-    protected lateinit var defaultButton: Button
+    protected val defaultButton: Button = @Suppress("LeakingThis") ktfx.layouts.button(getString(R.string.ok)) {
+        isDefaultButton = true
+    }
 
-    override fun buttons(manager: LayoutManager<Node>) = manager.run {
-        super.buttons(manager)
-        defaultButton = ktfx.layouts.button(getString(R.string.ok)) {
-            isDefaultButton = true
-        }.add()
+    init {
+        buttonBar.buttons += defaultButton
     }
 
     abstract fun getResult(): T

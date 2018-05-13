@@ -12,18 +12,24 @@ import ktfx.application.later
 import ktfx.coroutines.onAction
 import ktfx.coroutines.onCloseRequest
 import ktfx.layouts.LayoutManager
-import ktfx.layouts.buttonBar
+import ktfx.layouts._ButtonBar
 import ktfx.layouts.label
-import ktfx.layouts.pane
 import ktfx.layouts.separator
 import ktfx.scene.layout.updatePadding
 import org.controlsfx.control.PopOver
 
 /** Base [PopOver] class used across applications. */
-open class SimplePopOver(resourced: Resourced, titleId: String) : PopOver(), LayoutManager<Node>, Resourced by resourced {
+open class SimplePopOver(
+    resourced: Resourced,
+    titleId: String
+) : PopOver(), LayoutManager<Node>, Resourced by resourced {
 
-    private lateinit var contentPane: Pane
-    protected lateinit var cancelButton: Button
+    private val contentPane: Pane = Pane()
+    protected val buttonBar: _ButtonBar = _ButtonBar(null)
+    protected val cancelButton: Button = @Suppress("LeakingThis") ktfx.layouts.button(getString(R.string.close)) {
+        isCancelButton = true
+        onAction { hide() }
+    }
 
     override val childs: MutableList<Node> get() = contentPane.children
 
@@ -35,16 +41,10 @@ open class SimplePopOver(resourced: Resourced, titleId: String) : PopOver(), Lay
                 textFill = getColor(R.color.teal)
             }
             separator()
-            contentPane = pane()
-            buttonBar { buttons(this) } marginTop 8.0
+            contentPane.add()
+            buttonBar.add() marginTop 8.0
         }
-    }
-
-    protected open fun buttons(manager: LayoutManager<Node>) = manager.run {
-        cancelButton = ktfx.layouts.button(getString(R.string.close)) {
-            isCancelButton = true
-            onAction { hide() }
-        }.add()
+        buttonBar.buttons += cancelButton
     }
 
     fun showAt(node: Node) {

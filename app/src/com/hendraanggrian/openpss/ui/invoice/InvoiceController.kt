@@ -233,8 +233,10 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
                         transaction {
                             val invoices = Invoices.buildQuery {
                                 if (customerProperty.value != null) and(customerId.equal(customerProperty.value.id))
-                                if (unpaidPaymentItem.isSelected) and(it.paid.equal(false))
-                                if (paidPaymentItem.isSelected) and(it.paid.equal(true))
+                                when {
+                                    unpaidPaymentItem.isSelected -> and(it.paid.equal(false))
+                                    paidPaymentItem.isSelected -> and(it.paid.equal(true))
+                                }
                                 if (pickDateRadio.isSelected) and(it.dateTime.matches(dateBox.value))
                             }
                             invoicePagination.pageCount =

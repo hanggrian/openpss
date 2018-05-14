@@ -2,8 +2,7 @@
 
 <?import com.hendraanggrian.openpss.layouts.SegmentedTabPane?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.*?>
 <SegmentedTabPane xmlns="http://javafx.com/javafx"
                   xmlns:fx="http://javafx.com/fxml"
                   fx:controller="com.hendraanggrian.openpss.ui.finance.FinanceController"
@@ -29,7 +28,13 @@
             <contextMenu>
                 <ContextMenu>
                     <items>
-                        <MenuItem fx:id="viewInvoiceItem" mnemonicParsing="false" onAction="#viewInvoice" text="%view"/>
+                        <MenuItem fx:id="viewInvoiceItem" mnemonicParsing="false" onAction="#viewInvoice" text="%view">
+                            <graphic>
+                                <ImageView>
+                                    <Image url="@/image/btn_invoice_light.png"/>
+                                </ImageView>
+                            </graphic>
+                        </MenuItem>
                     </items>
                 </ContextMenu>
             </contextMenu>

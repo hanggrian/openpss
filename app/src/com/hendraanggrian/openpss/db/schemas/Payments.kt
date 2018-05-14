@@ -50,8 +50,6 @@ data class Payment(
 
     val typedMethod: Method get() = enumValueOfId(method)
 
-    fun isCash(): Boolean = reference == null
-
     enum class Method : StringResource {
         CASH {
             override val resourceId: String = R.string.cash

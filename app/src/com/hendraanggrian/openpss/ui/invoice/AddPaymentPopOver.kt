@@ -1,8 +1,8 @@
 package com.hendraanggrian.openpss.ui.invoice
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.controls.DoubleField
 import com.hendraanggrian.openpss.controls.DefaultPopOver
+import com.hendraanggrian.openpss.controls.DoubleField
 import com.hendraanggrian.openpss.controls.doubleField
 import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.db.schemas.Invoice
@@ -12,22 +12,20 @@ import com.hendraanggrian.openpss.db.schemas.Payment.Method.CASH
 import com.hendraanggrian.openpss.db.schemas.Payment.Method.values
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.resources.Resourced
+import com.hendraanggrian.openpss.ui.Selectable
 import com.hendraanggrian.openpss.util.currencyConverter
 import com.hendraanggrian.openpss.util.getColor
 import com.hendraanggrian.openpss.util.getFont
 import javafx.scene.Node
 import javafx.scene.control.ChoiceBox
+import javafx.scene.control.SelectionModel
 import javafx.scene.control.TextField
 import javafx.scene.image.ImageView
 import ktfx.beans.binding.bindingOf
+import ktfx.beans.binding.booleanBindingOf
 import ktfx.beans.binding.stringBindingOf
 import ktfx.beans.value.eq
-import ktfx.beans.value.greater
-import ktfx.beans.value.isBlank
-import ktfx.beans.value.lessEq
-import ktfx.beans.value.or
 import ktfx.collections.toObservableList
-import ktfx.coroutines.listener
 import ktfx.coroutines.onAction
 import ktfx.layouts.button
 import ktfx.layouts.choiceBox
@@ -42,12 +40,14 @@ class AddPaymentPopOver(
     resourced: Resourced,
     private val employee: Employee,
     private val invoice: Invoice
-) : DefaultPopOver<Payment>(resourced, R.string.add_payment) {
+) : DefaultPopOver<Payment>(resourced, R.string.add_payment), Selectable<Method> {
 
     private lateinit var valueField: DoubleField
     private lateinit var methodChoice: ChoiceBox<Method>
     private lateinit var referenceField: TextField
     private val receivable = transaction { invoice.calculateDue() }
+
+    override val selectionModel: SelectionModel<Method> get() = methodChoice.selectionModel
 
     init {
         gridPane {
@@ -92,15 +92,15 @@ class AddPaymentPopOver(
             label(getString(R.string.reference)) { bindDisable() } row 7 col 0
             referenceField = textField { bindDisable() } row 7 col 1 colSpans 2
         }
-        val binding = !valueField.validProperty() or
-            valueField.valueProperty().lessEq(0) or
-            valueField.valueProperty().greater(receivable)
-        methodChoice.selectionModel.selectedItemProperty().listener { _, _, method ->
-            defaultButton.disableProperty().bind(when (method) {
-                CASH -> binding
-                else -> binding or referenceField.textProperty().isBlank()
-            })
-        }
+        defaultButton.disableProperty().bind(booleanBindingOf(valueField.valueProperty(), selectedProperty,
+            referenceField.textProperty()) {
+            (!valueField.isValid || valueField.value <= 0 || valueField.value > receivable).let {
+                when (selected) {
+                    CASH -> it
+                    else -> it || referenceField.text.isBlank()
+                }
+            }
+        })
     }
 
     override fun getResult(): Payment = Payment.new(invoice.id, employee.id, methodChoice.value, valueField.value,

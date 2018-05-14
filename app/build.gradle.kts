@@ -119,15 +119,21 @@ tasks {
     withType<PackTask> {
         dependsOn("installDist")
 
-        classpath(*buildDir.resolve("install/app/lib").listFiles() ?: emptyArray())
+        buildDir.resolve("install/app/lib")?.listFiles()?.forEach {
+            classpath.add(it.path)
+        }
         executable = RELEASE_NAME
         mainClass = application.mainClassName
-        vmArgs("Xmx2G")
-        resources("res", "../scene/sceneres")
-        outputName = RELEASE_NAME
-
-        iconDir = rootProject.projectDir.resolve("art").resolve("$RELEASE_NAME.icns")
-        bundleId = RELEASE_GROUP
+        vmArgs.add("Xmx2G")
+        resources.addAll(listOf("res", "../scene/sceneres"))
+        mac("/Library/Java/JavaVirtualMachines/jdk1.8.0_172.jdk/Contents/Home") {
+            name = "$RELEASE_NAME.app"
+            icon = projectDir.resolve("art").resolve("$RELEASE_NAME.icns").path
+            bundleId = RELEASE_GROUP
+        }
+        windows64("/Users/hendraanggrian/Desktop/jdk1.8.0_172") {
+            name = RELEASE_NAME
+        }
         verbose = true
         openOnDone = true
     }

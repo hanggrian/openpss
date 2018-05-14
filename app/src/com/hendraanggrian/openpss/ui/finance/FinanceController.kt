@@ -54,7 +54,6 @@ import ktfx.coroutines.onMouseClicked
 import ktfx.layouts.pane
 import ktfx.layouts.separator
 import ktfx.scene.input.isDoubleClick
-import org.controlsfx.control.PopOver.ArrowLocation.TOP_RIGHT
 import java.net.URL
 import java.util.Locale
 import java.util.ResourceBundle
@@ -159,7 +158,6 @@ class FinanceController : SegmentedController(), Refreshable,
     }
 
     @FXML fun viewInvoice() = ViewInvoicePopOver(this, transaction { Invoices[selected2!!.invoiceId].single() })
-        .apply { arrowLocation = TOP_RIGHT }
         .showAt(dailyTable)
 
     @FXML fun viewPayments() {

@@ -137,7 +137,7 @@ class ViewInvoicePopOver(invoice: Invoice) : SimplePopOver(object : Resourced {
     }
 
     private companion object {
-        const val MAX_WIDTH = 285.0 // equivalent to 7.5cm
+        const val MAX_WIDTH = 283.46456693 // equivalent to 7.5cm
 
         fun LayoutManager<Node>.boldLabel(
             text: String,

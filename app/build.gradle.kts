@@ -128,7 +128,7 @@ tasks {
         resources.addAll(listOf("res", "../scene/sceneres"))
         mac("/Library/Java/JavaVirtualMachines/jdk1.8.0_172.jdk/Contents/Home") {
             name = "$RELEASE_NAME.app"
-            icon = projectDir.resolve("art").resolve("$RELEASE_NAME.icns").path
+            icon = "art/$RELEASE_NAME.icns"
             bundleId = RELEASE_GROUP
         }
         windows64("/Users/hendraanggrian/Desktop/jdk1.8.0_172") {

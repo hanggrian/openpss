@@ -157,7 +157,7 @@ class FinanceController : SegmentedController(), Refreshable,
         }
     }
 
-    @FXML fun viewInvoice() = ViewInvoicePopOver(this, transaction { Invoices[selected2!!.invoiceId].single() })
+    @FXML fun viewInvoice() = ViewInvoicePopOver(transaction { Invoices[selected2!!.invoiceId].single() })
         .showAt(dailyTable)
 
     @FXML fun viewPayments() {

@@ -42,14 +42,14 @@ class App : Application(), Resourced {
 
         @JvmStatic fun main(args: Array<String>) = launch<App>(*args)
 
-        inline val supportedLocales: ObservableList<Locale> get() = observableListOf(Locale("en"), Locale("in"))
+        inline val supportedLocales: ObservableList<Locale> get() = observableListOf(Locale("en"), Locale("id"))
     }
 
     override lateinit var resources: ResourceBundle
 
     override fun init() {
         if (DEBUG) configure()
-        resources = getBundle("string", Locale(LoginFile.LANGUAGE))
+        resources = getBundle("string_${LoginFile.LANGUAGE}")
     }
 
     override fun start(stage: Stage) {

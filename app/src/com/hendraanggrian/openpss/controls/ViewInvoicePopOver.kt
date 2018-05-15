@@ -28,20 +28,18 @@ import ktfx.layouts.label
 import ktfx.layouts.line
 import ktfx.layouts.region
 import ktfx.layouts.vbox
-import ktfx.scene.layout.prefSize
-import java.util.Locale
 import java.util.ResourceBundle
 import java.util.ResourceBundle.getBundle
 
-class ViewInvoicePopOver(resourced: Resourced, invoice: Invoice) : SimplePopOver(resourced, R.string.invoice) {
+class ViewInvoicePopOver(invoice: Invoice) : SimplePopOver(object : Resourced {
+    override val resources: ResourceBundle = getBundle("string_${transaction {
+        findGlobalSettings(KEY_CURRENCY_LANGUAGE).single().value
+    }}")
+}, R.string.invoice) {
 
     private lateinit var invoiceHeaders: List<String>
     private lateinit var customer: Customer
     private lateinit var employee: Employee
-
-    override val resources: ResourceBundle = transaction {
-        getBundle("string", Locale(findGlobalSettings(KEY_CURRENCY_LANGUAGE).single().value))
-    }
 
     init {
         transaction {

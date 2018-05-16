@@ -69,9 +69,9 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced 
             content = gridPane {
                 gap = 8.0
                 label(getString(R.string.language)) col 0 row 0
-                LanguageBox().apply {
+                LanguageBox(LoginFile.LANGUAGE).apply {
                     valueProperty().listener(CommonPool) { _, _, value ->
-                        LoginFile.LANGUAGE = value
+                        LoginFile.LANGUAGE = value.code
                         LoginFile.save()
                         launch(FX) {
                             close()

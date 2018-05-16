@@ -1,18 +1,21 @@
 package com.hendraanggrian.openpss.controls
 
-import com.hendraanggrian.openpss.io.properties.LoginFile
+import com.hendraanggrian.openpss.Language
 import javafx.scene.control.ChoiceBox
-import ktfx.collections.observableListOf
+import ktfx.collections.toObservableList
 import ktfx.listeners.converter
-import java.util.Locale
 
-class LanguageBox : ChoiceBox<String>(observableListOf("en", "id")) {
+class LanguageBox(prefill: Language) : ChoiceBox<Language>(Language.values().toObservableList()) {
+
+    constructor(prefill: String) : this(Language.from(prefill))
 
     init {
         maxWidth = Double.MAX_VALUE
-        selectionModel.select(LoginFile.LANGUAGE)
+        selectionModel.select(prefill)
         converter {
-            toString { Locale(it!!).let { it.getDisplayLanguage(it) } }
+            toString {
+                it!!.toLocale().let { it.getDisplayLanguage(it) }
+            }
         }
     }
 }

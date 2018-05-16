@@ -1,8 +1,9 @@
 package com.hendraanggrian.openpss.ui.main
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_CURRENCY_LANGUAGE
+import com.hendraanggrian.openpss.controls.LanguageBox
 import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_INVOICE_HEADERS
+import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_LANGUAGE
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.io.properties.SettingsFile
 import com.hendraanggrian.openpss.io.properties.SettingsFile.INVOICE_QUICK_SELECT_CUSTOMER
@@ -14,13 +15,11 @@ import com.hendraanggrian.openpss.util.getColor
 import com.hendraanggrian.openpss.util.getFont
 import com.hendraanggrian.openpss.util.getStyle
 import com.hendraanggrian.openpss.util.onActionFilter
-import javafx.geometry.Pos.CENTER
 import javafx.geometry.Pos.CENTER_LEFT
 import javafx.scene.Node
 import javafx.scene.control.ChoiceBox
 import javafx.scene.control.Dialog
 import javafx.scene.control.TextArea
-import javafx.scene.control.TextField
 import javafx.scene.image.ImageView
 import javafx.scene.layout.HBox
 import javafx.scene.layout.VBox
@@ -40,7 +39,6 @@ import ktfx.layouts.gridPane
 import ktfx.layouts.hbox
 import ktfx.layouts.label
 import ktfx.layouts.textArea
-import ktfx.layouts.textField
 import ktfx.layouts.vbox
 import ktfx.scene.control.cancelButton
 import ktfx.scene.control.graphicIcon
@@ -48,7 +46,6 @@ import ktfx.scene.control.headerTitle
 import ktfx.scene.control.okButton
 import ktfx.scene.layout.gap
 import java.util.Currency
-import java.util.Locale
 
 class SettingsDialog(resourced: Resourced, showGlobalSettings: Boolean) : Dialog<Nothing>(), Resourced by resourced {
 
@@ -63,8 +60,7 @@ class SettingsDialog(resourced: Resourced, showGlobalSettings: Boolean) : Dialog
     private lateinit var invoiceHeadersArea: TextArea
     private lateinit var wageReaderChoice: ChoiceBox<Any>
 
-    private lateinit var languageField: TextField
-    private lateinit var countryField: TextField
+    private lateinit var languageBox: LanguageBox
 
     init {
         headerTitle = getString(R.string.settings)
@@ -100,17 +96,14 @@ class SettingsDialog(resourced: Resourced, showGlobalSettings: Boolean) : Dialog
                     gap = 8.0
                     transaction {
                         label(getString(R.string.currency)) row 0 col 0
-                        languageField = textField(findGlobalSettings(KEY_CURRENCY_LANGUAGE).single().value) {
-                            promptText = "xx"
-                            maxWidth = 48.0
-                            alignment = CENTER
-                            textProperty().listener { isGlobalChanged.set(true) }
-                        } row 0 col 1
+                        languageBox = LanguageBox(findGlobalSettings(KEY_LANGUAGE).single().value).apply {
+                            valueProperty().listener { isGlobalChanged.set(true) }
+                        }.add() row 0 col 1
                         label {
                             font = getFont(R.font.sf_pro_text_bold)
-                            textProperty().bind(stringBindingOf(languageField.textProperty(), countryField.textProperty()) {
+                            textProperty().bind(stringBindingOf(languageBox.valueProperty()) {
                                 try {
-                                    Currency.getInstance(Locale(languageField.text, countryField.text)).symbol
+                                    Currency.getInstance(languageBox.value.toLocale()).symbol
                                 } catch (e: Exception) {
                                     CURRENCY_INVALID
                                 }
@@ -118,7 +111,7 @@ class SettingsDialog(resourced: Resourced, showGlobalSettings: Boolean) : Dialog
                             textFillProperty().bind(bindingOf(textProperty()) {
                                 getColor(if (text == CURRENCY_INVALID) R.color.red else R.color.teal)
                             })
-                        } row 0 col 3
+                        } row 0 col 2
                         label(getString(R.string.invoice_headers)) row 1 col 0
                         invoiceHeadersArea = textArea(findGlobalSettings(KEY_INVOICE_HEADERS).single().valueList
                             .joinToString("\n").trim()) {
@@ -129,7 +122,7 @@ class SettingsDialog(resourced: Resourced, showGlobalSettings: Boolean) : Dialog
                                     else -> isGlobalChanged.set(true)
                                 }
                             }
-                        } row 1 col 1 colSpans 3
+                        } row 1 col 1 colSpans 2
                     }
                 }
             }
@@ -140,7 +133,7 @@ class SettingsDialog(resourced: Resourced, showGlobalSettings: Boolean) : Dialog
             onActionFilter {
                 if (isLocalChanged.value) SettingsFile.save()
                 if (isGlobalChanged.value) transaction {
-                    findGlobalSettings(KEY_CURRENCY_LANGUAGE).projection { value }.update(languageField.text)
+                    findGlobalSettings(KEY_LANGUAGE).projection { value }.update(languageBox.value.code)
                     findGlobalSettings(KEY_INVOICE_HEADERS).projection { value }
                         .update(invoiceHeadersArea.text.trim().replace("\n", "|"))
                     clearConverters()

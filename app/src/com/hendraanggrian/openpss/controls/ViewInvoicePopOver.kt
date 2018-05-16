@@ -5,7 +5,7 @@ import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.db.schemas.Employees
-import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_CURRENCY_LANGUAGE
+import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_LANGUAGE
 import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_INVOICE_HEADERS
 import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.db.transaction
@@ -33,7 +33,7 @@ import java.util.ResourceBundle.getBundle
 
 class ViewInvoicePopOver(invoice: Invoice) : SimplePopOver(object : Resourced {
     override val resources: ResourceBundle = getBundle("string_${transaction {
-        findGlobalSettings(KEY_CURRENCY_LANGUAGE).single().value
+        findGlobalSettings(KEY_LANGUAGE).single().value
     }}")
 }, R.string.invoice) {
 

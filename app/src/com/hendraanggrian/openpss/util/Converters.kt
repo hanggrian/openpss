@@ -2,12 +2,12 @@
 
 package com.hendraanggrian.openpss.util
 
-import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_CURRENCY_LANGUAGE
+import com.hendraanggrian.openpss.Language
+import com.hendraanggrian.openpss.db.schemas.GlobalSetting
 import com.hendraanggrian.openpss.db.transaction
 import javafx.util.StringConverter
 import javafx.util.converter.CurrencyStringConverter
 import javafx.util.converter.NumberStringConverter
-import java.util.Locale
 import java.util.WeakHashMap
 
 /**
@@ -24,11 +24,7 @@ val numberConverter: NumberStringConverter get() = getOrStore { NumberStringConv
 val currencyConverter: CurrencyStringConverter
     get() = getOrStore {
         CurrencyStringConverter(transaction {
-            val language = findGlobalSettings(KEY_CURRENCY_LANGUAGE).single().value
-            when {
-                language.isNotBlank() -> Locale(language)
-                else -> Locale.getDefault()
-            }
+            Language.from(findGlobalSettings(GlobalSetting.KEY_LANGUAGE).single().value).toLocale()
         })
     }
 

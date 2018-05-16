@@ -70,8 +70,8 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced 
                 gap = 8.0
                 label(getString(R.string.language)) col 0 row 0
                 LanguageBox().apply {
-                    valueProperty().listener(CommonPool) { _, _, locale ->
-                        LoginFile.LANGUAGE = locale.language
+                    valueProperty().listener(CommonPool) { _, _, value ->
+                        LoginFile.LANGUAGE = value
                         LoginFile.save()
                         launch(FX) {
                             close()

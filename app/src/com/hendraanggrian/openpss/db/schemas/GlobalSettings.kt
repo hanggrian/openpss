@@ -16,11 +16,11 @@ data class GlobalSetting(
 ) : Document<GlobalSettings> {
     companion object {
         const val KEY_CURRENCY_LANGUAGE = "currency_language"
-        const val KEY_CURRENCY_COUNTRY = "currency_country"
         const val KEY_INVOICE_HEADERS = "invoice_headers"
 
         fun listKeys(): List<String> = listOf(
-            KEY_CURRENCY_LANGUAGE, KEY_CURRENCY_COUNTRY, KEY_INVOICE_HEADERS)
+            KEY_CURRENCY_LANGUAGE,
+            KEY_INVOICE_HEADERS)
 
         fun new(key: String): GlobalSetting = GlobalSetting(key, "")
     }

@@ -1,7 +1,6 @@
 package com.hendraanggrian.openpss.ui.main
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_CURRENCY_COUNTRY
 import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_CURRENCY_LANGUAGE
 import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_INVOICE_HEADERS
 import com.hendraanggrian.openpss.db.transaction
@@ -61,8 +60,6 @@ class SettingsDialog(resourced: Resourced, showGlobalSettings: Boolean) : Dialog
     private var isLocalChanged = false.toProperty()
     private var isGlobalChanged = false.toProperty()
 
-    private lateinit var customerPaginationChoice: ChoiceBox<Int>
-    private lateinit var invoicePaginationChoice: ChoiceBox<Int>
     private lateinit var invoiceHeadersArea: TextArea
     private lateinit var wageReaderChoice: ChoiceBox<Any>
 
@@ -109,12 +106,6 @@ class SettingsDialog(resourced: Resourced, showGlobalSettings: Boolean) : Dialog
                             alignment = CENTER
                             textProperty().listener { isGlobalChanged.set(true) }
                         } row 0 col 1
-                        countryField = textField(findGlobalSettings(KEY_CURRENCY_COUNTRY).single().value) {
-                            promptText = "XX"
-                            maxWidth = 48.0
-                            alignment = CENTER
-                            textProperty().listener { isGlobalChanged.set(true) }
-                        } row 0 col 2
                         label {
                             font = getFont(R.font.sf_pro_text_bold)
                             textProperty().bind(stringBindingOf(languageField.textProperty(), countryField.textProperty()) {
@@ -150,7 +141,6 @@ class SettingsDialog(resourced: Resourced, showGlobalSettings: Boolean) : Dialog
                 if (isLocalChanged.value) SettingsFile.save()
                 if (isGlobalChanged.value) transaction {
                     findGlobalSettings(KEY_CURRENCY_LANGUAGE).projection { value }.update(languageField.text)
-                    findGlobalSettings(KEY_CURRENCY_COUNTRY).projection { value }.update(countryField.text)
                     findGlobalSettings(KEY_INVOICE_HEADERS).projection { value }
                         .update(invoiceHeadersArea.text.trim().replace("\n", "|"))
                     clearConverters()

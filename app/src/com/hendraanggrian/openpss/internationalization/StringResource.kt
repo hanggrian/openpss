@@ -1,4 +1,4 @@
-package com.hendraanggrian.openpss.resources
+package com.hendraanggrian.openpss.internationalization
 
 interface StringResource {
 

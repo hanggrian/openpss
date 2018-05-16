@@ -21,7 +21,12 @@ open class HostField : TextField() {
     val isValid: Boolean by validProperty
 
     init {
-        validProperty.bind(booleanBindingOf(textProperty()) { getInstance().isValidInet4Address(text) })
+        validProperty.bind(booleanBindingOf(textProperty()) {
+            when (text) {
+                "localhost" -> true
+                else -> getInstance().isValidInet4Address(text)
+            }
+        })
         focusedProperty().listener { _, _, value -> if (value && text.isNotEmpty()) selectAll() }
     }
 }

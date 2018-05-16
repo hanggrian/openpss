@@ -6,7 +6,7 @@ import com.hendraanggrian.openpss.controls.DefaultPopOver
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.resources.Resourced
+import com.hendraanggrian.openpss.internationalization.Resourced
 import com.hendraanggrian.openpss.ui.Selectable
 import javafx.scene.control.ListView
 import javafx.scene.control.SelectionModel

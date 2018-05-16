@@ -78,7 +78,7 @@ class EmployeeController : SegmentedController(), Refreshable, Selectable<Employ
 
     override fun refresh() = employeeTable.items.let {
         it.clear()
-        it += transaction { Employees().toMutableObservableList().also { it -= Employee.BACKDOOR } }
+        it += transaction { Employees().toMutableObservableList() }
     }
 
     private fun add() = InputUserPopOver(this, R.string.add_employee, false).showAt(addButton) {

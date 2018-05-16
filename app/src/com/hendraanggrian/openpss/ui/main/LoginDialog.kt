@@ -5,12 +5,12 @@ import com.hendraanggrian.openpss.BuildConfig.DEBUG
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.controls.HostField
 import com.hendraanggrian.openpss.controls.IntField
-import com.hendraanggrian.openpss.controls.LanguageBox
+import com.hendraanggrian.openpss.controls.RegionBox
 import com.hendraanggrian.openpss.controls.hostField
 import com.hendraanggrian.openpss.controls.intField
 import com.hendraanggrian.openpss.db.login
+import com.hendraanggrian.openpss.internationalization.Resourced
 import com.hendraanggrian.openpss.io.properties.LoginFile
-import com.hendraanggrian.openpss.resources.Resourced
 import com.hendraanggrian.openpss.util.getStyle
 import com.hendraanggrian.openpss.util.onActionFilter
 import javafx.geometry.Pos.CENTER_RIGHT
@@ -69,9 +69,9 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced 
             content = gridPane {
                 gap = 8.0
                 label(getString(R.string.language)) col 0 row 0
-                LanguageBox(LoginFile.LANGUAGE).apply {
+                RegionBox(LoginFile.region).apply {
                     valueProperty().listener(CommonPool) { _, _, value ->
-                        LoginFile.LANGUAGE = value.code
+                        LoginFile.region = value
                         LoginFile.save()
                         launch(FX) {
                             close()

@@ -6,7 +6,7 @@ import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.db.schemas.Employees
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.io.properties.LoginFile
-import com.hendraanggrian.openpss.resources.Resourced
+import com.hendraanggrian.openpss.internationalization.Resourced
 import com.hendraanggrian.openpss.ui.main.ChangePasswordDialog
 import com.hendraanggrian.openpss.ui.main.LoginDialog
 import com.hendraanggrian.openpss.util.controller
@@ -14,20 +14,17 @@ import com.hendraanggrian.openpss.util.getResource
 import com.hendraanggrian.openpss.util.getStyle
 import com.hendraanggrian.openpss.util.pane
 import javafx.application.Application
-import javafx.collections.ObservableList
 import javafx.fxml.FXMLLoader
 import javafx.scene.image.Image
 import javafx.stage.Stage
 import kotlinx.nosql.equal
 import kotlinx.nosql.update
 import ktfx.application.launch
-import ktfx.collections.observableListOf
 import ktfx.layouts.styledScene
 import ktfx.scene.control.styledInfoAlert
 import ktfx.stage.icon
 import ktfx.stage.setMinSize
 import org.apache.log4j.BasicConfigurator.configure
-import java.util.Locale
 import java.util.ResourceBundle
 import java.util.ResourceBundle.getBundle
 
@@ -41,8 +38,6 @@ class App : Application(), Resourced {
         const val STYLE_BORDERLESS_TITLEDPANE = "borderless-titledpane"
 
         @JvmStatic fun main(args: Array<String>) = launch<App>(*args)
-
-        inline val supportedLocales: ObservableList<Locale> get() = observableListOf(Locale("en"), Locale("id"))
     }
 
     override lateinit var resources: ResourceBundle

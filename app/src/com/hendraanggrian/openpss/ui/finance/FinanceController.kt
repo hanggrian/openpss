@@ -55,7 +55,6 @@ import ktfx.layouts.pane
 import ktfx.layouts.separator
 import ktfx.scene.input.isDoubleClick
 import java.net.URL
-import java.util.Locale
 import java.util.ResourceBundle
 
 class FinanceController : SegmentedController(), Refreshable,
@@ -112,7 +111,7 @@ class FinanceController : SegmentedController(), Refreshable,
             valueProperty().listener { refresh() }
         }
         monthBox = monthBox {
-            setLocale(Locale(LoginFile.LANGUAGE))
+            setLocale(LoginFile.region.toLocale())
             valueProperty().listener { refresh() }
         }
         tabPane.header.toggleGroup.run {

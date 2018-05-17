@@ -5,10 +5,10 @@ import com.hendraanggrian.openpss.BuildConfig.DEBUG
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.controls.HostField
 import com.hendraanggrian.openpss.controls.IntField
-import com.hendraanggrian.openpss.controls.LanguageBox
 import com.hendraanggrian.openpss.controls.hostField
 import com.hendraanggrian.openpss.controls.intField
 import com.hendraanggrian.openpss.db.login
+import com.hendraanggrian.openpss.internationalization.Language
 import com.hendraanggrian.openpss.internationalization.Resourced
 import com.hendraanggrian.openpss.io.properties.LoginFile
 import com.hendraanggrian.openpss.io.properties.PreferencesFile
@@ -30,10 +30,12 @@ import ktfx.beans.binding.otherwise
 import ktfx.beans.binding.then
 import ktfx.beans.value.isBlank
 import ktfx.beans.value.or
+import ktfx.collections.toObservableList
 import ktfx.coroutines.FX
 import ktfx.coroutines.listener
 import ktfx.coroutines.onAction
 import ktfx.layouts.anchorPane
+import ktfx.layouts.choiceBox
 import ktfx.layouts.gridPane
 import ktfx.layouts.hbox
 import ktfx.layouts.hyperlink
@@ -42,7 +44,6 @@ import ktfx.layouts.passwordField
 import ktfx.layouts.textField
 import ktfx.layouts.toggleButton
 import ktfx.layouts.tooltip
-import ktfx.listeners.converter
 import ktfx.scene.control.cancelButton
 import ktfx.scene.control.customButton
 import ktfx.scene.control.icon
@@ -71,8 +72,9 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced 
             content = gridPane {
                 gap = 8.0
                 label(getString(R.string.language)) col 0 row 0
-                LanguageBox(PreferencesFile.LANGUAGE).apply {
-                    converter { toString { it!!.language } }
+                choiceBox(Language.values().toObservableList()) {
+                    maxWidth = Double.MAX_VALUE
+                    selectionModel.select(PreferencesFile.language)
                     valueProperty().listener(CommonPool) { _, _, value ->
                         PreferencesFile.language = value
                         PreferencesFile.save()
@@ -84,7 +86,7 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(), Resourced by resourced 
                             }
                         }
                     }
-                }.add() col 1 row 0 colSpans 2
+                } col 1 row 0 colSpans 2
                 label(getString(R.string.employee)) col 0 row 1
                 employeeField = textField(LoginFile.EMPLOYEE) {
                     promptText = getString(R.string.employee)

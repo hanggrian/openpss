@@ -1,17 +1,16 @@
 package com.hendraanggrian.openpss.ui.main
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.controls.LanguageBox
 import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_INVOICE_HEADERS
 import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_LANGUAGE
 import com.hendraanggrian.openpss.db.transaction
+import com.hendraanggrian.openpss.internationalization.Language
 import com.hendraanggrian.openpss.internationalization.Resourced
 import com.hendraanggrian.openpss.io.properties.PreferencesFile
 import com.hendraanggrian.openpss.io.properties.PreferencesFile.INVOICE_QUICK_SELECT_CUSTOMER
 import com.hendraanggrian.openpss.io.properties.PreferencesFile.WAGE_READER
 import com.hendraanggrian.openpss.ui.wage.readers.Reader
 import com.hendraanggrian.openpss.util.clearConverters
-import com.hendraanggrian.openpss.util.getColor
 import com.hendraanggrian.openpss.util.getFont
 import com.hendraanggrian.openpss.util.getStyle
 import com.hendraanggrian.openpss.util.onActionFilter
@@ -24,10 +23,9 @@ import javafx.scene.image.ImageView
 import javafx.scene.layout.HBox
 import javafx.scene.layout.VBox
 import kotlinx.nosql.update
-import ktfx.beans.binding.bindingOf
-import ktfx.beans.binding.stringBindingOf
 import ktfx.beans.property.toProperty
 import ktfx.beans.value.and
+import ktfx.collections.toObservableList
 import ktfx.coroutines.listener
 import ktfx.layouts.LayoutDsl
 import ktfx.layouts.LayoutManager
@@ -46,7 +44,6 @@ import ktfx.scene.control.graphicIcon
 import ktfx.scene.control.headerTitle
 import ktfx.scene.control.okButton
 import ktfx.scene.layout.gap
-import java.util.Currency
 
 class PreferencesDialog(resourced: Resourced, showGlobalSettings: Boolean) : Dialog<Nothing>(), Resourced by resourced {
 
@@ -61,7 +58,7 @@ class PreferencesDialog(resourced: Resourced, showGlobalSettings: Boolean) : Dia
     private lateinit var invoiceHeadersArea: TextArea
     private lateinit var wageReaderChoice: ChoiceBox<Any>
 
-    private lateinit var languageBox: LanguageBox
+    private lateinit var languageBox: ChoiceBox<Language>
 
     init {
         headerTitle = getString(R.string.preferences)
@@ -97,23 +94,11 @@ class PreferencesDialog(resourced: Resourced, showGlobalSettings: Boolean) : Dia
                     gap = 8.0
                     transaction {
                         label(getString(R.string.currency)) row 0 col 0
-                        languageBox = LanguageBox(findGlobalSettings(KEY_LANGUAGE).single().value).apply {
-                            converter { toString { it!!.currency } }
+                        languageBox = choiceBox(Language.values().toObservableList()) {
+                            converter { toString { it!!.toString(true) } }
+                            selectionModel.select(Language.of(findGlobalSettings(KEY_LANGUAGE).single().value))
                             valueProperty().listener { isGlobalChanged.set(true) }
-                        }.add() row 0 col 1
-                        label {
-                            font = getFont(R.font.sf_pro_text_bold)
-                            textProperty().bind(stringBindingOf(languageBox.valueProperty()) {
-                                try {
-                                    Currency.getInstance(languageBox.value.toLocale()).symbol
-                                } catch (e: Exception) {
-                                    CURRENCY_INVALID
-                                }
-                            })
-                            textFillProperty().bind(bindingOf(textProperty()) {
-                                getColor(if (text == CURRENCY_INVALID) R.color.red else R.color.teal)
-                            })
-                        } row 0 col 2
+                        } row 0 col 1
                         label(getString(R.string.invoice_headers)) row 1 col 0
                         invoiceHeadersArea = textArea(findGlobalSettings(KEY_INVOICE_HEADERS).single().valueList
                             .joinToString("\n").trim()) {
@@ -124,7 +109,7 @@ class PreferencesDialog(resourced: Resourced, showGlobalSettings: Boolean) : Dia
                                     else -> isGlobalChanged.set(true)
                                 }
                             }
-                        } row 1 col 1 colSpans 2
+                        } row 1 col 1
                     }
                 }
             }
@@ -135,7 +120,7 @@ class PreferencesDialog(resourced: Resourced, showGlobalSettings: Boolean) : Dia
             onActionFilter {
                 if (isLocalChanged.value) PreferencesFile.save()
                 if (isGlobalChanged.value) transaction {
-                    findGlobalSettings(KEY_LANGUAGE).projection { value }.update(languageBox.value.toString())
+                    findGlobalSettings(KEY_LANGUAGE).projection { value }.update(languageBox.value.fullCode)
                     findGlobalSettings(KEY_INVOICE_HEADERS).projection { value }
                         .update(invoiceHeadersArea.text.trim().replace("\n", "|"))
                     clearConverters()

@@ -26,7 +26,6 @@ import ktfx.stage.icon
 import ktfx.stage.setMinSize
 import org.apache.log4j.BasicConfigurator.configure
 import java.util.ResourceBundle
-import java.util.ResourceBundle.getBundle
 
 class App : Application(), Resourced {
 
@@ -44,7 +43,7 @@ class App : Application(), Resourced {
 
     override fun init() {
         if (DEBUG) configure()
-        resources = getBundle("string_${PreferencesFile.language.code}")
+        resources = PreferencesFile.language.toResourcesBundle()
     }
 
     override fun start(stage: Stage) {

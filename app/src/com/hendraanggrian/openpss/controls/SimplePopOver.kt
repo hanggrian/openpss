@@ -3,6 +3,8 @@ package com.hendraanggrian.openpss.controls
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.internationalization.Resourced
 import com.hendraanggrian.openpss.util.getColor
+import javafx.beans.property.ObjectProperty
+import javafx.beans.property.SimpleObjectProperty
 import javafx.scene.Node
 import javafx.scene.control.Button
 import javafx.scene.control.ListView
@@ -10,11 +12,13 @@ import javafx.scene.control.TableView
 import javafx.scene.layout.Pane
 import javafx.scene.text.Font
 import javafx.util.Duration.ZERO
+import ktfx.beans.value.getValue
+import ktfx.beans.value.setValue
 import ktfx.coroutines.onAction
 import ktfx.coroutines.onCloseRequest
 import ktfx.layouts.LayoutManager
 import ktfx.layouts._ButtonBar
-import ktfx.layouts.label
+import ktfx.layouts.borderPane
 import ktfx.layouts.separator
 import ktfx.scene.layout.updatePadding
 import org.controlsfx.control.PopOver
@@ -34,12 +38,19 @@ open class SimplePopOver(
 
     override val childs: MutableList<Node> get() = contentPane.children
 
+    private val graphicProperty = SimpleObjectProperty<Node>()
+    fun graphicProperty(): ObjectProperty<Node> = graphicProperty
+    var graphic: Node by graphicProperty
+
     init {
         contentNode = ktfx.layouts.vbox(12.0) {
             updatePadding(12.0, 16.0, 12.0, 16.0)
-            label(getString(titleId)) {
-                font = Font.font(18.0)
-                textFill = getColor(R.color.teal)
+            borderPane {
+                left = ktfx.layouts.label(getString(titleId)) {
+                    font = Font.font(18.0)
+                    textFill = getColor(R.color.teal)
+                }
+                rightProperty().bindBidirectional(graphicProperty)
             }
             separator()
             contentPane.add()

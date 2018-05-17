@@ -9,6 +9,7 @@ import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_INVOICE
 import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_LANGUAGE
 import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.db.transaction
+import com.hendraanggrian.openpss.internationalization.Language
 import com.hendraanggrian.openpss.internationalization.Resourced
 import com.hendraanggrian.openpss.util.PATTERN_DATE
 import com.hendraanggrian.openpss.util.PATTERN_TIME
@@ -29,12 +30,11 @@ import ktfx.layouts.line
 import ktfx.layouts.region
 import ktfx.layouts.vbox
 import java.util.ResourceBundle
-import java.util.ResourceBundle.getBundle
 
 class ViewInvoicePopOver(invoice: Invoice) : SimplePopOver(object : Resourced {
-    override val resources: ResourceBundle = getBundle("string_${transaction {
+    override val resources: ResourceBundle = Language.of(transaction {
         findGlobalSettings(KEY_LANGUAGE).single().value
-    }}")
+    }).toResourcesBundle()
 }, R.string.invoice) {
 
     private lateinit var invoiceHeaders: List<String>
@@ -42,6 +42,7 @@ class ViewInvoicePopOver(invoice: Invoice) : SimplePopOver(object : Resourced {
     private lateinit var employee: Employee
 
     init {
+        graphic = ktfx.layouts.label(resources.baseBundleName)
         transaction {
             invoiceHeaders = findGlobalSettings(KEY_INVOICE_HEADERS).single().valueList
             employee = Employees[invoice.employeeId].single()

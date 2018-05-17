@@ -1,13 +1,14 @@
 package com.hendraanggrian.openpss.internationalization
 
 import sun.util.locale.LocaleUtils
+import java.util.Currency
 import java.util.Locale
 
-enum class Region(private val nativeLocale: Locale) {
+enum class Language(private val nativeLocale: Locale) {
     US(Locale.US),
     INDONESIA(Locale("id", "ID"));
 
-    val language: String
+    val code: String
         get() = LocaleUtils.toLowerString(nativeLocale.language).intern().let {
             when (it) {
                 "iw" -> "he"
@@ -17,17 +18,17 @@ enum class Region(private val nativeLocale: Locale) {
             }
         }
 
-    val country: String get() = nativeLocale.country
+    val language: String get() = nativeLocale.getDisplayLanguage(nativeLocale)
 
-    val displayLanguage: String get() = nativeLocale.getDisplayLanguage(nativeLocale)
+    val currency: String get() = Currency.getInstance(nativeLocale).symbol
 
     fun toLocale(): Locale = nativeLocale
 
-    override fun toString(): String = displayLanguage
+    override fun toString(): String = "$code-${nativeLocale.country}"
 
     companion object {
-        fun from(language: String, country: String): Region = Region.values().single {
-            it.language.equals(language, true) && it.country.equals(country, true)
-        }
+        fun of(language: String): Language = Language.values().singleOrNull {
+            it.code == language.substringBefore('-')
+        } ?: US
     }
 }

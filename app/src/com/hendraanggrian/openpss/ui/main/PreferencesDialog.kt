@@ -1,12 +1,10 @@
 package com.hendraanggrian.openpss.ui.main
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.controls.RegionBox
-import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_COUNTRY
+import com.hendraanggrian.openpss.controls.LanguageBox
 import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_INVOICE_HEADERS
 import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_LANGUAGE
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.internationalization.Region
 import com.hendraanggrian.openpss.internationalization.Resourced
 import com.hendraanggrian.openpss.io.properties.PreferencesFile
 import com.hendraanggrian.openpss.io.properties.PreferencesFile.INVOICE_QUICK_SELECT_CUSTOMER
@@ -42,6 +40,7 @@ import ktfx.layouts.hbox
 import ktfx.layouts.label
 import ktfx.layouts.textArea
 import ktfx.layouts.vbox
+import ktfx.listeners.converter
 import ktfx.scene.control.cancelButton
 import ktfx.scene.control.graphicIcon
 import ktfx.scene.control.headerTitle
@@ -62,7 +61,7 @@ class PreferencesDialog(resourced: Resourced, showGlobalSettings: Boolean) : Dia
     private lateinit var invoiceHeadersArea: TextArea
     private lateinit var wageReaderChoice: ChoiceBox<Any>
 
-    private lateinit var regionBox: RegionBox
+    private lateinit var languageBox: LanguageBox
 
     init {
         headerTitle = getString(R.string.preferences)
@@ -98,15 +97,15 @@ class PreferencesDialog(resourced: Resourced, showGlobalSettings: Boolean) : Dia
                     gap = 8.0
                     transaction {
                         label(getString(R.string.currency)) row 0 col 0
-                        regionBox = RegionBox(Region.from(
-                            findGlobalSettings(KEY_LANGUAGE).single().value,
-                            findGlobalSettings(KEY_COUNTRY).single().value
-                        )).apply { valueProperty().listener { isGlobalChanged.set(true) } }.add() row 0 col 1
+                        languageBox = LanguageBox(findGlobalSettings(KEY_LANGUAGE).single().value).apply {
+                            converter { toString { it!!.currency } }
+                            valueProperty().listener { isGlobalChanged.set(true) }
+                        }.add() row 0 col 1
                         label {
                             font = getFont(R.font.sf_pro_text_bold)
-                            textProperty().bind(stringBindingOf(regionBox.valueProperty()) {
+                            textProperty().bind(stringBindingOf(languageBox.valueProperty()) {
                                 try {
-                                    Currency.getInstance(regionBox.value.toLocale()).symbol
+                                    Currency.getInstance(languageBox.value.toLocale()).symbol
                                 } catch (e: Exception) {
                                     CURRENCY_INVALID
                                 }
@@ -136,8 +135,7 @@ class PreferencesDialog(resourced: Resourced, showGlobalSettings: Boolean) : Dia
             onActionFilter {
                 if (isLocalChanged.value) PreferencesFile.save()
                 if (isGlobalChanged.value) transaction {
-                    findGlobalSettings(KEY_LANGUAGE).projection { value }.update(regionBox.value.language)
-                    findGlobalSettings(KEY_COUNTRY).projection { value }.update(regionBox.value.country)
+                    findGlobalSettings(KEY_LANGUAGE).projection { value }.update(languageBox.value.toString())
                     findGlobalSettings(KEY_INVOICE_HEADERS).projection { value }
                         .update(invoiceHeadersArea.text.trim().replace("\n", "|"))
                     clearConverters()

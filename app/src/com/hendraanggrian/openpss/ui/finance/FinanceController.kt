@@ -17,7 +17,7 @@ import com.hendraanggrian.openpss.db.schemas.Payment.Method.DEBIT_CARD
 import com.hendraanggrian.openpss.db.schemas.Payment.Method.TRANSFER
 import com.hendraanggrian.openpss.db.schemas.Payments
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.io.properties.LoginFile
+import com.hendraanggrian.openpss.io.properties.PreferencesFile
 import com.hendraanggrian.openpss.layouts.DateBox
 import com.hendraanggrian.openpss.layouts.MonthBox
 import com.hendraanggrian.openpss.layouts.SegmentedTabPane
@@ -111,7 +111,7 @@ class FinanceController : SegmentedController(), Refreshable,
             valueProperty().listener { refresh() }
         }
         monthBox = monthBox {
-            setLocale(LoginFile.region.toLocale())
+            setLocale(PreferencesFile.language.toLocale())
             valueProperty().listener { refresh() }
         }
         tabPane.header.toggleGroup.run {

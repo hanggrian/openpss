@@ -5,8 +5,8 @@ import com.hendraanggrian.openpss.BuildConfig.DEBUG
 import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.db.schemas.Employees
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.io.properties.LoginFile
 import com.hendraanggrian.openpss.internationalization.Resourced
+import com.hendraanggrian.openpss.io.properties.PreferencesFile
 import com.hendraanggrian.openpss.ui.main.ChangePasswordDialog
 import com.hendraanggrian.openpss.ui.main.LoginDialog
 import com.hendraanggrian.openpss.util.controller
@@ -44,7 +44,7 @@ class App : Application(), Resourced {
 
     override fun init() {
         if (DEBUG) configure()
-        resources = getBundle("string_${LoginFile.LANGUAGE}")
+        resources = getBundle("string_${PreferencesFile.language.code}")
     }
 
     override fun start(stage: Stage) {

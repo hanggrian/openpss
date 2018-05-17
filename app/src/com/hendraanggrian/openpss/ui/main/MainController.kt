@@ -35,7 +35,7 @@ class MainController : Controller(), Selectable<Tab> {
     @FXML lateinit var addCustomerItem: MenuItem
     @FXML lateinit var addInvoiceItem: MenuItem
     @FXML lateinit var quitItem: MenuItem
-    @FXML lateinit var settingsItem: MenuItem
+    @FXML lateinit var preferencesItem: MenuItem
     @FXML lateinit var navigationPane: BorderPane
     @FXML lateinit var navigationLeftBox: HBox
     @FXML lateinit var navigationRightBox: HBox
@@ -79,7 +79,7 @@ class MainController : Controller(), Selectable<Tab> {
         else -> select(invoiceController) { addInvoice() }
     }
 
-    @FXML fun settings() = SettingsDialog(this, transaction { login.isAtLeast(MANAGER) }).show()
+    @FXML fun preferences() = PreferencesDialog(this, transaction { login.isAtLeast(MANAGER) }).show()
 
     @FXML fun quit() = exit()
 

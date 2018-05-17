@@ -27,7 +27,7 @@ enum class Region(private val nativeLocale: Locale) {
 
     companion object {
         fun from(language: String, country: String): Region = Region.values().single {
-            it.language == language && country == country
+            it.language.equals(language, true) && it.country.equals(country, true)
         }
     }
 }

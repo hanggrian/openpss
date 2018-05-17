@@ -14,7 +14,7 @@
             <MenuItem fx:id="addInvoiceItem" mnemonicParsing="false" onAction="#add" text="%add_invoice"
                       accelerator="SHORTCUT+I"/>
             <SeparatorMenuItem/>
-            <MenuItem fx:id="settingsItem" mnemonicParsing="false" onAction="#settings" text="%settings"
+            <MenuItem fx:id="preferencesItem" mnemonicParsing="false" onAction="#preferences" text="%preferences"
                       accelerator="SHORTCUT+,">
                 <graphic>
                     <ImageView pickOnBounds="true" preserveRatio="true">

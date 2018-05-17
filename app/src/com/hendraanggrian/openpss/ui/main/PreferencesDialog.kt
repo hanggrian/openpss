@@ -8,9 +8,9 @@ import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_LANGUAG
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.internationalization.Region
 import com.hendraanggrian.openpss.internationalization.Resourced
-import com.hendraanggrian.openpss.io.properties.SettingsFile
-import com.hendraanggrian.openpss.io.properties.SettingsFile.INVOICE_QUICK_SELECT_CUSTOMER
-import com.hendraanggrian.openpss.io.properties.SettingsFile.WAGE_READER
+import com.hendraanggrian.openpss.io.properties.PreferencesFile
+import com.hendraanggrian.openpss.io.properties.PreferencesFile.INVOICE_QUICK_SELECT_CUSTOMER
+import com.hendraanggrian.openpss.io.properties.PreferencesFile.WAGE_READER
 import com.hendraanggrian.openpss.ui.wage.readers.Reader
 import com.hendraanggrian.openpss.util.clearConverters
 import com.hendraanggrian.openpss.util.getColor
@@ -49,7 +49,7 @@ import ktfx.scene.control.okButton
 import ktfx.scene.layout.gap
 import java.util.Currency
 
-class SettingsDialog(resourced: Resourced, showGlobalSettings: Boolean) : Dialog<Nothing>(), Resourced by resourced {
+class PreferencesDialog(resourced: Resourced, showGlobalSettings: Boolean) : Dialog<Nothing>(), Resourced by resourced {
 
     private companion object {
         const val CURRENCY_INVALID = "-"
@@ -65,15 +65,15 @@ class SettingsDialog(resourced: Resourced, showGlobalSettings: Boolean) : Dialog
     private lateinit var regionBox: RegionBox
 
     init {
-        headerTitle = getString(R.string.settings)
-        graphicIcon = ImageView(R.image.header_settings)
+        headerTitle = getString(R.string.preferences)
+        graphicIcon = ImageView(R.image.header_preferences)
         dialogPane.run {
             stylesheets += getStyle(R.style.openpss)
             content = vbox {
                 spacing = 16.0
                 group(R.string.invoice) {
                     checkBox(getString(R.string.quick_select_customer_when_adding_invoice)) {
-                        isSelected = SettingsFile.INVOICE_QUICK_SELECT_CUSTOMER
+                        isSelected = PreferencesFile.INVOICE_QUICK_SELECT_CUSTOMER
                         selectedProperty().listener { _, _, value ->
                             isLocalChanged.set(true)
                             INVOICE_QUICK_SELECT_CUSTOMER = value
@@ -134,7 +134,7 @@ class SettingsDialog(resourced: Resourced, showGlobalSettings: Boolean) : Dialog
         okButton {
             disableProperty().bind(!isLocalChanged and !isGlobalChanged)
             onActionFilter {
-                if (isLocalChanged.value) SettingsFile.save()
+                if (isLocalChanged.value) PreferencesFile.save()
                 if (isGlobalChanged.value) transaction {
                     findGlobalSettings(KEY_LANGUAGE).projection { value }.update(regionBox.value.language)
                     findGlobalSettings(KEY_COUNTRY).projection { value }.update(regionBox.value.country)

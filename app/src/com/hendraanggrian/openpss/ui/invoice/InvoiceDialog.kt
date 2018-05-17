@@ -9,7 +9,7 @@ import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.db.schemas.Employees
 import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.io.properties.SettingsFile.INVOICE_QUICK_SELECT_CUSTOMER
+import com.hendraanggrian.openpss.io.properties.PreferencesFile.INVOICE_QUICK_SELECT_CUSTOMER
 import com.hendraanggrian.openpss.internationalization.Resourced
 import com.hendraanggrian.openpss.ui.invoice.order.AddOffsetPopOver
 import com.hendraanggrian.openpss.ui.invoice.order.AddOtherPopOver

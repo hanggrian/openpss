@@ -1,4 +1,4 @@
-package com.hendraanggrian.openpss.internationalization
+package com.hendraanggrian.openpss.localization
 
 import sun.util.locale.LocaleUtils
 import java.util.Currency
@@ -34,6 +34,8 @@ enum class Language(private val nativeLocale: Locale) {
     fun toResourcesBundle(): ResourceBundle = ResourceBundle.getBundle("string_$code")
 
     companion object {
-        fun of(fullCode: String): Language = Language.values().singleOrNull { it.fullCode == fullCode } ?: EN_US
+        fun ofCode(code: String): Language = Language.values().singleOrNull { it.code == code } ?: EN_US
+
+        fun ofFullCode(fullCode: String): Language = Language.values().singleOrNull { it.fullCode == fullCode } ?: EN_US
     }
 }

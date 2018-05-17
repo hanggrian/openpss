@@ -4,8 +4,8 @@ import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_INVOICE_HEADERS
 import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_LANGUAGE
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.internationalization.Language
-import com.hendraanggrian.openpss.internationalization.Resourced
+import com.hendraanggrian.openpss.localization.Language
+import com.hendraanggrian.openpss.localization.Resourced
 import com.hendraanggrian.openpss.io.properties.PreferencesFile
 import com.hendraanggrian.openpss.io.properties.PreferencesFile.INVOICE_QUICK_SELECT_CUSTOMER
 import com.hendraanggrian.openpss.io.properties.PreferencesFile.WAGE_READER
@@ -96,7 +96,7 @@ class PreferencesDialog(resourced: Resourced, showGlobalSettings: Boolean) : Dia
                         label(getString(R.string.currency)) row 0 col 0
                         languageBox = choiceBox(Language.values().toObservableList()) {
                             converter { toString { it!!.toString(true) } }
-                            selectionModel.select(Language.of(findGlobalSettings(KEY_LANGUAGE).single().value))
+                            selectionModel.select(Language.ofFullCode(findGlobalSettings(KEY_LANGUAGE).single().value))
                             valueProperty().listener { isGlobalChanged.set(true) }
                         } row 0 col 1
                         label(getString(R.string.invoice_headers)) row 1 col 0

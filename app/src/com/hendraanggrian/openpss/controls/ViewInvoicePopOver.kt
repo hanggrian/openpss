@@ -9,8 +9,8 @@ import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_INVOICE
 import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_LANGUAGE
 import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.internationalization.Language
-import com.hendraanggrian.openpss.internationalization.Resourced
+import com.hendraanggrian.openpss.localization.Language
+import com.hendraanggrian.openpss.localization.Resourced
 import com.hendraanggrian.openpss.util.PATTERN_DATE
 import com.hendraanggrian.openpss.util.PATTERN_TIME
 import com.hendraanggrian.openpss.util.currencyConverter
@@ -32,7 +32,7 @@ import ktfx.layouts.vbox
 import java.util.ResourceBundle
 
 class ViewInvoicePopOver(invoice: Invoice) : SimplePopOver(object : Resourced {
-    override val resources: ResourceBundle = Language.of(transaction {
+    override val resources: ResourceBundle = Language.ofFullCode(transaction {
         findGlobalSettings(KEY_LANGUAGE).single().value
     }).toResourcesBundle()
 }, R.string.invoice) {
@@ -42,7 +42,7 @@ class ViewInvoicePopOver(invoice: Invoice) : SimplePopOver(object : Resourced {
     private lateinit var employee: Employee
 
     init {
-        graphic = ktfx.layouts.label(resources.baseBundleName)
+        graphic = ktfx.layouts.label(language.toString())
         transaction {
             invoiceHeaders = findGlobalSettings(KEY_INVOICE_HEADERS).single().valueList
             employee = Employees[invoice.employeeId].single()

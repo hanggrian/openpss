@@ -1,4 +1,4 @@
-package com.hendraanggrian.openpss.internationalization
+package com.hendraanggrian.openpss.localization
 
 import java.util.ResourceBundle
 
@@ -6,6 +6,8 @@ import java.util.ResourceBundle
 interface Resourced {
 
     val resources: ResourceBundle
+
+    val language: Language get() = Language.ofCode(resources.baseBundleName.substringAfter('_'))
 
     fun getString(id: String): String = resources.getString(id)
 

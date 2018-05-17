@@ -2,7 +2,7 @@ package com.hendraanggrian.openpss.controls
 
 import com.hendraanggrian.openpss.layouts.DateBox
 import com.hendraanggrian.openpss.layouts.dateBox
-import com.hendraanggrian.openpss.internationalization.Resourced
+import com.hendraanggrian.openpss.localization.Resourced
 import org.joda.time.LocalDate
 
 class DatePopOver(

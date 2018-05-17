@@ -3,7 +3,7 @@ package com.hendraanggrian.openpss.db.schemas
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.db.Document
 import com.hendraanggrian.openpss.db.dbDateTime
-import com.hendraanggrian.openpss.internationalization.StringResource
+import com.hendraanggrian.openpss.localization.StringResource
 import com.hendraanggrian.openpss.util.enumValueOfId
 import com.hendraanggrian.openpss.util.id
 import kotlinx.nosql.Id

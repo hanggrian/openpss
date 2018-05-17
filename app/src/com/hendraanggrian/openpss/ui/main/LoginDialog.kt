@@ -8,8 +8,8 @@ import com.hendraanggrian.openpss.controls.IntField
 import com.hendraanggrian.openpss.controls.hostField
 import com.hendraanggrian.openpss.controls.intField
 import com.hendraanggrian.openpss.db.login
-import com.hendraanggrian.openpss.internationalization.Language
-import com.hendraanggrian.openpss.internationalization.Resourced
+import com.hendraanggrian.openpss.localization.Language
+import com.hendraanggrian.openpss.localization.Resourced
 import com.hendraanggrian.openpss.io.properties.LoginFile
 import com.hendraanggrian.openpss.io.properties.PreferencesFile
 import com.hendraanggrian.openpss.util.getStyle

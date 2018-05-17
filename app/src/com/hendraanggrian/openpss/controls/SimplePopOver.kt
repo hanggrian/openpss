@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.controls
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.internationalization.Resourced
+import com.hendraanggrian.openpss.localization.Resourced
 import com.hendraanggrian.openpss.util.getColor
 import javafx.beans.property.ObjectProperty
 import javafx.beans.property.SimpleObjectProperty

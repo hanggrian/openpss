@@ -6,7 +6,7 @@ import com.hendraanggrian.openpss.controls.IntField
 import com.hendraanggrian.openpss.controls.intField
 import com.hendraanggrian.openpss.db.Order
 import com.hendraanggrian.openpss.db.Titled
-import com.hendraanggrian.openpss.internationalization.Resourced
+import com.hendraanggrian.openpss.localization.Resourced
 import com.hendraanggrian.openpss.util.currencyConverter
 import com.hendraanggrian.openpss.util.getColor
 import com.hendraanggrian.openpss.util.getFont

@@ -4,7 +4,7 @@ import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.controls.DefaultPopOver
 import com.hendraanggrian.openpss.layouts.TimeBox
 import com.hendraanggrian.openpss.layouts.timeBox
-import com.hendraanggrian.openpss.internationalization.Resourced
+import com.hendraanggrian.openpss.localization.Resourced
 import ktfx.beans.binding.booleanBindingOf
 import ktfx.layouts.gridPane
 import ktfx.layouts.label

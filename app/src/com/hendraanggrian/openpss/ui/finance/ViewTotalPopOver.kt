@@ -2,7 +2,7 @@ package com.hendraanggrian.openpss.ui.finance
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.controls.SimplePopOver
-import com.hendraanggrian.openpss.internationalization.Resourced
+import com.hendraanggrian.openpss.localization.Resourced
 import com.hendraanggrian.openpss.util.currencyConverter
 import com.hendraanggrian.openpss.util.getFont
 import javafx.geometry.HPos.RIGHT

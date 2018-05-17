@@ -4,7 +4,7 @@ import com.hendraanggrian.openpss.layouts.DateBox
 import com.hendraanggrian.openpss.layouts.TimeBox
 import com.hendraanggrian.openpss.layouts.dateBox
 import com.hendraanggrian.openpss.layouts.timeBox
-import com.hendraanggrian.openpss.internationalization.Resourced
+import com.hendraanggrian.openpss.localization.Resourced
 import com.hendraanggrian.openpss.ui.wage.record.Record
 import ktfx.coroutines.onAction
 import ktfx.layouts.button

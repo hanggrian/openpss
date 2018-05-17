@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.ui
 
 import com.hendraanggrian.openpss.db.schemas.Employee
-import com.hendraanggrian.openpss.internationalization.Resourced
+import com.hendraanggrian.openpss.localization.Resourced
 import javafx.fxml.Initializable
 import java.net.URL
 import java.util.ResourceBundle

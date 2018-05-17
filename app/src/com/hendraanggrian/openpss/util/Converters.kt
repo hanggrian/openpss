@@ -4,7 +4,7 @@ package com.hendraanggrian.openpss.util
 
 import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_LANGUAGE
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.internationalization.Language
+import com.hendraanggrian.openpss.localization.Language
 import javafx.util.StringConverter
 import javafx.util.converter.CurrencyStringConverter
 import javafx.util.converter.NumberStringConverter
@@ -24,7 +24,7 @@ val numberConverter: NumberStringConverter get() = getOrStore { NumberStringConv
 val currencyConverter: CurrencyStringConverter
     get() = getOrStore {
         CurrencyStringConverter(transaction {
-            Language.of(findGlobalSettings(KEY_LANGUAGE).single().value).toLocale()
+            Language.ofFullCode(findGlobalSettings(KEY_LANGUAGE).single().value).toLocale()
         })
     }
 

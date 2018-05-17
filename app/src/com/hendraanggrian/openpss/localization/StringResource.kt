@@ -1,4 +1,4 @@
-package com.hendraanggrian.openpss.internationalization
+package com.hendraanggrian.openpss.localization
 
 interface StringResource {
 

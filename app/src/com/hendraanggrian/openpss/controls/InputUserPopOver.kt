@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.controls
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.internationalization.Resourced
+import com.hendraanggrian.openpss.localization.Resourced
 import com.hendraanggrian.openpss.util.clean
 import com.hendraanggrian.openpss.util.isName
 import com.hendraanggrian.openpss.util.validator

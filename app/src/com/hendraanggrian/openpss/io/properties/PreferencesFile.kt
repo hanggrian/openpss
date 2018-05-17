@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.io.properties
 
-import com.hendraanggrian.openpss.internationalization.Language
-import com.hendraanggrian.openpss.internationalization.Language.EN_US
+import com.hendraanggrian.openpss.localization.Language
+import com.hendraanggrian.openpss.localization.Language.EN_US
 import com.hendraanggrian.openpss.ui.wage.readers.EClockingReader
 
 /** User manually configurable settings file. */
@@ -14,7 +14,7 @@ object PreferencesFile : PropertiesFile("preferences") {
     var WAGE_READER: String by EClockingReader.name
 
     var language: Language
-        get() = Language.of(LANGUAGE)
+        get() = Language.ofFullCode(LANGUAGE)
         set(value) {
             LANGUAGE = value.fullCode
         }

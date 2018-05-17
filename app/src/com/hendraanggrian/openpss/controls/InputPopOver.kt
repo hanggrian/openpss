@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.controls
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.internationalization.Resourced
+import com.hendraanggrian.openpss.localization.Resourced
 import javafx.beans.binding.BooleanBinding
 import javafx.scene.control.TextField
 import ktfx.beans.value.isBlank

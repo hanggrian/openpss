@@ -8,7 +8,7 @@ import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.db.schemas.PlatePrice
 import com.hendraanggrian.openpss.db.schemas.PlatePrices
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.internationalization.Resourced
+import com.hendraanggrian.openpss.localization.Resourced
 import javafx.beans.Observable
 import javafx.beans.value.ObservableBooleanValue
 import javafx.scene.control.ChoiceBox

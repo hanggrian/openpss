@@ -4,7 +4,7 @@ import com.hendraanggrian.openpss.db.schemas.Recess
 import com.hendraanggrian.openpss.db.schemas.Wage
 import com.hendraanggrian.openpss.db.schemas.Wages
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.internationalization.Resourced
+import com.hendraanggrian.openpss.localization.Resourced
 import com.hendraanggrian.openpss.ui.wage.record.Record
 import com.hendraanggrian.openpss.ui.wage.record.Record.Companion.INDEX_NODE
 import com.hendraanggrian.openpss.ui.wage.record.Record.Companion.INDEX_TOTAL

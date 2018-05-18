@@ -11,7 +11,7 @@ import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.localization.Language
 import com.hendraanggrian.openpss.localization.Resourced
-import com.hendraanggrian.openpss.util.PATTERN_DATETIME_EXTENDED
+import com.hendraanggrian.openpss.util.PATTERN_DATE
 import com.hendraanggrian.openpss.util.PATTERN_TIME
 import com.hendraanggrian.openpss.util.currencyConverter
 import com.hendraanggrian.openpss.util.getFont
@@ -21,7 +21,6 @@ import javafx.geometry.Insets
 import javafx.geometry.Pos
 import javafx.scene.Node
 import javafx.scene.control.Label
-import javafx.scene.image.ImageView
 import javafx.scene.layout.Border
 import javafx.scene.layout.BorderStroke
 import javafx.scene.layout.BorderStrokeStyle.DASHED
@@ -98,11 +97,13 @@ class ViewInvoicePopOver(invoice: Invoice) : SimplePopOver(object : Resourced {
                 row++
                 line(endX = MAX_WIDTH - 32.0) row row col 0 colSpans 3
                 row++
-                label(customer.name, ImageView(R.image.text2_customer)) {
+                label(customer.name) {
                     font = getFont(R.font.sf_pro_text_bold, 24)
-                } row row col 0 colSpans 2
-                label(invoice.dateTime.toString(PATTERN_DATETIME_EXTENDED) + '\n' + invoice.dateTime.toString(PATTERN_TIME),
-                    ImageView(R.image.text2_since)) row row col 2
+                } row row col 0
+                label("${getString(R.string.employee)}\n${transaction {
+                    Employees[invoice.employeeId].single().name
+                }}") row row col 1
+                label(invoice.dateTime.toString(PATTERN_DATE) + '\n' + invoice.dateTime.toString(PATTERN_TIME)) row row col 2
                 row++
                 vbox {
                     invoice.plates.run {
@@ -151,7 +152,7 @@ class ViewInvoicePopOver(invoice: Invoice) : SimplePopOver(object : Resourced {
                 row++
                 line(endX = MAX_WIDTH - 32.0) row row col 0 colSpans 3
                 row++
-                label(invoice.note, ImageView(R.image.text2_note)) {
+                label(invoice.note) {
                     maxWidth = Double.MAX_VALUE
                     maxHeight = Double.MAX_VALUE
                     isWrapText = true

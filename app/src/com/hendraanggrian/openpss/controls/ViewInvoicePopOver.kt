@@ -102,6 +102,7 @@ class ViewInvoicePopOver(invoice: Invoice) : SimplePopOver(object : Resourced {
                         constraints { hgrow = ALWAYS }
                         constraints()
                         constraints()
+                        constraints()
                     }
                     var row = 0
                     invoice.plates.run {
@@ -110,9 +111,10 @@ class ViewInvoicePopOver(invoice: Invoice) : SimplePopOver(object : Resourced {
                             row++
                             forEach {
                                 label(it.title) row row col 0
-                                label("${it.machine} ${numberConverter.toString(it.qty)} x " +
-                                    currencyConverter.toString(it.price)) row row col 1
-                                label(currencyConverter.toString(it.total)) row row col 2
+                                label(it.machine) row row col 1
+                                label("${numberConverter.toString(it.qty)} x " +
+                                    currencyConverter.toString(it.price)) row row col 2
+                                label(currencyConverter.toString(it.total)) row row col 3
                                 row++
                             }
                         }
@@ -123,9 +125,10 @@ class ViewInvoicePopOver(invoice: Invoice) : SimplePopOver(object : Resourced {
                             row++
                             forEach {
                                 label(it.title) row row col 0
-                                label("${it.machine} ${it.typedTechnique.toString(this@ViewInvoicePopOver)} " +
-                                    numberConverter.toString(it.qty)) row row col 1
-                                label(currencyConverter.toString(it.total)) row row col 2
+                                label(it.machine) row row col 1
+                                label("${it.typedTechnique.toString(this@ViewInvoicePopOver)} " +
+                                    numberConverter.toString(it.qty)) row row col 2
+                                label(currencyConverter.toString(it.total)) row row col 3
                                 row++
                             }
                         }
@@ -137,8 +140,8 @@ class ViewInvoicePopOver(invoice: Invoice) : SimplePopOver(object : Resourced {
                             forEach {
                                 label(it.title) row row col 0
                                 label("${numberConverter.toString(it.qty)} x " +
-                                    currencyConverter.toString(it.price)) row row col 1
-                                label(currencyConverter.toString(it.total)) row row col 2
+                                    currencyConverter.toString(it.price)) row row col 2
+                                label(currencyConverter.toString(it.total)) row row col 3
                                 row++
                             }
                         }

@@ -4,11 +4,11 @@ import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_INVOICE_HEADERS
 import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_LANGUAGE
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.localization.Language
-import com.hendraanggrian.openpss.localization.Resourced
 import com.hendraanggrian.openpss.io.properties.PreferencesFile
 import com.hendraanggrian.openpss.io.properties.PreferencesFile.INVOICE_QUICK_SELECT_CUSTOMER
 import com.hendraanggrian.openpss.io.properties.PreferencesFile.WAGE_READER
+import com.hendraanggrian.openpss.localization.Language
+import com.hendraanggrian.openpss.localization.Resourced
 import com.hendraanggrian.openpss.ui.wage.readers.Reader
 import com.hendraanggrian.openpss.util.clearConverters
 import com.hendraanggrian.openpss.util.getFont
@@ -93,7 +93,7 @@ class PreferencesDialog(resourced: Resourced, showGlobalSettings: Boolean) : Dia
                 gridPane {
                     gap = 8.0
                     transaction {
-                        label(getString(R.string.currency)) row 0 col 0
+                        label(getString(R.string.server_language)) row 0 col 0
                         languageBox = choiceBox(Language.values().toObservableList()) {
                             converter { toString { it!!.toString(true) } }
                             selectionModel.select(Language.ofFullCode(findGlobalSettings(KEY_LANGUAGE).single().value))

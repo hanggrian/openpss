@@ -18,8 +18,8 @@ import com.hendraanggrian.openpss.util.numberConverter
 import javafx.geometry.HPos.RIGHT
 import javafx.geometry.Insets
 import javafx.geometry.Pos.CENTER
-import javafx.scene.Node
-import javafx.scene.control.Label
+import javafx.geometry.Pos.CENTER_LEFT
+import javafx.geometry.Pos.CENTER_RIGHT
 import javafx.scene.layout.Border
 import javafx.scene.layout.BorderStroke
 import javafx.scene.layout.BorderStrokeStyle.DASHED
@@ -29,7 +29,6 @@ import javafx.scene.layout.CornerRadii.EMPTY
 import javafx.scene.layout.Priority.ALWAYS
 import javafx.scene.paint.Color.BLACK
 import javafx.scene.text.TextAlignment
-import ktfx.layouts.LayoutManager
 import ktfx.layouts.button
 import ktfx.layouts.columnConstraints
 import ktfx.layouts.gridPane
@@ -49,12 +48,17 @@ class ViewInvoicePopOver(invoice: Invoice) : SimplePopOver(object : Resourced {
     }).toResourcesBundle()
 }, R.string.invoice) {
 
+    private companion object {
+        const val EXPECTED_WIDTH = 912.0 // 9.5-inch
+        const val EXPECTED_HEIGHT = 528.0 // 5.5-inch
+    }
+
     private lateinit var invoiceHeaders: List<String>
     private lateinit var customer: Customer
     private lateinit var employee: Employee
 
     init {
-        graphic = ktfx.layouts.label(language.toString())
+        graphic = ktfx.layouts.label("${getString(R.string.server_language)}: $language")
         transaction {
             invoiceHeaders = findGlobalSettings(KEY_INVOICE_HEADERS).single().valueList
             employee = Employees[invoice.employeeId].single()
@@ -78,17 +82,16 @@ class ViewInvoicePopOver(invoice: Invoice) : SimplePopOver(object : Resourced {
                     }
                 }
                 vbox {
+                    alignment = CENTER_LEFT
                     invoiceHeaders.forEachIndexed { index, s ->
-                        label(s) {
-                            if (index == 0) font = getFont(R.font.sf_pro_text_bold)
-                        }
+                        label(s) { if (index == 0) font = getFont(R.font.sf_pro_text_bold) }
                     }
-                } row 0 col 0 colSpans 2
-                textFlow {
-                    textAlignment = TextAlignment.RIGHT
-                    "${getString(R.string.invoice)}\n" { font = getFont(R.font.sf_pro_text_bold, 32) }
-                    "# ${invoice.no}" { font = getFont(R.font.sf_pro_text_bold, 18) }
-                } row 0 col 2
+                } row 0 col 0
+                vbox {
+                    alignment = CENTER_RIGHT
+                    label(getString(R.string.invoice)) { font = getFont(R.font.sf_pro_text_bold, 32) }
+                    label("# ${invoice.no}") { font = getFont(R.font.sf_pro_text_bold, 18) }
+                } row 0 col 1 colSpans 2
                 line(endX = EXPECTED_WIDTH - 32.0) row 1 col 0 colSpans 3
                 label(customer.name) {
                     font = getFont(R.font.sf_pro_text_bold, 24)
@@ -154,7 +157,9 @@ class ViewInvoicePopOver(invoice: Invoice) : SimplePopOver(object : Resourced {
                     "${getString(R.string.note)}\n" { font = getFont(R.font.sf_pro_text_bold) }
                     invoice.note()
                 } row 5 col 0 rowSpans 2
-                boldLabel(currencyConverter.toString(invoice.total), 18) row 5 col 1 colSpans 2 halign RIGHT
+                label(currencyConverter.toString(invoice.total)) {
+                    font = getFont(R.font.sf_pro_text_bold, 18)
+                } row 5 col 1 colSpans 2 halign RIGHT
                 vbox {
                     alignment = CENTER
                     region { prefHeight = 50.0 }
@@ -174,19 +179,6 @@ class ViewInvoicePopOver(invoice: Invoice) : SimplePopOver(object : Resourced {
                 isDefaultButton = true
                 isDisable = invoice.printed
             }
-        }
-    }
-
-    private companion object {
-        const val EXPECTED_WIDTH = 912.0 // 9.5-inch
-        const val EXPECTED_HEIGHT = 528.0 // 5.5-inch
-
-        fun LayoutManager<Node>.boldLabel(
-            text: String,
-            size: Int = 13
-        ): Label = label(text) {
-            isWrapText = true
-            font = getFont(R.font.sf_pro_text_bold, size)
         }
     }
 }

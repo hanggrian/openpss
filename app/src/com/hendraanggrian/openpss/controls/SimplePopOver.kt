@@ -5,6 +5,8 @@ import com.hendraanggrian.openpss.localization.Resourced
 import com.hendraanggrian.openpss.util.getColor
 import javafx.beans.property.ObjectProperty
 import javafx.beans.property.SimpleObjectProperty
+import javafx.geometry.Pos.CENTER_LEFT
+import javafx.geometry.Pos.CENTER_RIGHT
 import javafx.scene.Node
 import javafx.scene.control.Button
 import javafx.scene.control.ListView
@@ -14,6 +16,7 @@ import javafx.scene.text.Font
 import javafx.util.Duration.ZERO
 import ktfx.beans.value.getValue
 import ktfx.beans.value.setValue
+import ktfx.coroutines.listener
 import ktfx.coroutines.onAction
 import ktfx.coroutines.onCloseRequest
 import ktfx.layouts.LayoutManager
@@ -49,8 +52,11 @@ open class SimplePopOver(
                 left = ktfx.layouts.label(getString(titleId)) {
                     font = Font.font(18.0)
                     textFill = getColor(R.color.teal)
+                } align CENTER_LEFT
+                rightProperty().run {
+                    bindBidirectional(graphicProperty)
+                    listener { _, _, value -> value align CENTER_RIGHT }
                 }
-                rightProperty().bindBidirectional(graphicProperty)
             }
             separator()
             contentPane.add()

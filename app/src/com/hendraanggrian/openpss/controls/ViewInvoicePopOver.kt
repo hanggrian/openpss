@@ -11,7 +11,7 @@ import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.localization.Language
 import com.hendraanggrian.openpss.localization.Resourced
-import com.hendraanggrian.openpss.util.PATTERN_DATE
+import com.hendraanggrian.openpss.util.PATTERN_DATETIME_EXTENDED
 import com.hendraanggrian.openpss.util.PATTERN_TIME
 import com.hendraanggrian.openpss.util.currencyConverter
 import com.hendraanggrian.openpss.util.getFont
@@ -19,7 +19,6 @@ import com.hendraanggrian.openpss.util.numberConverter
 import javafx.geometry.HPos.RIGHT
 import javafx.geometry.Insets
 import javafx.geometry.Pos
-import javafx.geometry.Pos.CENTER_RIGHT
 import javafx.scene.Node
 import javafx.scene.control.Label
 import javafx.scene.image.ImageView
@@ -30,8 +29,8 @@ import javafx.scene.layout.BorderStrokeStyle.SOLID
 import javafx.scene.layout.BorderWidths.DEFAULT
 import javafx.scene.layout.CornerRadii.EMPTY
 import javafx.scene.layout.Priority.ALWAYS
-import javafx.scene.layout.Priority.NEVER
 import javafx.scene.paint.Color.BLACK
+import javafx.scene.text.TextAlignment
 import ktfx.layouts.LayoutManager
 import ktfx.layouts.button
 import ktfx.layouts.columnConstraints
@@ -41,6 +40,7 @@ import ktfx.layouts.label
 import ktfx.layouts.line
 import ktfx.layouts.pane
 import ktfx.layouts.region
+import ktfx.layouts.textFlow
 import ktfx.layouts.vbox
 import ktfx.scene.layout.gap
 import java.util.ResourceBundle
@@ -72,9 +72,14 @@ class ViewInvoicePopOver(invoice: Invoice) : SimplePopOver(object : Resourced {
                 minHeight = MAX_HEIGHT
                 maxHeight = MAX_HEIGHT
                 columnConstraints {
-                    constraints { hgrow = ALWAYS }
-                    constraints { hgrow = NEVER }
-                    constraints { hgrow = NEVER }
+                    constraints {
+                        hgrow = ALWAYS
+                        isFillWidth = true
+                    }
+                    constraints(200.0)
+                    constraints(200.0) {
+                        halignment = RIGHT
+                    }
                 }
                 var row = 0
                 vbox {
@@ -85,24 +90,19 @@ class ViewInvoicePopOver(invoice: Invoice) : SimplePopOver(object : Resourced {
                         }
                     }
                 } row row col 0 colSpans 2
-                vbox {
-                    alignment = CENTER_RIGHT
-                    boldLabel(getString(R.string.invoice), 32)
-                    boldLabel("#${invoice.no}", 18)
+                textFlow {
+                    textAlignment = TextAlignment.RIGHT
+                    "${getString(R.string.invoice)}\n" { font = getFont(R.font.sf_pro_text_bold, 32) }
+                    "#${invoice.no}" { font = getFont(R.font.sf_pro_text_bold, 18) }
                 } row row col 2
                 row++
                 line(endX = MAX_WIDTH - 32.0) row row col 0 colSpans 3
                 row++
-                vbox {
-                    label(customer.name, ImageView(R.image.text_customer)) {
-                        font = getFont(R.font.sf_pro_text_bold, 24)
-                    }
-                    label("${getString(R.string.employee)}: ${transaction {
-                        Employees[invoice.employeeId].single().name
-                    }}") marginLeft 30.0
+                label(customer.name, ImageView(R.image.text2_customer)) {
+                    font = getFont(R.font.sf_pro_text_bold, 24)
                 } row row col 0 colSpans 2
-                label(invoice.dateTime.toString(PATTERN_DATE) + '\n' + invoice.dateTime.toString(PATTERN_TIME),
-                    ImageView(R.image.text_since)) row row col 2 halign RIGHT
+                label(invoice.dateTime.toString(PATTERN_DATETIME_EXTENDED) + '\n' + invoice.dateTime.toString(PATTERN_TIME),
+                    ImageView(R.image.text2_since)) row row col 2
                 row++
                 vbox {
                     invoice.plates.run {
@@ -151,23 +151,27 @@ class ViewInvoicePopOver(invoice: Invoice) : SimplePopOver(object : Resourced {
                 row++
                 line(endX = MAX_WIDTH - 32.0) row row col 0 colSpans 3
                 row++
-                boldLabel(currencyConverter.toString(invoice.total), 18) row row col 2 halign RIGHT
-                row++
-                label(invoice.note, ImageView(R.image.text_note)) {
+                label(invoice.note, ImageView(R.image.text2_note)) {
                     maxWidth = Double.MAX_VALUE
+                    maxHeight = Double.MAX_VALUE
+                    isWrapText = true
                     border = Border(BorderStroke(BLACK, SOLID, EMPTY, DEFAULT))
-                } row row col 0 hpriority ALWAYS
+                } row row col 0 rowSpans 2
+                boldLabel(currencyConverter.toString(invoice.total), 18) row row col 1 colSpans 2 halign RIGHT
+                row++
                 vbox {
                     alignment = Pos.CENTER
                     region { prefHeight = 50.0 }
                     line(endX = 200.0)
-                    label(getString(R.string.signature))
+                    label("${getString(R.string.employee)}: ${transaction {
+                        Employees[invoice.employeeId].single().name
+                    }}")
                 } row row col 1
                 vbox {
                     alignment = Pos.CENTER
                     region { prefHeight = 50.0 }
                     line(endX = 200.0)
-                    label(getString(R.string.signature))
+                    label(getString(R.string.customer))
                 } row row col 2
             }
         }

@@ -11,14 +11,13 @@ import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.localization.Language
 import com.hendraanggrian.openpss.localization.Resourced
-import com.hendraanggrian.openpss.util.PATTERN_DATE
-import com.hendraanggrian.openpss.util.PATTERN_TIME
+import com.hendraanggrian.openpss.util.PATTERN_DATETIME_EXTENDED
 import com.hendraanggrian.openpss.util.currencyConverter
 import com.hendraanggrian.openpss.util.getFont
 import com.hendraanggrian.openpss.util.numberConverter
 import javafx.geometry.HPos.RIGHT
 import javafx.geometry.Insets
-import javafx.geometry.Pos
+import javafx.geometry.Pos.CENTER
 import javafx.scene.Node
 import javafx.scene.control.Label
 import javafx.scene.layout.Border
@@ -34,7 +33,6 @@ import ktfx.layouts.LayoutManager
 import ktfx.layouts.button
 import ktfx.layouts.columnConstraints
 import ktfx.layouts.gridPane
-import ktfx.layouts.hbox
 import ktfx.layouts.label
 import ktfx.layouts.line
 import ktfx.layouts.pane
@@ -42,6 +40,7 @@ import ktfx.layouts.region
 import ktfx.layouts.textFlow
 import ktfx.layouts.vbox
 import ktfx.scene.layout.gap
+import ktfx.scene.layout.paddingAll
 import java.util.ResourceBundle
 
 class ViewInvoicePopOver(invoice: Invoice) : SimplePopOver(object : Resourced {
@@ -66,10 +65,8 @@ class ViewInvoicePopOver(invoice: Invoice) : SimplePopOver(object : Resourced {
             gridPane {
                 gap = 16.0
                 padding = Insets(16.0)
-                minWidth = MAX_WIDTH
-                maxWidth = MAX_WIDTH
-                minHeight = MAX_HEIGHT
-                maxHeight = MAX_HEIGHT
+                minWidth = EXPECTED_WIDTH
+                minHeight = EXPECTED_HEIGHT
                 columnConstraints {
                     constraints {
                         hgrow = ALWAYS
@@ -80,100 +77,93 @@ class ViewInvoicePopOver(invoice: Invoice) : SimplePopOver(object : Resourced {
                         halignment = RIGHT
                     }
                 }
-                var row = 0
                 vbox {
                     invoiceHeaders.forEachIndexed { index, s ->
-                        when (index) {
-                            0 -> boldLabel(s)
-                            else -> label(s)
+                        label(s) {
+                            if (index == 0) font = getFont(R.font.sf_pro_text_bold)
                         }
                     }
-                } row row col 0 colSpans 2
+                } row 0 col 0 colSpans 2
                 textFlow {
                     textAlignment = TextAlignment.RIGHT
                     "${getString(R.string.invoice)}\n" { font = getFont(R.font.sf_pro_text_bold, 32) }
-                    "#${invoice.no}" { font = getFont(R.font.sf_pro_text_bold, 18) }
-                } row row col 2
-                row++
-                line(endX = MAX_WIDTH - 32.0) row row col 0 colSpans 3
-                row++
+                    "# ${invoice.no}" { font = getFont(R.font.sf_pro_text_bold, 18) }
+                } row 0 col 2
+                line(endX = EXPECTED_WIDTH - 32.0) row 1 col 0 colSpans 3
                 label(customer.name) {
                     font = getFont(R.font.sf_pro_text_bold, 24)
-                } row row col 0
-                label("${getString(R.string.employee)}\n${transaction {
-                    Employees[invoice.employeeId].single().name
-                }}") row row col 1
-                label(invoice.dateTime.toString(PATTERN_DATE) + '\n' + invoice.dateTime.toString(PATTERN_TIME)) row row col 2
-                row++
-                vbox {
+                } row 2 col 0 colSpans 2
+                label(invoice.dateTime.toString(PATTERN_DATETIME_EXTENDED) + '\n' +
+                    transaction { Employees[invoice.employeeId].single().name }
+                ) { textAlignment = TextAlignment.RIGHT } row 2 col 2
+                gridPane {
+                    hgap = 16.0
+                    columnConstraints {
+                        constraints { hgrow = ALWAYS }
+                        constraints()
+                        constraints()
+                    }
+                    var row = 0
                     invoice.plates.run {
-                        if (isNotEmpty()) vbox {
-                            boldLabel(getString(R.string.plate))
+                        if (isNotEmpty()) {
+                            label(getString(R.string.plate)) { font = getFont(R.font.sf_pro_text_bold) } row row col 0
+                            row++
                             forEach {
-                                label(it.title)
-                                hbox {
-                                    label("  ${it.machine} ${numberConverter.toString(it.qty)} x " +
-                                        currencyConverter.toString(it.price))
-                                    region() hpriority ALWAYS
-                                    label(currencyConverter.toString(it.total))
-                                }
+                                label(it.title) row row col 0
+                                label("${it.machine} ${numberConverter.toString(it.qty)} x " +
+                                    currencyConverter.toString(it.price)) row row col 1
+                                label(currencyConverter.toString(it.total)) row row col 2
+                                row++
                             }
                         }
                     }
                     invoice.offsets.run {
-                        if (isNotEmpty()) vbox {
-                            boldLabel(getString(R.string.offset))
+                        if (isNotEmpty()) {
+                            label(getString(R.string.offset)) { font = getFont(R.font.sf_pro_text_bold) } row row col 0
+                            row++
                             forEach {
-                                label(it.title)
-                                hbox {
-                                    label("  ${it.machine} ${it.typedTechnique.toString(this@ViewInvoicePopOver)} " +
-                                        numberConverter.toString(it.qty))
-                                    region() hpriority ALWAYS
-                                    label(currencyConverter.toString(it.total))
-                                }
+                                label(it.title) row row col 0
+                                label("${it.machine} ${it.typedTechnique.toString(this@ViewInvoicePopOver)} " +
+                                    numberConverter.toString(it.qty)) row row col 1
+                                label(currencyConverter.toString(it.total)) row row col 2
+                                row++
                             }
                         }
                     }
                     invoice.others.run {
-                        if (isNotEmpty()) vbox {
-                            boldLabel(getString(R.string.others))
+                        if (isNotEmpty()) {
+                            label(getString(R.string.others)) { font = getFont(R.font.sf_pro_text_bold) } row row col 0
+                            row++
                             forEach {
-                                label(it.title)
-                                hbox {
-                                    label("  ${numberConverter.toString(it.qty)} x " +
-                                        currencyConverter.toString(it.price))
-                                    region() hpriority ALWAYS
-                                    label(currencyConverter.toString(it.total))
-                                }
+                                label(it.title) row row col 0
+                                label("${numberConverter.toString(it.qty)} x " +
+                                    currencyConverter.toString(it.price)) row row col 1
+                                label(currencyConverter.toString(it.total)) row row col 2
+                                row++
                             }
                         }
                     }
-                } row row col 0 colSpans 3 vpriority ALWAYS
-                row++
-                line(endX = MAX_WIDTH - 32.0) row row col 0 colSpans 3
-                row++
-                label(invoice.note) {
-                    maxWidth = Double.MAX_VALUE
-                    maxHeight = Double.MAX_VALUE
-                    isWrapText = true
+                } row 3 col 0 colSpans 3 vpriority ALWAYS
+                line(endX = EXPECTED_WIDTH - 32.0) row 4 col 0 colSpans 3
+                textFlow {
+                    paddingAll = 8.0
                     border = Border(BorderStroke(BLACK, SOLID, EMPTY, DEFAULT))
-                } row row col 0 rowSpans 2
-                boldLabel(currencyConverter.toString(invoice.total), 18) row row col 1 colSpans 2 halign RIGHT
-                row++
+                    "${getString(R.string.note)}\n" { font = getFont(R.font.sf_pro_text_bold) }
+                    invoice.note()
+                } row 5 col 0 rowSpans 2
+                boldLabel(currencyConverter.toString(invoice.total), 18) row 5 col 1 colSpans 2 halign RIGHT
                 vbox {
-                    alignment = Pos.CENTER
+                    alignment = CENTER
                     region { prefHeight = 50.0 }
-                    line(endX = 200.0)
-                    label("${getString(R.string.employee)}: ${transaction {
-                        Employees[invoice.employeeId].single().name
-                    }}")
-                } row row col 1
+                    line(endX = 150.0)
+                    label(getString(R.string.employee))
+                } row 6 col 1
                 vbox {
-                    alignment = Pos.CENTER
+                    alignment = CENTER
                     region { prefHeight = 50.0 }
-                    line(endX = 200.0)
+                    line(endX = 150.0)
                     label(getString(R.string.customer))
-                } row row col 2
+                } row 6 col 2
             }
         }
         buttonBar.run {
@@ -185,8 +175,8 @@ class ViewInvoicePopOver(invoice: Invoice) : SimplePopOver(object : Resourced {
     }
 
     private companion object {
-        const val MAX_WIDTH = 912.0 // equivalent to 9.5"
-        const val MAX_HEIGHT = 528.0 // equivalent to 5.5"
+        const val EXPECTED_WIDTH = 912.0 // 9.5-inch
+        const val EXPECTED_HEIGHT = 528.0 // 5.5-inch
 
         fun LayoutManager<Node>.boldLabel(
             text: String,

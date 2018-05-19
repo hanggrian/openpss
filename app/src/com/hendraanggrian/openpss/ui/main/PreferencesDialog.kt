@@ -1,6 +1,7 @@
 package com.hendraanggrian.openpss.ui.main
 
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.controls.SimpleDialog
 import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_INVOICE_HEADERS
 import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_LANGUAGE
 import com.hendraanggrian.openpss.db.transaction
@@ -12,14 +13,11 @@ import com.hendraanggrian.openpss.localization.Resourced
 import com.hendraanggrian.openpss.ui.wage.readers.Reader
 import com.hendraanggrian.openpss.util.clearConverters
 import com.hendraanggrian.openpss.util.getFont
-import com.hendraanggrian.openpss.util.getStyle
 import com.hendraanggrian.openpss.util.onActionFilter
 import javafx.geometry.Pos.CENTER_LEFT
 import javafx.scene.Node
 import javafx.scene.control.ChoiceBox
-import javafx.scene.control.Dialog
 import javafx.scene.control.TextArea
-import javafx.scene.image.ImageView
 import javafx.scene.layout.HBox
 import javafx.scene.layout.VBox
 import kotlinx.nosql.update
@@ -40,15 +38,16 @@ import ktfx.layouts.textArea
 import ktfx.layouts.vbox
 import ktfx.listeners.converter
 import ktfx.scene.control.cancelButton
-import ktfx.scene.control.graphicIcon
-import ktfx.scene.control.headerTitle
 import ktfx.scene.control.okButton
 import ktfx.scene.layout.gap
 
-class PreferencesDialog(resourced: Resourced, showGlobalSettings: Boolean) : Dialog<Nothing>(), Resourced by resourced {
+class PreferencesDialog(resourced: Resourced, showGlobalSettings: Boolean) : SimpleDialog<Nothing>(
+    resourced,
+    R.string.preferences,
+    R.image.header_preferences
+) {
 
     private companion object {
-        const val CURRENCY_INVALID = "-"
         const val INVOICE_HEADERS_DIVIDER = "|"
     }
 
@@ -61,56 +60,51 @@ class PreferencesDialog(resourced: Resourced, showGlobalSettings: Boolean) : Dia
     private lateinit var languageBox: ChoiceBox<Language>
 
     init {
-        headerTitle = getString(R.string.preferences)
-        graphicIcon = ImageView(R.image.header_preferences)
-        dialogPane.run {
-            stylesheets += getStyle(R.style.openpss)
-            content = vbox {
-                spacing = 16.0
-                group(R.string.invoice) {
-                    checkBox(getString(R.string.quick_select_customer_when_adding_invoice)) {
-                        isSelected = PreferencesFile.INVOICE_QUICK_SELECT_CUSTOMER
-                        selectedProperty().listener { _, _, value ->
-                            isLocalChanged.set(true)
-                            INVOICE_QUICK_SELECT_CUSTOMER = value
-                        }
+        vbox {
+            spacing = 16.0
+            group(R.string.invoice) {
+                checkBox(getString(R.string.quick_select_customer_when_adding_invoice)) {
+                    isSelected = PreferencesFile.INVOICE_QUICK_SELECT_CUSTOMER
+                    selectedProperty().listener { _, _, value ->
+                        isLocalChanged.set(true)
+                        INVOICE_QUICK_SELECT_CUSTOMER = value
                     }
                 }
-                group(R.string.wage) {
-                    item {
-                        label(getString(R.string.reader))
-                        wageReaderChoice = choiceBox(Reader.listAll()) {
-                            value = Reader.of(WAGE_READER)
-                            valueProperty().listener { _, _, value ->
-                                isLocalChanged.set(true)
-                                WAGE_READER = (value as Reader).name
-                            }
+            }
+            group(R.string.wage) {
+                item {
+                    label(getString(R.string.reader))
+                    wageReaderChoice = choiceBox(Reader.listAll()) {
+                        value = Reader.of(WAGE_READER)
+                        valueProperty().listener { _, _, value ->
+                            isLocalChanged.set(true)
+                            WAGE_READER = (value as Reader).name
                         }
                     }
                 }
             }
-            if (showGlobalSettings) expandableContent = group(R.string.global_settings) {
-                gridPane {
-                    gap = 8.0
-                    transaction {
-                        label(getString(R.string.server_language)) row 0 col 0
-                        languageBox = choiceBox(Language.values().toObservableList()) {
-                            converter { toString { it!!.toString(true) } }
-                            selectionModel.select(Language.ofFullCode(findGlobalSettings(KEY_LANGUAGE).single().value))
-                            valueProperty().listener { isGlobalChanged.set(true) }
-                        } row 0 col 1
-                        label(getString(R.string.invoice_headers)) row 1 col 0
-                        invoiceHeadersArea = textArea(findGlobalSettings(KEY_INVOICE_HEADERS).single().valueList
-                            .joinToString("\n").trim()) {
-                            setMaxSize(256.0, 88.0)
-                            textProperty().listener { _, oldValue, value ->
-                                when (INVOICE_HEADERS_DIVIDER) {
-                                    in value -> text = oldValue
-                                    else -> isGlobalChanged.set(true)
-                                }
+        }
+        if (showGlobalSettings) dialogPane.expandableContent = group(R.string.global_settings) {
+            gridPane {
+                gap = 8.0
+                transaction {
+                    label(getString(R.string.server_language)) row 0 col 0
+                    languageBox = choiceBox(Language.values().toObservableList()) {
+                        converter { toString { it!!.toString(true) } }
+                        selectionModel.select(Language.ofFullCode(findGlobalSettings(KEY_LANGUAGE).single().value))
+                        valueProperty().listener { isGlobalChanged.set(true) }
+                    } row 0 col 1
+                    label(getString(R.string.invoice_headers)) row 1 col 0
+                    invoiceHeadersArea = textArea(findGlobalSettings(KEY_INVOICE_HEADERS).single().valueList
+                        .joinToString("\n").trim()) {
+                        setMaxSize(256.0, 88.0)
+                        textProperty().listener { _, oldValue, value ->
+                            when (INVOICE_HEADERS_DIVIDER) {
+                                in value -> text = oldValue
+                                else -> isGlobalChanged.set(true)
                             }
-                        } row 1 col 1
-                    }
+                        }
+                    } row 1 col 1
                 }
             }
         }
@@ -133,7 +127,7 @@ class PreferencesDialog(resourced: Resourced, showGlobalSettings: Boolean) : Dia
     private fun group(
         titleId: String,
         init: (@LayoutDsl _VBox).() -> Unit
-    ): VBox = vbox(4.0) {
+    ): VBox = ktfx.layouts.vbox(4.0) {
         label(getString(titleId)) { font = getFont(R.font.sf_pro_text_bold) }
         init()
     }

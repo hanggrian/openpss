@@ -2,6 +2,7 @@ package com.hendraanggrian.openpss.ui.invoice
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.controls.DefaultPopOver
+import com.hendraanggrian.openpss.controls.SimpleDialog
 import com.hendraanggrian.openpss.db.dbDateTime
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Customers
@@ -19,7 +20,6 @@ import com.hendraanggrian.openpss.util.currencyCell
 import com.hendraanggrian.openpss.util.currencyConverter
 import com.hendraanggrian.openpss.util.getColor
 import com.hendraanggrian.openpss.util.getFont
-import com.hendraanggrian.openpss.util.getStyle
 import com.hendraanggrian.openpss.util.numberCell
 import com.hendraanggrian.openpss.util.stringCell
 import javafx.beans.property.DoubleProperty
@@ -29,7 +29,6 @@ import javafx.beans.property.SimpleObjectProperty
 import javafx.geometry.HPos.RIGHT
 import javafx.scene.Node
 import javafx.scene.control.ButtonType.CANCEL
-import javafx.scene.control.Dialog
 import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
 import javafx.scene.control.TextArea
@@ -58,8 +57,6 @@ import ktfx.layouts.separatorMenuItem
 import ktfx.layouts.tableView
 import ktfx.layouts.textArea
 import ktfx.scene.control.cancelButton
-import ktfx.scene.control.graphicIcon
-import ktfx.scene.control.headerTitle
 import ktfx.scene.control.okButton
 import ktfx.scene.input.isDelete
 import ktfx.scene.layout.gap
@@ -69,7 +66,10 @@ class InvoiceDialog(
     resourced: Resourced,
     private val prefill: Invoice? = null,
     employee: Employee? = prefill?.let { transaction { Employees[prefill.employeeId].single() } }
-) : Dialog<Invoice>(), Resourced by resourced {
+) : SimpleDialog<Invoice>(resourced, when (prefill) {
+    null -> R.string.add_invoice
+    else -> R.string.edit_invoice
+}, R.image.header_invoice) {
 
     private lateinit var plateTable: TableView<Invoice.Plate>
     private lateinit var offsetTable: TableView<Invoice.Offset>
@@ -84,85 +84,80 @@ class InvoiceDialog(
     private val totalProperty: DoubleProperty = SimpleDoubleProperty()
 
     init {
-        headerTitle = getString(if (!isEdit()) R.string.add_invoice else R.string.edit_invoice)
-        graphicIcon = ImageView(R.image.header_invoice)
-        dialogPane.run {
-            stylesheets += getStyle(R.style.openpss)
-            content = gridPane {
-                gap = 8.0
-                label(getString(R.string.employee)) col 0 row 0
-                label(employee!!.name) { font = getFont(R.font.sf_pro_text_bold) } col 1 row 0
-                label(getString(R.string.date)) col 2 row 0 hpriority ALWAYS halign RIGHT
-                label(dateTime.toString(PATTERN_DATE)) { font = getFont(R.font.sf_pro_text_bold) } col 3 row 0
-                label(getString(R.string.customer)) col 0 row 1
-                button {
-                    isDisable = isEdit()
-                    textProperty().bind(stringBindingOf(customerProperty) {
-                        customerProperty.value?.toString() ?: getString(R.string.search_customer)
-                    })
-                    onAction {
-                        SearchCustomerPopOver(this@InvoiceDialog).showAt(this@button) { customerProperty.set(it) }
-                    }
-                    if (INVOICE_QUICK_SELECT_CUSTOMER && !isEdit()) fire()
-                } col 1 row 1
-                label(getString(R.string.plate)) col 0 row 2
-                plateTable = invoiceTableView({ AddPlatePopOver(this@InvoiceDialog) }) {
-                    columns {
-                        column<Invoice.Plate, String>(R.string.machine, 64) { stringCell { machine } }
-                        column<Invoice.Plate, String>(R.string.title, 256) { stringCell { title } }
-                        column<Invoice.Plate, String>(R.string.qty, 64) { numberCell { qty } }
-                        column<Invoice.Plate, String>(R.string.price, 416) { currencyCell { price } }
-                        column<Invoice.Plate, String>(R.string.total, 128) { currencyCell { total } }
-                    }
-                    if (isEdit()) items.addAll(prefill!!.plates)
-                } col 1 row 2 colSpans 3
-                label(getString(R.string.offset)) col 0 row 3
-                offsetTable = invoiceTableView({ AddOffsetPopOver(this@InvoiceDialog) }) {
-                    columns {
-                        column<Invoice.Offset, String>(R.string.machine, 64) { stringCell { machine } }
-                        column<Invoice.Offset, String>(R.string.title, 256) { stringCell { title } }
-                        column<Invoice.Offset, String>(R.string.qty, 64) { numberCell { qty } }
-                        column<Invoice.Offset, String>(R.string.technique, 128) {
-                            stringCell { typedTechnique.toString(this@InvoiceDialog) }
-                        }
-                        column<Invoice.Offset, String>(R.string.min_qty, 64) { numberCell { minQty } }
-                        column<Invoice.Offset, String>(R.string.min_price, 128) { currencyCell { minPrice } }
-                        column<Invoice.Offset, String>(R.string.excess_price, 64) { currencyCell { excessPrice } }
-                        column<Invoice.Offset, String>(R.string.total, 128) { currencyCell { total } }
-                    }
-                    if (isEdit()) items.addAll(prefill!!.offsets)
-                } col 1 row 3 colSpans 3
-                label(getString(R.string.others)) col 0 row 4
-                otherTable = invoiceTableView({ AddOtherPopOver(this@InvoiceDialog) }) {
-                    columns {
-                        column<Invoice.Other, String>(R.string.title, 336) { stringCell { title } }
-                        column<Invoice.Other, String>(R.string.qty, 64) { numberCell { qty } }
-                        column<Invoice.Other, String>(R.string.price, 416) { currencyCell { price } }
-                        column<Invoice.Other, String>(R.string.total, 128) { currencyCell { total } }
-                    }
-                    if (isEdit()) items.addAll(prefill!!.others)
-                } col 1 row 4 colSpans 3
-                totalProperty.bind(doubleBindingOf(plateTable.items, offsetTable.items, otherTable.items) {
-                    plateTable.items.sumByDouble { it.total } +
-                        offsetTable.items.sumByDouble { it.total } +
-                        otherTable.items.sumByDouble { it.total }
+        gridPane {
+            gap = 8.0
+            label(getString(R.string.employee)) col 0 row 0
+            label(employee!!.name) { font = getFont(R.font.sf_pro_text_bold) } col 1 row 0
+            label(getString(R.string.date)) col 2 row 0 hpriority ALWAYS halign RIGHT
+            label(dateTime.toString(PATTERN_DATE)) { font = getFont(R.font.sf_pro_text_bold) } col 3 row 0
+            label(getString(R.string.customer)) col 0 row 1
+            button {
+                isDisable = isEdit()
+                textProperty().bind(stringBindingOf(customerProperty) {
+                    customerProperty.value?.toString() ?: getString(R.string.search_customer)
                 })
-                label(getString(R.string.note)) col 0 row 5
-                noteArea = textArea {
-                    prefHeight = 48.0
-                    if (isEdit()) text = prefill!!.note
-                } col 1 row 5 colSpans 3
-                label(getString(R.string.total)) col 0 row 6
-                label {
-                    font = getFont(R.font.sf_pro_text_bold)
-                    textProperty().bind(stringBindingOf(totalProperty) {
-                        currencyConverter.toString(totalProperty.value)
-                    })
-                    textFillProperty().bind(`when`(totalProperty greater 0)
-                        then getColor(R.color.teal)
-                        otherwise getColor(R.color.red))
-                } col 1 row 6
-            }
+                onAction {
+                    SearchCustomerPopOver(this@InvoiceDialog).showAt(this@button) { customerProperty.set(it) }
+                }
+                if (INVOICE_QUICK_SELECT_CUSTOMER && !isEdit()) fire()
+            } col 1 row 1
+            label(getString(R.string.plate)) col 0 row 2
+            plateTable = invoiceTableView({ AddPlatePopOver(this@InvoiceDialog) }) {
+                columns {
+                    column<Invoice.Plate, String>(R.string.machine, 64) { stringCell { machine } }
+                    column<Invoice.Plate, String>(R.string.title, 256) { stringCell { title } }
+                    column<Invoice.Plate, String>(R.string.qty, 64) { numberCell { qty } }
+                    column<Invoice.Plate, String>(R.string.price, 416) { currencyCell { price } }
+                    column<Invoice.Plate, String>(R.string.total, 128) { currencyCell { total } }
+                }
+                if (isEdit()) items.addAll(prefill!!.plates)
+            } col 1 row 2 colSpans 3
+            label(getString(R.string.offset)) col 0 row 3
+            offsetTable = invoiceTableView({ AddOffsetPopOver(this@InvoiceDialog) }) {
+                columns {
+                    column<Invoice.Offset, String>(R.string.machine, 64) { stringCell { machine } }
+                    column<Invoice.Offset, String>(R.string.title, 256) { stringCell { title } }
+                    column<Invoice.Offset, String>(R.string.qty, 64) { numberCell { qty } }
+                    column<Invoice.Offset, String>(R.string.technique, 128) {
+                        stringCell { typedTechnique.toString(this@InvoiceDialog) }
+                    }
+                    column<Invoice.Offset, String>(R.string.min_qty, 64) { numberCell { minQty } }
+                    column<Invoice.Offset, String>(R.string.min_price, 128) { currencyCell { minPrice } }
+                    column<Invoice.Offset, String>(R.string.excess_price, 64) { currencyCell { excessPrice } }
+                    column<Invoice.Offset, String>(R.string.total, 128) { currencyCell { total } }
+                }
+                if (isEdit()) items.addAll(prefill!!.offsets)
+            } col 1 row 3 colSpans 3
+            label(getString(R.string.others)) col 0 row 4
+            otherTable = invoiceTableView({ AddOtherPopOver(this@InvoiceDialog) }) {
+                columns {
+                    column<Invoice.Other, String>(R.string.title, 336) { stringCell { title } }
+                    column<Invoice.Other, String>(R.string.qty, 64) { numberCell { qty } }
+                    column<Invoice.Other, String>(R.string.price, 416) { currencyCell { price } }
+                    column<Invoice.Other, String>(R.string.total, 128) { currencyCell { total } }
+                }
+                if (isEdit()) items.addAll(prefill!!.others)
+            } col 1 row 4 colSpans 3
+            totalProperty.bind(doubleBindingOf(plateTable.items, offsetTable.items, otherTable.items) {
+                plateTable.items.sumByDouble { it.total } +
+                    offsetTable.items.sumByDouble { it.total } +
+                    otherTable.items.sumByDouble { it.total }
+            })
+            label(getString(R.string.note)) col 0 row 5
+            noteArea = textArea {
+                prefHeight = 48.0
+                if (isEdit()) text = prefill!!.note
+            } col 1 row 5 colSpans 3
+            label(getString(R.string.total)) col 0 row 6
+            label {
+                font = getFont(R.font.sf_pro_text_bold)
+                textProperty().bind(stringBindingOf(totalProperty) {
+                    currencyConverter.toString(totalProperty.value)
+                })
+                textFillProperty().bind(`when`(totalProperty greater 0)
+                    then getColor(R.color.teal)
+                    otherwise getColor(R.color.red))
+            } col 1 row 6
         }
         cancelButton()
         okButton().disableProperty().bind(customerProperty.isNull or totalProperty.lessEq(0))

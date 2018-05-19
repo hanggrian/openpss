@@ -25,6 +25,10 @@
             <SeparatorMenuItem/>
             <MenuItem fx:id="quitItem" mnemonicParsing="false" onAction="#quit" text="%quit" accelerator="SHORTCUT+Q"/>
         </Menu>
+        <Menu mnemonicParsing="false" text="Edit">
+            <MenuItem fx:id="platePriceItem" mnemonicParsing="false" onAction="#price" text="%plate_price"/>
+            <MenuItem fx:id="offsetPriceItem" mnemonicParsing="false" onAction="#price" text="%offset_price"/>
+        </Menu>
         <Menu mnemonicParsing="false" text="%help">
             <MenuItem mnemonicParsing="false" onAction="#about" text="%about">
                 <graphic>

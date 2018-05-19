@@ -24,18 +24,13 @@ import com.hendraanggrian.openpss.ui.SegmentedController
 import com.hendraanggrian.openpss.ui.Selectable
 import com.hendraanggrian.openpss.ui.Selectable2
 import com.hendraanggrian.openpss.util.PATTERN_DATETIME_EXTENDED
-import com.hendraanggrian.openpss.util.controller
 import com.hendraanggrian.openpss.util.currencyCell
 import com.hendraanggrian.openpss.util.doneCell
-import com.hendraanggrian.openpss.util.getResource
-import com.hendraanggrian.openpss.util.getStyle
 import com.hendraanggrian.openpss.util.matches
-import com.hendraanggrian.openpss.util.pane
 import com.hendraanggrian.openpss.util.stringCell
 import com.hendraanggrian.openpss.util.yesNoAlert
 import javafx.beans.property.SimpleObjectProperty
 import javafx.fxml.FXML
-import javafx.fxml.FXMLLoader
 import javafx.geometry.Orientation.VERTICAL
 import javafx.geometry.Pos.CENTER
 import javafx.scene.Node
@@ -50,7 +45,6 @@ import javafx.scene.control.TableView
 import javafx.scene.control.TableView.CONSTRAINED_RESIZE_POLICY
 import javafx.scene.image.ImageView
 import javafx.scene.layout.Priority.ALWAYS
-import javafx.stage.Modality.APPLICATION_MODAL
 import javafx.util.Callback
 import kotlinx.nosql.equal
 import kotlinx.nosql.update
@@ -71,12 +65,10 @@ import ktfx.layouts.hbox
 import ktfx.layouts.region
 import ktfx.layouts.separator
 import ktfx.layouts.splitPane
-import ktfx.layouts.styledScene
 import ktfx.layouts.tableView
 import ktfx.layouts.vbox
 import ktfx.scene.input.isDoubleClick
 import ktfx.scene.layout.updatePadding
-import ktfx.stage.stage
 import java.net.URL
 import java.util.ResourceBundle
 import kotlin.math.ceil
@@ -101,9 +93,7 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
     override val leftButtons: List<Node>
         get() = listOf(refreshButton, separator(VERTICAL), addButton, editButton, deleteButton)
 
-    private lateinit var platePriceButton: Button
-    private lateinit var offsetPriceButton: Button
-    override val rightButtons: List<Node> get() = listOf(platePriceButton, offsetPriceButton)
+    override val rightButtons: List<Node> get() = listOf()
 
     private val customerProperty = SimpleObjectProperty<Customer>()
     private lateinit var invoiceTable: TableView<Invoice>
@@ -127,12 +117,6 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
         }
         deleteButton = stretchableButton(getString(R.string.delete), ImageView(R.image.btn_delete_light)) {
             onAction { deleteInvoice() }
-        }
-        platePriceButton = stretchableButton(getString(R.string.plate_price), ImageView(R.image.btn_plate_light)) {
-            onAction { platePrice() }
-        }
-        offsetPriceButton = stretchableButton(getString(R.string.offset_price), ImageView(R.image.btn_offset_light)) {
-            onAction { offsetPrice() }
         }
 
         customerButton.textProperty().bind(stringBindingOf(customerProperty) {
@@ -302,22 +286,6 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
             reload(selected!!)
         }
     }
-
-    private fun platePrice() = stage(getString(R.string.plate_price)) {
-        initModality(APPLICATION_MODAL)
-        val loader = FXMLLoader(getResource(R.layout.controller_price_plate), resources)
-        scene = styledScene(getStyle(R.style.openpss), loader.pane)
-        isResizable = false
-        loader.controller.login = login
-    }.show()
-
-    private fun offsetPrice() = stage(getString(R.string.offset_price)) {
-        initModality(APPLICATION_MODAL)
-        val loader = FXMLLoader(getResource(R.layout.controller_price_offset), resources)
-        scene = styledScene(getStyle(R.style.openpss), loader.pane)
-        isResizable = false
-        loader.controller.login = login
-    }.show()
 
     private fun SessionWrapper.updatePaymentStatus() = Invoices[selected!!]
         .projection { Invoices.paid }

@@ -6,6 +6,7 @@ import com.hendraanggrian.openpss.BuildConfig.USER
 import com.hendraanggrian.openpss.BuildConfig.VERSION
 import com.hendraanggrian.openpss.BuildConfig.WEBSITE
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.controls.SimpleDialog
 import com.hendraanggrian.openpss.localization.Resourced
 import com.hendraanggrian.openpss.ui.Selectable
 import com.hendraanggrian.openpss.ui.main.github.GitHubApi
@@ -17,7 +18,6 @@ import javafx.geometry.Pos.CENTER_LEFT
 import javafx.scene.control.Button
 import javafx.scene.control.ButtonBar.ButtonData.CANCEL_CLOSE
 import javafx.scene.control.ButtonType.CANCEL
-import javafx.scene.control.Dialog
 import javafx.scene.control.ListView
 import javafx.scene.control.ProgressIndicator
 import javafx.scene.control.SelectionModel
@@ -52,7 +52,7 @@ import ktfx.scene.layout.maxSize
 import ktfx.scene.layout.paddingAll
 import java.util.concurrent.TimeUnit.SECONDS
 
-class AboutDialog(resourced: Resourced) : Dialog<Nothing>(), Resourced by resourced, Selectable<License> {
+class AboutDialog(resourced: Resourced) : SimpleDialog<Nothing>(resourced), Selectable<License> {
 
     private lateinit var checkUpdateButton: Button
     private lateinit var checkUpdateProgress: ProgressIndicator
@@ -141,7 +141,7 @@ class AboutDialog(resourced: Resourced) : Dialog<Nothing>(), Resourced by resour
                 } marginLeft 48.0
             }
         }
-        dialogPane.expandableContent = hbox {
+        dialogPane.expandableContent = ktfx.layouts.hbox {
             titledPane(getString(R.string.open_source_software)) {
                 isCollapsible = false
                 licenseList = listView {

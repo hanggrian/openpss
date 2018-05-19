@@ -1,10 +1,13 @@
 package com.hendraanggrian.openpss.ui.invoice
 
 import com.hendraanggrian.openpss.App.Companion.STYLE_DEFAULT_BUTTON
+import com.hendraanggrian.openpss.App.Companion.STYLE_SEARCH_TEXTFIELD
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.controls.IntField
 import com.hendraanggrian.openpss.controls.PaginatedPane
 import com.hendraanggrian.openpss.controls.ViewInvoicePopOver
 import com.hendraanggrian.openpss.controls.stretchableButton
+import com.hendraanggrian.openpss.controls.styledIntField
 import com.hendraanggrian.openpss.controls.styledStretchableButton
 import com.hendraanggrian.openpss.db.SessionWrapper
 import com.hendraanggrian.openpss.db.schemas.Customer
@@ -44,6 +47,7 @@ import javafx.scene.control.SplitMenuButton
 import javafx.scene.control.TableView
 import javafx.scene.control.TableView.CONSTRAINED_RESIZE_POLICY
 import javafx.scene.image.ImageView
+import javafx.scene.layout.HBox
 import javafx.scene.layout.Priority.ALWAYS
 import javafx.util.Callback
 import kotlinx.nosql.equal
@@ -53,6 +57,7 @@ import ktfx.beans.binding.bindingOf
 import ktfx.beans.binding.stringBindingOf
 import ktfx.beans.binding.times
 import ktfx.beans.property.toReadOnlyProperty
+import ktfx.beans.value.neq
 import ktfx.beans.value.or
 import ktfx.collections.emptyObservableList
 import ktfx.collections.toMutableObservableList
@@ -75,6 +80,7 @@ import kotlin.math.ceil
 
 class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice>, Selectable2<Payment> {
 
+    @FXML lateinit var filterBox: HBox
     @FXML lateinit var allDateRadio: RadioButton
     @FXML lateinit var pickDateRadio: RadioButton
     @FXML lateinit var dateBox: DateBox
@@ -93,7 +99,8 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
     override val leftButtons: List<Node>
         get() = listOf(refreshButton, separator(VERTICAL), addButton, editButton, deleteButton)
 
-    override val rightButtons: List<Node> get() = listOf()
+    private lateinit var searchField: IntField
+    override val rightButtons: List<Node> get() = listOf(searchField)
 
     private val customerProperty = SimpleObjectProperty<Customer>()
     private lateinit var invoiceTable: TableView<Invoice>
@@ -117,6 +124,11 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
         }
         deleteButton = stretchableButton(getString(R.string.delete), ImageView(R.image.btn_delete_light)) {
             onAction { deleteInvoice() }
+        }
+        searchField = styledIntField(STYLE_SEARCH_TEXTFIELD) {
+            filterBox.disableProperty().bind(valueProperty() neq 0)
+            later { prefWidthProperty().bind(scene.widthProperty() * 0.12) }
+            promptText = getString(R.string.search_no)
         }
 
         customerButton.textProperty().bind(stringBindingOf(customerProperty) {

@@ -53,3 +53,18 @@ fun doubleField(
 inline fun LayoutManager<Node>.doubleField(
     noinline init: ((@LayoutDsl DoubleField).() -> Unit)? = null
 ): DoubleField = com.hendraanggrian.openpss.controls.doubleField(init).add()
+
+/** Creates a styled [DoubleField]. */
+fun styledDoubleField(
+    styleClass: String,
+    init: ((@LayoutDsl DoubleField).() -> Unit)? = null
+): DoubleField = DoubleField().also {
+    it.styleClass += styleClass
+    init?.invoke(it)
+}
+
+/** Creates a styled [DoubleField] and add it to this [LayoutManager]. */
+inline fun LayoutManager<Node>.styledDoubleField(
+    styleClass: String,
+    noinline init: ((@LayoutDsl DoubleField).() -> Unit)? = null
+): DoubleField = com.hendraanggrian.openpss.controls.styledDoubleField(styleClass, init).add()

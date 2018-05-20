@@ -52,8 +52,8 @@ class MainController : Controller(), Selectable<Tab> {
     @FXML lateinit var navigationRightBox: HBox
     @FXML lateinit var tabPane: SegmentedTabPane
     @FXML lateinit var customerController: CustomerController
-    @FXML lateinit var scheduleController: ScheduleController
     @FXML lateinit var invoiceController: InvoiceController
+    @FXML lateinit var scheduleController: ScheduleController
     @FXML lateinit var financeController: FinanceController
     @FXML lateinit var wageController: WageController
     @FXML lateinit var employeeController: EmployeeController
@@ -77,8 +77,7 @@ class MainController : Controller(), Selectable<Tab> {
         }
 
         later {
-            // employeeLabel.text = login.name
-            controllers = listOf(customerController, scheduleController, invoiceController, financeController,
+            controllers = listOf(customerController, invoiceController, scheduleController, financeController,
                 wageController, employeeController)
             controllers.forEach { it.login = login }
             financeController.addExtra(FinanceController.EXTRA_MAIN_CONTROLLER, this)

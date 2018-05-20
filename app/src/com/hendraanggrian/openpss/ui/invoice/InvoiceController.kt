@@ -16,7 +16,6 @@ import com.hendraanggrian.openpss.db.schemas.Employee.Role.MANAGER
 import com.hendraanggrian.openpss.db.schemas.Employees
 import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.db.schemas.Invoices
-import com.hendraanggrian.openpss.db.schemas.Invoices.customerId
 import com.hendraanggrian.openpss.db.schemas.Payment
 import com.hendraanggrian.openpss.db.schemas.Payments
 import com.hendraanggrian.openpss.db.schemas.Payments.invoiceId
@@ -75,6 +74,7 @@ import ktfx.layouts.vbox
 import ktfx.scene.input.isDoubleClick
 import ktfx.scene.layout.updatePadding
 import java.net.URL
+import java.time.LocalDate
 import java.util.ResourceBundle
 import kotlin.math.ceil
 
@@ -100,7 +100,8 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
         get() = listOf(refreshButton, separator(VERTICAL), addButton, editButton, deleteButton)
 
     private lateinit var searchField: IntField
-    override val rightButtons: List<Node> get() = listOf(searchField)
+    private lateinit var resetFiltersButton: Button
+    override val rightButtons: List<Node> get() = listOf(searchField, resetFiltersButton)
 
     private val customerProperty = SimpleObjectProperty<Customer>()
     private lateinit var invoiceTable: TableView<Invoice>
@@ -127,8 +128,18 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
         }
         searchField = styledIntField(STYLE_SEARCH_TEXTFIELD) {
             filterBox.disableProperty().bind(valueProperty() neq 0)
-            later { prefWidthProperty().bind(scene.widthProperty() * 0.12) }
+            later { prefWidthProperty().bind(invoicePagination.scene.widthProperty() * 0.12) }
             promptText = getString(R.string.search_no)
+        }
+        resetFiltersButton = stretchableButton(getString(R.string.clear_filters),
+            ImageView(R.image.btn_clear_inactive)) {
+            onAction {
+                searchField.value = 0
+                customerProperty.set(null)
+                pickDateRadio.isSelected = true
+                dateBox.picker.value = LocalDate.now()
+                anyPaymentItem.isSelected = true
+            }
         }
 
         customerButton.textProperty().bind(stringBindingOf(customerProperty) {
@@ -149,7 +160,7 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
     }
 
     override fun refresh() = later {
-        invoicePagination.contentFactoryProperty().bind(bindingOf(customerProperty,
+        invoicePagination.contentFactoryProperty().bind(bindingOf(searchField.valueProperty(), customerProperty,
             anyPaymentItem.selectedProperty(), unpaidPaymentItem.selectedProperty(), paidPaymentItem.selectedProperty(),
             allDateRadio.selectedProperty(), pickDateRadio.selectedProperty(), dateBox.valueProperty()) {
             Callback<Pair<Int, Int>, Node> { (page, count) ->
@@ -228,15 +239,20 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
                     later {
                         transaction {
                             val invoices = Invoices.buildQuery {
-                                if (customerProperty.value != null) and(customerId.equal(customerProperty.value.id))
                                 when {
-                                    unpaidPaymentItem.isSelected -> and(it.paid.equal(false))
-                                    paidPaymentItem.isSelected -> and(it.paid.equal(true))
+                                    searchField.value != 0 -> and(it.no.equal(searchField.value))
+                                    else -> {
+                                        if (customerProperty.value != null)
+                                            and(it.customerId.equal(customerProperty.value.id))
+                                        when {
+                                            unpaidPaymentItem.isSelected -> and(it.paid.equal(false))
+                                            paidPaymentItem.isSelected -> and(it.paid.equal(true))
+                                        }
+                                        if (pickDateRadio.isSelected) and(it.dateTime.matches(dateBox.value))
+                                    }
                                 }
-                                if (pickDateRadio.isSelected) and(it.dateTime.matches(dateBox.value))
                             }
-                            invoicePagination.pageCount =
-                                ceil(invoices.count() / count.toDouble()).toInt()
+                            invoicePagination.pageCount = ceil(invoices.count() / count.toDouble()).toInt()
                             invoiceTable.items = invoices
                                 .skip(count * page)
                                 .take(count).toMutableObservableList()

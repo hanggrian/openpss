@@ -52,13 +52,13 @@
             <!--suppress ALL -->
             <fx:include fx:id="customer" source="controller_customer.fxml"/>
         </Tab>
-        <Tab closable="false" text="%schedule">
-            <!--suppress ALL -->
-            <fx:include fx:id="schedule" source="controller_schedule.fxml"/>
-        </Tab>
         <Tab closable="false" text="%invoice">
             <!--suppress ALL -->
             <fx:include fx:id="invoice" source="controller_invoice.fxml"/>
+        </Tab>
+        <Tab closable="false" text="%schedule">
+            <!--suppress ALL -->
+            <fx:include fx:id="schedule" source="controller_schedule.fxml"/>
         </Tab>
         <Tab closable="false" text="%finance">
             <!--suppress ALL -->

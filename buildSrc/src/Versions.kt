@@ -11,6 +11,7 @@ const val VERSION_BUILDCONFIG = "0.12"
 const val VERSION_PACKR = "0.4"
 const val VERSION_KTFX = "0.3.0"
 const val VERSION_COMMONS_LANG = "3.7"
+const val VERSION_COMMONS_MATH = "3.6.1"
 const val VERSION_POI = "3.17"
 
 internal const val VERSION_CONTROLSFX = "8.40.14"

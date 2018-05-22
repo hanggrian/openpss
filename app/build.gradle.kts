@@ -58,6 +58,7 @@ dependencies {
     implementation(google("guava", VERSION_GUAVA, "guava"))
     implementation(hendraanggrian("ktfx", VERSION_KTFX, "ktfx"))
     implementation(apache("commons-lang3", VERSION_COMMONS_LANG))
+    implementation(apache("commons-math3", VERSION_COMMONS_MATH))
     implementation(apache("poi-ooxml", VERSION_POI))
     implementation(log4j12())
 

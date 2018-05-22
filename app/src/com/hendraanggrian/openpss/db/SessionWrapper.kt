@@ -65,7 +65,7 @@ class SessionWrapper(val session: MongoDBSession) :
     inline fun <S : DocumentSchema<D>, D : Document<S>> S.buildQuery(
         noinline builder: QueryBuilder.(S) -> Unit
     ): DocumentSchemaQueryWrapper<S, String, D> = invoke {
-        _QueryBuilder().apply { builder(this@buildQuery) }.build()
+        QueryBuilderImpl().apply { builder(this@buildQuery) }.build()
     }
 
     inline fun Employee.isAtLeast(role: Employee.Role): Boolean =

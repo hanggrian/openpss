@@ -1,10 +1,10 @@
 package com.hendraanggrian.openpss.ui.invoice.order
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.controls.DoubleField
-import com.hendraanggrian.openpss.controls.IntField
-import com.hendraanggrian.openpss.controls.doubleField
-import com.hendraanggrian.openpss.controls.intField
+import com.hendraanggrian.openpss.control.DoubleField
+import com.hendraanggrian.openpss.control.IntField
+import com.hendraanggrian.openpss.control.doubleField
+import com.hendraanggrian.openpss.control.intField
 import com.hendraanggrian.openpss.db.OffsetOrder
 import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.db.schemas.OffsetPrice

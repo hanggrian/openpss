@@ -1,8 +1,8 @@
 package com.hendraanggrian.openpss.ui.invoice
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.controls.DefaultPopOver
-import com.hendraanggrian.openpss.controls.SimpleDialog
+import com.hendraanggrian.openpss.control.DefaultPopOver
+import com.hendraanggrian.openpss.control.SimpleDialog
 import com.hendraanggrian.openpss.db.dbDateTime
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Customers

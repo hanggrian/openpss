@@ -1,6 +1,6 @@
 @file:Suppress("NOTHING_TO_INLINE")
 
-package com.hendraanggrian.openpss.controls
+package com.hendraanggrian.openpss.control
 
 import javafx.beans.property.BooleanProperty
 import javafx.beans.property.DoubleProperty
@@ -52,7 +52,7 @@ fun doubleField(
 /** Creates a [DoubleField] and add it to this [LayoutManager]. */
 inline fun LayoutManager<Node>.doubleField(
     noinline init: ((@LayoutDsl DoubleField).() -> Unit)? = null
-): DoubleField = com.hendraanggrian.openpss.controls.doubleField(init).add()
+): DoubleField = com.hendraanggrian.openpss.control.doubleField(init).add()
 
 /** Creates a styled [DoubleField]. */
 fun styledDoubleField(
@@ -67,4 +67,4 @@ fun styledDoubleField(
 inline fun LayoutManager<Node>.styledDoubleField(
     styleClass: String,
     noinline init: ((@LayoutDsl DoubleField).() -> Unit)? = null
-): DoubleField = com.hendraanggrian.openpss.controls.styledDoubleField(styleClass, init).add()
+): DoubleField = com.hendraanggrian.openpss.control.styledDoubleField(styleClass, init).add()

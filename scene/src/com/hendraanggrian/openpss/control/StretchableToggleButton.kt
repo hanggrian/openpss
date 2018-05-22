@@ -1,6 +1,6 @@
 @file:Suppress("NOTHING_TO_INLINE")
 
-package com.hendraanggrian.openpss.controls
+package com.hendraanggrian.openpss.control
 
 import javafx.beans.DefaultProperty
 import javafx.beans.property.SimpleStringProperty
@@ -38,7 +38,7 @@ inline fun LayoutManager<Node>.stretchableToggleButton(
     adaptableText: String,
     graphic: Node? = null,
     noinline init: ((@LayoutDsl StretchableButton).() -> Unit)? = null
-): StretchableButton = com.hendraanggrian.openpss.controls.stretchableButton(adaptableText, graphic, init).add()
+): StretchableButton = com.hendraanggrian.openpss.control.stretchableButton(adaptableText, graphic, init).add()
 
 /** Create a styled [StretchableToggleButton]. */
 fun styledStretchableToggleButton(
@@ -57,5 +57,5 @@ inline fun LayoutManager<Node>.styledStretchableToggleButton(
     adaptableText: String,
     graphic: Node? = null,
     noinline init: ((@LayoutDsl StretchableToggleButton).() -> Unit)? = null
-): StretchableToggleButton = com.hendraanggrian.openpss.controls
+): StretchableToggleButton = com.hendraanggrian.openpss.control
     .styledStretchableToggleButton(styleClass, adaptableText, graphic, init).add()

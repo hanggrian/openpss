@@ -1,6 +1,6 @@
 @file:Suppress("NOTHING_TO_INLINE")
 
-package com.hendraanggrian.openpss.controls
+package com.hendraanggrian.openpss.control
 
 import javafx.beans.DefaultProperty
 import javafx.beans.property.SimpleStringProperty

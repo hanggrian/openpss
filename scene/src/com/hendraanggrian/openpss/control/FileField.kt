@@ -1,7 +1,7 @@
-package com.hendraanggrian.openpss.controls
+package com.hendraanggrian.openpss.control
 
-import com.hendraanggrian.openpss.controls.FileField.Scope.FILE
-import com.hendraanggrian.openpss.controls.FileField.Scope.FOLDER
+import com.hendraanggrian.openpss.control.FileField.Scope.FILE
+import com.hendraanggrian.openpss.control.FileField.Scope.FOLDER
 import javafx.beans.property.BooleanProperty
 import javafx.beans.property.ObjectProperty
 import javafx.beans.property.SimpleBooleanProperty

@@ -6,7 +6,7 @@ import com.hendraanggrian.openpss.BuildConfig.USER
 import com.hendraanggrian.openpss.BuildConfig.VERSION
 import com.hendraanggrian.openpss.BuildConfig.WEBSITE
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.controls.SimpleDialog
+import com.hendraanggrian.openpss.control.SimpleDialog
 import com.hendraanggrian.openpss.localization.Resourced
 import com.hendraanggrian.openpss.ui.Selectable
 import com.hendraanggrian.openpss.ui.main.github.GitHubApi

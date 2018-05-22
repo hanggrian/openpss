@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<?import com.hendraanggrian.openpss.controls.*?>
-<?import com.hendraanggrian.openpss.layouts.TimeBox?>
+<?import com.hendraanggrian.openpss.control.*?>
+<?import com.hendraanggrian.openpss.layout.TimeBox?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.HBox?>

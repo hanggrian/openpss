@@ -1,4 +1,4 @@
-package com.hendraanggrian.openpss.controls
+package com.hendraanggrian.openpss.control
 
 import javafx.beans.property.ObjectProperty
 import javafx.beans.property.StringProperty

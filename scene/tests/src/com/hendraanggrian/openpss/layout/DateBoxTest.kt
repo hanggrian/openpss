@@ -1,4 +1,4 @@
-package com.hendraanggrian.openpss.layouts
+package com.hendraanggrian.openpss.layout
 
 import com.hendraanggrian.openpss.scene.NodeTest
 import com.hendraanggrian.openpss.util.toJava

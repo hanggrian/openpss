@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.ui.customer
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.controls.DefaultPopOver
+import com.hendraanggrian.openpss.control.DefaultPopOver
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.localization.Resourced
 import com.hendraanggrian.openpss.util.isName

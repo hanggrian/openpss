@@ -1,9 +1,9 @@
 @file:Suppress("NOTHING_TO_INLINE", "UNUSED")
 
-package com.hendraanggrian.openpss.layouts
+package com.hendraanggrian.openpss.layout
 
-import com.hendraanggrian.openpss.controls.IntField
-import com.hendraanggrian.openpss.controls.intField
+import com.hendraanggrian.openpss.control.IntField
+import com.hendraanggrian.openpss.control.intField
 import com.hendraanggrian.openpss.scene.R
 import javafx.beans.property.ObjectProperty
 import javafx.beans.property.SimpleObjectProperty
@@ -102,4 +102,4 @@ fun timeBox(
 inline fun LayoutManager<Node>.timeBox(
     prefill: LocalTime = MIDNIGHT,
     noinline init: ((@LayoutDsl TimeBox).() -> Unit)? = null
-): TimeBox = com.hendraanggrian.openpss.layouts.timeBox(prefill, init).add()
+): TimeBox = com.hendraanggrian.openpss.layout.timeBox(prefill, init).add()

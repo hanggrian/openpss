@@ -1,9 +1,9 @@
-package com.hendraanggrian.openpss.controls
+package com.hendraanggrian.openpss.control
 
-import com.hendraanggrian.openpss.layouts.DateBox
-import com.hendraanggrian.openpss.layouts.TimeBox
-import com.hendraanggrian.openpss.layouts.dateBox
-import com.hendraanggrian.openpss.layouts.timeBox
+import com.hendraanggrian.openpss.layout.DateBox
+import com.hendraanggrian.openpss.layout.TimeBox
+import com.hendraanggrian.openpss.layout.dateBox
+import com.hendraanggrian.openpss.layout.timeBox
 import com.hendraanggrian.openpss.localization.Resourced
 import com.hendraanggrian.openpss.ui.wage.record.Record
 import ktfx.coroutines.onAction

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<?import com.hendraanggrian.openpss.controls.PaginatedPane?>
-<?import com.hendraanggrian.openpss.layouts.DateBox?>
+<?import com.hendraanggrian.openpss.control.PaginatedPane?>
+<?import com.hendraanggrian.openpss.layout.DateBox?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>

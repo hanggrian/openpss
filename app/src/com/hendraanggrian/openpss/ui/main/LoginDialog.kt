@@ -3,11 +3,11 @@ package com.hendraanggrian.openpss.ui.main
 import com.hendraanggrian.openpss.BuildConfig.APP_NAME
 import com.hendraanggrian.openpss.BuildConfig.DEBUG
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.controls.HostField
-import com.hendraanggrian.openpss.controls.IntField
-import com.hendraanggrian.openpss.controls.SimpleDialog
-import com.hendraanggrian.openpss.controls.hostField
-import com.hendraanggrian.openpss.controls.intField
+import com.hendraanggrian.openpss.control.HostField
+import com.hendraanggrian.openpss.control.IntField
+import com.hendraanggrian.openpss.control.SimpleDialog
+import com.hendraanggrian.openpss.control.hostField
+import com.hendraanggrian.openpss.control.intField
 import com.hendraanggrian.openpss.db.login
 import com.hendraanggrian.openpss.io.properties.LoginFile
 import com.hendraanggrian.openpss.io.properties.PreferencesFile

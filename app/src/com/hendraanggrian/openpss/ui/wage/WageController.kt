@@ -3,8 +3,8 @@ package com.hendraanggrian.openpss.ui.wage
 import com.hendraanggrian.openpss.App.Companion.STYLE_DEFAULT_BUTTON
 import com.hendraanggrian.openpss.BuildConfig.DEBUG
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.controls.stretchableButton
-import com.hendraanggrian.openpss.controls.styledStretchableButton
+import com.hendraanggrian.openpss.control.stretchableButton
+import com.hendraanggrian.openpss.control.styledStretchableButton
 import com.hendraanggrian.openpss.io.WageFolder
 import com.hendraanggrian.openpss.io.properties.PreferencesFile.WAGE_READER
 import com.hendraanggrian.openpss.ui.SegmentedController

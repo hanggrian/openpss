@@ -1,4 +1,4 @@
-package com.hendraanggrian.openpss.controls
+package com.hendraanggrian.openpss.control
 
 import javafx.scene.control.TreeItem
 import ktfx.coroutines.listener

@@ -1,7 +1,7 @@
-package com.hendraanggrian.openpss.controls
+package com.hendraanggrian.openpss.control
 
-import com.hendraanggrian.openpss.layouts.DateBox
-import com.hendraanggrian.openpss.layouts.dateBox
+import com.hendraanggrian.openpss.layout.DateBox
+import com.hendraanggrian.openpss.layout.dateBox
 import com.hendraanggrian.openpss.localization.Resourced
 import org.joda.time.LocalDate
 

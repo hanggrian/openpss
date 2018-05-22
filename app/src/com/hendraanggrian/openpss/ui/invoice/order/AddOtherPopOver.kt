@@ -1,8 +1,8 @@
 package com.hendraanggrian.openpss.ui.invoice.order
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.controls.DoubleField
-import com.hendraanggrian.openpss.controls.doubleField
+import com.hendraanggrian.openpss.control.DoubleField
+import com.hendraanggrian.openpss.control.doubleField
 import com.hendraanggrian.openpss.db.SimpleOrder
 import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.localization.Resourced

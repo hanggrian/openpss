@@ -3,12 +3,12 @@ package com.hendraanggrian.openpss.ui.invoice
 import com.hendraanggrian.openpss.App.Companion.STYLE_DEFAULT_BUTTON
 import com.hendraanggrian.openpss.App.Companion.STYLE_SEARCH_TEXTFIELD
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.controls.IntField
-import com.hendraanggrian.openpss.controls.PaginatedPane
-import com.hendraanggrian.openpss.controls.ViewInvoicePopOver
-import com.hendraanggrian.openpss.controls.stretchableButton
-import com.hendraanggrian.openpss.controls.styledIntField
-import com.hendraanggrian.openpss.controls.styledStretchableButton
+import com.hendraanggrian.openpss.control.IntField
+import com.hendraanggrian.openpss.control.PaginatedPane
+import com.hendraanggrian.openpss.control.ViewInvoicePopOver
+import com.hendraanggrian.openpss.control.stretchableButton
+import com.hendraanggrian.openpss.control.styledIntField
+import com.hendraanggrian.openpss.control.styledStretchableButton
 import com.hendraanggrian.openpss.db.SessionWrapper
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Customers
@@ -20,7 +20,7 @@ import com.hendraanggrian.openpss.db.schemas.Payment
 import com.hendraanggrian.openpss.db.schemas.Payments
 import com.hendraanggrian.openpss.db.schemas.Payments.invoiceId
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.layouts.DateBox
+import com.hendraanggrian.openpss.layout.DateBox
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.SegmentedController
 import com.hendraanggrian.openpss.ui.Selectable

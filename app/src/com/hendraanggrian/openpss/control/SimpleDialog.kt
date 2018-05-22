@@ -1,4 +1,4 @@
-package com.hendraanggrian.openpss.controls
+package com.hendraanggrian.openpss.control
 
 import com.hendraanggrian.openpss.localization.Resourced
 import com.hendraanggrian.openpss.util.getStyle

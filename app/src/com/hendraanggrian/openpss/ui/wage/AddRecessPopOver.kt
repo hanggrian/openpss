@@ -1,9 +1,9 @@
 package com.hendraanggrian.openpss.ui.wage
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.controls.DefaultPopOver
-import com.hendraanggrian.openpss.layouts.TimeBox
-import com.hendraanggrian.openpss.layouts.timeBox
+import com.hendraanggrian.openpss.control.DefaultPopOver
+import com.hendraanggrian.openpss.layout.TimeBox
+import com.hendraanggrian.openpss.layout.timeBox
 import com.hendraanggrian.openpss.localization.Resourced
 import ktfx.beans.binding.booleanBindingOf
 import ktfx.layouts.gridPane

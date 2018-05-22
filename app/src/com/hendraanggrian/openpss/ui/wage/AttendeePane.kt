@@ -1,8 +1,8 @@
 package com.hendraanggrian.openpss.ui.wage
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.controls.DateTimePopOver
-import com.hendraanggrian.openpss.controls.intField
+import com.hendraanggrian.openpss.control.DateTimePopOver
+import com.hendraanggrian.openpss.control.intField
 import com.hendraanggrian.openpss.db.schemas.Recesses
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.localization.Resourced

@@ -3,10 +3,10 @@ package com.hendraanggrian.openpss.ui.customer
 import com.hendraanggrian.openpss.App.Companion.STYLE_DEFAULT_BUTTON
 import com.hendraanggrian.openpss.App.Companion.STYLE_SEARCH_TEXTFIELD
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.controls.InputUserPopOver
-import com.hendraanggrian.openpss.controls.PaginatedPane
-import com.hendraanggrian.openpss.controls.stretchableButton
-import com.hendraanggrian.openpss.controls.styledStretchableButton
+import com.hendraanggrian.openpss.control.InputUserPopOver
+import com.hendraanggrian.openpss.control.PaginatedPane
+import com.hendraanggrian.openpss.control.stretchableButton
+import com.hendraanggrian.openpss.control.styledStretchableButton
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.schemas.Employee.Role.MANAGER

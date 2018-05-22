@@ -1,6 +1,6 @@
-package com.hendraanggrian.openpss.layouts
+package com.hendraanggrian.openpss.layout
 
-import com.hendraanggrian.openpss.controls.StretchableToggleButton
+import com.hendraanggrian.openpss.control.StretchableToggleButton
 import com.hendraanggrian.openpss.scene.R
 import javafx.scene.control.Tab
 import javafx.scene.control.TabPane

@@ -1,4 +1,4 @@
-package com.hendraanggrian.openpss.controls
+package com.hendraanggrian.openpss.control
 
 import com.hendraanggrian.openpss.scene.NodeTest
 import org.junit.Test

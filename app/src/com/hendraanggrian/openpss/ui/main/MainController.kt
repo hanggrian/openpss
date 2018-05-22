@@ -3,7 +3,7 @@ package com.hendraanggrian.openpss.ui.main
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.db.schemas.Employee.Role.MANAGER
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.layouts.SegmentedTabPane
+import com.hendraanggrian.openpss.layout.SegmentedTabPane
 import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.SegmentedController

@@ -2,11 +2,11 @@ package com.hendraanggrian.openpss.ui.wage.record
 
 import com.hendraanggrian.openpss.BuildConfig.DEBUG
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.controls.DatePopOver
-import com.hendraanggrian.openpss.controls.UncollapsibleTreeItem
+import com.hendraanggrian.openpss.control.DatePopOver
+import com.hendraanggrian.openpss.control.UncollapsibleTreeItem
 import com.hendraanggrian.openpss.io.WageContentFolder
 import com.hendraanggrian.openpss.io.WageFile
-import com.hendraanggrian.openpss.layouts.TimeBox
+import com.hendraanggrian.openpss.layout.TimeBox
 import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.wage.Attendee
 import com.hendraanggrian.openpss.ui.wage.record.Record.Companion.getDummy

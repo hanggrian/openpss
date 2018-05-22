@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.ui.main
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.controls.SimpleDialog
+import com.hendraanggrian.openpss.control.SimpleDialog
 import com.hendraanggrian.openpss.localization.Resourced
 import javafx.scene.control.ButtonType.OK
 import javafx.scene.control.PasswordField

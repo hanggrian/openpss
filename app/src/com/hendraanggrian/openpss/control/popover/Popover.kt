@@ -34,7 +34,7 @@ abstract class Popover(
 
     private val contentPane: Pane = Pane()
     protected val buttonBar: _ButtonBar = _ButtonBar(null)
-    protected val cancelButton: Button = @Suppress("LeakingThis") ktfx.layouts.button(getString(R.string.close)) {
+    protected val cancelButton: Button = ktfx.layouts.button(getString(R.string.close)) {
         isCancelButton = true
         onAction { hide() }
     }
@@ -79,4 +79,6 @@ abstract class Popover(
             }
         }
     }
+
+    final override fun getString(id: String): String = super.getString(id)
 }

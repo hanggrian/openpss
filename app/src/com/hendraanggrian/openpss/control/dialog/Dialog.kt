@@ -9,7 +9,6 @@ import ktfx.layouts.LayoutManager
 import ktfx.scene.control.graphicIcon
 import ktfx.scene.control.headerTitle
 
-@Suppress("LeakingThis")
 abstract class Dialog<R>(
     resourced: Resourced,
     headerId: String? = null,
@@ -23,4 +22,6 @@ abstract class Dialog<R>(
         if (graphicId != null) graphicIcon = ImageView(graphicId)
         dialogPane.stylesheets += getStyle(com.hendraanggrian.openpss.R.style.openpss)
     }
+
+    final override fun getString(id: String): String = super.getString(id)
 }

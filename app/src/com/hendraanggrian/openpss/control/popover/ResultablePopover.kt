@@ -14,7 +14,7 @@ abstract class ResultablePopover<T>(
     titleId: String
 ) : Popover(resourced, titleId), Resultable<T> {
 
-    protected val defaultButton: Button = @Suppress("LeakingThis") ktfx.layouts.button(getString(R.string.ok)) {
+    protected val defaultButton: Button = ktfx.layouts.button(getString(R.string.ok)) {
         isDefaultButton = true
     }
 

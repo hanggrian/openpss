@@ -25,7 +25,6 @@ import javafx.scene.image.ImageView
 import javafx.scene.layout.AnchorPane
 import javafx.scene.layout.FlowPane
 import javafx.stage.FileChooser.ExtensionFilter
-import javafx.stage.Modality.APPLICATION_MODAL
 import kotlinx.coroutines.experimental.launch
 import ktfx.application.later
 import ktfx.beans.binding.booleanBindingOf
@@ -107,13 +106,7 @@ class WageController : SegmentedController() {
 
     private fun disableRecess() = DisableRecessPopover(this, attendeePanes).showAt(disableRecessButton)
 
-    private fun recess() = stage(getString(R.string.recess)) {
-        val loader = FXMLLoader(getResource(R.layout.controller_wage_recess), resources)
-        initModality(APPLICATION_MODAL)
-        scene = styledScene(getStyle(R.style.openpss), loader.pane)
-        isResizable = false
-        loader.controller.login = login
-    }.showAndWait()
+    private fun recess() = EditRecessDialog(this, login).show()
 
     private fun history() = openFile(WageFolder)
 

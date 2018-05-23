@@ -1,8 +1,8 @@
 package com.hendraanggrian.openpss.ui.invoice
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.control.DefaultPopOver
-import com.hendraanggrian.openpss.control.SimpleDialog
+import com.hendraanggrian.openpss.control.DefaultPopover
+import com.hendraanggrian.openpss.control.Dialog
 import com.hendraanggrian.openpss.db.dbDateTime
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Customers
@@ -12,9 +12,9 @@ import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.io.properties.PreferencesFile.INVOICE_QUICK_SELECT_CUSTOMER
 import com.hendraanggrian.openpss.localization.Resourced
-import com.hendraanggrian.openpss.ui.invoice.order.AddOffsetPopOver
-import com.hendraanggrian.openpss.ui.invoice.order.AddOtherPopOver
-import com.hendraanggrian.openpss.ui.invoice.order.AddPlatePopOver
+import com.hendraanggrian.openpss.ui.invoice.order.AddOffsetPopover
+import com.hendraanggrian.openpss.ui.invoice.order.AddOtherPopover
+import com.hendraanggrian.openpss.ui.invoice.order.AddPlatePopover
 import com.hendraanggrian.openpss.util.PATTERN_DATE
 import com.hendraanggrian.openpss.util.currencyCell
 import com.hendraanggrian.openpss.util.currencyConverter
@@ -66,7 +66,7 @@ class InvoiceDialog(
     resourced: Resourced,
     private val prefill: Invoice? = null,
     employee: Employee? = prefill?.let { transaction { Employees[prefill.employeeId].single() } }
-) : SimpleDialog<Invoice>(resourced, when (prefill) {
+) : Dialog<Invoice>(resourced, when (prefill) {
     null -> R.string.add_invoice
     else -> R.string.edit_invoice
 }, R.image.header_invoice) {
@@ -97,12 +97,12 @@ class InvoiceDialog(
                     customerProperty.value?.toString() ?: getString(R.string.search_customer)
                 })
                 onAction {
-                    SearchCustomerPopOver(this@InvoiceDialog).showAt(this@button) { customerProperty.set(it) }
+                    SearchCustomerPopover(this@InvoiceDialog).showAt(this@button) { customerProperty.set(it) }
                 }
                 if (INVOICE_QUICK_SELECT_CUSTOMER && !isEdit()) fire()
             } col 1 row 1
             label(getString(R.string.plate)) col 0 row 2
-            plateTable = invoiceTableView({ AddPlatePopOver(this@InvoiceDialog) }) {
+            plateTable = invoiceTableView({ AddPlatePopover(this@InvoiceDialog) }) {
                 columns {
                     column<Invoice.Plate, String>(R.string.machine, 64) { stringCell { machine } }
                     column<Invoice.Plate, String>(R.string.title, 256) { stringCell { title } }
@@ -113,7 +113,7 @@ class InvoiceDialog(
                 if (isEdit()) items.addAll(prefill!!.plates)
             } col 1 row 2 colSpans 3
             label(getString(R.string.offset)) col 0 row 3
-            offsetTable = invoiceTableView({ AddOffsetPopOver(this@InvoiceDialog) }) {
+            offsetTable = invoiceTableView({ AddOffsetPopover(this@InvoiceDialog) }) {
                 columns {
                     column<Invoice.Offset, String>(R.string.machine, 64) { stringCell { machine } }
                     column<Invoice.Offset, String>(R.string.title, 256) { stringCell { title } }
@@ -129,7 +129,7 @@ class InvoiceDialog(
                 if (isEdit()) items.addAll(prefill!!.offsets)
             } col 1 row 3 colSpans 3
             label(getString(R.string.others)) col 0 row 4
-            otherTable = invoiceTableView({ AddOtherPopOver(this@InvoiceDialog) }) {
+            otherTable = invoiceTableView({ AddOtherPopover(this@InvoiceDialog) }) {
                 columns {
                     column<Invoice.Other, String>(R.string.title, 336) { stringCell { title } }
                     column<Invoice.Other, String>(R.string.qty, 64) { numberCell { qty } }
@@ -188,7 +188,7 @@ class InvoiceDialog(
     private fun isEdit(): Boolean = prefill != null
 
     private fun <S> LayoutManager<Node>.invoiceTableView(
-        newAddOrderPopOver: () -> DefaultPopOver<S>,
+        newAddOrderPopOver: () -> DefaultPopover<S>,
         init: TableView<S>.() -> Unit
     ): TableView<S> = tableView {
         prefHeight = 96.0

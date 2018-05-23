@@ -8,11 +8,11 @@ import com.hendraanggrian.openpss.util.validator
 import javafx.beans.binding.BooleanBinding
 import org.controlsfx.validation.Severity.WARNING
 
-class InputUserPopOver(
+class InputUserPopover(
     resourced: Resourced,
     titleId: String,
     private val restrictiveInput: Boolean = true
-) : InputPopOver(resourced, titleId) {
+) : InputPopover(resourced, titleId) {
 
     init {
         if (restrictiveInput) editor.validator<String>(

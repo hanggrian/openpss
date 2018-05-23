@@ -12,12 +12,12 @@ import ktfx.layouts.gridPane
 import ktfx.scene.layout.gap
 import org.joda.time.DateTime
 
-class DateTimePopOver(
+class DateTimePopover(
     resourced: Resourced,
     titleId: String,
     defaultButtonTextId: String,
     prefill: DateTime
-) : DefaultPopOver<DateTime>(resourced, titleId) {
+) : DefaultPopover<DateTime>(resourced, titleId) {
 
     private lateinit var dateBox: DateBox
     private lateinit var timeBox: TimeBox

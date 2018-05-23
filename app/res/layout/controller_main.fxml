@@ -26,8 +26,10 @@
             <MenuItem fx:id="quitItem" mnemonicParsing="false" onAction="#quit" text="%quit" accelerator="SHORTCUT+Q"/>
         </Menu>
         <Menu mnemonicParsing="false" text="Edit">
-            <MenuItem fx:id="platePriceItem" mnemonicParsing="false" onAction="#price" text="%plate_price"/>
-            <MenuItem fx:id="offsetPriceItem" mnemonicParsing="false" onAction="#price" text="%offset_price"/>
+            <MenuItem fx:id="platePriceItem" mnemonicParsing="false" onAction="#editPrice" text="%plate_price"/>
+            <MenuItem fx:id="offsetPriceItem" mnemonicParsing="false" onAction="#editPrice" text="%offset_price"/>
+            <SeparatorMenuItem/>
+            <MenuItem fx:id="employeeItem" mnemonicParsing="false" onAction="#editEmployee" text="%employee"/>
         </Menu>
         <Menu mnemonicParsing="false" text="%help">
             <MenuItem mnemonicParsing="false" onAction="#about" text="%about">
@@ -52,6 +54,10 @@
             <!--suppress ALL -->
             <fx:include fx:id="customer" source="controller_customer.fxml"/>
         </Tab>
+        <!--Tab closable="false" text="%quotation"-->
+        <!--suppress ALL -->
+        <!--fx:include fx:id="quotation" source="controller_quotation.fxml"/>
+    </Tab-->
         <Tab closable="false" text="%invoice">
             <!--suppress ALL -->
             <fx:include fx:id="invoice" source="controller_invoice.fxml"/>

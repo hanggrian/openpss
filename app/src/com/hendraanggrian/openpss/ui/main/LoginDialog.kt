@@ -5,7 +5,7 @@ import com.hendraanggrian.openpss.BuildConfig.DEBUG
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.HostField
 import com.hendraanggrian.openpss.control.IntField
-import com.hendraanggrian.openpss.control.SimpleDialog
+import com.hendraanggrian.openpss.control.Dialog
 import com.hendraanggrian.openpss.control.hostField
 import com.hendraanggrian.openpss.control.intField
 import com.hendraanggrian.openpss.db.login
@@ -49,7 +49,7 @@ import ktfx.scene.control.styledErrorAlert
 import ktfx.scene.control.styledInfoAlert
 import ktfx.scene.layout.gap
 
-class LoginDialog(resourced: Resourced) : SimpleDialog<Any>(resourced, graphicId = R.image.header_launcher) {
+class LoginDialog(resourced: Resourced) : Dialog<Any>(resourced, graphicId = R.image.header_launcher) {
 
     private lateinit var employeeField: TextField
     private lateinit var passwordField1: PasswordField

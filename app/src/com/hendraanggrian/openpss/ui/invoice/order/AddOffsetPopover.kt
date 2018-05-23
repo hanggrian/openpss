@@ -24,7 +24,7 @@ import ktfx.layouts.choiceBox
 import ktfx.layouts.label
 import ktfx.listeners.converter
 
-class AddOffsetPopOver(resourced: Resourced) : AddOrderPopOver<Invoice.Offset>(
+class AddOffsetPopover(resourced: Resourced) : AddOrderPopover<Invoice.Offset>(
     resourced,
     R.string.add_offset
 ), OffsetOrder {
@@ -45,7 +45,7 @@ class AddOffsetPopOver(resourced: Resourced) : AddOrderPopOver<Invoice.Offset>(
         } col 1 row 2
         label(getString(R.string.technique)) col 0 row 3
         techniqueChoice = choiceBox(Invoice.Offset.Technique.values().toObservableList()) {
-            converter { toString { it!!.toString(this@AddOffsetPopOver) } }
+            converter { toString { it!!.toString(this@AddOffsetPopover) } }
             selectionModel.selectFirst()
         } col 1 row 3
         label(getString(R.string.min_qty)) col 0 row 4

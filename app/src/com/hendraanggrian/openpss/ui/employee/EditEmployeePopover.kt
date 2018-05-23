@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.ui.employee
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.control.DefaultPopOver
+import com.hendraanggrian.openpss.control.DefaultPopover
 import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.db.schemas.Employee.Companion.DEFAULT_PASSWORD
 import com.hendraanggrian.openpss.db.schemas.Employee.Role.values
@@ -22,10 +22,10 @@ import ktfx.layouts.label
 import ktfx.layouts.textField
 import ktfx.scene.layout.gap
 
-class EditEmployeePopOver(
+class EditEmployeePopover(
     resourced: Resourced,
     private val employee: Employee
-) : DefaultPopOver<Employee>(resourced, R.string.edit_employee) {
+) : DefaultPopover<Employee>(resourced, R.string.edit_employee) {
 
     private lateinit var nameField: TextField
     private lateinit var roleChoice: ChoiceBox<Employee.Role>

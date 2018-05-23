@@ -9,7 +9,7 @@ import ktfx.layouts.LayoutManager
 import ktfx.scene.control.graphicIcon
 import ktfx.scene.control.headerTitle
 
-open class SimpleDialog<R>(
+open class Dialog<R>(
     resourced: Resourced,
     headerId: String? = null,
     graphicId: String? = null

@@ -27,7 +27,7 @@ import ktfx.scene.layout.updatePadding
 import org.controlsfx.control.PopOver
 
 /** Base [PopOver] class used across applications. */
-open class SimplePopOver(
+open class Popover(
     resourced: Resourced,
     titleId: String
 ) : PopOver(), LayoutManager<Node>, Resourced by resourced {

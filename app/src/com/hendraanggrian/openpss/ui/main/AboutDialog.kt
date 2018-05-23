@@ -6,7 +6,7 @@ import com.hendraanggrian.openpss.BuildConfig.USER
 import com.hendraanggrian.openpss.BuildConfig.VERSION
 import com.hendraanggrian.openpss.BuildConfig.WEBSITE
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.control.SimpleDialog
+import com.hendraanggrian.openpss.control.Dialog
 import com.hendraanggrian.openpss.localization.Resourced
 import com.hendraanggrian.openpss.ui.Selectable
 import com.hendraanggrian.openpss.ui.main.github.GitHubApi
@@ -52,7 +52,7 @@ import ktfx.scene.layout.maxSize
 import ktfx.scene.layout.paddingAll
 import java.util.concurrent.TimeUnit.SECONDS
 
-class AboutDialog(resourced: Resourced) : SimpleDialog<Nothing>(resourced), Selectable<License> {
+class AboutDialog(resourced: Resourced) : Dialog<Nothing>(resourced), Selectable<License> {
 
     private lateinit var checkUpdateButton: Button
     private lateinit var checkUpdateProgress: ProgressIndicator

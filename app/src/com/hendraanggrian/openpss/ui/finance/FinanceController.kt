@@ -2,7 +2,7 @@ package com.hendraanggrian.openpss.ui.finance
 
 import com.hendraanggrian.openpss.App.Companion.STYLE_DEFAULT_BUTTON
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.control.ViewInvoicePopOver
+import com.hendraanggrian.openpss.control.ViewInvoicePopover
 import com.hendraanggrian.openpss.control.stretchableButton
 import com.hendraanggrian.openpss.control.styledStretchableButton
 import com.hendraanggrian.openpss.db.schemas.Employees
@@ -156,7 +156,7 @@ class FinanceController : SegmentedController(), Refreshable,
         }
     }
 
-    @FXML fun viewInvoice() = ViewInvoicePopOver(transaction { Invoices[selected2!!.invoiceId].single() })
+    @FXML fun viewInvoice() = ViewInvoicePopover(transaction { Invoices[selected2!!.invoiceId].single() })
         .showAt(dailyTable)
 
     @FXML fun viewPayments() {
@@ -164,7 +164,7 @@ class FinanceController : SegmentedController(), Refreshable,
         dateBox.picker.value = selected3!!.date.toJava()
     }
 
-    private fun viewTotal() = ViewTotalPopOver(this, getTotal(CASH), getTotal(CREDIT_CARD), getTotal(DEBIT_CARD),
+    private fun viewTotal() = ViewTotalPopover(this, getTotal(CASH), getTotal(CREDIT_CARD), getTotal(DEBIT_CARD),
         getTotal(CHEQUE), getTotal(TRANSFER)).showAt(viewTotalButton)
 
     private fun getTotal(method: Method) = when (selectedIndex) {

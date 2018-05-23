@@ -5,11 +5,11 @@ import com.hendraanggrian.openpss.layout.dateBox
 import com.hendraanggrian.openpss.localization.Resourced
 import org.joda.time.LocalDate
 
-class DatePopOver(
+class DatePopover(
     resourced: Resourced,
     titleId: String,
     prefill: LocalDate = LocalDate.now()
-) : DefaultPopOver<LocalDate>(resourced, titleId) {
+) : DefaultPopover<LocalDate>(resourced, titleId) {
 
     private val dateBox: DateBox = dateBox(prefill)
 

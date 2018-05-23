@@ -1,12 +1,12 @@
 package com.hendraanggrian.openpss.ui.invoice.price
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.control.InputPopOver
+import com.hendraanggrian.openpss.control.InputPopover
 import com.hendraanggrian.openpss.db.Document
 import com.hendraanggrian.openpss.db.Named
 import com.hendraanggrian.openpss.db.NamedSchema
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.ui.SimpleTableController
+import com.hendraanggrian.openpss.ui.TableController
 import com.hendraanggrian.openpss.util.getStyle
 import com.hendraanggrian.openpss.util.isNotEmpty
 import com.hendraanggrian.openpss.util.stringCell
@@ -18,7 +18,7 @@ import ktfx.scene.control.styledErrorAlert
 import java.net.URL
 import java.util.ResourceBundle
 
-abstract class PriceController<D, S>(schema: S) : SimpleTableController<D, S>(schema)
+abstract class PriceController<D, S>(schema: S) : TableController<D, S>(schema)
     where D : Document<S>, D : Named,
           S : DocumentSchema<D>, S : NamedSchema {
 
@@ -31,7 +31,7 @@ abstract class PriceController<D, S>(schema: S) : SimpleTableController<D, S>(sc
         nameColumn.stringCell { name }
     }
 
-    override fun add() = InputPopOver(this, when {
+    override fun add() = InputPopover(this, when {
         this is PlatePriceController -> R.string.add_plate
         else -> R.string.add_offset
     }).showAt(addButton) { name ->

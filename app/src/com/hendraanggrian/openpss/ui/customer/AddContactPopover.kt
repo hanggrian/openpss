@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.ui.customer
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.control.DefaultPopOver
+import com.hendraanggrian.openpss.control.DefaultPopover
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Customer.Contact.Type.PHONE
 import com.hendraanggrian.openpss.db.schemas.Customer.Contact.Type.values
@@ -18,7 +18,7 @@ import ktfx.listeners.converter
 import ktfx.scene.layout.gap
 import org.apache.commons.validator.routines.EmailValidator
 
-class AddContactPopOver(resourced: Resourced) : DefaultPopOver<Customer.Contact>(resourced, R.string.add_contact) {
+class AddContactPopover(resourced: Resourced) : DefaultPopover<Customer.Contact>(resourced, R.string.add_contact) {
 
     companion object {
         /** Taken from `android.util.Patterns`, but instead use `kotlin.Regex`. */
@@ -35,7 +35,7 @@ class AddContactPopOver(resourced: Resourced) : DefaultPopOver<Customer.Contact>
             gap = 8.0
             label(getString(R.string.type)) col 0 row 0
             typeChoice = choiceBox(values().toObservableList()) {
-                converter { toString { it!!.toString(this@AddContactPopOver) } }
+                converter { toString { it!!.toString(this@AddContactPopover) } }
             } col 1 row 0
             label(getString(R.string.contact)) col 0 row 1
             contactField = textField { promptText = getString(R.string.contact) } col 1 row 1

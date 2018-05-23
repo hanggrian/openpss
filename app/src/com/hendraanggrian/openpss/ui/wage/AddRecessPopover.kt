@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.ui.wage
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.control.DefaultPopOver
+import com.hendraanggrian.openpss.control.DefaultPopover
 import com.hendraanggrian.openpss.layout.TimeBox
 import com.hendraanggrian.openpss.layout.timeBox
 import com.hendraanggrian.openpss.localization.Resourced
@@ -11,9 +11,9 @@ import ktfx.layouts.label
 import ktfx.scene.layout.gap
 import org.joda.time.LocalTime
 
-class AddRecessPopOver(
+class AddRecessPopover(
     resourced: Resourced
-) : DefaultPopOver<Pair<LocalTime, LocalTime>>(resourced, R.string.add_reccess) {
+) : DefaultPopover<Pair<LocalTime, LocalTime>>(resourced, R.string.add_reccess) {
 
     private lateinit var startBox: TimeBox
     private lateinit var endBox: TimeBox

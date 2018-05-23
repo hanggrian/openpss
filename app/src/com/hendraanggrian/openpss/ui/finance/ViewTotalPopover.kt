@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.ui.finance
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.control.SimplePopOver
+import com.hendraanggrian.openpss.control.Popover
 import com.hendraanggrian.openpss.localization.Resourced
 import com.hendraanggrian.openpss.util.currencyConverter
 import com.hendraanggrian.openpss.util.getFont
@@ -10,14 +10,14 @@ import ktfx.layouts.columnConstraints
 import ktfx.layouts.gridPane
 import ktfx.layouts.label
 
-class ViewTotalPopOver(
+class ViewTotalPopover(
     resourced: Resourced,
     private val cash: Double,
     private val credit: Double,
     private val debit: Double,
     private val cheque: Double,
     private val transfer: Double
-) : SimplePopOver(resourced, R.string.view_total) {
+) : Popover(resourced, R.string.view_total) {
 
     init {
         gridPane {

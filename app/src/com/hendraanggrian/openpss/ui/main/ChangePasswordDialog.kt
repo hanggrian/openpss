@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.ui.main
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.control.SimpleDialog
+import com.hendraanggrian.openpss.control.Dialog
 import com.hendraanggrian.openpss.localization.Resourced
 import javafx.scene.control.ButtonType.OK
 import javafx.scene.control.PasswordField
@@ -16,7 +16,7 @@ import ktfx.scene.control.cancelButton
 import ktfx.scene.control.okButton
 import ktfx.scene.layout.gap
 
-class ChangePasswordDialog(resourced: Resourced) : SimpleDialog<String>(
+class ChangePasswordDialog(resourced: Resourced) : Dialog<String>(
     resourced,
     R.string.change_password,
     R.image.header_change_password

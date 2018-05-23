@@ -8,7 +8,7 @@ import ktfx.coroutines.onAction
 import org.controlsfx.control.PopOver
 
 /** [PopOver] with default button and return type. */
-abstract class DefaultPopOver<out T>(resourced: Resourced, titleId: String) : SimplePopOver(resourced, titleId) {
+abstract class DefaultPopover<out T>(resourced: Resourced, titleId: String) : Popover(resourced, titleId) {
 
     protected val defaultButton: Button = @Suppress("LeakingThis") ktfx.layouts.button(getString(R.string.ok)) {
         isDefaultButton = true

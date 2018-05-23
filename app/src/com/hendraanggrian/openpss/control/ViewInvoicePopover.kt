@@ -42,7 +42,7 @@ import ktfx.scene.layout.gap
 import ktfx.scene.layout.paddingAll
 import java.util.ResourceBundle
 
-class ViewInvoicePopOver(invoice: Invoice) : SimplePopOver(object : Resourced {
+class ViewInvoicePopover(invoice: Invoice) : Popover(object : Resourced {
     override val resources: ResourceBundle = Language.ofFullCode(transaction {
         findGlobalSettings(KEY_LANGUAGE).single().value
     }).toResourcesBundle()
@@ -129,7 +129,7 @@ class ViewInvoicePopOver(invoice: Invoice) : SimplePopOver(object : Resourced {
                             forEach {
                                 label(it.title) row row col 0
                                 label(it.machine) row row col 1
-                                label("${it.typedTechnique.toString(this@ViewInvoicePopOver)} " +
+                                label("${it.typedTechnique.toString(this@ViewInvoicePopover)} " +
                                     numberConverter.toString(it.qty)) row row col 2
                                 label(currencyConverter.toString(it.total)) row row col 3
                                 row++

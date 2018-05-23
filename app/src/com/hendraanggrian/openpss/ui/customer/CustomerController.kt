@@ -3,7 +3,7 @@ package com.hendraanggrian.openpss.ui.customer
 import com.hendraanggrian.openpss.App.Companion.STYLE_DEFAULT_BUTTON
 import com.hendraanggrian.openpss.App.Companion.STYLE_SEARCH_TEXTFIELD
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.control.InputUserPopOver
+import com.hendraanggrian.openpss.control.InputUserPopover
 import com.hendraanggrian.openpss.control.PaginatedPane
 import com.hendraanggrian.openpss.control.stretchableButton
 import com.hendraanggrian.openpss.control.styledStretchableButton
@@ -181,7 +181,7 @@ class CustomerController : SegmentedController(), Refreshable, Selectable<Custom
         }
     }
 
-    fun add() = InputUserPopOver(this, R.string.add_customer).showAt(addButton) {
+    fun add() = InputUserPopover(this, R.string.add_customer).showAt(addButton) {
         transaction {
             when {
                 Customers { it.name.matches("^$it$", CASE_INSENSITIVE) }.isNotEmpty() ->
@@ -195,14 +195,14 @@ class CustomerController : SegmentedController(), Refreshable, Selectable<Custom
         }
     }
 
-    private fun edit() = EditCustomerPopOver(this, selected!!).showAt(editButton) {
+    private fun edit() = EditCustomerPopover(this, selected!!).showAt(editButton) {
         transaction {
             Customers[selected!!].projection { name + address + note }.update(it.name, it.address, it.note)
             reload()
         }
     }
 
-    @FXML fun addContact() = AddContactPopOver(this).showAt(contactTable) {
+    @FXML fun addContact() = AddContactPopover(this).showAt(contactTable) {
         transaction {
             Customers[selected!!].projection { contacts }.update(selected!!.contacts + it)
             reload()

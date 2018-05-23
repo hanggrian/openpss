@@ -2,7 +2,7 @@ package com.hendraanggrian.openpss.ui.employee
 
 import com.hendraanggrian.openpss.App.Companion.STYLE_DEFAULT_BUTTON
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.control.InputUserPopOver
+import com.hendraanggrian.openpss.control.InputUserPopover
 import com.hendraanggrian.openpss.control.stretchableButton
 import com.hendraanggrian.openpss.control.styledStretchableButton
 import com.hendraanggrian.openpss.db.schemas.Employee
@@ -81,14 +81,14 @@ class EmployeeController : SegmentedController(), Refreshable, Selectable<Employ
         it += transaction { Employees().toMutableObservableList() }
     }
 
-    private fun add() = InputUserPopOver(this, R.string.add_employee, false).showAt(addButton) {
+    private fun add() = InputUserPopover(this, R.string.add_employee, false).showAt(addButton) {
         val employee = Employee.new(it)
         employee.id = transaction { Employees.insert(employee) }
         employeeTable.items.add(employee)
         selectionModel.select(employee)
     }
 
-    private fun edit() = EditEmployeePopOver(this, selected!!).showAt(editButton) {
+    private fun edit() = EditEmployeePopover(this, selected!!).showAt(editButton) {
         transaction {
             Employees[selected!!.id]
                 .projection { name + password + role }

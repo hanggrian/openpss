@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.ui.customer
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.control.DefaultPopOver
+import com.hendraanggrian.openpss.control.DefaultPopover
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.localization.Resourced
 import com.hendraanggrian.openpss.util.isName
@@ -14,10 +14,10 @@ import ktfx.layouts.textArea
 import ktfx.layouts.textField
 import ktfx.scene.layout.gap
 
-class EditCustomerPopOver(
+class EditCustomerPopover(
     resourced: Resourced,
     private val customer: Customer
-) : DefaultPopOver<Customer>(resourced, R.string.edit_customer) {
+) : DefaultPopover<Customer>(resourced, R.string.edit_customer) {
 
     private lateinit var nameField: TextField
     private lateinit var addressField: TextField

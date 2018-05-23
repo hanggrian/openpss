@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.ui.invoice
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.control.DefaultPopOver
+import com.hendraanggrian.openpss.control.DefaultPopover
 import com.hendraanggrian.openpss.control.DoubleField
 import com.hendraanggrian.openpss.control.doubleField
 import com.hendraanggrian.openpss.db.schemas.Employee
@@ -36,11 +36,11 @@ import ktfx.layouts.tooltip
 import ktfx.listeners.converter
 import ktfx.scene.layout.gap
 
-class AddPaymentPopOver(
+class AddPaymentPopover(
     resourced: Resourced,
     private val employee: Employee,
     private val invoice: Invoice
-) : DefaultPopOver<Payment>(resourced, R.string.add_payment), Selectable<Method> {
+) : DefaultPopover<Payment>(resourced, R.string.add_payment), Selectable<Method> {
 
     private lateinit var valueField: DoubleField
     private lateinit var methodChoice: ChoiceBox<Method>
@@ -86,7 +86,7 @@ class AddPaymentPopOver(
             } row 3 col 1 colSpans 2
             label(getString(R.string.payment_method)) row 6 col 0
             methodChoice = choiceBox(values().toObservableList()) {
-                converter { toString { it!!.toString(this@AddPaymentPopOver) } }
+                converter { toString { it!!.toString(this@AddPaymentPopover) } }
                 selectionModel.selectFirst()
             } row 6 col 1 colSpans 2
             label(getString(R.string.reference)) { bindDisable() } row 7 col 0

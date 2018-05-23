@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.ui.wage
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.control.SimplePopOver
+import com.hendraanggrian.openpss.control.Popover
 import com.hendraanggrian.openpss.db.schemas.Recesses
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.localization.Resourced
@@ -17,10 +17,10 @@ import ktfx.layouts.gridPane
 import ktfx.layouts.label
 import ktfx.scene.layout.gap
 
-class DisableRecessPopOver(
+class DisableRecessPopover(
     resourced: Resourced,
     private val attendeePanes: List<AttendeePane>
-) : SimplePopOver(resourced, R.string.disable_recess) {
+) : Popover(resourced, R.string.disable_recess) {
 
     private lateinit var recessChoice: ChoiceBox<*>
     private lateinit var roleChoice: ChoiceBox<*>

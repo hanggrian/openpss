@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.ui.invoice.order
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.control.DefaultPopOver
+import com.hendraanggrian.openpss.control.DefaultPopover
 import com.hendraanggrian.openpss.control.IntField
 import com.hendraanggrian.openpss.control.intField
 import com.hendraanggrian.openpss.db.Order
@@ -21,10 +21,10 @@ import ktfx.layouts.label
 import ktfx.layouts.textField
 import ktfx.scene.layout.gap
 
-abstract class AddOrderPopOver<out T : Titled>(
+abstract class AddOrderPopover<out T : Titled>(
     resourced: Resourced,
     titleId: String
-) : DefaultPopOver<T>(resourced, titleId), Order {
+) : DefaultPopover<T>(resourced, titleId), Order {
 
     abstract fun _GridPane.onLayout()
 

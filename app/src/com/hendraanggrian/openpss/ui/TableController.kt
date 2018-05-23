@@ -23,7 +23,7 @@ import java.util.ResourceBundle
  * @see [com.hendraanggrian.openpss.ui.invoice.OffsetPriceController]
  * @see [com.hendraanggrian.openpss.ui.wage.WageRecessController]
  */
-abstract class SimpleTableController<D : Document<S>, S : DocumentSchema<D>>(
+abstract class TableController<D : Document<S>, S : DocumentSchema<D>>(
     protected val schema: S
 ) : Controller(), Refreshable {
 

@@ -7,7 +7,7 @@ import javafx.scene.control.TextField
 import ktfx.beans.value.isBlank
 import ktfx.layouts.textField
 
-open class InputPopOver(resourced: Resourced, titleId: String) : DefaultPopOver<String>(resourced, titleId) {
+open class InputPopover(resourced: Resourced, titleId: String) : DefaultPopover<String>(resourced, titleId) {
 
     protected val editor: TextField = textField()
 

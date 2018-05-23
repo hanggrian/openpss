@@ -5,7 +5,7 @@ import com.hendraanggrian.openpss.App.Companion.STYLE_SEARCH_TEXTFIELD
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.IntField
 import com.hendraanggrian.openpss.control.PaginatedPane
-import com.hendraanggrian.openpss.control.ViewInvoicePopOver
+import com.hendraanggrian.openpss.control.ViewInvoicePopover
 import com.hendraanggrian.openpss.control.stretchableButton
 import com.hendraanggrian.openpss.control.styledIntField
 import com.hendraanggrian.openpss.control.styledStretchableButton
@@ -293,13 +293,13 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
         invoiceTable.items.remove(selected)
     }
 
-    @FXML fun selectCustomer() = SearchCustomerPopOver(this).showAt(customerButton) { customerProperty.set(it) }
+    @FXML fun selectCustomer() = SearchCustomerPopover(this).showAt(customerButton) { customerProperty.set(it) }
 
     @FXML fun clearCustomer() = customerProperty.set(null)
 
-    fun viewInvoice() = ViewInvoicePopOver(selected!!).showAt(invoiceTable)
+    fun viewInvoice() = ViewInvoicePopover(selected!!).showAt(invoiceTable)
 
-    private fun addPayment() = AddPaymentPopOver(this, login, selected!!).showAt(deletePaymentButton) {
+    private fun addPayment() = AddPaymentPopover(this, login, selected!!).showAt(deletePaymentButton) {
         transaction {
             Payments += it
             updatePaymentStatus()

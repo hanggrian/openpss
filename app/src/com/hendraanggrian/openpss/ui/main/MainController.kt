@@ -46,6 +46,7 @@ class MainController : Controller(), Selectable<Tab> {
     @FXML lateinit var quitItem: MenuItem
     @FXML lateinit var platePriceItem: MenuItem
     @FXML lateinit var offsetPriceItem: MenuItem
+    @FXML lateinit var employeeItem: MenuItem
     @FXML lateinit var preferencesItem: MenuItem
     @FXML lateinit var navigationPane: BorderPane
     @FXML lateinit var navigationLeftBox: HBox
@@ -91,7 +92,7 @@ class MainController : Controller(), Selectable<Tab> {
 
     @FXML fun quit() = exit()
 
-    @FXML fun price(event: ActionEvent) {
+    @FXML fun editPrice(event: ActionEvent) {
         val isPlate = event.source == platePriceItem
         stage(getString(if (isPlate) R.string.plate_price else R.string.offset_price)) {
             initModality(APPLICATION_MODAL)
@@ -103,6 +104,10 @@ class MainController : Controller(), Selectable<Tab> {
             isResizable = false
             loader.controller.login = login
         }.show()
+    }
+
+    @FXML fun editEmployee() {
+
     }
 
     @FXML fun preferences() = PreferencesDialog(this, transaction { login.isAtLeast(MANAGER) }).show()

@@ -14,7 +14,7 @@ import ktfx.beans.value.or
 import ktfx.layouts._GridPane
 import ktfx.layouts.label
 
-class AddOtherPopOver(resourced: Resourced) : AddOrderPopOver<Invoice.Other>(
+class AddOtherPopover(resourced: Resourced) : AddOrderPopover<Invoice.Other>(
     resourced,
     R.string.add_other
 ), SimpleOrder {

@@ -21,7 +21,7 @@ import ktfx.layouts._GridPane
 import ktfx.layouts.choiceBox
 import ktfx.layouts.label
 
-class AddPlatePopOver(resourced: Resourced) : AddOrderPopOver<Invoice.Plate>(
+class AddPlatePopover(resourced: Resourced) : AddOrderPopover<Invoice.Plate>(
     resourced,
     R.string.add_plate
 ), SimpleOrder {

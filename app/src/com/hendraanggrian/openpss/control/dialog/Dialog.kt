@@ -1,4 +1,4 @@
-package com.hendraanggrian.openpss.control
+package com.hendraanggrian.openpss.control.dialog
 
 import com.hendraanggrian.openpss.localization.Resourced
 import com.hendraanggrian.openpss.util.getStyle
@@ -9,7 +9,8 @@ import ktfx.layouts.LayoutManager
 import ktfx.scene.control.graphicIcon
 import ktfx.scene.control.headerTitle
 
-open class Dialog<R>(
+@Suppress("LeakingThis")
+abstract class Dialog<R>(
     resourced: Resourced,
     headerId: String? = null,
     graphicId: String? = null
@@ -18,7 +19,7 @@ open class Dialog<R>(
     override fun <T : Node> T.add(): T = also { dialogPane.content = it }
 
     init {
-        if (headerId != null) headerTitle = @Suppress("LeakingThis") getString(headerId)
+        if (headerId != null) headerTitle = getString(headerId)
         if (graphicId != null) graphicIcon = ImageView(graphicId)
         dialogPane.stylesheets += getStyle(com.hendraanggrian.openpss.R.style.openpss)
     }

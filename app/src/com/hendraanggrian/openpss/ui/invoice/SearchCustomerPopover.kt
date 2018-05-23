@@ -2,7 +2,7 @@ package com.hendraanggrian.openpss.ui.invoice
 
 import com.hendraanggrian.openpss.App.Companion.STYLE_SEARCH_TEXTFIELD
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.control.DefaultPopover
+import com.hendraanggrian.openpss.control.popover.ResultablePopover
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.transaction
@@ -23,7 +23,7 @@ import ktfx.layouts.vbox
 import ktfx.scene.input.isDoubleClick
 import kotlin.text.RegexOption.IGNORE_CASE
 
-class SearchCustomerPopover(resourced: Resourced) : DefaultPopover<Customer>(resourced, R.string.search_customer),
+class SearchCustomerPopover(resourced: Resourced) : ResultablePopover<Customer>(resourced, R.string.search_customer),
     Selectable<Customer> {
 
     private companion object {
@@ -56,7 +56,7 @@ class SearchCustomerPopover(resourced: Resourced) : DefaultPopover<Customer>(res
         defaultButton.disableProperty().bind(!selectedBinding)
     }
 
-    override fun getResult(): Customer = selected!!
+    override val optionalResult: Customer? get() = selected!!
 
     override val selectionModel: SelectionModel<Customer> get() = customerList.selectionModel
 }

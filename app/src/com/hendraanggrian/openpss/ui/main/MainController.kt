@@ -107,7 +107,6 @@ class MainController : Controller(), Selectable<Tab> {
     }
 
     @FXML fun editEmployee() {
-
     }
 
     @FXML fun preferences() = PreferencesDialog(this, transaction { login.isAtLeast(MANAGER) }).show()

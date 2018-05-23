@@ -1,9 +1,9 @@
 package com.hendraanggrian.openpss.ui.invoice
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.control.DefaultPopover
 import com.hendraanggrian.openpss.control.DoubleField
 import com.hendraanggrian.openpss.control.doubleField
+import com.hendraanggrian.openpss.control.popover.ResultablePopover
 import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.db.schemas.Payment
@@ -40,7 +40,7 @@ class AddPaymentPopover(
     resourced: Resourced,
     private val employee: Employee,
     private val invoice: Invoice
-) : DefaultPopover<Payment>(resourced, R.string.add_payment), Selectable<Method> {
+) : ResultablePopover<Payment>(resourced, R.string.add_payment), Selectable<Method> {
 
     private lateinit var valueField: DoubleField
     private lateinit var methodChoice: ChoiceBox<Method>
@@ -103,11 +103,12 @@ class AddPaymentPopover(
         })
     }
 
-    override fun getResult(): Payment = Payment.new(invoice.id, employee.id, methodChoice.value, valueField.value,
-        when (methodChoice.selectionModel.selectedItem) {
-            CASH -> null
-            else -> referenceField.text
-        })
+    override val optionalResult: Payment?
+        get() = Payment.new(invoice.id, employee.id, methodChoice.value, valueField.value,
+            when (methodChoice.selectionModel.selectedItem) {
+                CASH -> null
+                else -> referenceField.text
+            })
 
     private fun Node.bindDisable() = disableProperty().bind(methodChoice.selectionModel.selectedItemProperty() eq CASH)
 }

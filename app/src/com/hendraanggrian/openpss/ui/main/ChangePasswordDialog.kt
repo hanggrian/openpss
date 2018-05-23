@@ -1,9 +1,8 @@
 package com.hendraanggrian.openpss.ui.main
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.control.Dialog
+import com.hendraanggrian.openpss.control.dialog.ResultableDialog
 import com.hendraanggrian.openpss.localization.Resourced
-import javafx.scene.control.ButtonType.OK
 import javafx.scene.control.PasswordField
 import ktfx.application.later
 import ktfx.beans.value.isBlank
@@ -16,7 +15,7 @@ import ktfx.scene.control.cancelButton
 import ktfx.scene.control.okButton
 import ktfx.scene.layout.gap
 
-class ChangePasswordDialog(resourced: Resourced) : Dialog<String>(
+class ChangePasswordDialog(resourced: Resourced) : ResultableDialog<String>(
     resourced,
     R.string.change_password,
     R.image.header_change_password
@@ -40,7 +39,8 @@ class ChangePasswordDialog(resourced: Resourced) : Dialog<String>(
         okButton().disableProperty().bind(changePasswordField.textProperty().isBlank()
             or confirmPasswordField.textProperty().isBlank()
             or changePasswordField.textProperty().neq(confirmPasswordField.textProperty()))
-        setResultConverter { if (it == OK) changePasswordField.text else null }
         later { changePasswordField.requestFocus() }
     }
+
+    override val optionalResult: String? get() = changePasswordField.text
 }

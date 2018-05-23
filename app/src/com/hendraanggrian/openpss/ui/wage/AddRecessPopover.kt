@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.ui.wage
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.control.DefaultPopover
+import com.hendraanggrian.openpss.control.popover.ResultablePopover
 import com.hendraanggrian.openpss.layout.TimeBox
 import com.hendraanggrian.openpss.layout.timeBox
 import com.hendraanggrian.openpss.localization.Resourced
@@ -13,7 +13,7 @@ import org.joda.time.LocalTime
 
 class AddRecessPopover(
     resourced: Resourced
-) : DefaultPopover<Pair<LocalTime, LocalTime>>(resourced, R.string.add_reccess) {
+) : ResultablePopover<Pair<LocalTime, LocalTime>>(resourced, R.string.add_reccess) {
 
     private lateinit var startBox: TimeBox
     private lateinit var endBox: TimeBox
@@ -31,5 +31,5 @@ class AddRecessPopover(
         })
     }
 
-    override fun getResult(): Pair<LocalTime, LocalTime> = startBox.value to endBox.value
+    override val optionalResult: Pair<LocalTime, LocalTime>? get() = startBox.value to endBox.value
 }

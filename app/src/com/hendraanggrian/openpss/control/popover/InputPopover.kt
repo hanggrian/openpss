@@ -1,4 +1,4 @@
-package com.hendraanggrian.openpss.control
+package com.hendraanggrian.openpss.control.popover
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.localization.Resourced
@@ -7,7 +7,7 @@ import javafx.scene.control.TextField
 import ktfx.beans.value.isBlank
 import ktfx.layouts.textField
 
-open class InputPopover(resourced: Resourced, titleId: String) : DefaultPopover<String>(resourced, titleId) {
+open class InputPopover(resourced: Resourced, titleId: String) : ResultablePopover<String>(resourced, titleId) {
 
     protected val editor: TextField = textField()
 
@@ -20,5 +20,5 @@ open class InputPopover(resourced: Resourced, titleId: String) : DefaultPopover<
         }
     }
 
-    override fun getResult(): String = editor.text
+    override val optionalResult: String? get() = editor.text
 }

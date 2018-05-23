@@ -1,8 +1,8 @@
 package com.hendraanggrian.openpss.ui.invoice
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.control.DefaultPopover
-import com.hendraanggrian.openpss.control.Dialog
+import com.hendraanggrian.openpss.control.dialog.ResultableDialog
+import com.hendraanggrian.openpss.control.popover.ResultablePopover
 import com.hendraanggrian.openpss.db.dbDateTime
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Customers
@@ -28,7 +28,6 @@ import javafx.beans.property.SimpleDoubleProperty
 import javafx.beans.property.SimpleObjectProperty
 import javafx.geometry.HPos.RIGHT
 import javafx.scene.Node
-import javafx.scene.control.ButtonType.CANCEL
 import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
 import javafx.scene.control.TextArea
@@ -65,8 +64,8 @@ import org.joda.time.DateTime
 class InvoiceDialog(
     resourced: Resourced,
     private val prefill: Invoice? = null,
-    employee: Employee? = prefill?.let { transaction { Employees[prefill.employeeId].single() } }
-) : Dialog<Invoice>(resourced, when (prefill) {
+    private val employee: Employee? = prefill?.let { transaction { Employees[prefill.employeeId].single() } }
+) : ResultableDialog<Invoice>(resourced, when (prefill) {
     null -> R.string.add_invoice
     else -> R.string.edit_invoice
 }, R.image.header_invoice) {
@@ -161,34 +160,31 @@ class InvoiceDialog(
         }
         cancelButton()
         okButton().disableProperty().bind(customerProperty.isNull or totalProperty.lessEq(0))
-        setResultConverter {
-            when (it) {
-                CANCEL -> null
-                else -> when {
-                    isEdit() -> prefill!!.apply {
-                        plates = plateTable.items
-                        offsets = offsetTable.items
-                        others = otherTable.items
-                        note = noteArea.text
-                    }
-                    else -> Invoice.new(
-                        employee!!.id,
-                        customerProperty.value.id,
-                        dateTime,
-                        plateTable.items,
-                        offsetTable.items,
-                        otherTable.items,
-                        noteArea.text
-                    )
-                }
-            }
-        }
     }
+
+    override val optionalResult: Invoice?
+        get() = when {
+            isEdit() -> prefill!!.apply {
+                plates = plateTable.items
+                offsets = offsetTable.items
+                others = otherTable.items
+                note = noteArea.text
+            }
+            else -> Invoice.new(
+                employee!!.id,
+                customerProperty.value.id,
+                dateTime,
+                plateTable.items,
+                offsetTable.items,
+                otherTable.items,
+                noteArea.text
+            )
+        }
 
     private fun isEdit(): Boolean = prefill != null
 
     private fun <S> LayoutManager<Node>.invoiceTableView(
-        newAddOrderPopOver: () -> DefaultPopover<S>,
+        newAddOrderPopOver: () -> ResultablePopover<S>,
         init: TableView<S>.() -> Unit
     ): TableView<S> = tableView {
         prefHeight = 96.0

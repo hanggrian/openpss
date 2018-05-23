@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.ui.main
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.control.Dialog
+import com.hendraanggrian.openpss.control.dialog.Dialog
 import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_INVOICE_HEADERS
 import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_LANGUAGE
 import com.hendraanggrian.openpss.db.transaction
@@ -41,11 +41,10 @@ import ktfx.scene.control.cancelButton
 import ktfx.scene.control.okButton
 import ktfx.scene.layout.gap
 
-class PreferencesDialog(resourced: Resourced, showGlobalSettings: Boolean) : Dialog<Nothing>(
-    resourced,
-    R.string.preferences,
-    R.image.header_preferences
-) {
+class PreferencesDialog(
+    resourced: Resourced,
+    showGlobalSettings: Boolean
+) : Dialog<Nothing>(resourced, R.string.preferences, R.image.header_preferences) {
 
     private companion object {
         const val INVOICE_HEADERS_DIVIDER = "|"

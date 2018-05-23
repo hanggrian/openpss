@@ -1,9 +1,9 @@
 package com.hendraanggrian.openpss.ui.invoice.order
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.control.DefaultPopover
 import com.hendraanggrian.openpss.control.IntField
 import com.hendraanggrian.openpss.control.intField
+import com.hendraanggrian.openpss.control.popover.ResultablePopover
 import com.hendraanggrian.openpss.db.Order
 import com.hendraanggrian.openpss.db.Titled
 import com.hendraanggrian.openpss.localization.Resourced
@@ -21,18 +21,16 @@ import ktfx.layouts.label
 import ktfx.layouts.textField
 import ktfx.scene.layout.gap
 
-abstract class AddOrderPopover<out T : Titled>(
+abstract class AddOrderPopover<T : Titled>(
     resourced: Resourced,
     titleId: String
-) : DefaultPopover<T>(resourced, titleId), Order {
+) : ResultablePopover<T>(resourced, titleId), Order {
 
     abstract fun _GridPane.onLayout()
 
     abstract val totalBindingDependencies: Array<Observable>
 
     abstract val disableBinding: ObservableBooleanValue
-
-    abstract fun newInstance(): T
 
     protected lateinit var titleField: TextField
     protected lateinit var qtyField: IntField
@@ -66,6 +64,4 @@ abstract class AddOrderPopover<out T : Titled>(
             disableProperty().bind(disableBinding)
         }
     }
-
-    override fun getResult(): T = newInstance()
 }

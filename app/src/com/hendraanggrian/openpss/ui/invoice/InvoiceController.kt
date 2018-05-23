@@ -5,7 +5,7 @@ import com.hendraanggrian.openpss.App.Companion.STYLE_SEARCH_TEXTFIELD
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.IntField
 import com.hendraanggrian.openpss.control.PaginatedPane
-import com.hendraanggrian.openpss.control.ViewInvoicePopover
+import com.hendraanggrian.openpss.control.popover.ViewInvoicePopover
 import com.hendraanggrian.openpss.control.stretchableButton
 import com.hendraanggrian.openpss.control.styledIntField
 import com.hendraanggrian.openpss.control.styledStretchableButton

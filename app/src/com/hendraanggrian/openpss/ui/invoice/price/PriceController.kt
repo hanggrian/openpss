@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.ui.invoice.price
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.control.InputPopover
+import com.hendraanggrian.openpss.control.popover.InputPopover
 import com.hendraanggrian.openpss.db.Document
 import com.hendraanggrian.openpss.db.Named
 import com.hendraanggrian.openpss.db.NamedSchema

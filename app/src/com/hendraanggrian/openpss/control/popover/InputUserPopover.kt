@@ -1,4 +1,4 @@
-package com.hendraanggrian.openpss.control
+package com.hendraanggrian.openpss.control.popover
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.localization.Resourced
@@ -27,5 +27,5 @@ class InputUserPopover(
             else -> super.defaultDisableBinding
         }
 
-    override fun getResult(): String = editor.text.clean()
+    override val optionalResult: String? get() = editor.text.clean()
 }

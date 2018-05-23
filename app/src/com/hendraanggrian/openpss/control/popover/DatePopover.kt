@@ -1,4 +1,4 @@
-package com.hendraanggrian.openpss.control
+package com.hendraanggrian.openpss.control.popover
 
 import com.hendraanggrian.openpss.layout.DateBox
 import com.hendraanggrian.openpss.layout.dateBox
@@ -9,9 +9,9 @@ class DatePopover(
     resourced: Resourced,
     titleId: String,
     prefill: LocalDate = LocalDate.now()
-) : DefaultPopover<LocalDate>(resourced, titleId) {
+) : ResultablePopover<LocalDate>(resourced, titleId) {
 
     private val dateBox: DateBox = dateBox(prefill)
 
-    override fun getResult(): LocalDate = dateBox.valueProperty().value
+    override val optionalResult: LocalDate? get() = dateBox.valueProperty().value
 }

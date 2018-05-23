@@ -5,7 +5,7 @@ import com.hendraanggrian.openpss.BuildConfig.DEBUG
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.HostField
 import com.hendraanggrian.openpss.control.IntField
-import com.hendraanggrian.openpss.control.Dialog
+import com.hendraanggrian.openpss.control.dialog.Dialog
 import com.hendraanggrian.openpss.control.hostField
 import com.hendraanggrian.openpss.control.intField
 import com.hendraanggrian.openpss.db.login

@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.ui.employee
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.control.DefaultPopover
+import com.hendraanggrian.openpss.control.popover.ResultablePopover
 import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.db.schemas.Employee.Companion.DEFAULT_PASSWORD
 import com.hendraanggrian.openpss.db.schemas.Employee.Role.values
@@ -25,7 +25,7 @@ import ktfx.scene.layout.gap
 class EditEmployeePopover(
     resourced: Resourced,
     private val employee: Employee
-) : DefaultPopover<Employee>(resourced, R.string.edit_employee) {
+) : ResultablePopover<Employee>(resourced, R.string.edit_employee) {
 
     private lateinit var nameField: TextField
     private lateinit var roleChoice: ChoiceBox<Employee.Role>
@@ -59,9 +59,10 @@ class EditEmployeePopover(
         }
     }
 
-    override fun getResult(): Employee = employee.apply {
-        name = nameField.text
-        typedRole = roleChoice.value
-        if (passwordButton.isDisable) password = DEFAULT_PASSWORD
-    }
+    override val optionalResult: Employee?
+        get() = employee.apply {
+            name = nameField.text
+            typedRole = roleChoice.value
+            if (passwordButton.isDisable) password = DEFAULT_PASSWORD
+        }
 }

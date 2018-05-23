@@ -2,7 +2,7 @@ package com.hendraanggrian.openpss.ui.wage.record
 
 import com.hendraanggrian.openpss.BuildConfig.DEBUG
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.control.DatePopover
+import com.hendraanggrian.openpss.control.popover.DatePopover
 import com.hendraanggrian.openpss.control.UncollapsibleTreeItem
 import com.hendraanggrian.openpss.io.WageContentFolder
 import com.hendraanggrian.openpss.io.WageFile

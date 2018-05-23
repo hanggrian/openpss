@@ -1,4 +1,4 @@
-package com.hendraanggrian.openpss.control
+package com.hendraanggrian.openpss.control.popover
 
 import com.hendraanggrian.openpss.layout.DateBox
 import com.hendraanggrian.openpss.layout.TimeBox
@@ -17,7 +17,7 @@ class DateTimePopover(
     titleId: String,
     defaultButtonTextId: String,
     prefill: DateTime
-) : DefaultPopover<DateTime>(resourced, titleId) {
+) : ResultablePopover<DateTime>(resourced, titleId) {
 
     private lateinit var dateBox: DateBox
     private lateinit var timeBox: TimeBox
@@ -44,5 +44,5 @@ class DateTimePopover(
         defaultButton.text = getString(defaultButtonTextId)
     }
 
-    override fun getResult(): DateTime = dateBox.value.toDateTime(timeBox.value)
+    override val optionalResult: DateTime? get() = dateBox.value.toDateTime(timeBox.value)
 }

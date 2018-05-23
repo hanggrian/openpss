@@ -2,7 +2,7 @@ package com.hendraanggrian.openpss.ui.employee
 
 import com.hendraanggrian.openpss.App.Companion.STYLE_DEFAULT_BUTTON
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.control.InputUserPopover
+import com.hendraanggrian.openpss.control.popover.InputUserPopover
 import com.hendraanggrian.openpss.control.stretchableButton
 import com.hendraanggrian.openpss.control.styledStretchableButton
 import com.hendraanggrian.openpss.db.schemas.Employee

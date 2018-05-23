@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.ui.customer
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.control.DefaultPopover
+import com.hendraanggrian.openpss.control.popover.ResultablePopover
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Customer.Contact.Type.PHONE
 import com.hendraanggrian.openpss.db.schemas.Customer.Contact.Type.values
@@ -18,7 +18,7 @@ import ktfx.listeners.converter
 import ktfx.scene.layout.gap
 import org.apache.commons.validator.routines.EmailValidator
 
-class AddContactPopover(resourced: Resourced) : DefaultPopover<Customer.Contact>(resourced, R.string.add_contact) {
+class AddContactPopover(resourced: Resourced) : ResultablePopover<Customer.Contact>(resourced, R.string.add_contact) {
 
     companion object {
         /** Taken from `android.util.Patterns`, but instead use `kotlin.Regex`. */
@@ -52,5 +52,5 @@ class AddContactPopover(resourced: Resourced) : DefaultPopover<Customer.Contact>
         }
     }
 
-    override fun getResult(): Customer.Contact = Customer.Contact.new(typeChoice.value, contactField.text)
+    override val optionalResult: Customer.Contact? get() = Customer.Contact.new(typeChoice.value, contactField.text)
 }

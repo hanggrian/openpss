@@ -1,4 +1,4 @@
-package com.hendraanggrian.openpss.control
+package com.hendraanggrian.openpss.control.popover
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.localization.Resourced
@@ -27,7 +27,7 @@ import ktfx.scene.layout.updatePadding
 import org.controlsfx.control.PopOver
 
 /** Base [PopOver] class used across applications. */
-open class Popover(
+abstract class Popover(
     resourced: Resourced,
     titleId: String
 ) : PopOver(), LayoutManager<Node>, Resourced by resourced {

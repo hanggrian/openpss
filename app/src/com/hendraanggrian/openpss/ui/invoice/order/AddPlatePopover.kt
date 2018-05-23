@@ -48,11 +48,12 @@ class AddPlatePopover(resourced: Resourced) : AddOrderPopover<Invoice.Plate>(
             qtyField.valueProperty().lessEq(0) or
             priceField.valueProperty().lessEq(0)
 
-    override fun newInstance(): Invoice.Plate = Invoice.Plate.new(
-        machineChoice.value.name,
-        titleField.text,
-        qtyField.value,
-        priceField.value)
+    override val optionalResult: Invoice.Plate?
+        get() = Invoice.Plate.new(
+            machineChoice.value.name,
+            titleField.text,
+            qtyField.value,
+            priceField.value)
 
     override val qty: Int get() = qtyField.value
 

@@ -68,14 +68,15 @@ class AddOffsetPopover(resourced: Resourced) : AddOrderPopover<Invoice.Offset>(
             minPriceField.valueProperty().lessEq(0) or
             excessPriceField.valueProperty().lessEq(0)
 
-    override fun newInstance(): Invoice.Offset = Invoice.Offset.new(
-        machineChoice.value.name,
-        titleField.text,
-        qtyField.value,
-        techniqueChoice.value,
-        minQtyField.value,
-        minPriceField.value,
-        excessPriceField.value)
+    override val optionalResult: Invoice.Offset?
+        get() = Invoice.Offset.new(
+            machineChoice.value.name,
+            titleField.text,
+            qtyField.value,
+            techniqueChoice.value,
+            minQtyField.value,
+            minPriceField.value,
+            excessPriceField.value)
 
     override val typedTechnique: Invoice.Offset.Technique get() = techniqueChoice.value
 

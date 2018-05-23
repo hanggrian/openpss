@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.ui.customer
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.control.DefaultPopover
+import com.hendraanggrian.openpss.control.popover.ResultablePopover
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.localization.Resourced
 import com.hendraanggrian.openpss.util.isName
@@ -17,7 +17,7 @@ import ktfx.scene.layout.gap
 class EditCustomerPopover(
     resourced: Resourced,
     private val customer: Customer
-) : DefaultPopover<Customer>(resourced, R.string.edit_customer) {
+) : ResultablePopover<Customer>(resourced, R.string.edit_customer) {
 
     private lateinit var nameField: TextField
     private lateinit var addressField: TextField
@@ -39,9 +39,10 @@ class EditCustomerPopover(
         }
     }
 
-    override fun getResult(): Customer = customer.apply {
-        name = nameField.text
-        address = addressField.text.orNull()
-        note = noteArea.text.orNull()
-    }
+    override val optionalResult: Customer?
+        get() = customer.apply {
+            name = nameField.text
+            address = addressField.text.orNull()
+            note = noteArea.text.orNull()
+        }
 }

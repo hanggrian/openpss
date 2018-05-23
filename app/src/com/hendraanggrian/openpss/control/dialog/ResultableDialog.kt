@@ -2,7 +2,7 @@ package com.hendraanggrian.openpss.control.dialog
 
 import com.hendraanggrian.openpss.control.Resultable
 import com.hendraanggrian.openpss.localization.Resourced
-import javafx.scene.control.ButtonBar
+import javafx.scene.control.ButtonBar.ButtonData.OK_DONE
 
 abstract class ResultableDialog<T>(
     resourced: Resourced,
@@ -12,7 +12,7 @@ abstract class ResultableDialog<T>(
 
     init {
         setResultConverter {
-            if (it.buttonData == ButtonBar.ButtonData.OK_DONE) null
+            if (it.buttonData == OK_DONE) null
             else optionalResult
         }
     }

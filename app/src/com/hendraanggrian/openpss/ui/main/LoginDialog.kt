@@ -5,6 +5,7 @@ import com.hendraanggrian.openpss.BuildConfig.DEBUG
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.HostField
 import com.hendraanggrian.openpss.control.IntField
+import com.hendraanggrian.openpss.control.PasswordBox
 import com.hendraanggrian.openpss.control.dialog.Dialog
 import com.hendraanggrian.openpss.control.hostField
 import com.hendraanggrian.openpss.control.intField
@@ -19,21 +20,16 @@ import javafx.geometry.Pos.CENTER_RIGHT
 import javafx.scene.control.ButtonBar.ButtonData.OK_DONE
 import javafx.scene.control.PasswordField
 import javafx.scene.control.TextField
-import javafx.scene.image.Image
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.launch
 import ktfx.application.exit
 import ktfx.application.later
-import ktfx.beans.binding.`when`
-import ktfx.beans.binding.otherwise
-import ktfx.beans.binding.then
 import ktfx.beans.value.isBlank
 import ktfx.beans.value.or
 import ktfx.collections.toObservableList
 import ktfx.coroutines.FX
 import ktfx.coroutines.listener
 import ktfx.coroutines.onAction
-import ktfx.layouts.anchorPane
 import ktfx.layouts.choiceBox
 import ktfx.layouts.gridPane
 import ktfx.layouts.hbox
@@ -41,8 +37,6 @@ import ktfx.layouts.hyperlink
 import ktfx.layouts.label
 import ktfx.layouts.passwordField
 import ktfx.layouts.textField
-import ktfx.layouts.toggleButton
-import ktfx.layouts.tooltip
 import ktfx.scene.control.cancelButton
 import ktfx.scene.control.customButton
 import ktfx.scene.control.styledErrorAlert
@@ -52,7 +46,7 @@ import ktfx.scene.layout.gap
 class LoginDialog(resourced: Resourced) : Dialog<Any>(resourced, graphicId = R.image.header_launcher) {
 
     private lateinit var employeeField: TextField
-    private lateinit var passwordField1: PasswordField
+    private lateinit var passwordBox: PasswordBox
     private lateinit var passwordField2: TextField
     private lateinit var serverHostField: HostField
     private lateinit var serverPortField: IntField
@@ -80,33 +74,14 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(resourced, graphicId = R.i
                         }
                     }
                 }
-            } col 1 row 0 colSpans 2
+            } col 1 row 0
             label(getString(R.string.employee)) col 0 row 1
             employeeField = textField(LoginFile.EMPLOYEE) {
                 promptText = getString(R.string.employee)
                 textProperty().listener { _, _, newValue -> LoginFile.EMPLOYEE = newValue }
-            } col 1 row 1 colSpans 2
+            } col 1 row 1
             label(getString(R.string.password)) col 0 row 2
-            anchorPane {
-                passwordField1 = passwordField { promptText = getString(R.string.password) }
-                passwordField2 = textField {
-                    isVisible = false
-                    promptText = getString(R.string.password)
-                }
-                passwordField1.textProperty().bindBidirectional(passwordField2.textProperty())
-            } col 1 row 2
-            toggleButton {
-                tooltip(getString(R.string.view_password))
-                graphic = ktfx.layouts.imageView {
-                    imageProperty().bind(`when`(this@toggleButton.selectedProperty())
-                        then Image(R.image.btn_visibility_on_light)
-                        otherwise Image(R.image.btn_visibility_off_light))
-                }
-                selectedProperty().listener { _, _, selected ->
-                    passwordField1.isVisible = !selected
-                    passwordField2.isVisible = selected
-                }
-            } col 2 row 2
+            passwordBox = PasswordBox(this@LoginDialog).add() col 1 row 2
         }
         dialogPane.expandableContent = ktfx.layouts.gridPane {
             gap = 8.0
@@ -144,7 +119,7 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(resourced, graphicId = R.i
         cancelButton()
         customButton(getString(R.string.login), OK_DONE) {
             disableProperty().bind(employeeField.textProperty().isBlank()
-                or passwordField1.textProperty().isBlank()
+                or passwordBox.textProperty().isBlank()
                 or !serverHostField.validProperty()
                 or serverPortField.textProperty().isBlank()
                 or serverUserField.textProperty().isBlank()
@@ -158,7 +133,7 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(resourced, graphicId = R.i
                         serverUserField.text,
                         serverPasswordField.text,
                         employeeField.text,
-                        passwordField1.text)
+                        passwordBox.text)
                     launch(FX) {
                         result = employee
                         close()
@@ -170,9 +145,9 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(resourced, graphicId = R.i
             }
         }
         later {
-            if (employeeField.text.isBlank()) employeeField.requestFocus() else passwordField1.requestFocus()
+            if (employeeField.text.isBlank()) employeeField.requestFocus() else passwordBox.requestFocus()
             dialogPane.isExpanded = !LoginFile.isDbValid()
-            if (DEBUG) passwordField1.text = "hendraganteng"
+            if (DEBUG) passwordBox.text = "hendraganteng"
         }
     }
 }

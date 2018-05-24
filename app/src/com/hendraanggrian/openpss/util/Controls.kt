@@ -17,9 +17,9 @@ import ktfx.scene.control.styledConfirmAlert
 import kotlin.coroutines.experimental.CoroutineContext
 
 /** Can't use `ktfx-coroutines` because by the time `consume` is called in coroutine context, it is already too late. */
-fun Node.onActionFilter(
+inline fun Node.onActionFilter(
     context: CoroutineContext = FX,
-    action: suspend CoroutineScope.() -> Unit
+    noinline action: suspend CoroutineScope.() -> Unit
 ) = addEventFilter(ACTION) {
     it.consume()
     launch(context) { action() }

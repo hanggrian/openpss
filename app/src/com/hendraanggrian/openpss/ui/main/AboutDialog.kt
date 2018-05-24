@@ -35,12 +35,9 @@ import ktfx.layouts.hbox
 import ktfx.layouts.hyperlink
 import ktfx.layouts.imageView
 import ktfx.layouts.label
-import ktfx.layouts.listView
 import ktfx.layouts.progressIndicator
 import ktfx.layouts.text
-import ktfx.layouts.textArea
 import ktfx.layouts.textFlow
-import ktfx.layouts.titledPane
 import ktfx.layouts.vbox
 import ktfx.listeners.cellFactory
 import ktfx.scene.control.closeButton
@@ -50,13 +47,23 @@ import ktfx.scene.control.icon
 import ktfx.scene.control.styledInfoAlert
 import ktfx.scene.layout.maxSize
 import ktfx.scene.layout.paddingAll
+import org.controlsfx.control.MasterDetailPane
 import java.util.concurrent.TimeUnit.SECONDS
 
 class AboutDialog(resourced: Resourced) : Dialog<Nothing>(resourced), Selectable<License> {
 
     private lateinit var checkUpdateButton: Button
     private lateinit var checkUpdateProgress: ProgressIndicator
-    private lateinit var licenseList: ListView<License>
+    private val licenseList: ListView<License> = ktfx.layouts.listView(License.values().toObservableList()) {
+        cellFactory {
+            onUpdate { license, empty ->
+                if (license != null && !empty) graphic = ktfx.layouts.vbox {
+                    label(license.repo) { font = font(12.0) }
+                    label(license.owner) { font = getFont(R.font.sf_pro_text_bold, 12) }
+                }
+            }
+        }
+    }
 
     init {
         icon = Image(R.image.menu_about)
@@ -141,33 +148,17 @@ class AboutDialog(resourced: Resourced) : Dialog<Nothing>(resourced), Selectable
                 } marginLeft 48.0
             }
         }
-        dialogPane.expandableContent = ktfx.layouts.hbox {
-            titledPane(getString(R.string.open_source_software)) {
-                isCollapsible = false
-                licenseList = listView {
-                    prefHeight = 256.0
-                    items = License.values().toObservableList()
-                    cellFactory {
-                        onUpdate { license, empty ->
-                            if (license != null && !empty) graphic = ktfx.layouts.vbox {
-                                label(license.repo) { font = font(12.0) }
-                                label(license.owner) { font = getFont(R.font.sf_pro_text_bold, 12) }
-                            }
-                        }
-                    }
-                }
-            }
-            titledPane(getString(R.string.license)) {
-                isCollapsible = false
-                textArea {
-                    prefHeight = 256.0
+        dialogPane.expandableContent = ktfx.layouts.titledPane(getString(R.string.open_source_software_license)) {
+            isCollapsible = false
+            MasterDetailPane().apply {
+                dividerPosition = 0.3
+                showDetailNodeProperty().bind(selectedBinding)
+                masterNode = licenseList
+                detailNode = ktfx.layouts.textArea {
                     isEditable = false
-                    text = getString(R.string.select_license)
-                    licenseList.selectionModel.selectedItemProperty().listener { _, _, license ->
-                        text = license?.getContent() ?: getString(R.string.select_license)
-                    }
+                    selectedProperty.listener { _, _, license -> text = license?.getContent() }
                 }
-            }
+            }.add()
         }
         customButton("Homepage", CANCEL_CLOSE) {
             visibleProperty().bind(dialogPane.expandedProperty() and selectedBinding)

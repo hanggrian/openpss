@@ -35,6 +35,7 @@ import javafx.beans.property.SimpleObjectProperty
 import javafx.fxml.FXML
 import javafx.geometry.Orientation.VERTICAL
 import javafx.geometry.Pos.CENTER
+import javafx.geometry.Side.BOTTOM
 import javafx.scene.Node
 import javafx.scene.control.Button
 import javafx.scene.control.MenuButton
@@ -68,11 +69,11 @@ import ktfx.layouts.contextMenu
 import ktfx.layouts.hbox
 import ktfx.layouts.region
 import ktfx.layouts.separator
-import ktfx.layouts.splitPane
 import ktfx.layouts.tableView
 import ktfx.layouts.vbox
 import ktfx.scene.input.isDoubleClick
 import ktfx.scene.layout.updatePadding
+import org.controlsfx.control.MasterDetailPane
 import java.net.URL
 import java.time.LocalDate
 import java.util.ResourceBundle
@@ -164,8 +165,7 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
             anyPaymentItem.selectedProperty(), unpaidPaymentItem.selectedProperty(), paidPaymentItem.selectedProperty(),
             allDateRadio.selectedProperty(), pickDateRadio.selectedProperty(), dateBox.valueProperty()) {
             Callback<Pair<Int, Int>, Node> { (page, count) ->
-                splitPane {
-                    orientation = VERTICAL
+                MasterDetailPane(BOTTOM).apply {
                     invoiceTable = tableView {
                         columnResizePolicy = CONSTRAINED_RESIZE_POLICY
                         columns {
@@ -192,7 +192,9 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
                             }
                         }
                     }
-                    vbox {
+                    showDetailNodeProperty().bind(selectedBinding)
+                    masterNode = invoiceTable
+                    detailNode = vbox {
                         hbox {
                             alignment = CENTER
                             spacing = 8.0
@@ -210,7 +212,7 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
                             }
                         }
                         paymentTable = tableView {
-                            minHeightProperty().bind(this@splitPane.heightProperty() * 0.25)
+                            minHeightProperty().bind(this@apply.heightProperty() * 0.25)
                             columnResizePolicy = CONSTRAINED_RESIZE_POLICY
                             columns {
                                 getString(R.string.date)<String> {
@@ -235,7 +237,7 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
                             })
                         }
                     }
-                    setDividerPosition(0, 0.75)
+                    dividerPosition = 0.6
                     later {
                         transaction {
                             val invoices = Invoices.buildQuery {

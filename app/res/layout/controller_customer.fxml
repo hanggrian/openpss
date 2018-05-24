@@ -5,80 +5,82 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
-<SplitPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1"
-           fx:controller="com.hendraanggrian.openpss.ui.customer.CustomerController"
-           fx:id="splitPane" dividerPositions="0.3">
-    <PaginatedPane fx:id="customerPagination" VBox.vgrow="ALWAYS"
-                   count="26.5"/>
-    <GridPane hgap="16" vgap="16">
-        <columnConstraints>
-            <ColumnConstraints hgrow="NEVER"/>
-            <ColumnConstraints hgrow="ALWAYS"/>
-        </columnConstraints>
-        <rowConstraints>
-            <RowConstraints vgrow="NEVER"/>
-            <RowConstraints vgrow="NEVER"/>
-            <RowConstraints vgrow="NEVER"/>
-            <RowConstraints vgrow="NEVER"/>
-            <RowConstraints vgrow="NEVER"/>
-            <RowConstraints vgrow="ALWAYS"/>
-        </rowConstraints>
-        <padding>
-            <Insets bottom="16" left="16" right="16"/>
-        </padding>
-        <Label styleClass="display-label" fx:id="nameLabel" wrapText="true" GridPane.rowIndex="0"
-               GridPane.columnIndex="1"/>
-        <ImageView fx:id="idImage" GridPane.rowIndex="1" GridPane.columnIndex="0">
-            <Image url="@/image/text_customer.png"/>
-        </ImageView>
-        <Label fx:id="idLabel" wrapText="true" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
-        <ImageView fx:id="sinceImage" GridPane.rowIndex="2" GridPane.columnIndex="0">
-            <Image url="@/image/text_since.png"/>
-        </ImageView>
-        <Label fx:id="sinceLabel" wrapText="true" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
-        <ImageView fx:id="addressImage" GridPane.rowIndex="3" GridPane.columnIndex="0">
-            <Image url="@/image/text_address.png"/>
-        </ImageView>
-        <Label fx:id="addressLabel" wrapText="true" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
-        <ImageView fx:id="noteImage" GridPane.rowIndex="4" GridPane.columnIndex="0">
-            <Image url="@/image/text_note.png"/>
-        </ImageView>
-        <Label fx:id="noteLabel" wrapText="true" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
-        <ImageView fx:id="contactImage" GridPane.rowIndex="5" GridPane.columnIndex="0" GridPane.valignment="TOP">
-            <Image url="@/image/text_contact.png"/>
-        </ImageView>
-        <TableView fx:id="contactTable" prefHeight="-NaN" GridPane.rowIndex="5" GridPane.columnIndex="1">
-            <columns>
-                <TableColumn fx:id="typeColumn" text="%type"/>
-                <TableColumn fx:id="valueColumn" text="%value"/>
-            </columns>
-            <columnResizePolicy>
-                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
-            </columnResizePolicy>
-            <contextMenu>
-                <ContextMenu>
-                    <items>
-                        <MenuItem mnemonicParsing="false" fx:id="addContactItem" onAction="#addContact" text="%add">
-                            <graphic>
-                                <ImageView>
-                                    <Image url="@/image/menu_add.png"/>
-                                </ImageView>
-                            </graphic>
-                        </MenuItem>
-                        <MenuItem mnemonicParsing="false" fx:id="deleteContactItem" onAction="#deleteContact"
-                                  text="%delete">
-                            <graphic>
-                                <ImageView>
-                                    <Image url="@/image/menu_delete.png"/>
-                                </ImageView>
-                            </graphic>
-                        </MenuItem>
-                    </items>
-                </ContextMenu>
-            </contextMenu>
-        </TableView>
-        <Label fx:id="coverLabel" alignment="CENTER" text="%select_customer" style="-fx-background-color: #f4f4f4;"
-               maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
-               GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.rowSpan="6" GridPane.columnSpan="2"/>
-    </GridPane>
-</SplitPane>
+<?import org.controlsfx.control.MasterDetailPane?>
+<MasterDetailPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1"
+                  fx:controller="com.hendraanggrian.openpss.ui.customer.CustomerController"
+                  fx:id="masterDetailPane" dividerPosition="0.2">
+    <masterNode>
+        <PaginatedPane fx:id="customerPagination" VBox.vgrow="ALWAYS"
+                       count="26.5"/>
+    </masterNode>
+    <detailNode>
+        <GridPane hgap="16" vgap="16">
+            <columnConstraints>
+                <ColumnConstraints hgrow="NEVER"/>
+                <ColumnConstraints hgrow="ALWAYS"/>
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints vgrow="NEVER"/>
+                <RowConstraints vgrow="NEVER"/>
+                <RowConstraints vgrow="NEVER"/>
+                <RowConstraints vgrow="NEVER"/>
+                <RowConstraints vgrow="NEVER"/>
+                <RowConstraints vgrow="ALWAYS"/>
+            </rowConstraints>
+            <padding>
+                <Insets bottom="16" left="16" right="16"/>
+            </padding>
+            <Label styleClass="display-label" fx:id="nameLabel" wrapText="true" GridPane.rowIndex="0"
+                   GridPane.columnIndex="1"/>
+            <ImageView fx:id="idImage" GridPane.rowIndex="1" GridPane.columnIndex="0">
+                <Image url="@/image/text_customer.png"/>
+            </ImageView>
+            <Label fx:id="idLabel" wrapText="true" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+            <ImageView fx:id="sinceImage" GridPane.rowIndex="2" GridPane.columnIndex="0">
+                <Image url="@/image/text_since.png"/>
+            </ImageView>
+            <Label fx:id="sinceLabel" wrapText="true" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+            <ImageView fx:id="addressImage" GridPane.rowIndex="3" GridPane.columnIndex="0">
+                <Image url="@/image/text_address.png"/>
+            </ImageView>
+            <Label fx:id="addressLabel" wrapText="true" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+            <ImageView fx:id="noteImage" GridPane.rowIndex="4" GridPane.columnIndex="0">
+                <Image url="@/image/text_note.png"/>
+            </ImageView>
+            <Label fx:id="noteLabel" wrapText="true" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+            <ImageView fx:id="contactImage" GridPane.rowIndex="5" GridPane.columnIndex="0" GridPane.valignment="TOP">
+                <Image url="@/image/text_contact.png"/>
+            </ImageView>
+            <TableView fx:id="contactTable" prefHeight="-NaN" GridPane.rowIndex="5" GridPane.columnIndex="1">
+                <columns>
+                    <TableColumn fx:id="typeColumn" text="%type"/>
+                    <TableColumn fx:id="valueColumn" text="%value"/>
+                </columns>
+                <columnResizePolicy>
+                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                </columnResizePolicy>
+                <contextMenu>
+                    <ContextMenu>
+                        <items>
+                            <MenuItem mnemonicParsing="false" fx:id="addContactItem" onAction="#addContact" text="%add">
+                                <graphic>
+                                    <ImageView>
+                                        <Image url="@/image/menu_add.png"/>
+                                    </ImageView>
+                                </graphic>
+                            </MenuItem>
+                            <MenuItem mnemonicParsing="false" fx:id="deleteContactItem" onAction="#deleteContact"
+                                      text="%delete">
+                                <graphic>
+                                    <ImageView>
+                                        <Image url="@/image/menu_delete.png"/>
+                                    </ImageView>
+                                </graphic>
+                            </MenuItem>
+                        </items>
+                    </ContextMenu>
+                </contextMenu>
+            </TableView>
+        </GridPane>
+    </detailNode>
+</MasterDetailPane>

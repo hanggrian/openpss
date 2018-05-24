@@ -28,7 +28,7 @@
             </graphic>
         </RadioButton>
         <SplitMenuButton mnemonicParsing="false" fx:id="customerButton" onAction="#selectCustomer"
-                         text="%select_customer">
+                         text="%search_customer">
             <graphic>
                 <ImageView>
                     <Image url="@/image/btn_customer_light.png"/>

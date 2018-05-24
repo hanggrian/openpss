@@ -3,8 +3,8 @@ package com.hendraanggrian.openpss.ui.customer
 import com.hendraanggrian.openpss.App.Companion.STYLE_DEFAULT_BUTTON
 import com.hendraanggrian.openpss.App.Companion.STYLE_SEARCH_TEXTFIELD
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.control.popover.InputUserPopover
 import com.hendraanggrian.openpss.control.PaginatedPane
+import com.hendraanggrian.openpss.control.popover.InputUserPopover
 import com.hendraanggrian.openpss.control.stretchableButton
 import com.hendraanggrian.openpss.control.styledStretchableButton
 import com.hendraanggrian.openpss.db.schemas.Customer
@@ -31,7 +31,6 @@ import javafx.scene.control.ListView
 import javafx.scene.control.MenuButton
 import javafx.scene.control.MenuItem
 import javafx.scene.control.SelectionModel
-import javafx.scene.control.SplitPane
 import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
 import javafx.scene.control.TextField
@@ -58,6 +57,7 @@ import ktfx.layouts.separator
 import ktfx.layouts.styledTextField
 import ktfx.layouts.tooltip
 import ktfx.scene.control.styledErrorAlert
+import org.controlsfx.control.MasterDetailPane
 import java.net.URL
 import java.util.ResourceBundle
 import java.util.regex.Pattern.CASE_INSENSITIVE
@@ -65,7 +65,7 @@ import kotlin.math.ceil
 
 class CustomerController : SegmentedController(), Refreshable, Selectable<Customer>, Selectable2<Customer.Contact> {
 
-    @FXML lateinit var splitPane: SplitPane
+    @FXML lateinit var masterDetailPane: MasterDetailPane
     @FXML lateinit var customerPagination: PaginatedPane
     @FXML lateinit var nameLabel: Label
     @FXML lateinit var idImage: ImageView
@@ -82,7 +82,6 @@ class CustomerController : SegmentedController(), Refreshable, Selectable<Custom
     @FXML lateinit var valueColumn: TableColumn<Customer.Contact, String>
     @FXML lateinit var addContactItem: MenuItem
     @FXML lateinit var deleteContactItem: MenuItem
-    @FXML lateinit var coverLabel: Label
 
     private lateinit var refreshButton: Button
     private lateinit var addButton: Button
@@ -123,7 +122,6 @@ class CustomerController : SegmentedController(), Refreshable, Selectable<Custom
             filterAddressItem = checkMenuItem(getString(R.string.address))
             filterNoteItem = checkMenuItem(getString(R.string.note))
         }
-        customerPagination.minWidthProperty().bind(240.toReadOnlyProperty())
         idImage.tooltip(getString(R.string.id))
         sinceImage.tooltip(getString(R.string.since))
         addressImage.tooltip(getString(R.string.address))
@@ -171,10 +169,10 @@ class CustomerController : SegmentedController(), Refreshable, Selectable<Custom
                     sinceLabel.bindLabel { selected?.since?.toString(PATTERN_DATE).orEmpty() }
                     addressLabel.bindLabel { selected?.address ?: "-" }
                     noteLabel.bindLabel { selected?.note ?: "-" }
-                    contactTable.itemsProperty().bind(bindingOf(customerList.selectionModel.selectedItemProperty()) {
+                    contactTable.itemsProperty().bind(bindingOf(selectedProperty) {
                         selected?.contacts?.toObservableList() ?: emptyObservableList()
                     })
-                    coverLabel.visibleProperty().bind(customerList.selectionModel.selectedItemProperty().isNull)
+                    masterDetailPane.showDetailNodeProperty().bind(selectedBinding)
                     customerList
                 }
             })

@@ -52,7 +52,7 @@ abstract class AddOrderPopover<T : Titled>(
                     })
                     textFillProperty().bind(bindingOf(textProperty()) {
                         getColor(when {
-                            total > 0 -> R.color.teal
+                            total > 0 -> R.color.blue
                             else -> R.color.red
                         })
                     })

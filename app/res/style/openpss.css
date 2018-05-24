@@ -1,9 +1,9 @@
 /* OVERRIDING */
 
 .root {
-    -fx-accent: #009688;
-    -fx-focus-color: #009688;
-    -fx-default-button: #009688;
+    -fx-accent: #1e88e5;
+    -fx-focus-color: #1e88e5;
+    -fx-default-button: #1e88e5;
 }
 
 .split-pane *.split-pane-divider {
@@ -21,16 +21,16 @@
 }
 
 .default-button {
-    -fx-background-color: #009688;
-    -fx-text-fill: #FAFAFA;
+    -fx-background-color: #1e88e5;
+    -fx-text-fill: #fafafa;
 }
 
 .default-button:hover {
-    -fx-background-color: #4DB6AC;
+    -fx-background-color: #6ab7ff;
 }
 
 .default-button:pressed {
-    -fx-background-color: #00796B;
+    -fx-background-color: #005cb2;
 }
 
 .search-textfield {

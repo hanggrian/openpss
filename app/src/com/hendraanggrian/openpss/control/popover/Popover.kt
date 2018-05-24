@@ -51,7 +51,7 @@ abstract class Popover(
             borderPane {
                 left = ktfx.layouts.label(getString(titleId)) {
                     font = Font.font(18.0)
-                    textFill = getColor(R.color.teal)
+                    textFill = getColor(R.color.blue)
                 } align CENTER_LEFT
                 rightProperty().run {
                     bindBidirectional(graphicProperty)

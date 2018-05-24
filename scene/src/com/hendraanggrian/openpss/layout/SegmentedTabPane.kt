@@ -6,6 +6,7 @@ import javafx.scene.control.Tab
 import javafx.scene.control.TabPane
 import javafx.scene.control.ToggleButton
 import javafx.scene.layout.Pane
+import javafx.scene.paint.Color
 import ktfx.application.later
 import ktfx.coroutines.listener
 import ktfx.scene.layout.paddingTop

@@ -154,7 +154,7 @@ class InvoiceDialog(
                     currencyConverter.toString(totalProperty.value)
                 })
                 textFillProperty().bind(`when`(totalProperty greater 0)
-                    then getColor(R.color.blue)
+                    then getColor(R.color.green)
                     otherwise getColor(R.color.red))
             } col 1 row 6
         }

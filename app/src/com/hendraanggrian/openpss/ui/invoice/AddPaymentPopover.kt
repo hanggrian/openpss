@@ -79,7 +79,7 @@ class AddPaymentPopover(
                 })
                 textFillProperty().bind(bindingOf(textProperty()) {
                     getColor(when {
-                        receivable - valueField.value == 0.0 -> R.color.blue
+                        receivable - valueField.value == 0.0 -> R.color.green
                         else -> R.color.red
                     })
                 })

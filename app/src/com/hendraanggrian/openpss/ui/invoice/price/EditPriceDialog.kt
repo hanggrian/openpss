@@ -29,6 +29,7 @@ abstract class EditPriceDialog<D, S>(
 
     init {
         getString(R.string.name)<String> {
+            minWidth = 96.0
             stringCell { name }
         }
     }

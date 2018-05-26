@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.control.popover
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.localization.Resourced
+import com.hendraanggrian.openpss.i18n.Resourced
 import javafx.beans.binding.BooleanBinding
 import javafx.scene.control.TextField
 import ktfx.beans.value.isBlank

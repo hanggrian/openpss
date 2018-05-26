@@ -6,13 +6,15 @@ import com.hendraanggrian.openpss.control.popover.InputUserPopover
 import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.db.schemas.Employees
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.localization.Resourced
+import com.hendraanggrian.openpss.i18n.Resourced
 import com.hendraanggrian.openpss.util.stringCell
 import kotlinx.coroutines.experimental.delay
 import kotlinx.coroutines.experimental.launch
 import ktfx.beans.property.toReadOnlyProperty
 import ktfx.beans.value.or
+import ktfx.collections.toObservableList
 import ktfx.coroutines.FX
+import ktfx.scene.control.choiceBoxCellFactory
 
 class EditEmployeeDialog(
     resourced: Resourced,
@@ -23,8 +25,8 @@ class EditEmployeeDialog(
         getString(R.string.name)<String> {
             stringCell { name }
         }
-        getString(R.string.role)<String> {
-            stringCell { typedRole.toString() }
+        getString(R.string.role)<Employee.Role> {
+            choiceBoxCellFactory(Employee.Role.values().toObservableList())
         }
         launch(FX) {
             delay(100)

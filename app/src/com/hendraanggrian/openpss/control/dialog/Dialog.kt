@@ -1,6 +1,6 @@
 package com.hendraanggrian.openpss.control.dialog
 
-import com.hendraanggrian.openpss.localization.Resourced
+import com.hendraanggrian.openpss.i18n.Resourced
 import com.hendraanggrian.openpss.util.getStyle
 import javafx.scene.Node
 import javafx.scene.control.Dialog

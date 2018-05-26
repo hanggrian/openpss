@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.control.popover
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.localization.Resourced
+import com.hendraanggrian.openpss.i18n.Resourced
 import com.hendraanggrian.openpss.util.getColor
 import javafx.beans.property.ObjectProperty
 import javafx.beans.property.SimpleObjectProperty

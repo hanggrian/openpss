@@ -8,7 +8,7 @@ import com.hendraanggrian.openpss.control.styledStretchableButton
 import com.hendraanggrian.openpss.db.Document
 import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.localization.Resourced
+import com.hendraanggrian.openpss.i18n.Resourced
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.Selectable
 import com.hendraanggrian.openpss.util.yesNoAlert
@@ -70,6 +70,7 @@ abstract class TableDialog<D : Document<S>, S : DocumentSchema<D>>(
             }
             table = tableView {
                 columnResizePolicy = CONSTRAINED_RESIZE_POLICY
+                isEditable = true
             }
         }
         refresh()

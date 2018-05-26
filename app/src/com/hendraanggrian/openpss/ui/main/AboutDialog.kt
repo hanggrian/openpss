@@ -7,7 +7,7 @@ import com.hendraanggrian.openpss.BuildConfig.VERSION
 import com.hendraanggrian.openpss.BuildConfig.WEBSITE
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.dialog.Dialog
-import com.hendraanggrian.openpss.localization.Resourced
+import com.hendraanggrian.openpss.i18n.Resourced
 import com.hendraanggrian.openpss.ui.Selectable
 import com.hendraanggrian.openpss.ui.main.github.GitHubApi
 import com.hendraanggrian.openpss.util.browseUrl
@@ -151,6 +151,7 @@ class AboutDialog(resourced: Resourced) : Dialog<Nothing>(resourced), Selectable
         dialogPane.expandableContent = ktfx.layouts.titledPane(getString(R.string.open_source_software_license)) {
             isCollapsible = false
             MasterDetailPane().apply {
+                maxHeight = 256.0
                 dividerPosition = 0.3
                 showDetailNodeProperty().bind(selectedBinding)
                 masterNode = licenseList

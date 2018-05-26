@@ -7,7 +7,7 @@ import com.hendraanggrian.openpss.db.Order
 import com.hendraanggrian.openpss.db.SimpleOrder
 import com.hendraanggrian.openpss.db.Titled
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.localization.StringResource
+import com.hendraanggrian.openpss.i18n.StringResource
 import com.hendraanggrian.openpss.util.enumValueOfId
 import com.hendraanggrian.openpss.util.id
 import kotlinx.nosql.Id

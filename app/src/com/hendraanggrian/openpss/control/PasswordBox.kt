@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.control
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.localization.Resourced
+import com.hendraanggrian.openpss.i18n.Resourced
 import javafx.beans.property.StringProperty
 import javafx.scene.control.PasswordField
 import javafx.scene.control.TextField

@@ -3,7 +3,7 @@ package com.hendraanggrian.openpss.control.dialog
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.PasswordBox
 import com.hendraanggrian.openpss.db.schemas.Employee
-import com.hendraanggrian.openpss.localization.Resourced
+import com.hendraanggrian.openpss.i18n.Resourced
 import javafx.scene.control.ChoiceBox
 import ktfx.layouts.vbox
 

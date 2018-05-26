@@ -4,7 +4,7 @@ package com.hendraanggrian.openpss.util
 
 import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_LANGUAGE
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.localization.Language
+import com.hendraanggrian.openpss.i18n.Language
 import javafx.util.StringConverter
 import javafx.util.converter.CurrencyStringConverter
 import javafx.util.converter.NumberStringConverter

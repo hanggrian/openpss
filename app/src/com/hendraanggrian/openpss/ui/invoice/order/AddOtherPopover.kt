@@ -5,7 +5,7 @@ import com.hendraanggrian.openpss.control.DoubleField
 import com.hendraanggrian.openpss.control.doubleField
 import com.hendraanggrian.openpss.db.SimpleOrder
 import com.hendraanggrian.openpss.db.schemas.Invoice
-import com.hendraanggrian.openpss.localization.Resourced
+import com.hendraanggrian.openpss.i18n.Resourced
 import javafx.beans.Observable
 import javafx.beans.value.ObservableBooleanValue
 import ktfx.beans.value.isBlank

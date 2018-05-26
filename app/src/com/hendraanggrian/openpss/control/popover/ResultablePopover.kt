@@ -2,7 +2,7 @@ package com.hendraanggrian.openpss.control.popover
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.Resultable
-import com.hendraanggrian.openpss.localization.Resourced
+import com.hendraanggrian.openpss.i18n.Resourced
 import javafx.scene.Node
 import javafx.scene.control.Button
 import ktfx.coroutines.onAction

@@ -11,7 +11,7 @@ import com.hendraanggrian.openpss.db.schemas.Employees
 import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.io.properties.PreferencesFile.INVOICE_QUICK_SELECT_CUSTOMER
-import com.hendraanggrian.openpss.localization.Resourced
+import com.hendraanggrian.openpss.i18n.Resourced
 import com.hendraanggrian.openpss.ui.invoice.order.AddOffsetPopover
 import com.hendraanggrian.openpss.ui.invoice.order.AddOtherPopover
 import com.hendraanggrian.openpss.ui.invoice.order.AddPlatePopover

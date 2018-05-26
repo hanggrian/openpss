@@ -5,8 +5,8 @@ import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.db.schemas.PlatePrice
 import com.hendraanggrian.openpss.db.schemas.PlatePrices
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.localization.Resourced
-import javafx.geometry.Pos
+import com.hendraanggrian.openpss.i18n.Resourced
+import javafx.geometry.Pos.CENTER_RIGHT
 import kotlinx.nosql.equal
 import kotlinx.nosql.update
 import ktfx.beans.property.asObservable
@@ -23,7 +23,7 @@ class EditPlatePriceDialog(
     init {
         getString(R.string.price)<Double> {
             minWidth = 128.0
-            style = labeledStyle { alignment = Pos.CENTER_RIGHT }
+            style = labeledStyle { alignment = CENTER_RIGHT }
             setCellValueFactory { it.value.price.toProperty().asObservable() }
             textFieldCellFactory {
                 fromString { it.toDoubleOrNull() ?: 0.0 }

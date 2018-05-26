@@ -2,7 +2,7 @@ package com.hendraanggrian.openpss.ui.main
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.dialog.ResultableDialog
-import com.hendraanggrian.openpss.localization.Resourced
+import com.hendraanggrian.openpss.i18n.Resourced
 import javafx.scene.control.PasswordField
 import ktfx.application.later
 import ktfx.beans.value.isBlank

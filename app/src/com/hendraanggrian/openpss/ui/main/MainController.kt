@@ -9,7 +9,6 @@ import com.hendraanggrian.openpss.ui.SegmentedController
 import com.hendraanggrian.openpss.ui.Selectable
 import com.hendraanggrian.openpss.ui.customer.CustomerController
 import com.hendraanggrian.openpss.ui.employee.EditEmployeeDialog
-import com.hendraanggrian.openpss.ui.employee.EmployeeController
 import com.hendraanggrian.openpss.ui.finance.FinanceController
 import com.hendraanggrian.openpss.ui.invoice.InvoiceController
 import com.hendraanggrian.openpss.ui.invoice.price.EditOffsetPriceDialog
@@ -51,7 +50,6 @@ class MainController : Controller(), Selectable<Tab> {
     @FXML lateinit var scheduleController: ScheduleController
     @FXML lateinit var financeController: FinanceController
     @FXML lateinit var wageController: WageController
-    @FXML lateinit var employeeController: EmployeeController
 
     private lateinit var controllers: List<SegmentedController>
 
@@ -73,7 +71,7 @@ class MainController : Controller(), Selectable<Tab> {
 
         later {
             controllers = listOf(customerController, invoiceController, scheduleController, financeController,
-                wageController, employeeController)
+                wageController)
             controllers.forEach { it.login = login }
             financeController.addExtra(FinanceController.EXTRA_MAIN_CONTROLLER, this)
         }

@@ -16,7 +16,7 @@ import ktfx.coroutines.listener
 interface StretchableLabeled {
 
     companion object {
-        private const val STRETCH_POINT = 1200
+        private const val STRETCH_POINT = 1100
     }
 
     fun stretchableTextProperty(): StringProperty

@@ -74,9 +74,5 @@
             <!--suppress ALL -->
             <fx:include fx:id="wage" source="controller_wage.fxml"/>
         </Tab>
-        <Tab closable="false" text="%employee">
-            <!--suppress ALL -->
-            <fx:include fx:id="employee" source="controller_employee.fxml"/>
-        </Tab>
     </SegmentedTabPane>
 </VBox>

@@ -1,4 +1,4 @@
-package com.hendraanggrian.openpss.localization
+package com.hendraanggrian.openpss.i18n
 
 import sun.util.locale.LocaleUtils
 import java.util.Currency

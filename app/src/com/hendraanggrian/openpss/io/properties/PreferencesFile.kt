@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.io.properties
 
-import com.hendraanggrian.openpss.localization.Language
-import com.hendraanggrian.openpss.localization.Language.EN_US
+import com.hendraanggrian.openpss.i18n.Language
+import com.hendraanggrian.openpss.i18n.Language.EN_US
 import com.hendraanggrian.openpss.ui.wage.readers.EClockingReader
 
 /** User manually configurable settings file. */

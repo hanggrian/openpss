@@ -10,16 +10,16 @@ import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.db.schemas.Employees
 import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.io.properties.PreferencesFile.INVOICE_QUICK_SELECT_CUSTOMER
 import com.hendraanggrian.openpss.i18n.Resourced
+import com.hendraanggrian.openpss.io.properties.PreferencesFile.INVOICE_QUICK_SELECT_CUSTOMER
 import com.hendraanggrian.openpss.ui.invoice.order.AddOffsetPopover
 import com.hendraanggrian.openpss.ui.invoice.order.AddOtherPopover
 import com.hendraanggrian.openpss.ui.invoice.order.AddPlatePopover
 import com.hendraanggrian.openpss.util.PATTERN_DATE
+import com.hendraanggrian.openpss.util.bold
 import com.hendraanggrian.openpss.util.currencyCell
 import com.hendraanggrian.openpss.util.currencyConverter
 import com.hendraanggrian.openpss.util.getColor
-import com.hendraanggrian.openpss.util.getFont
 import com.hendraanggrian.openpss.util.numberCell
 import com.hendraanggrian.openpss.util.stringCell
 import javafx.beans.property.DoubleProperty
@@ -86,9 +86,9 @@ class InvoiceDialog(
         gridPane {
             gap = 8.0
             label(getString(R.string.employee)) col 0 row 0
-            label(employee!!.name) { font = getFont(R.font.sf_pro_text_bold) } col 1 row 0
+            label(employee!!.name) { font = bold() } col 1 row 0
             label(getString(R.string.date)) col 2 row 0 hpriority ALWAYS halign RIGHT
-            label(dateTime.toString(PATTERN_DATE)) { font = getFont(R.font.sf_pro_text_bold) } col 3 row 0
+            label(dateTime.toString(PATTERN_DATE)) { font = bold() } col 3 row 0
             label(getString(R.string.customer)) col 0 row 1
             button {
                 isDisable = isEdit()
@@ -149,7 +149,7 @@ class InvoiceDialog(
             } col 1 row 5 colSpans 3
             label(getString(R.string.total)) col 0 row 6
             label {
-                font = getFont(R.font.sf_pro_text_bold)
+                font = bold()
                 textProperty().bind(stringBindingOf(totalProperty) {
                     currencyConverter.toString(totalProperty.value)
                 })

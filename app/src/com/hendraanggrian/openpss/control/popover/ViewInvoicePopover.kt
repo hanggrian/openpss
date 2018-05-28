@@ -12,8 +12,8 @@ import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.i18n.Language
 import com.hendraanggrian.openpss.i18n.Resourced
 import com.hendraanggrian.openpss.util.PATTERN_DATETIME_EXTENDED
+import com.hendraanggrian.openpss.util.bold
 import com.hendraanggrian.openpss.util.currencyConverter
-import com.hendraanggrian.openpss.util.getFont
 import com.hendraanggrian.openpss.util.numberConverter
 import javafx.geometry.HPos.RIGHT
 import javafx.geometry.Insets
@@ -84,17 +84,17 @@ class ViewInvoicePopover(invoice: Invoice) : Popover(object : Resourced {
                 vbox {
                     alignment = CENTER_LEFT
                     invoiceHeaders.forEachIndexed { index, s ->
-                        label(s) { if (index == 0) font = getFont(R.font.sf_pro_text_bold) }
+                        label(s) { if (index == 0) font = bold() }
                     }
                 } row 0 col 0
                 vbox {
                     alignment = CENTER_RIGHT
-                    label(getString(R.string.invoice)) { font = getFont(R.font.sf_pro_text_bold, 32) }
-                    label("# ${invoice.no}") { font = getFont(R.font.sf_pro_text_bold, 18) }
+                    label(getString(R.string.invoice)) { font = bold(32) }
+                    label("# ${invoice.no}") { font = bold(18) }
                 } row 0 col 1 colSpans 2
                 line(endX = EXPECTED_WIDTH - 32.0) row 1 col 0 colSpans 3
                 label(customer.name) {
-                    font = getFont(R.font.sf_pro_text_bold, 24)
+                    font = bold(24)
                 } row 2 col 0 colSpans 2
                 label(invoice.dateTime.toString(PATTERN_DATETIME_EXTENDED) + '\n' +
                     transaction { Employees[invoice.employeeId].single().name }
@@ -110,7 +110,7 @@ class ViewInvoicePopover(invoice: Invoice) : Popover(object : Resourced {
                     var row = 0
                     invoice.plates.run {
                         if (isNotEmpty()) {
-                            label(getString(R.string.plate)) { font = getFont(R.font.sf_pro_text_bold) } row row col 0
+                            label(getString(R.string.plate)) { font = bold() } row row col 0
                             row++
                             forEach {
                                 label(it.title) row row col 0
@@ -124,7 +124,7 @@ class ViewInvoicePopover(invoice: Invoice) : Popover(object : Resourced {
                     }
                     invoice.offsets.run {
                         if (isNotEmpty()) {
-                            label(getString(R.string.offset)) { font = getFont(R.font.sf_pro_text_bold) } row row col 0
+                            label(getString(R.string.offset)) { font = bold() } row row col 0
                             row++
                             forEach {
                                 label(it.title) row row col 0
@@ -138,7 +138,7 @@ class ViewInvoicePopover(invoice: Invoice) : Popover(object : Resourced {
                     }
                     invoice.others.run {
                         if (isNotEmpty()) {
-                            label(getString(R.string.others)) { font = getFont(R.font.sf_pro_text_bold) } row row col 0
+                            label(getString(R.string.others)) { font = bold() } row row col 0
                             row++
                             forEach {
                                 label(it.title) row row col 0
@@ -154,11 +154,11 @@ class ViewInvoicePopover(invoice: Invoice) : Popover(object : Resourced {
                 textFlow {
                     paddingAll = 8.0
                     border = Border(BorderStroke(BLACK, SOLID, EMPTY, DEFAULT))
-                    "${getString(R.string.note)}\n" { font = getFont(R.font.sf_pro_text_bold) }
+                    "${getString(R.string.note)}\n" { font = bold() }
                     invoice.note()
                 } row 5 col 0 rowSpans 2
                 label(currencyConverter.toString(invoice.total)) {
-                    font = getFont(R.font.sf_pro_text_bold, 18)
+                    font = bold(18)
                 } row 5 col 1 colSpans 2 halign RIGHT
                 vbox {
                     alignment = CENTER

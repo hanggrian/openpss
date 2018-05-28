@@ -5,14 +5,14 @@ import com.hendraanggrian.openpss.control.dialog.Dialog
 import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_INVOICE_HEADERS
 import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_LANGUAGE
 import com.hendraanggrian.openpss.db.transaction
+import com.hendraanggrian.openpss.i18n.Language
+import com.hendraanggrian.openpss.i18n.Resourced
 import com.hendraanggrian.openpss.io.properties.PreferencesFile
 import com.hendraanggrian.openpss.io.properties.PreferencesFile.INVOICE_QUICK_SELECT_CUSTOMER
 import com.hendraanggrian.openpss.io.properties.PreferencesFile.WAGE_READER
-import com.hendraanggrian.openpss.i18n.Language
-import com.hendraanggrian.openpss.i18n.Resourced
 import com.hendraanggrian.openpss.ui.wage.readers.Reader
+import com.hendraanggrian.openpss.util.bold
 import com.hendraanggrian.openpss.util.clearConverters
-import com.hendraanggrian.openpss.util.getFont
 import com.hendraanggrian.openpss.util.onActionFilter
 import javafx.geometry.Pos.CENTER_LEFT
 import javafx.scene.Node
@@ -127,7 +127,7 @@ class PreferencesDialog(
         titleId: String,
         init: (@LayoutDsl _VBox).() -> Unit
     ): VBox = ktfx.layouts.vbox(4.0) {
-        label(getString(titleId)) { font = getFont(R.font.sf_pro_text_bold) }
+        label(getString(titleId)) { font = bold() }
         init()
     }
 
@@ -135,7 +135,7 @@ class PreferencesDialog(
         titleId: String,
         init: (@LayoutDsl _VBox).() -> Unit
     ): VBox = vbox(4.0) {
-        label(getString(titleId)) { font = getFont(R.font.sf_pro_text_bold) }
+        label(getString(titleId)) { font = bold() }
         init()
     }
 

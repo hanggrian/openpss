@@ -2,8 +2,8 @@ package com.hendraanggrian.openpss.ui.wage.record
 
 import com.hendraanggrian.openpss.BuildConfig.DEBUG
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.control.popover.DatePopover
 import com.hendraanggrian.openpss.control.UncollapsibleTreeItem
+import com.hendraanggrian.openpss.control.popover.DatePopover
 import com.hendraanggrian.openpss.io.WageContentFolder
 import com.hendraanggrian.openpss.io.WageFile
 import com.hendraanggrian.openpss.layout.TimeBox
@@ -13,8 +13,8 @@ import com.hendraanggrian.openpss.ui.wage.record.Record.Companion.getDummy
 import com.hendraanggrian.openpss.util.PATTERN_DATE
 import com.hendraanggrian.openpss.util.PATTERN_DATETIME
 import com.hendraanggrian.openpss.util.PATTERN_TIME
+import com.hendraanggrian.openpss.util.bold
 import com.hendraanggrian.openpss.util.currencyConverter
-import com.hendraanggrian.openpss.util.getFont
 import com.hendraanggrian.openpss.util.getResource
 import com.hendraanggrian.openpss.util.getStyle
 import com.hendraanggrian.openpss.util.numberConverter
@@ -94,7 +94,7 @@ class WageRecordController : Controller() {
                             else -> any.toString()
                         }) {
                             if (treeTableRow.treeItem?.value?.isTotal() == true) {
-                                font = getFont(R.font.sf_pro_text_bold)
+                                font = bold()
                             }
                         }
                     }

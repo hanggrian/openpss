@@ -7,9 +7,9 @@ import com.hendraanggrian.openpss.control.popover.ResultablePopover
 import com.hendraanggrian.openpss.db.Order
 import com.hendraanggrian.openpss.db.Titled
 import com.hendraanggrian.openpss.i18n.Resourced
+import com.hendraanggrian.openpss.util.bold
 import com.hendraanggrian.openpss.util.currencyConverter
 import com.hendraanggrian.openpss.util.getColor
-import com.hendraanggrian.openpss.util.getFont
 import javafx.beans.Observable
 import javafx.beans.value.ObservableBooleanValue
 import javafx.scene.control.TextField
@@ -46,7 +46,7 @@ abstract class AddOrderPopover<T : Titled>(
             (children.size / 2).let { totalRow ->
                 label(getString(R.string.total)) col 0 row totalRow
                 label {
-                    font = getFont(R.font.sf_pro_text_bold)
+                    font = bold()
                     textProperty().bind(stringBindingOf(*totalBindingDependencies) {
                         currencyConverter.toString(total)
                     })

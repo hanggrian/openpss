@@ -3,8 +3,8 @@ package com.hendraanggrian.openpss.ui.finance
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.popover.Popover
 import com.hendraanggrian.openpss.i18n.Resourced
+import com.hendraanggrian.openpss.util.bold
 import com.hendraanggrian.openpss.util.currencyConverter
-import com.hendraanggrian.openpss.util.getFont
 import javafx.geometry.HPos.RIGHT
 import ktfx.layouts.columnConstraints
 import ktfx.layouts.gridPane
@@ -38,10 +38,10 @@ class ViewTotalPopover(
             label(getString(R.string.transfer)) col 0 row 4
             label(currencyConverter.toString(transfer)) col 1 row 4
             label(getString(R.string.total)) {
-                font = getFont(R.font.sf_pro_text_bold)
+                font = bold()
             } col 0 row 5
             label(currencyConverter.toString(cash + credit + debit + cheque + transfer)) {
-                font = getFont(R.font.sf_pro_text_bold)
+                font = bold()
             } col 1 row 5
         }
     }

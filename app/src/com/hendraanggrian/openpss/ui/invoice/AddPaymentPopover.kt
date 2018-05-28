@@ -13,9 +13,9 @@ import com.hendraanggrian.openpss.db.schemas.Payment.Method.values
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.i18n.Resourced
 import com.hendraanggrian.openpss.ui.Selectable
+import com.hendraanggrian.openpss.util.bold
 import com.hendraanggrian.openpss.util.currencyConverter
 import com.hendraanggrian.openpss.util.getColor
-import com.hendraanggrian.openpss.util.getFont
 import javafx.scene.Node
 import javafx.scene.control.ChoiceBox
 import javafx.scene.control.SelectionModel
@@ -54,11 +54,11 @@ class AddPaymentPopover(
             gap = 8.0
             label(getString(R.string.employee)) row 0 col 0
             label(employee.name) {
-                font = getFont(R.font.sf_pro_text_bold)
+                font = bold()
             } row 0 col 1 colSpans 2
             label(getString(R.string.receivable)) row 1 col 0
             label(currencyConverter.toString(receivable)) {
-                font = getFont(R.font.sf_pro_text_bold)
+                font = bold()
             } row 1 col 1 colSpans 2
             label(getString(R.string.payment)) row 2 col 0
             valueField = doubleField { promptText = getString(R.string.payment) } row 2 col 1
@@ -68,7 +68,7 @@ class AddPaymentPopover(
             } row 2 col 2
             label(getString(R.string.remaining)) row 3 col 0
             label {
-                font = getFont(R.font.sf_pro_text_bold)
+                font = bold()
                 textProperty().bind(stringBindingOf(valueField.valueProperty()) {
                     (receivable - valueField.value).let { remaining ->
                         when (remaining) {

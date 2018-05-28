@@ -10,6 +10,7 @@ import com.hendraanggrian.openpss.control.dialog.Dialog
 import com.hendraanggrian.openpss.i18n.Resourced
 import com.hendraanggrian.openpss.ui.Selectable
 import com.hendraanggrian.openpss.ui.main.github.GitHubApi
+import com.hendraanggrian.openpss.util.bold
 import com.hendraanggrian.openpss.util.browseUrl
 import com.hendraanggrian.openpss.util.getFont
 import com.hendraanggrian.openpss.util.getStyle
@@ -59,7 +60,7 @@ class AboutDialog(resourced: Resourced) : Dialog<Nothing>(resourced), Selectable
             onUpdate { license, empty ->
                 if (license != null && !empty) graphic = ktfx.layouts.vbox {
                     label(license.repo) { font = font(12.0) }
-                    label(license.owner) { font = getFont(R.font.sf_pro_text_bold, 12) }
+                    label(license.owner) { font = bold(12) }
                 }
             }
         }
@@ -76,18 +77,18 @@ class AboutDialog(resourced: Resourced) : Dialog<Nothing>(resourced), Selectable
                 vbox {
                     alignment = CENTER_LEFT
                     textFlow {
-                        "${FULL_NAME.substringBefore(' ')} " { font = getFont(R.font.sf_pro_text_bold, 24) }
+                        "${FULL_NAME.substringBefore(' ')} " { font = bold(24) }
                         (FULL_NAME.substringAfter(' ')) { font = getFont(R.font.sf_pro_text_light, 24) }
                     }
                     text("${getString(R.string.version)} $VERSION") { font = font(12.0) } marginTop 2.0
                     text(getString(R.string.built_with_open_source_software_expand_to_see_licenses)) marginTop 20.0
                     textFlow {
                         "${getString(R.string.powered_by)} " { font = font(12.0) }
-                        "JavaFX" { font = getFont(R.font.sf_pro_text_bold, 12) }
+                        "JavaFX" { font = bold(12) }
                     } marginTop 4.0
                     textFlow {
                         "${getString(R.string.author)} " { font = font(12.0) }
-                        USER { font = getFont(R.font.sf_pro_text_bold, 12) }
+                        USER { font = bold(12) }
                     } marginTop 4.0
                     hbox {
                         button("GitHub") { onAction { browseUrl(WEBSITE) } }

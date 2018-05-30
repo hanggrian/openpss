@@ -131,52 +131,50 @@ class CustomerController : SegmentedController(), Refreshable, Selectable<Custom
         valueColumn.stringCell { value }
     }
 
-    override fun refresh() {
-        later {
-            customerPagination.contentFactoryProperty().bind(bindingOf(
-                searchField.textProperty(),
-                filterNameItem.selectedProperty(),
-                filterAddressItem.selectedProperty(),
-                filterNoteItem.selectedProperty()
-            ) {
-                Callback<Pair<Int, Int>, Node> { (page, count) ->
-                    customerList = listView {
-                        later {
-                            transaction {
-                                val customers = Customers.buildQuery {
-                                    if (searchField.text.isNotBlank()) {
-                                        if (filterNameItem.isSelected)
-                                            or(it.name.matches(searchField.text, CASE_INSENSITIVE))
-                                        if (filterAddressItem.isSelected)
-                                            or(it.address.matches(searchField.text, CASE_INSENSITIVE))
-                                        if (filterNoteItem.isSelected)
-                                            or(it.note.matches(searchField.text, CASE_INSENSITIVE))
-                                    }
+    override fun refresh() = later {
+        customerPagination.contentFactoryProperty().bind(bindingOf(
+            searchField.textProperty(),
+            filterNameItem.selectedProperty(),
+            filterAddressItem.selectedProperty(),
+            filterNoteItem.selectedProperty()
+        ) {
+            Callback<Pair<Int, Int>, Node> { (page, count) ->
+                customerList = listView {
+                    later {
+                        transaction {
+                            val customers = Customers.buildQuery {
+                                if (searchField.text.isNotBlank()) {
+                                    if (filterNameItem.isSelected)
+                                        or(it.name.matches(searchField.text, CASE_INSENSITIVE))
+                                    if (filterAddressItem.isSelected)
+                                        or(it.address.matches(searchField.text, CASE_INSENSITIVE))
+                                    if (filterNoteItem.isSelected)
+                                        or(it.note.matches(searchField.text, CASE_INSENSITIVE))
                                 }
-                                customerPagination.pageCount = ceil(customers.count() / count.toDouble()).toInt()
-                                items = customers
-                                    .skip(count * page)
-                                    .take(count).toMutableObservableList()
-                                val fullAccess = login.isAtLeast(MANAGER).toReadOnlyProperty()
-                                editButton.disableProperty().bind(!selectedBinding or !fullAccess)
-                                addContactItem.disableProperty().bind(!selectedBinding)
-                                deleteContactItem.disableProperty().bind(!selectedBinding2 or !fullAccess)
                             }
+                            customerPagination.pageCount = ceil(customers.count() / count.toDouble()).toInt()
+                            items = customers
+                                .skip(count * page)
+                                .take(count).toMutableObservableList()
+                            val fullAccess = login.isAtLeast(MANAGER).toReadOnlyProperty()
+                            editButton.disableProperty().bind(!selectedBinding or !fullAccess)
+                            addContactItem.disableProperty().bind(!selectedBinding)
+                            deleteContactItem.disableProperty().bind(!selectedBinding2 or !fullAccess)
                         }
                     }
-                    nameLabel.bindLabel { selected?.name.orEmpty() }
-                    idLabel.bindLabel { selected?.id?.toString().orEmpty() }
-                    sinceLabel.bindLabel { selected?.since?.toString(PATTERN_DATE).orEmpty() }
-                    addressLabel.bindLabel { selected?.address ?: "-" }
-                    noteLabel.bindLabel { selected?.note ?: "-" }
-                    contactTable.itemsProperty().bind(bindingOf(selectedProperty) {
-                        selected?.contacts?.toObservableList() ?: emptyObservableList()
-                    })
-                    masterDetailPane.showDetailNodeProperty().bind(selectedBinding)
-                    customerList
                 }
-            })
-        }
+                nameLabel.bindLabel { selected?.name.orEmpty() }
+                idLabel.bindLabel { selected?.id?.toString().orEmpty() }
+                sinceLabel.bindLabel { selected?.since?.toString(PATTERN_DATE).orEmpty() }
+                addressLabel.bindLabel { selected?.address ?: "-" }
+                noteLabel.bindLabel { selected?.note ?: "-" }
+                contactTable.itemsProperty().bind(bindingOf(selectedProperty) {
+                    selected?.contacts?.toObservableList() ?: emptyObservableList()
+                })
+                masterDetailPane.showDetailNodeProperty().bind(selectedBinding)
+                customerList
+            }
+        })
     }
 
     fun add() = InputUserPopover(this, R.string.add_customer).showAt(addButton) {

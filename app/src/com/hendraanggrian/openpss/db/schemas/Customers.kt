@@ -37,6 +37,7 @@ data class Customer(
     var note: String?,
     var contacts: List<Contact>
 ) : Document<Customers>, Named {
+
     companion object {
         fun new(name: String): Customer = Customer(name, dbDate, null, null, listOf())
     }

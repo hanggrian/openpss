@@ -39,9 +39,10 @@ class App : Application(), Resourced {
         @JvmStatic fun main(args: Array<String>) = launch<App>(*args)
     }
 
-    override val resources: ResourceBundle = PreferencesFile.language.toResourcesBundle()
+    override lateinit var resources: ResourceBundle
 
     override fun init() {
+        resources = PreferencesFile.language.toResourcesBundle()
         if (DEBUG) configure()
     }
 

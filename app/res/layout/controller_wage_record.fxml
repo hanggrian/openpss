@@ -4,8 +4,7 @@
 <?import com.hendraanggrian.openpss.layout.TimeBox?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.*?>
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.hendraanggrian.openpss.ui.wage.record.WageRecordController"
       fx:id="root">
@@ -36,9 +35,11 @@
                 <Image url="@/image/btn_disable_daily_light.png"/>
             </ImageView>
         </StretchableButton>
-        <StretchableButton mnemonicParsing="false" onAction="#screenshot" stretchableText="%screenshot">
+        <Region HBox.hgrow="ALWAYS"/>
+        <StretchableButton mnemonicParsing="false" onAction="#screenshot" stretchableText="%screenshot"
+                           styleClass="default-button">
             <ImageView>
-                <Image url="@/image/btn_screenshot_light.png"/>
+                <Image url="@/image/btn_screenshot_dark.png"/>
             </ImageView>
         </StretchableButton>
     </HBox>

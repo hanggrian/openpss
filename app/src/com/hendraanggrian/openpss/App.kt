@@ -54,10 +54,10 @@ class App : Application(), Resourced {
 
             stage.apply {
                 val loader = FXMLLoader(getResource(R.layout.controller_main), resources)
-                title = "$APP_NAME - ${employee.name} [${employee.typedRole}]".let { if (DEBUG) "$it - DEBUG" else it }
+                title = "$APP_NAME - ${employee.name}".let { if (DEBUG) "$it - DEBUG" else it }
                 scene = styledScene(getStyle(R.style.openpss), loader.pane)
                 setMinSize(800.0, 450.0)
-                loader.controller.login = employee
+                loader.controller.employee = employee
             }.show()
 
             if (employee.isFirstTimeLogin) ChangePasswordDialog(this).showAndWait().ifPresent { newPassword ->

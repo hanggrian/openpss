@@ -25,10 +25,11 @@ import ktfx.beans.value.or
 import ktfx.collections.toMutableObservableList
 import ktfx.coroutines.onAction
 import ktfx.layouts.TableColumnsBuilder
+import ktfx.layouts._HBox
+import ktfx.layouts.anchorPane
 import ktfx.layouts.hbox
 import ktfx.layouts.separator
 import ktfx.layouts.tableView
-import ktfx.layouts.vbox
 import ktfx.scene.control.closeButton
 
 abstract class TableDialog<D : Document<S>, S : DocumentSchema<D>>(
@@ -47,33 +48,35 @@ abstract class TableDialog<D : Document<S>, S : DocumentSchema<D>>(
 
     override val selectionModel: SelectionModel<D> get() = table.selectionModel
 
+    val buttonBox: _HBox get() = graphic as _HBox
+
     init {
-        vbox(8.0) {
-            hbox(8.0) {
-                refreshButton = styledStretchableButton(STYLE_DEFAULT_BUTTON, getString(R.string.refresh),
-                    ImageView(R.image.btn_refresh_dark)) {
-                    onAction { refresh() }
-                }
-                separator(VERTICAL)
-                addButton = stretchableButton(getString(R.string.add), ImageView(R.image.btn_add_light)) {
-                    onAction { this@TableDialog.add() }
-                }
-                deleteButton = stretchableButton(getString(R.string.delete), ImageView(R.image.btn_delete_light)) {
-                    onAction { delete() }
-                    later {
-                        transaction {
-                            disableProperty().bind(selectedProperty.isNull or
-                                !employee.isAtLeast(Employee.Role.MANAGER).toProperty())
-                        }
+        isResizable = true
+        graphic = hbox(8.0) {
+            refreshButton = styledStretchableButton(STYLE_DEFAULT_BUTTON, getString(R.string.refresh),
+                ImageView(R.image.btn_refresh_dark)) {
+                onAction { refresh() }
+            }
+            separator(VERTICAL)
+            addButton = stretchableButton(getString(R.string.add), ImageView(R.image.btn_add_light)) {
+                onAction { this@TableDialog.add() }
+            }
+            deleteButton = stretchableButton(getString(R.string.delete), ImageView(R.image.btn_delete_light)) {
+                onAction { delete() }
+                later {
+                    transaction {
+                        disableProperty().bind(selectedProperty.isNull or !employee.isAdmin().toProperty())
                     }
                 }
             }
-            table = tableView {
+        }
+        anchorPane {
+            table = tableView<D> {
                 columnResizePolicy = CONSTRAINED_RESIZE_POLICY
                 isEditable = true
-            }
+            } anchorAll 1.0
         }
-        refresh()
+        @Suppress("LeakingThis") refresh()
         closeButton()
     }
 
@@ -85,7 +88,7 @@ abstract class TableDialog<D : Document<S>, S : DocumentSchema<D>>(
         table.columns += it
     }
 
-    final override fun refresh() {
+    override fun refresh() {
         table.items = transaction { schema().toMutableObservableList() }
     }
 

@@ -1,4 +1,4 @@
-package com.hendraanggrian.openpss.ui.invoice.price
+package com.hendraanggrian.openpss.ui.main.edit.price
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.db.schemas.Employee

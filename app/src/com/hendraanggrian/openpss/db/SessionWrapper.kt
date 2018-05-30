@@ -68,8 +68,7 @@ class SessionWrapper(val session: MongoDBSession) :
         QueryBuilderImpl().apply { builder(this@buildQuery) }.build()
     }
 
-    inline fun Employee.isAtLeast(role: Employee.Role): Boolean =
-        Employees[this].single().typedRole.accessLevel >= role.accessLevel
+    inline fun Employee.isAdmin(): Boolean = Employees[this].single().admin
 
     inline fun findGlobalSettings(
         key: String

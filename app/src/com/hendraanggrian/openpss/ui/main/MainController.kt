@@ -1,6 +1,5 @@
 package com.hendraanggrian.openpss.ui.main
 
-import com.hendraanggrian.openpss.db.schemas.Employee.Role.MANAGER
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.layout.SegmentedTabPane
 import com.hendraanggrian.openpss.ui.Controller
@@ -8,11 +7,12 @@ import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.SegmentedController
 import com.hendraanggrian.openpss.ui.Selectable
 import com.hendraanggrian.openpss.ui.customer.CustomerController
-import com.hendraanggrian.openpss.ui.employee.EditEmployeeDialog
+import com.hendraanggrian.openpss.ui.main.edit.EditEmployeeDialog
 import com.hendraanggrian.openpss.ui.finance.FinanceController
 import com.hendraanggrian.openpss.ui.invoice.InvoiceController
-import com.hendraanggrian.openpss.ui.invoice.price.EditOffsetPriceDialog
-import com.hendraanggrian.openpss.ui.invoice.price.EditPlatePriceDialog
+import com.hendraanggrian.openpss.ui.main.edit.price.EditOffsetPriceDialog
+import com.hendraanggrian.openpss.ui.main.edit.price.EditPlatePriceDialog
+import com.hendraanggrian.openpss.ui.main.help.AboutDialog
 import com.hendraanggrian.openpss.ui.schedule.ScheduleController
 import com.hendraanggrian.openpss.ui.wage.WageController
 import javafx.event.ActionEvent
@@ -72,7 +72,7 @@ class MainController : Controller(), Selectable<Tab> {
         later {
             controllers = listOf(customerController, invoiceController, scheduleController, financeController,
                 wageController)
-            controllers.forEach { it.login = login }
+            controllers.forEach { it.employee = employee }
             financeController.addExtra(FinanceController.EXTRA_MAIN_CONTROLLER, this)
         }
     }
@@ -85,13 +85,13 @@ class MainController : Controller(), Selectable<Tab> {
     @FXML fun quit() = exit()
 
     @FXML fun editPrice(event: ActionEvent) = when (platePriceItem) {
-        event.source -> EditPlatePriceDialog(this, login)
-        else -> EditOffsetPriceDialog(this, login)
+        event.source -> EditPlatePriceDialog(this, employee)
+        else -> EditOffsetPriceDialog(this, employee)
     }.show()
 
-    @FXML fun editEmployee() = EditEmployeeDialog(this, login).show()
+    @FXML fun editEmployee() = EditEmployeeDialog(this, employee).show()
 
-    @FXML fun preferences() = PreferencesDialog(this, transaction { login.isAtLeast(MANAGER) }).show()
+    @FXML fun preferences() = PreferencesDialog(this, transaction { employee.isAdmin() }).show()
 
     @FXML fun about() = AboutDialog(this).show()
 

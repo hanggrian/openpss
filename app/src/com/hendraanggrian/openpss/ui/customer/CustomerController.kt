@@ -9,7 +9,6 @@ import com.hendraanggrian.openpss.control.stretchableButton
 import com.hendraanggrian.openpss.control.styledStretchableButton
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Customers
-import com.hendraanggrian.openpss.db.schemas.Employee.Role.MANAGER
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.SegmentedController
@@ -156,7 +155,7 @@ class CustomerController : SegmentedController(), Refreshable, Selectable<Custom
                             items = customers
                                 .skip(count * page)
                                 .take(count).toMutableObservableList()
-                            val fullAccess = login.isAtLeast(MANAGER).toReadOnlyProperty()
+                            val fullAccess = employee.isAdmin().toReadOnlyProperty()
                             editButton.disableProperty().bind(!selectedBinding or !fullAccess)
                             addContactItem.disableProperty().bind(!selectedBinding)
                             deleteContactItem.disableProperty().bind(!selectedBinding2 or !fullAccess)

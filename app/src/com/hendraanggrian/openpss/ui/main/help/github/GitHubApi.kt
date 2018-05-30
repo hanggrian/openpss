@@ -1,4 +1,4 @@
-package com.hendraanggrian.openpss.ui.main.github
+package com.hendraanggrian.openpss.ui.main.help.github
 
 import com.google.common.util.concurrent.ListenableFuture
 import com.hendraanggrian.openpss.BuildConfig.ARTIFACT
@@ -28,6 +28,7 @@ interface GitHubApi {
             .baseUrl(END_POINT)
             .addCallAdapterFactory(GuavaCallAdapterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())
-            .build().create(GitHubApi::class.java)
+            .build()
+            .create(GitHubApi::class.java)
     }
 }

@@ -9,11 +9,7 @@ import java.util.ResourceBundle
 /** Base class of all controllers. */
 open class Controller : Initializable, Resourced {
 
-    /**
-     * Field name starts with underscore to avoid conflict with
-     * [com.hendraanggrian.openpss.ui.employee.EmployeeController].
-     */
-    lateinit var login: Employee
+    lateinit var employee: Employee
 
     override lateinit var resources: ResourceBundle
 

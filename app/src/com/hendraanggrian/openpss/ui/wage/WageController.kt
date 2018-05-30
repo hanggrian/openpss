@@ -106,7 +106,7 @@ class WageController : SegmentedController() {
 
     private fun disableRecess() = DisableRecessPopover(this, attendeePanes).showAt(disableRecessButton)
 
-    private fun recess() = EditRecessDialog(this, login).show()
+    private fun recess() = EditRecessDialog(this, employee).show()
 
     private fun history() = openFile(WageFolder)
 

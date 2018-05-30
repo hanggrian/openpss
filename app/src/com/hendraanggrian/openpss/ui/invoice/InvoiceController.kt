@@ -12,7 +12,6 @@ import com.hendraanggrian.openpss.control.styledStretchableButton
 import com.hendraanggrian.openpss.db.SessionWrapper
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Customers
-import com.hendraanggrian.openpss.db.schemas.Employee.Role.MANAGER
 import com.hendraanggrian.openpss.db.schemas.Employees
 import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.db.schemas.Invoices
@@ -258,7 +257,7 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
                             invoiceTable.items = invoices
                                 .skip(count * page)
                                 .take(count).toMutableObservableList()
-                            val fullAccess = login.isAtLeast(MANAGER).toReadOnlyProperty()
+                            val fullAccess = employee.isAdmin().toReadOnlyProperty()
                             editButton.disableProperty().bind(!selectedBinding or !fullAccess)
                             deleteButton.disableProperty().bind(!selectedBinding or !fullAccess)
                         }
@@ -268,7 +267,7 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
         })
     }
 
-    fun addInvoice() = InvoiceDialog(this, employee = login).showAndWait().ifPresent {
+    fun addInvoice() = InvoiceDialog(this, employee = employee).showAndWait().ifPresent {
         transaction {
             it.id = Invoices.insert(it)
             invoiceTable.items.add(it)
@@ -301,7 +300,7 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
 
     fun viewInvoice() = ViewInvoicePopover(selected!!).showAt(invoiceTable)
 
-    private fun addPayment() = AddPaymentPopover(this, login, selected!!).showAt(deletePaymentButton) {
+    private fun addPayment() = AddPaymentPopover(this, employee, selected!!).showAt(deletePaymentButton) {
         transaction {
             Payments += it
             updatePaymentStatus()

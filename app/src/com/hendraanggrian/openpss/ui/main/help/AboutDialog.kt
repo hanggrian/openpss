@@ -1,4 +1,4 @@
-package com.hendraanggrian.openpss.ui.main
+package com.hendraanggrian.openpss.ui.main.help
 
 import com.hendraanggrian.openpss.BuildConfig.DEBUG
 import com.hendraanggrian.openpss.BuildConfig.FULL_NAME
@@ -9,7 +9,8 @@ import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.dialog.Dialog
 import com.hendraanggrian.openpss.i18n.Resourced
 import com.hendraanggrian.openpss.ui.Selectable
-import com.hendraanggrian.openpss.ui.main.github.GitHubApi
+import com.hendraanggrian.openpss.ui.main.License
+import com.hendraanggrian.openpss.ui.main.help.github.GitHubApi
 import com.hendraanggrian.openpss.util.bold
 import com.hendraanggrian.openpss.util.browseUrl
 import com.hendraanggrian.openpss.util.getFont

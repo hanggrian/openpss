@@ -1,4 +1,4 @@
-package com.hendraanggrian.openpss.ui.main.github
+package com.hendraanggrian.openpss.ui.main.help.github
 
 import com.google.gson.annotations.SerializedName
 import com.hendraanggrian.openpss.BuildConfig.VERSION

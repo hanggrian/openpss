@@ -20,5 +20,5 @@ fun openFile(file: File) {
 }
 
 private inline fun ensureDesktopAvailable(): Boolean = isDesktopSupported().also {
-    if (!it) styledErrorAlert(getStyle(R.style.openpss), "Desktop isn't supported!").show()
+    if (!it) styledErrorAlert(getStyle(R.style.openpss), "Desktop is not supported.").show()
 }

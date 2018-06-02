@@ -25,5 +25,6 @@ class StretchableSplitMenuButton @JvmOverloads constructor(
 
     init {
         initialize()
+        setGraphic(graphic)
     }
 }

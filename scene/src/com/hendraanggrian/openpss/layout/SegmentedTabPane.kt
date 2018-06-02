@@ -13,6 +13,10 @@ import org.controlsfx.control.SegmentedButton
 
 class SegmentedTabPane : TabPane() {
 
+    private companion object {
+        const val STRETCH_POINT = 1100
+    }
+
     var header: SegmentedButton = SegmentedButton()
     var isTextStretchable: Boolean = false
 
@@ -46,7 +50,7 @@ class SegmentedTabPane : TabPane() {
     private fun populate(tabs: Collection<Tab>) {
         header.buttons += tabs.map {
             when {
-                isTextStretchable -> StretchableToggleButton(it.text, it.graphic)
+                isTextStretchable -> StretchableToggleButton(STRETCH_POINT, it.text, it.graphic)
                 else -> ToggleButton(it.text, it.graphic)
             }
         }

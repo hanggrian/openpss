@@ -7,9 +7,9 @@ import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.SegmentedController
 import com.hendraanggrian.openpss.ui.Selectable
 import com.hendraanggrian.openpss.ui.customer.CustomerController
-import com.hendraanggrian.openpss.ui.main.edit.EditEmployeeDialog
 import com.hendraanggrian.openpss.ui.finance.FinanceController
 import com.hendraanggrian.openpss.ui.invoice.InvoiceController
+import com.hendraanggrian.openpss.ui.main.edit.EditEmployeeDialog
 import com.hendraanggrian.openpss.ui.main.edit.price.EditOffsetPriceDialog
 import com.hendraanggrian.openpss.ui.main.edit.price.EditPlatePriceDialog
 import com.hendraanggrian.openpss.ui.main.help.AboutDialog
@@ -24,7 +24,7 @@ import javafx.scene.control.Tab
 import javafx.scene.layout.AnchorPane
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.HBox
-import ktfx.application.exit
+import ktfx.application.Platform
 import ktfx.application.later
 import ktfx.coroutines.listener
 import org.apache.commons.lang3.SystemUtils.IS_OS_MAC
@@ -82,7 +82,10 @@ class MainController : Controller(), Selectable<Tab> {
         else -> select(invoiceController) { addInvoice() }
     }
 
-    @FXML fun quit() = exit()
+    @FXML fun quit() {
+        Platform.tkExit()
+        Platform.exit()
+    }
 
     @FXML fun editPrice(event: ActionEvent) = when (platePriceItem) {
         event.source -> EditPlatePriceDialog(this, employee)

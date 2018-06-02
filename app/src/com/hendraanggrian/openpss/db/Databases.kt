@@ -23,7 +23,7 @@ import com.mongodb.ServerAddress
 import kotlinx.coroutines.experimental.async
 import kotlinx.nosql.equal
 import kotlinx.nosql.mongodb.MongoDB
-import ktfx.application.exit
+import ktfx.application.Platform
 import ktfx.scene.control.styledErrorAlert
 import org.joda.time.DateTime
 import org.joda.time.LocalDate
@@ -46,7 +46,10 @@ fun <T> transaction(statement: SessionWrapper.() -> T): T = try {
     if (DEBUG) e.printStackTrace()
     styledErrorAlert(getStyle(R.style.openpss), e.message.toString()) {
         headerText = "Connection closed. Please sign in again."
-    }.showAndWait().ifPresent { exit() }
+    }.showAndWait().ifPresent {
+        Platform.tkExit()
+        Platform.exit()
+    }
     error("Connection closed. Please sign in again.")
 }
 

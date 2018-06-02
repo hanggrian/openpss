@@ -4,13 +4,13 @@ package com.hendraanggrian.openpss.util
 
 import javafx.geometry.Pos
 import javafx.scene.control.TreeTableColumn
-import ktfx.beans.property.toReadOnlyProperty
+import ktfx.beans.property.toProperty
 import ktfx.styles.labeledStyle
 
 inline fun <T> TreeTableColumn<T, String>.stringCell(noinline target: T.() -> Any) =
-    setCellValueFactory { it.value.value.target().let { it as? String ?: it.toString() }.toReadOnlyProperty() }
+    setCellValueFactory { it.value.value.target().let { it as? String ?: it.toString() }.toProperty() }
 
 inline fun <T> TreeTableColumn<T, String>.numberCell(noinline target: T.() -> Int) {
     style = labeledStyle { alignment = Pos.CENTER_RIGHT }
-    setCellValueFactory { numberConverter.toString(it.value.value.target()).toReadOnlyProperty() }
+    setCellValueFactory { numberConverter.toString(it.value.value.target()).toProperty() }
 }

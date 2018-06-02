@@ -21,7 +21,7 @@ import javafx.scene.control.TextArea
 import javafx.scene.layout.HBox
 import javafx.scene.layout.VBox
 import kotlinx.nosql.update
-import ktfx.beans.property.toProperty
+import ktfx.beans.property.toMutableProperty
 import ktfx.beans.value.and
 import ktfx.collections.toObservableList
 import ktfx.coroutines.listener
@@ -50,8 +50,8 @@ class PreferencesDialog(
         const val INVOICE_HEADERS_DIVIDER = "|"
     }
 
-    private var isLocalChanged = false.toProperty()
-    private var isGlobalChanged = false.toProperty()
+    private var isLocalChanged = false.toMutableProperty()
+    private var isGlobalChanged = false.toMutableProperty()
 
     private lateinit var invoiceHeadersArea: TextArea
     private lateinit var wageReaderChoice: ChoiceBox<Any>

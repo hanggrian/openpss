@@ -1,5 +1,6 @@
 package com.hendraanggrian.openpss.ui.wage
 
+import com.hendraanggrian.openpss.App.Companion.STRETCH_POINT
 import com.hendraanggrian.openpss.App.Companion.STYLE_DEFAULT_BUTTON
 import com.hendraanggrian.openpss.BuildConfig.DEBUG
 import com.hendraanggrian.openpss.R
@@ -66,23 +67,26 @@ class WageController : SegmentedController() {
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
-        browseButton = stretchableButton(getString(R.string.browse), ImageView(R.image.btn_browse_light)) {
+        browseButton = stretchableButton(STRETCH_POINT, getString(R.string.browse),
+            ImageView(R.image.btn_browse_light)) {
             onAction { browse() }
         }
-        processButton = styledStretchableButton(
-            STYLE_DEFAULT_BUTTON, getString(R.string.process), ImageView(R.image.btn_process_dark)) {
+        processButton = styledStretchableButton(STYLE_DEFAULT_BUTTON, STRETCH_POINT, getString(R.string.process),
+            ImageView(R.image.btn_process_dark)) {
             onAction { process() }
             disableProperty().bind(flowPane.children.isEmpty)
         }
-        disableRecessButton = stretchableButton(getString(R.string.disable_recess),
+        disableRecessButton = stretchableButton(STRETCH_POINT, getString(R.string.disable_recess),
             ImageView(R.image.btn_disable_recess_light)) {
             onAction { disableRecess() }
             disableProperty().bind(flowPane.children.isEmpty)
         }
-        recessButton = stretchableButton(getString(R.string.recess), ImageView(R.image.btn_recess_light)) {
+        recessButton = stretchableButton(STRETCH_POINT, getString(R.string.recess),
+            ImageView(R.image.btn_recess_light)) {
             onAction { recess() }
         }
-        historyButton = stretchableButton(getString(R.string.history), ImageView(R.image.btn_history_light)) {
+        historyButton = stretchableButton(STRETCH_POINT, getString(R.string.history),
+            ImageView(R.image.btn_history_light)) {
             onAction { history() }
         }
 

@@ -1,5 +1,6 @@
 package com.hendraanggrian.openpss.ui.finance
 
+import com.hendraanggrian.openpss.App.Companion.STRETCH_POINT
 import com.hendraanggrian.openpss.App.Companion.STYLE_DEFAULT_BUTTON
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.popover.ViewInvoicePopover
@@ -99,10 +100,11 @@ class FinanceController : SegmentedController(), Refreshable,
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
-        refreshButton = stretchableButton(getString(R.string.refresh), ImageView(R.image.btn_refresh_light)) {
+        refreshButton = stretchableButton(STRETCH_POINT, getString(R.string.refresh),
+            ImageView(R.image.btn_refresh_light)) {
             onAction { refresh() }
         }
-        viewTotalButton = styledStretchableButton(STYLE_DEFAULT_BUTTON, getString(R.string.total),
+        viewTotalButton = styledStretchableButton(STYLE_DEFAULT_BUTTON, STRETCH_POINT, getString(R.string.total),
             ImageView(R.image.btn_money_dark)) {
             onAction { viewTotal() }
         }

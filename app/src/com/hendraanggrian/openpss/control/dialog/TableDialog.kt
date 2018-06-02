@@ -13,6 +13,7 @@ import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.Selectable
 import com.hendraanggrian.openpss.util.yesNoAlert
 import javafx.geometry.Orientation.VERTICAL
+import javafx.geometry.Pos.CENTER_RIGHT
 import javafx.scene.control.SelectionModel
 import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
@@ -30,6 +31,7 @@ import ktfx.layouts.anchorPane
 import ktfx.layouts.hbox
 import ktfx.layouts.separator
 import ktfx.layouts.tableView
+import ktfx.layouts.vbox
 import ktfx.scene.control.closeButton
 
 abstract class TableDialog<D : Document<S>, S : DocumentSchema<D>>(
@@ -40,35 +42,46 @@ abstract class TableDialog<D : Document<S>, S : DocumentSchema<D>>(
     graphicId: String? = null
 ) : Dialog<Nothing>(resourced, headerId, graphicId), TableColumnsBuilder<D>, Selectable<D>, Refreshable {
 
+    private companion object {
+        const val STRETCH_POINT = 400
+    }
+
     protected lateinit var refreshButton: StretchableButton
     protected lateinit var addButton: StretchableButton
     protected lateinit var deleteButton: StretchableButton
+    protected val extraButtons: _HBox = _HBox(8.0)
 
     protected lateinit var table: TableView<D>
 
     override val selectionModel: SelectionModel<D> get() = table.selectionModel
 
-    val buttonBox: _HBox get() = graphic as _HBox
-
     init {
         isResizable = true
-        graphic = hbox(8.0) {
-            refreshButton = styledStretchableButton(STYLE_DEFAULT_BUTTON, getString(R.string.refresh),
-                ImageView(R.image.btn_refresh_dark)) {
-                onAction { refresh() }
-            }
-            separator(VERTICAL)
-            addButton = stretchableButton(getString(R.string.add), ImageView(R.image.btn_add_light)) {
-                onAction { this@TableDialog.add() }
-            }
-            deleteButton = stretchableButton(getString(R.string.delete), ImageView(R.image.btn_delete_light)) {
-                onAction { delete() }
-                later {
-                    transaction {
-                        disableProperty().bind(selectedProperty.isNull or !employee.isAdmin().toProperty())
+        graphic = vbox(8.0) {
+            alignment = CENTER_RIGHT
+            hbox(8.0) {
+                alignment = CENTER_RIGHT
+                refreshButton = styledStretchableButton(STYLE_DEFAULT_BUTTON, STRETCH_POINT, getString(R.string.refresh),
+                    ImageView(R.image.btn_refresh_dark)) {
+                    onAction { refresh() }
+                }
+                separator(VERTICAL)
+                addButton = stretchableButton(STRETCH_POINT, getString(R.string.add), ImageView(R.image.btn_add_light)) {
+                    onAction { this@TableDialog.add() }
+                }
+                deleteButton = stretchableButton(STRETCH_POINT, getString(R.string.delete),
+                    ImageView(R.image.btn_delete_light)) {
+                    onAction { delete() }
+                    later {
+                        transaction {
+                            disableProperty().bind(selectedProperty.isNull or !employee.isAdmin().toProperty())
+                        }
                     }
                 }
             }
+            extraButtons.apply {
+                alignment = CENTER_RIGHT
+            }.add()
         }
         anchorPane {
             table = tableView<D> {

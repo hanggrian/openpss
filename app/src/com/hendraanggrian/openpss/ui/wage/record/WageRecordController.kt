@@ -22,6 +22,7 @@ import com.hendraanggrian.openpss.util.openFile
 import com.hendraanggrian.openpss.util.stringCell
 import com.sun.javafx.scene.control.skin.TreeTableViewSkin
 import com.sun.javafx.scene.control.skin.VirtualFlow
+import javafx.beans.value.ObservableValue
 import javafx.fxml.FXML
 import javafx.scene.control.Button
 import javafx.scene.control.ButtonBar.ButtonData.CANCEL_CLOSE
@@ -36,7 +37,6 @@ import javafx.stage.Stage
 import ktfx.application.later
 import ktfx.beans.binding.booleanBindingOf
 import ktfx.beans.binding.stringBindingOf
-import ktfx.beans.property.asObservable
 import ktfx.beans.value.or
 import ktfx.collections.isEmpty
 import ktfx.coroutines.onAction
@@ -49,6 +49,7 @@ import ktfx.scene.snapshot
 import java.net.URL
 import java.util.ResourceBundle
 
+@Suppress("UNCHECKED_CAST")
 class WageRecordController : Controller() {
 
     companion object {
@@ -105,11 +106,11 @@ class WageRecordController : Controller() {
         nameColumn.stringCell { displayedName }
         startColumn.setCellValueFactory { it.value.value.displayedStart }
         endColumn.setCellValueFactory { it.value.value.displayedEnd }
-        dailyColumn.setCellValueFactory { it.value.value.dailyProperty.asObservable() }
-        dailyIncomeColumn.setCellValueFactory { it.value.value.dailyIncomeProperty.asObservable() }
-        overtimeColumn.setCellValueFactory { it.value.value.overtimeProperty.asObservable() }
-        overtimeIncomeColumn.setCellValueFactory { it.value.value.overtimeIncomeProperty.asObservable() }
-        totalColumn.setCellValueFactory { it.value.value.totalProperty.asObservable() }
+        dailyColumn.setCellValueFactory { it.value.value.dailyProperty as ObservableValue<Double> }
+        dailyIncomeColumn.setCellValueFactory { it.value.value.dailyIncomeProperty as ObservableValue<Double> }
+        overtimeColumn.setCellValueFactory { it.value.value.overtimeProperty as ObservableValue<Double> }
+        overtimeIncomeColumn.setCellValueFactory { it.value.value.overtimeIncomeProperty as ObservableValue<Double> }
+        totalColumn.setCellValueFactory { it.value.value.totalProperty as ObservableValue<Double> }
 
         later {
             getExtra<List<Attendee>>(EXTRA_ATTENDEES).forEach { attendee ->

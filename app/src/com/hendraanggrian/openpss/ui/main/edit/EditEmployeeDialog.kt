@@ -10,19 +10,17 @@ import com.hendraanggrian.openpss.i18n.Resourced
 import com.hendraanggrian.openpss.util.doneCell
 import com.hendraanggrian.openpss.util.getStyle
 import com.hendraanggrian.openpss.util.stringCell
-import javafx.geometry.Orientation.VERTICAL
 import javafx.scene.Node
 import kotlinx.coroutines.experimental.delay
 import kotlinx.coroutines.experimental.launch
 import kotlinx.nosql.notEqual
 import kotlinx.nosql.update
-import ktfx.beans.property.toReadOnlyProperty
+import ktfx.beans.property.toProperty
 import ktfx.beans.value.or
 import ktfx.collections.toMutableObservableList
 import ktfx.coroutines.FX
 import ktfx.coroutines.onAction
 import ktfx.layouts.button
-import ktfx.layouts.separator
 import ktfx.scene.control.styledInfoAlert
 
 class EditEmployeeDialog(
@@ -31,8 +29,7 @@ class EditEmployeeDialog(
 ) : TableDialog<Employee, Employees>(Employees, resourced, employee, R.string.employee, R.image.header_employee) {
 
     init {
-        buttonBox.run {
-            separator(VERTICAL)
+        extraButtons.run {
             button(getString(R.string.toggle_admin)) {
                 bindDisable()
                 onAction {
@@ -58,7 +55,7 @@ class EditEmployeeDialog(
         }
         launch(FX) {
             delay(100)
-            transaction { employee.isAdmin() }.toReadOnlyProperty().let {
+            transaction { employee.isAdmin() }.toProperty().let {
                 addButton.disableProperty().bind(!it)
                 deleteButton.disableProperty().bind(!selectedBinding or !it)
             }
@@ -77,5 +74,5 @@ class EditEmployeeDialog(
     }
 
     private fun Node.bindDisable() = disableProperty()
-        .bind(!selectedBinding or !transaction { employee.isAdmin().toReadOnlyProperty() })
+        .bind(!selectedBinding or !transaction { employee.isAdmin().toProperty() })
 }

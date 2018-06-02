@@ -30,6 +30,8 @@ import java.util.ResourceBundle
 class App : Application(), Resourced {
 
     companion object {
+        const val STRETCH_POINT = 1100
+
         const val STYLE_NAVIGATION_PANE = "navigation-pane"
         const val STYLE_DISPLAY_LABEL = "display-label"
         const val STYLE_DEFAULT_BUTTON = "default-button"
@@ -56,7 +58,7 @@ class App : Application(), Resourced {
                 val loader = FXMLLoader(getResource(R.layout.controller_main), resources)
                 title = "$APP_NAME - ${employee.name}".let { if (DEBUG) "$it - DEBUG" else it }
                 scene = styledScene(getStyle(R.style.openpss), loader.pane)
-                setMinSize(800.0, 450.0)
+                setMinSize(850.0, 450.0)
                 loader.controller.employee = employee
             }.show()
 

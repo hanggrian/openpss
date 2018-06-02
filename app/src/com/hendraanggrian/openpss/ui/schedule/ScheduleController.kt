@@ -1,5 +1,6 @@
 package com.hendraanggrian.openpss.ui.schedule
 
+import com.hendraanggrian.openpss.App.Companion.STRETCH_POINT
 import com.hendraanggrian.openpss.App.Companion.STYLE_DEFAULT_BUTTON
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.UncollapsibleTreeItem
@@ -52,15 +53,16 @@ class ScheduleController : SegmentedController(), Refreshable, TreeSelectable<Sc
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
-        refreshButton = stretchableButton(getString(R.string.refresh), ImageView(R.image.btn_refresh_light)) {
+        refreshButton = stretchableButton(STRETCH_POINT, getString(R.string.refresh),
+            ImageView(R.image.btn_refresh_light)) {
             onAction { refresh() }
         }
-        doneButton = styledStretchableButton(STYLE_DEFAULT_BUTTON, getString(R.string.done),
+        doneButton = styledStretchableButton(STYLE_DEFAULT_BUTTON, STRETCH_POINT, getString(R.string.done),
             ImageView(R.image.btn_done_dark)) {
             onAction { done() }
             disableProperty().bind(selecteds.isEmpty)
         }
-        historyToggle = stretchableToggleButton(R.string.history, ImageView(R.image.btn_history_light)) {
+        historyToggle = stretchableToggleButton(STRETCH_POINT, R.string.history, ImageView(R.image.btn_history_light)) {
             selectedProperty().listener { refresh() }
         }
         scheduleTable.run {

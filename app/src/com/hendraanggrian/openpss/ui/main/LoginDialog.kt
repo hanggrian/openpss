@@ -10,10 +10,10 @@ import com.hendraanggrian.openpss.control.dialog.Dialog
 import com.hendraanggrian.openpss.control.hostField
 import com.hendraanggrian.openpss.control.intField
 import com.hendraanggrian.openpss.db.login
-import com.hendraanggrian.openpss.io.properties.LoginFile
-import com.hendraanggrian.openpss.io.properties.PreferencesFile
 import com.hendraanggrian.openpss.i18n.Language
 import com.hendraanggrian.openpss.i18n.Resourced
+import com.hendraanggrian.openpss.io.properties.LoginFile
+import com.hendraanggrian.openpss.io.properties.PreferencesFile
 import com.hendraanggrian.openpss.ui.main.help.AboutDialog
 import com.hendraanggrian.openpss.util.getStyle
 import com.hendraanggrian.openpss.util.onActionFilter
@@ -23,7 +23,7 @@ import javafx.scene.control.PasswordField
 import javafx.scene.control.TextField
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.launch
-import ktfx.application.exit
+import ktfx.application.Platform
 import ktfx.application.later
 import ktfx.beans.value.isBlank
 import ktfx.beans.value.or
@@ -71,7 +71,10 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(resourced, graphicId = R.i
                         close()
                         later {
                             styledInfoAlert(getStyle(R.style.openpss), getString(R.string.please_restart))
-                                .showAndWait().ifPresent { exit() }
+                                .showAndWait().ifPresent {
+                                    Platform.tkExit()
+                                    Platform.exit()
+                                }
                         }
                     }
                 }

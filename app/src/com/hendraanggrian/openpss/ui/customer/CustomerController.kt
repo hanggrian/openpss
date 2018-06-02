@@ -1,5 +1,6 @@
 package com.hendraanggrian.openpss.ui.customer
 
+import com.hendraanggrian.openpss.App.Companion.STRETCH_POINT
 import com.hendraanggrian.openpss.App.Companion.STYLE_DEFAULT_BUTTON
 import com.hendraanggrian.openpss.App.Companion.STYLE_SEARCH_TEXTFIELD
 import com.hendraanggrian.openpss.R
@@ -42,7 +43,7 @@ import ktfx.application.later
 import ktfx.beans.binding.bindingOf
 import ktfx.beans.binding.stringBindingOf
 import ktfx.beans.binding.times
-import ktfx.beans.property.toReadOnlyProperty
+import ktfx.beans.property.toProperty
 import ktfx.beans.value.or
 import ktfx.collections.emptyObservableList
 import ktfx.collections.toMutableObservableList
@@ -101,14 +102,15 @@ class CustomerController : SegmentedController(), Refreshable, Selectable<Custom
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
-        refreshButton = stretchableButton(getString(R.string.refresh), ImageView(R.image.btn_refresh_light)) {
+        refreshButton = stretchableButton(STRETCH_POINT, getString(R.string.refresh),
+            ImageView(R.image.btn_refresh_light)) {
             onAction { refresh() }
         }
-        addButton = styledStretchableButton(STYLE_DEFAULT_BUTTON, getString(R.string.add),
+        addButton = styledStretchableButton(STYLE_DEFAULT_BUTTON, STRETCH_POINT, getString(R.string.add),
             ImageView(R.image.btn_add_dark)) {
             onAction { add() }
         }
-        editButton = stretchableButton(getString(R.string.edit), ImageView(R.image.btn_edit_light)) {
+        editButton = stretchableButton(STRETCH_POINT, getString(R.string.edit), ImageView(R.image.btn_edit_light)) {
             onAction { edit() }
         }
         searchField = styledTextField(STYLE_SEARCH_TEXTFIELD) {
@@ -155,7 +157,7 @@ class CustomerController : SegmentedController(), Refreshable, Selectable<Custom
                             items = customers
                                 .skip(count * page)
                                 .take(count).toMutableObservableList()
-                            val fullAccess = employee.isAdmin().toReadOnlyProperty()
+                            val fullAccess = employee.isAdmin().toProperty()
                             editButton.disableProperty().bind(!selectedBinding or !fullAccess)
                             addContactItem.disableProperty().bind(!selectedBinding)
                             deleteContactItem.disableProperty().bind(!selectedBinding2 or !fullAccess)

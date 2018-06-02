@@ -17,7 +17,7 @@ import javafx.collections.ObservableList
 import kotlinx.nosql.equal
 import kotlinx.nosql.update
 import ktfx.beans.binding.doubleBindingOf
-import ktfx.beans.property.toProperty
+import ktfx.beans.property.toMutableProperty
 import ktfx.beans.value.getValue
 import ktfx.beans.value.setValue
 import ktfx.collections.mutableObservableListOf
@@ -81,35 +81,36 @@ data class Attendee(
     override fun toString(): String = "$id. $name"
 
     fun toNodeRecord(resourced: Resourced): Record =
-        Record(resourced, INDEX_NODE, this, DateTime.now().toProperty(), DateTime.now().toProperty())
+        Record(resourced, INDEX_NODE, this, DateTime.now().toMutableProperty(), DateTime.now().toMutableProperty())
 
     fun toChildRecords(resourced: Resourced): Set<Record> {
         val records = mutableSetOf<Record>()
         val iterator = attendances.iterator()
         var index = 0
         while (iterator.hasNext()) records +=
-            Record(resourced, index++, this, iterator.next().toProperty(), iterator.next().toProperty())
+            Record(resourced, index++, this, iterator.next().toMutableProperty(), iterator.next().toMutableProperty())
         return records
     }
 
     fun toTotalRecords(resourced: Resourced, children: Collection<Record>): Record =
-        Record(resourced, INDEX_TOTAL, this, START_OF_TIME.toProperty(), START_OF_TIME.toProperty()).apply {
-            dailyProperty.bind(doubleBindingOf(*children.map { it.dailyProperty }.toTypedArray()) {
-                children.sumByDouble { it.daily }.round()
-            })
-            dailyIncomeProperty.bind(doubleBindingOf(*children.map { it.dailyIncomeProperty }.toTypedArray()) {
-                children.sumByDouble { it.dailyIncome }.round()
-            })
-            overtimeProperty.bind(doubleBindingOf(*children.map { it.overtimeProperty }.toTypedArray()) {
-                children.sumByDouble { it.overtime }.round()
-            })
-            overtimeIncomeProperty.bind(doubleBindingOf(*children.map { it.overtimeIncomeProperty }.toTypedArray()) {
-                children.sumByDouble { it.overtimeIncome }.round()
-            })
-            totalProperty.bind(doubleBindingOf(*children.map { it.totalProperty }.toTypedArray()) {
-                children.sumByDouble { it.total }.round()
-            })
-        }
+        Record(resourced, INDEX_TOTAL, this, START_OF_TIME.toMutableProperty(), START_OF_TIME.toMutableProperty())
+            .apply {
+                dailyProperty.bind(doubleBindingOf(*children.map { it.dailyProperty }.toTypedArray()) {
+                    children.sumByDouble { it.daily }.round()
+                })
+                dailyIncomeProperty.bind(doubleBindingOf(*children.map { it.dailyIncomeProperty }.toTypedArray()) {
+                    children.sumByDouble { it.dailyIncome }.round()
+                })
+                overtimeProperty.bind(doubleBindingOf(*children.map { it.overtimeProperty }.toTypedArray()) {
+                    children.sumByDouble { it.overtime }.round()
+                })
+                overtimeIncomeProperty.bind(doubleBindingOf(*children.map { it.overtimeIncomeProperty }.toTypedArray()) {
+                    children.sumByDouble { it.overtimeIncome }.round()
+                })
+                totalProperty.bind(doubleBindingOf(*children.map { it.totalProperty }.toTypedArray()) {
+                    children.sumByDouble { it.total }.round()
+                })
+            }
 
     companion object {
         /** Dummy for invisible [javafx.scene.control.TreeTableView] root. */

@@ -4,8 +4,8 @@ import com.hendraanggrian.openpss.BuildConfig.DEBUG
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.UncollapsibleTreeItem
 import com.hendraanggrian.openpss.control.popover.DatePopover
-import com.hendraanggrian.openpss.io.WageContentFolder
-import com.hendraanggrian.openpss.io.WageFile
+import com.hendraanggrian.openpss.io.WageContentDirectory
+import com.hendraanggrian.openpss.io.WageContentFile
 import com.hendraanggrian.openpss.layout.TimeBox
 import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.wage.Attendee
@@ -14,6 +14,7 @@ import com.hendraanggrian.openpss.util.PATTERN_DATE
 import com.hendraanggrian.openpss.util.PATTERN_DATETIME
 import com.hendraanggrian.openpss.util.PATTERN_TIME
 import com.hendraanggrian.openpss.util.bold
+import com.hendraanggrian.openpss.util.concatenate
 import com.hendraanggrian.openpss.util.currencyConverter
 import com.hendraanggrian.openpss.util.getResource
 import com.hendraanggrian.openpss.util.getStyle
@@ -23,6 +24,7 @@ import com.hendraanggrian.openpss.util.stringCell
 import com.sun.javafx.scene.control.skin.TreeTableViewSkin
 import com.sun.javafx.scene.control.skin.VirtualFlow
 import javafx.beans.value.ObservableValue
+import javafx.embed.swing.SwingFXUtils
 import javafx.fxml.FXML
 import javafx.scene.control.Button
 import javafx.scene.control.ButtonBar.ButtonData.CANCEL_CLOSE
@@ -46,8 +48,10 @@ import ktfx.listeners.cellFactory
 import ktfx.scene.control.customButton
 import ktfx.scene.control.styledInfoAlert
 import ktfx.scene.snapshot
+import java.awt.image.BufferedImage
 import java.net.URL
 import java.util.ResourceBundle
+import javax.imageio.ImageIO
 
 @Suppress("UNCHECKED_CAST")
 class WageRecordController : Controller() {
@@ -185,24 +189,26 @@ class WageRecordController : Controller() {
             undoable.append()
         }
 
-    @FXML fun screenshot() = getResource(R.style.treetableview_print).toExternalForm().let { printStylesheet ->
-        togglePrintMode(true, printStylesheet)
+    @FXML fun screenshot() {
+        val images = mutableListOf<BufferedImage>()
+        val stylesheet = getResource(R.style.treetableview_print).toExternalForm()
+        togglePrintMode(true, stylesheet)
         recordTable.scrollTo(0)
         val flow = (recordTable.skin as TreeTableViewSkin<*>).children[1] as VirtualFlow<*>
         var i = 0
         do {
-            if (DEBUG) println("Snapshoting page $i")
-            WageFile(i).write(recordTable.snapshot())
+            images += SwingFXUtils.fromFXImage(recordTable.snapshot(), null)
             recordTable.scrollTo(flow.lastVisibleCell.index)
             i++
         } while (flow.lastVisibleCell.index + 1 <
             recordTable.root.children.size + recordTable.root.children.sumBy { it.children.size })
-        togglePrintMode(false, printStylesheet)
+        togglePrintMode(false, stylesheet)
+        ImageIO.write(images.concatenate(), "png", WageContentFile)
         styledInfoAlert(getStyle(R.style.openpss), getString(R.string.screenshot_finished)) {
             customButton(getString(R.string.open_folder), CANCEL_CLOSE)
         }.showAndWait()
             .filter { it.buttonData == CANCEL_CLOSE }
-            .ifPresent { openFile(WageContentFolder) }
+            .ifPresent { openFile(WageContentDirectory) }
     }
 
     private inline val records: List<Record> get() = recordTable.root.children.flatMap { it.children }.map { it.value }

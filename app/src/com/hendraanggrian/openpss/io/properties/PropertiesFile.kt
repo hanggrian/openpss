@@ -1,6 +1,6 @@
 package com.hendraanggrian.openpss.io.properties
 
-import com.hendraanggrian.openpss.io.MainFolder
+import com.hendraanggrian.openpss.io.MainDirectory
 import kotlinx.coroutines.experimental.async
 import java.io.File
 import java.util.Properties
@@ -8,12 +8,12 @@ import kotlin.reflect.KProperty
 
 /**
  * Represents a file of [Properties] that acts as local settings.
- * It is saved as hidden file located in [MainFolder].
+ * It is saved as hidden file located in [MainDirectory].
  *
  * Since it is hidden, some systems will misrepresent file name as extension.
  * To avoid this issue, use an unusual name that is not a known file extension.
  */
-abstract class PropertiesFile(name: String) : File(MainFolder, ".$name") {
+abstract class PropertiesFile(name: String) : File(MainDirectory, ".$name") {
 
     /** Properties reference to get, set, and finally save into this file. */
     private val properties = Properties()

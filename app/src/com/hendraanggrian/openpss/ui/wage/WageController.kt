@@ -6,7 +6,7 @@ import com.hendraanggrian.openpss.BuildConfig.DEBUG
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.stretchableButton
 import com.hendraanggrian.openpss.control.styledStretchableButton
-import com.hendraanggrian.openpss.io.WageFolder
+import com.hendraanggrian.openpss.io.WageDirectory
 import com.hendraanggrian.openpss.io.properties.PreferencesFile.WAGE_READER
 import com.hendraanggrian.openpss.ui.SegmentedController
 import com.hendraanggrian.openpss.ui.wage.readers.Reader
@@ -112,7 +112,7 @@ class WageController : SegmentedController() {
 
     private fun recess() = EditRecessDialog(this, employee).show()
 
-    private fun history() = openFile(WageFolder)
+    private fun history() = openFile(WageDirectory)
 
     private fun browse() = fileChooser(
         ExtensionFilter(getString(R.string.input_file), *Reader.of(WAGE_READER).extensions))

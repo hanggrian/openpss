@@ -19,7 +19,7 @@ class PermissionDialog(resourced: Resourced) : ResultableDialog<Boolean>(
         vbox(8.0) {
             /*employeeChoice = choiceBox(transaction { Employees {it.role} }) {
             }*/
-            passwordBox = PasswordBox(this@PermissionDialog).add()
+            passwordBox = PasswordBox(this@PermissionDialog)()
         }
     }
 

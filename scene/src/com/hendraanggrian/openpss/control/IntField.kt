@@ -41,7 +41,7 @@ fun intField(
 /** Creates a [IntField] and add it to this [LayoutManager]. */
 inline fun LayoutManager<Node>.intField(
     noinline init: ((@LayoutDsl IntField).() -> Unit)? = null
-): IntField = com.hendraanggrian.openpss.control.intField(init).add()
+): IntField = com.hendraanggrian.openpss.control.intField(init)()
 
 /** Creates a styled [IntField]. */
 fun styledIntField(
@@ -56,4 +56,4 @@ fun styledIntField(
 inline fun LayoutManager<Node>.styledIntField(
     styleClass: String,
     noinline init: ((@LayoutDsl IntField).() -> Unit)? = null
-): IntField = com.hendraanggrian.openpss.control.styledIntField(styleClass, init).add()
+): IntField = com.hendraanggrian.openpss.control.styledIntField(styleClass, init)()

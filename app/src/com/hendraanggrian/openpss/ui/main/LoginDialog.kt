@@ -85,7 +85,7 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(resourced, graphicId = R.i
                 textProperty().listener { _, _, newValue -> LoginFile.EMPLOYEE = newValue }
             } col 1 row 1
             label(getString(R.string.password)) col 0 row 2
-            passwordBox = PasswordBox(this@LoginDialog).add() col 1 row 2
+            passwordBox = PasswordBox(this@LoginDialog)() col 1 row 2
         }
         dialogPane.expandableContent = ktfx.layouts.gridPane {
             gap = 8.0

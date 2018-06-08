@@ -102,4 +102,4 @@ fun monthBox(
 inline fun LayoutManager<Node>.monthBox(
     prefill: YearMonth = YearMonth.now(),
     noinline init: ((@LayoutDsl MonthBox).() -> Unit)? = null
-): MonthBox = com.hendraanggrian.openpss.layout.monthBox(prefill, init).add()
+): MonthBox = com.hendraanggrian.openpss.layout.monthBox(prefill, init)()

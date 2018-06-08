@@ -81,7 +81,7 @@ abstract class TableDialog<D : Document<S>, S : DocumentSchema<D>>(
             }
             extraButtons.apply {
                 alignment = CENTER_RIGHT
-            }.add()
+            }()
         }
         anchorPane {
             table = tableView<D> {

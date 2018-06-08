@@ -47,7 +47,7 @@ inline fun LayoutManager<Node>.stretchableToggleButton(
     graphic: Node? = null,
     noinline init: ((@LayoutDsl StretchableToggleButton).() -> Unit)? = null
 ): StretchableToggleButton =
-    com.hendraanggrian.openpss.control.stretchableToggleButton(stretchPoint, adaptableText, graphic, init).add()
+    com.hendraanggrian.openpss.control.stretchableToggleButton(stretchPoint, adaptableText, graphic, init)()
 
 /** Create a styled [StretchableToggleButton]. */
 fun styledStretchableToggleButton(
@@ -69,4 +69,4 @@ inline fun LayoutManager<Node>.styledStretchableToggleButton(
     graphic: Node? = null,
     noinline init: ((@LayoutDsl StretchableToggleButton).() -> Unit)? = null
 ): StretchableToggleButton = com.hendraanggrian.openpss.control
-    .styledStretchableToggleButton(styleClass, stretchPoint, adaptableText, graphic, init).add()
+    .styledStretchableToggleButton(styleClass, stretchPoint, adaptableText, graphic, init)()

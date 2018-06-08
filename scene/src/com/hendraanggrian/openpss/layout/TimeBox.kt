@@ -102,4 +102,4 @@ fun timeBox(
 inline fun LayoutManager<Node>.timeBox(
     prefill: LocalTime = MIDNIGHT,
     noinline init: ((@LayoutDsl TimeBox).() -> Unit)? = null
-): TimeBox = com.hendraanggrian.openpss.layout.timeBox(prefill, init).add()
+): TimeBox = com.hendraanggrian.openpss.layout.timeBox(prefill, init)()

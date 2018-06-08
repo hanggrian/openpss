@@ -59,8 +59,8 @@ abstract class Popover(
                 }
             }
             separator()
-            contentPane.add()
-            buttonBar.add() marginTop 8.0
+            contentPane()
+            buttonBar() marginTop 8.0
         }
         buttonBar.buttons += cancelButton
     }

@@ -1,6 +1,5 @@
 package com.hendraanggrian.openpss.ui.wage.record
 
-import com.hendraanggrian.openpss.BuildConfig.DEBUG
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.UncollapsibleTreeItem
 import com.hendraanggrian.openpss.control.popover.DatePopover
@@ -24,7 +23,6 @@ import com.hendraanggrian.openpss.util.stringCell
 import com.sun.javafx.scene.control.skin.TreeTableViewSkin
 import com.sun.javafx.scene.control.skin.VirtualFlow
 import javafx.beans.value.ObservableValue
-import javafx.embed.swing.SwingFXUtils
 import javafx.fxml.FXML
 import javafx.scene.control.Button
 import javafx.scene.control.ButtonBar.ButtonData.CANCEL_CLOSE
@@ -42,6 +40,7 @@ import ktfx.beans.binding.stringBindingOf
 import ktfx.beans.value.or
 import ktfx.collections.isEmpty
 import ktfx.coroutines.onAction
+import ktfx.embed.swing.toBufferedImage
 import ktfx.layouts.label
 import ktfx.layouts.menuItem
 import ktfx.listeners.cellFactory
@@ -197,7 +196,7 @@ class WageRecordController : Controller() {
         val flow = (recordTable.skin as TreeTableViewSkin<*>).children[1] as VirtualFlow<*>
         var i = 0
         do {
-            images += SwingFXUtils.fromFXImage(recordTable.snapshot(), null)
+            images += recordTable.snapshot().toBufferedImage()
             recordTable.scrollTo(flow.lastVisibleCell.index)
             i++
         } while (flow.lastVisibleCell.index + 1 <

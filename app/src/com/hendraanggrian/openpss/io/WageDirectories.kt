@@ -11,7 +11,7 @@ open class WageContentDirectory(date: LocalDate) : Directory(WageDirectory, date
     companion object : WageContentDirectory(LocalDate.now())
 }
 
-open class WageContentFile(time: LocalTime) : File(WageContentDirectory, "${time.toString("HH:mm")}.png") {
+open class WageContentFile(time: LocalTime) : File(WageContentDirectory, "${time.toString("HH-mm")}.png") {
 
     companion object : WageContentFile(LocalTime.now())
 }

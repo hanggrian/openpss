@@ -51,7 +51,7 @@ inline fun LayoutManager<Node>.stretchableButton(
     graphic: Node? = null,
     noinline init: ((@LayoutDsl StretchableButton).() -> Unit)? = null
 ): StretchableButton = com.hendraanggrian.openpss.control.stretchableButton(stretchPoint, adaptableText, graphic, init)
-    .add()
+    .invoke()
 
 /** Create a styled [StretchableButton]. */
 fun styledStretchableButton(
@@ -73,4 +73,4 @@ inline fun LayoutManager<Node>.styledStretchableButton(
     graphic: Node? = null,
     noinline init: ((@LayoutDsl StretchableButton).() -> Unit)? = null
 ): StretchableButton = com.hendraanggrian.openpss.control
-    .styledStretchableButton(styleClass, stretchPoint, adaptableText, graphic, init).add()
+    .styledStretchableButton(styleClass, stretchPoint, adaptableText, graphic, init)()

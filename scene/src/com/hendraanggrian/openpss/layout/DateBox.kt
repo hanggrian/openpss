@@ -68,4 +68,4 @@ fun dateBox(
 inline fun LayoutManager<Node>.dateBox(
     prefill: LocalDate = now(),
     noinline init: ((@LayoutDsl DateBox).() -> Unit)? = null
-): DateBox = com.hendraanggrian.openpss.layout.dateBox(prefill, init).add()
+): DateBox = com.hendraanggrian.openpss.layout.dateBox(prefill, init)()

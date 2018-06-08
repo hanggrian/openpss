@@ -15,7 +15,7 @@ abstract class Dialog<R>(
     graphicId: String? = null
 ) : Dialog<R>(), LayoutManager<Node>, Resourced by resourced {
 
-    override fun <T : Node> T.add(): T = also { dialogPane.content = it }
+    override fun <T : Node> T.invoke(): T = also { dialogPane.content = it }
 
     init {
         if (headerId != null) headerTitle = getString(headerId)

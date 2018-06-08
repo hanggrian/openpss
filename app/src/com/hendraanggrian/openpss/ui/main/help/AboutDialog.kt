@@ -161,7 +161,7 @@ class AboutDialog(resourced: Resourced) : Dialog<Nothing>(resourced), Selectable
                     isEditable = false
                     selectedProperty.listener { _, _, license -> text = license?.getContent() }
                 }
-            }.add()
+            }()
         }
         customButton("Homepage", CANCEL_CLOSE) {
             visibleProperty().bind(dialogPane.expandedProperty() and selectedBinding)

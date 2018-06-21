@@ -32,7 +32,7 @@ class AddContactPopover(resourced: Resourced) : ResultablePopover<Customer.Conta
 
     init {
         gridPane {
-            gap = 8.0
+            gap = R.dimen.padding_small.toDouble()
             label(getString(R.string.type)) col 0 row 0
             typeChoice = choiceBox(values().toObservableList()) {
                 converter { toString { it!!.toString(this@AddContactPopover) } }

@@ -48,7 +48,6 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(resourced, graphicId = R.i
 
     private lateinit var employeeField: TextField
     private lateinit var passwordBox: PasswordBox
-    private lateinit var passwordField2: TextField
     private lateinit var serverHostField: HostField
     private lateinit var serverPortField: IntField
     private lateinit var serverUserField: TextField
@@ -59,7 +58,7 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(resourced, graphicId = R.i
         headerText = getString(R.string.login)
         isResizable = false
         gridPane {
-            gap = 8.0
+            gap = R.dimen.padding_small.toDouble()
             label(getString(R.string.language)) col 0 row 0
             choiceBox(Language.values().toObservableList()) {
                 maxWidth = Double.MAX_VALUE
@@ -88,7 +87,7 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(resourced, graphicId = R.i
             passwordBox = PasswordBox(this@LoginDialog)() col 1 row 2
         }
         dialogPane.expandableContent = ktfx.layouts.gridPane {
-            gap = 8.0
+            gap = R.dimen.padding_small.toDouble()
             label(getString(R.string.server_host_port)) col 0 row 0
             serverHostField = hostField {
                 text = LoginFile.DB_HOST

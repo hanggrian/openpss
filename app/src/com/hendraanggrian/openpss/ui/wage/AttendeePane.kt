@@ -68,7 +68,7 @@ class AttendeePane(
         content = vbox {
             isFillWidth = true
             gridPane {
-                gap = 4.0
+                gap = R.dimen.padding_verysmall.toDouble()
                 paddingAll = 8.0
                 attendee.role?.let { role ->
                     label(getString(R.string.role)) col 0 row 0 marginRight 4.0

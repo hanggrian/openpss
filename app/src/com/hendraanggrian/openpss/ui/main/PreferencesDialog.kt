@@ -60,7 +60,7 @@ class PreferencesDialog(
 
     init {
         vbox {
-            spacing = 16.0
+            spacing = R.dimen.padding_large.toDouble()
             group(R.string.invoice) {
                 checkBox(getString(R.string.quick_select_customer_when_adding_invoice)) {
                     isSelected = PreferencesFile.INVOICE_QUICK_SELECT_CUSTOMER
@@ -85,7 +85,7 @@ class PreferencesDialog(
         }
         if (showGlobalSettings) dialogPane.expandableContent = group(R.string.global_settings) {
             gridPane {
-                gap = 8.0
+                gap = R.dimen.padding_small.toDouble()
                 transaction {
                     label(getString(R.string.server_language)) row 0 col 0
                     languageBox = choiceBox(Language.values().toObservableList()) {

@@ -67,8 +67,8 @@ class ViewInvoicePopover(invoice: Invoice) : Popover(object : Resourced {
         pane {
             border = Border(BorderStroke(BLACK, DASHED, EMPTY, DEFAULT))
             gridPane {
-                gap = 16.0
-                padding = Insets(16.0)
+                gap = R.dimen.padding_large.toDouble()
+                padding = Insets(20.0)
                 minWidth = EXPECTED_WIDTH
                 minHeight = EXPECTED_HEIGHT
                 columnConstraints {
@@ -100,7 +100,7 @@ class ViewInvoicePopover(invoice: Invoice) : Popover(object : Resourced {
                     transaction { Employees[invoice.employeeId].single().name }
                 ) { textAlignment = TextAlignment.RIGHT } row 2 col 2
                 gridPane {
-                    hgap = 16.0
+                    hgap = R.dimen.padding_large.toDouble()
                     columnConstraints {
                         constraints { hgrow = ALWAYS }
                         constraints()

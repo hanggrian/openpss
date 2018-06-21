@@ -199,8 +199,12 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
                     detailNode = vbox {
                         hbox {
                             alignment = CENTER
-                            spacing = 8.0
-                            updatePadding(8.0, 16.0, 8.0, 16.0)
+                            spacing = R.dimen.padding_small.toDouble()
+                            updatePadding(
+                                R.dimen.padding_small.toDouble(),
+                                R.dimen.padding_large.toDouble(),
+                                R.dimen.padding_small.toDouble(),
+                                R.dimen.padding_large.toDouble())
                             region() hpriority ALWAYS
                             styledStretchableButton(STYLE_DEFAULT_BUTTON, STRETCH_POINT, getString(R.string.add_payment),
                                 ImageView(R.image.btn_add_dark)) {

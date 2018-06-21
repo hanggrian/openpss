@@ -8,7 +8,7 @@
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.hendraanggrian.openpss.ui.wage.record.WageRecordController"
       fx:id="root">
-    <HBox fx:id="navigationBox" styleClass="navigation-pane" spacing="8">
+    <HBox fx:id="navigationBox" styleClass="navigation-pane" spacing="10">
         <StretchableSplitMenuButton mnemonicParsing="false" fx:id="undoButton" onAction="#undo" stretchableText="%undo">
             <ImageView>
                 <Image url="@/image/btn_undo_light.png"/>

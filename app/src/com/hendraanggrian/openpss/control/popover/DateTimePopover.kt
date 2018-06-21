@@ -1,10 +1,11 @@
 package com.hendraanggrian.openpss.control.popover
 
+import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.i18n.Resourced
 import com.hendraanggrian.openpss.layout.DateBox
 import com.hendraanggrian.openpss.layout.TimeBox
 import com.hendraanggrian.openpss.layout.dateBox
 import com.hendraanggrian.openpss.layout.timeBox
-import com.hendraanggrian.openpss.i18n.Resourced
 import com.hendraanggrian.openpss.ui.wage.record.Record
 import ktfx.coroutines.onAction
 import ktfx.layouts.button
@@ -24,7 +25,7 @@ class DateTimePopover(
 
     init {
         gridPane {
-            gap = 8.0
+            gap = R.dimen.padding_small.toDouble()
             dateBox = dateBox(prefill.toLocalDate()) row 0 col 1
             button("-${Record.WORKING_HOURS}") {
                 onAction { repeat(Record.WORKING_HOURS) { timeBox.previousButton.fire() } }

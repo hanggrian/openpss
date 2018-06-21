@@ -8,9 +8,9 @@
 <?import javafx.scene.layout.*?>
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.hendraanggrian.openpss.ui.invoice.InvoiceController">
-    <HBox fx:id="filterBox" alignment="CENTER" spacing="8">
+    <HBox fx:id="filterBox" alignment="CENTER" spacing="10">
         <padding>
-            <Insets bottom="16" left="16" right="16"/>
+            <Insets bottom="10" left="10" right="10"/>
         </padding>
         <Region HBox.hgrow="ALWAYS"/>
         <fx:define>

@@ -25,7 +25,7 @@ class EditCustomerPopover(
 
     init {
         gridPane {
-            gap = 8.0
+            gap = R.dimen.padding_small.toDouble()
             label(getString(R.string.name)) col 0 row 0
             nameField = textField(customer.name) col 1 row 0
             label(getString(R.string.address)) col 0 row 1

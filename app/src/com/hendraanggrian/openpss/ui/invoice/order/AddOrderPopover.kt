@@ -37,7 +37,7 @@ abstract class AddOrderPopover<T : Titled>(
 
     init {
         gridPane {
-            gap = 8.0
+            gap = R.dimen.padding_small.toDouble()
             label(getString(R.string.title)) col 0 row 0
             titleField = textField { promptText = getString(R.string.title) } col 1 row 0
             label(getString(R.string.qty)) col 0 row 1

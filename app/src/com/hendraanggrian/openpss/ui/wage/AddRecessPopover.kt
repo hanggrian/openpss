@@ -20,7 +20,7 @@ class AddRecessPopover(
 
     init {
         gridPane {
-            gap = 8.0
+            gap = R.dimen.padding_small.toDouble()
             label(getString(R.string.start)) col 0 row 0
             startBox = timeBox() col 1 row 0
             label(getString(R.string.end)) col 0 row 1

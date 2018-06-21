@@ -25,8 +25,8 @@ class ViewTotalPopover(
                 constraints()
                 constraints { halignment = RIGHT }
             }
-            vgap = 16.0
-            hgap = 32.0
+            vgap = 20.0
+            hgap = 40.0
             label(getString(R.string.cash)) col 0 row 0
             label(currencyConverter.toString(cash)) col 1 row 0
             label(getString(R.string.credit_card)) col 0 row 1

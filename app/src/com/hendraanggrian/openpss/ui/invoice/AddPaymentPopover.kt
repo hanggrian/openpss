@@ -51,7 +51,7 @@ class AddPaymentPopover(
 
     init {
         gridPane {
-            gap = 8.0
+            gap = R.dimen.padding_small.toDouble()
             label(getString(R.string.employee)) row 0 col 0
             label(employee.name) {
                 font = bold()

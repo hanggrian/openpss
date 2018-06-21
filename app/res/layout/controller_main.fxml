@@ -44,9 +44,9 @@
     <AnchorPane styleClass="navigation-pane">
         <BorderPane fx:id="navigationPane" AnchorPane.bottomAnchor="0" AnchorPane.topAnchor="0"
                     AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0"/>
-        <HBox spacing="8" fx:id="navigationLeftBox" AnchorPane.bottomAnchor="0" AnchorPane.topAnchor="0"
+        <HBox spacing="10" fx:id="navigationLeftBox" AnchorPane.bottomAnchor="0" AnchorPane.topAnchor="0"
               AnchorPane.leftAnchor="0"/>
-        <HBox spacing="8" fx:id="navigationRightBox" AnchorPane.bottomAnchor="0" AnchorPane.topAnchor="0"
+        <HBox spacing="10" fx:id="navigationRightBox" AnchorPane.bottomAnchor="0" AnchorPane.topAnchor="0"
               AnchorPane.rightAnchor="0"/>
     </AnchorPane>
     <SegmentedTabPane VBox.vgrow="ALWAYS" fx:id="tabPane">
@@ -54,10 +54,6 @@
             <!--suppress ALL -->
             <fx:include fx:id="customer" source="controller_customer.fxml"/>
         </Tab>
-        <!--Tab closable="false" text="%quotation"-->
-        <!--suppress ALL -->
-        <!--fx:include fx:id="quotation" source="controller_quotation.fxml"/>
-    </Tab-->
         <Tab closable="false" text="%invoice">
             <!--suppress ALL -->
             <fx:include fx:id="invoice" source="controller_invoice.fxml"/>

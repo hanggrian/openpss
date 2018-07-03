@@ -4,8 +4,9 @@ import org.gradle.kotlin.dsl.kotlin
 import org.jetbrains.kotlin.gradle.dsl.Coroutines
 import org.jetbrains.kotlin.gradle.dsl.Coroutines.*
 import org.gradle.language.base.plugins.LifecycleBasePlugin.*
+import org.jetbrains.kotlin.js.translate.context.Namer.kotlin
 
-group = "$RELEASE_GROUP.$RELEASE_ARTIFACT.scene"
+group = "$RELEASE_GROUP.scene"
 version = RELEASE_VERSION
 
 plugins {
@@ -35,9 +36,9 @@ dependencies {
     compile(kotlin("stdlib", VERSION_KOTLIN))
     compile(kotlinx("coroutines-javafx", VERSION_COROUTINES))
     compile(controlsFX())
-    compile(hendraanggrian("ktfx-layouts", VERSION_KTFX, "ktfx"))
-    compile(hendraanggrian("ktfx-listeners", VERSION_KTFX, "ktfx"))
-    compile(hendraanggrian("ktfx-coroutines", VERSION_KTFX, "ktfx"))
+    compile(hendraanggrian("ktfx", VERSION_KTFX, "layouts"))
+    compile(hendraanggrian("ktfx", VERSION_KTFX, "listeners"))
+    compile(hendraanggrian("ktfx", VERSION_KTFX, "coroutines"))
     compile(jodaTime())
     compile(commonsValidator())
 

@@ -1,3 +1,5 @@
+import org.gradle.api.JavaVersion.*
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.gradle.api.tasks.Delete
 import org.gradle.kotlin.dsl.kotlin
 import java.io.File
@@ -7,12 +9,17 @@ buildscript {
     repositories {
         jcenter()
         maven("https://oss.sonatype.org/content/repositories/snapshots") // required for packr
+
+        // temporaries, remove when each is approved in jcenter
+        maven("https://dl.bintray.com/hendraanggrian/r-gradle-plugin")
+        maven("https://dl.bintray.com/hendraanggrian/buildconfig-gradle-plugin")
+        maven("https://dl.bintray.com/hendraanggrian/packr-gradle-plugin")
     }
     dependencies {
         classpath(kotlin("gradle-plugin", VERSION_KOTLIN))
-        classpath(hendraanggrian("r", VERSION_R))
-        classpath(hendraanggrian("buildconfig", VERSION_BUILDCONFIG))
-        classpath(hendraanggrian("packr", VERSION_PACKR))
+        classpath(hendraanggrian("r", VERSION_R, "gradle-plugin"))
+        classpath(hendraanggrian("buildconfig", VERSION_BUILDCONFIG, "gradle-plugin"))
+        classpath(hendraanggrian("packr", VERSION_PACKR, "gradle-plugin"))
         classpath(shadow())
         classpath(junitPlatform("gradle-plugin"))
     }
@@ -23,8 +30,13 @@ allprojects {
         jcenter()
         maven("http://repository.jetbrains.com/kotlin-nosql") // required for kotlin-nosql
     }
-    tasks.withType<Delete> {
-        delete(projectDir.resolve("out"))
+    tasks {
+        withType<Delete> {
+            delete(projectDir.resolve("out"))
+        }
+        withType<KotlinCompile> {
+            kotlinOptions.jvmTarget = VERSION_1_8.toString()
+        }
     }
 }
 

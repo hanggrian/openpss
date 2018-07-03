@@ -15,12 +15,14 @@ fun DependencyHandler.square(module: String, version: String, repo: String? = nu
 fun DependencyHandler.google(module: String, version: String, repo: String? = null) =
     optionalRepo("com.google", module, version, repo ?: module)
 
-fun DependencyHandler.hendraanggrian(module: String, version: String, repo: String? = null) =
-    optionalRepo("com.hendraanggrian", module, version, repo)
-
-inline val PluginDependenciesSpec.r get() = id("r")
-inline val PluginDependenciesSpec.buildconfig get() = id("buildconfig")
-inline val PluginDependenciesSpec.packr get() = id("packr")
+fun DependencyHandler.hendraanggrian(
+    module: String,
+    version: String,
+    submodule: String? = null
+) = "com.hendraanggrian.$module:${submodule?.let { "$module-$it" } ?: module}:$version"
+inline val PluginDependenciesSpec.r get() = id("com.hendraanggrian.r")
+inline val PluginDependenciesSpec.buildconfig get() = id("com.hendraanggrian.buildconfig")
+inline val PluginDependenciesSpec.packr get() = id("com.hendraanggrian.packr")
 
 fun DependencyHandler.guava() = "com.google.guava:guava:$VERSION_GUAVA-jre"
 

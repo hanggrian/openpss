@@ -9,13 +9,13 @@ import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.kotlin
 import org.jetbrains.kotlin.gradle.dsl.Coroutines.*
 import org.gradle.language.base.plugins.LifecycleBasePlugin.*
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlin.js.translate.context.Namer.kotlin
 
 import org.junit.platform.gradle.plugin.FiltersExtension
 import org.junit.platform.gradle.plugin.EnginesExtension
 import org.junit.platform.gradle.plugin.JUnitPlatformExtension
 
-group = "$RELEASE_GROUP.$RELEASE_ARTIFACT"
+group = RELEASE_GROUP
 version = RELEASE_VERSION
 
 plugins {
@@ -56,7 +56,7 @@ dependencies {
     implementation(square("converter-gson", VERSION_RETROFIT, "retrofit2"))
     implementation(google("gson", VERSION_GSON, "code.gson"))
     implementation(google("guava", VERSION_GUAVA, "guava"))
-    implementation(hendraanggrian("ktfx", VERSION_KTFX, "ktfx"))
+    implementation(hendraanggrian("ktfx", VERSION_KTFX))
     implementation(apache("commons-lang3", VERSION_COMMONS_LANG))
     implementation(apache("commons-math3", VERSION_COMMONS_MATH))
     implementation(apache("poi-ooxml", VERSION_POI))
@@ -137,10 +137,6 @@ tasks {
         }
         verbose = true
         openOnDone = true
-    }
-
-    withType<KotlinCompile> {
-        kotlinOptions.jvmTarget = "1.8"
     }
 }
 

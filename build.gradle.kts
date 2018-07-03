@@ -9,11 +9,6 @@ buildscript {
     repositories {
         jcenter()
         maven("https://oss.sonatype.org/content/repositories/snapshots") // required for packr
-
-        // temporaries, remove when each is approved in jcenter
-        maven("https://dl.bintray.com/hendraanggrian/r-gradle-plugin")
-        maven("https://dl.bintray.com/hendraanggrian/buildconfig-gradle-plugin")
-        maven("https://dl.bintray.com/hendraanggrian/packr-gradle-plugin")
     }
     dependencies {
         classpath(kotlin("gradle-plugin", VERSION_KOTLIN))

@@ -13,13 +13,13 @@ import com.hendraanggrian.openpss.util.getColor
 import javafx.beans.Observable
 import javafx.beans.value.ObservableBooleanValue
 import javafx.scene.control.TextField
-import ktfx.beans.binding.bindingOf
-import ktfx.beans.binding.stringBindingOf
-import ktfx.layouts._GridPane
-import ktfx.layouts.gridPane
-import ktfx.layouts.label
-import ktfx.layouts.textField
-import ktfx.scene.layout.gap
+import javafxx.beans.binding.bindingOf
+import javafxx.beans.binding.stringBindingOf
+import javafxx.layouts._GridPane
+import javafxx.layouts.gridPane
+import javafxx.layouts.label
+import javafxx.layouts.textField
+import javafxx.scene.layout.gap
 
 abstract class AddOrderPopover<T : Titled>(
     resourced: Resourced,

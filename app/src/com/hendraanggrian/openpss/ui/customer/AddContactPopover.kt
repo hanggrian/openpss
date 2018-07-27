@@ -8,14 +8,14 @@ import com.hendraanggrian.openpss.db.schemas.Customer.Contact.Type.values
 import com.hendraanggrian.openpss.i18n.Resourced
 import javafx.scene.control.ChoiceBox
 import javafx.scene.control.TextField
-import ktfx.beans.binding.booleanBindingOf
-import ktfx.collections.toObservableList
-import ktfx.layouts.choiceBox
-import ktfx.layouts.gridPane
-import ktfx.layouts.label
-import ktfx.layouts.textField
-import ktfx.listeners.converter
-import ktfx.scene.layout.gap
+import javafxx.beans.binding.booleanBindingOf
+import javafxx.collections.toObservableList
+import javafxx.layouts.choiceBox
+import javafxx.layouts.gridPane
+import javafxx.layouts.label
+import javafxx.layouts.textField
+import javafxx.listeners.converter
+import javafxx.scene.layout.gap
 import org.apache.commons.validator.routines.EmailValidator
 
 class AddContactPopover(resourced: Resourced) : ResultablePopover<Customer.Contact>(resourced, R.string.add_contact) {

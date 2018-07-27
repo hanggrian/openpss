@@ -23,26 +23,26 @@ import javafx.scene.control.PasswordField
 import javafx.scene.control.TextField
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.launch
-import ktfx.application.Platform
-import ktfx.application.later
-import ktfx.beans.value.isBlank
-import ktfx.beans.value.or
-import ktfx.collections.toObservableList
-import ktfx.coroutines.FX
-import ktfx.coroutines.listener
-import ktfx.coroutines.onAction
-import ktfx.layouts.choiceBox
-import ktfx.layouts.gridPane
-import ktfx.layouts.hbox
-import ktfx.layouts.hyperlink
-import ktfx.layouts.label
-import ktfx.layouts.passwordField
-import ktfx.layouts.textField
-import ktfx.scene.control.cancelButton
-import ktfx.scene.control.customButton
-import ktfx.scene.control.styledErrorAlert
-import ktfx.scene.control.styledInfoAlert
-import ktfx.scene.layout.gap
+import javafxx.application.Platform
+import javafxx.application.later
+import javafxx.beans.value.isBlank
+import javafxx.beans.value.or
+import javafxx.collections.toObservableList
+import javafxx.coroutines.FX
+import javafxx.coroutines.listener
+import javafxx.coroutines.onAction
+import javafxx.layouts.choiceBox
+import javafxx.layouts.gridPane
+import javafxx.layouts.hbox
+import javafxx.layouts.hyperlink
+import javafxx.layouts.label
+import javafxx.layouts.passwordField
+import javafxx.layouts.textField
+import javafxx.scene.control.cancelButton
+import javafxx.scene.control.customButton
+import javafxx.scene.control.styledErrorAlert
+import javafxx.scene.control.styledInfoAlert
+import javafxx.scene.layout.gap
 
 class LoginDialog(resourced: Resourced) : Dialog<Any>(resourced, graphicId = R.image.header_launcher) {
 
@@ -86,7 +86,7 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(resourced, graphicId = R.i
             label(getString(R.string.password)) col 0 row 2
             passwordBox = PasswordBox(this@LoginDialog)() col 1 row 2
         }
-        dialogPane.expandableContent = ktfx.layouts.gridPane {
+        dialogPane.expandableContent = javafxx.layouts.gridPane {
             gap = R.dimen.padding_small.toDouble()
             label(getString(R.string.server_host_port)) col 0 row 0
             serverHostField = hostField {

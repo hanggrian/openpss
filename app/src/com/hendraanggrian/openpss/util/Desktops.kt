@@ -3,7 +3,7 @@
 package com.hendraanggrian.openpss.util
 
 import com.hendraanggrian.openpss.R
-import ktfx.scene.control.styledErrorAlert
+import javafxx.scene.control.styledErrorAlert
 import java.awt.Desktop.getDesktop
 import java.awt.Desktop.isDesktopSupported
 import java.io.File

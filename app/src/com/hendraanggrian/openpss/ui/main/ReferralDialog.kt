@@ -4,8 +4,8 @@ import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.i18n.Resourced
 import javafx.scene.control.Dialog
 import javafx.scene.image.ImageView
-import ktfx.scene.control.graphicIcon
-import ktfx.scene.control.headerTitle
+import javafxx.scene.control.graphicIcon
+import javafxx.scene.control.headerTitle
 
 class ReferralDialog(resourced: Resourced) : Dialog<Nothing>(), Resourced by resourced {
 

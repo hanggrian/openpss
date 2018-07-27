@@ -9,8 +9,8 @@ import javafx.beans.property.SimpleStringProperty
 import javafx.beans.property.StringProperty
 import javafx.scene.Node
 import javafx.scene.control.Button
-import ktfx.layouts.LayoutDsl
-import ktfx.layouts.LayoutManager
+import javafxx.layouts.LayoutDsl
+import javafxx.layouts.LayoutManager
 
 /**
  * A button that will display text when the window have sufficient width.

@@ -7,10 +7,10 @@ import javafx.geometry.Pos.CENTER
 import javafx.geometry.Pos.CENTER_RIGHT
 import javafx.scene.control.TableColumn
 import javafx.scene.image.Image
-import ktfx.beans.property.toProperty
-import ktfx.layouts.imageView
-import ktfx.listeners.cellFactory
-import ktfx.styles.labeledStyle
+import javafxx.beans.property.toProperty
+import javafxx.layouts.imageView
+import javafxx.listeners.cellFactory
+import javafxx.styles.labeledStyle
 
 fun <T> TableColumn<T, Boolean>.doneCell(size: Int = 64, target: T.() -> Boolean) {
     size.toDouble().let {

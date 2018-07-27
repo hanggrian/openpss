@@ -8,9 +8,9 @@ import javafx.scene.Scene
 import javafx.scene.control.Tooltip
 import kotlinx.coroutines.experimental.delay
 import kotlinx.coroutines.experimental.launch
-import ktfx.beans.binding.bindingOf
-import ktfx.beans.binding.stringBindingOf
-import ktfx.coroutines.FX
+import javafxx.beans.binding.bindingOf
+import javafxx.beans.binding.stringBindingOf
+import javafxx.coroutines.FX
 
 interface StretchableLabeled {
 

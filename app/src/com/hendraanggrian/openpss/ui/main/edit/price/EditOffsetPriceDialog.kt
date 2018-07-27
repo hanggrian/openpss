@@ -10,10 +10,10 @@ import javafx.beans.value.ObservableValue
 import javafx.geometry.Pos.CENTER_RIGHT
 import kotlinx.nosql.equal
 import kotlinx.nosql.update
-import ktfx.beans.property.toProperty
-import ktfx.coroutines.onEditCommit
-import ktfx.listeners.textFieldCellFactory
-import ktfx.styles.labeledStyle
+import javafxx.beans.property.toProperty
+import javafxx.coroutines.onEditCommit
+import javafxx.listeners.textFieldCellFactory
+import javafxx.styles.labeledStyle
 
 @Suppress("UNCHECKED_CAST")
 class EditOffsetPriceDialog(

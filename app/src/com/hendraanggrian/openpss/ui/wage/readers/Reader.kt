@@ -4,7 +4,7 @@ import com.hendraanggrian.openpss.ui.wage.Attendee
 import javafx.collections.ObservableList
 import javafx.scene.control.Separator
 import javafx.stage.FileChooser
-import ktfx.collections.toMutableObservableList
+import javafxx.collections.toMutableObservableList
 import java.io.File
 
 /** A file readers that generates collection of [Attendee] given input file. */

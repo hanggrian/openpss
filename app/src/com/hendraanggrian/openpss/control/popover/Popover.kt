@@ -14,16 +14,16 @@ import javafx.scene.control.TableView
 import javafx.scene.layout.Pane
 import javafx.scene.text.Font
 import javafx.util.Duration.ZERO
-import ktfx.beans.value.getValue
-import ktfx.beans.value.setValue
-import ktfx.coroutines.listener
-import ktfx.coroutines.onAction
-import ktfx.coroutines.onCloseRequest
-import ktfx.layouts.LayoutManager
-import ktfx.layouts._ButtonBar
-import ktfx.layouts.borderPane
-import ktfx.layouts.separator
-import ktfx.scene.layout.updatePadding
+import javafxx.beans.value.getValue
+import javafxx.beans.value.setValue
+import javafxx.coroutines.listener
+import javafxx.coroutines.onAction
+import javafxx.coroutines.onCloseRequest
+import javafxx.layouts.LayoutManager
+import javafxx.layouts._ButtonBar
+import javafxx.layouts.borderPane
+import javafxx.layouts.separator
+import javafxx.scene.layout.updatePadding
 import org.controlsfx.control.PopOver
 
 /** Base [PopOver] class used across applications. */
@@ -34,7 +34,7 @@ abstract class Popover(
 
     private val contentPane: Pane = Pane()
     protected val buttonBar: _ButtonBar = _ButtonBar(null)
-    protected val cancelButton: Button = ktfx.layouts.button(getString(R.string.close)) {
+    protected val cancelButton: Button = javafxx.layouts.button(getString(R.string.close)) {
         isCancelButton = true
         onAction { hide() }
     }
@@ -46,10 +46,10 @@ abstract class Popover(
     var graphic: Node by graphicProperty
 
     init {
-        contentNode = ktfx.layouts.vbox(12.0) {
+        contentNode = javafxx.layouts.vbox(12.0) {
             updatePadding(12.0, 16.0, 12.0, 16.0)
             borderPane {
-                left = ktfx.layouts.label(getString(titleId)) {
+                left = javafxx.layouts.label(getString(titleId)) {
                     font = Font.font(18.0)
                     textFill = getColor(R.color.blue)
                 } align CENTER_LEFT

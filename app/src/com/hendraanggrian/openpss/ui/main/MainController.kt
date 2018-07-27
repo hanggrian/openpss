@@ -24,9 +24,9 @@ import javafx.scene.control.Tab
 import javafx.scene.layout.AnchorPane
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.HBox
-import ktfx.application.Platform
-import ktfx.application.later
-import ktfx.coroutines.listener
+import javafxx.application.Platform
+import javafxx.application.later
+import javafxx.coroutines.listener
 import org.apache.commons.lang3.SystemUtils.IS_OS_MAC
 import java.net.URL
 import java.util.ResourceBundle

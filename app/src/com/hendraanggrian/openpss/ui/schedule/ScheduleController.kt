@@ -28,11 +28,11 @@ import javafx.scene.control.TreeTableView.TreeTableViewSelectionModel
 import javafx.scene.image.ImageView
 import kotlinx.nosql.equal
 import kotlinx.nosql.update
-import ktfx.application.later
-import ktfx.collections.isEmpty
-import ktfx.coroutines.listener
-import ktfx.coroutines.onAction
-import ktfx.layouts.separator
+import javafxx.application.later
+import javafxx.collections.isEmpty
+import javafxx.coroutines.listener
+import javafxx.coroutines.onAction
+import javafxx.layouts.separator
 import java.net.URL
 import java.util.ResourceBundle
 

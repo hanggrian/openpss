@@ -14,7 +14,7 @@ import com.hendraanggrian.openpss.util.isNotEmpty
 import com.hendraanggrian.openpss.util.stringCell
 import kotlinx.nosql.equal
 import kotlinx.nosql.mongodb.DocumentSchema
-import ktfx.scene.control.styledErrorAlert
+import javafxx.scene.control.styledErrorAlert
 
 abstract class EditPriceDialog<D, S>(
     schema: S,

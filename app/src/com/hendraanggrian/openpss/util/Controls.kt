@@ -12,8 +12,8 @@ import javafx.scene.control.ChoiceBox
 import javafx.scene.control.ListView
 import kotlinx.coroutines.experimental.CoroutineScope
 import kotlinx.coroutines.experimental.launch
-import ktfx.coroutines.FX
-import ktfx.scene.control.styledConfirmAlert
+import javafxx.coroutines.FX
+import javafxx.scene.control.styledConfirmAlert
 import kotlin.coroutines.experimental.CoroutineContext
 
 /** Can't use `ktfx-coroutines` because by the time `consume` is called in coroutine context, it is already too late. */

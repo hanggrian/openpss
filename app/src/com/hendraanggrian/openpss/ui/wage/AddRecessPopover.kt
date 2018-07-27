@@ -5,10 +5,10 @@ import com.hendraanggrian.openpss.control.popover.ResultablePopover
 import com.hendraanggrian.openpss.layout.TimeBox
 import com.hendraanggrian.openpss.layout.timeBox
 import com.hendraanggrian.openpss.i18n.Resourced
-import ktfx.beans.binding.booleanBindingOf
-import ktfx.layouts.gridPane
-import ktfx.layouts.label
-import ktfx.scene.layout.gap
+import javafxx.beans.binding.booleanBindingOf
+import javafxx.layouts.gridPane
+import javafxx.layouts.label
+import javafxx.scene.layout.gap
 import org.joda.time.LocalTime
 
 class AddRecessPopover(

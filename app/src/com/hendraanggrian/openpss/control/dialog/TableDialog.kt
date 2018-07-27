@@ -20,19 +20,19 @@ import javafx.scene.control.TableView
 import javafx.scene.control.TableView.CONSTRAINED_RESIZE_POLICY
 import javafx.scene.image.ImageView
 import kotlinx.nosql.mongodb.DocumentSchema
-import ktfx.application.later
-import ktfx.beans.property.toProperty
-import ktfx.beans.value.or
-import ktfx.collections.toMutableObservableList
-import ktfx.coroutines.onAction
-import ktfx.layouts.TableColumnsBuilder
-import ktfx.layouts._HBox
-import ktfx.layouts.anchorPane
-import ktfx.layouts.hbox
-import ktfx.layouts.separator
-import ktfx.layouts.tableView
-import ktfx.layouts.vbox
-import ktfx.scene.control.closeButton
+import javafxx.application.later
+import javafxx.beans.property.toProperty
+import javafxx.beans.value.or
+import javafxx.collections.toMutableObservableList
+import javafxx.coroutines.onAction
+import javafxx.layouts.TableColumnsBuilder
+import javafxx.layouts._HBox
+import javafxx.layouts.anchorPane
+import javafxx.layouts.hbox
+import javafxx.layouts.separator
+import javafxx.layouts.tableView
+import javafxx.layouts.vbox
+import javafxx.scene.control.closeButton
 
 abstract class TableDialog<D : Document<S>, S : DocumentSchema<D>>(
     protected val schema: S,

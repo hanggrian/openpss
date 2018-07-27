@@ -27,24 +27,24 @@ import javafx.scene.layout.AnchorPane
 import javafx.scene.layout.FlowPane
 import javafx.stage.FileChooser.ExtensionFilter
 import kotlinx.coroutines.experimental.launch
-import ktfx.application.later
-import ktfx.beans.binding.booleanBindingOf
-import ktfx.beans.binding.stringBindingOf
-import ktfx.beans.value.lessEq
-import ktfx.beans.value.or
-import ktfx.collections.isEmpty
-import ktfx.collections.size
-import ktfx.coroutines.FX
-import ktfx.coroutines.onAction
-import ktfx.layouts.borderPane
-import ktfx.layouts.label
-import ktfx.layouts.separator
-import ktfx.layouts.styledScene
-import ktfx.scene.control.styledErrorAlert
-import ktfx.scene.layout.maxSize
-import ktfx.stage.fileChooser
-import ktfx.stage.setMinSize
-import ktfx.stage.stage
+import javafxx.application.later
+import javafxx.beans.binding.booleanBindingOf
+import javafxx.beans.binding.stringBindingOf
+import javafxx.beans.value.lessEq
+import javafxx.beans.value.or
+import javafxx.collections.isEmpty
+import javafxx.collections.size
+import javafxx.coroutines.FX
+import javafxx.coroutines.onAction
+import javafxx.layouts.borderPane
+import javafxx.layouts.label
+import javafxx.layouts.separator
+import javafxx.layouts.styledScene
+import javafxx.scene.control.styledErrorAlert
+import javafxx.scene.layout.maxSize
+import javafxx.stage.fileChooser
+import javafxx.stage.setMinSize
+import javafxx.stage.stage
 import java.io.File
 import java.net.URL
 import java.util.ResourceBundle
@@ -124,7 +124,7 @@ class WageController : SegmentedController() {
         val loadingPane = borderPane {
             prefWidthProperty().bind(titledPane.widthProperty())
             prefHeightProperty().bind(titledPane.heightProperty())
-            center = ktfx.layouts.progressIndicator { maxSize = 128.0 }
+            center = javafxx.layouts.progressIndicator { maxSize = 128.0 }
         }
         anchorPane.children += loadingPane
         flowPane.children.clear()

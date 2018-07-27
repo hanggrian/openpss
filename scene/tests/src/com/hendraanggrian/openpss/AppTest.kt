@@ -4,7 +4,7 @@ import javafx.application.Application
 import javafx.fxml.FXMLLoader
 import javafx.scene.Scene
 import javafx.stage.Stage
-import ktfx.application.launch
+import javafxx.application.launch
 import java.net.URL
 
 class AppTest : Application() {

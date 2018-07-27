@@ -7,9 +7,9 @@ import javafx.beans.property.ObjectProperty
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleObjectProperty
 import javafx.scene.control.TextField
-import ktfx.beans.binding.bindingOf
-import ktfx.beans.binding.booleanBindingOf
-import ktfx.beans.value.getValue
+import javafxx.beans.binding.bindingOf
+import javafxx.beans.binding.booleanBindingOf
+import javafxx.beans.value.getValue
 import java.io.File
 
 /** Field that display file or directory path. */

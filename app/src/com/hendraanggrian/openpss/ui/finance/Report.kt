@@ -8,7 +8,7 @@ import com.hendraanggrian.openpss.db.schemas.Payment.Method.CREDIT_CARD
 import com.hendraanggrian.openpss.db.schemas.Payment.Method.DEBIT_CARD
 import com.hendraanggrian.openpss.db.schemas.Payment.Method.TRANSFER
 import javafx.collections.ObservableList
-import ktfx.collections.toObservableList
+import javafxx.collections.toObservableList
 import org.joda.time.LocalDate
 
 data class Report(

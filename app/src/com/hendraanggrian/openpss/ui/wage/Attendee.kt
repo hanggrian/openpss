@@ -16,11 +16,11 @@ import javafx.beans.property.SimpleIntegerProperty
 import javafx.collections.ObservableList
 import kotlinx.nosql.equal
 import kotlinx.nosql.update
-import ktfx.beans.binding.doubleBindingOf
-import ktfx.beans.property.toMutableProperty
-import ktfx.beans.value.getValue
-import ktfx.beans.value.setValue
-import ktfx.collections.mutableObservableListOf
+import javafxx.beans.binding.doubleBindingOf
+import javafxx.beans.property.toMutableProperty
+import javafxx.beans.value.getValue
+import javafxx.beans.value.setValue
+import javafxx.collections.mutableObservableListOf
 import org.joda.time.DateTime
 import org.joda.time.Minutes.minutes
 import org.joda.time.Period

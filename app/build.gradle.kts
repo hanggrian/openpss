@@ -1,7 +1,7 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
-import com.hendraanggrian.buildconfig.BuildConfigTask
+import com.hendraanggrian.generation.buildconfig.BuildConfigTask
+import com.hendraanggrian.generation.r.RTask
 import com.hendraanggrian.packr.PackTask
-import com.hendraanggrian.r.RTask
 import org.gradle.api.JavaVersion.VERSION_1_10
 import org.gradle.api.plugins.ExtensionAware
 import org.gradle.jvm.tasks.Jar
@@ -22,8 +22,8 @@ plugins {
     java
     kotlin("jvm")
     idea
-    r
-    buildconfig
+    generation("r")
+    generation("buildconfig")
     shadow
     application
     packr
@@ -56,7 +56,7 @@ dependencies {
     implementation(square("converter-gson", VERSION_RETROFIT, "retrofit2"))
     implementation(google("gson", VERSION_GSON, "code.gson"))
     implementation(google("guava", VERSION_GUAVA, "guava"))
-    implementation(hendraanggrian("ktfx", VERSION_KTFX))
+    implementation(hendraanggrian("javafxx", version = VERSION_JAVAFXX))
     implementation(apache("commons-lang3", VERSION_COMMONS_LANG))
     implementation(apache("commons-math3", VERSION_COMMONS_MATH))
     implementation(apache("poi-ooxml", VERSION_POI))

@@ -23,8 +23,8 @@ import com.mongodb.ServerAddress
 import kotlinx.coroutines.experimental.async
 import kotlinx.nosql.equal
 import kotlinx.nosql.mongodb.MongoDB
-import ktfx.application.Platform
-import ktfx.scene.control.styledErrorAlert
+import javafxx.application.Platform
+import javafxx.scene.control.styledErrorAlert
 import org.joda.time.DateTime
 import org.joda.time.LocalDate
 import org.joda.time.LocalTime

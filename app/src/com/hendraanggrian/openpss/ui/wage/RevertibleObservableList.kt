@@ -1,8 +1,8 @@
 package com.hendraanggrian.openpss.ui.wage
 
 import javafx.collections.ObservableList
-import ktfx.collections.mutableObservableListOf
-import ktfx.collections.toMutableObservableList
+import javafxx.collections.mutableObservableListOf
+import javafxx.collections.toMutableObservableList
 
 class RevertibleObservableList<E>(
     private val actual: ObservableList<E> = mutableObservableListOf()

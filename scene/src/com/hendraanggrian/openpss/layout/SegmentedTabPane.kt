@@ -6,9 +6,9 @@ import javafx.scene.control.Tab
 import javafx.scene.control.TabPane
 import javafx.scene.control.ToggleButton
 import javafx.scene.layout.Pane
-import ktfx.application.later
-import ktfx.coroutines.listener
-import ktfx.scene.layout.paddingTop
+import javafxx.application.later
+import javafxx.coroutines.listener
+import javafxx.scene.layout.paddingTop
 import org.controlsfx.control.SegmentedButton
 
 class SegmentedTabPane : TabPane() {
@@ -32,7 +32,9 @@ class SegmentedTabPane : TabPane() {
             }
         }
         selectionModel.selectedIndexProperty().listener { _, _, value ->
-            if (header.buttons.isNotEmpty()) header.toggleGroup.selectToggle(header.buttons[value.toInt()])
+            if (header.buttons.isNotEmpty()) {
+                header.toggleGroup.selectToggle(header.buttons[value.toInt()])
+            }
         }
         populate(tabs)
         tabs.listener<Tab> { change ->
@@ -40,7 +42,9 @@ class SegmentedTabPane : TabPane() {
             when {
                 change.wasAdded() -> {
                     populate(change.addedSubList)
-                    if (change.from == 0) header.buttons.first().isSelected = true
+                    if (change.from == 0) {
+                        header.buttons.first().isSelected = true
+                    }
                 }
                 else -> header.buttons -= header.buttons.filter { it.text in change.addedSubList.map { it.text } }
             }

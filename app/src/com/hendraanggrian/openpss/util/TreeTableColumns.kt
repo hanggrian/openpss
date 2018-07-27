@@ -4,8 +4,8 @@ package com.hendraanggrian.openpss.util
 
 import javafx.geometry.Pos
 import javafx.scene.control.TreeTableColumn
-import ktfx.beans.property.toProperty
-import ktfx.styles.labeledStyle
+import javafxx.beans.property.toProperty
+import javafxx.styles.labeledStyle
 
 inline fun <T> TreeTableColumn<T, String>.stringCell(noinline target: T.() -> Any) =
     setCellValueFactory { it.value.value.target().let { it as? String ?: it.toString() }.toProperty() }

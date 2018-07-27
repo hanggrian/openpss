@@ -4,16 +4,16 @@ import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.dialog.ResultableDialog
 import com.hendraanggrian.openpss.i18n.Resourced
 import javafx.scene.control.PasswordField
-import ktfx.application.later
-import ktfx.beans.value.isBlank
-import ktfx.beans.value.neq
-import ktfx.beans.value.or
-import ktfx.layouts.gridPane
-import ktfx.layouts.label
-import ktfx.layouts.passwordField
-import ktfx.scene.control.cancelButton
-import ktfx.scene.control.okButton
-import ktfx.scene.layout.gap
+import javafxx.application.later
+import javafxx.beans.value.isBlank
+import javafxx.beans.value.neq
+import javafxx.beans.value.or
+import javafxx.layouts.gridPane
+import javafxx.layouts.label
+import javafxx.layouts.passwordField
+import javafxx.scene.control.cancelButton
+import javafxx.scene.control.okButton
+import javafxx.scene.layout.gap
 
 class ChangePasswordDialog(resourced: Resourced) : ResultableDialog<String>(
     resourced,

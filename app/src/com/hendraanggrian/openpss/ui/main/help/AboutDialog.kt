@@ -25,30 +25,30 @@ import javafx.scene.control.ProgressIndicator
 import javafx.scene.control.SelectionModel
 import javafx.scene.image.Image
 import javafx.scene.text.Font.font
+import javafxx.application.later
+import javafxx.beans.value.and
+import javafxx.collections.toObservableList
+import javafxx.coroutines.FX
+import javafxx.coroutines.listener
+import javafxx.coroutines.onAction
+import javafxx.layouts.button
+import javafxx.layouts.hbox
+import javafxx.layouts.hyperlink
+import javafxx.layouts.imageView
+import javafxx.layouts.label
+import javafxx.layouts.progressIndicator
+import javafxx.layouts.text
+import javafxx.layouts.textFlow
+import javafxx.layouts.vbox
+import javafxx.listeners.cellFactory
+import javafxx.scene.control.closeButton
+import javafxx.scene.control.customButton
+import javafxx.scene.control.errorAlert
+import javafxx.scene.control.icon
+import javafxx.scene.control.styledInfoAlert
+import javafxx.scene.layout.maxSize
+import javafxx.scene.layout.paddingAll
 import kotlinx.coroutines.experimental.launch
-import ktfx.application.later
-import ktfx.beans.value.and
-import ktfx.collections.toObservableList
-import ktfx.coroutines.FX
-import ktfx.coroutines.listener
-import ktfx.coroutines.onAction
-import ktfx.layouts.button
-import ktfx.layouts.hbox
-import ktfx.layouts.hyperlink
-import ktfx.layouts.imageView
-import ktfx.layouts.label
-import ktfx.layouts.progressIndicator
-import ktfx.layouts.text
-import ktfx.layouts.textFlow
-import ktfx.layouts.vbox
-import ktfx.listeners.cellFactory
-import ktfx.scene.control.closeButton
-import ktfx.scene.control.customButton
-import ktfx.scene.control.errorAlert
-import ktfx.scene.control.icon
-import ktfx.scene.control.styledInfoAlert
-import ktfx.scene.layout.maxSize
-import ktfx.scene.layout.paddingAll
 import org.controlsfx.control.MasterDetailPane
 import java.util.concurrent.TimeUnit.SECONDS
 
@@ -56,10 +56,10 @@ class AboutDialog(resourced: Resourced) : Dialog<Nothing>(resourced), Selectable
 
     private lateinit var checkUpdateButton: Button
     private lateinit var checkUpdateProgress: ProgressIndicator
-    private val licenseList: ListView<License> = ktfx.layouts.listView(License.values().toObservableList()) {
+    private val licenseList: ListView<License> = javafxx.layouts.listView(License.values().toObservableList()) {
         cellFactory {
             onUpdate { license, empty ->
-                if (license != null && !empty) graphic = ktfx.layouts.vbox {
+                if (license != null && !empty) graphic = javafxx.layouts.vbox {
                     label(license.repo) { font = font(12.0) }
                     label(license.owner) { font = bold(12) }
                 }
@@ -74,7 +74,10 @@ class AboutDialog(resourced: Resourced) : Dialog<Nothing>(resourced), Selectable
             stylesheets += getStyle(R.style.openpss)
             content = hbox {
                 paddingAll = 48.0
-                imageView(Image(R.image.display_launcher))
+                imageView(Image(R.image.display_launcher)) {
+                    fitHeight = 172.0
+                    fitWidth = 172.0
+                }
                 vbox {
                     alignment = CENTER_LEFT
                     textFlow {
@@ -107,7 +110,7 @@ class AboutDialog(resourced: Resourced) : Dialog<Nothing>(resourced), Selectable
                                                     title = getString(R.string.openpss_is_available, release.name),
                                                     buttonTypes = *arrayOf(CANCEL)
                                                 ) {
-                                                    dialogPane.content = ktfx.layouts.vbox {
+                                                    dialogPane.content = javafxx.layouts.vbox {
                                                         release.assets.forEach { asset ->
                                                             hyperlink(asset.name) {
                                                                 onAction {
@@ -150,14 +153,14 @@ class AboutDialog(resourced: Resourced) : Dialog<Nothing>(resourced), Selectable
                 } marginLeft 48.0
             }
         }
-        dialogPane.expandableContent = ktfx.layouts.titledPane(getString(R.string.open_source_software_license)) {
+        dialogPane.expandableContent = javafxx.layouts.titledPane(getString(R.string.open_source_software_license)) {
             isCollapsible = false
             MasterDetailPane().apply {
                 maxHeight = 256.0
                 dividerPosition = 0.3
                 showDetailNodeProperty().bind(selectedBinding)
                 masterNode = licenseList
-                detailNode = ktfx.layouts.textArea {
+                detailNode = javafxx.layouts.textArea {
                     isEditable = false
                     selectedProperty.listener { _, _, license -> text = license?.getContent() }
                 }

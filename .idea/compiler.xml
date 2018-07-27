@@ -14,6 +14,8 @@
       <module name="core_test" target="1.9" />
       <module name="javafx_main" target="1.8" />
       <module name="javafx_test" target="1.8" />
+      <module name="openpss_buildSrc_main" target="1.8" />
+      <module name="openpss_buildSrc_test" target="1.8" />
       <module name="scene_main" target="1.8" />
       <module name="scene_test" target="1.8" />
       <module name="wijayaprinting-scene_main" target="1.8" />

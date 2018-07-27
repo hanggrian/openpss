@@ -5,7 +5,7 @@ import com.hendraanggrian.openpss.control.Resultable
 import com.hendraanggrian.openpss.i18n.Resourced
 import javafx.scene.Node
 import javafx.scene.control.Button
-import ktfx.coroutines.onAction
+import javafxx.coroutines.onAction
 import org.controlsfx.control.PopOver
 
 /** [PopOver] with default button and return type. */
@@ -14,7 +14,7 @@ abstract class ResultablePopover<T>(
     titleId: String
 ) : Popover(resourced, titleId), Resultable<T> {
 
-    protected val defaultButton: Button = ktfx.layouts.button(getString(R.string.ok)) {
+    protected val defaultButton: Button = javafxx.layouts.button(getString(R.string.ok)) {
         isDefaultButton = true
     }
 

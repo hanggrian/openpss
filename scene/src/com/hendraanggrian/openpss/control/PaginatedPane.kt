@@ -8,9 +8,9 @@ import javafx.beans.property.SimpleObjectProperty
 import javafx.scene.Node
 import javafx.scene.control.Pagination
 import javafx.util.Callback
-import ktfx.beans.binding.bindingOf
-import ktfx.beans.value.getValue
-import ktfx.beans.value.setValue
+import javafxx.beans.binding.bindingOf
+import javafxx.beans.value.getValue
+import javafxx.beans.value.setValue
 
 class PaginatedPane : Pagination() {
 

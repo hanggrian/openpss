@@ -5,7 +5,7 @@ import com.hendraanggrian.openpss.control.PasswordBox
 import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.i18n.Resourced
 import javafx.scene.control.ChoiceBox
-import ktfx.layouts.vbox
+import javafxx.layouts.vbox
 
 class PermissionDialog(resourced: Resourced) : ResultableDialog<Boolean>(
     resourced,

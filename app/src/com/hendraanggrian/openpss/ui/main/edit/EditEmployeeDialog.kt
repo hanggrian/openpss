@@ -15,13 +15,13 @@ import kotlinx.coroutines.experimental.delay
 import kotlinx.coroutines.experimental.launch
 import kotlinx.nosql.notEqual
 import kotlinx.nosql.update
-import ktfx.beans.property.toProperty
-import ktfx.beans.value.or
-import ktfx.collections.toMutableObservableList
-import ktfx.coroutines.FX
-import ktfx.coroutines.onAction
-import ktfx.layouts.button
-import ktfx.scene.control.styledInfoAlert
+import javafxx.beans.property.toProperty
+import javafxx.beans.value.or
+import javafxx.collections.toMutableObservableList
+import javafxx.coroutines.FX
+import javafxx.coroutines.onAction
+import javafxx.layouts.button
+import javafxx.scene.control.styledInfoAlert
 
 class EditEmployeeDialog(
     resourced: Resourced,

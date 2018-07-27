@@ -8,13 +8,14 @@ import java.nio.file.Files.delete
 buildscript {
     repositories {
         jcenter()
+        maven("https://dl.bintray.com/hendraanggrian/packr")
         maven("https://oss.sonatype.org/content/repositories/snapshots") // required for packr
     }
     dependencies {
         classpath(kotlin("gradle-plugin", VERSION_KOTLIN))
-        classpath(hendraanggrian("r", VERSION_R, "gradle-plugin"))
-        classpath(hendraanggrian("buildconfig", VERSION_BUILDCONFIG, "gradle-plugin"))
-        classpath(hendraanggrian("packr", VERSION_PACKR, "gradle-plugin"))
+        classpath(hendraanggrian("generation", "r-gradle-plugin", VERSION_R))
+        classpath(hendraanggrian("generation", "buildconfig-gradle-plugin", VERSION_BUILDCONFIG))
+        classpath(hendraanggrian("packr", "packr-gradle-plugin", VERSION_PACKR))
         classpath(shadow())
         classpath(junitPlatform("gradle-plugin"))
     }

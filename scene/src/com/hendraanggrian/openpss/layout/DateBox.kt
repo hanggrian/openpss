@@ -12,14 +12,14 @@ import javafx.scene.Node
 import javafx.scene.control.Button
 import javafx.scene.control.DatePicker
 import javafx.scene.image.ImageView
-import ktfx.beans.binding.bindingOf
-import ktfx.beans.value.getValue
-import ktfx.coroutines.onAction
-import ktfx.layouts.LayoutDsl
-import ktfx.layouts.LayoutManager
-import ktfx.layouts._HBox
-import ktfx.layouts.button
-import ktfx.layouts.datePicker
+import javafxx.beans.binding.bindingOf
+import javafxx.beans.value.getValue
+import javafxx.coroutines.onAction
+import javafxx.layouts.LayoutDsl
+import javafxx.layouts.LayoutManager
+import javafxx.layouts._HBox
+import javafxx.layouts.button
+import javafxx.layouts.datePicker
 import org.joda.time.LocalDate
 import org.joda.time.LocalDate.now
 

@@ -5,9 +5,9 @@ import com.hendraanggrian.openpss.util.getStyle
 import javafx.scene.Node
 import javafx.scene.control.Dialog
 import javafx.scene.image.ImageView
-import ktfx.layouts.LayoutManager
-import ktfx.scene.control.graphicIcon
-import ktfx.scene.control.headerTitle
+import javafxx.layouts.LayoutManager
+import javafxx.scene.control.graphicIcon
+import javafxx.scene.control.headerTitle
 
 abstract class Dialog<R>(
     resourced: Resourced,

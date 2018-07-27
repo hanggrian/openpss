@@ -1,5 +1,5 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
-import com.hendraanggrian.r.RTask
+import com.hendraanggrian.generation.r.RTask
 import org.gradle.kotlin.dsl.kotlin
 import org.jetbrains.kotlin.gradle.dsl.Coroutines
 import org.jetbrains.kotlin.gradle.dsl.Coroutines.*
@@ -13,7 +13,7 @@ plugins {
     `java-library`
     kotlin("jvm")
     idea
-    r
+    generation("r")
     shadow
 }
 
@@ -36,9 +36,9 @@ dependencies {
     compile(kotlin("stdlib", VERSION_KOTLIN))
     compile(kotlinx("coroutines-javafx", VERSION_COROUTINES))
     compile(controlsFX())
-    compile(hendraanggrian("ktfx", VERSION_KTFX, "layouts"))
-    compile(hendraanggrian("ktfx", VERSION_KTFX, "listeners"))
-    compile(hendraanggrian("ktfx", VERSION_KTFX, "coroutines"))
+    compile(hendraanggrian("javafxx", "layouts-ktx", VERSION_JAVAFXX))
+    compile(hendraanggrian("javafxx", "listeners-ktx", VERSION_JAVAFXX))
+    compile(hendraanggrian("javafxx", "coroutines-ktx", VERSION_JAVAFXX))
     compile(jodaTime())
     compile(commonsValidator())
 

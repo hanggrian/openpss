@@ -8,13 +8,13 @@ import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleDoubleProperty
 import javafx.scene.Node
 import javafx.scene.control.TextField
-import ktfx.beans.binding.booleanBindingOf
-import ktfx.beans.value.getValue
-import ktfx.beans.value.setValue
-import ktfx.coroutines.listener
-import ktfx.layouts.LayoutDsl
-import ktfx.layouts.LayoutManager
-import ktfx.listeners.bindBidirectional
+import javafxx.beans.binding.booleanBindingOf
+import javafxx.beans.value.getValue
+import javafxx.beans.value.setValue
+import javafxx.coroutines.listener
+import javafxx.layouts.LayoutDsl
+import javafxx.layouts.LayoutManager
+import javafxx.listeners.bindBidirectional
 
 open class DoubleField : TextField() {
 

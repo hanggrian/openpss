@@ -6,11 +6,11 @@ import javafx.beans.property.BooleanProperty
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.scene.Node
 import javafx.scene.control.TextField
-import ktfx.beans.binding.booleanBindingOf
-import ktfx.beans.value.getValue
-import ktfx.coroutines.listener
-import ktfx.layouts.LayoutDsl
-import ktfx.layouts.LayoutManager
+import javafxx.beans.binding.booleanBindingOf
+import javafxx.beans.value.getValue
+import javafxx.coroutines.listener
+import javafxx.layouts.LayoutDsl
+import javafxx.layouts.LayoutManager
 import org.apache.commons.validator.routines.InetAddressValidator.getInstance
 
 /** Field that display IP address. */

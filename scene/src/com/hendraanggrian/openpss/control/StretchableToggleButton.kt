@@ -9,8 +9,8 @@ import javafx.beans.property.SimpleStringProperty
 import javafx.beans.property.StringProperty
 import javafx.scene.Node
 import javafx.scene.control.ToggleButton
-import ktfx.layouts.LayoutDsl
-import ktfx.layouts.LayoutManager
+import javafxx.layouts.LayoutDsl
+import javafxx.layouts.LayoutManager
 
 @DefaultProperty("graphic")
 class StretchableToggleButton @JvmOverloads constructor(

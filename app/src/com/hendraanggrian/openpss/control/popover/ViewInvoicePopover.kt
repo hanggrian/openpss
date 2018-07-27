@@ -29,17 +29,17 @@ import javafx.scene.layout.CornerRadii.EMPTY
 import javafx.scene.layout.Priority.ALWAYS
 import javafx.scene.paint.Color.BLACK
 import javafx.scene.text.TextAlignment
-import ktfx.layouts.button
-import ktfx.layouts.columnConstraints
-import ktfx.layouts.gridPane
-import ktfx.layouts.label
-import ktfx.layouts.line
-import ktfx.layouts.pane
-import ktfx.layouts.region
-import ktfx.layouts.textFlow
-import ktfx.layouts.vbox
-import ktfx.scene.layout.gap
-import ktfx.scene.layout.paddingAll
+import javafxx.layouts.button
+import javafxx.layouts.columnConstraints
+import javafxx.layouts.gridPane
+import javafxx.layouts.label
+import javafxx.layouts.line
+import javafxx.layouts.pane
+import javafxx.layouts.region
+import javafxx.layouts.textFlow
+import javafxx.layouts.vbox
+import javafxx.scene.layout.gap
+import javafxx.scene.layout.paddingAll
 import java.util.ResourceBundle
 
 class ViewInvoicePopover(invoice: Invoice) : Popover(object : Resourced {
@@ -58,7 +58,7 @@ class ViewInvoicePopover(invoice: Invoice) : Popover(object : Resourced {
     private lateinit var employee: Employee
 
     init {
-        graphic = ktfx.layouts.label("${getString(R.string.server_language)}: $language")
+        graphic = javafxx.layouts.label("${getString(R.string.server_language)}: $language")
         transaction {
             invoiceHeaders = findGlobalSettings(KEY_INVOICE_HEADERS).single().valueList
             employee = Employees[invoice.employeeId].single()

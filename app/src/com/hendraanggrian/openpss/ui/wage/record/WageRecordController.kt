@@ -3,8 +3,8 @@ package com.hendraanggrian.openpss.ui.wage.record
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.UncollapsibleTreeItem
 import com.hendraanggrian.openpss.control.popover.DatePopover
-import com.hendraanggrian.openpss.io.WageContentDirectory
-import com.hendraanggrian.openpss.io.WageContentFile
+import com.hendraanggrian.openpss.io.WageDirectory
+import com.hendraanggrian.openpss.io.WageFile
 import com.hendraanggrian.openpss.layout.TimeBox
 import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.wage.Attendee
@@ -202,12 +202,12 @@ class WageRecordController : Controller() {
         } while (flow.lastVisibleCell.index + 1 <
             recordTable.root.children.size + recordTable.root.children.sumBy { it.children.size })
         togglePrintMode(false, stylesheet)
-        ImageIO.write(images.concatenate(), "png", WageContentFile)
+        ImageIO.write(images.concatenate(), "png", WageFile())
         styledInfoAlert(getStyle(R.style.openpss), getString(R.string.screenshot_finished)) {
             customButton(getString(R.string.open_folder), CANCEL_CLOSE)
         }.showAndWait()
             .filter { it.buttonData == CANCEL_CLOSE }
-            .ifPresent { openFile(WageContentDirectory) }
+            .ifPresent { openFile(WageDirectory) }
     }
 
     private inline val records: List<Record> get() = recordTable.root.children.flatMap { it.children }.map { it.value }

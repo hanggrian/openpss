@@ -10,4 +10,4 @@ import kotlinx.nosql.Query
 inline fun <T : AbstractSchema, C> AbstractColumn<out C?, T, *>.matches(
     regex: Any,
     flags: Int = 0
-): Query = matches(regex.toString().toPattern(flags))
+): Query = matches("$regex".toPattern(flags))

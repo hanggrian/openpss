@@ -24,7 +24,7 @@ import javafxx.stage.icon
 import javafxx.stage.setMinSize
 import kotlinx.nosql.equal
 import kotlinx.nosql.update
-import org.apache.log4j.BasicConfigurator.configure
+import org.apache.log4j.BasicConfigurator
 import java.util.ResourceBundle
 
 class App : Application(), Resourced {
@@ -46,7 +46,7 @@ class App : Application(), Resourced {
     override fun init() {
         resources = PreferencesFile.language.toResourcesBundle()
         if (DEBUG) {
-            configure()
+            BasicConfigurator.configure()
         }
     }
 

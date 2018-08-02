@@ -5,11 +5,12 @@ package com.hendraanggrian.openpss.util
 import javafx.scene.control.Control
 import org.controlsfx.validation.Severity
 import org.controlsfx.validation.ValidationSupport
-import org.controlsfx.validation.Validator.createPredicateValidator
+import org.controlsfx.validation.Validator
 
 inline fun <T> Control.validator(
     message: String,
     severity: Severity,
     required: Boolean = true,
     noinline predicate: (T) -> Boolean
-) = ValidationSupport().registerValidator(this, required, createPredicateValidator<T>(predicate, message, severity))
+) = ValidationSupport().registerValidator(this, required,
+    Validator.createPredicateValidator<T>(predicate, message, severity))

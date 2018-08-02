@@ -36,9 +36,6 @@ import javafx.scene.control.TableView
 import javafx.scene.control.TextField
 import javafx.scene.image.ImageView
 import javafx.util.Callback
-import kotlinx.coroutines.experimental.delay
-import kotlinx.coroutines.experimental.launch
-import kotlinx.nosql.update
 import javafxx.application.later
 import javafxx.beans.binding.bindingOf
 import javafxx.beans.binding.stringBindingOf
@@ -57,6 +54,9 @@ import javafxx.layouts.separator
 import javafxx.layouts.styledTextField
 import javafxx.layouts.tooltip
 import javafxx.scene.control.styledErrorAlert
+import kotlinx.coroutines.experimental.delay
+import kotlinx.coroutines.experimental.launch
+import kotlinx.nosql.update
 import org.controlsfx.control.MasterDetailPane
 import java.net.URL
 import java.util.ResourceBundle
@@ -178,12 +178,12 @@ class CustomerController : SegmentedController(), Refreshable, Selectable<Custom
         })
     }
 
-    fun add() = InputUserPopover(this, R.string.add_customer).showAt(addButton) {
+    fun add() = InputUserPopover(this, R.string.add_customer).showAt(addButton) { name ->
         transaction {
             when {
-                Customers { it.name.matches("^$it$", CASE_INSENSITIVE) }.isNotEmpty() ->
+                Customers { it.name.matches("^$name$", CASE_INSENSITIVE) }.isNotEmpty() ->
                     styledErrorAlert(getStyle(R.style.openpss), getString(R.string.name_taken)).show()
-                else -> Customer.new(it).let {
+                else -> Customer.new(name).let {
                     it.id = Customers.insert(it)
                     customerList.items.add(it)
                     customerList.selectionModel.select(customerList.items.lastIndex)

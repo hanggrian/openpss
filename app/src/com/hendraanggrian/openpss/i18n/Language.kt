@@ -9,33 +9,42 @@ enum class Language(private val nativeLocale: Locale) {
     EN_US(Locale.US),
     ID_ID(Locale("id", "ID"));
 
+    /** Reverse the damage done in [Locale.convertOldISOCodes]. */
     val code: String
-        get() = LocaleUtils.toLowerString(nativeLocale.language).intern().let {
-            when (it) {
-                "iw" -> "he"
-                "ji" -> "yi"
-                "in" -> "id"
-                else -> it
+        get() = LocaleUtils.toLowerString(nativeLocale.language)
+            .intern()
+            .let {
+                when (it) {
+                    "iw" -> "he"
+                    "ji" -> "yi"
+                    "in" -> "id"
+                    else -> it
+                }
             }
-        }
 
     val fullCode: String get() = "$code-${nativeLocale.country}"
 
     fun toLocale(): Locale = nativeLocale
 
     @JvmOverloads
-    fun toString(showCurrency: Boolean = false): String = nativeLocale.getDisplayLanguage(nativeLocale).let {
-        when {
-            showCurrency -> "${Currency.getInstance(nativeLocale).symbol} - $it"
-            else -> it
+    fun toString(showCurrency: Boolean = false): String = nativeLocale
+        .getDisplayLanguage(nativeLocale)
+        .let {
+            when {
+                showCurrency -> "${Currency.getInstance(nativeLocale).symbol} - $it"
+                else -> it
+            }
         }
-    }
 
     fun toResourcesBundle(): ResourceBundle = ResourceBundle.getBundle("string_$code")
 
     companion object {
-        fun ofCode(code: String): Language = Language.values().singleOrNull { it.code == code } ?: EN_US
 
-        fun ofFullCode(fullCode: String): Language = Language.values().singleOrNull { it.fullCode == fullCode } ?: EN_US
+        fun ofCode(code: String): Language = find { it.code == code }
+
+        fun ofFullCode(fullCode: String): Language = find { it.fullCode == fullCode }
+
+        private inline fun find(predicate: (Language) -> Boolean): Language = Language.values()
+            .singleOrNull(predicate) ?: EN_US
     }
 }

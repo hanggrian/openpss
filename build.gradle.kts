@@ -31,7 +31,7 @@ allprojects {
             delete(projectDir.resolve("out"))
         }
         withType<KotlinCompile> {
-            kotlinOptions.jvmTarget = VERSION_1_8.toString()
+            kotlinOptions.jvmTarget = "$VERSION_1_8"
         }
     }
 }

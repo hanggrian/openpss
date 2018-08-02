@@ -8,18 +8,20 @@ import javafx.event.ActionEvent.ACTION
 import javafx.scene.Node
 import javafx.scene.control.ButtonType.NO
 import javafx.scene.control.ButtonType.YES
-import javafx.scene.control.ChoiceBox
 import javafx.scene.control.ListView
-import kotlinx.coroutines.experimental.CoroutineScope
-import kotlinx.coroutines.experimental.launch
 import javafxx.coroutines.FX
 import javafxx.scene.control.styledConfirmAlert
+import kotlinx.coroutines.experimental.CoroutineScope
+import kotlinx.coroutines.experimental.launch
 import kotlin.coroutines.experimental.CoroutineContext
 
-/** Can't use `ktfx-coroutines` because by the time `consume` is called in coroutine context, it is already too late. */
-inline fun Node.onActionFilter(
+/**
+ * Can't use `javafxx-coroutines` because by the time `consume`
+ * is called in coroutine context, it is already too late.
+ */
+fun Node.onActionFilter(
     context: CoroutineContext = FX,
-    noinline action: suspend CoroutineScope.() -> Unit
+    action: suspend CoroutineScope.() -> Unit
 ) = addEventFilter(ACTION) {
     it.consume()
     launch(context) { action() }
@@ -38,6 +40,3 @@ inline fun <T> ListView<T>.forceRefresh() {
     items = null
     items = temp
 }
-
-@Suppress("UNCHECKED_CAST")
-inline fun <T> ChoiceBox<*>.get(): T = value as T

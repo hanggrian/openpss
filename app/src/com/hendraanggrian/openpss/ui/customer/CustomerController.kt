@@ -183,10 +183,12 @@ class CustomerController : SegmentedController(), Refreshable, Selectable<Custom
             when {
                 Customers { it.name.matches("^$name$", CASE_INSENSITIVE) }.isNotEmpty() ->
                     styledErrorAlert(getStyle(R.style.openpss), getString(R.string.name_taken)).show()
-                else -> Customer.new(name).let {
-                    it.id = Customers.insert(it)
-                    customerList.items.add(it)
-                    customerList.selectionModel.select(customerList.items.lastIndex)
+                else -> {
+                    Customer.new(name).let {
+                        it.id = Customers.insert(it)
+                        customerList.items.add(it)
+                        customerList.selectionModel.select(customerList.items.lastIndex)
+                    }
                 }
             }
         }
@@ -195,22 +197,22 @@ class CustomerController : SegmentedController(), Refreshable, Selectable<Custom
     private fun edit() = EditCustomerPopover(this, selected!!).showAt(editButton) {
         transaction {
             Customers[selected!!].projection { name + address + note }.update(it.name, it.address, it.note)
-            reload()
         }
+        reload()
     }
 
     @FXML fun addContact() = AddContactPopover(this).showAt(contactTable) {
         transaction {
             Customers[selected!!].projection { contacts }.update(selected!!.contacts + it)
-            reload()
         }
+        reload()
     }
 
     @FXML fun deleteContact() = yesNoAlert(R.string.delete_contact) {
         transaction {
             Customers[selected!!].projection { contacts }.update(selected!!.contacts - selected2!!)
-            reload()
         }
+        reload()
     }
 
     private fun Label.bindLabel(target: () -> String) = textProperty()

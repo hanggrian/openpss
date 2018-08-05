@@ -1,3 +1,4 @@
 .pagination {
     -fx-page-information-alignment: right;
+    -fx-padding: 0 0 5 0;
 }

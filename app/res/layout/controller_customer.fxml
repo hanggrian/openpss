@@ -10,8 +10,7 @@
                   fx:controller="com.hendraanggrian.openpss.ui.customer.CustomerController"
                   fx:id="masterDetailPane" dividerPosition="0.2">
     <masterNode>
-        <PaginatedPane fx:id="customerPagination" VBox.vgrow="ALWAYS"
-                       count="26.5"/>
+        <PaginatedPane fx:id="customerPagination" VBox.vgrow="ALWAYS" count="26.5"/>
     </masterNode>
     <detailNode>
         <GridPane hgap="20" vgap="20">

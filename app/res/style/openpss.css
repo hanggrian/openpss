@@ -13,7 +13,7 @@
 /* CUSTOM STYLECLASSES */
 
 .navigation-pane {
-    -fx-padding: 16 16 16 16;
+    -fx-padding: 10 10 10 10;
 }
 
 .display-label {
@@ -34,14 +34,14 @@
 }
 
 .search-textfield {
-  -fx-background-image: url('../image/field_search_inactive.png');
-  -fx-background-repeat: no-repeat;
-  -fx-background-position: left center;
-  -fx-padding: 5 8 5 24;
+    -fx-background-image: url('../image/field_search_inactive.png');
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: left center;
+    -fx-padding: 5 8 5 24;
 }
 
 .search-textfield:focused {
-  -fx-background-image: url('../image/field_search_active.png');
+    -fx-background-image: url('../image/field_search_active.png');
 }
 
 .borderless-titledpane > *.content {

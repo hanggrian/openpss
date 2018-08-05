@@ -46,7 +46,7 @@ class SegmentedTabPane : TabPane() {
                         header.buttons.first().isSelected = true
                     }
                 }
-                else -> header.buttons -= header.buttons.filter { it.text in change.addedSubList.map { it.text } }
+                else -> header.buttons -= header.buttons.filter { button -> button.text in change.addedSubList.map { it.text } }
             }
         }
     }

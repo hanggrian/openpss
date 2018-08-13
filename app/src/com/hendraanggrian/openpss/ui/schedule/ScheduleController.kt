@@ -26,13 +26,13 @@ import javafx.scene.control.TreeTableColumn
 import javafx.scene.control.TreeTableView
 import javafx.scene.control.TreeTableView.TreeTableViewSelectionModel
 import javafx.scene.image.ImageView
-import kotlinx.nosql.equal
-import kotlinx.nosql.update
 import javafxx.application.later
 import javafxx.collections.isEmpty
 import javafxx.coroutines.listener
 import javafxx.coroutines.onAction
 import javafxx.layouts.separator
+import kotlinx.nosql.equal
+import kotlinx.nosql.update
 import java.net.URL
 import java.util.ResourceBundle
 

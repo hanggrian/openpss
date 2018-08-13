@@ -14,13 +14,13 @@ import com.hendraanggrian.openpss.util.round
 import javafx.beans.property.IntegerProperty
 import javafx.beans.property.SimpleIntegerProperty
 import javafx.collections.ObservableList
-import kotlinx.nosql.equal
-import kotlinx.nosql.update
 import javafxx.beans.binding.doubleBindingOf
 import javafxx.beans.property.toMutableProperty
 import javafxx.beans.value.getValue
 import javafxx.beans.value.setValue
 import javafxx.collections.mutableObservableListOf
+import kotlinx.nosql.equal
+import kotlinx.nosql.update
 import org.joda.time.DateTime
 import org.joda.time.Minutes.minutes
 import org.joda.time.Period

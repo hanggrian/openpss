@@ -45,9 +45,7 @@ class App : Application(), Resourced {
 
     override fun init() {
         resources = PreferencesFile.language.toResourcesBundle()
-        if (DEBUG) {
-            BasicConfigurator.configure()
-        }
+        if (DEBUG) BasicConfigurator.configure()
     }
 
     override fun start(stage: Stage) {

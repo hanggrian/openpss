@@ -1,4 +1,4 @@
-package com.hendraanggrian.openpss.ui.main.help.github
+package com.hendraanggrian.openpss.ui.main.help
 
 import com.google.common.util.concurrent.ListenableFuture
 import com.hendraanggrian.openpss.BuildConfig.ARTIFACT
@@ -13,7 +13,7 @@ import retrofit2.http.GET
 interface GitHubApi {
 
     @GET("repos/$USER/$ARTIFACT/releases/latest")
-    fun getLatestRelease(): ListenableFuture<Release>
+    fun getLatestRelease(): ListenableFuture<GitHubRelease>
 
     companion object {
         private const val END_POINT = "https://api.github.com"

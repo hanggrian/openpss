@@ -28,6 +28,7 @@ class AddOffsetPopover(resourced: Resourced) : AddOrderPopover<Invoice.Offset>(
     resourced,
     R.string.add_offset
 ), OffsetOrder {
+
     private lateinit var machineChoice: ChoiceBox<OffsetPrice>
     private lateinit var techniqueChoice: ChoiceBox<Invoice.Offset.Technique>
     private lateinit var minQtyField: IntField

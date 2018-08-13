@@ -10,7 +10,6 @@ import com.hendraanggrian.openpss.control.dialog.Dialog
 import com.hendraanggrian.openpss.i18n.Resourced
 import com.hendraanggrian.openpss.ui.Selectable
 import com.hendraanggrian.openpss.ui.main.License
-import com.hendraanggrian.openpss.ui.main.help.github.GitHubApi
 import com.hendraanggrian.openpss.util.bold
 import com.hendraanggrian.openpss.util.browseUrl
 import com.hendraanggrian.openpss.util.getFont
@@ -107,13 +106,13 @@ class AboutDialog(resourced: Resourced) : Dialog<Nothing>(resourced), Selectable
                                             when {
                                                 release.isNewer() -> styledInfoAlert(
                                                     getStyle(R.style.openpss),
-                                                    title = getString(R.string.openpss_is_available, release.name),
+                                                    title = getString(R.string.openpss_is_available, release.version),
                                                     buttonTypes = *arrayOf(CANCEL)
                                                 ) {
                                                     dialogPane.content = javafxx.layouts.vbox {
                                                         release.assets.forEach { asset ->
                                                             hyperlink(asset.name) {
-                                                                onAction {
+                                                                onAction { _ ->
                                                                     browseUrl(asset.downloadUrl)
                                                                     close()
                                                                 }

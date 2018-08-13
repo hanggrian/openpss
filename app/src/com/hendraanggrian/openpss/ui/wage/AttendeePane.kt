@@ -24,8 +24,6 @@ import javafx.scene.input.MouseEvent.MOUSE_CLICKED
 import javafx.scene.layout.Priority.ALWAYS
 import javafx.scene.layout.StackPane
 import javafx.scene.text.Font.font
-import kotlinx.coroutines.experimental.delay
-import kotlinx.coroutines.experimental.launch
 import javafxx.beans.binding.bindingOf
 import javafxx.collections.sort
 import javafxx.coroutines.FX
@@ -48,6 +46,8 @@ import javafxx.scene.input.isDelete
 import javafxx.scene.input.isDoubleClick
 import javafxx.scene.layout.gap
 import javafxx.scene.layout.paddingAll
+import kotlinx.coroutines.experimental.delay
+import kotlinx.coroutines.experimental.launch
 import org.joda.time.DateTime
 import org.joda.time.DateTime.now
 import kotlin.math.absoluteValue

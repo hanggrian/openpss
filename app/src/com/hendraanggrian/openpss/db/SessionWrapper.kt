@@ -65,7 +65,7 @@ class SessionWrapper(val session: MongoDBSession) :
     inline fun <S : DocumentSchema<D>, D : Document<S>> S.buildQuery(
         noinline builder: QueryBuilder.(S) -> Unit
     ): DocumentSchemaQueryWrapper<S, String, D> = invoke {
-        QueryBuilderImpl().apply { builder(this@buildQuery) }.build()
+        _QueryBuilder().apply { builder(this@buildQuery) }.build()
     }
 
     inline fun Employee.isAdmin(): Boolean = Employees[this].single().admin

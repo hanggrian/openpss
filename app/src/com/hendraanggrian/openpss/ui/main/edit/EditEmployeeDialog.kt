@@ -11,10 +11,6 @@ import com.hendraanggrian.openpss.util.doneCell
 import com.hendraanggrian.openpss.util.getStyle
 import com.hendraanggrian.openpss.util.stringCell
 import javafx.scene.Node
-import kotlinx.coroutines.experimental.delay
-import kotlinx.coroutines.experimental.launch
-import kotlinx.nosql.notEqual
-import kotlinx.nosql.update
 import javafxx.beans.property.toProperty
 import javafxx.beans.value.or
 import javafxx.collections.toMutableObservableList
@@ -22,6 +18,10 @@ import javafxx.coroutines.FX
 import javafxx.coroutines.onAction
 import javafxx.layouts.button
 import javafxx.scene.control.styledInfoAlert
+import kotlinx.coroutines.experimental.delay
+import kotlinx.coroutines.experimental.launch
+import kotlinx.nosql.notEqual
+import kotlinx.nosql.update
 
 class EditEmployeeDialog(
     resourced: Resourced,

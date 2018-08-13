@@ -16,9 +16,10 @@ class InputUserPopover(
 
     init {
         if (restrictiveInput) editor.validator<String>(
-            getString(R.string.name_doesnt_start_with_uppercase_letter_add_anyway), WARNING, false) {
-            editor.text.split(" ").none { it.firstOrNull().let { it == null || it.isLowerCase() } }
-        }
+            getString(R.string.name_doesnt_start_with_uppercase_letter_add_anyway),
+            WARNING,
+            false
+        ) { _ -> editor.text.split(" ").none { s -> s.firstOrNull().let { it == null || it.isLowerCase() } } }
     }
 
     override val defaultDisableBinding: BooleanBinding

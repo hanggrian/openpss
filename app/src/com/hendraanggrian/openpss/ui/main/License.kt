@@ -1,7 +1,8 @@
 package com.hendraanggrian.openpss.ui.main
 
 import com.hendraanggrian.openpss.util.getResourceAsStream
-import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.experimental.DefaultDispatcher
+import kotlinx.coroutines.experimental.withContext
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.util.stream.Collectors
@@ -23,10 +24,10 @@ enum class License(val owner: String, val repo: String, val homepage: String) {
         "Google",
         "Guava",
         "https://github.com/google/guava"),
-    HENDRAANGGRIAN_KTFX(
+    HENDRAANGGRIAN_JAVAFXX(
         "Hendra Anggrian",
-        "KtFX",
-        "https://github.com/hendraanggrian/ktfx"),
+        "javafxx",
+        "https://github.com/hendraanggrian/javafxx"),
     JETBRAINS_KOTLIN(
         "JetBrains",
         "Kotlin",
@@ -44,9 +45,9 @@ enum class License(val owner: String, val repo: String, val homepage: String) {
         "Log4j12",
         "https://www.slf4j.org");
 
-    suspend fun getContent(): String = async {
+    suspend fun getContent(): String = withContext(DefaultDispatcher) {
         getResourceAsStream("/license/${name.toLowerCase()}.txt").use {
             BufferedReader(InputStreamReader(it)).lines().collect(Collectors.joining("\n"))
         }
-    }.await()
+    }
 }

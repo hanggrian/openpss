@@ -28,7 +28,7 @@ class DateTimePopover(
             gap = R.dimen.padding_small.toDouble()
             dateBox = dateBox(prefill.toLocalDate()) row 0 col 1
             button("-${Record.WORKING_HOURS}") {
-                onAction { repeat(Record.WORKING_HOURS) { timeBox.previousButton.fire() } }
+                onAction { _ -> repeat(Record.WORKING_HOURS) { timeBox.previousButton.fire() } }
             } row 1 col 0
             timeBox = timeBox(prefill.toLocalTime()) {
                 setOnOverlap { plus ->
@@ -39,7 +39,7 @@ class DateTimePopover(
                 }
             } row 1 col 1
             button("+${Record.WORKING_HOURS}") {
-                onAction { repeat(Record.WORKING_HOURS) { timeBox.nextButton.fire() } }
+                onAction { _ -> repeat(Record.WORKING_HOURS) { timeBox.nextButton.fire() } }
             } row 1 col 2
         }
         defaultButton.text = getString(defaultButtonTextId)

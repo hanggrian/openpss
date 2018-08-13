@@ -14,7 +14,7 @@ interface QueryBuilder {
 }
 
 @Suppress("ClassName")
-class QueryBuilderImpl : QueryBuilder, Builder<Query> {
+class _QueryBuilder : QueryBuilder, Builder<Query> {
     private var source: Query? = null
 
     override fun and(target: Query) = setOrCreate(target) { AndQuery(it, target) }

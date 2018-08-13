@@ -20,7 +20,6 @@ import javafx.scene.control.ChoiceBox
 import javafx.scene.control.TextArea
 import javafx.scene.layout.HBox
 import javafx.scene.layout.VBox
-import kotlinx.nosql.update
 import javafxx.beans.property.toMutableProperty
 import javafxx.beans.value.and
 import javafxx.collections.toObservableList
@@ -40,6 +39,7 @@ import javafxx.listeners.converter
 import javafxx.scene.control.cancelButton
 import javafxx.scene.control.okButton
 import javafxx.scene.layout.gap
+import kotlinx.nosql.update
 
 class PreferencesDialog(
     resourced: Resourced,

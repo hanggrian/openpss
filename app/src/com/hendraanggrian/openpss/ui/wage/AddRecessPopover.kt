@@ -2,9 +2,9 @@ package com.hendraanggrian.openpss.ui.wage
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.popover.ResultablePopover
+import com.hendraanggrian.openpss.i18n.Resourced
 import com.hendraanggrian.openpss.layout.TimeBox
 import com.hendraanggrian.openpss.layout.timeBox
-import com.hendraanggrian.openpss.i18n.Resourced
 import javafxx.beans.binding.booleanBindingOf
 import javafxx.layouts.gridPane
 import javafxx.layouts.label

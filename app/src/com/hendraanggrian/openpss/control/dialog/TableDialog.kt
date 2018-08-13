@@ -19,7 +19,6 @@ import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
 import javafx.scene.control.TableView.CONSTRAINED_RESIZE_POLICY
 import javafx.scene.image.ImageView
-import kotlinx.nosql.mongodb.DocumentSchema
 import javafxx.application.later
 import javafxx.beans.property.toProperty
 import javafxx.beans.value.or
@@ -33,6 +32,7 @@ import javafxx.layouts.separator
 import javafxx.layouts.tableView
 import javafxx.layouts.vbox
 import javafxx.scene.control.closeButton
+import kotlinx.nosql.mongodb.DocumentSchema
 
 abstract class TableDialog<D : Document<S>, S : DocumentSchema<D>>(
     protected val schema: S,

@@ -8,12 +8,12 @@ import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.i18n.Resourced
 import javafx.beans.value.ObservableValue
 import javafx.geometry.Pos.CENTER_RIGHT
-import kotlinx.nosql.equal
-import kotlinx.nosql.update
 import javafxx.beans.property.toProperty
 import javafxx.coroutines.onEditCommit
 import javafxx.listeners.textFieldCellFactory
 import javafxx.styles.labeledStyle
+import kotlinx.nosql.equal
+import kotlinx.nosql.update
 
 @Suppress("UNCHECKED_CAST")
 class EditOffsetPriceDialog(

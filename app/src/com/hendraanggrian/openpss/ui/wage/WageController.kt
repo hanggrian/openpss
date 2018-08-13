@@ -26,7 +26,6 @@ import javafx.scene.image.ImageView
 import javafx.scene.layout.AnchorPane
 import javafx.scene.layout.FlowPane
 import javafx.stage.FileChooser.ExtensionFilter
-import kotlinx.coroutines.experimental.launch
 import javafxx.application.later
 import javafxx.beans.binding.booleanBindingOf
 import javafxx.beans.binding.stringBindingOf
@@ -45,6 +44,7 @@ import javafxx.scene.layout.maxSize
 import javafxx.stage.fileChooser
 import javafxx.stage.setMinSize
 import javafxx.stage.stage
+import kotlinx.coroutines.experimental.launch
 import java.io.File
 import java.net.URL
 import java.util.ResourceBundle

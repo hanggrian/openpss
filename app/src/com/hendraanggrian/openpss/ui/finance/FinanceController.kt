@@ -9,13 +9,6 @@ import com.hendraanggrian.openpss.control.styledStretchableButton
 import com.hendraanggrian.openpss.db.schemas.Employees
 import com.hendraanggrian.openpss.db.schemas.Invoices
 import com.hendraanggrian.openpss.db.schemas.Payment
-import com.hendraanggrian.openpss.db.schemas.Payment.Companion.gather
-import com.hendraanggrian.openpss.db.schemas.Payment.Method
-import com.hendraanggrian.openpss.db.schemas.Payment.Method.CASH
-import com.hendraanggrian.openpss.db.schemas.Payment.Method.CHEQUE
-import com.hendraanggrian.openpss.db.schemas.Payment.Method.CREDIT_CARD
-import com.hendraanggrian.openpss.db.schemas.Payment.Method.DEBIT_CARD
-import com.hendraanggrian.openpss.db.schemas.Payment.Method.TRANSFER
 import com.hendraanggrian.openpss.db.schemas.Payments
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.io.properties.PreferencesFile
@@ -32,6 +25,7 @@ import com.hendraanggrian.openpss.ui.Selectable3
 import com.hendraanggrian.openpss.util.PATTERN_DATE
 import com.hendraanggrian.openpss.util.PATTERN_TIME
 import com.hendraanggrian.openpss.util.currencyCell
+import com.hendraanggrian.openpss.util.doneCell
 import com.hendraanggrian.openpss.util.matches
 import com.hendraanggrian.openpss.util.numberCell
 import com.hendraanggrian.openpss.util.stringCell
@@ -72,17 +66,14 @@ class FinanceController : SegmentedController(), Refreshable,
     @FXML lateinit var dailyTimeColumn: TableColumn<Payment, String>
     @FXML lateinit var dailyEmployeeColumn: TableColumn<Payment, String>
     @FXML lateinit var dailyValueColumn: TableColumn<Payment, String>
-    @FXML lateinit var dailyMethodColumn: TableColumn<Payment, String>
+    @FXML lateinit var dailyCashColumn: TableColumn<Payment, Boolean>
     @FXML lateinit var dailyReferenceColumn: TableColumn<Payment, String>
     @FXML lateinit var viewInvoiceItem: MenuItem
 
     @FXML lateinit var monthlyTable: TableView<Report>
     @FXML lateinit var monthlyDateColumn: TableColumn<Report, String>
     @FXML lateinit var monthlyCashColumn: TableColumn<Report, String>
-    @FXML lateinit var monthlyCreditColumn: TableColumn<Report, String>
-    @FXML lateinit var monthlyDebitColumn: TableColumn<Report, String>
-    @FXML lateinit var monthlyChequeColumn: TableColumn<Report, String>
-    @FXML lateinit var monthlyTransferColumn: TableColumn<Report, String>
+    @FXML lateinit var monthlyNonCashColumn: TableColumn<Report, String>
     @FXML lateinit var monthlyTotalColumn: TableColumn<Report, String>
     @FXML lateinit var viewPaymentsItem: MenuItem
 
@@ -131,17 +122,14 @@ class FinanceController : SegmentedController(), Refreshable,
         dailyTimeColumn.stringCell { dateTime.toString(PATTERN_TIME) }
         dailyEmployeeColumn.stringCell { transaction { Employees[employeeId].single().toString() } }
         dailyValueColumn.currencyCell { value }
-        dailyMethodColumn.stringCell { typedMethod.toString(this@FinanceController) }
+        dailyCashColumn.doneCell { isCash() }
         dailyReferenceColumn.stringCell { reference }
         viewInvoiceItem.disableProperty().bind(!selectedBinding2)
         dailyTable.onMouseClicked { if (it.isDoubleClick() && selected2 != null) viewInvoice() }
 
         monthlyDateColumn.stringCell { date.toString(PATTERN_DATE) }
-        monthlyCashColumn.currencyCell { valueMap[CASH]!! }
-        monthlyCreditColumn.currencyCell { valueMap[CREDIT_CARD]!! }
-        monthlyDebitColumn.currencyCell { valueMap[DEBIT_CARD]!! }
-        monthlyChequeColumn.currencyCell { valueMap[CHEQUE]!! }
-        monthlyTransferColumn.currencyCell { valueMap[TRANSFER]!! }
+        monthlyCashColumn.currencyCell { cash }
+        monthlyNonCashColumn.currencyCell { nonCash }
         monthlyTotalColumn.currencyCell { total }
         viewPaymentsItem.disableProperty().bind(!selectedBinding3)
         monthlyTable.onMouseClicked { if (it.isDoubleClick() && selected3 != null) viewPayments() }
@@ -166,12 +154,16 @@ class FinanceController : SegmentedController(), Refreshable,
         dateBox.picker.value = selected3!!.date.toJava()
     }
 
-    private fun viewTotal() = ViewTotalPopover(this, getTotal(CASH), getTotal(CREDIT_CARD), getTotal(DEBIT_CARD),
-        getTotal(CHEQUE), getTotal(TRANSFER)).showAt(viewTotalButton)
+    private fun viewTotal() = ViewTotalPopover(this, getTotal(true), getTotal(false)).showAt(viewTotalButton)
 
-    private fun getTotal(method: Method) = when (selectedIndex) {
-        0 -> gather(dailyTable.items, method)
-        else -> monthlyTable.items.sumByDouble { it.valueMap[method]!! }
+    private fun getTotal(isCash: Boolean): Double = when (selectedIndex) {
+        0 -> Payment.gather(dailyTable.items, isCash)
+        else -> monthlyTable.items.sumByDouble {
+            when {
+                isCash -> it.cash
+                else -> it.nonCash
+            }
+        }
     }
 
     private fun List<Node>.addAll(vararg buttons: Node) {

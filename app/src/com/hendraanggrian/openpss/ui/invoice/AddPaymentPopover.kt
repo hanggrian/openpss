@@ -7,47 +7,37 @@ import com.hendraanggrian.openpss.control.popover.ResultablePopover
 import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.db.schemas.Payment
-import com.hendraanggrian.openpss.db.schemas.Payment.Method
-import com.hendraanggrian.openpss.db.schemas.Payment.Method.CASH
-import com.hendraanggrian.openpss.db.schemas.Payment.Method.values
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.i18n.Resourced
-import com.hendraanggrian.openpss.ui.Selectable
 import com.hendraanggrian.openpss.util.bold
 import com.hendraanggrian.openpss.util.currencyConverter
 import com.hendraanggrian.openpss.util.getColor
 import javafx.scene.Node
-import javafx.scene.control.ChoiceBox
-import javafx.scene.control.SelectionModel
+import javafx.scene.control.CheckBox
 import javafx.scene.control.TextField
 import javafx.scene.image.ImageView
 import javafxx.beans.binding.bindingOf
 import javafxx.beans.binding.booleanBindingOf
 import javafxx.beans.binding.stringBindingOf
-import javafxx.beans.value.eq
-import javafxx.collections.toObservableList
 import javafxx.coroutines.onAction
 import javafxx.layouts.button
-import javafxx.layouts.choiceBox
+import javafxx.layouts.checkBox
 import javafxx.layouts.gridPane
 import javafxx.layouts.label
 import javafxx.layouts.textField
 import javafxx.layouts.tooltip
-import javafxx.listeners.converter
 import javafxx.scene.layout.gap
 
 class AddPaymentPopover(
     resourced: Resourced,
     private val employee: Employee,
     private val invoice: Invoice
-) : ResultablePopover<Payment>(resourced, R.string.add_payment), Selectable<Method> {
+) : ResultablePopover<Payment>(resourced, R.string.add_payment) {
 
     private lateinit var valueField: DoubleField
-    private lateinit var methodChoice: ChoiceBox<Method>
+    private lateinit var cashBox: CheckBox
     private lateinit var referenceField: TextField
     private val receivable = transaction { invoice.calculateDue() }
-
-    override val selectionModel: SelectionModel<Method> get() = methodChoice.selectionModel
 
     init {
         gridPane {
@@ -84,19 +74,16 @@ class AddPaymentPopover(
                     })
                 })
             } row 3 col 1 colSpans 2
-            label(getString(R.string.payment_method)) row 6 col 0
-            methodChoice = choiceBox(values().toObservableList()) {
-                converter { toString { it!!.toString(this@AddPaymentPopover) } }
-                selectionModel.selectFirst()
-            } row 6 col 1 colSpans 2
+            label(getString(R.string.cash)) row 6 col 0
+            cashBox = checkBox { isSelected = true } row 6 col 1 colSpans 2
             label(getString(R.string.reference)) { bindDisable() } row 7 col 0
             referenceField = textField { bindDisable() } row 7 col 1 colSpans 2
         }
-        defaultButton.disableProperty().bind(booleanBindingOf(valueField.valueProperty(), selectedProperty,
+        defaultButton.disableProperty().bind(booleanBindingOf(valueField.valueProperty(), cashBox.selectedProperty(),
             referenceField.textProperty()) {
             (!valueField.isValid || valueField.value <= 0 || valueField.value > receivable).let {
-                when (selected) {
-                    CASH -> it
+                when (cashBox.isSelected) {
+                    true -> it
                     else -> it || referenceField.text.isBlank()
                 }
             }
@@ -104,11 +91,11 @@ class AddPaymentPopover(
     }
 
     override val optionalResult: Payment?
-        get() = Payment.new(invoice.id, employee.id, methodChoice.value, valueField.value,
-            when (methodChoice.selectionModel.selectedItem) {
-                CASH -> null
+        get() = Payment.new(invoice.id, employee.id, valueField.value,
+            when (cashBox.isSelected) {
+                true -> null
                 else -> referenceField.text
             })
 
-    private fun Node.bindDisable() = disableProperty().bind(methodChoice.selectionModel.selectedItemProperty() eq CASH)
+    private fun Node.bindDisable() = disableProperty().bind(cashBox.selectedProperty())
 }

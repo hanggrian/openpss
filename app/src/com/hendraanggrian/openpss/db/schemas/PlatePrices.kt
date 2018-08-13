@@ -17,6 +17,7 @@ data class PlatePrice(
     override var name: String,
     var price: Double
 ) : Document<PlatePrices>, Named {
+
     companion object {
         fun new(name: String): PlatePrice = PlatePrice(name, 0.0)
     }

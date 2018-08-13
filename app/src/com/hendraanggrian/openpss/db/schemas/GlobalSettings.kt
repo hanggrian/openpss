@@ -14,6 +14,7 @@ data class GlobalSetting(
     val key: String,
     var value: String
 ) : Document<GlobalSettings> {
+
     companion object {
         const val KEY_LANGUAGE = "language"
         const val KEY_INVOICE_HEADERS = "invoice_headers"

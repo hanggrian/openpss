@@ -8,7 +8,7 @@ import javafxx.beans.property.toProperty
 import javafxx.styles.labeledStyle
 
 inline fun <T> TreeTableColumn<T, String>.stringCell(noinline target: T.() -> Any) =
-    setCellValueFactory { it.value.value.target().let { it as? String ?: it.toString() }.toProperty() }
+    setCellValueFactory { col -> col.value.value.target().let { it as? String ?: it.toString() }.toProperty() }
 
 inline fun <T> TreeTableColumn<T, String>.numberCell(noinline target: T.() -> Int) {
     style = labeledStyle { alignment = Pos.CENTER_RIGHT }

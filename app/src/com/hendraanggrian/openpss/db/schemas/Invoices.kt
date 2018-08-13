@@ -71,6 +71,7 @@ data class Invoice(
     val paid: Boolean,
     val done: Boolean
 ) : Document<Invoices> {
+
     companion object {
         fun new(
             employeeId: Id<String, Employees>,
@@ -97,6 +98,7 @@ data class Invoice(
         override val qty: Int,
         override val price: Double
     ) : Titled, SimpleOrder {
+
         companion object {
             fun new(
                 machine: String,
@@ -116,6 +118,7 @@ data class Invoice(
         override val minPrice: Double,
         override val excessPrice: Double
     ) : Titled, OffsetOrder {
+
         companion object {
             fun new(
                 machine: String,
@@ -148,6 +151,7 @@ data class Invoice(
         override val qty: Int,
         override val price: Double
     ) : Titled, SimpleOrder {
+
         companion object {
             fun new(
                 title: String,

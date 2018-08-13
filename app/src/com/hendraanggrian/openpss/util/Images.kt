@@ -5,7 +5,7 @@ package com.hendraanggrian.openpss.util
 import java.awt.image.BufferedImage
 import java.awt.image.BufferedImage.TYPE_INT_RGB
 
-inline fun Iterable<BufferedImage>.concatenate(imageType: Int = TYPE_INT_RGB): BufferedImage {
+fun Iterable<BufferedImage>.concatenate(imageType: Int = TYPE_INT_RGB): BufferedImage {
     val image = BufferedImage(firstOrNull()?.width ?: 0, sumBy { it.height }, imageType)
     var y = 0
     forEach {

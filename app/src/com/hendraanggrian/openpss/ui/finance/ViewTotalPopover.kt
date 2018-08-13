@@ -12,11 +12,8 @@ import javafxx.layouts.label
 
 class ViewTotalPopover(
     resourced: Resourced,
-    private val cash: Double,
-    private val credit: Double,
-    private val debit: Double,
-    private val cheque: Double,
-    private val transfer: Double
+    cash: Double,
+    nonCash: Double
 ) : Popover(resourced, R.string.view_total) {
 
     init {
@@ -29,20 +26,14 @@ class ViewTotalPopover(
             hgap = 40.0
             label(getString(R.string.cash)) col 0 row 0
             label(currencyConverter.toString(cash)) col 1 row 0
-            label(getString(R.string.credit_card)) col 0 row 1
-            label(currencyConverter.toString(credit)) col 1 row 1
-            label(getString(R.string.debit_card)) col 0 row 2
-            label(currencyConverter.toString(debit)) col 1 row 2
-            label(getString(R.string.cheque)) col 0 row 3
-            label(currencyConverter.toString(cheque)) col 1 row 3
-            label(getString(R.string.transfer)) col 0 row 4
-            label(currencyConverter.toString(transfer)) col 1 row 4
+            label(getString(R.string.non_cash)) col 0 row 1
+            label(currencyConverter.toString(nonCash)) col 1 row 1
             label(getString(R.string.total)) {
                 font = bold()
-            } col 0 row 5
-            label(currencyConverter.toString(cash + credit + debit + cheque + transfer)) {
+            } col 0 row 2
+            label(currencyConverter.toString(cash + nonCash)) {
                 font = bold()
-            } col 1 row 5
+            } col 1 row 2
         }
     }
 }

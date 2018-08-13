@@ -50,8 +50,6 @@ import javafx.scene.image.ImageView
 import javafx.scene.layout.HBox
 import javafx.scene.layout.Priority.ALWAYS
 import javafx.util.Callback
-import kotlinx.nosql.equal
-import kotlinx.nosql.update
 import javafxx.application.later
 import javafxx.beans.binding.bindingOf
 import javafxx.beans.binding.stringBindingOf
@@ -73,6 +71,8 @@ import javafxx.layouts.tableView
 import javafxx.layouts.vbox
 import javafxx.scene.input.isDoubleClick
 import javafxx.scene.layout.updatePadding
+import kotlinx.nosql.equal
+import kotlinx.nosql.update
 import org.controlsfx.control.MasterDetailPane
 import java.net.URL
 import java.time.LocalDate
@@ -230,8 +230,8 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
                                 getString(R.string.value)<String> {
                                     stringCell { value.toString() }
                                 }
-                                getString(R.string.payment_method)<String> {
-                                    stringCell { typedMethod.toString(this@InvoiceController) }
+                                getString(R.string.cash)<Boolean> {
+                                    doneCell { isCash() }
                                 }
                                 getString(R.string.reference)<String> {
                                     stringCell { reference }

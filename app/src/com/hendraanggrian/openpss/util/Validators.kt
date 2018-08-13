@@ -12,5 +12,5 @@ inline fun <T> Control.validator(
     severity: Severity,
     required: Boolean = true,
     noinline predicate: (T) -> Boolean
-) = ValidationSupport().registerValidator(this, required,
+): Boolean = ValidationSupport().registerValidator(this, required,
     Validator.createPredicateValidator<T>(predicate, message, severity))

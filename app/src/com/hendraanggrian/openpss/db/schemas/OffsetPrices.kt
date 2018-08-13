@@ -22,6 +22,7 @@ data class OffsetPrice(
     var minPrice: Double,
     var excessPrice: Double
 ) : Document<OffsetPrices>, Named {
+
     companion object {
         fun new(name: String): OffsetPrice = OffsetPrice(name, 1000, 0.0, 0.0)
     }

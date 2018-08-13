@@ -1,3 +1,7 @@
+/**
+ * Nothing crucial here, just looking to save few lines of code in many controllers.
+ */
+
 package com.hendraanggrian.openpss.ui
 
 import javafx.beans.binding.BooleanBinding

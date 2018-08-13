@@ -24,7 +24,6 @@ import javafx.scene.control.Tab
 import javafx.scene.layout.AnchorPane
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.HBox
-import javafxx.application.Platform
 import javafxx.application.later
 import javafxx.coroutines.listener
 import org.apache.commons.lang3.SystemUtils.IS_OS_MAC
@@ -82,10 +81,7 @@ class MainController : Controller(), Selectable<Tab> {
         else -> select(invoiceController) { addInvoice() }
     }
 
-    @FXML fun quit() {
-        Platform.tkExit()
-        Platform.exit()
-    }
+    @FXML fun quit() = com.hendraanggrian.openpss.util.quit()
 
     @FXML fun editPrice(event: ActionEvent) = when (platePriceItem) {
         event.source -> EditPlatePriceDialog(this, employee)

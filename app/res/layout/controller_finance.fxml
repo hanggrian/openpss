@@ -19,7 +19,7 @@
                 <TableColumn fx:id="dailyTimeColumn" text="%time"/>
                 <TableColumn fx:id="dailyEmployeeColumn" text="%employee"/>
                 <TableColumn fx:id="dailyValueColumn" text="%value"/>
-                <TableColumn fx:id="dailyMethodColumn" text="%payment_method"/>
+                <TableColumn fx:id="dailyCashColumn" text="%cash"/>
                 <TableColumn fx:id="dailyReferenceColumn" text="%reference"/>
             </columns>
             <columnResizePolicy>
@@ -50,10 +50,7 @@
             <columns>
                 <TableColumn fx:id="monthlyDateColumn" text="%date"/>
                 <TableColumn fx:id="monthlyCashColumn" text="%cash"/>
-                <TableColumn fx:id="monthlyCreditColumn" text="%credit_card"/>
-                <TableColumn fx:id="monthlyDebitColumn" text="%debit_card"/>
-                <TableColumn fx:id="monthlyChequeColumn" text="%cheque"/>
-                <TableColumn fx:id="monthlyTransferColumn" text="%transfer"/>
+                <TableColumn fx:id="monthlyNonCashColumn" text="%non_cash"/>
                 <TableColumn fx:id="monthlyTotalColumn" text="%total"/>
             </columns>
             <columnResizePolicy>

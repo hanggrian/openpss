@@ -16,15 +16,15 @@ import com.hendraanggrian.openpss.db.schemas.Recesses
 import com.hendraanggrian.openpss.db.schemas.Wages
 import com.hendraanggrian.openpss.util.getStyle
 import com.hendraanggrian.openpss.util.isEmpty
+import com.hendraanggrian.openpss.util.quit
 import com.mongodb.MongoClientOptions.Builder
 import com.mongodb.MongoCredential.createCredential
 import com.mongodb.MongoException
 import com.mongodb.ServerAddress
+import javafxx.scene.control.styledErrorAlert
 import kotlinx.coroutines.experimental.async
 import kotlinx.nosql.equal
 import kotlinx.nosql.mongodb.MongoDB
-import javafxx.application.Platform
-import javafxx.scene.control.styledErrorAlert
 import org.joda.time.DateTime
 import org.joda.time.LocalDate
 import org.joda.time.LocalTime
@@ -47,8 +47,7 @@ fun <T> transaction(statement: SessionWrapper.() -> T): T = try {
     styledErrorAlert(getStyle(R.style.openpss), e.message.toString()) {
         headerText = "Connection closed. Please sign in again."
     }.showAndWait().ifPresent {
-        Platform.tkExit()
-        Platform.exit()
+        quit()
     }
     error("Connection closed. Please sign in again.")
 }

@@ -17,13 +17,11 @@ import com.hendraanggrian.openpss.io.properties.PreferencesFile
 import com.hendraanggrian.openpss.ui.main.help.AboutDialog
 import com.hendraanggrian.openpss.util.getStyle
 import com.hendraanggrian.openpss.util.onActionFilter
+import com.hendraanggrian.openpss.util.quit
 import javafx.geometry.Pos.CENTER_RIGHT
 import javafx.scene.control.ButtonBar.ButtonData.OK_DONE
 import javafx.scene.control.PasswordField
 import javafx.scene.control.TextField
-import kotlinx.coroutines.experimental.CommonPool
-import kotlinx.coroutines.experimental.launch
-import javafxx.application.Platform
 import javafxx.application.later
 import javafxx.beans.value.isBlank
 import javafxx.beans.value.or
@@ -43,6 +41,8 @@ import javafxx.scene.control.customButton
 import javafxx.scene.control.styledErrorAlert
 import javafxx.scene.control.styledInfoAlert
 import javafxx.scene.layout.gap
+import kotlinx.coroutines.experimental.CommonPool
+import kotlinx.coroutines.experimental.launch
 
 class LoginDialog(resourced: Resourced) : Dialog<Any>(resourced, graphicId = R.image.header_launcher) {
 
@@ -70,10 +70,7 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(resourced, graphicId = R.i
                         close()
                         later {
                             styledInfoAlert(getStyle(R.style.openpss), getString(R.string.please_restart))
-                                .showAndWait().ifPresent {
-                                    Platform.tkExit()
-                                    Platform.exit()
-                                }
+                                .showAndWait().ifPresent { quit() }
                         }
                     }
                 }

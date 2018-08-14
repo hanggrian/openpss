@@ -16,7 +16,7 @@ import com.hendraanggrian.openpss.db.schemas.Recesses
 import com.hendraanggrian.openpss.db.schemas.Wages
 import com.hendraanggrian.openpss.util.getStyle
 import com.hendraanggrian.openpss.util.isEmpty
-import com.hendraanggrian.openpss.util.quit
+import com.hendraanggrian.openpss.util.forceExit
 import com.mongodb.MongoClientOptions.Builder
 import com.mongodb.MongoCredential.createCredential
 import com.mongodb.MongoException
@@ -47,7 +47,7 @@ fun <T> transaction(statement: SessionWrapper.() -> T): T = try {
     styledErrorAlert(getStyle(R.style.openpss), e.message.toString()) {
         headerText = "Connection closed. Please sign in again."
     }.showAndWait().ifPresent {
-        quit()
+        forceExit()
     }
     error("Connection closed. Please sign in again.")
 }

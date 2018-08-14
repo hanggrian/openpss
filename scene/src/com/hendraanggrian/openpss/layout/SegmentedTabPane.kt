@@ -13,8 +13,8 @@ import org.controlsfx.control.SegmentedButton
 
 class SegmentedTabPane : TabPane() {
 
-    private companion object {
-        const val STRETCH_POINT = 1100
+    companion object {
+        const val STRETCH_POINT = 1100.0
     }
 
     var header: SegmentedButton = SegmentedButton()

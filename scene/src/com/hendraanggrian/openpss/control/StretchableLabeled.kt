@@ -1,21 +1,21 @@
 package com.hendraanggrian.openpss.control
 
-import javafx.beans.property.IntegerProperty
+import javafx.beans.property.DoubleProperty
 import javafx.beans.property.ObjectProperty
 import javafx.beans.property.ReadOnlyDoubleProperty
 import javafx.beans.property.StringProperty
 import javafx.scene.Scene
 import javafx.scene.control.Tooltip
-import kotlinx.coroutines.experimental.delay
-import kotlinx.coroutines.experimental.launch
 import javafxx.beans.binding.bindingOf
 import javafxx.beans.binding.stringBindingOf
 import javafxx.coroutines.FX
+import kotlinx.coroutines.experimental.delay
+import kotlinx.coroutines.experimental.launch
 
 interface StretchableLabeled {
 
-    fun stretchPointProperty(): IntegerProperty
-    var stretchPoint: Int
+    fun stretchPointProperty(): DoubleProperty
+    var stretchPoint: Double
         get() = stretchPointProperty().get()
         set(value) = stretchPointProperty().set(value)
 

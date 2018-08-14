@@ -1,6 +1,5 @@
 package com.hendraanggrian.openpss.ui.customer
 
-import com.hendraanggrian.openpss.App.Companion.STRETCH_POINT
 import com.hendraanggrian.openpss.App.Companion.STYLE_DEFAULT_BUTTON
 import com.hendraanggrian.openpss.App.Companion.STYLE_SEARCH_TEXTFIELD
 import com.hendraanggrian.openpss.R
@@ -11,6 +10,7 @@ import com.hendraanggrian.openpss.control.styledStretchableButton
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.transaction
+import com.hendraanggrian.openpss.layout.SegmentedTabPane.Companion.STRETCH_POINT
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.SegmentedController
 import com.hendraanggrian.openpss.ui.Selectable

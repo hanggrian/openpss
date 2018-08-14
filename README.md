@@ -112,7 +112,7 @@ License
     See the License for the specific language governing permissions and
     limitations under the License.
 
-[logo]: /art/OpenPSS.png
+[logo]: /app/art/OpenPSS.png
 [releases]: https://github.com/hendraanggrian/wijayaprinting/releases
 [MongoDB]: https://www.mongodb.com/
 [ktlint]: https://github.com/shyiko/ktlint

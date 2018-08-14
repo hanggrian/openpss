@@ -3,8 +3,8 @@
 package com.hendraanggrian.openpss.control
 
 import javafx.beans.DefaultProperty
-import javafx.beans.property.IntegerProperty
-import javafx.beans.property.SimpleIntegerProperty
+import javafx.beans.property.DoubleProperty
+import javafx.beans.property.SimpleDoubleProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.beans.property.StringProperty
 import javafx.scene.Node
@@ -14,13 +14,13 @@ import javafxx.layouts.LayoutManager
 
 @DefaultProperty("graphic")
 class StretchableToggleButton @JvmOverloads constructor(
-    stretchPoint: Int = -1,
+    stretchPoint: Double = -1.0,
     stretchableText: String? = null,
     graphic: Node? = null
 ) : ToggleButton(null, graphic), StretchableLabeled {
 
-    private val stretchPointProperty = SimpleIntegerProperty(stretchPoint)
-    override fun stretchPointProperty(): IntegerProperty = stretchPointProperty
+    private val stretchPointProperty = SimpleDoubleProperty(stretchPoint)
+    override fun stretchPointProperty(): DoubleProperty = stretchPointProperty
 
     private val stretchableTextProperty = SimpleStringProperty(stretchableText)
     override fun stretchableTextProperty(): StringProperty = stretchableTextProperty
@@ -32,7 +32,7 @@ class StretchableToggleButton @JvmOverloads constructor(
 
 /** Creates an [StretchableToggleButton]. */
 fun stretchableToggleButton(
-    stretchPoint: Int,
+    stretchPoint: Double,
     adaptableText: String,
     graphic: Node? = null,
     init: ((@LayoutDsl StretchableToggleButton).() -> Unit)? = null
@@ -42,7 +42,7 @@ fun stretchableToggleButton(
 
 /** Creates an [StretchableToggleButton] and add it to this [LayoutManager]. */
 inline fun LayoutManager<Node>.stretchableToggleButton(
-    stretchPoint: Int,
+    stretchPoint: Double,
     adaptableText: String,
     graphic: Node? = null,
     noinline init: ((@LayoutDsl StretchableToggleButton).() -> Unit)? = null
@@ -52,7 +52,7 @@ inline fun LayoutManager<Node>.stretchableToggleButton(
 /** Create a styled [StretchableToggleButton]. */
 fun styledStretchableToggleButton(
     styleClass: String,
-    stretchPoint: Int,
+    stretchPoint: Double,
     adaptableText: String,
     graphic: Node? = null,
     init: ((@LayoutDsl StretchableToggleButton).() -> Unit)? = null
@@ -64,7 +64,7 @@ fun styledStretchableToggleButton(
 /** Creates a styled [StretchableToggleButton] and add it to this [LayoutManager]. */
 inline fun LayoutManager<Node>.styledStretchableToggleButton(
     styleClass: String,
-    stretchPoint: Int,
+    stretchPoint: Double,
     adaptableText: String,
     graphic: Node? = null,
     noinline init: ((@LayoutDsl StretchableToggleButton).() -> Unit)? = null

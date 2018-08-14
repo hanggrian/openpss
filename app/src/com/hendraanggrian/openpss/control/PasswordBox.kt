@@ -13,7 +13,7 @@ import javafxx.beans.value.getValue
 import javafxx.beans.value.setValue
 import javafxx.coroutines.listener
 import javafxx.layouts._HBox
-import javafxx.layouts.anchorPane
+import javafxx.layouts.pane
 import javafxx.layouts.passwordField
 import javafxx.layouts.textField
 import javafxx.layouts.toggleButton
@@ -25,7 +25,7 @@ class PasswordBox(resourced: Resourced) : _HBox(8.0), Resourced by resourced {
     private lateinit var field2: TextField
 
     init {
-        anchorPane {
+        pane {
             field1 = passwordField {
                 promptText = getString(R.string.password)
             }
@@ -52,5 +52,8 @@ class PasswordBox(resourced: Resourced) : _HBox(8.0), Resourced by resourced {
     fun textProperty(): StringProperty = field1.textProperty()
     var text: String by textProperty()
 
-    override fun requestFocus() = field1.requestFocus()
+    override fun requestFocus() = when {
+        field1.isVisible -> field1.requestFocus()
+        else -> field2.requestFocus()
+    }
 }

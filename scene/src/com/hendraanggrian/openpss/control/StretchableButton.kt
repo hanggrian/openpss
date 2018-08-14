@@ -3,8 +3,8 @@
 package com.hendraanggrian.openpss.control
 
 import javafx.beans.DefaultProperty
-import javafx.beans.property.IntegerProperty
-import javafx.beans.property.SimpleIntegerProperty
+import javafx.beans.property.DoubleProperty
+import javafx.beans.property.SimpleDoubleProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.beans.property.StringProperty
 import javafx.scene.Node
@@ -18,13 +18,13 @@ import javafxx.layouts.LayoutManager
  */
 @DefaultProperty("graphic")
 class StretchableButton @JvmOverloads constructor(
-    stretchPoint: Int = -1,
+    stretchPoint: Double = -1.0,
     stretchableText: String? = null,
     graphic: Node? = null
 ) : Button(null, graphic), StretchableLabeled {
 
-    private val stretchPointProperty = SimpleIntegerProperty(stretchPoint)
-    override fun stretchPointProperty(): IntegerProperty = stretchPointProperty
+    private val stretchPointProperty = SimpleDoubleProperty(stretchPoint)
+    override fun stretchPointProperty(): DoubleProperty = stretchPointProperty
 
     private val stretchableTextProperty = SimpleStringProperty(stretchableText)
     override fun stretchableTextProperty(): StringProperty = stretchableTextProperty
@@ -36,7 +36,7 @@ class StretchableButton @JvmOverloads constructor(
 
 /** Creates an [StretchableButton]. */
 fun stretchableButton(
-    stretchPoint: Int,
+    stretchPoint: Double,
     adaptableText: String,
     graphic: Node? = null,
     init: ((@LayoutDsl StretchableButton).() -> Unit)? = null
@@ -46,7 +46,7 @@ fun stretchableButton(
 
 /** Creates an [StretchableButton] and add it to this [LayoutManager]. */
 inline fun LayoutManager<Node>.stretchableButton(
-    stretchPoint: Int,
+    stretchPoint: Double,
     adaptableText: String,
     graphic: Node? = null,
     noinline init: ((@LayoutDsl StretchableButton).() -> Unit)? = null
@@ -56,7 +56,7 @@ inline fun LayoutManager<Node>.stretchableButton(
 /** Create a styled [StretchableButton]. */
 fun styledStretchableButton(
     styleClass: String,
-    stretchPoint: Int,
+    stretchPoint: Double,
     adaptableText: String,
     graphic: Node? = null,
     init: ((@LayoutDsl StretchableButton).() -> Unit)? = null
@@ -68,7 +68,7 @@ fun styledStretchableButton(
 /** Creates a styled [StretchableButton] and add it to this [LayoutManager]. */
 inline fun LayoutManager<Node>.styledStretchableButton(
     styleClass: String,
-    stretchPoint: Int,
+    stretchPoint: Double,
     adaptableText: String,
     graphic: Node? = null,
     noinline init: ((@LayoutDsl StretchableButton).() -> Unit)? = null

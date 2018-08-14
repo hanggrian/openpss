@@ -2,5 +2,7 @@
 
 package com.hendraanggrian.openpss.util
 
+import org.apache.commons.math3.util.Precision
+
 /** The only reason why Apache Commons Math is used. */
-inline fun Double.round(): Double = org.apache.commons.math3.util.Precision.round(this, 2)
+inline fun Double.round(): Double = Precision.round(this, 2)

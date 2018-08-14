@@ -30,8 +30,6 @@ import java.util.ResourceBundle
 class App : Application(), Resourced {
 
     companion object {
-        const val STRETCH_POINT = 1100
-
         const val STYLE_NAVIGATION_PANE = "navigation-pane"
         const val STYLE_DISPLAY_LABEL = "display-label"
         const val STYLE_DEFAULT_BUTTON = "default-button"

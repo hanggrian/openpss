@@ -43,7 +43,7 @@ abstract class TableDialog<D : Document<S>, S : DocumentSchema<D>>(
 ) : Dialog<Nothing>(resourced, headerId, graphicId), TableColumnsBuilder<D>, Selectable<D>, Refreshable {
 
     private companion object {
-        const val STRETCH_POINT = 400
+        const val STRETCH_POINT = 400.0
     }
 
     protected lateinit var refreshButton: StretchableButton

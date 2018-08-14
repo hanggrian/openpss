@@ -1,6 +1,5 @@
 package com.hendraanggrian.openpss.ui.finance
 
-import com.hendraanggrian.openpss.App.Companion.STRETCH_POINT
 import com.hendraanggrian.openpss.App.Companion.STYLE_DEFAULT_BUTTON
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.popover.ViewInvoicePopover
@@ -15,6 +14,7 @@ import com.hendraanggrian.openpss.io.properties.PreferencesFile
 import com.hendraanggrian.openpss.layout.DateBox
 import com.hendraanggrian.openpss.layout.MonthBox
 import com.hendraanggrian.openpss.layout.SegmentedTabPane
+import com.hendraanggrian.openpss.layout.SegmentedTabPane.Companion.STRETCH_POINT
 import com.hendraanggrian.openpss.layout.dateBox
 import com.hendraanggrian.openpss.layout.monthBox
 import com.hendraanggrian.openpss.ui.Refreshable

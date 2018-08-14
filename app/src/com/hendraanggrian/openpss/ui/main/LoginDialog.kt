@@ -15,12 +15,13 @@ import com.hendraanggrian.openpss.i18n.Resourced
 import com.hendraanggrian.openpss.io.properties.LoginFile
 import com.hendraanggrian.openpss.io.properties.PreferencesFile
 import com.hendraanggrian.openpss.ui.main.help.AboutDialog
-import com.hendraanggrian.openpss.ui.main.help.UpdateChecker
+import com.hendraanggrian.openpss.ui.main.help.GitHubApi
 import com.hendraanggrian.openpss.util.getStyle
 import com.hendraanggrian.openpss.util.onActionFilter
 import com.hendraanggrian.openpss.util.quit
 import javafx.geometry.Pos.CENTER_RIGHT
 import javafx.scene.control.ButtonBar.ButtonData.OK_DONE
+import javafx.scene.control.ButtonType.CANCEL
 import javafx.scene.control.PasswordField
 import javafx.scene.control.TextField
 import javafxx.application.later
@@ -41,6 +42,7 @@ import javafxx.scene.control.cancelButton
 import javafxx.scene.control.customButton
 import javafxx.scene.control.styledErrorAlert
 import javafxx.scene.control.styledInfoAlert
+import javafxx.scene.control.styledWarningAlert
 import javafxx.scene.layout.gap
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.launch
@@ -113,7 +115,19 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(resourced, graphicId = R.i
             hbox {
                 alignment = CENTER_RIGHT
                 hyperlink(getString(R.string.check_for_updates)) {
-                    onAction { UpdateChecker.check(this@LoginDialog) }
+                    onAction {
+                        GitHubApi.checkUpdates(this@LoginDialog, { title, actions ->
+                            styledWarningAlert(getStyle(R.style.openpss), title = title, buttonTypes = *arrayOf(CANCEL)) {
+                                dialogPane.content = javafxx.layouts.vbox {
+                                    actions.forEach { action ->
+                                        hyperlink(action.text) { onAction = action }
+                                    }
+                                }
+                            }.show()
+                        }) { title, content ->
+                            styledInfoAlert(getStyle(R.style.openpss), title, contentText = content).show()
+                        }
+                    }
                 } marginLeft 8.0
                 hyperlink(getString(R.string.about)) {
                     onAction { AboutDialog(this@LoginDialog).show() }

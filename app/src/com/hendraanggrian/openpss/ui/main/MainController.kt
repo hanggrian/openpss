@@ -13,7 +13,7 @@ import com.hendraanggrian.openpss.ui.main.edit.EditEmployeeDialog
 import com.hendraanggrian.openpss.ui.main.edit.price.EditOffsetPriceDialog
 import com.hendraanggrian.openpss.ui.main.edit.price.EditPlatePriceDialog
 import com.hendraanggrian.openpss.ui.main.help.AboutDialog
-import com.hendraanggrian.openpss.ui.main.help.UpdateChecker
+import com.hendraanggrian.openpss.ui.main.help.GitHubApi
 import com.hendraanggrian.openpss.ui.schedule.ScheduleController
 import com.hendraanggrian.openpss.ui.wage.WageController
 import javafx.event.ActionEvent
@@ -28,11 +28,13 @@ import javafx.scene.layout.HBox
 import javafxx.application.later
 import javafxx.coroutines.listener
 import org.apache.commons.lang3.SystemUtils.IS_OS_MAC
+import org.controlsfx.control.NotificationPane
 import java.net.URL
 import java.util.ResourceBundle
 
 class MainController : Controller(), Selectable<Tab> {
 
+    @FXML lateinit var notificationPane: NotificationPane
     @FXML lateinit var menuBar: MenuBar
     @FXML lateinit var addCustomerItem: MenuItem
     @FXML lateinit var addInvoiceItem: MenuItem
@@ -95,7 +97,15 @@ class MainController : Controller(), Selectable<Tab> {
 
     @FXML fun about() = AboutDialog(this).show()
 
-    @FXML fun checkUpdate() = UpdateChecker.check(this)
+    @FXML fun checkUpdate() = GitHubApi.checkUpdates(this, { title, actions ->
+        notificationPane.text = title
+        notificationPane.actions.setAll(actions)
+        notificationPane.show()
+    }) { _, content ->
+        notificationPane.text = content
+        notificationPane.actions.clear()
+        notificationPane.show()
+    }
 
     private fun <T : SegmentedController> select(controller: T, run: T.() -> Unit) {
         select(controllers.indexOf(controller))

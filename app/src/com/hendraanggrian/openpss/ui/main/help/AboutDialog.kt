@@ -15,14 +15,11 @@ import com.hendraanggrian.openpss.util.getFont
 import com.hendraanggrian.openpss.util.getStyle
 import com.hendraanggrian.openpss.util.onActionFilter
 import javafx.geometry.Pos.CENTER_LEFT
-import javafx.scene.control.Button
 import javafx.scene.control.ButtonBar.ButtonData.CANCEL_CLOSE
 import javafx.scene.control.ListView
-import javafx.scene.control.ProgressIndicator
 import javafx.scene.control.SelectionModel
 import javafx.scene.image.Image
 import javafx.scene.text.Font.font
-import javafxx.application.later
 import javafxx.beans.value.and
 import javafxx.collections.toObservableList
 import javafxx.coroutines.listener
@@ -31,7 +28,6 @@ import javafxx.layouts.button
 import javafxx.layouts.hbox
 import javafxx.layouts.imageView
 import javafxx.layouts.label
-import javafxx.layouts.progressIndicator
 import javafxx.layouts.text
 import javafxx.layouts.textFlow
 import javafxx.layouts.vbox
@@ -39,15 +35,12 @@ import javafxx.listeners.cellFactory
 import javafxx.scene.control.closeButton
 import javafxx.scene.control.customButton
 import javafxx.scene.control.icon
-import javafxx.scene.layout.maxSize
 import javafxx.scene.layout.paddingAll
 import org.controlsfx.control.MasterDetailPane
 import java.net.URI
 
 class AboutDialog(resourced: Resourced) : Dialog<Nothing>(resourced), Selectable<License> {
 
-    private lateinit var checkUpdateButton: Button
-    private lateinit var checkUpdateProgress: ProgressIndicator
     private val licenseList: ListView<License> = javafxx.layouts.listView(License.values().toObservableList()) {
         cellFactory {
             onUpdate { license, empty ->
@@ -87,23 +80,9 @@ class AboutDialog(resourced: Resourced) : Dialog<Nothing>(resourced), Selectable
                         USER { font = bold(12) }
                     } marginTop 4.0
                     hbox {
+                        spacing = 8.0
                         button("GitHub") { onAction { desktop?.browse(URI(WEBSITE)) } }
-                        checkUpdateButton = button(getString(R.string.check_for_updates)) {
-                            onAction {
-                                isDisable = true
-                                checkUpdateProgress.isVisible = true
-                                UpdateChecker.check(this@AboutDialog) {
-                                    isDisable = false
-                                    checkUpdateProgress.isVisible = false
-                                }
-                            }
-                        } marginLeft 8.0
-                        later {
-                            checkUpdateProgress = progressIndicator {
-                                maxSize = checkUpdateButton.height
-                                isVisible = false
-                            } marginLeft 8.0
-                        }
+                        button("Email") { onAction { desktop?.mail(URI("mailto:$USER@gmail")) } }
                     } marginTop 20.0
                 } marginLeft 48.0
             }

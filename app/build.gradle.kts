@@ -57,6 +57,7 @@ dependencies {
     implementation(google("gson", VERSION_GSON, "code.gson"))
     implementation(google("guava", VERSION_GUAVA, "guava"))
     implementation(hendraanggrian("javafxx", version = VERSION_JAVAFXX))
+    implementation(hendraanggrian("javafxx", "layouts-controlsfx-ktx", VERSION_JAVAFXX))
     implementation(apache("maven-artifact", VERSION_MAVEN))
     implementation(apache("commons-lang3", VERSION_COMMONS_LANG))
     implementation(apache("commons-math3", VERSION_COMMONS_MATH))

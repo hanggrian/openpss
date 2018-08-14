@@ -13,6 +13,7 @@ import com.hendraanggrian.openpss.ui.main.edit.EditEmployeeDialog
 import com.hendraanggrian.openpss.ui.main.edit.price.EditOffsetPriceDialog
 import com.hendraanggrian.openpss.ui.main.edit.price.EditPlatePriceDialog
 import com.hendraanggrian.openpss.ui.main.help.AboutDialog
+import com.hendraanggrian.openpss.ui.main.help.UpdateChecker
 import com.hendraanggrian.openpss.ui.schedule.ScheduleController
 import com.hendraanggrian.openpss.ui.wage.WageController
 import javafx.event.ActionEvent
@@ -93,6 +94,8 @@ class MainController : Controller(), Selectable<Tab> {
     @FXML fun preferences() = PreferencesDialog(this, transaction { employee.isAdmin() }).show()
 
     @FXML fun about() = AboutDialog(this).show()
+
+    @FXML fun checkUpdate() = UpdateChecker.check(this)
 
     private fun <T : SegmentedController> select(controller: T, run: T.() -> Unit) {
         select(controllers.indexOf(controller))

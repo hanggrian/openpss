@@ -12,9 +12,9 @@ import com.hendraanggrian.openpss.ui.SegmentedController
 import com.hendraanggrian.openpss.ui.wage.readers.Reader
 import com.hendraanggrian.openpss.ui.wage.record.WageRecordController.Companion.EXTRA_ATTENDEES
 import com.hendraanggrian.openpss.util.controller
+import com.hendraanggrian.openpss.util.desktop
 import com.hendraanggrian.openpss.util.getResource
 import com.hendraanggrian.openpss.util.getStyle
-import com.hendraanggrian.openpss.util.openFile
 import com.hendraanggrian.openpss.util.pane
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
@@ -112,7 +112,7 @@ class WageController : SegmentedController() {
 
     private fun recess() = EditRecessDialog(this, employee).show()
 
-    private fun history() = openFile(WageDirectory)
+    private fun history() = desktop?.open(WageDirectory)
 
     private fun browse() = fileChooser(
         ExtensionFilter(getString(R.string.input_file), *Reader.of(WAGE_READER).extensions))

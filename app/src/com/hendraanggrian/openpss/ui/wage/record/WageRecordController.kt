@@ -15,10 +15,10 @@ import com.hendraanggrian.openpss.util.PATTERN_TIME
 import com.hendraanggrian.openpss.util.bold
 import com.hendraanggrian.openpss.util.concatenate
 import com.hendraanggrian.openpss.util.currencyConverter
+import com.hendraanggrian.openpss.util.desktop
 import com.hendraanggrian.openpss.util.getResource
 import com.hendraanggrian.openpss.util.getStyle
 import com.hendraanggrian.openpss.util.numberConverter
-import com.hendraanggrian.openpss.util.openFile
 import com.hendraanggrian.openpss.util.stringCell
 import com.sun.javafx.scene.control.skin.TreeTableViewSkin
 import com.sun.javafx.scene.control.skin.VirtualFlow
@@ -207,7 +207,7 @@ class WageRecordController : Controller() {
             customButton(getString(R.string.open_folder), CANCEL_CLOSE)
         }.showAndWait()
             .filter { it.buttonData == CANCEL_CLOSE }
-            .ifPresent { openFile(WageDirectory) }
+            .ifPresent { desktop?.open(WageDirectory) }
     }
 
     private inline val records: List<Record> get() = recordTable.root.children.flatMap { it.children }.map { it.value }

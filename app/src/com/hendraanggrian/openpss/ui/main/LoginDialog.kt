@@ -15,6 +15,7 @@ import com.hendraanggrian.openpss.i18n.Resourced
 import com.hendraanggrian.openpss.io.properties.LoginFile
 import com.hendraanggrian.openpss.io.properties.PreferencesFile
 import com.hendraanggrian.openpss.ui.main.help.AboutDialog
+import com.hendraanggrian.openpss.ui.main.help.UpdateChecker
 import com.hendraanggrian.openpss.util.getStyle
 import com.hendraanggrian.openpss.util.onActionFilter
 import com.hendraanggrian.openpss.util.quit
@@ -111,6 +112,9 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(resourced, graphicId = R.i
             } col 1 row 2 colSpans 2
             hbox {
                 alignment = CENTER_RIGHT
+                hyperlink(getString(R.string.check_for_updates)) {
+                    onAction { UpdateChecker.check(this@LoginDialog) }
+                } marginLeft 8.0
                 hyperlink(getString(R.string.about)) {
                     onAction { AboutDialog(this@LoginDialog).show() }
                 } marginLeft 8.0

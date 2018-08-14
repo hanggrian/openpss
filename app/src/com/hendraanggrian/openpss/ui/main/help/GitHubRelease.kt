@@ -10,9 +10,8 @@ data class GitHubRelease(
     @SerializedName("assets") val assets: List<Asset>
 ) {
 
-    fun isNewer(): Boolean = ComparableVersion(version) > ComparableVersion(VERSION) &&
         assets.isNotEmpty() &&
-        assets.single().isUploaded()
+        assets.all { it.isUploaded() }
 
     data class Asset(
         @SerializedName("browser_download_url") val downloadUrl: String,

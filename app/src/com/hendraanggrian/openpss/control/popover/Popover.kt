@@ -66,16 +66,18 @@ abstract class Popover(
     }
 
     fun showAt(node: Node) {
+        // to avoid error when closing window/stage during popover display
         node.scene.window.onCloseRequest { hide(ZERO) }
+        // now check for coordinate to show popover
         val selectedIndex = (node as? TableView<*>)?.selectionModel?.selectedIndex
             ?: (node as? ListView<*>)?.selectionModel?.selectedIndex
-            ?: -1
         when (selectedIndex) {
-            -1 -> show(node)
-            else -> node.localToScreen(node.boundsInLocal).let {
+            null -> show(node)
+            else -> {
+                val bounds = node.localToScreen(node.boundsInLocal)
                 show(node.scene.window,
-                    it.minX + it.width,
-                    it.minY + selectedIndex * 22.0 + (0 until selectedIndex).sumByDouble { 2.0 })
+                    bounds.minX + bounds.width,
+                    bounds.minY + selectedIndex * 22.0 + (0 until selectedIndex).sumByDouble { 2.0 })
             }
         }
     }

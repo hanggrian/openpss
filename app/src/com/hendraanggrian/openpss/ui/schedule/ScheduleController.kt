@@ -51,6 +51,8 @@ class ScheduleController : SegmentedController(), Refreshable, TreeSelectable<Sc
     private lateinit var historyToggle: ToggleButton
     override val rightButtons: List<Node> get() = listOf(historyToggle)
 
+    override val selectionModel: TreeTableViewSelectionModel<Schedule> get() = scheduleTable.selectionModel
+
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
         refreshButton = stretchableButton(STRETCH_POINT, getString(R.string.refresh),
@@ -112,8 +114,6 @@ class ScheduleController : SegmentedController(), Refreshable, TreeSelectable<Sc
             }
         }
     }
-
-    override val selectionModel: TreeTableViewSelectionModel<Schedule> get() = scheduleTable.selectionModel
 
     private fun done() {
         transaction { Invoices[selected!!.value.invoiceId!!].projection { done }.update(true) }

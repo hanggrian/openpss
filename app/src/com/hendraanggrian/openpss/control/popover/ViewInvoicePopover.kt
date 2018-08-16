@@ -64,11 +64,11 @@ class ViewInvoicePopover(invoice: Invoice) : Popover(object : Resourced {
             customer = Customers[invoice.customerId].single()
         }
         gridPane {
-            border = getStroke(DASHED)
+            border = DASHED.toBorder()
             gap = R.dimen.padding_large.toDouble()
             paddingAll = 20.0
-            minWidth = WIDTH
-            minHeight = HEIGHT
+            setMinSize(WIDTH, HEIGHT)
+            setMaxSize(WIDTH, HEIGHT)
             columnConstraints {
                 constraints {
                     hgrow = ALWAYS
@@ -151,7 +151,7 @@ class ViewInvoicePopover(invoice: Invoice) : Popover(object : Resourced {
             line(endX = WIDTH - 32.0) row 4 col 0 colSpans 3
             textFlow {
                 paddingAll = 8.0
-                border = getStroke(SOLID)
+                border = SOLID.toBorder()
                 "${getString(R.string.note)}\n" { font = bold() }
                 invoice.note()
             } row 5 col 0 rowSpans 2
@@ -179,5 +179,5 @@ class ViewInvoicePopover(invoice: Invoice) : Popover(object : Resourced {
         }
     }
 
-    private fun getStroke(style: BorderStrokeStyle) = Border(BorderStroke(BLACK, style, EMPTY, DEFAULT))
+    private fun BorderStrokeStyle.toBorder() = Border(BorderStroke(BLACK, this, EMPTY, DEFAULT))
 }

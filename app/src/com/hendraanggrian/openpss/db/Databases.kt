@@ -14,15 +14,16 @@ import com.hendraanggrian.openpss.db.schemas.Payments
 import com.hendraanggrian.openpss.db.schemas.PlatePrices
 import com.hendraanggrian.openpss.db.schemas.Recesses
 import com.hendraanggrian.openpss.db.schemas.Wages
+import com.hendraanggrian.openpss.util.forceExit
 import com.hendraanggrian.openpss.util.getStyle
 import com.hendraanggrian.openpss.util.isEmpty
-import com.hendraanggrian.openpss.util.forceExit
 import com.mongodb.MongoClientOptions.Builder
 import com.mongodb.MongoCredential.createCredential
 import com.mongodb.MongoException
 import com.mongodb.ServerAddress
 import javafxx.scene.control.styledErrorAlert
-import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.experimental.DefaultDispatcher
+import kotlinx.coroutines.experimental.withContext
 import kotlinx.nosql.equal
 import kotlinx.nosql.mongodb.MongoDB
 import org.joda.time.DateTime
@@ -80,13 +81,18 @@ suspend fun login(
 }
 
 @Throws(Exception::class)
-private suspend fun connect(host: String, port: Int, user: String, password: String): MongoDB = async {
+private suspend fun connect(
+    host: String,
+    port: Int,
+    user: String,
+    password: String
+): MongoDB = withContext(DefaultDispatcher) {
     MongoDB(arrayOf(ServerAddress(host, port)),
         ARTIFACT,
         arrayOf(createCredential(user, "admin", password.toCharArray())),
         Builder().serverSelectionTimeout(3000).build(),
         TABLES)
-}.await()
+}
 
 /** Date and time new server. */
 val dbDateTime: DateTime get() = DateTime(evalDate)

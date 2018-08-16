@@ -71,10 +71,10 @@ class MainController : Controller(), Selectable<Tab> {
         AnchorPane.setLeftAnchor(tabPane.header, 0.0)
         AnchorPane.setRightAnchor(tabPane.header, 0.0)
 
-        replaceButtons(customerController)
+        customerController.replaceButtons()
         selectedIndexProperty.listener { _, _, value ->
             val controller = controllers[value.toInt()]
-            replaceButtons(controller)
+            controller.replaceButtons()
             if (controller is Refreshable) {
                 controller.refresh()
                 if (controller is FinanceController && !isFinanceTabFixed) {
@@ -83,7 +83,7 @@ class MainController : Controller(), Selectable<Tab> {
                     later {
                         stage.width = STRETCH_POINT
                         launch(FX) {
-                            delay(100)
+                            delay(200)
                             stage.width = temp
                         }
                     }
@@ -133,14 +133,14 @@ class MainController : Controller(), Selectable<Tab> {
         controller.run(run)
     }
 
-    private fun replaceButtons(controller: SegmentedController) {
+    private fun SegmentedController.replaceButtons() {
         navigationLeftBox.children.let {
             it.clear()
-            it += controller.leftButtons
+            it += leftButtons
         }
         navigationRightBox.children.let {
             it.clear()
-            it += controller.rightButtons
+            it += rightButtons
         }
     }
 }

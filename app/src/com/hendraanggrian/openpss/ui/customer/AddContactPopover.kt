@@ -20,9 +20,9 @@ import org.apache.commons.validator.routines.EmailValidator
 
 class AddContactPopover(resourced: Resourced) : ResultablePopover<Customer.Contact>(resourced, R.string.add_contact) {
 
-    companion object {
+    private companion object {
         /** Taken from `android.util.Patterns`, but instead use `kotlin.Regex`. */
-        private val REGEX_PHONE = Regex("(\\+[0-9]+[\\- \\.]*)?" +
+        val REGEX_PHONE = Regex("(\\+[0-9]+[\\- \\.]*)?" +
             "(\\([0-9]+\\)[\\- \\.]*)?" +
             "([0-9][0-9\\- \\.]+[0-9])")
     }

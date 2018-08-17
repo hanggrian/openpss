@@ -17,7 +17,7 @@ inline fun forceExit() {
 val desktop: Desktop?
     get() {
         if (!Desktop.isDesktopSupported()) {
-            styledErrorAlert(getStyle(R.style.openpss), "Desktop is not supported.").show()
+            styledErrorAlert(getStyle(R.style.openpss), "java.awt.Desktop is not supported.").show()
             return null
         }
         return Desktop.getDesktop()

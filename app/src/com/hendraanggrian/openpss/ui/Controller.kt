@@ -17,7 +17,7 @@ open class Controller : Initializable, Resourced {
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         this.resources = resources
-        if (this is Refreshable) refresh()
+        (this as? Refreshable)?.refresh()
     }
 
     /** Register extra [value] with [key]. */

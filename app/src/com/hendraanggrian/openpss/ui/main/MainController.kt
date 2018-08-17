@@ -2,7 +2,6 @@ package com.hendraanggrian.openpss.ui.main
 
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.layout.SegmentedTabPane
-import com.hendraanggrian.openpss.layout.SegmentedTabPane.Companion.STRETCH_POINT
 import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.SegmentedController
@@ -27,12 +26,8 @@ import javafx.scene.control.Tab
 import javafx.scene.layout.AnchorPane
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.HBox
-import javafx.stage.Stage
 import javafxx.application.later
-import javafxx.coroutines.FX
 import javafxx.coroutines.listener
-import kotlinx.coroutines.experimental.delay
-import kotlinx.coroutines.experimental.launch
 import org.apache.commons.lang3.SystemUtils.IS_OS_MAC
 import org.controlsfx.control.NotificationPane
 import java.net.URL
@@ -62,7 +57,6 @@ class MainController : Controller(), Selectable<Tab> {
     override val selectionModel: SelectionModel<Tab> get() = tabPane.selectionModel
 
     private lateinit var controllers: List<SegmentedController>
-    private var isFinanceTabFixed = false
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
@@ -75,21 +69,7 @@ class MainController : Controller(), Selectable<Tab> {
         selectedIndexProperty.listener { _, _, value ->
             val controller = controllers[value.toInt()]
             controller.replaceButtons()
-            if (controller is Refreshable) {
-                controller.refresh()
-                if (controller is FinanceController && !isFinanceTabFixed) {
-                    val stage = notificationPane.scene.window as Stage
-                    val temp = stage.width
-                    later {
-                        stage.width = STRETCH_POINT
-                        launch(FX) {
-                            delay(200)
-                            stage.width = temp
-                        }
-                    }
-                    isFinanceTabFixed = true
-                }
-            }
+            (controller as? Refreshable)?.refresh()
         }
 
         later {

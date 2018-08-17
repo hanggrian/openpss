@@ -2,9 +2,10 @@ package com.hendraanggrian.openpss.ui.main.help
 
 import com.google.common.util.concurrent.ListenableFuture
 import com.google.gson.annotations.SerializedName
-import com.hendraanggrian.openpss.BuildConfig
 import com.hendraanggrian.openpss.BuildConfig.ARTIFACT
+import com.hendraanggrian.openpss.BuildConfig.DEBUG
 import com.hendraanggrian.openpss.BuildConfig.USER
+import com.hendraanggrian.openpss.BuildConfig.VERSION
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.i18n.Resourced
 import com.hendraanggrian.openpss.util.desktop
@@ -32,7 +33,7 @@ interface GitHubApi {
         @SerializedName("assets") val assets: List<Asset>
     ) {
 
-        fun isNewer(): Boolean = ComparableVersion(version) > ComparableVersion(BuildConfig.VERSION) &&
+        fun isNewer(): Boolean = ComparableVersion(version) > ComparableVersion(VERSION) &&
             assets.isNotEmpty() &&
             assets.all { it.isUploaded() }
     }
@@ -65,7 +66,7 @@ interface GitHubApi {
 
         fun checkUpdates(
             resourced: Resourced,
-            onAvailable: (title: String, List<Action>) -> Unit,
+            onAvailable: (title: String, actions: List<Action>) -> Unit,
             onUnavailable: (title: String, content: String) -> Unit
         ) {
             launch {
@@ -73,21 +74,20 @@ interface GitHubApi {
                     val release = create().getLatestRelease().get(TIMEOUT, SECONDS)
                     launch(FX) {
                         when {
-                            release.isNewer() ->
-                                onAvailable(resourced.getString(R.string.openpss_is_available, release.version),
-                                    release.assets.map { asset ->
-                                        Action(asset.name) {
-                                            desktop?.browse(URI(asset.downloadUrl))
-                                        }
-                                    })
-                            else ->
-                                onUnavailable.invoke(resourced.getString(R.string.you_re_up_to_date), resourced.getString(
-                                    R.string.openpss_is_currently_the_newest_version_available,
-                                    BuildConfig.VERSION))
+                            release.isNewer() -> onAvailable(
+                                resourced.getString(R.string.openpss_is_available, release.version),
+                                release.assets.map { asset ->
+                                    Action(asset.name) {
+                                        desktop?.browse(URI(asset.downloadUrl))
+                                    }
+                                })
+                            else -> onUnavailable(
+                                resourced.getString(R.string.you_re_up_to_date),
+                                resourced.getString(R.string.openpss_is_currently_the_newest_version_available, VERSION))
                         }
                     }
                 } catch (e: Exception) {
-                    if (BuildConfig.DEBUG) e.printStackTrace()
+                    if (DEBUG) e.printStackTrace()
                     launch(FX) {
                         errorAlert(resourced.getString(R.string.no_internet_connection)).show()
                     }

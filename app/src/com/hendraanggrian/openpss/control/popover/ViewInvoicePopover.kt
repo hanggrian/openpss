@@ -15,7 +15,7 @@ import com.hendraanggrian.openpss.util.PATTERN_DATETIME_EXTENDED
 import com.hendraanggrian.openpss.util.bold
 import com.hendraanggrian.openpss.util.currencyConverter
 import com.hendraanggrian.openpss.util.numberConverter
-import javafx.geometry.Dimension2D
+import javafx.geometry.HPos.LEFT
 import javafx.geometry.HPos.RIGHT
 import javafx.geometry.Pos.CENTER
 import javafx.geometry.Pos.CENTER_LEFT
@@ -30,7 +30,6 @@ import javafx.scene.layout.BorderWidths.DEFAULT
 import javafx.scene.layout.CornerRadii.EMPTY
 import javafx.scene.layout.Priority.ALWAYS
 import javafx.scene.paint.Color.BLACK
-import javafx.scene.text.TextAlignment
 import javafxx.layouts.LayoutManager
 import javafxx.layouts.button
 import javafxx.layouts.columnConstraints
@@ -44,8 +43,11 @@ import javafxx.layouts.vbox
 import javafxx.scene.layout.gap
 import javafxx.scene.layout.paddingAll
 import java.util.ResourceBundle
-import kotlin.Double.Companion.MAX_VALUE
 
+/**
+ * Popup displaying invoice using server's language instead of local.
+ * Size of invoice is equivalent to 10x14cm, possibly the smallest continuous form available.
+ */
 class ViewInvoicePopover(invoice: Invoice) : Popover(object : Resourced {
     override val resources: ResourceBundle = Language.ofFullCode(transaction {
         findGlobalSettings(KEY_LANGUAGE).single().value
@@ -53,8 +55,8 @@ class ViewInvoicePopover(invoice: Invoice) : Popover(object : Resourced {
 }, R.string.invoice) {
 
     private companion object {
-        /** Size equivalent to 10x14cm, possibly the smallest continuous form available. */
-        val SIZE = Dimension2D(378.0, 530.0)
+        const val WIDTH = 378.0
+        const val HEIGHT = 530.0
     }
 
     private lateinit var invoiceHeaders: List<String>
@@ -71,8 +73,8 @@ class ViewInvoicePopover(invoice: Invoice) : Popover(object : Resourced {
         vbox(R.dimen.padding_small.toDouble()) {
             border = DASHED.toBorder()
             paddingAll = R.dimen.padding_small.toDouble()
-            setMinSize(SIZE.width, SIZE.height)
-            setMaxSize(SIZE.width, SIZE.height)
+            setMinSize(WIDTH, HEIGHT)
+            setMaxSize(WIDTH, HEIGHT)
             hbox(R.dimen.padding_small.toDouble()) {
                 vbox {
                     alignment = CENTER_LEFT
@@ -85,30 +87,30 @@ class ViewInvoicePopover(invoice: Invoice) : Popover(object : Resourced {
                 }
             }
             fullLine()
-            hbox(R.dimen.padding_small.toDouble()) {
-                label(customer.name) { maxWidth = MAX_VALUE } hpriority ALWAYS
-                label(invoice.dateTime.toString(PATTERN_DATETIME_EXTENDED) + '\n' +
-                    transaction { Employees[invoice.employeeId].single().name }
-                ) { textAlignment = TextAlignment.RIGHT }
+            vbox {
+                alignment = CENTER
+                label("${invoice.dateTime.toString(PATTERN_DATETIME_EXTENDED)} " +
+                    "(${transaction { Employees[invoice.employeeId].single().name }})")
+                label(customer.name) { font = bold() }
+                label(customer.id.toString())
             }
             gridPane {
                 hgap = R.dimen.padding_small.toDouble()
                 columnConstraints {
+                    constraints { halignment = RIGHT }
                     constraints { hgrow = ALWAYS }
                     constraints()
-                    constraints()
-                    constraints()
+                    constraints { halignment = RIGHT }
                 }
                 var row = 0
                 invoice.plates.run {
                     if (isNotEmpty()) {
-                        label(getString(R.string.plate)) { font = bold() } row row col 0
+                        label(getString(R.string.plate)) { font = bold() } row row col 0 colSpans 4 halign LEFT
                         row++
                         forEach {
-                            label(it.title) row row col 0
-                            label(it.machine) row row col 1
-                            label("${numberConverter.toString(it.qty)} x " +
-                                currencyConverter.toString(it.price)) row row col 2
+                            label(numberConverter.toString(it.qty)) row row col 0
+                            label(it.title) { isWrapText = true } row row col 1
+                            label(it.machine) row row col 2
                             label(currencyConverter.toString(it.total)) row row col 3
                             row++
                         }
@@ -116,13 +118,12 @@ class ViewInvoicePopover(invoice: Invoice) : Popover(object : Resourced {
                 }
                 invoice.offsets.run {
                     if (isNotEmpty()) {
-                        label(getString(R.string.offset)) { font = bold() } row row col 0
+                        label(getString(R.string.offset)) { font = bold() } row row col 0 colSpans 4 halign LEFT
                         row++
                         forEach {
-                            label(it.title) row row col 0
-                            label(it.machine) row row col 1
-                            label("${it.typedTechnique.toString(this@ViewInvoicePopover)} " +
-                                numberConverter.toString(it.qty)) row row col 2
+                            label(numberConverter.toString(it.qty)) row row col 0
+                            label(it.title) { isWrapText = true } row row col 1
+                            label(it.machine) row row col 2
                             label(currencyConverter.toString(it.total)) row row col 3
                             row++
                         }
@@ -130,12 +131,11 @@ class ViewInvoicePopover(invoice: Invoice) : Popover(object : Resourced {
                 }
                 invoice.others.run {
                     if (isNotEmpty()) {
-                        label(getString(R.string.others)) { font = bold() } row row col 0
+                        label(getString(R.string.others)) { font = bold() } row row col 0 colSpans 4 halign LEFT
                         row++
                         forEach {
-                            label(it.title) row row col 0
-                            label("${numberConverter.toString(it.qty)} x " +
-                                currencyConverter.toString(it.price)) row row col 2
+                            label(numberConverter.toString(it.qty)) row row col 0
+                            label(it.title) { isWrapText = true } row row col 1 colSpans 2
                             label(currencyConverter.toString(it.total)) row row col 3
                             row++
                         }
@@ -151,7 +151,9 @@ class ViewInvoicePopover(invoice: Invoice) : Popover(object : Resourced {
                     "${getString(R.string.note)}\n" { font = bold() }
                     invoice.note()
                 } row 0 col 0 rowSpans 2 hpriority ALWAYS
-                label(currencyConverter.toString(invoice.total)) { font = bold() } row 0 col 1 colSpans 2 halign RIGHT
+                label(currencyConverter.toString(invoice.total)) {
+                    font = bold()
+                } row 0 col 1 colSpans 2 halign RIGHT
                 vbox {
                     alignment = CENTER
                     region { prefHeight = 50.0 }
@@ -176,5 +178,5 @@ class ViewInvoicePopover(invoice: Invoice) : Popover(object : Resourced {
 
     private fun BorderStrokeStyle.toBorder() = Border(BorderStroke(BLACK, this, EMPTY, DEFAULT))
 
-    private fun LayoutManager<Node>.fullLine() = line(endX = SIZE.width - R.dimen.padding_small.toDouble() * 2)
+    private fun LayoutManager<Node>.fullLine() = line(endX = WIDTH - R.dimen.padding_small.toDouble() * 2)
 }

@@ -1,6 +1,7 @@
 package com.hendraanggrian.openpss.control.popover
 
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.db.Order
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.schemas.Employee
@@ -31,6 +32,8 @@ import javafx.scene.layout.CornerRadii.EMPTY
 import javafx.scene.layout.Priority.ALWAYS
 import javafx.scene.paint.Color.BLACK
 import javafxx.layouts.LayoutManager
+import javafxx.layouts._GridPane
+import javafxx.layouts._VBox
 import javafxx.layouts.button
 import javafxx.layouts.columnConstraints
 import javafxx.layouts.gridPane
@@ -94,52 +97,23 @@ class ViewInvoicePopover(invoice: Invoice) : Popover(object : Resourced {
                 label(customer.name) { font = bold() }
                 label(customer.id.toString())
             }
-            gridPane {
-                hgap = R.dimen.padding_small.toDouble()
-                columnConstraints {
-                    constraints { halignment = RIGHT }
-                    constraints { hgrow = ALWAYS }
-                    constraints()
-                    constraints { halignment = RIGHT }
+            vbox {
+                contentGridPane(R.string.plate, invoice.plates) { plate, row ->
+                    label(numberConverter.toString(plate.qty)) row row col 0
+                    label(plate.title) { isWrapText = true } row row col 1
+                    label(plate.machine) row row col 2
+                    label(currencyConverter.toString(plate.total)) row row col 3
                 }
-                var row = 0
-                invoice.plates.run {
-                    if (isNotEmpty()) {
-                        label(getString(R.string.plate)) { font = bold() } row row col 0 colSpans 4 halign LEFT
-                        row++
-                        forEach {
-                            label(numberConverter.toString(it.qty)) row row col 0
-                            label(it.title) { isWrapText = true } row row col 1
-                            label(it.machine) row row col 2
-                            label(currencyConverter.toString(it.total)) row row col 3
-                            row++
-                        }
-                    }
+                contentGridPane(R.string.offset, invoice.offsets) { offset, row ->
+                    label(numberConverter.toString(offset.qty)) row row col 0
+                    label(offset.title) { isWrapText = true } row row col 1
+                    label(offset.machine) row row col 2
+                    label(currencyConverter.toString(offset.total)) row row col 3
                 }
-                invoice.offsets.run {
-                    if (isNotEmpty()) {
-                        label(getString(R.string.offset)) { font = bold() } row row col 0 colSpans 4 halign LEFT
-                        row++
-                        forEach {
-                            label(numberConverter.toString(it.qty)) row row col 0
-                            label(it.title) { isWrapText = true } row row col 1
-                            label(it.machine) row row col 2
-                            label(currencyConverter.toString(it.total)) row row col 3
-                            row++
-                        }
-                    }
-                }
-                invoice.others.run {
-                    if (isNotEmpty()) {
-                        label(getString(R.string.others)) { font = bold() } row row col 0 colSpans 4 halign LEFT
-                        row++
-                        forEach {
-                            label(numberConverter.toString(it.qty)) row row col 0
-                            label(it.title) { isWrapText = true } row row col 1 colSpans 2
-                            label(currencyConverter.toString(it.total)) row row col 3
-                            row++
-                        }
-                    }
+                contentGridPane(R.string.others, invoice.others) { other, row ->
+                    label(numberConverter.toString(other.qty)) row row col 0
+                    label(other.title) { isWrapText = true } row row col 1 colSpans 2
+                    label(currencyConverter.toString(other.total)) row row col 3
                 }
             } vpriority ALWAYS
             fullLine()
@@ -172,6 +146,37 @@ class ViewInvoicePopover(invoice: Invoice) : Popover(object : Resourced {
             button(getString(R.string.print)) {
                 isDefaultButton = true
                 isDisable = invoice.printed
+            }
+        }
+    }
+
+    private fun <T : Order> _VBox.contentGridPane(
+        titleId: String,
+        orders: List<T>,
+        lineBuilder: _GridPane.(order: T, row: Int) -> Unit
+    ) {
+        if (orders.isNotEmpty()) gridPane {
+            hgap = R.dimen.padding_small.toDouble()
+            columnConstraints {
+                constraints {
+                    minWidth = USE_PREF_SIZE
+                    halignment = RIGHT
+                }
+                constraints { hgrow = ALWAYS }
+                constraints {
+                    minWidth = USE_PREF_SIZE
+                }
+                constraints {
+                    minWidth = USE_PREF_SIZE
+                    halignment = RIGHT
+                }
+            }
+            var row = 0
+            label(getString(titleId)) { font = bold() } row row col 0 colSpans 4 halign LEFT
+            row++
+            orders.forEach {
+                lineBuilder(it, row)
+                row++
             }
         }
     }

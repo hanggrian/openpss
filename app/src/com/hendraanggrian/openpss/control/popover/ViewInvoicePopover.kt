@@ -15,10 +15,12 @@ import com.hendraanggrian.openpss.util.PATTERN_DATETIME_EXTENDED
 import com.hendraanggrian.openpss.util.bold
 import com.hendraanggrian.openpss.util.currencyConverter
 import com.hendraanggrian.openpss.util.numberConverter
+import javafx.geometry.Dimension2D
 import javafx.geometry.HPos.RIGHT
 import javafx.geometry.Pos.CENTER
 import javafx.geometry.Pos.CENTER_LEFT
 import javafx.geometry.Pos.CENTER_RIGHT
+import javafx.scene.Node
 import javafx.scene.layout.Border
 import javafx.scene.layout.BorderStroke
 import javafx.scene.layout.BorderStrokeStyle
@@ -29,9 +31,11 @@ import javafx.scene.layout.CornerRadii.EMPTY
 import javafx.scene.layout.Priority.ALWAYS
 import javafx.scene.paint.Color.BLACK
 import javafx.scene.text.TextAlignment
+import javafxx.layouts.LayoutManager
 import javafxx.layouts.button
 import javafxx.layouts.columnConstraints
 import javafxx.layouts.gridPane
+import javafxx.layouts.hbox
 import javafxx.layouts.label
 import javafxx.layouts.line
 import javafxx.layouts.region
@@ -40,6 +44,7 @@ import javafxx.layouts.vbox
 import javafxx.scene.layout.gap
 import javafxx.scene.layout.paddingAll
 import java.util.ResourceBundle
+import kotlin.Double.Companion.MAX_VALUE
 
 class ViewInvoicePopover(invoice: Invoice) : Popover(object : Resourced {
     override val resources: ResourceBundle = Language.ofFullCode(transaction {
@@ -48,8 +53,8 @@ class ViewInvoicePopover(invoice: Invoice) : Popover(object : Resourced {
 }, R.string.invoice) {
 
     private companion object {
-        const val WIDTH = 912.0 // 9.5-inch
-        const val HEIGHT = 528.0 // 5.5-inch
+        /** Size equivalent to 10x14cm, possibly the smallest continuous form available. */
+        val SIZE = Dimension2D(378.0, 530.0)
     }
 
     private lateinit var invoiceHeaders: List<String>
@@ -63,42 +68,31 @@ class ViewInvoicePopover(invoice: Invoice) : Popover(object : Resourced {
             employee = Employees[invoice.employeeId].single()
             customer = Customers[invoice.customerId].single()
         }
-        gridPane {
+        vbox(R.dimen.padding_small.toDouble()) {
             border = DASHED.toBorder()
-            gap = R.dimen.padding_large.toDouble()
-            paddingAll = 20.0
-            setMinSize(WIDTH, HEIGHT)
-            setMaxSize(WIDTH, HEIGHT)
-            columnConstraints {
-                constraints {
-                    hgrow = ALWAYS
-                    isFillWidth = true
-                }
-                constraints(200.0)
-                constraints(200.0) {
-                    halignment = RIGHT
+            paddingAll = R.dimen.padding_small.toDouble()
+            setMinSize(SIZE.width, SIZE.height)
+            setMaxSize(SIZE.width, SIZE.height)
+            hbox(R.dimen.padding_small.toDouble()) {
+                vbox {
+                    alignment = CENTER_LEFT
+                    invoiceHeaders.forEachIndexed { index, s -> label(s) { if (index == 0) font = bold() } }
+                } hpriority ALWAYS
+                vbox {
+                    alignment = CENTER_RIGHT
+                    label(getString(R.string.invoice)) { font = bold(18) }
+                    label("# ${invoice.no}") { font = bold(32) }
                 }
             }
-            vbox {
-                alignment = CENTER_LEFT
-                invoiceHeaders.forEachIndexed { index, s ->
-                    label(s) { if (index == 0) font = bold() }
-                }
-            } row 0 col 0
-            vbox {
-                alignment = CENTER_RIGHT
-                label(getString(R.string.invoice)) { font = bold(32) }
-                label("# ${invoice.no}") { font = bold(18) }
-            } row 0 col 1 colSpans 2
-            line(endX = WIDTH - 32.0) row 1 col 0 colSpans 3
-            label(customer.name) {
-                font = bold(24)
-            } row 2 col 0 colSpans 2
-            label(invoice.dateTime.toString(PATTERN_DATETIME_EXTENDED) + '\n' +
-                transaction { Employees[invoice.employeeId].single().name }
-            ) { textAlignment = TextAlignment.RIGHT } row 2 col 2
+            fullLine()
+            hbox(R.dimen.padding_small.toDouble()) {
+                label(customer.name) { maxWidth = MAX_VALUE } hpriority ALWAYS
+                label(invoice.dateTime.toString(PATTERN_DATETIME_EXTENDED) + '\n' +
+                    transaction { Employees[invoice.employeeId].single().name }
+                ) { textAlignment = TextAlignment.RIGHT }
+            }
             gridPane {
-                hgap = R.dimen.padding_large.toDouble()
+                hgap = R.dimen.padding_small.toDouble()
                 columnConstraints {
                     constraints { hgrow = ALWAYS }
                     constraints()
@@ -147,29 +141,30 @@ class ViewInvoicePopover(invoice: Invoice) : Popover(object : Resourced {
                         }
                     }
                 }
-            } row 3 col 0 colSpans 3 vpriority ALWAYS
-            line(endX = WIDTH - 32.0) row 4 col 0 colSpans 3
-            textFlow {
-                paddingAll = 8.0
-                border = SOLID.toBorder()
-                "${getString(R.string.note)}\n" { font = bold() }
-                invoice.note()
-            } row 5 col 0 rowSpans 2
-            label(currencyConverter.toString(invoice.total)) {
-                font = bold(18)
-            } row 5 col 1 colSpans 2 halign RIGHT
-            vbox {
-                alignment = CENTER
-                region { prefHeight = 50.0 }
-                line(endX = 150.0)
-                label(getString(R.string.employee))
-            } row 6 col 1
-            vbox {
-                alignment = CENTER
-                region { prefHeight = 50.0 }
-                line(endX = 150.0)
-                label(getString(R.string.customer))
-            } row 6 col 2
+            } vpriority ALWAYS
+            fullLine()
+            gridPane {
+                gap = R.dimen.padding_small.toDouble()
+                textFlow {
+                    paddingAll = 8.0
+                    border = SOLID.toBorder()
+                    "${getString(R.string.note)}\n" { font = bold() }
+                    invoice.note()
+                } row 0 col 0 rowSpans 2 hpriority ALWAYS
+                label(currencyConverter.toString(invoice.total)) { font = bold() } row 0 col 1 colSpans 2 halign RIGHT
+                vbox {
+                    alignment = CENTER
+                    region { prefHeight = 50.0 }
+                    line(endX = 75.0)
+                    label(getString(R.string.employee))
+                } row 1 col 1
+                vbox {
+                    alignment = CENTER
+                    region { prefHeight = 50.0 }
+                    line(endX = 75.0)
+                    label(getString(R.string.customer))
+                } row 1 col 2
+            }
         }
         buttonBar.run {
             button(getString(R.string.print)) {
@@ -180,4 +175,6 @@ class ViewInvoicePopover(invoice: Invoice) : Popover(object : Resourced {
     }
 
     private fun BorderStrokeStyle.toBorder() = Border(BorderStroke(BLACK, this, EMPTY, DEFAULT))
+
+    private fun LayoutManager<Node>.fullLine() = line(endX = SIZE.width - R.dimen.padding_small.toDouble() * 2)
 }

@@ -2,11 +2,11 @@ package com.hendraanggrian.openpss.db.schemas
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.db.Document
+import com.hendraanggrian.openpss.db.Numbered
 import com.hendraanggrian.openpss.db.OffsetOrder
 import com.hendraanggrian.openpss.db.Order
 import com.hendraanggrian.openpss.db.SimpleOrder
 import com.hendraanggrian.openpss.db.Titled
-import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.i18n.StringResource
 import com.hendraanggrian.openpss.util.enumValueOfId
 import com.hendraanggrian.openpss.util.id
@@ -59,7 +59,7 @@ object Invoices : DocumentSchema<Invoice>("invoices", Invoice::class) {
 }
 
 data class Invoice(
-    val no: Int,
+    override val no: Int,
     val employeeId: Id<String, Employees>,
     val customerId: Id<String, Customers>,
     val dateTime: DateTime,
@@ -70,7 +70,7 @@ data class Invoice(
     val printed: Boolean,
     val paid: Boolean,
     val done: Boolean
-) : Document<Invoices> {
+) : Document<Invoices>, Numbered {
 
     companion object {
         fun new(
@@ -82,7 +82,7 @@ data class Invoice(
             others: List<Other>,
             note: String
         ): Invoice = Invoice(
-            transaction { Invoices().lastOrNull()?.no ?: 0 } + 1,
+            Numbered.next(Invoices),
             employeeId, customerId, dateTime, plates, offsets, others, note, false, false, false)
     }
 

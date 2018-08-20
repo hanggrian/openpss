@@ -68,8 +68,8 @@ class CustomerController : SegmentedController(), Refreshable, Selectable<Custom
     @FXML lateinit var masterDetailPane: MasterDetailPane
     @FXML lateinit var customerPagination: PaginatedPane
     @FXML lateinit var nameLabel: Label
-    @FXML lateinit var idImage: ImageView
-    @FXML lateinit var idLabel: Label
+    @FXML lateinit var noImage: ImageView
+    @FXML lateinit var noLabel: Label
     @FXML lateinit var sinceImage: ImageView
     @FXML lateinit var sinceLabel: Label
     @FXML lateinit var addressImage: ImageView
@@ -123,7 +123,7 @@ class CustomerController : SegmentedController(), Refreshable, Selectable<Custom
             filterAddressItem = checkMenuItem(getString(R.string.address))
             filterNoteItem = checkMenuItem(getString(R.string.note))
         }
-        idImage.tooltip(getString(R.string.id))
+        noImage.tooltip(getString(R.string.id))
         sinceImage.tooltip(getString(R.string.since))
         addressImage.tooltip(getString(R.string.address))
         noteImage.tooltip(getString(R.string.note))
@@ -165,7 +165,7 @@ class CustomerController : SegmentedController(), Refreshable, Selectable<Custom
                     }
                 }
                 nameLabel.bindLabel { selected?.name.orEmpty() }
-                idLabel.bindLabel { selected?.id?.toString().orEmpty() }
+                noLabel.bindLabel { selected?.no?.toString().orEmpty() }
                 sinceLabel.bindLabel { selected?.since?.toString(PATTERN_DATE).orEmpty() }
                 addressLabel.bindLabel { selected?.address ?: "-" }
                 noteLabel.bindLabel { selected?.note ?: "-" }

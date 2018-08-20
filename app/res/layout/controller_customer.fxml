@@ -31,10 +31,10 @@
             </padding>
             <Label styleClass="display-label" fx:id="nameLabel" wrapText="true" GridPane.rowIndex="0"
                    GridPane.columnIndex="1"/>
-            <ImageView fx:id="idImage" GridPane.rowIndex="1" GridPane.columnIndex="0">
+            <ImageView fx:id="noImage" GridPane.rowIndex="1" GridPane.columnIndex="0">
                 <Image url="@/image/text_customer.png"/>
             </ImageView>
-            <Label fx:id="idLabel" wrapText="true" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+            <Label fx:id="noLabel" wrapText="true" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
             <ImageView fx:id="sinceImage" GridPane.rowIndex="2" GridPane.columnIndex="0">
                 <Image url="@/image/text_since.png"/>
             </ImageView>

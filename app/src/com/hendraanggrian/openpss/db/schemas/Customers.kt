@@ -4,6 +4,7 @@ import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.db.Document
 import com.hendraanggrian.openpss.db.Named
 import com.hendraanggrian.openpss.db.NamedSchema
+import com.hendraanggrian.openpss.db.Numbered
 import com.hendraanggrian.openpss.db.dbDate
 import com.hendraanggrian.openpss.i18n.StringResource
 import com.hendraanggrian.openpss.util.enumValueOfId
@@ -18,6 +19,7 @@ import kotlinx.nosql.string
 import org.joda.time.LocalDate
 
 object Customers : DocumentSchema<Customer>("customers", Customer::class), NamedSchema {
+    val no = integer("no")
     override val name = string("name")
     val since = date("since")
     val address = nullableString("address")
@@ -31,15 +33,17 @@ object Customers : DocumentSchema<Customer>("customers", Customer::class), Named
 }
 
 data class Customer(
+    override val no: Int,
     override var name: String,
     val since: LocalDate,
     var address: String?,
     var note: String?,
     var contacts: List<Contact>
-) : Document<Customers>, Named {
+) : Document<Customers>, Numbered, Named {
 
     companion object {
-        fun new(name: String): Customer = Customer(name, dbDate, null, null, listOf())
+
+        fun new(name: String): Customer = Customer(Numbered.next(Customers), name, dbDate, null, null, listOf())
     }
 
     override lateinit var id: Id<String, Customers>

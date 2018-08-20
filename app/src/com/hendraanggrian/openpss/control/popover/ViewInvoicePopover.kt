@@ -94,8 +94,7 @@ class ViewInvoicePopover(invoice: Invoice) : Popover(object : Resourced {
                 alignment = CENTER
                 label("${invoice.dateTime.toString(PATTERN_DATETIME_EXTENDED)} " +
                     "(${transaction { Employees[invoice.employeeId].single().name }})")
-                label(customer.name) { font = bold() }
-                label(customer.id.toString())
+                label("${customer.no}. ${customer.name}") { font = bold() }
             }
             vbox {
                 contentGridPane(R.string.plate, invoice.plates) { plate, row ->

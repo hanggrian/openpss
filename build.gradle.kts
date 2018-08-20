@@ -8,7 +8,6 @@ import java.nio.file.Files.delete
 buildscript {
     repositories {
         jcenter()
-        maven("https://dl.bintray.com/hendraanggrian/packr")
         maven("https://oss.sonatype.org/content/repositories/snapshots") // required for packr
     }
     dependencies {

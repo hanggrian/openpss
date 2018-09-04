@@ -54,7 +54,6 @@ class ScheduleController : SegmentedController(), Refreshable, TreeSelectable<Sc
             ImageView(R.image.btn_refresh_light)) {
             onAction { refresh() }
         }
-        space()
         doneButton = styledStretchableButton(STYLE_DEFAULT_BUTTON, STRETCH_POINT, getString(R.string.done),
             ImageView(R.image.btn_done_dark)) {
             onAction { done() }

@@ -27,7 +27,7 @@
                 <RowConstraints vgrow="ALWAYS"/>
             </rowConstraints>
             <padding>
-                <Insets bottom="16" left="16" right="16" top="8"/>
+                <Insets topRightBottomLeft="16"/>
             </padding>
             <Label styleClass="display-label" fx:id="nameLabel" wrapText="true" GridPane.rowIndex="0"
                    GridPane.columnIndex="1"/>

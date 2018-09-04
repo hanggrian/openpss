@@ -62,8 +62,6 @@ class MainController : Controller(), Selectable<Tab> {
         super.initialize(location, resources)
         menuBar.isUseSystemMenuBar = IS_OS_MAC
         navigationPane.center = tabPane.header
-        AnchorPane.setLeftAnchor(tabPane.header, 0.0)
-        AnchorPane.setRightAnchor(tabPane.header, 0.0)
 
         customerController.replaceButtons()
         selectedIndexProperty.listener { _, _, value ->

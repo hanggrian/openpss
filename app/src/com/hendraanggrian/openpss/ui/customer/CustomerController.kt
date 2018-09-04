@@ -31,6 +31,7 @@ import javafx.scene.control.SelectionModel
 import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
 import javafx.scene.control.TextField
+import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import javafx.util.Callback
 import javafxx.application.later
@@ -44,6 +45,7 @@ import javafxx.collections.toObservableList
 import javafxx.coroutines.FX
 import javafxx.coroutines.onAction
 import javafxx.layouts.LayoutManager
+import javafxx.layouts.contextMenu
 import javafxx.layouts.listView
 import javafxx.layouts.styledTextField
 import javafxx.layouts.tooltip
@@ -79,7 +81,6 @@ class CustomerController : SegmentedController(), Refreshable, Selectable<Custom
 
     private lateinit var refreshButton: Button
     private lateinit var addButton: Button
-    private lateinit var editButton: Button
     private lateinit var searchField: TextField
 
     private lateinit var customerList: ListView<Customer>
@@ -92,13 +93,9 @@ class CustomerController : SegmentedController(), Refreshable, Selectable<Custom
             ImageView(R.image.btn_refresh_light)) {
             onAction { refresh() }
         }
-        space()
         addButton = styledStretchableButton(STYLE_DEFAULT_BUTTON, STRETCH_POINT, getString(R.string.add),
             ImageView(R.image.btn_add_dark)) {
             onAction { add() }
-        }
-        editButton = stretchableButton(STRETCH_POINT, getString(R.string.edit), ImageView(R.image.btn_edit_light)) {
-            onAction { edit() }
         }
     }
 
@@ -137,7 +134,12 @@ class CustomerController : SegmentedController(), Refreshable, Selectable<Custom
                                 .skip(count * page)
                                 .take(count).toMutableObservableList()
                             val fullAccess = employee.isAdmin().toProperty()
-                            editButton.disableProperty().bind(!selectedBinding or !fullAccess)
+                            contextMenu {
+                                getString(R.string.edit)(ImageView(Image(R.image.menu_edit))) {
+                                    disableProperty().bind(!selectedBinding or !fullAccess)
+                                    onAction { edit() }
+                                }
+                            }
                             addContactItem.disableProperty().bind(!selectedBinding)
                             deleteContactItem.disableProperty().bind(!selectedBinding2 or !fullAccess)
                         }
@@ -173,7 +175,7 @@ class CustomerController : SegmentedController(), Refreshable, Selectable<Custom
         }
     }
 
-    private fun edit() = EditCustomerPopover(this, selected!!).showAt(editButton) {
+    private fun edit() = EditCustomerPopover(this, selected!!).showAt(customerList) {
         transaction {
             Customers[selected!!].projection { name + address + note }.update(it.name, it.address, it.note)
         }

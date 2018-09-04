@@ -26,10 +26,6 @@ open class SegmentedController : Controller() {
     open fun LayoutManager<Node>.rightActions() {
     }
 
-    fun LayoutManager<Node>.space() = region { minWidth = 16.0 }
-
-    fun space() = region { minWidth = 16.0 }
-
     class EmptyLayoutManager : LayoutManager<Node> {
 
         override val childs: MutableList<Node> = mutableListOf()

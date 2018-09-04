@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <?import com.hendraanggrian.openpss.control.PaginatedPane?>
+<?import com.hendraanggrian.openpss.control.StretchableButton?>
 <?import com.hendraanggrian.openpss.layout.DateBox?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
@@ -12,6 +13,12 @@
         <padding>
             <Insets bottom="10" left="10" right="10"/>
         </padding>
+        <StretchableButton mnemonicParsing="false" stretchPoint="1100" stretchableText="%clear_filters"
+                           onAction="#clearFilters">
+            <ImageView>
+                <Image url="@/image/btn_clear_inactive.png"/>
+            </ImageView>
+        </StretchableButton>
         <Region HBox.hgrow="ALWAYS"/>
         <fx:define>
             <ToggleGroup fx:id="pickDateGroup"/>

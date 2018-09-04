@@ -64,15 +64,15 @@ import javafxx.coroutines.onMouseClicked
 import javafxx.layouts.LayoutManager
 import javafxx.layouts.columns
 import javafxx.layouts.contextMenu
+import javafxx.layouts.controlsfx.masterDetailPane
 import javafxx.layouts.hbox
 import javafxx.layouts.region
+import javafxx.layouts.separatorMenuItem
 import javafxx.layouts.tableView
-import javafxx.layouts.vbox
 import javafxx.scene.input.isDoubleClick
 import javafxx.scene.layout.updatePadding
 import kotlinx.nosql.equal
 import kotlinx.nosql.update
-import org.controlsfx.control.MasterDetailPane
 import java.net.URL
 import java.time.LocalDate
 import java.util.ResourceBundle
@@ -94,10 +94,7 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
 
     private lateinit var refreshButton: Button
     private lateinit var addButton: Button
-    private lateinit var editButton: Button
-    private lateinit var deleteButton: Button
     private lateinit var searchField: IntField
-    private lateinit var resetFiltersButton: Button
 
     private val customerProperty = SimpleObjectProperty<Customer>()
     private lateinit var invoiceTable: TableView<Invoice>
@@ -112,35 +109,16 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
             ImageView(R.image.btn_refresh_light)) {
             onAction { refresh() }
         }
-        space()
         addButton = styledStretchableButton(STYLE_DEFAULT_BUTTON, STRETCH_POINT, getString(R.string.add),
             ImageView(R.image.btn_add_dark)) {
             onAction { addInvoice() }
-        }
-        editButton = stretchableButton(STRETCH_POINT, getString(R.string.edit), ImageView(R.image.btn_edit_light)) {
-            onAction { editInvoice() }
-        }
-        deleteButton = stretchableButton(STRETCH_POINT, getString(R.string.delete),
-            ImageView(R.image.btn_delete_light)) {
-            onAction { deleteInvoice() }
         }
     }
 
     override fun LayoutManager<Node>.rightActions() {
         searchField = styledIntField(STYLE_SEARCH_TEXTFIELD) {
             filterBox.disableProperty().bind(valueProperty() neq 0)
-            later { prefWidthProperty().bind(invoicePagination.scene.widthProperty() * 0.12) }
             promptText = getString(R.string.search_no)
-        }
-        resetFiltersButton = stretchableButton(STRETCH_POINT, getString(R.string.clear_filters),
-            ImageView(R.image.btn_clear_inactive)) {
-            onAction {
-                searchField.value = 0
-                customerProperty.set(null)
-                pickDateRadio.isSelected = true
-                dateBox.picker.value = LocalDate.now()
-                anyPaymentItem.isSelected = true
-            }
         }
     }
 
@@ -168,8 +146,8 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
             anyPaymentItem.selectedProperty(), unpaidPaymentItem.selectedProperty(), paidPaymentItem.selectedProperty(),
             allDateRadio.selectedProperty(), pickDateRadio.selectedProperty(), dateBox.valueProperty()) {
             Callback<Pair<Int, Int>, Node> { (page, count) ->
-                MasterDetailPane(BOTTOM).apply {
-                    invoiceTable = tableView {
+                masterDetailPane(BOTTOM) {
+                    invoiceTable = javafxx.layouts.tableView {
                         columnResizePolicy = CONSTRAINED_RESIZE_POLICY
                         columns {
                             getString(R.string.id)<String> { stringCell { no.toString() } }
@@ -188,16 +166,10 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
                             getString(R.string.done)<Boolean> { doneCell { done } }
                         }
                         onMouseClicked { if (it.isDoubleClick() && selected != null) viewInvoice() }
-                        contextMenu {
-                            getString(R.string.view)(ImageView(R.image.btn_invoice_light)) {
-                                later { disableProperty().bind(!selectedBinding) }
-                                onAction { viewInvoice() }
-                            }
-                        }
                     }
                     showDetailNodeProperty().bind(selectedBinding)
                     masterNode = invoiceTable
-                    detailNode = vbox {
+                    detailNode = javafxx.layouts.vbox {
                         hbox {
                             alignment = CENTER
                             spacing = R.dimen.padding_small.toDouble()
@@ -219,7 +191,7 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
                             }
                         }
                         paymentTable = tableView {
-                            minHeightProperty().bind(this@apply.heightProperty() * 0.25)
+                            minHeightProperty().bind(this@masterDetailPane.heightProperty() * 0.25)
                             columnResizePolicy = CONSTRAINED_RESIZE_POLICY
                             columns {
                                 getString(R.string.date)<String> {
@@ -266,8 +238,21 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
                                 .skip(count * page)
                                 .take(count).toMutableObservableList()
                             val fullAccess = employee.isAdmin().toProperty()
-                            editButton.disableProperty().bind(!selectedBinding or !fullAccess)
-                            deleteButton.disableProperty().bind(!selectedBinding or !fullAccess)
+                            invoiceTable.contextMenu {
+                                getString(R.string.view)(ImageView(R.image.btn_invoice_light)) {
+                                    later { disableProperty().bind(!selectedBinding) }
+                                    onAction { viewInvoice() }
+                                }
+                                separatorMenuItem()
+                                getString(R.string.edit)(ImageView(R.image.btn_edit_light)) {
+                                    disableProperty().bind(!selectedBinding or !fullAccess)
+                                    onAction { editInvoice() }
+                                }
+                                getString(R.string.delete)(ImageView(R.image.btn_delete_light)) {
+                                    disableProperty().bind(!selectedBinding or !fullAccess)
+                                    onAction { deleteInvoice() }
+                                }
+                            }
                         }
                     }
                 }
@@ -300,6 +285,14 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
             Payments { invoiceId.equal(selected!!.id) }.remove()
         }
         invoiceTable.items.remove(selected)
+    }
+
+    @FXML fun clearFilters() {
+        searchField.value = 0
+        customerProperty.set(null)
+        pickDateRadio.isSelected = true
+        dateBox.picker.value = LocalDate.now()
+        anyPaymentItem.isSelected = true
     }
 
     @FXML fun selectCustomer() = SearchCustomerPopover(this).showAt(customerButton) { customerProperty.set(it) }

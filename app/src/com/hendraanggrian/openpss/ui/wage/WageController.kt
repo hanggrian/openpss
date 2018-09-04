@@ -37,6 +37,7 @@ import javafxx.coroutines.onAction
 import javafxx.layouts.LayoutManager
 import javafxx.layouts.borderPane
 import javafxx.layouts.label
+import javafxx.layouts.region
 import javafxx.layouts.styledScene
 import javafxx.scene.control.styledErrorAlert
 import javafxx.scene.layout.maxSize
@@ -70,7 +71,7 @@ class WageController : SegmentedController() {
             onAction { process() }
             disableProperty().bind(flowPane.children.isEmpty)
         }
-        space()
+        region()
         disableRecessButton = stretchableButton(STRETCH_POINT, getString(R.string.disable_recess),
             ImageView(R.image.btn_disable_recess_light)) {
             onAction { disableRecess() }

@@ -9,35 +9,36 @@
       fx:controller="com.hendraanggrian.openpss.ui.wage.record.WageRecordController"
       fx:id="root">
     <HBox fx:id="navigationBox" styleClass="navigation-pane" spacing="10">
-        <StretchableSplitMenuButton mnemonicParsing="false" fx:id="undoButton" onAction="#undo" stretchableText="%undo">
+        <StretchableSplitMenuButton mnemonicParsing="false" fx:id="undoButton" onAction="#undo" stretchPoint="1100"
+                                    stretchableText="%undo">
             <ImageView>
                 <Image url="@/image/btn_undo_light.png"/>
             </ImageView>
         </StretchableSplitMenuButton>
-        <Separator orientation="VERTICAL"/>
+        <Region minWidth="10"/>
         <TimeBox fx:id="timeBox"/>
-        <StretchableButton mnemonicParsing="false" fx:id="lockStartButton" onAction="#lockStart"
+        <StretchableButton mnemonicParsing="false" fx:id="lockStartButton" onAction="#lockStart" stretchPoint="1100"
                            stretchableText="%lock_start_time">
             <ImageView>
                 <Image url="@/image/btn_lock_start_light.png"/>
             </ImageView>
         </StretchableButton>
-        <StretchableButton mnemonicParsing="false" fx:id="lockEndButton" onAction="#lockEnd"
+        <StretchableButton mnemonicParsing="false" fx:id="lockEndButton" onAction="#lockEnd" stretchPoint="1100"
                            stretchableText="%lock_end_time">
             <ImageView>
                 <Image url="@/image/btn_lock_end_light.png"/>
             </ImageView>
         </StretchableButton>
-        <Separator orientation="VERTICAL"/>
+        <Region minWidth="10"/>
         <StretchableButton mnemonicParsing="false" fx:id="disableDailyIncomeButton" onAction="#disableDailyIncome"
-                           stretchableText="%disable_daily_income">
+                           stretchPoint="1100" stretchableText="%disable_daily_income">
             <ImageView>
                 <Image url="@/image/btn_disable_daily_light.png"/>
             </ImageView>
         </StretchableButton>
         <Region HBox.hgrow="ALWAYS"/>
-        <StretchableButton mnemonicParsing="false" onAction="#screenshot" stretchableText="%screenshot"
-                           styleClass="default-button">
+        <StretchableButton mnemonicParsing="false" onAction="#screenshot" stretchPoint="1100"
+                           stretchableText="%screenshot" styleClass="default-button">
             <ImageView>
                 <Image url="@/image/btn_screenshot_dark.png"/>
             </ImageView>

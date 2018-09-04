@@ -22,7 +22,7 @@ import javafxx.coroutines.onCloseRequest
 import javafxx.layouts.LayoutManager
 import javafxx.layouts._ButtonBar
 import javafxx.layouts.borderPane
-import javafxx.layouts.separator
+import javafxx.layouts.region
 import javafxx.scene.layout.updatePadding
 import org.controlsfx.control.PopOver
 
@@ -58,7 +58,7 @@ abstract class Popover(
                     listener { _, _, value -> value align CENTER_RIGHT }
                 }
             }
-            separator()
+            region()
             contentPane()
             buttonBar() marginTop 8.0
         }

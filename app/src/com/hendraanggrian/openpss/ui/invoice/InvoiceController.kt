@@ -33,7 +33,6 @@ import com.hendraanggrian.openpss.util.stringCell
 import com.hendraanggrian.openpss.util.yesNoAlert
 import javafx.beans.property.SimpleObjectProperty
 import javafx.fxml.FXML
-import javafx.geometry.Orientation.VERTICAL
 import javafx.geometry.Pos.CENTER
 import javafx.geometry.Side.BOTTOM
 import javafx.scene.Node
@@ -62,11 +61,11 @@ import javafxx.collections.toMutableObservableList
 import javafxx.collections.toObservableList
 import javafxx.coroutines.onAction
 import javafxx.coroutines.onMouseClicked
+import javafxx.layouts.LayoutManager
 import javafxx.layouts.columns
 import javafxx.layouts.contextMenu
 import javafxx.layouts.hbox
 import javafxx.layouts.region
-import javafxx.layouts.separator
 import javafxx.layouts.tableView
 import javafxx.layouts.vbox
 import javafxx.scene.input.isDoubleClick
@@ -97,12 +96,8 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
     private lateinit var addButton: Button
     private lateinit var editButton: Button
     private lateinit var deleteButton: Button
-    override val leftButtons: List<Node>
-        get() = listOf(refreshButton, separator(VERTICAL), addButton, editButton, deleteButton)
-
     private lateinit var searchField: IntField
     private lateinit var resetFiltersButton: Button
-    override val rightButtons: List<Node> get() = listOf(searchField, resetFiltersButton)
 
     private val customerProperty = SimpleObjectProperty<Customer>()
     private lateinit var invoiceTable: TableView<Invoice>
@@ -112,12 +107,12 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
     override val selectionModel: SelectionModel<Invoice> get() = invoiceTable.selectionModel
     override val selectionModel2: SelectionModel<Payment> get() = paymentTable.selectionModel
 
-    override fun initialize(location: URL, resources: ResourceBundle) {
-        super.initialize(location, resources)
+    override fun LayoutManager<Node>.leftActions() {
         refreshButton = stretchableButton(STRETCH_POINT, getString(R.string.refresh),
             ImageView(R.image.btn_refresh_light)) {
             onAction { refresh() }
         }
+        space()
         addButton = styledStretchableButton(STYLE_DEFAULT_BUTTON, STRETCH_POINT, getString(R.string.add),
             ImageView(R.image.btn_add_dark)) {
             onAction { addInvoice() }
@@ -129,6 +124,9 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
             ImageView(R.image.btn_delete_light)) {
             onAction { deleteInvoice() }
         }
+    }
+
+    override fun LayoutManager<Node>.rightActions() {
         searchField = styledIntField(STYLE_SEARCH_TEXTFIELD) {
             filterBox.disableProperty().bind(valueProperty() neq 0)
             later { prefWidthProperty().bind(invoicePagination.scene.widthProperty() * 0.12) }
@@ -144,7 +142,10 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
                 anyPaymentItem.isSelected = true
             }
         }
+    }
 
+    override fun initialize(location: URL, resources: ResourceBundle) {
+        super.initialize(location, resources)
         customerButton.textProperty().bind(stringBindingOf(customerProperty) {
             customerProperty.value?.toString() ?: getString(R.string.search_customer)
         })

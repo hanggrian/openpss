@@ -18,7 +18,6 @@ import com.hendraanggrian.openpss.util.getStyle
 import com.hendraanggrian.openpss.util.pane
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
-import javafx.geometry.Orientation.VERTICAL
 import javafx.scene.Node
 import javafx.scene.control.Button
 import javafx.scene.control.TitledPane
@@ -35,9 +34,9 @@ import javafxx.collections.isEmpty
 import javafxx.collections.size
 import javafxx.coroutines.FX
 import javafxx.coroutines.onAction
+import javafxx.layouts.LayoutManager
 import javafxx.layouts.borderPane
 import javafxx.layouts.label
-import javafxx.layouts.separator
 import javafxx.layouts.styledScene
 import javafxx.scene.control.styledErrorAlert
 import javafxx.scene.layout.maxSize
@@ -58,15 +57,10 @@ class WageController : SegmentedController() {
     private lateinit var browseButton: Button
     private lateinit var processButton: Button
     private lateinit var disableRecessButton: Button
-    override val leftButtons: List<Node>
-        get() = listOf(browseButton, processButton, separator(VERTICAL), disableRecessButton)
-
     private lateinit var recessButton: Button
     private lateinit var historyButton: Button
-    override val rightButtons: List<Node> get() = listOf(recessButton, historyButton)
 
-    override fun initialize(location: URL, resources: ResourceBundle) {
-        super.initialize(location, resources)
+    override fun LayoutManager<Node>.leftActions() {
         browseButton = stretchableButton(STRETCH_POINT, getString(R.string.browse),
             ImageView(R.image.btn_browse_light)) {
             onAction { browse() }
@@ -76,11 +70,15 @@ class WageController : SegmentedController() {
             onAction { process() }
             disableProperty().bind(flowPane.children.isEmpty)
         }
+        space()
         disableRecessButton = stretchableButton(STRETCH_POINT, getString(R.string.disable_recess),
             ImageView(R.image.btn_disable_recess_light)) {
             onAction { disableRecess() }
             disableProperty().bind(flowPane.children.isEmpty)
         }
+    }
+
+    override fun LayoutManager<Node>.rightActions() {
         recessButton = stretchableButton(STRETCH_POINT, getString(R.string.recess),
             ImageView(R.image.btn_recess_light)) {
             onAction { recess() }
@@ -89,7 +87,10 @@ class WageController : SegmentedController() {
             ImageView(R.image.btn_history_light)) {
             onAction { history() }
         }
+    }
 
+    override fun initialize(location: URL, resources: ResourceBundle) {
+        super.initialize(location, resources)
         titledPane.textProperty().bind(stringBindingOf(flowPane.children) {
             "${flowPane.children.size} ${getString(R.string.employee)}"
         })

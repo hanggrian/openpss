@@ -87,8 +87,8 @@ class MainController : Controller(), Selectable<Tab> {
 
     @FXML fun quit() = forceExit()
 
-    @FXML fun editPrice(event: ActionEvent) = when (platePriceItem) {
-        event.source -> EditPlatePriceDialog(this, employee)
+    @FXML fun editPrice(event: ActionEvent) = when (event.source) {
+        platePriceItem -> EditPlatePriceDialog(this, employee)
         else -> EditOffsetPriceDialog(this, employee)
     }.show()
 
@@ -114,13 +114,7 @@ class MainController : Controller(), Selectable<Tab> {
     }
 
     private fun SegmentedController.replaceButtons() {
-        navigationLeftBox.children.let {
-            it.clear()
-            it += leftButtons
-        }
-        navigationRightBox.children.let {
-            it.clear()
-            it += rightButtons
-        }
+        navigationLeftBox.children.setAll(leftActionManager.childs)
+        navigationRightBox.children.setAll(rightActionManager.childs)
     }
 }

@@ -22,7 +22,6 @@ import com.hendraanggrian.openpss.util.matches
 import com.hendraanggrian.openpss.util.stringCell
 import com.hendraanggrian.openpss.util.yesNoAlert
 import javafx.fxml.FXML
-import javafx.geometry.Orientation.VERTICAL
 import javafx.scene.Node
 import javafx.scene.control.Button
 import javafx.scene.control.Label
@@ -44,8 +43,8 @@ import javafxx.collections.toMutableObservableList
 import javafxx.collections.toObservableList
 import javafxx.coroutines.FX
 import javafxx.coroutines.onAction
+import javafxx.layouts.LayoutManager
 import javafxx.layouts.listView
-import javafxx.layouts.separator
 import javafxx.layouts.styledTextField
 import javafxx.layouts.tooltip
 import javafxx.scene.control.styledErrorAlert
@@ -81,22 +80,19 @@ class CustomerController : SegmentedController(), Refreshable, Selectable<Custom
     private lateinit var refreshButton: Button
     private lateinit var addButton: Button
     private lateinit var editButton: Button
-    override val leftButtons: List<Node> get() = listOf(refreshButton, separator(VERTICAL), addButton, editButton)
-
     private lateinit var searchField: TextField
-    override val rightButtons: List<Node> get() = listOf(searchField)
 
     private lateinit var customerList: ListView<Customer>
 
     override val selectionModel: SelectionModel<Customer> get() = customerList.selectionModel
     override val selectionModel2: SelectionModel<Customer.Contact> get() = contactTable.selectionModel
 
-    override fun initialize(location: URL, resources: ResourceBundle) {
-        super.initialize(location, resources)
+    override fun LayoutManager<Node>.leftActions() {
         refreshButton = stretchableButton(STRETCH_POINT, getString(R.string.refresh),
             ImageView(R.image.btn_refresh_light)) {
             onAction { refresh() }
         }
+        space()
         addButton = styledStretchableButton(STYLE_DEFAULT_BUTTON, STRETCH_POINT, getString(R.string.add),
             ImageView(R.image.btn_add_dark)) {
             onAction { add() }
@@ -104,9 +100,16 @@ class CustomerController : SegmentedController(), Refreshable, Selectable<Custom
         editButton = stretchableButton(STRETCH_POINT, getString(R.string.edit), ImageView(R.image.btn_edit_light)) {
             onAction { edit() }
         }
+    }
+
+    override fun LayoutManager<Node>.rightActions() {
         searchField = styledTextField(STYLE_SEARCH_TEXTFIELD) {
             promptText = getString(R.string.search)
         }
+    }
+
+    override fun initialize(location: URL, resources: ResourceBundle) {
+        super.initialize(location, resources)
         noImage.tooltip(getString(R.string.id))
         sinceImage.tooltip(getString(R.string.since))
         addressImage.tooltip(getString(R.string.address))

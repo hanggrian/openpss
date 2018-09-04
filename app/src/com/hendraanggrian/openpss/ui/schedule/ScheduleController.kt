@@ -16,7 +16,6 @@ import com.hendraanggrian.openpss.ui.TreeSelectable
 import com.hendraanggrian.openpss.util.PATTERN_DATETIME_EXTENDED
 import com.hendraanggrian.openpss.util.stringCell
 import javafx.fxml.FXML
-import javafx.geometry.Orientation.VERTICAL
 import javafx.scene.Node
 import javafx.scene.control.Button
 import javafx.scene.control.SelectionMode.MULTIPLE
@@ -30,7 +29,7 @@ import javafxx.application.later
 import javafxx.collections.isEmpty
 import javafxx.coroutines.listener
 import javafxx.coroutines.onAction
-import javafxx.layouts.separator
+import javafxx.layouts.LayoutManager
 import kotlinx.nosql.equal
 import kotlinx.nosql.update
 import java.net.URL
@@ -46,27 +45,31 @@ class ScheduleController : SegmentedController(), Refreshable, TreeSelectable<Sc
 
     private lateinit var refreshButton: Button
     private lateinit var doneButton: Button
-    override val leftButtons: List<Node> get() = listOf(refreshButton, separator(VERTICAL), doneButton)
-
     private lateinit var historyToggle: ToggleButton
-    override val rightButtons: List<Node> get() = listOf(historyToggle)
 
     override val selectionModel: TreeTableViewSelectionModel<Schedule> get() = scheduleTable.selectionModel
 
-    override fun initialize(location: URL, resources: ResourceBundle) {
-        super.initialize(location, resources)
+    override fun LayoutManager<Node>.leftActions() {
         refreshButton = stretchableButton(STRETCH_POINT, getString(R.string.refresh),
             ImageView(R.image.btn_refresh_light)) {
             onAction { refresh() }
         }
+        space()
         doneButton = styledStretchableButton(STYLE_DEFAULT_BUTTON, STRETCH_POINT, getString(R.string.done),
             ImageView(R.image.btn_done_dark)) {
             onAction { done() }
             disableProperty().bind(selecteds.isEmpty)
         }
+    }
+
+    override fun LayoutManager<Node>.rightActions() {
         historyToggle = stretchableToggleButton(STRETCH_POINT, R.string.history, ImageView(R.image.btn_history_light)) {
             selectedProperty().listener { refresh() }
         }
+    }
+
+    override fun initialize(location: URL, resources: ResourceBundle) {
+        super.initialize(location, resources)
         scheduleTable.run {
             root = TreeItem()
             selectionModel.run {

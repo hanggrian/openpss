@@ -31,7 +31,6 @@ import com.hendraanggrian.openpss.util.numberCell
 import com.hendraanggrian.openpss.util.stringCell
 import com.hendraanggrian.openpss.util.toJava
 import javafx.fxml.FXML
-import javafx.geometry.Orientation.VERTICAL
 import javafx.scene.Node
 import javafx.scene.control.Button
 import javafx.scene.control.MenuItem
@@ -46,8 +45,8 @@ import javafxx.collections.toMutableObservableList
 import javafxx.coroutines.listener
 import javafxx.coroutines.onAction
 import javafxx.coroutines.onMouseClicked
+import javafxx.layouts.LayoutManager
 import javafxx.layouts.pane
-import javafxx.layouts.separator
 import javafxx.scene.input.isDoubleClick
 import java.net.URL
 import java.util.ResourceBundle
@@ -79,15 +78,16 @@ class FinanceController : SegmentedController(), Refreshable,
 
     private lateinit var refreshButton: Button
     private lateinit var viewTotalButton: Button
-    override val leftButtons: List<Node> = mutableListOf()
-
     private lateinit var dateBox: DateBox
     private lateinit var monthBox: MonthBox
-    override val rightButtons: List<Node> = listOf(pane())
 
     override val selectionModel: SelectionModel<Tab> get() = tabPane.selectionModel
     override val selectionModel2: SelectionModel<Payment> get() = dailyTable.selectionModel
     override val selectionModel3: SelectionModel<Report> get() = monthlyTable.selectionModel
+
+    override fun LayoutManager<Node>.rightActions() {
+        pane()
+    }
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
@@ -99,7 +99,7 @@ class FinanceController : SegmentedController(), Refreshable,
             ImageView(R.image.btn_money_dark)) {
             onAction { viewTotal() }
         }
-        leftButtons.addAll(tabPane.header, separator(VERTICAL), refreshButton, viewTotalButton)
+        leftActionManager.childs.addAll(tabPane.header, space(), refreshButton, viewTotalButton)
         dateBox = dateBox {
             valueProperty().listener { refresh() }
         }
@@ -109,7 +109,7 @@ class FinanceController : SegmentedController(), Refreshable,
         }
         tabPane.header.toggleGroup.run {
             selectedToggleProperty().addListener { _, _, toggle ->
-                val pane = rightButtons.first() as Pane
+                val pane = rightActionManager.childs.first() as Pane
                 pane.children.clear()
                 pane.children += when (toggles.indexOf(toggle)) {
                     0 -> dateBox

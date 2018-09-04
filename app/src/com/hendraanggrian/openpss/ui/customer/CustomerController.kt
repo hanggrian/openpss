@@ -25,10 +25,8 @@ import javafx.fxml.FXML
 import javafx.geometry.Orientation.VERTICAL
 import javafx.scene.Node
 import javafx.scene.control.Button
-import javafx.scene.control.CheckMenuItem
 import javafx.scene.control.Label
 import javafx.scene.control.ListView
-import javafx.scene.control.MenuButton
 import javafx.scene.control.MenuItem
 import javafx.scene.control.SelectionModel
 import javafx.scene.control.TableColumn
@@ -39,7 +37,6 @@ import javafx.util.Callback
 import javafxx.application.later
 import javafxx.beans.binding.bindingOf
 import javafxx.beans.binding.stringBindingOf
-import javafxx.beans.binding.times
 import javafxx.beans.property.toProperty
 import javafxx.beans.value.or
 import javafxx.collections.emptyObservableList
@@ -47,9 +44,7 @@ import javafxx.collections.toMutableObservableList
 import javafxx.collections.toObservableList
 import javafxx.coroutines.FX
 import javafxx.coroutines.onAction
-import javafxx.layouts.checkMenuItem
 import javafxx.layouts.listView
-import javafxx.layouts.menuButton
 import javafxx.layouts.separator
 import javafxx.layouts.styledTextField
 import javafxx.layouts.tooltip
@@ -89,11 +84,7 @@ class CustomerController : SegmentedController(), Refreshable, Selectable<Custom
     override val leftButtons: List<Node> get() = listOf(refreshButton, separator(VERTICAL), addButton, editButton)
 
     private lateinit var searchField: TextField
-    private lateinit var filterMenu: MenuButton
-    private lateinit var filterNameItem: CheckMenuItem
-    private lateinit var filterAddressItem: CheckMenuItem
-    private lateinit var filterNoteItem: CheckMenuItem
-    override val rightButtons: List<Node> get() = listOf(searchField, filterMenu)
+    override val rightButtons: List<Node> get() = listOf(searchField)
 
     private lateinit var customerList: ListView<Customer>
 
@@ -114,14 +105,7 @@ class CustomerController : SegmentedController(), Refreshable, Selectable<Custom
             onAction { edit() }
         }
         searchField = styledTextField(STYLE_SEARCH_TEXTFIELD) {
-            later { prefWidthProperty().bind(customerPagination.scene.widthProperty() * 0.12) }
             promptText = getString(R.string.search)
-        }
-        filterMenu = menuButton(graphic = ImageView(R.image.btn_filter_light)) {
-            tooltip(getString(R.string.filter))
-            filterNameItem = checkMenuItem(getString(R.string.name)) { isSelected = true }
-            filterAddressItem = checkMenuItem(getString(R.string.address))
-            filterNoteItem = checkMenuItem(getString(R.string.note))
         }
         noImage.tooltip(getString(R.string.id))
         sinceImage.tooltip(getString(R.string.since))
@@ -133,24 +117,16 @@ class CustomerController : SegmentedController(), Refreshable, Selectable<Custom
     }
 
     override fun refresh() = later {
-        customerPagination.contentFactoryProperty().bind(bindingOf(
-            searchField.textProperty(),
-            filterNameItem.selectedProperty(),
-            filterAddressItem.selectedProperty(),
-            filterNoteItem.selectedProperty()
-        ) {
+        customerPagination.contentFactoryProperty().bind(bindingOf(searchField.textProperty()) {
             Callback<Pair<Int, Int>, Node> { (page, count) ->
                 customerList = listView {
                     later {
                         transaction {
                             val customers = Customers.buildQuery {
                                 if (searchField.text.isNotBlank()) {
-                                    if (filterNameItem.isSelected)
-                                        or(it.name.matches(searchField.text, CASE_INSENSITIVE))
-                                    if (filterAddressItem.isSelected)
-                                        or(it.address.matches(searchField.text, CASE_INSENSITIVE))
-                                    if (filterNoteItem.isSelected)
-                                        or(it.note.matches(searchField.text, CASE_INSENSITIVE))
+                                    or(it.name.matches(searchField.text, CASE_INSENSITIVE))
+                                    or(it.address.matches(searchField.text, CASE_INSENSITIVE))
+                                    or(it.note.matches(searchField.text, CASE_INSENSITIVE))
                                 }
                             }
                             customerPagination.pageCount = ceil(customers.count() / count.toDouble()).toInt()

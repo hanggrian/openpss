@@ -16,6 +16,12 @@
     -fx-padding: 10 10 10 10;
 }
 
+.bordered-pane {
+    -fx-border-color: #c8c8c8;
+    -fx-border-width: 1;
+    -fx-border-style: solid;
+}
+
 .display-label {
     -fx-font-size: 13pt;
 }

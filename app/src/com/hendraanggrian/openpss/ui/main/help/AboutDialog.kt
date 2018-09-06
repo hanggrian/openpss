@@ -59,7 +59,7 @@ class AboutDialog(resourced: Resourced) : Dialog<Nothing>(resourced), Selectable
             stylesheets += getStyle(R.style.openpss)
             content = hbox {
                 paddingAll = 48.0
-                imageView(Image(R.image.display_launcher)) {
+                imageView(R.image.display_launcher) {
                     fitHeight = 172.0
                     fitWidth = 172.0
                 }

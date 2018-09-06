@@ -32,14 +32,14 @@ abstract class Popover(
     titleId: String
 ) : PopOver(), LayoutManager<Node>, Resourced by resourced {
 
-    private val contentPane: Pane = Pane()
+    private val contentPane = Pane()
     protected val buttonBar: _ButtonBar = _ButtonBar(null)
     protected val cancelButton: Button = javafxx.layouts.button(getString(R.string.close)) {
         isCancelButton = true
         onAction { hide() }
     }
 
-    override val childs: MutableList<Node> get() = contentPane.children
+    override val childs get() = contentPane.children
 
     private val graphicProperty = SimpleObjectProperty<Node>()
     fun graphicProperty(): ObjectProperty<Node> = graphicProperty

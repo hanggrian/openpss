@@ -31,7 +31,6 @@ import javafx.scene.control.SelectionModel
 import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
 import javafx.scene.control.TextField
-import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import javafx.util.Callback
 import javafxx.application.later
@@ -135,7 +134,7 @@ class CustomerController : SegmentedController(), Refreshable, Selectable<Custom
                                 .take(count).toMutableObservableList()
                             val fullAccess = employee.isAdmin().toProperty()
                             contextMenu {
-                                getString(R.string.edit)(ImageView(Image(R.image.menu_edit))) {
+                                getString(R.string.edit)(ImageView(R.image.menu_edit)) {
                                     disableProperty().bind(!selectedBinding or !fullAccess)
                                     onAction { edit() }
                                 }

@@ -37,7 +37,6 @@ import javafxx.coroutines.onAction
 import javafxx.layouts.LayoutManager
 import javafxx.layouts.borderPane
 import javafxx.layouts.label
-import javafxx.layouts.region
 import javafxx.layouts.styledScene
 import javafxx.scene.control.styledErrorAlert
 import javafxx.scene.layout.maxSize
@@ -66,16 +65,16 @@ class WageController : SegmentedController() {
             ImageView(R.image.btn_browse_light)) {
             onAction { browse() }
         }
-        processButton = styledStretchableButton(STYLE_DEFAULT_BUTTON, STRETCH_POINT, getString(R.string.process),
-            ImageView(R.image.btn_process_dark)) {
-            onAction { process() }
-            disableProperty().bind(flowPane.children.isEmpty)
-        }
-        region()
+        space()
         disableRecessButton = stretchableButton(STRETCH_POINT, getString(R.string.disable_recess),
             ImageView(R.image.btn_disable_recess_light)) {
-            onAction { disableRecess() }
             disableProperty().bind(flowPane.children.isEmpty)
+            onAction { disableRecess() }
+        }
+        processButton = styledStretchableButton(STYLE_DEFAULT_BUTTON, STRETCH_POINT, getString(R.string.process),
+            ImageView(R.image.btn_process_dark)) {
+            disableProperty().bind(flowPane.children.isEmpty)
+            onAction { process() }
         }
     }
 
@@ -100,6 +99,8 @@ class WageController : SegmentedController() {
         // if (DEBUG) read(File("/Users/hendraanggrian/Downloads/Absen 4-13-18.xlsx"))
     }
 
+    private fun disableRecess() = DisableRecessPopover(this, attendeePanes).showAt(disableRecessButton)
+
     private fun process() {
         attendees.forEach { it.saveWage() }
         stage(getString(R.string.record)) {
@@ -109,8 +110,6 @@ class WageController : SegmentedController() {
             loader.controller.addExtra(EXTRA_ATTENDEES, attendees)
         }.showAndWait()
     }
-
-    private fun disableRecess() = DisableRecessPopover(this, attendeePanes).showAt(disableRecessButton)
 
     private fun recess() = EditRecessDialog(this, employee).show()
 

@@ -2,7 +2,6 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import com.hendraanggrian.generation.buildconfig.BuildConfigTask
 import com.hendraanggrian.generation.r.RTask
 import com.hendraanggrian.packr.PackTask
-import org.codehaus.groovy.ast.tools.GeneralUtils.args
 import org.gradle.api.plugins.ExtensionAware
 import org.gradle.jvm.tasks.Jar
 import org.gradle.kotlin.dsl.configure

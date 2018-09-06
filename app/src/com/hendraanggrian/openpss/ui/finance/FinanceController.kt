@@ -47,7 +47,6 @@ import javafxx.coroutines.onAction
 import javafxx.coroutines.onMouseClicked
 import javafxx.layouts.LayoutManager
 import javafxx.layouts.pane
-import javafxx.layouts.region
 import javafxx.scene.input.isDoubleClick
 import java.net.URL
 import java.util.ResourceBundle
@@ -100,7 +99,7 @@ class FinanceController : SegmentedController(), Refreshable,
             ImageView(R.image.btn_money_dark)) {
             onAction { viewTotal() }
         }
-        leftActionManager.childs.addAll(tabPane.header, region(), refreshButton, viewTotalButton)
+        leftActionManager.childs.addAll(tabPane.header, space(), refreshButton, viewTotalButton)
         dateBox = dateBox {
             valueProperty().listener { refresh() }
         }

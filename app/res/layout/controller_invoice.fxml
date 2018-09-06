@@ -6,27 +6,20 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.hendraanggrian.openpss.ui.invoice.InvoiceController">
-    <HBox fx:id="filterBox" alignment="CENTER" spacing="10">
+    <HBox fx:id="filterBox" alignment="CENTER_RIGHT" spacing="10">
         <padding>
             <Insets bottom="10" left="10" right="10"/>
         </padding>
-        <StretchableButton mnemonicParsing="false" stretchPoint="1100" stretchableText="%clear_filters"
-                           onAction="#clearFilters">
-            <ImageView>
-                <Image url="@/image/btn_clear_inactive.png"/>
-            </ImageView>
-        </StretchableButton>
-        <Region HBox.hgrow="ALWAYS"/>
         <fx:define>
             <ToggleGroup fx:id="pickDateGroup"/>
         </fx:define>
-        <RadioButton fx:id="allDateRadio" mnemonicParsing="false" toggleGroup="$pickDateGroup"
-                     text="%all_date"/>
-        <RadioButton fx:id="pickDateRadio" mnemonicParsing="false" toggleGroup="$pickDateGroup"
-                     text="%pick_date" selected="true" contentDisplay="RIGHT">
+        <RadioButton fx:id="allDateRadio" mnemonicParsing="false" toggleGroup="$pickDateGroup" text="%all_date"/>
+        <RadioButton fx:id="pickDateRadio" mnemonicParsing="false" toggleGroup="$pickDateGroup" text="%pick_date"
+                     selected="true" contentDisplay="RIGHT">
             <HBox.margin>
                 <Insets left="8"/>
             </HBox.margin>
@@ -34,16 +27,14 @@
                 <DateBox fx:id="dateBox"/>
             </graphic>
         </RadioButton>
-        <SplitMenuButton mnemonicParsing="false" fx:id="customerButton" onAction="#selectCustomer"
-                         text="%search_customer">
+        <SplitMenuButton mnemonicParsing="false" fx:id="customerButton" onAction="#selectCustomer">
             <graphic>
                 <ImageView>
                     <Image url="@/image/btn_customer_light.png"/>
                 </ImageView>
             </graphic>
             <items>
-                <MenuItem mnemonicParsing="false" fx:id="customerButtonItem" onAction="#clearCustomer"
-                          text="%clear">
+                <MenuItem mnemonicParsing="false" fx:id="customerButtonItem" onAction="#clearCustomer" text="%clear">
                     <graphic>
                         <ImageView>
                             <Image url="@/image/menu_clear.png"/>
@@ -73,6 +64,12 @@
                                text="%paid"/>
             </items>
         </MenuButton>
+        <StretchableButton mnemonicParsing="false" fx:id="clearFiltersButton" stretchPoint="1100"
+                           stretchableText="%clear_filters" onAction="#clearFilters">
+            <ImageView>
+                <Image url="@/image/btn_clear_inactive.png"/>
+            </ImageView>
+        </StretchableButton>
     </HBox>
     <PaginatedPane fx:id="invoicePagination" VBox.vgrow="ALWAYS"/>
 </VBox>

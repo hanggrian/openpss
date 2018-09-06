@@ -1,6 +1,7 @@
 package com.hendraanggrian.openpss.ui
 
 import javafx.scene.Node
+import javafx.scene.layout.Region
 import javafxx.layouts.LayoutManager
 import javafxx.layouts.region
 import java.net.URL
@@ -26,8 +27,12 @@ open class SegmentedController : Controller() {
     open fun LayoutManager<Node>.rightActions() {
     }
 
+    protected fun space(): Region = region { minWidth = 10.0 }
+
+    protected fun LayoutManager<Node>.space(): Region = region { minWidth = 10.0 }
+
     class EmptyLayoutManager : LayoutManager<Node> {
 
-        override val childs: MutableList<Node> = mutableListOf()
+        override val childs = mutableListOf<Node>()
     }
 }

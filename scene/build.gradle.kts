@@ -17,7 +17,7 @@ plugins {
     shadow
 }
 
-java.sourceSets {
+sourceSets {
     "main" {
         java.srcDir("src")
         resources.srcDir("sceneres")
@@ -30,7 +30,7 @@ java.sourceSets {
 
 kotlin.experimental.coroutines = ENABLE
 
-val ktlint by configurations.creating
+val ktlint by configurations.registering
 
 dependencies {
     compile(kotlin("stdlib", VERSION_KOTLIN))
@@ -54,7 +54,7 @@ tasks {
         resourcesDir = projectDir.resolve("sceneres")
     }
 
-    "ktlint"(JavaExec::class) {
+    val ktlint by registering(JavaExec::class) {
         get("check").dependsOn(this)
         group = VERIFICATION_GROUP
         inputs.dir("src")
@@ -64,7 +64,7 @@ tasks {
         main = "com.github.shyiko.ktlint.Main"
         args("src/**/*.kt")
     }
-    "ktlintFormat"(JavaExec::class) {
+    val ktlintFormat by registering(JavaExec::class) {
         group = "formatting"
         inputs.dir("src")
         outputs.dir("src")

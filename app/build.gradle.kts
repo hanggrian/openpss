@@ -2,7 +2,6 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import com.hendraanggrian.generation.buildconfig.BuildConfigTask
 import com.hendraanggrian.generation.r.RTask
 import com.hendraanggrian.packr.PackTask
-import org.gradle.api.JavaVersion.VERSION_1_10
 import org.gradle.api.plugins.ExtensionAware
 import org.gradle.jvm.tasks.Jar
 import org.gradle.kotlin.dsl.configure
@@ -30,15 +29,13 @@ plugins {
     `junit-platform`
 }
 
-java {
-    sourceSets {
-        "main" {
-            java.srcDir("src")
-            resources.srcDir("res")
-        }
-        "test" {
-            java.srcDir("tests/src")
-        }
+sourceSets {
+    "main" {
+        java.srcDir("src")
+        resources.srcDir("res")
+    }
+    "test" {
+        java.srcDir("tests/src")
     }
 }
 
@@ -46,7 +43,7 @@ application.mainClassName = "$group.App"
 
 kotlin.experimental.coroutines = ENABLE
 
-val ktlint by configurations.creating
+val ktlint by configurations.registering
 
 dependencies {
     implementation(project(":scene"))
@@ -86,13 +83,13 @@ tasks {
     withType<BuildConfigTask> {
         appName = RELEASE_NAME
         debug = RELEASE_DEBUG
-        field("USER", RELEASE_USER)
-        field("FULL_NAME", RELEASE_FULL_NAME)
-        field("ARTIFACT", RELEASE_ARTIFACT)
-        field("WEBSITE", RELEASE_WEBSITE)
+        field(String::class.java, "USER", RELEASE_USER)
+        field(String::class.java, "FULL_NAME", RELEASE_FULL_NAME)
+        field(String::class.java, "ARTIFACT", RELEASE_ARTIFACT)
+        field(String::class.java, "WEBSITE", RELEASE_WEBSITE)
     }
 
-    "ktlint"(JavaExec::class) {
+    val ktlint by registering(JavaExec::class) {
         get("check").dependsOn(this)
         group = VERIFICATION_GROUP
         inputs.dir("src")
@@ -102,7 +99,7 @@ tasks {
         main = "com.github.shyiko.ktlint.Main"
         args("src/**/*.kt")
     }
-    "ktlintFormat"(JavaExec::class) {
+    val ktlintFormat by registering(JavaExec::class) {
         group = "formatting"
         inputs.dir("src")
         outputs.dir("src")

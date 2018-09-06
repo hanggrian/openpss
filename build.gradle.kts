@@ -9,6 +9,7 @@ buildscript {
     repositories {
         jcenter()
         maven("https://oss.sonatype.org/content/repositories/snapshots") // required for packr
+        maven("https://dl.bintray.com/hendraanggrian/packr") // packr is not approved by jcenter yet
     }
     dependencies {
         classpath(kotlin("gradle-plugin", VERSION_KOTLIN))

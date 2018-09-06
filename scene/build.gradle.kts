@@ -1,5 +1,6 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import com.hendraanggrian.generation.r.RTask
+import org.codehaus.groovy.ast.tools.GeneralUtils.args
 import org.gradle.kotlin.dsl.kotlin
 import org.jetbrains.kotlin.gradle.dsl.Coroutines
 import org.jetbrains.kotlin.gradle.dsl.Coroutines.*
@@ -18,11 +19,11 @@ plugins {
 }
 
 sourceSets {
-    "main" {
+    getByName("main") {
         java.srcDir("src")
         resources.srcDir("sceneres")
     }
-    "test" {
+    getByName("test") {
         java.srcDir("tests/src")
         resources.srcDir("tests/res")
     }
@@ -46,7 +47,7 @@ dependencies {
     testImplementation(testFX("core"))
     testImplementation(testFX("junit"))
 
-    ktlint(ktlint())
+    ktlint(this, ktlint())
 }
 
 tasks {
@@ -54,24 +55,24 @@ tasks {
         resourcesDir = projectDir.resolve("sceneres")
     }
 
-    val ktlint by registering(JavaExec::class) {
-        get("check").dependsOn(this)
+    register("ktlint", JavaExec::class) {
+        get("check").dependsOn(ktlint)
         group = VERIFICATION_GROUP
         inputs.dir("src")
         outputs.dir("src")
         description = "Check Kotlin code style."
-        classpath = ktlint
+        classpath(ktlint())
         main = "com.github.shyiko.ktlint.Main"
-        args("src/**/*.kt")
+        args("src/**.kt")
     }
-    val ktlintFormat by registering(JavaExec::class) {
+    register("ktlintformat", JavaExec::class) {
         group = "formatting"
         inputs.dir("src")
         outputs.dir("src")
         description = "Fix Kotlin code style deviations."
-        classpath = ktlint
+        classpath(ktlint())
         main = "com.github.shyiko.ktlint.Main"
-        args("-F", "src/**/*.kt")
+        args("-F", "src*.kt")
     }
 
     withType<ShadowJar> {

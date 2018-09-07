@@ -9,7 +9,7 @@ import javafxx.layouts.LayoutManager
 import javafxx.scene.control.graphicIcon
 import javafxx.scene.control.headerTitle
 
-abstract class Dialog<R>(
+open class Dialog<R>(
     resourced: Resourced,
     headerId: String? = null,
     graphicId: String? = null

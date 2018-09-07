@@ -23,11 +23,13 @@ import javafx.scene.control.MenuBar
 import javafx.scene.control.MenuItem
 import javafx.scene.control.SelectionModel
 import javafx.scene.control.Tab
-import javafx.scene.layout.AnchorPane
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.HBox
 import javafxx.application.later
+import javafxx.coroutines.FX
 import javafxx.coroutines.listener
+import kotlinx.coroutines.experimental.delay
+import kotlinx.coroutines.experimental.launch
 import org.apache.commons.lang3.SystemUtils.IS_OS_MAC
 import org.controlsfx.control.NotificationPane
 import java.net.URL
@@ -57,6 +59,7 @@ class MainController : Controller(), Selectable<Tab> {
     override val selectionModel: SelectionModel<Tab> get() = tabPane.selectionModel
 
     private lateinit var controllers: List<SegmentedController>
+    private var isFinanceTabFixed = false
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
@@ -67,7 +70,16 @@ class MainController : Controller(), Selectable<Tab> {
         selectedIndexProperty.listener { _, _, value ->
             val controller = controllers[value.toInt()]
             controller.replaceButtons()
-            (controller as? Refreshable)?.refresh()
+            if (controller is Refreshable) {
+                controller.refresh()
+                if (controller is FinanceController && !isFinanceTabFixed) {
+                    launch(FX) {
+                        fixFinanceTab(1)
+                        fixFinanceTab(0)
+                    }
+                    isFinanceTabFixed = true
+                }
+            }
         }
 
         later {
@@ -106,13 +118,18 @@ class MainController : Controller(), Selectable<Tab> {
         notificationPane.show()
     }
 
-    private fun <T : SegmentedController> select(controller: T, run: T.() -> Unit) {
+    private fun SegmentedController.replaceButtons() {
+        navigationLeftBox.children.setAll(leftActionManager.childs)
+        navigationRightBox.children.setAll(rightActionManager.childs)
+    }
+
+    private inline fun <T : SegmentedController> select(controller: T, run: T.() -> Unit) {
         select(controllers.indexOf(controller))
         controller.run(run)
     }
 
-    private fun SegmentedController.replaceButtons() {
-        navigationLeftBox.children.setAll(leftActionManager.childs)
-        navigationRightBox.children.setAll(rightActionManager.childs)
+    private suspend inline fun fixFinanceTab(index: Int) {
+        delay(100)
+        financeController.tabPane.header.buttons[index].requestFocus()
     }
 }

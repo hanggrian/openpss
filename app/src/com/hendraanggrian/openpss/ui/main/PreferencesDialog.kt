@@ -126,7 +126,7 @@ class PreferencesDialog(
     private fun group(
         titleId: String,
         init: (@LayoutDsl _VBox).() -> Unit
-    ): VBox = javafxx.layouts.vbox(4.0) {
+    ): VBox = javafxx.layouts.vbox(R.dimen.padding_verysmall.toDouble()) {
         label(getString(titleId)) { font = bold() }
         init()
     }
@@ -134,7 +134,7 @@ class PreferencesDialog(
     private fun LayoutManager<Node>.group(
         titleId: String,
         init: (@LayoutDsl _VBox).() -> Unit
-    ): VBox = vbox(4.0) {
+    ): VBox = vbox(R.dimen.padding_verysmall.toDouble()) {
         label(getString(titleId)) { font = bold() }
         init()
     }
@@ -142,7 +142,7 @@ class PreferencesDialog(
     private fun LayoutManager<Node>.item(
         labelId: String? = null,
         init: (@LayoutDsl _HBox).() -> Unit
-    ): HBox = hbox(8.0) {
+    ): HBox = hbox(R.dimen.padding_small.toDouble()) {
         alignment = CENTER_LEFT
         if (labelId != null) label(getString(labelId))
         init()

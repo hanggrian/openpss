@@ -69,7 +69,7 @@ class AttendeePane(
             isFillWidth = true
             gridPane {
                 gap = R.dimen.padding_verysmall.toDouble()
-                paddingAll = 8.0
+                paddingAll = R.dimen.padding_small.toDouble()
                 attendee.role?.let { role ->
                     label(getString(R.string.role)) col 0 row 0 marginRight 4.0
                     label(role) col 1 row 0 colSpans 2
@@ -131,7 +131,7 @@ class AttendeePane(
                                         label(hours.toString()) {
                                             font = font(10.0)
                                             if (hours > 12) textFill = getColor(R.color.red)
-                                        } marginLeft 8.0
+                                        } marginLeft R.dimen.padding_small.toDouble()
                                     }
                                 }
                             }

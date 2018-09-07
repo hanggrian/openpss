@@ -19,6 +19,7 @@ import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
 import javafx.scene.control.TableView.CONSTRAINED_RESIZE_POLICY
 import javafx.scene.image.ImageView
+import javafx.stage.Stage
 import javafxx.application.later
 import javafxx.beans.property.toProperty
 import javafxx.beans.value.or
@@ -32,8 +33,10 @@ import javafxx.layouts.separator
 import javafxx.layouts.tableView
 import javafxx.layouts.vbox
 import javafxx.scene.control.closeButton
+import javafxx.stage.setMinSize
 import kotlinx.nosql.mongodb.DocumentSchema
 
+@Suppress("LeakingThis")
 abstract class TableDialog<D : Document<S>, S : DocumentSchema<D>>(
     protected val schema: S,
     resourced: Resourced,
@@ -49,7 +52,7 @@ abstract class TableDialog<D : Document<S>, S : DocumentSchema<D>>(
     protected lateinit var refreshButton: StretchableButton
     protected lateinit var addButton: StretchableButton
     protected lateinit var deleteButton: StretchableButton
-    protected val extraButtons: _HBox = _HBox(8.0)
+    protected val extraButtons: _HBox = _HBox(R.dimen.padding_small.toDouble())
 
     protected lateinit var table: TableView<D>
 
@@ -57,9 +60,9 @@ abstract class TableDialog<D : Document<S>, S : DocumentSchema<D>>(
 
     init {
         isResizable = true
-        graphic = vbox(8.0) {
+        graphic = vbox(R.dimen.padding_small.toDouble()) {
             alignment = CENTER_RIGHT
-            hbox(8.0) {
+            hbox(R.dimen.padding_small.toDouble()) {
                 alignment = CENTER_RIGHT
                 refreshButton = styledStretchableButton(STYLE_DEFAULT_BUTTON, STRETCH_POINT, getString(R.string.refresh),
                     ImageView(R.image.btn_refresh_dark)) {
@@ -67,7 +70,7 @@ abstract class TableDialog<D : Document<S>, S : DocumentSchema<D>>(
                 }
                 separator(VERTICAL)
                 addButton = stretchableButton(STRETCH_POINT, getString(R.string.add), ImageView(R.image.btn_add_light)) {
-                    onAction { this@TableDialog.add() }
+                    onAction { add() }
                 }
                 deleteButton = stretchableButton(STRETCH_POINT, getString(R.string.delete),
                     ImageView(R.image.btn_delete_light)) {
@@ -89,8 +92,9 @@ abstract class TableDialog<D : Document<S>, S : DocumentSchema<D>>(
                 isEditable = true
             } anchorAll 1.0
         }
-        @Suppress("LeakingThis") refresh()
+        refresh()
         closeButton()
+        later { (dialogPane.scene.window as Stage).setMinSize(width, height) }
     }
 
     override fun <T> column(

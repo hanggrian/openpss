@@ -16,9 +16,9 @@ import com.hendraanggrian.openpss.io.properties.LoginFile
 import com.hendraanggrian.openpss.io.properties.PreferencesFile
 import com.hendraanggrian.openpss.ui.main.help.AboutDialog
 import com.hendraanggrian.openpss.ui.main.help.GitHubApi
+import com.hendraanggrian.openpss.util.forceExit
 import com.hendraanggrian.openpss.util.getStyle
 import com.hendraanggrian.openpss.util.onActionFilter
-import com.hendraanggrian.openpss.util.forceExit
 import javafx.geometry.Pos.CENTER_RIGHT
 import javafx.scene.control.ButtonBar.ButtonData.OK_DONE
 import javafx.scene.control.ButtonType.CANCEL
@@ -85,6 +85,27 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(resourced, graphicId = R.i
             } col 1 row 1
             label(getString(R.string.password)) col 0 row 2
             passwordBox = PasswordBox(this@LoginDialog)() col 1 row 2
+            hbox {
+                alignment = CENTER_RIGHT
+                hyperlink(getString(R.string.check_for_updates)) {
+                    onAction {
+                        GitHubApi.checkUpdates(this@LoginDialog, { title, actions ->
+                            styledWarningAlert(getStyle(R.style.openpss), title = title, buttonTypes = *arrayOf(CANCEL)) {
+                                dialogPane.content = javafxx.layouts.vbox {
+                                    actions.forEach { action ->
+                                        hyperlink(action.text) { onAction = action }
+                                    }
+                                }
+                            }.show()
+                        }) { title, content ->
+                            styledInfoAlert(getStyle(R.style.openpss), title, contentText = content).show()
+                        }
+                    }
+                } marginLeft R.dimen.padding_small.toDouble()
+                hyperlink(getString(R.string.about)) {
+                    onAction { AboutDialog(this@LoginDialog).show() }
+                } marginLeft R.dimen.padding_small.toDouble()
+            } col 0 row 3 colSpans 2
         }
         dialogPane.expandableContent = javafxx.layouts.gridPane {
             gap = R.dimen.padding_small.toDouble()
@@ -112,27 +133,6 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(resourced, graphicId = R.i
                 promptText = getString(R.string.server_password)
                 textProperty().listener { _, _, newValue -> LoginFile.DB_PASSWORD = newValue }
             } col 1 row 2 colSpans 2
-            hbox {
-                alignment = CENTER_RIGHT
-                hyperlink(getString(R.string.check_for_updates)) {
-                    onAction {
-                        GitHubApi.checkUpdates(this@LoginDialog, { title, actions ->
-                            styledWarningAlert(getStyle(R.style.openpss), title = title, buttonTypes = *arrayOf(CANCEL)) {
-                                dialogPane.content = javafxx.layouts.vbox {
-                                    actions.forEach { action ->
-                                        hyperlink(action.text) { onAction = action }
-                                    }
-                                }
-                            }.show()
-                        }) { title, content ->
-                            styledInfoAlert(getStyle(R.style.openpss), title, contentText = content).show()
-                        }
-                    }
-                } marginLeft 8.0
-                hyperlink(getString(R.string.about)) {
-                    onAction { AboutDialog(this@LoginDialog).show() }
-                } marginLeft 8.0
-            } col 0 row 3 colSpans 3
         }
         cancelButton()
         customButton(getString(R.string.login), OK_DONE) {

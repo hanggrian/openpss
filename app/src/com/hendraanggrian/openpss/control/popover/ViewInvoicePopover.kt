@@ -119,7 +119,7 @@ class ViewInvoicePopover(invoice: Invoice) : Popover(object : Resourced {
             gridPane {
                 gap = R.dimen.padding_small.toDouble()
                 textFlow {
-                    paddingAll = 8.0
+                    paddingAll = R.dimen.padding_small.toDouble()
                     border = SOLID.toBorder()
                     "${getString(R.string.note)}\n" { font = bold() }
                     invoice.note()

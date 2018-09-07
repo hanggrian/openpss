@@ -22,7 +22,6 @@ import javafxx.coroutines.onCloseRequest
 import javafxx.layouts.LayoutManager
 import javafxx.layouts._ButtonBar
 import javafxx.layouts.borderPane
-import javafxx.layouts.region
 import javafxx.scene.layout.updatePadding
 import org.controlsfx.control.PopOver
 
@@ -39,14 +38,14 @@ abstract class Popover(
         onAction { hide() }
     }
 
-    override val childs get() = contentPane.children
+    override val childs get() = contentPane.children!!
 
     private val graphicProperty = SimpleObjectProperty<Node>()
     fun graphicProperty(): ObjectProperty<Node> = graphicProperty
     var graphic: Node by graphicProperty
 
     init {
-        contentNode = javafxx.layouts.vbox(12.0) {
+        contentNode = javafxx.layouts.vbox(R.dimen.padding_small.toDouble()) {
             updatePadding(12.0, 16.0, 12.0, 16.0)
             borderPane {
                 left = javafxx.layouts.label(getString(titleId)) {
@@ -58,9 +57,8 @@ abstract class Popover(
                     listener { _, _, value -> value align CENTER_RIGHT }
                 }
             }
-            region()
             contentPane()
-            buttonBar() marginTop 8.0
+            buttonBar() marginTop R.dimen.padding_small.toDouble()
         }
         buttonBar.buttons += cancelButton
     }

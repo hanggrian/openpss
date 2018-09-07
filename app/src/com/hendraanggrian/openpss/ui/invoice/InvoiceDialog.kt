@@ -95,7 +95,7 @@ class InvoiceDialog(
                 textProperty().bind(stringBindingOf(customerProperty) {
                     customerProperty.value?.toString() ?: getString(R.string.search_customer)
                 })
-                onAction {
+                onAction { _ ->
                     SearchCustomerPopover(this@InvoiceDialog).showAt(this@button) { customerProperty.set(it) }
                 }
                 if (INVOICE_QUICK_SELECT_CUSTOMER && !isEdit()) fire()
@@ -192,7 +192,7 @@ class InvoiceDialog(
         prefWidth = columns.sumByDouble { it.minWidth } + 34 // just enough for vertical scrollbar
         contextMenu {
             getString(R.string.add)(ImageView(R.image.menu_add)) {
-                onAction { newAddOrderPopOver().showAt(this@tableView) { this@tableView.items.add(it) } }
+                onAction { _ -> newAddOrderPopOver().showAt(this@tableView) { this@tableView.items.add(it) } }
             }
             separatorMenuItem()
             getString(R.string.delete)(ImageView(R.image.menu_delete)) {

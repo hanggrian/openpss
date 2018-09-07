@@ -80,7 +80,7 @@ class AboutDialog(resourced: Resourced) : Dialog<Nothing>(resourced), Selectable
                         USER { font = bold(12) }
                     } marginTop 4.0
                     hbox {
-                        spacing = 8.0
+                        spacing = R.dimen.padding_small.toDouble()
                         button("GitHub") { onAction { desktop?.browse(URI(WEBSITE)) } }
                         button("Email") { onAction { desktop?.mail(URI("mailto:$USER@gmail")) } }
                     } marginTop 20.0

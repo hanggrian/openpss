@@ -1,6 +1,5 @@
-package com.hendraanggrian.openpss.util
+package com.hendraanggrian.openpss.ui
 
-import com.hendraanggrian.openpss.ui.Controller
 import javafx.fxml.FXMLLoader
 import javafx.scene.layout.Region
 

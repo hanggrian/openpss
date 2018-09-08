@@ -1,7 +1,8 @@
 @file:Suppress("NOTHING_TO_INLINE")
 
-package com.hendraanggrian.openpss.util
+package com.hendraanggrian.openpss.control
 
+import com.hendraanggrian.openpss.numberConverter
 import javafx.geometry.Pos
 import javafx.scene.control.TreeTableColumn
 import javafxx.beans.property.toProperty

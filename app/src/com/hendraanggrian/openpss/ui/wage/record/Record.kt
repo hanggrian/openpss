@@ -4,8 +4,8 @@ import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.i18n.Resourced
 import com.hendraanggrian.openpss.ui.wage.Attendee
 import com.hendraanggrian.openpss.ui.wage.IntervalWrapper
-import com.hendraanggrian.openpss.util.PATTERN_DATETIME
-import com.hendraanggrian.openpss.util.START_OF_TIME
+import com.hendraanggrian.openpss.PATTERN_DATETIME
+import com.hendraanggrian.openpss.START_OF_TIME
 import com.hendraanggrian.openpss.util.round
 import javafx.beans.property.BooleanProperty
 import javafx.beans.property.DoubleProperty

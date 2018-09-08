@@ -7,9 +7,9 @@ import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.db.schemas.Employees
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.i18n.Resourced
-import com.hendraanggrian.openpss.util.doneCell
+import com.hendraanggrian.openpss.control.doneCell
 import com.hendraanggrian.openpss.util.getStyle
-import com.hendraanggrian.openpss.util.stringCell
+import com.hendraanggrian.openpss.control.stringCell
 import javafx.scene.Node
 import javafxx.beans.property.toProperty
 import javafxx.beans.value.or

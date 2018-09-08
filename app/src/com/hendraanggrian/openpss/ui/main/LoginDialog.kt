@@ -18,7 +18,7 @@ import com.hendraanggrian.openpss.ui.main.help.AboutDialog
 import com.hendraanggrian.openpss.ui.main.help.GitHubApi
 import com.hendraanggrian.openpss.util.forceExit
 import com.hendraanggrian.openpss.util.getStyle
-import com.hendraanggrian.openpss.util.onActionFilter
+import com.hendraanggrian.openpss.control.onActionFilter
 import javafx.geometry.Pos.CENTER_RIGHT
 import javafx.scene.control.ButtonBar.ButtonData.OK_DONE
 import javafx.scene.control.ButtonType.CANCEL

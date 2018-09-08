@@ -1,10 +1,8 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import com.hendraanggrian.generation.r.RTask
 import org.gradle.kotlin.dsl.kotlin
-import org.jetbrains.kotlin.gradle.dsl.Coroutines
 import org.jetbrains.kotlin.gradle.dsl.Coroutines.*
 import org.gradle.language.base.plugins.LifecycleBasePlugin.*
-import org.jetbrains.kotlin.js.translate.context.Namer.kotlin
 
 group = "$RELEASE_GROUP.scene"
 version = RELEASE_VERSION

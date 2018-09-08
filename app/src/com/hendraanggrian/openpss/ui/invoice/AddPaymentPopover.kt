@@ -9,8 +9,8 @@ import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.db.schemas.Payment
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.i18n.Resourced
-import com.hendraanggrian.openpss.util.bold
-import com.hendraanggrian.openpss.util.currencyConverter
+import com.hendraanggrian.openpss.control.bold
+import com.hendraanggrian.openpss.currencyConverter
 import com.hendraanggrian.openpss.util.getColor
 import javafx.scene.Node
 import javafx.scene.control.CheckBox

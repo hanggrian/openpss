@@ -11,7 +11,7 @@ import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.i18n.Resourced
 import com.hendraanggrian.openpss.util.getStyle
 import com.hendraanggrian.openpss.util.isNotEmpty
-import com.hendraanggrian.openpss.util.stringCell
+import com.hendraanggrian.openpss.control.stringCell
 import javafxx.scene.control.styledErrorAlert
 import kotlinx.nosql.equal
 import kotlinx.nosql.mongodb.DocumentSchema

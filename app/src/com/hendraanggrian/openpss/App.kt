@@ -9,10 +9,10 @@ import com.hendraanggrian.openpss.i18n.Resourced
 import com.hendraanggrian.openpss.io.properties.PreferencesFile
 import com.hendraanggrian.openpss.ui.main.ChangePasswordDialog
 import com.hendraanggrian.openpss.ui.main.LoginDialog
-import com.hendraanggrian.openpss.util.controller
+import com.hendraanggrian.openpss.ui.controller
 import com.hendraanggrian.openpss.util.getResource
 import com.hendraanggrian.openpss.util.getStyle
-import com.hendraanggrian.openpss.util.pane
+import com.hendraanggrian.openpss.ui.pane
 import javafx.application.Application
 import javafx.fxml.FXMLLoader
 import javafx.scene.image.Image

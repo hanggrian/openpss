@@ -11,9 +11,9 @@ import com.hendraanggrian.openpss.io.properties.PreferencesFile
 import com.hendraanggrian.openpss.io.properties.PreferencesFile.INVOICE_QUICK_SELECT_CUSTOMER
 import com.hendraanggrian.openpss.io.properties.PreferencesFile.WAGE_READER
 import com.hendraanggrian.openpss.ui.wage.readers.Reader
-import com.hendraanggrian.openpss.util.bold
-import com.hendraanggrian.openpss.util.clearConverters
-import com.hendraanggrian.openpss.util.onActionFilter
+import com.hendraanggrian.openpss.control.bold
+import com.hendraanggrian.openpss.clearConverters
+import com.hendraanggrian.openpss.control.onActionFilter
 import javafx.geometry.Pos.CENTER_LEFT
 import javafx.scene.Node
 import javafx.scene.control.ChoiceBox

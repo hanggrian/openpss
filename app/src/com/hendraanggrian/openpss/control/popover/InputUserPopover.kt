@@ -4,7 +4,7 @@ import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.i18n.Resourced
 import com.hendraanggrian.openpss.util.clean
 import com.hendraanggrian.openpss.util.isName
-import com.hendraanggrian.openpss.util.validator
+import com.hendraanggrian.openpss.control.validator
 import javafx.beans.binding.BooleanBinding
 import org.controlsfx.validation.Severity.WARNING
 

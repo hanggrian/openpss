@@ -11,11 +11,11 @@ import com.hendraanggrian.openpss.layout.SegmentedTabPane.Companion.STRETCH_POIN
 import com.hendraanggrian.openpss.ui.SegmentedController
 import com.hendraanggrian.openpss.ui.wage.readers.Reader
 import com.hendraanggrian.openpss.ui.wage.record.WageRecordController.Companion.EXTRA_ATTENDEES
-import com.hendraanggrian.openpss.util.controller
+import com.hendraanggrian.openpss.ui.controller
 import com.hendraanggrian.openpss.util.desktop
 import com.hendraanggrian.openpss.util.getResource
 import com.hendraanggrian.openpss.util.getStyle
-import com.hendraanggrian.openpss.util.pane
+import com.hendraanggrian.openpss.ui.pane
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
 import javafx.scene.Node

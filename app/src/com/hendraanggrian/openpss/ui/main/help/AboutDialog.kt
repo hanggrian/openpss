@@ -9,11 +9,11 @@ import com.hendraanggrian.openpss.control.dialog.Dialog
 import com.hendraanggrian.openpss.i18n.Resourced
 import com.hendraanggrian.openpss.ui.Selectable
 import com.hendraanggrian.openpss.ui.main.License
-import com.hendraanggrian.openpss.util.bold
+import com.hendraanggrian.openpss.control.bold
 import com.hendraanggrian.openpss.util.desktop
 import com.hendraanggrian.openpss.util.getFont
 import com.hendraanggrian.openpss.util.getStyle
-import com.hendraanggrian.openpss.util.onActionFilter
+import com.hendraanggrian.openpss.control.onActionFilter
 import javafx.geometry.Pos.CENTER_LEFT
 import javafx.scene.control.ButtonBar.ButtonData.CANCEL_CLOSE
 import javafx.scene.control.ListView

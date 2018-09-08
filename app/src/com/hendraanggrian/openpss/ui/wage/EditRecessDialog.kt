@@ -7,8 +7,8 @@ import com.hendraanggrian.openpss.db.schemas.Recess
 import com.hendraanggrian.openpss.db.schemas.Recesses
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.i18n.Resourced
-import com.hendraanggrian.openpss.util.PATTERN_TIME
-import com.hendraanggrian.openpss.util.stringCell
+import com.hendraanggrian.openpss.PATTERN_TIME
+import com.hendraanggrian.openpss.control.stringCell
 
 class EditRecessDialog(
     resourced: Resourced,

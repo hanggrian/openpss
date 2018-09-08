@@ -1,8 +1,9 @@
 @file:Suppress("NOTHING_TO_INLINE")
 
-package com.hendraanggrian.openpss.util
+package com.hendraanggrian.openpss.control
 
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.util.getFont
 import javafx.scene.text.Font
 import javafx.scene.text.Font.font
 import javafx.scene.text.FontWeight.BOLD

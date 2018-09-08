@@ -3,12 +3,10 @@ import com.hendraanggrian.generation.buildconfig.BuildConfigTask
 import com.hendraanggrian.generation.r.RTask
 import com.hendraanggrian.packr.PackTask
 import org.gradle.api.plugins.ExtensionAware
-import org.gradle.jvm.tasks.Jar
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.kotlin
 import org.jetbrains.kotlin.gradle.dsl.Coroutines.*
 import org.gradle.language.base.plugins.LifecycleBasePlugin.*
-import org.jetbrains.kotlin.js.translate.context.Namer.kotlin
 
 import org.junit.platform.gradle.plugin.FiltersExtension
 import org.junit.platform.gradle.plugin.EnginesExtension

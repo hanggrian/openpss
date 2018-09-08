@@ -1,8 +1,10 @@
 @file:Suppress("NOTHING_TO_INLINE")
 
-package com.hendraanggrian.openpss.util
+package com.hendraanggrian.openpss.control
 
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.currencyConverter
+import com.hendraanggrian.openpss.numberConverter
 import javafx.geometry.Pos.CENTER
 import javafx.geometry.Pos.CENTER_RIGHT
 import javafx.scene.control.TableColumn

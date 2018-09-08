@@ -7,8 +7,8 @@ import com.hendraanggrian.openpss.control.popover.ResultablePopover
 import com.hendraanggrian.openpss.db.Order
 import com.hendraanggrian.openpss.db.Titled
 import com.hendraanggrian.openpss.i18n.Resourced
-import com.hendraanggrian.openpss.util.bold
-import com.hendraanggrian.openpss.util.currencyConverter
+import com.hendraanggrian.openpss.control.bold
+import com.hendraanggrian.openpss.currencyConverter
 import com.hendraanggrian.openpss.util.getColor
 import javafx.beans.Observable
 import javafx.beans.value.ObservableBooleanValue

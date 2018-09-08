@@ -13,8 +13,8 @@ import com.hendraanggrian.openpss.layout.SegmentedTabPane.Companion.STRETCH_POIN
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.SegmentedController
 import com.hendraanggrian.openpss.ui.TreeSelectable
-import com.hendraanggrian.openpss.util.PATTERN_DATETIME_EXTENDED
-import com.hendraanggrian.openpss.util.stringCell
+import com.hendraanggrian.openpss.PATTERN_DATETIME_EXTENDED
+import com.hendraanggrian.openpss.control.stringCell
 import javafx.fxml.FXML
 import javafx.scene.Node
 import javafx.scene.control.Button

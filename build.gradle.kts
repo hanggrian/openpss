@@ -2,8 +2,6 @@ import org.gradle.api.JavaVersion.*
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.gradle.api.tasks.Delete
 import org.gradle.kotlin.dsl.kotlin
-import java.io.File
-import java.nio.file.Files.delete
 
 buildscript {
     repositories {

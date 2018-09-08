@@ -11,7 +11,7 @@ import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.i18n.Resourced
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.Selectable
-import com.hendraanggrian.openpss.util.yesNoAlert
+import com.hendraanggrian.openpss.control.yesNoAlert
 import javafx.geometry.Orientation.VERTICAL
 import javafx.geometry.Pos.CENTER_RIGHT
 import javafx.scene.control.SelectionModel

@@ -1,6 +1,4 @@
-@file:Suppress("NOTHING_TO_INLINE")
-
-package com.hendraanggrian.openpss.util
+package com.hendraanggrian.openpss
 
 import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_LANGUAGE
 import com.hendraanggrian.openpss.db.transaction
@@ -28,6 +26,7 @@ val currencyConverter: CurrencyStringConverter
         })
     }
 
+/** For debugging purposes. */
 fun clearConverters() = stringConverters.clear()
 
 /** Obtain converter listAll cache, or create a new one and store it before returning it back. */

@@ -35,15 +35,15 @@ fun <T> TableColumn<T, Boolean>.doneCell(size: Int = 64, target: T.() -> Boolean
     }
 }
 
-inline fun <T> TableColumn<T, String>.stringCell(noinline target: T.() -> String?) =
+fun <T> TableColumn<T, String>.stringCell(target: T.() -> String?) =
     setCellValueFactory { it.value.target().orEmpty().toProperty() }
 
-inline fun <T> TableColumn<T, String>.numberCell(noinline target: T.() -> Int) {
+fun <T> TableColumn<T, String>.numberCell(target: T.() -> Int) {
     style = labeledStyle { alignment = CENTER_RIGHT }
     setCellValueFactory { numberConverter.toString(it.value.target()).toProperty() }
 }
 
-inline fun <T> TableColumn<T, String>.currencyCell(noinline target: T.() -> Double) {
+fun <T> TableColumn<T, String>.currencyCell(target: T.() -> Double) {
     style = labeledStyle { alignment = CENTER_RIGHT }
     setCellValueFactory { currencyConverter.toString(it.value.target()).toProperty() }
 }

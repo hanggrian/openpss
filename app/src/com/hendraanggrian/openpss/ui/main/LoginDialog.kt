@@ -9,6 +9,7 @@ import com.hendraanggrian.openpss.control.PasswordBox
 import com.hendraanggrian.openpss.control.dialog.Dialog
 import com.hendraanggrian.openpss.control.hostField
 import com.hendraanggrian.openpss.control.intField
+import com.hendraanggrian.openpss.control.onActionFilter
 import com.hendraanggrian.openpss.db.login
 import com.hendraanggrian.openpss.i18n.Language
 import com.hendraanggrian.openpss.i18n.Resourced
@@ -18,7 +19,6 @@ import com.hendraanggrian.openpss.ui.main.help.AboutDialog
 import com.hendraanggrian.openpss.ui.main.help.GitHubApi
 import com.hendraanggrian.openpss.util.forceExit
 import com.hendraanggrian.openpss.util.getStyle
-import com.hendraanggrian.openpss.control.onActionFilter
 import javafx.geometry.Pos.CENTER_RIGHT
 import javafx.scene.control.ButtonBar.ButtonData.OK_DONE
 import javafx.scene.control.ButtonType.CANCEL
@@ -107,7 +107,7 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(resourced, graphicId = R.i
                 } marginLeft R.dimen.padding_small.toDouble()
             } col 0 row 3 colSpans 2
         }
-        dialogPane.expandableContent = javafxx.layouts.gridPane {
+        gridPane {
             gap = R.dimen.padding_small.toDouble()
             label(getString(R.string.server_host_port)) col 0 row 0
             serverHostField = hostField {

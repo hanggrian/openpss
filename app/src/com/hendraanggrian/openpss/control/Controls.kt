@@ -32,15 +32,15 @@ fun Node.onActionFilter(
     launch(context) { action() }
 }
 
-inline fun Resourced.yesNoAlert(
+fun Resourced.yesNoAlert(
     contentTextId: String = R.string.are_you_sure,
-    noinline action: () -> Unit
+    action: () -> Unit
 ) = styledConfirmAlert(getStyle(R.style.openpss), getString(contentTextId), YES, NO)
     .showAndWait()
     .filter { it == YES }
     .ifPresent { action() }
 
-inline fun <T> ListView<T>.forceRefresh() {
+fun <T> ListView<T>.forceRefresh() {
     val temp = items
     items = null
     items = temp

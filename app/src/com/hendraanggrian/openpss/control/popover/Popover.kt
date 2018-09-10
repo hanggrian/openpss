@@ -26,7 +26,7 @@ import javafxx.scene.layout.updatePadding
 import org.controlsfx.control.PopOver
 
 /** Base [PopOver] class used across applications. */
-abstract class Popover(
+open class Popover(
     resourced: Resourced,
     titleId: String
 ) : PopOver(), LayoutManager<Node>, Resourced by resourced {

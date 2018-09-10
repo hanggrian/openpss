@@ -1,6 +1,9 @@
 package com.hendraanggrian.openpss.control.popover
 
+import com.hendraanggrian.openpss.PATTERN_DATETIME_EXTENDED
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.control.bold
+import com.hendraanggrian.openpss.currencyConverter
 import com.hendraanggrian.openpss.db.Order
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Customers
@@ -12,9 +15,6 @@ import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.i18n.Language
 import com.hendraanggrian.openpss.i18n.Resourced
-import com.hendraanggrian.openpss.PATTERN_DATETIME_EXTENDED
-import com.hendraanggrian.openpss.control.bold
-import com.hendraanggrian.openpss.currencyConverter
 import com.hendraanggrian.openpss.numberConverter
 import javafx.geometry.HPos.LEFT
 import javafx.geometry.HPos.RIGHT
@@ -31,6 +31,7 @@ import javafx.scene.layout.BorderWidths.DEFAULT
 import javafx.scene.layout.CornerRadii.EMPTY
 import javafx.scene.layout.Priority.ALWAYS
 import javafx.scene.paint.Color.BLACK
+import javafx.scene.text.TextAlignment
 import javafxx.layouts.LayoutManager
 import javafxx.layouts._GridPane
 import javafxx.layouts._VBox
@@ -99,19 +100,27 @@ class ViewInvoicePopover(invoice: Invoice) : Popover(object : Resourced {
             vbox {
                 contentGridPane(R.string.plate, invoice.plates) { plate, row ->
                     label(numberConverter.toString(plate.qty)) row row col 0
-                    label(plate.title) { isWrapText = true } row row col 1
-                    label(plate.machine) row row col 2
+                    label(plate.machine) row row col 1
+                    label(plate.title) {
+                        isWrapText = true
+                    } row row col 2
                     label(currencyConverter.toString(plate.total)) row row col 3
                 }
                 contentGridPane(R.string.offset, invoice.offsets) { offset, row ->
                     label(numberConverter.toString(offset.qty)) row row col 0
-                    label(offset.title) { isWrapText = true } row row col 1
-                    label(offset.machine) row row col 2
+                    label("${offset.machine}\n${offset.typedTechnique.toString(this@ViewInvoicePopover)}") {
+                        textAlignment = TextAlignment.CENTER
+                    } row row col 1
+                    label(offset.title) {
+                        isWrapText = true
+                    } row row col 2
                     label(currencyConverter.toString(offset.total)) row row col 3
                 }
                 contentGridPane(R.string.others, invoice.others) { other, row ->
                     label(numberConverter.toString(other.qty)) row row col 0
-                    label(other.title) { isWrapText = true } row row col 1 colSpans 2
+                    label(other.title) {
+                        isWrapText = true
+                    } row row col 1 colSpans 2
                     label(currencyConverter.toString(other.total)) row row col 3
                 }
             } vpriority ALWAYS
@@ -161,10 +170,10 @@ class ViewInvoicePopover(invoice: Invoice) : Popover(object : Resourced {
                     minWidth = USE_PREF_SIZE
                     halignment = RIGHT
                 }
-                constraints { hgrow = ALWAYS }
                 constraints {
                     minWidth = USE_PREF_SIZE
                 }
+                constraints { hgrow = ALWAYS }
                 constraints {
                     minWidth = USE_PREF_SIZE
                     halignment = RIGHT

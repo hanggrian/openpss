@@ -2,14 +2,20 @@ package com.hendraanggrian.openpss.ui.invoice
 
 import com.hendraanggrian.openpss.App.Companion.STYLE_DEFAULT_BUTTON
 import com.hendraanggrian.openpss.App.Companion.STYLE_SEARCH_TEXTFIELD
+import com.hendraanggrian.openpss.PATTERN_DATETIME_EXTENDED
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.IntField
 import com.hendraanggrian.openpss.control.PaginatedPane
+import com.hendraanggrian.openpss.control.currencyCell
+import com.hendraanggrian.openpss.control.doneCell
 import com.hendraanggrian.openpss.control.popover.ViewInvoicePopover
 import com.hendraanggrian.openpss.control.stretchableButton
+import com.hendraanggrian.openpss.control.stringCell
 import com.hendraanggrian.openpss.control.styledIntField
 import com.hendraanggrian.openpss.control.styledStretchableButton
+import com.hendraanggrian.openpss.control.yesNoAlert
 import com.hendraanggrian.openpss.db.SessionWrapper
+import com.hendraanggrian.openpss.db.matches
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.schemas.Employees
@@ -25,12 +31,6 @@ import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.SegmentedController
 import com.hendraanggrian.openpss.ui.Selectable
 import com.hendraanggrian.openpss.ui.Selectable2
-import com.hendraanggrian.openpss.PATTERN_DATETIME_EXTENDED
-import com.hendraanggrian.openpss.control.currencyCell
-import com.hendraanggrian.openpss.control.doneCell
-import com.hendraanggrian.openpss.db.matches
-import com.hendraanggrian.openpss.control.stringCell
-import com.hendraanggrian.openpss.control.yesNoAlert
 import javafx.beans.property.SimpleObjectProperty
 import javafx.fxml.FXML
 import javafx.geometry.Pos.CENTER
@@ -196,7 +196,7 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
                                     stringCell { transaction { Employees[employeeId].single().toString() } }
                                 }
                                 getString(R.string.value)<String> {
-                                    stringCell { value.toString() }
+                                    currencyCell { value }
                                 }
                                 getString(R.string.cash)<Boolean> {
                                     doneCell { isCash() }
@@ -206,8 +206,10 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
                                 }
                             }
                             itemsProperty().bind(bindingOf(invoiceTable.selectionModel.selectedItemProperty()) {
-                                if (selected == null) emptyObservableList()
-                                else transaction { Payments { invoiceId.equal(selected!!.id) }.toObservableList() }
+                                when (selected) {
+                                    null -> emptyObservableList()
+                                    else -> transaction { Payments { invoiceId.equal(selected!!.id) }.toObservableList() }
+                                }
                             })
                             contextMenu {
                                 getString(R.string.delete)(ImageView(R.image.btn_delete_light)) {

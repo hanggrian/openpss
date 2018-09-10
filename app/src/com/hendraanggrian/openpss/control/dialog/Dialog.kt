@@ -15,7 +15,13 @@ open class Dialog<R>(
     graphicId: String? = null
 ) : Dialog<R>(), LayoutManager<Node>, Resourced by resourced {
 
-    override fun <T : Node> T.invoke(): T = also { dialogPane.content = it }
+    override fun <T : Node> T.invoke(): T = also {
+        when (null) {
+            dialogPane.content -> dialogPane.content = it
+            dialogPane.expandableContent -> dialogPane.expandableContent = it
+            else -> error("Dialog layout DSL only accepts 2 childs.")
+        }
+    }
 
     init {
         if (headerId != null) headerTitle = getString(headerId)

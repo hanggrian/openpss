@@ -2,15 +2,15 @@ package com.hendraanggrian.openpss.ui.invoice
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.DoubleField
+import com.hendraanggrian.openpss.control.bold
 import com.hendraanggrian.openpss.control.doubleField
 import com.hendraanggrian.openpss.control.popover.ResultablePopover
+import com.hendraanggrian.openpss.currencyConverter
 import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.db.schemas.Payment
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.i18n.Resourced
-import com.hendraanggrian.openpss.control.bold
-import com.hendraanggrian.openpss.currencyConverter
 import com.hendraanggrian.openpss.util.getColor
 import javafx.scene.Node
 import javafx.scene.control.CheckBox
@@ -61,15 +61,15 @@ class AddPaymentPopover(
                 font = bold()
                 textProperty().bind(stringBindingOf(valueField.valueProperty()) {
                     (receivable - valueField.value).let { remaining ->
-                        when (remaining) {
-                            0.0 -> getString(R.string.paid)
+                        when {
+                            remaining <= 0.0 -> getString(R.string.paid)
                             else -> currencyConverter.toString(remaining)
                         }
                     }
                 })
                 textFillProperty().bind(bindingOf(textProperty()) {
                     getColor(when {
-                        receivable - valueField.value == 0.0 -> R.color.green
+                        receivable - valueField.value <= 0.0 -> R.color.green
                         else -> R.color.red
                     })
                 })
@@ -82,8 +82,8 @@ class AddPaymentPopover(
         defaultButton.disableProperty().bind(booleanBindingOf(valueField.valueProperty(), cashBox.selectedProperty(),
             referenceField.textProperty()) {
             (!valueField.isValid || valueField.value <= 0 || valueField.value > receivable).let {
-                when (cashBox.isSelected) {
-                    true -> it
+                when {
+                    cashBox.isSelected -> it
                     else -> it || referenceField.text.isBlank()
                 }
             }
@@ -92,8 +92,8 @@ class AddPaymentPopover(
 
     override val optionalResult: Payment?
         get() = Payment.new(invoice.id, employee.id, valueField.value,
-            when (cashBox.isSelected) {
-                true -> null
+            when {
+                cashBox.isSelected -> null
                 else -> referenceField.text
             })
 

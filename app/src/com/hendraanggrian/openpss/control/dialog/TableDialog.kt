@@ -30,7 +30,6 @@ import javafxx.layouts._HBox
 import javafxx.layouts.anchorPane
 import javafxx.layouts.hbox
 import javafxx.layouts.tableView
-import javafxx.layouts.vbox
 import javafxx.scene.control.closeButton
 import javafxx.stage.setMinSize
 import kotlinx.nosql.mongodb.DocumentSchema
@@ -59,7 +58,7 @@ abstract class TableDialog<D : Document<S>, S : DocumentSchema<D>>(
 
     init {
         isResizable = true
-        graphic = vbox(R.dimen.padding_small.toDouble()) {
+        graphic = javafxx.layouts.vbox(R.dimen.padding_small.toDouble()) {
             alignment = CENTER_RIGHT
             hbox(R.dimen.padding_small.toDouble()) {
                 alignment = CENTER_RIGHT

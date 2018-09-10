@@ -11,7 +11,6 @@ import javafxx.beans.binding.otherwise
 import javafxx.beans.binding.then
 import javafxx.beans.value.getValue
 import javafxx.beans.value.setValue
-import javafxx.coroutines.listener
 import javafxx.layouts._HBox
 import javafxx.layouts.pane
 import javafxx.layouts.passwordField
@@ -30,9 +29,10 @@ class PasswordBox(resourced: Resourced) : _HBox(R.dimen.padding_small.toDouble()
                 promptText = getString(R.string.password)
             }
             field2 = textField {
-                isVisible = false
                 promptText = getString(R.string.password)
+                isVisible = false
             }
+            field1.textProperty().bindBidirectional(field2.textProperty())
         }
         toggleButton {
             tooltip(getString(R.string.view_password))
@@ -41,12 +41,9 @@ class PasswordBox(resourced: Resourced) : _HBox(R.dimen.padding_small.toDouble()
                     then Image(R.image.btn_visibility_on_light)
                     otherwise Image(R.image.btn_visibility_off_light))
             }
-            selectedProperty().listener { _, _, selected ->
-                field1.isVisible = !selected
-                field2.isVisible = selected
-            }
+            field1.visibleProperty().bind(!selectedProperty())
+            field2.visibleProperty().bind(selectedProperty())
         }
-        field1.textProperty().bindBidirectional(field2.textProperty())
     }
 
     fun textProperty(): StringProperty = field1.textProperty()

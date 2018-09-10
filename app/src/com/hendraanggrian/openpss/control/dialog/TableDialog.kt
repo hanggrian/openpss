@@ -3,16 +3,16 @@ package com.hendraanggrian.openpss.control.dialog
 import com.hendraanggrian.openpss.App.Companion.STYLE_DEFAULT_BUTTON
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.StretchableButton
+import com.hendraanggrian.openpss.control.space
 import com.hendraanggrian.openpss.control.stretchableButton
 import com.hendraanggrian.openpss.control.styledStretchableButton
+import com.hendraanggrian.openpss.control.yesNoAlert
 import com.hendraanggrian.openpss.db.Document
 import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.i18n.Resourced
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.Selectable
-import com.hendraanggrian.openpss.control.yesNoAlert
-import javafx.geometry.Orientation.VERTICAL
 import javafx.geometry.Pos.CENTER_RIGHT
 import javafx.scene.control.SelectionModel
 import javafx.scene.control.TableColumn
@@ -29,7 +29,6 @@ import javafxx.layouts.TableColumnsBuilder
 import javafxx.layouts._HBox
 import javafxx.layouts.anchorPane
 import javafxx.layouts.hbox
-import javafxx.layouts.separator
 import javafxx.layouts.tableView
 import javafxx.layouts.vbox
 import javafxx.scene.control.closeButton
@@ -68,7 +67,7 @@ abstract class TableDialog<D : Document<S>, S : DocumentSchema<D>>(
                     ImageView(R.image.btn_refresh_dark)) {
                     onAction { refresh() }
                 }
-                separator(VERTICAL)
+                space()
                 addButton = stretchableButton(STRETCH_POINT, getString(R.string.add), ImageView(R.image.btn_add_light)) {
                     onAction { add() }
                 }

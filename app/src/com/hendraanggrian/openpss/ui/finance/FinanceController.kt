@@ -1,10 +1,18 @@
 package com.hendraanggrian.openpss.ui.finance
 
 import com.hendraanggrian.openpss.App.Companion.STYLE_DEFAULT_BUTTON
+import com.hendraanggrian.openpss.PATTERN_DATE
+import com.hendraanggrian.openpss.PATTERN_TIME
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.control.currencyCell
+import com.hendraanggrian.openpss.control.doneCell
+import com.hendraanggrian.openpss.control.numberCell
 import com.hendraanggrian.openpss.control.popover.ViewInvoicePopover
+import com.hendraanggrian.openpss.control.space
 import com.hendraanggrian.openpss.control.stretchableButton
+import com.hendraanggrian.openpss.control.stringCell
 import com.hendraanggrian.openpss.control.styledStretchableButton
+import com.hendraanggrian.openpss.db.matches
 import com.hendraanggrian.openpss.db.schemas.Employees
 import com.hendraanggrian.openpss.db.schemas.Invoices
 import com.hendraanggrian.openpss.db.schemas.Payment
@@ -22,13 +30,6 @@ import com.hendraanggrian.openpss.ui.SegmentedController
 import com.hendraanggrian.openpss.ui.Selectable
 import com.hendraanggrian.openpss.ui.Selectable2
 import com.hendraanggrian.openpss.ui.Selectable3
-import com.hendraanggrian.openpss.PATTERN_DATE
-import com.hendraanggrian.openpss.PATTERN_TIME
-import com.hendraanggrian.openpss.control.currencyCell
-import com.hendraanggrian.openpss.control.doneCell
-import com.hendraanggrian.openpss.db.matches
-import com.hendraanggrian.openpss.control.numberCell
-import com.hendraanggrian.openpss.control.stringCell
 import com.hendraanggrian.openpss.util.toJava
 import javafx.fxml.FXML
 import javafx.scene.Node
@@ -99,7 +100,8 @@ class FinanceController : SegmentedController(), Refreshable,
             ImageView(R.image.btn_money_dark)) {
             onAction { viewTotal() }
         }
-        leftActionManager.childs.addAll(tabPane.header, space(), refreshButton, viewTotalButton)
+        leftActionManager.childs.addAll(tabPane.header, space(R.dimen.padding_small.toDouble()),
+            refreshButton, viewTotalButton)
         dateBox = dateBox {
             valueProperty().listener { refresh() }
         }

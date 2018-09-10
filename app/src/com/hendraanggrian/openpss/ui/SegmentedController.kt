@@ -1,9 +1,7 @@
 package com.hendraanggrian.openpss.ui
 
 import javafx.scene.Node
-import javafx.scene.layout.Region
 import javafxx.layouts.LayoutManager
-import javafxx.layouts.region
 import java.net.URL
 import java.util.ResourceBundle
 
@@ -26,10 +24,6 @@ open class SegmentedController : Controller() {
     /** Override this function to add right actions. */
     open fun LayoutManager<Node>.rightActions() {
     }
-
-    protected fun space(): Region = region { minWidth = 10.0 }
-
-    protected fun LayoutManager<Node>.space(): Region = region { minWidth = 10.0 }
 
     class EmptyLayoutManager : LayoutManager<Node> {
 

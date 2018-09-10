@@ -3,19 +3,20 @@ package com.hendraanggrian.openpss.ui.wage
 import com.hendraanggrian.openpss.App.Companion.STYLE_DEFAULT_BUTTON
 import com.hendraanggrian.openpss.BuildConfig.DEBUG
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.control.space
 import com.hendraanggrian.openpss.control.stretchableButton
 import com.hendraanggrian.openpss.control.styledStretchableButton
 import com.hendraanggrian.openpss.io.WageDirectory
 import com.hendraanggrian.openpss.io.properties.PreferencesFile.WAGE_READER
 import com.hendraanggrian.openpss.layout.SegmentedTabPane.Companion.STRETCH_POINT
 import com.hendraanggrian.openpss.ui.SegmentedController
+import com.hendraanggrian.openpss.ui.controller
+import com.hendraanggrian.openpss.ui.pane
 import com.hendraanggrian.openpss.ui.wage.readers.Reader
 import com.hendraanggrian.openpss.ui.wage.record.WageRecordController.Companion.EXTRA_ATTENDEES
-import com.hendraanggrian.openpss.ui.controller
 import com.hendraanggrian.openpss.util.desktop
 import com.hendraanggrian.openpss.util.getResource
 import com.hendraanggrian.openpss.util.getStyle
-import com.hendraanggrian.openpss.ui.pane
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
 import javafx.scene.Node
@@ -65,7 +66,7 @@ class WageController : SegmentedController() {
             ImageView(R.image.btn_browse_light)) {
             onAction { browse() }
         }
-        space()
+        space(R.dimen.padding_small.toDouble())
         disableRecessButton = stretchableButton(STRETCH_POINT, getString(R.string.disable_recess),
             ImageView(R.image.btn_disable_recess_light)) {
             disableProperty().bind(flowPane.children.isEmpty)

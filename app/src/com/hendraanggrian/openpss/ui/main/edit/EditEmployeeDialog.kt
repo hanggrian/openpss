@@ -34,7 +34,7 @@ class EditEmployeeDialog(
         const val DELAY = 200
     }
 
-    override fun LayoutManager<Node>.extraActions() {
+    override fun LayoutManager<Node>.onCreateActions() {
         button(getString(R.string.toggle_admin)) {
             bindDisable()
             onAction {

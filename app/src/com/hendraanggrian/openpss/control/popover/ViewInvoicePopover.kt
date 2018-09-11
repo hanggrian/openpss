@@ -21,6 +21,7 @@ import javafx.geometry.HPos.RIGHT
 import javafx.geometry.Pos.CENTER
 import javafx.geometry.Pos.CENTER_LEFT
 import javafx.geometry.Pos.CENTER_RIGHT
+import javafx.print.PrinterJob
 import javafx.scene.Node
 import javafx.scene.layout.Border
 import javafx.scene.layout.BorderStroke
@@ -32,6 +33,8 @@ import javafx.scene.layout.CornerRadii.EMPTY
 import javafx.scene.layout.Priority.ALWAYS
 import javafx.scene.paint.Color.BLACK
 import javafx.scene.text.TextAlignment
+import javafxx.application.later
+import javafxx.coroutines.onAction
 import javafxx.layouts.LayoutManager
 import javafxx.layouts._GridPane
 import javafxx.layouts._VBox
@@ -52,7 +55,7 @@ import java.util.ResourceBundle
  * Popup displaying invoice using server's language instead of local.
  * Size of invoice is equivalent to 10x14cm, possibly the smallest continuous form available.
  */
-class ViewInvoicePopover(invoice: Invoice) : Popover(object : Resourced {
+class ViewInvoicePopover(private val invoice: Invoice) : Popover(object : Resourced {
     override val resources: ResourceBundle = Language.ofFullCode(transaction {
         findGlobalSettings(KEY_LANGUAGE).single().value
     }).toResourcesBundle()
@@ -66,6 +69,19 @@ class ViewInvoicePopover(invoice: Invoice) : Popover(object : Resourced {
     private lateinit var invoiceHeaders: List<String>
     private lateinit var customer: Customer
     private lateinit var employee: Employee
+
+    override fun LayoutManager<Node>.onCreateActions() {
+        button(getString(R.string.print)) {
+            isDefaultButton = true
+            later { isDisable = invoice.printed }
+            onAction {
+                val job = PrinterJob.createPrinterJob()
+                if (job == null) {
+
+                }
+            }
+        }
+    }
 
     init {
         graphic = javafxx.layouts.label("${getString(R.string.server_language)}: $language")
@@ -130,7 +146,7 @@ class ViewInvoicePopover(invoice: Invoice) : Popover(object : Resourced {
             gridPane {
                 gap = R.dimen.padding_small.toDouble()
                 textFlow {
-                    paddingAll = R.dimen.padding_small.toDouble()
+                    paddingAll = R.dimen.padding_verysmall.toDouble()
                     border = SOLID.toBorder()
                     "${getString(R.string.note)}\n" { font = bold() }
                     invoice.note()
@@ -140,22 +156,16 @@ class ViewInvoicePopover(invoice: Invoice) : Popover(object : Resourced {
                 } row 0 col 1 colSpans 2 halign RIGHT
                 vbox {
                     alignment = CENTER
-                    region { prefHeight = 50.0 }
-                    line(endX = 75.0)
+                    region { prefHeight = 48.0 }
+                    line(endX = 64.0)
                     label(getString(R.string.employee))
                 } row 1 col 1
                 vbox {
                     alignment = CENTER
-                    region { prefHeight = 50.0 }
-                    line(endX = 75.0)
+                    region { prefHeight = 48.0 }
+                    line(endX = 64.0)
                     label(getString(R.string.customer))
                 } row 1 col 2
-            }
-        }
-        buttonBar.run {
-            button(getString(R.string.print)) {
-                isDefaultButton = true
-                isDisable = invoice.printed
             }
         }
     }

@@ -13,16 +13,16 @@ open class SegmentedController : Controller() {
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
-        leftActionManager.leftActions()
-        rightActionManager.rightActions()
+        leftActionManager.onCreateLeftActions()
+        rightActionManager.onCreateRightActions()
     }
 
     /** Override this function to add left actions. */
-    open fun LayoutManager<Node>.leftActions() {
+    open fun LayoutManager<Node>.onCreateLeftActions() {
     }
 
     /** Override this function to add right actions. */
-    open fun LayoutManager<Node>.rightActions() {
+    open fun LayoutManager<Node>.onCreateRightActions() {
     }
 
     class EmptyLayoutManager : LayoutManager<Node> {

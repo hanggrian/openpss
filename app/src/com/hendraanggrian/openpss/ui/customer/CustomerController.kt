@@ -87,7 +87,7 @@ class CustomerController : SegmentedController(), Refreshable, Selectable<Custom
     override val selectionModel: SelectionModel<Customer> get() = customerList.selectionModel
     override val selectionModel2: SelectionModel<Customer.Contact> get() = contactTable.selectionModel
 
-    override fun LayoutManager<Node>.leftActions() {
+    override fun LayoutManager<Node>.onCreateLeftActions() {
         refreshButton =
             stretchableButton(STRETCH_POINT, getString(R.string.refresh), ImageView(R.image.btn_refresh_light)) {
                 onAction { refresh() }
@@ -102,7 +102,7 @@ class CustomerController : SegmentedController(), Refreshable, Selectable<Custom
         }
     }
 
-    override fun LayoutManager<Node>.rightActions() {
+    override fun LayoutManager<Node>.onCreateRightActions() {
         searchField = styledTextField(STYLE_SEARCH_TEXTFIELD) {
             promptText = getString(R.string.search)
         }

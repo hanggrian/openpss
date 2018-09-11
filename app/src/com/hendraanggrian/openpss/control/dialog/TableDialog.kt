@@ -93,7 +93,7 @@ abstract class TableDialog<D : Document<S>, S : DocumentSchema<D>>(
                         }
                     }
             }
-            extraButtons.extraActions()
+            extraButtons.onCreateActions()
             if (extraButtons.children.isNotEmpty()) extraButtons()
         }
         refresh()
@@ -104,7 +104,7 @@ abstract class TableDialog<D : Document<S>, S : DocumentSchema<D>>(
     }
 
     /** Override this function to add extra actions. */
-    open fun LayoutManager<Node>.extraActions() {
+    open fun LayoutManager<Node>.onCreateActions() {
     }
 
     override fun <T> column(

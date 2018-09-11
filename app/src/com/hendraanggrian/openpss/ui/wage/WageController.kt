@@ -61,7 +61,7 @@ class WageController : SegmentedController() {
     private lateinit var recessButton: Button
     private lateinit var historyButton: Button
 
-    override fun LayoutManager<Node>.leftActions() {
+    override fun LayoutManager<Node>.onCreateLeftActions() {
         browseButton =
             stretchableButton(STRETCH_POINT, getString(R.string.browse), ImageView(R.image.btn_browse_light)) {
                 onAction { browse() }
@@ -86,7 +86,7 @@ class WageController : SegmentedController() {
         }
     }
 
-    override fun LayoutManager<Node>.rightActions() {
+    override fun LayoutManager<Node>.onCreateRightActions() {
         recessButton =
             stretchableButton(STRETCH_POINT, getString(R.string.recess), ImageView(R.image.btn_recess_light)) {
                 onAction { recess() }

@@ -5,12 +5,14 @@ import com.hendraanggrian.openpss.control.popover.Popover
 import com.hendraanggrian.openpss.db.schemas.Recesses
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.i18n.Resourced
+import javafx.scene.Node
 import javafx.scene.control.ChoiceBox
 import javafx.scene.control.Separator
 import javafxx.beans.value.or
 import javafxx.collections.mutableObservableListOf
 import javafxx.collections.toObservableList
 import javafxx.coroutines.onAction
+import javafxx.layouts.LayoutManager
 import javafxx.layouts.button
 import javafxx.layouts.choiceBox
 import javafxx.layouts.gridPane
@@ -24,6 +26,29 @@ class DisableRecessPopover(
 
     private lateinit var recessChoice: ChoiceBox<*>
     private lateinit var roleChoice: ChoiceBox<*>
+
+    override fun LayoutManager<Node>.onCreateActions() {
+        button(getString(R.string.apply)) {
+            disableProperty().bind(recessChoice.valueProperty().isNull or roleChoice.valueProperty().isNull)
+            onAction {
+                attendeePanes
+                    .filter { pane ->
+                        when {
+                            roleChoice.value is String -> pane.attendee.role == roleChoice.value
+                            else -> pane.attendee == roleChoice.value as Attendee
+                        }
+                    }.map { pane -> pane.recessChecks }
+                    .forEach { pane ->
+                        (when {
+                            recessChoice.value is String -> pane
+                            else -> pane.filter { _pane -> _pane.text == recessChoice.value.toString() }
+                        }).forEach { _pane ->
+                            _pane.isSelected = false
+                        }
+                    }
+            }
+        }
+    }
 
     init {
         gridPane {
@@ -41,28 +66,6 @@ class DisableRecessPopover(
                 *attendees.toTypedArray()
             )
             ) col 1 row 1
-        }
-        buttonBar.run {
-            button(getString(R.string.apply)) {
-                disableProperty().bind(recessChoice.valueProperty().isNull or roleChoice.valueProperty().isNull)
-                onAction {
-                    attendeePanes
-                        .filter { pane ->
-                            when {
-                                roleChoice.value is String -> pane.attendee.role == roleChoice.value
-                                else -> pane.attendee == roleChoice.value as Attendee
-                            }
-                        }.map { pane -> pane.recessChecks }
-                        .forEach { pane ->
-                            (when {
-                                recessChoice.value is String -> pane
-                                else -> pane.filter { _pane -> _pane.text == recessChoice.value.toString() }
-                            }).forEach { _pane ->
-                                _pane.isSelected = false
-                            }
-                        }
-                }
-            }
         }
     }
 

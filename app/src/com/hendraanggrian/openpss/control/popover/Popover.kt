@@ -8,35 +8,29 @@ import javafx.beans.property.SimpleObjectProperty
 import javafx.geometry.Pos.CENTER_LEFT
 import javafx.geometry.Pos.CENTER_RIGHT
 import javafx.scene.Node
-import javafx.scene.control.Button
 import javafx.scene.control.ListView
 import javafx.scene.control.TableView
 import javafx.scene.layout.Pane
 import javafx.scene.text.Font
-import javafx.util.Duration.ZERO
 import javafxx.beans.value.getValue
 import javafxx.beans.value.setValue
 import javafxx.coroutines.listener
 import javafxx.coroutines.onAction
-import javafxx.coroutines.onCloseRequest
 import javafxx.layouts.LayoutManager
-import javafxx.layouts._ButtonBar
 import javafxx.layouts.borderPane
+import javafxx.layouts.button
+import javafxx.layouts.buttonBar
 import javafxx.scene.layout.updatePadding
 import org.controlsfx.control.PopOver
 
 /** Base [PopOver] class used across applications. */
+@Suppress("LeakingThis")
 open class Popover(
     resourced: Resourced,
     titleId: String
 ) : PopOver(), LayoutManager<Node>, Resourced by resourced {
 
     private val contentPane = Pane()
-    protected val buttonBar: _ButtonBar = _ButtonBar(null)
-    protected val cancelButton: Button = javafxx.layouts.button(getString(R.string.close)) {
-        isCancelButton = true
-        onAction { hide() }
-    }
 
     override val childs get() = contentPane.children!!
 
@@ -58,14 +52,26 @@ open class Popover(
                 }
             }
             contentPane()
-            buttonBar() marginTop R.dimen.padding_small.toDouble()
+            buttonBar {
+                button(getString(R.string.close)) {
+                    isCancelButton = true
+                    onAction { hide() }
+                }
+                onCreateActions()
+            } marginTop R.dimen.padding_small.toDouble()
         }
-        buttonBar.buttons += cancelButton
+    }
+
+    /** Override this function to add extra actions. */
+    open fun LayoutManager<Node>.onCreateActions() {
     }
 
     fun showAt(node: Node) {
         // to avoid error when closing window/stage during popover display
-        node.scene.window.onCloseRequest { hide(ZERO) }
+        node.scene.window.setOnCloseRequest {
+            isAnimated = false
+            hide()
+        }
         // now check for coordinate to show popover
         val selectedIndex = (node as? TableView<*>)?.selectionModel?.selectedIndex
             ?: (node as? ListView<*>)?.selectionModel?.selectedIndex

@@ -26,6 +26,7 @@ import javafx.scene.control.TreeTableView
 import javafx.scene.control.TreeTableView.TreeTableViewSelectionModel
 import javafx.scene.image.ImageView
 import javafxx.application.later
+import javafxx.beans.value.or
 import javafxx.collections.isEmpty
 import javafxx.coroutines.listener
 import javafxx.coroutines.onAction
@@ -49,7 +50,7 @@ class ScheduleController : SegmentedController(), Refreshable, TreeSelectable<Sc
 
     override val selectionModel: TreeTableViewSelectionModel<Schedule> get() = scheduleTable.selectionModel
 
-    override fun LayoutManager<Node>.leftActions() {
+    override fun LayoutManager<Node>.onCreateLeftActions() {
         refreshButton =
             stretchableButton(STRETCH_POINT, getString(R.string.refresh), ImageView(R.image.btn_refresh_light)) {
                 onAction { refresh() }
@@ -61,13 +62,13 @@ class ScheduleController : SegmentedController(), Refreshable, TreeSelectable<Sc
             ImageView(R.image.btn_done_dark)
         ) {
             onAction { done() }
-            disableProperty().bind(selecteds.isEmpty)
         }
     }
 
-    override fun LayoutManager<Node>.rightActions() {
+    override fun LayoutManager<Node>.onCreateRightActions() {
         historyToggle = stretchableToggleButton(STRETCH_POINT, R.string.history, ImageView(R.image.btn_history_light)) {
             selectedProperty().listener { refresh() }
+            doneButton.disableProperty().bind(selecteds.isEmpty or selectedProperty())
         }
     }
 

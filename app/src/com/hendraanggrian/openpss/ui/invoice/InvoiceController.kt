@@ -106,7 +106,7 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
     override val selectionModel: SelectionModel<Invoice> get() = invoiceTable.selectionModel
     override val selectionModel2: SelectionModel<Payment> get() = paymentTable.selectionModel
 
-    override fun LayoutManager<Node>.leftActions() {
+    override fun LayoutManager<Node>.onCreateLeftActions() {
         refreshButton =
             stretchableButton(STRETCH_POINT, getString(R.string.refresh), ImageView(R.image.btn_refresh_light)) {
                 onAction { refresh() }
@@ -121,7 +121,7 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
         }
     }
 
-    override fun LayoutManager<Node>.rightActions() {
+    override fun LayoutManager<Node>.onCreateRightActions() {
         searchField = styledIntField(STYLE_SEARCH_TEXTFIELD) {
             filterBox.disableProperty().bind(valueProperty() neq 0)
             promptText = getString(R.string.search_no)

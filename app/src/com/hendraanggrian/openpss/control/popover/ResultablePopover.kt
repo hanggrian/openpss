@@ -6,6 +6,7 @@ import com.hendraanggrian.openpss.i18n.Resourced
 import javafx.scene.Node
 import javafx.scene.control.Button
 import javafxx.coroutines.onAction
+import javafxx.layouts.LayoutManager
 import org.controlsfx.control.PopOver
 
 /** [PopOver] with default button and return type. */
@@ -14,12 +15,12 @@ abstract class ResultablePopover<T>(
     titleId: String
 ) : Popover(resourced, titleId), Resultable<T> {
 
-    protected val defaultButton: Button = javafxx.layouts.button(getString(R.string.ok)) {
-        isDefaultButton = true
-    }
+    protected lateinit var defaultButton: Button
 
-    init {
-        buttonBar.buttons += defaultButton
+    override fun LayoutManager<Node>.onCreateActions() {
+        defaultButton = javafxx.layouts.button(getString(R.string.ok)) {
+            isDefaultButton = true
+        }()
     }
 
     fun showAt(node: Node, onAction: (T) -> Unit) {

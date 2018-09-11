@@ -86,7 +86,7 @@ class FinanceController : SegmentedController(), Refreshable,
     override val selectionModel2: SelectionModel<Payment> get() = dailyTable.selectionModel
     override val selectionModel3: SelectionModel<Report> get() = monthlyTable.selectionModel
 
-    override fun LayoutManager<Node>.rightActions() {
+    override fun LayoutManager<Node>.onCreateRightActions() {
         pane()
     }
 

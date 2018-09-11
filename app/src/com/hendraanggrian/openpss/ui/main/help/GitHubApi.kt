@@ -53,10 +53,12 @@ interface GitHubApi {
 
         private fun create(): GitHubApi = Retrofit.Builder()
             .client(OkHttpClient.Builder().addInterceptor {
-                it.proceed(it.request()
-                    .newBuilder()
-                    .addHeader("Accept", "application/json")
-                    .build())
+                it.proceed(
+                    it.request()
+                        .newBuilder()
+                        .addHeader("Accept", "application/json")
+                        .build()
+                )
             }.build())
             .baseUrl(END_POINT)
             .addCallAdapterFactory(GuavaCallAdapterFactory.create())
@@ -83,7 +85,8 @@ interface GitHubApi {
                                 })
                             else -> onUnavailable(
                                 resourced.getString(R.string.you_re_up_to_date),
-                                resourced.getString(R.string.openpss_is_currently_the_newest_version_available, VERSION))
+                                resourced.getString(R.string.openpss_is_currently_the_newest_version_available, VERSION)
+                            )
                         }
                     }
                 } catch (e: Exception) {

@@ -62,32 +62,39 @@ class WageController : SegmentedController() {
     private lateinit var historyButton: Button
 
     override fun LayoutManager<Node>.leftActions() {
-        browseButton = stretchableButton(STRETCH_POINT, getString(R.string.browse),
-            ImageView(R.image.btn_browse_light)) {
-            onAction { browse() }
-        }
-        space(R.dimen.padding_small.toDouble())
-        disableRecessButton = stretchableButton(STRETCH_POINT, getString(R.string.disable_recess),
-            ImageView(R.image.btn_disable_recess_light)) {
+        browseButton =
+            stretchableButton(STRETCH_POINT, getString(R.string.browse), ImageView(R.image.btn_browse_light)) {
+                onAction { browse() }
+            }
+        space()
+        disableRecessButton = stretchableButton(
+            STRETCH_POINT,
+            getString(R.string.disable_recess),
+            ImageView(R.image.btn_disable_recess_light)
+        ) {
             disableProperty().bind(flowPane.children.isEmpty)
             onAction { disableRecess() }
         }
-        processButton = styledStretchableButton(STYLE_DEFAULT_BUTTON, STRETCH_POINT, getString(R.string.process),
-            ImageView(R.image.btn_process_dark)) {
+        processButton = styledStretchableButton(
+            STYLE_DEFAULT_BUTTON,
+            STRETCH_POINT,
+            getString(R.string.process),
+            ImageView(R.image.btn_process_dark)
+        ) {
             disableProperty().bind(flowPane.children.isEmpty)
             onAction { process() }
         }
     }
 
     override fun LayoutManager<Node>.rightActions() {
-        recessButton = stretchableButton(STRETCH_POINT, getString(R.string.recess),
-            ImageView(R.image.btn_recess_light)) {
-            onAction { recess() }
-        }
-        historyButton = stretchableButton(STRETCH_POINT, getString(R.string.history),
-            ImageView(R.image.btn_history_light)) {
-            onAction { history() }
-        }
+        recessButton =
+            stretchableButton(STRETCH_POINT, getString(R.string.recess), ImageView(R.image.btn_recess_light)) {
+                onAction { recess() }
+            }
+        historyButton =
+            stretchableButton(STRETCH_POINT, getString(R.string.history), ImageView(R.image.btn_history_light)) {
+                onAction { history() }
+            }
     }
 
     override fun initialize(location: URL, resources: ResourceBundle) {
@@ -116,10 +123,10 @@ class WageController : SegmentedController() {
 
     private fun history() = desktop?.open(WageDirectory)
 
-    private fun browse() = fileChooser(
-        ExtensionFilter(getString(R.string.input_file), *Reader.of(WAGE_READER).extensions))
-        .showOpenDialog(anchorPane.scene.window)
-        ?.let { read(it) }
+    private fun browse() =
+        fileChooser(ExtensionFilter(getString(R.string.input_file), *Reader.of(WAGE_READER).extensions))
+            .showOpenDialog(anchorPane.scene.window)
+            ?.let { read(it) }
 
     private fun read(file: File) {
         titledPane.graphic = label("${file.absolutePath} -")
@@ -155,7 +162,8 @@ class WageController : SegmentedController() {
                                 })
                                 onAction {
                                     flowPane.children -= flowPane.children.toList().takeLast(
-                                        flowPane.children.lastIndex - flowPane.children.indexOf(this@attendeePane))
+                                        flowPane.children.lastIndex - flowPane.children.indexOf(this@attendeePane)
+                                    )
                                     bindProcessButton()
                                 }
                             }

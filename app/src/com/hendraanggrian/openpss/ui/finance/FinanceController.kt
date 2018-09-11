@@ -92,16 +92,22 @@ class FinanceController : SegmentedController(), Refreshable,
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
-        refreshButton = stretchableButton(STRETCH_POINT, getString(R.string.refresh),
-            ImageView(R.image.btn_refresh_light)) {
-            onAction { refresh() }
-        }
-        viewTotalButton = styledStretchableButton(STYLE_DEFAULT_BUTTON, STRETCH_POINT, getString(R.string.total),
-            ImageView(R.image.btn_money_dark)) {
+        refreshButton =
+            stretchableButton(STRETCH_POINT, getString(R.string.refresh), ImageView(R.image.btn_refresh_light)) {
+                onAction { refresh() }
+            }
+        viewTotalButton = styledStretchableButton(
+            STYLE_DEFAULT_BUTTON,
+            STRETCH_POINT,
+            getString(R.string.total),
+            ImageView(R.image.btn_money_dark)
+        ) {
             onAction { viewTotal() }
         }
-        leftActionManager.childs.addAll(tabPane.header, space(R.dimen.padding_small.toDouble()),
-            refreshButton, viewTotalButton)
+        leftActionManager.childs.addAll(
+            tabPane.header, space(),
+            refreshButton, viewTotalButton
+        )
         dateBox = dateBox {
             valueProperty().listener { refresh() }
         }

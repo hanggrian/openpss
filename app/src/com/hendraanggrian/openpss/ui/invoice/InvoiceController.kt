@@ -107,12 +107,16 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
     override val selectionModel2: SelectionModel<Payment> get() = paymentTable.selectionModel
 
     override fun LayoutManager<Node>.leftActions() {
-        refreshButton = stretchableButton(STRETCH_POINT, getString(R.string.refresh),
-            ImageView(R.image.btn_refresh_light)) {
-            onAction { refresh() }
-        }
-        addButton = styledStretchableButton(STYLE_DEFAULT_BUTTON, STRETCH_POINT, getString(R.string.add),
-            ImageView(R.image.btn_add_dark)) {
+        refreshButton =
+            stretchableButton(STRETCH_POINT, getString(R.string.refresh), ImageView(R.image.btn_refresh_light)) {
+                onAction { refresh() }
+            }
+        addButton = styledStretchableButton(
+            STYLE_DEFAULT_BUTTON,
+            STRETCH_POINT,
+            getString(R.string.add),
+            ImageView(R.image.btn_add_dark)
+        ) {
             onAction { addInvoice() }
         }
     }
@@ -133,24 +137,36 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
         paymentButton.textProperty().bind(stringBindingOf(
             anyPaymentItem.selectedProperty(),
             unpaidPaymentItem.selectedProperty(),
-            paidPaymentItem.selectedProperty()) {
-            getString(when {
-                unpaidPaymentItem.isSelected -> R.string.unpaid
-                paidPaymentItem.isSelected -> R.string.paid
-                else -> R.string.any
-            })
+            paidPaymentItem.selectedProperty()
+        ) {
+            getString(
+                when {
+                    unpaidPaymentItem.isSelected -> R.string.unpaid
+                    paidPaymentItem.isSelected -> R.string.paid
+                    else -> R.string.any
+                }
+            )
         })
         pickDateRadio.graphic.disableProperty().bind(!pickDateRadio.selectedProperty())
-        clearFiltersButton.disableProperty().bind(pickDateRadio.selectedProperty() and
-            (dateBox.valueProperty() eq LocalDate.now()) and
-            customerProperty.isNull and
-            (paymentButton.textProperty() eq getString(R.string.any)))
+        clearFiltersButton.disableProperty().bind(
+            pickDateRadio.selectedProperty() and
+                (dateBox.valueProperty() eq LocalDate.now()) and
+                customerProperty.isNull and
+                (paymentButton.textProperty() eq getString(R.string.any))
+        )
     }
 
     override fun refresh() = later {
-        invoicePagination.contentFactoryProperty().bind(bindingOf(searchField.valueProperty(), customerProperty,
-            anyPaymentItem.selectedProperty(), unpaidPaymentItem.selectedProperty(), paidPaymentItem.selectedProperty(),
-            allDateRadio.selectedProperty(), pickDateRadio.selectedProperty(), dateBox.valueProperty()) {
+        invoicePagination.contentFactoryProperty().bind(bindingOf(
+            searchField.valueProperty(),
+            customerProperty,
+            anyPaymentItem.selectedProperty(),
+            unpaidPaymentItem.selectedProperty(),
+            paidPaymentItem.selectedProperty(),
+            allDateRadio.selectedProperty(),
+            pickDateRadio.selectedProperty(),
+            dateBox.valueProperty()
+        ) {
             Callback<Pair<Int, Int>, Node> { (page, count) ->
                 masterDetailPane(BOTTOM) {
                     invoiceTable = javafxx.layouts.tableView {
@@ -180,8 +196,10 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
                             alignment = CENTER
                             paddingAll = R.dimen.padding_small.toDouble()
                             region() hpriority ALWAYS
-                            addPaymentButton = styledStretchableButton(STYLE_DEFAULT_BUTTON, STRETCH_POINT,
-                                getString(R.string.add_payment), ImageView(R.image.btn_add_dark)) {
+                            addPaymentButton = styledStretchableButton(
+                                STYLE_DEFAULT_BUTTON, STRETCH_POINT,
+                                getString(R.string.add_payment), ImageView(R.image.btn_add_dark)
+                            ) {
                                 disableProperty().bind(!selectedBinding)
                                 onAction { addPayment() }
                             }

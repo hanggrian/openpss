@@ -1,14 +1,14 @@
 package com.hendraanggrian.openpss.ui.wage
 
+import com.hendraanggrian.openpss.PATTERN_DATETIME_EXTENDED
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.control.forceRefresh
 import com.hendraanggrian.openpss.control.intField
 import com.hendraanggrian.openpss.control.popover.DateTimePopover
 import com.hendraanggrian.openpss.db.schemas.Recesses
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.i18n.Resourced
 import com.hendraanggrian.openpss.ui.Selectable
-import com.hendraanggrian.openpss.PATTERN_DATETIME_EXTENDED
-import com.hendraanggrian.openpss.control.forceRefresh
 import com.hendraanggrian.openpss.util.getColor
 import com.hendraanggrian.openpss.util.round
 import javafx.geometry.Pos.CENTER
@@ -171,10 +171,12 @@ class AttendeePane(
         contentDisplay = RIGHT
         graphic = imageView {
             imageProperty().bind(bindingOf(hoverProperty()) {
-                Image(when {
-                    isHover -> R.image.btn_clear_active
-                    else -> R.image.btn_clear_inactive
-                })
+                Image(
+                    when {
+                        isHover -> R.image.btn_clear_active
+                        else -> R.image.btn_clear_inactive
+                    }
+                )
             })
             eventFilter(type = MOUSE_CLICKED) { deleteMenu.fire() }
         }
@@ -208,8 +210,10 @@ class AttendeePane(
         }
     }
 
-    private fun editAttendance() = DateTimePopover(this, R.string.edit_record, R.string.edit,
-        selected!!).showAt(attendanceList) {
+    private fun editAttendance() = DateTimePopover(
+        this, R.string.edit_record, R.string.edit,
+        selected!!
+    ).showAt(attendanceList) {
         attendanceList.run {
             items[attendanceList.selectionModel.selectedIndex] = it
             items.sort()

@@ -37,9 +37,11 @@ class PasswordBox(resourced: Resourced) : _HBox(R.dimen.padding_small.toDouble()
         toggleButton {
             tooltip(getString(R.string.view_password))
             graphic = javafxx.layouts.imageView {
-                imageProperty().bind(`when`(this@toggleButton.selectedProperty())
-                    then Image(R.image.btn_visibility_on_light)
-                    otherwise Image(R.image.btn_visibility_off_light))
+                imageProperty().bind(
+                    `when`(this@toggleButton.selectedProperty())
+                        then Image(R.image.btn_visibility_on_light)
+                        otherwise Image(R.image.btn_visibility_off_light)
+                )
             }
             field1.visibleProperty().bind(!selectedProperty())
             field2.visibleProperty().bind(selectedProperty())

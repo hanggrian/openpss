@@ -32,8 +32,8 @@ import org.joda.time.LocalTime
 import java.util.Date
 
 private lateinit var DB: MongoDB
-private val TABLES = arrayOf(GlobalSettings, Customers, Employees, Invoices, OffsetPrices, Payments, PlatePrices,
-    Recesses, Wages)
+private val TABLES =
+    arrayOf(GlobalSettings, Customers, Employees, Invoices, OffsetPrices, Payments, PlatePrices, Recesses, Wages)
 
 /**
  * A failed transaction will most likely throw an exception instance listAll [MongoException].
@@ -87,11 +87,13 @@ private suspend fun connect(
     user: String,
     password: String
 ): MongoDB = withContext(DefaultDispatcher) {
-    MongoDB(arrayOf(ServerAddress(host, port)),
+    MongoDB(
+        arrayOf(ServerAddress(host, port)),
         ARTIFACT,
         arrayOf(createCredential(user, "admin", password.toCharArray())),
         Builder().serverSelectionTimeout(3000).build(),
-        TABLES)
+        TABLES
+    )
 }
 
 /** Date and time new server. */

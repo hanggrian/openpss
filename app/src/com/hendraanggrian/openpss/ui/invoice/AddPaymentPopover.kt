@@ -68,10 +68,12 @@ class AddPaymentPopover(
                     }
                 })
                 textFillProperty().bind(bindingOf(textProperty()) {
-                    getColor(when {
-                        receivable - valueField.value <= 0.0 -> R.color.green
-                        else -> R.color.red
-                    })
+                    getColor(
+                        when {
+                            receivable - valueField.value <= 0.0 -> R.color.green
+                            else -> R.color.red
+                        }
+                    )
                 })
             } row 3 col 1 colSpans 2
             label(getString(R.string.cash)) row 6 col 0
@@ -79,8 +81,10 @@ class AddPaymentPopover(
             label(getString(R.string.reference)) { bindDisable() } row 7 col 0
             referenceField = textField { bindDisable() } row 7 col 1 colSpans 2
         }
-        defaultButton.disableProperty().bind(booleanBindingOf(valueField.valueProperty(), cashBox.selectedProperty(),
-            referenceField.textProperty()) {
+        defaultButton.disableProperty().bind(booleanBindingOf(
+            valueField.valueProperty(), cashBox.selectedProperty(),
+            referenceField.textProperty()
+        ) {
             (!valueField.isValid || valueField.value <= 0 || valueField.value > receivable).let {
                 when {
                     cashBox.isSelected -> it
@@ -91,11 +95,13 @@ class AddPaymentPopover(
     }
 
     override val optionalResult: Payment?
-        get() = Payment.new(invoice.id, employee.id, valueField.value,
+        get() = Payment.new(
+            invoice.id, employee.id, valueField.value,
             when {
                 cashBox.isSelected -> null
                 else -> referenceField.text
-            })
+            }
+        )
 
     private fun Node.bindDisable() = disableProperty().bind(cashBox.selectedProperty())
 }

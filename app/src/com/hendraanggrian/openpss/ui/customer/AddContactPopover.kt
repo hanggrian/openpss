@@ -22,9 +22,11 @@ class AddContactPopover(resourced: Resourced) : ResultablePopover<Customer.Conta
 
     private companion object {
         /** Taken from `android.util.Patterns`, but instead use `kotlin.Regex`. */
-        val REGEX_PHONE = Regex("(\\+[0-9]+[\\- \\.]*)?" +
-            "(\\([0-9]+\\)[\\- \\.]*)?" +
-            "([0-9][0-9\\- \\.]+[0-9])")
+        val REGEX_PHONE = Regex(
+            "(\\+[0-9]+[\\- \\.]*)?" +
+                "(\\([0-9]+\\)[\\- \\.]*)?" +
+                "([0-9][0-9\\- \\.]+[0-9])"
+        )
     }
 
     private lateinit var typeChoice: ChoiceBox<Customer.Contact.Type>

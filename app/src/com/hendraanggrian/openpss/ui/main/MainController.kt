@@ -83,8 +83,8 @@ class MainController : Controller(), Selectable<Tab> {
         }
 
         later {
-            controllers = listOf(customerController, invoiceController, scheduleController, financeController,
-                wageController)
+            controllers =
+                listOf(customerController, invoiceController, scheduleController, financeController, wageController)
             controllers.forEach { it.employee = employee }
             financeController.addExtra(FinanceController.EXTRA_MAIN_CONTROLLER, this)
         }

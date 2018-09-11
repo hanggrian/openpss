@@ -2,11 +2,15 @@ package com.hendraanggrian.openpss.ui.customer
 
 import com.hendraanggrian.openpss.App.Companion.STYLE_DEFAULT_BUTTON
 import com.hendraanggrian.openpss.App.Companion.STYLE_SEARCH_TEXTFIELD
+import com.hendraanggrian.openpss.PATTERN_DATE
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.PaginatedPane
 import com.hendraanggrian.openpss.control.popover.InputUserPopover
 import com.hendraanggrian.openpss.control.stretchableButton
+import com.hendraanggrian.openpss.control.stringCell
 import com.hendraanggrian.openpss.control.styledStretchableButton
+import com.hendraanggrian.openpss.control.yesNoAlert
+import com.hendraanggrian.openpss.db.matches
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.transaction
@@ -15,12 +19,8 @@ import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.SegmentedController
 import com.hendraanggrian.openpss.ui.Selectable
 import com.hendraanggrian.openpss.ui.Selectable2
-import com.hendraanggrian.openpss.PATTERN_DATE
 import com.hendraanggrian.openpss.util.getStyle
 import com.hendraanggrian.openpss.util.isNotEmpty
-import com.hendraanggrian.openpss.db.matches
-import com.hendraanggrian.openpss.control.stringCell
-import com.hendraanggrian.openpss.control.yesNoAlert
 import javafx.fxml.FXML
 import javafx.scene.Node
 import javafx.scene.control.Button
@@ -88,12 +88,16 @@ class CustomerController : SegmentedController(), Refreshable, Selectable<Custom
     override val selectionModel2: SelectionModel<Customer.Contact> get() = contactTable.selectionModel
 
     override fun LayoutManager<Node>.leftActions() {
-        refreshButton = stretchableButton(STRETCH_POINT, getString(R.string.refresh),
-            ImageView(R.image.btn_refresh_light)) {
-            onAction { refresh() }
-        }
-        addButton = styledStretchableButton(STYLE_DEFAULT_BUTTON, STRETCH_POINT, getString(R.string.add),
-            ImageView(R.image.btn_add_dark)) {
+        refreshButton =
+            stretchableButton(STRETCH_POINT, getString(R.string.refresh), ImageView(R.image.btn_refresh_light)) {
+                onAction { refresh() }
+            }
+        addButton = styledStretchableButton(
+            STYLE_DEFAULT_BUTTON,
+            STRETCH_POINT,
+            getString(R.string.add),
+            ImageView(R.image.btn_add_dark)
+        ) {
             onAction { add() }
         }
     }

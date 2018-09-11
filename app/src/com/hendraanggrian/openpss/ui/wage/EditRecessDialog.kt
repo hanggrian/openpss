@@ -1,14 +1,14 @@
 package com.hendraanggrian.openpss.ui.wage
 
+import com.hendraanggrian.openpss.PATTERN_TIME
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.dialog.TableDialog
+import com.hendraanggrian.openpss.control.stringCell
 import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.db.schemas.Recess
 import com.hendraanggrian.openpss.db.schemas.Recesses
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.i18n.Resourced
-import com.hendraanggrian.openpss.PATTERN_TIME
-import com.hendraanggrian.openpss.control.stringCell
 
 class EditRecessDialog(
     resourced: Resourced,

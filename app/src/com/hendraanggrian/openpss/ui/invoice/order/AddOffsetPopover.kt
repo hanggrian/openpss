@@ -58,8 +58,10 @@ class AddOffsetPopover(resourced: Resourced) : AddOrderPopover<Invoice.Offset>(
     }
 
     override val totalBindingDependencies: Array<Observable>
-        get() = arrayOf(qtyField.valueProperty(), techniqueChoice.valueProperty(), minQtyField.valueProperty(),
-            minPriceField.valueProperty(), excessPriceField.valueProperty())
+        get() = arrayOf(
+            qtyField.valueProperty(), techniqueChoice.valueProperty(), minQtyField.valueProperty(),
+            minPriceField.valueProperty(), excessPriceField.valueProperty()
+        )
 
     override val disableBinding: ObservableBooleanValue
         get() = machineChoice.valueProperty().isNull or
@@ -77,7 +79,8 @@ class AddOffsetPopover(resourced: Resourced) : AddOrderPopover<Invoice.Offset>(
             techniqueChoice.value,
             minQtyField.value,
             minPriceField.value,
-            excessPriceField.value)
+            excessPriceField.value
+        )
 
     override val typedTechnique: Invoice.Offset.Technique get() = techniqueChoice.value
 

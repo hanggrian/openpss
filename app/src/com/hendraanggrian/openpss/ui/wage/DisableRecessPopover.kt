@@ -29,31 +29,38 @@ class DisableRecessPopover(
         gridPane {
             gap = R.dimen.padding_small.toDouble()
             label(getString(R.string.recess)) col 0 row 0
-            recessChoice = choiceBox(mutableObservableListOf(getString(R.string.all),
-                Separator(),
-                *transaction { Recesses().toObservableList().toTypedArray() })
+            recessChoice = choiceBox(
+                mutableObservableListOf(getString(R.string.all),
+                    Separator(),
+                    *transaction { Recesses().toObservableList().toTypedArray() })
             ) { selectionModel.selectFirst() } col 1 row 0
             label(getString(R.string.employee)) col 0 row 1
             roleChoice = choiceBox(mutableObservableListOf(
                 *attendees.filter { it.role != null }.map { it.role!! }.distinct().toTypedArray(),
                 Separator(),
-                *attendees.toTypedArray())) col 1 row 1
+                *attendees.toTypedArray()
+            )
+            ) col 1 row 1
         }
         buttonBar.run {
             button(getString(R.string.apply)) {
                 disableProperty().bind(recessChoice.valueProperty().isNull or roleChoice.valueProperty().isNull)
                 onAction {
-                    attendeePanes.filter {
-                        when {
-                            roleChoice.value is String -> it.attendee.role == roleChoice.value
-                            else -> it.attendee == roleChoice.value as Attendee
+                    attendeePanes
+                        .filter { pane ->
+                            when {
+                                roleChoice.value is String -> pane.attendee.role == roleChoice.value
+                                else -> pane.attendee == roleChoice.value as Attendee
+                            }
+                        }.map { pane -> pane.recessChecks }
+                        .forEach { pane ->
+                            (when {
+                                recessChoice.value is String -> pane
+                                else -> pane.filter { _pane -> _pane.text == recessChoice.value.toString() }
+                            }).forEach { _pane ->
+                                _pane.isSelected = false
+                            }
                         }
-                    }.map { it.recessChecks }.forEach {
-                        (when {
-                            recessChoice.value is String -> it
-                            else -> it.filter { it.text == recessChoice.value.toString() }
-                        }).forEach { it.isSelected = false }
-                    }
                 }
             }
         }

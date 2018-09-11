@@ -27,10 +27,14 @@ fun <T> TableColumn<T, Boolean>.doneCell(size: Int = 64, target: T.() -> Boolean
         onUpdate { done, empty ->
             text = null
             graphic = null
-            if (done != null && !empty) graphic = imageView(Image(when {
-                done -> R.image.btn_done_yes
-                else -> R.image.btn_done_no
-            }))
+            if (done != null && !empty) graphic = imageView(
+                Image(
+                    when {
+                        done -> R.image.btn_done_yes
+                        else -> R.image.btn_done_no
+                    }
+                )
+            )
         }
     }
 }

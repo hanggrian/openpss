@@ -53,7 +53,8 @@ class AddPlatePopover(resourced: Resourced) : AddOrderPopover<Invoice.Plate>(
             machineChoice.value.name,
             titleField.text,
             qtyField.value,
-            priceField.value)
+            priceField.value
+        )
 
     override val qty: Int get() = qtyField.value
 

@@ -93,8 +93,10 @@ class ViewInvoicePopover(invoice: Invoice) : Popover(object : Resourced {
             fullLine()
             vbox {
                 alignment = CENTER
-                label("${invoice.dateTime.toString(PATTERN_DATETIME_EXTENDED)} " +
-                    "(${transaction { Employees[invoice.employeeId].single().name }})")
+                label(
+                    "${invoice.dateTime.toString(PATTERN_DATETIME_EXTENDED)} " +
+                        "(${transaction { Employees[invoice.employeeId].single().name }})"
+                )
                 label("${customer.no}. ${customer.name}") { font = bold() }
             }
             vbox {

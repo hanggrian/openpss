@@ -90,7 +90,11 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(resourced, graphicId = R.i
                 hyperlink(getString(R.string.check_for_updates)) {
                     onAction {
                         GitHubApi.checkUpdates(this@LoginDialog, { title, actions ->
-                            styledWarningAlert(getStyle(R.style.openpss), title = title, buttonTypes = *arrayOf(CANCEL)) {
+                            styledWarningAlert(
+                                getStyle(R.style.openpss),
+                                title = title,
+                                buttonTypes = *arrayOf(CANCEL)
+                            ) {
                                 dialogPane.content = javafxx.layouts.vbox {
                                     actions.forEach { action ->
                                         hyperlink(action.text) { onAction = action }
@@ -136,12 +140,14 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(resourced, graphicId = R.i
         }
         cancelButton()
         customButton(getString(R.string.login), OK_DONE) {
-            disableProperty().bind(employeeField.textProperty().isBlank()
-                or passwordBox.textProperty().isBlank()
-                or !serverHostField.validProperty()
-                or serverPortField.textProperty().isBlank()
-                or serverUserField.textProperty().isBlank()
-                or serverPasswordField.textProperty().isBlank())
+            disableProperty().bind(
+                employeeField.textProperty().isBlank()
+                    or passwordBox.textProperty().isBlank()
+                    or !serverHostField.validProperty()
+                    or serverPortField.textProperty().isBlank()
+                    or serverUserField.textProperty().isBlank()
+                    or serverPasswordField.textProperty().isBlank()
+            )
             onActionFilter(CommonPool) {
                 LoginFile.save()
                 try {
@@ -151,7 +157,8 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(resourced, graphicId = R.i
                         serverUserField.text,
                         serverPasswordField.text,
                         employeeField.text,
-                        passwordBox.text)
+                        passwordBox.text
+                    )
                     launch(FX) {
                         result = employee
                         close()

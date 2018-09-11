@@ -36,9 +36,11 @@ class ChangePasswordDialog(resourced: Resourced) : ResultableDialog<String>(
             confirmPasswordField = passwordField { promptText = getString(R.string.confirm_password) } col 1 row 2
         }
         cancelButton()
-        okButton().disableProperty().bind(changePasswordField.textProperty().isBlank()
-            or confirmPasswordField.textProperty().isBlank()
-            or changePasswordField.textProperty().neq(confirmPasswordField.textProperty()))
+        okButton().disableProperty().bind(
+            changePasswordField.textProperty().isBlank()
+                or confirmPasswordField.textProperty().isBlank()
+                or changePasswordField.textProperty().neq(confirmPasswordField.textProperty())
+        )
         later { changePasswordField.requestFocus() }
     }
 

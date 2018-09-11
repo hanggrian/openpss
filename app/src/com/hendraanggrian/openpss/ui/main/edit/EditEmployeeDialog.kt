@@ -2,20 +2,21 @@ package com.hendraanggrian.openpss.ui.main.edit
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.dialog.TableDialog
+import com.hendraanggrian.openpss.control.doneCell
 import com.hendraanggrian.openpss.control.popover.InputUserPopover
+import com.hendraanggrian.openpss.control.stringCell
 import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.db.schemas.Employees
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.i18n.Resourced
-import com.hendraanggrian.openpss.control.doneCell
 import com.hendraanggrian.openpss.util.getStyle
-import com.hendraanggrian.openpss.control.stringCell
 import javafx.scene.Node
 import javafxx.beans.property.toProperty
 import javafxx.beans.value.or
 import javafxx.collections.toMutableObservableList
 import javafxx.coroutines.FX
 import javafxx.coroutines.onAction
+import javafxx.layouts.LayoutManager
 import javafxx.layouts.button
 import javafxx.scene.control.styledInfoAlert
 import kotlinx.coroutines.experimental.delay
@@ -28,25 +29,32 @@ class EditEmployeeDialog(
     private val employee: Employee
 ) : TableDialog<Employee, Employees>(Employees, resourced, employee, R.string.employee, R.image.header_employee) {
 
-    init {
-        extraButtons.run {
-            button(getString(R.string.toggle_admin)) {
-                bindDisable()
-                onAction {
-                    transaction { Employees[selected!!].projection { admin }.update(!selected!!.admin) }
-                    refresh()
-                }
-            }
-            button(getString(R.string.reset_password)) {
-                bindDisable()
-                onAction {
-                    transaction { Employees[selected!!].projection { password }.update(Employee.DEFAULT_PASSWORD) }
-                    styledInfoAlert(getStyle(R.style.openpss),
-                        getString(R.string.change_password_popup_will_appear_when_is_logged_back_in, employee.name))
-                        .show()
-                }
+    private companion object {
+        // temporary fix
+        const val DELAY = 200
+    }
+
+    override fun LayoutManager<Node>.extraActions() {
+        button(getString(R.string.toggle_admin)) {
+            bindDisable()
+            onAction {
+                transaction { Employees[selected!!].projection { admin }.update(!selected!!.admin) }
+                refresh()
             }
         }
+        button(getString(R.string.reset_password)) {
+            bindDisable()
+            onAction {
+                transaction { Employees[selected!!].projection { password }.update(Employee.DEFAULT_PASSWORD) }
+                styledInfoAlert(
+                    getStyle(R.style.openpss),
+                    getString(R.string.change_password_popup_will_appear_when_is_logged_back_in, employee.name)
+                ).show()
+            }
+        }
+    }
+
+    init {
         getString(R.string.name)<String> {
             stringCell { name }
         }
@@ -54,7 +62,7 @@ class EditEmployeeDialog(
             doneCell { admin }
         }
         launch(FX) {
-            delay(100)
+            delay(DELAY)
             transaction { employee.isAdmin() }.toProperty().let {
                 addButton.disableProperty().bind(!it)
                 deleteButton.disableProperty().bind(!selectedBinding or !it)
@@ -73,6 +81,10 @@ class EditEmployeeDialog(
         select(employee)
     }
 
-    private fun Node.bindDisable() = disableProperty()
-        .bind(!selectedBinding or !transaction { employee.isAdmin().toProperty() })
+    private fun Node.bindDisable() {
+        launch(FX) {
+            delay(DELAY)
+            disableProperty().bind(!selectedBinding or !transaction { employee.isAdmin() }.toProperty())
+        }
+    }
 }

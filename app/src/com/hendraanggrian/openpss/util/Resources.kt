@@ -16,7 +16,14 @@ inline fun getResourceAsStream(name: String): InputStream = App::class.java.getR
 
 inline fun getStyle(name: String): String = getResource(name).toExternalForm()
 
-inline fun getFont(name: String, size: Number = -1): Font = loadFont(getResource(name).toExternalForm(), size.toDouble())
+inline fun getFont(name: String, size: Number = -1): Font {
+    var f = loadFont(getResource(name).toExternalForm(), size.toDouble())
+    if (f == null) {
+        // fallback method for when `loadFont(String, Double)` doesn't work, known to happen in Windows.
+        f = getResourceAsStream(name).use { loadFont(it, size.toDouble()) }
+    }
+    return f
+}
 
 // should probably not be here
 inline fun getColor(name: String): Color = web(name)

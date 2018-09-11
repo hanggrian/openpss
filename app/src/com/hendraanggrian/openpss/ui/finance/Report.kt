@@ -17,9 +17,13 @@ data class Report(
         fun listAll(payments: Iterable<Payment>): ObservableList<Report> = payments
             .groupBy { it.dateTime.toLocalDate() }
             .flatMap { (dateTime, payments) ->
-                listOf(Report(dateTime,
-                    Payment.gather(payments, true),
-                    Payment.gather(payments, false)))
+                listOf(
+                    Report(
+                        dateTime,
+                        Payment.gather(payments, true),
+                        Payment.gather(payments, false)
+                    )
+                )
             }
             .toObservableList()
     }

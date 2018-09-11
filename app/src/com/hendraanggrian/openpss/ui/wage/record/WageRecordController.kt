@@ -1,25 +1,25 @@
 package com.hendraanggrian.openpss.ui.wage.record
 
-import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.control.UncollapsibleTreeItem
-import com.hendraanggrian.openpss.control.popover.DatePopover
-import com.hendraanggrian.openpss.io.WageDirectory
-import com.hendraanggrian.openpss.io.WageFile
-import com.hendraanggrian.openpss.layout.TimeBox
-import com.hendraanggrian.openpss.ui.Controller
-import com.hendraanggrian.openpss.ui.wage.Attendee
-import com.hendraanggrian.openpss.ui.wage.record.Record.Companion.getDummy
 import com.hendraanggrian.openpss.PATTERN_DATE
 import com.hendraanggrian.openpss.PATTERN_DATETIME
 import com.hendraanggrian.openpss.PATTERN_TIME
+import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.control.UncollapsibleTreeItem
 import com.hendraanggrian.openpss.control.bold
-import com.hendraanggrian.openpss.util.concatenate
+import com.hendraanggrian.openpss.control.popover.DatePopover
+import com.hendraanggrian.openpss.control.stringCell
 import com.hendraanggrian.openpss.currencyConverter
+import com.hendraanggrian.openpss.io.WageDirectory
+import com.hendraanggrian.openpss.io.WageFile
+import com.hendraanggrian.openpss.layout.TimeBox
+import com.hendraanggrian.openpss.numberConverter
+import com.hendraanggrian.openpss.ui.Controller
+import com.hendraanggrian.openpss.ui.wage.Attendee
+import com.hendraanggrian.openpss.ui.wage.record.Record.Companion.getDummy
+import com.hendraanggrian.openpss.util.concatenate
 import com.hendraanggrian.openpss.util.desktop
 import com.hendraanggrian.openpss.util.getResource
 import com.hendraanggrian.openpss.util.getStyle
-import com.hendraanggrian.openpss.numberConverter
-import com.hendraanggrian.openpss.control.stringCell
 import com.sun.javafx.scene.control.skin.TreeTableViewSkin
 import com.sun.javafx.scene.control.skin.VirtualFlow
 import javafx.beans.value.ObservableValue
@@ -79,8 +79,8 @@ class WageRecordController : Controller() {
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
         undoButton.disableProperty().bind(undoButton.items.isEmpty)
-        arrayOf(lockStartButton, lockEndButton).forEach {
-            it.disableProperty().bind(recordTable.selectionModel.selectedItemProperty().isNull or
+        arrayOf(lockStartButton, lockEndButton).forEach { button ->
+            button.disableProperty().bind(recordTable.selectionModel.selectedItemProperty().isNull or
                 booleanBindingOf(recordTable.selectionModel.selectedItemProperty()) {
                     recordTable.selectionModel.selectedItems?.any { !it.value.isChild() } ?: true
                 })
@@ -92,11 +92,13 @@ class WageRecordController : Controller() {
             columns.forEach {
                 it.cellFactory {
                     onUpdate { any, empty ->
-                        if (any != null && !empty) graphic = label(when (it) {
-                            dailyColumn, overtimeColumn -> numberConverter.toString(any as Number)
-                            dailyIncomeColumn, overtimeIncomeColumn, totalColumn -> currencyConverter.toString(any as Number)
-                            else -> any.toString()
-                        }) {
+                        if (any != null && !empty) graphic = label(
+                            when (it) {
+                                dailyColumn, overtimeColumn -> numberConverter.toString(any as Number)
+                                dailyIncomeColumn, overtimeIncomeColumn, totalColumn -> currencyConverter.toString(any as Number)
+                                else -> any.toString()
+                            }
+                        ) {
                             if (treeTableRow.treeItem?.value?.isTotal() == true) {
                                 font = bold()
                             }
@@ -200,7 +202,8 @@ class WageRecordController : Controller() {
             recordTable.scrollTo(flow.lastVisibleCell.index)
             i++
         } while (flow.lastVisibleCell.index + 1 <
-            recordTable.root.children.size + recordTable.root.children.sumBy { it.children.size })
+            recordTable.root.children.size + recordTable.root.children.sumBy { it.children.size }
+        )
         togglePrintMode(false, stylesheet)
         ImageIO.write(images.concatenate(), "png", WageFile())
         styledInfoAlert(getStyle(R.style.openpss), getString(R.string.screenshot_finished)) {

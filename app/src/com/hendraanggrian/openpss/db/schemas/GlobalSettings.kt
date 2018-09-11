@@ -21,7 +21,8 @@ data class GlobalSetting(
 
         fun listKeys(): List<String> = listOf(
             KEY_LANGUAGE,
-            KEY_INVOICE_HEADERS)
+            KEY_INVOICE_HEADERS
+        )
 
         fun new(key: String): GlobalSetting = GlobalSetting(key, "")
     }

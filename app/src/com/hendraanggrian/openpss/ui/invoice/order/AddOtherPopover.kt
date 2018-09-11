@@ -37,7 +37,8 @@ class AddOtherPopover(resourced: Resourced) : AddOrderPopover<Invoice.Other>(
         get() = Invoice.Other.new(
             titleField.text,
             qtyField.value,
-            priceField.value)
+            priceField.value
+        )
 
     override val qty: Int get() = qtyField.value
 

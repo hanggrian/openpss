@@ -14,6 +14,7 @@ import com.hendraanggrian.openpss.i18n.Resourced
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.Selectable
 import javafx.geometry.Pos.CENTER_RIGHT
+import javafx.scene.Node
 import javafx.scene.control.SelectionModel
 import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
@@ -25,6 +26,7 @@ import javafxx.beans.property.toProperty
 import javafxx.beans.value.or
 import javafxx.collections.toMutableObservableList
 import javafxx.coroutines.onAction
+import javafxx.layouts.LayoutManager
 import javafxx.layouts.TableColumnsBuilder
 import javafxx.layouts._HBox
 import javafxx.layouts.anchorPane
@@ -50,7 +52,7 @@ abstract class TableDialog<D : Document<S>, S : DocumentSchema<D>>(
     protected lateinit var refreshButton: StretchableButton
     protected lateinit var addButton: StretchableButton
     protected lateinit var deleteButton: StretchableButton
-    protected val extraButtons: _HBox = _HBox(R.dimen.padding_small.toDouble())
+    protected val extraButtons: _HBox = _HBox(R.dimen.padding_small.toDouble()).apply { alignment = CENTER_RIGHT }
 
     protected lateinit var table: TableView<D>
 
@@ -58,41 +60,51 @@ abstract class TableDialog<D : Document<S>, S : DocumentSchema<D>>(
 
     init {
         isResizable = true
-        graphic = javafxx.layouts.vbox(R.dimen.padding_small.toDouble()) {
-            alignment = CENTER_RIGHT
-            hbox(R.dimen.padding_small.toDouble()) {
-                alignment = CENTER_RIGHT
-                refreshButton = styledStretchableButton(STYLE_DEFAULT_BUTTON, STRETCH_POINT, getString(R.string.refresh),
-                    ImageView(R.image.btn_refresh_dark)) {
-                    onAction { refresh() }
-                }
-                space()
-                addButton = stretchableButton(STRETCH_POINT, getString(R.string.add), ImageView(R.image.btn_add_light)) {
-                    onAction { add() }
-                }
-                deleteButton = stretchableButton(STRETCH_POINT, getString(R.string.delete),
-                    ImageView(R.image.btn_delete_light)) {
-                    onAction { delete() }
-                    later {
-                        transaction {
-                            disableProperty().bind(selectedProperty.isNull or !employee.isAdmin().toProperty())
-                        }
-                    }
-                }
-            }
-            extraButtons.apply {
-                alignment = CENTER_RIGHT
-            }()
-        }
         anchorPane {
             table = tableView<D> {
                 columnResizePolicy = CONSTRAINED_RESIZE_POLICY
                 isEditable = true
             } anchorAll 1.0
         }
+        graphic = javafxx.layouts.vbox(R.dimen.padding_small.toDouble()) {
+            alignment = CENTER_RIGHT
+            hbox(R.dimen.padding_small.toDouble()) {
+                alignment = CENTER_RIGHT
+                refreshButton = styledStretchableButton(
+                    STYLE_DEFAULT_BUTTON,
+                    STRETCH_POINT,
+                    getString(R.string.refresh),
+                    ImageView(R.image.btn_refresh_dark)
+                ) {
+                    onAction { refresh() }
+                }
+                space()
+                addButton =
+                    stretchableButton(STRETCH_POINT, getString(R.string.add), ImageView(R.image.btn_add_light)) {
+                        onAction { add() }
+                    }
+                deleteButton =
+                    stretchableButton(STRETCH_POINT, getString(R.string.delete), ImageView(R.image.btn_delete_light)) {
+                        onAction { delete() }
+                        later {
+                            transaction {
+                                disableProperty().bind(selectedProperty.isNull or !employee.isAdmin().toProperty())
+                            }
+                        }
+                    }
+            }
+            extraButtons.extraActions()
+            if (extraButtons.children.isNotEmpty()) extraButtons()
+        }
         refresh()
         closeButton()
-        later { (dialogPane.scene.window as Stage).setMinSize(width, height) }
+        later {
+            (dialogPane.scene.window as Stage).setMinSize(width, height)
+        }
+    }
+
+    /** Override this function to add extra actions. */
+    open fun LayoutManager<Node>.extraActions() {
     }
 
     override fun <T> column(

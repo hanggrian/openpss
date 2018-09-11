@@ -1,11 +1,11 @@
 package com.hendraanggrian.openpss.ui.wage.record
 
+import com.hendraanggrian.openpss.PATTERN_DATETIME
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.START_OF_TIME
 import com.hendraanggrian.openpss.i18n.Resourced
 import com.hendraanggrian.openpss.ui.wage.Attendee
 import com.hendraanggrian.openpss.ui.wage.IntervalWrapper
-import com.hendraanggrian.openpss.PATTERN_DATETIME
-import com.hendraanggrian.openpss.START_OF_TIME
 import com.hendraanggrian.openpss.util.round
 import javafx.beans.property.BooleanProperty
 import javafx.beans.property.DoubleProperty
@@ -62,8 +62,10 @@ class Record(
         const val INDEX_TOTAL = -1
 
         /** Dummy for invisible [javafx.scene.control.TreeTableView] root. */
-        fun getDummy(resourced: Resourced) = Record(resourced, Int.MIN_VALUE, Attendee.DUMMY,
-            START_OF_TIME.toMutableProperty(), START_OF_TIME.toMutableProperty())
+        fun getDummy(resourced: Resourced) = Record(
+            resourced, Int.MIN_VALUE, Attendee.DUMMY,
+            START_OF_TIME.toMutableProperty(), START_OF_TIME.toMutableProperty()
+        )
     }
 
     init {

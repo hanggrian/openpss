@@ -2,13 +2,13 @@ package com.hendraanggrian.openpss.ui.invoice.order
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.IntField
+import com.hendraanggrian.openpss.control.bold
 import com.hendraanggrian.openpss.control.intField
 import com.hendraanggrian.openpss.control.popover.ResultablePopover
+import com.hendraanggrian.openpss.currencyConverter
 import com.hendraanggrian.openpss.db.Order
 import com.hendraanggrian.openpss.db.Titled
 import com.hendraanggrian.openpss.i18n.Resourced
-import com.hendraanggrian.openpss.control.bold
-import com.hendraanggrian.openpss.currencyConverter
 import com.hendraanggrian.openpss.util.getColor
 import javafx.beans.Observable
 import javafx.beans.value.ObservableBooleanValue
@@ -51,10 +51,12 @@ abstract class AddOrderPopover<T : Titled>(
                         currencyConverter.toString(total)
                     })
                     textFillProperty().bind(bindingOf(textProperty()) {
-                        getColor(when {
-                            total > 0 -> R.color.green
-                            else -> R.color.red
-                        })
+                        getColor(
+                            when {
+                                total > 0 -> R.color.green
+                                else -> R.color.red
+                            }
+                        )
                     })
                 } col 1 row totalRow
             }

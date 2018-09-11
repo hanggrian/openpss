@@ -1,7 +1,10 @@
 package com.hendraanggrian.openpss.ui.main
 
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.clearConverters
+import com.hendraanggrian.openpss.control.bold
 import com.hendraanggrian.openpss.control.dialog.Dialog
+import com.hendraanggrian.openpss.control.onActionFilter
 import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_INVOICE_HEADERS
 import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_LANGUAGE
 import com.hendraanggrian.openpss.db.transaction
@@ -11,9 +14,6 @@ import com.hendraanggrian.openpss.io.properties.PreferencesFile
 import com.hendraanggrian.openpss.io.properties.PreferencesFile.INVOICE_QUICK_SELECT_CUSTOMER
 import com.hendraanggrian.openpss.io.properties.PreferencesFile.WAGE_READER
 import com.hendraanggrian.openpss.ui.wage.readers.Reader
-import com.hendraanggrian.openpss.control.bold
-import com.hendraanggrian.openpss.clearConverters
-import com.hendraanggrian.openpss.control.onActionFilter
 import javafx.geometry.Pos.CENTER_LEFT
 import javafx.scene.Node
 import javafx.scene.control.ChoiceBox
@@ -94,8 +94,10 @@ class PreferencesDialog(
                         valueProperty().listener { isGlobalChanged.set(true) }
                     } row 0 col 1
                     label(getString(R.string.invoice_headers)) row 1 col 0
-                    invoiceHeadersArea = textArea(findGlobalSettings(KEY_INVOICE_HEADERS).single().valueList
-                        .joinToString("\n").trim()) {
+                    invoiceHeadersArea = textArea(
+                        findGlobalSettings(KEY_INVOICE_HEADERS).single().valueList
+                            .joinToString("\n").trim()
+                    ) {
                         setMaxSize(256.0, 88.0)
                         textProperty().listener { _, oldValue, value ->
                             when (INVOICE_HEADERS_DIVIDER) {

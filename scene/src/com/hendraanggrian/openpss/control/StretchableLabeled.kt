@@ -8,8 +8,10 @@ import javafx.scene.Scene
 import javafx.scene.control.Tooltip
 import javafxx.beans.binding.bindingOf
 import javafxx.beans.binding.stringBindingOf
-import javafxx.coroutines.FX
+import kotlinx.coroutines.experimental.Dispatchers
+import kotlinx.coroutines.experimental.GlobalScope
 import kotlinx.coroutines.experimental.delay
+import kotlinx.coroutines.experimental.javafx.JavaFx
 import kotlinx.coroutines.experimental.launch
 
 interface StretchableLabeled {
@@ -33,7 +35,7 @@ interface StretchableLabeled {
     fun initialize() {
         when {
             getScene()?.widthProperty() != null -> getScene()!!.widthProperty()()
-            else -> launch(FX) {
+            else -> GlobalScope.launch(Dispatchers.JavaFx) {
                 while (getScene()?.widthProperty() == null) delay(250)
                 getScene()!!.widthProperty()()
             }

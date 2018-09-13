@@ -33,7 +33,6 @@ import javafxx.beans.value.lessEq
 import javafxx.beans.value.or
 import javafxx.collections.isEmpty
 import javafxx.collections.size
-import javafxx.coroutines.FX
 import javafxx.coroutines.onAction
 import javafxx.layouts.LayoutManager
 import javafxx.layouts.borderPane
@@ -44,6 +43,9 @@ import javafxx.scene.layout.maxSize
 import javafxx.stage.fileChooser
 import javafxx.stage.setMinSize
 import javafxx.stage.stage
+import kotlinx.coroutines.experimental.Dispatchers
+import kotlinx.coroutines.experimental.GlobalScope
+import kotlinx.coroutines.experimental.javafx.JavaFx
 import kotlinx.coroutines.experimental.launch
 import java.io.File
 import java.net.URL
@@ -137,11 +139,11 @@ class WageController : SegmentedController() {
         }
         anchorPane.children += loadingPane
         flowPane.children.clear()
-        launch {
+        GlobalScope.launch(Dispatchers.Default) {
             try {
                 Reader.of(WAGE_READER).read(file).forEach { attendee ->
                     attendee.mergeDuplicates()
-                    launch(FX) {
+                    GlobalScope.launch(Dispatchers.JavaFx) {
                         flowPane.children += attendeePane(this@WageController, attendee) {
                             deleteMenu.onAction {
                                 flowPane.children -= this@attendeePane
@@ -170,13 +172,13 @@ class WageController : SegmentedController() {
                         }
                     }
                 }
-                launch(FX) {
+                GlobalScope.launch(Dispatchers.JavaFx) {
                     anchorPane.children -= loadingPane
                     bindProcessButton()
                 }
             } catch (e: Exception) {
                 if (DEBUG) e.printStackTrace()
-                launch(FX) {
+                GlobalScope.launch(Dispatchers.JavaFx) {
                     anchorPane.children -= loadingPane
                     bindProcessButton()
                     styledErrorAlert(getStyle(R.style.openpss), e.message.toString()).show()

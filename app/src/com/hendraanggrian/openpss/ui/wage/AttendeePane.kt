@@ -26,7 +26,6 @@ import javafx.scene.layout.StackPane
 import javafx.scene.text.Font.font
 import javafxx.beans.binding.bindingOf
 import javafxx.collections.sort
-import javafxx.coroutines.FX
 import javafxx.coroutines.eventFilter
 import javafxx.coroutines.listener
 import javafxx.coroutines.onAction
@@ -46,7 +45,10 @@ import javafxx.scene.input.isDelete
 import javafxx.scene.input.isDoubleClick
 import javafxx.scene.layout.gap
 import javafxx.scene.layout.paddingAll
+import kotlinx.coroutines.experimental.Dispatchers
+import kotlinx.coroutines.experimental.GlobalScope
 import kotlinx.coroutines.experimental.delay
+import kotlinx.coroutines.experimental.javafx.JavaFx
 import kotlinx.coroutines.experimental.launch
 import org.joda.time.DateTime
 import org.joda.time.DateTime.now
@@ -180,7 +182,7 @@ class AttendeePane(
             })
             eventFilter(type = MOUSE_CLICKED) { deleteMenu.fire() }
         }
-        launch(FX) {
+        GlobalScope.launch(Dispatchers.JavaFx) {
             delay(250)
             applyCss()
             layout()

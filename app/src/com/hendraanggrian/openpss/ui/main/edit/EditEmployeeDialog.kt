@@ -14,12 +14,14 @@ import javafx.scene.Node
 import javafxx.beans.property.toProperty
 import javafxx.beans.value.or
 import javafxx.collections.toMutableObservableList
-import javafxx.coroutines.FX
 import javafxx.coroutines.onAction
 import javafxx.layouts.LayoutManager
 import javafxx.layouts.button
 import javafxx.scene.control.styledInfoAlert
+import kotlinx.coroutines.experimental.Dispatchers
+import kotlinx.coroutines.experimental.GlobalScope
 import kotlinx.coroutines.experimental.delay
+import kotlinx.coroutines.experimental.javafx.JavaFx
 import kotlinx.coroutines.experimental.launch
 import kotlinx.nosql.notEqual
 import kotlinx.nosql.update
@@ -61,7 +63,7 @@ class EditEmployeeDialog(
         getString(R.string.admin)<Boolean> {
             doneCell { admin }
         }
-        launch(FX) {
+        GlobalScope.launch(Dispatchers.JavaFx) {
             delay(DELAY)
             transaction { employee.isAdmin() }.toProperty().let {
                 addButton.disableProperty().bind(!it)
@@ -82,7 +84,7 @@ class EditEmployeeDialog(
     }
 
     private fun Node.bindDisable() {
-        launch(FX) {
+        GlobalScope.launch(Dispatchers.JavaFx) {
             delay(DELAY)
             disableProperty().bind(!selectedBinding or !transaction { employee.isAdmin() }.toProperty())
         }

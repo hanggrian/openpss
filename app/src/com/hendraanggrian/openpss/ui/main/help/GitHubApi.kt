@@ -9,8 +9,10 @@ import com.hendraanggrian.openpss.BuildConfig.VERSION
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.i18n.Resourced
 import com.hendraanggrian.openpss.util.desktop
-import javafxx.coroutines.FX
 import javafxx.scene.control.errorAlert
+import kotlinx.coroutines.experimental.Dispatchers
+import kotlinx.coroutines.experimental.GlobalScope
+import kotlinx.coroutines.experimental.javafx.JavaFx
 import kotlinx.coroutines.experimental.launch
 import okhttp3.OkHttpClient
 import org.apache.maven.artifact.versioning.ComparableVersion
@@ -71,10 +73,10 @@ interface GitHubApi {
             onAvailable: (title: String, actions: List<Action>) -> Unit,
             onUnavailable: (title: String, content: String) -> Unit
         ) {
-            launch {
+            GlobalScope.launch(Dispatchers.Default) {
                 try {
                     val release = create().getLatestRelease().get(TIMEOUT, SECONDS)
-                    launch(FX) {
+                    GlobalScope.launch(Dispatchers.JavaFx) {
                         when {
                             release.isNewer() -> onAvailable(
                                 resourced.getString(R.string.openpss_is_available, release.version),
@@ -91,7 +93,7 @@ interface GitHubApi {
                     }
                 } catch (e: Exception) {
                     if (DEBUG) e.printStackTrace()
-                    launch(FX) {
+                    GlobalScope.launch(Dispatchers.JavaFx) {
                         errorAlert(resourced.getString(R.string.no_internet_connection)).show()
                     }
                 }

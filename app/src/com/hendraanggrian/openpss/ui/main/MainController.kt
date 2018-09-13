@@ -26,9 +26,11 @@ import javafx.scene.control.Tab
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.HBox
 import javafxx.application.later
-import javafxx.coroutines.FX
 import javafxx.coroutines.listener
+import kotlinx.coroutines.experimental.Dispatchers
+import kotlinx.coroutines.experimental.GlobalScope
 import kotlinx.coroutines.experimental.delay
+import kotlinx.coroutines.experimental.javafx.JavaFx
 import kotlinx.coroutines.experimental.launch
 import org.apache.commons.lang3.SystemUtils.IS_OS_MAC
 import org.controlsfx.control.NotificationPane
@@ -73,7 +75,7 @@ class MainController : Controller(), Selectable<Tab> {
             if (controller is Refreshable) {
                 controller.refresh()
                 if (controller is FinanceController && !isFinanceTabFixed) {
-                    launch(FX) {
+                    GlobalScope.launch(Dispatchers.JavaFx) {
                         fixFinanceTab(1)
                         fixFinanceTab(0)
                     }

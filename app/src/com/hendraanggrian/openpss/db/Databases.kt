@@ -22,7 +22,7 @@ import com.mongodb.MongoCredential.createCredential
 import com.mongodb.MongoException
 import com.mongodb.ServerAddress
 import javafxx.scene.control.styledErrorAlert
-import kotlinx.coroutines.experimental.DefaultDispatcher
+import kotlinx.coroutines.experimental.Dispatchers
 import kotlinx.coroutines.experimental.withContext
 import kotlinx.nosql.equal
 import kotlinx.nosql.mongodb.MongoDB
@@ -86,7 +86,7 @@ private suspend fun connect(
     port: Int,
     user: String,
     password: String
-): MongoDB = withContext(DefaultDispatcher) {
+): MongoDB = withContext(Dispatchers.Default) {
     MongoDB(
         arrayOf(ServerAddress(host, port)),
         ARTIFACT,

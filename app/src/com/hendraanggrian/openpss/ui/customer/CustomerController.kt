@@ -41,7 +41,6 @@ import javafxx.beans.value.or
 import javafxx.collections.emptyObservableList
 import javafxx.collections.toMutableObservableList
 import javafxx.collections.toObservableList
-import javafxx.coroutines.FX
 import javafxx.coroutines.onAction
 import javafxx.layouts.LayoutManager
 import javafxx.layouts.contextMenu
@@ -49,7 +48,10 @@ import javafxx.layouts.listView
 import javafxx.layouts.styledTextField
 import javafxx.layouts.tooltip
 import javafxx.scene.control.styledErrorAlert
+import kotlinx.coroutines.experimental.Dispatchers
+import kotlinx.coroutines.experimental.GlobalScope
 import kotlinx.coroutines.experimental.delay
+import kotlinx.coroutines.experimental.javafx.JavaFx
 import kotlinx.coroutines.experimental.launch
 import kotlinx.nosql.update
 import org.controlsfx.control.MasterDetailPane
@@ -205,7 +207,7 @@ class CustomerController : SegmentedController(), Refreshable, Selectable<Custom
     private fun reload() {
         val index = selectedIndex
         refresh()
-        launch(FX) {
+        GlobalScope.launch(Dispatchers.JavaFx) {
             delay(250)
             reselect(index)
         }

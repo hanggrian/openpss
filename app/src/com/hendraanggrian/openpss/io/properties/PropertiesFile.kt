@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.io.properties
 
 import com.hendraanggrian.openpss.io.MainDirectory
-import kotlinx.coroutines.experimental.DefaultDispatcher
+import kotlinx.coroutines.experimental.Dispatchers
 import kotlinx.coroutines.experimental.withContext
 import java.io.File
 import java.util.Properties
@@ -24,7 +24,7 @@ abstract class PropertiesFile(name: String) : File(MainDirectory, ".$name") {
         inputStream().use { properties.load(it) }
     }
 
-    suspend fun save(comments: String? = null) = withContext(DefaultDispatcher) {
+    suspend fun save(comments: String? = null) = withContext(Dispatchers.Default) {
         outputStream().use { properties.store(it, comments) }
     }
 

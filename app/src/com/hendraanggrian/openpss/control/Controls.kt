@@ -11,9 +11,11 @@ import javafx.scene.control.ButtonType.NO
 import javafx.scene.control.ButtonType.YES
 import javafx.scene.control.Control
 import javafx.scene.control.ListView
-import javafxx.coroutines.FX
 import javafxx.scene.control.styledConfirmAlert
 import kotlinx.coroutines.experimental.CoroutineScope
+import kotlinx.coroutines.experimental.Dispatchers
+import kotlinx.coroutines.experimental.GlobalScope
+import kotlinx.coroutines.experimental.javafx.JavaFx
 import kotlinx.coroutines.experimental.launch
 import org.controlsfx.validation.Severity
 import org.controlsfx.validation.ValidationSupport
@@ -25,11 +27,11 @@ import kotlin.coroutines.experimental.CoroutineContext
  * is called in coroutine context, it is already too late.
  */
 fun Node.onActionFilter(
-    context: CoroutineContext = FX,
+    context: CoroutineContext = Dispatchers.JavaFx,
     action: suspend CoroutineScope.() -> Unit
 ) = addEventFilter(ACTION) {
     it.consume()
-    launch(context) { action() }
+    GlobalScope.launch(context) { action() }
 }
 
 fun Resourced.yesNoAlert(

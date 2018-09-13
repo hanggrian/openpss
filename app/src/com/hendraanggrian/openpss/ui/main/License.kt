@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.ui.main
 
 import com.hendraanggrian.openpss.util.getResourceAsStream
-import kotlinx.coroutines.experimental.DefaultDispatcher
+import kotlinx.coroutines.experimental.Dispatchers
 import kotlinx.coroutines.experimental.withContext
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -54,7 +54,7 @@ enum class License(val owner: String, val repo: String, val homepage: String) {
         "https://www.slf4j.org"
     );
 
-    suspend fun getContent(): String = withContext(DefaultDispatcher) {
+    suspend fun getContent(): String = withContext(Dispatchers.Default) {
         getResourceAsStream("/license/${name.toLowerCase()}.txt").use {
             BufferedReader(InputStreamReader(it)).lines().collect(Collectors.joining("\n"))
         }

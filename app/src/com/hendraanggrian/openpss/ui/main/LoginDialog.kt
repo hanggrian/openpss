@@ -28,7 +28,6 @@ import javafxx.application.later
 import javafxx.beans.value.isBlank
 import javafxx.beans.value.or
 import javafxx.collections.toObservableList
-import javafxx.coroutines.FX
 import javafxx.coroutines.listener
 import javafxx.coroutines.onAction
 import javafxx.layouts.choiceBox
@@ -44,7 +43,9 @@ import javafxx.scene.control.styledErrorAlert
 import javafxx.scene.control.styledInfoAlert
 import javafxx.scene.control.styledWarningAlert
 import javafxx.scene.layout.gap
-import kotlinx.coroutines.experimental.CommonPool
+import kotlinx.coroutines.experimental.Dispatchers
+import kotlinx.coroutines.experimental.GlobalScope
+import kotlinx.coroutines.experimental.javafx.JavaFx
 import kotlinx.coroutines.experimental.launch
 
 class LoginDialog(resourced: Resourced) : Dialog<Any>(resourced, graphicId = R.image.header_launcher) {
@@ -66,10 +67,10 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(resourced, graphicId = R.i
             choiceBox(Language.values().toObservableList()) {
                 maxWidth = Double.MAX_VALUE
                 selectionModel.select(PreferencesFile.language)
-                valueProperty().listener(CommonPool) { _, _, value ->
+                valueProperty().listener(Dispatchers.Default) { _, _, value ->
                     PreferencesFile.language = value
                     PreferencesFile.save()
-                    launch(FX) {
+                    GlobalScope.launch(Dispatchers.JavaFx) {
                         close()
                         later {
                             styledInfoAlert(getStyle(R.style.openpss), getString(R.string.please_restart))
@@ -148,7 +149,7 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(resourced, graphicId = R.i
                     or serverUserField.textProperty().isBlank()
                     or serverPasswordField.textProperty().isBlank()
             )
-            onActionFilter(CommonPool) {
+            onActionFilter(Dispatchers.Default) {
                 LoginFile.save()
                 try {
                     val employee = login(
@@ -159,13 +160,15 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(resourced, graphicId = R.i
                         employeeField.text,
                         passwordBox.text
                     )
-                    launch(FX) {
+                    GlobalScope.launch(Dispatchers.JavaFx) {
                         result = employee
                         close()
                     }
                 } catch (e: Exception) {
                     if (DEBUG) e.printStackTrace()
-                    launch(FX) { styledErrorAlert(getStyle(R.style.openpss), e.message.toString()).show() }
+                    GlobalScope.launch(Dispatchers.JavaFx) {
+                        styledErrorAlert(getStyle(R.style.openpss), e.message.toString()).show()
+                    }
                 }
             }
         }

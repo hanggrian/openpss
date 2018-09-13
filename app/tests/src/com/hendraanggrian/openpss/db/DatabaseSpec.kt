@@ -1,4 +1,4 @@
-package com.hendraanggrian.openpss.db
+/*package com.hendraanggrian.openpss.db
 
 import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.io.properties.LoginFile
@@ -26,4 +26,4 @@ object DatabaseSpec : Spek({
             }
         }
     }
-})
+})*/

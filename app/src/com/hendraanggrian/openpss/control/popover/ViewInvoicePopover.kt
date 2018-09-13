@@ -16,11 +16,16 @@ import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.i18n.Language
 import com.hendraanggrian.openpss.i18n.Resourced
 import com.hendraanggrian.openpss.numberConverter
+import com.sun.javafx.print.PrintHelper
+import com.sun.javafx.print.Units.MM
 import javafx.geometry.HPos.LEFT
 import javafx.geometry.HPos.RIGHT
 import javafx.geometry.Pos.CENTER
 import javafx.geometry.Pos.CENTER_LEFT
 import javafx.geometry.Pos.CENTER_RIGHT
+import javafx.print.PageOrientation.PORTRAIT
+import javafx.print.Paper
+import javafx.print.Printer
 import javafx.print.PrinterJob
 import javafx.scene.Node
 import javafx.scene.layout.Border
@@ -31,8 +36,10 @@ import javafx.scene.layout.BorderStrokeStyle.SOLID
 import javafx.scene.layout.BorderWidths.DEFAULT
 import javafx.scene.layout.CornerRadii.EMPTY
 import javafx.scene.layout.Priority.ALWAYS
+import javafx.scene.layout.VBox
 import javafx.scene.paint.Color.BLACK
 import javafx.scene.text.TextAlignment
+import javafx.scene.transform.Scale
 import javafxx.application.later
 import javafxx.coroutines.onAction
 import javafxx.layouts.LayoutManager
@@ -64,20 +71,34 @@ class ViewInvoicePopover(private val invoice: Invoice) : Popover(object : Resour
     private companion object {
         const val WIDTH = 378.0
         const val HEIGHT = 530.0
+
+        val PAPER_INVOICE: Paper = PrintHelper.createPaper("Invoice", 100.0, 140.0, MM)
     }
 
     private lateinit var invoiceHeaders: List<String>
     private lateinit var customer: Customer
     private lateinit var employee: Employee
+    private val invoiceBox: VBox
 
     override fun LayoutManager<Node>.onCreateActions() {
         button(getString(R.string.print)) {
             isDefaultButton = true
             later { isDisable = invoice.printed }
             onAction {
+                val layout = Printer
+                    .getDefaultPrinter()
+                    .createPageLayout(PAPER_INVOICE, PORTRAIT, 0.0, 0.0, 0.0, 0.0)
+                invoiceBox.border = null
+                invoiceBox.transforms += Scale(
+                    layout.printableWidth / invoiceBox.boundsInParent.width,
+                    layout.printableHeight / invoiceBox.boundsInParent.height
+                )
                 val job = PrinterJob.createPrinterJob()
-                if (job == null) {
-
+                if (job != null) {
+                    val success = job.printPage(invoiceBox)
+                    if (success) {
+                        job.endJob()
+                    }
                 }
             }
         }
@@ -90,7 +111,7 @@ class ViewInvoicePopover(private val invoice: Invoice) : Popover(object : Resour
             employee = Employees[invoice.employeeId].single()
             customer = Customers[invoice.customerId].single()
         }
-        vbox(R.dimen.padding_small.toDouble()) {
+        invoiceBox = vbox(R.dimen.padding_small.toDouble()) {
             border = DASHED.toBorder()
             paddingAll = R.dimen.padding_small.toDouble()
             setMinSize(WIDTH, HEIGHT)

@@ -17,7 +17,6 @@ import javafx.scene.control.ContentDisplay.RIGHT
 import javafx.scene.control.ListView
 import javafx.scene.control.MenuItem
 import javafx.scene.control.SelectionModel
-import javafx.scene.control.TitledPane
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import javafx.scene.input.MouseEvent.MOUSE_CLICKED
@@ -32,10 +31,10 @@ import javafxx.coroutines.onAction
 import javafxx.coroutines.onKeyPressed
 import javafxx.coroutines.onMouseClicked
 import javafxx.layouts.LayoutDsl
+import javafxx.layouts._TitledPane
 import javafxx.layouts.checkBox
 import javafxx.layouts.contextMenu
 import javafxx.layouts.gridPane
-import javafxx.layouts.imageView
 import javafxx.layouts.label
 import javafxx.layouts.listView
 import javafxx.layouts.separatorMenuItem
@@ -57,7 +56,7 @@ import kotlin.math.absoluteValue
 class AttendeePane(
     resourced: Resourced,
     val attendee: Attendee
-) : TitledPane(attendee.toString(), null), Resourced by resourced, Selectable<DateTime> {
+) : _TitledPane(attendee.toString(), null), Resourced by resourced, Selectable<DateTime> {
 
     val recessChecks: MutableList<CheckBox> = mutableListOf()
     lateinit var deleteMenu: MenuItem
@@ -67,7 +66,7 @@ class AttendeePane(
 
     init {
         isCollapsible = false
-        content = vbox {
+        vbox {
             isFillWidth = true
             gridPane {
                 gap = R.dimen.padding_verysmall.toDouble()
@@ -171,7 +170,7 @@ class AttendeePane(
             deleteToTheRightMenu = getString(R.string.delete_employees_to_the_right)()
         }
         contentDisplay = RIGHT
-        graphic = imageView {
+        graphic = javafxx.layouts.imageView {
             imageProperty().bind(bindingOf(hoverProperty()) {
                 Image(
                     when {

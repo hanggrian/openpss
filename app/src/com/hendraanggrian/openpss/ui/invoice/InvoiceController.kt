@@ -265,10 +265,6 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
                                     onAction { viewInvoice() }
                                 }
                                 separatorMenuItem()
-                                getString(R.string.edit)(ImageView(R.image.btn_edit_light)) {
-                                    disableProperty().bind(!selectedBinding or !fullAccess)
-                                    onAction { editInvoice() }
-                                }
                                 getString(R.string.delete)(ImageView(R.image.btn_delete_light)) {
                                     disableProperty().bind(!selectedBinding or !fullAccess)
                                     onAction { deleteInvoice() }
@@ -281,24 +277,13 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
         })
     }
 
-    fun addInvoice() = InvoiceDialog(this, employee = employee).showAndWait().ifPresent {
+    fun addInvoice() = AddInvoiceDialog(this, employee).showAndWait().ifPresent {
         transaction {
             it.id = Invoices.insert(it)
             invoiceTable.items.add(it)
             invoiceTable.selectionModel.selectFirst()
         }
     }
-
-    private fun editInvoice() = InvoiceDialog(this@InvoiceController, selected!!)
-        .showAndWait()
-        .ifPresent {
-            transaction {
-                Invoices[it]
-                    .projection { plates + offsets + others + note + paid }
-                    .update(it.plates, it.offsets, it.others, it.note, it.calculateDue() <= 0.0)
-                reload(it)
-            }
-        }
 
     private fun deleteInvoice() = yesNoAlert {
         transaction {

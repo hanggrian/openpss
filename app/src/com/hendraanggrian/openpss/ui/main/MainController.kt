@@ -75,10 +75,8 @@ class MainController : Controller(), Selectable<Tab> {
             if (controller is Refreshable) {
                 controller.refresh()
                 if (controller is FinanceController && !isFinanceTabFixed) {
-                    GlobalScope.launch(Dispatchers.JavaFx) {
-                        fixFinanceTab(1)
-                        fixFinanceTab(0)
-                    }
+                    fixFinanceTab(1)
+                    fixFinanceTab(0)
                     isFinanceTabFixed = true
                 }
             }

@@ -84,17 +84,19 @@ class ViewInvoicePopover(private val invoice: Invoice) : Popover(object : Resour
             isDefaultButton = true
             later { isDisable = invoice.printed }
             onAction {
-                val layout = Printer
-                    .getDefaultPrinter()
-                    .createPageLayout(PAPER_INVOICE, PORTRAIT, 0.0, 0.0, 0.0, 0.0)
-                invoiceBox.border = null
-                invoiceBox.transforms += Scale(
-                    layout.printableWidth / invoiceBox.boundsInParent.width,
-                    layout.printableHeight / invoiceBox.boundsInParent.height
-                )
+                val printer = Printer.getDefaultPrinter()
+                val layout = printer.createPageLayout(PAPER_INVOICE, PORTRAIT, 0.0, 0.0, 0.0, 0.0)
+                printer.printerAttributes
                 val job = PrinterJob.createPrinterJob()
-                if (job != null) {
-                    val success = job.printPage(invoiceBox)
+                invoiceBox.run {
+                    border = null
+                    transforms += Scale(
+                        layout.printableWidth / invoiceBox.boundsInParent.width,
+                        layout.printableHeight / invoiceBox.boundsInParent.height
+                    )
+                }
+                if (job != null && job.showPrintDialog(invoiceBox.scene.window)) {
+                    val success = job.printPage(layout, invoiceBox)
                     if (success) {
                         job.endJob()
                     }
@@ -136,7 +138,7 @@ class ViewInvoicePopover(private val invoice: Invoice) : Popover(object : Resour
                 label("${customer.no}. ${customer.name}") { font = bold() }
             }
             vbox {
-                contentGridPane(R.string.plate, invoice.plates) { plate, row ->
+                orderGridPane(R.string.plate, invoice.plates) { plate, row ->
                     label(numberConverter.toString(plate.qty)) row row col 0
                     label(plate.machine) row row col 1
                     label(plate.title) {
@@ -144,7 +146,7 @@ class ViewInvoicePopover(private val invoice: Invoice) : Popover(object : Resour
                     } row row col 2
                     label(currencyConverter.toString(plate.total)) row row col 3
                 }
-                contentGridPane(R.string.offset, invoice.offsets) { offset, row ->
+                orderGridPane(R.string.offset, invoice.offsets) { offset, row ->
                     label(numberConverter.toString(offset.qty)) row row col 0
                     label("${offset.machine}\n${offset.typedTechnique.toString(this@ViewInvoicePopover)}") {
                         textAlignment = TextAlignment.CENTER
@@ -154,7 +156,7 @@ class ViewInvoicePopover(private val invoice: Invoice) : Popover(object : Resour
                     } row row col 2
                     label(currencyConverter.toString(offset.total)) row row col 3
                 }
-                contentGridPane(R.string.others, invoice.others) { other, row ->
+                orderGridPane(R.string.others, invoice.others) { other, row ->
                     label(numberConverter.toString(other.qty)) row row col 0
                     label(other.title) {
                         isWrapText = true
@@ -190,7 +192,7 @@ class ViewInvoicePopover(private val invoice: Invoice) : Popover(object : Resour
         }
     }
 
-    private fun <T : Invoice.Order> _VBox.contentGridPane(
+    private fun <T : Invoice.Order> _VBox.orderGridPane(
         titleId: String,
         orders: List<T>,
         lineBuilder: _GridPane.(order: T, row: Int) -> Unit

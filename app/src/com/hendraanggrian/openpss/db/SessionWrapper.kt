@@ -62,18 +62,18 @@ class SessionWrapper(val session: MongoDBSession) :
     }
 
     /** Build query for optional and/or query operation. */
-    inline fun <S : DocumentSchema<D>, D : Document<S>> S.buildQuery(
-        noinline builder: QueryBuilder.(S) -> Unit
+    fun <S : DocumentSchema<D>, D : Document<S>> S.buildQuery(
+        builder: QueryBuilder.(S) -> Unit
     ): DocumentSchemaQueryWrapper<S, String, D> = invoke {
         _QueryBuilder().apply { builder(this@buildQuery) }.build()
     }
 
-    inline fun Employee.isAdmin(): Boolean = Employees[this].single().admin
+    fun Employee.isAdmin(): Boolean = Employees[this].single().admin
 
-    inline fun findGlobalSettings(
+    fun findGlobalSettings(
         key: String
     ): DocumentSchemaQueryWrapper<GlobalSettings, String, GlobalSetting> = GlobalSettings { it.key.equal(key) }
 
-    inline fun Invoice.calculateDue(): Double =
+    fun Invoice.calculateDue(): Double =
         total - Payments { it.invoiceId.equal(id) }.sumByDouble { it.value }
 }

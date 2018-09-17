@@ -3,7 +3,6 @@ package com.hendraanggrian.openpss.db.schemas
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.db.Document
 import com.hendraanggrian.openpss.db.Numbered
-import com.hendraanggrian.openpss.db.Order
 import com.hendraanggrian.openpss.db.Titled
 import com.hendraanggrian.openpss.i18n.StringResource
 import com.hendraanggrian.openpss.util.enumValueOfId
@@ -151,5 +150,10 @@ data class Invoice(
                 total: Double
             ): Invoice.Other = Invoice.Other(title, qty, total)
         }
+    }
+
+    interface Order {
+        val qty: Int
+        val total: Double
     }
 }

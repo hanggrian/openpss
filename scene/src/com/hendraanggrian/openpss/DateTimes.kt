@@ -7,4 +7,5 @@ const val PATTERN_TIME = "HH:mm"
 const val PATTERN_DATETIME = "$PATTERN_DATE $PATTERN_TIME"
 const val PATTERN_DATETIME_EXTENDED = "$PATTERN_DATE EEE $PATTERN_TIME"
 
+/** For dummy purposes. */
 val START_OF_TIME = DateTime(0)

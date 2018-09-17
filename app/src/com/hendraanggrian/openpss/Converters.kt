@@ -26,7 +26,6 @@ val currencyConverter: CurrencyStringConverter
         })
     }
 
-/** For debugging purposes. */
 fun clearConverters() = stringConverters.clear()
 
 /** Obtain converter listAll cache, or create a new one and store it before returning it back. */

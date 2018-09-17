@@ -23,7 +23,7 @@ class _QueryBuilder : QueryBuilder, Builder<Query> {
 
     override fun build(): Query = source ?: NoQuery
 
-    private inline fun setOrCreate(target: Query, creator: (Query) -> Query) {
+    private fun setOrCreate(target: Query, creator: (Query) -> Query) {
         source = source?.let { creator(it) } ?: target
     }
 }

@@ -44,7 +44,7 @@ object EClockingReader : Reader() {
                         val date = LocalDate.fromDateFields(row.getCell(CELL_DATE).dateCellValue)
                         multimap.putAll(Attendee(no, name, dept), (CELL_RECORD_START until CELL_RECORD_END)
                             .map { row.getCell(it) }
-                            .filter { it.cellTypeEnum == NUMERIC }
+                            .filter { it.cellType == NUMERIC }
                             .map { date.toDateTime(LocalTime.fromDateFields(it.dateCellValue)) })
                     }
             }

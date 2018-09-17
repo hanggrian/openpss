@@ -4,7 +4,6 @@ import com.hendraanggrian.openpss.PATTERN_DATETIME_EXTENDED
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.bold
 import com.hendraanggrian.openpss.currencyConverter
-import com.hendraanggrian.openpss.db.Order
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.schemas.Employee
@@ -191,7 +190,7 @@ class ViewInvoicePopover(private val invoice: Invoice) : Popover(object : Resour
         }
     }
 
-    private fun <T : Order> _VBox.contentGridPane(
+    private fun <T : Invoice.Order> _VBox.contentGridPane(
         titleId: String,
         orders: List<T>,
         lineBuilder: _GridPane.(order: T, row: Int) -> Unit

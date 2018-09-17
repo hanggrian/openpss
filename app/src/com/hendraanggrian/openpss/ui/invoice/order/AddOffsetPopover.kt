@@ -5,6 +5,7 @@ import com.hendraanggrian.openpss.control.DoubleField
 import com.hendraanggrian.openpss.control.IntField
 import com.hendraanggrian.openpss.control.doubleField
 import com.hendraanggrian.openpss.control.intField
+import com.hendraanggrian.openpss.currencyConverter
 import com.hendraanggrian.openpss.db.OffsetOrder
 import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.db.schemas.OffsetPrice
@@ -63,7 +64,7 @@ class AddOffsetPopover(resourced: Resourced) : AddOrderPopover<Invoice.Offset>(
             minPriceField.valueProperty(), excessPriceField.valueProperty()
         )
 
-    override val disableBinding: ObservableBooleanValue
+    override val defaultButtonDisableBinding: ObservableBooleanValue
         get() = machineChoice.valueProperty().isNull or
             titleField.textProperty().isBlank() or
             qtyField.valueProperty().lessEq(0) or
@@ -77,9 +78,7 @@ class AddOffsetPopover(resourced: Resourced) : AddOrderPopover<Invoice.Offset>(
             titleField.text,
             qtyField.value,
             techniqueChoice.value,
-            minQtyField.value,
-            minPriceField.value,
-            excessPriceField.value
+            currencyConverter.fromString(totalLabel.text).toDouble()
         )
 
     override val typedTechnique: Invoice.Offset.Technique get() = techniqueChoice.value

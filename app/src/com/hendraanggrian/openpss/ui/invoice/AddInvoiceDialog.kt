@@ -95,7 +95,7 @@ class AddInvoiceDialog(
                     column<Invoice.Plate, String>(R.string.machine, 64) { stringCell { machine } }
                     column<Invoice.Plate, String>(R.string.title, 256) { stringCell { title } }
                     column<Invoice.Plate, String>(R.string.qty, 64) { numberCell { qty } }
-                    column<Invoice.Plate, String>(R.string.price, 416) { currencyCell { price } }
+                    // column<Invoice.Plate, String>(R.string.price, 416) { currencyCell { price } }
                     column<Invoice.Plate, String>(R.string.total, 128) { currencyCell { total } }
                 }
             } col 1 row 2 colSpans 3
@@ -108,9 +108,9 @@ class AddInvoiceDialog(
                     column<Invoice.Offset, String>(R.string.technique, 128) {
                         stringCell { typedTechnique.toString(this@AddInvoiceDialog) }
                     }
-                    column<Invoice.Offset, String>(R.string.min_qty, 64) { numberCell { minQty } }
-                    column<Invoice.Offset, String>(R.string.min_price, 128) { currencyCell { minPrice } }
-                    column<Invoice.Offset, String>(R.string.excess_price, 64) { currencyCell { excessPrice } }
+                    // column<Invoice.Offset, String>(R.string.min_qty, 64) { numberCell { minQty } }
+                    // column<Invoice.Offset, String>(R.string.min_price, 128) { currencyCell { minPrice } }
+                    // column<Invoice.Offset, String>(R.string.excess_price, 64) { currencyCell { excessPrice } }
                     column<Invoice.Offset, String>(R.string.total, 128) { currencyCell { total } }
                 }
             } col 1 row 3 colSpans 3
@@ -119,7 +119,7 @@ class AddInvoiceDialog(
                 columns {
                     column<Invoice.Other, String>(R.string.title, 336) { stringCell { title } }
                     column<Invoice.Other, String>(R.string.qty, 64) { numberCell { qty } }
-                    column<Invoice.Other, String>(R.string.price, 416) { currencyCell { price } }
+                    // column<Invoice.Other, String>(R.string.price, 416) { currencyCell { price } }
                     column<Invoice.Other, String>(R.string.total, 128) { currencyCell { total } }
                 }
             } col 1 row 4 colSpans 3
@@ -164,7 +164,7 @@ class AddInvoiceDialog(
     ): TableView<S> = tableView {
         prefHeight = 96.0
         init()
-        prefWidth = columns.sumByDouble { it.minWidth } + 34 // just enough for vertical scrollbar
+        // prefWidth = columns.sumByDouble { it.minWidth } + 34 // just enough for vertical scrollbar
         contextMenu {
             getString(R.string.add)(ImageView(R.image.menu_add)) {
                 onAction { _ -> newAddOrderPopOver().showAt(this@tableView) { this@tableView.items.add(it) } }

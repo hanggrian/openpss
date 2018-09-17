@@ -3,9 +3,7 @@ package com.hendraanggrian.openpss.db.schemas
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.db.Document
 import com.hendraanggrian.openpss.db.Numbered
-import com.hendraanggrian.openpss.db.OffsetOrder
 import com.hendraanggrian.openpss.db.Order
-import com.hendraanggrian.openpss.db.SimpleOrder
 import com.hendraanggrian.openpss.db.Titled
 import com.hendraanggrian.openpss.i18n.StringResource
 import com.hendraanggrian.openpss.util.enumValueOfId
@@ -14,7 +12,6 @@ import kotlinx.nosql.Id
 import kotlinx.nosql.ListColumn
 import kotlinx.nosql.boolean
 import kotlinx.nosql.dateTime
-import kotlinx.nosql.double
 import kotlinx.nosql.id
 import kotlinx.nosql.integer
 import kotlinx.nosql.mongodb.DocumentSchema
@@ -38,7 +35,7 @@ object Invoices : DocumentSchema<Invoice>("invoices", Invoice::class) {
         val title = string("title")
         val qty = integer("qty")
         val machine = string("machine")
-        val price = double("price")
+        val total = string("total")
     }
 
     class Offsets : ListColumn<Invoice.Offset, Invoices>("offsets", Invoice.Offset::class) {
@@ -46,15 +43,13 @@ object Invoices : DocumentSchema<Invoice>("invoices", Invoice::class) {
         val qty = integer("qty")
         val machine = string("machine")
         val technique = string("technique")
-        val minQty = integer("min_qty")
-        val minPrice = double("min_price")
-        val excessPrice = double("excess_price")
+        val total = string("total")
     }
 
     class Others : ListColumn<Invoice.Other, Invoices>("others", Invoice.Other::class) {
         val title = string("title")
         val qty = integer("qty")
-        val price = double("price")
+        val total = string("total")
     }
 }
 
@@ -83,7 +78,8 @@ data class Invoice(
             note: String
         ): Invoice = Invoice(
             Numbered.next(Invoices),
-            employeeId, customerId, dateTime, plates, offsets, others, note, false, false, false)
+            employeeId, customerId, dateTime, plates, offsets, others, note, false, false, false
+        )
     }
 
     override lateinit var id: Id<String, Invoices>
@@ -96,16 +92,16 @@ data class Invoice(
         val machine: String,
         override val title: String,
         override val qty: Int,
-        override val price: Double
-    ) : Titled, SimpleOrder {
+        override val total: Double
+    ) : Titled, Order {
 
         companion object {
             fun new(
                 machine: String,
                 title: String,
                 qty: Int,
-                price: Double
-            ): Plate = Plate(machine, title, qty, price)
+                total: Double
+            ): Plate = Plate(machine, title, qty, total)
         }
     }
 
@@ -114,10 +110,8 @@ data class Invoice(
         override val title: String,
         override val qty: Int,
         val technique: String,
-        override val minQty: Int,
-        override val minPrice: Double,
-        override val excessPrice: Double
-    ) : Titled, OffsetOrder {
+        override val total: Double
+    ) : Titled, Order {
 
         companion object {
             fun new(
@@ -125,13 +119,11 @@ data class Invoice(
                 title: String,
                 qty: Int,
                 technique: Technique,
-                minQty: Int,
-                minPrice: Double,
-                excessPrice: Double
-            ): Offset = Offset(machine, title, qty, technique.id, minQty, minPrice, excessPrice)
+                total: Double
+            ): Offset = Offset(machine, title, qty, technique.id, total)
         }
 
-        override val typedTechnique: Technique get() = enumValueOfId(technique)
+        val typedTechnique: Technique get() = enumValueOfId(technique)
 
         enum class Technique : StringResource {
             ONE_SIDE {
@@ -149,15 +141,15 @@ data class Invoice(
     data class Other(
         override val title: String,
         override val qty: Int,
-        override val price: Double
-    ) : Titled, SimpleOrder {
+        override val total: Double
+    ) : Titled, Order {
 
         companion object {
             fun new(
                 title: String,
                 qty: Int,
-                price: Double
-            ): Invoice.Other = Invoice.Other(title, qty, price)
+                total: Double
+            ): Invoice.Other = Invoice.Other(title, qty, total)
         }
     }
 }

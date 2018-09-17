@@ -33,7 +33,7 @@ val ktlint by configurations.registering
 dependencies {
     compile(kotlin("stdlib", VERSION_KOTLIN))
     compile(kotlinx("coroutines-javafx", VERSION_COROUTINES))
-    compile(controlsFX())
+    compile(controlsFx())
     compile(hendraanggrian("javafxx", "layouts-ktx", VERSION_JAVAFXX))
     compile(hendraanggrian("javafxx", "listeners-ktx", VERSION_JAVAFXX))
     compile(hendraanggrian("javafxx", "coroutines-ktx", VERSION_JAVAFXX))
@@ -41,8 +41,8 @@ dependencies {
     compile(commonsValidator())
 
     testImplementation(kotlin("test", VERSION_KOTLIN))
-    testImplementation(testFX("core"))
-    testImplementation(testFX("junit"))
+    testImplementation(testFx("core"))
+    testImplementation(testFx("junit"))
 
     ktlint(this, ktlint())
 }

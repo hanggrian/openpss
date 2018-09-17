@@ -12,6 +12,7 @@ import com.hendraanggrian.openpss.i18n.Resourced
 import com.hendraanggrian.openpss.util.getColor
 import javafx.beans.Observable
 import javafx.beans.value.ObservableBooleanValue
+import javafx.scene.control.Label
 import javafx.scene.control.TextField
 import javafxx.beans.binding.bindingOf
 import javafxx.beans.binding.stringBindingOf
@@ -30,10 +31,11 @@ abstract class AddOrderPopover<T : Titled>(
 
     abstract val totalBindingDependencies: Array<Observable>
 
-    abstract val disableBinding: ObservableBooleanValue
+    abstract val defaultButtonDisableBinding: ObservableBooleanValue
 
     protected lateinit var titleField: TextField
     protected lateinit var qtyField: IntField
+    protected lateinit var totalLabel: Label
 
     init {
         gridPane {
@@ -45,7 +47,7 @@ abstract class AddOrderPopover<T : Titled>(
             onLayout()
             (children.size / 2).let { totalRow ->
                 label(getString(R.string.total)) col 0 row totalRow
-                label {
+                totalLabel = label {
                     font = bold()
                     textProperty().bind(stringBindingOf(*totalBindingDependencies) {
                         currencyConverter.toString(total)
@@ -63,7 +65,9 @@ abstract class AddOrderPopover<T : Titled>(
         }
         defaultButton.run {
             text = getString(R.string.add)
-            disableProperty().bind(disableBinding)
+            disableProperty().bind(defaultButtonDisableBinding)
         }
     }
+
+    override val qty: Int get() = qtyField.value
 }

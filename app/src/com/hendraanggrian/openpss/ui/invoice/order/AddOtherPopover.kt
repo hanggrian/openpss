@@ -3,7 +3,7 @@ package com.hendraanggrian.openpss.ui.invoice.order
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.DoubleField
 import com.hendraanggrian.openpss.control.doubleField
-import com.hendraanggrian.openpss.db.SimpleOrder
+import com.hendraanggrian.openpss.db.Order
 import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.i18n.Resourced
 import javafx.beans.Observable
@@ -17,7 +17,8 @@ import javafxx.layouts.label
 class AddOtherPopover(resourced: Resourced) : AddOrderPopover<Invoice.Other>(
     resourced,
     R.string.add_other
-), SimpleOrder {
+), Order {
+
     private lateinit var priceField: DoubleField
 
     override fun _GridPane.onLayout() {
@@ -28,19 +29,13 @@ class AddOtherPopover(resourced: Resourced) : AddOrderPopover<Invoice.Other>(
     override val totalBindingDependencies: Array<Observable>
         get() = arrayOf(qtyField.valueProperty(), priceField.valueProperty())
 
-    override val disableBinding: ObservableBooleanValue
+    override val defaultButtonDisableBinding: ObservableBooleanValue
         get() = titleField.textProperty().isBlank() or
             qtyField.valueProperty().lessEq(0) or
             priceField.valueProperty().lessEq(0)
 
     override val optionalResult: Invoice.Other?
-        get() = Invoice.Other.new(
-            titleField.text,
-            qtyField.value,
-            priceField.value
-        )
+        get() = Invoice.Other.new(titleField.text, qty, total)
 
-    override val qty: Int get() = qtyField.value
-
-    override val price: Double get() = priceField.value
+    override val total: Double get() = qtyField.value * priceField.value
 }

@@ -27,11 +27,7 @@ import javafx.scene.layout.BorderPane
 import javafx.scene.layout.HBox
 import javafxx.application.later
 import javafxx.coroutines.listener
-import kotlinx.coroutines.experimental.Dispatchers
-import kotlinx.coroutines.experimental.GlobalScope
 import kotlinx.coroutines.experimental.delay
-import kotlinx.coroutines.experimental.javafx.JavaFx
-import kotlinx.coroutines.experimental.launch
 import org.apache.commons.lang3.SystemUtils.IS_OS_MAC
 import org.controlsfx.control.NotificationPane
 import java.net.URL

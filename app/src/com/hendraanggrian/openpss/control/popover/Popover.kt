@@ -1,6 +1,7 @@
 package com.hendraanggrian.openpss.control.popover
 
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.control.dialog.Dialog
 import com.hendraanggrian.openpss.i18n.Resourced
 import com.hendraanggrian.openpss.util.getColor
 import javafx.beans.property.ObjectProperty
@@ -26,7 +27,7 @@ import org.controlsfx.control.PopOver
 /** Base [PopOver] class used across applications. */
 @Suppress("LeakingThis")
 open class Popover(
-    resourced: Resourced,
+    private val resourced: Resourced,
     titleId: String
 ) : PopOver(), LayoutManager<Node>, Resourced by resourced {
 
@@ -68,9 +69,11 @@ open class Popover(
 
     fun showAt(node: Node) {
         // to avoid error when closing window/stage during popover display
-        node.scene.window.setOnCloseRequest {
-            isAnimated = false
-            hide()
+        if (resourced is Dialog<*>) {
+            resourced.dialogPane.scene.window.setOnCloseRequest {
+                isAnimated = false
+                hide()
+            }
         }
         // now check for coordinate to show popover
         val selectedIndex = (node as? TableView<*>)?.selectionModel?.selectedIndex

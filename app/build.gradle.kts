@@ -3,10 +3,7 @@ import com.hendraanggrian.generation.buildconfig.BuildConfigTask
 import com.hendraanggrian.generation.r.RTask
 import com.hendraanggrian.packr.PackTask
 import org.gradle.api.plugins.ExtensionAware
-import org.gradle.kotlin.dsl.configure
-import org.gradle.kotlin.dsl.kotlin
-import org.jetbrains.kotlin.gradle.dsl.Coroutines.*
-import org.gradle.language.base.plugins.LifecycleBasePlugin.*
+import org.jetbrains.kotlin.gradle.dsl.Coroutines
 
 import org.junit.platform.gradle.plugin.FiltersExtension
 import org.junit.platform.gradle.plugin.EnginesExtension
@@ -39,7 +36,7 @@ sourceSets {
 
 application.mainClassName = "$group.App"
 
-kotlin.experimental.coroutines = ENABLE
+kotlin.experimental.coroutines = Coroutines.ENABLE
 
 val ktlint by configurations.registering
 
@@ -70,15 +67,17 @@ dependencies {
     }
     testImplementation(junitPlatform("runner"))
 
-    ktlint(this, ktlint())
+    ktlint {
+        invoke(ktlint())
+    }
 }
 
 tasks {
-    withType<RTask> {
+    "generateR"(RTask::class) {
         resourcesDir = projectDir.resolve("res")
         lowercase = true
     }
-    withType<BuildConfigTask> {
+    "generateBuildConfig"(BuildConfigTask::class) {
         appName = RELEASE_NAME
         debug = RELEASE_DEBUG
         field(String::class.java, "USER", RELEASE_USER)
@@ -87,34 +86,37 @@ tasks {
         field(String::class.java, "WEBSITE", RELEASE_WEBSITE)
     }
 
-    register("ktlint", JavaExec::class) {
-        get("check").dependsOn(ktlint)
-        group = VERIFICATION_GROUP
+    val ktlint by registering(JavaExec::class) {
+        group = LifecycleBasePlugin.VERIFICATION_GROUP
         inputs.dir("src")
         outputs.dir("src")
         description = "Check Kotlin code style."
-        classpath(ktlint())
+        classpath(configurations["ktlint"])
         main = "com.github.shyiko.ktlint.Main"
-        args("src/**.kt")
+        args("src/**/*.kt")
     }
-    register("ktlintformat", JavaExec::class) {
+    "check" {
+        dependsOn(ktlint)
+    }
+    register("ktlintFormat", JavaExec::class) {
         group = "formatting"
         inputs.dir("src")
         outputs.dir("src")
         description = "Fix Kotlin code style deviations."
-        classpath(ktlint())
+        classpath(configurations["ktlint"])
         main = "com.github.shyiko.ktlint.Main"
-        args("-F", "src*.kt")
+        args("-F", "src/**/*.kt")
     }
 
-    withType<ShadowJar> {
+    "shadowJar"(ShadowJar::class) {
         destinationDir = buildDir.resolve("release")
         manifest.attributes(mapOf("Main-Class" to application.mainClassName))
         baseName = RELEASE_ARTIFACT
         version = RELEASE_VERSION
         classifier = null
     }
-    withType<PackTask> {
+
+    "pack"(PackTask::class) {
         dependsOn("installDist")
 
         buildDir.resolve("install/app/lib")?.listFiles()?.forEach {

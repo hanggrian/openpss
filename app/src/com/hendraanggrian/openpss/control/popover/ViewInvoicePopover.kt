@@ -40,7 +40,6 @@ import javafx.scene.paint.Color.BLACK
 import javafx.scene.text.TextAlignment
 import javafx.scene.transform.Scale
 import javafxx.application.later
-import javafxx.coroutines.onAction
 import javafxx.layouts.LayoutManager
 import javafxx.layouts._GridPane
 import javafxx.layouts._VBox
@@ -71,7 +70,7 @@ class ViewInvoicePopover(private val invoice: Invoice) : Popover(object : Resour
         const val WIDTH = 378.0
         const val HEIGHT = 530.0
 
-        val PAPER_INVOICE: Paper = PrintHelper.createPaper("Invoice", 100.0, 140.0, MM)
+        val PAPER: Paper = PrintHelper.createPaper("Invoice", 100.0, 140.0, MM)
     }
 
     private lateinit var invoiceHeaders: List<String>
@@ -83,11 +82,8 @@ class ViewInvoicePopover(private val invoice: Invoice) : Popover(object : Resour
         button(getString(R.string.print)) {
             isDefaultButton = true
             later { isDisable = invoice.printed }
-            onAction {
-                val printer = Printer.getDefaultPrinter()
-                val layout = printer.createPageLayout(PAPER_INVOICE, PORTRAIT, 0.0, 0.0, 0.0, 0.0)
-                printer.printerAttributes
-                val job = PrinterJob.createPrinterJob()
+            setOnAction {
+                val layout = Printer.getDefaultPrinter().createPageLayout(PAPER, PORTRAIT, 0.0, 0.0, 0.0, 0.0)
                 invoiceBox.run {
                     border = null
                     transforms += Scale(
@@ -95,11 +91,9 @@ class ViewInvoicePopover(private val invoice: Invoice) : Popover(object : Resour
                         layout.printableHeight / invoiceBox.boundsInParent.height
                     )
                 }
-                if (job != null && job.showPrintDialog(invoiceBox.scene.window)) {
-                    val success = job.printPage(layout, invoiceBox)
-                    if (success) {
-                        job.endJob()
-                    }
+                val job = PrinterJob.createPrinterJob()!!
+                if (job.showPrintDialog(this@ViewInvoicePopover) && job.printPage(layout, invoiceBox)) {
+                    job.endJob()
                 }
             }
         }

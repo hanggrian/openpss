@@ -20,29 +20,28 @@ Head to [releases] to download this app in 3 variants:
 
 #### Database
 [MongoDB] is required to run the app,
-install it on server system and grant privileges to the main user (below uses example user 'hendraanggrian'):
+install it on server system and grant privileges to the main user in admin database:
 
 ```json
 {
-	"_id" : "admin.hendraanggrian",
-	"user" : "hendraanggrian",
-	"db" : "admin",
-	"roles" : [
+	user: "my_name",
+	pwd: "my_password",
+	roles: [
 		{
-			"role" : "userAdminAnyDatabase",
-			"db" : "admin"
+			role: "userAdminAnyDatabase",
+			db: "admin"
 		},
 		{
-			"role" : "dbAdminAnyDatabase",
-			"db" : "admin"
+			role: "dbAdminAnyDatabase",
+			db: "admin"
 		},
 		{
-			"role" : "readWriteAnyDatabase",
-			"db" : "admin"
+			role: "readWriteAnyDatabase",
+			db: "admin"
 		},
 		{
-			"role" : "executeFunctions",
-			"db" : "admin"
+			role: "executeFunctions",
+			db: "admin"
 		}
 	]
 }
@@ -52,18 +51,18 @@ Where `executeFunctions` is a custom role:
 
 ```json
 {
-	"role" : "executeFunctions",
-	"privileges" : [
+	role: "executeFunctions",
+	privileges: [
 		{
-			"resource" : {
-				"anyResource" : true
+			resource: {
+				anyResource: true
 			},
-			"actions" : [
+			actions: [
 				"anyAction"
 			]
 		}
 	],
-	"roles" : [ ]
+	roles: [ ]
 }
 ```
 

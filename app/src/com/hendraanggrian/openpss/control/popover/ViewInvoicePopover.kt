@@ -80,10 +80,12 @@ class ViewInvoicePopover(private val invoice: Invoice) : Popover(object : Resour
 
     override fun LayoutManager<Node>.onCreateActions() {
         button(getString(R.string.print)) {
+            isAutoHide = false
             isDefaultButton = true
             later { isDisable = invoice.printed }
             setOnAction {
-                val layout = Printer.getDefaultPrinter().createPageLayout(PAPER, PORTRAIT, 0.0, 0.0, 0.0, 0.0)
+                val printer = Printer.getDefaultPrinter()
+                val layout = printer.createPageLayout(PAPER, PORTRAIT, 0.0, 0.0, 0.0, 0.0)
                 invoiceBox.run {
                     border = null
                     transforms += Scale(
@@ -91,9 +93,10 @@ class ViewInvoicePopover(private val invoice: Invoice) : Popover(object : Resour
                         layout.printableHeight / invoiceBox.boundsInParent.height
                     )
                 }
-                val job = PrinterJob.createPrinterJob()!!
+                val job = PrinterJob.createPrinterJob(printer)!!
                 if (job.showPrintDialog(this@ViewInvoicePopover) && job.printPage(layout, invoiceBox)) {
                     job.endJob()
+                    isAutoHide = true
                 }
             }
         }

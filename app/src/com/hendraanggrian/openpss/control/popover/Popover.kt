@@ -1,6 +1,7 @@
 package com.hendraanggrian.openpss.control.popover
 
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.control.ActionManager
 import com.hendraanggrian.openpss.control.dialog.Dialog
 import com.hendraanggrian.openpss.i18n.Resourced
 import com.hendraanggrian.openpss.util.getColor
@@ -29,7 +30,7 @@ import org.controlsfx.control.PopOver
 open class Popover(
     private val resourced: Resourced,
     titleId: String
-) : PopOver(), LayoutManager<Node>, Resourced by resourced {
+) : PopOver(), LayoutManager<Node>, ActionManager, Resourced by resourced {
 
     private val contentPane = Pane()
 
@@ -61,10 +62,6 @@ open class Popover(
                 onCreateActions()
             } marginTop R.dimen.padding_small.toDouble()
         }
-    }
-
-    /** Override this function to add extra actions. */
-    open fun LayoutManager<Node>.onCreateActions() {
     }
 
     fun showAt(node: Node) {

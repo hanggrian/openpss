@@ -31,5 +31,5 @@ class AddRecessPopover(
         })
     }
 
-    override val optionalResult: Pair<LocalTime, LocalTime>? get() = startBox.value to endBox.value
+    override val nullableResult: Pair<LocalTime, LocalTime>? get() = startBox.value to endBox.value
 }

@@ -20,5 +20,5 @@ open class InputPopover(resourced: Resourced, titleId: String) : ResultablePopov
         }
     }
 
-    override val optionalResult: String? get() = editor.text
+    override val nullableResult: String? get() = editor.text
 }

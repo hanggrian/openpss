@@ -2,6 +2,7 @@ package com.hendraanggrian.openpss.control.dialog
 
 import com.hendraanggrian.openpss.App.Companion.STYLE_DEFAULT_BUTTON
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.control.ActionManager
 import com.hendraanggrian.openpss.control.StretchableButton
 import com.hendraanggrian.openpss.control.space
 import com.hendraanggrian.openpss.control.stretchableButton
@@ -14,7 +15,6 @@ import com.hendraanggrian.openpss.i18n.Resourced
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.Selectable
 import javafx.geometry.Pos.CENTER_RIGHT
-import javafx.scene.Node
 import javafx.scene.control.SelectionModel
 import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
@@ -26,7 +26,6 @@ import javafxx.beans.property.toProperty
 import javafxx.beans.value.or
 import javafxx.collections.toMutableObservableList
 import javafxx.coroutines.onAction
-import javafxx.layouts.LayoutManager
 import javafxx.layouts.TableColumnsBuilder
 import javafxx.layouts._HBox
 import javafxx.layouts.anchorPane
@@ -43,7 +42,7 @@ abstract class TableDialog<D : Document<S>, S : DocumentSchema<D>>(
     employee: Employee,
     headerId: String? = null,
     graphicId: String? = null
-) : Dialog<Nothing>(resourced, headerId, graphicId), TableColumnsBuilder<D>, Selectable<D>, Refreshable {
+) : Dialog<Nothing>(resourced, headerId, graphicId), ActionManager, TableColumnsBuilder<D>, Selectable<D>, Refreshable {
 
     private companion object {
         const val STRETCH_POINT = 400.0
@@ -101,10 +100,6 @@ abstract class TableDialog<D : Document<S>, S : DocumentSchema<D>>(
         later {
             (dialogPane.scene.window as Stage).setMinSize(width, height)
         }
-    }
-
-    /** Override this function to add extra actions. */
-    open fun LayoutManager<Node>.onCreateActions() {
     }
 
     override fun <T> column(

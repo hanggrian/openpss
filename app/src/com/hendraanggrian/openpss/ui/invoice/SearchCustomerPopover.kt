@@ -56,7 +56,7 @@ class SearchCustomerPopover(resourced: Resourced) : ResultablePopover<Customer>(
         defaultButton.disableProperty().bind(!selectedBinding)
     }
 
-    override val optionalResult: Customer? get() = selected!!
+    override val nullableResult: Customer? get() = selected!!
 
     override val selectionModel: SelectionModel<Customer> get() = customerList.selectionModel
 }

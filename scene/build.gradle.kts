@@ -49,7 +49,7 @@ dependencies {
 
 tasks {
     "generateR"(RTask::class) {
-        resourcesDir = projectDir.resolve("sceneres")
+        resourcesDirectory = projectDir.resolve("sceneres")
     }
 
     val ktlint by registering(JavaExec::class) {

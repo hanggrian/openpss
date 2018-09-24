@@ -1,7 +1,8 @@
 package com.hendraanggrian.openpss.ui.main.help
 
+import com.hendraanggrian.openpss.BuildConfig.AUTHOR
+import com.hendraanggrian.openpss.BuildConfig.EMAIL
 import com.hendraanggrian.openpss.BuildConfig.FULL_NAME
-import com.hendraanggrian.openpss.BuildConfig.USER
 import com.hendraanggrian.openpss.BuildConfig.VERSION
 import com.hendraanggrian.openpss.BuildConfig.WEBSITE
 import com.hendraanggrian.openpss.R
@@ -80,12 +81,12 @@ class AboutDialog(resourced: Resourced) : Dialog<Nothing>(resourced), Selectable
                 } marginTop 4.0
                 textFlow {
                     "${getString(R.string.author)} " { font = font(12.0) }
-                    USER { font = bold(12) }
+                    AUTHOR { font = bold(12) }
                 } marginTop 4.0
                 hbox {
                     spacing = R.dimen.padding_small.toDouble()
                     button("GitHub") { onAction { desktop?.browse(URI(WEBSITE)) } }
-                    button("Email") { onAction { desktop?.mail(URI("mailto:$USER@gmail")) } }
+                    button("Email") { onAction { desktop?.mail(URI("mailto:$EMAIL")) } }
                 } marginTop 20.0
             } marginLeft 48.0
         }

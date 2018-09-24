@@ -44,5 +44,5 @@ class ChangePasswordDialog(resourced: Resourced) : ResultableDialog<String>(
         later { changePasswordField.requestFocus() }
     }
 
-    override val optionalResult: String? get() = changePasswordField.text
+    override val nullableResult: String? get() = changePasswordField.text
 }

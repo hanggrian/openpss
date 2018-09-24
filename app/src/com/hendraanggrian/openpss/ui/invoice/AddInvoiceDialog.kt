@@ -144,7 +144,7 @@ class AddInvoiceDialog(
         okButton().disableProperty().bind(customerProperty.isNull or totalProperty.lessEq(0))
     }
 
-    override val optionalResult: Invoice?
+    override val nullableResult: Invoice?
         get() = Invoice.new(
             employee.id,
             customerProperty.value.id,

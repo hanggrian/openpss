@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.ui.main
 
-import com.hendraanggrian.openpss.BuildConfig.APP_NAME
 import com.hendraanggrian.openpss.BuildConfig.DEBUG
+import com.hendraanggrian.openpss.BuildConfig.NAME
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.HostField
 import com.hendraanggrian.openpss.control.IntField
@@ -58,7 +58,7 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(resourced, graphicId = R.i
     private lateinit var serverPasswordField: PasswordField
 
     init {
-        title = APP_NAME
+        title = NAME
         headerText = getString(R.string.login)
         isResizable = false
         gridPane {

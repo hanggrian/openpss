@@ -54,5 +54,5 @@ class AddContactPopover(resourced: Resourced) : ResultablePopover<Customer.Conta
         }
     }
 
-    override val optionalResult: Customer.Contact? get() = Customer.Contact.new(typeChoice.value, contactField.text)
+    override val nullableResult: Customer.Contact? get() = Customer.Contact.new(typeChoice.value, contactField.text)
 }

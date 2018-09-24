@@ -39,7 +39,7 @@ class EditCustomerPopover(
         }
     }
 
-    override val optionalResult: Customer?
+    override val nullableResult: Customer?
         get() = customer.apply {
             name = nameField.text
             address = addressField.text.orNull()

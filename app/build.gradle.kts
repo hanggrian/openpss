@@ -74,16 +74,17 @@ dependencies {
 
 tasks {
     "generateR"(RTask::class) {
-        resourcesDir = projectDir.resolve("res")
-        lowercase = true
+        resourcesDirectory = projectDir.resolve("res")
+        setLowercase(true)
     }
     "generateBuildConfig"(BuildConfigTask::class) {
         appName = RELEASE_NAME
         debug = RELEASE_DEBUG
-        field(String::class.java, "USER", RELEASE_USER)
-        field(String::class.java, "FULL_NAME", RELEASE_FULL_NAME)
-        field(String::class.java, "ARTIFACT", RELEASE_ARTIFACT)
-        field(String::class.java, "WEBSITE", RELEASE_WEBSITE)
+        artifactId = RELEASE_ARTIFACT
+        author = RELEASE_USER
+        email = "$RELEASE_USER@gmail.com"
+        website = RELEASE_WEBSITE
+        field("FULL_NAME", RELEASE_FULL_NAME)
     }
 
     val ktlint by registering(JavaExec::class) {

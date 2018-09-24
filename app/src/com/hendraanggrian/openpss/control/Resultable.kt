@@ -6,5 +6,5 @@ interface Resultable<T> {
     /**
      * @return result of the component.
      */
-    val optionalResult: T?
+    val nullableResult: T?
 }

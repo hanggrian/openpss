@@ -28,5 +28,5 @@ class InputUserPopover(
             else -> super.defaultDisableBinding
         }
 
-    override val optionalResult: String? get() = editor.text.clean()
+    override val nullableResult: String? get() = editor.text.clean()
 }

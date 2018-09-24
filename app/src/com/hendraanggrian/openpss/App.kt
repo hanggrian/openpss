@@ -1,18 +1,18 @@
 package com.hendraanggrian.openpss
 
-import com.hendraanggrian.openpss.BuildConfig.APP_NAME
 import com.hendraanggrian.openpss.BuildConfig.DEBUG
+import com.hendraanggrian.openpss.BuildConfig.NAME
 import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.db.schemas.Employees
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.i18n.Resourced
 import com.hendraanggrian.openpss.io.properties.PreferencesFile
+import com.hendraanggrian.openpss.ui.controller
 import com.hendraanggrian.openpss.ui.main.ChangePasswordDialog
 import com.hendraanggrian.openpss.ui.main.LoginDialog
-import com.hendraanggrian.openpss.ui.controller
+import com.hendraanggrian.openpss.ui.pane
 import com.hendraanggrian.openpss.util.getResource
 import com.hendraanggrian.openpss.util.getStyle
-import com.hendraanggrian.openpss.ui.pane
 import javafx.application.Application
 import javafx.fxml.FXMLLoader
 import javafx.scene.image.Image
@@ -54,7 +54,7 @@ class App : Application(), Resourced {
 
             stage.apply {
                 val loader = FXMLLoader(getResource(R.layout.controller_main), resources)
-                title = "$APP_NAME - ${employee.name}".let { if (DEBUG) "$it - DEBUG" else it }
+                title = "$NAME - ${employee.name}".let { if (DEBUG) "$it - DEBUG" else it }
                 scene = styledScene(getStyle(R.style.openpss), loader.pane)
                 setMinSize(850.0, 450.0)
                 loader.controller.employee = employee

@@ -3,8 +3,8 @@ package com.hendraanggrian.openpss.ui.main.help
 import com.google.common.util.concurrent.ListenableFuture
 import com.google.gson.annotations.SerializedName
 import com.hendraanggrian.openpss.BuildConfig.ARTIFACT
+import com.hendraanggrian.openpss.BuildConfig.AUTHOR
 import com.hendraanggrian.openpss.BuildConfig.DEBUG
-import com.hendraanggrian.openpss.BuildConfig.USER
 import com.hendraanggrian.openpss.BuildConfig.VERSION
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.i18n.Resourced
@@ -27,7 +27,7 @@ import java.util.concurrent.TimeUnit.SECONDS
 /** As seen in `https://developer.github.com/v3/`. */
 interface GitHubApi {
 
-    @GET("repos/$USER/$ARTIFACT/releases/latest")
+    @GET("repos/$AUTHOR/$ARTIFACT/releases/latest")
     fun getLatestRelease(): ListenableFuture<Release>
 
     data class Release(

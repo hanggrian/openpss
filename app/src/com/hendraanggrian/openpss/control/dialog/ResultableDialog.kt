@@ -13,7 +13,7 @@ abstract class ResultableDialog<T>(
     init {
         setResultConverter {
             when (it.buttonData) {
-                OK_DONE -> optionalResult
+                OK_DONE -> nullableResult
                 else -> null
             }
         }

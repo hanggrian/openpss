@@ -94,7 +94,7 @@ class AddPaymentPopover(
         })
     }
 
-    override val optionalResult: Payment?
+    override val nullableResult: Payment?
         get() = Payment.new(
             invoice.id, employee.id, valueField.value,
             when {

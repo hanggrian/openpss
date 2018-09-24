@@ -13,5 +13,5 @@ class DatePopover(
 
     private val dateBox: DateBox = dateBox(prefill)
 
-    override val optionalResult: LocalDate? get() = dateBox.valueProperty().value
+    override val nullableResult: LocalDate? get() = dateBox.valueProperty().value
 }

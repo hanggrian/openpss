@@ -26,7 +26,7 @@ abstract class ResultablePopover<T>(
     fun showAt(node: Node, onAction: (T) -> Unit) {
         showAt(node)
         defaultButton.onAction {
-            onAction(optionalResult!!)
+            onAction(nullableResult!!)
             hide()
         }
     }

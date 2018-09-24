@@ -11,6 +11,7 @@ import com.hendraanggrian.openpss.db.schemas.Employees
 import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_INVOICE_HEADERS
 import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_LANGUAGE
 import com.hendraanggrian.openpss.db.schemas.Invoice
+import com.hendraanggrian.openpss.db.schemas.Invoices
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.i18n.Language
 import com.hendraanggrian.openpss.i18n.Resourced
@@ -39,7 +40,7 @@ import javafx.scene.layout.VBox
 import javafx.scene.paint.Color.BLACK
 import javafx.scene.text.TextAlignment
 import javafx.scene.transform.Scale
-import javafxx.application.later
+import javafxx.coroutines.onAction
 import javafxx.layouts.LayoutManager
 import javafxx.layouts._GridPane
 import javafxx.layouts._VBox
@@ -54,6 +55,7 @@ import javafxx.layouts.textFlow
 import javafxx.layouts.vbox
 import javafxx.scene.layout.gap
 import javafxx.scene.layout.paddingAll
+import kotlinx.nosql.update
 import java.util.ResourceBundle
 
 /**
@@ -80,24 +82,30 @@ class ViewInvoicePopover(private val invoice: Invoice) : Popover(object : Resour
 
     override fun LayoutManager<Node>.onCreateActions() {
         button(getString(R.string.print)) {
-            isAutoHide = false
             isDefaultButton = true
-            later { isDisable = invoice.printed }
-            setOnAction {
+            isDisable = invoice.printed
+            onAction {
+                // resize node to actual print size
                 val printer = Printer.getDefaultPrinter()
                 val layout = printer.createPageLayout(PAPER, PORTRAIT, 0.0, 0.0, 0.0, 0.0)
                 invoiceBox.run {
                     border = null
                     transforms += Scale(
-                        layout.printableWidth / invoiceBox.boundsInParent.width,
-                        layout.printableHeight / invoiceBox.boundsInParent.height
+                        layout.printableWidth / boundsInParent.width,
+                        layout.printableHeight / boundsInParent.height
                     )
                 }
+                // disable auto-hide when print dialog is showing
+                isAutoHide = false
                 val job = PrinterJob.createPrinterJob(printer)!!
                 if (job.showPrintDialog(this@ViewInvoicePopover) && job.printPage(layout, invoiceBox)) {
                     job.endJob()
-                    isAutoHide = true
+                    transaction {
+                        Invoices[invoice].projection { printed }.update(true)
+                    }
+                    hide()
                 }
+                isAutoHide = true
             }
         }
     }

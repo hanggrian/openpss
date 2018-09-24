@@ -74,7 +74,7 @@ class AddOffsetPopover(resourced: Resourced) : AddOrderPopover<Invoice.Offset>(r
             techniqueChoice.valueProperty().isNull or
             totalField.valueProperty().lessEq(0)
 
-    override val optionalResult: Invoice.Offset?
+    override val nullableResult: Invoice.Offset?
         get() = Invoice.Offset.new(machineChoice.value.name, titleField.text, qty, techniqueChoice.value, total)
 
     override fun calculateTotal(): Double = when (techniqueChoice.value) {

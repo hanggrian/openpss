@@ -45,5 +45,5 @@ class DateTimePopover(
         defaultButton.text = getString(defaultButtonTextId)
     }
 
-    override val optionalResult: DateTime? get() = dateBox.value.toDateTime(timeBox.value)
+    override val nullableResult: DateTime? get() = dateBox.value.toDateTime(timeBox.value)
 }

@@ -31,7 +31,7 @@ class AddOtherPopover(resourced: Resourced) : AddOrderPopover<Invoice.Other>(res
             qtyField.valueProperty().lessEq(0) or
             totalField.valueProperty().lessEq(0)
 
-    override val optionalResult: Invoice.Other?
+    override val nullableResult: Invoice.Other?
         get() = Invoice.Other.new(titleField.text, qty, total)
 
     override fun calculateTotal(): Double = qtyField.value * priceField.value

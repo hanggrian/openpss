@@ -1,5 +1,11 @@
 package com.hendraanggrian.openpss.ui.main
 
+import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.START_OF_TIME
+import com.hendraanggrian.openpss.control.popover.ViewInvoicePopover
+import com.hendraanggrian.openpss.db.schemas.Customers
+import com.hendraanggrian.openpss.db.schemas.Invoice
+import com.hendraanggrian.openpss.db.schemas.Invoice.Offset.Technique.TWO_SIDE_EQUAL
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.layout.SegmentedTabPane
 import com.hendraanggrian.openpss.ui.Controller
@@ -27,6 +33,7 @@ import javafx.scene.layout.BorderPane
 import javafx.scene.layout.HBox
 import javafxx.application.later
 import javafxx.coroutines.listener
+import javafxx.scene.control.errorAlert
 import kotlinx.coroutines.experimental.delay
 import org.apache.commons.lang3.SystemUtils.IS_OS_MAC
 import org.controlsfx.control.NotificationPane
@@ -102,7 +109,27 @@ class MainController : Controller(), Selectable<Tab> {
 
     @FXML fun preferences() = PreferencesDialog(this, transaction { employee.isAdmin() }).show()
 
-    @FXML fun about() = AboutDialog(this).show()
+    @FXML fun testViewInvoice() {
+        val customer = transaction { Customers.find().firstOrNull() }
+        when (customer) {
+            null -> errorAlert(getString(R.string.no_customer_to_test)).showAndWait()
+            else -> ViewInvoicePopover(
+                Invoice(
+                    no = 1234,
+                    employeeId = employee.id,
+                    customerId = customer.id,
+                    dateTime = START_OF_TIME,
+                    plates = listOf(Invoice.Plate.new("Title", 5, 92000.0, "Machine")),
+                    offsets = listOf(Invoice.Offset.new("Title", 5, 92000.0, "Machine", TWO_SIDE_EQUAL)),
+                    others = listOf(Invoice.Other.new("Title", 5, 92000.0)),
+                    note = "This is a test",
+                    printed = false,
+                    paid = false,
+                    done = false
+                ), true
+            ).showAt(menuBar)
+        }
+    }
 
     @FXML fun checkUpdate() = GitHubApi.checkUpdates(this, { title, actions ->
         notificationPane.text = title
@@ -113,6 +140,8 @@ class MainController : Controller(), Selectable<Tab> {
         notificationPane.actions.clear()
         notificationPane.show()
     }
+
+    @FXML fun about() = AboutDialog(this).show()
 
     private fun SegmentedController.replaceButtons() {
         navigationLeftBox.children.setAll(leftActionManager.childs)

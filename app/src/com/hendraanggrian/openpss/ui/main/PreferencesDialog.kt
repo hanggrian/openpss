@@ -85,7 +85,7 @@ class PreferencesDialog(
         }
         if (showGlobalSettings) dialogPane.expandableContent = group(R.string.global_settings) {
             gridPane {
-                gap = R.dimen.padding_small.toDouble()
+                gap = R.dimen.padding_medium.toDouble()
                 transaction {
                     label(getString(R.string.server_language)) row 0 col 0
                     languageBox = choiceBox(Language.values().toObservableList()) {
@@ -128,7 +128,7 @@ class PreferencesDialog(
     private fun group(
         titleId: String,
         init: (@LayoutDsl _VBox).() -> Unit
-    ): VBox = javafxx.layouts.vbox(R.dimen.padding_verysmall.toDouble()) {
+    ): VBox = javafxx.layouts.vbox(R.dimen.padding_small.toDouble()) {
         label(getString(titleId)) { font = bold() }
         init()
     }
@@ -136,7 +136,7 @@ class PreferencesDialog(
     private fun LayoutManager<Node>.group(
         titleId: String,
         init: (@LayoutDsl _VBox).() -> Unit
-    ): VBox = vbox(R.dimen.padding_verysmall.toDouble()) {
+    ): VBox = vbox(R.dimen.padding_small.toDouble()) {
         label(getString(titleId)) { font = bold() }
         init()
     }
@@ -144,7 +144,7 @@ class PreferencesDialog(
     private fun LayoutManager<Node>.item(
         labelId: String? = null,
         init: (@LayoutDsl _HBox).() -> Unit
-    ): HBox = hbox(R.dimen.padding_small.toDouble()) {
+    ): HBox = hbox(R.dimen.padding_medium.toDouble()) {
         alignment = CENTER_LEFT
         if (labelId != null) label(getString(labelId))
         init()

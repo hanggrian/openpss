@@ -84,7 +84,7 @@ class AboutDialog(resourced: Resourced) : Dialog<Nothing>(resourced), Selectable
                     AUTHOR { font = bold(12) }
                 } marginTop 4.0
                 hbox {
-                    spacing = R.dimen.padding_small.toDouble()
+                    spacing = R.dimen.padding_medium.toDouble()
                     button("GitHub") { onAction { desktop?.browse(URI(WEBSITE)) } }
                     button("Email") { onAction { desktop?.mail(URI("mailto:$EMAIL")) } }
                 } marginTop 20.0

@@ -74,7 +74,7 @@ class AddInvoiceDialog(
 
     init {
         gridPane {
-            gap = R.dimen.padding_small.toDouble()
+            gap = R.dimen.padding_medium.toDouble()
             label(getString(R.string.employee)) col 0 row 0
             label(employee.name) { font = bold() } col 1 row 0
             label(getString(R.string.date)) col 2 row 0 hpriority ALWAYS halign RIGHT

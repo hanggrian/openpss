@@ -69,8 +69,8 @@ class AttendeePane(
         vbox {
             isFillWidth = true
             gridPane {
-                gap = R.dimen.padding_verysmall.toDouble()
-                paddingAll = R.dimen.padding_small.toDouble()
+                gap = R.dimen.padding_small.toDouble()
+                paddingAll = R.dimen.padding_medium.toDouble()
                 attendee.role?.let { role ->
                     label(getString(R.string.role)) col 0 row 0 marginRight 4.0
                     label(role) col 1 row 0 colSpans 2
@@ -132,7 +132,7 @@ class AttendeePane(
                                         label(hours.toString()) {
                                             font = font(10.0)
                                             if (hours > 12) textFill = getColor(R.color.red)
-                                        } marginLeft R.dimen.padding_small.toDouble()
+                                        } marginLeft R.dimen.padding_medium.toDouble()
                                     }
                                 }
                             }

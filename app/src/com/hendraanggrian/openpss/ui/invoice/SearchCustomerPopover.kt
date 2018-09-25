@@ -51,7 +51,7 @@ class SearchCustomerPopover(resourced: Resourced) : ResultablePopover<Customer>(
                 itemsProperty().listener { _, _, value -> if (value.isNotEmpty()) selectionModel.selectFirst() }
                 onMouseClicked { if (it.isDoubleClick() && selected != null) defaultButton.fire() }
                 onKeyPressed { if (it.code == ENTER && selected != null) defaultButton.fire() }
-            } marginTop R.dimen.padding_small.toDouble()
+            } marginTop R.dimen.padding_medium.toDouble()
         }
         defaultButton.disableProperty().bind(!selectedBinding)
     }

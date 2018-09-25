@@ -52,7 +52,7 @@ class DisableRecessPopover(
 
     init {
         gridPane {
-            gap = R.dimen.padding_small.toDouble()
+            gap = R.dimen.padding_medium.toDouble()
             label(getString(R.string.recess)) col 0 row 0
             recessChoice = choiceBox(
                 mutableObservableListOf(getString(R.string.all),

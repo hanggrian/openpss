@@ -18,7 +18,7 @@ import javafxx.layouts.textField
 import javafxx.layouts.toggleButton
 import javafxx.layouts.tooltip
 
-class PasswordBox(resourced: Resourced) : _HBox(R.dimen.padding_small.toDouble()), Resourced by resourced {
+class PasswordBox(resourced: Resourced) : _HBox(R.dimen.padding_medium.toDouble()), Resourced by resourced {
 
     private lateinit var field1: PasswordField
     private lateinit var field2: TextField

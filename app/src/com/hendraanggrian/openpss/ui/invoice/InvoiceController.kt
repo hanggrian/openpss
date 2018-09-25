@@ -61,6 +61,7 @@ import javafxx.collections.emptyObservableList
 import javafxx.collections.toMutableObservableList
 import javafxx.collections.toObservableList
 import javafxx.coroutines.onAction
+import javafxx.coroutines.onHidden
 import javafxx.coroutines.onMouseClicked
 import javafxx.layouts.LayoutManager
 import javafxx.layouts.columns
@@ -192,9 +193,9 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
                     showDetailNodeProperty().bind(selectedBinding)
                     masterNode = invoiceTable
                     detailNode = javafxx.layouts.vbox {
-                        hbox(R.dimen.padding_small.toDouble()) {
+                        hbox(R.dimen.padding_medium.toDouble()) {
                             alignment = CENTER
-                            paddingAll = R.dimen.padding_small.toDouble()
+                            paddingAll = R.dimen.padding_medium.toDouble()
                             region() hpriority ALWAYS
                             addPaymentButton = styledStretchableButton(
                                 STYLE_DEFAULT_BUTTON, STRETCH_POINT,
@@ -304,7 +305,13 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
 
     @FXML fun clearCustomer() = customerProperty.set(null)
 
-    private fun viewInvoice() = ViewInvoicePopover(selected!!).showAt(invoiceTable)
+    private fun viewInvoice() = ViewInvoicePopover(selected!!).apply {
+        onHidden {
+            transaction {
+                reload(selected!!)
+            }
+        }
+    }.showAt(invoiceTable)
 
     private fun addPayment() = AddPaymentPopover(this, employee, selected!!).showAt(addPaymentButton) {
         transaction {

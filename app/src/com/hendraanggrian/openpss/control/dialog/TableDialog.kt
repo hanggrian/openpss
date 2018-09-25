@@ -51,7 +51,7 @@ abstract class TableDialog<D : Document<S>, S : DocumentSchema<D>>(
     protected lateinit var refreshButton: StretchableButton
     protected lateinit var addButton: StretchableButton
     protected lateinit var deleteButton: StretchableButton
-    protected val extraButtons: _HBox = _HBox(R.dimen.padding_small.toDouble()).apply { alignment = CENTER_RIGHT }
+    protected val extraButtons: _HBox = _HBox(R.dimen.padding_medium.toDouble()).apply { alignment = CENTER_RIGHT }
 
     protected lateinit var table: TableView<D>
 
@@ -65,9 +65,9 @@ abstract class TableDialog<D : Document<S>, S : DocumentSchema<D>>(
                 isEditable = true
             } anchorAll 1.0
         }
-        graphic = javafxx.layouts.vbox(R.dimen.padding_small.toDouble()) {
+        graphic = javafxx.layouts.vbox(R.dimen.padding_medium.toDouble()) {
             alignment = CENTER_RIGHT
-            hbox(R.dimen.padding_small.toDouble()) {
+            hbox(R.dimen.padding_medium.toDouble()) {
                 alignment = CENTER_RIGHT
                 refreshButton = styledStretchableButton(
                     STYLE_DEFAULT_BUTTON,

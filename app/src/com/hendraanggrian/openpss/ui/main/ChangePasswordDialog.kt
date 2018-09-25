@@ -26,7 +26,7 @@ class ChangePasswordDialog(resourced: Resourced) : ResultableDialog<String>(
 
     init {
         gridPane {
-            gap = R.dimen.padding_small.toDouble()
+            gap = R.dimen.padding_medium.toDouble()
             label {
                 text = getString(R.string.new_employee_must_assign_new_password_this_will_only_occur_once)
             } col 0 row 0 colSpans 2

@@ -62,7 +62,10 @@ import java.util.ResourceBundle
  * Popup displaying invoice using server's language instead of local.
  * Size of invoice is equivalent to 10x14cm, possibly the smallest continuous form available.
  */
-class ViewInvoicePopover(private val invoice: Invoice) : Popover(object : Resourced {
+class ViewInvoicePopover(
+    private val invoice: Invoice,
+    private val isTest: Boolean = false
+) : Popover(object : Resourced {
     override val resources: ResourceBundle = Language.ofFullCode(transaction {
         findGlobalSettings(KEY_LANGUAGE).single().value
     }).toResourcesBundle()
@@ -100,12 +103,11 @@ class ViewInvoicePopover(private val invoice: Invoice) : Popover(object : Resour
                 val job = PrinterJob.createPrinterJob(printer)!!
                 if (job.showPrintDialog(this@ViewInvoicePopover) && job.printPage(layout, invoiceBox)) {
                     job.endJob()
-                    transaction {
+                    if (!isTest) transaction {
                         Invoices[invoice].projection { printed }.update(true)
                     }
-                    hide()
                 }
-                isAutoHide = true
+                hide()
             }
         }
     }
@@ -117,12 +119,12 @@ class ViewInvoicePopover(private val invoice: Invoice) : Popover(object : Resour
             employee = Employees[invoice.employeeId].single()
             customer = Customers[invoice.customerId].single()
         }
-        invoiceBox = vbox(R.dimen.padding_small.toDouble()) {
+        invoiceBox = vbox(R.dimen.padding_medium.toDouble()) {
             border = DASHED.toBorder()
-            paddingAll = R.dimen.padding_small.toDouble()
+            paddingAll = R.dimen.padding_medium.toDouble()
             setMinSize(WIDTH, HEIGHT)
             setMaxSize(WIDTH, HEIGHT)
-            hbox(R.dimen.padding_small.toDouble()) {
+            hbox(R.dimen.padding_medium.toDouble()) {
                 vbox {
                     alignment = CENTER_LEFT
                     invoiceHeaders.forEachIndexed { index, s -> label(s) { if (index == 0) font = bold() } }
@@ -144,7 +146,7 @@ class ViewInvoicePopover(private val invoice: Invoice) : Popover(object : Resour
             }
             vbox {
                 gridPane {
-                    hgap = R.dimen.padding_small.toDouble()
+                    hgap = R.dimen.padding_medium.toDouble()
                     columnConstraints {
                         constraints {
                             minWidth = USE_PREF_SIZE
@@ -189,9 +191,9 @@ class ViewInvoicePopover(private val invoice: Invoice) : Popover(object : Resour
             } vpriority ALWAYS
             fullLine()
             gridPane {
-                gap = R.dimen.padding_small.toDouble()
+                gap = R.dimen.padding_medium.toDouble()
                 textFlow {
-                    paddingAll = R.dimen.padding_verysmall.toDouble()
+                    paddingAll = R.dimen.padding_small.toDouble()
                     border = SOLID.toBorder()
                     "${getString(R.string.note)}\n" { font = bold() }
                     invoice.note()
@@ -233,5 +235,5 @@ class ViewInvoicePopover(private val invoice: Invoice) : Popover(object : Resour
 
     private fun BorderStrokeStyle.toBorder() = Border(BorderStroke(BLACK, this, EMPTY, DEFAULT))
 
-    private fun LayoutManager<Node>.fullLine() = line(endX = WIDTH - R.dimen.padding_small.toDouble() * 2)
+    private fun LayoutManager<Node>.fullLine() = line(endX = WIDTH - R.dimen.padding_medium.toDouble() * 2)
 }

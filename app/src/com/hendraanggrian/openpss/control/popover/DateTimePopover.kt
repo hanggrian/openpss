@@ -25,7 +25,7 @@ class DateTimePopover(
 
     init {
         gridPane {
-            gap = R.dimen.padding_small.toDouble()
+            gap = R.dimen.padding_medium.toDouble()
             dateBox = dateBox(prefill.toLocalDate()) row 0 col 1
             button("-${Record.WORKING_HOURS}") {
                 onAction { _ -> repeat(Record.WORKING_HOURS) { timeBox.previousButton.fire() } }

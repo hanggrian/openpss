@@ -33,16 +33,16 @@ object Invoices : DocumentSchema<Invoice>("invoices", Invoice::class) {
     class Plates : ListColumn<Invoice.Plate, Invoices>("plates", Invoice.Plate::class) {
         val title = string("title")
         val qty = integer("qty")
-        val machine = string("machine")
         val total = string("total")
+        val machine = string("machine")
     }
 
     class Offsets : ListColumn<Invoice.Offset, Invoices>("offsets", Invoice.Offset::class) {
         val title = string("title")
         val qty = integer("qty")
+        val total = string("total")
         val machine = string("machine")
         val technique = string("technique")
-        val total = string("total")
     }
 
     class Others : ListColumn<Invoice.Other, Invoices>("others", Invoice.Other::class) {
@@ -88,38 +88,38 @@ data class Invoice(
     private fun List<Order>.sum() = sumByDouble { it.total }
 
     data class Plate(
-        val machine: String,
         override val title: String,
         override val qty: Int,
-        override val total: Double
+        override val total: Double,
+        val machine: String
     ) : Titled, Order {
 
         companion object {
             fun new(
-                machine: String,
                 title: String,
                 qty: Int,
-                total: Double
-            ): Plate = Plate(machine, title, qty, total)
+                total: Double,
+                machine: String
+            ): Plate = Plate(title, qty, total, machine)
         }
     }
 
     data class Offset(
-        val machine: String,
         override val title: String,
         override val qty: Int,
-        val technique: String,
-        override val total: Double
+        override val total: Double,
+        val machine: String,
+        val technique: String
     ) : Titled, Order {
 
         companion object {
             fun new(
-                machine: String,
                 title: String,
                 qty: Int,
-                technique: Technique,
-                total: Double
-            ): Offset = Offset(machine, title, qty, technique.id, total)
+                total: Double,
+                machine: String,
+                technique: Technique
+            ): Offset = Offset(title, qty, total, machine, technique.id)
         }
 
         val typedTechnique: Technique get() = enumValueOfId(technique)

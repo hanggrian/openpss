@@ -41,7 +41,7 @@ open class Popover(
     var graphic: Node by graphicProperty
 
     init {
-        contentNode = javafxx.layouts.vbox(R.dimen.padding_small.toDouble()) {
+        contentNode = javafxx.layouts.vbox(R.dimen.padding_medium.toDouble()) {
             updatePadding(12.0, 16.0, 12.0, 16.0)
             borderPane {
                 left = javafxx.layouts.label(getString(titleId)) {
@@ -60,7 +60,7 @@ open class Popover(
                     onAction { hide() }
                 }
                 onCreateActions()
-            } marginTop R.dimen.padding_small.toDouble()
+            } marginTop R.dimen.padding_medium.toDouble()
         }
     }
 

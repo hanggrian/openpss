@@ -36,6 +36,9 @@
                 <MenuItem fx:id="employeeItem" mnemonicParsing="false" onAction="#editEmployee" text="%employee"/>
             </Menu>
             <Menu mnemonicParsing="false" text="%help">
+                <MenuItem mnemonicParsing="false" onAction="#testViewInvoice" text="%test_view_invoice"/>
+                <SeparatorMenuItem/>
+                <MenuItem mnemonicParsing="false" onAction="#checkUpdate" text="%check_for_updates"/>
                 <MenuItem mnemonicParsing="false" onAction="#about" text="%about">
                     <graphic>
                         <ImageView pickOnBounds="true" preserveRatio="true">
@@ -43,7 +46,6 @@
                         </ImageView>
                     </graphic>
                 </MenuItem>
-                <MenuItem mnemonicParsing="false" onAction="#checkUpdate" text="%check_for_updates"/>
             </Menu>
         </MenuBar>
         <AnchorPane styleClass="navigation-pane">

@@ -62,7 +62,7 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(resourced, graphicId = R.i
         headerText = getString(R.string.login)
         isResizable = false
         gridPane {
-            gap = R.dimen.padding_small.toDouble()
+            gap = R.dimen.padding_medium.toDouble()
             label(getString(R.string.language)) col 0 row 0
             choiceBox(Language.values().toObservableList()) {
                 maxWidth = Double.MAX_VALUE
@@ -106,14 +106,14 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(resourced, graphicId = R.i
                             styledInfoAlert(getStyle(R.style.openpss), title, contentText = content).show()
                         }
                     }
-                } marginLeft R.dimen.padding_small.toDouble()
+                } marginLeft R.dimen.padding_medium.toDouble()
                 hyperlink(getString(R.string.about)) {
                     onAction { AboutDialog(this@LoginDialog).show() }
-                } marginLeft R.dimen.padding_small.toDouble()
+                } marginLeft R.dimen.padding_medium.toDouble()
             } col 0 row 3 colSpans 2
         }
         gridPane {
-            gap = R.dimen.padding_small.toDouble()
+            gap = R.dimen.padding_medium.toDouble()
             label(getString(R.string.server_host_port)) col 0 row 0
             serverHostField = hostField {
                 text = LoginFile.DB_HOST

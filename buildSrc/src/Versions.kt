@@ -1,5 +1,5 @@
 const val VERSION_GRADLE = "4.10.1"
-const val VERSION_KOTLIN = "1.2.70"
+const val VERSION_KOTLIN = "1.2.71"
 const val VERSION_NOSQL = "0.1-SNAPSHOT"
 const val VERSION_COROUTINES = "0.26.0"
 

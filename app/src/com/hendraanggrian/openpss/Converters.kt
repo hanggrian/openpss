@@ -13,21 +13,18 @@ import java.util.WeakHashMap
  * To avoid creating the same instances over and over again, we cache those converters in this weak map for reuse,
  * using its class name as key.
  */
-private val stringConverters: MutableMap<String, StringConverter<*>> = WeakHashMap<String, StringConverter<*>>()
+private val stringConverters: MutableMap<String, StringConverter<Number>> =
+    WeakHashMap<String, StringConverter<Number>>()
 
 /** Number decimal string converter. */
-val numberConverter: NumberStringConverter get() = getOrStore { NumberStringConverter() }
+val numberConverter: StringConverter<Number> get() = stringConverters.getOrPut("number") { NumberStringConverter() }
 
 /** Number decimal with currency prefix string converter. */
-val currencyConverter: CurrencyStringConverter
-    get() = getOrStore {
+val currencyConverter: StringConverter<Number>
+    get() = stringConverters.getOrPut("currency") {
         CurrencyStringConverter(transaction {
             Language.ofFullCode(findGlobalSettings(KEY_LANGUAGE).single().value).toLocale()
         })
     }
 
 fun clearConverters() = stringConverters.clear()
-
-/** Obtain converter listAll cache, or create a new one and store it before returning it back. */
-private inline fun <reified T : StringConverter<*>> getOrStore(defaultValue: () -> T): T =
-    stringConverters.getOrPut(T::class.java.canonicalName) { defaultValue() } as T

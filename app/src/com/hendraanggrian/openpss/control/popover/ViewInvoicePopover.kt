@@ -40,10 +40,10 @@ import javafx.scene.layout.VBox
 import javafx.scene.paint.Color.BLACK
 import javafx.scene.text.TextAlignment
 import javafx.scene.transform.Scale
+import javafxx.application.later
 import javafxx.coroutines.onAction
 import javafxx.layouts.LayoutManager
 import javafxx.layouts._GridPane
-import javafxx.layouts._VBox
 import javafxx.layouts.button
 import javafxx.layouts.columnConstraints
 import javafxx.layouts.gridPane
@@ -83,7 +83,7 @@ class ViewInvoicePopover(private val invoice: Invoice) : Popover(object : Resour
     override fun LayoutManager<Node>.onCreateActions() {
         button(getString(R.string.print)) {
             isDefaultButton = true
-            isDisable = invoice.printed
+            later { isDisable = invoice.printed }
             onAction {
                 // resize node to actual print size
                 val printer = Printer.getDefaultPrinter()
@@ -143,30 +143,48 @@ class ViewInvoicePopover(private val invoice: Invoice) : Popover(object : Resour
                 label("${customer.no}. ${customer.name}") { font = bold() }
             }
             vbox {
-                orderGridPane(R.string.plate, invoice.plates) { plate, row ->
-                    label(numberConverter.toString(plate.qty)) row row col 0
-                    label(plate.machine) row row col 1
-                    label(plate.title) {
-                        isWrapText = true
-                    } row row col 2
-                    label(currencyConverter.toString(plate.total)) row row col 3
-                }
-                orderGridPane(R.string.offset, invoice.offsets) { offset, row ->
-                    label(numberConverter.toString(offset.qty)) row row col 0
-                    label("${offset.machine}\n${offset.typedTechnique.toString(this@ViewInvoicePopover)}") {
-                        textAlignment = TextAlignment.CENTER
-                    } row row col 1
-                    label(offset.title) {
-                        isWrapText = true
-                    } row row col 2
-                    label(currencyConverter.toString(offset.total)) row row col 3
-                }
-                orderGridPane(R.string.others, invoice.others) { other, row ->
-                    label(numberConverter.toString(other.qty)) row row col 0
-                    label(other.title) {
-                        isWrapText = true
-                    } row row col 1 colSpans 2
-                    label(currencyConverter.toString(other.total)) row row col 3
+                gridPane {
+                    hgap = R.dimen.padding_small.toDouble()
+                    columnConstraints {
+                        constraints {
+                            minWidth = USE_PREF_SIZE
+                            halignment = RIGHT
+                        }
+                        constraints {
+                            minWidth = USE_PREF_SIZE
+                        }
+                        constraints { hgrow = ALWAYS }
+                        constraints {
+                            minWidth = USE_PREF_SIZE
+                            halignment = RIGHT
+                        }
+                    }
+                    var row = 0
+                    row += orderGridPane(row, R.string.plate, invoice.plates) { order, i ->
+                        label(numberConverter.toString(order.qty)) row i col 0
+                        label(order.machine) row i col 1
+                        label(order.title) {
+                            isWrapText = true
+                        } row i col 2
+                        label(numberConverter.toString(order.total)) row i col 3
+                    }
+                    row += orderGridPane(row, R.string.offset, invoice.offsets) { order, i ->
+                        label(numberConverter.toString(order.qty)) row i col 0
+                        label("${order.machine}\n${order.typedTechnique.toString(this@ViewInvoicePopover)}") {
+                            textAlignment = TextAlignment.CENTER
+                        } row i col 1
+                        label(order.title) {
+                            isWrapText = true
+                        } row i col 2
+                        label(numberConverter.toString(order.total)) row i col 3
+                    }
+                    row += orderGridPane(row, R.string.others, invoice.others) { order, i ->
+                        label(numberConverter.toString(order.qty)) row i col 0
+                        label(order.title) {
+                            isWrapText = true
+                        } row i col 2
+                        label(numberConverter.toString(order.total)) row i col 3
+                    }
                 }
             } vpriority ALWAYS
             fullLine()
@@ -197,35 +215,20 @@ class ViewInvoicePopover(private val invoice: Invoice) : Popover(object : Resour
         }
     }
 
-    private fun <T : Invoice.Order> _VBox.orderGridPane(
+    private fun <T : Invoice.Order> _GridPane.orderGridPane(
+        currentRow: Int,
         titleId: String,
         orders: List<T>,
         lineBuilder: _GridPane.(order: T, row: Int) -> Unit
-    ) {
-        if (orders.isNotEmpty()) gridPane {
-            hgap = R.dimen.padding_small.toDouble()
-            columnConstraints {
-                constraints {
-                    minWidth = USE_PREF_SIZE
-                    halignment = RIGHT
-                }
-                constraints {
-                    minWidth = USE_PREF_SIZE
-                }
-                constraints { hgrow = ALWAYS }
-                constraints {
-                    minWidth = USE_PREF_SIZE
-                    halignment = RIGHT
-                }
-            }
-            var row = 0
-            label(getString(titleId)) { font = bold() } row row col 0 colSpans 4 halign LEFT
+    ): Int {
+        var row = currentRow
+        label(getString(titleId)) { font = bold() } row row col 0 colSpans 4 halign LEFT
+        row++
+        orders.forEach {
+            lineBuilder(it, row)
             row++
-            orders.forEach {
-                lineBuilder(it, row)
-                row++
-            }
         }
+        return row
     }
 
     private fun BorderStrokeStyle.toBorder() = Border(BorderStroke(BLACK, this, EMPTY, DEFAULT))

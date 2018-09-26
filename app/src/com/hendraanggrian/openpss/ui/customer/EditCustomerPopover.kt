@@ -8,11 +8,11 @@ import com.hendraanggrian.openpss.util.isName
 import com.hendraanggrian.openpss.util.orNull
 import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
-import javafxx.layouts.gridPane
-import javafxx.layouts.label
-import javafxx.layouts.textArea
-import javafxx.layouts.textField
-import javafxx.scene.layout.gap
+import ktfx.layouts.gridPane
+import ktfx.layouts.label
+import ktfx.layouts.textArea
+import ktfx.layouts.textField
+import ktfx.scene.layout.gap
 
 class EditCustomerPopover(
     resourced: Resourced,

@@ -7,10 +7,10 @@ import com.hendraanggrian.openpss.layout.TimeBox
 import com.hendraanggrian.openpss.layout.dateBox
 import com.hendraanggrian.openpss.layout.timeBox
 import com.hendraanggrian.openpss.ui.wage.record.Record
-import javafxx.coroutines.onAction
-import javafxx.layouts.button
-import javafxx.layouts.gridPane
-import javafxx.scene.layout.gap
+import ktfx.coroutines.onAction
+import ktfx.layouts.button
+import ktfx.layouts.gridPane
+import ktfx.scene.layout.gap
 import org.joda.time.DateTime
 
 class DateTimePopover(

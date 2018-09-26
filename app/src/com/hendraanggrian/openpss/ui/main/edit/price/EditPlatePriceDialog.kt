@@ -8,10 +8,10 @@ import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.i18n.Resourced
 import javafx.beans.value.ObservableValue
 import javafx.geometry.Pos.CENTER_RIGHT
-import javafxx.beans.property.toProperty
-import javafxx.coroutines.onEditCommit
-import javafxx.listeners.textFieldCellFactory
-import javafxx.styles.labeledStyle
+import ktfx.beans.property.toProperty
+import ktfx.coroutines.onEditCommit
+import ktfx.listeners.textFieldCellFactory
+import ktfx.styles.labeledStyle
 import kotlinx.nosql.equal
 import kotlinx.nosql.update
 

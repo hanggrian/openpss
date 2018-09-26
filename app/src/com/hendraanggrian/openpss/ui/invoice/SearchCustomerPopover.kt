@@ -12,15 +12,15 @@ import javafx.scene.control.ListView
 import javafx.scene.control.SelectionModel
 import javafx.scene.control.TextField
 import javafx.scene.input.KeyCode.ENTER
-import javafxx.beans.binding.bindingOf
-import javafxx.collections.toMutableObservableList
-import javafxx.coroutines.listener
-import javafxx.coroutines.onKeyPressed
-import javafxx.coroutines.onMouseClicked
-import javafxx.layouts.listView
-import javafxx.layouts.styledTextField
-import javafxx.layouts.vbox
-import javafxx.scene.input.isDoubleClick
+import ktfx.beans.binding.bindingOf
+import ktfx.collections.toMutableObservableList
+import ktfx.coroutines.listener
+import ktfx.coroutines.onKeyPressed
+import ktfx.coroutines.onMouseClicked
+import ktfx.layouts.listView
+import ktfx.layouts.styledTextField
+import ktfx.layouts.vbox
+import ktfx.scene.input.isDoubleClick
 import kotlin.text.RegexOption.IGNORE_CASE
 
 class SearchCustomerPopover(resourced: Resourced) : ResultablePopover<Customer>(resourced, R.string.search_customer),

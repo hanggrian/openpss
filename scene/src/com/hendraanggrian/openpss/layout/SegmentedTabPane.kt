@@ -6,9 +6,9 @@ import javafx.scene.control.Tab
 import javafx.scene.control.TabPane
 import javafx.scene.control.ToggleButton
 import javafx.scene.layout.Pane
-import javafxx.application.later
-import javafxx.coroutines.listener
-import javafxx.scene.layout.paddingTop
+import ktfx.application.later
+import ktfx.coroutines.listener
+import ktfx.scene.layout.paddingTop
 import org.controlsfx.control.SegmentedButton
 
 class SegmentedTabPane : TabPane() {

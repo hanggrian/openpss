@@ -8,16 +8,16 @@ import com.hendraanggrian.openpss.i18n.Resourced
 import javafx.scene.Node
 import javafx.scene.control.ChoiceBox
 import javafx.scene.control.Separator
-import javafxx.beans.value.or
-import javafxx.collections.mutableObservableListOf
-import javafxx.collections.toObservableList
-import javafxx.coroutines.onAction
-import javafxx.layouts.LayoutManager
-import javafxx.layouts.button
-import javafxx.layouts.choiceBox
-import javafxx.layouts.gridPane
-import javafxx.layouts.label
-import javafxx.scene.layout.gap
+import ktfx.beans.value.or
+import ktfx.collections.mutableObservableListOf
+import ktfx.collections.toObservableList
+import ktfx.coroutines.onAction
+import ktfx.layouts.LayoutManager
+import ktfx.layouts.button
+import ktfx.layouts.choiceBox
+import ktfx.layouts.gridPane
+import ktfx.layouts.label
+import ktfx.scene.layout.gap
 
 class DisableRecessPopover(
     resourced: Resourced,

@@ -5,7 +5,7 @@ buildscript {
     repositories {
         jcenter()
         maven("https://oss.sonatype.org/content/repositories/snapshots") // required for packr
-        maven("https://dl.bintray.com/hendraanggrian/packr") // packr is not approved by jcenter yet
+        maven("https://dl.bintray.com/hendraanggrian/packr")
     }
     dependencies {
         classpath(kotlin("gradle-plugin", VERSION_KOTLIN))
@@ -21,6 +21,7 @@ allprojects {
     repositories {
         jcenter()
         maven("http://repository.jetbrains.com/kotlin-nosql") // required for kotlin-nosql
+        maven("https://dl.bintray.com/hendraanggrian/ktfx")
     }
     tasks {
         withType<Delete> {

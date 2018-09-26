@@ -7,11 +7,11 @@ import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.i18n.Resourced
 import javafx.beans.Observable
 import javafx.beans.value.ObservableBooleanValue
-import javafxx.beans.value.isBlank
-import javafxx.beans.value.lessEq
-import javafxx.beans.value.or
-import javafxx.layouts._GridPane
-import javafxx.layouts.label
+import ktfx.beans.value.isBlank
+import ktfx.beans.value.lessEq
+import ktfx.beans.value.or
+import ktfx.layouts._GridPane
+import ktfx.layouts.label
 
 class AddOtherPopover(resourced: Resourced) : AddOrderPopover<Invoice.Other>(resourced, R.string.add_other),
     Invoice.Order {

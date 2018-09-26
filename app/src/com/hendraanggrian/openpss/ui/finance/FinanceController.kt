@@ -41,14 +41,14 @@ import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
 import javafx.scene.image.ImageView
 import javafx.scene.layout.Pane
-import javafxx.application.later
-import javafxx.collections.toMutableObservableList
-import javafxx.coroutines.listener
-import javafxx.coroutines.onAction
-import javafxx.coroutines.onMouseClicked
-import javafxx.layouts.LayoutManager
-import javafxx.layouts.pane
-import javafxx.scene.input.isDoubleClick
+import ktfx.application.later
+import ktfx.collections.toMutableObservableList
+import ktfx.coroutines.listener
+import ktfx.coroutines.onAction
+import ktfx.coroutines.onMouseClicked
+import ktfx.layouts.LayoutManager
+import ktfx.layouts.pane
+import ktfx.scene.input.isDoubleClick
 import java.net.URL
 import java.util.ResourceBundle
 

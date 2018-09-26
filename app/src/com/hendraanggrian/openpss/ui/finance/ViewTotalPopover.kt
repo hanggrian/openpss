@@ -6,9 +6,9 @@ import com.hendraanggrian.openpss.control.popover.Popover
 import com.hendraanggrian.openpss.currencyConverter
 import com.hendraanggrian.openpss.i18n.Resourced
 import javafx.geometry.HPos.RIGHT
-import javafxx.layouts.columnConstraints
-import javafxx.layouts.gridPane
-import javafxx.layouts.label
+import ktfx.layouts.columnConstraints
+import ktfx.layouts.gridPane
+import ktfx.layouts.label
 
 class ViewTotalPopover(
     resourced: Resourced,

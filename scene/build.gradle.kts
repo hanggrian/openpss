@@ -32,9 +32,9 @@ dependencies {
     compile(kotlin("stdlib", VERSION_KOTLIN))
     compile(kotlinx("coroutines-javafx", VERSION_COROUTINES))
     compile(controlsFx())
-    compile(hendraanggrian("javafxx", "layouts-ktx", VERSION_JAVAFXX))
-    compile(hendraanggrian("javafxx", "listeners-ktx", VERSION_JAVAFXX))
-    compile(hendraanggrian("javafxx", "coroutines-ktx", VERSION_JAVAFXX))
+    compile(hendraanggrian("ktfx", "ktfx-layouts", VERSION_KTFX))
+    compile(hendraanggrian("ktfx", "ktfx-listeners", VERSION_KTFX))
+    compile(hendraanggrian("ktfx", "ktfx-coroutines", VERSION_KTFX))
     compile(jodaTime())
     compile(commonsValidator())
 

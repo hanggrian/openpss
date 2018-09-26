@@ -2,7 +2,7 @@ package com.hendraanggrian.openpss.ui.finance
 
 import com.hendraanggrian.openpss.db.schemas.Payment
 import javafx.collections.ObservableList
-import javafxx.collections.toObservableList
+import ktfx.collections.toObservableList
 import org.joda.time.LocalDate
 
 data class Report(

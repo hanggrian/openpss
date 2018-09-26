@@ -49,32 +49,32 @@ import javafx.scene.image.ImageView
 import javafx.scene.layout.HBox
 import javafx.scene.layout.Priority.ALWAYS
 import javafx.util.Callback
-import javafxx.application.later
-import javafxx.beans.binding.bindingOf
-import javafxx.beans.binding.stringBindingOf
-import javafxx.beans.property.toProperty
-import javafxx.beans.value.and
-import javafxx.beans.value.eq
-import javafxx.beans.value.neq
-import javafxx.beans.value.or
-import javafxx.collections.emptyObservableList
-import javafxx.collections.toMutableObservableList
-import javafxx.collections.toObservableList
-import javafxx.coroutines.onAction
-import javafxx.coroutines.onHidden
-import javafxx.coroutines.onMouseClicked
-import javafxx.layouts.LayoutManager
-import javafxx.layouts.columns
-import javafxx.layouts.contextMenu
-import javafxx.layouts.controlsfx.masterDetailPane
-import javafxx.layouts.hbox
-import javafxx.layouts.region
-import javafxx.layouts.separatorMenuItem
-import javafxx.layouts.tableView
-import javafxx.scene.input.isDoubleClick
-import javafxx.scene.layout.paddingAll
 import kotlinx.nosql.equal
 import kotlinx.nosql.update
+import ktfx.application.later
+import ktfx.beans.binding.bindingOf
+import ktfx.beans.binding.stringBindingOf
+import ktfx.beans.property.toProperty
+import ktfx.beans.value.and
+import ktfx.beans.value.eq
+import ktfx.beans.value.neq
+import ktfx.beans.value.or
+import ktfx.collections.emptyObservableList
+import ktfx.collections.toMutableObservableList
+import ktfx.collections.toObservableList
+import ktfx.controlsfx.masterDetailPane
+import ktfx.coroutines.onAction
+import ktfx.coroutines.onHidden
+import ktfx.coroutines.onMouseClicked
+import ktfx.layouts.LayoutManager
+import ktfx.layouts.columns
+import ktfx.layouts.contextMenu
+import ktfx.layouts.hbox
+import ktfx.layouts.region
+import ktfx.layouts.separatorMenuItem
+import ktfx.layouts.tableView
+import ktfx.scene.input.isDoubleClick
+import ktfx.scene.layout.paddingAll
 import org.joda.time.LocalDate
 import java.net.URL
 import java.util.ResourceBundle
@@ -170,7 +170,7 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
         ) {
             Callback<Pair<Int, Int>, Node> { (page, count) ->
                 masterDetailPane(BOTTOM) {
-                    invoiceTable = javafxx.layouts.tableView {
+                    invoiceTable = ktfx.layouts.tableView {
                         columnResizePolicy = CONSTRAINED_RESIZE_POLICY
                         columns {
                             getString(R.string.id)<String> { stringCell { no.toString() } }
@@ -192,7 +192,7 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
                     }
                     showDetailNodeProperty().bind(selectedBinding)
                     masterNode = invoiceTable
-                    detailNode = javafxx.layouts.vbox {
+                    detailNode = ktfx.layouts.vbox {
                         hbox(R.dimen.padding_medium.toDouble()) {
                             alignment = CENTER
                             paddingAll = R.dimen.padding_medium.toDouble()

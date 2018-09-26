@@ -14,15 +14,15 @@ import javafx.scene.control.ListView
 import javafx.scene.control.TableView
 import javafx.scene.layout.Pane
 import javafx.scene.text.Font
-import javafxx.beans.value.getValue
-import javafxx.beans.value.setValue
-import javafxx.coroutines.listener
-import javafxx.coroutines.onAction
-import javafxx.layouts.LayoutManager
-import javafxx.layouts.borderPane
-import javafxx.layouts.button
-import javafxx.layouts.buttonBar
-import javafxx.scene.layout.updatePadding
+import ktfx.beans.value.getValue
+import ktfx.beans.value.setValue
+import ktfx.coroutines.listener
+import ktfx.coroutines.onAction
+import ktfx.layouts.LayoutManager
+import ktfx.layouts.borderPane
+import ktfx.layouts.button
+import ktfx.layouts.buttonBar
+import ktfx.scene.layout.updatePadding
 import org.controlsfx.control.PopOver
 
 /** Base [PopOver] class used across applications. */
@@ -41,10 +41,10 @@ open class Popover(
     var graphic: Node by graphicProperty
 
     init {
-        contentNode = javafxx.layouts.vbox(R.dimen.padding_medium.toDouble()) {
+        contentNode = ktfx.layouts.vbox(R.dimen.padding_medium.toDouble()) {
             updatePadding(12.0, 16.0, 12.0, 16.0)
             borderPane {
-                left = javafxx.layouts.label(getString(titleId)) {
+                left = ktfx.layouts.label(getString(titleId)) {
                     font = Font.font(18.0)
                     textFill = getColor(R.color.blue)
                 } align CENTER_LEFT

@@ -24,25 +24,25 @@ import javafx.scene.control.ButtonBar.ButtonData.OK_DONE
 import javafx.scene.control.ButtonType.CANCEL
 import javafx.scene.control.PasswordField
 import javafx.scene.control.TextField
-import javafxx.application.later
-import javafxx.beans.value.isBlank
-import javafxx.beans.value.or
-import javafxx.collections.toObservableList
-import javafxx.coroutines.listener
-import javafxx.coroutines.onAction
-import javafxx.layouts.choiceBox
-import javafxx.layouts.gridPane
-import javafxx.layouts.hbox
-import javafxx.layouts.hyperlink
-import javafxx.layouts.label
-import javafxx.layouts.passwordField
-import javafxx.layouts.textField
-import javafxx.scene.control.cancelButton
-import javafxx.scene.control.customButton
-import javafxx.scene.control.styledErrorAlert
-import javafxx.scene.control.styledInfoAlert
-import javafxx.scene.control.styledWarningAlert
-import javafxx.scene.layout.gap
+import ktfx.application.later
+import ktfx.beans.value.isBlank
+import ktfx.beans.value.or
+import ktfx.collections.toObservableList
+import ktfx.coroutines.listener
+import ktfx.coroutines.onAction
+import ktfx.layouts.choiceBox
+import ktfx.layouts.gridPane
+import ktfx.layouts.hbox
+import ktfx.layouts.hyperlink
+import ktfx.layouts.label
+import ktfx.layouts.passwordField
+import ktfx.layouts.textField
+import ktfx.scene.control.cancelButton
+import ktfx.scene.control.customButton
+import ktfx.scene.control.styledErrorAlert
+import ktfx.scene.control.styledInfoAlert
+import ktfx.scene.control.styledWarningAlert
+import ktfx.scene.layout.gap
 import kotlinx.coroutines.experimental.Dispatchers
 import kotlinx.coroutines.experimental.GlobalScope
 import kotlinx.coroutines.experimental.javafx.JavaFx
@@ -96,7 +96,7 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(resourced, graphicId = R.i
                                 title = title,
                                 buttonTypes = *arrayOf(CANCEL)
                             ) {
-                                dialogPane.content = javafxx.layouts.vbox {
+                                dialogPane.content = ktfx.layouts.vbox {
                                     actions.forEach { action ->
                                         hyperlink(action.text) { onAction = action }
                                     }

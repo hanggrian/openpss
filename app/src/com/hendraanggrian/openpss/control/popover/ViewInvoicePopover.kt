@@ -40,21 +40,21 @@ import javafx.scene.layout.VBox
 import javafx.scene.paint.Color.BLACK
 import javafx.scene.text.TextAlignment
 import javafx.scene.transform.Scale
-import javafxx.application.later
-import javafxx.coroutines.onAction
-import javafxx.layouts.LayoutManager
-import javafxx.layouts._GridPane
-import javafxx.layouts.button
-import javafxx.layouts.columnConstraints
-import javafxx.layouts.gridPane
-import javafxx.layouts.hbox
-import javafxx.layouts.label
-import javafxx.layouts.line
-import javafxx.layouts.region
-import javafxx.layouts.textFlow
-import javafxx.layouts.vbox
-import javafxx.scene.layout.gap
-import javafxx.scene.layout.paddingAll
+import ktfx.application.later
+import ktfx.coroutines.onAction
+import ktfx.layouts.LayoutManager
+import ktfx.layouts._GridPane
+import ktfx.layouts.button
+import ktfx.layouts.columnConstraints
+import ktfx.layouts.gridPane
+import ktfx.layouts.hbox
+import ktfx.layouts.label
+import ktfx.layouts.line
+import ktfx.layouts.region
+import ktfx.layouts.textFlow
+import ktfx.layouts.vbox
+import ktfx.scene.layout.gap
+import ktfx.scene.layout.paddingAll
 import kotlinx.nosql.update
 import java.util.ResourceBundle
 
@@ -113,7 +113,7 @@ class ViewInvoicePopover(
     }
 
     init {
-        graphic = javafxx.layouts.label("${getString(R.string.server_language)}: $language")
+        graphic = ktfx.layouts.label("${getString(R.string.server_language)}: $language")
         transaction {
             invoiceHeaders = findGlobalSettings(KEY_INVOICE_HEADERS).single().valueList
             employee = Employees[invoice.employeeId].single()

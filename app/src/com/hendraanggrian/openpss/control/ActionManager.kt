@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.control
 
 import javafx.scene.Node
-import javafxx.layouts.LayoutManager
+import ktfx.layouts.LayoutManager
 
 interface ActionManager {
 

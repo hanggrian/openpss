@@ -23,27 +23,27 @@ import javafx.scene.input.MouseEvent.MOUSE_CLICKED
 import javafx.scene.layout.Priority.ALWAYS
 import javafx.scene.layout.StackPane
 import javafx.scene.text.Font.font
-import javafxx.beans.binding.bindingOf
-import javafxx.collections.sort
-import javafxx.coroutines.eventFilter
-import javafxx.coroutines.listener
-import javafxx.coroutines.onAction
-import javafxx.coroutines.onKeyPressed
-import javafxx.coroutines.onMouseClicked
-import javafxx.layouts.LayoutDsl
-import javafxx.layouts._TitledPane
-import javafxx.layouts.checkBox
-import javafxx.layouts.contextMenu
-import javafxx.layouts.gridPane
-import javafxx.layouts.label
-import javafxx.layouts.listView
-import javafxx.layouts.separatorMenuItem
-import javafxx.layouts.vbox
-import javafxx.listeners.cellFactory
-import javafxx.scene.input.isDelete
-import javafxx.scene.input.isDoubleClick
-import javafxx.scene.layout.gap
-import javafxx.scene.layout.paddingAll
+import ktfx.beans.binding.bindingOf
+import ktfx.collections.sort
+import ktfx.coroutines.eventFilter
+import ktfx.coroutines.listener
+import ktfx.coroutines.onAction
+import ktfx.coroutines.onKeyPressed
+import ktfx.coroutines.onMouseClicked
+import ktfx.layouts.LayoutDsl
+import ktfx.layouts._TitledPane
+import ktfx.layouts.checkBox
+import ktfx.layouts.contextMenu
+import ktfx.layouts.gridPane
+import ktfx.layouts.label
+import ktfx.layouts.listView
+import ktfx.layouts.separatorMenuItem
+import ktfx.layouts.vbox
+import ktfx.listeners.cellFactory
+import ktfx.scene.input.isDelete
+import ktfx.scene.input.isDoubleClick
+import ktfx.scene.layout.gap
+import ktfx.scene.layout.paddingAll
 import kotlinx.coroutines.experimental.Dispatchers
 import kotlinx.coroutines.experimental.GlobalScope
 import kotlinx.coroutines.experimental.delay
@@ -111,7 +111,7 @@ class AttendeePane(
                     onUpdate { dateTime, empty ->
                         text = null
                         graphic = null
-                        if (dateTime != null && !empty) graphic = javafxx.layouts.hbox {
+                        if (dateTime != null && !empty) graphic = ktfx.layouts.hbox {
                             alignment = CENTER
                             val itemLabel = label(dateTime.toString(PATTERN_DATETIME_EXTENDED)) {
                                 maxWidth = Double.MAX_VALUE
@@ -170,7 +170,7 @@ class AttendeePane(
             deleteToTheRightMenu = getString(R.string.delete_employees_to_the_right)()
         }
         contentDisplay = RIGHT
-        graphic = javafxx.layouts.imageView {
+        graphic = ktfx.layouts.imageView {
             imageProperty().bind(bindingOf(hoverProperty()) {
                 Image(
                     when {

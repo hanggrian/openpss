@@ -18,31 +18,31 @@ import javafx.scene.control.ListView
 import javafx.scene.control.SelectionModel
 import javafx.scene.image.Image
 import javafx.scene.text.Font.font
-import javafxx.collections.toObservableList
-import javafxx.coroutines.listener
-import javafxx.coroutines.onAction
-import javafxx.layouts.button
-import javafxx.layouts.contextMenu
-import javafxx.layouts.controlsfx.masterDetailPane
-import javafxx.layouts.hbox
-import javafxx.layouts.imageView
-import javafxx.layouts.label
-import javafxx.layouts.text
-import javafxx.layouts.textFlow
-import javafxx.layouts.titledPane
-import javafxx.layouts.vbox
-import javafxx.listeners.cellFactory
-import javafxx.scene.control.closeButton
-import javafxx.scene.control.icon
-import javafxx.scene.layout.paddingAll
+import ktfx.collections.toObservableList
+import ktfx.controlsfx.masterDetailPane
+import ktfx.coroutines.listener
+import ktfx.coroutines.onAction
+import ktfx.layouts.button
+import ktfx.layouts.contextMenu
+import ktfx.layouts.hbox
+import ktfx.layouts.imageView
+import ktfx.layouts.label
+import ktfx.layouts.text
+import ktfx.layouts.textFlow
+import ktfx.layouts.titledPane
+import ktfx.layouts.vbox
+import ktfx.listeners.cellFactory
+import ktfx.scene.control.closeButton
+import ktfx.scene.control.icon
+import ktfx.scene.layout.paddingAll
 import java.net.URI
 
 class AboutDialog(resourced: Resourced) : Dialog<Nothing>(resourced), Selectable<License> {
 
-    private val licenseList: ListView<License> = javafxx.layouts.listView(License.values().toObservableList()) {
+    private val licenseList: ListView<License> = ktfx.layouts.listView(License.values().toObservableList()) {
         cellFactory {
             onUpdate { license, empty ->
-                if (license != null && !empty) graphic = javafxx.layouts.vbox {
+                if (license != null && !empty) graphic = ktfx.layouts.vbox {
                     label(license.repo) { font = font(12.0) }
                     label(license.owner) { font = bold(12) }
                 }
@@ -97,7 +97,7 @@ class AboutDialog(resourced: Resourced) : Dialog<Nothing>(resourced), Selectable
                 dividerPosition = 0.3
                 showDetailNodeProperty().bind(selectedBinding)
                 masterNode = licenseList
-                detailNode = javafxx.layouts.textArea {
+                detailNode = ktfx.layouts.textArea {
                     isEditable = false
                     selectedProperty.listener { _, _, license -> text = license?.getContent() }
                 }

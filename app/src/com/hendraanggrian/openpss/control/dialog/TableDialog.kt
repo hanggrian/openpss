@@ -21,18 +21,18 @@ import javafx.scene.control.TableView
 import javafx.scene.control.TableView.CONSTRAINED_RESIZE_POLICY
 import javafx.scene.image.ImageView
 import javafx.stage.Stage
-import javafxx.application.later
-import javafxx.beans.property.toProperty
-import javafxx.beans.value.or
-import javafxx.collections.toMutableObservableList
-import javafxx.coroutines.onAction
-import javafxx.layouts.TableColumnsBuilder
-import javafxx.layouts._HBox
-import javafxx.layouts.anchorPane
-import javafxx.layouts.hbox
-import javafxx.layouts.tableView
-import javafxx.scene.control.closeButton
-import javafxx.stage.setMinSize
+import ktfx.application.later
+import ktfx.beans.property.toProperty
+import ktfx.beans.value.or
+import ktfx.collections.toMutableObservableList
+import ktfx.coroutines.onAction
+import ktfx.layouts.TableColumnsBuilder
+import ktfx.layouts._HBox
+import ktfx.layouts.anchorPane
+import ktfx.layouts.hbox
+import ktfx.layouts.tableView
+import ktfx.scene.control.closeButton
+import ktfx.stage.setMinSize
 import kotlinx.nosql.mongodb.DocumentSchema
 
 @Suppress("LeakingThis")
@@ -65,7 +65,7 @@ abstract class TableDialog<D : Document<S>, S : DocumentSchema<D>>(
                 isEditable = true
             } anchorAll 1.0
         }
-        graphic = javafxx.layouts.vbox(R.dimen.padding_medium.toDouble()) {
+        graphic = ktfx.layouts.vbox(R.dimen.padding_medium.toDouble()) {
             alignment = CENTER_RIGHT
             hbox(R.dimen.padding_medium.toDouble()) {
                 alignment = CENTER_RIGHT

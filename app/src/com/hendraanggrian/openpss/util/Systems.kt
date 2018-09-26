@@ -4,7 +4,7 @@ package com.hendraanggrian.openpss.util
 
 import com.hendraanggrian.openpss.R
 import javafx.application.Platform
-import javafxx.scene.control.styledErrorAlert
+import ktfx.scene.control.styledErrorAlert
 import java.awt.Desktop
 
 /** Because sometimes [Platform.exit] is not enough. */

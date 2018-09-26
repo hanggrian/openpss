@@ -4,8 +4,8 @@ import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.i18n.Resourced
 import javafx.beans.binding.BooleanBinding
 import javafx.scene.control.TextField
-import javafxx.beans.value.isBlank
-import javafxx.layouts.textField
+import ktfx.beans.value.isBlank
+import ktfx.layouts.textField
 
 open class InputPopover(resourced: Resourced, titleId: String) : ResultablePopover<String>(resourced, titleId) {
 

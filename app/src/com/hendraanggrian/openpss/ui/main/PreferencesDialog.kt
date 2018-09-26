@@ -20,25 +20,25 @@ import javafx.scene.control.ChoiceBox
 import javafx.scene.control.TextArea
 import javafx.scene.layout.HBox
 import javafx.scene.layout.VBox
-import javafxx.beans.property.toMutableProperty
-import javafxx.beans.value.and
-import javafxx.collections.toObservableList
-import javafxx.coroutines.listener
-import javafxx.layouts.LayoutDsl
-import javafxx.layouts.LayoutManager
-import javafxx.layouts._HBox
-import javafxx.layouts._VBox
-import javafxx.layouts.checkBox
-import javafxx.layouts.choiceBox
-import javafxx.layouts.gridPane
-import javafxx.layouts.hbox
-import javafxx.layouts.label
-import javafxx.layouts.textArea
-import javafxx.layouts.vbox
-import javafxx.listeners.converter
-import javafxx.scene.control.cancelButton
-import javafxx.scene.control.okButton
-import javafxx.scene.layout.gap
+import ktfx.beans.property.toMutableProperty
+import ktfx.beans.value.and
+import ktfx.collections.toObservableList
+import ktfx.coroutines.listener
+import ktfx.layouts.LayoutDsl
+import ktfx.layouts.LayoutManager
+import ktfx.layouts._HBox
+import ktfx.layouts._VBox
+import ktfx.layouts.checkBox
+import ktfx.layouts.choiceBox
+import ktfx.layouts.gridPane
+import ktfx.layouts.hbox
+import ktfx.layouts.label
+import ktfx.layouts.textArea
+import ktfx.layouts.vbox
+import ktfx.listeners.converter
+import ktfx.scene.control.cancelButton
+import ktfx.scene.control.okButton
+import ktfx.scene.layout.gap
 import kotlinx.nosql.update
 
 class PreferencesDialog(
@@ -128,7 +128,7 @@ class PreferencesDialog(
     private fun group(
         titleId: String,
         init: (@LayoutDsl _VBox).() -> Unit
-    ): VBox = javafxx.layouts.vbox(R.dimen.padding_small.toDouble()) {
+    ): VBox = ktfx.layouts.vbox(R.dimen.padding_small.toDouble()) {
         label(getString(titleId)) { font = bold() }
         init()
     }

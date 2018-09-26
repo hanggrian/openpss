@@ -5,8 +5,8 @@ import com.hendraanggrian.openpss.control.Resultable
 import com.hendraanggrian.openpss.i18n.Resourced
 import javafx.scene.Node
 import javafx.scene.control.Button
-import javafxx.coroutines.onAction
-import javafxx.layouts.LayoutManager
+import ktfx.coroutines.onAction
+import ktfx.layouts.LayoutManager
 import org.controlsfx.control.PopOver
 
 /** [PopOver] with default button and return type. */
@@ -18,7 +18,7 @@ abstract class ResultablePopover<T>(
     protected lateinit var defaultButton: Button
 
     override fun LayoutManager<Node>.onCreateActions() {
-        defaultButton = javafxx.layouts.button(getString(R.string.ok)) {
+        defaultButton = ktfx.layouts.button(getString(R.string.ok)) {
             isDefaultButton = true
         }()
     }

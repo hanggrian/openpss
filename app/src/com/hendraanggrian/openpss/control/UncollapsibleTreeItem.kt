@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.control
 
 import javafx.scene.control.TreeItem
-import javafxx.coroutines.listener
+import ktfx.coroutines.listener
 
 class UncollapsibleTreeItem<T>(value: T) : TreeItem<T>(value) {
 

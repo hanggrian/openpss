@@ -14,11 +14,11 @@ import com.hendraanggrian.openpss.util.round
 import javafx.beans.property.IntegerProperty
 import javafx.beans.property.SimpleIntegerProperty
 import javafx.collections.ObservableList
-import javafxx.beans.binding.doubleBindingOf
-import javafxx.beans.property.toMutableProperty
-import javafxx.beans.value.getValue
-import javafxx.beans.value.setValue
-import javafxx.collections.mutableObservableListOf
+import ktfx.beans.binding.doubleBindingOf
+import ktfx.beans.property.toMutableProperty
+import ktfx.beans.value.getValue
+import ktfx.beans.value.setValue
+import ktfx.collections.mutableObservableListOf
 import kotlinx.nosql.equal
 import kotlinx.nosql.update
 import org.joda.time.DateTime

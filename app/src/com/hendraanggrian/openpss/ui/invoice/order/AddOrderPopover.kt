@@ -14,15 +14,15 @@ import javafx.beans.value.ObservableBooleanValue
 import javafx.scene.control.TextField
 import javafx.scene.control.ToggleButton
 import javafx.scene.image.ImageView
-import javafxx.beans.binding.stringBindingOf
-import javafxx.coroutines.listener
-import javafxx.layouts._GridPane
-import javafxx.layouts.gridPane
-import javafxx.layouts.label
-import javafxx.layouts.textField
-import javafxx.layouts.toggleButton
-import javafxx.layouts.tooltip
-import javafxx.scene.layout.gap
+import ktfx.beans.binding.stringBindingOf
+import ktfx.coroutines.listener
+import ktfx.layouts._GridPane
+import ktfx.layouts.gridPane
+import ktfx.layouts.label
+import ktfx.layouts.textField
+import ktfx.layouts.toggleButton
+import ktfx.layouts.tooltip
+import ktfx.scene.layout.gap
 
 abstract class AddOrderPopover<T : Titled>(resourced: Resourced, titleId: String) :
     ResultablePopover<T>(resourced, titleId), Invoice.Order {

@@ -6,8 +6,8 @@ import javafx.beans.property.ReadOnlyDoubleProperty
 import javafx.beans.property.StringProperty
 import javafx.scene.Scene
 import javafx.scene.control.Tooltip
-import javafxx.beans.binding.bindingOf
-import javafxx.beans.binding.stringBindingOf
+import ktfx.beans.binding.bindingOf
+import ktfx.beans.binding.stringBindingOf
 import kotlinx.coroutines.experimental.Dispatchers
 import kotlinx.coroutines.experimental.GlobalScope
 import kotlinx.coroutines.experimental.delay

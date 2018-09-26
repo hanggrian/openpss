@@ -5,8 +5,8 @@ package com.hendraanggrian.openpss.control
 import com.hendraanggrian.openpss.numberConverter
 import javafx.geometry.Pos
 import javafx.scene.control.TreeTableColumn
-import javafxx.beans.property.toProperty
-import javafxx.styles.labeledStyle
+import ktfx.beans.property.toProperty
+import ktfx.styles.labeledStyle
 
 fun <T> TreeTableColumn<T, String>.stringCell(target: T.() -> Any) =
     setCellValueFactory { col -> col.value.value.target().let { it as? String ?: it.toString() }.toProperty() }

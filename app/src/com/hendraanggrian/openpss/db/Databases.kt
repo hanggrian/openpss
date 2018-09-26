@@ -21,7 +21,7 @@ import com.mongodb.MongoClientOptions.Builder
 import com.mongodb.MongoCredential.createCredential
 import com.mongodb.MongoException
 import com.mongodb.ServerAddress
-import javafxx.scene.control.styledErrorAlert
+import ktfx.scene.control.styledErrorAlert
 import kotlinx.coroutines.experimental.Dispatchers
 import kotlinx.coroutines.experimental.withContext
 import kotlinx.nosql.equal

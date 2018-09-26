@@ -11,7 +11,7 @@ import javafx.scene.control.ButtonType.NO
 import javafx.scene.control.ButtonType.YES
 import javafx.scene.control.Control
 import javafx.scene.control.ListView
-import javafxx.scene.control.styledConfirmAlert
+import ktfx.scene.control.styledConfirmAlert
 import kotlinx.coroutines.experimental.CoroutineScope
 import kotlinx.coroutines.experimental.Dispatchers
 import kotlinx.coroutines.experimental.GlobalScope

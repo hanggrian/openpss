@@ -31,9 +31,9 @@ import javafx.scene.control.SelectionModel
 import javafx.scene.control.Tab
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.HBox
-import javafxx.application.later
-import javafxx.coroutines.listener
-import javafxx.scene.control.errorAlert
+import ktfx.application.later
+import ktfx.coroutines.listener
+import ktfx.scene.control.errorAlert
 import kotlinx.coroutines.experimental.delay
 import org.apache.commons.lang3.SystemUtils.IS_OS_MAC
 import org.controlsfx.control.NotificationPane

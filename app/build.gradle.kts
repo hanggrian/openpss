@@ -127,12 +127,13 @@ tasks {
         mainClass = application.mainClassName
         vmArgs.add("Xmx2G")
         resources.addAll(listOf("res", "../scene/sceneres"))
-        mac("/Library/Java/JavaVirtualMachines/jdk1.8.0_172.jdk/Contents/Home") {
+        mac {
             name = "$RELEASE_NAME.app"
             icon = "art/$RELEASE_NAME.icns"
             bundleId = RELEASE_GROUP
         }
-        windows64("/Users/hendraanggrian/Desktop/jdk1.8.0_172") {
+        windows64 {
+            jdk = "/Users/hendraanggrian/Desktop/jdk1.8.0_172"
             name = RELEASE_NAME
         }
         verbose = true

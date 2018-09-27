@@ -11,13 +11,6 @@ import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.i18n.Resourced
 import com.hendraanggrian.openpss.util.getStyle
 import javafx.scene.Node
-import ktfx.beans.property.toProperty
-import ktfx.beans.value.or
-import ktfx.collections.toMutableObservableList
-import ktfx.coroutines.onAction
-import ktfx.layouts.LayoutManager
-import ktfx.layouts.button
-import ktfx.scene.control.styledInfoAlert
 import kotlinx.coroutines.experimental.Dispatchers
 import kotlinx.coroutines.experimental.GlobalScope
 import kotlinx.coroutines.experimental.delay
@@ -25,6 +18,13 @@ import kotlinx.coroutines.experimental.javafx.JavaFx
 import kotlinx.coroutines.experimental.launch
 import kotlinx.nosql.notEqual
 import kotlinx.nosql.update
+import ktfx.beans.property.toProperty
+import ktfx.beans.value.or
+import ktfx.collections.toMutableObservableList
+import ktfx.coroutines.onAction
+import ktfx.layouts.LayoutManager
+import ktfx.layouts.button
+import ktfx.scene.control.styledInfoAlert
 
 class EditEmployeeDialog(
     resourced: Resourced,
@@ -33,7 +33,7 @@ class EditEmployeeDialog(
 
     private companion object {
         // temporary fix
-        const val DELAY = 200
+        const val DELAY = 200L
     }
 
     override fun LayoutManager<Node>.onCreateActions() {

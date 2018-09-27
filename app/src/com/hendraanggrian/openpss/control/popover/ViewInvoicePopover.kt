@@ -38,8 +38,10 @@ import javafx.scene.layout.CornerRadii.EMPTY
 import javafx.scene.layout.Priority.ALWAYS
 import javafx.scene.layout.VBox
 import javafx.scene.paint.Color.BLACK
+import javafx.scene.text.Font.font
 import javafx.scene.text.TextAlignment
 import javafx.scene.transform.Scale
+import kotlinx.nosql.update
 import ktfx.application.later
 import ktfx.coroutines.onAction
 import ktfx.layouts.LayoutManager
@@ -55,7 +57,6 @@ import ktfx.layouts.textFlow
 import ktfx.layouts.vbox
 import ktfx.scene.layout.gap
 import ktfx.scene.layout.paddingAll
-import kotlinx.nosql.update
 import java.util.ResourceBundle
 
 /**
@@ -131,8 +132,8 @@ class ViewInvoicePopover(
                 } hpriority ALWAYS
                 vbox {
                     alignment = CENTER_RIGHT
-                    label(getString(R.string.invoice)) { font = bold(18) }
-                    label("# ${invoice.no}") { font = bold(32) }
+                    label(getString(R.string.invoice)) { font = font(18.0) }
+                    label("# ${invoice.no}") { font = font(32.0) }
                 }
             }
             fullLine()
@@ -230,6 +231,8 @@ class ViewInvoicePopover(
             lineBuilder(it, row)
             row++
         }
+        region { prefHeight = R.dimen.padding_small.toDouble() } row row col 0 colSpans 4
+        row++
         return row
     }
 

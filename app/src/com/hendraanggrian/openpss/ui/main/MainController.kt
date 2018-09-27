@@ -1,8 +1,8 @@
 package com.hendraanggrian.openpss.ui.main
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.START_OF_TIME
 import com.hendraanggrian.openpss.control.popover.ViewInvoicePopover
+import com.hendraanggrian.openpss.db.dbDateTime
 import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.db.schemas.Invoice.Offset.Technique.TWO_SIDE_EQUAL
@@ -31,10 +31,10 @@ import javafx.scene.control.SelectionModel
 import javafx.scene.control.Tab
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.HBox
+import kotlinx.coroutines.experimental.delay
 import ktfx.application.later
 import ktfx.coroutines.listener
 import ktfx.scene.control.errorAlert
-import kotlinx.coroutines.experimental.delay
 import org.apache.commons.lang3.SystemUtils.IS_OS_MAC
 import org.controlsfx.control.NotificationPane
 import java.net.URL
@@ -118,7 +118,7 @@ class MainController : Controller(), Selectable<Tab> {
                     no = 1234,
                     employeeId = employee.id,
                     customerId = customer.id,
-                    dateTime = START_OF_TIME,
+                    dateTime = dbDateTime,
                     plates = listOf(Invoice.Plate.new("Title", 5, 92000.0, "Machine")),
                     offsets = listOf(Invoice.Offset.new("Title", 5, 92000.0, "Machine", TWO_SIDE_EQUAL)),
                     others = listOf(Invoice.Other.new("Title", 5, 92000.0)),

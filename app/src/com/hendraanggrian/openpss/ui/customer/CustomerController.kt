@@ -33,6 +33,12 @@ import javafx.scene.control.TableView
 import javafx.scene.control.TextField
 import javafx.scene.image.ImageView
 import javafx.util.Callback
+import kotlinx.coroutines.experimental.Dispatchers
+import kotlinx.coroutines.experimental.GlobalScope
+import kotlinx.coroutines.experimental.delay
+import kotlinx.coroutines.experimental.javafx.JavaFx
+import kotlinx.coroutines.experimental.launch
+import kotlinx.nosql.update
 import ktfx.application.later
 import ktfx.beans.binding.bindingOf
 import ktfx.beans.binding.stringBindingOf
@@ -45,15 +51,9 @@ import ktfx.coroutines.onAction
 import ktfx.layouts.LayoutManager
 import ktfx.layouts.contextMenu
 import ktfx.layouts.listView
-import ktfx.layouts.styledTextField
+import ktfx.layouts.textField
 import ktfx.layouts.tooltip
 import ktfx.scene.control.styledErrorAlert
-import kotlinx.coroutines.experimental.Dispatchers
-import kotlinx.coroutines.experimental.GlobalScope
-import kotlinx.coroutines.experimental.delay
-import kotlinx.coroutines.experimental.javafx.JavaFx
-import kotlinx.coroutines.experimental.launch
-import kotlinx.nosql.update
 import org.controlsfx.control.MasterDetailPane
 import java.net.URL
 import java.util.ResourceBundle
@@ -105,7 +105,8 @@ class CustomerController : SegmentedController(), Refreshable, Selectable<Custom
     }
 
     override fun LayoutManager<Node>.onCreateRightActions() {
-        searchField = styledTextField(STYLE_SEARCH_TEXTFIELD) {
+        searchField = textField {
+            styleClass += STYLE_SEARCH_TEXTFIELD
             promptText = getString(R.string.search)
         }
     }

@@ -18,7 +18,7 @@ import ktfx.coroutines.listener
 import ktfx.coroutines.onKeyPressed
 import ktfx.coroutines.onMouseClicked
 import ktfx.layouts.listView
-import ktfx.layouts.styledTextField
+import ktfx.layouts.textField
 import ktfx.layouts.vbox
 import ktfx.scene.input.isDoubleClick
 import kotlin.text.RegexOption.IGNORE_CASE
@@ -35,7 +35,8 @@ class SearchCustomerPopover(resourced: Resourced) : ResultablePopover<Customer>(
 
     init {
         vbox {
-            searchField = styledTextField(STYLE_SEARCH_TEXTFIELD) {
+            searchField = textField {
+                styleClass += STYLE_SEARCH_TEXTFIELD
                 promptText = getString(R.string.customer)
             }
             customerList = listView<Customer> {

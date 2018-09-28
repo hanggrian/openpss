@@ -26,6 +26,10 @@ import javafx.scene.image.ImageView
 import javafx.scene.layout.AnchorPane
 import javafx.scene.layout.FlowPane
 import javafx.stage.FileChooser.ExtensionFilter
+import kotlinx.coroutines.experimental.Dispatchers
+import kotlinx.coroutines.experimental.GlobalScope
+import kotlinx.coroutines.experimental.javafx.JavaFx
+import kotlinx.coroutines.experimental.launch
 import ktfx.application.later
 import ktfx.beans.binding.booleanBindingOf
 import ktfx.beans.binding.stringBindingOf
@@ -37,16 +41,12 @@ import ktfx.coroutines.onAction
 import ktfx.layouts.LayoutManager
 import ktfx.layouts.borderPane
 import ktfx.layouts.label
-import ktfx.layouts.styledScene
+import ktfx.layouts.scene
 import ktfx.scene.control.styledErrorAlert
 import ktfx.scene.layout.maxSize
 import ktfx.stage.fileChooser
 import ktfx.stage.setMinSize
 import ktfx.stage.stage
-import kotlinx.coroutines.experimental.Dispatchers
-import kotlinx.coroutines.experimental.GlobalScope
-import kotlinx.coroutines.experimental.javafx.JavaFx
-import kotlinx.coroutines.experimental.launch
 import java.io.File
 import java.net.URL
 import java.util.ResourceBundle
@@ -115,7 +115,9 @@ class WageController : SegmentedController() {
         attendees.forEach { it.saveWage() }
         stage(getString(R.string.record)) {
             val loader = FXMLLoader(getResource(R.layout.controller_wage_record), resources)
-            scene = styledScene(getStyle(R.style.openpss), loader.pane)
+            scene = scene(loader.pane) {
+                stylesheets += getStyle(R.style.openpss)
+            }
             setMinSize(1000.0, 650.0)
             loader.controller.addExtra(EXTRA_ATTENDEES, attendees)
         }.showAndWait()

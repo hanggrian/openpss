@@ -17,13 +17,13 @@ import javafx.application.Application
 import javafx.fxml.FXMLLoader
 import javafx.scene.image.Image
 import javafx.stage.Stage
+import kotlinx.nosql.equal
+import kotlinx.nosql.update
 import ktfx.application.launch
-import ktfx.layouts.styledScene
+import ktfx.layouts.scene
 import ktfx.scene.control.styledInfoAlert
 import ktfx.stage.icon
 import ktfx.stage.setMinSize
-import kotlinx.nosql.equal
-import kotlinx.nosql.update
 import org.apache.log4j.BasicConfigurator
 import java.util.ResourceBundle
 
@@ -55,7 +55,9 @@ class App : Application(), Resourced {
             stage.apply {
                 val loader = FXMLLoader(getResource(R.layout.controller_main), resources)
                 title = "$NAME - ${employee.name}".let { if (DEBUG) "$it - DEBUG" else it }
-                scene = styledScene(getStyle(R.style.openpss), loader.pane)
+                scene = scene(loader.pane) {
+                    stylesheets += getStyle(R.style.openpss)
+                }
                 setMinSize(850.0, 450.0)
                 loader.controller.employee = employee
             }.show()

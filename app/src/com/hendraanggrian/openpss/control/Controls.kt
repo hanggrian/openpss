@@ -9,17 +9,13 @@ import javafx.event.ActionEvent.ACTION
 import javafx.scene.Node
 import javafx.scene.control.ButtonType.NO
 import javafx.scene.control.ButtonType.YES
-import javafx.scene.control.Control
 import javafx.scene.control.ListView
-import ktfx.scene.control.styledConfirmAlert
 import kotlinx.coroutines.experimental.CoroutineScope
 import kotlinx.coroutines.experimental.Dispatchers
 import kotlinx.coroutines.experimental.GlobalScope
 import kotlinx.coroutines.experimental.javafx.JavaFx
 import kotlinx.coroutines.experimental.launch
-import org.controlsfx.validation.Severity
-import org.controlsfx.validation.ValidationSupport
-import org.controlsfx.validation.Validator
+import ktfx.scene.control.styledConfirmAlert
 import kotlin.coroutines.experimental.CoroutineContext
 
 /**
@@ -47,14 +43,3 @@ fun <T> ListView<T>.forceRefresh() {
     items = null
     items = temp
 }
-
-inline fun <T> Control.validator(
-    message: String,
-    severity: Severity,
-    required: Boolean = true,
-    noinline predicate: (T) -> Boolean
-): Boolean = ValidationSupport().registerValidator(
-    this,
-    required,
-    Validator.createPredicateValidator<T>(predicate, message, severity)
-)

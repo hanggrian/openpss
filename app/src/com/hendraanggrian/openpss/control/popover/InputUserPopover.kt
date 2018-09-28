@@ -1,12 +1,12 @@
 package com.hendraanggrian.openpss.control.popover
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.control.validator
 import com.hendraanggrian.openpss.i18n.Resourced
 import com.hendraanggrian.openpss.util.clean
 import com.hendraanggrian.openpss.util.isName
 import javafx.beans.binding.BooleanBinding
-import org.controlsfx.validation.Severity.WARNING
+import ktfx.controlsfx.registerPredicateValidator
+import org.controlsfx.validation.Severity
 
 class InputUserPopover(
     resourced: Resourced,
@@ -15,11 +15,14 @@ class InputUserPopover(
 ) : InputPopover(resourced, titleId) {
 
     init {
-        if (restrictiveInput) editor.validator<String>(
-            getString(R.string.name_doesnt_start_with_uppercase_letter_add_anyway),
-            WARNING,
-            false
-        ) { _ -> editor.text.split(" ").none { s -> s.firstOrNull().let { it == null || it.isLowerCase() } } }
+        if (restrictiveInput) {
+            editor.registerPredicateValidator<String>(
+                getString(R.string.name_doesnt_start_with_uppercase_letter_add_anyway),
+                Severity.WARNING
+            ) { text ->
+                text.split(' ').none { s -> s.firstOrNull().let { it == null || it.isLowerCase() } }
+            }
+        }
     }
 
     override val defaultDisableBinding: BooleanBinding

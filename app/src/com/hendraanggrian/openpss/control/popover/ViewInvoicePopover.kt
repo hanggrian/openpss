@@ -3,6 +3,7 @@ package com.hendraanggrian.openpss.control.popover
 import com.hendraanggrian.openpss.PATTERN_DATETIME_EXTENDED
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.bold
+import com.hendraanggrian.openpss.control.space
 import com.hendraanggrian.openpss.currencyConverter
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Customers
@@ -231,7 +232,7 @@ class ViewInvoicePopover(
             lineBuilder(it, row)
             row++
         }
-        region { prefHeight = R.dimen.padding_small.toDouble() } row row col 0 colSpans 4
+        space(height = R.dimen.padding_small.toDouble()) row row col 0 colSpans 4
         row++
         return row
     }

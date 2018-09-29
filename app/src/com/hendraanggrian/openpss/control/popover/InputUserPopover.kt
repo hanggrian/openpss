@@ -18,9 +18,10 @@ class InputUserPopover(
         if (restrictiveInput) {
             editor.registerPredicateValidator<String>(
                 getString(R.string.name_doesnt_start_with_uppercase_letter_add_anyway),
-                Severity.WARNING
-            ) { text ->
-                text.split(' ').none { s -> s.firstOrNull().let { it == null || it.isLowerCase() } }
+                Severity.WARNING,
+                false
+            ) { _ ->
+                editor.text.split(' ').none { s -> s.firstOrNull().let { it == null || it.isLowerCase() } }
             }
         }
     }

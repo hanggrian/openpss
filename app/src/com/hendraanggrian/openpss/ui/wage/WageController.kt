@@ -5,7 +5,6 @@ import com.hendraanggrian.openpss.BuildConfig.DEBUG
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.space
 import com.hendraanggrian.openpss.control.stretchableButton
-import com.hendraanggrian.openpss.control.styledStretchableButton
 import com.hendraanggrian.openpss.io.WageDirectory
 import com.hendraanggrian.openpss.io.properties.PreferencesFile.WAGE_READER
 import com.hendraanggrian.openpss.layout.SegmentedTabPane.Companion.STRETCH_POINT
@@ -58,16 +57,20 @@ class WageController : SegmentedController() {
     @FXML lateinit var flowPane: FlowPane
 
     private lateinit var browseButton: Button
-    private lateinit var processButton: Button
+    private lateinit var saveButton: Button
+    private lateinit var saveAndProcessButton: Button
     private lateinit var disableRecessButton: Button
     private lateinit var recessButton: Button
     private lateinit var historyButton: Button
 
     override fun LayoutManager<Node>.onCreateLeftActions() {
-        browseButton =
-            stretchableButton(STRETCH_POINT, getString(R.string.browse), ImageView(R.image.btn_browse_light)) {
-                onAction { browse() }
-            }
+        browseButton = stretchableButton(
+            STRETCH_POINT,
+            getString(R.string.browse),
+            ImageView(R.image.btn_browse_light)
+        ) {
+            onAction { browse() }
+        }
         space()
         disableRecessButton = stretchableButton(
             STRETCH_POINT,
@@ -77,26 +80,43 @@ class WageController : SegmentedController() {
             disableProperty().bind(flowPane.children.isEmpty)
             onAction { disableRecess() }
         }
-        processButton = styledStretchableButton(
-            STYLE_DEFAULT_BUTTON,
+        saveButton = stretchableButton(
             STRETCH_POINT,
-            getString(R.string.process),
-            ImageView(R.image.btn_process_dark)
+            getString(R.string.save),
+            ImageView(R.image.btn_save_light)
         ) {
             disableProperty().bind(flowPane.children.isEmpty)
-            onAction { process() }
+            onAction { save() }
+        }
+        saveAndProcessButton = stretchableButton(
+            STRETCH_POINT,
+            getString(R.string.save_and_process),
+            ImageView(R.image.btn_process_dark)
+        ) {
+            styleClass += STYLE_DEFAULT_BUTTON
+            disableProperty().bind(flowPane.children.isEmpty)
+            onAction {
+                save()
+                process()
+            }
         }
     }
 
     override fun LayoutManager<Node>.onCreateRightActions() {
-        recessButton =
-            stretchableButton(STRETCH_POINT, getString(R.string.recess), ImageView(R.image.btn_recess_light)) {
-                onAction { recess() }
-            }
-        historyButton =
-            stretchableButton(STRETCH_POINT, getString(R.string.history), ImageView(R.image.btn_history_light)) {
-                onAction { history() }
-            }
+        recessButton = stretchableButton(
+            STRETCH_POINT,
+            getString(R.string.recess),
+            ImageView(R.image.btn_recess_light)
+        ) {
+            onAction { recess() }
+        }
+        historyButton = stretchableButton(
+            STRETCH_POINT,
+            getString(R.string.history),
+            ImageView(R.image.btn_history_light)
+        ) {
+            onAction { history() }
+        }
     }
 
     override fun initialize(location: URL, resources: ResourceBundle) {
@@ -106,22 +126,24 @@ class WageController : SegmentedController() {
         })
 
         later { flowPane.prefWrapLengthProperty().bind(flowPane.scene.widthProperty()) }
-        // if (DEBUG) read(File("/Users/hendraanggrian/Downloads/Absen 4-13-18.xlsx"))
+        if (DEBUG) {
+            val file = File("/Users/hendraanggrian/Downloads/Absen 4-13-18.xlsx")
+            if (file.exists()) read(file)
+        }
     }
 
     private fun disableRecess() = DisableRecessPopover(this, attendeePanes).showAt(disableRecessButton)
 
-    private fun process() {
-        attendees.forEach { it.saveWage() }
-        stage(getString(R.string.record)) {
-            val loader = FXMLLoader(getResource(R.layout.controller_wage_record), resources)
-            scene = scene(loader.pane) {
-                stylesheets += getStyle(R.style.openpss)
-            }
-            setMinSize(1000.0, 650.0)
-            loader.controller.addExtra(EXTRA_ATTENDEES, attendees)
-        }.showAndWait()
-    }
+    private fun save() = attendees.forEach { it.saveWage() }
+
+    private fun process() = stage(getString(R.string.record)) {
+        val loader = FXMLLoader(getResource(R.layout.controller_wage_record), resources)
+        scene = scene(loader.pane) {
+            stylesheets += getStyle(R.style.openpss)
+        }
+        setMinSize(1000.0, 650.0)
+        loader.controller.addExtra(EXTRA_ATTENDEES, attendees)
+    }.showAndWait()
 
     private fun recess() = EditRecessDialog(this, employee).show()
 
@@ -149,7 +171,7 @@ class WageController : SegmentedController() {
                         flowPane.children += attendeePane(this@WageController, attendee) {
                             deleteMenu.onAction {
                                 flowPane.children -= this@attendeePane
-                                bindProcessButton()
+                                bindSaveAndProcessButton()
                             }
                             deleteOthersMenu.run {
                                 disableProperty().bind(flowPane.children.size() lessEq 1)
@@ -157,7 +179,7 @@ class WageController : SegmentedController() {
                                     flowPane.children -= flowPane.children.toMutableList().apply {
                                         remove(this@attendeePane)
                                     }
-                                    bindProcessButton()
+                                    bindSaveAndProcessButton()
                                 }
                             }
                             deleteToTheRightMenu.run {
@@ -168,7 +190,7 @@ class WageController : SegmentedController() {
                                     flowPane.children -= flowPane.children.toList().takeLast(
                                         flowPane.children.lastIndex - flowPane.children.indexOf(this@attendeePane)
                                     )
-                                    bindProcessButton()
+                                    bindSaveAndProcessButton()
                                 }
                             }
                         }
@@ -176,13 +198,13 @@ class WageController : SegmentedController() {
                 }
                 GlobalScope.launch(Dispatchers.JavaFx) {
                     anchorPane.children -= loadingPane
-                    bindProcessButton()
+                    bindSaveAndProcessButton()
                 }
             } catch (e: Exception) {
                 if (DEBUG) e.printStackTrace()
                 GlobalScope.launch(Dispatchers.JavaFx) {
                     anchorPane.children -= loadingPane
-                    bindProcessButton()
+                    bindSaveAndProcessButton()
                     styledErrorAlert(getStyle(R.style.openpss), e.message.toString()).show()
                 }
             }
@@ -193,8 +215,8 @@ class WageController : SegmentedController() {
 
     private inline val attendees: List<Attendee> get() = attendeePanes.map { it.attendee }
 
-    /** As attendees are populated, process button need to be rebinded according to new requirements. */
-    private fun bindProcessButton() = processButton.disableProperty().bind(flowPane.children.isEmpty or
+    /** As attendees are populated, saveAndProcess button need to be rebinded according to new requirements. */
+    private fun bindSaveAndProcessButton() = saveAndProcessButton.disableProperty().bind(flowPane.children.isEmpty or
         booleanBindingOf(flowPane.children, *flowPane.children
             .map { (it as AttendeePane).attendanceList.items }
             .toTypedArray()) { attendees.any { it.attendances.size % 2 != 0 } })

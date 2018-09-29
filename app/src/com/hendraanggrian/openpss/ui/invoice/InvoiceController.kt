@@ -8,11 +8,10 @@ import com.hendraanggrian.openpss.control.IntField
 import com.hendraanggrian.openpss.control.PaginatedPane
 import com.hendraanggrian.openpss.control.currencyCell
 import com.hendraanggrian.openpss.control.doneCell
+import com.hendraanggrian.openpss.control.intField
 import com.hendraanggrian.openpss.control.popover.ViewInvoicePopover
 import com.hendraanggrian.openpss.control.stretchableButton
 import com.hendraanggrian.openpss.control.stringCell
-import com.hendraanggrian.openpss.control.styledIntField
-import com.hendraanggrian.openpss.control.styledStretchableButton
 import com.hendraanggrian.openpss.control.yesNoAlert
 import com.hendraanggrian.openpss.db.SessionWrapper
 import com.hendraanggrian.openpss.db.matches
@@ -112,18 +111,19 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
             stretchableButton(STRETCH_POINT, getString(R.string.refresh), ImageView(R.image.btn_refresh_light)) {
                 onAction { refresh() }
             }
-        addButton = styledStretchableButton(
-            STYLE_DEFAULT_BUTTON,
+        addButton = stretchableButton(
             STRETCH_POINT,
             getString(R.string.add),
             ImageView(R.image.btn_add_dark)
         ) {
+            styleClass += STYLE_DEFAULT_BUTTON
             onAction { addInvoice() }
         }
     }
 
     override fun LayoutManager<Node>.onCreateRightActions() {
-        searchField = styledIntField(STYLE_SEARCH_TEXTFIELD) {
+        searchField = intField {
+            styleClass += STYLE_SEARCH_TEXTFIELD
             filterBox.disableProperty().bind(valueProperty() neq 0)
             promptText = getString(R.string.search_no)
         }
@@ -197,10 +197,12 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
                             alignment = CENTER
                             paddingAll = R.dimen.padding_medium.toDouble()
                             region() hpriority ALWAYS
-                            addPaymentButton = styledStretchableButton(
-                                STYLE_DEFAULT_BUTTON, STRETCH_POINT,
-                                getString(R.string.add_payment), ImageView(R.image.btn_add_dark)
+                            addPaymentButton = stretchableButton(
+                                STRETCH_POINT,
+                                getString(R.string.add_payment),
+                                ImageView(R.image.btn_add_dark)
                             ) {
+                                styleClass += STYLE_DEFAULT_BUTTON
                                 disableProperty().bind(!selectedBinding)
                                 onAction { addPayment() }
                             }

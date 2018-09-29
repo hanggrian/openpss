@@ -8,7 +8,6 @@ import com.hendraanggrian.openpss.control.PaginatedPane
 import com.hendraanggrian.openpss.control.popover.InputUserPopover
 import com.hendraanggrian.openpss.control.stretchableButton
 import com.hendraanggrian.openpss.control.stringCell
-import com.hendraanggrian.openpss.control.styledStretchableButton
 import com.hendraanggrian.openpss.control.yesNoAlert
 import com.hendraanggrian.openpss.db.matches
 import com.hendraanggrian.openpss.db.schemas.Customer
@@ -94,12 +93,12 @@ class CustomerController : SegmentedController(), Refreshable, Selectable<Custom
             stretchableButton(STRETCH_POINT, getString(R.string.refresh), ImageView(R.image.btn_refresh_light)) {
                 onAction { refresh() }
             }
-        addButton = styledStretchableButton(
-            STYLE_DEFAULT_BUTTON,
+        addButton = stretchableButton(
             STRETCH_POINT,
             getString(R.string.add),
             ImageView(R.image.btn_add_dark)
         ) {
+            styleClass += STYLE_DEFAULT_BUTTON
             onAction { add() }
         }
     }

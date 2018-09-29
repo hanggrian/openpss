@@ -6,7 +6,6 @@ import com.hendraanggrian.openpss.control.ActionManager
 import com.hendraanggrian.openpss.control.StretchableButton
 import com.hendraanggrian.openpss.control.space
 import com.hendraanggrian.openpss.control.stretchableButton
-import com.hendraanggrian.openpss.control.styledStretchableButton
 import com.hendraanggrian.openpss.control.yesNoAlert
 import com.hendraanggrian.openpss.db.Document
 import com.hendraanggrian.openpss.db.schemas.Employee
@@ -21,6 +20,7 @@ import javafx.scene.control.TableView
 import javafx.scene.control.TableView.CONSTRAINED_RESIZE_POLICY
 import javafx.scene.image.ImageView
 import javafx.stage.Stage
+import kotlinx.nosql.mongodb.DocumentSchema
 import ktfx.application.later
 import ktfx.beans.property.toProperty
 import ktfx.beans.value.or
@@ -33,7 +33,6 @@ import ktfx.layouts.hbox
 import ktfx.layouts.tableView
 import ktfx.scene.control.closeButton
 import ktfx.stage.setMinSize
-import kotlinx.nosql.mongodb.DocumentSchema
 
 @Suppress("LeakingThis")
 abstract class TableDialog<D : Document<S>, S : DocumentSchema<D>>(
@@ -69,12 +68,12 @@ abstract class TableDialog<D : Document<S>, S : DocumentSchema<D>>(
             alignment = CENTER_RIGHT
             hbox(R.dimen.padding_medium.toDouble()) {
                 alignment = CENTER_RIGHT
-                refreshButton = styledStretchableButton(
-                    STYLE_DEFAULT_BUTTON,
+                refreshButton = stretchableButton(
                     STRETCH_POINT,
                     getString(R.string.refresh),
                     ImageView(R.image.btn_refresh_dark)
                 ) {
+                    styleClass += STYLE_DEFAULT_BUTTON
                     onAction { refresh() }
                 }
                 space()

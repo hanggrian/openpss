@@ -11,7 +11,6 @@ import com.hendraanggrian.openpss.control.popover.ViewInvoicePopover
 import com.hendraanggrian.openpss.control.space
 import com.hendraanggrian.openpss.control.stretchableButton
 import com.hendraanggrian.openpss.control.stringCell
-import com.hendraanggrian.openpss.control.styledStretchableButton
 import com.hendraanggrian.openpss.db.matches
 import com.hendraanggrian.openpss.db.schemas.Employees
 import com.hendraanggrian.openpss.db.schemas.Invoices
@@ -96,12 +95,12 @@ class FinanceController : SegmentedController(), Refreshable,
             stretchableButton(STRETCH_POINT, getString(R.string.refresh), ImageView(R.image.btn_refresh_light)) {
                 onAction { refresh() }
             }
-        viewTotalButton = styledStretchableButton(
-            STYLE_DEFAULT_BUTTON,
+        viewTotalButton = stretchableButton(
             STRETCH_POINT,
             getString(R.string.total),
             ImageView(R.image.btn_money_dark)
         ) {
+            styleClass += STYLE_DEFAULT_BUTTON
             onAction { viewTotal() }
         }
         leftActionManager.childs.addAll(

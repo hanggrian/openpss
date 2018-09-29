@@ -7,7 +7,6 @@ import com.hendraanggrian.openpss.control.UncollapsibleTreeItem
 import com.hendraanggrian.openpss.control.stretchableButton
 import com.hendraanggrian.openpss.control.stretchableToggleButton
 import com.hendraanggrian.openpss.control.stringCell
-import com.hendraanggrian.openpss.control.styledStretchableButton
 import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.schemas.Invoices
 import com.hendraanggrian.openpss.db.transaction
@@ -25,14 +24,14 @@ import javafx.scene.control.TreeTableColumn
 import javafx.scene.control.TreeTableView
 import javafx.scene.control.TreeTableView.TreeTableViewSelectionModel
 import javafx.scene.image.ImageView
+import kotlinx.nosql.equal
+import kotlinx.nosql.update
 import ktfx.application.later
 import ktfx.beans.value.or
 import ktfx.collections.isEmpty
 import ktfx.coroutines.listener
 import ktfx.coroutines.onAction
 import ktfx.layouts.LayoutManager
-import kotlinx.nosql.equal
-import kotlinx.nosql.update
 import java.net.URL
 import java.util.ResourceBundle
 
@@ -55,12 +54,12 @@ class ScheduleController : SegmentedController(), Refreshable, TreeSelectable<Sc
             stretchableButton(STRETCH_POINT, getString(R.string.refresh), ImageView(R.image.btn_refresh_light)) {
                 onAction { refresh() }
             }
-        doneButton = styledStretchableButton(
-            STYLE_DEFAULT_BUTTON,
+        doneButton = stretchableButton(
             STRETCH_POINT,
             getString(R.string.done),
             ImageView(R.image.btn_done_dark)
         ) {
+            styleClass += STYLE_DEFAULT_BUTTON
             onAction { done() }
         }
     }

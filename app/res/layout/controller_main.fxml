@@ -34,6 +34,8 @@
                 <MenuItem fx:id="offsetPriceItem" mnemonicParsing="false" onAction="#editPrice" text="%offset_price"/>
                 <SeparatorMenuItem/>
                 <MenuItem fx:id="employeeItem" mnemonicParsing="false" onAction="#editEmployee" text="%employee"/>
+                <SeparatorMenuItem/>
+                <MenuItem fx:id="recessItem" mnemonicParsing="false" onAction="#editRecess" text="%recess"/>
             </Menu>
             <Menu mnemonicParsing="false" text="%help">
                 <MenuItem mnemonicParsing="false" onAction="#testViewInvoice" text="%test_view_invoice"/>

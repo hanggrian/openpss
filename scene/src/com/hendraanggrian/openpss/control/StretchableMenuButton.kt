@@ -8,8 +8,8 @@ import javafx.beans.property.SimpleDoubleProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.beans.property.StringProperty
 import javafx.scene.Node
+import javafx.scene.control.MenuButton
 import javafx.scene.control.MenuItem
-import javafx.scene.control.SplitMenuButton
 import javafx.scene.image.ImageView
 import ktfx.layouts.LayoutDsl
 import ktfx.layouts.LayoutManager
@@ -17,14 +17,14 @@ import ktfx.layouts.menuItem
 
 /**
  * A button that will display text when the window have sufficient width.
- * When it doesn't, [StretchableSplitMenuButton] will store its text as tooltip.
+ * When it doesn't, [StretchableMenuButton] will store its text as tooltip.
  */
 @DefaultProperty("graphic")
-class StretchableSplitMenuButton @JvmOverloads constructor(
+class StretchableMenuButton @JvmOverloads constructor(
     stretchPoint: Double = -1.0,
     stretchableText: String? = null,
     graphic: Node? = null
-) : SplitMenuButton(), StretchableLabeled, LayoutManager<MenuItem> {
+) : MenuButton(), StretchableLabeled, LayoutManager<MenuItem> {
 
     override val childs: MutableCollection<MenuItem> get() = items
 
@@ -45,21 +45,21 @@ class StretchableSplitMenuButton @JvmOverloads constructor(
     ): MenuItem = menuItem(this, graphic, init)
 }
 
-/** Creates an [StretchableSplitMenuButton]. */
-fun stretchableSplitMenuButton(
+/** Creates an [StretchableMenuButton]. */
+fun stretchableMenuButton(
     stretchPoint: Double,
     adaptableText: String,
     graphic: Node? = null,
-    init: ((@LayoutDsl StretchableSplitMenuButton).() -> Unit)? = null
-): StretchableSplitMenuButton = StretchableSplitMenuButton(stretchPoint, adaptableText, graphic).also {
+    init: ((@LayoutDsl StretchableMenuButton).() -> Unit)? = null
+): StretchableMenuButton = StretchableMenuButton(stretchPoint, adaptableText, graphic).also {
     init?.invoke(it)
 }
 
-/** Creates an [StretchableSplitMenuButton] and add it to this [LayoutManager]. */
-inline fun LayoutManager<Node>.stretchableSplitMenuButton(
+/** Creates an [StretchableMenuButton] and add it to this [LayoutManager]. */
+inline fun LayoutManager<Node>.stretchableMenuButton(
     stretchPoint: Double,
     adaptableText: String,
     graphic: Node? = null,
-    noinline init: ((@LayoutDsl StretchableSplitMenuButton).() -> Unit)? = null
-): StretchableSplitMenuButton =
-    com.hendraanggrian.openpss.control.stretchableSplitMenuButton(stretchPoint, adaptableText, graphic, init)()
+    noinline init: ((@LayoutDsl StretchableMenuButton).() -> Unit)? = null
+): StretchableMenuButton =
+    com.hendraanggrian.openpss.control.stretchableMenuButton(stretchPoint, adaptableText, graphic, init)()

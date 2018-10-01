@@ -57,10 +57,9 @@ class WageController : SegmentedController() {
     @FXML lateinit var flowPane: FlowPane
 
     private lateinit var browseButton: Button
-    private lateinit var saveButton: Button
-    private lateinit var saveAndProcessButton: Button
     private lateinit var disableRecessButton: Button
-    private lateinit var recessButton: Button
+    private lateinit var saveWageButton: Button
+    private lateinit var processButton: Button
     private lateinit var historyButton: Button
 
     override fun LayoutManager<Node>.onCreateLeftActions() {
@@ -80,36 +79,27 @@ class WageController : SegmentedController() {
             disableProperty().bind(flowPane.children.isEmpty)
             onAction { disableRecess() }
         }
-        saveButton = stretchableButton(
+        saveWageButton = stretchableButton(
             STRETCH_POINT,
-            getString(R.string.save),
+            getString(R.string.save_wage),
             ImageView(R.image.btn_save_light)
         ) {
             disableProperty().bind(flowPane.children.isEmpty)
-            onAction { save() }
-        }
-        saveAndProcessButton = stretchableButton(
-            STRETCH_POINT,
-            getString(R.string.save_and_process),
-            ImageView(R.image.btn_process_dark)
-        ) {
-            styleClass += STYLE_DEFAULT_BUTTON
-            disableProperty().bind(flowPane.children.isEmpty)
-            onAction {
-                save()
-                process()
-            }
+            onAction { saveWage() }
         }
     }
 
     override fun LayoutManager<Node>.onCreateRightActions() {
-        recessButton = stretchableButton(
+        processButton = stretchableButton(
             STRETCH_POINT,
-            getString(R.string.recess),
-            ImageView(R.image.btn_recess_light)
+            getString(R.string.process),
+            ImageView(R.image.btn_process_dark)
         ) {
-            onAction { recess() }
+            styleClass += STYLE_DEFAULT_BUTTON
+            isDisable = true
+            onAction { process() }
         }
+        space()
         historyButton = stretchableButton(
             STRETCH_POINT,
             getString(R.string.history),
@@ -134,7 +124,7 @@ class WageController : SegmentedController() {
 
     private fun disableRecess() = DisableRecessPopover(this, attendeePanes).showAt(disableRecessButton)
 
-    private fun save() = attendees.forEach { it.saveWage() }
+    private fun saveWage() = attendees.forEach { it.saveWage() }
 
     private fun process() = stage(getString(R.string.record)) {
         val loader = FXMLLoader(getResource(R.layout.controller_wage_record), resources)
@@ -144,8 +134,6 @@ class WageController : SegmentedController() {
         setMinSize(1000.0, 650.0)
         loader.controller.addExtra(EXTRA_ATTENDEES, attendees)
     }.showAndWait()
-
-    private fun recess() = EditRecessDialog(this, employee).show()
 
     private fun history() = desktop?.open(WageDirectory)
 
@@ -216,7 +204,7 @@ class WageController : SegmentedController() {
     private inline val attendees: List<Attendee> get() = attendeePanes.map { it.attendee }
 
     /** As attendees are populated, saveAndProcess button need to be rebinded according to new requirements. */
-    private fun bindSaveAndProcessButton() = saveAndProcessButton.disableProperty().bind(flowPane.children.isEmpty or
+    private fun bindSaveAndProcessButton() = processButton.disableProperty().bind(flowPane.children.isEmpty or
         booleanBindingOf(flowPane.children, *flowPane.children
             .map { (it as AttendeePane).attendanceList.items }
             .toTypedArray()) { attendees.any { it.attendances.size % 2 != 0 } })

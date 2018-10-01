@@ -33,6 +33,7 @@ class App : Application(), Resourced {
         const val STYLE_NAVIGATION_PANE = "navigation-pane"
         const val STYLE_DISPLAY_LABEL = "display-label"
         const val STYLE_DEFAULT_BUTTON = "default-button"
+        const val STYLE_SPLIT_MENU_DEFAULT_BUTTON = "default-split-menu-button"
         const val STYLE_SEARCH_TEXTFIELD = "search-textfield"
         const val STYLE_BORDERLESS_TITLEDPANE = "borderless-titledpane"
 

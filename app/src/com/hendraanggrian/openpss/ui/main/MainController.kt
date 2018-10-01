@@ -21,6 +21,7 @@ import com.hendraanggrian.openpss.ui.main.edit.price.EditPlatePriceDialog
 import com.hendraanggrian.openpss.ui.main.help.AboutDialog
 import com.hendraanggrian.openpss.ui.main.help.GitHubApi
 import com.hendraanggrian.openpss.ui.schedule.ScheduleController
+import com.hendraanggrian.openpss.ui.wage.EditRecessDialog
 import com.hendraanggrian.openpss.ui.wage.WageController
 import com.hendraanggrian.openpss.util.forceExit
 import javafx.event.ActionEvent
@@ -50,6 +51,7 @@ class MainController : Controller(), Selectable<Tab> {
     @FXML lateinit var platePriceItem: MenuItem
     @FXML lateinit var offsetPriceItem: MenuItem
     @FXML lateinit var employeeItem: MenuItem
+    @FXML lateinit var recessItem: MenuItem
     @FXML lateinit var preferencesItem: MenuItem
     @FXML lateinit var navigationPane: BorderPane
     @FXML lateinit var navigationLeftBox: HBox
@@ -106,6 +108,8 @@ class MainController : Controller(), Selectable<Tab> {
     }.show()
 
     @FXML fun editEmployee() = EditEmployeeDialog(this, employee).show()
+
+    @FXML fun editRecess() = EditRecessDialog(this, employee).show()
 
     @FXML fun preferences() = PreferencesDialog(this, transaction { employee.isAdmin() }).show()
 

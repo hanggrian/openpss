@@ -39,6 +39,47 @@
     -fx-background-color: #005cb2;
 }
 
+.default-split-menu-button {
+    -fx-background-color: #1e88e5;
+}
+
+.default-split-menu-button:hover {
+    -fx-background-color: #6ab7ff;
+}
+
+.default-split-menu-button:pressed {
+    -fx-background-color: #005cb2;
+}
+
+.default-split-menu-button > .label {
+    -fx-background-color: #1e88e5;
+    -fx-text-fill: #fafafa;
+}
+
+.default-split-menu-button:hover > .label {
+    -fx-background-color: #6ab7ff;
+}
+
+.default-split-menu-button:pressed > .label {
+    -fx-background-color: #005cb2;
+}
+
+.default-split-menu-button > .arrow-button {
+    -fx-background-color: #1e88e5;
+}
+
+.default-split-menu-button:hover > .arrow-button {
+    -fx-background-color: #6ab7ff;
+}
+
+.default-split-menu-button:pressed > .arrow-button {
+    -fx-background-color: #005cb2;
+}
+
+.default-split-menu-button > .arrow-button > .arrow {
+    -fx-background-color: #fafafa;
+}
+
 .search-textfield {
     -fx-background-image: url('../image/field_search_inactive.png');
     -fx-background-repeat: no-repeat;

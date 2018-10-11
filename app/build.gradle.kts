@@ -1,16 +1,7 @@
-import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
-import com.hendraanggrian.generation.buildconfig.BuildConfigTask
-import com.hendraanggrian.generation.r.RTask
-import com.hendraanggrian.packr.PackTask
 import org.gradle.api.plugins.ExtensionAware
-import org.jetbrains.kotlin.gradle.dsl.Coroutines
-
 import org.junit.platform.gradle.plugin.FiltersExtension
 import org.junit.platform.gradle.plugin.EnginesExtension
 import org.junit.platform.gradle.plugin.JUnitPlatformExtension
-
-group = RELEASE_GROUP
-version = RELEASE_VERSION
 
 plugins {
     java
@@ -24,6 +15,9 @@ plugins {
     `junit-platform`
 }
 
+group = RELEASE_GROUP
+version = RELEASE_VERSION
+
 sourceSets {
     getByName("main") {
         java.srcDir("src")
@@ -36,7 +30,7 @@ sourceSets {
 
 application.mainClassName = "$group.App"
 
-kotlin.experimental.coroutines = Coroutines.ENABLE
+kotlin.experimental.coroutines = org.jetbrains.kotlin.gradle.dsl.Coroutines.ENABLE
 
 val ktlint by configurations.registering
 
@@ -73,11 +67,11 @@ dependencies {
 }
 
 tasks {
-    "generateR"(RTask::class) {
-        resourcesDirectory = projectDir.resolve("res")
-        setLowercase(true)
+    "generateR"(com.hendraanggrian.generation.r.RTask::class) {
+        resourcesDir = projectDir.resolve("res")
+        isLowercase = true
     }
-    "generateBuildConfig"(BuildConfigTask::class) {
+    "generateBuildConfig"(com.hendraanggrian.generation.buildconfig.BuildConfigTask::class) {
         appName = RELEASE_NAME
         debug = RELEASE_DEBUG
         artifactId = RELEASE_ARTIFACT
@@ -109,7 +103,7 @@ tasks {
         args("-F", "src/**/*.kt")
     }
 
-    "shadowJar"(ShadowJar::class) {
+    "shadowJar"(com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar::class) {
         destinationDir = buildDir.resolve("release")
         manifest.attributes(mapOf("Main-Class" to application.mainClassName))
         baseName = RELEASE_ARTIFACT
@@ -117,23 +111,23 @@ tasks {
         classifier = null
     }
 
-    "pack"(PackTask::class) {
+    "pack"(com.hendraanggrian.packr.PackTask::class) {
         dependsOn("installDist")
 
         buildDir.resolve("install/app/lib")?.listFiles()?.forEach {
-            classpath.add(it.path)
+            classpath(it.path)
         }
         executable = RELEASE_NAME
         mainClass = application.mainClassName
-        vmArgs.add("Xmx2G")
-        resources.addAll(listOf("res", "../scene/sceneres"))
-        mac {
+        vmArgs("Xmx2G")
+        resources(projectDir.resolve("res"), projectDir.parentFile.resolve("scene/sceneres"))
+        macOS {
             name = "$RELEASE_NAME.app"
-            icon = "art/$RELEASE_NAME.icns"
+            icon = projectDir.resolve("art/$RELEASE_NAME.icns")
             bundleId = RELEASE_GROUP
         }
         windows64 {
-            jdk = "/Users/hendraanggrian/Desktop/jdk1.8.0_172"
+            jdk = "/Users/hendraanggrian/Desktop/jdk1.8.0_181"
             name = RELEASE_NAME
         }
         verbose = true

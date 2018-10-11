@@ -1,11 +1,9 @@
-import org.gradle.api.JavaVersion.*
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 buildscript {
     repositories {
         jcenter()
         maven("https://oss.sonatype.org/content/repositories/snapshots") // required for packr
         maven("https://dl.bintray.com/hendraanggrian/packr")
+        maven("https://dl.bintray.com/hendraanggrian/generation")
     }
     dependencies {
         classpath(kotlin("gradle-plugin", VERSION_KOTLIN))
@@ -21,14 +19,13 @@ allprojects {
     repositories {
         jcenter()
         maven("http://repository.jetbrains.com/kotlin-nosql") // required for kotlin-nosql
-        maven("https://dl.bintray.com/hendraanggrian/ktfx")
     }
     tasks {
         withType<Delete> {
             delete(projectDir.resolve("out"))
         }
-        withType<KotlinCompile> {
-            kotlinOptions.jvmTarget = "$VERSION_1_8"
+        withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+            kotlinOptions.jvmTarget = "${JavaVersion.VERSION_1_8}"
         }
     }
 }

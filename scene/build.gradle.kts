@@ -1,10 +1,3 @@
-import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
-import com.hendraanggrian.generation.r.RTask
-import org.jetbrains.kotlin.gradle.dsl.Coroutines
-
-group = "$RELEASE_GROUP.scene"
-version = RELEASE_VERSION
-
 plugins {
     `java-library`
     kotlin("jvm")
@@ -12,6 +5,9 @@ plugins {
     generation("r")
     shadow
 }
+
+group = "$RELEASE_GROUP.scene"
+version = RELEASE_VERSION
 
 sourceSets {
     getByName("main") {
@@ -24,7 +20,7 @@ sourceSets {
     }
 }
 
-kotlin.experimental.coroutines = Coroutines.ENABLE
+kotlin.experimental.coroutines = org.jetbrains.kotlin.gradle.dsl.Coroutines.ENABLE
 
 val ktlint by configurations.registering
 
@@ -48,8 +44,8 @@ dependencies {
 }
 
 tasks {
-    "generateR"(RTask::class) {
-        resourcesDirectory = projectDir.resolve("sceneres")
+    "generateR"(com.hendraanggrian.generation.r.RTask::class) {
+        resourcesDir = projectDir.resolve("sceneres")
     }
 
     val ktlint by registering(JavaExec::class) {
@@ -74,7 +70,7 @@ tasks {
         args("-F", "src/**/*.kt")
     }
 
-    withType<ShadowJar> {
+    withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
         destinationDir = buildDir.resolve("release")
         baseName = "$RELEASE_ARTIFACT-scene"
         version = RELEASE_VERSION

@@ -39,7 +39,6 @@ import javafx.scene.layout.CornerRadii.EMPTY
 import javafx.scene.layout.Priority.ALWAYS
 import javafx.scene.layout.VBox
 import javafx.scene.paint.Color.BLACK
-import javafx.scene.text.Font.font
 import javafx.scene.text.TextAlignment
 import javafx.scene.transform.Scale
 import kotlinx.nosql.update
@@ -58,6 +57,8 @@ import ktfx.layouts.textFlow
 import ktfx.layouts.vbox
 import ktfx.scene.layout.gap
 import ktfx.scene.layout.paddingAll
+import ktfx.scene.text.fontSize
+import ktfx.util.invoke
 import java.util.ResourceBundle
 
 /**
@@ -133,8 +134,8 @@ class ViewInvoicePopover(
                 } hpriority ALWAYS
                 vbox {
                     alignment = CENTER_RIGHT
-                    label(getString(R.string.invoice)) { font = font(18.0) }
-                    label("# ${invoice.no}") { font = font(32.0) }
+                    label(getString(R.string.invoice)) { fontSize = 18.0 }
+                    label("# ${invoice.no}") { fontSize = 32.0 }
                 }
             }
             fullLine()
@@ -165,29 +166,29 @@ class ViewInvoicePopover(
                     }
                     var row = 0
                     row += orderGridPane(row, R.string.plate, invoice.plates) { order, i ->
-                        label(numberConverter.toString(order.qty)) row i col 0
+                        label(numberConverter(order.qty)) row i col 0
                         label(order.machine) row i col 1
                         label(order.title) {
                             isWrapText = true
                         } row i col 2
-                        label(numberConverter.toString(order.total)) row i col 3
+                        label(numberConverter(order.total)) row i col 3
                     }
                     row += orderGridPane(row, R.string.offset, invoice.offsets) { order, i ->
-                        label(numberConverter.toString(order.qty)) row i col 0
+                        label(numberConverter(order.qty)) row i col 0
                         label("${order.machine}\n${order.typedTechnique.toString(this@ViewInvoicePopover)}") {
                             textAlignment = TextAlignment.CENTER
                         } row i col 1
                         label(order.title) {
                             isWrapText = true
                         } row i col 2
-                        label(numberConverter.toString(order.total)) row i col 3
+                        label(numberConverter(order.total)) row i col 3
                     }
                     row += orderGridPane(row, R.string.others, invoice.others) { order, i ->
-                        label(numberConverter.toString(order.qty)) row i col 0
+                        label(numberConverter(order.qty)) row i col 0
                         label(order.title) {
                             isWrapText = true
                         } row i col 2
-                        label(numberConverter.toString(order.total)) row i col 3
+                        label(numberConverter(order.total)) row i col 3
                     }
                 }
             } vpriority ALWAYS
@@ -200,7 +201,7 @@ class ViewInvoicePopover(
                     "${getString(R.string.note)}\n" { font = bold() }
                     invoice.note()
                 } row 0 col 0 rowSpans 2 hpriority ALWAYS
-                label(currencyConverter.toString(invoice.total)) {
+                label(currencyConverter(invoice.total)) {
                     font = bold()
                 } row 0 col 1 colSpans 2 halign RIGHT
                 vbox {

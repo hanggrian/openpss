@@ -13,6 +13,7 @@ import ktfx.beans.property.toProperty
 import ktfx.layouts.imageView
 import ktfx.listeners.cellFactory
 import ktfx.styles.labeledStyle
+import ktfx.util.invoke
 
 fun <T> TableColumn<T, Boolean>.doneCell(size: Int = 64, target: T.() -> Boolean) {
     size.toDouble().let {
@@ -44,10 +45,10 @@ fun <T> TableColumn<T, String>.stringCell(target: T.() -> String?) =
 
 fun <T> TableColumn<T, String>.numberCell(target: T.() -> Int) {
     style = labeledStyle { alignment = CENTER_RIGHT }
-    setCellValueFactory { numberConverter.toString(it.value.target()).toProperty() }
+    setCellValueFactory { numberConverter(it.value.target()).toProperty() }
 }
 
 fun <T> TableColumn<T, String>.currencyCell(target: T.() -> Double) {
     style = labeledStyle { alignment = CENTER_RIGHT }
-    setCellValueFactory { currencyConverter.toString(it.value.target()).toProperty() }
+    setCellValueFactory { currencyConverter(it.value.target()).toProperty() }
 }

@@ -24,7 +24,7 @@ import ktfx.collections.toMutableObservableList
 import ktfx.coroutines.onAction
 import ktfx.layouts.LayoutManager
 import ktfx.layouts.button
-import ktfx.scene.control.styledInfoAlert
+import ktfx.scene.control.infoAlert
 
 class EditEmployeeDialog(
     resourced: Resourced,
@@ -48,10 +48,11 @@ class EditEmployeeDialog(
             bindDisable()
             onAction {
                 transaction { Employees[selected!!].projection { password }.update(Employee.DEFAULT_PASSWORD) }
-                styledInfoAlert(
-                    getStyle(R.style.openpss),
+                infoAlert(
                     getString(R.string.change_password_popup_will_appear_when_is_logged_back_in, employee.name)
-                ).show()
+                ) {
+                    dialogPane.stylesheets += getStyle(R.style.openpss)
+                }.show()
             }
         }
     }

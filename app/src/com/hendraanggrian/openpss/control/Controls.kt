@@ -15,7 +15,7 @@ import kotlinx.coroutines.experimental.Dispatchers
 import kotlinx.coroutines.experimental.GlobalScope
 import kotlinx.coroutines.experimental.javafx.JavaFx
 import kotlinx.coroutines.experimental.launch
-import ktfx.scene.control.styledConfirmAlert
+import ktfx.scene.control.confirmAlert
 import kotlin.coroutines.experimental.CoroutineContext
 
 /**
@@ -33,7 +33,7 @@ fun Node.onActionFilter(
 fun Resourced.yesNoAlert(
     contentTextId: String = R.string.are_you_sure,
     action: () -> Unit
-) = styledConfirmAlert(getStyle(R.style.openpss), getString(contentTextId), YES, NO)
+) = confirmAlert(getString(contentTextId), YES, NO) { dialogPane.stylesheets += getStyle(R.style.openpss) }
     .showAndWait()
     .filter { it == YES }
     .ifPresent { action() }

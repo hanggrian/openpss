@@ -24,6 +24,10 @@ import javafx.scene.control.ButtonBar.ButtonData.OK_DONE
 import javafx.scene.control.ButtonType.CANCEL
 import javafx.scene.control.PasswordField
 import javafx.scene.control.TextField
+import kotlinx.coroutines.experimental.Dispatchers
+import kotlinx.coroutines.experimental.GlobalScope
+import kotlinx.coroutines.experimental.javafx.JavaFx
+import kotlinx.coroutines.experimental.launch
 import ktfx.application.later
 import ktfx.beans.value.isBlank
 import ktfx.beans.value.or
@@ -39,14 +43,10 @@ import ktfx.layouts.passwordField
 import ktfx.layouts.textField
 import ktfx.scene.control.cancelButton
 import ktfx.scene.control.customButton
-import ktfx.scene.control.styledErrorAlert
-import ktfx.scene.control.styledInfoAlert
-import ktfx.scene.control.styledWarningAlert
+import ktfx.scene.control.errorAlert
+import ktfx.scene.control.infoAlert
+import ktfx.scene.control.warningAlert
 import ktfx.scene.layout.gap
-import kotlinx.coroutines.experimental.Dispatchers
-import kotlinx.coroutines.experimental.GlobalScope
-import kotlinx.coroutines.experimental.javafx.JavaFx
-import kotlinx.coroutines.experimental.launch
 
 class LoginDialog(resourced: Resourced) : Dialog<Any>(resourced, graphicId = R.image.header_launcher) {
 
@@ -73,8 +73,9 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(resourced, graphicId = R.i
                     GlobalScope.launch(Dispatchers.JavaFx) {
                         close()
                         later {
-                            styledInfoAlert(getStyle(R.style.openpss), getString(R.string.please_restart))
-                                .showAndWait().ifPresent { forceExit() }
+                            infoAlert(getString(R.string.please_restart)) {
+                                dialogPane.stylesheets += getStyle(R.style.openpss)
+                            }.showAndWait().ifPresent { forceExit() }
                         }
                     }
                 }
@@ -91,11 +92,8 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(resourced, graphicId = R.i
                 hyperlink(getString(R.string.check_for_updates)) {
                     onAction {
                         GitHubApi.checkUpdates(this@LoginDialog, { title, actions ->
-                            styledWarningAlert(
-                                getStyle(R.style.openpss),
-                                title = title,
-                                buttonTypes = *arrayOf(CANCEL)
-                            ) {
+                            warningAlert(title, CANCEL) {
+                                dialogPane.stylesheets += getStyle(R.style.openpss)
                                 dialogPane.content = ktfx.layouts.vbox {
                                     actions.forEach { action ->
                                         hyperlink(action.text) { onAction = action }
@@ -103,7 +101,9 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(resourced, graphicId = R.i
                                 }
                             }.show()
                         }) { title, content ->
-                            styledInfoAlert(getStyle(R.style.openpss), title, contentText = content).show()
+                            infoAlert(title, content = content) {
+                                dialogPane.stylesheets += getStyle(R.style.openpss)
+                            }.show()
                         }
                     }
                 } marginLeft R.dimen.padding_medium.toDouble()
@@ -167,7 +167,9 @@ class LoginDialog(resourced: Resourced) : Dialog<Any>(resourced, graphicId = R.i
                 } catch (e: Exception) {
                     if (DEBUG) e.printStackTrace()
                     GlobalScope.launch(Dispatchers.JavaFx) {
-                        styledErrorAlert(getStyle(R.style.openpss), e.message.toString()).show()
+                        errorAlert(e.message.toString()) {
+                            dialogPane.stylesheets += getStyle(R.style.openpss)
+                        }.show()
                     }
                 }
             }

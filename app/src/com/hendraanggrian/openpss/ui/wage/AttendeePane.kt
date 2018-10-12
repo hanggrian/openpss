@@ -22,7 +22,11 @@ import javafx.scene.image.ImageView
 import javafx.scene.input.MouseEvent.MOUSE_CLICKED
 import javafx.scene.layout.Priority.ALWAYS
 import javafx.scene.layout.StackPane
-import javafx.scene.text.Font.font
+import kotlinx.coroutines.experimental.Dispatchers
+import kotlinx.coroutines.experimental.GlobalScope
+import kotlinx.coroutines.experimental.delay
+import kotlinx.coroutines.experimental.javafx.JavaFx
+import kotlinx.coroutines.experimental.launch
 import ktfx.beans.binding.bindingOf
 import ktfx.collections.sort
 import ktfx.coroutines.eventFilter
@@ -44,11 +48,7 @@ import ktfx.scene.input.isDelete
 import ktfx.scene.input.isDoubleClick
 import ktfx.scene.layout.gap
 import ktfx.scene.layout.paddingAll
-import kotlinx.coroutines.experimental.Dispatchers
-import kotlinx.coroutines.experimental.GlobalScope
-import kotlinx.coroutines.experimental.delay
-import kotlinx.coroutines.experimental.javafx.JavaFx
-import kotlinx.coroutines.experimental.launch
+import ktfx.scene.text.fontSize
 import org.joda.time.DateTime
 import org.joda.time.DateTime.now
 import kotlin.math.absoluteValue
@@ -81,14 +81,14 @@ class AttendeePane(
                     promptText = getString(R.string.income)
                     valueProperty().bindBidirectional(attendee.dailyProperty)
                 } col 1 row 1
-                label("@${getString(R.string.day)}") { font = font(10.0) } col 2 row 1
+                label("@${getString(R.string.day)}") { fontSize = 10.0 } col 2 row 1
                 label(getString(R.string.overtime)) col 0 row 2 marginRight 4.0
                 intField {
                     prefWidth = 80.0
                     promptText = getString(R.string.overtime)
                     valueProperty().bindBidirectional(attendee.hourlyOvertimeProperty)
                 } col 1 row 2
-                label("@${getString(R.string.hour)}") { font = font(10.0) } col 2 row 2
+                label("@${getString(R.string.hour)}") { fontSize = 10.0 } col 2 row 2
                 label(getString(R.string.recess)) col 0 row 3 marginRight 4.0
                 vbox {
                     transaction {
@@ -130,7 +130,7 @@ class AttendeePane(
                                             }
                                         val hours = (minutes / 60.0).round()
                                         label(hours.toString()) {
-                                            font = font(10.0)
+                                            fontSize = 10.0
                                             if (hours > 12) textFill = getColor(R.color.red)
                                         } marginLeft R.dimen.padding_medium.toDouble()
                                     }

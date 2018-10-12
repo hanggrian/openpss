@@ -12,9 +12,9 @@ import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.i18n.Resourced
 import com.hendraanggrian.openpss.util.getStyle
 import com.hendraanggrian.openpss.util.isNotEmpty
-import ktfx.scene.control.styledErrorAlert
 import kotlinx.nosql.equal
 import kotlinx.nosql.mongodb.DocumentSchema
+import ktfx.scene.control.errorAlert
 
 abstract class EditPriceDialog<D, S>(
     schema: S,
@@ -42,8 +42,9 @@ abstract class EditPriceDialog<D, S>(
     ).showAt(addButton) { name ->
         transaction @Suppress("IMPLICIT_CAST_TO_ANY") {
             when {
-                schema { it.name.equal(name) }.isNotEmpty() ->
-                    styledErrorAlert(getStyle(R.style.openpss), getString(R.string.name_taken)).show()
+                schema { it.name.equal(name) }.isNotEmpty() -> errorAlert(getString(R.string.name_taken)) {
+                    dialogPane.stylesheets += getStyle(R.style.openpss)
+                }.show()
                 else -> {
                     val price = newPrice(name)
                     price.id = schema.insert(price)

@@ -35,6 +35,7 @@ import ktfx.listeners.cellFactory
 import ktfx.scene.control.closeButton
 import ktfx.scene.control.icon
 import ktfx.scene.layout.paddingAll
+import ktfx.scene.text.fontSize
 import java.net.URI
 
 class AboutDialog(resourced: Resourced) : Dialog<Nothing>(resourced), Selectable<License> {
@@ -43,7 +44,7 @@ class AboutDialog(resourced: Resourced) : Dialog<Nothing>(resourced), Selectable
         cellFactory {
             onUpdate { license, empty ->
                 if (license != null && !empty) graphic = ktfx.layouts.vbox {
-                    label(license.repo) { font = font(12.0) }
+                    label(license.repo) { fontSize = 12.0 }
                     label(license.owner) { font = bold(12) }
                 }
             }

@@ -4,7 +4,7 @@ package com.hendraanggrian.openpss.util
 
 import com.hendraanggrian.openpss.R
 import javafx.application.Platform
-import ktfx.scene.control.styledErrorAlert
+import ktfx.scene.control.errorAlert
 import java.awt.Desktop
 
 /** Because sometimes [Platform.exit] is not enough. */
@@ -17,7 +17,9 @@ inline fun forceExit() {
 val desktop: Desktop?
     get() {
         if (!Desktop.isDesktopSupported()) {
-            styledErrorAlert(getStyle(R.style.openpss), "java.awt.Desktop is not supported.").show()
+            errorAlert("java.awt.Desktop is not supported.") {
+                dialogPane.stylesheets += getStyle(R.style.openpss)
+            }.show()
             return null
         }
         return Desktop.getDesktop()

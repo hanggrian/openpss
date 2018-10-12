@@ -3,6 +3,7 @@ package com.hendraanggrian.openpss.ui.schedule
 import com.hendraanggrian.openpss.db.schemas.Invoices
 import com.hendraanggrian.openpss.numberConverter
 import kotlinx.nosql.Id
+import ktfx.util.invoke
 
 data class Schedule(
     val invoiceId: Id<String, Invoices>?,
@@ -18,7 +19,7 @@ data class Schedule(
         title: String,
         qty: Int,
         type: String = ""
-    ) : this(invoiceId, firstColumn, title, numberConverter.toString(qty), type)
+    ) : this(invoiceId, firstColumn, title, numberConverter(qty), type)
 
     fun isNode(): Boolean = invoiceId != null
 

@@ -13,7 +13,6 @@ import javafx.scene.Node
 import javafx.scene.control.ListView
 import javafx.scene.control.TableView
 import javafx.scene.layout.Pane
-import javafx.scene.text.Font
 import ktfx.beans.value.getValue
 import ktfx.beans.value.setValue
 import ktfx.coroutines.listener
@@ -23,6 +22,7 @@ import ktfx.layouts.borderPane
 import ktfx.layouts.button
 import ktfx.layouts.buttonBar
 import ktfx.scene.layout.updatePadding
+import ktfx.scene.text.fontSize
 import org.controlsfx.control.PopOver
 
 /** Base [PopOver] class used across applications. */
@@ -45,7 +45,7 @@ open class Popover(
             updatePadding(12.0, 16.0, 12.0, 16.0)
             borderPane {
                 left = ktfx.layouts.label(getString(titleId)) {
-                    font = Font.font(18.0)
+                    fontSize = 18.0
                     textFill = getColor(R.color.blue)
                 } align CENTER_LEFT
                 rightProperty().run {

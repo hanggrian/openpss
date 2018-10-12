@@ -28,6 +28,7 @@ dependencies {
     compile(kotlin("stdlib", VERSION_KOTLIN))
     compile(kotlinx("coroutines-javafx", VERSION_COROUTINES))
     compile(controlsFx())
+    compile(hendraanggrian("ktfx", "ktfx-commons", VERSION_KTFX))
     compile(hendraanggrian("ktfx", "ktfx-layouts", VERSION_KTFX))
     compile(hendraanggrian("ktfx", "ktfx-listeners", VERSION_KTFX))
     compile(hendraanggrian("ktfx", "ktfx-coroutines", VERSION_KTFX))

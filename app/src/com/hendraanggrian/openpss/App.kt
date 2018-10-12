@@ -21,7 +21,7 @@ import kotlinx.nosql.equal
 import kotlinx.nosql.update
 import ktfx.application.launch
 import ktfx.layouts.scene
-import ktfx.scene.control.styledInfoAlert
+import ktfx.scene.control.infoAlert
 import ktfx.stage.icon
 import ktfx.stage.setMinSize
 import org.apache.log4j.BasicConfigurator
@@ -66,7 +66,9 @@ class App : Application(), Resourced {
             if (employee.isFirstTimeLogin) ChangePasswordDialog(this).showAndWait().ifPresent { newPassword ->
                 transaction {
                     Employees { it.name.equal(employee.name) }.projection { password }.update(newPassword)
-                    styledInfoAlert(getStyle(R.style.openpss), getString(R.string.successfully_changed_password)).show()
+                    infoAlert(getString(R.string.successfully_changed_password)) {
+                        dialogPane.stylesheets += getStyle(R.style.openpss)
+                    }.show()
                 }
             }
         }

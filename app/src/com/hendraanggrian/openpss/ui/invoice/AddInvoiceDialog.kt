@@ -56,6 +56,7 @@ import ktfx.scene.control.cancelButton
 import ktfx.scene.control.okButton
 import ktfx.scene.input.isDelete
 import ktfx.scene.layout.gap
+import ktfx.util.invoke
 import org.joda.time.DateTime
 
 class AddInvoiceDialog(
@@ -131,7 +132,7 @@ class AddInvoiceDialog(
             label {
                 font = bold()
                 textProperty().bind(stringBindingOf(totalProperty) {
-                    currencyConverter.toString(totalProperty.value)
+                    currencyConverter(totalProperty.value)
                 })
                 textFillProperty().bind(
                     `when`(totalProperty greater 0)

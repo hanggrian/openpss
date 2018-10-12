@@ -52,7 +52,7 @@ import ktfx.layouts.contextMenu
 import ktfx.layouts.listView
 import ktfx.layouts.textField
 import ktfx.layouts.tooltip
-import ktfx.scene.control.styledErrorAlert
+import ktfx.scene.control.errorAlert
 import org.controlsfx.control.MasterDetailPane
 import java.net.URL
 import java.util.ResourceBundle
@@ -168,7 +168,9 @@ class CustomerController : SegmentedController(), Refreshable, Selectable<Custom
         transaction {
             when {
                 Customers { it.name.matches("^$name$", CASE_INSENSITIVE) }.isNotEmpty() ->
-                    styledErrorAlert(getStyle(R.style.openpss), getString(R.string.name_taken)).show()
+                    errorAlert(getString(R.string.name_taken)) {
+                        dialogPane.stylesheets += getStyle(R.style.openpss)
+                    }.show()
                 else -> {
                     Customer.new(name).let {
                         it.id = Customers.insert(it)

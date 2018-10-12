@@ -21,11 +21,11 @@ import com.mongodb.MongoClientOptions.Builder
 import com.mongodb.MongoCredential.createCredential
 import com.mongodb.MongoException
 import com.mongodb.ServerAddress
-import ktfx.scene.control.styledErrorAlert
 import kotlinx.coroutines.experimental.Dispatchers
 import kotlinx.coroutines.experimental.withContext
 import kotlinx.nosql.equal
 import kotlinx.nosql.mongodb.MongoDB
+import ktfx.scene.control.errorAlert
 import org.joda.time.DateTime
 import org.joda.time.LocalDate
 import org.joda.time.LocalTime
@@ -45,7 +45,8 @@ fun <T> transaction(statement: SessionWrapper.() -> T): T = try {
     DB.withSession { SessionWrapper(this).statement() }
 } catch (e: MongoException) {
     if (DEBUG) e.printStackTrace()
-    styledErrorAlert(getStyle(R.style.openpss), e.message.toString()) {
+    errorAlert(e.message.toString()) {
+        dialogPane.stylesheets += getStyle(R.style.openpss)
         headerText = "Connection closed. Please sign in again."
     }.showAndWait().ifPresent {
         forceExit()

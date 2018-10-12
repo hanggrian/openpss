@@ -45,8 +45,9 @@ import ktfx.layouts.label
 import ktfx.layouts.menuItem
 import ktfx.listeners.cellFactory
 import ktfx.scene.control.customButton
-import ktfx.scene.control.styledInfoAlert
+import ktfx.scene.control.infoAlert
 import ktfx.scene.snapshot
+import ktfx.util.invoke
 import java.awt.image.BufferedImage
 import java.net.URL
 import java.util.ResourceBundle
@@ -94,8 +95,8 @@ class WageRecordController : Controller() {
                     onUpdate { any, empty ->
                         if (any != null && !empty) graphic = label(
                             when (it) {
-                                dailyColumn, overtimeColumn -> numberConverter.toString(any as Number)
-                                dailyIncomeColumn, overtimeIncomeColumn, totalColumn -> currencyConverter.toString(any as Number)
+                                dailyColumn, overtimeColumn -> numberConverter(any as Number)
+                                dailyIncomeColumn, overtimeIncomeColumn, totalColumn -> currencyConverter(any as Number)
                                 else -> any.toString()
                             }
                         ) {
@@ -129,7 +130,8 @@ class WageRecordController : Controller() {
             }
             (root.scene.window as Stage).titleProperty().bind(
                 stringBindingOf(*records.filter { it.isChild() }.map { it.totalProperty }.toTypedArray()) {
-                    "${getString(R.string.record)} - ${currencyConverter.toString(records
+                    "${getString(R.string.record)} - ${currencyConverter(records
+                        .asSequence()
                         .filter { it.isTotal() }
                         .sumByDouble { it.totalProperty.value })}"
                 })
@@ -206,7 +208,8 @@ class WageRecordController : Controller() {
         )
         togglePrintMode(false, stylesheet)
         ImageIO.write(images.concatenate(), "png", WageFile())
-        styledInfoAlert(getStyle(R.style.openpss), getString(R.string.screenshot_finished)) {
+        infoAlert(getString(R.string.screenshot_finished)) {
+            dialogPane.stylesheets += getStyle(R.style.openpss)
             customButton(getString(R.string.open_folder), CANCEL_CLOSE)
         }.showAndWait()
             .filter { it.buttonData == CANCEL_CLOSE }

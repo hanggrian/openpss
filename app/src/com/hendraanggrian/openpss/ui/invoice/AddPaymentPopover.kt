@@ -27,6 +27,7 @@ import ktfx.layouts.label
 import ktfx.layouts.textField
 import ktfx.layouts.tooltip
 import ktfx.scene.layout.gap
+import ktfx.util.invoke
 
 class AddPaymentPopover(
     resourced: Resourced,
@@ -47,7 +48,7 @@ class AddPaymentPopover(
                 font = bold()
             } row 0 col 1 colSpans 2
             label(getString(R.string.receivable)) row 1 col 0
-            label(currencyConverter.toString(receivable)) {
+            label(currencyConverter(receivable)) {
                 font = bold()
             } row 1 col 1 colSpans 2
             label(getString(R.string.payment)) row 2 col 0
@@ -63,7 +64,7 @@ class AddPaymentPopover(
                     (receivable - valueField.value).let { remaining ->
                         when {
                             remaining <= 0.0 -> getString(R.string.paid)
-                            else -> currencyConverter.toString(remaining)
+                            else -> currencyConverter(remaining)
                         }
                     }
                 })

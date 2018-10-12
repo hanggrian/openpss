@@ -41,7 +41,7 @@ import ktfx.layouts.LayoutManager
 import ktfx.layouts.borderPane
 import ktfx.layouts.label
 import ktfx.layouts.scene
-import ktfx.scene.control.styledErrorAlert
+import ktfx.scene.control.errorAlert
 import ktfx.scene.layout.maxSize
 import ktfx.stage.fileChooser
 import ktfx.stage.setMinSize
@@ -193,7 +193,9 @@ class WageController : SegmentedController() {
                 GlobalScope.launch(Dispatchers.JavaFx) {
                     anchorPane.children -= loadingPane
                     bindSaveAndProcessButton()
-                    styledErrorAlert(getStyle(R.style.openpss), e.message.toString()).show()
+                    errorAlert(e.message.toString()) {
+                        dialogPane.stylesheets += getStyle(R.style.openpss)
+                    }.show()
                 }
             }
         }

@@ -32,7 +32,7 @@ application.mainClassName = "$group.App"
 
 kotlin.experimental.coroutines = org.jetbrains.kotlin.gradle.dsl.Coroutines.ENABLE
 
-val ktlint by configurations.registering
+ktlint()
 
 dependencies {
     implementation(project(":scene"))
@@ -60,10 +60,6 @@ dependencies {
         exclude("org.junit.platform")
     }
     testImplementation(junitPlatform("runner"))
-
-    ktlint {
-        invoke(ktlint())
-    }
 }
 
 tasks {
@@ -71,6 +67,7 @@ tasks {
         resourcesDir = projectDir.resolve("res")
         isLowercase = true
     }
+
     "generateBuildConfig"(com.hendraanggrian.generation.buildconfig.BuildConfigTask::class) {
         appName = RELEASE_NAME
         debug = RELEASE_DEBUG
@@ -79,28 +76,6 @@ tasks {
         email = "$RELEASE_USER@gmail.com"
         website = RELEASE_WEBSITE
         field("FULL_NAME", RELEASE_FULL_NAME)
-    }
-
-    val ktlint by registering(JavaExec::class) {
-        group = LifecycleBasePlugin.VERIFICATION_GROUP
-        inputs.dir("src")
-        outputs.dir("src")
-        description = "Check Kotlin code style."
-        classpath(configurations["ktlint"])
-        main = "com.github.shyiko.ktlint.Main"
-        args("src/**/*.kt")
-    }
-    "check" {
-        dependsOn(ktlint)
-    }
-    register("ktlintFormat", JavaExec::class) {
-        group = "formatting"
-        inputs.dir("src")
-        outputs.dir("src")
-        description = "Fix Kotlin code style deviations."
-        classpath(configurations["ktlint"])
-        main = "com.github.shyiko.ktlint.Main"
-        args("-F", "src/**/*.kt")
     }
 
     "shadowJar"(com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar::class) {

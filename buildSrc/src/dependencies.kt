@@ -41,8 +41,6 @@ fun DependencyHandler.spek(module: String) = "org.jetbrains.spek:spek-$module:$V
 
 fun DependencyHandler.testFx(module: String) = "org.testfx:testfx-$module:$VERSION_TESTFX"
 
-fun DependencyHandler.ktlint() = "com.github.shyiko:ktlint:$VERSION_KTLINT"
-
 private fun optionalRepo(
     group: String,
     module: String,

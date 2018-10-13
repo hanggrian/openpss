@@ -22,7 +22,7 @@ sourceSets {
 
 kotlin.experimental.coroutines = org.jetbrains.kotlin.gradle.dsl.Coroutines.ENABLE
 
-val ktlint by configurations.registering
+ktlint()
 
 dependencies {
     compile(kotlin("stdlib", VERSION_KOTLIN))
@@ -38,37 +38,11 @@ dependencies {
     testImplementation(kotlin("test", VERSION_KOTLIN))
     testImplementation(testFx("core"))
     testImplementation(testFx("junit"))
-
-    ktlint {
-        invoke(ktlint())
-    }
 }
 
 tasks {
     "generateR"(com.hendraanggrian.generation.r.RTask::class) {
         resourcesDir = projectDir.resolve("sceneres")
-    }
-
-    val ktlint by registering(JavaExec::class) {
-        group = LifecycleBasePlugin.VERIFICATION_GROUP
-        inputs.dir("src")
-        outputs.dir("src")
-        description = "Check Kotlin code style."
-        classpath(configurations["ktlint"])
-        main = "com.github.shyiko.ktlint.Main"
-        args("src/**/*.kt")
-    }
-    "check" {
-        dependsOn(ktlint)
-    }
-    register("ktlintFormat", JavaExec::class) {
-        group = "formatting"
-        inputs.dir("src")
-        outputs.dir("src")
-        description = "Fix Kotlin code style deviations."
-        classpath(configurations["ktlint"])
-        main = "com.github.shyiko.ktlint.Main"
-        args("-F", "src/**/*.kt")
     }
 
     withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {

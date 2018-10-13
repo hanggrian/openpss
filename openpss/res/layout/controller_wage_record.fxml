@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<?import com.hendraanggrian.openpss.control.*?>
+<?import com.hendraanggrian.openpss.control.TimeBox?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.hendraanggrian.openpss.ui.wage.record.WageRecordController"
+      fx:id="root">
+    <HBox fx:id="navigationBox" styleClass="navigation-pane" spacing="10">
+        <StretchableSplitMenuButton mnemonicParsing="false" fx:id="undoButton" onAction="#undo" stretchPoint="1100"
+                                    stretchableText="%undo">
+            <ImageView>
+                <Image url="@/image/btn_undo_light.png"/>
+            </ImageView>
+        </StretchableSplitMenuButton>
+        <Region minWidth="10"/>
+        <TimeBox fx:id="timeBox"/>
+        <StretchableButton mnemonicParsing="false" fx:id="lockStartButton" onAction="#lockStart" stretchPoint="1100"
+                           stretchableText="%lock_start_time">
+            <ImageView>
+                <Image url="@/image/btn_lock_start_light.png"/>
+            </ImageView>
+        </StretchableButton>
+        <StretchableButton mnemonicParsing="false" fx:id="lockEndButton" onAction="#lockEnd" stretchPoint="1100"
+                           stretchableText="%lock_end_time">
+            <ImageView>
+                <Image url="@/image/btn_lock_end_light.png"/>
+            </ImageView>
+        </StretchableButton>
+        <Region minWidth="10"/>
+        <StretchableButton mnemonicParsing="false" fx:id="disableDailyIncomeButton" onAction="#disableDailyIncome"
+                           stretchPoint="1100" stretchableText="%disable_daily_income">
+            <ImageView>
+                <Image url="@/image/btn_disable_daily_light.png"/>
+            </ImageView>
+        </StretchableButton>
+        <Region HBox.hgrow="ALWAYS"/>
+        <StretchableButton mnemonicParsing="false" onAction="#screenshot" stretchPoint="1100"
+                           stretchableText="%screenshot" styleClass="default-button">
+            <ImageView>
+                <Image url="@/image/btn_screenshot_dark.png"/>
+            </ImageView>
+        </StretchableButton>
+    </HBox>
+    <TreeTableView fx:id="recordTable" showRoot="false" VBox.vgrow="ALWAYS">
+        <columns>
+            <TreeTableColumn fx:id="nameColumn" sortable="false" text="%name"/>
+            <TreeTableColumn fx:id="startColumn" sortable="false" resizable="false" text="%start"
+                             maxWidth="156" minWidth="156" prefWidth="156" style="-fx-alignment: CENTER;"/>
+            <TreeTableColumn fx:id="endColumn" sortable="false" resizable="false" text="%end"
+                             maxWidth="156" minWidth="156" prefWidth="156" style="-fx-alignment: CENTER;"/>
+            <TreeTableColumn fx:id="dailyColumn" sortable="false" resizable="false" text="%daily"
+                             maxWidth="64" minWidth="64" prefWidth="64" style="-fx-alignment: CENTER;"/>
+            <TreeTableColumn fx:id="dailyIncomeColumn" sortable="false" text="%daily_income"
+                             style="-fx-alignment: CENTER-RIGHT;"/>
+            <TreeTableColumn fx:id="overtimeColumn" sortable="false" resizable="false" text="%overtime"
+                             maxWidth="64" minWidth="64" prefWidth="64" style="-fx-alignment: CENTER;"/>
+            <TreeTableColumn fx:id="overtimeIncomeColumn" sortable="false" text="%overtime_income"
+                             style="-fx-alignment: CENTER-RIGHT;"/>
+            <TreeTableColumn fx:id="totalColumn" sortable="false" text="%total"
+                             style="-fx-alignment: CENTER-RIGHT;"/>
+        </columns>
+        <columnResizePolicy>
+            <TreeTableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+        </columnResizePolicy>
+    </TreeTableView>
+</VBox>

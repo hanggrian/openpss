@@ -10,7 +10,30 @@
     -fx-padding: 0 1 0 1;
 }
 
+.jfx-text-field {
+    -jfx-focus-color: #1e88e5;
+    -fx-prompt-text-fill: #797979;
+}
+
+.jfx-password-field {
+    -jfx-focus-color: #1e88e5;
+    -fx-prompt-text-fill: #797979;
+}
+
+.jfx-toggle-button {
+    -jfx-toggle-color: #1e88e5;
+}
+
 /* CUSTOM STYLECLASSES */
+
+.button-flat {
+    -fx-text-fill: #1e88e5;
+}
+
+.button-raised {
+    -fx-text-fill: white;
+    -fx-background-color: #1e88e5;
+}
 
 .navigation-pane {
     -fx-padding: 10 10 10 10;

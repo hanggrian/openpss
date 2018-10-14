@@ -48,6 +48,7 @@ dependencies {
 
     implementation(hendraanggrian("ktfx", version = VERSION_KTFX))
     implementation(hendraanggrian("ktfx", "ktfx-controlsfx", VERSION_KTFX))
+    implementation(hendraanggrian("ktfx", "ktfx-jfoenix", VERSION_KTFX))
 
     implementation(jodaTime())
 

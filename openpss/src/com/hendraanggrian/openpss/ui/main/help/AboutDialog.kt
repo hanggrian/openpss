@@ -1,5 +1,6 @@
 package com.hendraanggrian.openpss.ui.main.help
 
+import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.BuildConfig.AUTHOR
 import com.hendraanggrian.openpss.BuildConfig.EMAIL
 import com.hendraanggrian.openpss.BuildConfig.FULL_NAME
@@ -13,6 +14,7 @@ import com.hendraanggrian.openpss.ui.Selectable
 import com.hendraanggrian.openpss.ui.main.License
 import com.hendraanggrian.openpss.util.desktop
 import com.hendraanggrian.openpss.util.getFont
+import com.jfoenix.controls.JFXButton
 import javafx.geometry.Pos.CENTER_LEFT
 import javafx.scene.control.ListView
 import javafx.scene.control.SelectionModel
@@ -22,7 +24,7 @@ import ktfx.collections.toObservableList
 import ktfx.controlsfx.masterDetailPane
 import ktfx.coroutines.listener
 import ktfx.coroutines.onAction
-import ktfx.layouts.button
+import ktfx.jfoenix.jfxButton
 import ktfx.layouts.contextMenu
 import ktfx.layouts.hbox
 import ktfx.layouts.imageView
@@ -86,8 +88,15 @@ class AboutDialog(resourced: Resourced) : Dialog<Nothing>(resourced), Selectable
                 } marginTop 4.0
                 hbox {
                     spacing = R.dimen.padding_medium.toDouble()
-                    button("GitHub") { onAction { desktop?.browse(URI(WEBSITE)) } }
-                    button("Email") { onAction { desktop?.mail(URI("mailto:$EMAIL")) } }
+                    jfxButton("GitHub") {
+                        styleClass += App.STYLE_BUTTON_RAISED
+                        buttonType = JFXButton.ButtonType.RAISED
+                        onAction { desktop?.browse(URI(WEBSITE)) }
+                    }
+                    jfxButton("Email") {
+                        styleClass += App.STYLE_BUTTON_FLAT
+                        onAction { desktop?.mail(URI("mailto:$EMAIL")) }
+                    }
                 } marginTop 20.0
             } marginLeft 48.0
         }

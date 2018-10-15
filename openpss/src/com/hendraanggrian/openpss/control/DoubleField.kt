@@ -6,14 +6,13 @@ import javafx.beans.property.BooleanProperty
 import javafx.beans.property.DoubleProperty
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleDoubleProperty
-import javafx.scene.Node
 import javafx.scene.control.TextField
+import ktfx.NodeManager
+import ktfx.annotations.LayoutDsl
 import ktfx.beans.binding.booleanBindingOf
 import ktfx.beans.value.getValue
 import ktfx.beans.value.setValue
 import ktfx.coroutines.listener
-import ktfx.layouts.LayoutDsl
-import ktfx.layouts.LayoutManager
 import ktfx.listeners.bindBidirectional
 
 open class DoubleField : TextField() {
@@ -50,6 +49,6 @@ fun doubleField(
 }
 
 /** Creates a [DoubleField] and add it to this [LayoutManager]. */
-inline fun LayoutManager<Node>.doubleField(
+inline fun NodeManager.doubleField(
     noinline init: ((@LayoutDsl DoubleField).() -> Unit)? = null
 ): DoubleField = (com.hendraanggrian.openpss.control.doubleField(init))()

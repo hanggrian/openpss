@@ -24,12 +24,12 @@ import javafx.beans.property.ObjectProperty
 import javafx.beans.property.SimpleDoubleProperty
 import javafx.beans.property.SimpleObjectProperty
 import javafx.geometry.HPos.RIGHT
-import javafx.scene.Node
 import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
 import javafx.scene.control.TextArea
 import javafx.scene.image.ImageView
 import javafx.scene.layout.Priority.ALWAYS
+import ktfx.NodeManager
 import ktfx.application.later
 import ktfx.beans.binding.`when`
 import ktfx.beans.binding.doubleBindingOf
@@ -42,7 +42,6 @@ import ktfx.beans.value.or
 import ktfx.collections.isEmpty
 import ktfx.coroutines.onAction
 import ktfx.coroutines.onKeyPressed
-import ktfx.layouts.LayoutManager
 import ktfx.layouts.TableColumnsBuilder
 import ktfx.layouts.button
 import ktfx.layouts.columns
@@ -156,7 +155,7 @@ class AddInvoiceDialog(
             noteArea.text
         )
 
-    private fun <S> LayoutManager<Node>.invoiceTableView(
+    private fun <S> NodeManager.invoiceTableView(
         newAddOrderPopOver: () -> ResultablePopover<S>,
         init: TableView<S>.() -> Unit
     ): TableView<S> = tableView {

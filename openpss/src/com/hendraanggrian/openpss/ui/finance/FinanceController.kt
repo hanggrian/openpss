@@ -4,8 +4,14 @@ import com.hendraanggrian.openpss.App.Companion.STYLE_DEFAULT_BUTTON
 import com.hendraanggrian.openpss.PATTERN_DATE
 import com.hendraanggrian.openpss.PATTERN_TIME
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.control.DateBox
+import com.hendraanggrian.openpss.control.MonthBox
+import com.hendraanggrian.openpss.control.SegmentedTabPane
+import com.hendraanggrian.openpss.control.SegmentedTabPane.Companion.STRETCH_POINT
 import com.hendraanggrian.openpss.control.currencyCell
+import com.hendraanggrian.openpss.control.dateBox
 import com.hendraanggrian.openpss.control.doneCell
+import com.hendraanggrian.openpss.control.monthBox
 import com.hendraanggrian.openpss.control.numberCell
 import com.hendraanggrian.openpss.control.popover.ViewInvoicePopover
 import com.hendraanggrian.openpss.control.space
@@ -18,12 +24,6 @@ import com.hendraanggrian.openpss.db.schemas.Payment
 import com.hendraanggrian.openpss.db.schemas.Payments
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.io.properties.PreferencesFile
-import com.hendraanggrian.openpss.control.DateBox
-import com.hendraanggrian.openpss.control.MonthBox
-import com.hendraanggrian.openpss.control.SegmentedTabPane
-import com.hendraanggrian.openpss.control.SegmentedTabPane.Companion.STRETCH_POINT
-import com.hendraanggrian.openpss.control.dateBox
-import com.hendraanggrian.openpss.control.monthBox
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.SegmentedController
 import com.hendraanggrian.openpss.ui.Selectable
@@ -40,12 +40,12 @@ import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
 import javafx.scene.image.ImageView
 import javafx.scene.layout.Pane
+import ktfx.NodeManager
 import ktfx.application.later
 import ktfx.collections.toMutableObservableList
 import ktfx.coroutines.listener
 import ktfx.coroutines.onAction
 import ktfx.coroutines.onMouseClicked
-import ktfx.layouts.LayoutManager
 import ktfx.layouts.pane
 import ktfx.scene.input.isDoubleClick
 import java.net.URL
@@ -85,7 +85,7 @@ class FinanceController : SegmentedController(), Refreshable,
     override val selectionModel2: SelectionModel<Payment> get() = dailyTable.selectionModel
     override val selectionModel3: SelectionModel<Report> get() = monthlyTable.selectionModel
 
-    override fun LayoutManager<Node>.onCreateRightActions() {
+    override fun NodeManager.onCreateRightActions() {
         pane()
     }
 
@@ -107,7 +107,7 @@ class FinanceController : SegmentedController(), Refreshable,
             styleClass += STYLE_DEFAULT_BUTTON
             onAction { viewTotal() }
         }
-        leftActionManager.childs.addAll(
+        leftActionManager.collection.addAll(
             tabPane.header, space(),
             refreshButton, viewTotalButton
         )
@@ -120,7 +120,7 @@ class FinanceController : SegmentedController(), Refreshable,
         }
         tabPane.header.toggleGroup.run {
             selectedToggleProperty().addListener { _, _, toggle ->
-                val pane = rightActionManager.childs.first() as Pane
+                val pane = rightActionManager.collection.first() as Pane
                 pane.children.clear()
                 pane.children += when (toggles.indexOf(toggle)) {
                     0 -> dateBox

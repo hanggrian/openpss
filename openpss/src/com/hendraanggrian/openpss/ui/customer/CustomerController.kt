@@ -5,6 +5,7 @@ import com.hendraanggrian.openpss.App.Companion.STYLE_SEARCH_TEXTFIELD
 import com.hendraanggrian.openpss.PATTERN_DATE
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.PaginatedPane
+import com.hendraanggrian.openpss.control.SegmentedTabPane.Companion.STRETCH_POINT
 import com.hendraanggrian.openpss.control.popover.InputUserPopover
 import com.hendraanggrian.openpss.control.stretchableButton
 import com.hendraanggrian.openpss.control.stringCell
@@ -13,7 +14,6 @@ import com.hendraanggrian.openpss.db.matches
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.control.SegmentedTabPane.Companion.STRETCH_POINT
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.SegmentedController
 import com.hendraanggrian.openpss.ui.Selectable
@@ -38,6 +38,7 @@ import kotlinx.coroutines.experimental.delay
 import kotlinx.coroutines.experimental.javafx.JavaFx
 import kotlinx.coroutines.experimental.launch
 import kotlinx.nosql.update
+import ktfx.NodeManager
 import ktfx.application.later
 import ktfx.beans.binding.bindingOf
 import ktfx.beans.binding.stringBindingOf
@@ -47,7 +48,6 @@ import ktfx.collections.emptyObservableList
 import ktfx.collections.toMutableObservableList
 import ktfx.collections.toObservableList
 import ktfx.coroutines.onAction
-import ktfx.layouts.LayoutManager
 import ktfx.layouts.contextMenu
 import ktfx.layouts.listView
 import ktfx.layouts.textField
@@ -88,7 +88,7 @@ class CustomerController : SegmentedController(), Refreshable, Selectable<Custom
     override val selectionModel: SelectionModel<Customer> get() = customerList.selectionModel
     override val selectionModel2: SelectionModel<Customer.Contact> get() = contactTable.selectionModel
 
-    override fun LayoutManager<Node>.onCreateLeftActions() {
+    override fun NodeManager.onCreateLeftActions() {
         refreshButton =
             stretchableButton(STRETCH_POINT, getString(R.string.refresh), ImageView(R.image.btn_refresh_light)) {
                 onAction { refresh() }
@@ -103,7 +103,7 @@ class CustomerController : SegmentedController(), Refreshable, Selectable<Custom
         }
     }
 
-    override fun LayoutManager<Node>.onCreateRightActions() {
+    override fun NodeManager.onCreateRightActions() {
         searchField = textField {
             styleClass += STYLE_SEARCH_TEXTFIELD
             promptText = getString(R.string.search)

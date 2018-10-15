@@ -8,15 +8,14 @@ import com.hendraanggrian.openpss.util.toJoda
 import javafx.beans.property.ObjectProperty
 import javafx.beans.property.SimpleObjectProperty
 import javafx.geometry.Pos.CENTER
-import javafx.scene.Node
 import javafx.scene.control.Button
 import javafx.scene.control.DatePicker
 import javafx.scene.image.ImageView
+import ktfx.NodeManager
+import ktfx.annotations.LayoutDsl
 import ktfx.beans.binding.bindingOf
 import ktfx.beans.value.getValue
 import ktfx.coroutines.onAction
-import ktfx.layouts.LayoutDsl
-import ktfx.layouts.LayoutManager
 import ktfx.layouts._HBox
 import ktfx.layouts.button
 import ktfx.layouts.datePicker
@@ -65,7 +64,7 @@ fun dateBox(
 }
 
 /** Creates a [DateBox] and add it to this [LayoutManager]. */
-inline fun LayoutManager<Node>.dateBox(
+inline fun NodeManager.dateBox(
     prefill: LocalDate = now(),
     noinline init: ((@LayoutDsl DateBox).() -> Unit)? = null
 ): DateBox = (com.hendraanggrian.openpss.control.dateBox(prefill, init))()

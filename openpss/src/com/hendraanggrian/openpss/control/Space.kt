@@ -2,10 +2,9 @@
 
 package com.hendraanggrian.openpss.control
 
-import javafx.scene.Node
 import javafx.scene.layout.Region
-import ktfx.layouts.LayoutDsl
-import ktfx.layouts.LayoutManager
+import ktfx.NodeManager
+import ktfx.annotations.LayoutDsl
 
 open class Space @JvmOverloads constructor(width: Double = 0.0, height: Double = 0.0) : Region() {
 
@@ -25,7 +24,7 @@ fun space(
 }
 
 /** Creates a [Space] and add it to this [LayoutManager]. */
-inline fun LayoutManager<Node>.space(
+inline fun NodeManager.space(
     width: Double = 0.0,
     height: Double = 0.0,
     noinline init: ((@LayoutDsl Space).() -> Unit)? = null

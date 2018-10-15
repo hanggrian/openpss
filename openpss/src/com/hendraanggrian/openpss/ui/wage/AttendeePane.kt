@@ -27,6 +27,7 @@ import kotlinx.coroutines.experimental.GlobalScope
 import kotlinx.coroutines.experimental.delay
 import kotlinx.coroutines.experimental.javafx.JavaFx
 import kotlinx.coroutines.experimental.launch
+import ktfx.annotations.LayoutDsl
 import ktfx.beans.binding.bindingOf
 import ktfx.collections.sort
 import ktfx.coroutines.eventFilter
@@ -34,7 +35,6 @@ import ktfx.coroutines.listener
 import ktfx.coroutines.onAction
 import ktfx.coroutines.onKeyPressed
 import ktfx.coroutines.onMouseClicked
-import ktfx.layouts.LayoutDsl
 import ktfx.layouts._TitledPane
 import ktfx.layouts.checkBox
 import ktfx.layouts.contextMenu

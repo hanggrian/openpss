@@ -1,11 +1,10 @@
 package com.hendraanggrian.openpss.control
 
-import javafx.scene.Node
-import ktfx.layouts.LayoutManager
+import ktfx.NodeManager
 
 interface ActionManager {
 
     /** Override this function to add extra actions. */
-    fun LayoutManager<Node>.onCreateActions() {
+    fun NodeManager.onCreateActions() {
     }
 }

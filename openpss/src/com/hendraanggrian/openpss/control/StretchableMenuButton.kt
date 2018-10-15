@@ -11,8 +11,9 @@ import javafx.scene.Node
 import javafx.scene.control.MenuButton
 import javafx.scene.control.MenuItem
 import javafx.scene.image.ImageView
-import ktfx.layouts.LayoutDsl
-import ktfx.layouts.LayoutManager
+import ktfx.MenuItemManager
+import ktfx.NodeManager
+import ktfx.annotations.LayoutDsl
 import ktfx.layouts.menuItem
 
 /**
@@ -24,9 +25,9 @@ class StretchableMenuButton @JvmOverloads constructor(
     stretchPoint: Double = -1.0,
     stretchableText: String? = null,
     graphic: Node? = null
-) : MenuButton(), StretchableLabeled, LayoutManager<MenuItem> {
+) : MenuButton(), StretchableLabeled, MenuItemManager {
 
-    override val childs: MutableCollection<MenuItem> get() = items
+    override val collection: MutableCollection<MenuItem> get() = items
 
     private val stretchPointProperty = SimpleDoubleProperty(stretchPoint)
     override fun stretchPointProperty(): DoubleProperty = stretchPointProperty
@@ -60,7 +61,7 @@ fun stretchableMenuButton(
 }
 
 /** Creates an [StretchableMenuButton] and add it to this [LayoutManager]. */
-inline fun LayoutManager<Node>.stretchableMenuButton(
+inline fun NodeManager.stretchableMenuButton(
     stretchPoint: Double,
     adaptableText: String,
     graphic: Node? = null,

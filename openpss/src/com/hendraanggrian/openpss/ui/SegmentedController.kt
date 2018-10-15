@@ -1,15 +1,15 @@
 package com.hendraanggrian.openpss.ui
 
 import javafx.scene.Node
-import ktfx.layouts.LayoutManager
+import ktfx.NodeManager
 import java.net.URL
 import java.util.ResourceBundle
 
 @Suppress("LeakingThis")
 open class SegmentedController : Controller() {
 
-    val leftActionManager = EmptyLayoutManager()
-    val rightActionManager = EmptyLayoutManager()
+    val leftActionManager = EmptyNodeManager()
+    val rightActionManager = EmptyNodeManager()
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
@@ -18,15 +18,15 @@ open class SegmentedController : Controller() {
     }
 
     /** Override this function to add left actions. */
-    open fun LayoutManager<Node>.onCreateLeftActions() {
+    open fun NodeManager.onCreateLeftActions() {
     }
 
     /** Override this function to add right actions. */
-    open fun LayoutManager<Node>.onCreateRightActions() {
+    open fun NodeManager.onCreateRightActions() {
     }
 
-    class EmptyLayoutManager : LayoutManager<Node> {
+    class EmptyNodeManager : NodeManager {
 
-        override val childs = mutableListOf<Node>()
+        override val collection = mutableListOf<Node>()
     }
 }

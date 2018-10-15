@@ -4,8 +4,10 @@ import com.hendraanggrian.openpss.App.Companion.STYLE_DEFAULT_BUTTON
 import com.hendraanggrian.openpss.App.Companion.STYLE_SEARCH_TEXTFIELD
 import com.hendraanggrian.openpss.PATTERN_DATETIME_EXTENDED
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.control.DateBox
 import com.hendraanggrian.openpss.control.IntField
 import com.hendraanggrian.openpss.control.PaginatedPane
+import com.hendraanggrian.openpss.control.SegmentedTabPane.Companion.STRETCH_POINT
 import com.hendraanggrian.openpss.control.currencyCell
 import com.hendraanggrian.openpss.control.doneCell
 import com.hendraanggrian.openpss.control.intField
@@ -24,8 +26,6 @@ import com.hendraanggrian.openpss.db.schemas.Payment
 import com.hendraanggrian.openpss.db.schemas.Payments
 import com.hendraanggrian.openpss.db.schemas.Payments.invoiceId
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.control.DateBox
-import com.hendraanggrian.openpss.control.SegmentedTabPane.Companion.STRETCH_POINT
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.SegmentedController
 import com.hendraanggrian.openpss.ui.Selectable
@@ -50,6 +50,7 @@ import javafx.scene.layout.Priority.ALWAYS
 import javafx.util.Callback
 import kotlinx.nosql.equal
 import kotlinx.nosql.update
+import ktfx.NodeManager
 import ktfx.application.later
 import ktfx.beans.binding.bindingOf
 import ktfx.beans.binding.stringBindingOf
@@ -65,7 +66,6 @@ import ktfx.controlsfx.masterDetailPane
 import ktfx.coroutines.onAction
 import ktfx.coroutines.onHidden
 import ktfx.coroutines.onMouseClicked
-import ktfx.layouts.LayoutManager
 import ktfx.layouts.columns
 import ktfx.layouts.contextMenu
 import ktfx.layouts.hbox
@@ -106,7 +106,7 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
     override val selectionModel: SelectionModel<Invoice> get() = invoiceTable.selectionModel
     override val selectionModel2: SelectionModel<Payment> get() = paymentTable.selectionModel
 
-    override fun LayoutManager<Node>.onCreateLeftActions() {
+    override fun NodeManager.onCreateLeftActions() {
         refreshButton =
             stretchableButton(STRETCH_POINT, getString(R.string.refresh), ImageView(R.image.btn_refresh_light)) {
                 onAction { refresh() }
@@ -121,7 +121,7 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
         }
     }
 
-    override fun LayoutManager<Node>.onCreateRightActions() {
+    override fun NodeManager.onCreateRightActions() {
         searchField = intField {
             styleClass += STYLE_SEARCH_TEXTFIELD
             filterBox.disableProperty().bind(valueProperty() neq 0)

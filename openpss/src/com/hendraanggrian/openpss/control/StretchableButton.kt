@@ -9,8 +9,8 @@ import javafx.beans.property.SimpleStringProperty
 import javafx.beans.property.StringProperty
 import javafx.scene.Node
 import javafx.scene.control.Button
-import ktfx.layouts.LayoutDsl
-import ktfx.layouts.LayoutManager
+import ktfx.NodeManager
+import ktfx.annotations.LayoutDsl
 
 /**
  * A button that will display text when the window have sufficient width.
@@ -49,7 +49,7 @@ fun stretchableButton(
 }
 
 /** Creates an [StretchableButton] and add it to this [LayoutManager]. */
-inline fun LayoutManager<Node>.stretchableButton(
+inline fun NodeManager.stretchableButton(
     stretchPoint: Double,
     adaptableText: String,
     graphic: Node? = null,

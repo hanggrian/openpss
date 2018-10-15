@@ -4,13 +4,12 @@ package com.hendraanggrian.openpss.control
 
 import javafx.beans.property.IntegerProperty
 import javafx.beans.property.SimpleIntegerProperty
-import javafx.scene.Node
 import javafx.scene.control.TextField
+import ktfx.NodeManager
+import ktfx.annotations.LayoutDsl
 import ktfx.beans.value.getValue
 import ktfx.beans.value.setValue
 import ktfx.coroutines.listener
-import ktfx.layouts.LayoutDsl
-import ktfx.layouts.LayoutManager
 import ktfx.listeners.bindBidirectional
 
 open class IntField : TextField() {
@@ -39,6 +38,6 @@ fun intField(
 }
 
 /** Creates a [IntField] and add it to this [LayoutManager]. */
-inline fun LayoutManager<Node>.intField(
+inline fun NodeManager.intField(
     noinline init: ((@LayoutDsl IntField).() -> Unit)? = null
 ): IntField = (com.hendraanggrian.openpss.control.intField(init))()

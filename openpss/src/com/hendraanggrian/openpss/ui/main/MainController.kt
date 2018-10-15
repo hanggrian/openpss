@@ -1,13 +1,13 @@
 package com.hendraanggrian.openpss.ui.main
 
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.control.SegmentedTabPane
 import com.hendraanggrian.openpss.control.popover.ViewInvoicePopover
 import com.hendraanggrian.openpss.db.dbDateTime
 import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.db.schemas.Invoice.Offset.Technique.TWO_SIDE_EQUAL
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.control.SegmentedTabPane
 import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.SegmentedController
@@ -148,8 +148,8 @@ class MainController : Controller(), Selectable<Tab> {
     @FXML fun about() = AboutDialog(this).show()
 
     private fun SegmentedController.replaceButtons() {
-        navigationLeftBox.children.setAll(leftActionManager.childs)
-        navigationRightBox.children.setAll(rightActionManager.childs)
+        navigationLeftBox.children.setAll(leftActionManager.collection)
+        navigationRightBox.children.setAll(rightActionManager.collection)
     }
 
     private inline fun <T : SegmentedController> select(controller: T, run: T.() -> Unit) {

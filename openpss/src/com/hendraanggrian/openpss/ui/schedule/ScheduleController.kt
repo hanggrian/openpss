@@ -3,6 +3,7 @@ package com.hendraanggrian.openpss.ui.schedule
 import com.hendraanggrian.openpss.App.Companion.STYLE_DEFAULT_BUTTON
 import com.hendraanggrian.openpss.PATTERN_DATETIME_EXTENDED
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.control.SegmentedTabPane.Companion.STRETCH_POINT
 import com.hendraanggrian.openpss.control.UncollapsibleTreeItem
 import com.hendraanggrian.openpss.control.stretchableButton
 import com.hendraanggrian.openpss.control.stretchableToggleButton
@@ -10,12 +11,10 @@ import com.hendraanggrian.openpss.control.stringCell
 import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.schemas.Invoices
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.control.SegmentedTabPane.Companion.STRETCH_POINT
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.SegmentedController
 import com.hendraanggrian.openpss.ui.TreeSelectable
 import javafx.fxml.FXML
-import javafx.scene.Node
 import javafx.scene.control.Button
 import javafx.scene.control.SelectionMode.MULTIPLE
 import javafx.scene.control.ToggleButton
@@ -26,12 +25,12 @@ import javafx.scene.control.TreeTableView.TreeTableViewSelectionModel
 import javafx.scene.image.ImageView
 import kotlinx.nosql.equal
 import kotlinx.nosql.update
+import ktfx.NodeManager
 import ktfx.application.later
 import ktfx.beans.value.or
 import ktfx.collections.isEmpty
 import ktfx.coroutines.listener
 import ktfx.coroutines.onAction
-import ktfx.layouts.LayoutManager
 import java.net.URL
 import java.util.ResourceBundle
 
@@ -49,7 +48,7 @@ class ScheduleController : SegmentedController(), Refreshable, TreeSelectable<Sc
 
     override val selectionModel: TreeTableViewSelectionModel<Schedule> get() = scheduleTable.selectionModel
 
-    override fun LayoutManager<Node>.onCreateLeftActions() {
+    override fun NodeManager.onCreateLeftActions() {
         refreshButton =
             stretchableButton(STRETCH_POINT, getString(R.string.refresh), ImageView(R.image.btn_refresh_light)) {
                 onAction { refresh() }
@@ -64,7 +63,7 @@ class ScheduleController : SegmentedController(), Refreshable, TreeSelectable<Sc
         }
     }
 
-    override fun LayoutManager<Node>.onCreateRightActions() {
+    override fun NodeManager.onCreateRightActions() {
         historyToggle = stretchableToggleButton(STRETCH_POINT, R.string.history, ImageView(R.image.btn_history_light)) {
             selectedProperty().listener { refresh() }
             doneButton.disableProperty().bind(selecteds.isEmpty or selectedProperty())

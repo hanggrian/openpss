@@ -15,17 +15,17 @@ import com.hendraanggrian.openpss.io.properties.PreferencesFile.INVOICE_QUICK_SE
 import com.hendraanggrian.openpss.io.properties.PreferencesFile.WAGE_READER
 import com.hendraanggrian.openpss.ui.wage.readers.Reader
 import javafx.geometry.Pos.CENTER_LEFT
-import javafx.scene.Node
 import javafx.scene.control.ChoiceBox
 import javafx.scene.control.TextArea
 import javafx.scene.layout.HBox
 import javafx.scene.layout.VBox
+import kotlinx.nosql.update
+import ktfx.NodeManager
+import ktfx.annotations.LayoutDsl
 import ktfx.beans.property.toMutableProperty
 import ktfx.beans.value.and
 import ktfx.collections.toObservableList
 import ktfx.coroutines.listener
-import ktfx.layouts.LayoutDsl
-import ktfx.layouts.LayoutManager
 import ktfx.layouts._HBox
 import ktfx.layouts._VBox
 import ktfx.layouts.checkBox
@@ -39,7 +39,6 @@ import ktfx.listeners.converter
 import ktfx.scene.control.cancelButton
 import ktfx.scene.control.okButton
 import ktfx.scene.layout.gap
-import kotlinx.nosql.update
 
 class PreferencesDialog(
     resourced: Resourced,
@@ -133,7 +132,7 @@ class PreferencesDialog(
         init()
     }
 
-    private fun LayoutManager<Node>.group(
+    private fun NodeManager.group(
         titleId: String,
         init: (@LayoutDsl _VBox).() -> Unit
     ): VBox = vbox(R.dimen.padding_small.toDouble()) {
@@ -141,7 +140,7 @@ class PreferencesDialog(
         init()
     }
 
-    private fun LayoutManager<Node>.item(
+    private fun NodeManager.item(
         labelId: String? = null,
         init: (@LayoutDsl _HBox).() -> Unit
     ): HBox = hbox(R.dimen.padding_medium.toDouble()) {

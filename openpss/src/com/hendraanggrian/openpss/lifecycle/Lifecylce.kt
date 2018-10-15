@@ -1,13 +1,12 @@
 package com.hendraanggrian.openpss.lifecycle
 
-import javafx.scene.Node
-import ktfx.layouts.LayoutManager
+import ktfx.NodeManager
 
 interface Lifecylce {
 
-    fun LayoutManager<Node>.onCreate() {
+    fun NodeManager.onCreate() {
     }
 
-    fun LayoutManager<Node>.onCreateActions() {
+    fun NodeManager.onCreateActions() {
     }
 }

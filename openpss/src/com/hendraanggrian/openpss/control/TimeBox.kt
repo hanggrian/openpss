@@ -6,15 +6,14 @@ import com.hendraanggrian.openpss.R
 import javafx.beans.property.ObjectProperty
 import javafx.beans.property.SimpleObjectProperty
 import javafx.geometry.Pos.CENTER
-import javafx.scene.Node
 import javafx.scene.control.Button
 import javafx.scene.image.ImageView
+import ktfx.NodeManager
+import ktfx.annotations.LayoutDsl
 import ktfx.beans.binding.bindingOf
 import ktfx.beans.value.getValue
 import ktfx.coroutines.listener
 import ktfx.coroutines.onAction
-import ktfx.layouts.LayoutDsl
-import ktfx.layouts.LayoutManager
 import ktfx.layouts._HBox
 import ktfx.layouts.button
 import org.joda.time.LocalTime
@@ -97,7 +96,7 @@ fun timeBox(
 }
 
 /** Creates a [TimeBox] and add it to this [LayoutManager]. */
-inline fun LayoutManager<Node>.timeBox(
+inline fun NodeManager.timeBox(
     prefill: LocalTime = MIDNIGHT,
     noinline init: ((@LayoutDsl TimeBox).() -> Unit)? = null
 ): TimeBox = (com.hendraanggrian.openpss.control.timeBox(prefill, init))()

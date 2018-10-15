@@ -6,6 +6,7 @@ import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.bold
 import com.hendraanggrian.openpss.control.dialog.MaterialAlert
 import com.hendraanggrian.openpss.control.dialog.MaterialResultableDialog
+import com.hendraanggrian.openpss.control.popover.MaterialPopover
 import com.hendraanggrian.openpss.db.login
 import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.i18n.Language
@@ -18,7 +19,6 @@ import com.hendraanggrian.openpss.util.forceExit
 import com.jfoenix.controls.JFXButton
 import javafx.geometry.HPos
 import javafx.geometry.Pos
-import javafx.scene.Node
 import javafx.scene.control.Button
 import javafx.scene.control.ButtonType
 import javafx.scene.control.PasswordField
@@ -30,18 +30,17 @@ import kotlinx.coroutines.experimental.Dispatchers
 import kotlinx.coroutines.experimental.GlobalScope
 import kotlinx.coroutines.experimental.javafx.JavaFx
 import kotlinx.coroutines.experimental.launch
+import ktfx.NodeManager
 import ktfx.application.later
 import ktfx.beans.value.isBlank
 import ktfx.beans.value.or
 import ktfx.collections.toObservableList
-import ktfx.controlsfx.popOver
 import ktfx.coroutines.listener
 import ktfx.coroutines.onAction
 import ktfx.jfoenix.jfxButton
 import ktfx.jfoenix.jfxPasswordField
 import ktfx.jfoenix.jfxTextField
 import ktfx.jfoenix.jfxToggleButton
-import ktfx.layouts.LayoutManager
 import ktfx.layouts._StackPane
 import ktfx.layouts.anchorPane
 import ktfx.layouts.choiceBox
@@ -61,7 +60,6 @@ import ktfx.scene.layout.gap
 import ktfx.scene.layout.paddingAll
 import ktfx.scene.layout.updatePadding
 import ktfx.scene.text.fontSize
-import org.controlsfx.control.PopOver
 
 class LoginLayout(resourced: Resourced) : _StackPane(), Resourced by resourced {
 
@@ -147,7 +145,7 @@ class LoginLayout(resourced: Resourced) : _StackPane(), Resourced by resourced {
                     isWrapText = true
                     fontSize = 16.0
                 }
-                employeeField = jfxTextField {
+                employeeField = jfxTextField(LoginFile.EMPLOYEE) {
                     fontSize = 16.0
                     promptText = getString(R.string.employee)
                     later { requestFocus() }
@@ -155,20 +153,7 @@ class LoginLayout(resourced: Resourced) : _StackPane(), Resourced by resourced {
                 textFlow {
                     hyperlink(getString(R.string.connection_settings)) {
                         onAction {
-                            popOver {
-                                arrowLocation = PopOver.ArrowLocation.BOTTOM_CENTER
-                                gridPane {
-                                    paddingAll = 16.0
-                                    gap = R.dimen.padding_medium.toDouble()
-                                    label(getString(R.string.server_host_port)) col 0 row 0
-                                    serverHostField() col 1 row 0
-                                    serverPortField() col 2 row 0
-                                    label(getString(R.string.server_user)) col 0 row 1
-                                    serverUserField() col 1 row 1 colSpans 2
-                                    label(getString(R.string.server_password)) col 0 row 2
-                                    serverPasswordField() col 1 row 2 colSpans 2
-                                }
-                            }.show(this@hyperlink)
+                            ConnectionSettingsPopover().showAt(this@hyperlink)
                         }
                     }
                 }
@@ -215,7 +200,7 @@ class LoginLayout(resourced: Resourced) : _StackPane(), Resourced by resourced {
                                 or serverPasswordField.textProperty().isBlank()
                         )
                         onAction {
-                            PasswordDialog(this@LoginLayout).show(this@LoginLayout) { _ ->
+                            PasswordDialog().show(this@LoginLayout) { _ ->
                                 GlobalScope.launch(Dispatchers.IO) {
                                     LoginFile.save()
                                     try {
@@ -252,10 +237,26 @@ class LoginLayout(resourced: Resourced) : _StackPane(), Resourced by resourced {
         this.onSuccess = onSuccess
     }
 
-    inner class PasswordDialog(resourced: Resourced) :
-        MaterialResultableDialog<Unit>(resourced, R.string.password_required) {
+    inner class ConnectionSettingsPopover : MaterialPopover(this, R.string.connection_settings) {
 
-        override fun LayoutManager<Node>.onCreate() {
+        override fun NodeManager.onCreate() {
+            gridPane {
+                paddingAll = 16.0
+                gap = R.dimen.padding_medium.toDouble()
+                label(getString(R.string.server_host_port)) col 0 row 0
+                serverHostField() col 1 row 0
+                serverPortField() col 2 row 0
+                label(getString(R.string.server_user)) col 0 row 1
+                serverUserField() col 1 row 1 colSpans 2
+                label(getString(R.string.server_password)) col 0 row 2
+                serverPasswordField() col 1 row 2 colSpans 2
+            }
+        }
+    }
+
+    inner class PasswordDialog : MaterialResultableDialog<Unit>(this, R.string.password_required) {
+
+        override fun NodeManager.onCreate() {
             setOnDialogOpened {
                 passwordField.requestFocus()
             }
@@ -288,7 +289,7 @@ class LoginLayout(resourced: Resourced) : _StackPane(), Resourced by resourced {
             }
         }
 
-        override fun LayoutManager<Node>.onCreateActions() {
+        override fun NodeManager.onCreateActions() {
             defaultButton = jfxButton(getString(R.string.login)) {
                 styleClass += App.STYLE_BUTTON_RAISED
                 buttonType = JFXButton.ButtonType.RAISED
@@ -297,6 +298,4 @@ class LoginLayout(resourced: Resourced) : _StackPane(), Resourced by resourced {
             }
         }
     }
-
-
 }

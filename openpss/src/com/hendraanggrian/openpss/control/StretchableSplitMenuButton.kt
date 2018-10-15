@@ -11,8 +11,9 @@ import javafx.scene.Node
 import javafx.scene.control.MenuItem
 import javafx.scene.control.SplitMenuButton
 import javafx.scene.image.ImageView
-import ktfx.layouts.LayoutDsl
-import ktfx.layouts.LayoutManager
+import ktfx.MenuItemManager
+import ktfx.NodeManager
+import ktfx.annotations.LayoutDsl
 import ktfx.layouts.menuItem
 
 /**
@@ -24,9 +25,9 @@ class StretchableSplitMenuButton @JvmOverloads constructor(
     stretchPoint: Double = -1.0,
     stretchableText: String? = null,
     graphic: Node? = null
-) : SplitMenuButton(), StretchableLabeled, LayoutManager<MenuItem> {
+) : SplitMenuButton(), StretchableLabeled, MenuItemManager {
 
-    override val childs: MutableCollection<MenuItem> get() = items
+    override val collection: MutableCollection<MenuItem> get() = items
 
     private val stretchPointProperty = SimpleDoubleProperty(stretchPoint)
     override fun stretchPointProperty(): DoubleProperty = stretchPointProperty
@@ -60,7 +61,7 @@ fun stretchableSplitMenuButton(
 }
 
 /** Creates an [StretchableSplitMenuButton] and add it to this [LayoutManager]. */
-inline fun LayoutManager<Node>.stretchableSplitMenuButton(
+inline fun NodeManager.stretchableSplitMenuButton(
     stretchPoint: Double,
     adaptableText: String,
     graphic: Node? = null,

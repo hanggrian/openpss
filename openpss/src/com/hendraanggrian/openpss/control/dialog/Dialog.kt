@@ -5,7 +5,7 @@ import com.hendraanggrian.openpss.util.getStyle
 import javafx.scene.Node
 import javafx.scene.control.Dialog
 import javafx.scene.image.ImageView
-import ktfx.layouts.LayoutManager
+import ktfx.NodeManager
 import ktfx.scene.control.graphicIcon
 import ktfx.scene.control.headerTitle
 
@@ -13,7 +13,7 @@ open class Dialog<R>(
     resourced: Resourced,
     headerId: String? = null,
     graphicId: String? = null
-) : Dialog<R>(), LayoutManager<Node>, Resourced by resourced {
+) : Dialog<R>(), NodeManager by NodeManager.InvokableOnly, Resourced by resourced {
 
     override fun <T : Node> T.invoke(): T = also {
         when (null) {

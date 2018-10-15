@@ -1,13 +1,13 @@
 package com.hendraanggrian.openpss.ui.wage
 
-import com.hendraanggrian.openpss.App.Companion.STYLE_DEFAULT_BUTTON
+import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.BuildConfig.DEBUG
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.control.SegmentedTabPane.Companion.STRETCH_POINT
 import com.hendraanggrian.openpss.control.space
 import com.hendraanggrian.openpss.control.stretchableButton
 import com.hendraanggrian.openpss.io.WageDirectory
 import com.hendraanggrian.openpss.io.properties.PreferencesFile.WAGE_READER
-import com.hendraanggrian.openpss.control.SegmentedTabPane.Companion.STRETCH_POINT
 import com.hendraanggrian.openpss.ui.SegmentedController
 import com.hendraanggrian.openpss.ui.controller
 import com.hendraanggrian.openpss.ui.pane
@@ -18,7 +18,6 @@ import com.hendraanggrian.openpss.util.getResource
 import com.hendraanggrian.openpss.util.getStyle
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
-import javafx.scene.Node
 import javafx.scene.control.Button
 import javafx.scene.control.TitledPane
 import javafx.scene.image.ImageView
@@ -29,6 +28,7 @@ import kotlinx.coroutines.experimental.Dispatchers
 import kotlinx.coroutines.experimental.GlobalScope
 import kotlinx.coroutines.experimental.javafx.JavaFx
 import kotlinx.coroutines.experimental.launch
+import ktfx.NodeManager
 import ktfx.application.later
 import ktfx.beans.binding.booleanBindingOf
 import ktfx.beans.binding.stringBindingOf
@@ -37,7 +37,6 @@ import ktfx.beans.value.or
 import ktfx.collections.isEmpty
 import ktfx.collections.size
 import ktfx.coroutines.onAction
-import ktfx.layouts.LayoutManager
 import ktfx.layouts.borderPane
 import ktfx.layouts.label
 import ktfx.layouts.scene
@@ -62,7 +61,7 @@ class WageController : SegmentedController() {
     private lateinit var processButton: Button
     private lateinit var historyButton: Button
 
-    override fun LayoutManager<Node>.onCreateLeftActions() {
+    override fun NodeManager.onCreateLeftActions() {
         browseButton = stretchableButton(
             STRETCH_POINT,
             getString(R.string.browse),
@@ -89,13 +88,13 @@ class WageController : SegmentedController() {
         }
     }
 
-    override fun LayoutManager<Node>.onCreateRightActions() {
+    override fun NodeManager.onCreateRightActions() {
         processButton = stretchableButton(
             STRETCH_POINT,
             getString(R.string.process),
             ImageView(R.image.btn_process_dark)
         ) {
-            styleClass += STYLE_DEFAULT_BUTTON
+            styleClass += App.STYLE_DEFAULT_BUTTON
             isDisable = true
             onAction { process() }
         }

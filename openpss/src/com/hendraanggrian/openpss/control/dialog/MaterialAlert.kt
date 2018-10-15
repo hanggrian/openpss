@@ -1,9 +1,8 @@
 package com.hendraanggrian.openpss.control.dialog
 
 import com.hendraanggrian.openpss.i18n.Resourced
-import javafx.scene.Node
+import ktfx.NodeManager
 import ktfx.application.later
-import ktfx.layouts.LayoutManager
 import ktfx.layouts.label
 
 class MaterialAlert(
@@ -12,7 +11,7 @@ class MaterialAlert(
     private val contentId: String
 ) : MaterialDialog(resourced, titleId) {
 
-    override fun LayoutManager<Node>.onCreate() {
+    override fun NodeManager.onCreate() {
         label {
             later {
                 text = getString(contentId)

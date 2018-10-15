@@ -28,7 +28,6 @@ import javafx.print.PageOrientation.PORTRAIT
 import javafx.print.Paper
 import javafx.print.Printer
 import javafx.print.PrinterJob
-import javafx.scene.Node
 import javafx.scene.layout.Border
 import javafx.scene.layout.BorderStroke
 import javafx.scene.layout.BorderStrokeStyle
@@ -42,9 +41,9 @@ import javafx.scene.paint.Color.BLACK
 import javafx.scene.text.TextAlignment
 import javafx.scene.transform.Scale
 import kotlinx.nosql.update
+import ktfx.NodeManager
 import ktfx.application.later
 import ktfx.coroutines.onAction
-import ktfx.layouts.LayoutManager
 import ktfx.layouts._GridPane
 import ktfx.layouts.button
 import ktfx.layouts.columnConstraints
@@ -86,7 +85,7 @@ class ViewInvoicePopover(
     private lateinit var employee: Employee
     private val invoiceBox: VBox
 
-    override fun LayoutManager<Node>.onCreateActions() {
+    override fun NodeManager.onCreateActions() {
         button(getString(R.string.print)) {
             isDefaultButton = true
             later { isDisable = invoice.printed }
@@ -240,5 +239,5 @@ class ViewInvoicePopover(
 
     private fun BorderStrokeStyle.toBorder() = Border(BorderStroke(BLACK, this, EMPTY, DEFAULT))
 
-    private fun LayoutManager<Node>.fullLine() = line(endX = WIDTH - R.dimen.padding_medium.toDouble() * 2)
+    private fun NodeManager.fullLine() = line(endX = WIDTH - R.dimen.padding_medium.toDouble() * 2)
 }

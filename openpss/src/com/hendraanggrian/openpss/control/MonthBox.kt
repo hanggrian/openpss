@@ -6,16 +6,15 @@ import com.hendraanggrian.openpss.R
 import javafx.beans.property.ObjectProperty
 import javafx.beans.property.SimpleObjectProperty
 import javafx.geometry.Pos.CENTER
-import javafx.scene.Node
 import javafx.scene.control.Button
 import javafx.scene.control.ChoiceBox
 import javafx.scene.image.ImageView
+import ktfx.NodeManager
+import ktfx.annotations.LayoutDsl
 import ktfx.beans.binding.bindingOf
 import ktfx.beans.value.getValue
 import ktfx.collections.toObservableList
 import ktfx.coroutines.onAction
-import ktfx.layouts.LayoutDsl
-import ktfx.layouts.LayoutManager
 import ktfx.layouts._HBox
 import ktfx.layouts.button
 import ktfx.layouts.choiceBox
@@ -97,7 +96,7 @@ fun monthBox(
 }
 
 /** Creates a [MonthBox] and add it to this [LayoutManager]. */
-inline fun LayoutManager<Node>.monthBox(
+inline fun NodeManager.monthBox(
     prefill: YearMonth = YearMonth.now(),
     noinline init: ((@LayoutDsl MonthBox).() -> Unit)? = null
 ): MonthBox = (com.hendraanggrian.openpss.control.monthBox(prefill, init))()

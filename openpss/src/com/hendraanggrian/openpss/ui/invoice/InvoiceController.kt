@@ -11,7 +11,6 @@ import com.hendraanggrian.openpss.control.SegmentedTabPane.Companion.STRETCH_POI
 import com.hendraanggrian.openpss.control.currencyCell
 import com.hendraanggrian.openpss.control.doneCell
 import com.hendraanggrian.openpss.control.intField
-import com.hendraanggrian.openpss.control.popover.ViewInvoicePopover
 import com.hendraanggrian.openpss.control.stretchableButton
 import com.hendraanggrian.openpss.control.stringCell
 import com.hendraanggrian.openpss.control.yesNoAlert
@@ -26,6 +25,7 @@ import com.hendraanggrian.openpss.db.schemas.Payment
 import com.hendraanggrian.openpss.db.schemas.Payments
 import com.hendraanggrian.openpss.db.schemas.Payments.invoiceId
 import com.hendraanggrian.openpss.db.transaction
+import com.hendraanggrian.openpss.popup.popover.ViewInvoicePopover
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.SegmentedController
 import com.hendraanggrian.openpss.ui.Selectable
@@ -280,9 +280,9 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
         })
     }
 
-    fun addInvoice() = AddInvoiceDialog(this, employee).showAndWait().ifPresent {
+    fun addInvoice() = AddInvoiceDialog(this, employee).show(dialogContainer) {
         transaction {
-            it.id = Invoices.insert(it)
+            it!!.id = Invoices.insert(it)
             invoiceTable.items.add(it)
             invoiceTable.selectionModel.selectFirst()
         }

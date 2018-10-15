@@ -4,7 +4,7 @@ import com.hendraanggrian.openpss.PATTERN_DATETIME_EXTENDED
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.forceRefresh
 import com.hendraanggrian.openpss.control.intField
-import com.hendraanggrian.openpss.control.popover.DateTimePopover
+import com.hendraanggrian.openpss.popup.popover.DateTimePopover
 import com.hendraanggrian.openpss.db.schemas.Recesses
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.i18n.Resourced
@@ -195,7 +195,9 @@ class AttendeePane(
 
     override val selectionModel: SelectionModel<DateTime> get() = attendanceList.selectionModel
 
-    private fun addAttendance() = DateTimePopover(this, R.string.add_record, R.string.add,
+    private fun addAttendance() = DateTimePopover(this,
+        R.string.add_record,
+        R.string.add,
         now().run { minusMinutes(minuteOfHour) }).showAt(attendanceList) {
         attendanceList.run {
             items.add(it)
@@ -203,7 +205,9 @@ class AttendeePane(
         }
     }
 
-    private fun copyAttendance() = DateTimePopover(this, R.string.add_record, R.string.add,
+    private fun copyAttendance() = DateTimePopover(this,
+        R.string.add_record,
+        R.string.add,
         selected!!.run { minusMinutes(minuteOfHour) }).showAt(attendanceList) {
         attendanceList.run {
             items.add(it)

@@ -6,7 +6,7 @@ import com.hendraanggrian.openpss.PATTERN_DATE
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.PaginatedPane
 import com.hendraanggrian.openpss.control.SegmentedTabPane.Companion.STRETCH_POINT
-import com.hendraanggrian.openpss.control.popover.InputUserPopover
+import com.hendraanggrian.openpss.popup.popover.InputUserPopover
 import com.hendraanggrian.openpss.control.stretchableButton
 import com.hendraanggrian.openpss.control.stringCell
 import com.hendraanggrian.openpss.control.yesNoAlert

@@ -1,9 +1,9 @@
 package com.hendraanggrian.openpss.ui.main.edit
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.control.dialog.TableDialog
+import com.hendraanggrian.openpss.popup.dialog.TableDialog
 import com.hendraanggrian.openpss.control.doneCell
-import com.hendraanggrian.openpss.control.popover.InputUserPopover
+import com.hendraanggrian.openpss.popup.popover.InputUserPopover
 import com.hendraanggrian.openpss.control.stringCell
 import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.db.schemas.Employees
@@ -29,30 +29,33 @@ import ktfx.scene.control.infoAlert
 class EditEmployeeDialog(
     resourced: Resourced,
     private val employee: Employee
-) : TableDialog<Employee, Employees>(Employees, resourced, employee, R.string.employee, R.image.header_employee) {
+) : TableDialog<Employee, Employees>(resourced, R.string.employee, Employees, employee) {
 
     private companion object {
         // temporary fix
         const val DELAY = 200L
     }
 
-    override fun NodeManager.onCreateActions() {
-        button(getString(R.string.toggle_admin)) {
-            bindDisable()
-            onAction {
-                transaction { Employees[selected!!].projection { admin }.update(!selected!!.admin) }
-                refresh()
+    override fun onCreateActions(manager: NodeManager) {
+        super.onCreateActions(manager)
+        manager.run {
+            button(getString(R.string.toggle_admin)) {
+                bindDisable()
+                onAction {
+                    transaction { Employees[selected!!].projection { admin }.update(!selected!!.admin) }
+                    refresh()
+                }
             }
-        }
-        button(getString(R.string.reset_password)) {
-            bindDisable()
-            onAction {
-                transaction { Employees[selected!!].projection { password }.update(Employee.DEFAULT_PASSWORD) }
-                infoAlert(
-                    getString(R.string.change_password_popup_will_appear_when_is_logged_back_in, employee.name)
-                ) {
-                    dialogPane.stylesheets += getStyle(R.style.openpss)
-                }.show()
+            button(getString(R.string.reset_password)) {
+                bindDisable()
+                onAction {
+                    transaction { Employees[selected!!].projection { password }.update(Employee.DEFAULT_PASSWORD) }
+                    infoAlert(
+                        getString(R.string.change_password_popup_will_appear_when_is_logged_back_in, employee.name)
+                    ) {
+                        dialogPane.stylesheets += getStyle(R.style.openpss)
+                    }.show()
+                }
             }
         }
     }

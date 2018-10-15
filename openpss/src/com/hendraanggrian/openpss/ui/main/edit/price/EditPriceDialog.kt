@@ -1,8 +1,8 @@
 package com.hendraanggrian.openpss.ui.main.edit.price
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.control.dialog.TableDialog
-import com.hendraanggrian.openpss.control.popover.InputPopover
+import com.hendraanggrian.openpss.popup.dialog.TableDialog
+import com.hendraanggrian.openpss.popup.popover.InputPopover
 import com.hendraanggrian.openpss.control.stringCell
 import com.hendraanggrian.openpss.db.Document
 import com.hendraanggrian.openpss.db.Named
@@ -17,17 +17,17 @@ import kotlinx.nosql.mongodb.DocumentSchema
 import ktfx.scene.control.errorAlert
 
 abstract class EditPriceDialog<D, S>(
-    schema: S,
     resourced: Resourced,
-    employee: Employee,
-    headerId: String? = null,
-    graphicId: String? = null
-) : TableDialog<D, S>(schema, resourced, employee, headerId, graphicId)
+    headerId: String,
+    schema: S,
+    employee: Employee
+) : TableDialog<D, S>(resourced, headerId, schema, employee)
     where D : Document<S>, D : Named, S : DocumentSchema<D>, S : NamedSchema {
 
     abstract fun newPrice(name: String): D
 
     init {
+        @Suppress("LeakingThis")
         getString(R.string.name)<String> {
             minWidth = 96.0
             stringCell { name }

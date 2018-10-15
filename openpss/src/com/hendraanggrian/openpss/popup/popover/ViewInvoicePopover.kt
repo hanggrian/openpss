@@ -1,4 +1,4 @@
-package com.hendraanggrian.openpss.control.popover
+package com.hendraanggrian.openpss.popup.popover
 
 import com.hendraanggrian.openpss.PATTERN_DATETIME_EXTENDED
 import com.hendraanggrian.openpss.R
@@ -97,8 +97,14 @@ class ViewInvoicePopover(
             invoiceBox = vbox(R.dimen.padding_medium.toDouble()) {
                 border = DASHED.toBorder()
                 paddingAll = R.dimen.padding_medium.toDouble()
-                setMinSize(WIDTH, HEIGHT)
-                setMaxSize(WIDTH, HEIGHT)
+                setMinSize(
+                    WIDTH,
+                    HEIGHT
+                )
+                setMaxSize(
+                    WIDTH,
+                    HEIGHT
+                )
                 hbox(R.dimen.padding_medium.toDouble()) {
                     vbox {
                         alignment = CENTER_LEFT

@@ -5,7 +5,7 @@ import com.hendraanggrian.openpss.control.DoubleField
 import com.hendraanggrian.openpss.control.IntField
 import com.hendraanggrian.openpss.control.doubleField
 import com.hendraanggrian.openpss.control.intField
-import com.hendraanggrian.openpss.control.popover.ResultablePopover
+import com.hendraanggrian.openpss.popup.popover.ResultablePopover
 import com.hendraanggrian.openpss.db.Titled
 import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.i18n.Resourced

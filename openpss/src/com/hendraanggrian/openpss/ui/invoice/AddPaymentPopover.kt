@@ -4,7 +4,7 @@ import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.DoubleField
 import com.hendraanggrian.openpss.control.bold
 import com.hendraanggrian.openpss.control.doubleField
-import com.hendraanggrian.openpss.control.popover.ResultablePopover
+import com.hendraanggrian.openpss.popup.popover.ResultablePopover
 import com.hendraanggrian.openpss.currencyConverter
 import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.db.schemas.Invoice

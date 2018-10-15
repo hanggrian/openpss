@@ -6,8 +6,8 @@ import com.hendraanggrian.openpss.db.schemas.Employees
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.i18n.Resourced
 import com.hendraanggrian.openpss.io.properties.PreferencesFile
-import com.hendraanggrian.openpss.ui.login.LoginLayout
 import com.hendraanggrian.openpss.ui.controller
+import com.hendraanggrian.openpss.ui.login.LoginLayout
 import com.hendraanggrian.openpss.ui.main.ChangePasswordDialog
 import com.hendraanggrian.openpss.ui.pane
 import com.hendraanggrian.openpss.util.getResource
@@ -58,20 +58,26 @@ class App : Application(), Resourced {
             LoginLayout(this@App).apply {
                 setOnSuccess { employee ->
                     val loader = FXMLLoader(getResource(R.layout.controller_main), resources)
+                    val pane = loader.pane
+                    val controller = loader.controller
+
+                    controller.employee = employee
+
                     this@run.isResizable = true
                     title = "$NAME - ${employee.name}".let { if (DEBUG) "$it - DEBUG" else it }
-                    this@run.scene = scene(loader.pane) {
+                    this@run.scene = scene(pane) {
                         stylesheets += getStyle(R.style.openpss)
                     }
                     this@run.setMinSize(850.0, 450.0)
-                    loader.controller.employee = employee
 
-                    if (employee.isFirstTimeLogin) ChangePasswordDialog(this).showAndWait().ifPresent { newPassword ->
-                        transaction {
-                            Employees { it.name.equal(employee.name) }.projection { password }.update(newPassword)
-                            infoAlert(getString(R.string.successfully_changed_password)) {
-                                dialogPane.stylesheets += getStyle(R.style.openpss)
-                            }.show()
+                    if (employee.isFirstTimeLogin) {
+                        ChangePasswordDialog(this).show(controller.dialogContainer) { newPassword ->
+                            transaction {
+                                Employees { it.name.equal(employee.name) }.projection { password }.update(newPassword!!)
+                                infoAlert(getString(R.string.successfully_changed_password)) {
+                                    dialogPane.stylesheets += getStyle(R.style.openpss)
+                                }.show()
+                            }
                         }
                     }
                 }

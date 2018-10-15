@@ -8,18 +8,18 @@ import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.i18n.Resourced
 import javafx.beans.value.ObservableValue
 import javafx.geometry.Pos.CENTER_RIGHT
+import kotlinx.nosql.equal
+import kotlinx.nosql.update
 import ktfx.beans.property.toProperty
 import ktfx.coroutines.onEditCommit
 import ktfx.listeners.textFieldCellFactory
 import ktfx.styles.labeledStyle
-import kotlinx.nosql.equal
-import kotlinx.nosql.update
 
 @Suppress("UNCHECKED_CAST")
 class EditOffsetPriceDialog(
     resourced: Resourced,
     employee: Employee
-) : EditPriceDialog<OffsetPrice, OffsetPrices>(OffsetPrices, resourced, employee, R.string.offset_price) {
+) : EditPriceDialog<OffsetPrice, OffsetPrices>(resourced, R.string.offset_price, OffsetPrices, employee) {
 
     init {
         getString(R.string.min_qty)<Int> {

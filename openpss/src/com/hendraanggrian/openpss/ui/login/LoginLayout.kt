@@ -4,15 +4,15 @@ import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.BuildConfig
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.bold
-import com.hendraanggrian.openpss.control.dialog.MaterialAlert
-import com.hendraanggrian.openpss.control.dialog.MaterialResultableDialog
-import com.hendraanggrian.openpss.control.popover.Popover
 import com.hendraanggrian.openpss.db.login
 import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.i18n.Language
 import com.hendraanggrian.openpss.i18n.Resourced
 import com.hendraanggrian.openpss.io.properties.LoginFile
 import com.hendraanggrian.openpss.io.properties.PreferencesFile
+import com.hendraanggrian.openpss.popup.dialog.ResultableDialog
+import com.hendraanggrian.openpss.popup.dialog.TextDialog
+import com.hendraanggrian.openpss.popup.popover.Popover
 import com.hendraanggrian.openpss.ui.main.help.AboutDialog
 import com.hendraanggrian.openpss.ui.main.help.GitHubApi
 import com.hendraanggrian.openpss.util.forceExit
@@ -119,7 +119,7 @@ class LoginLayout(resourced: Resourced) : _StackPane(), Resourced by resourced {
                     GlobalScope.launch(Dispatchers.JavaFx) {
                         later {
                             checkNotNull(R.string._restart_required)
-                            MaterialAlert(
+                            TextDialog(
                                 this@LoginLayout,
                                 R.string.restart_required,
                                 R.string._restart_required
@@ -257,7 +257,7 @@ class LoginLayout(resourced: Resourced) : _StackPane(), Resourced by resourced {
         }
     }
 
-    inner class PasswordDialog : MaterialResultableDialog<Unit>(this, R.string.password_required) {
+    inner class PasswordDialog : ResultableDialog<Unit>(this, R.string.password_required) {
 
         override fun onCreate(manager: NodeManager) {
             super.onCreate(manager)
@@ -297,13 +297,9 @@ class LoginLayout(resourced: Resourced) : _StackPane(), Resourced by resourced {
 
         override fun onCreateActions(manager: NodeManager) {
             super.onCreateActions(manager)
-            manager.run {
-                defaultButton = jfxButton(getString(R.string.login)) {
-                    styleClass += App.STYLE_BUTTON_RAISED
-                    buttonType = JFXButton.ButtonType.RAISED
-                    disableProperty().bind(textField.textProperty().isBlank())
-                    passwordField.onActionProperty().bindBidirectional(onActionProperty())
-                }
+            defaultButton.run {
+                disableProperty().bind(textField.textProperty().isBlank())
+                passwordField.onActionProperty().bindBidirectional(onActionProperty())
             }
         }
     }

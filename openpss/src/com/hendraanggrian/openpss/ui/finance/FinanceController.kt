@@ -13,7 +13,7 @@ import com.hendraanggrian.openpss.control.dateBox
 import com.hendraanggrian.openpss.control.doneCell
 import com.hendraanggrian.openpss.control.monthBox
 import com.hendraanggrian.openpss.control.numberCell
-import com.hendraanggrian.openpss.control.popover.ViewInvoicePopover
+import com.hendraanggrian.openpss.popup.popover.ViewInvoicePopover
 import com.hendraanggrian.openpss.control.space
 import com.hendraanggrian.openpss.control.stretchableButton
 import com.hendraanggrian.openpss.control.stringCell

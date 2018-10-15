@@ -1,9 +1,9 @@
-package com.hendraanggrian.openpss.control.popover
+package com.hendraanggrian.openpss.popup.popover
 
 import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.control.Resultable
 import com.hendraanggrian.openpss.i18n.Resourced
+import com.hendraanggrian.openpss.popup.ResultablePopup
 import com.jfoenix.controls.JFXButton
 import javafx.scene.Node
 import javafx.scene.control.Button
@@ -16,7 +16,8 @@ import org.controlsfx.control.PopOver
 abstract class ResultablePopover<T>(
     resourced: Resourced,
     titleId: String
-) : Popover(resourced, titleId), Resultable<T> {
+) : Popover(resourced, titleId),
+    ResultablePopup<T> {
 
     protected lateinit var defaultButton: Button
 

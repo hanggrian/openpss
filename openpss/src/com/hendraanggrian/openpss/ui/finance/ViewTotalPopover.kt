@@ -2,7 +2,7 @@ package com.hendraanggrian.openpss.ui.finance
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.bold
-import com.hendraanggrian.openpss.control.popover.Popover
+import com.hendraanggrian.openpss.popup.popover.Popover
 import com.hendraanggrian.openpss.i18n.Resourced
 import javafx.geometry.HPos
 import ktfx.NodeManager

@@ -2,12 +2,12 @@ package com.hendraanggrian.openpss.ui.main
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.SegmentedTabPane
-import com.hendraanggrian.openpss.control.popover.ViewInvoicePopover
 import com.hendraanggrian.openpss.db.dbDateTime
 import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.db.schemas.Invoice.Offset.Technique.TWO_SIDE_EQUAL
 import com.hendraanggrian.openpss.db.transaction
+import com.hendraanggrian.openpss.popup.popover.ViewInvoicePopover
 import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.SegmentedController
@@ -32,6 +32,7 @@ import javafx.scene.control.SelectionModel
 import javafx.scene.control.Tab
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.HBox
+import javafx.scene.layout.StackPane
 import kotlinx.coroutines.experimental.delay
 import ktfx.application.later
 import ktfx.coroutines.listener
@@ -43,6 +44,7 @@ import java.util.ResourceBundle
 
 class MainController : Controller(), Selectable<Tab> {
 
+    @FXML override lateinit var dialogContainer: StackPane // jfx dialog container
     @FXML lateinit var notificationPane: NotificationPane
     @FXML lateinit var menuBar: MenuBar
     @FXML lateinit var addCustomerItem: MenuItem
@@ -64,8 +66,14 @@ class MainController : Controller(), Selectable<Tab> {
     @FXML lateinit var wageController: WageController
 
     override val selectionModel: SelectionModel<Tab> get() = tabPane.selectionModel
+    private val controllers get() = mutableListOf(
+        customerController,
+        invoiceController,
+        scheduleController,
+        financeController,
+        wageController
+    )
 
-    private lateinit var controllers: List<SegmentedController>
     private var isFinanceTabFixed = false
 
     override fun initialize(location: URL, resources: ResourceBundle) {
@@ -88,9 +96,10 @@ class MainController : Controller(), Selectable<Tab> {
         }
 
         later {
-            controllers =
-                listOf(customerController, invoiceController, scheduleController, financeController, wageController)
-            controllers.forEach { it.employee = employee }
+            controllers.forEach {
+                it.employee = employee
+                it.dialogContainer = dialogContainer
+            }
             financeController.addExtra(FinanceController.EXTRA_MAIN_CONTROLLER, this)
         }
     }

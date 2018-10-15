@@ -3,6 +3,7 @@ package com.hendraanggrian.openpss.ui
 import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.i18n.Resourced
 import javafx.fxml.Initializable
+import javafx.scene.layout.StackPane
 import java.net.URL
 import java.util.ResourceBundle
 
@@ -10,6 +11,7 @@ import java.util.ResourceBundle
 open class Controller : Initializable, Resourced {
 
     lateinit var employee: Employee
+    open lateinit var dialogContainer: StackPane
 
     override lateinit var resources: ResourceBundle
 

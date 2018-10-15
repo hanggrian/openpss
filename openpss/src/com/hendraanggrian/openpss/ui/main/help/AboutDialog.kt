@@ -8,7 +8,6 @@ import com.hendraanggrian.openpss.BuildConfig.VERSION
 import com.hendraanggrian.openpss.BuildConfig.WEBSITE
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.bold
-import com.hendraanggrian.openpss.control.dialog.Dialog
 import com.hendraanggrian.openpss.i18n.Resourced
 import com.hendraanggrian.openpss.ui.Selectable
 import com.hendraanggrian.openpss.ui.main.License
@@ -16,6 +15,7 @@ import com.hendraanggrian.openpss.util.desktop
 import com.hendraanggrian.openpss.util.getFont
 import com.jfoenix.controls.JFXButton
 import javafx.geometry.Pos.CENTER_LEFT
+import javafx.scene.control.Dialog
 import javafx.scene.control.ListView
 import javafx.scene.control.SelectionModel
 import javafx.scene.image.Image
@@ -40,7 +40,7 @@ import ktfx.scene.layout.paddingAll
 import ktfx.scene.text.fontSize
 import java.net.URI
 
-class AboutDialog(resourced: Resourced) : Dialog<Nothing>(resourced), Selectable<License> {
+class AboutDialog(resourced: Resourced) : Dialog<Unit>(), Selectable<License>, Resourced by resourced {
 
     private val licenseList: ListView<License> = ktfx.layouts.listView(License.values().toObservableList()) {
         cellFactory {

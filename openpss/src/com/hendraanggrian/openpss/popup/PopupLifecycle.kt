@@ -1,8 +1,8 @@
-package com.hendraanggrian.openpss.lifecycle
+package com.hendraanggrian.openpss.popup
 
 import ktfx.NodeManager
 
-interface Lifecylce {
+interface PopupLifecycle {
 
     fun onCreate(manager: NodeManager) {
     }

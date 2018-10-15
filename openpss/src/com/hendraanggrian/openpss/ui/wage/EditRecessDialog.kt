@@ -2,7 +2,7 @@ package com.hendraanggrian.openpss.ui.wage
 
 import com.hendraanggrian.openpss.PATTERN_TIME
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.control.dialog.TableDialog
+import com.hendraanggrian.openpss.popup.dialog.TableDialog
 import com.hendraanggrian.openpss.control.stringCell
 import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.db.schemas.Recess
@@ -13,7 +13,7 @@ import com.hendraanggrian.openpss.i18n.Resourced
 class EditRecessDialog(
     resourced: Resourced,
     employee: Employee
-) : TableDialog<Recess, Recesses>(Recesses, resourced, employee, R.string.recess, R.image.header_recess) {
+) : TableDialog<Recess, Recesses>(resourced, R.string.recess, Recesses, employee) {
 
     init {
         getString(R.string.start)<String> {

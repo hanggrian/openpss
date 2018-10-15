@@ -72,7 +72,7 @@ class AddInvoiceDialog(
 
     override fun onCreate(manager: NodeManager) {
         super.onCreate(manager)
-        manager.run {
+        manager.runLater {
             gridPane {
                 gap = R.dimen.padding_medium.toDouble()
                 label(getString(R.string.employee)) col 0 row 0
@@ -145,7 +145,9 @@ class AddInvoiceDialog(
 
     override fun onCreateActions(manager: NodeManager) {
         super.onCreateActions(manager)
-        defaultButton.disableProperty().bind(customerProperty.isNull or totalProperty.lessEq(0))
+        later {
+            defaultButton.disableProperty().bind(customerProperty.isNull or totalProperty.lessEq(0))
+        }
     }
 
     override val nullableResult: Invoice?

@@ -13,11 +13,10 @@ import ktfx.jfoenix.jfxButton
 import org.controlsfx.control.PopOver
 
 /** [PopOver] with default button and return type. */
-abstract class ResultablePopover<T>(
+open class ResultablePopover<T>(
     resourced: Resourced,
     titleId: String
-) : Popover(resourced, titleId),
-    ResultablePopup<T> {
+) : Popover(resourced, titleId), ResultablePopup<T> {
 
     protected lateinit var defaultButton: Button
 

@@ -12,7 +12,7 @@ import ktfx.NodeManager
 import ktfx.coroutines.onAction
 import ktfx.jfoenix.jfxButton
 
-abstract class ResultableDialog<T>(
+open class ResultableDialog<T>(
     resourced: Resourced,
     titleId: String
 ) : Dialog(resourced, titleId), ResultablePopup<T> {

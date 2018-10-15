@@ -2,7 +2,6 @@ package com.hendraanggrian.openpss.popup.dialog
 
 import com.hendraanggrian.openpss.i18n.Resourced
 import ktfx.NodeManager
-import ktfx.application.later
 import ktfx.layouts.label
 
 class TextDialog(
@@ -13,11 +12,9 @@ class TextDialog(
 
     override fun onCreate(manager: NodeManager) {
         super.onCreate(manager)
-        manager.run {
+        manager.runLater {
             label {
-                later {
-                    text = getString(contentId)
-                }
+                text = getString(contentId)
                 isWrapText = true
             }
         }

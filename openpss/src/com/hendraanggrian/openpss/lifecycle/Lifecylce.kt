@@ -4,9 +4,9 @@ import ktfx.NodeManager
 
 interface Lifecylce {
 
-    fun NodeManager.onCreate() {
+    fun onCreate(manager: NodeManager) {
     }
 
-    fun NodeManager.onCreateActions() {
+    fun onCreateActions(manager: NodeManager) {
     }
 }

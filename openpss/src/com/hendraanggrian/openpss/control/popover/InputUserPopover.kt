@@ -5,6 +5,7 @@ import com.hendraanggrian.openpss.i18n.Resourced
 import com.hendraanggrian.openpss.util.clean
 import com.hendraanggrian.openpss.util.isName
 import javafx.beans.binding.BooleanBinding
+import ktfx.NodeManager
 import ktfx.controlsfx.registerPredicateValidator
 import org.controlsfx.validation.Severity
 
@@ -14,7 +15,8 @@ class InputUserPopover(
     private val restrictiveInput: Boolean = true
 ) : InputPopover(resourced, titleId) {
 
-    init {
+    override fun onCreate(manager: NodeManager) {
+        super.onCreate(manager)
         if (restrictiveInput) {
             editor.registerPredicateValidator<String>(
                 getString(R.string.name_doesnt_start_with_uppercase_letter_add_anyway),

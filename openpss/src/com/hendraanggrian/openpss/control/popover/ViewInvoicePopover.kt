@@ -83,138 +83,144 @@ class ViewInvoicePopover(
     private lateinit var invoiceHeaders: List<String>
     private lateinit var customer: Customer
     private lateinit var employee: Employee
-    private val invoiceBox: VBox
+    private lateinit var invoiceBox: VBox
 
-    override fun NodeManager.onCreateActions() {
-        button(getString(R.string.print)) {
-            isDefaultButton = true
-            later { isDisable = invoice.printed }
-            onAction {
-                // resize node to actual print size
-                val printer = Printer.getDefaultPrinter()
-                val layout = printer.createPageLayout(PAPER, PORTRAIT, 0.0, 0.0, 0.0, 0.0)
-                invoiceBox.run {
-                    border = null
-                    transforms += Scale(
-                        layout.printableWidth / boundsInParent.width,
-                        layout.printableHeight / boundsInParent.height
-                    )
-                }
-                // disable auto-hide when print dialog is showing
-                isAutoHide = false
-                val job = PrinterJob.createPrinterJob(printer)!!
-                if (job.showPrintDialog(this@ViewInvoicePopover) && job.printPage(layout, invoiceBox)) {
-                    job.endJob()
-                    if (!isTest) transaction {
-                        Invoices[invoice].projection { printed }.update(true)
-                    }
-                }
-                hide()
-            }
-        }
-    }
-
-    init {
-        graphic = ktfx.layouts.label("${getString(R.string.server_language)}: $language")
+    override fun onCreate(manager: NodeManager) {
+        super.onCreate(manager)
+        graphic = label("${getString(R.string.server_language)}: $language")
         transaction {
             invoiceHeaders = findGlobalSettings(KEY_INVOICE_HEADERS).single().valueList
             employee = Employees[invoice.employeeId].single()
             customer = Customers[invoice.customerId].single()
         }
-        invoiceBox = vbox(R.dimen.padding_medium.toDouble()) {
-            border = DASHED.toBorder()
-            paddingAll = R.dimen.padding_medium.toDouble()
-            setMinSize(WIDTH, HEIGHT)
-            setMaxSize(WIDTH, HEIGHT)
-            hbox(R.dimen.padding_medium.toDouble()) {
-                vbox {
-                    alignment = CENTER_LEFT
-                    invoiceHeaders.forEachIndexed { index, s -> label(s) { if (index == 0) font = bold() } }
-                } hpriority ALWAYS
-                vbox {
-                    alignment = CENTER_RIGHT
-                    label(getString(R.string.invoice)) { fontSize = 18.0 }
-                    label("# ${invoice.no}") { fontSize = 32.0 }
+        manager.run {
+            invoiceBox = vbox(R.dimen.padding_medium.toDouble()) {
+                border = DASHED.toBorder()
+                paddingAll = R.dimen.padding_medium.toDouble()
+                setMinSize(WIDTH, HEIGHT)
+                setMaxSize(WIDTH, HEIGHT)
+                hbox(R.dimen.padding_medium.toDouble()) {
+                    vbox {
+                        alignment = CENTER_LEFT
+                        invoiceHeaders.forEachIndexed { index, s -> label(s) { if (index == 0) font = bold() } }
+                    } hpriority ALWAYS
+                    vbox {
+                        alignment = CENTER_RIGHT
+                        label(getString(R.string.invoice)) { fontSize = 18.0 }
+                        label("# ${invoice.no}") { fontSize = 32.0 }
+                    }
                 }
-            }
-            fullLine()
-            vbox {
-                alignment = CENTER
-                label(
-                    "${invoice.dateTime.toString(PATTERN_DATETIME_EXTENDED)} " +
-                        "(${transaction { Employees[invoice.employeeId].single().name }})"
-                )
-                label("${customer.no}. ${customer.name}") { font = bold() }
-            }
-            vbox {
+                fullLine()
+                vbox {
+                    alignment = CENTER
+                    label(
+                        "${invoice.dateTime.toString(PATTERN_DATETIME_EXTENDED)} " +
+                            "(${transaction { Employees[invoice.employeeId].single().name }})"
+                    )
+                    label("${customer.no}. ${customer.name}") { font = bold() }
+                }
+                vbox {
+                    gridPane {
+                        hgap = R.dimen.padding_medium.toDouble()
+                        columnConstraints {
+                            constraints {
+                                minWidth = USE_PREF_SIZE
+                                halignment = RIGHT
+                            }
+                            constraints {
+                                minWidth = USE_PREF_SIZE
+                            }
+                            constraints { hgrow = ALWAYS }
+                            constraints {
+                                minWidth = USE_PREF_SIZE
+                                halignment = RIGHT
+                            }
+                        }
+                        var row = 0
+                        row += orderGridPane(row, R.string.plate, invoice.plates) { order, i ->
+                            label(numberConverter(order.qty)) row i col 0
+                            label(order.machine) row i col 1
+                            label(order.title) {
+                                isWrapText = true
+                            } row i col 2
+                            label(numberConverter(order.total)) row i col 3
+                        }
+                        row += orderGridPane(row, R.string.offset, invoice.offsets) { order, i ->
+                            label(numberConverter(order.qty)) row i col 0
+                            label("${order.machine}\n${order.typedTechnique.toString(this@ViewInvoicePopover)}") {
+                                textAlignment = TextAlignment.CENTER
+                            } row i col 1
+                            label(order.title) {
+                                isWrapText = true
+                            } row i col 2
+                            label(numberConverter(order.total)) row i col 3
+                        }
+                        row += orderGridPane(row, R.string.others, invoice.others) { order, i ->
+                            label(numberConverter(order.qty)) row i col 0
+                            label(order.title) {
+                                isWrapText = true
+                            } row i col 2
+                            label(numberConverter(order.total)) row i col 3
+                        }
+                    }
+                } vpriority ALWAYS
+                fullLine()
                 gridPane {
-                    hgap = R.dimen.padding_medium.toDouble()
-                    columnConstraints {
-                        constraints {
-                            minWidth = USE_PREF_SIZE
-                            halignment = RIGHT
-                        }
-                        constraints {
-                            minWidth = USE_PREF_SIZE
-                        }
-                        constraints { hgrow = ALWAYS }
-                        constraints {
-                            minWidth = USE_PREF_SIZE
-                            halignment = RIGHT
-                        }
-                    }
-                    var row = 0
-                    row += orderGridPane(row, R.string.plate, invoice.plates) { order, i ->
-                        label(numberConverter(order.qty)) row i col 0
-                        label(order.machine) row i col 1
-                        label(order.title) {
-                            isWrapText = true
-                        } row i col 2
-                        label(numberConverter(order.total)) row i col 3
-                    }
-                    row += orderGridPane(row, R.string.offset, invoice.offsets) { order, i ->
-                        label(numberConverter(order.qty)) row i col 0
-                        label("${order.machine}\n${order.typedTechnique.toString(this@ViewInvoicePopover)}") {
-                            textAlignment = TextAlignment.CENTER
-                        } row i col 1
-                        label(order.title) {
-                            isWrapText = true
-                        } row i col 2
-                        label(numberConverter(order.total)) row i col 3
-                    }
-                    row += orderGridPane(row, R.string.others, invoice.others) { order, i ->
-                        label(numberConverter(order.qty)) row i col 0
-                        label(order.title) {
-                            isWrapText = true
-                        } row i col 2
-                        label(numberConverter(order.total)) row i col 3
-                    }
+                    gap = R.dimen.padding_medium.toDouble()
+                    textFlow {
+                        paddingAll = R.dimen.padding_small.toDouble()
+                        border = SOLID.toBorder()
+                        "${getString(R.string.note)}\n" { font = bold() }
+                        invoice.note()
+                    } row 0 col 0 rowSpans 2 hpriority ALWAYS
+                    label(currencyConverter(invoice.total)) {
+                        font = bold()
+                    } row 0 col 1 colSpans 2 halign RIGHT
+                    vbox {
+                        alignment = CENTER
+                        region { prefHeight = 48.0 }
+                        line(endX = 64.0)
+                        label(getString(R.string.employee))
+                    } row 1 col 1
+                    vbox {
+                        alignment = CENTER
+                        region { prefHeight = 48.0 }
+                        line(endX = 64.0)
+                        label(getString(R.string.customer))
+                    } row 1 col 2
                 }
-            } vpriority ALWAYS
-            fullLine()
-            gridPane {
-                gap = R.dimen.padding_medium.toDouble()
-                textFlow {
-                    paddingAll = R.dimen.padding_small.toDouble()
-                    border = SOLID.toBorder()
-                    "${getString(R.string.note)}\n" { font = bold() }
-                    invoice.note()
-                } row 0 col 0 rowSpans 2 hpriority ALWAYS
-                label(currencyConverter(invoice.total)) {
-                    font = bold()
-                } row 0 col 1 colSpans 2 halign RIGHT
-                vbox {
-                    alignment = CENTER
-                    region { prefHeight = 48.0 }
-                    line(endX = 64.0)
-                    label(getString(R.string.employee))
-                } row 1 col 1
-                vbox {
-                    alignment = CENTER
-                    region { prefHeight = 48.0 }
-                    line(endX = 64.0)
-                    label(getString(R.string.customer))
-                } row 1 col 2
+            }
+        }
+    }
+
+    override fun onCreateActions(manager: NodeManager) {
+        super.onCreateActions(manager)
+        manager.run {
+            button(getString(R.string.print)) {
+                isDefaultButton = true
+                later { isDisable = invoice.printed }
+                onAction {
+                    // resize node to actual print size
+                    val printer = Printer.getDefaultPrinter()
+                    val layout = printer.createPageLayout(PAPER, PORTRAIT, 0.0, 0.0, 0.0, 0.0)
+                    invoiceBox.run {
+                        border = null
+                        transforms += Scale(
+                            layout.printableWidth / boundsInParent.width,
+                            layout.printableHeight / boundsInParent.height
+                        )
+                    }
+                    // disable auto-hide when print dialog is showing
+                    isAutoHide = false
+                    val job = PrinterJob.createPrinterJob(printer)!!
+                    if (job.showPrintDialog(this@ViewInvoicePopover) && job.printPage(layout, invoiceBox)) {
+                        job.endJob()
+                        if (!isTest) transaction {
+                            Invoices[invoice].projection { printed }.update(true)
+                        }
+                    }
+                    hide()
+                }
             }
         }
     }

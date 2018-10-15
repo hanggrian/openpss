@@ -25,14 +25,14 @@ open class MaterialDialog(
                 fontSize = 18.0
                 textFill = getColor(R.color.blue)
             }
-            onCreate()
+            onCreate(this)
             buttonBar {
                 jfxButton(getString(R.string.close)) {
                     styleClass += App.STYLE_BUTTON_FLAT
                     isCancelButton = true
                     onAction { close() }
                 }
-                onCreateActions()
+                onCreateActions(this)
             } marginTop R.dimen.padding_medium.toDouble()
         }
     }

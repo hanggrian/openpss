@@ -11,12 +11,15 @@ class MaterialAlert(
     private val contentId: String
 ) : MaterialDialog(resourced, titleId) {
 
-    override fun NodeManager.onCreate() {
-        label {
-            later {
-                text = getString(contentId)
+    override fun onCreate(manager: NodeManager) {
+        super.onCreate(manager)
+        manager.run {
+            label {
+                later {
+                    text = getString(contentId)
+                }
+                isWrapText = true
             }
-            isWrapText = true
         }
     }
 }

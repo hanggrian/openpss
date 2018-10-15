@@ -6,7 +6,7 @@ import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.bold
 import com.hendraanggrian.openpss.control.dialog.MaterialAlert
 import com.hendraanggrian.openpss.control.dialog.MaterialResultableDialog
-import com.hendraanggrian.openpss.control.popover.MaterialPopover
+import com.hendraanggrian.openpss.control.popover.Popover
 import com.hendraanggrian.openpss.db.login
 import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.i18n.Language
@@ -237,64 +237,73 @@ class LoginLayout(resourced: Resourced) : _StackPane(), Resourced by resourced {
         this.onSuccess = onSuccess
     }
 
-    inner class ConnectionSettingsPopover : MaterialPopover(this, R.string.connection_settings) {
+    inner class ConnectionSettingsPopover : Popover(this, R.string.connection_settings) {
 
-        override fun NodeManager.onCreate() {
-            gridPane {
-                paddingAll = 16.0
-                gap = R.dimen.padding_medium.toDouble()
-                label(getString(R.string.server_host_port)) col 0 row 0
-                serverHostField() col 1 row 0
-                serverPortField() col 2 row 0
-                label(getString(R.string.server_user)) col 0 row 1
-                serverUserField() col 1 row 1 colSpans 2
-                label(getString(R.string.server_password)) col 0 row 2
-                serverPasswordField() col 1 row 2 colSpans 2
+        override fun onCreate(manager: NodeManager) {
+            super.onCreate(manager)
+            manager.run {
+                gridPane {
+                    paddingAll = 16.0
+                    gap = R.dimen.padding_medium.toDouble()
+                    label(getString(R.string.server_host_port)) col 0 row 0
+                    serverHostField() col 1 row 0
+                    serverPortField() col 2 row 0
+                    label(getString(R.string.server_user)) col 0 row 1
+                    serverUserField() col 1 row 1 colSpans 2
+                    label(getString(R.string.server_password)) col 0 row 2
+                    serverPasswordField() col 1 row 2 colSpans 2
+                }
             }
         }
     }
 
     inner class PasswordDialog : MaterialResultableDialog<Unit>(this, R.string.password_required) {
 
-        override fun NodeManager.onCreate() {
+        override fun onCreate(manager: NodeManager) {
+            super.onCreate(manager)
             setOnDialogOpened {
                 passwordField.requestFocus()
             }
             setOnDialogClosed {
                 employeeField.requestFocus()
             }
-            hbox(R.dimen.padding_medium.toDouble()) {
-                stackPane {
-                    alignment = Pos.CENTER
-                    passwordField = jfxPasswordField {
-                        promptText = getString(R.string.password)
+            manager.run {
+                hbox(R.dimen.padding_medium.toDouble()) {
+                    stackPane {
+                        alignment = Pos.CENTER
+                        passwordField = jfxPasswordField {
+                            promptText = getString(R.string.password)
+                        }
+                        textField = jfxTextField {
+                            promptText = getString(R.string.password)
+                            isVisible = false
+                            passwordField.textProperty().bindBidirectional(textProperty())
+                        }
                     }
-                    textField = jfxTextField {
-                        promptText = getString(R.string.password)
-                        isVisible = false
-                        passwordField.textProperty().bindBidirectional(textProperty())
-                    }
-                }
-                jfxToggleButton {
-                    text = getString(R.string.view)
-                    passwordField.visibleProperty().bind(!selectedProperty())
-                    textField.visibleProperty().bind(selectedProperty())
-                    selectedProperty().listener {
-                        when {
-                            passwordField.isVisible -> passwordField.requestFocus()
-                            else -> textField.requestFocus()
+                    jfxToggleButton {
+                        text = getString(R.string.view)
+                        passwordField.visibleProperty().bind(!selectedProperty())
+                        textField.visibleProperty().bind(selectedProperty())
+                        selectedProperty().listener {
+                            when {
+                                passwordField.isVisible -> passwordField.requestFocus()
+                                else -> textField.requestFocus()
+                            }
                         }
                     }
                 }
             }
         }
 
-        override fun NodeManager.onCreateActions() {
-            defaultButton = jfxButton(getString(R.string.login)) {
-                styleClass += App.STYLE_BUTTON_RAISED
-                buttonType = JFXButton.ButtonType.RAISED
-                disableProperty().bind(textField.textProperty().isBlank())
-                passwordField.onActionProperty().bindBidirectional(onActionProperty())
+        override fun onCreateActions(manager: NodeManager) {
+            super.onCreateActions(manager)
+            manager.run {
+                defaultButton = jfxButton(getString(R.string.login)) {
+                    styleClass += App.STYLE_BUTTON_RAISED
+                    buttonType = JFXButton.ButtonType.RAISED
+                    disableProperty().bind(textField.textProperty().isBlank())
+                    passwordField.onActionProperty().bindBidirectional(onActionProperty())
+                }
             }
         }
     }

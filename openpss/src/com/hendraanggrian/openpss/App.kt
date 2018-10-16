@@ -46,29 +46,29 @@ class App : Application(), Resourced {
 
     override fun init() {
         resources = PreferencesFile.language.toResourcesBundle()
-        if (DEBUG) BasicConfigurator.configure()
+        if (DEBUG) {
+            BasicConfigurator.configure()
+        }
     }
 
-    override fun start(stage: Stage) = stage.run {
-        icon = Image(R.image.display_launcher)
-        isResizable = false
-        title = getString(R.string.openpss_login)
-        scene = scene {
+    override fun start(stage: Stage) {
+        stage.icon = Image(R.image.display_launcher)
+        stage.isResizable = false
+        stage.title = getString(R.string.openpss_login)
+        stage.scene = scene {
             stylesheets += getStyle(R.style.openpss)
             LoginLayout(this@App).apply {
                 setOnSuccess { employee ->
                     val loader = FXMLLoader(getResource(R.layout.controller_main), resources)
-                    val pane = loader.pane
+                    this@scene.run {
+                        loader.pane()
+                    }
                     val controller = loader.controller
-
                     controller.employee = employee
 
-                    this@run.isResizable = true
-                    title = "$NAME - ${employee.name}".let { if (DEBUG) "$it - DEBUG" else it }
-                    this@run.scene = scene(pane) {
-                        stylesheets += getStyle(R.style.openpss)
-                    }
-                    this@run.setMinSize(850.0, 450.0)
+                    stage.isResizable = true
+                    stage.title = "$NAME - ${employee.name}".let { if (DEBUG) "$it - DEBUG" else it }
+                    stage.setMinSize(850.0, 450.0)
 
                     if (employee.isFirstTimeLogin) {
                         ChangePasswordDialog(this).show(controller.dialogContainer) { newPassword ->

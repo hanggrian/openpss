@@ -278,6 +278,9 @@ class LoginLayout(resourced: Resourced) : _StackPane(), Resourced by resourced {
                             promptText = getString(R.string.password)
                             isVisible = false
                             passwordField.textProperty().bindBidirectional(textProperty())
+                            if (BuildConfig.DEBUG) {
+                                text = "hendraganteng"
+                            }
                         }
                     }
                     jfxToggleButton {

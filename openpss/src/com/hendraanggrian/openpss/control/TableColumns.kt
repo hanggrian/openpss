@@ -5,14 +5,11 @@ package com.hendraanggrian.openpss.control
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.currencyConverter
 import com.hendraanggrian.openpss.numberConverter
-import javafx.geometry.Pos.CENTER
-import javafx.geometry.Pos.CENTER_RIGHT
 import javafx.scene.control.TableColumn
 import javafx.scene.image.Image
 import ktfx.beans.property.toProperty
 import ktfx.layouts.imageView
 import ktfx.listeners.cellFactory
-import ktfx.styles.labeledStyle
 import ktfx.util.invoke
 
 fun <T> TableColumn<T, Boolean>.doneCell(size: Int = 64, target: T.() -> Boolean) {
@@ -22,7 +19,7 @@ fun <T> TableColumn<T, Boolean>.doneCell(size: Int = 64, target: T.() -> Boolean
         maxWidth = it
     }
     isResizable = false
-    style = labeledStyle { alignment = CENTER }
+    style = "-fx-alignment: center;"
     setCellValueFactory { it.value.target().toProperty() }
     cellFactory {
         onUpdate { done, empty ->
@@ -44,11 +41,11 @@ fun <T> TableColumn<T, String>.stringCell(target: T.() -> String?) =
     setCellValueFactory { it.value.target().orEmpty().toProperty() }
 
 fun <T> TableColumn<T, String>.numberCell(target: T.() -> Int) {
-    style = labeledStyle { alignment = CENTER_RIGHT }
+    style = "-fx-alignment: center-right;"
     setCellValueFactory { numberConverter(it.value.target()).toProperty() }
 }
 
 fun <T> TableColumn<T, String>.currencyCell(target: T.() -> Double) {
-    style = labeledStyle { alignment = CENTER_RIGHT }
+    style = "-fx-alignment: center-right;"
     setCellValueFactory { currencyConverter(it.value.target()).toProperty() }
 }

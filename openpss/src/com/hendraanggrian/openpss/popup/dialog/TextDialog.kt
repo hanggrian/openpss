@@ -2,6 +2,7 @@ package com.hendraanggrian.openpss.popup.dialog
 
 import com.hendraanggrian.openpss.i18n.Resourced
 import ktfx.NodeManager
+import ktfx.application.runLater
 import ktfx.layouts.label
 
 class TextDialog(

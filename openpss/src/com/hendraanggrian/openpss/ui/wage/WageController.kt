@@ -127,7 +127,8 @@ class WageController : SegmentedController() {
 
     private fun process() = stage(getString(R.string.record)) {
         val loader = FXMLLoader(getResource(R.layout.controller_wage_record), resources)
-        scene = scene(loader.pane) {
+        scene = scene {
+            loader.pane()
             stylesheets += getStyle(R.style.openpss)
         }
         setMinSize(1000.0, 650.0)

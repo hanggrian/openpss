@@ -31,6 +31,7 @@ import javafx.scene.image.ImageView
 import javafx.scene.layout.Priority.ALWAYS
 import ktfx.NodeManager
 import ktfx.application.later
+import ktfx.application.runLater
 import ktfx.beans.binding.`when`
 import ktfx.beans.binding.doubleBindingOf
 import ktfx.beans.binding.otherwise

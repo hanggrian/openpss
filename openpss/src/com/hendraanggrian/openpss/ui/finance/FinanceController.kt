@@ -13,7 +13,6 @@ import com.hendraanggrian.openpss.control.dateBox
 import com.hendraanggrian.openpss.control.doneCell
 import com.hendraanggrian.openpss.control.monthBox
 import com.hendraanggrian.openpss.control.numberCell
-import com.hendraanggrian.openpss.popup.popover.ViewInvoicePopover
 import com.hendraanggrian.openpss.control.space
 import com.hendraanggrian.openpss.control.stretchableButton
 import com.hendraanggrian.openpss.control.stringCell
@@ -24,6 +23,7 @@ import com.hendraanggrian.openpss.db.schemas.Payment
 import com.hendraanggrian.openpss.db.schemas.Payments
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.io.properties.PreferencesFile
+import com.hendraanggrian.openpss.popup.popover.ViewInvoicePopover
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.SegmentedController
 import com.hendraanggrian.openpss.ui.Selectable
@@ -158,14 +158,14 @@ class FinanceController : SegmentedController(), Refreshable,
     }
 
     @FXML fun viewInvoice() = ViewInvoicePopover(transaction { Invoices[selected2!!.invoiceId].single() })
-        .showAt(dailyTable)
+        .show(dailyTable)
 
     @FXML fun viewPayments() {
         selectFirst()
         dateBox.picker.value = selected3!!.date.toJava()
     }
 
-    private fun viewTotal() = ViewTotalPopover(this, getTotal(true), getTotal(false)).showAt(viewTotalButton)
+    private fun viewTotal() = ViewTotalPopover(this, getTotal(true), getTotal(false)).show(viewTotalButton)
 
     private fun getTotal(isCash: Boolean): Double = when (selectedIndex) {
         0 -> Payment.gather(dailyTable.items, isCash)

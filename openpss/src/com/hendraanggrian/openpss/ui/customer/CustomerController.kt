@@ -6,7 +6,6 @@ import com.hendraanggrian.openpss.PATTERN_DATE
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.PaginatedPane
 import com.hendraanggrian.openpss.control.SegmentedTabPane.Companion.STRETCH_POINT
-import com.hendraanggrian.openpss.popup.popover.InputUserPopover
 import com.hendraanggrian.openpss.control.stretchableButton
 import com.hendraanggrian.openpss.control.stringCell
 import com.hendraanggrian.openpss.control.yesNoAlert
@@ -14,6 +13,7 @@ import com.hendraanggrian.openpss.db.matches
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.transaction
+import com.hendraanggrian.openpss.popup.popover.InputUserPopover
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.SegmentedController
 import com.hendraanggrian.openpss.ui.Selectable
@@ -164,7 +164,7 @@ class CustomerController : SegmentedController(), Refreshable, Selectable<Custom
         })
     }
 
-    fun add() = InputUserPopover(this, R.string.add_customer).showAt(addButton) { name ->
+    fun add() = InputUserPopover(this, R.string.add_customer).show(addButton) { name ->
         transaction {
             when {
                 Customers { it.name.matches("^$name$", CASE_INSENSITIVE) }.isNotEmpty() ->
@@ -182,14 +182,14 @@ class CustomerController : SegmentedController(), Refreshable, Selectable<Custom
         }
     }
 
-    private fun edit() = EditCustomerPopover(this, selected!!).showAt(customerList) {
+    private fun edit() = EditCustomerPopover(this, selected!!).show(customerList) {
         transaction {
             Customers[selected!!].projection { name + address + note }.update(it.name, it.address, it.note)
         }
         reload()
     }
 
-    @FXML fun addContact() = AddContactPopover(this).showAt(contactTable) {
+    @FXML fun addContact() = AddContactPopover(this).show(contactTable) {
         transaction {
             Customers[selected!!].projection { contacts }.update(selected!!.contacts + it)
         }

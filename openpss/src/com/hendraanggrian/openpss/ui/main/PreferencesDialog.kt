@@ -4,7 +4,6 @@ import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.clearConverters
 import com.hendraanggrian.openpss.control.bold
-import com.hendraanggrian.openpss.popup.dialog.Dialog
 import com.hendraanggrian.openpss.control.onActionFilter
 import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_INVOICE_HEADERS
 import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_LANGUAGE
@@ -12,8 +11,8 @@ import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.i18n.Language
 import com.hendraanggrian.openpss.i18n.Resourced
 import com.hendraanggrian.openpss.io.properties.PreferencesFile
-import com.hendraanggrian.openpss.io.properties.PreferencesFile.INVOICE_QUICK_SELECT_CUSTOMER
 import com.hendraanggrian.openpss.io.properties.PreferencesFile.WAGE_READER
+import com.hendraanggrian.openpss.popup.dialog.Dialog
 import com.hendraanggrian.openpss.ui.wage.readers.Reader
 import com.jfoenix.controls.JFXButton
 import javafx.geometry.Pos.CENTER_LEFT
@@ -31,7 +30,6 @@ import ktfx.coroutines.listener
 import ktfx.jfoenix.jfxButton
 import ktfx.layouts._HBox
 import ktfx.layouts._VBox
-import ktfx.layouts.checkBox
 import ktfx.layouts.choiceBox
 import ktfx.layouts.gridPane
 import ktfx.layouts.hbox
@@ -58,67 +56,51 @@ class PreferencesDialog(
 
     private lateinit var languageBox: ChoiceBox<Language>
 
-    override fun onCreate(manager: NodeManager) {
-        super.onCreate(manager)
-        manager.run {
-            vbox {
-                spacing = R.dimen.padding_large.toDouble()
-                group(R.string.invoice) {
-                    checkBox(getString(R.string.quick_select_customer_when_adding_invoice)) {
-                        isSelected = PreferencesFile.INVOICE_QUICK_SELECT_CUSTOMER
-                        selectedProperty().listener { _, _, value ->
+    init {
+        vbox {
+            spacing = R.dimen.padding_large.toDouble()
+            group(R.string.wage) {
+                item {
+                    label(getString(R.string.reader))
+                    wageReaderChoice = choiceBox(Reader.listAll()) {
+                        value = Reader.of(WAGE_READER)
+                        valueProperty().listener { _, _, value ->
                             isLocalChanged.set(true)
-                            INVOICE_QUICK_SELECT_CUSTOMER = value
-                        }
-                    }
-                }
-                group(R.string.wage) {
-                    item {
-                        label(getString(R.string.reader))
-                        wageReaderChoice = choiceBox(Reader.listAll()) {
-                            value = Reader.of(WAGE_READER)
-                            valueProperty().listener { _, _, value ->
-                                isLocalChanged.set(true)
-                                WAGE_READER = (value as Reader).name
-                            }
-                        }
-                    }
-                }
-            }
-            if (showGlobalSettings) {
-                group(R.string.global_settings) {
-                    gridPane {
-                        gap = R.dimen.padding_medium.toDouble()
-                        transaction {
-                            label(getString(R.string.server_language)) row 0 col 0
-                            languageBox = choiceBox(Language.values().toObservableList()) {
-                                converter { toString { it!!.toString(true) } }
-                                selectionModel.select(Language.ofFullCode(findGlobalSettings(KEY_LANGUAGE).single().value))
-                                valueProperty().listener { isGlobalChanged.set(true) }
-                            } row 0 col 1
-                            label(getString(R.string.invoice_headers)) row 1 col 0
-                            invoiceHeadersArea = textArea(
-                                findGlobalSettings(KEY_INVOICE_HEADERS).single().valueList
-                                    .joinToString("\n").trim()
-                            ) {
-                                setMaxSize(256.0, 88.0)
-                                textProperty().listener { _, oldValue, value ->
-                                    when (INVOICE_HEADERS_DIVIDER) {
-                                        in value -> text = oldValue
-                                        else -> isGlobalChanged.set(true)
-                                    }
-                                }
-                            } row 1 col 1
+                            WAGE_READER = (value as Reader).name
                         }
                     }
                 }
             }
         }
-    }
-
-    override fun onCreateActions(manager: NodeManager) {
-        super.onCreateActions(manager)
-        manager.run {
+        if (showGlobalSettings) {
+            group(R.string.global_settings) {
+                gridPane {
+                    gap = R.dimen.padding_medium.toDouble()
+                    transaction {
+                        label(getString(R.string.server_language)) row 0 col 0
+                        languageBox = choiceBox(Language.values().toObservableList()) {
+                            converter { toString { it!!.toString(true) } }
+                            selectionModel.select(Language.ofFullCode(findGlobalSettings(KEY_LANGUAGE).single().value))
+                            valueProperty().listener { isGlobalChanged.set(true) }
+                        } row 0 col 1
+                        label(getString(R.string.invoice_headers)) row 1 col 0
+                        invoiceHeadersArea = textArea(
+                            findGlobalSettings(KEY_INVOICE_HEADERS).single().valueList
+                                .joinToString("\n").trim()
+                        ) {
+                            setMaxSize(256.0, 88.0)
+                            textProperty().listener { _, oldValue, value ->
+                                when (INVOICE_HEADERS_DIVIDER) {
+                                    in value -> text = oldValue
+                                    else -> isGlobalChanged.set(true)
+                                }
+                            }
+                        } row 1 col 1
+                    }
+                }
+            }
+        }
+        buttonManager.run {
             jfxButton(getString(R.string.ok)) {
                 isDefaultButton = true
                 styleClass += App.STYLE_BUTTON_RAISED

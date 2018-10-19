@@ -30,7 +30,6 @@ import kotlinx.coroutines.experimental.Dispatchers
 import kotlinx.coroutines.experimental.GlobalScope
 import kotlinx.coroutines.experimental.javafx.JavaFx
 import kotlinx.coroutines.experimental.launch
-import ktfx.NodeManager
 import ktfx.application.later
 import ktfx.beans.value.isBlank
 import ktfx.beans.value.or
@@ -153,7 +152,7 @@ class LoginLayout(resourced: Resourced) : _StackPane(), Resourced by resourced {
                 textFlow {
                     hyperlink(getString(R.string.connection_settings)) {
                         onAction {
-                            ConnectionSettingsPopover().showAt(this@hyperlink)
+                            ConnectionSettingsPopover().show(this@hyperlink)
                         }
                     }
                 }
@@ -239,67 +238,56 @@ class LoginLayout(resourced: Resourced) : _StackPane(), Resourced by resourced {
 
     inner class ConnectionSettingsPopover : Popover(this, R.string.connection_settings) {
 
-        override fun onCreate(manager: NodeManager) {
-            super.onCreate(manager)
-            manager.run {
-                gridPane {
-                    paddingAll = 16.0
-                    gap = R.dimen.padding_medium.toDouble()
-                    label(getString(R.string.server_host_port)) col 0 row 0
-                    serverHostField() col 1 row 0
-                    serverPortField() col 2 row 0
-                    label(getString(R.string.server_user)) col 0 row 1
-                    serverUserField() col 1 row 1 colSpans 2
-                    label(getString(R.string.server_password)) col 0 row 2
-                    serverPasswordField() col 1 row 2 colSpans 2
-                }
+        init {
+            gridPane {
+                gap = R.dimen.padding_medium.toDouble()
+                label(getString(R.string.server_host_port)) col 0 row 0
+                serverHostField() col 1 row 0
+                serverPortField() col 2 row 0
+                label(getString(R.string.server_user)) col 0 row 1
+                serverUserField() col 1 row 1 colSpans 2
+                label(getString(R.string.server_password)) col 0 row 2
+                serverPasswordField() col 1 row 2 colSpans 2
             }
         }
     }
 
     inner class PasswordDialog : ResultableDialog<Unit>(this, R.string.password_required) {
 
-        override fun onCreate(manager: NodeManager) {
-            super.onCreate(manager)
+        init {
             setOnDialogOpened {
                 passwordField.requestFocus()
             }
             setOnDialogClosed {
                 employeeField.requestFocus()
             }
-            manager.run {
-                hbox(R.dimen.padding_medium.toDouble()) {
-                    stackPane {
-                        alignment = Pos.CENTER
-                        passwordField = jfxPasswordField {
-                            promptText = getString(R.string.password)
-                        }
-                        textField = jfxTextField {
-                            promptText = getString(R.string.password)
-                            isVisible = false
-                            passwordField.textProperty().bindBidirectional(textProperty())
-                            if (BuildConfig.DEBUG) {
-                                text = "hendraganteng"
-                            }
+            hbox(R.dimen.padding_medium.toDouble()) {
+                stackPane {
+                    alignment = Pos.CENTER
+                    passwordField = jfxPasswordField {
+                        promptText = getString(R.string.password)
+                    }
+                    textField = jfxTextField {
+                        promptText = getString(R.string.password)
+                        isVisible = false
+                        passwordField.textProperty().bindBidirectional(textProperty())
+                        if (BuildConfig.DEBUG) {
+                            text = "hendraganteng"
                         }
                     }
-                    jfxToggleButton {
-                        text = getString(R.string.view)
-                        passwordField.visibleProperty().bind(!selectedProperty())
-                        textField.visibleProperty().bind(selectedProperty())
-                        selectedProperty().listener {
-                            when {
-                                passwordField.isVisible -> passwordField.requestFocus()
-                                else -> textField.requestFocus()
-                            }
+                }
+                jfxToggleButton {
+                    text = getString(R.string.view)
+                    passwordField.visibleProperty().bind(!selectedProperty())
+                    textField.visibleProperty().bind(selectedProperty())
+                    selectedProperty().listener {
+                        when {
+                            passwordField.isVisible -> passwordField.requestFocus()
+                            else -> textField.requestFocus()
                         }
                     }
                 }
             }
-        }
-
-        override fun onCreateActions(manager: NodeManager) {
-            super.onCreateActions(manager)
             defaultButton.run {
                 disableProperty().bind(textField.textProperty().isBlank())
                 passwordField.onActionProperty().bindBidirectional(onActionProperty())

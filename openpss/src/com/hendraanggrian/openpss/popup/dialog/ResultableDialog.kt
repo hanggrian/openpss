@@ -8,7 +8,6 @@ import com.jfoenix.controls.JFXButton
 import javafx.scene.control.Button
 import javafx.scene.layout.StackPane
 import kotlinx.coroutines.experimental.CoroutineScope
-import ktfx.NodeManager
 import ktfx.coroutines.onAction
 import ktfx.jfoenix.jfxButton
 
@@ -19,9 +18,8 @@ open class ResultableDialog<T>(
 
     protected lateinit var defaultButton: Button
 
-    override fun onCreateActions(manager: NodeManager) {
-        super.onCreateActions(manager)
-        manager.run {
+    init {
+        buttonManager.run {
             defaultButton = jfxButton(getString(R.string.ok)) {
                 isDefaultButton = true
                 styleClass += App.STYLE_BUTTON_RAISED

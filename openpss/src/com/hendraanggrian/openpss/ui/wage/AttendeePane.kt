@@ -4,16 +4,16 @@ import com.hendraanggrian.openpss.PATTERN_DATETIME_EXTENDED
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.forceRefresh
 import com.hendraanggrian.openpss.control.intField
-import com.hendraanggrian.openpss.popup.popover.DateTimePopover
 import com.hendraanggrian.openpss.db.schemas.Recesses
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.i18n.Resourced
+import com.hendraanggrian.openpss.popup.popover.DateTimePopover
 import com.hendraanggrian.openpss.ui.Selectable
 import com.hendraanggrian.openpss.util.getColor
 import com.hendraanggrian.openpss.util.round
 import javafx.geometry.Pos.CENTER
 import javafx.scene.control.CheckBox
-import javafx.scene.control.ContentDisplay.RIGHT
+import javafx.scene.control.ContentDisplay
 import javafx.scene.control.ListView
 import javafx.scene.control.MenuItem
 import javafx.scene.control.SelectionModel
@@ -169,7 +169,7 @@ class AttendeePane(
             deleteOthersMenu = getString(R.string.delete_others)()
             deleteToTheRightMenu = getString(R.string.delete_employees_to_the_right)()
         }
-        contentDisplay = RIGHT
+        contentDisplay = ContentDisplay.RIGHT
         graphic = ktfx.layouts.imageView {
             imageProperty().bind(bindingOf(hoverProperty()) {
                 Image(
@@ -195,20 +195,24 @@ class AttendeePane(
 
     override val selectionModel: SelectionModel<DateTime> get() = attendanceList.selectionModel
 
-    private fun addAttendance() = DateTimePopover(this,
+    private fun addAttendance() = DateTimePopover(
+        this,
         R.string.add_record,
         R.string.add,
-        now().run { minusMinutes(minuteOfHour) }).showAt(attendanceList) {
+        now().run { minusMinutes(minuteOfHour) }
+    ).show(attendanceList) {
         attendanceList.run {
             items.add(it)
             items.sort()
         }
     }
 
-    private fun copyAttendance() = DateTimePopover(this,
+    private fun copyAttendance() = DateTimePopover(
+        this,
         R.string.add_record,
         R.string.add,
-        selected!!.run { minusMinutes(minuteOfHour) }).showAt(attendanceList) {
+        selected!!.run { minusMinutes(minuteOfHour) }
+    ).show(attendanceList) {
         attendanceList.run {
             items.add(it)
             items.sort()
@@ -216,9 +220,11 @@ class AttendeePane(
     }
 
     private fun editAttendance() = DateTimePopover(
-        this, R.string.edit_record, R.string.edit,
+        this,
+        R.string.edit_record,
+        R.string.edit,
         selected!!
-    ).showAt(attendanceList) {
+    ).show(attendanceList) {
         attendanceList.run {
             items[attendanceList.selectionModel.selectedIndex] = it
             items.sort()

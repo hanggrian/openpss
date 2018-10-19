@@ -140,7 +140,7 @@ class MainController : Controller(), Selectable<Tab> {
                     paid = false,
                     done = false
                 ), true
-            ).showAt(menuBar)
+            ).show(menuBar)
         }
     }
 

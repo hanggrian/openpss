@@ -303,7 +303,7 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
         anyPaymentItem.isSelected = true
     }
 
-    @FXML fun selectCustomer() = SearchCustomerPopover(this).showAt(customerButton) { customerProperty.set(it) }
+    @FXML fun selectCustomer() = SearchCustomerPopover(this).show(customerButton) { customerProperty.set(it) }
 
     @FXML fun clearCustomer() = customerProperty.set(null)
 
@@ -313,9 +313,9 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
                 reload(selected!!)
             }
         }
-    }.showAt(invoiceTable)
+    }.show(invoiceTable)
 
-    private fun addPayment() = AddPaymentPopover(this, employee, selected!!).showAt(addPaymentButton) {
+    private fun addPayment() = AddPaymentPopover(this, employee, selected!!).show(addPaymentButton) {
         transaction {
             Payments += it
             updatePaymentStatus()

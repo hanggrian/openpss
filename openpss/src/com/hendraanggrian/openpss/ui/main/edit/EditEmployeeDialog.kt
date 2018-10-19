@@ -1,14 +1,14 @@
 package com.hendraanggrian.openpss.ui.main.edit
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.popup.dialog.TableDialog
 import com.hendraanggrian.openpss.control.doneCell
-import com.hendraanggrian.openpss.popup.popover.InputUserPopover
 import com.hendraanggrian.openpss.control.stringCell
 import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.db.schemas.Employees
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.i18n.Resourced
+import com.hendraanggrian.openpss.popup.dialog.TableDialog
+import com.hendraanggrian.openpss.popup.popover.InputUserPopover
 import com.hendraanggrian.openpss.util.getStyle
 import javafx.scene.Node
 import kotlinx.coroutines.experimental.Dispatchers
@@ -37,7 +37,6 @@ class EditEmployeeDialog(
     }
 
     override fun onCreateActions(manager: NodeManager) {
-        super.onCreateActions(manager)
         manager.run {
             button(getString(R.string.toggle_admin)) {
                 bindDisable()
@@ -80,7 +79,7 @@ class EditEmployeeDialog(
         table.items = transaction { Employees { it.name.notEqual(Employee.BACKDOOR.name) }.toMutableObservableList() }
     }
 
-    override fun add() = InputUserPopover(this, R.string.add_employee, false).showAt(addButton) {
+    override fun add() = InputUserPopover(this, R.string.add_employee, false).show(addButton) {
         val employee = Employee.new(it)
         employee.id = transaction { Employees.insert(employee) }
         table.items.add(employee)

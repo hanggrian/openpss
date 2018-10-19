@@ -32,6 +32,7 @@ import ktfx.layouts.hbox
 import ktfx.layouts.tableView
 import ktfx.stage.setMinSize
 
+@Suppress("LeakingThis")
 abstract class TableDialog<D : Document<S>, S : DocumentSchema<D>>(
     resourced: Resourced,
     titleId: String,
@@ -51,8 +52,7 @@ abstract class TableDialog<D : Document<S>, S : DocumentSchema<D>>(
 
     override val selectionModel: SelectionModel<D> get() = table.selectionModel
 
-    override fun onCreate(manager: NodeManager) {
-        super.onCreate(manager)
+    init {
         graphic = ktfx.layouts.vbox(R.dimen.padding_medium.toDouble()) {
             alignment = CENTER_RIGHT
             hbox(R.dimen.padding_medium.toDouble()) {
@@ -82,18 +82,19 @@ abstract class TableDialog<D : Document<S>, S : DocumentSchema<D>>(
             }
             onCreateActions(this)
         }
-        manager.run {
-            anchorPane {
-                table = tableView<D> {
-                    columnResizePolicy = CONSTRAINED_RESIZE_POLICY
-                    isEditable = true
-                } anchorAll 1.0
-            }
+        anchorPane {
+            table = tableView<D> {
+                columnResizePolicy = CONSTRAINED_RESIZE_POLICY
+                isEditable = true
+            } anchorAll 1.0
         }
         refresh()
         later {
             (scene.window as Stage).setMinSize(width, height)
         }
+    }
+
+    open fun onCreateActions(manager: NodeManager) {
     }
 
     override fun <T> column(

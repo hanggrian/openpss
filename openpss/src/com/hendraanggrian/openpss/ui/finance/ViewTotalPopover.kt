@@ -2,10 +2,9 @@ package com.hendraanggrian.openpss.ui.finance
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.bold
-import com.hendraanggrian.openpss.popup.popover.Popover
 import com.hendraanggrian.openpss.i18n.Resourced
+import com.hendraanggrian.openpss.popup.popover.Popover
 import javafx.geometry.HPos
-import ktfx.NodeManager
 import ktfx.layouts.columnConstraints
 import ktfx.layouts.gridPane
 import ktfx.layouts.label
@@ -17,27 +16,24 @@ class ViewTotalPopover(
     private val nonCash: Double
 ) : Popover(resourced, R.string.view_total) {
 
-    override fun onCreate(manager: NodeManager) {
-        super.onCreate(manager)
-        manager.run {
-            gridPane {
-                columnConstraints {
-                    constraints()
-                    constraints { halignment = HPos.RIGHT }
-                }
-                vgap = 20.0
-                hgap = 40.0
-                label(getString(R.string.cash)) col 0 row 0
-                label(com.hendraanggrian.openpss.currencyConverter(cash)) col 1 row 0
-                label(getString(R.string.non_cash)) col 0 row 1
-                label(com.hendraanggrian.openpss.currencyConverter(nonCash)) col 1 row 1
-                label(getString(R.string.total)) {
-                    font = bold()
-                } col 0 row 2
-                label(com.hendraanggrian.openpss.currencyConverter(cash + nonCash)) {
-                    font = bold()
-                } col 1 row 2
+    init {
+        gridPane {
+            columnConstraints {
+                constraints()
+                constraints { halignment = HPos.RIGHT }
             }
+            vgap = 20.0
+            hgap = 40.0
+            label(getString(R.string.cash)) col 0 row 0
+            label(com.hendraanggrian.openpss.currencyConverter(cash)) col 1 row 0
+            label(getString(R.string.non_cash)) col 0 row 1
+            label(com.hendraanggrian.openpss.currencyConverter(nonCash)) col 1 row 1
+            label(getString(R.string.total)) {
+                font = bold()
+            } col 0 row 2
+            label(com.hendraanggrian.openpss.currencyConverter(cash + nonCash)) {
+                font = bold()
+            } col 1 row 2
         }
     }
 }

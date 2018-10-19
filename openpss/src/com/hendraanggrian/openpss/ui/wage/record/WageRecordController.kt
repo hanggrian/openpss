@@ -4,15 +4,15 @@ import com.hendraanggrian.openpss.PATTERN_DATE
 import com.hendraanggrian.openpss.PATTERN_DATETIME
 import com.hendraanggrian.openpss.PATTERN_TIME
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.control.TimeBox
 import com.hendraanggrian.openpss.control.UncollapsibleTreeItem
 import com.hendraanggrian.openpss.control.bold
-import com.hendraanggrian.openpss.popup.popover.DatePopover
 import com.hendraanggrian.openpss.control.stringCell
 import com.hendraanggrian.openpss.currencyConverter
 import com.hendraanggrian.openpss.io.WageDirectory
 import com.hendraanggrian.openpss.io.WageFile
-import com.hendraanggrian.openpss.control.TimeBox
 import com.hendraanggrian.openpss.numberConverter
+import com.hendraanggrian.openpss.popup.popover.DatePopover
 import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.wage.Attendee
 import com.hendraanggrian.openpss.ui.wage.record.Record.Companion.getDummy
@@ -181,19 +181,18 @@ class WageRecordController : Controller() {
     @FXML fun disableDailyIncome() = DatePopover(
         this,
         R.string.disable_daily_income
-    )
-        .showAt(disableDailyIncomeButton) { date ->
-            val undoable = Undoable()
-            records.filter { it.startProperty.value.toLocalDate() == date }
-                .forEach { record ->
-                    val initial = record.dailyDisabledProperty.value
-                    record.dailyDisabledProperty.set(!initial)
-                    if (undoable.name == null) undoable.name = "${getString(R.string.daily_disabled)} " +
-                        record.startProperty.value.toString(PATTERN_DATE)
-                    undoable.addAction { record.dailyDisabledProperty.set(initial) }
-                }
-            undoable.append()
-        }
+    ).show(disableDailyIncomeButton) { date ->
+        val undoable = Undoable()
+        records.filter { it.startProperty.value.toLocalDate() == date }
+            .forEach { record ->
+                val initial = record.dailyDisabledProperty.value
+                record.dailyDisabledProperty.set(!initial)
+                if (undoable.name == null) undoable.name = "${getString(R.string.daily_disabled)} " +
+                    record.startProperty.value.toString(PATTERN_DATE)
+                undoable.addAction { record.dailyDisabledProperty.set(initial) }
+            }
+        undoable.append()
+    }
 
     @FXML fun screenshot() {
         val images = mutableListOf<BufferedImage>()

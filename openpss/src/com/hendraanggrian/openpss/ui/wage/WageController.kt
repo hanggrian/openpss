@@ -121,7 +121,7 @@ class WageController : SegmentedController() {
         }
     }
 
-    private fun disableRecess() = DisableRecessPopover(this, attendeePanes).showAt(disableRecessButton)
+    private fun disableRecess() = DisableRecessPopover(this, attendeePanes).show(disableRecessButton)
 
     private fun saveWage() = attendees.forEach { it.saveWage() }
 

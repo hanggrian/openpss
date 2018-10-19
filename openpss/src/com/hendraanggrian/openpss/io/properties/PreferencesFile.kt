@@ -9,8 +9,6 @@ object PreferencesFile : PropertiesFile("preferences") {
 
     var LANGUAGE: String by EN_US.fullCode
 
-    var INVOICE_QUICK_SELECT_CUSTOMER: Boolean by true
-
     var WAGE_READER: String by EClockingReader.name
 
     var language: Language

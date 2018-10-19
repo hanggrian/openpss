@@ -7,7 +7,6 @@ import com.hendraanggrian.openpss.popup.ResultablePopup
 import com.jfoenix.controls.JFXButton
 import javafx.scene.Node
 import javafx.scene.control.Button
-import ktfx.NodeManager
 import ktfx.coroutines.onAction
 import ktfx.jfoenix.jfxButton
 import org.controlsfx.control.PopOver
@@ -20,9 +19,8 @@ open class ResultablePopover<T>(
 
     protected lateinit var defaultButton: Button
 
-    override fun onCreateActions(manager: NodeManager) {
-        super.onCreateActions(manager)
-        manager.run {
+    init {
+        buttonManager.run {
             defaultButton = jfxButton(getString(R.string.ok)) {
                 isDefaultButton = true
                 styleClass += App.STYLE_BUTTON_RAISED
@@ -31,8 +29,8 @@ open class ResultablePopover<T>(
         }
     }
 
-    fun showAt(node: Node, onAction: (T) -> Unit) {
-        showAt(node)
+    fun show(node: Node, onAction: (T) -> Unit) {
+        show(node)
         defaultButton.onAction {
             onAction(nullableResult!!)
             hide()

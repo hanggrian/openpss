@@ -2,13 +2,13 @@
 
 package com.hendraanggrian.openpss.control
 
+import com.jfoenix.controls.JFXButton
 import javafx.beans.DefaultProperty
 import javafx.beans.property.DoubleProperty
 import javafx.beans.property.SimpleDoubleProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.beans.property.StringProperty
 import javafx.scene.Node
-import javafx.scene.control.Button
 import ktfx.NodeManager
 import ktfx.annotations.LayoutDsl
 
@@ -21,7 +21,7 @@ class StretchableButton @JvmOverloads constructor(
     stretchPoint: Double = -1.0,
     stretchableText: String? = null,
     graphic: Node? = null
-) : Button(null, graphic), StretchableLabeled {
+) : JFXButton(null, graphic), StretchableLabeled {
 
     private val stretchPointProperty = SimpleDoubleProperty(stretchPoint)
     override fun stretchPointProperty(): DoubleProperty = stretchPointProperty

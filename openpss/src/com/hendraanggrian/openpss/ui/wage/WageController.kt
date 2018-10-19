@@ -8,7 +8,7 @@ import com.hendraanggrian.openpss.control.space
 import com.hendraanggrian.openpss.control.stretchableButton
 import com.hendraanggrian.openpss.io.WageDirectory
 import com.hendraanggrian.openpss.io.properties.PreferencesFile.WAGE_READER
-import com.hendraanggrian.openpss.ui.SegmentedController
+import com.hendraanggrian.openpss.ui.ActionController
 import com.hendraanggrian.openpss.ui.controller
 import com.hendraanggrian.openpss.ui.pane
 import com.hendraanggrian.openpss.ui.wage.readers.Reader
@@ -49,7 +49,7 @@ import java.io.File
 import java.net.URL
 import java.util.ResourceBundle
 
-class WageController : SegmentedController() {
+class WageController : ActionController() {
 
     @FXML lateinit var anchorPane: AnchorPane
     @FXML lateinit var titledPane: TitledPane
@@ -61,7 +61,7 @@ class WageController : SegmentedController() {
     private lateinit var processButton: Button
     private lateinit var historyButton: Button
 
-    override fun NodeManager.onCreateLeftActions() {
+    override fun NodeManager.onCreateActions() {
         browseButton = stretchableButton(
             STRETCH_POINT,
             getString(R.string.browse),
@@ -86,9 +86,6 @@ class WageController : SegmentedController() {
             disableProperty().bind(flowPane.children.isEmpty)
             onAction { saveWage() }
         }
-    }
-
-    override fun NodeManager.onCreateRightActions() {
         processButton = stretchableButton(
             STRETCH_POINT,
             getString(R.string.process),

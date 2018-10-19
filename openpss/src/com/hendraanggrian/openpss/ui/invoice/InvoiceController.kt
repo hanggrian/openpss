@@ -26,8 +26,8 @@ import com.hendraanggrian.openpss.db.schemas.Payments
 import com.hendraanggrian.openpss.db.schemas.Payments.invoiceId
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.popup.popover.ViewInvoicePopover
+import com.hendraanggrian.openpss.ui.ActionController
 import com.hendraanggrian.openpss.ui.Refreshable
-import com.hendraanggrian.openpss.ui.SegmentedController
 import com.hendraanggrian.openpss.ui.Selectable
 import com.hendraanggrian.openpss.ui.Selectable2
 import javafx.beans.property.SimpleObjectProperty
@@ -79,7 +79,7 @@ import java.net.URL
 import java.util.ResourceBundle
 import kotlin.math.ceil
 
-class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice>, Selectable2<Payment> {
+class InvoiceController : ActionController(), Refreshable, Selectable<Invoice>, Selectable2<Payment> {
 
     @FXML lateinit var filterBox: HBox
     @FXML lateinit var allDateRadio: RadioButton
@@ -106,7 +106,7 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
     override val selectionModel: SelectionModel<Invoice> get() = invoiceTable.selectionModel
     override val selectionModel2: SelectionModel<Payment> get() = paymentTable.selectionModel
 
-    override fun NodeManager.onCreateLeftActions() {
+    override fun NodeManager.onCreateActions() {
         refreshButton =
             stretchableButton(STRETCH_POINT, getString(R.string.refresh), ImageView(R.image.btn_refresh_light)) {
                 onAction { refresh() }
@@ -119,9 +119,6 @@ class InvoiceController : SegmentedController(), Refreshable, Selectable<Invoice
             styleClass += STYLE_DEFAULT_BUTTON
             onAction { addInvoice() }
         }
-    }
-
-    override fun NodeManager.onCreateRightActions() {
         searchField = intField {
             styleClass += STYLE_SEARCH_TEXTFIELD
             filterBox.disableProperty().bind(valueProperty() neq 0)

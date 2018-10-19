@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.hendraanggrian.openpss.control.NotificationPane?>
-<?import com.hendraanggrian.openpss.control.SegmentedTabPane?>
+<?import com.jfoenix.controls.JFXTabPane?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -53,36 +54,37 @@
                     </MenuItem>
                 </Menu>
             </MenuBar>
-            <AnchorPane styleClass="navigation-pane">
-                <BorderPane fx:id="navigationPane" AnchorPane.bottomAnchor="0" AnchorPane.topAnchor="0"
-                            AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0"/>
-                <HBox spacing="10" fx:id="navigationLeftBox" AnchorPane.bottomAnchor="0" AnchorPane.topAnchor="0"
-                      AnchorPane.leftAnchor="0"/>
-                <HBox spacing="10" fx:id="navigationRightBox" AnchorPane.bottomAnchor="0" AnchorPane.topAnchor="0"
-                      AnchorPane.rightAnchor="0"/>
+            <AnchorPane VBox.vgrow="ALWAYS">
+                <JFXTabPane fx:id="tabPane" AnchorPane.bottomAnchor="0" AnchorPane.topAnchor="0"
+                            AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
+                    <Tab closable="false" text="%customer">
+                        <!--suppress ALL -->
+                        <fx:include fx:id="customer" source="controller_customer.fxml"/>
+                    </Tab>
+                    <Tab closable="false" text="%invoice">
+                        <!--suppress ALL -->
+                        <fx:include fx:id="invoice" source="controller_invoice.fxml"/>
+                    </Tab>
+                    <Tab closable="false" text="%schedule">
+                        <!--suppress ALL -->
+                        <fx:include fx:id="schedule" source="controller_schedule.fxml"/>
+                    </Tab>
+                    <Tab closable="false" text="%finance">
+                        <!--suppress ALL -->
+                        <fx:include fx:id="finance" source="controller_finance.fxml"/>
+                    </Tab>
+                    <Tab closable="false" text="%wage">
+                        <!--suppress ALL -->
+                        <fx:include fx:id="wage" source="controller_wage.fxml"/>
+                    </Tab>
+                </JFXTabPane>
+                <HBox fx:id="actionBox" spacing="10" alignment="CENTER" AnchorPane.topAnchor="0"
+                      AnchorPane.rightAnchor="0">
+                    <padding>
+                        <Insets topRightBottomLeft="6"/>
+                    </padding>
+                </HBox>
             </AnchorPane>
-            <SegmentedTabPane VBox.vgrow="ALWAYS" fx:id="tabPane">
-                <Tab closable="false" text="%customer">
-                    <!--suppress ALL -->
-                    <fx:include fx:id="customer" source="controller_customer.fxml"/>
-                </Tab>
-                <Tab closable="false" text="%invoice">
-                    <!--suppress ALL -->
-                    <fx:include fx:id="invoice" source="controller_invoice.fxml"/>
-                </Tab>
-                <Tab closable="false" text="%schedule">
-                    <!--suppress ALL -->
-                    <fx:include fx:id="schedule" source="controller_schedule.fxml"/>
-                </Tab>
-                <Tab closable="false" text="%finance">
-                    <!--suppress ALL -->
-                    <fx:include fx:id="finance" source="controller_finance.fxml"/>
-                </Tab>
-                <Tab closable="false" text="%wage">
-                    <!--suppress ALL -->
-                    <fx:include fx:id="wage" source="controller_wage.fxml"/>
-                </Tab>
-            </SegmentedTabPane>
         </VBox>
     </NotificationPane>
 </StackPane>

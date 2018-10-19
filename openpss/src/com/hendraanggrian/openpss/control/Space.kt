@@ -23,13 +23,9 @@ fun space(
     init?.invoke(it)
 }
 
-/** Creates a [Space] and add it to this [LayoutManager]. */
+/** Creates a [Space] and add it to this manager. */
 inline fun NodeManager.space(
     width: Double = 0.0,
     height: Double = 0.0,
     noinline init: ((@LayoutDsl Space).() -> Unit)? = null
-): Space = (com.hendraanggrian.openpss.control.space(
-    width,
-    height,
-    init
-))()
+): Space = com.hendraanggrian.openpss.control.space(width, height, init)()

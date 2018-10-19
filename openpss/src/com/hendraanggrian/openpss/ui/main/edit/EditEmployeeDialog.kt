@@ -36,25 +36,23 @@ class EditEmployeeDialog(
         const val DELAY = 200L
     }
 
-    override fun onCreateActions(manager: NodeManager) {
-        manager.run {
-            button(getString(R.string.toggle_admin)) {
-                bindDisable()
-                onAction {
-                    transaction { Employees[selected!!].projection { admin }.update(!selected!!.admin) }
-                    refresh()
-                }
+    override fun NodeManager.onCreateActions() {
+        button(getString(R.string.toggle_admin)) {
+            bindDisable()
+            onAction {
+                transaction { Employees[selected!!].projection { admin }.update(!selected!!.admin) }
+                refresh()
             }
-            button(getString(R.string.reset_password)) {
-                bindDisable()
-                onAction {
-                    transaction { Employees[selected!!].projection { password }.update(Employee.DEFAULT_PASSWORD) }
-                    infoAlert(
-                        getString(R.string.change_password_popup_will_appear_when_is_logged_back_in, employee.name)
-                    ) {
-                        dialogPane.stylesheets += getStyle(R.style.openpss)
-                    }.show()
-                }
+        }
+        button(getString(R.string.reset_password)) {
+            bindDisable()
+            onAction {
+                transaction { Employees[selected!!].projection { password }.update(Employee.DEFAULT_PASSWORD) }
+                infoAlert(
+                    getString(R.string.change_password_popup_will_appear_when_is_logged_back_in, employee.name)
+                ) {
+                    dialogPane.stylesheets += getStyle(R.style.openpss)
+                }.show()
             }
         }
     }

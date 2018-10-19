@@ -2,6 +2,7 @@ package com.hendraanggrian.openpss.popup.dialog
 
 import com.hendraanggrian.openpss.App.Companion.STYLE_DEFAULT_BUTTON
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.control.ActionManager
 import com.hendraanggrian.openpss.control.StretchableButton
 import com.hendraanggrian.openpss.control.space
 import com.hendraanggrian.openpss.control.stretchableButton
@@ -20,7 +21,6 @@ import javafx.scene.control.TableView.CONSTRAINED_RESIZE_POLICY
 import javafx.scene.image.ImageView
 import javafx.stage.Stage
 import kotlinx.nosql.mongodb.DocumentSchema
-import ktfx.NodeManager
 import ktfx.application.later
 import ktfx.beans.property.toProperty
 import ktfx.beans.value.or
@@ -38,7 +38,7 @@ abstract class TableDialog<D : Document<S>, S : DocumentSchema<D>>(
     titleId: String,
     protected val schema: S,
     private val employee: Employee
-) : Dialog(resourced, titleId), TableColumnsBuilder<D>, Selectable<D>, Refreshable {
+) : Dialog(resourced, titleId), TableColumnsBuilder<D>, Selectable<D>, Refreshable, ActionManager {
 
     private companion object {
         const val STRETCH_POINT = 400.0
@@ -80,7 +80,7 @@ abstract class TableDialog<D : Document<S>, S : DocumentSchema<D>>(
                         }
                     }
             }
-            onCreateActions(this)
+            onCreateActions()
         }
         anchorPane {
             table = tableView<D> {
@@ -92,9 +92,6 @@ abstract class TableDialog<D : Document<S>, S : DocumentSchema<D>>(
         later {
             (scene.window as Stage).setMinSize(width, height)
         }
-    }
-
-    open fun onCreateActions(manager: NodeManager) {
     }
 
     override fun <T> column(

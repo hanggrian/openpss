@@ -1,16 +1,15 @@
 package com.hendraanggrian.openpss.ui.main
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.control.SegmentedTabPane
 import com.hendraanggrian.openpss.db.dbDateTime
 import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.db.schemas.Invoice.Offset.Technique.TWO_SIDE_EQUAL
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.popup.popover.ViewInvoicePopover
+import com.hendraanggrian.openpss.ui.ActionController
 import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.Refreshable
-import com.hendraanggrian.openpss.ui.SegmentedController
 import com.hendraanggrian.openpss.ui.Selectable
 import com.hendraanggrian.openpss.ui.customer.CustomerController
 import com.hendraanggrian.openpss.ui.finance.FinanceController
@@ -24,13 +23,13 @@ import com.hendraanggrian.openpss.ui.schedule.ScheduleController
 import com.hendraanggrian.openpss.ui.wage.EditRecessDialog
 import com.hendraanggrian.openpss.ui.wage.WageController
 import com.hendraanggrian.openpss.util.forceExit
+import com.jfoenix.controls.JFXTabPane
 import javafx.event.ActionEvent
 import javafx.fxml.FXML
 import javafx.scene.control.MenuBar
 import javafx.scene.control.MenuItem
 import javafx.scene.control.SelectionModel
 import javafx.scene.control.Tab
-import javafx.scene.layout.BorderPane
 import javafx.scene.layout.HBox
 import javafx.scene.layout.StackPane
 import kotlinx.coroutines.experimental.delay
@@ -55,10 +54,8 @@ class MainController : Controller(), Selectable<Tab> {
     @FXML lateinit var employeeItem: MenuItem
     @FXML lateinit var recessItem: MenuItem
     @FXML lateinit var preferencesItem: MenuItem
-    @FXML lateinit var navigationPane: BorderPane
-    @FXML lateinit var navigationLeftBox: HBox
-    @FXML lateinit var navigationRightBox: HBox
-    @FXML lateinit var tabPane: SegmentedTabPane
+    @FXML lateinit var tabPane: JFXTabPane
+    @FXML lateinit var actionBox: HBox
     @FXML lateinit var customerController: CustomerController
     @FXML lateinit var invoiceController: InvoiceController
     @FXML lateinit var scheduleController: ScheduleController
@@ -66,20 +63,21 @@ class MainController : Controller(), Selectable<Tab> {
     @FXML lateinit var wageController: WageController
 
     override val selectionModel: SelectionModel<Tab> get() = tabPane.selectionModel
-    private val controllers get() = mutableListOf(
-        customerController,
-        invoiceController,
-        scheduleController,
-        financeController,
-        wageController
-    )
+    private val controllers
+        get() = mutableListOf(
+            customerController,
+            invoiceController,
+            scheduleController,
+            financeController,
+            wageController
+        )
 
     private var isFinanceTabFixed = false
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
         menuBar.isUseSystemMenuBar = IS_OS_MAC
-        navigationPane.center = tabPane.header
+        // navigationPane.center = tabPane.header
 
         customerController.replaceButtons()
         selectedIndexProperty.listener { _, _, value ->
@@ -156,12 +154,9 @@ class MainController : Controller(), Selectable<Tab> {
 
     @FXML fun about() = AboutDialog(this).show()
 
-    private fun SegmentedController.replaceButtons() {
-        navigationLeftBox.children.setAll(leftActionManager.collection)
-        navigationRightBox.children.setAll(rightActionManager.collection)
-    }
+    private fun ActionController.replaceButtons() = actionBox.children.setAll(actionManager.collection)
 
-    private inline fun <T : SegmentedController> select(controller: T, run: T.() -> Unit) {
+    private inline fun <T : ActionController> select(controller: T, run: T.() -> Unit) {
         select(controllers.indexOf(controller))
         controller.run(run)
     }

@@ -13,7 +13,6 @@ import com.hendraanggrian.openpss.control.dateBox
 import com.hendraanggrian.openpss.control.doneCell
 import com.hendraanggrian.openpss.control.monthBox
 import com.hendraanggrian.openpss.control.numberCell
-import com.hendraanggrian.openpss.control.space
 import com.hendraanggrian.openpss.control.stretchableButton
 import com.hendraanggrian.openpss.control.stringCell
 import com.hendraanggrian.openpss.db.matches
@@ -24,8 +23,8 @@ import com.hendraanggrian.openpss.db.schemas.Payments
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.io.properties.PreferencesFile
 import com.hendraanggrian.openpss.popup.popover.ViewInvoicePopover
+import com.hendraanggrian.openpss.ui.ActionController
 import com.hendraanggrian.openpss.ui.Refreshable
-import com.hendraanggrian.openpss.ui.SegmentedController
 import com.hendraanggrian.openpss.ui.Selectable
 import com.hendraanggrian.openpss.ui.Selectable2
 import com.hendraanggrian.openpss.ui.Selectable3
@@ -39,7 +38,6 @@ import javafx.scene.control.Tab
 import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
 import javafx.scene.image.ImageView
-import javafx.scene.layout.Pane
 import ktfx.NodeManager
 import ktfx.application.later
 import ktfx.collections.toMutableObservableList
@@ -51,7 +49,7 @@ import ktfx.scene.input.isDoubleClick
 import java.net.URL
 import java.util.ResourceBundle
 
-class FinanceController : SegmentedController(), Refreshable,
+class FinanceController : ActionController(), Refreshable,
     Selectable<Tab>, Selectable2<Payment>, Selectable3<Report> {
 
     companion object {
@@ -85,7 +83,7 @@ class FinanceController : SegmentedController(), Refreshable,
     override val selectionModel2: SelectionModel<Payment> get() = dailyTable.selectionModel
     override val selectionModel3: SelectionModel<Report> get() = monthlyTable.selectionModel
 
-    override fun NodeManager.onCreateRightActions() {
+    override fun NodeManager.onCreateActions() {
         pane()
     }
 
@@ -107,10 +105,10 @@ class FinanceController : SegmentedController(), Refreshable,
             styleClass += STYLE_DEFAULT_BUTTON
             onAction { viewTotal() }
         }
-        leftActionManager.collection.addAll(
+        /*leftActionManager.collection.addAll(
             tabPane.header, space(),
             refreshButton, viewTotalButton
-        )
+        )*/
         dateBox = dateBox {
             valueProperty().listener { refresh() }
         }
@@ -120,12 +118,12 @@ class FinanceController : SegmentedController(), Refreshable,
         }
         tabPane.header.toggleGroup.run {
             selectedToggleProperty().addListener { _, _, toggle ->
-                val pane = rightActionManager.collection.first() as Pane
+                /*val pane = rightActionManager.collection.first() as Pane
                 pane.children.clear()
                 pane.children += when (toggles.indexOf(toggle)) {
                     0 -> dateBox
                     else -> monthBox
-                }
+                }*/
             }
         }
 

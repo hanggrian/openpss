@@ -1,7 +1,5 @@
 package com.hendraanggrian.openpss.ui.customer
 
-import com.hendraanggrian.openpss.App.Companion.STYLE_DEFAULT_BUTTON
-import com.hendraanggrian.openpss.App.Companion.STYLE_SEARCH_TEXTFIELD
 import com.hendraanggrian.openpss.PATTERN_DATE
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.PaginatedPane
@@ -14,8 +12,8 @@ import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.popup.popover.InputUserPopover
+import com.hendraanggrian.openpss.ui.ActionController
 import com.hendraanggrian.openpss.ui.Refreshable
-import com.hendraanggrian.openpss.ui.SegmentedController
 import com.hendraanggrian.openpss.ui.Selectable
 import com.hendraanggrian.openpss.ui.Selectable2
 import com.hendraanggrian.openpss.util.getStyle
@@ -48,9 +46,9 @@ import ktfx.collections.emptyObservableList
 import ktfx.collections.toMutableObservableList
 import ktfx.collections.toObservableList
 import ktfx.coroutines.onAction
+import ktfx.jfoenix.jfxTextField
 import ktfx.layouts.contextMenu
 import ktfx.layouts.listView
-import ktfx.layouts.textField
 import ktfx.layouts.tooltip
 import ktfx.scene.control.errorAlert
 import org.controlsfx.control.MasterDetailPane
@@ -59,7 +57,7 @@ import java.util.ResourceBundle
 import java.util.regex.Pattern.CASE_INSENSITIVE
 import kotlin.math.ceil
 
-class CustomerController : SegmentedController(), Refreshable, Selectable<Customer>, Selectable2<Customer.Contact> {
+class CustomerController : ActionController(), Refreshable, Selectable<Customer>, Selectable2<Customer.Contact> {
 
     @FXML lateinit var masterDetailPane: MasterDetailPane
     @FXML lateinit var customerPagination: PaginatedPane
@@ -88,24 +86,14 @@ class CustomerController : SegmentedController(), Refreshable, Selectable<Custom
     override val selectionModel: SelectionModel<Customer> get() = customerList.selectionModel
     override val selectionModel2: SelectionModel<Customer.Contact> get() = contactTable.selectionModel
 
-    override fun NodeManager.onCreateLeftActions() {
-        refreshButton =
-            stretchableButton(STRETCH_POINT, getString(R.string.refresh), ImageView(R.image.btn_refresh_light)) {
-                onAction { refresh() }
-            }
-        addButton = stretchableButton(
-            STRETCH_POINT,
-            getString(R.string.add),
-            ImageView(R.image.btn_add_dark)
-        ) {
-            styleClass += STYLE_DEFAULT_BUTTON
+    override fun NodeManager.onCreateActions() {
+        refreshButton = stretchableButton(STRETCH_POINT, getString(R.string.refresh), ImageView(R.image.btn_refresh)) {
+            onAction { refresh() }
+        }
+        addButton = stretchableButton(STRETCH_POINT, getString(R.string.add), ImageView(R.image.btn_add)) {
             onAction { add() }
         }
-    }
-
-    override fun NodeManager.onCreateRightActions() {
-        searchField = textField {
-            styleClass += STYLE_SEARCH_TEXTFIELD
+        searchField = jfxTextField {
             promptText = getString(R.string.search)
         }
     }

@@ -23,7 +23,7 @@ import ktfx.beans.property.toProperty
 import ktfx.beans.value.or
 import ktfx.collections.toMutableObservableList
 import ktfx.coroutines.onAction
-import ktfx.layouts.button
+import ktfx.jfoenix.jfxButton
 import ktfx.scene.control.infoAlert
 
 class EditEmployeeDialog(
@@ -37,14 +37,14 @@ class EditEmployeeDialog(
     }
 
     override fun NodeManager.onCreateActions() {
-        button(getString(R.string.toggle_admin)) {
+        jfxButton(getString(R.string.toggle_admin)) {
             bindDisable()
             onAction {
                 transaction { Employees[selected!!].projection { admin }.update(!selected!!.admin) }
                 refresh()
             }
         }
-        button(getString(R.string.reset_password)) {
+        jfxButton(getString(R.string.reset_password)) {
             bindDisable()
             onAction {
                 transaction { Employees[selected!!].projection { password }.update(Employee.DEFAULT_PASSWORD) }

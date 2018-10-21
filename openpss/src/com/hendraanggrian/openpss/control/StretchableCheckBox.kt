@@ -2,22 +2,20 @@
 
 package com.hendraanggrian.openpss.control
 
+import com.jfoenix.controls.JFXCheckBox
 import javafx.beans.DefaultProperty
 import javafx.beans.property.DoubleProperty
 import javafx.beans.property.SimpleDoubleProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.beans.property.StringProperty
-import javafx.scene.Node
-import javafx.scene.control.ToggleButton
 import ktfx.NodeManager
 import ktfx.annotations.LayoutDsl
 
 @DefaultProperty("graphic")
-class StretchableToggleButton @JvmOverloads constructor(
+class StretchableCheckBox @JvmOverloads constructor(
     stretchPoint: Double = -1.0,
-    stretchableText: String? = null,
-    graphic: Node? = null
-) : ToggleButton(null, graphic), StretchableLabeled {
+    stretchableText: String? = null
+) : JFXCheckBox(null), StretchableLabeled {
 
     private val stretchPointProperty = SimpleDoubleProperty(stretchPoint)
     override fun stretchPointProperty(): DoubleProperty = stretchPointProperty
@@ -30,25 +28,21 @@ class StretchableToggleButton @JvmOverloads constructor(
     }
 }
 
-/** Creates an [StretchableToggleButton]. */
-fun stretchableToggleButton(
+/** Creates an [StretchableCheckBox]. */
+fun stretchableCheckBox(
     stretchPoint: Double,
     adaptableText: String,
-    graphic: Node? = null,
-    init: ((@LayoutDsl StretchableToggleButton).() -> Unit)? = null
-): StretchableToggleButton = StretchableToggleButton(
+    init: ((@LayoutDsl StretchableCheckBox).() -> Unit)? = null
+): StretchableCheckBox = StretchableCheckBox(
     stretchPoint,
-    adaptableText,
-    graphic
+    adaptableText
 ).also {
     init?.invoke(it)
 }
 
-/** Creates an [StretchableToggleButton] and add it to this [LayoutManager]. */
-inline fun NodeManager.stretchableToggleButton(
+/** Creates an [StretchableCheckBox] and add it to this manager. */
+inline fun NodeManager.stretchableCheckBox(
     stretchPoint: Double,
     adaptableText: String,
-    graphic: Node? = null,
-    noinline init: ((@LayoutDsl StretchableToggleButton).() -> Unit)? = null
-): StretchableToggleButton =
-    (com.hendraanggrian.openpss.control.stretchableToggleButton(stretchPoint, adaptableText, graphic, init))()
+    noinline init: ((@LayoutDsl StretchableCheckBox).() -> Unit)? = null
+): StretchableCheckBox = com.hendraanggrian.openpss.control.stretchableCheckBox(stretchPoint, adaptableText, init)()

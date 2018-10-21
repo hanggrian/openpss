@@ -4,6 +4,7 @@ import com.hendraanggrian.openpss.PATTERN_DATE
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.PaginatedPane
 import com.hendraanggrian.openpss.control.SegmentedTabPane.Companion.STRETCH_POINT
+import com.hendraanggrian.openpss.control.space
 import com.hendraanggrian.openpss.control.stretchableButton
 import com.hendraanggrian.openpss.control.stringCell
 import com.hendraanggrian.openpss.control.yesNoAlert
@@ -93,6 +94,7 @@ class CustomerController : ActionController(), Refreshable, Selectable<Customer>
         addButton = stretchableButton(STRETCH_POINT, getString(R.string.add), ImageView(R.image.btn_add)) {
             onAction { add() }
         }
+        space(R.dimen.padding_large.toDouble())
         searchField = jfxTextField {
             promptText = getString(R.string.search)
         }

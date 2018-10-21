@@ -8,7 +8,7 @@ import com.hendraanggrian.openpss.control.timeBox
 import com.hendraanggrian.openpss.i18n.Resourced
 import com.hendraanggrian.openpss.ui.wage.record.Record
 import ktfx.coroutines.onAction
-import ktfx.layouts.button
+import ktfx.jfoenix.jfxButton
 import ktfx.layouts.gridPane
 import ktfx.scene.layout.gap
 import org.joda.time.DateTime
@@ -17,7 +17,7 @@ class DateTimePopover(
     resourced: Resourced,
     titleId: String,
     defaultButtonTextId: String,
-    private val prefill: DateTime
+    prefill: DateTime
 ) : ResultablePopover<DateTime>(resourced, titleId) {
 
     private lateinit var dateBox: DateBox
@@ -27,7 +27,7 @@ class DateTimePopover(
         gridPane {
             gap = R.dimen.padding_medium.toDouble()
             dateBox = dateBox(prefill.toLocalDate()) row 0 col 1
-            button("-${Record.WORKING_HOURS}") {
+            jfxButton("-${Record.WORKING_HOURS}") {
                 onAction { _ ->
                     repeat(Record.WORKING_HOURS) {
                         timeBox.previousButton.fire()
@@ -42,7 +42,7 @@ class DateTimePopover(
                     }
                 }
             } row 1 col 1
-            button("+${Record.WORKING_HOURS}") {
+            jfxButton("+${Record.WORKING_HOURS}") {
                 onAction { _ ->
                     repeat(Record.WORKING_HOURS) {
                         timeBox.nextButton.fire()

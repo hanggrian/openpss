@@ -5,6 +5,7 @@ import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.i18n.Resourced
 import com.hendraanggrian.openpss.util.getColor
 import com.jfoenix.controls.JFXPopup
+import com.jfoenix.skins.JFXPopupSkin
 import javafx.beans.property.ObjectProperty
 import javafx.beans.property.SimpleObjectProperty
 import javafx.geometry.Pos
@@ -14,6 +15,7 @@ import javafx.scene.control.ListView
 import javafx.scene.control.TableView
 import javafx.scene.layout.Pane
 import ktfx.NodeManager
+import ktfx.application.later
 import ktfx.beans.value.getValue
 import ktfx.beans.value.setValue
 import ktfx.coroutines.listener
@@ -69,23 +71,21 @@ open class Popover(
     }
 
     override fun show(node: Node) {
-        // to avoid error when closing window/stage during popover display
-        /*if (resourced is Dialog<*>) {
-            resourced.dialogPane.scene.window.setOnCloseRequest {
-                isAnimated = false
-                hide()
-            }
-        }*/
-        // now check for coordinate to show popover
         val selectedIndex = (node as? TableView<*>)?.selectionModel?.selectedIndex
             ?: (node as? ListView<*>)?.selectionModel?.selectedIndex
         when (selectedIndex) {
             null -> super.show(node)
             else -> {
                 val bounds = node.localToScreen(node.boundsInLocal)
-                super.show(node.scene.window,
+                super.show(
+                    node.scene.window,
                     bounds.minX + bounds.width,
-                    bounds.minY + selectedIndex * 22.0 + (0 until selectedIndex).sumByDouble { 2.0 })
+                    bounds.minY + selectedIndex * 22.0 + (0 until selectedIndex).sumByDouble { 2.0 }
+                )
+                (skin as JFXPopupSkin).run {
+                    reset(JFXPopup.PopupVPosition.TOP, JFXPopup.PopupHPosition.LEFT, 0.0, 0.0)
+                    later { animate() }
+                }
             }
         }
     }

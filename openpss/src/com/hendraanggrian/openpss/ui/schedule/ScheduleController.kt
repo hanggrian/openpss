@@ -1,12 +1,12 @@
 package com.hendraanggrian.openpss.ui.schedule
 
-import com.hendraanggrian.openpss.App.Companion.STYLE_DEFAULT_BUTTON
 import com.hendraanggrian.openpss.PATTERN_DATETIME_EXTENDED
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.SegmentedTabPane.Companion.STRETCH_POINT
 import com.hendraanggrian.openpss.control.UncollapsibleTreeItem
+import com.hendraanggrian.openpss.control.space
 import com.hendraanggrian.openpss.control.stretchableButton
-import com.hendraanggrian.openpss.control.stretchableToggleButton
+import com.hendraanggrian.openpss.control.stretchableCheckBox
 import com.hendraanggrian.openpss.control.stringCell
 import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.schemas.Invoices
@@ -16,8 +16,8 @@ import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.TreeSelectable
 import javafx.fxml.FXML
 import javafx.scene.control.Button
+import javafx.scene.control.CheckBox
 import javafx.scene.control.SelectionMode.MULTIPLE
-import javafx.scene.control.ToggleButton
 import javafx.scene.control.TreeItem
 import javafx.scene.control.TreeTableColumn
 import javafx.scene.control.TreeTableView
@@ -44,24 +44,19 @@ class ScheduleController : ActionController(), Refreshable, TreeSelectable<Sched
 
     private lateinit var refreshButton: Button
     private lateinit var doneButton: Button
-    private lateinit var historyToggle: ToggleButton
+    private lateinit var historyCheck: CheckBox
 
     override val selectionModel: TreeTableViewSelectionModel<Schedule> get() = scheduleTable.selectionModel
 
     override fun NodeManager.onCreateActions() {
-        refreshButton =
-            stretchableButton(STRETCH_POINT, getString(R.string.refresh), ImageView(R.image.btn_refresh_light)) {
-                onAction { refresh() }
-            }
-        doneButton = stretchableButton(
-            STRETCH_POINT,
-            getString(R.string.done),
-            ImageView(R.image.btn_done_dark)
-        ) {
-            styleClass += STYLE_DEFAULT_BUTTON
+        refreshButton = stretchableButton(STRETCH_POINT, getString(R.string.refresh), ImageView(R.image.btn_refresh)) {
+            onAction { refresh() }
+        }
+        doneButton = stretchableButton(STRETCH_POINT, getString(R.string.done), ImageView(R.image.btn_done)) {
             onAction { done() }
         }
-        historyToggle = stretchableToggleButton(STRETCH_POINT, R.string.history, ImageView(R.image.btn_history_light)) {
+        space(R.dimen.padding_large.toDouble())
+        historyCheck = stretchableCheckBox(STRETCH_POINT, getString(R.string.history)) {
             selectedProperty().listener { refresh() }
             doneButton.disableProperty().bind(selecteds.isEmpty or selectedProperty())
         }
@@ -92,7 +87,7 @@ class ScheduleController : ActionController(), Refreshable, TreeSelectable<Sched
         scheduleTable.root.children.run {
             clear()
             transaction {
-                when (historyToggle.isSelected) {
+                when (historyCheck.isSelected) {
                     true -> Invoices { it.done.equal(true) }.take(20)
                     else -> Invoices { it.done.equal(false) }
                 }.forEach { invoice ->

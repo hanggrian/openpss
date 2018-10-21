@@ -89,22 +89,14 @@ class FinanceController : ActionController(), Refreshable,
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
-        refreshButton =
-            stretchableButton(
-                STRETCH_POINT,
-                getString(R.string.refresh),
-                ImageView(R.image.btn_refresh_light)
-            ) {
-                onAction { refresh() }
-            }
-        viewTotalButton = stretchableButton(
-            STRETCH_POINT,
-            getString(R.string.total),
-            ImageView(R.image.btn_money_dark)
-        ) {
-            styleClass += STYLE_DEFAULT_BUTTON
-            onAction { viewTotal() }
+        refreshButton = stretchableButton(STRETCH_POINT, getString(R.string.refresh), ImageView(R.image.btn_refresh)) {
+            onAction { refresh() }
         }
+        viewTotalButton =
+            stretchableButton(STRETCH_POINT, getString(R.string.total), ImageView(R.image.btn_money_dark)) {
+                styleClass += STYLE_DEFAULT_BUTTON
+                onAction { viewTotal() }
+            }
         /*leftActionManager.collection.addAll(
             tabPane.header, space(),
             refreshButton, viewTotalButton

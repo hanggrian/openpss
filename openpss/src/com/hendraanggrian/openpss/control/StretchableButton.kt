@@ -2,6 +2,7 @@
 
 package com.hendraanggrian.openpss.control
 
+import com.hendraanggrian.openpss.App
 import com.jfoenix.controls.JFXButton
 import javafx.beans.DefaultProperty
 import javafx.beans.property.DoubleProperty
@@ -31,6 +32,7 @@ class StretchableButton @JvmOverloads constructor(
 
     init {
         initialize()
+        style = App.STYLE_BUTTON_FLAT
     }
 }
 
@@ -40,23 +42,15 @@ fun stretchableButton(
     adaptableText: String,
     graphic: Node? = null,
     init: ((@LayoutDsl StretchableButton).() -> Unit)? = null
-): StretchableButton = StretchableButton(
-    stretchPoint,
-    adaptableText,
-    graphic
-).also {
+): StretchableButton = StretchableButton(stretchPoint, adaptableText, graphic).also {
     init?.invoke(it)
 }
 
-/** Creates an [StretchableButton] and add it to this [LayoutManager]. */
+/** Creates an [StretchableButton] and add it to this manager. */
 inline fun NodeManager.stretchableButton(
     stretchPoint: Double,
     adaptableText: String,
     graphic: Node? = null,
     noinline init: ((@LayoutDsl StretchableButton).() -> Unit)? = null
-): StretchableButton = (com.hendraanggrian.openpss.control.stretchableButton(
-    stretchPoint,
-    adaptableText,
-    graphic,
-    init
-))()
+): StretchableButton =
+    com.hendraanggrian.openpss.control.stretchableButton(stretchPoint, adaptableText, graphic, init)()

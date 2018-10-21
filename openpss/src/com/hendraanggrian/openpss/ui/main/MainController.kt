@@ -112,13 +112,13 @@ class MainController : Controller(), Selectable<Tab> {
     @FXML fun editPrice(event: ActionEvent) = when (event.source) {
         platePriceItem -> EditPlatePriceDialog(this, employee)
         else -> EditOffsetPriceDialog(this, employee)
-    }.show()
+    }.show(dialogContainer)
 
-    @FXML fun editEmployee() = EditEmployeeDialog(this, employee).show()
+    @FXML fun editEmployee() = EditEmployeeDialog(this, employee).show(dialogContainer)
 
-    @FXML fun editRecess() = EditRecessDialog(this, employee).show()
+    @FXML fun editRecess() = EditRecessDialog(this, employee).show(dialogContainer)
 
-    @FXML fun preferences() = PreferencesDialog(this, transaction { employee.isAdmin() }).show()
+    @FXML fun preferences() = PreferencesDialog(this, transaction { employee.isAdmin() }).show(dialogContainer)
 
     @FXML fun testViewInvoice() {
         val customer = transaction { Customers.find().firstOrNull() }

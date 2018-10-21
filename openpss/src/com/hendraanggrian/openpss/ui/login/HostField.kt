@@ -1,14 +1,14 @@
 package com.hendraanggrian.openpss.ui.login
 
+import com.jfoenix.controls.JFXTextField
 import javafx.beans.property.BooleanProperty
 import javafx.beans.property.SimpleBooleanProperty
-import javafx.scene.control.TextField
 import ktfx.beans.binding.booleanBindingOf
 import ktfx.coroutines.listener
 import org.apache.commons.validator.routines.InetAddressValidator
 
 /** Field that display IP address. */
-class HostField : TextField() {
+class HostField : JFXTextField() {
 
     private val validProperty = SimpleBooleanProperty()
     fun validProperty(): BooleanProperty = validProperty

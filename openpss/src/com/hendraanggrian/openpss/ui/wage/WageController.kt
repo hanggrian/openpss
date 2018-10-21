@@ -1,6 +1,5 @@
 package com.hendraanggrian.openpss.ui.wage
 
-import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.BuildConfig.DEBUG
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.SegmentedTabPane.Companion.STRETCH_POINT
@@ -18,8 +17,9 @@ import com.hendraanggrian.openpss.util.getResource
 import com.hendraanggrian.openpss.util.getStyle
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
+import javafx.geometry.Side
 import javafx.scene.control.Button
-import javafx.scene.control.TitledPane
+import javafx.scene.control.Label
 import javafx.scene.image.ImageView
 import javafx.scene.layout.AnchorPane
 import javafx.scene.layout.FlowPane
@@ -30,6 +30,7 @@ import kotlinx.coroutines.experimental.javafx.JavaFx
 import kotlinx.coroutines.experimental.launch
 import ktfx.NodeManager
 import ktfx.application.later
+import ktfx.beans.binding.bindingOf
 import ktfx.beans.binding.booleanBindingOf
 import ktfx.beans.binding.stringBindingOf
 import ktfx.beans.value.lessEq
@@ -45,6 +46,7 @@ import ktfx.scene.layout.maxSize
 import ktfx.stage.fileChooser
 import ktfx.stage.setMinSize
 import ktfx.stage.stage
+import org.controlsfx.control.HiddenSidesPane
 import java.io.File
 import java.net.URL
 import java.util.ResourceBundle
@@ -52,65 +54,44 @@ import java.util.ResourceBundle
 class WageController : ActionController() {
 
     @FXML lateinit var anchorPane: AnchorPane
-    @FXML lateinit var titledPane: TitledPane
+    @FXML lateinit var titleLabel: Label
+    @FXML lateinit var hiddenSidesPane: HiddenSidesPane
     @FXML lateinit var flowPane: FlowPane
+    @FXML lateinit var processButton: Button
 
     private lateinit var browseButton: Button
     private lateinit var disableRecessButton: Button
     private lateinit var saveWageButton: Button
-    private lateinit var processButton: Button
     private lateinit var historyButton: Button
 
     override fun NodeManager.onCreateActions() {
-        browseButton = stretchableButton(
-            STRETCH_POINT,
-            getString(R.string.browse),
-            ImageView(R.image.btn_browse_light)
-        ) {
+        browseButton = stretchableButton(STRETCH_POINT, getString(R.string.browse), ImageView(R.image.btn_browse)) {
             onAction { browse() }
         }
-        space()
         disableRecessButton = stretchableButton(
             STRETCH_POINT,
             getString(R.string.disable_recess),
-            ImageView(R.image.btn_disable_recess_light)
+            ImageView(R.image.btn_disable_recess)
         ) {
             disableProperty().bind(flowPane.children.isEmpty)
             onAction { disableRecess() }
         }
-        saveWageButton = stretchableButton(
-            STRETCH_POINT,
-            getString(R.string.save_wage),
-            ImageView(R.image.btn_save_light)
-        ) {
+        saveWageButton = stretchableButton(STRETCH_POINT, getString(R.string.save_wage), ImageView(R.image.btn_save)) {
             disableProperty().bind(flowPane.children.isEmpty)
             onAction { saveWage() }
         }
-        processButton = stretchableButton(
-            STRETCH_POINT,
-            getString(R.string.process),
-            ImageView(R.image.btn_process_dark)
-        ) {
-            styleClass += App.STYLE_DEFAULT_BUTTON
-            isDisable = true
-            onAction { process() }
-        }
-        space()
-        historyButton = stretchableButton(
-            STRETCH_POINT,
-            getString(R.string.history),
-            ImageView(R.image.btn_history_light)
-        ) {
+        space(R.dimen.padding_large.toDouble())
+        historyButton = stretchableButton(STRETCH_POINT, getString(R.string.history), ImageView(R.image.btn_history)) {
             onAction { history() }
         }
     }
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
-        titledPane.textProperty().bind(stringBindingOf(flowPane.children) {
+        titleLabel.textProperty().bind(stringBindingOf(flowPane.children) {
             "${flowPane.children.size} ${getString(R.string.employee)}"
         })
-
+        processButton.onAction { process() }
         later { flowPane.prefWrapLengthProperty().bind(flowPane.scene.widthProperty()) }
         if (DEBUG) {
             val file = File("/Users/hendraanggrian/Downloads/Absen 4-13-18.xlsx")
@@ -140,10 +121,10 @@ class WageController : ActionController() {
             ?.let { read(it) }
 
     private fun read(file: File) {
-        titledPane.graphic = label("${file.absolutePath} -")
+        titleLabel.graphic = label("${file.absolutePath} -")
         val loadingPane = borderPane {
-            prefWidthProperty().bind(titledPane.widthProperty())
-            prefHeightProperty().bind(titledPane.heightProperty())
+            prefWidthProperty().bind(anchorPane.widthProperty())
+            prefHeightProperty().bind(anchorPane.heightProperty())
             center = ktfx.layouts.progressIndicator { maxSize = 128.0 }
         }
         anchorPane.children += loadingPane
@@ -156,7 +137,7 @@ class WageController : ActionController() {
                         flowPane.children += attendeePane(this@WageController, attendee) {
                             deleteMenu.onAction {
                                 flowPane.children -= this@attendeePane
-                                bindSaveAndProcessButton()
+                                bindProcessButton()
                             }
                             deleteOthersMenu.run {
                                 disableProperty().bind(flowPane.children.size() lessEq 1)
@@ -164,7 +145,7 @@ class WageController : ActionController() {
                                     flowPane.children -= flowPane.children.toMutableList().apply {
                                         remove(this@attendeePane)
                                     }
-                                    bindSaveAndProcessButton()
+                                    bindProcessButton()
                                 }
                             }
                             deleteToTheRightMenu.run {
@@ -175,7 +156,7 @@ class WageController : ActionController() {
                                     flowPane.children -= flowPane.children.toList().takeLast(
                                         flowPane.children.lastIndex - flowPane.children.indexOf(this@attendeePane)
                                     )
-                                    bindSaveAndProcessButton()
+                                    bindProcessButton()
                                 }
                             }
                         }
@@ -183,13 +164,13 @@ class WageController : ActionController() {
                 }
                 GlobalScope.launch(Dispatchers.JavaFx) {
                     anchorPane.children -= loadingPane
-                    bindSaveAndProcessButton()
+                    bindProcessButton()
                 }
             } catch (e: Exception) {
                 if (DEBUG) e.printStackTrace()
                 GlobalScope.launch(Dispatchers.JavaFx) {
                     anchorPane.children -= loadingPane
-                    bindSaveAndProcessButton()
+                    bindProcessButton()
                     errorAlert(e.message.toString()) {
                         dialogPane.stylesheets += getStyle(R.style.openpss)
                     }.show()
@@ -202,9 +183,19 @@ class WageController : ActionController() {
 
     private inline val attendees: List<Attendee> get() = attendeePanes.map { it.attendee }
 
-    /** As attendees are populated, saveAndProcess button need to be rebinded according to new requirements. */
-    private fun bindSaveAndProcessButton() = processButton.disableProperty().bind(flowPane.children.isEmpty or
-        booleanBindingOf(flowPane.children, *flowPane.children
+    /** As attendees are populated, process button need to be rebinded according to new requirements. */
+    private fun bindProcessButton() {
+        processButton.disableProperty().bind(flowPane.children.isEmpty or
+            booleanBindingOf(flowPane.children, *flowPane.children
+                .map { (it as AttendeePane).attendanceList.items }
+                .toTypedArray()) { attendees.any { it.attendances.size % 2 != 0 } })
+        hiddenSidesPane.pinnedSideProperty().bind(bindingOf(flowPane.children, *flowPane.children
             .map { (it as AttendeePane).attendanceList.items }
-            .toTypedArray()) { attendees.any { it.attendances.size % 2 != 0 } })
+            .toTypedArray()) {
+            when {
+                flowPane.children.isEmpty() || attendees.any { it.attendances.size % 2 != 0 } -> null
+                else -> Side.BOTTOM
+            }
+        })
+    }
 }

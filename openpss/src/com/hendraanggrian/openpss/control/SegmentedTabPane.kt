@@ -53,11 +53,11 @@ class SegmentedTabPane : TabPane() {
     private fun populate(tabs: Collection<Tab>) {
         header.buttons += tabs.map {
             when {
-                isTextStretchable -> StretchableToggleButton(
+                isTextStretchable -> ToggleButton(it.text, it.graphic) /*StretchableCheckBox(
                     STRETCH_POINT,
                     it.text,
                     it.graphic
-                )
+                )*/
                 else -> ToggleButton(it.text, it.graphic)
             }
         }

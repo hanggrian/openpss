@@ -1,7 +1,6 @@
 package com.hendraanggrian.openpss.ui.invoice
 
 import com.hendraanggrian.openpss.App.Companion.STYLE_DEFAULT_BUTTON
-import com.hendraanggrian.openpss.App.Companion.STYLE_SEARCH_TEXTFIELD
 import com.hendraanggrian.openpss.PATTERN_DATETIME_EXTENDED
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.DateBox
@@ -11,6 +10,7 @@ import com.hendraanggrian.openpss.control.SegmentedTabPane.Companion.STRETCH_POI
 import com.hendraanggrian.openpss.control.currencyCell
 import com.hendraanggrian.openpss.control.doneCell
 import com.hendraanggrian.openpss.control.intField
+import com.hendraanggrian.openpss.control.space
 import com.hendraanggrian.openpss.control.stretchableButton
 import com.hendraanggrian.openpss.control.stringCell
 import com.hendraanggrian.openpss.control.yesNoAlert
@@ -107,20 +107,14 @@ class InvoiceController : ActionController(), Refreshable, Selectable<Invoice>, 
     override val selectionModel2: SelectionModel<Payment> get() = paymentTable.selectionModel
 
     override fun NodeManager.onCreateActions() {
-        refreshButton =
-            stretchableButton(STRETCH_POINT, getString(R.string.refresh), ImageView(R.image.btn_refresh_light)) {
-                onAction { refresh() }
-            }
-        addButton = stretchableButton(
-            STRETCH_POINT,
-            getString(R.string.add),
-            ImageView(R.image.btn_add_dark)
-        ) {
-            styleClass += STYLE_DEFAULT_BUTTON
+        refreshButton = stretchableButton(STRETCH_POINT, getString(R.string.refresh), ImageView(R.image.btn_refresh)) {
+            onAction { refresh() }
+        }
+        addButton = stretchableButton(STRETCH_POINT, getString(R.string.add), ImageView(R.image.btn_add)) {
             onAction { addInvoice() }
         }
+        space(R.dimen.padding_large.toDouble())
         searchField = intField {
-            styleClass += STYLE_SEARCH_TEXTFIELD
             filterBox.disableProperty().bind(valueProperty() neq 0)
             promptText = getString(R.string.search_no)
         }
@@ -197,7 +191,7 @@ class InvoiceController : ActionController(), Refreshable, Selectable<Invoice>, 
                             addPaymentButton = stretchableButton(
                                 STRETCH_POINT,
                                 getString(R.string.add_payment),
-                                ImageView(R.image.btn_add_dark)
+                                ImageView(R.image.btn_add)
                             ) {
                                 styleClass += STYLE_DEFAULT_BUTTON
                                 disableProperty().bind(!selectedBinding)
@@ -230,7 +224,7 @@ class InvoiceController : ActionController(), Refreshable, Selectable<Invoice>, 
                                 }
                             })
                             contextMenu {
-                                getString(R.string.delete)(ImageView(R.image.btn_delete_light)) {
+                                getString(R.string.delete)(ImageView(R.image.menu_delete)) {
                                     disableProperty().bind(!this@tableView.selectionModel.selectedItemProperty().isNotNull)
                                     onAction { deletePayment() }
                                 }
@@ -265,7 +259,7 @@ class InvoiceController : ActionController(), Refreshable, Selectable<Invoice>, 
                                     onAction { viewInvoice() }
                                 }
                                 separatorMenuItem()
-                                getString(R.string.delete)(ImageView(R.image.btn_delete_light)) {
+                                getString(R.string.delete)(ImageView(R.image.menu_delete)) {
                                     disableProperty().bind(!selectedBinding or !fullAccess)
                                     onAction { deleteInvoice() }
                                 }

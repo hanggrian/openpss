@@ -86,11 +86,11 @@ class LoginLayout(resourced: Resourced) : _StackPane(), Resourced by resourced {
         prefWidth = 64.0
         valueProperty().listener { _, _, newValue -> LoginFile.DB_PORT = newValue.toInt() }
     }
-    private val serverUserField = ktfx.layouts.textField(LoginFile.DB_USER) {
+    private val serverUserField = ktfx.jfoenix.jfxTextField(LoginFile.DB_USER) {
         promptText = getString(R.string.server_user)
         textProperty().listener { _, _, newValue -> LoginFile.DB_USER = newValue }
     }
-    private val serverPasswordField = ktfx.layouts.passwordField {
+    private val serverPasswordField = ktfx.jfoenix.jfxPasswordField {
         text = LoginFile.DB_PASSWORD
         promptText = getString(R.string.server_password)
         textProperty().listener { _, _, newValue -> LoginFile.DB_PASSWORD = newValue }

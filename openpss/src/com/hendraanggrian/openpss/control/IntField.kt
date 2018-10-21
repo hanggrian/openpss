@@ -2,9 +2,9 @@
 
 package com.hendraanggrian.openpss.control
 
+import com.jfoenix.controls.JFXTextField
 import javafx.beans.property.IntegerProperty
 import javafx.beans.property.SimpleIntegerProperty
-import javafx.scene.control.TextField
 import ktfx.NodeManager
 import ktfx.annotations.LayoutDsl
 import ktfx.beans.value.getValue
@@ -12,7 +12,7 @@ import ktfx.beans.value.setValue
 import ktfx.coroutines.listener
 import ktfx.listeners.bindBidirectional
 
-open class IntField : TextField() {
+open class IntField : JFXTextField() {
 
     private val valueProperty = SimpleIntegerProperty()
     fun valueProperty(): IntegerProperty = valueProperty
@@ -37,7 +37,7 @@ fun intField(
     init?.invoke(it)
 }
 
-/** Creates a [IntField] and add it to this [LayoutManager]. */
+/** Creates a [IntField] and add it to this manager. */
 inline fun NodeManager.intField(
     noinline init: ((@LayoutDsl IntField).() -> Unit)? = null
-): IntField = (com.hendraanggrian.openpss.control.intField(init))()
+): IntField = com.hendraanggrian.openpss.control.intField(init)()

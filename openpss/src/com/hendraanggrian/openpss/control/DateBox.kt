@@ -2,6 +2,7 @@
 
 package com.hendraanggrian.openpss.control
 
+import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.util.toJava
 import com.hendraanggrian.openpss.util.toJoda
@@ -16,9 +17,9 @@ import ktfx.annotations.LayoutDsl
 import ktfx.beans.binding.bindingOf
 import ktfx.beans.value.getValue
 import ktfx.coroutines.onAction
+import ktfx.jfoenix.jfxButton
+import ktfx.jfoenix.jfxDatePicker
 import ktfx.layouts._HBox
-import ktfx.layouts.button
-import ktfx.layouts.datePicker
 import org.joda.time.LocalDate
 import org.joda.time.LocalDate.now
 
@@ -38,16 +39,18 @@ open class DateBox @JvmOverloads constructor(prefill: LocalDate = now()) : _HBox
     val value: LocalDate by valueProperty
 
     init {
-        previousButton = button(graphic = ImageView(R.image.btn_previous)) {
+        previousButton = jfxButton(graphic = ImageView(R.image.btn_previous)) {
+            styleClass += App.STYLE_BUTTON_FLAT
             onAction { picker.value = picker.value.minusDays(1) }
         }
-        picker = datePicker {
+        picker = jfxDatePicker {
             editor.alignment = CENTER
             value = prefill.toJava()
             isEditable = false
             maxWidth = 116.0
         }
-        nextButton = button(graphic = ImageView(R.image.btn_next)) {
+        nextButton = jfxButton(graphic = ImageView(R.image.btn_next)) {
+            styleClass += App.STYLE_BUTTON_FLAT
             onAction { picker.value = picker.value.plusDays(1) }
         }
 
@@ -63,7 +66,7 @@ fun dateBox(
     init?.invoke(it)
 }
 
-/** Creates a [DateBox] and add it to this [LayoutManager]. */
+/** Creates a [DateBox] and add it to this manager. */
 inline fun NodeManager.dateBox(
     prefill: LocalDate = now(),
     noinline init: ((@LayoutDsl DateBox).() -> Unit)? = null

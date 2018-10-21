@@ -2,6 +2,7 @@
 
 package com.hendraanggrian.openpss.control
 
+import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.R
 import javafx.beans.property.ObjectProperty
 import javafx.beans.property.SimpleObjectProperty
@@ -14,8 +15,8 @@ import ktfx.beans.binding.bindingOf
 import ktfx.beans.value.getValue
 import ktfx.coroutines.listener
 import ktfx.coroutines.onAction
+import ktfx.jfoenix.jfxButton
 import ktfx.layouts._HBox
-import ktfx.layouts.button
 import org.joda.time.LocalTime
 import org.joda.time.LocalTime.MIDNIGHT
 
@@ -37,7 +38,8 @@ open class TimeBox @JvmOverloads constructor(prefill: LocalTime = MIDNIGHT) : _H
     val value: LocalTime by valueProperty
 
     init {
-        previousButton = button(graphic = ImageView(R.image.btn_previous)) {
+        previousButton = jfxButton(graphic = ImageView(R.image.btn_previous)) {
+            styleClass += App.STYLE_BUTTON_FLAT
             onAction {
                 hourField.value = when (hourField.value) {
                     0 -> {
@@ -62,7 +64,8 @@ open class TimeBox @JvmOverloads constructor(prefill: LocalTime = MIDNIGHT) : _H
                 if (value !in 0 until 60) minuteField.value = oldValue.toInt()
             }
         }
-        nextButton = button(graphic = ImageView(R.image.btn_next)) {
+        nextButton = jfxButton(graphic = ImageView(R.image.btn_next)) {
+            styleClass += App.STYLE_BUTTON_FLAT
             onAction {
                 hourField.value = when (hourField.value) {
                     23 -> {
@@ -95,7 +98,7 @@ fun timeBox(
     init?.invoke(it)
 }
 
-/** Creates a [TimeBox] and add it to this [LayoutManager]. */
+/** Creates a [TimeBox] and add it to this manager. */
 inline fun NodeManager.timeBox(
     prefill: LocalTime = MIDNIGHT,
     noinline init: ((@LayoutDsl TimeBox).() -> Unit)? = null

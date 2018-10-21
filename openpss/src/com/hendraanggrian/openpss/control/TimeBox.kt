@@ -4,6 +4,9 @@ package com.hendraanggrian.openpss.control
 
 import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.util.toJava
+import com.hendraanggrian.openpss.util.toJoda
+import com.jfoenix.controls.JFXTimePicker
 import javafx.beans.property.ObjectProperty
 import javafx.beans.property.SimpleObjectProperty
 import javafx.geometry.Pos.CENTER
@@ -13,10 +16,11 @@ import ktfx.NodeManager
 import ktfx.annotations.LayoutDsl
 import ktfx.beans.binding.bindingOf
 import ktfx.beans.value.getValue
-import ktfx.coroutines.listener
 import ktfx.coroutines.onAction
 import ktfx.jfoenix.jfxButton
+import ktfx.jfoenix.jfxTimePicker
 import ktfx.layouts._HBox
+import ktfx.listeners.stringConverter
 import org.joda.time.LocalTime
 import org.joda.time.LocalTime.MIDNIGHT
 
@@ -27,11 +31,10 @@ import org.joda.time.LocalTime.MIDNIGHT
  */
 open class TimeBox @JvmOverloads constructor(prefill: LocalTime = MIDNIGHT) : _HBox(0.0) {
 
-    lateinit var hourField: IntField
-    lateinit var minuteField: IntField
+    lateinit var picker: JFXTimePicker
     var previousButton: Button
     var nextButton: Button
-    private var onOverlap: ((Boolean) -> Unit)? = null
+    var onOverlap: ((Boolean) -> Unit)? = null
 
     private val valueProperty = SimpleObjectProperty<LocalTime>()
     fun valueProperty(): ObjectProperty<LocalTime> = valueProperty
@@ -41,52 +44,50 @@ open class TimeBox @JvmOverloads constructor(prefill: LocalTime = MIDNIGHT) : _H
         previousButton = jfxButton(graphic = ImageView(R.image.btn_previous)) {
             styleClass += App.STYLE_BUTTON_FLAT
             onAction {
-                hourField.value = when (hourField.value) {
+                picker.value = when (picker.value.hour) {
                     0 -> {
                         onOverlap?.invoke(false)
-                        23
+                        java.time.LocalTime.of(23, picker.value.minute, picker.value.second)
                     }
-                    else -> hourField.value - 1
+                    else -> picker.value.minusHours(1)
                 }
             }
         }
-        hourField = intField {
-            maxWidth = 58.0
-            alignment = CENTER
-            valueProperty().listener { _, oldValue, value ->
-                if (value !in 0 until 24) hourField.value = oldValue.toInt()
-            }
-        }
-        minuteField = intField {
-            maxWidth = 58.0
-            alignment = CENTER
-            valueProperty().listener { _, oldValue, value ->
-                if (value !in 0 until 60) minuteField.value = oldValue.toInt()
+        picker = jfxTimePicker {
+            setIs24HourView(true)
+            editor.alignment = CENTER
+            value = prefill.toJava()
+            isEditable = false
+            maxWidth = 116.0
+            //editor.text = editor.text.substringBeforeLast(':')
+            converter = stringConverter {
+                fromString {
+                    val a = it.split(':')
+                    java.time.LocalTime.of(a[0].toInt(), a[1].toInt(), 0)
+                }
+                toString {
+                    val s = it.toString()
+                    when {
+                        s.split(':').size > 2 -> s.substringBeforeLast(':')
+                        else -> s
+                    }
+                }
             }
         }
         nextButton = jfxButton(graphic = ImageView(R.image.btn_next)) {
             styleClass += App.STYLE_BUTTON_FLAT
             onAction {
-                hourField.value = when (hourField.value) {
+                picker.value = when (picker.value.hour) {
                     23 -> {
                         onOverlap?.invoke(true)
-                        0
+                        java.time.LocalTime.of(0, picker.value.minute, picker.value.second)
                     }
-                    else -> hourField.value + 1
+                    else -> picker.value.plusHours(1)
                 }
             }
         }
 
-        valueProperty.bind(bindingOf(hourField.valueProperty(), minuteField.valueProperty()) {
-            LocalTime(hourField.value, minuteField.value)
-        })
-
-        hourField.text = prefill.hourOfDay.toString()
-        minuteField.text = prefill.minuteOfHour.toString()
-    }
-
-    fun setOnOverlap(action: ((plus: Boolean) -> Unit)?) {
-        onOverlap = action
+        valueProperty.bind(bindingOf(picker.valueProperty()) { picker.value.toJoda() })
     }
 }
 

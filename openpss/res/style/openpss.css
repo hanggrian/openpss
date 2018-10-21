@@ -22,6 +22,15 @@
     -jfx-default-color: #1e88e5;
 }
 
+.jfx-password-field {
+    -jfx-focus-color: #1e88e5;
+    -fx-prompt-text-fill: #797979;
+}
+
+.jfx-radio-button .dot {
+    -fx-fill: #1e88e5;
+}
+
 .jfx-tab-pane .tab-header-background {
     -fx-background-color: rgba(0, 0, 0, 0);
 }
@@ -47,9 +56,8 @@
     -fx-prompt-text-fill: #797979;
 }
 
-.jfx-password-field {
-    -jfx-focus-color: #1e88e5;
-    -fx-prompt-text-fill: #797979;
+.jfx-time-picker {
+    -jfx-default-color: #1e88e5;
 }
 
 .jfx-toggle-button {

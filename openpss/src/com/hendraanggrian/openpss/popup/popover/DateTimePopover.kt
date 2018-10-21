@@ -35,7 +35,7 @@ class DateTimePopover(
                 }
             } row 1 col 0
             timeBox = timeBox(prefill.toLocalTime()) {
-                setOnOverlap { plus ->
+                onOverlap = { plus ->
                     dateBox.picker.value = when {
                         plus -> dateBox.picker.value.plusDays(1)
                         else -> dateBox.picker.value.minusDays(1)

@@ -29,6 +29,8 @@ import java.util.ResourceBundle
 class App : Application(), Resourced {
 
     companion object {
+        const val STRETCH_POINT = 1100.0
+
         const val STYLE_BUTTON_FLAT = "button-flat"
         const val STYLE_BUTTON_RAISED = "button-raised"
 

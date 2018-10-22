@@ -12,7 +12,7 @@
       fx:controller="com.hendraanggrian.openpss.ui.invoice.InvoiceController">
     <HBox fx:id="filterBox" alignment="CENTER_RIGHT" spacing="10">
         <padding>
-            <Insets bottom="10" left="10" right="10"/>
+            <Insets topRightBottomLeft="10"/>
         </padding>
         <fx:define>
             <ToggleGroup fx:id="pickDateGroup"/>

@@ -1,16 +1,17 @@
 package com.hendraanggrian.openpss.ui.invoice
 
+import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.DoubleField
 import com.hendraanggrian.openpss.control.bold
 import com.hendraanggrian.openpss.control.doubleField
-import com.hendraanggrian.openpss.popup.popover.ResultablePopover
 import com.hendraanggrian.openpss.currencyConverter
 import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.db.schemas.Payment
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.i18n.Resourced
+import com.hendraanggrian.openpss.popup.popover.ResultablePopover
 import com.hendraanggrian.openpss.util.getColor
 import javafx.scene.Node
 import javafx.scene.control.CheckBox
@@ -20,7 +21,7 @@ import ktfx.beans.binding.bindingOf
 import ktfx.beans.binding.booleanBindingOf
 import ktfx.beans.binding.stringBindingOf
 import ktfx.coroutines.onAction
-import ktfx.layouts.button
+import ktfx.jfoenix.jfxButton
 import ktfx.layouts.checkBox
 import ktfx.layouts.gridPane
 import ktfx.layouts.label
@@ -53,9 +54,12 @@ class AddPaymentPopover(
             } row 1 col 1 colSpans 2
             label(getString(R.string.payment)) row 2 col 0
             valueField = doubleField { promptText = getString(R.string.payment) } row 2 col 1
-            button(graphic = ImageView(R.image.btn_match_receivable_light)) {
+            jfxButton(graphic = ImageView(R.image.btn_match_receivable)) {
+                styleClass += App.STYLE_BUTTON_FLAT
                 tooltip(getString(R.string.match_receivable))
-                onAction { valueField.value = receivable }
+                onAction {
+                    valueField.value = receivable
+                }
             } row 2 col 2
             label(getString(R.string.remaining)) row 3 col 0
             label {

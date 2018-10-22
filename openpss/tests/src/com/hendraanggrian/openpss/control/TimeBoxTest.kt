@@ -1,5 +1,6 @@
 package com.hendraanggrian.openpss.control
 
+import com.hendraanggrian.openpss.util.toJava
 import org.joda.time.LocalTime
 import org.junit.Test
 import kotlin.test.assertEquals
@@ -14,8 +15,7 @@ class TimeBoxTest : NodeTest<TimeBox>() {
     }
 
     @Test fun custom() = LocalTime(12, 30).let {
-        node.hourField.value = it.hourOfDay
-        node.minuteField.value = it.minuteOfHour
+        node.picker.value = it.toJava()
         assertEquals(node.valueProperty().value, it)
     }
 }

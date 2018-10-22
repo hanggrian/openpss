@@ -59,7 +59,6 @@ open class TimeBox @JvmOverloads constructor(prefill: LocalTime = MIDNIGHT) : _H
             value = prefill.toJava()
             isEditable = false
             maxWidth = 116.0
-            //editor.text = editor.text.substringBeforeLast(':')
             converter = stringConverter {
                 fromString {
                     val a = it.split(':')

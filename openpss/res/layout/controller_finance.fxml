@@ -31,7 +31,7 @@
                         <MenuItem fx:id="viewInvoiceItem" mnemonicParsing="false" onAction="#viewInvoice" text="%view">
                             <graphic>
                                 <ImageView>
-                                    <Image url="@/image/btn_invoice_light.png"/>
+                                    <Image url="@/image/menu_invoice.png"/>
                                 </ImageView>
                             </graphic>
                         </MenuItem>

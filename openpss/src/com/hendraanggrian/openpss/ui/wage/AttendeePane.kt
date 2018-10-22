@@ -35,8 +35,8 @@ import ktfx.coroutines.listener
 import ktfx.coroutines.onAction
 import ktfx.coroutines.onKeyPressed
 import ktfx.coroutines.onMouseClicked
+import ktfx.jfoenix.jfxCheckBox
 import ktfx.layouts._TitledPane
-import ktfx.layouts.checkBox
 import ktfx.layouts.contextMenu
 import ktfx.layouts.gridPane
 import ktfx.layouts.label
@@ -93,7 +93,7 @@ class AttendeePane(
                 vbox {
                     transaction {
                         Recesses().forEach { recess ->
-                            recessChecks += checkBox(recess.toString()) {
+                            recessChecks += jfxCheckBox(recess.toString()) {
                                 selectedProperty().listener { _, _, selected ->
                                     if (selected) attendee.recesses += recess else attendee.recesses -= recess
                                     attendanceList.forceRefresh()

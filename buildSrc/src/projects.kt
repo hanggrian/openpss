@@ -23,24 +23,24 @@ fun Project.ktlint(
     }
 
     tasks {
-        register("ktlint", JavaExec::class) {
-            "check" {
-                dependsOn(this@register)
-            }
+        val ktlint = register("ktlint", JavaExec::class) {
             group = LifecycleBasePlugin.VERIFICATION_GROUP
             inputs.dir("src")
             outputs.dir("src")
             description = "Check Kotlin code style."
-            classpath(configuration)
+            classpath(configuration.get())
             main = "com.github.shyiko.ktlint.Main"
             args("src/**/*.kt")
+        }
+        "check" {
+            dependsOn(ktlint.get())
         }
         register("ktlintFormat", JavaExec::class) {
             group = "formatting"
             inputs.dir("src")
             outputs.dir("src")
             description = "Fix Kotlin code style deviations."
-            classpath(configuration)
+            classpath(configuration.get())
             main = "com.github.shyiko.ktlint.Main"
             args("-F", "src/**/*.kt")
         }

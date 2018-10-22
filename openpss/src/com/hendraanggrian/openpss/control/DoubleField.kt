@@ -2,11 +2,11 @@
 
 package com.hendraanggrian.openpss.control
 
+import com.jfoenix.controls.JFXTextField
 import javafx.beans.property.BooleanProperty
 import javafx.beans.property.DoubleProperty
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleDoubleProperty
-import javafx.scene.control.TextField
 import ktfx.NodeManager
 import ktfx.annotations.LayoutDsl
 import ktfx.beans.binding.booleanBindingOf
@@ -15,7 +15,7 @@ import ktfx.beans.value.setValue
 import ktfx.coroutines.listener
 import ktfx.listeners.bindBidirectional
 
-open class DoubleField : TextField() {
+open class DoubleField : JFXTextField() {
 
     private val valueProperty = SimpleDoubleProperty()
     fun valueProperty(): DoubleProperty = valueProperty
@@ -48,7 +48,7 @@ fun doubleField(
     init?.invoke(it)
 }
 
-/** Creates a [DoubleField] and add it to this [LayoutManager]. */
+/** Creates a [DoubleField] and add it to this manager. */
 inline fun NodeManager.doubleField(
     noinline init: ((@LayoutDsl DoubleField).() -> Unit)? = null
 ): DoubleField = (com.hendraanggrian.openpss.control.doubleField(init))()

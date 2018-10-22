@@ -5,22 +5,21 @@ import com.hendraanggrian.openpss.control.DoubleField
 import com.hendraanggrian.openpss.control.IntField
 import com.hendraanggrian.openpss.control.doubleField
 import com.hendraanggrian.openpss.control.intField
-import com.hendraanggrian.openpss.popup.popover.ResultablePopover
 import com.hendraanggrian.openpss.db.Titled
 import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.i18n.Resourced
+import com.hendraanggrian.openpss.popup.popover.ResultablePopover
 import javafx.beans.Observable
 import javafx.beans.value.ObservableBooleanValue
+import javafx.scene.control.CheckBox
 import javafx.scene.control.TextField
-import javafx.scene.control.ToggleButton
-import javafx.scene.image.ImageView
 import ktfx.beans.binding.stringBindingOf
 import ktfx.coroutines.listener
+import ktfx.jfoenix.jfxCheckBox
+import ktfx.jfoenix.jfxTextField
 import ktfx.layouts._GridPane
 import ktfx.layouts.gridPane
 import ktfx.layouts.label
-import ktfx.layouts.textField
-import ktfx.layouts.toggleButton
 import ktfx.layouts.tooltip
 import ktfx.scene.layout.gap
 
@@ -39,13 +38,13 @@ abstract class AddOrderPopover<T : Titled>(resourced: Resourced, titleId: String
     protected lateinit var titleField: TextField
     protected lateinit var qtyField: IntField
     protected lateinit var totalField: DoubleField
-    protected lateinit var customizeToggle: ToggleButton
+    protected lateinit var customizeCheck: CheckBox
 
     init {
         gridPane {
             gap = R.dimen.padding_medium.toDouble()
             label(getString(R.string.title)) col 0 row currentRow
-            titleField = textField { promptText = getString(R.string.title) } col 1 colSpans 2 row currentRow
+            titleField = jfxTextField { promptText = getString(R.string.title) } col 1 colSpans 2 row currentRow
             currentRow++
             label(getString(R.string.qty)) col 0 row currentRow
             qtyField = intField { promptText = getString(R.string.qty) } col 1 colSpans 2 row currentRow
@@ -54,7 +53,7 @@ abstract class AddOrderPopover<T : Titled>(resourced: Resourced, titleId: String
             currentRow++
             label(getString(R.string.total)) col 0 row currentRow
             totalField = doubleField { bindTotal() } col 1 row currentRow
-            customizeToggle = toggleButton(graphic = ImageView(R.image.btn_edit_light)) {
+            customizeCheck = jfxCheckBox(getString(R.string.customize)) {
                 tooltip(getString(R.string.customize_total))
                 selectedProperty().listener { _, _, selected ->
                     when {

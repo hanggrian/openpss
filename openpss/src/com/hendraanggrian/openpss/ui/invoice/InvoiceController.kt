@@ -254,7 +254,7 @@ class InvoiceController : ActionController(), Refreshable, Selectable<Invoice>, 
                                 .take(count).toMutableObservableList()
                             val fullAccess = employee.isAdmin().toProperty()
                             invoiceTable.contextMenu {
-                                getString(R.string.view)(ImageView(R.image.btn_invoice_light)) {
+                                getString(R.string.view)(ImageView(R.image.menu_invoice)) {
                                     later { disableProperty().bind(!selectedBinding) }
                                     onAction { viewInvoice() }
                                 }

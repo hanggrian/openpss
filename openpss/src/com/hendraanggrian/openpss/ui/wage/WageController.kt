@@ -125,7 +125,7 @@ class WageController : ActionController() {
         val loadingPane = borderPane {
             prefWidthProperty().bind(anchorPane.widthProperty())
             prefHeightProperty().bind(anchorPane.heightProperty())
-            center = ktfx.layouts.progressIndicator { maxSize = 128.0 }
+            center = ktfx.jfoenix.jfxSpinner { maxSize = 96.0 }
         }
         anchorPane.children += loadingPane
         flowPane.children.clear()

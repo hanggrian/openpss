@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <?import com.hendraanggrian.openpss.control.*?>
-<?import com.hendraanggrian.openpss.control.TimeBox?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.hendraanggrian.openpss.ui.wage.record.WageRecordController"
       fx:id="root">
-    <HBox fx:id="navigationBox" styleClass="navigation-pane" spacing="10">
+    <HBox fx:id="navigationBox" styleClass="navigation-pane" alignment="CENTER" spacing="10">
         <StretchableSplitMenuButton mnemonicParsing="false" fx:id="undoButton" onAction="#undo" stretchPoint="1100"
                                     stretchableText="%undo">
             <ImageView>
@@ -20,27 +19,27 @@
         <StretchableButton mnemonicParsing="false" fx:id="lockStartButton" onAction="#lockStart" stretchPoint="1100"
                            stretchableText="%lock_start_time">
             <ImageView>
-                <Image url="@/image/btn_lock_start_light.png"/>
+                <Image url="@/image/btn_lock_start.png"/>
             </ImageView>
         </StretchableButton>
         <StretchableButton mnemonicParsing="false" fx:id="lockEndButton" onAction="#lockEnd" stretchPoint="1100"
                            stretchableText="%lock_end_time">
             <ImageView>
-                <Image url="@/image/btn_lock_end_light.png"/>
+                <Image url="@/image/btn_lock_end.png"/>
             </ImageView>
         </StretchableButton>
         <Region minWidth="10"/>
         <StretchableButton mnemonicParsing="false" fx:id="disableDailyIncomeButton" onAction="#disableDailyIncome"
                            stretchPoint="1100" stretchableText="%disable_daily_income">
             <ImageView>
-                <Image url="@/image/btn_disable_daily_light.png"/>
+                <Image url="@/image/btn_disable_daily.png"/>
             </ImageView>
         </StretchableButton>
         <Region HBox.hgrow="ALWAYS"/>
         <StretchableButton mnemonicParsing="false" onAction="#screenshot" stretchPoint="1100"
-                           stretchableText="%screenshot" styleClass="default-button">
+                           stretchableText="%screenshot">
             <ImageView>
-                <Image url="@/image/btn_screenshot_dark.png"/>
+                <Image url="@/image/btn_screenshot.png"/>
             </ImageView>
         </StretchableButton>
     </HBox>

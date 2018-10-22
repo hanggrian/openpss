@@ -31,8 +31,12 @@
     -fx-fill: #1e88e5;
 }
 
+.jfx-spinner .arc {
+    -fx-stroke: #1e88e5;
+}
+
 .jfx-tab-pane .tab-header-background {
-    -fx-background-color: rgba(0, 0, 0, 0);
+    -fx-background-color: transparent;
 }
 .jfx-tab-pane .tab-header-area .jfx-rippler {
     -jfx-rippler-fill: #1e88e5;

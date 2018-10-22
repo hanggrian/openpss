@@ -1,6 +1,5 @@
 package com.hendraanggrian.openpss.ui.finance
 
-import com.hendraanggrian.openpss.App.Companion.STYLE_DEFAULT_BUTTON
 import com.hendraanggrian.openpss.PATTERN_DATE
 import com.hendraanggrian.openpss.PATTERN_TIME
 import com.hendraanggrian.openpss.R
@@ -92,11 +91,9 @@ class FinanceController : ActionController(), Refreshable,
         refreshButton = stretchableButton(STRETCH_POINT, getString(R.string.refresh), ImageView(R.image.btn_refresh)) {
             onAction { refresh() }
         }
-        viewTotalButton =
-            stretchableButton(STRETCH_POINT, getString(R.string.total), ImageView(R.image.btn_money_dark)) {
-                styleClass += STYLE_DEFAULT_BUTTON
-                onAction { viewTotal() }
-            }
+        viewTotalButton = stretchableButton(STRETCH_POINT, getString(R.string.total), ImageView(R.image.btn_money)) {
+            onAction { viewTotal() }
+        }
         /*leftActionManager.collection.addAll(
             tabPane.header, space(),
             refreshButton, viewTotalButton
@@ -109,7 +106,7 @@ class FinanceController : ActionController(), Refreshable,
             valueProperty().listener { refresh() }
         }
         tabPane.header.toggleGroup.run {
-            selectedToggleProperty().addListener { _, _, toggle ->
+            selectedToggleProperty().addListener { _, _, _ ->
                 /*val pane = rightActionManager.collection.first() as Pane
                 pane.children.clear()
                 pane.children += when (toggles.indexOf(toggle)) {

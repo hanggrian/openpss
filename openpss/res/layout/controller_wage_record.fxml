@@ -11,7 +11,7 @@
         <StretchableSplitMenuButton mnemonicParsing="false" fx:id="undoButton" onAction="#undo" stretchPoint="1100"
                                     stretchableText="%undo">
             <ImageView>
-                <Image url="@/image/btn_undo_light.png"/>
+                <Image url="@/image/btn_undo.png"/>
             </ImageView>
         </StretchableSplitMenuButton>
         <Region minWidth="10"/>

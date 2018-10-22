@@ -70,7 +70,7 @@ class App : Application(), Resourced {
 
                     stage.isResizable = true
                     stage.title = "$NAME - ${employee.name}".let { if (DEBUG) "$it - DEBUG" else it }
-                    stage.setMinSize(850.0, 600.0)
+                    stage.setMinSize(900.0, 600.0)
 
                     if (employee.isFirstTimeLogin) {
                         ChangePasswordDialog(this).show(controller.dialogContainer) { newPassword ->

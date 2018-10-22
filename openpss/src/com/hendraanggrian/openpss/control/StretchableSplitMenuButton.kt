@@ -60,11 +60,11 @@ fun stretchableSplitMenuButton(
     init?.invoke(it)
 }
 
-/** Creates an [StretchableSplitMenuButton] and add it to this [LayoutManager]. */
+/** Creates an [StretchableSplitMenuButton] and add it to this manager. */
 inline fun NodeManager.stretchableSplitMenuButton(
     stretchPoint: Double,
     adaptableText: String,
     graphic: Node? = null,
     noinline init: ((@LayoutDsl StretchableSplitMenuButton).() -> Unit)? = null
 ): StretchableSplitMenuButton =
-    (com.hendraanggrian.openpss.control.stretchableSplitMenuButton(stretchPoint, adaptableText, graphic, init))()
+    com.hendraanggrian.openpss.control.stretchableSplitMenuButton(stretchPoint, adaptableText, graphic, init)()

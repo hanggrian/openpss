@@ -5,6 +5,7 @@ package com.hendraanggrian.openpss.control
 import com.hendraanggrian.openpss.R
 import javafx.beans.property.ObjectProperty
 import javafx.beans.property.SimpleObjectProperty
+import javafx.geometry.Pos
 import javafx.geometry.Pos.CENTER
 import javafx.scene.control.Button
 import javafx.scene.control.ChoiceBox
@@ -15,8 +16,8 @@ import ktfx.beans.binding.bindingOf
 import ktfx.beans.value.getValue
 import ktfx.collections.toObservableList
 import ktfx.coroutines.onAction
+import ktfx.jfoenix.jfxButton
 import ktfx.layouts._HBox
-import ktfx.layouts.button
 import ktfx.layouts.choiceBox
 import ktfx.listeners.converter
 import org.joda.time.YearMonth
@@ -38,7 +39,8 @@ open class MonthBox @JvmOverloads constructor(prefill: YearMonth = now()) : _HBo
     private var months: Array<String> = getInstance().shortMonths
 
     init {
-        previousButton = button(graphic = ImageView(R.image.btn_previous)) {
+        alignment = Pos.CENTER
+        previousButton = jfxButton(graphic = ImageView(R.image.btn_previous)) {
             onAction {
                 monthBox.value = when (monthBox.value) {
                     0 -> {
@@ -61,7 +63,7 @@ open class MonthBox @JvmOverloads constructor(prefill: YearMonth = now()) : _HBo
             maxWidth = 56.0
             value = prefill.year
         }
-        nextButton = button(graphic = ImageView(R.image.btn_next)) {
+        nextButton = jfxButton(graphic = ImageView(R.image.btn_next)) {
             onAction {
                 monthBox.value = when (monthBox.value) {
                     11 -> {

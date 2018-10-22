@@ -12,6 +12,7 @@ import com.hendraanggrian.openpss.control.dateBox
 import com.hendraanggrian.openpss.control.doneCell
 import com.hendraanggrian.openpss.control.monthBox
 import com.hendraanggrian.openpss.control.numberCell
+import com.hendraanggrian.openpss.control.space
 import com.hendraanggrian.openpss.control.stretchableButton
 import com.hendraanggrian.openpss.control.stringCell
 import com.hendraanggrian.openpss.db.matches
@@ -37,6 +38,7 @@ import javafx.scene.control.Tab
 import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
 import javafx.scene.image.ImageView
+import javafx.scene.layout.Pane
 import ktfx.NodeManager
 import ktfx.application.later
 import ktfx.collections.toMutableObservableList
@@ -73,6 +75,7 @@ class FinanceController : ActionController(), Refreshable,
     @FXML lateinit var monthlyTotalColumn: TableColumn<Report, String>
     @FXML lateinit var viewPaymentsItem: MenuItem
 
+    private lateinit var switchablePane: Pane
     private lateinit var refreshButton: Button
     private lateinit var viewTotalButton: Button
     private lateinit var dateBox: DateBox
@@ -83,7 +86,7 @@ class FinanceController : ActionController(), Refreshable,
     override val selectionModel3: SelectionModel<Report> get() = monthlyTable.selectionModel
 
     override fun NodeManager.onCreateActions() {
-        pane()
+        switchablePane = pane()
     }
 
     override fun initialize(location: URL, resources: ResourceBundle) {
@@ -94,10 +97,10 @@ class FinanceController : ActionController(), Refreshable,
         viewTotalButton = stretchableButton(STRETCH_POINT, getString(R.string.total), ImageView(R.image.btn_money)) {
             onAction { viewTotal() }
         }
-        /*leftActionManager.collection.addAll(
-            tabPane.header, space(),
-            refreshButton, viewTotalButton
-        )*/
+        (actionManager.collection as MutableList<Node>).run {
+            add(0, tabPane.header)
+            addAll(2, listOf(space(), refreshButton, viewTotalButton))
+        }
         dateBox = dateBox {
             valueProperty().listener { refresh() }
         }
@@ -106,13 +109,13 @@ class FinanceController : ActionController(), Refreshable,
             valueProperty().listener { refresh() }
         }
         tabPane.header.toggleGroup.run {
-            selectedToggleProperty().addListener { _, _, _ ->
-                /*val pane = rightActionManager.collection.first() as Pane
-                pane.children.clear()
-                pane.children += when (toggles.indexOf(toggle)) {
-                    0 -> dateBox
-                    else -> monthBox
-                }*/
+            selectedToggleProperty().addListener { _, _, toggle ->
+                switchablePane.children.setAll(
+                    when (toggles.indexOf(toggle)) {
+                        0 -> dateBox
+                        else -> monthBox
+                    }
+                )
             }
         }
 

@@ -60,11 +60,11 @@ fun stretchableMenuButton(
     init?.invoke(it)
 }
 
-/** Creates an [StretchableMenuButton] and add it to this [LayoutManager]. */
+/** Creates an [StretchableMenuButton] and add it to this manager. */
 inline fun NodeManager.stretchableMenuButton(
     stretchPoint: Double,
     adaptableText: String,
     graphic: Node? = null,
     noinline init: ((@LayoutDsl StretchableMenuButton).() -> Unit)? = null
 ): StretchableMenuButton =
-    (com.hendraanggrian.openpss.control.stretchableMenuButton(stretchPoint, adaptableText, graphic, init))()
+    com.hendraanggrian.openpss.control.stretchableMenuButton(stretchPoint, adaptableText, graphic, init)()

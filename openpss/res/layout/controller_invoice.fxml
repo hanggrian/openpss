@@ -30,7 +30,7 @@
         <SplitMenuButton mnemonicParsing="false" fx:id="customerButton" onAction="#selectCustomer">
             <graphic>
                 <ImageView>
-                    <Image url="@/image/btn_customer_light.png"/>
+                    <Image url="@/image/menu_customer.png"/>
                 </ImageView>
             </graphic>
             <items>
@@ -49,7 +49,7 @@
             </fx:define>
             <graphic>
                 <ImageView pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/image/btn_payment_light.png"/>
+                    <Image url="@/image/menu_payment.png"/>
                 </ImageView>
             </graphic>
             <tooltip>

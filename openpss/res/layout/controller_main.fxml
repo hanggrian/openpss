@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXHamburger?>
-<?import com.jfoenix.controls.JFXTabPane?>
-<?import javafx.geometry.Insets?>
+<?import com.hendraanggrian.openpss.control.Space?>
+<?import com.jfoenix.controls.*?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import org.controlsfx.control.NotificationPane?>
 <StackPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
@@ -58,38 +56,58 @@
                         </MenuItem>
                     </Menu>
                 </MenuBar>
-                <AnchorPane VBox.vgrow="ALWAYS">
-                    <JFXTabPane fx:id="tabPane" AnchorPane.bottomAnchor="0" AnchorPane.topAnchor="0"
-                                AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
-                        <Tab closable="false" text="%customer">
-                            <!--suppress ALL -->
-                            <fx:include fx:id="customer" source="controller_customer.fxml"/>
-                        </Tab>
-                        <Tab closable="false" text="%invoice">
-                            <!--suppress ALL -->
-                            <fx:include fx:id="invoice" source="controller_invoice.fxml"/>
-                        </Tab>
-                        <Tab closable="false" text="%schedule">
-                            <!--suppress ALL -->
-                            <fx:include fx:id="schedule" source="controller_schedule.fxml"/>
-                        </Tab>
-                        <Tab closable="false" text="%finance">
-                            <!--suppress ALL -->
-                            <fx:include fx:id="finance" source="controller_finance.fxml"/>
-                        </Tab>
-                        <Tab closable="false" text="%wage">
-                            <!--suppress ALL -->
-                            <fx:include fx:id="wage" source="controller_wage.fxml"/>
-                        </Tab>
-                    </JFXTabPane>
-                    <JFXHamburger fx:id="hamburger" AnchorPane.topAnchor="13" AnchorPane.leftAnchor="10"/>
-                    <HBox fx:id="actionBox" spacing="10" alignment="CENTER" AnchorPane.topAnchor="0"
-                          AnchorPane.rightAnchor="0">
-                        <padding>
-                            <Insets topRightBottomLeft="6"/>
-                        </padding>
-                    </HBox>
-                </AnchorPane>
+                <JFXDrawer fx:id="drawer" defaultDrawerSize="250" VBox.vgrow="ALWAYS">
+                    <sidePane>
+                        <VBox>
+                            <AnchorPane>
+                                <ImageView>
+                                    <Image url="@/image/bg.png"/>
+                                </ImageView>
+                                <Label fx:id="employeeLabel" AnchorPane.leftAnchor="20" AnchorPane.bottomAnchor="10"/>
+                            </AnchorPane>
+                            <JFXListView fx:id="drawerList" VBox.vgrow="ALWAYS">
+                                <Label text="%customer"/>
+                                <Label text="%invoice"/>
+                                <Label text="%schedule"/>
+                                <Label text="%finance"/>
+                                <Label text="%wage"/>
+                            </JFXListView>
+                        </VBox>
+                    </sidePane>
+                    <content>
+                        <VBox>
+                            <JFXToolbar fx:id="toolbar">
+                                <leftItems>
+                                    <JFXHamburger fx:id="hamburger" prefWidth="25"/>
+                                    <Label fx:id="titleLabel" styleClass="display-label2"/>
+                                    <Space/>
+                                </leftItems>
+                            </JFXToolbar>
+                            <JFXTabPane fx:id="tabPane" VBox.vgrow="ALWAYS">
+                                <Tab closable="false" text="%customer">
+                                    <!--suppress ALL -->
+                                    <fx:include fx:id="customer" source="controller_customer.fxml"/>
+                                </Tab>
+                                <Tab closable="false" text="%invoice">
+                                    <!--suppress ALL -->
+                                    <fx:include fx:id="invoice" source="controller_invoice.fxml"/>
+                                </Tab>
+                                <Tab closable="false" text="%schedule">
+                                    <!--suppress ALL -->
+                                    <fx:include fx:id="schedule" source="controller_schedule.fxml"/>
+                                </Tab>
+                                <Tab closable="false" text="%finance">
+                                    <!--suppress ALL -->
+                                    <fx:include fx:id="finance" source="controller_finance.fxml"/>
+                                </Tab>
+                                <Tab closable="false" text="%wage">
+                                    <!--suppress ALL -->
+                                    <fx:include fx:id="wage" source="controller_wage.fxml"/>
+                                </Tab>
+                            </JFXTabPane>
+                        </VBox>
+                    </content>
+                </JFXDrawer>
             </VBox>
         </content>
     </NotificationPane>

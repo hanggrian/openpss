@@ -11,6 +11,7 @@ import com.hendraanggrian.openpss.ui.ActionController
 import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.Selectable
+import com.hendraanggrian.openpss.ui.Selectable2
 import com.hendraanggrian.openpss.ui.customer.CustomerController
 import com.hendraanggrian.openpss.ui.finance.FinanceController
 import com.hendraanggrian.openpss.ui.invoice.InvoiceController
@@ -23,20 +24,25 @@ import com.hendraanggrian.openpss.ui.schedule.ScheduleController
 import com.hendraanggrian.openpss.ui.wage.EditRecessDialog
 import com.hendraanggrian.openpss.ui.wage.WageController
 import com.hendraanggrian.openpss.util.forceExit
+import com.jfoenix.controls.JFXDrawer
 import com.jfoenix.controls.JFXHamburger
-import com.jfoenix.controls.JFXTabPane
+import com.jfoenix.controls.JFXListView
+import com.jfoenix.controls.JFXToolbar
 import com.jfoenix.transitions.hamburger.HamburgerSlideCloseTransition
+import javafx.animation.Animation
 import javafx.event.ActionEvent
 import javafx.fxml.FXML
+import javafx.scene.control.Label
 import javafx.scene.control.MenuBar
 import javafx.scene.control.MenuItem
 import javafx.scene.control.SelectionModel
 import javafx.scene.control.Tab
+import javafx.scene.control.TabPane
 import javafx.scene.input.MouseEvent
-import javafx.scene.layout.HBox
 import javafx.scene.layout.StackPane
 import kotlinx.coroutines.experimental.delay
 import ktfx.application.later
+import ktfx.beans.binding.stringBindingOf
 import ktfx.coroutines.listener
 import ktfx.scene.control.errorAlert
 import org.apache.commons.lang3.SystemUtils.IS_OS_MAC
@@ -44,9 +50,9 @@ import org.controlsfx.control.NotificationPane
 import java.net.URL
 import java.util.ResourceBundle
 
-class MainController : Controller(), Selectable<Tab> {
+class MainController : Controller(), Selectable<Tab>, Selectable2<Label> {
 
-    @FXML override lateinit var dialogContainer: StackPane // jfx dialog container
+    @FXML override lateinit var dialogContainer: StackPane
     @FXML lateinit var notificationPane: NotificationPane
     @FXML lateinit var menuBar: MenuBar
     @FXML lateinit var addCustomerItem: MenuItem
@@ -57,9 +63,13 @@ class MainController : Controller(), Selectable<Tab> {
     @FXML lateinit var employeeItem: MenuItem
     @FXML lateinit var recessItem: MenuItem
     @FXML lateinit var preferencesItem: MenuItem
-    @FXML lateinit var tabPane: JFXTabPane
+    @FXML lateinit var drawer: JFXDrawer
+    @FXML lateinit var drawerList: JFXListView<Label>
+    @FXML lateinit var toolbar: JFXToolbar
     @FXML lateinit var hamburger: JFXHamburger
-    @FXML lateinit var actionBox: HBox
+    @FXML lateinit var employeeLabel: Label
+    @FXML lateinit var titleLabel: Label
+    @FXML lateinit var tabPane: TabPane
     @FXML lateinit var customerController: CustomerController
     @FXML lateinit var invoiceController: InvoiceController
     @FXML lateinit var scheduleController: ScheduleController
@@ -67,6 +77,8 @@ class MainController : Controller(), Selectable<Tab> {
     @FXML lateinit var wageController: WageController
 
     override val selectionModel: SelectionModel<Tab> get() = tabPane.selectionModel
+    override val selectionModel2: SelectionModel<Label> get() = drawerList.selectionModel
+
     private val controllers
         get() = mutableListOf(
             customerController,
@@ -82,12 +94,17 @@ class MainController : Controller(), Selectable<Tab> {
         super.initialize(location, resources)
         menuBar.isUseSystemMenuBar = IS_OS_MAC
 
-        val burgerTask = HamburgerSlideCloseTransition(hamburger)
-        burgerTask.rate = -1.0
-        hamburger.addEventHandler(MouseEvent.MOUSE_PRESSED) { _ ->
-            burgerTask.rate = burgerTask.rate * -1
-            burgerTask.play()
+        selectFirst2()
+        selectedProperty2.listener { _, _, _ ->
+            select(selectedIndex2)
+            drawer.toggle()
         }
+        titleLabel.textProperty().bind(stringBindingOf(selectedProperty) { selected!!.text })
+
+        val transition = HamburgerSlideCloseTransition(hamburger).apply { rate = -1.0 }
+        drawer.setOnDrawerOpening { transition.toggle() }
+        drawer.setOnDrawerClosing { transition.toggle() }
+        hamburger.addEventHandler(MouseEvent.MOUSE_PRESSED) { _ -> drawer.toggle() }
 
         customerController.replaceButtons()
         selectedIndexProperty.listener { _, _, value ->
@@ -104,6 +121,7 @@ class MainController : Controller(), Selectable<Tab> {
         }
 
         later {
+            employeeLabel.text = employee.name
             controllers.forEach {
                 it.employee = employee
                 it.dialogContainer = dialogContainer
@@ -164,7 +182,12 @@ class MainController : Controller(), Selectable<Tab> {
 
     @FXML fun about() = AboutDialog(this).show()
 
-    private fun ActionController.replaceButtons() = actionBox.children.setAll(actionManager.collection)
+    private fun Animation.toggle() {
+        rate *= -1
+        play()
+    }
+
+    private fun ActionController.replaceButtons() = toolbar.setRightItems(*actionManager.collection.toTypedArray())
 
     private inline fun <T : ActionController> select(controller: T, run: T.() -> Unit) {
         select(controllers.indexOf(controller))

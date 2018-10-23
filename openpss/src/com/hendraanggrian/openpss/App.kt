@@ -1,7 +1,6 @@
 package com.hendraanggrian.openpss
 
 import com.hendraanggrian.openpss.BuildConfig.DEBUG
-import com.hendraanggrian.openpss.BuildConfig.NAME
 import com.hendraanggrian.openpss.db.schemas.Employees
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.i18n.Resourced
@@ -34,6 +33,7 @@ class App : Application(), Resourced {
         const val STYLE_BUTTON_FLAT = "button-flat"
         const val STYLE_BUTTON_RAISED = "button-raised"
 
+        const val STYLE_HIDDEN_TAB_PANE = "hidden-tab-pane"
         const val STYLE_NAVIGATION_PANE = "navigation-pane"
         const val STYLE_DISPLAY_LABEL = "display-label"
         const val STYLE_DEFAULT_BUTTON = "default-button"
@@ -69,8 +69,8 @@ class App : Application(), Resourced {
                     controller.employee = employee
 
                     stage.isResizable = true
-                    stage.title = "$NAME - ${employee.name}".let { if (DEBUG) "$it - DEBUG" else it }
-                    stage.setMinSize(900.0, 600.0)
+                    stage.title = BuildConfig.NAME.let { if (BuildConfig.DEBUG) "$it - DEBUG" else it }
+                    stage.setMinSize(800.0, 600.0)
 
                     if (employee.isFirstTimeLogin) {
                         ChangePasswordDialog(this).show(controller.dialogContainer) { newPassword ->

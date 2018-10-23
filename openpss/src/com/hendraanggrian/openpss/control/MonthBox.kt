@@ -8,7 +8,7 @@ import javafx.beans.property.SimpleObjectProperty
 import javafx.geometry.Pos
 import javafx.geometry.Pos.CENTER
 import javafx.scene.control.Button
-import javafx.scene.control.ChoiceBox
+import javafx.scene.control.ComboBox
 import javafx.scene.image.ImageView
 import ktfx.NodeManager
 import ktfx.annotations.LayoutDsl
@@ -17,8 +17,8 @@ import ktfx.beans.value.getValue
 import ktfx.collections.toObservableList
 import ktfx.coroutines.onAction
 import ktfx.jfoenix.jfxButton
+import ktfx.jfoenix.jfxComboBox
 import ktfx.layouts._HBox
-import ktfx.layouts.choiceBox
 import ktfx.listeners.converter
 import org.joda.time.YearMonth
 import org.joda.time.YearMonth.now
@@ -27,7 +27,7 @@ import java.util.Locale
 
 open class MonthBox @JvmOverloads constructor(prefill: YearMonth = now()) : _HBox(0.0) {
 
-    lateinit var monthBox: ChoiceBox<Int>
+    lateinit var monthBox: ComboBox<Int>
     lateinit var yearField: IntField
     var previousButton: Button
     var nextButton: Button
@@ -51,7 +51,7 @@ open class MonthBox @JvmOverloads constructor(prefill: YearMonth = now()) : _HBo
                 }
             }
         }
-        monthBox = choiceBox((0 until 12).toObservableList()) {
+        monthBox = jfxComboBox((0 until 12).toObservableList()) {
             value = prefill.monthOfYear - 1
             converter {
                 toString { months[it!!] }

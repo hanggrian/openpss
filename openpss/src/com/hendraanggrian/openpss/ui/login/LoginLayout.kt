@@ -37,12 +37,12 @@ import ktfx.collections.toObservableList
 import ktfx.coroutines.listener
 import ktfx.coroutines.onAction
 import ktfx.jfoenix.jfxButton
+import ktfx.jfoenix.jfxComboBox
 import ktfx.jfoenix.jfxPasswordField
 import ktfx.jfoenix.jfxTextField
 import ktfx.jfoenix.jfxToggleButton
 import ktfx.layouts._StackPane
 import ktfx.layouts.anchorPane
-import ktfx.layouts.choiceBox
 import ktfx.layouts.gridPane
 import ktfx.layouts.hbox
 import ktfx.layouts.hyperlink
@@ -110,7 +110,7 @@ class LoginLayout(resourced: Resourced) : _StackPane(), Resourced by resourced {
             gap = 8.0
             paddingAll = 8.0
             label(getString(R.string.language)) row 0 col 0 hpriority Priority.ALWAYS halign HPos.RIGHT
-            choiceBox(Language.values().toObservableList()) {
+            jfxComboBox(Language.values().toObservableList()) {
                 selectionModel.select(PreferencesFile.language)
                 valueProperty().listener(Dispatchers.Default) { _, _, value ->
                     PreferencesFile.language = value

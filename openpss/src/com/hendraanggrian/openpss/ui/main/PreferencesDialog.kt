@@ -16,7 +16,7 @@ import com.hendraanggrian.openpss.popup.dialog.Dialog
 import com.hendraanggrian.openpss.ui.wage.readers.Reader
 import com.jfoenix.controls.JFXButton
 import javafx.geometry.Pos.CENTER_LEFT
-import javafx.scene.control.ChoiceBox
+import javafx.scene.control.ComboBox
 import javafx.scene.control.TextArea
 import javafx.scene.layout.HBox
 import javafx.scene.layout.VBox
@@ -28,9 +28,9 @@ import ktfx.beans.value.and
 import ktfx.collections.toObservableList
 import ktfx.coroutines.listener
 import ktfx.jfoenix.jfxButton
+import ktfx.jfoenix.jfxComboBox
 import ktfx.layouts._HBox
 import ktfx.layouts._VBox
-import ktfx.layouts.choiceBox
 import ktfx.layouts.gridPane
 import ktfx.layouts.hbox
 import ktfx.layouts.label
@@ -52,9 +52,8 @@ class PreferencesDialog(
     private var isGlobalChanged = false.toMutableProperty()
 
     private lateinit var invoiceHeadersArea: TextArea
-    private lateinit var wageReaderChoice: ChoiceBox<Any>
-
-    private lateinit var languageBox: ChoiceBox<Language>
+    private lateinit var wageReaderChoice: ComboBox<Any>
+    private lateinit var languageBox: ComboBox<Language>
 
     init {
         vbox {
@@ -62,7 +61,7 @@ class PreferencesDialog(
             group(R.string.wage) {
                 item {
                     label(getString(R.string.reader))
-                    wageReaderChoice = choiceBox(Reader.listAll()) {
+                    wageReaderChoice = jfxComboBox(Reader.listAll()) {
                         value = Reader.of(WAGE_READER)
                         valueProperty().listener { _, _, value ->
                             isLocalChanged.set(true)
@@ -78,7 +77,7 @@ class PreferencesDialog(
                     gap = R.dimen.padding_medium.toDouble()
                     transaction {
                         label(getString(R.string.server_language)) row 0 col 0
-                        languageBox = choiceBox(Language.values().toObservableList()) {
+                        languageBox = jfxComboBox(Language.values().toObservableList()) {
                             converter { toString { it!!.toString(true) } }
                             selectionModel.select(Language.ofFullCode(findGlobalSettings(KEY_LANGUAGE).single().value))
                             valueProperty().listener { isGlobalChanged.set(true) }

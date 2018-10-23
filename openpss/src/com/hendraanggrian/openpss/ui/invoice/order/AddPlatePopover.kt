@@ -10,25 +10,25 @@ import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.i18n.Resourced
 import javafx.beans.Observable
 import javafx.beans.value.ObservableBooleanValue
-import javafx.scene.control.ChoiceBox
+import javafx.scene.control.ComboBox
 import ktfx.beans.value.isBlank
 import ktfx.beans.value.lessEq
 import ktfx.beans.value.or
 import ktfx.collections.toObservableList
 import ktfx.coroutines.listener
+import ktfx.jfoenix.jfxComboBox
 import ktfx.layouts._GridPane
-import ktfx.layouts.choiceBox
 import ktfx.layouts.label
 
 class AddPlatePopover(resourced: Resourced) : AddOrderPopover<Invoice.Plate>(resourced, R.string.add_plate),
     Invoice.Order {
 
-    private lateinit var machineChoice: ChoiceBox<PlatePrice>
+    private lateinit var machineChoice: ComboBox<PlatePrice>
     private lateinit var priceField: DoubleField
 
     override fun _GridPane.onCreateContent() {
         label(getString(R.string.machine)) col 0 row currentRow
-        machineChoice = choiceBox(transaction { PlatePrices().toObservableList() }) {
+        machineChoice = jfxComboBox(transaction { PlatePrices().toObservableList() }) {
             valueProperty().listener { _, _, plate ->
                 priceField.value = plate.price
             }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXHamburger?>
 <?import com.jfoenix.controls.JFXTabPane?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
@@ -81,6 +82,7 @@
                             <fx:include fx:id="wage" source="controller_wage.fxml"/>
                         </Tab>
                     </JFXTabPane>
+                    <JFXHamburger fx:id="hamburger" AnchorPane.topAnchor="13" AnchorPane.leftAnchor="10"/>
                     <HBox fx:id="actionBox" spacing="10" alignment="CENTER" AnchorPane.topAnchor="0"
                           AnchorPane.rightAnchor="0">
                         <padding>

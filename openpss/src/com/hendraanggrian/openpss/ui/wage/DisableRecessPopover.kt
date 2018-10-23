@@ -7,14 +7,14 @@ import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.i18n.Resourced
 import com.hendraanggrian.openpss.popup.popover.Popover
 import com.jfoenix.controls.JFXButton
-import javafx.scene.control.ChoiceBox
+import javafx.scene.control.ComboBox
 import javafx.scene.control.Separator
 import ktfx.beans.value.or
 import ktfx.collections.mutableObservableListOf
 import ktfx.collections.toObservableList
 import ktfx.coroutines.onAction
 import ktfx.jfoenix.jfxButton
-import ktfx.layouts.choiceBox
+import ktfx.jfoenix.jfxComboBox
 import ktfx.layouts.gridPane
 import ktfx.layouts.label
 import ktfx.scene.layout.gap
@@ -24,20 +24,20 @@ class DisableRecessPopover(
     private val attendeePanes: List<AttendeePane>
 ) : Popover(resourced, R.string.disable_recess) {
 
-    private lateinit var recessChoice: ChoiceBox<*>
-    private lateinit var roleChoice: ChoiceBox<*>
+    private lateinit var recessChoice: ComboBox<*>
+    private lateinit var roleChoice: ComboBox<*>
 
     init {
         gridPane {
             gap = R.dimen.padding_medium.toDouble()
             label(getString(R.string.recess)) col 0 row 0
-            recessChoice = choiceBox(
+            recessChoice = jfxComboBox(
                 mutableObservableListOf(getString(R.string.all),
                     Separator(),
                     *transaction { Recesses().toObservableList().toTypedArray() })
             ) { selectionModel.selectFirst() } col 1 row 0
             label(getString(R.string.employee)) col 0 row 1
-            roleChoice = choiceBox(mutableObservableListOf(
+            roleChoice = jfxComboBox(mutableObservableListOf(
                 *attendees.asSequence().filter { it.role != null }.map { it.role!! }.distinct().toList().toTypedArray(),
                 Separator(),
                 *attendees.toTypedArray()

@@ -1,16 +1,16 @@
 package com.hendraanggrian.openpss.ui.customer
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.popup.popover.ResultablePopover
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Customer.Contact.Type.PHONE
 import com.hendraanggrian.openpss.db.schemas.Customer.Contact.Type.values
 import com.hendraanggrian.openpss.i18n.Resourced
-import javafx.scene.control.ChoiceBox
+import com.hendraanggrian.openpss.popup.popover.ResultablePopover
+import javafx.scene.control.ComboBox
 import javafx.scene.control.TextField
 import ktfx.beans.binding.booleanBindingOf
 import ktfx.collections.toObservableList
-import ktfx.layouts.choiceBox
+import ktfx.jfoenix.jfxComboBox
 import ktfx.layouts.gridPane
 import ktfx.layouts.label
 import ktfx.layouts.textField
@@ -29,14 +29,14 @@ class AddContactPopover(resourced: Resourced) : ResultablePopover<Customer.Conta
         )
     }
 
-    private lateinit var typeChoice: ChoiceBox<Customer.Contact.Type>
+    private lateinit var typeChoice: ComboBox<Customer.Contact.Type>
     private lateinit var contactField: TextField
 
     init {
         gridPane {
             gap = R.dimen.padding_medium.toDouble()
             label(getString(R.string.type)) col 0 row 0
-            typeChoice = choiceBox(values().toObservableList()) {
+            typeChoice = jfxComboBox(values().toObservableList()) {
                 converter { toString { it!!.toString(this@AddContactPopover) } }
             } col 1 row 0
             label(getString(R.string.contact)) col 0 row 1

@@ -23,13 +23,16 @@ import com.hendraanggrian.openpss.ui.schedule.ScheduleController
 import com.hendraanggrian.openpss.ui.wage.EditRecessDialog
 import com.hendraanggrian.openpss.ui.wage.WageController
 import com.hendraanggrian.openpss.util.forceExit
+import com.jfoenix.controls.JFXHamburger
 import com.jfoenix.controls.JFXTabPane
+import com.jfoenix.transitions.hamburger.HamburgerSlideCloseTransition
 import javafx.event.ActionEvent
 import javafx.fxml.FXML
 import javafx.scene.control.MenuBar
 import javafx.scene.control.MenuItem
 import javafx.scene.control.SelectionModel
 import javafx.scene.control.Tab
+import javafx.scene.input.MouseEvent
 import javafx.scene.layout.HBox
 import javafx.scene.layout.StackPane
 import kotlinx.coroutines.experimental.delay
@@ -55,6 +58,7 @@ class MainController : Controller(), Selectable<Tab> {
     @FXML lateinit var recessItem: MenuItem
     @FXML lateinit var preferencesItem: MenuItem
     @FXML lateinit var tabPane: JFXTabPane
+    @FXML lateinit var hamburger: JFXHamburger
     @FXML lateinit var actionBox: HBox
     @FXML lateinit var customerController: CustomerController
     @FXML lateinit var invoiceController: InvoiceController
@@ -77,7 +81,13 @@ class MainController : Controller(), Selectable<Tab> {
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
         menuBar.isUseSystemMenuBar = IS_OS_MAC
-        // navigationPane.center = tabPane.header
+
+        val burgerTask = HamburgerSlideCloseTransition(hamburger)
+        burgerTask.rate = -1.0
+        hamburger.addEventHandler(MouseEvent.MOUSE_PRESSED) { _ ->
+            burgerTask.rate = burgerTask.rate * -1
+            burgerTask.play()
+        }
 
         customerController.replaceButtons()
         selectedIndexProperty.listener { _, _, value ->

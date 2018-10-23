@@ -12,29 +12,29 @@ import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.i18n.Resourced
 import javafx.beans.Observable
 import javafx.beans.value.ObservableBooleanValue
-import javafx.scene.control.ChoiceBox
+import javafx.scene.control.ComboBox
 import ktfx.beans.value.isBlank
 import ktfx.beans.value.lessEq
 import ktfx.beans.value.or
 import ktfx.collections.toObservableList
 import ktfx.coroutines.listener
+import ktfx.jfoenix.jfxComboBox
 import ktfx.layouts._GridPane
-import ktfx.layouts.choiceBox
 import ktfx.layouts.label
 import ktfx.listeners.converter
 
 class AddOffsetPopover(resourced: Resourced) : AddOrderPopover<Invoice.Offset>(resourced, R.string.add_offset),
     Invoice.Order {
 
-    private lateinit var machineChoice: ChoiceBox<OffsetPrice>
-    private lateinit var techniqueChoice: ChoiceBox<Invoice.Offset.Technique>
+    private lateinit var machineChoice: ComboBox<OffsetPrice>
+    private lateinit var techniqueChoice: ComboBox<Invoice.Offset.Technique>
     private lateinit var minQtyField: IntField
     private lateinit var minPriceField: DoubleField
     private lateinit var excessPriceField: DoubleField
 
     override fun _GridPane.onCreateContent() {
         label(getString(R.string.machine)) col 0 row currentRow
-        machineChoice = choiceBox(transaction { OffsetPrices().toObservableList() }) {
+        machineChoice = jfxComboBox(transaction { OffsetPrices().toObservableList() }) {
             valueProperty().listener { _, _, offset ->
                 minQtyField.value = offset.minQty
                 minPriceField.value = offset.minPrice
@@ -43,7 +43,7 @@ class AddOffsetPopover(resourced: Resourced) : AddOrderPopover<Invoice.Offset>(r
         } col 1 colSpans 2 row currentRow
         currentRow++
         label(getString(R.string.technique)) col 0 row currentRow
-        techniqueChoice = choiceBox(Invoice.Offset.Technique.values().toObservableList()) {
+        techniqueChoice = jfxComboBox(Invoice.Offset.Technique.values().toObservableList()) {
             converter { toString { it!!.toString(this@AddOffsetPopover) } }
             selectionModel.selectFirst()
         } col 1 colSpans 2 row currentRow

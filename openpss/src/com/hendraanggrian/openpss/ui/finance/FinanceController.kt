@@ -5,14 +5,12 @@ import com.hendraanggrian.openpss.PATTERN_TIME
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.DateBox
 import com.hendraanggrian.openpss.control.MonthBox
-import com.hendraanggrian.openpss.control.SegmentedTabPane
 import com.hendraanggrian.openpss.control.SegmentedTabPane.Companion.STRETCH_POINT
 import com.hendraanggrian.openpss.control.currencyCell
 import com.hendraanggrian.openpss.control.dateBox
 import com.hendraanggrian.openpss.control.doneCell
 import com.hendraanggrian.openpss.control.monthBox
 import com.hendraanggrian.openpss.control.numberCell
-import com.hendraanggrian.openpss.control.space
 import com.hendraanggrian.openpss.control.stretchableButton
 import com.hendraanggrian.openpss.control.stringCell
 import com.hendraanggrian.openpss.db.matches
@@ -35,6 +33,7 @@ import javafx.scene.control.Button
 import javafx.scene.control.MenuItem
 import javafx.scene.control.SelectionModel
 import javafx.scene.control.Tab
+import javafx.scene.control.TabPane
 import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
 import javafx.scene.image.ImageView
@@ -57,7 +56,7 @@ class FinanceController : ActionController(), Refreshable,
         const val EXTRA_MAIN_CONTROLLER = "EXTRA_MAIN_CONTROLLER"
     }
 
-    @FXML lateinit var tabPane: SegmentedTabPane
+    @FXML lateinit var tabPane: TabPane
 
     @FXML lateinit var dailyTable: TableView<Payment>
     @FXML lateinit var dailyNoColumn: TableColumn<Payment, String>
@@ -97,10 +96,10 @@ class FinanceController : ActionController(), Refreshable,
         viewTotalButton = stretchableButton(STRETCH_POINT, getString(R.string.total), ImageView(R.image.btn_money)) {
             onAction { viewTotal() }
         }
-        (actionManager.collection as MutableList<Node>).run {
+        /*(actionManager.collection as MutableList<Node>).run {
             add(0, tabPane.header)
             addAll(2, listOf(space(), refreshButton, viewTotalButton))
-        }
+        }*/
         dateBox = dateBox {
             valueProperty().listener { refresh() }
         }
@@ -108,7 +107,7 @@ class FinanceController : ActionController(), Refreshable,
             setLocale(PreferencesFile.language.toLocale())
             valueProperty().listener { refresh() }
         }
-        tabPane.header.toggleGroup.run {
+        /*tabPane.header.toggleGroup.run {
             selectedToggleProperty().addListener { _, _, toggle ->
                 switchablePane.children.setAll(
                     when (toggles.indexOf(toggle)) {
@@ -117,7 +116,7 @@ class FinanceController : ActionController(), Refreshable,
                     }
                 )
             }
-        }
+        }*/
 
         dailyNoColumn.numberCell { transaction { Invoices[invoiceId].single().no } }
         dailyTimeColumn.stringCell { dateTime.toString(PATTERN_TIME) }

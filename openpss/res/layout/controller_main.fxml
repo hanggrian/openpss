@@ -66,11 +66,41 @@
                                 <Label fx:id="employeeLabel" AnchorPane.leftAnchor="20" AnchorPane.bottomAnchor="10"/>
                             </AnchorPane>
                             <JFXListView fx:id="drawerList" VBox.vgrow="ALWAYS">
-                                <Label text="%customer"/>
-                                <Label text="%invoice"/>
-                                <Label text="%schedule"/>
-                                <Label text="%finance"/>
-                                <Label text="%wage"/>
+                                <Label styleClass="drawer-item" text="%customer">
+                                    <graphic>
+                                        <ImageView>
+                                            <Image url="@/image/tab_customer.png"/>
+                                        </ImageView>
+                                    </graphic>
+                                </Label>
+                                <Label styleClass="drawer-item" text="%invoice">
+                                    <graphic>
+                                        <ImageView>
+                                            <Image url="@/image/tab_invoice.png"/>
+                                        </ImageView>
+                                    </graphic>
+                                </Label>
+                                <Label styleClass="drawer-item" text="%schedule">
+                                    <graphic>
+                                        <ImageView>
+                                            <Image url="@/image/tab_schedule.png"/>
+                                        </ImageView>
+                                    </graphic>
+                                </Label>
+                                <Label styleClass="drawer-item" text="%finance">
+                                    <graphic>
+                                        <ImageView>
+                                            <Image url="@/image/tab_finance.png"/>
+                                        </ImageView>
+                                    </graphic>
+                                </Label>
+                                <Label styleClass="drawer-item" text="%wage">
+                                    <graphic>
+                                        <ImageView>
+                                            <Image url="@/image/tab_wage.png"/>
+                                        </ImageView>
+                                    </graphic>
+                                </Label>
                             </JFXListView>
                         </VBox>
                     </sidePane>
@@ -83,7 +113,7 @@
                                     <Space/>
                                 </leftItems>
                             </JFXToolbar>
-                            <JFXTabPane fx:id="tabPane" VBox.vgrow="ALWAYS">
+                            <JFXTabPane fx:id="tabPane" VBox.vgrow="ALWAYS" styleClass="hidden-tab-pane">
                                 <Tab closable="false" text="%customer">
                                     <!--suppress ALL -->
                                     <fx:include fx:id="customer" source="controller_customer.fxml"/>

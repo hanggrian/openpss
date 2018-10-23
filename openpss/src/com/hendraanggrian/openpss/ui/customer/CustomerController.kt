@@ -47,9 +47,9 @@ import ktfx.collections.emptyObservableList
 import ktfx.collections.toMutableObservableList
 import ktfx.collections.toObservableList
 import ktfx.coroutines.onAction
+import ktfx.jfoenix.jfxListView
 import ktfx.jfoenix.jfxTextField
 import ktfx.layouts.contextMenu
-import ktfx.layouts.listView
 import ktfx.layouts.tooltip
 import ktfx.scene.control.errorAlert
 import org.controlsfx.control.MasterDetailPane
@@ -114,7 +114,7 @@ class CustomerController : ActionController(), Refreshable, Selectable<Customer>
     override fun refresh() = later {
         customerPagination.contentFactoryProperty().bind(bindingOf(searchField.textProperty()) {
             Callback<Pair<Int, Int>, Node> { (page, count) ->
-                customerList = listView {
+                customerList = jfxListView {
                     later {
                         transaction {
                             val customers = Customers.buildQuery {

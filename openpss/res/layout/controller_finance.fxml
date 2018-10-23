@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.hendraanggrian.openpss.control.SegmentedTabPane?>
+<?import com.jfoenix.controls.JFXTabPane?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
-<SegmentedTabPane xmlns="http://javafx.com/javafx"
-                  xmlns:fx="http://javafx.com/fxml"
-                  fx:controller="com.hendraanggrian.openpss.ui.finance.FinanceController"
-                  fx:id="tabPane" textStretchable="true">
+<JFXTabPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.hendraanggrian.openpss.ui.finance.FinanceController"
+            fx:id="tabPane">
     <Tab closable="false" text="%daily">
         <graphic>
             <ImageView>
@@ -66,4 +66,4 @@
             </contextMenu>
         </TableView>
     </Tab>
-</SegmentedTabPane>
+</JFXTabPane>

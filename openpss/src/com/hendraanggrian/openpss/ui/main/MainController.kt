@@ -196,6 +196,6 @@ class MainController : Controller(), Selectable<Tab>, Selectable2<Label> {
 
     private suspend inline fun fixFinanceTab(index: Int) {
         delay(100)
-        financeController.tabPane.header.buttons[index].requestFocus()
+        // financeController.tabPane.header.buttons[index].requestFocus()
     }
 }

@@ -3,6 +3,7 @@ package com.hendraanggrian.openpss.popup.popover
 import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.i18n.Resourced
+import com.hendraanggrian.openpss.popup.dialog.Dialog
 import com.hendraanggrian.openpss.util.getColor
 import com.jfoenix.controls.JFXPopup
 import com.jfoenix.skins.JFXPopupSkin
@@ -30,7 +31,7 @@ import org.controlsfx.control.PopOver
 
 /** Base [PopOver] class used across applications. */
 open class Popover(
-    resourced: Resourced,
+    private val resourced: Resourced,
     titleId: String
 ) : JFXPopup(), Resourced by resourced, NodeManager {
 
@@ -73,8 +74,8 @@ open class Popover(
     override fun show(node: Node) {
         val selectedIndex = (node as? TableView<*>)?.selectionModel?.selectedIndex
             ?: (node as? ListView<*>)?.selectionModel?.selectedIndex
-        when (selectedIndex) {
-            null -> super.show(node)
+        when {
+            selectedIndex == null || resourced is Dialog -> super.show(node)
             else -> {
                 val bounds = node.localToScreen(node.boundsInLocal)
                 super.show(

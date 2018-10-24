@@ -37,14 +37,16 @@ import javafx.scene.control.TabPane
 import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
 import javafx.scene.image.ImageView
-import javafx.scene.layout.Pane
+import javafx.scene.layout.BorderPane
 import ktfx.NodeManager
 import ktfx.application.later
+import ktfx.beans.binding.`when`
+import ktfx.beans.value.eq
 import ktfx.collections.toMutableObservableList
 import ktfx.coroutines.listener
 import ktfx.coroutines.onAction
 import ktfx.coroutines.onMouseClicked
-import ktfx.layouts.pane
+import ktfx.layouts.borderPane
 import ktfx.scene.input.isDoubleClick
 import java.net.URL
 import java.util.ResourceBundle
@@ -74,7 +76,7 @@ class FinanceController : ActionController(), Refreshable,
     @FXML lateinit var monthlyTotalColumn: TableColumn<Report, String>
     @FXML lateinit var viewPaymentsItem: MenuItem
 
-    private lateinit var switchablePane: Pane
+    private lateinit var switchablePane: BorderPane
     private lateinit var refreshButton: Button
     private lateinit var viewTotalButton: Button
     private lateinit var dateBox: DateBox
@@ -85,7 +87,7 @@ class FinanceController : ActionController(), Refreshable,
     override val selectionModel3: SelectionModel<Report> get() = monthlyTable.selectionModel
 
     override fun NodeManager.onCreateActions() {
-        switchablePane = pane()
+        switchablePane = borderPane()
         refreshButton = stretchableButton(STRETCH_POINT, getString(R.string.refresh), ImageView(R.image.act_refresh)) {
             onAction { refresh() }
         }
@@ -103,14 +105,7 @@ class FinanceController : ActionController(), Refreshable,
             setLocale(PreferencesFile.language.toLocale())
             valueProperty().listener { refresh() }
         }
-        selectedProperty.listener { _, _, tab ->
-            switchablePane.children.setAll(
-                when (tabPane.tabs.indexOf(tab)) {
-                    0 -> dateBox
-                    else -> monthBox
-                }
-            )
-        }
+        switchablePane.centerProperty().bind(`when`(selectedIndexProperty eq 0).then<Node>(dateBox).otherwise(monthBox))
 
         dailyNoColumn.numberCell { transaction { Invoices[invoiceId].single().no } }
         dailyTimeColumn.stringCell { dateTime.toString(PATTERN_TIME) }

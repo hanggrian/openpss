@@ -1,12 +1,11 @@
 package com.hendraanggrian.openpss.ui.invoice
 
-import com.hendraanggrian.openpss.App.Companion.STYLE_SEARCH_TEXTFIELD
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.popup.popover.ResultablePopover
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.i18n.Resourced
+import com.hendraanggrian.openpss.popup.popover.ResultablePopover
 import com.hendraanggrian.openpss.ui.Selectable
 import javafx.scene.control.ListView
 import javafx.scene.control.SelectionModel
@@ -17,8 +16,8 @@ import ktfx.collections.toMutableObservableList
 import ktfx.coroutines.listener
 import ktfx.coroutines.onKeyPressed
 import ktfx.coroutines.onMouseClicked
-import ktfx.layouts.listView
-import ktfx.layouts.textField
+import ktfx.jfoenix.jfxListView
+import ktfx.jfoenix.jfxTextField
 import ktfx.layouts.vbox
 import ktfx.scene.input.isDoubleClick
 import kotlin.text.RegexOption.IGNORE_CASE
@@ -35,11 +34,10 @@ class SearchCustomerPopover(resourced: Resourced) : ResultablePopover<Customer>(
 
     init {
         vbox {
-            searchField = textField {
-                styleClass += STYLE_SEARCH_TEXTFIELD
-                promptText = getString(R.string.customer)
+            searchField = jfxTextField {
+                promptText = getString(R.string.name)
             }
-            customerList = listView<Customer> {
+            customerList = jfxListView<Customer> {
                 prefHeight = 252.0
                 itemsProperty().bind(bindingOf(searchField.textProperty()) {
                     transaction {

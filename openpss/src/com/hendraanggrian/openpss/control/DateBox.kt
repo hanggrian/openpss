@@ -8,6 +8,7 @@ import com.hendraanggrian.openpss.util.toJava
 import com.hendraanggrian.openpss.util.toJoda
 import javafx.beans.property.ObjectProperty
 import javafx.beans.property.SimpleObjectProperty
+import javafx.geometry.Pos
 import javafx.geometry.Pos.CENTER
 import javafx.scene.control.Button
 import javafx.scene.control.DatePicker
@@ -17,6 +18,7 @@ import ktfx.annotations.LayoutDsl
 import ktfx.beans.binding.bindingOf
 import ktfx.beans.value.getValue
 import ktfx.coroutines.onAction
+import ktfx.coroutines.onMouseClicked
 import ktfx.jfoenix.jfxButton
 import ktfx.jfoenix.jfxDatePicker
 import ktfx.layouts._HBox
@@ -39,12 +41,16 @@ open class DateBox @JvmOverloads constructor(prefill: LocalDate = now()) : _HBox
     val value: LocalDate by valueProperty
 
     init {
+        alignment = Pos.CENTER
         previousButton = jfxButton(graphic = ImageView(R.image.btn_previous)) {
             styleClass += App.STYLE_BUTTON_FLAT
             onAction { picker.value = picker.value.minusDays(1) }
         }
         picker = jfxDatePicker {
-            editor.alignment = CENTER
+            editor.run {
+                alignment = CENTER
+                onMouseClicked { picker.show() }
+            }
             value = prefill.toJava()
             isEditable = false
             maxWidth = 116.0
@@ -53,7 +59,6 @@ open class DateBox @JvmOverloads constructor(prefill: LocalDate = now()) : _HBox
             styleClass += App.STYLE_BUTTON_FLAT
             onAction { picker.value = picker.value.plusDays(1) }
         }
-
         valueProperty.bind(bindingOf(picker.valueProperty()) { picker.value.toJoda() })
     }
 }

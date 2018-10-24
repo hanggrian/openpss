@@ -17,6 +17,7 @@ import ktfx.annotations.LayoutDsl
 import ktfx.beans.binding.bindingOf
 import ktfx.beans.value.getValue
 import ktfx.coroutines.onAction
+import ktfx.coroutines.onMouseClicked
 import ktfx.jfoenix.jfxButton
 import ktfx.jfoenix.jfxTimePicker
 import ktfx.layouts._HBox
@@ -54,8 +55,11 @@ open class TimeBox @JvmOverloads constructor(prefill: LocalTime = MIDNIGHT) : _H
             }
         }
         picker = jfxTimePicker {
+            editor.run {
+                alignment = CENTER
+                onMouseClicked { picker.show() }
+            }
             setIs24HourView(true)
-            editor.alignment = CENTER
             value = prefill.toJava()
             isEditable = false
             maxWidth = 116.0

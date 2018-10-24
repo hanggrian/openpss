@@ -36,14 +36,12 @@ import javafx.geometry.Pos.CENTER
 import javafx.geometry.Side.BOTTOM
 import javafx.scene.Node
 import javafx.scene.control.Button
-import javafx.scene.control.MenuButton
-import javafx.scene.control.MenuItem
+import javafx.scene.control.ComboBox
 import javafx.scene.control.RadioButton
-import javafx.scene.control.RadioMenuItem
 import javafx.scene.control.SelectionModel
-import javafx.scene.control.SplitMenuButton
 import javafx.scene.control.TableView
 import javafx.scene.control.TableView.CONSTRAINED_RESIZE_POLICY
+import javafx.scene.control.TextField
 import javafx.scene.image.ImageView
 import javafx.scene.layout.HBox
 import javafx.scene.layout.Priority.ALWAYS
@@ -85,14 +83,10 @@ class InvoiceController : ActionController(), Refreshable, Selectable<Invoice>, 
     @FXML lateinit var allDateRadio: RadioButton
     @FXML lateinit var pickDateRadio: RadioButton
     @FXML lateinit var dateBox: DateBox
-    @FXML lateinit var customerButton: SplitMenuButton
-    @FXML lateinit var customerButtonItem: MenuItem
-    @FXML lateinit var paymentButton: MenuButton
-    @FXML lateinit var clearFiltersButton: Button
-    @FXML lateinit var anyPaymentItem: RadioMenuItem
-    @FXML lateinit var unpaidPaymentItem: RadioMenuItem
-    @FXML lateinit var paidPaymentItem: RadioMenuItem
+    @FXML lateinit var customerField: TextField
+    @FXML lateinit var paymentCombo: ComboBox<String>
     @FXML lateinit var invoicePagination: PaginatedPane
+    @FXML lateinit var clearFiltersButton: Button
 
     private lateinit var refreshButton: Button
     private lateinit var addButton: Button
@@ -122,29 +116,21 @@ class InvoiceController : ActionController(), Refreshable, Selectable<Invoice>, 
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
-        customerButton.textProperty().bind(stringBindingOf(customerProperty) {
+        paymentCombo.run {
+            items = listOf(R.string.any, R.string.paid, R.string.unpaid)
+                .map { getString(it) }
+                .toObservableList()
+            selectionModel.selectFirst()
+        }
+        customerField.textProperty().bind(stringBindingOf(customerProperty) {
             customerProperty.value?.toString() ?: getString(R.string.search)
         })
-        customerButtonItem.disableProperty().bind(customerProperty.isNull)
-        paymentButton.textProperty().bind(stringBindingOf(
-            anyPaymentItem.selectedProperty(),
-            unpaidPaymentItem.selectedProperty(),
-            paidPaymentItem.selectedProperty()
-        ) {
-            getString(
-                when {
-                    unpaidPaymentItem.isSelected -> R.string.unpaid
-                    paidPaymentItem.isSelected -> R.string.paid
-                    else -> R.string.any
-                }
-            )
-        })
-        pickDateRadio.graphic.disableProperty().bind(!pickDateRadio.selectedProperty())
+        dateBox.disableProperty().bind(!pickDateRadio.selectedProperty())
         clearFiltersButton.disableProperty().bind(
             pickDateRadio.selectedProperty() and
                 (dateBox.valueProperty() eq LocalDate.now()) and
                 customerProperty.isNull and
-                (paymentButton.textProperty() eq getString(R.string.any))
+                (paymentCombo.selectionModel.selectedIndexProperty() eq 0)
         )
     }
 
@@ -152,9 +138,7 @@ class InvoiceController : ActionController(), Refreshable, Selectable<Invoice>, 
         invoicePagination.contentFactoryProperty().bind(bindingOf(
             searchField.valueProperty(),
             customerProperty,
-            anyPaymentItem.selectedProperty(),
-            unpaidPaymentItem.selectedProperty(),
-            paidPaymentItem.selectedProperty(),
+            paymentCombo.valueProperty(),
             allDateRadio.selectedProperty(),
             pickDateRadio.selectedProperty(),
             dateBox.valueProperty()
@@ -240,9 +224,9 @@ class InvoiceController : ActionController(), Refreshable, Selectable<Invoice>, 
                                     else -> {
                                         if (customerProperty.value != null)
                                             and(it.customerId.equal(customerProperty.value.id))
-                                        when {
-                                            unpaidPaymentItem.isSelected -> and(it.paid.equal(false))
-                                            paidPaymentItem.isSelected -> and(it.paid.equal(true))
+                                        when (paymentCombo.selectionModel.selectedIndex) {
+                                            1 -> and(it.paid.equal(true))
+                                            2 -> and(it.paid.equal(false))
                                         }
                                         if (pickDateRadio.isSelected) and(it.dateTime.matches(dateBox.value))
                                     }
@@ -291,12 +275,10 @@ class InvoiceController : ActionController(), Refreshable, Selectable<Invoice>, 
         customerProperty.set(null)
         pickDateRadio.isSelected = true
         dateBox.picker.value = java.time.LocalDate.now()
-        anyPaymentItem.isSelected = true
+        paymentCombo.selectionModel.selectFirst()
     }
 
-    @FXML fun selectCustomer() = SearchCustomerPopover(this).show(customerButton) { customerProperty.set(it) }
-
-    @FXML fun clearCustomer() = customerProperty.set(null)
+    @FXML fun selectCustomer() = SearchCustomerPopover(this).show(customerField) { customerProperty.set(it) }
 
     private fun viewInvoice() = ViewInvoicePopover(selected!!).apply {
         onHidden {

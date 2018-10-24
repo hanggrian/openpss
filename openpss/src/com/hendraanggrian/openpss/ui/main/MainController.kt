@@ -110,8 +110,11 @@ class MainController : Controller(), Selectable<Tab>, Selectable2<Label> {
         titleLabel.textProperty().bind(stringBindingOf(selectedProperty2) { selected2?.text })
 
         val transition = HamburgerSlideCloseTransition(hamburger).apply { rate = -1.0 }
-        drawer.setOnDrawerOpening { transition.toggle() }
         drawer.setOnDrawerClosing { transition.toggle() }
+        drawer.setOnDrawerOpening {
+            transition.toggle()
+            drawerList.requestFocus()
+        }
         hamburger.addEventHandler(MouseEvent.MOUSE_PRESSED) { _ -> drawer.toggle() }
 
         customerGraphic.bind(0, R.image.tab_customer2, R.image.tab_customer)

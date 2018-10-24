@@ -41,8 +41,9 @@ import ktfx.beans.value.or
 import ktfx.collections.isEmpty
 import ktfx.coroutines.onAction
 import ktfx.coroutines.onKeyPressed
+import ktfx.coroutines.onMouseClicked
+import ktfx.jfoenix.jfxTextField
 import ktfx.layouts.TableColumnsBuilder
-import ktfx.layouts.button
 import ktfx.layouts.columns
 import ktfx.layouts.contextMenu
 import ktfx.layouts.gridPane
@@ -77,12 +78,13 @@ class AddInvoiceDialog(
             label(getString(R.string.date)) col 2 row 0 hpriority ALWAYS halign RIGHT
             label(dateTime.toString(PATTERN_DATE)) { font = bold() } col 3 row 0
             label(getString(R.string.customer)) col 0 row 1
-            button {
+            jfxTextField {
+                isEditable = false
                 textProperty().bind(stringBindingOf(customerProperty) {
                     customerProperty.value?.toString() ?: getString(R.string.search_customer)
                 })
-                onAction { _ ->
-                    SearchCustomerPopover(this@AddInvoiceDialog).show(this@button) { customerProperty.set(it) }
+                onMouseClicked { _ ->
+                    SearchCustomerPopover(this@AddInvoiceDialog).show(this@jfxTextField) { customerProperty.set(it) }
                 }
             } col 1 row 1
             label(getString(R.string.plate)) col 0 row 2

@@ -2,7 +2,8 @@
 
 <?import com.jfoenix.controls.JFXTabPane?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <JFXTabPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.hendraanggrian.openpss.ui.finance.FinanceController"

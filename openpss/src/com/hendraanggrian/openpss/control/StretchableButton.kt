@@ -32,7 +32,7 @@ class StretchableButton @JvmOverloads constructor(
 
     init {
         initialize()
-        style = App.STYLE_BUTTON_FLAT
+        styleClass += App.STYLE_BUTTON_FLAT
     }
 }
 

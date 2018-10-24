@@ -1,11 +1,11 @@
 package com.hendraanggrian.openpss.ui.finance
 
+import com.hendraanggrian.openpss.App.Companion.STRETCH_POINT
 import com.hendraanggrian.openpss.PATTERN_DATE
 import com.hendraanggrian.openpss.PATTERN_TIME
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.DateBox
 import com.hendraanggrian.openpss.control.MonthBox
-import com.hendraanggrian.openpss.control.SegmentedTabPane.Companion.STRETCH_POINT
 import com.hendraanggrian.openpss.control.currencyCell
 import com.hendraanggrian.openpss.control.dateBox
 import com.hendraanggrian.openpss.control.doneCell
@@ -86,20 +86,16 @@ class FinanceController : ActionController(), Refreshable,
 
     override fun NodeManager.onCreateActions() {
         switchablePane = pane()
+        refreshButton = stretchableButton(STRETCH_POINT, getString(R.string.refresh), ImageView(R.image.act_refresh)) {
+            onAction { refresh() }
+        }
+        viewTotalButton = stretchableButton(STRETCH_POINT, getString(R.string.total), ImageView(R.image.act_money)) {
+            onAction { viewTotal() }
+        }
     }
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
-        refreshButton = stretchableButton(STRETCH_POINT, getString(R.string.refresh), ImageView(R.image.btn_refresh)) {
-            onAction { refresh() }
-        }
-        viewTotalButton = stretchableButton(STRETCH_POINT, getString(R.string.total), ImageView(R.image.btn_money)) {
-            onAction { viewTotal() }
-        }
-        /*(actionManager.collection as MutableList<Node>).run {
-            add(0, tabPane.header)
-            addAll(2, listOf(space(), refreshButton, viewTotalButton))
-        }*/
         dateBox = dateBox {
             valueProperty().listener { refresh() }
         }
@@ -107,16 +103,14 @@ class FinanceController : ActionController(), Refreshable,
             setLocale(PreferencesFile.language.toLocale())
             valueProperty().listener { refresh() }
         }
-        /*tabPane.header.toggleGroup.run {
-            selectedToggleProperty().addListener { _, _, toggle ->
-                switchablePane.children.setAll(
-                    when (toggles.indexOf(toggle)) {
-                        0 -> dateBox
-                        else -> monthBox
-                    }
-                )
-            }
-        }*/
+        selectedProperty.listener { _, _, tab ->
+            switchablePane.children.setAll(
+                when (tabPane.tabs.indexOf(tab)) {
+                    0 -> dateBox
+                    else -> monthBox
+                }
+            )
+        }
 
         dailyNoColumn.numberCell { transaction { Invoices[invoiceId].single().no } }
         dailyTimeColumn.stringCell { dateTime.toString(PATTERN_TIME) }

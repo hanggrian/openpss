@@ -33,6 +33,8 @@ class App : Application(), Resourced {
         const val STYLE_BUTTON_FLAT = "button-flat"
         const val STYLE_BUTTON_RAISED = "button-raised"
 
+        const val STYLE_LABEL_ACCENT = "label-accent"
+
         const val STYLE_HIDDEN_TAB_PANE = "hidden-tab-pane"
         const val STYLE_NAVIGATION_PANE = "navigation-pane"
         const val STYLE_DISPLAY_LABEL = "display-label"

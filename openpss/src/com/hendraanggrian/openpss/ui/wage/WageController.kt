@@ -1,8 +1,8 @@
 package com.hendraanggrian.openpss.ui.wage
 
+import com.hendraanggrian.openpss.App.Companion.STRETCH_POINT
 import com.hendraanggrian.openpss.BuildConfig.DEBUG
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.control.SegmentedTabPane.Companion.STRETCH_POINT
 import com.hendraanggrian.openpss.control.space
 import com.hendraanggrian.openpss.control.stretchableButton
 import com.hendraanggrian.openpss.io.WageDirectory
@@ -65,23 +65,23 @@ class WageController : ActionController() {
     private lateinit var historyButton: Button
 
     override fun NodeManager.onCreateActions() {
-        browseButton = stretchableButton(STRETCH_POINT, getString(R.string.browse), ImageView(R.image.btn_browse)) {
+        browseButton = stretchableButton(STRETCH_POINT, getString(R.string.browse), ImageView(R.image.act_browse)) {
             onAction { browse() }
         }
         disableRecessButton = stretchableButton(
             STRETCH_POINT,
             getString(R.string.disable_recess),
-            ImageView(R.image.btn_disable_recess)
+            ImageView(R.image.act_disable_recess)
         ) {
             disableProperty().bind(flowPane.children.isEmpty)
             onAction { disableRecess() }
         }
-        saveWageButton = stretchableButton(STRETCH_POINT, getString(R.string.save_wage), ImageView(R.image.btn_save)) {
+        saveWageButton = stretchableButton(STRETCH_POINT, getString(R.string.save_wage), ImageView(R.image.act_save)) {
             disableProperty().bind(flowPane.children.isEmpty)
             onAction { saveWage() }
         }
         space(R.dimen.padding_large.toDouble())
-        historyButton = stretchableButton(STRETCH_POINT, getString(R.string.history), ImageView(R.image.btn_history)) {
+        historyButton = stretchableButton(STRETCH_POINT, getString(R.string.history), ImageView(R.image.act_history)) {
             onAction { history() }
         }
     }

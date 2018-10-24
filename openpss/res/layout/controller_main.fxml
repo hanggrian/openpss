@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.hendraanggrian.openpss.control.SelectionListView?>
 <?import com.hendraanggrian.openpss.control.Space?>
-<?import com.jfoenix.controls.*?>
+<?import com.jfoenix.controls.JFXDrawer?>
+<?import com.jfoenix.controls.JFXHamburger?>
+<?import com.jfoenix.controls.JFXToolbar?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
@@ -59,49 +62,39 @@
                 <JFXDrawer fx:id="drawer" defaultDrawerSize="250" VBox.vgrow="ALWAYS">
                     <sidePane>
                         <VBox>
-                            <AnchorPane>
-                                <ImageView>
-                                    <Image url="@/image/bg.png"/>
-                                </ImageView>
-                                <Label fx:id="employeeLabel" AnchorPane.leftAnchor="20" AnchorPane.bottomAnchor="10"/>
+                            <AnchorPane prefWidth="250" prefHeight="100">
+                                <VBox AnchorPane.leftAnchor="20" AnchorPane.bottomAnchor="20">
+                                    <Label text="%signed_in_as" styleClass="label-accent"/>
+                                    <Label fx:id="employeeLabel" styleClass="display-label2"/>
+                                </VBox>
                             </AnchorPane>
-                            <JFXListView fx:id="drawerList" VBox.vgrow="ALWAYS">
+                            <SelectionListView fx:id="drawerList" VBox.vgrow="ALWAYS" styleClass="list-view-borderless">
                                 <Label styleClass="drawer-item" text="%customer">
                                     <graphic>
-                                        <ImageView>
-                                            <Image url="@/image/tab_customer.png"/>
-                                        </ImageView>
+                                        <ImageView fx:id="customerGraphic"/>
                                     </graphic>
                                 </Label>
                                 <Label styleClass="drawer-item" text="%invoice">
                                     <graphic>
-                                        <ImageView>
-                                            <Image url="@/image/tab_invoice.png"/>
-                                        </ImageView>
+                                        <ImageView fx:id="invoiceGraphic"/>
                                     </graphic>
                                 </Label>
                                 <Label styleClass="drawer-item" text="%schedule">
                                     <graphic>
-                                        <ImageView>
-                                            <Image url="@/image/tab_schedule.png"/>
-                                        </ImageView>
+                                        <ImageView fx:id="scheduleGraphic"/>
                                     </graphic>
                                 </Label>
                                 <Label styleClass="drawer-item" text="%finance">
                                     <graphic>
-                                        <ImageView>
-                                            <Image url="@/image/tab_finance.png"/>
-                                        </ImageView>
+                                        <ImageView fx:id="financeGraphic"/>
                                     </graphic>
                                 </Label>
                                 <Label styleClass="drawer-item" text="%wage">
                                     <graphic>
-                                        <ImageView>
-                                            <Image url="@/image/tab_wage.png"/>
-                                        </ImageView>
+                                        <ImageView fx:id="wageGraphic"/>
                                     </graphic>
                                 </Label>
-                            </JFXListView>
+                            </SelectionListView>
                         </VBox>
                     </sidePane>
                     <content>
@@ -113,28 +106,28 @@
                                     <Space/>
                                 </leftItems>
                             </JFXToolbar>
-                            <JFXTabPane fx:id="tabPane" VBox.vgrow="ALWAYS" styleClass="hidden-tab-pane">
-                                <Tab closable="false" text="%customer">
+                            <TabPane fx:id="tabPane" VBox.vgrow="ALWAYS" styleClass="hidden-tab-pane">
+                                <Tab closable="false">
                                     <!--suppress ALL -->
                                     <fx:include fx:id="customer" source="controller_customer.fxml"/>
                                 </Tab>
-                                <Tab closable="false" text="%invoice">
+                                <Tab closable="false">
                                     <!--suppress ALL -->
                                     <fx:include fx:id="invoice" source="controller_invoice.fxml"/>
                                 </Tab>
-                                <Tab closable="false" text="%schedule">
+                                <Tab closable="false">
                                     <!--suppress ALL -->
                                     <fx:include fx:id="schedule" source="controller_schedule.fxml"/>
                                 </Tab>
-                                <Tab closable="false" text="%finance">
+                                <Tab closable="false">
                                     <!--suppress ALL -->
                                     <fx:include fx:id="finance" source="controller_finance.fxml"/>
                                 </Tab>
-                                <Tab closable="false" text="%wage">
+                                <Tab closable="false">
                                     <!--suppress ALL -->
                                     <fx:include fx:id="wage" source="controller_wage.fxml"/>
                                 </Tab>
-                            </JFXTabPane>
+                            </TabPane>
                         </VBox>
                     </content>
                 </JFXDrawer>

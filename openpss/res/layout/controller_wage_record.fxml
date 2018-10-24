@@ -11,7 +11,7 @@
         <StretchableSplitMenuButton mnemonicParsing="false" fx:id="undoButton" onAction="#undo" stretchPoint="1100"
                                     stretchableText="%undo">
             <ImageView>
-                <Image url="@/image/btn_undo.png"/>
+                <Image url="@/image/act_undo.png"/>
             </ImageView>
         </StretchableSplitMenuButton>
         <Region minWidth="10"/>
@@ -19,27 +19,27 @@
         <StretchableButton mnemonicParsing="false" fx:id="lockStartButton" onAction="#lockStart" stretchPoint="1100"
                            stretchableText="%lock_start_time">
             <ImageView>
-                <Image url="@/image/btn_lock_start.png"/>
+                <Image url="@/image/act_lock_start.png"/>
             </ImageView>
         </StretchableButton>
         <StretchableButton mnemonicParsing="false" fx:id="lockEndButton" onAction="#lockEnd" stretchPoint="1100"
                            stretchableText="%lock_end_time">
             <ImageView>
-                <Image url="@/image/btn_lock_end.png"/>
+                <Image url="@/image/act_lock_end.png"/>
             </ImageView>
         </StretchableButton>
         <Region minWidth="10"/>
         <StretchableButton mnemonicParsing="false" fx:id="disableDailyIncomeButton" onAction="#disableDailyIncome"
                            stretchPoint="1100" stretchableText="%disable_daily_income">
             <ImageView>
-                <Image url="@/image/btn_disable_daily.png"/>
+                <Image url="@/image/act_disable_daily.png"/>
             </ImageView>
         </StretchableButton>
         <Region HBox.hgrow="ALWAYS"/>
         <StretchableButton mnemonicParsing="false" onAction="#screenshot" stretchPoint="1100"
                            stretchableText="%screenshot">
             <ImageView>
-                <Image url="@/image/btn_screenshot.png"/>
+                <Image url="@/image/act_screenshot.png"/>
             </ImageView>
         </StretchableButton>
     </HBox>

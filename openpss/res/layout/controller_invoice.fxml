@@ -2,7 +2,7 @@
 
 <?import com.hendraanggrian.openpss.control.DateBox?>
 <?import com.hendraanggrian.openpss.control.PaginatedPane?>
-<?import com.hendraanggrian.openpss.control.StretchableButton?>
+<?import com.jfoenix.controls.JFXButton?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
@@ -64,12 +64,16 @@
                                text="%paid"/>
             </items>
         </MenuButton>
-        <StretchableButton mnemonicParsing="false" fx:id="clearFiltersButton" stretchPoint="1100"
-                           stretchableText="%clear_filters" onAction="#clearFilters">
-            <ImageView>
-                <Image url="@/image/btn_clear_inactive.png"/>
-            </ImageView>
-        </StretchableButton>
+        <JFXButton mnemonicParsing="false" fx:id="clearFiltersButton" onAction="#clearFilters" styleClass="button-flat">
+            <tooltip>
+                <Tooltip text="%clear_filters"/>
+            </tooltip>
+            <graphic>
+                <ImageView>
+                    <Image url="@/image/btn_clear_inactive.png"/>
+                </ImageView>
+            </graphic>
+        </JFXButton>
     </HBox>
     <PaginatedPane fx:id="invoicePagination" VBox.vgrow="ALWAYS"/>
 </VBox>

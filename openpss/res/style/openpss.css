@@ -26,6 +26,10 @@
     -jfx-default-color: -accent;
 }
 
+.jfx-drawer-overlay-pane {
+    -fx-background-color: rgba(0.0, 0.0, 0.0, 0.5)
+}
+
 .jfx-hamburger {
     -fx-cursor: hand;
 }
@@ -116,6 +120,14 @@
     -fx-border-style: solid;
 }
 
+.list-view-borderless {
+    -fx-background-color: transparent;
+}
+
+.label-accent {
+    -fx-text-fill: -accent;
+}
+
 .display-label {
     -fx-font-size: 13pt;
 }
@@ -175,6 +187,7 @@
 
 .hidden-tab-pane {
    -fx-tab-max-height: 0;
+   -fx-padding: -7 0 0 0;
 }
 .hidden-tab-pane > .tab-header-area {
     visibility: hidden;

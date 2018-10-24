@@ -1,8 +1,8 @@
 package com.hendraanggrian.openpss.ui.schedule
 
+import com.hendraanggrian.openpss.App.Companion.STRETCH_POINT
 import com.hendraanggrian.openpss.PATTERN_DATETIME_EXTENDED
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.control.SegmentedTabPane.Companion.STRETCH_POINT
 import com.hendraanggrian.openpss.control.UncollapsibleTreeItem
 import com.hendraanggrian.openpss.control.space
 import com.hendraanggrian.openpss.control.stretchableButton
@@ -49,10 +49,10 @@ class ScheduleController : ActionController(), Refreshable, TreeSelectable<Sched
     override val selectionModel: TreeTableViewSelectionModel<Schedule> get() = scheduleTable.selectionModel
 
     override fun NodeManager.onCreateActions() {
-        refreshButton = stretchableButton(STRETCH_POINT, getString(R.string.refresh), ImageView(R.image.btn_refresh)) {
+        refreshButton = stretchableButton(STRETCH_POINT, getString(R.string.refresh), ImageView(R.image.act_refresh)) {
             onAction { refresh() }
         }
-        doneButton = stretchableButton(STRETCH_POINT, getString(R.string.done), ImageView(R.image.btn_done)) {
+        doneButton = stretchableButton(STRETCH_POINT, getString(R.string.done), ImageView(R.image.act_done)) {
             onAction { done() }
         }
         space(R.dimen.padding_large.toDouble())

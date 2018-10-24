@@ -54,7 +54,7 @@ class AddPaymentPopover(
             } row 1 col 1 colSpans 2
             label(getString(R.string.payment)) row 2 col 0
             valueField = doubleField { promptText = getString(R.string.payment) } row 2 col 1
-            jfxButton(graphic = ImageView(R.image.btn_match_receivable)) {
+            jfxButton(graphic = ImageView(R.image.act_match_receivable)) {
                 styleClass += App.STYLE_BUTTON_FLAT
                 tooltip(getString(R.string.match_receivable))
                 onAction {

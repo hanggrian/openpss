@@ -12,6 +12,7 @@ import com.hendraanggrian.openpss.ui.Selectable
 import com.hendraanggrian.openpss.util.getColor
 import com.hendraanggrian.openpss.util.round
 import javafx.geometry.Pos.CENTER
+import javafx.scene.Node
 import javafx.scene.control.CheckBox
 import javafx.scene.control.ContentDisplay
 import javafx.scene.control.ListView
@@ -44,6 +45,7 @@ import ktfx.layouts.listView
 import ktfx.layouts.separatorMenuItem
 import ktfx.layouts.vbox
 import ktfx.listeners.cellFactory
+import ktfx.scene.find
 import ktfx.scene.input.isDelete
 import ktfx.scene.input.isDoubleClick
 import ktfx.scene.layout.gap
@@ -185,10 +187,10 @@ class AttendeePane(
             delay(250)
             applyCss()
             layout()
-            val titleRegion = lookup(".title")
+            val titleRegion = find<Node>(".title")
             val padding = (titleRegion as StackPane).padding
             val graphicWidth = graphic.layoutBounds.width
-            val labelWidth = titleRegion.lookup(".text").layoutBounds.width
+            val labelWidth = titleRegion.find<Node>(".text").layoutBounds.width
             graphicTextGap = width - graphicWidth - padding.left - padding.right - labelWidth
         }
     }

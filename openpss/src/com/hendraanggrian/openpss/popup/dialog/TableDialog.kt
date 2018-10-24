@@ -51,13 +51,13 @@ abstract class TableDialog<D : Document<S>, S : DocumentSchema<D>>(
             alignment = CENTER_RIGHT
             hbox(R.dimen.padding_medium.toDouble()) {
                 alignment = CENTER_RIGHT
-                refreshButton = jfxButton(graphic = ImageView(R.image.btn_refresh)) {
+                refreshButton = jfxButton(graphic = ImageView(R.image.act_refresh)) {
                     onAction { refresh() }
                 }
-                addButton = jfxButton(graphic = ImageView(R.image.btn_add)) {
+                addButton = jfxButton(graphic = ImageView(R.image.act_add)) {
                     onAction { add() }
                 }
-                deleteButton = jfxButton(graphic = ImageView(R.image.btn_delete)) {
+                deleteButton = jfxButton(graphic = ImageView(R.image.act_delete)) {
                     onAction { delete() }
                     later {
                         transaction {

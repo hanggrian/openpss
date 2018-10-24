@@ -8,11 +8,6 @@
             fx:controller="com.hendraanggrian.openpss.ui.finance.FinanceController"
             fx:id="tabPane">
     <Tab closable="false" text="%daily">
-        <graphic>
-            <ImageView>
-                <Image url="@/image/btn_daily.png"/>
-            </ImageView>
-        </graphic>
         <TableView fx:id="dailyTable">
             <columns>
                 <TableColumn fx:id="dailyNoColumn" text="%id"/>
@@ -41,11 +36,6 @@
         </TableView>
     </Tab>
     <Tab closable="false" text="%monthly">
-        <graphic>
-            <ImageView>
-                <Image url="@/image/btn_monthly.png"/>
-            </ImageView>
-        </graphic>
         <TableView fx:id="monthlyTable">
             <columns>
                 <TableColumn fx:id="monthlyDateColumn" text="%date"/>

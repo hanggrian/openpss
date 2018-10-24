@@ -38,11 +38,16 @@ import javafx.scene.control.MenuItem
 import javafx.scene.control.SelectionModel
 import javafx.scene.control.Tab
 import javafx.scene.control.TabPane
+import javafx.scene.image.Image
+import javafx.scene.image.ImageView
 import javafx.scene.input.MouseEvent
 import javafx.scene.layout.StackPane
-import kotlinx.coroutines.experimental.delay
 import ktfx.application.later
+import ktfx.beans.binding.`when`
+import ktfx.beans.binding.otherwise
 import ktfx.beans.binding.stringBindingOf
+import ktfx.beans.binding.then
+import ktfx.beans.value.eq
 import ktfx.coroutines.listener
 import ktfx.scene.control.errorAlert
 import org.apache.commons.lang3.SystemUtils.IS_OS_MAC
@@ -70,6 +75,11 @@ class MainController : Controller(), Selectable<Tab>, Selectable2<Label> {
     @FXML lateinit var employeeLabel: Label
     @FXML lateinit var titleLabel: Label
     @FXML lateinit var tabPane: TabPane
+    @FXML lateinit var customerGraphic: ImageView
+    @FXML lateinit var invoiceGraphic: ImageView
+    @FXML lateinit var scheduleGraphic: ImageView
+    @FXML lateinit var financeGraphic: ImageView
+    @FXML lateinit var wageGraphic: ImageView
     @FXML lateinit var customerController: CustomerController
     @FXML lateinit var invoiceController: InvoiceController
     @FXML lateinit var scheduleController: ScheduleController
@@ -88,8 +98,6 @@ class MainController : Controller(), Selectable<Tab>, Selectable2<Label> {
             wageController
         )
 
-    private var isFinanceTabFixed = false
-
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
         menuBar.isUseSystemMenuBar = IS_OS_MAC
@@ -99,24 +107,24 @@ class MainController : Controller(), Selectable<Tab>, Selectable2<Label> {
             select(selectedIndex2)
             drawer.toggle()
         }
-        titleLabel.textProperty().bind(stringBindingOf(selectedProperty) { selected!!.text })
+        titleLabel.textProperty().bind(stringBindingOf(selectedProperty2) { selected2?.text })
 
         val transition = HamburgerSlideCloseTransition(hamburger).apply { rate = -1.0 }
         drawer.setOnDrawerOpening { transition.toggle() }
         drawer.setOnDrawerClosing { transition.toggle() }
         hamburger.addEventHandler(MouseEvent.MOUSE_PRESSED) { _ -> drawer.toggle() }
 
+        customerGraphic.bind(0, R.image.tab_customer2, R.image.tab_customer)
+        invoiceGraphic.bind(1, R.image.tab_invoice2, R.image.tab_invoice)
+        scheduleGraphic.bind(2, R.image.tab_schedule2, R.image.tab_schedule)
+        financeGraphic.bind(3, R.image.tab_finance2, R.image.tab_finance)
+        wageGraphic.bind(4, R.image.tab_wage2, R.image.tab_wage)
+
         customerController.replaceButtons()
         selectedIndexProperty.listener { _, _, value ->
-            val controller = controllers[value.toInt()]
-            controller.replaceButtons()
-            if (controller is Refreshable) {
-                controller.refresh()
-                if (controller is FinanceController && !isFinanceTabFixed) {
-                    fixFinanceTab(1)
-                    fixFinanceTab(0)
-                    isFinanceTabFixed = true
-                }
+            controllers[value.toInt()].let {
+                it.replaceButtons()
+                (it as? Refreshable)?.refresh()
             }
         }
 
@@ -189,13 +197,14 @@ class MainController : Controller(), Selectable<Tab>, Selectable2<Label> {
 
     private fun ActionController.replaceButtons() = toolbar.setRightItems(*actionManager.collection.toTypedArray())
 
-    private inline fun <T : ActionController> select(controller: T, run: T.() -> Unit) {
+    private fun <T : ActionController> select(controller: T, run: T.() -> Unit) {
         select(controllers.indexOf(controller))
         controller.run(run)
     }
 
-    private suspend inline fun fixFinanceTab(index: Int) {
-        delay(100)
-        // financeController.tabPane.header.buttons[index].requestFocus()
-    }
+    private fun ImageView.bind(index: Int, selectedImageId: String, unselectedImageId: String) = imageProperty().bind(
+        `when`(selectedIndexProperty2 eq index)
+            then Image(selectedImageId)
+            otherwise Image(unselectedImageId)
+    )
 }

@@ -1,12 +1,12 @@
 package com.hendraanggrian.openpss.ui.invoice
 
+import com.hendraanggrian.openpss.App.Companion.STRETCH_POINT
 import com.hendraanggrian.openpss.App.Companion.STYLE_DEFAULT_BUTTON
 import com.hendraanggrian.openpss.PATTERN_DATETIME_EXTENDED
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.DateBox
 import com.hendraanggrian.openpss.control.IntField
 import com.hendraanggrian.openpss.control.PaginatedPane
-import com.hendraanggrian.openpss.control.SegmentedTabPane.Companion.STRETCH_POINT
 import com.hendraanggrian.openpss.control.currencyCell
 import com.hendraanggrian.openpss.control.doneCell
 import com.hendraanggrian.openpss.control.intField
@@ -107,10 +107,10 @@ class InvoiceController : ActionController(), Refreshable, Selectable<Invoice>, 
     override val selectionModel2: SelectionModel<Payment> get() = paymentTable.selectionModel
 
     override fun NodeManager.onCreateActions() {
-        refreshButton = stretchableButton(STRETCH_POINT, getString(R.string.refresh), ImageView(R.image.btn_refresh)) {
+        refreshButton = stretchableButton(STRETCH_POINT, getString(R.string.refresh), ImageView(R.image.act_refresh)) {
             onAction { refresh() }
         }
-        addButton = stretchableButton(STRETCH_POINT, getString(R.string.add), ImageView(R.image.btn_add)) {
+        addButton = stretchableButton(STRETCH_POINT, getString(R.string.add), ImageView(R.image.act_add)) {
             onAction { addInvoice() }
         }
         space(R.dimen.padding_large.toDouble())
@@ -191,7 +191,7 @@ class InvoiceController : ActionController(), Refreshable, Selectable<Invoice>, 
                             addPaymentButton = stretchableButton(
                                 STRETCH_POINT,
                                 getString(R.string.add_payment),
-                                ImageView(R.image.btn_add)
+                                ImageView(R.image.act_add)
                             ) {
                                 styleClass += STYLE_DEFAULT_BUTTON
                                 disableProperty().bind(!selectedBinding)

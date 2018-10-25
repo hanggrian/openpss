@@ -2,6 +2,7 @@ package com.hendraanggrian.openpss.ui.main.help
 
 import com.google.common.util.concurrent.ListenableFuture
 import com.google.gson.annotations.SerializedName
+import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.BuildConfig.ARTIFACT
 import com.hendraanggrian.openpss.BuildConfig.AUTHOR
 import com.hendraanggrian.openpss.BuildConfig.DEBUG
@@ -9,14 +10,15 @@ import com.hendraanggrian.openpss.BuildConfig.VERSION
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.i18n.Resourced
 import com.hendraanggrian.openpss.util.desktop
-import ktfx.scene.control.errorAlert
+import javafx.scene.layout.StackPane
 import kotlinx.coroutines.experimental.Dispatchers
 import kotlinx.coroutines.experimental.GlobalScope
 import kotlinx.coroutines.experimental.javafx.JavaFx
 import kotlinx.coroutines.experimental.launch
+import ktfx.jfoenix.jfxSnackbar
+import ktfx.scene.control.errorAlert
 import okhttp3.OkHttpClient
 import org.apache.maven.artifact.versioning.ComparableVersion
-import org.controlsfx.control.action.Action
 import retrofit2.Retrofit
 import retrofit2.adapter.guava.GuavaCallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
@@ -47,11 +49,13 @@ interface GitHubApi {
     ) {
 
         fun isUploaded(): Boolean = state == "uploaded"
+
+        override fun toString(): String = name
     }
 
     companion object {
         private const val END_POINT = "https://api.github.com"
-        private const val TIMEOUT: Long = 5
+        private const val TIMEOUT = 5L
 
         private fun create(): GitHubApi = Retrofit.Builder()
             .client(OkHttpClient.Builder().addInterceptor {
@@ -68,26 +72,31 @@ interface GitHubApi {
             .build()
             .create(GitHubApi::class.java)
 
-        fun checkUpdates(
-            resourced: Resourced,
-            onAvailable: (title: String, actions: List<Action>) -> Unit,
-            onUnavailable: (title: String, content: String) -> Unit
-        ) {
+        @Suppress("NOTHING_TO_INLINE")
+        inline fun <T> checkUpdates(resourced: T) where T : Resourced, T : StackPane =
+            checkUpdates(resourced, resourced)
+
+        fun checkUpdates(resourced: Resourced, root: StackPane) {
             GlobalScope.launch(Dispatchers.Default) {
                 try {
                     val release = create().getLatestRelease().get(TIMEOUT, SECONDS)
                     GlobalScope.launch(Dispatchers.JavaFx) {
                         when {
-                            release.isNewer() -> onAvailable(
+                            release.isNewer() -> root.jfxSnackbar(
                                 resourced.getString(R.string.openpss_is_available, release.version),
-                                release.assets.map { asset ->
-                                    Action(asset.name) {
-                                        desktop?.browse(URI(asset.downloadUrl))
-                                    }
-                                })
-                            else -> onUnavailable(
-                                resourced.getString(R.string.you_re_up_to_date),
-                                resourced.getString(R.string.openpss_is_currently_the_newest_version_available, VERSION)
+                                App.DURATION_LONG,
+                                resourced.getString(R.string.download)
+                            ) {
+                                UpdateDialog(resourced, release.assets).show(root) { url ->
+                                    desktop?.browse(URI(url))
+                                }
+                            }
+                            else -> root.jfxSnackbar(
+                                resourced.getString(
+                                    R.string.openpss_is_currently_the_newest_version_available,
+                                    VERSION
+                                ),
+                                App.DURATION_SHORT
                             )
                         }
                     }

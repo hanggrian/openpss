@@ -20,10 +20,8 @@ import com.jfoenix.controls.JFXButton
 import javafx.geometry.HPos
 import javafx.geometry.Pos
 import javafx.scene.control.Button
-import javafx.scene.control.ButtonType
 import javafx.scene.control.PasswordField
 import javafx.scene.control.TextField
-import javafx.scene.image.Image
 import javafx.scene.layout.Priority
 import javafx.scene.text.TextAlignment
 import kotlinx.coroutines.experimental.Dispatchers
@@ -52,15 +50,12 @@ import ktfx.layouts.stackPane
 import ktfx.layouts.text
 import ktfx.layouts.textFlow
 import ktfx.layouts.vbox
-import ktfx.scene.control.errorAlert
-import ktfx.scene.control.infoAlert
-import ktfx.scene.control.warningAlert
 import ktfx.scene.layout.gap
 import ktfx.scene.layout.paddingAll
 import ktfx.scene.layout.updatePadding
 import ktfx.scene.text.fontSize
 
-class LoginLayout(resourced: Resourced) : _StackPane(), Resourced by resourced {
+class LoginPane(resourced: Resourced) : _StackPane(), Resourced by resourced {
 
     private companion object {
         const val WIDTH = 400.0
@@ -72,7 +67,7 @@ class LoginLayout(resourced: Resourced) : _StackPane(), Resourced by resourced {
     private lateinit var passwordField: PasswordField
     private lateinit var textField: TextField
 
-    private lateinit var onSuccess: (Employee) -> Unit
+    var onSuccess: ((Employee) -> Unit)? = null
 
     private val serverHostField = HostField().apply {
         text = LoginFile.DB_HOST
@@ -97,14 +92,8 @@ class LoginLayout(resourced: Resourced) : _StackPane(), Resourced by resourced {
     }
 
     init {
-        setMinSize(
-            WIDTH,
-            HEIGHT
-        )
-        setMaxSize(
-            WIDTH,
-            HEIGHT
-        )
+        setMinSize(WIDTH, HEIGHT)
+        setMaxSize(WIDTH, HEIGHT)
         gridPane {
             alignment = Pos.CENTER_RIGHT
             gap = 8.0
@@ -117,16 +106,9 @@ class LoginLayout(resourced: Resourced) : _StackPane(), Resourced by resourced {
                     PreferencesFile.save()
                     GlobalScope.launch(Dispatchers.JavaFx) {
                         later {
-                            checkNotNull(R.string._restart_required)
-                            TextDialog(
-                                this@LoginLayout,
-                                R.string.restart_required,
-                                R.string._restart_required
-                            ).apply {
-                                setOnDialogClosed {
-                                    forceExit()
-                                }
-                            }.show(this@LoginLayout)
+                            TextDialog(this@LoginPane, R.string.restart_required, getString(R.string._restart_required))
+                                .apply { setOnDialogClosed { forceExit() } }
+                                .show(this@LoginPane)
                         }
                     }
                 }
@@ -134,10 +116,7 @@ class LoginLayout(resourced: Resourced) : _StackPane(), Resourced by resourced {
             vbox(8.0) {
                 alignment = Pos.CENTER
                 updatePadding(32.0, 24.0, 32.0, 24.0)
-                imageView(Image(R.image.display_launcher)) {
-                    fitWidth = 64.0
-                    fitHeight = 64.0
-                }
+                imageView(R.image.logo_small)
                 label(getString(R.string.openpss_login)) { font = bold(18.0) }
                 label(getString(R.string._login_desc1)) {
                     textAlignment = TextAlignment.CENTER
@@ -162,20 +141,7 @@ class LoginLayout(resourced: Resourced) : _StackPane(), Resourced by resourced {
                     }
                     hyperlink(getString(R.string.check_for_updates)) {
                         onAction {
-                            GitHubApi.checkUpdates(this@LoginLayout, { title, actions ->
-                                warningAlert(title, ButtonType.CANCEL) {
-                                    dialogPane.stylesheets += com.hendraanggrian.openpss.util.getStyle(R.style.openpss)
-                                    dialogPane.content = ktfx.layouts.vbox {
-                                        actions.forEach { action ->
-                                            hyperlink(action.text) { onAction = action }
-                                        }
-                                    }
-                                }.show()
-                            }) { title, content ->
-                                infoAlert(title, content = content) {
-                                    dialogPane.stylesheets += com.hendraanggrian.openpss.util.getStyle(R.style.openpss)
-                                }.show()
-                            }
+                            GitHubApi.checkUpdates(this@LoginPane)
                         }
                     }
                 } marginTop 24.0
@@ -184,7 +150,7 @@ class LoginLayout(resourced: Resourced) : _StackPane(), Resourced by resourced {
                         updatePadding(8.0, 16.0, 8.0, 16.0)
                         fontSize = 16.0
                         styleClass += App.STYLE_BUTTON_FLAT
-                        onAction { AboutDialog(this@LoginLayout).show() }
+                        onAction { AboutDialog(this@LoginPane).show() }
                     } anchorLeft 0.0
                     loginButton = jfxButton(getString(R.string.login)) {
                         updatePadding(8.0, 16.0, 8.0, 16.0)
@@ -199,7 +165,7 @@ class LoginLayout(resourced: Resourced) : _StackPane(), Resourced by resourced {
                                 or serverPasswordField.textProperty().isBlank()
                         )
                         onAction {
-                            PasswordDialog().show(this@LoginLayout) { _ ->
+                            PasswordDialog().show(this@LoginPane) { _ ->
                                 GlobalScope.launch(Dispatchers.IO) {
                                     LoginFile.save()
                                     try {
@@ -212,14 +178,13 @@ class LoginLayout(resourced: Resourced) : _StackPane(), Resourced by resourced {
                                             passwordField.text
                                         )
                                         GlobalScope.launch(Dispatchers.JavaFx) {
-                                            onSuccess(employee)
+                                            onSuccess?.invoke(employee)
                                         }
                                     } catch (e: Exception) {
                                         if (BuildConfig.DEBUG) e.printStackTrace()
                                         GlobalScope.launch(Dispatchers.JavaFx) {
-                                            errorAlert(e.message.toString()) {
-                                                dialogPane.stylesheets += com.hendraanggrian.openpss.util.getStyle(R.style.openpss)
-                                            }.show()
+                                            TextDialog(this@LoginPane, R.string.login_failed, e.message.toString())
+                                                .show(this@LoginPane)
                                         }
                                     }
                                 }
@@ -230,10 +195,6 @@ class LoginLayout(resourced: Resourced) : _StackPane(), Resourced by resourced {
                 } marginTop 24.0
             } row 1 col 0 colSpans 2
         }
-    }
-
-    fun setOnSuccess(onSuccess: (Employee) -> Unit) {
-        this.onSuccess = onSuccess
     }
 
     inner class ConnectionSettingsPopover : Popover(this, R.string.connection_settings) {

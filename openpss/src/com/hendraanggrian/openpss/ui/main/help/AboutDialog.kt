@@ -11,33 +11,41 @@ import com.hendraanggrian.openpss.util.desktop
 import com.jfoenix.controls.JFXButton
 import javafx.geometry.Pos
 import javafx.scene.control.Dialog
+import javafx.scene.control.Hyperlink
 import javafx.scene.control.ListView
 import javafx.scene.control.SelectionModel
 import javafx.scene.image.Image
 import javafx.scene.text.Font
+import ktfx.application.later
 import ktfx.collections.toObservableList
 import ktfx.controlsfx.masterDetailPane
 import ktfx.coroutines.listener
 import ktfx.coroutines.onAction
 import ktfx.jfoenix.jfxButton
+import ktfx.jfoenix.jfxListView
 import ktfx.layouts.contextMenu
 import ktfx.layouts.hbox
 import ktfx.layouts.imageView
 import ktfx.layouts.label
 import ktfx.layouts.text
 import ktfx.layouts.textFlow
-import ktfx.layouts.titledPane
 import ktfx.layouts.vbox
 import ktfx.listeners.cellFactory
 import ktfx.scene.control.closeButton
 import ktfx.scene.control.icon
+import ktfx.scene.find
 import ktfx.scene.layout.paddingAll
 import ktfx.scene.text.fontSize
 import java.net.URI
 
+/**
+ * The only dialog not using [com.hendraanggrian.openpss.popup.dialog.Dialog].
+ * This is because it uses native dialog's expandable content.
+ */
 class AboutDialog(resourced: Resourced) : Dialog<Unit>(), Selectable<License>, Resourced by resourced {
 
-    private val licenseList: ListView<License> = ktfx.layouts.listView(License.values().toObservableList()) {
+    private val licenseList: ListView<License> = jfxListView {
+        items = License.values().toObservableList()
         cellFactory {
             onUpdate { license, empty ->
                 if (license != null && !empty) graphic = ktfx.layouts.vbox {
@@ -48,7 +56,7 @@ class AboutDialog(resourced: Resourced) : Dialog<Unit>(), Selectable<License>, R
         }
         contextMenu {
             "Homepage" {
-                disableProperty().bind(!this@listView.selectionModel.selectedItemProperty().isNotNull)
+                disableProperty().bind(!this@jfxListView.selectionModel.selectedItemProperty().isNotNull)
                 onAction { desktop?.browse(URI(selected!!.homepage)) }
             }
         }
@@ -63,10 +71,7 @@ class AboutDialog(resourced: Resourced) : Dialog<Unit>(), Selectable<License>, R
             stylesheets += com.hendraanggrian.openpss.util.getStyle(R.style.openpss)
             content = hbox {
                 paddingAll = 48.0
-                imageView(R.image.display_launcher) {
-                    fitHeight = 172.0
-                    fitWidth = 172.0
-                }
+                imageView(R.image.logo)
                 vbox {
                     alignment = Pos.CENTER_LEFT
                     textFlow {
@@ -101,20 +106,32 @@ class AboutDialog(resourced: Resourced) : Dialog<Unit>(), Selectable<License>, R
                     } marginTop 20.0
                 } marginLeft 48.0
             }
-            expandableContent = titledPane(getString(R.string.open_source_software_license)) {
-                isCollapsible = false
-                masterDetailPane {
-                    maxHeight = 256.0
-                    dividerPosition = 0.3
-                    showDetailNodeProperty().bind(selectedBinding)
-                    masterNode = licenseList
-                    detailNode = ktfx.layouts.textArea {
-                        isEditable = false
-                        selectedProperty.listener { _, _, license -> text = license?.getContent() }
-                    }
+            expandableContent = masterDetailPane {
+                maxHeight = 256.0
+                dividerPosition = 0.3
+                showDetailNodeProperty().bind(selectedBinding)
+                masterNode = licenseList
+                detailNode = ktfx.jfoenix.jfxTextArea {
+                    isEditable = false
+                    selectedProperty.listener { _, _, license -> text = license?.getContent() }
                 }
             }
         }
         closeButton()
+
+        later {
+            dialogPane.run {
+                val detailsButton = find<Hyperlink>(".details-button")
+                detailsButton.text = getString(R.string._open_source_license_show)
+                expandedProperty().listener { _, _, isExpanded ->
+                    detailsButton.text = getString(
+                        when {
+                            isExpanded -> R.string._open_source_license_hide
+                            else -> R.string._open_source_license_show
+                        }
+                    )
+                }
+            }
+        }
     }
 }

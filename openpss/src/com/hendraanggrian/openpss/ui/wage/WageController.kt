@@ -17,7 +17,6 @@ import com.hendraanggrian.openpss.util.getResource
 import com.hendraanggrian.openpss.util.getStyle
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
-import javafx.geometry.Side
 import javafx.scene.control.Button
 import javafx.scene.control.Label
 import javafx.scene.image.ImageView
@@ -30,7 +29,6 @@ import kotlinx.coroutines.experimental.javafx.JavaFx
 import kotlinx.coroutines.experimental.launch
 import ktfx.NodeManager
 import ktfx.application.later
-import ktfx.beans.binding.bindingOf
 import ktfx.beans.binding.booleanBindingOf
 import ktfx.beans.binding.stringBindingOf
 import ktfx.beans.value.lessEq
@@ -46,18 +44,16 @@ import ktfx.scene.layout.maxSize
 import ktfx.stage.fileChooser
 import ktfx.stage.setMinSize
 import ktfx.stage.stage
-import org.controlsfx.control.HiddenSidesPane
 import java.io.File
 import java.net.URL
 import java.util.ResourceBundle
 
 class WageController : ActionController() {
 
-    @FXML lateinit var anchorPane: AnchorPane
     @FXML lateinit var titleLabel: Label
-    @FXML lateinit var hiddenSidesPane: HiddenSidesPane
-    @FXML lateinit var flowPane: FlowPane
     @FXML lateinit var processButton: Button
+    @FXML lateinit var anchorPane: AnchorPane
+    @FXML lateinit var flowPane: FlowPane
 
     private lateinit var browseButton: Button
     private lateinit var disableRecessButton: Button
@@ -91,7 +87,7 @@ class WageController : ActionController() {
         titleLabel.textProperty().bind(stringBindingOf(flowPane.children) {
             "${flowPane.children.size} ${getString(R.string.employee)}"
         })
-        processButton.onAction { process() }
+        bindProcessButton()
         later { flowPane.prefWrapLengthProperty().bind(flowPane.scene.widthProperty()) }
         if (DEBUG) {
             val file = File("/Users/hendraanggrian/Downloads/Absen 4-13-18.xlsx")
@@ -99,11 +95,7 @@ class WageController : ActionController() {
         }
     }
 
-    private fun disableRecess() = DisableRecessPopover(this, attendeePanes).show(disableRecessButton)
-
-    private fun saveWage() = attendees.forEach { it.saveWage() }
-
-    private fun process() = stage(getString(R.string.record)) {
+    @FXML fun process() = stage(getString(R.string.record)) {
         val loader = FXMLLoader(getResource(R.layout.controller_wage_record), resources)
         scene = scene {
             loader.pane()
@@ -112,6 +104,10 @@ class WageController : ActionController() {
         setMinSize(1000.0, 650.0)
         loader.controller.addExtra(EXTRA_ATTENDEES, attendees)
     }.showAndWait()
+
+    private fun disableRecess() = DisableRecessPopover(this, attendeePanes).show(disableRecessButton)
+
+    private fun saveWage() = attendees.forEach { it.saveWage() }
 
     private fun history() = desktop?.open(WageDirectory)
 
@@ -184,18 +180,8 @@ class WageController : ActionController() {
     private inline val attendees: List<Attendee> get() = attendeePanes.map { it.attendee }
 
     /** As attendees are populated, process button need to be rebinded according to new requirements. */
-    private fun bindProcessButton() {
-        processButton.disableProperty().bind(flowPane.children.isEmpty or
-            booleanBindingOf(flowPane.children, *flowPane.children
-                .map { (it as AttendeePane).attendanceList.items }
-                .toTypedArray()) { attendees.any { it.attendances.size % 2 != 0 } })
-        hiddenSidesPane.pinnedSideProperty().bind(bindingOf(flowPane.children, *flowPane.children
+    private fun bindProcessButton() = processButton.disableProperty().bind(flowPane.children.isEmpty or
+        booleanBindingOf(flowPane.children, *flowPane.children
             .map { (it as AttendeePane).attendanceList.items }
-            .toTypedArray()) {
-            when {
-                flowPane.children.isEmpty() || attendees.any { it.attendances.size % 2 != 0 } -> null
-                else -> Side.BOTTOM
-            }
-        })
-    }
+            .toTypedArray()) { attendees.any { it.attendances.size % 2 != 0 } })
 }

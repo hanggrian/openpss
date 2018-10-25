@@ -5,8 +5,9 @@ import com.hendraanggrian.openpss.db.schemas.Employees
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.i18n.Resourced
 import com.hendraanggrian.openpss.io.properties.PreferencesFile
+import com.hendraanggrian.openpss.popup.dialog.TextDialog
 import com.hendraanggrian.openpss.ui.controller
-import com.hendraanggrian.openpss.ui.login.LoginLayout
+import com.hendraanggrian.openpss.ui.login.LoginPane
 import com.hendraanggrian.openpss.ui.main.ChangePasswordDialog
 import com.hendraanggrian.openpss.ui.pane
 import com.hendraanggrian.openpss.util.getResource
@@ -19,7 +20,6 @@ import kotlinx.nosql.equal
 import kotlinx.nosql.update
 import ktfx.application.launch
 import ktfx.layouts.scene
-import ktfx.scene.control.infoAlert
 import ktfx.stage.icon
 import ktfx.stage.setMinSize
 import org.apache.log4j.BasicConfigurator
@@ -29,6 +29,9 @@ class App : Application(), Resourced {
 
     companion object {
         const val STRETCH_POINT = 1100.0
+
+        const val DURATION_SHORT = 3000L
+        const val DURATION_LONG = 6000L
 
         const val STYLE_BUTTON_FLAT = "button-flat"
         const val STYLE_BUTTON_RAISED = "button-raised"
@@ -46,13 +49,13 @@ class App : Application(), Resourced {
     }
 
     override fun start(stage: Stage) {
-        stage.icon = Image(R.image.display_launcher)
+        stage.icon = Image(R.image.logo_small)
         stage.isResizable = false
         stage.title = getString(R.string.openpss_login)
         stage.scene = scene {
             stylesheets += getStyle(R.style.openpss)
-            LoginLayout(this@App).apply {
-                setOnSuccess { employee ->
+            LoginPane(this@App).apply {
+                onSuccess = { employee ->
                     val loader = FXMLLoader(getResource(R.layout.controller_main), resources)
                     this@scene.run {
                         loader.pane()
@@ -68,9 +71,11 @@ class App : Application(), Resourced {
                         ChangePasswordDialog(this).show(controller.dialogContainer) { newPassword ->
                             transaction {
                                 Employees { it.name.equal(employee.name) }.projection { password }.update(newPassword!!)
-                                infoAlert(getString(R.string.successfully_changed_password)) {
-                                    dialogPane.stylesheets += getStyle(R.style.openpss)
-                                }.show()
+                                TextDialog(
+                                    this@App,
+                                    R.string.successfully_changed_password,
+                                    getString(R.string.successfully_changed_password)
+                                ).show(this@apply)
                             }
                         }
                     }

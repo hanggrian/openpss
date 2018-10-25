@@ -1,31 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- AnchorPane is necessary for displaying loadingPane in the center. -->
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXToolbar?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.*?>
-<?import org.controlsfx.control.HiddenSidesPane?>
-<AnchorPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.hendraanggrian.openpss.ui.wage.WageController"
-            fx:id="anchorPane">
-    <VBox AnchorPane.leftAnchor="0" AnchorPane.bottomAnchor="0" AnchorPane.rightAnchor="0"
-          AnchorPane.topAnchor="0">
-        <Label fx:id="titleLabel">
-            <padding>
-                <Insets top="5" right="10" bottom="5" left="10"/>
-            </padding>
-        </Label>
-        <HiddenSidesPane fx:id="hiddenSidesPane" triggerDistance="0" VBox.vgrow="ALWAYS">
-            <content>
-                <ScrollPane hbarPolicy="NEVER">
-                    <FlowPane fx:id="flowPane"/>
-                </ScrollPane>
-            </content>
-            <bottom>
-                <Button fx:id="processButton" styleClass="button-raised" text="%process"/>
-            </bottom>
-        </HiddenSidesPane>
-    </VBox>
-</AnchorPane>
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.hendraanggrian.openpss.ui.wage.WageController">
+    <JFXToolbar>
+        <leftItems>
+            <Label fx:id="titleLabel"/>
+        </leftItems>
+        <rightItems>
+            <JFXButton fx:id="processButton" text="%process" mnemonicParsing="false" styleClass="button-raised"
+                       onAction="#process"/>
+        </rightItems>
+    </JFXToolbar>
+    <!-- AnchorPane is necessary for displaying loadingPane in the center. -->
+    <AnchorPane fx:id="anchorPane" VBox.vgrow="ALWAYS">
+        <ScrollPane hbarPolicy="NEVER" AnchorPane.leftAnchor="0" AnchorPane.bottomAnchor="0" AnchorPane.rightAnchor="0"
+                    AnchorPane.topAnchor="0">
+            <FlowPane fx:id="flowPane"/>
+        </ScrollPane>
+    </AnchorPane>
+</VBox>

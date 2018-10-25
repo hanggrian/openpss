@@ -1,17 +1,17 @@
 package com.hendraanggrian.openpss.ui
 
+import com.hendraanggrian.openpss.Context
 import com.hendraanggrian.openpss.db.schemas.Employee
-import com.hendraanggrian.openpss.i18n.Resourced
 import javafx.fxml.Initializable
 import javafx.scene.layout.StackPane
 import java.net.URL
 import java.util.ResourceBundle
 
 /** Base class of all controllers. */
-open class Controller : Initializable, Resourced {
+open class Controller : Initializable, Context {
 
-    lateinit var employee: Employee
-    open lateinit var dialogContainer: StackPane
+    override lateinit var employee: Employee
+    override lateinit var dialogContainer: StackPane
 
     override lateinit var resources: ResourceBundle
 

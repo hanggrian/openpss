@@ -1,9 +1,15 @@
+/* GLOBAL */
+
 * {
     -accent: #1e88e5;
     -accent-light: #6ab7ff;
     -accent-dark: #005cb2;
+
+    -light: fafafa;
     -dark: rgba(0.0, 0.0, 0.0, 0.54);
 }
+
+/* OVERRIDING */
 
 .root {
     -fx-accent: -accent;
@@ -11,7 +17,10 @@
     -fx-default-button: -accent;
 }
 
-/* OVERRIDING */
+.pagination {
+    -fx-page-information-alignment: right;
+    -fx-padding: 0 0 5 0;
+}
 
 .split-pane *.split-pane-divider {
     -fx-padding: 0 1 0 1;
@@ -35,6 +44,10 @@
     -jfx-default-color: -accent;
 }
 
+.jfx-dialog-overlay-pane {
+    -fx-background-color: -dark;
+}
+
 .jfx-drawer-overlay-pane {
     -fx-background-color: -dark;
 }
@@ -55,6 +68,16 @@
 
 .jfx-radio-button {
     -jfx-selected-color: -accent;
+}
+
+.jfx-snackbar-content {
+    -fx-background-color: #323232;
+}
+.jfx-snackbar-toast {
+    -fx-text-fill: -light;
+}
+.jfx-snackbar-action {
+    -fx-text-fill: -accent;
 }
 
 .jfx-spinner .arc {
@@ -114,7 +137,7 @@
 }
 
 .button-raised {
-    -fx-text-fill: white;
+    -fx-text-fill: -light;
     -fx-background-color: -accent;
 }
 .button-raised:hover {

@@ -6,13 +6,13 @@ import ktfx.layouts.label
 class TextDialog(
     resourced: Resourced,
     titleId: String,
-    private val contentId: String
+    content: String = ""
 ) : Dialog(resourced, titleId) {
 
     init {
         label {
-            text = getString(contentId)
             isWrapText = true
+            text = content
         }
     }
 }

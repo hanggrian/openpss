@@ -1,6 +1,5 @@
 package com.hendraanggrian.openpss.control
 
-import com.hendraanggrian.openpss.R
 import javafx.beans.property.DoubleProperty
 import javafx.beans.property.ObjectProperty
 import javafx.beans.property.SimpleDoubleProperty
@@ -23,7 +22,6 @@ class PaginatedPane : Pagination() {
     var contentFactory: Callback<Pair<Int, Int>, Node>? by contentFactoryProperty
 
     init {
-        stylesheets += javaClass.getResource(R.style.paginatedpane).toExternalForm()
         pageFactoryProperty().bind(bindingOf(countProperty, contentFactoryProperty) {
             Callback<Int, Node> { page ->
                 contentFactory?.call(page to (height / count).toInt())

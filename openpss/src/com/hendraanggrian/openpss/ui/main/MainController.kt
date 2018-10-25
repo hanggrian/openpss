@@ -58,7 +58,6 @@ import java.util.ResourceBundle
 class MainController : Controller(), Selectable<Tab>, Selectable2<Label> {
 
     @FXML override lateinit var dialogContainer: StackPane
-    @FXML lateinit var notificationPane: NotificationPane
     @FXML lateinit var menuBar: MenuBar
     @FXML lateinit var addCustomerItem: MenuItem
     @FXML lateinit var addInvoiceItem: MenuItem
@@ -181,15 +180,7 @@ class MainController : Controller(), Selectable<Tab>, Selectable2<Label> {
         }
     }
 
-    @FXML fun checkUpdate() = GitHubApi.checkUpdates(this, { title, actions ->
-        notificationPane.text = title
-        notificationPane.actions.setAll(actions)
-        notificationPane.show()
-    }) { _, content ->
-        notificationPane.text = content
-        notificationPane.actions.clear()
-        notificationPane.show()
-    }
+    @FXML fun checkUpdate() = GitHubApi.checkUpdates(this, dialogContainer)
 
     @FXML fun about() = AboutDialog(this).show()
 

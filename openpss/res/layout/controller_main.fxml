@@ -8,130 +8,125 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
-<?import org.controlsfx.control.NotificationPane?>
 <StackPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
            fx:controller="com.hendraanggrian.openpss.ui.main.MainController"
            fx:id="dialogContainer">
-    <NotificationPane fx:id="notificationPane">
-        <content>
-            <VBox>
-                <MenuBar fx:id="menuBar">
-                    <Menu mnemonicParsing="false" text="File">
-                        <MenuItem fx:id="addCustomerItem" mnemonicParsing="false" onAction="#add" text="%add_customer"
-                                  accelerator="SHORTCUT+N"/>
-                        <MenuItem fx:id="addInvoiceItem" mnemonicParsing="false" onAction="#add" text="%add_invoice"
-                                  accelerator="SHORTCUT+I"/>
-                        <SeparatorMenuItem/>
-                        <MenuItem fx:id="preferencesItem" mnemonicParsing="false" onAction="#preferences"
-                                  text="%preferences"
-                                  accelerator="SHORTCUT+,">
-                            <graphic>
-                                <ImageView pickOnBounds="true" preserveRatio="true">
-                                    <Image url="@/image/menu_settings.png"/>
-                                </ImageView>
-                            </graphic>
-                        </MenuItem>
-                        <SeparatorMenuItem/>
-                        <MenuItem fx:id="quitItem" mnemonicParsing="false" onAction="#quit" text="%quit"
-                                  accelerator="SHORTCUT+Q"/>
-                    </Menu>
-                    <Menu mnemonicParsing="false" text="Edit">
-                        <MenuItem fx:id="platePriceItem" mnemonicParsing="false" onAction="#editPrice"
-                                  text="%plate_price"/>
-                        <MenuItem fx:id="offsetPriceItem" mnemonicParsing="false" onAction="#editPrice"
-                                  text="%offset_price"/>
-                        <SeparatorMenuItem/>
-                        <MenuItem fx:id="employeeItem" mnemonicParsing="false" onAction="#editEmployee"
-                                  text="%employee"/>
-                        <SeparatorMenuItem/>
-                        <MenuItem fx:id="recessItem" mnemonicParsing="false" onAction="#editRecess" text="%recess"/>
-                    </Menu>
-                    <Menu mnemonicParsing="false" text="%help">
-                        <MenuItem mnemonicParsing="false" onAction="#testViewInvoice" text="%test_view_invoice"/>
-                        <SeparatorMenuItem/>
-                        <MenuItem mnemonicParsing="false" onAction="#checkUpdate" text="%check_for_updates"/>
-                        <MenuItem mnemonicParsing="false" onAction="#about" text="%about">
-                            <graphic>
-                                <ImageView pickOnBounds="true" preserveRatio="true">
-                                    <Image url="@/image/menu_about.png"/>
-                                </ImageView>
-                            </graphic>
-                        </MenuItem>
-                    </Menu>
-                </MenuBar>
-                <JFXDrawer fx:id="drawer" defaultDrawerSize="250" VBox.vgrow="ALWAYS">
-                    <sidePane>
-                        <VBox>
-                            <AnchorPane prefWidth="250" prefHeight="100">
-                                <VBox AnchorPane.leftAnchor="20" AnchorPane.bottomAnchor="20">
-                                    <Label text="%signed_in_as" styleClass="label-accent"/>
-                                    <Label fx:id="employeeLabel" styleClass="label-display2"/>
-                                </VBox>
-                            </AnchorPane>
-                            <SelectionListView fx:id="drawerList" VBox.vgrow="ALWAYS" styleClass="list-view-borderless">
-                                <Label styleClass="drawer-item" text="%customer">
-                                    <graphic>
-                                        <ImageView fx:id="customerGraphic"/>
-                                    </graphic>
-                                </Label>
-                                <Label styleClass="drawer-item" text="%invoice">
-                                    <graphic>
-                                        <ImageView fx:id="invoiceGraphic"/>
-                                    </graphic>
-                                </Label>
-                                <Label styleClass="drawer-item" text="%schedule">
-                                    <graphic>
-                                        <ImageView fx:id="scheduleGraphic"/>
-                                    </graphic>
-                                </Label>
-                                <Label styleClass="drawer-item" text="%finance">
-                                    <graphic>
-                                        <ImageView fx:id="financeGraphic"/>
-                                    </graphic>
-                                </Label>
-                                <Label styleClass="drawer-item" text="%wage">
-                                    <graphic>
-                                        <ImageView fx:id="wageGraphic"/>
-                                    </graphic>
-                                </Label>
-                            </SelectionListView>
+    <VBox>
+        <MenuBar fx:id="menuBar">
+            <Menu mnemonicParsing="false" text="File">
+                <MenuItem fx:id="addCustomerItem" mnemonicParsing="false" onAction="#add" text="%add_customer"
+                          accelerator="SHORTCUT+N"/>
+                <MenuItem fx:id="addInvoiceItem" mnemonicParsing="false" onAction="#add" text="%add_invoice"
+                          accelerator="SHORTCUT+I"/>
+                <SeparatorMenuItem/>
+                <MenuItem fx:id="preferencesItem" mnemonicParsing="false" onAction="#preferences"
+                          text="%preferences"
+                          accelerator="SHORTCUT+,">
+                    <graphic>
+                        <ImageView pickOnBounds="true" preserveRatio="true">
+                            <Image url="@/image/menu_settings.png"/>
+                        </ImageView>
+                    </graphic>
+                </MenuItem>
+                <SeparatorMenuItem/>
+                <MenuItem fx:id="quitItem" mnemonicParsing="false" onAction="#quit" text="%quit"
+                          accelerator="SHORTCUT+Q"/>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Edit">
+                <MenuItem fx:id="platePriceItem" mnemonicParsing="false" onAction="#editPrice"
+                          text="%plate_price"/>
+                <MenuItem fx:id="offsetPriceItem" mnemonicParsing="false" onAction="#editPrice"
+                          text="%offset_price"/>
+                <SeparatorMenuItem/>
+                <MenuItem fx:id="employeeItem" mnemonicParsing="false" onAction="#editEmployee"
+                          text="%employee"/>
+                <SeparatorMenuItem/>
+                <MenuItem fx:id="recessItem" mnemonicParsing="false" onAction="#editRecess" text="%recess"/>
+            </Menu>
+            <Menu mnemonicParsing="false" text="%help">
+                <MenuItem mnemonicParsing="false" onAction="#testViewInvoice" text="%test_view_invoice"/>
+                <SeparatorMenuItem/>
+                <MenuItem mnemonicParsing="false" onAction="#checkUpdate" text="%check_for_updates"/>
+                <MenuItem mnemonicParsing="false" onAction="#about" text="%about">
+                    <graphic>
+                        <ImageView pickOnBounds="true" preserveRatio="true">
+                            <Image url="@/image/menu_about.png"/>
+                        </ImageView>
+                    </graphic>
+                </MenuItem>
+            </Menu>
+        </MenuBar>
+        <JFXDrawer fx:id="drawer" defaultDrawerSize="250" VBox.vgrow="ALWAYS">
+            <sidePane>
+                <VBox>
+                    <AnchorPane prefWidth="250" prefHeight="100">
+                        <VBox AnchorPane.leftAnchor="20" AnchorPane.bottomAnchor="20">
+                            <Label text="%signed_in_as" styleClass="label-accent"/>
+                            <Label fx:id="employeeLabel" styleClass="label-display2"/>
                         </VBox>
-                    </sidePane>
-                    <content>
-                        <VBox>
-                            <JFXToolbar fx:id="toolbar">
-                                <leftItems>
-                                    <JFXHamburger fx:id="hamburger" prefWidth="25"/>
-                                    <Label fx:id="titleLabel" styleClass="label-display2"/>
-                                    <Space/>
-                                </leftItems>
-                            </JFXToolbar>
-                            <TabPane fx:id="tabPane" VBox.vgrow="ALWAYS" styleClass="tab-pane-hidden">
-                                <Tab closable="false">
-                                    <!--suppress ALL -->
-                                    <fx:include fx:id="customer" source="controller_customer.fxml"/>
-                                </Tab>
-                                <Tab closable="false">
-                                    <!--suppress ALL -->
-                                    <fx:include fx:id="invoice" source="controller_invoice.fxml"/>
-                                </Tab>
-                                <Tab closable="false">
-                                    <!--suppress ALL -->
-                                    <fx:include fx:id="schedule" source="controller_schedule.fxml"/>
-                                </Tab>
-                                <Tab closable="false">
-                                    <!--suppress ALL -->
-                                    <fx:include fx:id="finance" source="controller_finance.fxml"/>
-                                </Tab>
-                                <Tab closable="false">
-                                    <!--suppress ALL -->
-                                    <fx:include fx:id="wage" source="controller_wage.fxml"/>
-                                </Tab>
-                            </TabPane>
-                        </VBox>
-                    </content>
-                </JFXDrawer>
-            </VBox>
-        </content>
-    </NotificationPane>
+                    </AnchorPane>
+                    <SelectionListView fx:id="drawerList" VBox.vgrow="ALWAYS" styleClass="list-view-borderless">
+                        <Label styleClass="drawer-item" text="%customer">
+                            <graphic>
+                                <ImageView fx:id="customerGraphic"/>
+                            </graphic>
+                        </Label>
+                        <Label styleClass="drawer-item" text="%invoice">
+                            <graphic>
+                                <ImageView fx:id="invoiceGraphic"/>
+                            </graphic>
+                        </Label>
+                        <Label styleClass="drawer-item" text="%schedule">
+                            <graphic>
+                                <ImageView fx:id="scheduleGraphic"/>
+                            </graphic>
+                        </Label>
+                        <Label styleClass="drawer-item" text="%finance">
+                            <graphic>
+                                <ImageView fx:id="financeGraphic"/>
+                            </graphic>
+                        </Label>
+                        <Label styleClass="drawer-item" text="%wage">
+                            <graphic>
+                                <ImageView fx:id="wageGraphic"/>
+                            </graphic>
+                        </Label>
+                    </SelectionListView>
+                </VBox>
+            </sidePane>
+            <content>
+                <VBox>
+                    <JFXToolbar fx:id="toolbar">
+                        <leftItems>
+                            <JFXHamburger fx:id="hamburger" prefWidth="25"/>
+                            <Label fx:id="titleLabel" styleClass="label-display2"/>
+                            <Space/>
+                        </leftItems>
+                    </JFXToolbar>
+                    <TabPane fx:id="tabPane" VBox.vgrow="ALWAYS" styleClass="tab-pane-hidden">
+                        <Tab closable="false">
+                            <!--suppress ALL -->
+                            <fx:include fx:id="customer" source="controller_customer.fxml"/>
+                        </Tab>
+                        <Tab closable="false">
+                            <!--suppress ALL -->
+                            <fx:include fx:id="invoice" source="controller_invoice.fxml"/>
+                        </Tab>
+                        <Tab closable="false">
+                            <!--suppress ALL -->
+                            <fx:include fx:id="schedule" source="controller_schedule.fxml"/>
+                        </Tab>
+                        <Tab closable="false">
+                            <!--suppress ALL -->
+                            <fx:include fx:id="finance" source="controller_finance.fxml"/>
+                        </Tab>
+                        <Tab closable="false">
+                            <!--suppress ALL -->
+                            <fx:include fx:id="wage" source="controller_wage.fxml"/>
+                        </Tab>
+                    </TabPane>
+                </VBox>
+            </content>
+        </JFXDrawer>
+    </VBox>
 </StackPane>

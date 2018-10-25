@@ -1,5 +1,6 @@
 .tree-table-view .column-header-background {
-    visibility: hidden; -fx-padding: -1em;
+    visibility: hidden;
+    -fx-padding: -1em;
 }
 
 .tree-table-view *.scroll-bar:vertical *.increment-button,

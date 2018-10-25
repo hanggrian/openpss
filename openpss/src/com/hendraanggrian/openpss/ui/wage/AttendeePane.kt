@@ -107,8 +107,8 @@ class AttendeePane(
                 } col 1 row 3 colSpans 2
             }
             attendanceList = listView(attendee.attendances) {
-                prefWidth = 128.0
-                maxHeight = 352.0 // just enough for 7 days attendance
+                prefWidth = 150.0
+                maxHeight = 360.0 // just enough for 7 days attendance
                 cellFactory {
                     onUpdate { dateTime, empty ->
                         text = null

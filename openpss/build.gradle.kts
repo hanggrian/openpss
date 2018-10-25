@@ -103,9 +103,7 @@ tasks {
     "pack"(com.hendraanggrian.packr.PackTask::class) {
         dependsOn("installDist")
 
-        buildDir.resolve("install/app/lib")?.listFiles()?.forEach {
-            classpath(it.path)
-        }
+        buildDir.resolve("install/$RELEASE_ARTIFACT/lib")?.listFiles()?.forEach { classpath(it.path) }
         executable = RELEASE_NAME
         mainClass = application.mainClassName
         vmArgs("Xmx2G")

@@ -65,7 +65,7 @@
                             <AnchorPane prefWidth="250" prefHeight="100">
                                 <VBox AnchorPane.leftAnchor="20" AnchorPane.bottomAnchor="20">
                                     <Label text="%signed_in_as" styleClass="label-accent"/>
-                                    <Label fx:id="employeeLabel" styleClass="display-label2"/>
+                                    <Label fx:id="employeeLabel" styleClass="label-display2"/>
                                 </VBox>
                             </AnchorPane>
                             <SelectionListView fx:id="drawerList" VBox.vgrow="ALWAYS" styleClass="list-view-borderless">
@@ -102,11 +102,11 @@
                             <JFXToolbar fx:id="toolbar">
                                 <leftItems>
                                     <JFXHamburger fx:id="hamburger" prefWidth="25"/>
-                                    <Label fx:id="titleLabel" styleClass="display-label2"/>
+                                    <Label fx:id="titleLabel" styleClass="label-display2"/>
                                     <Space/>
                                 </leftItems>
                             </JFXToolbar>
-                            <TabPane fx:id="tabPane" VBox.vgrow="ALWAYS" styleClass="hidden-tab-pane">
+                            <TabPane fx:id="tabPane" VBox.vgrow="ALWAYS" styleClass="tab-pane-hidden">
                                 <Tab closable="false">
                                     <!--suppress ALL -->
                                     <fx:include fx:id="customer" source="controller_customer.fxml"/>

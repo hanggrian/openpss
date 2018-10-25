@@ -27,9 +27,8 @@ import ktfx.layouts.buttonBar
 import ktfx.layouts.pane
 import ktfx.scene.layout.paddingAll
 import ktfx.scene.text.fontSize
-import org.controlsfx.control.PopOver
 
-/** Base [PopOver] class used across applications. */
+/** Base popup class used across applications. */
 open class Popover(
     private val resourced: Resourced,
     titleId: String

@@ -20,6 +20,7 @@ import com.hendraanggrian.openpss.util.concatenate
 import com.hendraanggrian.openpss.util.desktop
 import com.hendraanggrian.openpss.util.getResource
 import com.hendraanggrian.openpss.util.getStyle
+import com.jfoenix.controls.JFXToolbar
 import com.sun.javafx.scene.control.skin.TreeTableViewSkin
 import com.sun.javafx.scene.control.skin.VirtualFlow
 import javafx.beans.value.ObservableValue
@@ -31,7 +32,6 @@ import javafx.scene.control.SplitMenuButton
 import javafx.scene.control.TreeItem
 import javafx.scene.control.TreeTableColumn
 import javafx.scene.control.TreeTableView
-import javafx.scene.layout.HBox
 import javafx.scene.layout.VBox
 import javafx.stage.Stage
 import ktfx.application.later
@@ -61,7 +61,7 @@ class WageRecordController : Controller() {
     }
 
     @FXML lateinit var root: VBox
-    @FXML lateinit var navigationBox: HBox
+    @FXML lateinit var toolbar: JFXToolbar
     @FXML lateinit var undoButton: SplitMenuButton
     @FXML lateinit var timeBox: TimeBox
     @FXML lateinit var lockStartButton: Button
@@ -232,11 +232,11 @@ class WageRecordController : Controller() {
 
     private fun togglePrintMode(on: Boolean, printStylesheet: String) = when {
         on -> {
-            root.children -= navigationBox
+            root.children -= toolbar
             recordTable.stylesheets += printStylesheet
         }
         else -> {
-            root.children.add(0, navigationBox)
+            root.children.add(0, toolbar)
             recordTable.stylesheets -= printStylesheet
         }
     }

@@ -33,16 +33,6 @@ class App : Application(), Resourced {
         const val STYLE_BUTTON_FLAT = "button-flat"
         const val STYLE_BUTTON_RAISED = "button-raised"
 
-        const val STYLE_LABEL_ACCENT = "label-accent"
-
-        const val STYLE_HIDDEN_TAB_PANE = "hidden-tab-pane"
-        const val STYLE_NAVIGATION_PANE = "navigation-pane"
-        const val STYLE_DISPLAY_LABEL = "display-label"
-        const val STYLE_DEFAULT_BUTTON = "default-button"
-        const val STYLE_SPLIT_MENU_DEFAULT_BUTTON = "default-split-menu-button"
-        const val STYLE_SEARCH_TEXTFIELD = "search-textfield"
-        const val STYLE_BORDERLESS_TITLEDPANE = "borderless-titledpane"
-
         @JvmStatic fun main(args: Array<String>) = launch<App>(*args)
     }
 

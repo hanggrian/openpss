@@ -1,48 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <?import com.hendraanggrian.openpss.control.*?>
+<?import com.jfoenix.controls.JFXToolbar?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.hendraanggrian.openpss.ui.wage.record.WageRecordController"
       fx:id="root">
-    <HBox fx:id="navigationBox" styleClass="navigation-pane" alignment="CENTER" spacing="10">
-        <StretchableSplitMenuButton mnemonicParsing="false" fx:id="undoButton" onAction="#undo" stretchPoint="1100"
-                                    stretchableText="%undo">
-            <ImageView>
-                <Image url="@/image/act_undo.png"/>
-            </ImageView>
-        </StretchableSplitMenuButton>
-        <Region minWidth="10"/>
-        <TimeBox fx:id="timeBox"/>
-        <StretchableButton mnemonicParsing="false" fx:id="lockStartButton" onAction="#lockStart" stretchPoint="1100"
-                           stretchableText="%lock_start_time">
-            <ImageView>
-                <Image url="@/image/act_lock_start.png"/>
-            </ImageView>
-        </StretchableButton>
-        <StretchableButton mnemonicParsing="false" fx:id="lockEndButton" onAction="#lockEnd" stretchPoint="1100"
-                           stretchableText="%lock_end_time">
-            <ImageView>
-                <Image url="@/image/act_lock_end.png"/>
-            </ImageView>
-        </StretchableButton>
-        <Region minWidth="10"/>
-        <StretchableButton mnemonicParsing="false" fx:id="disableDailyIncomeButton" onAction="#disableDailyIncome"
-                           stretchPoint="1100" stretchableText="%disable_daily_income">
-            <ImageView>
-                <Image url="@/image/act_disable_daily.png"/>
-            </ImageView>
-        </StretchableButton>
-        <Region HBox.hgrow="ALWAYS"/>
-        <StretchableButton mnemonicParsing="false" onAction="#screenshot" stretchPoint="1100"
-                           stretchableText="%screenshot">
-            <ImageView>
-                <Image url="@/image/act_screenshot.png"/>
-            </ImageView>
-        </StretchableButton>
-    </HBox>
+    <JFXToolbar fx:id="toolbar">
+        <leftItems>
+            <StretchableSplitMenuButton mnemonicParsing="false" fx:id="undoButton" onAction="#undo" stretchPoint="1100"
+                                        stretchableText="%undo">
+                <ImageView>
+                    <Image url="@/image/act_undo.png"/>
+                </ImageView>
+            </StretchableSplitMenuButton>
+            <Region minWidth="10"/>
+            <TimeBox fx:id="timeBox"/>
+            <StretchableButton mnemonicParsing="false" fx:id="lockStartButton" onAction="#lockStart" stretchPoint="1100"
+                               stretchableText="%lock_start_time">
+                <ImageView>
+                    <Image url="@/image/act_lock_start.png"/>
+                </ImageView>
+            </StretchableButton>
+            <StretchableButton mnemonicParsing="false" fx:id="lockEndButton" onAction="#lockEnd" stretchPoint="1100"
+                               stretchableText="%lock_end_time">
+                <ImageView>
+                    <Image url="@/image/act_lock_end.png"/>
+                </ImageView>
+            </StretchableButton>
+            <Region minWidth="10"/>
+            <StretchableButton mnemonicParsing="false" fx:id="disableDailyIncomeButton" onAction="#disableDailyIncome"
+                               stretchPoint="1100" stretchableText="%disable_daily_income">
+                <ImageView>
+                    <Image url="@/image/act_disable_daily.png"/>
+                </ImageView>
+            </StretchableButton>
+        </leftItems>
+        <rightItems>
+            <StretchableButton mnemonicParsing="false" onAction="#screenshot" stretchPoint="1100"
+                               stretchableText="%screenshot">
+                <ImageView>
+                    <Image url="@/image/act_screenshot.png"/>
+                </ImageView>
+            </StretchableButton>
+        </rightItems>
+    </JFXToolbar>
     <TreeTableView fx:id="recordTable" showRoot="false" VBox.vgrow="ALWAYS">
         <columns>
             <TreeTableColumn fx:id="nameColumn" sortable="false" text="%name"/>

@@ -1,13 +1,13 @@
 package com.hendraanggrian.openpss.popup.popover
 
+import com.hendraanggrian.openpss.Context
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.i18n.Resourced
 import javafx.beans.binding.BooleanBinding
 import javafx.scene.control.TextField
 import ktfx.beans.value.isBlank
 import ktfx.jfoenix.jfxTextField
 
-open class InputPopover(resourced: Resourced, titleId: String) : ResultablePopover<String>(resourced, titleId) {
+open class InputPopover(context: Context, titleId: String) : ResultablePopover<String>(context, titleId) {
 
     protected val editor: TextField = jfxTextField()
 

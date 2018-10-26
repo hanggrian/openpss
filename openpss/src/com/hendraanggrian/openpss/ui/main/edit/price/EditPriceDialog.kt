@@ -1,27 +1,25 @@
 package com.hendraanggrian.openpss.ui.main.edit.price
 
+import com.hendraanggrian.openpss.App
+import com.hendraanggrian.openpss.Context
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.stringCell
 import com.hendraanggrian.openpss.db.Document
 import com.hendraanggrian.openpss.db.Named
 import com.hendraanggrian.openpss.db.NamedSchema
-import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.i18n.Resourced
 import com.hendraanggrian.openpss.popup.dialog.TableDialog
 import com.hendraanggrian.openpss.popup.popover.InputPopover
-import com.hendraanggrian.openpss.util.getStyle
 import com.hendraanggrian.openpss.util.isNotEmpty
 import kotlinx.nosql.equal
 import kotlinx.nosql.mongodb.DocumentSchema
-import ktfx.scene.control.errorAlert
+import ktfx.jfoenix.jfxSnackbar
 
 abstract class EditPriceDialog<D, S>(
-    resourced: Resourced,
+    context: Context,
     headerId: String,
-    schema: S,
-    employee: Employee
-) : TableDialog<D, S>(resourced, headerId, schema, employee)
+    schema: S
+) : TableDialog<D, S>(context, headerId, schema)
     where D : Document<S>, D : Named, S : DocumentSchema<D>, S : NamedSchema {
 
     abstract fun newPrice(name: String): D
@@ -42,9 +40,8 @@ abstract class EditPriceDialog<D, S>(
     ).show(addButton) { name ->
         transaction @Suppress("IMPLICIT_CAST_TO_ANY") {
             when {
-                schema { it.name.equal(name) }.isNotEmpty() -> errorAlert(getString(R.string.name_taken)) {
-                    dialogPane.stylesheets += getStyle(R.style.openpss)
-                }.show()
+                schema { it.name.equal(name) }.isNotEmpty() ->
+                    root.jfxSnackbar(getString(R.string.name_taken), App.DURATION_SHORT)
                 else -> {
                     val price = newPrice(name)
                     price.id = schema.insert(price)

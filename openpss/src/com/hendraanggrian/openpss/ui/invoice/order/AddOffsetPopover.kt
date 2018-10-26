@@ -1,5 +1,6 @@
 package com.hendraanggrian.openpss.ui.invoice.order
 
+import com.hendraanggrian.openpss.Context
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.DoubleField
 import com.hendraanggrian.openpss.control.IntField
@@ -9,7 +10,6 @@ import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.db.schemas.OffsetPrice
 import com.hendraanggrian.openpss.db.schemas.OffsetPrices
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.i18n.Resourced
 import javafx.beans.Observable
 import javafx.beans.value.ObservableBooleanValue
 import javafx.scene.control.ComboBox
@@ -23,7 +23,7 @@ import ktfx.layouts._GridPane
 import ktfx.layouts.label
 import ktfx.listeners.converter
 
-class AddOffsetPopover(resourced: Resourced) : AddOrderPopover<Invoice.Offset>(resourced, R.string.add_offset),
+class AddOffsetPopover(context: Context) : AddOrderPopover<Invoice.Offset>(context, R.string.add_offset),
     Invoice.Order {
 
     private lateinit var machineChoice: ComboBox<OffsetPrice>

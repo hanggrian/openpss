@@ -1,5 +1,6 @@
 package com.hendraanggrian.openpss.ui.invoice.order
 
+import com.hendraanggrian.openpss.Context
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.DoubleField
 import com.hendraanggrian.openpss.control.IntField
@@ -7,7 +8,6 @@ import com.hendraanggrian.openpss.control.doubleField
 import com.hendraanggrian.openpss.control.intField
 import com.hendraanggrian.openpss.db.Titled
 import com.hendraanggrian.openpss.db.schemas.Invoice
-import com.hendraanggrian.openpss.i18n.Resourced
 import com.hendraanggrian.openpss.popup.popover.ResultablePopover
 import javafx.beans.Observable
 import javafx.beans.value.ObservableBooleanValue
@@ -23,8 +23,8 @@ import ktfx.layouts.label
 import ktfx.layouts.tooltip
 import ktfx.scene.layout.gap
 
-abstract class AddOrderPopover<T : Titled>(resourced: Resourced, titleId: String) :
-    ResultablePopover<T>(resourced, titleId), Invoice.Order {
+abstract class AddOrderPopover<T : Titled>(context: Context, titleId: String) :
+    ResultablePopover<T>(context, titleId), Invoice.Order {
 
     abstract fun _GridPane.onCreateContent()
 

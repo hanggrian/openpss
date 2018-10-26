@@ -1,5 +1,6 @@
 package com.hendraanggrian.openpss.ui.wage
 
+import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.App.Companion.STRETCH_POINT
 import com.hendraanggrian.openpss.BuildConfig.DEBUG
 import com.hendraanggrian.openpss.R
@@ -7,14 +8,15 @@ import com.hendraanggrian.openpss.control.space
 import com.hendraanggrian.openpss.control.stretchableButton
 import com.hendraanggrian.openpss.io.WageDirectory
 import com.hendraanggrian.openpss.io.properties.PreferencesFile.WAGE_READER
+import com.hendraanggrian.openpss.popup.dialog.TextDialog
 import com.hendraanggrian.openpss.ui.ActionController
 import com.hendraanggrian.openpss.ui.controller
 import com.hendraanggrian.openpss.ui.pane
 import com.hendraanggrian.openpss.ui.wage.readers.Reader
 import com.hendraanggrian.openpss.ui.wage.record.WageRecordController.Companion.EXTRA_ATTENDEES
-import com.hendraanggrian.openpss.util.desktop
 import com.hendraanggrian.openpss.util.getResource
 import com.hendraanggrian.openpss.util.getStyle
+import com.jfoenix.controls.JFXScrollPane
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
 import javafx.scene.control.Button
@@ -23,10 +25,10 @@ import javafx.scene.image.ImageView
 import javafx.scene.layout.AnchorPane
 import javafx.scene.layout.FlowPane
 import javafx.stage.FileChooser.ExtensionFilter
-import kotlinx.coroutines.experimental.Dispatchers
-import kotlinx.coroutines.experimental.GlobalScope
-import kotlinx.coroutines.experimental.javafx.JavaFx
-import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.javafx.JavaFx
+import kotlinx.coroutines.launch
 import ktfx.NodeManager
 import ktfx.application.later
 import ktfx.beans.binding.booleanBindingOf
@@ -36,10 +38,12 @@ import ktfx.beans.value.or
 import ktfx.collections.isEmpty
 import ktfx.collections.size
 import ktfx.coroutines.onAction
+import ktfx.jfoenix.jfxButton
+import ktfx.jfoenix.jfxToolbar
+import ktfx.layouts.anchorPane
 import ktfx.layouts.borderPane
 import ktfx.layouts.label
 import ktfx.layouts.scene
-import ktfx.scene.control.errorAlert
 import ktfx.scene.layout.maxSize
 import ktfx.stage.fileChooser
 import ktfx.stage.setMinSize
@@ -53,6 +57,7 @@ class WageController : ActionController() {
     @FXML lateinit var titleLabel: Label
     @FXML lateinit var processButton: Button
     @FXML lateinit var anchorPane: AnchorPane
+    @FXML lateinit var scrollPane: JFXScrollPane
     @FXML lateinit var flowPane: FlowPane
 
     private lateinit var browseButton: Button
@@ -87,11 +92,25 @@ class WageController : ActionController() {
         titleLabel.textProperty().bind(stringBindingOf(flowPane.children) {
             "${flowPane.children.size} ${getString(R.string.employee)}"
         })
+        scrollPane.mainHeader.children.add(anchorPane {
+            jfxToolbar {
+                leftItems {
+                    label("fuck you")
+                }
+                rightItems {
+                    jfxButton("Fuck") {
+                        styleClass += App.STYLE_BUTTON_RAISED
+                    }
+                }
+            }
+        })
         bindProcessButton()
-        later { flowPane.prefWrapLengthProperty().bind(flowPane.scene.widthProperty()) }
-        if (DEBUG) {
-            val file = File("/Users/hendraanggrian/Downloads/Absen 4-13-18.xlsx")
-            if (file.exists()) read(file)
+        later {
+            flowPane.prefWrapLengthProperty().bind(flowPane.scene.widthProperty())
+            if (DEBUG) {
+                val file = File("/Users/hendraanggrian/Downloads/Absen 4-13-18.xlsx")
+                if (file.exists()) read(file)
+            }
         }
     }
 
@@ -130,27 +149,26 @@ class WageController : ActionController() {
                 Reader.of(WAGE_READER).read(file).forEach { attendee ->
                     attendee.mergeDuplicates()
                     GlobalScope.launch(Dispatchers.JavaFx) {
-                        flowPane.children += attendeePane(this@WageController, attendee) {
+                        flowPane.children += AttendeePane(this@WageController, attendee).apply {
                             deleteMenu.onAction {
-                                flowPane.children -= this@attendeePane
+                                flowPane.children -= this@apply
                                 bindProcessButton()
                             }
                             deleteOthersMenu.run {
                                 disableProperty().bind(flowPane.children.size() lessEq 1)
-                                onAction {
-                                    flowPane.children -= flowPane.children.toMutableList().apply {
-                                        remove(this@attendeePane)
-                                    }
+                                onAction { _ ->
+                                    flowPane.children -= flowPane.children.toMutableList()
+                                        .also { it -= this@apply }
                                     bindProcessButton()
                                 }
                             }
                             deleteToTheRightMenu.run {
                                 disableProperty().bind(booleanBindingOf(flowPane.children) {
-                                    flowPane.children.indexOf(this@attendeePane) == flowPane.children.lastIndex
+                                    flowPane.children.indexOf(this@apply) == flowPane.children.lastIndex
                                 })
                                 onAction {
                                     flowPane.children -= flowPane.children.toList().takeLast(
-                                        flowPane.children.lastIndex - flowPane.children.indexOf(this@attendeePane)
+                                        flowPane.children.lastIndex - flowPane.children.indexOf(this@apply)
                                     )
                                     bindProcessButton()
                                 }
@@ -167,9 +185,7 @@ class WageController : ActionController() {
                 GlobalScope.launch(Dispatchers.JavaFx) {
                     anchorPane.children -= loadingPane
                     bindProcessButton()
-                    errorAlert(e.message.toString()) {
-                        dialogPane.stylesheets += getStyle(R.style.openpss)
-                    }.show()
+                    TextDialog(this@WageController, R.string.reading_failed, e.message.toString()).show()
                 }
             }
         }

@@ -1,5 +1,6 @@
 package com.hendraanggrian.openpss.ui.customer
 
+import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.App.Companion.STRETCH_POINT
 import com.hendraanggrian.openpss.PATTERN_DATE
 import com.hendraanggrian.openpss.R
@@ -7,17 +8,16 @@ import com.hendraanggrian.openpss.control.PaginatedPane
 import com.hendraanggrian.openpss.control.space
 import com.hendraanggrian.openpss.control.stretchableButton
 import com.hendraanggrian.openpss.control.stringCell
-import com.hendraanggrian.openpss.control.yesNoAlert
 import com.hendraanggrian.openpss.db.matches
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.transaction
+import com.hendraanggrian.openpss.popup.dialog.ConfirmDialog
 import com.hendraanggrian.openpss.popup.popover.InputUserPopover
 import com.hendraanggrian.openpss.ui.ActionController
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.Selectable
 import com.hendraanggrian.openpss.ui.Selectable2
-import com.hendraanggrian.openpss.util.getStyle
 import com.hendraanggrian.openpss.util.isNotEmpty
 import javafx.fxml.FXML
 import javafx.scene.Node
@@ -31,27 +31,26 @@ import javafx.scene.control.TableView
 import javafx.scene.control.TextField
 import javafx.scene.image.ImageView
 import javafx.util.Callback
-import kotlinx.coroutines.experimental.Dispatchers
-import kotlinx.coroutines.experimental.GlobalScope
-import kotlinx.coroutines.experimental.delay
-import kotlinx.coroutines.experimental.javafx.JavaFx
-import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.javafx.JavaFx
+import kotlinx.coroutines.launch
 import kotlinx.nosql.update
 import ktfx.NodeManager
 import ktfx.application.later
 import ktfx.beans.binding.bindingOf
 import ktfx.beans.binding.stringBindingOf
-import ktfx.beans.property.toProperty
 import ktfx.beans.value.or
 import ktfx.collections.emptyObservableList
 import ktfx.collections.toMutableObservableList
 import ktfx.collections.toObservableList
 import ktfx.coroutines.onAction
+import ktfx.jfoenix.jfxSnackbar
 import ktfx.jfoenix.jfxTextField
 import ktfx.layouts.contextMenu
 import ktfx.layouts.listView
 import ktfx.layouts.tooltip
-import ktfx.scene.control.errorAlert
 import org.controlsfx.control.MasterDetailPane
 import java.net.URL
 import java.util.ResourceBundle
@@ -128,7 +127,7 @@ class CustomerController : ActionController(), Refreshable, Selectable<Customer>
                             items = customers
                                 .skip(count * page)
                                 .take(count).toMutableObservableList()
-                            val fullAccess = employee.isAdmin().toProperty()
+                            val fullAccess = isAdminProperty()
                             contextMenu {
                                 getString(R.string.edit)(ImageView(R.image.menu_edit)) {
                                     disableProperty().bind(!selectedBinding or !fullAccess)
@@ -158,9 +157,7 @@ class CustomerController : ActionController(), Refreshable, Selectable<Customer>
         transaction {
             when {
                 Customers { it.name.matches("^$name$", CASE_INSENSITIVE) }.isNotEmpty() ->
-                    errorAlert(getString(R.string.name_taken)) {
-                        dialogPane.stylesheets += getStyle(R.style.openpss)
-                    }.show()
+                    root.jfxSnackbar(getString(R.string.name_taken), App.DURATION_SHORT)
                 else -> {
                     Customer.new(name).let {
                         it.id = Customers.insert(it)
@@ -186,7 +183,7 @@ class CustomerController : ActionController(), Refreshable, Selectable<Customer>
         reload()
     }
 
-    @FXML fun deleteContact() = yesNoAlert(R.string.delete_contact) {
+    @FXML fun deleteContact() = ConfirmDialog(this, R.string.delete_contact).show {
         transaction {
             Customers[selected!!].projection { contacts }.update(selected!!.contacts - selected2!!)
         }

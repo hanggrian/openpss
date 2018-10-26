@@ -1,10 +1,10 @@
 package com.hendraanggrian.openpss.ui.wage
 
 import com.hendraanggrian.openpss.App
+import com.hendraanggrian.openpss.Context
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.db.schemas.Recesses
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.i18n.Resourced
 import com.hendraanggrian.openpss.popup.popover.Popover
 import com.jfoenix.controls.JFXButton
 import javafx.scene.control.ComboBox
@@ -20,9 +20,9 @@ import ktfx.layouts.label
 import ktfx.scene.layout.gap
 
 class DisableRecessPopover(
-    resourced: Resourced,
+    context: Context,
     private val attendeePanes: List<AttendeePane>
-) : Popover(resourced, R.string.disable_recess) {
+) : Popover(context, R.string.disable_recess) {
 
     private lateinit var recessChoice: ComboBox<*>
     private lateinit var roleChoice: ComboBox<*>

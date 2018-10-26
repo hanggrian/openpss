@@ -1,7 +1,5 @@
 package com.hendraanggrian.openpss.db
 
-import com.hendraanggrian.openpss.db.schemas.Employee
-import com.hendraanggrian.openpss.db.schemas.Employees
 import com.hendraanggrian.openpss.db.schemas.GlobalSetting
 import com.hendraanggrian.openpss.db.schemas.GlobalSettings
 import com.hendraanggrian.openpss.db.schemas.Invoice
@@ -67,8 +65,6 @@ class SessionWrapper(val session: MongoDBSession) :
     ): DocumentSchemaQueryWrapper<S, String, D> = invoke {
         _QueryBuilder().apply { builder(this@buildQuery) }.build()
     }
-
-    fun Employee.isAdmin(): Boolean = Employees[this].single().admin
 
     fun findGlobalSettings(
         key: String

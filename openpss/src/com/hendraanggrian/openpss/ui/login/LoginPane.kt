@@ -2,12 +2,13 @@ package com.hendraanggrian.openpss.ui.login
 
 import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.BuildConfig
+import com.hendraanggrian.openpss.Context
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.bold
 import com.hendraanggrian.openpss.db.login
 import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.i18n.Language
-import com.hendraanggrian.openpss.i18n.Resourced
+import com.hendraanggrian.openpss.i18n.Resources
 import com.hendraanggrian.openpss.io.properties.LoginFile
 import com.hendraanggrian.openpss.io.properties.PreferencesFile
 import com.hendraanggrian.openpss.popup.dialog.ResultableDialog
@@ -15,7 +16,6 @@ import com.hendraanggrian.openpss.popup.dialog.TextDialog
 import com.hendraanggrian.openpss.popup.popover.Popover
 import com.hendraanggrian.openpss.ui.main.help.AboutDialog
 import com.hendraanggrian.openpss.ui.main.help.GitHubApi
-import com.hendraanggrian.openpss.util.forceExit
 import com.jfoenix.controls.JFXButton
 import javafx.geometry.HPos
 import javafx.geometry.Pos
@@ -23,11 +23,12 @@ import javafx.scene.control.Button
 import javafx.scene.control.PasswordField
 import javafx.scene.control.TextField
 import javafx.scene.layout.Priority
+import javafx.scene.layout.StackPane
 import javafx.scene.text.TextAlignment
-import kotlinx.coroutines.experimental.Dispatchers
-import kotlinx.coroutines.experimental.GlobalScope
-import kotlinx.coroutines.experimental.javafx.JavaFx
-import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.javafx.JavaFx
+import kotlinx.coroutines.launch
 import ktfx.application.later
 import ktfx.beans.value.isBlank
 import ktfx.beans.value.or
@@ -54,8 +55,9 @@ import ktfx.scene.layout.gap
 import ktfx.scene.layout.paddingAll
 import ktfx.scene.layout.updatePadding
 import ktfx.scene.text.fontSize
+import java.util.ResourceBundle
 
-class LoginPane(resourced: Resourced) : _StackPane(), Resourced by resourced {
+class LoginPane(private val resourced: Resources) : _StackPane(), Context {
 
     private companion object {
         const val WIDTH = 400.0
@@ -68,6 +70,10 @@ class LoginPane(resourced: Resourced) : _StackPane(), Resourced by resourced {
     private lateinit var textField: TextField
 
     var onSuccess: ((Employee) -> Unit)? = null
+
+    override val resources: ResourceBundle get() = resourced.resources
+    override val login: Employee get() = throw UnsupportedOperationException()
+    override val root: StackPane get() = this
 
     private val serverHostField = HostField().apply {
         text = LoginFile.DB_HOST
@@ -107,7 +113,7 @@ class LoginPane(resourced: Resourced) : _StackPane(), Resourced by resourced {
                     GlobalScope.launch(Dispatchers.JavaFx) {
                         later {
                             TextDialog(this@LoginPane, R.string.restart_required, getString(R.string._restart_required))
-                                .apply { setOnDialogClosed { forceExit() } }
+                                .apply { setOnDialogClosed { App.exit() } }
                                 .show(this@LoginPane)
                         }
                     }
@@ -165,7 +171,7 @@ class LoginPane(resourced: Resourced) : _StackPane(), Resourced by resourced {
                                 or serverPasswordField.textProperty().isBlank()
                         )
                         onAction {
-                            PasswordDialog().show(this@LoginPane) { _ ->
+                            PasswordDialog().show { _ ->
                                 GlobalScope.launch(Dispatchers.IO) {
                                     LoginFile.save()
                                     try {

@@ -1,10 +1,10 @@
 package com.hendraanggrian.openpss.ui.wage
 
+import com.hendraanggrian.openpss.Context
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.popup.popover.ResultablePopover
-import com.hendraanggrian.openpss.i18n.Resourced
 import com.hendraanggrian.openpss.control.TimeBox
 import com.hendraanggrian.openpss.control.timeBox
+import com.hendraanggrian.openpss.popup.popover.ResultablePopover
 import ktfx.beans.binding.booleanBindingOf
 import ktfx.layouts.gridPane
 import ktfx.layouts.label
@@ -12,8 +12,8 @@ import ktfx.scene.layout.gap
 import org.joda.time.LocalTime
 
 class AddRecessPopover(
-    resourced: Resourced
-) : ResultablePopover<Pair<LocalTime, LocalTime>>(resourced, R.string.add_reccess) {
+    context: Context
+) : ResultablePopover<Pair<LocalTime, LocalTime>>(context, R.string.add_reccess) {
 
     private lateinit var startBox: TimeBox
     private lateinit var endBox: TimeBox

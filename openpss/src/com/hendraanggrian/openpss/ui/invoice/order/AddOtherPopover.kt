@@ -1,10 +1,10 @@
 package com.hendraanggrian.openpss.ui.invoice.order
 
+import com.hendraanggrian.openpss.Context
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.DoubleField
 import com.hendraanggrian.openpss.control.doubleField
 import com.hendraanggrian.openpss.db.schemas.Invoice
-import com.hendraanggrian.openpss.i18n.Resourced
 import javafx.beans.Observable
 import javafx.beans.value.ObservableBooleanValue
 import ktfx.beans.value.isBlank
@@ -13,7 +13,7 @@ import ktfx.beans.value.or
 import ktfx.layouts._GridPane
 import ktfx.layouts.label
 
-class AddOtherPopover(resourced: Resourced) : AddOrderPopover<Invoice.Other>(resourced, R.string.add_other),
+class AddOtherPopover(context: Context) : AddOrderPopover<Invoice.Other>(context, R.string.add_other),
     Invoice.Order {
 
     private lateinit var priceField: DoubleField

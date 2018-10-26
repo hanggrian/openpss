@@ -1,5 +1,6 @@
 package com.hendraanggrian.openpss.popup.popover
 
+import com.hendraanggrian.openpss.Context
 import com.hendraanggrian.openpss.PATTERN_DATETIME_EXTENDED
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.bold
@@ -15,7 +16,6 @@ import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.db.schemas.Invoices
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.i18n.Language
-import com.hendraanggrian.openpss.i18n.Resourced
 import com.hendraanggrian.openpss.numberConverter
 import com.sun.javafx.print.PrintHelper
 import com.sun.javafx.print.Units.MM
@@ -65,13 +65,10 @@ import java.util.ResourceBundle
  * Size of invoice is equivalent to 10x14cm, possibly the smallest continuous form available.
  */
 class ViewInvoicePopover(
+    context: Context,
     private val invoice: Invoice,
     private val isTest: Boolean = false
-) : Popover(object : Resourced {
-    override val resources: ResourceBundle = Language.ofFullCode(transaction {
-        findGlobalSettings(KEY_LANGUAGE).single().value
-    }).toResourcesBundle()
-}, R.string.invoice) {
+) : Popover(context, R.string.invoice) {
 
     private companion object {
         const val WIDTH = 378.0
@@ -84,6 +81,10 @@ class ViewInvoicePopover(
     private lateinit var customer: Customer
     private lateinit var employee: Employee
     private val invoiceBox: VBox
+
+    override val resources: ResourceBundle = Language.ofFullCode(transaction {
+        findGlobalSettings(KEY_LANGUAGE).single().value
+    }).toResourcesBundle()
 
     init {
         graphic = label("${getString(R.string.server_language)}: $language")

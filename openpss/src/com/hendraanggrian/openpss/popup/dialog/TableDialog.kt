@@ -1,12 +1,10 @@
 package com.hendraanggrian.openpss.popup.dialog
 
+import com.hendraanggrian.openpss.Context
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.ActionManager
-import com.hendraanggrian.openpss.control.yesNoAlert
 import com.hendraanggrian.openpss.db.Document
-import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.i18n.Resourced
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.Selectable
 import javafx.geometry.Pos.CENTER_RIGHT
@@ -19,7 +17,6 @@ import javafx.scene.image.ImageView
 import javafx.stage.Stage
 import kotlinx.nosql.mongodb.DocumentSchema
 import ktfx.application.later
-import ktfx.beans.property.toProperty
 import ktfx.beans.value.or
 import ktfx.collections.toMutableObservableList
 import ktfx.coroutines.onAction
@@ -32,11 +29,10 @@ import ktfx.stage.setMinSize
 
 @Suppress("LeakingThis")
 abstract class TableDialog<D : Document<S>, S : DocumentSchema<D>>(
-    resourced: Resourced,
+    context: Context,
     titleId: String,
-    protected val schema: S,
-    private val employee: Employee
-) : Dialog(resourced, titleId), TableColumnsBuilder<D>, Selectable<D>, Refreshable, ActionManager {
+    protected val schema: S
+) : Dialog(context, titleId), TableColumnsBuilder<D>, Selectable<D>, Refreshable, ActionManager {
 
     protected lateinit var refreshButton: Button
     protected lateinit var addButton: Button
@@ -61,7 +57,7 @@ abstract class TableDialog<D : Document<S>, S : DocumentSchema<D>>(
                     onAction { delete() }
                     later {
                         transaction {
-                            disableProperty().bind(selectedProperty.isNull or !employee.isAdmin().toProperty())
+                            disableProperty().bind(selectedProperty.isNull or !isAdminProperty())
                         }
                     }
                 }
@@ -94,7 +90,7 @@ abstract class TableDialog<D : Document<S>, S : DocumentSchema<D>>(
 
     abstract fun add()
 
-    private fun delete() = yesNoAlert {
+    private fun delete() = ConfirmDialog(this).show {
         transaction { schema -= selected!! }
         table.items.remove(selected!!)
     }

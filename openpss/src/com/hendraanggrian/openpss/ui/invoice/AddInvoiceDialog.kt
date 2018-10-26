@@ -1,5 +1,6 @@
 package com.hendraanggrian.openpss.ui.invoice
 
+import com.hendraanggrian.openpss.Context
 import com.hendraanggrian.openpss.PATTERN_DATE
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.bold
@@ -9,9 +10,7 @@ import com.hendraanggrian.openpss.control.stringCell
 import com.hendraanggrian.openpss.currencyConverter
 import com.hendraanggrian.openpss.db.dbDateTime
 import com.hendraanggrian.openpss.db.schemas.Customer
-import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.db.schemas.Invoice
-import com.hendraanggrian.openpss.i18n.Resourced
 import com.hendraanggrian.openpss.popup.dialog.ResultableDialog
 import com.hendraanggrian.openpss.popup.popover.ResultablePopover
 import com.hendraanggrian.openpss.ui.invoice.order.AddOffsetPopover
@@ -57,9 +56,8 @@ import ktfx.util.invoke
 import org.joda.time.DateTime
 
 class AddInvoiceDialog(
-    resourced: Resourced,
-    private val employee: Employee
-) : ResultableDialog<Invoice>(resourced, R.string.add_invoice) {
+    context: Context
+) : ResultableDialog<Invoice>(context, R.string.add_invoice) {
 
     private lateinit var plateTable: TableView<Invoice.Plate>
     private lateinit var offsetTable: TableView<Invoice.Offset>
@@ -74,7 +72,7 @@ class AddInvoiceDialog(
         gridPane {
             gap = R.dimen.padding_medium.toDouble()
             label(getString(R.string.employee)) col 0 row 0
-            label(employee.name) { font = bold() } col 1 row 0
+            label(login.name) { font = bold() } col 1 row 0
             label(getString(R.string.date)) col 2 row 0 hpriority ALWAYS halign RIGHT
             label(dateTime.toString(PATTERN_DATE)) { font = bold() } col 3 row 0
             label(getString(R.string.customer)) col 0 row 1
@@ -143,7 +141,7 @@ class AddInvoiceDialog(
 
     override val nullableResult: Invoice?
         get() = Invoice.new(
-            employee.id,
+            login.id,
             customerProperty.value.id,
             dateTime,
             plateTable.items,

@@ -13,7 +13,6 @@ import com.hendraanggrian.openpss.control.intField
 import com.hendraanggrian.openpss.control.space
 import com.hendraanggrian.openpss.control.stretchableButton
 import com.hendraanggrian.openpss.control.stringCell
-import com.hendraanggrian.openpss.control.yesNoAlert
 import com.hendraanggrian.openpss.db.SessionWrapper
 import com.hendraanggrian.openpss.db.matches
 import com.hendraanggrian.openpss.db.schemas.Customer
@@ -25,6 +24,7 @@ import com.hendraanggrian.openpss.db.schemas.Payment
 import com.hendraanggrian.openpss.db.schemas.Payments
 import com.hendraanggrian.openpss.db.schemas.Payments.invoiceId
 import com.hendraanggrian.openpss.db.transaction
+import com.hendraanggrian.openpss.popup.dialog.ConfirmDialog
 import com.hendraanggrian.openpss.popup.popover.ViewInvoicePopover
 import com.hendraanggrian.openpss.ui.ActionController
 import com.hendraanggrian.openpss.ui.Refreshable
@@ -52,7 +52,6 @@ import ktfx.NodeManager
 import ktfx.application.later
 import ktfx.beans.binding.bindingOf
 import ktfx.beans.binding.stringBindingOf
-import ktfx.beans.property.toProperty
 import ktfx.beans.value.and
 import ktfx.beans.value.eq
 import ktfx.beans.value.neq
@@ -236,7 +235,6 @@ class InvoiceController : ActionController(), Refreshable, Selectable<Invoice>, 
                             invoiceTable.items = invoices
                                 .skip(count * page)
                                 .take(count).toMutableObservableList()
-                            val fullAccess = employee.isAdmin().toProperty()
                             invoiceTable.contextMenu {
                                 getString(R.string.view)(ImageView(R.image.menu_invoice)) {
                                     later { disableProperty().bind(!selectedBinding) }
@@ -244,7 +242,7 @@ class InvoiceController : ActionController(), Refreshable, Selectable<Invoice>, 
                                 }
                                 separatorMenuItem()
                                 getString(R.string.delete)(ImageView(R.image.menu_delete)) {
-                                    disableProperty().bind(!selectedBinding or !fullAccess)
+                                    disableProperty().bind(!selectedBinding or !isAdminProperty())
                                     onAction { deleteInvoice() }
                                 }
                             }
@@ -255,7 +253,7 @@ class InvoiceController : ActionController(), Refreshable, Selectable<Invoice>, 
         })
     }
 
-    fun addInvoice() = AddInvoiceDialog(this, employee).show(dialogContainer) {
+    fun addInvoice() = AddInvoiceDialog(this).show {
         transaction {
             it!!.id = Invoices.insert(it)
             invoiceTable.items.add(it)
@@ -263,7 +261,7 @@ class InvoiceController : ActionController(), Refreshable, Selectable<Invoice>, 
         }
     }
 
-    private fun deleteInvoice() = yesNoAlert {
+    private fun deleteInvoice() = ConfirmDialog(this).show { _ ->
         transaction {
             Invoices -= selected!!
             Payments { invoiceId.equal(selected!!.id) }.remove()
@@ -280,7 +278,7 @@ class InvoiceController : ActionController(), Refreshable, Selectable<Invoice>, 
 
     @FXML fun selectCustomer() = SearchCustomerPopover(this).show(customerField) { customerProperty.set(it) }
 
-    private fun viewInvoice() = ViewInvoicePopover(selected!!).apply {
+    private fun viewInvoice() = ViewInvoicePopover(this, selected!!).apply {
         onHidden {
             transaction {
                 reload(selected!!)
@@ -288,7 +286,7 @@ class InvoiceController : ActionController(), Refreshable, Selectable<Invoice>, 
         }
     }.show(invoiceTable)
 
-    private fun addPayment() = AddPaymentPopover(this, employee, selected!!).show(addPaymentButton) {
+    private fun addPayment() = AddPaymentPopover(this, selected!!).show(addPaymentButton) {
         transaction {
             Payments += it
             updatePaymentStatus()
@@ -296,7 +294,7 @@ class InvoiceController : ActionController(), Refreshable, Selectable<Invoice>, 
         }
     }
 
-    private fun deletePayment() = yesNoAlert {
+    private fun deletePayment() = ConfirmDialog(this).show {
         transaction {
             Payments -= selected2!!
             updatePaymentStatus()

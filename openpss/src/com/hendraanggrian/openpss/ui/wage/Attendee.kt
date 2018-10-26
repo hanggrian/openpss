@@ -5,7 +5,7 @@ import com.hendraanggrian.openpss.db.schemas.Recess
 import com.hendraanggrian.openpss.db.schemas.Wage
 import com.hendraanggrian.openpss.db.schemas.Wages
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.i18n.Resourced
+import com.hendraanggrian.openpss.i18n.Resources
 import com.hendraanggrian.openpss.ui.wage.record.Record
 import com.hendraanggrian.openpss.ui.wage.record.Record.Companion.INDEX_NODE
 import com.hendraanggrian.openpss.ui.wage.record.Record.Companion.INDEX_TOTAL
@@ -80,20 +80,20 @@ data class Attendee(
 
     override fun toString(): String = "$id. $name"
 
-    fun toNodeRecord(resourced: Resourced): Record =
-        Record(resourced, INDEX_NODE, this, DateTime.now().toMutableProperty(), DateTime.now().toMutableProperty())
+    fun toNodeRecord(resources: Resources): Record =
+        Record(resources, INDEX_NODE, this, DateTime.now().toMutableProperty(), DateTime.now().toMutableProperty())
 
-    fun toChildRecords(resourced: Resourced): Set<Record> {
+    fun toChildRecords(resources: Resources): Set<Record> {
         val records = mutableSetOf<Record>()
         val iterator = attendances.iterator()
         var index = 0
         while (iterator.hasNext()) records +=
-            Record(resourced, index++, this, iterator.next().toMutableProperty(), iterator.next().toMutableProperty())
+            Record(resources, index++, this, iterator.next().toMutableProperty(), iterator.next().toMutableProperty())
         return records
     }
 
-    fun toTotalRecords(resourced: Resourced, children: Collection<Record>): Record =
-        Record(resourced, INDEX_TOTAL, this, START_OF_TIME.toMutableProperty(), START_OF_TIME.toMutableProperty())
+    fun toTotalRecords(resources: Resources, children: Collection<Record>): Record =
+        Record(resources, INDEX_TOTAL, this, START_OF_TIME.toMutableProperty(), START_OF_TIME.toMutableProperty())
             .apply {
                 dailyProperty.bind(doubleBindingOf(*children.map { it.dailyProperty }.toTypedArray()) {
                     children.sumByDouble { it.daily }.round()

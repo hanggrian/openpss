@@ -6,7 +6,7 @@ import com.hendraanggrian.openpss.db.Named
 import com.hendraanggrian.openpss.db.NamedSchema
 import com.hendraanggrian.openpss.db.Numbered
 import com.hendraanggrian.openpss.db.dbDate
-import com.hendraanggrian.openpss.i18n.StringResource
+import com.hendraanggrian.openpss.i18n.Resourced
 import com.hendraanggrian.openpss.util.enumValueOfId
 import com.hendraanggrian.openpss.util.id
 import kotlinx.nosql.Id
@@ -60,7 +60,7 @@ data class Customer(
 
         val typedType: Type get() = enumValueOfId(type)
 
-        enum class Type : StringResource {
+        enum class Type : Resourced {
             PHONE {
                 override val resourceId: String = R.string.phone
             },

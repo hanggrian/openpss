@@ -1,12 +1,17 @@
 package com.hendraanggrian.openpss.popup.dialog
 
+import com.hendraanggrian.openpss.Context
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.i18n.Resourced
 import ktfx.layouts.label
 
-class ConfirmDialog(resourced: Resourced) : ResultableDialog<Unit>(resourced, R.string.are_you_sure) {
+class ConfirmDialog(
+    context: Context,
+    textId: String? = null
+) : ResultableDialog<Unit>(context, R.string.are_you_sure) {
 
     init {
-        label(resourced.getString(R.string.are_you_sure))
+        textId?.let { label(getString(it)) }
+        cancelButton.text = getString(R.string.no)
+        defaultButton.text = getString(R.string.yes)
     }
 }

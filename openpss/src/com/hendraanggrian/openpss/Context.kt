@@ -1,12 +1,33 @@
 package com.hendraanggrian.openpss
 
 import com.hendraanggrian.openpss.db.schemas.Employee
-import com.hendraanggrian.openpss.i18n.Resourced
+import com.hendraanggrian.openpss.db.schemas.Employees
+import com.hendraanggrian.openpss.db.transaction
+import com.hendraanggrian.openpss.i18n.Resources
+import javafx.beans.property.ReadOnlyBooleanProperty
 import javafx.scene.layout.StackPane
+import ktfx.beans.property.toProperty
+import ktfx.jfoenix.jfxSnackbar
+import java.awt.Desktop
 
-interface Context : Resourced {
+/** Usually being passed around as first constructor of many components. */
+interface Context : Resources {
 
-    val employee: Employee
+    val login: Employee
 
-    val dialogContainer: StackPane
+    val root: StackPane
+
+    fun isAdmin(): Boolean = transaction { Employees[login].single().admin }
+
+    fun isAdminProperty(): ReadOnlyBooleanProperty = isAdmin().toProperty()
+
+    /** Returns [Desktop] instance, may be null if it is unsupported. */
+    val desktop: Desktop?
+        get() {
+            if (!Desktop.isDesktopSupported()) {
+                root.jfxSnackbar("java.awt.Desktop is not supported.", App.DURATION_SHORT)
+                return null
+            }
+            return Desktop.getDesktop()
+        }
 }

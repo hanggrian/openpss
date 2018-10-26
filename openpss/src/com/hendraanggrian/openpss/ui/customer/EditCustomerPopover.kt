@@ -1,9 +1,9 @@
 package com.hendraanggrian.openpss.ui.customer
 
+import com.hendraanggrian.openpss.Context
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.popup.popover.ResultablePopover
 import com.hendraanggrian.openpss.db.schemas.Customer
-import com.hendraanggrian.openpss.i18n.Resourced
+import com.hendraanggrian.openpss.popup.popover.ResultablePopover
 import com.hendraanggrian.openpss.util.isName
 import com.hendraanggrian.openpss.util.orNull
 import javafx.scene.control.TextArea
@@ -15,9 +15,9 @@ import ktfx.layouts.textField
 import ktfx.scene.layout.gap
 
 class EditCustomerPopover(
-    resourced: Resourced,
+    context: Context,
     private val customer: Customer
-) : ResultablePopover<Customer>(resourced, R.string.edit_customer) {
+) : ResultablePopover<Customer>(context, R.string.edit_customer) {
 
     private lateinit var nameField: TextField
     private lateinit var addressField: TextField

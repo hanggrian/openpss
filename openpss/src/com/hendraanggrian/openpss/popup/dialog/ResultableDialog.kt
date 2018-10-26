@@ -1,20 +1,19 @@
 package com.hendraanggrian.openpss.popup.dialog
 
 import com.hendraanggrian.openpss.App
+import com.hendraanggrian.openpss.Context
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.i18n.Resourced
 import com.hendraanggrian.openpss.popup.ResultablePopup
 import com.jfoenix.controls.JFXButton
 import javafx.scene.control.Button
-import javafx.scene.layout.StackPane
-import kotlinx.coroutines.experimental.CoroutineScope
+import kotlinx.coroutines.CoroutineScope
 import ktfx.coroutines.onAction
 import ktfx.jfoenix.jfxButton
 
 open class ResultableDialog<T>(
-    resourced: Resourced,
+    context: Context,
     titleId: String
-) : Dialog(resourced, titleId), ResultablePopup<T> {
+) : Dialog(context, titleId), ResultablePopup<T> {
 
     protected lateinit var defaultButton: Button
 
@@ -28,8 +27,8 @@ open class ResultableDialog<T>(
         }
     }
 
-    fun show(container: StackPane, onAction: suspend CoroutineScope.(T?) -> Unit) {
-        show(container)
+    fun show(onAction: suspend CoroutineScope.(T?) -> Unit) {
+        super.show()
         defaultButton.onAction {
             onAction(nullableResult)
             close()

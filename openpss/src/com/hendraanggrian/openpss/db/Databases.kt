@@ -1,5 +1,6 @@
 package com.hendraanggrian.openpss.db
 
+import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.BuildConfig.ARTIFACT
 import com.hendraanggrian.openpss.BuildConfig.DEBUG
 import com.hendraanggrian.openpss.R
@@ -14,15 +15,14 @@ import com.hendraanggrian.openpss.db.schemas.Payments
 import com.hendraanggrian.openpss.db.schemas.PlatePrices
 import com.hendraanggrian.openpss.db.schemas.Recesses
 import com.hendraanggrian.openpss.db.schemas.Wages
-import com.hendraanggrian.openpss.util.forceExit
 import com.hendraanggrian.openpss.util.getStyle
 import com.hendraanggrian.openpss.util.isEmpty
 import com.mongodb.MongoClientOptions.Builder
 import com.mongodb.MongoCredential.createCredential
 import com.mongodb.MongoException
 import com.mongodb.ServerAddress
-import kotlinx.coroutines.experimental.Dispatchers
-import kotlinx.coroutines.experimental.withContext
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import kotlinx.nosql.equal
 import kotlinx.nosql.mongodb.MongoDB
 import ktfx.scene.control.errorAlert
@@ -49,7 +49,7 @@ fun <T> transaction(statement: SessionWrapper.() -> T): T = try {
         dialogPane.stylesheets += getStyle(R.style.openpss)
         headerText = "Connection closed. Please sign in again."
     }.showAndWait().ifPresent {
-        forceExit()
+        App.exit()
     }
     error("Connection closed. Please sign in again.")
 }

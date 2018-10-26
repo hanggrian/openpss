@@ -51,8 +51,7 @@ import ktfx.scene.input.isDoubleClick
 import java.net.URL
 import java.util.ResourceBundle
 
-class FinanceController : ActionController(), Refreshable,
-    Selectable<Tab>, Selectable2<Payment>, Selectable3<Report> {
+class FinanceController : ActionController(), Refreshable, Selectable<Tab>, Selectable2<Payment>, Selectable3<Report> {
 
     companion object {
         const val EXTRA_MAIN_CONTROLLER = "EXTRA_MAIN_CONTROLLER"
@@ -135,7 +134,7 @@ class FinanceController : ActionController(), Refreshable,
         }
     }
 
-    @FXML fun viewInvoice() = ViewInvoicePopover(transaction { Invoices[selected2!!.invoiceId].single() })
+    @FXML fun viewInvoice() = ViewInvoicePopover(this, transaction { Invoices[selected2!!.invoiceId].single() })
         .show(dailyTable)
 
     @FXML fun viewPayments() {

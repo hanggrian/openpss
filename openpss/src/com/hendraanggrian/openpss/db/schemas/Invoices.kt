@@ -4,7 +4,7 @@ import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.db.Document
 import com.hendraanggrian.openpss.db.Numbered
 import com.hendraanggrian.openpss.db.Titled
-import com.hendraanggrian.openpss.i18n.StringResource
+import com.hendraanggrian.openpss.i18n.Resourced
 import com.hendraanggrian.openpss.util.enumValueOfId
 import com.hendraanggrian.openpss.util.id
 import kotlinx.nosql.Id
@@ -124,7 +124,7 @@ data class Invoice(
 
         val typedTechnique: Technique get() = enumValueOfId(technique)
 
-        enum class Technique : StringResource {
+        enum class Technique : Resourced {
             ONE_SIDE {
                 override val resourceId: String = R.string.one_side
             },

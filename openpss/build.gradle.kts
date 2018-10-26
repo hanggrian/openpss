@@ -31,8 +31,6 @@ sourceSets {
 
 application.mainClassName = "$group.App"
 
-kotlin.experimental.coroutines = org.jetbrains.kotlin.gradle.dsl.Coroutines.ENABLE
-
 ktlint()
 
 dependencies {

@@ -1,5 +1,6 @@
 package com.hendraanggrian.openpss.ui.invoice.order
 
+import com.hendraanggrian.openpss.Context
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.DoubleField
 import com.hendraanggrian.openpss.control.doubleField
@@ -7,7 +8,6 @@ import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.db.schemas.PlatePrice
 import com.hendraanggrian.openpss.db.schemas.PlatePrices
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.i18n.Resourced
 import javafx.beans.Observable
 import javafx.beans.value.ObservableBooleanValue
 import javafx.scene.control.ComboBox
@@ -20,7 +20,7 @@ import ktfx.jfoenix.jfxComboBox
 import ktfx.layouts._GridPane
 import ktfx.layouts.label
 
-class AddPlatePopover(resourced: Resourced) : AddOrderPopover<Invoice.Plate>(resourced, R.string.add_plate),
+class AddPlatePopover(context: Context) : AddOrderPopover<Invoice.Plate>(context, R.string.add_plate),
     Invoice.Order {
 
     private lateinit var machineChoice: ComboBox<PlatePrice>

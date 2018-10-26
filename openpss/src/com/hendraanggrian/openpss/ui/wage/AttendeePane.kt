@@ -1,12 +1,11 @@
 package com.hendraanggrian.openpss.ui.wage
 
+import com.hendraanggrian.openpss.Context
 import com.hendraanggrian.openpss.PATTERN_DATETIME_EXTENDED
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.control.forceRefresh
 import com.hendraanggrian.openpss.control.intField
 import com.hendraanggrian.openpss.db.schemas.Recesses
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.i18n.Resourced
 import com.hendraanggrian.openpss.popup.popover.DateTimePopover
 import com.hendraanggrian.openpss.ui.Selectable
 import com.hendraanggrian.openpss.util.getColor
@@ -23,12 +22,11 @@ import javafx.scene.image.ImageView
 import javafx.scene.input.MouseEvent.MOUSE_CLICKED
 import javafx.scene.layout.Priority.ALWAYS
 import javafx.scene.layout.StackPane
-import kotlinx.coroutines.experimental.Dispatchers
-import kotlinx.coroutines.experimental.GlobalScope
-import kotlinx.coroutines.experimental.delay
-import kotlinx.coroutines.experimental.javafx.JavaFx
-import kotlinx.coroutines.experimental.launch
-import ktfx.annotations.LayoutDsl
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.javafx.JavaFx
+import kotlinx.coroutines.launch
 import ktfx.beans.binding.bindingOf
 import ktfx.collections.sort
 import ktfx.coroutines.eventFilter
@@ -56,9 +54,9 @@ import org.joda.time.DateTime.now
 import kotlin.math.absoluteValue
 
 class AttendeePane(
-    resourced: Resourced,
+    context: Context,
     val attendee: Attendee
-) : _TitledPane(attendee.toString(), null), Resourced by resourced, Selectable<DateTime> {
+) : _TitledPane(attendee.toString(), null), Context by context, Selectable<DateTime> {
 
     val recessChecks: MutableList<CheckBox> = mutableListOf()
     lateinit var deleteMenu: MenuItem
@@ -232,11 +230,13 @@ class AttendeePane(
             items.sort()
         }
     }
-}
 
-@Suppress("NOTHING_TO_INLINE")
-inline fun attendeePane(
-    resourced: Resourced,
-    attendee: Attendee,
-    noinline init: ((@LayoutDsl AttendeePane).() -> Unit)? = null
-): AttendeePane = AttendeePane(resourced, attendee).apply { init?.invoke(this) }
+    private companion object {
+
+        fun <T> ListView<T>.forceRefresh() {
+            val temp = items
+            items = null
+            items = temp
+        }
+    }
+}

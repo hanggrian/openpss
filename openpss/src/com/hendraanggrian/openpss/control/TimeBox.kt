@@ -9,6 +9,7 @@ import com.hendraanggrian.openpss.util.toJoda
 import com.jfoenix.controls.JFXTimePicker
 import javafx.beans.property.ObjectProperty
 import javafx.beans.property.SimpleObjectProperty
+import javafx.geometry.Pos
 import javafx.geometry.Pos.CENTER
 import javafx.scene.control.Button
 import javafx.scene.image.ImageView
@@ -42,6 +43,7 @@ open class TimeBox @JvmOverloads constructor(prefill: LocalTime = MIDNIGHT) : _H
     val value: LocalTime by valueProperty
 
     init {
+        alignment = Pos.CENTER
         previousButton = jfxButton(graphic = ImageView(R.image.btn_previous)) {
             styleClass += App.STYLE_BUTTON_FLAT
             onAction {

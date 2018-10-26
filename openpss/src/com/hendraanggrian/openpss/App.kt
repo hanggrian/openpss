@@ -3,9 +3,8 @@ package com.hendraanggrian.openpss
 import com.hendraanggrian.openpss.BuildConfig.DEBUG
 import com.hendraanggrian.openpss.db.schemas.Employees
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.i18n.Resourced
+import com.hendraanggrian.openpss.i18n.Resources
 import com.hendraanggrian.openpss.io.properties.PreferencesFile
-import com.hendraanggrian.openpss.popup.dialog.TextDialog
 import com.hendraanggrian.openpss.ui.controller
 import com.hendraanggrian.openpss.ui.login.LoginPane
 import com.hendraanggrian.openpss.ui.main.ChangePasswordDialog
@@ -13,19 +12,21 @@ import com.hendraanggrian.openpss.ui.pane
 import com.hendraanggrian.openpss.util.getResource
 import com.hendraanggrian.openpss.util.getStyle
 import javafx.application.Application
+import javafx.application.Platform
 import javafx.fxml.FXMLLoader
 import javafx.scene.image.Image
 import javafx.stage.Stage
 import kotlinx.nosql.equal
 import kotlinx.nosql.update
 import ktfx.application.launch
+import ktfx.jfoenix.jfxSnackbar
 import ktfx.layouts.scene
 import ktfx.stage.icon
 import ktfx.stage.setMinSize
 import org.apache.log4j.BasicConfigurator
 import java.util.ResourceBundle
 
-class App : Application(), Resourced {
+class App : Application(), Resources {
 
     companion object {
         const val STRETCH_POINT = 1100.0
@@ -37,6 +38,11 @@ class App : Application(), Resourced {
         const val STYLE_BUTTON_RAISED = "button-raised"
 
         @JvmStatic fun main(args: Array<String>) = launch<App>(*args)
+
+        fun exit() {
+            Platform.exit() // exit JavaFX
+            System.exit(0) // exit Java
+        }
     }
 
     override lateinit var resources: ResourceBundle
@@ -61,21 +67,17 @@ class App : Application(), Resourced {
                         loader.pane()
                     }
                     val controller = loader.controller
-                    controller.employee = employee
+                    controller.login = employee
 
                     stage.isResizable = true
                     stage.title = BuildConfig.NAME.let { if (BuildConfig.DEBUG) "$it - DEBUG" else it }
                     stage.setMinSize(800.0, 600.0)
 
                     if (employee.isFirstTimeLogin) {
-                        ChangePasswordDialog(this).show(controller.dialogContainer) { newPassword ->
+                        ChangePasswordDialog(this).show { newPassword ->
                             transaction {
                                 Employees { it.name.equal(employee.name) }.projection { password }.update(newPassword!!)
-                                TextDialog(
-                                    this@App,
-                                    R.string.successfully_changed_password,
-                                    getString(R.string.successfully_changed_password)
-                                ).show(this@apply)
+                                jfxSnackbar(getString(R.string.successfully_changed_password), App.DURATION_LONG)
                             }
                         }
                     }

@@ -1,10 +1,10 @@
 package com.hendraanggrian.openpss.ui.invoice
 
+import com.hendraanggrian.openpss.Context
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.i18n.Resourced
 import com.hendraanggrian.openpss.popup.popover.ResultablePopover
 import com.hendraanggrian.openpss.ui.Selectable
 import javafx.scene.control.ListView
@@ -22,7 +22,7 @@ import ktfx.layouts.vbox
 import ktfx.scene.input.isDoubleClick
 import kotlin.text.RegexOption.IGNORE_CASE
 
-class SearchCustomerPopover(resourced: Resourced) : ResultablePopover<Customer>(resourced, R.string.search_customer),
+class SearchCustomerPopover(context: Context) : ResultablePopover<Customer>(context, R.string.search_customer),
     Selectable<Customer> {
 
     private companion object {

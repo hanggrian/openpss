@@ -1,8 +1,8 @@
 package com.hendraanggrian.openpss.ui.finance
 
+import com.hendraanggrian.openpss.Context
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.bold
-import com.hendraanggrian.openpss.i18n.Resourced
 import com.hendraanggrian.openpss.popup.popover.Popover
 import javafx.geometry.HPos
 import ktfx.layouts.columnConstraints
@@ -11,10 +11,10 @@ import ktfx.layouts.label
 import ktfx.util.invoke
 
 class ViewTotalPopover(
-    resourced: Resourced,
+    context: Context,
     private val cash: Double,
     private val nonCash: Double
-) : Popover(resourced, R.string.view_total) {
+) : Popover(context, R.string.view_total) {
 
     init {
         gridPane {

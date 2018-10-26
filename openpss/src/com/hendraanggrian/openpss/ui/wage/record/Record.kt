@@ -3,7 +3,7 @@ package com.hendraanggrian.openpss.ui.wage.record
 import com.hendraanggrian.openpss.PATTERN_DATETIME
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.START_OF_TIME
-import com.hendraanggrian.openpss.i18n.Resourced
+import com.hendraanggrian.openpss.i18n.Resources
 import com.hendraanggrian.openpss.ui.wage.Attendee
 import com.hendraanggrian.openpss.ui.wage.IntervalWrapper
 import com.hendraanggrian.openpss.util.round
@@ -25,7 +25,7 @@ import org.joda.time.LocalTime
 import kotlin.math.absoluteValue
 
 class Record(
-    resourced: Resourced,
+    resources: Resources,
 
     val index: Int,
     val attendee: Attendee,
@@ -42,7 +42,7 @@ class Record(
     val overtimeIncomeProperty: DoubleProperty = SimpleDoubleProperty(),
 
     val totalProperty: DoubleProperty = SimpleDoubleProperty()
-) : Resourced by resourced {
+) : Resources by resources {
 
     var start: DateTime by startProperty
     var end: DateTime by endProperty
@@ -62,8 +62,8 @@ class Record(
         const val INDEX_TOTAL = -1
 
         /** Dummy for invisible [javafx.scene.control.TreeTableView] root. */
-        fun getDummy(resourced: Resourced) = Record(
-            resourced, Int.MIN_VALUE, Attendee.DUMMY,
+        fun getDummy(resources: Resources) = Record(
+            resources, Int.MIN_VALUE, Attendee.DUMMY,
             START_OF_TIME.toMutableProperty(), START_OF_TIME.toMutableProperty()
         )
     }

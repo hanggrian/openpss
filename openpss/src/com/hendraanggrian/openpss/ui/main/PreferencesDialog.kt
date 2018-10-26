@@ -1,25 +1,31 @@
 package com.hendraanggrian.openpss.ui.main
 
 import com.hendraanggrian.openpss.App
+import com.hendraanggrian.openpss.Context
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.clearConverters
 import com.hendraanggrian.openpss.control.bold
-import com.hendraanggrian.openpss.control.onActionFilter
 import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_INVOICE_HEADERS
 import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_LANGUAGE
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.i18n.Language
-import com.hendraanggrian.openpss.i18n.Resourced
 import com.hendraanggrian.openpss.io.properties.PreferencesFile
 import com.hendraanggrian.openpss.io.properties.PreferencesFile.WAGE_READER
 import com.hendraanggrian.openpss.popup.dialog.Dialog
 import com.hendraanggrian.openpss.ui.wage.readers.Reader
 import com.jfoenix.controls.JFXButton
+import javafx.event.ActionEvent
 import javafx.geometry.Pos.CENTER_LEFT
+import javafx.scene.Node
 import javafx.scene.control.ComboBox
 import javafx.scene.control.TextArea
 import javafx.scene.layout.HBox
 import javafx.scene.layout.VBox
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.javafx.JavaFx
+import kotlinx.coroutines.launch
 import kotlinx.nosql.update
 import ktfx.NodeManager
 import ktfx.annotations.LayoutDsl
@@ -38,15 +44,9 @@ import ktfx.layouts.textArea
 import ktfx.layouts.vbox
 import ktfx.listeners.converter
 import ktfx.scene.layout.gap
+import kotlin.coroutines.CoroutineContext
 
-class PreferencesDialog(
-    resourced: Resourced,
-    private val showGlobalSettings: Boolean
-) : Dialog(resourced, R.string.preferences) {
-
-    private companion object {
-        const val INVOICE_HEADERS_DIVIDER = "|"
-    }
+class PreferencesDialog(context: Context) : Dialog(context, R.string.preferences) {
 
     private var isLocalChanged = false.toMutableProperty()
     private var isGlobalChanged = false.toMutableProperty()
@@ -71,7 +71,7 @@ class PreferencesDialog(
                 }
             }
         }
-        if (showGlobalSettings) {
+        if (isAdmin()) {
             group(R.string.global_settings) {
                 gridPane {
                     gap = R.dimen.padding_medium.toDouble()
@@ -142,5 +142,22 @@ class PreferencesDialog(
         alignment = CENTER_LEFT
         if (labelId != null) label(getString(labelId))
         init()
+    }
+
+    private companion object {
+
+        const val INVOICE_HEADERS_DIVIDER = "|"
+
+        /**
+         * Can't use `javafxx-coroutines` because by the time `consume`
+         * is called in coroutine context, it is already too late.
+         */
+        fun Node.onActionFilter(
+            context: CoroutineContext = Dispatchers.JavaFx,
+            action: suspend CoroutineScope.() -> Unit
+        ) = addEventFilter(ActionEvent.ACTION) {
+            it.consume()
+            GlobalScope.launch(context) { action() }
+        }
     }
 }

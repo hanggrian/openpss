@@ -17,16 +17,13 @@ import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.wage.Attendee
 import com.hendraanggrian.openpss.ui.wage.record.Record.Companion.getDummy
 import com.hendraanggrian.openpss.util.concatenate
-import com.hendraanggrian.openpss.util.desktop
 import com.hendraanggrian.openpss.util.getResource
-import com.hendraanggrian.openpss.util.getStyle
 import com.jfoenix.controls.JFXToolbar
 import com.sun.javafx.scene.control.skin.TreeTableViewSkin
 import com.sun.javafx.scene.control.skin.VirtualFlow
 import javafx.beans.value.ObservableValue
 import javafx.fxml.FXML
 import javafx.scene.control.Button
-import javafx.scene.control.ButtonBar.ButtonData.CANCEL_CLOSE
 import javafx.scene.control.SelectionMode.MULTIPLE
 import javafx.scene.control.SplitMenuButton
 import javafx.scene.control.TreeItem
@@ -41,11 +38,10 @@ import ktfx.beans.value.or
 import ktfx.collections.isEmpty
 import ktfx.coroutines.onAction
 import ktfx.embed.swing.toBufferedImage
+import ktfx.jfoenix.jfxIndefiniteSnackbar
 import ktfx.layouts.label
 import ktfx.layouts.menuItem
 import ktfx.listeners.cellFactory
-import ktfx.scene.control.customButton
-import ktfx.scene.control.infoAlert
 import ktfx.scene.snapshot
 import ktfx.util.invoke
 import java.awt.image.BufferedImage
@@ -60,7 +56,7 @@ class WageRecordController : Controller() {
         const val EXTRA_ATTENDEES = "EXTRA_ATTENDEES"
     }
 
-    @FXML lateinit var root: VBox
+    @FXML lateinit var vbox: VBox
     @FXML lateinit var toolbar: JFXToolbar
     @FXML lateinit var undoButton: SplitMenuButton
     @FXML lateinit var timeBox: TimeBox
@@ -128,7 +124,7 @@ class WageRecordController : Controller() {
                     children += TreeItem(total)
                 }
             }
-            (root.scene.window as Stage).titleProperty().bind(
+            (vbox.scene.window as Stage).titleProperty().bind(
                 stringBindingOf(*records.filter { it.isChild() }.map { it.totalProperty }.toTypedArray()) {
                     "${getString(R.string.record)} - ${currencyConverter(records
                         .asSequence()
@@ -210,12 +206,9 @@ class WageRecordController : Controller() {
         )
         togglePrintMode(false, stylesheet)
         ImageIO.write(images.concatenate(), "png", WageFile())
-        infoAlert(getString(R.string.screenshot_finished)) {
-            dialogPane.stylesheets += getStyle(R.style.openpss)
-            customButton(getString(R.string.open_folder), CANCEL_CLOSE)
-        }.showAndWait()
-            .filter { it.buttonData == CANCEL_CLOSE }
-            .ifPresent { desktop?.open(WageDirectory) }
+        root.jfxIndefiniteSnackbar(getString(R.string.screenshot_finished), getString(R.string.open_folder)) {
+            desktop?.open(WageDirectory)
+        }
     }
 
     private inline val records: List<Record> get() = recordTable.root.children.flatMap { it.children }.map { it.value }
@@ -232,11 +225,11 @@ class WageRecordController : Controller() {
 
     private fun togglePrintMode(on: Boolean, printStylesheet: String) = when {
         on -> {
-            root.children -= toolbar
+            vbox.children -= toolbar
             recordTable.stylesheets += printStylesheet
         }
         else -> {
-            root.children.add(0, toolbar)
+            vbox.children.add(0, toolbar)
             recordTable.stylesheets -= printStylesheet
         }
     }

@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.VBox?>
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.hendraanggrian.openpss.ui.wage.record.WageRecordController"
-      fx:id="root">
+      fx:id="vbox">
     <JFXToolbar fx:id="toolbar">
         <leftItems>
             <StretchableSplitMenuButton mnemonicParsing="false" fx:id="undoButton" onAction="#undo" stretchPoint="1100"
@@ -17,7 +17,7 @@
                     <Image url="@/image/act_undo.png"/>
                 </ImageView>
             </StretchableSplitMenuButton>
-            <Region minWidth="10"/>
+            <Space minWidth="10"/>
             <TimeBox fx:id="timeBox"/>
             <StretchableButton mnemonicParsing="false" fx:id="lockStartButton" onAction="#lockStart" stretchPoint="1100"
                                stretchableText="%lock_start_time">
@@ -31,7 +31,7 @@
                     <Image url="@/image/act_lock_end.png"/>
                 </ImageView>
             </StretchableButton>
-            <Region minWidth="10"/>
+            <Space minWidth="10"/>
             <StretchableButton mnemonicParsing="false" fx:id="disableDailyIncomeButton" onAction="#disableDailyIncome"
                                stretchPoint="1100" stretchableText="%disable_daily_income">
                 <ImageView>

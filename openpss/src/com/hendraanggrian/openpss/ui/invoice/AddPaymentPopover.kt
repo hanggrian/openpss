@@ -1,16 +1,15 @@
 package com.hendraanggrian.openpss.ui.invoice
 
 import com.hendraanggrian.openpss.App
+import com.hendraanggrian.openpss.Context
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.DoubleField
 import com.hendraanggrian.openpss.control.bold
 import com.hendraanggrian.openpss.control.doubleField
 import com.hendraanggrian.openpss.currencyConverter
-import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.db.schemas.Payment
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.i18n.Resourced
 import com.hendraanggrian.openpss.popup.popover.ResultablePopover
 import com.hendraanggrian.openpss.util.getColor
 import javafx.scene.Node
@@ -31,10 +30,9 @@ import ktfx.scene.layout.gap
 import ktfx.util.invoke
 
 class AddPaymentPopover(
-    resourced: Resourced,
-    private val employee: Employee,
+    context: Context,
     private val invoice: Invoice
-) : ResultablePopover<Payment>(resourced, R.string.add_payment) {
+) : ResultablePopover<Payment>(context, R.string.add_payment) {
 
     private lateinit var valueField: DoubleField
     private lateinit var cashBox: CheckBox
@@ -45,7 +43,7 @@ class AddPaymentPopover(
         gridPane {
             gap = R.dimen.padding_medium.toDouble()
             label(getString(R.string.employee)) row 0 col 0
-            label(employee.name) {
+            label(login.name) {
                 font = bold()
             } row 0 col 1 colSpans 2
             label(getString(R.string.receivable)) row 1 col 0
@@ -101,7 +99,7 @@ class AddPaymentPopover(
 
     override val nullableResult: Payment?
         get() = Payment.new(
-            invoice.id, employee.id, valueField.value,
+            invoice.id, login.id, valueField.value,
             when {
                 cashBox.isSelected -> null
                 else -> referenceField.text

@@ -1,11 +1,10 @@
 package com.hendraanggrian.openpss.ui.main.edit.price
 
+import com.hendraanggrian.openpss.Context
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.db.schemas.OffsetPrice
 import com.hendraanggrian.openpss.db.schemas.OffsetPrices
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.i18n.Resourced
 import javafx.beans.value.ObservableValue
 import kotlinx.nosql.equal
 import kotlinx.nosql.update
@@ -15,9 +14,8 @@ import ktfx.listeners.textFieldCellFactory
 
 @Suppress("UNCHECKED_CAST")
 class EditOffsetPriceDialog(
-    resourced: Resourced,
-    employee: Employee
-) : EditPriceDialog<OffsetPrice, OffsetPrices>(resourced, R.string.offset_price, OffsetPrices, employee) {
+    context: Context
+) : EditPriceDialog<OffsetPrice, OffsetPrices>(context, R.string.offset_price, OffsetPrices) {
 
     init {
         getString(R.string.min_qty)<Int> {

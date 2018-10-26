@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.*?>
 <StackPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
            fx:controller="com.hendraanggrian.openpss.ui.main.MainController"
-           fx:id="dialogContainer">
+           fx:id="root">
     <VBox>
         <MenuBar fx:id="menuBar">
             <Menu mnemonicParsing="false" text="File">
@@ -56,7 +56,8 @@
                 </MenuItem>
             </Menu>
         </MenuBar>
-        <JFXDrawer fx:id="drawer" defaultDrawerSize="250" VBox.vgrow="ALWAYS">
+        <JFXDrawer fx:id="drawer" defaultDrawerSize="250" VBox.vgrow="ALWAYS"
+                   onDrawerOpening="#toggleHamburger" onDrawerClosing="#toggleHamburger">
             <sidePane>
                 <VBox>
                     <AnchorPane prefWidth="250" prefHeight="100">

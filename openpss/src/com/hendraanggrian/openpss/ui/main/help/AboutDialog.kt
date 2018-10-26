@@ -2,12 +2,11 @@ package com.hendraanggrian.openpss.ui.main.help
 
 import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.BuildConfig
+import com.hendraanggrian.openpss.Context
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.bold
-import com.hendraanggrian.openpss.i18n.Resourced
 import com.hendraanggrian.openpss.ui.Selectable
 import com.hendraanggrian.openpss.ui.main.License
-import com.hendraanggrian.openpss.util.desktop
 import com.jfoenix.controls.JFXButton
 import javafx.geometry.Pos
 import javafx.scene.control.Dialog
@@ -42,7 +41,7 @@ import java.net.URI
  * The only dialog not using [com.hendraanggrian.openpss.popup.dialog.Dialog].
  * This is because it uses native dialog's expandable content.
  */
-class AboutDialog(resourced: Resourced) : Dialog<Unit>(), Selectable<License>, Resourced by resourced {
+class AboutDialog(context: Context) : Dialog<Unit>(), Selectable<License>, Context by context {
 
     private val licenseList: ListView<License> = jfxListView {
         items = License.values().toObservableList()

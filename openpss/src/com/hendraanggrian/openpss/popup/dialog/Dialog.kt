@@ -1,14 +1,15 @@
 package com.hendraanggrian.openpss.popup.dialog
 
 import com.hendraanggrian.openpss.App
+import com.hendraanggrian.openpss.Context
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.i18n.Resourced
 import com.hendraanggrian.openpss.util.getColor
 import com.jfoenix.controls.JFXDialog
 import javafx.beans.property.ObjectProperty
 import javafx.beans.property.SimpleObjectProperty
 import javafx.geometry.Pos
 import javafx.scene.Node
+import javafx.scene.control.Button
 import javafx.scene.layout.VBox
 import ktfx.NodeManager
 import ktfx.beans.value.getValue
@@ -23,20 +24,23 @@ import ktfx.scene.layout.paddingAll
 import ktfx.scene.text.fontSize
 
 open class Dialog(
-    resourced: Resourced,
+    context: Context,
     titleId: String
-) : JFXDialog(), Resourced by resourced, NodeManager {
+) : JFXDialog(), Context by context, NodeManager {
 
     override val collection: MutableCollection<Node> get() = contentPane.children
 
     private lateinit var contentPane: VBox
     protected lateinit var buttonManager: NodeManager
+    protected lateinit var cancelButton: Button
 
     private val graphicProperty = SimpleObjectProperty<Node>()
     fun graphicProperty(): ObjectProperty<Node> = graphicProperty
     var graphic: Node by graphicProperty
 
     init {
+        @Suppress("LeakingThis")
+        dialogContainer = root
         content = ktfx.layouts.vbox(R.dimen.padding_medium.toDouble()) {
             paddingAll = R.dimen.padding_large.toDouble()
             borderPane {
@@ -52,7 +56,7 @@ open class Dialog(
             contentPane = vbox(R.dimen.padding_medium.toDouble())
             buttonBar {
                 buttonManager = this
-                jfxButton(getString(R.string.close)) {
+                cancelButton = jfxButton(getString(R.string.close)) {
                     styleClass += App.STYLE_BUTTON_FLAT
                     isCancelButton = true
                     onAction {

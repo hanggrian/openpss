@@ -1,10 +1,10 @@
 package com.hendraanggrian.openpss.ui.customer
 
+import com.hendraanggrian.openpss.Context
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Customer.Contact.Type.PHONE
 import com.hendraanggrian.openpss.db.schemas.Customer.Contact.Type.values
-import com.hendraanggrian.openpss.i18n.Resourced
 import com.hendraanggrian.openpss.popup.popover.ResultablePopover
 import javafx.scene.control.ComboBox
 import javafx.scene.control.TextField
@@ -18,7 +18,7 @@ import ktfx.listeners.converter
 import ktfx.scene.layout.gap
 import org.apache.commons.validator.routines.EmailValidator
 
-class AddContactPopover(resourced: Resourced) : ResultablePopover<Customer.Contact>(resourced, R.string.add_contact) {
+class AddContactPopover(context: Context) : ResultablePopover<Customer.Contact>(context, R.string.add_contact) {
 
     private companion object {
         /** Taken from `android.util.Patterns`, but instead use `kotlin.Regex`. */

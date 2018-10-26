@@ -1,22 +1,18 @@
 package com.hendraanggrian.openpss.popup.popover
 
 import com.hendraanggrian.openpss.App
+import com.hendraanggrian.openpss.Context
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.i18n.Resourced
-import com.hendraanggrian.openpss.popup.dialog.Dialog
 import com.hendraanggrian.openpss.util.getColor
 import com.jfoenix.controls.JFXPopup
-import com.jfoenix.skins.JFXPopupSkin
 import javafx.beans.property.ObjectProperty
 import javafx.beans.property.SimpleObjectProperty
 import javafx.geometry.Pos
 import javafx.geometry.Pos.CENTER_RIGHT
 import javafx.scene.Node
-import javafx.scene.control.ListView
-import javafx.scene.control.TableView
+import javafx.scene.control.Button
 import javafx.scene.layout.VBox
 import ktfx.NodeManager
-import ktfx.application.later
 import ktfx.beans.value.getValue
 import ktfx.beans.value.setValue
 import ktfx.coroutines.listener
@@ -30,14 +26,15 @@ import ktfx.scene.text.fontSize
 
 /** Base popup class used across applications. */
 open class Popover(
-    private val resourced: Resourced,
+    context: Context,
     titleId: String
-) : JFXPopup(), Resourced by resourced, NodeManager {
+) : JFXPopup(), Context by context, NodeManager {
 
     override val collection: MutableCollection<Node> get() = contentPane.children
 
     private lateinit var contentPane: VBox
     protected lateinit var buttonManager: NodeManager
+    protected lateinit var cancelButton: Button
 
     private val graphicProperty = SimpleObjectProperty<Node>()
     fun graphicProperty(): ObjectProperty<Node> = graphicProperty
@@ -59,7 +56,7 @@ open class Popover(
             contentPane = vbox(R.dimen.padding_medium.toDouble())
             buttonBar {
                 buttonManager = this
-                jfxButton(getString(R.string.close)) {
+                cancelButton = jfxButton(getString(R.string.close)) {
                     styleClass += App.STYLE_BUTTON_FLAT
                     isCancelButton = true
                     onAction {
@@ -69,26 +66,4 @@ open class Popover(
             } marginTop R.dimen.padding_medium.toDouble()
         }
     }
-
-    override fun show(node: Node) {
-        val selectedIndex = (node as? TableView<*>)?.selectionModel?.selectedIndex
-            ?: (node as? ListView<*>)?.selectionModel?.selectedIndex
-        when {
-            selectedIndex == null || resourced is Dialog -> super.show(node)
-            else -> {
-                val bounds = node.localToScreen(node.boundsInLocal)
-                super.show(
-                    node.scene.window,
-                    bounds.minX + bounds.width,
-                    bounds.minY + selectedIndex * 22.0 + (0 until selectedIndex).sumByDouble { 2.0 }
-                )
-                (skin as JFXPopupSkin).run {
-                    reset(JFXPopup.PopupVPosition.TOP, JFXPopup.PopupHPosition.LEFT, 0.0, 0.0)
-                    later { animate() }
-                }
-            }
-        }
-    }
-
-    final override fun getString(id: String): String = super.getString(id)
 }

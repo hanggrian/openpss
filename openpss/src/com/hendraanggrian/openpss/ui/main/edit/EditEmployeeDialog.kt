@@ -1,35 +1,33 @@
 package com.hendraanggrian.openpss.ui.main.edit
 
+import com.hendraanggrian.openpss.App
+import com.hendraanggrian.openpss.Context
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.doneCell
 import com.hendraanggrian.openpss.control.stringCell
 import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.db.schemas.Employees
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.i18n.Resourced
 import com.hendraanggrian.openpss.popup.dialog.TableDialog
 import com.hendraanggrian.openpss.popup.popover.InputUserPopover
-import com.hendraanggrian.openpss.util.getStyle
 import javafx.scene.Node
-import kotlinx.coroutines.experimental.Dispatchers
-import kotlinx.coroutines.experimental.GlobalScope
-import kotlinx.coroutines.experimental.delay
-import kotlinx.coroutines.experimental.javafx.JavaFx
-import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.javafx.JavaFx
+import kotlinx.coroutines.launch
 import kotlinx.nosql.notEqual
 import kotlinx.nosql.update
 import ktfx.NodeManager
-import ktfx.beans.property.toProperty
 import ktfx.beans.value.or
 import ktfx.collections.toMutableObservableList
 import ktfx.coroutines.onAction
 import ktfx.jfoenix.jfxButton
-import ktfx.scene.control.infoAlert
+import ktfx.jfoenix.jfxSnackbar
 
 class EditEmployeeDialog(
-    resourced: Resourced,
-    private val employee: Employee
-) : TableDialog<Employee, Employees>(resourced, R.string.employee, Employees, employee) {
+    context: Context
+) : TableDialog<Employee, Employees>(context, R.string.employee, Employees) {
 
     private companion object {
         // temporary fix
@@ -48,11 +46,10 @@ class EditEmployeeDialog(
             bindDisable()
             onAction {
                 transaction { Employees[selected!!].projection { password }.update(Employee.DEFAULT_PASSWORD) }
-                infoAlert(
-                    getString(R.string.change_password_popup_will_appear_when_is_logged_back_in, employee.name)
-                ) {
-                    dialogPane.stylesheets += getStyle(R.style.openpss)
-                }.show()
+                root.jfxSnackbar(
+                    getString(R.string.change_password_popup_will_appear_when_is_logged_back_in, login.name),
+                    App.DURATION_LONG
+                )
             }
         }
     }
@@ -66,7 +63,7 @@ class EditEmployeeDialog(
         }
         GlobalScope.launch(Dispatchers.JavaFx) {
             delay(DELAY)
-            transaction { employee.isAdmin() }.toProperty().let {
+            isAdminProperty().let {
                 addButton.disableProperty().bind(!it)
                 deleteButton.disableProperty().bind(!selectedBinding or !it)
             }
@@ -87,7 +84,7 @@ class EditEmployeeDialog(
     private fun Node.bindDisable() {
         GlobalScope.launch(Dispatchers.JavaFx) {
             delay(DELAY)
-            disableProperty().bind(!selectedBinding or !transaction { employee.isAdmin() }.toProperty())
+            disableProperty().bind(!selectedBinding or !isAdminProperty())
         }
     }
 }

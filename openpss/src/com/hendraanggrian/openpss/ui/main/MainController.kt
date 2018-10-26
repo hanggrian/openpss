@@ -1,5 +1,6 @@
 package com.hendraanggrian.openpss.ui.main
 
+import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.db.dbDateTime
 import com.hendraanggrian.openpss.db.schemas.Customers
@@ -23,13 +24,11 @@ import com.hendraanggrian.openpss.ui.main.help.GitHubApi
 import com.hendraanggrian.openpss.ui.schedule.ScheduleController
 import com.hendraanggrian.openpss.ui.wage.EditRecessDialog
 import com.hendraanggrian.openpss.ui.wage.WageController
-import com.hendraanggrian.openpss.util.forceExit
 import com.jfoenix.controls.JFXDrawer
 import com.jfoenix.controls.JFXHamburger
 import com.jfoenix.controls.JFXListView
 import com.jfoenix.controls.JFXToolbar
 import com.jfoenix.transitions.hamburger.HamburgerSlideCloseTransition
-import javafx.animation.Animation
 import javafx.event.ActionEvent
 import javafx.fxml.FXML
 import javafx.scene.control.Label
@@ -49,15 +48,14 @@ import ktfx.beans.binding.stringBindingOf
 import ktfx.beans.binding.then
 import ktfx.beans.value.eq
 import ktfx.coroutines.listener
-import ktfx.scene.control.errorAlert
+import ktfx.jfoenix.jfxSnackbar
 import org.apache.commons.lang3.SystemUtils.IS_OS_MAC
-import org.controlsfx.control.NotificationPane
 import java.net.URL
 import java.util.ResourceBundle
 
 class MainController : Controller(), Selectable<Tab>, Selectable2<Label> {
 
-    @FXML override lateinit var dialogContainer: StackPane
+    @FXML override lateinit var root: StackPane
     @FXML lateinit var menuBar: MenuBar
     @FXML lateinit var addCustomerItem: MenuItem
     @FXML lateinit var addInvoiceItem: MenuItem
@@ -88,6 +86,7 @@ class MainController : Controller(), Selectable<Tab>, Selectable2<Label> {
     override val selectionModel: SelectionModel<Tab> get() = tabPane.selectionModel
     override val selectionModel2: SelectionModel<Label> get() = drawerList.selectionModel
 
+    private lateinit var hamburgerTransition: HamburgerSlideCloseTransition
     private val controllers
         get() = mutableListOf(
             customerController,
@@ -106,15 +105,9 @@ class MainController : Controller(), Selectable<Tab>, Selectable2<Label> {
             select(selectedIndex2)
             drawer.toggle()
         }
-        titleLabel.textProperty().bind(stringBindingOf(selectedProperty2) { selected2?.text })
-
-        val transition = HamburgerSlideCloseTransition(hamburger).apply { rate = -1.0 }
-        drawer.setOnDrawerClosing { transition.toggle() }
-        drawer.setOnDrawerOpening {
-            transition.toggle()
-            drawerList.requestFocus()
-        }
+        hamburgerTransition = HamburgerSlideCloseTransition(hamburger).apply { rate = -1.0 }
         hamburger.addEventHandler(MouseEvent.MOUSE_PRESSED) { _ -> drawer.toggle() }
+        titleLabel.textProperty().bind(stringBindingOf(selectedProperty2) { selected2?.text })
 
         customerGraphic.bind(0, R.image.tab_customer2, R.image.tab_customer)
         invoiceGraphic.bind(1, R.image.tab_invoice2, R.image.tab_invoice)
@@ -131,10 +124,11 @@ class MainController : Controller(), Selectable<Tab>, Selectable2<Label> {
         }
 
         later {
-            employeeLabel.text = employee.name
+            drawer.toggle()
+            employeeLabel.text = login.name
             controllers.forEach {
-                it.employee = employee
-                it.dialogContainer = dialogContainer
+                it.login = login
+                it.root = root
             }
             financeController.addExtra(FinanceController.EXTRA_MAIN_CONTROLLER, this)
         }
@@ -145,27 +139,28 @@ class MainController : Controller(), Selectable<Tab>, Selectable2<Label> {
         else -> select(invoiceController) { addInvoice() }
     }
 
-    @FXML fun quit() = forceExit()
+    @FXML fun quit() = App.exit()
 
     @FXML fun editPrice(event: ActionEvent) = when (event.source) {
-        platePriceItem -> EditPlatePriceDialog(this, employee)
-        else -> EditOffsetPriceDialog(this, employee)
-    }.show(dialogContainer)
+        platePriceItem -> EditPlatePriceDialog(this)
+        else -> EditOffsetPriceDialog(this)
+    }.show()
 
-    @FXML fun editEmployee() = EditEmployeeDialog(this, employee).show(dialogContainer)
+    @FXML fun editEmployee() = EditEmployeeDialog(this).show()
 
-    @FXML fun editRecess() = EditRecessDialog(this, employee).show(dialogContainer)
+    @FXML fun editRecess() = EditRecessDialog(this).show()
 
-    @FXML fun preferences() = PreferencesDialog(this, transaction { employee.isAdmin() }).show(dialogContainer)
+    @FXML fun preferences() = PreferencesDialog(this).show()
 
     @FXML fun testViewInvoice() {
         val customer = transaction { Customers.find().firstOrNull() }
         when (customer) {
-            null -> errorAlert(getString(R.string.no_customer_to_test)).showAndWait()
+            null -> root.jfxSnackbar(getString(R.string.no_customer_to_test), App.DURATION_SHORT)
             else -> ViewInvoicePopover(
+                this,
                 Invoice(
                     no = 1234,
-                    employeeId = employee.id,
+                    employeeId = login.id,
                     customerId = customer.id,
                     dateTime = dbDateTime,
                     plates = listOf(Invoice.Plate.new("Title", 5, 92000.0, "Machine")),
@@ -180,13 +175,16 @@ class MainController : Controller(), Selectable<Tab>, Selectable2<Label> {
         }
     }
 
-    @FXML fun checkUpdate() = GitHubApi.checkUpdates(this, dialogContainer)
+    @FXML fun checkUpdate() = GitHubApi.checkUpdates(this)
 
     @FXML fun about() = AboutDialog(this).show()
 
-    private fun Animation.toggle() {
-        rate *= -1
-        play()
+    @FXML fun toggleHamburger() {
+        hamburgerTransition.rate *= -1
+        hamburgerTransition.play()
+        if (drawer.isOpening && !drawerList.isFocused) {
+            drawerList.requestFocus()
+        }
     }
 
     private fun ActionController.replaceButtons() = toolbar.setRightItems(*actionManager.collection.toTypedArray())

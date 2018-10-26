@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.popup.popover
 
+import com.hendraanggrian.openpss.Context
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.i18n.Resourced
 import com.hendraanggrian.openpss.util.clean
 import com.hendraanggrian.openpss.util.isName
 import javafx.beans.binding.BooleanBinding
@@ -9,10 +9,10 @@ import ktfx.controlsfx.registerPredicateValidator
 import org.controlsfx.validation.Severity
 
 class InputUserPopover(
-    resourced: Resourced,
+    context: Context,
     titleId: String,
     private val restrictiveInput: Boolean = true
-) : InputPopover(resourced, titleId) {
+) : InputPopover(context, titleId) {
 
     init {
         if (restrictiveInput) {

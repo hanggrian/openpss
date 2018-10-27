@@ -1,6 +1,5 @@
 package com.hendraanggrian.openpss.ui.invoice
 
-import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.App.Companion.STRETCH_POINT
 import com.hendraanggrian.openpss.PATTERN_DATETIME_EXTENDED
 import com.hendraanggrian.openpss.R
@@ -176,7 +175,6 @@ class InvoiceController : ActionController(), Refreshable, Selectable<Invoice>, 
                                 getString(R.string.add_payment),
                                 ImageView(R.image.act_add)
                             ) {
-                                styleClass += App.STYLE_BUTTON_RAISED
                                 disableProperty().bind(!selectedBinding)
                                 onAction { addPayment() }
                             }
@@ -286,7 +284,7 @@ class InvoiceController : ActionController(), Refreshable, Selectable<Invoice>, 
         }
     }.show(invoiceTable)
 
-    private fun addPayment() = AddPaymentPopover(this, selected!!).show(addPaymentButton) {
+    private fun addPayment() = AddPaymentPopover(this, selected!!).show(paymentTable) {
         transaction {
             Payments += it
             updatePaymentStatus()

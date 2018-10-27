@@ -78,32 +78,31 @@ class FinanceController : ActionController(), Refreshable, Selectable<Tab>, Sele
     private lateinit var switchablePane: BorderPane
     private lateinit var refreshButton: Button
     private lateinit var viewTotalButton: Button
-    private lateinit var dateBox: DateBox
-    private lateinit var monthBox: MonthBox
+
+    private val dateBox: DateBox = dateBox {
+        valueProperty().listener { refresh() }
+    }
+    private val monthBox: MonthBox = monthBox {
+        setLocale(PreferencesFile.language.toLocale())
+        valueProperty().listener { refresh() }
+    }
 
     override val selectionModel: SelectionModel<Tab> get() = tabPane.selectionModel
     override val selectionModel2: SelectionModel<Payment> get() = dailyTable.selectionModel
     override val selectionModel3: SelectionModel<Report> get() = monthlyTable.selectionModel
 
     override fun NodeManager.onCreateActions() {
-        switchablePane = borderPane()
         refreshButton = stretchableButton(STRETCH_POINT, getString(R.string.refresh), ImageView(R.image.act_refresh)) {
             onAction { refresh() }
         }
         viewTotalButton = stretchableButton(STRETCH_POINT, getString(R.string.total), ImageView(R.image.act_money)) {
             onAction { viewTotal() }
         }
+        switchablePane = borderPane()
     }
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
-        dateBox = dateBox {
-            valueProperty().listener { refresh() }
-        }
-        monthBox = monthBox {
-            setLocale(PreferencesFile.language.toLocale())
-            valueProperty().listener { refresh() }
-        }
         switchablePane.centerProperty().bind(`when`(selectedIndexProperty eq 0).then<Node>(dateBox).otherwise(monthBox))
 
         dailyNoColumn.numberCell { transaction { Invoices[invoiceId].single().no } }

@@ -11,9 +11,9 @@ import javafx.scene.control.TextField
 import ktfx.beans.binding.booleanBindingOf
 import ktfx.collections.toObservableList
 import ktfx.jfoenix.jfxComboBox
+import ktfx.jfoenix.jfxTextField
 import ktfx.layouts.gridPane
 import ktfx.layouts.label
-import ktfx.layouts.textField
 import ktfx.listeners.converter
 import ktfx.scene.layout.gap
 import org.apache.commons.validator.routines.EmailValidator
@@ -40,7 +40,7 @@ class AddContactPopover(context: Context) : ResultablePopover<Customer.Contact>(
                 converter { toString { it!!.toString(this@AddContactPopover) } }
             } col 1 row 0
             label(getString(R.string.contact)) col 0 row 1
-            contactField = textField { promptText = getString(R.string.contact) } col 1 row 1
+            contactField = jfxTextField { promptText = getString(R.string.contact) } col 1 row 1
         }
         defaultButton.run {
             text = getString(R.string.add)

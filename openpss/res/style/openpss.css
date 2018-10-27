@@ -61,11 +61,6 @@
     -fx-background-radius: 5px;
 }
 
-.jfx-password-field {
-    -jfx-focus-color: -accent;
-    -fx-prompt-text-fill: -dark;
-}
-
 .jfx-radio-button {
     -jfx-selected-color: -accent;
 }
@@ -106,7 +101,7 @@
     -fx-text-fill: -accent;
 }
 
-.jfx-text-field {
+.jfx-text-field, .jfx-text-area, .jfx-password-field {
     -jfx-focus-color: -accent;
     -fx-prompt-text-fill: -dark;
 }
@@ -144,17 +139,6 @@
     -fx-background-color: -accent-light;
 }
 .button-raised:pressed {
-    -fx-background-color: -accent-dark;
-}
-
-.button-raised-reverse {
-    -fx-text-fill: -accent;
-    -fx-background-color: -light;
-}
-.button-raised-reverse:hover {
-    -fx-background-color: -accent-light;
-}
-.button-raised-reverse:pressed {
     -fx-background-color: -accent-dark;
 }
 

@@ -28,7 +28,6 @@ import com.jfoenix.controls.JFXDrawer
 import com.jfoenix.controls.JFXHamburger
 import com.jfoenix.controls.JFXListView
 import com.jfoenix.controls.JFXToolbar
-import com.jfoenix.transitions.hamburger.HamburgerSlideCloseTransition
 import javafx.event.ActionEvent
 import javafx.fxml.FXML
 import javafx.scene.control.Label
@@ -86,7 +85,6 @@ class MainController : Controller(), Selectable<Tab>, Selectable2<Label> {
     override val selectionModel: SelectionModel<Tab> get() = tabPane.selectionModel
     override val selectionModel2: SelectionModel<Label> get() = drawerList.selectionModel
 
-    private lateinit var hamburgerTransition: HamburgerSlideCloseTransition
     private val controllers
         get() = mutableListOf(
             customerController,
@@ -105,7 +103,6 @@ class MainController : Controller(), Selectable<Tab>, Selectable2<Label> {
             select(selectedIndex2)
             drawer.toggle()
         }
-        hamburgerTransition = HamburgerSlideCloseTransition(hamburger).apply { rate = -1.0 }
         hamburger.addEventHandler(MouseEvent.MOUSE_PRESSED) { _ -> drawer.toggle() }
         titleLabel.textProperty().bind(stringBindingOf(selectedProperty2) { selected2?.text })
 
@@ -180,8 +177,6 @@ class MainController : Controller(), Selectable<Tab>, Selectable2<Label> {
     @FXML fun about() = AboutDialog(this).show()
 
     @FXML fun toggleHamburger() {
-        hamburgerTransition.rate *= -1
-        hamburgerTransition.play()
         if (drawer.isOpening && !drawerList.isFocused) {
             drawerList.requestFocus()
         }

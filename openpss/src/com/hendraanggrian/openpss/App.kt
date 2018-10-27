@@ -36,7 +36,6 @@ class App : Application(), Resources {
 
         const val STYLE_BUTTON_FLAT = "button-flat"
         const val STYLE_BUTTON_RAISED = "button-raised"
-        const val STYLE_BUTTON_RAISED_REVERSE = "button-raised-reverse"
 
         @JvmStatic fun main(args: Array<String>) = launch<App>(*args)
 

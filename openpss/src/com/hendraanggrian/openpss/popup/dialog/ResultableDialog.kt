@@ -6,7 +6,7 @@ import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.popup.ResultablePopup
 import com.jfoenix.controls.JFXButton
 import javafx.scene.control.Button
-import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.experimental.CoroutineScope
 import ktfx.coroutines.onAction
 import ktfx.jfoenix.jfxButton
 

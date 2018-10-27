@@ -1,27 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-
-<?import com.jfoenix.controls.JFXButton?>
-<?import com.jfoenix.controls.JFXScrollPane?>
-<?import com.jfoenix.controls.JFXToolbar?>
-<?import javafx.scene.control.Label?>
+<!-- AnchorPane is necessary for displaying loadingPane in the center. -->
 <?import javafx.scene.layout.*?>
-<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.hendraanggrian.openpss.ui.wage.WageController">
-    <JFXToolbar>
-        <leftItems>
-            <Label fx:id="titleLabel"/>
-        </leftItems>
-        <rightItems>
-            <JFXButton fx:id="processButton" text="%process" mnemonicParsing="false" styleClass="button-raised"
-                       onAction="#process"/>
-        </rightItems>
-    </JFXToolbar>
-    <!-- AnchorPane is necessary for displaying loadingPane in the center. -->
-    <AnchorPane fx:id="anchorPane" VBox.vgrow="ALWAYS">
-        <JFXScrollPane fx:id="scrollPane" AnchorPane.leftAnchor="0" AnchorPane.bottomAnchor="0"
-                       AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
-            <FlowPane fx:id="flowPane"/>
-        </JFXScrollPane>
-    </AnchorPane>
-</VBox>
+<?import ktfx.jfoenix._JFXScrollPane?>
+<AnchorPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.hendraanggrian.openpss.ui.wage.WageController"
+            fx:id="anchorPane" VBox.vgrow="ALWAYS">
+    <_JFXScrollPane fx:id="scrollPane" AnchorPane.leftAnchor="0" AnchorPane.bottomAnchor="0"
+                    AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
+        <FlowPane fx:id="flowPane"/>
+    </_JFXScrollPane>
+</AnchorPane>

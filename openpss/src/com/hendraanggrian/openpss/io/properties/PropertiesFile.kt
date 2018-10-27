@@ -1,8 +1,8 @@
 package com.hendraanggrian.openpss.io.properties
 
 import com.hendraanggrian.openpss.io.MainDirectory
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.experimental.Dispatchers
+import kotlinx.coroutines.experimental.withContext
 import java.io.File
 import java.util.Properties
 import kotlin.reflect.KProperty

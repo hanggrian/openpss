@@ -21,11 +21,11 @@ import javafx.scene.control.ComboBox
 import javafx.scene.control.TextArea
 import javafx.scene.layout.HBox
 import javafx.scene.layout.VBox
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.javafx.JavaFx
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.experimental.CoroutineScope
+import kotlinx.coroutines.experimental.Dispatchers
+import kotlinx.coroutines.experimental.GlobalScope
+import kotlinx.coroutines.experimental.javafx.JavaFx
+import kotlinx.coroutines.experimental.launch
 import kotlinx.nosql.update
 import ktfx.NodeManager
 import ktfx.annotations.LayoutDsl
@@ -44,7 +44,7 @@ import ktfx.layouts.textArea
 import ktfx.layouts.vbox
 import ktfx.listeners.converter
 import ktfx.scene.layout.gap
-import kotlin.coroutines.CoroutineContext
+import kotlin.coroutines.experimental.CoroutineContext
 
 class PreferencesDialog(context: Context) : Dialog(context, R.string.preferences) {
 

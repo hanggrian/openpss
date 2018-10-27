@@ -147,6 +147,17 @@
     -fx-background-color: -accent-dark;
 }
 
+.button-raised-reverse {
+    -fx-text-fill: -accent;
+    -fx-background-color: -light;
+}
+.button-raised-reverse:hover {
+    -fx-background-color: -accent-light;
+}
+.button-raised-reverse:pressed {
+    -fx-background-color: -accent-dark;
+}
+
 .label-accent {
     -fx-text-fill: -accent;
 }

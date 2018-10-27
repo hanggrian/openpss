@@ -11,11 +11,11 @@ import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.popup.dialog.TableDialog
 import com.hendraanggrian.openpss.popup.popover.InputUserPopover
 import javafx.scene.Node
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.javafx.JavaFx
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.experimental.Dispatchers
+import kotlinx.coroutines.experimental.GlobalScope
+import kotlinx.coroutines.experimental.delay
+import kotlinx.coroutines.experimental.javafx.JavaFx
+import kotlinx.coroutines.experimental.launch
 import kotlinx.nosql.notEqual
 import kotlinx.nosql.update
 import ktfx.NodeManager

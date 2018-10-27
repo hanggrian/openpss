@@ -14,21 +14,27 @@ import com.hendraanggrian.openpss.ui.controller
 import com.hendraanggrian.openpss.ui.pane
 import com.hendraanggrian.openpss.ui.wage.readers.Reader
 import com.hendraanggrian.openpss.ui.wage.record.WageRecordController.Companion.EXTRA_ATTENDEES
+import com.hendraanggrian.openpss.util.getColor
 import com.hendraanggrian.openpss.util.getResource
 import com.hendraanggrian.openpss.util.getStyle
-import com.jfoenix.controls.JFXScrollPane
+import com.jfoenix.controls.JFXButton
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
+import javafx.geometry.Insets
 import javafx.scene.control.Button
 import javafx.scene.control.Label
 import javafx.scene.image.ImageView
 import javafx.scene.layout.AnchorPane
+import javafx.scene.layout.Background
+import javafx.scene.layout.BackgroundFill
+import javafx.scene.layout.CornerRadii
 import javafx.scene.layout.FlowPane
+import javafx.scene.paint.Color
 import javafx.stage.FileChooser.ExtensionFilter
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.javafx.JavaFx
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.experimental.Dispatchers
+import kotlinx.coroutines.experimental.GlobalScope
+import kotlinx.coroutines.experimental.javafx.JavaFx
+import kotlinx.coroutines.experimental.launch
 import ktfx.NodeManager
 import ktfx.application.later
 import ktfx.beans.binding.booleanBindingOf
@@ -38,9 +44,9 @@ import ktfx.beans.value.or
 import ktfx.collections.isEmpty
 import ktfx.collections.size
 import ktfx.coroutines.onAction
+import ktfx.jfoenix._JFXScrollPane
 import ktfx.jfoenix.jfxButton
 import ktfx.jfoenix.jfxToolbar
-import ktfx.layouts.anchorPane
 import ktfx.layouts.borderPane
 import ktfx.layouts.label
 import ktfx.layouts.scene
@@ -54,11 +60,13 @@ import java.util.ResourceBundle
 
 class WageController : ActionController() {
 
-    @FXML lateinit var titleLabel: Label
-    @FXML lateinit var processButton: Button
     @FXML lateinit var anchorPane: AnchorPane
-    @FXML lateinit var scrollPane: JFXScrollPane
+    @FXML lateinit var scrollPane: _JFXScrollPane
     @FXML lateinit var flowPane: FlowPane
+
+    private lateinit var descLabel: Label
+    private lateinit var titleLabel: Label
+    private lateinit var processButton: Button
 
     private lateinit var browseButton: Button
     private lateinit var disableRecessButton: Button
@@ -89,21 +97,36 @@ class WageController : ActionController() {
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
-        titleLabel.textProperty().bind(stringBindingOf(flowPane.children) {
-            "${flowPane.children.size} ${getString(R.string.employee)}"
-        })
-        scrollPane.mainHeader.children.add(anchorPane {
-            jfxToolbar {
-                leftItems {
-                    label("fuck you")
+        scrollPane.run {
+            mainHeader.background =
+                Background(BackgroundFill(getColor(R.color.accent), CornerRadii.EMPTY, Insets.EMPTY))
+            mainHeader {
+                descLabel = label {
+                    textFill = Color.WHITE
                 }
-                rightItems {
-                    jfxButton("Fuck") {
-                        styleClass += App.STYLE_BUTTON_RAISED
+            }
+            topBar {
+                jfxToolbar {
+                    leftItems {
+                        titleLabel = label {
+                            textFill = Color.WHITE
+                            textProperty().bind(stringBindingOf(flowPane.children) {
+                                "${flowPane.children.size} ${getString(R.string.employee)}"
+                            })
+                        }
+                    }
+                    rightItems {
+                        processButton = jfxButton(getString(R.string.process)) {
+                            styleClass += App.STYLE_BUTTON_RAISED_REVERSE
+                            buttonType = JFXButton.ButtonType.RAISED
+                            onAction {
+                                process()
+                            }
+                        }
                     }
                 }
             }
-        })
+        }
         bindProcessButton()
         later {
             flowPane.prefWrapLengthProperty().bind(flowPane.scene.widthProperty())
@@ -113,16 +136,6 @@ class WageController : ActionController() {
             }
         }
     }
-
-    @FXML fun process() = stage(getString(R.string.record)) {
-        val loader = FXMLLoader(getResource(R.layout.controller_wage_record), resources)
-        scene = scene {
-            loader.pane()
-            stylesheets += getStyle(R.style.openpss)
-        }
-        setMinSize(1000.0, 650.0)
-        loader.controller.addExtra(EXTRA_ATTENDEES, attendees)
-    }.showAndWait()
 
     private fun disableRecess() = DisableRecessPopover(this, attendeePanes).show(disableRecessButton)
 
@@ -136,7 +149,7 @@ class WageController : ActionController() {
             ?.let { read(it) }
 
     private fun read(file: File) {
-        titleLabel.graphic = label("${file.absolutePath} -")
+        descLabel.text = file.absolutePath
         val loadingPane = borderPane {
             prefWidthProperty().bind(anchorPane.widthProperty())
             prefHeightProperty().bind(anchorPane.heightProperty())
@@ -190,6 +203,16 @@ class WageController : ActionController() {
             }
         }
     }
+
+    private fun process() = stage(getString(R.string.record)) {
+        val loader = FXMLLoader(getResource(R.layout.controller_wage_record), resources)
+        scene = scene {
+            loader.pane()
+            stylesheets += getStyle(R.style.openpss)
+        }
+        setMinSize(1000.0, 650.0)
+        loader.controller.addExtra(EXTRA_ATTENDEES, attendees)
+    }.showAndWait()
 
     private inline val attendeePanes: List<AttendeePane> get() = flowPane.children.map { (it as AttendeePane) }
 

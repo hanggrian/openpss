@@ -22,11 +22,11 @@ import javafx.scene.image.ImageView
 import javafx.scene.input.MouseEvent.MOUSE_CLICKED
 import javafx.scene.layout.Priority.ALWAYS
 import javafx.scene.layout.StackPane
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.javafx.JavaFx
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.experimental.Dispatchers
+import kotlinx.coroutines.experimental.GlobalScope
+import kotlinx.coroutines.experimental.delay
+import kotlinx.coroutines.experimental.javafx.JavaFx
+import kotlinx.coroutines.experimental.launch
 import ktfx.beans.binding.bindingOf
 import ktfx.collections.sort
 import ktfx.coroutines.eventFilter

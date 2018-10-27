@@ -46,7 +46,7 @@ open class Dialog(
             borderPane {
                 left = ktfx.layouts.label(getString(titleId)) {
                     fontSize = 18.0
-                    textFill = getColor(R.color.blue)
+                    textFill = getColor(R.color.accent)
                 } align Pos.CENTER_LEFT
                 rightProperty().run {
                     bindBidirectional(graphicProperty)

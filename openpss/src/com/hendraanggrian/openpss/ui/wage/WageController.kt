@@ -18,6 +18,8 @@ import com.hendraanggrian.openpss.util.getColor
 import com.hendraanggrian.openpss.util.getResource
 import com.hendraanggrian.openpss.util.getStyle
 import com.jfoenix.controls.JFXButton
+import javafx.beans.property.SimpleStringProperty
+import javafx.beans.property.StringProperty
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
 import javafx.geometry.Insets
@@ -39,10 +41,14 @@ import ktfx.NodeManager
 import ktfx.application.later
 import ktfx.beans.binding.booleanBindingOf
 import ktfx.beans.binding.stringBindingOf
+import ktfx.beans.property.hasValue
+import ktfx.beans.value.getValue
 import ktfx.beans.value.lessEq
 import ktfx.beans.value.or
+import ktfx.beans.value.setValue
 import ktfx.collections.isEmpty
 import ktfx.collections.size
+import ktfx.controlsfx.gridView
 import ktfx.coroutines.onAction
 import ktfx.jfoenix._JFXScrollPane
 import ktfx.jfoenix.jfxButton
@@ -51,9 +57,11 @@ import ktfx.layouts.borderPane
 import ktfx.layouts.label
 import ktfx.layouts.scene
 import ktfx.scene.layout.maxSize
+import ktfx.scene.layout.paddingTop
 import ktfx.stage.fileChooser
 import ktfx.stage.setMinSize
 import ktfx.stage.stage
+import org.controlsfx.control.GridView
 import java.io.File
 import java.net.URL
 import java.util.ResourceBundle
@@ -64,14 +72,17 @@ class WageController : ActionController() {
     @FXML lateinit var scrollPane: _JFXScrollPane
     @FXML lateinit var flowPane: FlowPane
 
-    private lateinit var descLabel: Label
     private lateinit var titleLabel: Label
     private lateinit var processButton: Button
+    private lateinit var employeeGrid: GridView<String>
 
     private lateinit var browseButton: Button
     private lateinit var disableRecessButton: Button
     private lateinit var saveWageButton: Button
     private lateinit var historyButton: Button
+
+    private val filePathProperty: StringProperty = SimpleStringProperty()
+    private var filePath: String by filePathProperty
 
     override fun NodeManager.onCreateActions() {
         browseButton = stretchableButton(STRETCH_POINT, getString(R.string.browse), ImageView(R.image.act_browse)) {
@@ -101,8 +112,8 @@ class WageController : ActionController() {
             mainHeader.background =
                 Background(BackgroundFill(getColor(R.color.accent), CornerRadii.EMPTY, Insets.EMPTY))
             mainHeader {
-                descLabel = label {
-                    textFill = Color.WHITE
+                employeeGrid = gridView {
+                    paddingTop = 50.0
                 }
             }
             topBar {
@@ -110,8 +121,13 @@ class WageController : ActionController() {
                     leftItems {
                         titleLabel = label {
                             textFill = Color.WHITE
-                            textProperty().bind(stringBindingOf(flowPane.children) {
-                                "${flowPane.children.size} ${getString(R.string.employee)}"
+                            textProperty().bind(stringBindingOf(filePathProperty, flowPane.children) {
+                                "${flowPane.children.size} ${getString(R.string.employee)}".let {
+                                    when {
+                                        filePathProperty.hasValue() -> "$filePath ($it)"
+                                        else -> it
+                                    }
+                                }
                             })
                         }
                     }
@@ -119,9 +135,7 @@ class WageController : ActionController() {
                         processButton = jfxButton(getString(R.string.process)) {
                             styleClass += App.STYLE_BUTTON_RAISED_REVERSE
                             buttonType = JFXButton.ButtonType.RAISED
-                            onAction {
-                                process()
-                            }
+                            onAction { process() }
                         }
                     }
                 }
@@ -149,7 +163,8 @@ class WageController : ActionController() {
             ?.let { read(it) }
 
     private fun read(file: File) {
-        descLabel.text = file.absolutePath
+        employeeGrid.items.clear()
+        filePath = file.absolutePath
         val loadingPane = borderPane {
             prefWidthProperty().bind(anchorPane.widthProperty())
             prefHeightProperty().bind(anchorPane.heightProperty())
@@ -162,6 +177,7 @@ class WageController : ActionController() {
                 Reader.of(WAGE_READER).read(file).forEach { attendee ->
                     attendee.mergeDuplicates()
                     GlobalScope.launch(Dispatchers.JavaFx) {
+                        employeeGrid.items.add(attendee.name)
                         flowPane.children += AttendeePane(this@WageController, attendee).apply {
                             deleteMenu.onAction {
                                 flowPane.children -= this@apply

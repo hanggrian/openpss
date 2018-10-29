@@ -44,8 +44,8 @@ class Record(
     val totalProperty: DoubleProperty = SimpleDoubleProperty()
 ) : Resources by resources {
 
-    var start: DateTime by startProperty
-    var end: DateTime by endProperty
+    var start: DateTime? by startProperty
+    var end: DateTime? by endProperty
     var isDailyDisabled: Boolean by dailyDisabledProperty
     var daily: Double by dailyProperty
     var overtime: Double by overtimeProperty
@@ -126,7 +126,7 @@ class Record(
             bind(stringBindingOf(startProperty, dailyDisabledProperty) {
                 when {
                     isNode() -> attendee.role.orEmpty()
-                    isChild() -> start.toString(PATTERN_DATETIME).let { if (isDailyDisabled) "($it)" else it }
+                    isChild() -> start!!.toString(PATTERN_DATETIME).let { if (isDailyDisabled) "($it)" else it }
                     isTotal() -> ""
                     else -> throw UnsupportedOperationException()
                 }
@@ -138,7 +138,7 @@ class Record(
             bind(stringBindingOf(endProperty, dailyDisabledProperty) {
                 when {
                     isNode() -> "${attendee.attendances.size / 2} ${getString(R.string.day)}"
-                    isChild() -> end.toString(PATTERN_DATETIME).let { if (isDailyDisabled) "($it)" else it }
+                    isChild() -> end!!.toString(PATTERN_DATETIME).let { if (isDailyDisabled) "($it)" else it }
                     isTotal() -> getString(R.string.total)
                     else -> throw UnsupportedOperationException()
                 }
@@ -146,17 +146,17 @@ class Record(
         }
 
     fun cloneStart(time: LocalTime): DateTime =
-        DateTime(start.year, start.monthOfYear, start.dayOfMonth, time.hourOfDay, time.minuteOfHour)
+        DateTime(start!!.year, start!!.monthOfYear, start!!.dayOfMonth, time.hourOfDay, time.minuteOfHour)
 
     fun cloneEnd(time: LocalTime): DateTime =
-        DateTime(end.year, end.monthOfYear, end.dayOfMonth, time.hourOfDay, time.minuteOfHour)
+        DateTime(end!!.year, end!!.monthOfYear, end!!.dayOfMonth, time.hourOfDay, time.minuteOfHour)
 
     private val workingHours: Double
         get() {
-            val interval = IntervalWrapper.of(start, end)
+            val interval = IntervalWrapper.of(start!!, end!!)
             var minutes = interval.minutes
             attendee.recesses
-                .map { it.getInterval(start) }
+                .map { it.getInterval(start!!) }
                 .forEach {
                     minutes -= interval.overlap(it)?.toDuration()?.toStandardMinutes()?.minutes?.absoluteValue ?: 0
                 }

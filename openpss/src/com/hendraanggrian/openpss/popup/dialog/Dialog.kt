@@ -34,7 +34,7 @@ open class Dialog(
 
     private val graphicProperty = SimpleObjectProperty<Node>()
     fun graphicProperty(): ObjectProperty<Node> = graphicProperty
-    var graphic: Node by graphicProperty
+    var graphic: Node? by graphicProperty
 
     init {
         @Suppress("LeakingThis")

@@ -34,7 +34,7 @@ open class MonthBox @JvmOverloads constructor(prefill: YearMonth = now()) : _HBo
 
     private val valueProperty = SimpleObjectProperty<YearMonth>()
     fun valueProperty(): ObjectProperty<YearMonth> = valueProperty
-    val value: YearMonth by valueProperty
+    val value: YearMonth? by valueProperty
 
     private var months: Array<String> = getInstance().shortMonths
 

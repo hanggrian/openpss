@@ -36,7 +36,7 @@ open class Popover(
 
     private val graphicProperty = SimpleObjectProperty<Node>()
     fun graphicProperty(): ObjectProperty<Node> = graphicProperty
-    var graphic: Node by graphicProperty
+    var graphic: Node? by graphicProperty
 
     init {
         popupContent = ktfx.layouts.vbox(R.dimen.padding_medium.toDouble()) {

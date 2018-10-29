@@ -40,7 +40,7 @@ open class TimeBox @JvmOverloads constructor(prefill: LocalTime = MIDNIGHT) : _H
 
     private val valueProperty = SimpleObjectProperty<LocalTime>()
     fun valueProperty(): ObjectProperty<LocalTime> = valueProperty
-    val value: LocalTime by valueProperty
+    val value: LocalTime? by valueProperty
 
     init {
         alignment = Pos.CENTER

@@ -38,7 +38,7 @@ open class DateBox @JvmOverloads constructor(prefill: LocalDate = now()) : _HBox
 
     private val valueProperty = SimpleObjectProperty<LocalDate>()
     fun valueProperty(): ObjectProperty<LocalDate> = valueProperty
-    val value: LocalDate by valueProperty
+    val value: LocalDate? by valueProperty
 
     init {
         alignment = Pos.CENTER

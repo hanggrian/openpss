@@ -127,8 +127,8 @@ class FinanceController : ActionController(), Refreshable, Selectable<Tab>, Sele
     override fun refresh() = later {
         transaction {
             when (selectedIndex) {
-                0 -> dailyTable.items = Payments { it.dateTime.matches(dateBox.value) }.toMutableObservableList()
-                else -> monthlyTable.items = Report.listAll(Payments { it.dateTime.matches(monthBox.value) })
+                0 -> dailyTable.items = Payments { it.dateTime.matches(dateBox.value!!) }.toMutableObservableList()
+                else -> monthlyTable.items = Report.listAll(Payments { it.dateTime.matches(monthBox.value!!) })
             }
         }
     }

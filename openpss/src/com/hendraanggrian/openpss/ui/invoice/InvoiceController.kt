@@ -225,7 +225,7 @@ class InvoiceController : ActionController(), Refreshable, Selectable<Invoice>, 
                                             1 -> and(it.paid.equal(true))
                                             2 -> and(it.paid.equal(false))
                                         }
-                                        if (pickDateRadio.isSelected) and(it.dateTime.matches(dateBox.value))
+                                        if (pickDateRadio.isSelected) and(it.dateTime.matches(dateBox.value!!))
                                     }
                                 }
                             }

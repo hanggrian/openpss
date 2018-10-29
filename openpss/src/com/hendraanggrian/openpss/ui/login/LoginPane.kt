@@ -25,10 +25,10 @@ import javafx.scene.control.TextField
 import javafx.scene.layout.Priority
 import javafx.scene.layout.StackPane
 import javafx.scene.text.TextAlignment
-import kotlinx.coroutines.experimental.Dispatchers
-import kotlinx.coroutines.experimental.GlobalScope
-import kotlinx.coroutines.experimental.javafx.JavaFx
-import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.javafx.JavaFx
+import kotlinx.coroutines.launch
 import ktfx.application.later
 import ktfx.beans.value.isBlank
 import ktfx.beans.value.or
@@ -171,7 +171,7 @@ class LoginPane(private val resourced: Resources) : _StackPane(), Context {
                                 or serverPasswordField.textProperty().isBlank()
                         )
                         onAction {
-                            PasswordDialog().show { _ ->
+                            PasswordDialog().show {
                                 GlobalScope.launch(Dispatchers.IO) {
                                     LoginFile.save()
                                     try {

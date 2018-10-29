@@ -27,9 +27,9 @@ class AddRecessPopover(
             endBox = timeBox() col 1 row 1
         }
         defaultButton.disableProperty().bind(booleanBindingOf(startBox.valueProperty(), endBox.valueProperty()) {
-            startBox.value >= endBox.value
+            startBox.value!! >= endBox.value!!
         })
     }
 
-    override val nullableResult: Pair<LocalTime, LocalTime>? get() = startBox.value to endBox.value
+    override val nullableResult: Pair<LocalTime, LocalTime>? get() = startBox.value!! to endBox.value!!
 }

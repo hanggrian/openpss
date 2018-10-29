@@ -10,7 +10,7 @@ import com.hendraanggrian.openpss.currencyConverter
 import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.db.schemas.Payment
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.popup.popover.ResultablePopover
+import com.hendraanggrian.openpss.popup.dialog.ResultableDialog
 import com.hendraanggrian.openpss.util.getColor
 import javafx.scene.Node
 import javafx.scene.control.CheckBox
@@ -21,18 +21,18 @@ import ktfx.beans.binding.booleanBindingOf
 import ktfx.beans.binding.stringBindingOf
 import ktfx.coroutines.onAction
 import ktfx.jfoenix.jfxButton
-import ktfx.layouts.checkBox
+import ktfx.jfoenix.jfxCheckBox
+import ktfx.jfoenix.jfxTextField
 import ktfx.layouts.gridPane
 import ktfx.layouts.label
-import ktfx.layouts.textField
 import ktfx.layouts.tooltip
 import ktfx.scene.layout.gap
 import ktfx.util.invoke
 
-class AddPaymentPopover(
+class AddPaymentDialog(
     context: Context,
     private val invoice: Invoice
-) : ResultablePopover<Payment>(context, R.string.add_payment) {
+) : ResultableDialog<Payment>(context, R.string.add_payment) {
 
     private lateinit var valueField: DoubleField
     private lateinit var cashBox: CheckBox
@@ -52,7 +52,7 @@ class AddPaymentPopover(
             } row 1 col 1 colSpans 2
             label(getString(R.string.payment)) row 2 col 0
             valueField = doubleField { promptText = getString(R.string.payment) } row 2 col 1
-            jfxButton(graphic = ImageView(R.image.act_match_receivable)) {
+            jfxButton(graphic = ImageView(R.image.btn_match_receivable)) {
                 styleClass += App.STYLE_BUTTON_FLAT
                 tooltip(getString(R.string.match_receivable))
                 onAction {
@@ -80,9 +80,9 @@ class AddPaymentPopover(
                 })
             } row 3 col 1 colSpans 2
             label(getString(R.string.cash)) row 6 col 0
-            cashBox = checkBox { isSelected = true } row 6 col 1 colSpans 2
+            cashBox = jfxCheckBox { isSelected = true } row 6 col 1 colSpans 2
             label(getString(R.string.reference)) { bindDisable() } row 7 col 0
-            referenceField = textField { bindDisable() } row 7 col 1 colSpans 2
+            referenceField = jfxTextField { bindDisable() } row 7 col 1 colSpans 2
         }
         defaultButton.disableProperty().bind(booleanBindingOf(
             valueField.valueProperty(), cashBox.selectedProperty(),

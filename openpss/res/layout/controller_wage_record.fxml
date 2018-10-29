@@ -4,7 +4,6 @@
 <?import com.jfoenix.controls.JFXToolbar?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
-<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.hendraanggrian.openpss.ui.wage.record.WageRecordController"
@@ -14,7 +13,7 @@
             <StretchableSplitMenuButton mnemonicParsing="false" fx:id="undoButton" onAction="#undo" stretchPoint="1100"
                                         stretchableText="%undo">
                 <ImageView>
-                    <Image url="@/image/act_undo.png"/>
+                    <Image url="@/image/btn_undo.png"/>
                 </ImageView>
             </StretchableSplitMenuButton>
             <Space minWidth="10"/>

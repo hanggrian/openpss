@@ -75,7 +75,7 @@ class EditEmployeeDialog(
     }
 
     override fun add() = InputUserPopover(this, R.string.add_employee, false).show(addButton) {
-        val employee = Employee.new(it)
+        val employee = Employee.new(it!!)
         employee.id = transaction { Employees.insert(employee) }
         table.items.add(employee)
         select(employee)

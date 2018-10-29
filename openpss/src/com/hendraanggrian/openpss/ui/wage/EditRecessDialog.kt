@@ -20,8 +20,8 @@ class EditRecessDialog(context: Context) : TableDialog<Recess, Recesses>(context
         }
     }
 
-    override fun add() = AddRecessPopover(this).show(addButton) { (start, end) ->
-        val recess = Recess(start, end)
+    override fun add() = AddRecessPopover(this).show(addButton) { pair ->
+        val recess = Recess(pair!!.first, pair.second)
         recess.id = transaction { Recesses.insert(recess) }
         table.items.add(recess)
     }

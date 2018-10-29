@@ -284,9 +284,9 @@ class InvoiceController : ActionController(), Refreshable, Selectable<Invoice>, 
         }
     }.show(invoiceTable)
 
-    private fun addPayment() = AddPaymentPopover(this, selected!!).show(paymentTable) {
+    private fun addPayment() = AddPaymentDialog(this, selected!!).show {
         transaction {
-            Payments += it
+            Payments += it!!
             updatePaymentStatus()
             reload(selected!!)
         }

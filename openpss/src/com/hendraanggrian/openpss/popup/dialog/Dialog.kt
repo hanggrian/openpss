@@ -3,7 +3,6 @@ package com.hendraanggrian.openpss.popup.dialog
 import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.Context
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.util.getColor
 import com.jfoenix.controls.JFXDialog
 import javafx.beans.property.ObjectProperty
 import javafx.beans.property.SimpleObjectProperty
@@ -21,7 +20,6 @@ import ktfx.layouts.borderPane
 import ktfx.layouts.buttonBar
 import ktfx.layouts.vbox
 import ktfx.scene.layout.paddingAll
-import ktfx.scene.text.fontSize
 
 open class Dialog(
     context: Context,
@@ -45,8 +43,7 @@ open class Dialog(
             paddingAll = R.dimen.padding_large.toDouble()
             borderPane {
                 left = ktfx.layouts.label(getString(titleId)) {
-                    fontSize = 18.0
-                    textFill = getColor(R.color.accent)
+                    styleClass += App.STYLE_LABEL_DISPLAY
                 } align Pos.CENTER_LEFT
                 rightProperty().run {
                     bindBidirectional(graphicProperty)

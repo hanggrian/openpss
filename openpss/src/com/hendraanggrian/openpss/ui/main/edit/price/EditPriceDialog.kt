@@ -43,7 +43,7 @@ abstract class EditPriceDialog<D, S>(
                 schema { it.name.equal(name) }.isNotEmpty() ->
                     root.jfxSnackbar(getString(R.string.name_taken), App.DURATION_SHORT)
                 else -> {
-                    val price = newPrice(name)
+                    val price = newPrice(name!!)
                     price.id = schema.insert(price)
                     table.items.add(price)
                 }

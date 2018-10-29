@@ -36,6 +36,7 @@ class App : Application(), Resources {
 
         const val STYLE_BUTTON_FLAT = "button-flat"
         const val STYLE_BUTTON_RAISED = "button-raised"
+        const val STYLE_LABEL_DISPLAY = "label-display"
 
         @JvmStatic fun main(args: Array<String>) = launch<App>(*args)
 

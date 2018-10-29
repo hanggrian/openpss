@@ -29,7 +29,7 @@ open class ResultablePopover<T>(
         }
     }
 
-    fun show(node: Node, onAction: (T) -> Unit) {
+    fun show(node: Node, onAction: (T?) -> Unit) {
         show(node)
         defaultButton.onAction {
             onAction(nullableResult!!)

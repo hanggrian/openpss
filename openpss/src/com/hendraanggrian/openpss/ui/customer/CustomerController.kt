@@ -159,7 +159,7 @@ class CustomerController : ActionController(), Refreshable, Selectable<Customer>
                 Customers { it.name.matches("^$name$", CASE_INSENSITIVE) }.isNotEmpty() ->
                     root.jfxSnackbar(getString(R.string.name_taken), App.DURATION_SHORT)
                 else -> {
-                    Customer.new(name).let {
+                    Customer.new(name!!).let {
                         it.id = Customers.insert(it)
                         customerList.items.add(it)
                         customerList.selectionModel.select(customerList.items.lastIndex)
@@ -169,16 +169,16 @@ class CustomerController : ActionController(), Refreshable, Selectable<Customer>
         }
     }
 
-    private fun edit() = EditCustomerPopover(this, selected!!).show(customerList) {
+    private fun edit() = EditCustomerDialog(this, selected!!).show {
         transaction {
-            Customers[selected!!].projection { name + address + note }.update(it.name, it.address, it.note)
+            Customers[selected!!].projection { name + address + note }.update(it!!.name, it.address, it.note)
         }
         reload()
     }
 
     @FXML fun addContact() = AddContactPopover(this).show(contactTable) {
         transaction {
-            Customers[selected!!].projection { contacts }.update(selected!!.contacts + it)
+            Customers[selected!!].projection { contacts }.update(selected!!.contacts + it!!)
         }
         reload()
     }

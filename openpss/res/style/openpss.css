@@ -163,6 +163,12 @@
     -fx-background-color: transparent;
 }
 
+.pane-bordered {
+    -fx-border-color: #c8c8c8;
+    -fx-border-width: 1;
+    -fx-border-style: solid;
+}
+
 .tab-pane-hidden {
     -fx-tab-max-height: 0;
     -fx-padding: -7 0 0 0;

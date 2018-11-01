@@ -9,6 +9,7 @@ abstract class Directory : File {
     constructor(parent: Directory, child: String) : super(parent, child)
 
     init {
+        check(isDirectory)
         mkdirs()
     }
 

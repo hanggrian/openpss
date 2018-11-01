@@ -115,13 +115,13 @@ class InvoiceController : ActionController(), Refreshable, Selectable<Invoice>, 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
         paymentCombo.run {
-            items = listOf(R.string.any, R.string.paid, R.string.unpaid)
+            items = listOf(R.string.paid_and_unpaid, R.string.paid, R.string.unpaid)
                 .map { getString(it) }
                 .toObservableList()
             selectionModel.selectFirst()
         }
         customerField.textProperty().bind(stringBindingOf(customerProperty) {
-            customerProperty.value?.toString() ?: getString(R.string.search)
+            customerProperty.value?.toString() ?: getString(R.string.search_customer)
         })
         dateBox.disableProperty().bind(!pickDateRadio.selectedProperty())
         clearFiltersButton.disableProperty().bind(

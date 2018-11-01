@@ -28,18 +28,8 @@
                             selected="true" contentDisplay="RIGHT"/>
             <DateBox fx:id="dateBox"/>
         </HBox>
-        <HBox alignment="CENTER" spacing="5">
-            <ImageView>
-                <Image url="@/image/menu_customer.png"/>
-            </ImageView>
-            <JFXTextField fx:id="customerField" editable="false" onMouseClicked="#selectCustomer"/>
-        </HBox>
-        <HBox alignment="CENTER" spacing="5">
-            <ImageView>
-                <Image url="@/image/menu_payment.png"/>
-            </ImageView>
-            <JFXComboBox fx:id="paymentCombo"/>
-        </HBox>
+        <JFXTextField fx:id="customerField" editable="false" onMouseClicked="#selectCustomer"/>
+        <JFXComboBox fx:id="paymentCombo"/>
         <JFXButton mnemonicParsing="false" fx:id="clearFiltersButton" onAction="#clearFilters" styleClass="button-flat">
             <tooltip>
                 <Tooltip text="%clear_filters"/>

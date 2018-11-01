@@ -16,8 +16,8 @@ import ktfx.collections.toMutableObservableList
 import ktfx.coroutines.listener
 import ktfx.coroutines.onKeyPressed
 import ktfx.coroutines.onMouseClicked
-import ktfx.jfoenix.jfxListView
 import ktfx.jfoenix.jfxTextField
+import ktfx.layouts.listView
 import ktfx.layouts.vbox
 import ktfx.scene.input.isDoubleClick
 import kotlin.text.RegexOption.IGNORE_CASE
@@ -37,7 +37,7 @@ class SearchCustomerPopover(context: Context) : ResultablePopover<Customer>(cont
             searchField = jfxTextField {
                 promptText = getString(R.string.name)
             }
-            customerList = jfxListView<Customer> {
+            customerList = listView<Customer> {
                 prefHeight = 252.0
                 itemsProperty().bind(bindingOf(searchField.textProperty()) {
                     transaction {

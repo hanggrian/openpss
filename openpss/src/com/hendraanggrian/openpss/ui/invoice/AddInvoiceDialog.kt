@@ -13,7 +13,7 @@ import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.popup.dialog.ResultableDialog
 import com.hendraanggrian.openpss.popup.popover.ResultablePopover
-import com.hendraanggrian.openpss.ui.invoice.order.AddOffsetPopover
+import com.hendraanggrian.openpss.ui.invoice.order.AddOffsetPrintPopover
 import com.hendraanggrian.openpss.ui.invoice.order.AddOtherPopover
 import com.hendraanggrian.openpss.ui.invoice.order.AddPlatePopover
 import com.hendraanggrian.openpss.util.getColor
@@ -60,7 +60,7 @@ class AddInvoiceDialog(
 ) : ResultableDialog<Invoice>(context, R.string.add_invoice) {
 
     private lateinit var plateTable: TableView<Invoice.Plate>
-    private lateinit var offsetTable: TableView<Invoice.Offset>
+    private lateinit var printTable: TableView<Invoice.Print>
     private lateinit var otherTable: TableView<Invoice.Other>
     private lateinit var noteArea: TextArea
 
@@ -95,15 +95,15 @@ class AddInvoiceDialog(
                 }
             } col 1 row 2 colSpans 3
             label(getString(R.string.offset)) col 0 row 3
-            offsetTable = invoiceTableView({ AddOffsetPopover(this@AddInvoiceDialog) }) {
+            printTable = invoiceTableView({ AddOffsetPrintPopover(this@AddInvoiceDialog) }) {
                 columns {
-                    column<Invoice.Offset, String>(R.string.qty, 72) { numberCell { qty } }
-                    column<Invoice.Offset, String>(R.string.machine, 72) { stringCell { machine } }
-                    column<Invoice.Offset, String>(R.string.technique, 72) {
+                    column<Invoice.Print, String>(R.string.qty, 72) { numberCell { qty } }
+                    column<Invoice.Print, String>(R.string.machine, 72) { stringCell { machine } }
+                    column<Invoice.Print, String>(R.string.technique, 72) {
                         stringCell { typedTechnique.toString(this@AddInvoiceDialog) }
                     }
-                    column<Invoice.Offset, String>(R.string.title, 192) { stringCell { title } }
-                    column<Invoice.Offset, String>(R.string.total, 156) { currencyCell { total } }
+                    column<Invoice.Print, String>(R.string.title, 192) { stringCell { title } }
+                    column<Invoice.Print, String>(R.string.total, 156) { currencyCell { total } }
                 }
             } col 1 row 3 colSpans 3
             label(getString(R.string.others)) col 0 row 4
@@ -114,9 +114,9 @@ class AddInvoiceDialog(
                     column<Invoice.Other, String>(R.string.total, 156) { currencyCell { total } }
                 }
             } col 1 row 4 colSpans 3
-            totalProperty.bind(doubleBindingOf(plateTable.items, offsetTable.items, otherTable.items) {
+            totalProperty.bind(doubleBindingOf(plateTable.items, printTable.items, otherTable.items) {
                 plateTable.items.sumByDouble { it.total } +
-                    offsetTable.items.sumByDouble { it.total } +
+                    printTable.items.sumByDouble { it.total } +
                     otherTable.items.sumByDouble { it.total }
             })
             label(getString(R.string.note)) col 0 row 5
@@ -144,8 +144,8 @@ class AddInvoiceDialog(
             login.id,
             customerProperty.value.id,
             dateTime,
+            printTable.items,
             plateTable.items,
-            offsetTable.items,
             otherTable.items,
             noteArea.text
         )

@@ -15,7 +15,7 @@ open class ResultableDialog<T>(
     titleId: String
 ) : Dialog(context, titleId), ResultablePopup<T> {
 
-    protected var defaultButton: Button
+    protected val defaultButton: Button
 
     init {
         buttonManager.run {

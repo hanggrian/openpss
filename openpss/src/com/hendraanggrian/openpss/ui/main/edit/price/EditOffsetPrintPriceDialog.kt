@@ -2,8 +2,8 @@ package com.hendraanggrian.openpss.ui.main.edit.price
 
 import com.hendraanggrian.openpss.Context
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.db.schemas.OffsetPrice
-import com.hendraanggrian.openpss.db.schemas.OffsetPrices
+import com.hendraanggrian.openpss.db.schemas.OffsetPrintPrice
+import com.hendraanggrian.openpss.db.schemas.OffsetPrintPrices
 import com.hendraanggrian.openpss.db.transaction
 import javafx.beans.value.ObservableValue
 import kotlinx.nosql.equal
@@ -13,9 +13,9 @@ import ktfx.coroutines.onEditCommit
 import ktfx.listeners.textFieldCellFactory
 
 @Suppress("UNCHECKED_CAST")
-class EditOffsetPriceDialog(
+class EditOffsetPrintPriceDialog(
     context: Context
-) : EditPriceDialog<OffsetPrice, OffsetPrices>(context, R.string.offset_price, OffsetPrices) {
+) : EditPriceDialog<OffsetPrintPrice, OffsetPrintPrices>(context, R.string.offset_print_price, OffsetPrintPrices) {
 
     init {
         getString(R.string.min_qty)<Int> {
@@ -27,7 +27,7 @@ class EditOffsetPriceDialog(
             }
             onEditCommit { cell ->
                 transaction {
-                    OffsetPrices { it.name.equal(cell.rowValue.name) }.projection { minQty }.update(cell.newValue)
+                    OffsetPrintPrices { it.name.equal(cell.rowValue.name) }.projection { minQty }.update(cell.newValue)
                 }
                 cell.rowValue.minQty = cell.newValue
             }
@@ -42,7 +42,8 @@ class EditOffsetPriceDialog(
             }
             onEditCommit { cell ->
                 transaction {
-                    OffsetPrices { it.name.equal(cell.rowValue.name) }.projection { minPrice }.update(cell.newValue)
+                    OffsetPrintPrices { it.name.equal(cell.rowValue.name) }.projection { minPrice }
+                        .update(cell.newValue)
                 }
                 cell.rowValue.minPrice = cell.newValue
             }
@@ -57,12 +58,13 @@ class EditOffsetPriceDialog(
             }
             onEditCommit { cell ->
                 transaction {
-                    OffsetPrices { it.name.equal(cell.rowValue.name) }.projection { excessPrice }.update(cell.newValue)
+                    OffsetPrintPrices { it.name.equal(cell.rowValue.name) }.projection { excessPrice }
+                        .update(cell.newValue)
                 }
                 cell.rowValue.excessPrice = cell.newValue
             }
         }
     }
 
-    override fun newPrice(name: String): OffsetPrice = OffsetPrice.new(name)
+    override fun newPrice(name: String): OffsetPrintPrice = OffsetPrintPrice.new(name)
 }

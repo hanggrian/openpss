@@ -33,8 +33,6 @@ application.mainClassName = "$group.App"
 
 ktlint()
 
-kotlin.experimental.coroutines = org.jetbrains.kotlin.gradle.dsl.Coroutines.ENABLE
-
 dependencies {
     implementation(kotlin("stdlib", VERSION_KOTLIN))
     implementation(kotlin("nosql-mongodb", VERSION_NOSQL))

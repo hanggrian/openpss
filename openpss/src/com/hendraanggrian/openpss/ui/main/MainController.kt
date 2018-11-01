@@ -5,7 +5,7 @@ import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.db.dbDateTime
 import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.schemas.Invoice
-import com.hendraanggrian.openpss.db.schemas.Invoice.Offset.Technique.TWO_SIDE_EQUAL
+import com.hendraanggrian.openpss.db.schemas.Invoice.Print.Technique.TWO_SIDE_EQUAL
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.popup.popover.ViewInvoicePopover
 import com.hendraanggrian.openpss.ui.ActionController
@@ -17,7 +17,8 @@ import com.hendraanggrian.openpss.ui.customer.CustomerController
 import com.hendraanggrian.openpss.ui.finance.FinanceController
 import com.hendraanggrian.openpss.ui.invoice.InvoiceController
 import com.hendraanggrian.openpss.ui.main.edit.EditEmployeeDialog
-import com.hendraanggrian.openpss.ui.main.edit.price.EditOffsetPriceDialog
+import com.hendraanggrian.openpss.ui.main.edit.price.EditDigitalPrintPriceDialog
+import com.hendraanggrian.openpss.ui.main.edit.price.EditOffsetPrintPriceDialog
 import com.hendraanggrian.openpss.ui.main.edit.price.EditPlatePriceDialog
 import com.hendraanggrian.openpss.ui.main.help.AboutDialog
 import com.hendraanggrian.openpss.ui.main.help.GitHubApi
@@ -60,7 +61,8 @@ class MainController : Controller(), Selectable<Tab>, Selectable2<Label> {
     @FXML lateinit var addInvoiceItem: MenuItem
     @FXML lateinit var quitItem: MenuItem
     @FXML lateinit var platePriceItem: MenuItem
-    @FXML lateinit var offsetPriceItem: MenuItem
+    @FXML lateinit var offsetPrintPriceItem: MenuItem
+    @FXML lateinit var digitalPrintPriceItem: MenuItem
     @FXML lateinit var employeeItem: MenuItem
     @FXML lateinit var recessItem: MenuItem
     @FXML lateinit var preferencesItem: MenuItem
@@ -140,7 +142,8 @@ class MainController : Controller(), Selectable<Tab>, Selectable2<Label> {
 
     @FXML fun editPrice(event: ActionEvent) = when (event.source) {
         platePriceItem -> EditPlatePriceDialog(this)
-        else -> EditOffsetPriceDialog(this)
+        offsetPrintPriceItem -> EditOffsetPrintPriceDialog(this)
+        else -> EditDigitalPrintPriceDialog(this)
     }.show()
 
     @FXML fun editEmployee() = EditEmployeeDialog(this).show()
@@ -161,7 +164,7 @@ class MainController : Controller(), Selectable<Tab>, Selectable2<Label> {
                     customerId = customer.id,
                     dateTime = dbDateTime,
                     plates = listOf(Invoice.Plate.new("Title", 5, 92000.0, "Machine")),
-                    offsets = listOf(Invoice.Offset.new("Title", 5, 92000.0, "Machine", TWO_SIDE_EQUAL)),
+                    prints = listOf(Invoice.Print.new("Title", 5, 92000.0, "Machine", TWO_SIDE_EQUAL)),
                     others = listOf(Invoice.Other.new("Title", 5, 92000.0)),
                     note = "This is a test",
                     printed = false,

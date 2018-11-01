@@ -5,12 +5,13 @@ import com.hendraanggrian.openpss.BuildConfig.ARTIFACT
 import com.hendraanggrian.openpss.BuildConfig.DEBUG
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.db.schemas.Customers
+import com.hendraanggrian.openpss.db.schemas.DigitalPrintPrices
 import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.db.schemas.Employees
 import com.hendraanggrian.openpss.db.schemas.GlobalSetting
 import com.hendraanggrian.openpss.db.schemas.GlobalSettings
 import com.hendraanggrian.openpss.db.schemas.Invoices
-import com.hendraanggrian.openpss.db.schemas.OffsetPrices
+import com.hendraanggrian.openpss.db.schemas.OffsetPrintPrices
 import com.hendraanggrian.openpss.db.schemas.Payments
 import com.hendraanggrian.openpss.db.schemas.PlatePrices
 import com.hendraanggrian.openpss.db.schemas.Recesses
@@ -33,7 +34,18 @@ import java.util.Date
 
 private lateinit var DB: MongoDB
 private val TABLES =
-    arrayOf(GlobalSettings, Customers, Employees, Invoices, OffsetPrices, Payments, PlatePrices, Recesses, Wages)
+    arrayOf(
+        Customers,
+        DigitalPrintPrices,
+        Employees,
+        GlobalSettings,
+        Invoices,
+        OffsetPrintPrices,
+        Payments,
+        PlatePrices,
+        Recesses,
+        Wages
+    )
 
 /**
  * A failed transaction will most likely throw an exception instance listAll [MongoException].

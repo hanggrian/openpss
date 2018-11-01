@@ -33,9 +33,10 @@ abstract class EditPriceDialog<D, S>(
     }
 
     override fun add() = InputPopover(
-        this, when {
-            this is EditPlatePriceDialog -> R.string.add_plate
-            else -> R.string.add_offset
+        this, when (this) {
+            is EditPlatePriceDialog -> R.string.add_plate
+            is EditOffsetPrintPriceDialog -> R.string.add_offset_print
+            else -> R.string.add_digital_print
         }
     ).show(addButton) { name ->
         transaction @Suppress("IMPLICIT_CAST_TO_ANY") {

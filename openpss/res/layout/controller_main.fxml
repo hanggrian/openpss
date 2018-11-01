@@ -35,8 +35,10 @@
             <Menu mnemonicParsing="false" text="Edit">
                 <MenuItem fx:id="platePriceItem" mnemonicParsing="false" onAction="#editPrice"
                           text="%plate_price"/>
-                <MenuItem fx:id="offsetPriceItem" mnemonicParsing="false" onAction="#editPrice"
-                          text="%offset_price"/>
+                <MenuItem fx:id="offsetPrintPriceItem" mnemonicParsing="false" onAction="#editPrice"
+                          text="%offset_print_price"/>
+                <MenuItem fx:id="digitalPrintPriceItem" mnemonicParsing="false" onAction="#editPrice"
+                          text="%digital_print_price"/>
                 <SeparatorMenuItem/>
                 <MenuItem fx:id="employeeItem" mnemonicParsing="false" onAction="#editEmployee"
                           text="%employee"/>

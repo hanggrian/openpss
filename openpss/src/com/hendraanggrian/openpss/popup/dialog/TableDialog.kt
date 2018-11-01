@@ -25,6 +25,7 @@ import ktfx.layouts.TableColumnsBuilder
 import ktfx.layouts.anchorPane
 import ktfx.layouts.hbox
 import ktfx.layouts.tableView
+import ktfx.layouts.tooltip
 import ktfx.stage.setMinSize
 
 @Suppress("LeakingThis")
@@ -48,12 +49,15 @@ abstract class TableDialog<D : Document<S>, S : DocumentSchema<D>>(
             hbox(R.dimen.padding_medium.toDouble()) {
                 alignment = CENTER_RIGHT
                 refreshButton = jfxButton(graphic = ImageView(R.image.act_refresh)) {
+                    tooltip(getString(R.string.refresh))
                     onAction { refresh() }
                 }
                 addButton = jfxButton(graphic = ImageView(R.image.act_add)) {
+                    tooltip(getString(R.string.add))
                     onAction { add() }
                 }
                 deleteButton = jfxButton(graphic = ImageView(R.image.act_delete)) {
+                    tooltip(getString(R.string.delete))
                     onAction { delete() }
                     later {
                         transaction {

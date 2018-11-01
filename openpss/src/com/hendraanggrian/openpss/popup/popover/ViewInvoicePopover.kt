@@ -150,7 +150,7 @@ class ViewInvoicePopover(
                         } row i col 2
                         label(numberConverter(order.total)) row i col 3
                     }
-                    row += orderGridPane(row, R.string.offset, invoice.offsets) { order, i ->
+                    row += orderGridPane(row, R.string.offset, invoice.prints) { order, i ->
                         label(numberConverter(order.qty)) row i col 0
                         label("${order.machine}\n${order.typedTechnique.toString(this@ViewInvoicePopover)}") {
                             textAlignment = TextAlignment.CENTER

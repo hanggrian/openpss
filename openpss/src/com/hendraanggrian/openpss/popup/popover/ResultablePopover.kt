@@ -17,7 +17,7 @@ open class ResultablePopover<T>(
     titleId: String
 ) : Popover(context, titleId), ResultablePopup<T> {
 
-    protected lateinit var defaultButton: Button
+    protected val defaultButton: Button
 
     init {
         buttonManager.run {

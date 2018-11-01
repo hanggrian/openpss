@@ -7,8 +7,8 @@ import com.hendraanggrian.openpss.control.IntField
 import com.hendraanggrian.openpss.control.doubleField
 import com.hendraanggrian.openpss.control.intField
 import com.hendraanggrian.openpss.db.schemas.Invoice
-import com.hendraanggrian.openpss.db.schemas.OffsetPrice
-import com.hendraanggrian.openpss.db.schemas.OffsetPrices
+import com.hendraanggrian.openpss.db.schemas.OffsetPrintPrice
+import com.hendraanggrian.openpss.db.schemas.OffsetPrintPrices
 import com.hendraanggrian.openpss.db.transaction
 import javafx.beans.Observable
 import javafx.beans.value.ObservableBooleanValue
@@ -23,18 +23,18 @@ import ktfx.layouts._GridPane
 import ktfx.layouts.label
 import ktfx.listeners.converter
 
-class AddOffsetPopover(context: Context) : AddOrderPopover<Invoice.Offset>(context, R.string.add_offset),
-    Invoice.Order {
+class AddOffsetPrintPopover(context: Context) :
+    AddOrderPopover<Invoice.Print>(context, R.string.add_offset_print), Invoice.Order {
 
-    private lateinit var machineChoice: ComboBox<OffsetPrice>
-    private lateinit var techniqueChoice: ComboBox<Invoice.Offset.Technique>
+    private lateinit var machineChoice: ComboBox<OffsetPrintPrice>
+    private lateinit var techniqueChoice: ComboBox<Invoice.Print.Technique>
     private lateinit var minQtyField: IntField
     private lateinit var minPriceField: DoubleField
     private lateinit var excessPriceField: DoubleField
 
     override fun _GridPane.onCreateContent() {
         label(getString(R.string.machine)) col 0 row currentRow
-        machineChoice = jfxComboBox(transaction { OffsetPrices().toObservableList() }) {
+        machineChoice = jfxComboBox(transaction { OffsetPrintPrices().toObservableList() }) {
             valueProperty().listener { _, _, offset ->
                 minQtyField.value = offset.minQty
                 minPriceField.value = offset.minPrice
@@ -43,8 +43,8 @@ class AddOffsetPopover(context: Context) : AddOrderPopover<Invoice.Offset>(conte
         } col 1 colSpans 2 row currentRow
         currentRow++
         label(getString(R.string.technique)) col 0 row currentRow
-        techniqueChoice = jfxComboBox(Invoice.Offset.Technique.values().toObservableList()) {
-            converter { toString { it!!.toString(this@AddOffsetPopover) } }
+        techniqueChoice = jfxComboBox(Invoice.Print.Technique.values().toObservableList()) {
+            converter { toString { it!!.toString(this@AddOffsetPrintPopover) } }
             selectionModel.selectFirst()
         } col 1 colSpans 2 row currentRow
         currentRow++
@@ -74,24 +74,24 @@ class AddOffsetPopover(context: Context) : AddOrderPopover<Invoice.Offset>(conte
             techniqueChoice.valueProperty().isNull or
             totalField.valueProperty().lessEq(0)
 
-    override val nullableResult: Invoice.Offset?
-        get() = Invoice.Offset.new(titleField.text, qty, total, machineChoice.value.name, techniqueChoice.value)
+    override val nullableResult: Invoice.Print?
+        get() = Invoice.Print.new(titleField.text, qty, total, machineChoice.value.name, techniqueChoice.value)
 
     override fun calculateTotal(): Double = when (techniqueChoice.value) {
         null -> 0.0
-        Invoice.Offset.Technique.ONE_SIDE -> calculateSide(
+        Invoice.Print.Technique.ONE_SIDE -> calculateSide(
             qty,
             minQtyField.value,
             minPriceField.value,
             excessPriceField.value
         )
-        Invoice.Offset.Technique.TWO_SIDE_EQUAL -> calculateSide(
+        Invoice.Print.Technique.TWO_SIDE_EQUAL -> calculateSide(
             qty * 2,
             minQtyField.value,
             minPriceField.value,
             excessPriceField.value
         )
-        Invoice.Offset.Technique.TWO_SIDE_DISTINCT -> calculateSide(
+        Invoice.Print.Technique.TWO_SIDE_DISTINCT -> calculateSide(
             qty,
             minQtyField.value,
             minPriceField.value,

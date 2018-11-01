@@ -22,27 +22,27 @@ object Invoices : DocumentSchema<Invoice>("invoices", Invoice::class) {
     val employeeId = id("employee_id", Employees)
     val customerId = id("customer_id", Customers)
     val dateTime = dateTime("date_time")
+    val prints = Prints()
     val plates = Plates()
-    val offsets = Offsets()
     val others = Others()
     val note = string("note")
     val printed = boolean("printed")
     val paid = boolean("paid")
     val done = boolean("done")
 
-    class Plates : ListColumn<Invoice.Plate, Invoices>("plates", Invoice.Plate::class) {
-        val title = string("title")
-        val qty = integer("qty")
-        val total = string("total")
-        val machine = string("machine")
-    }
-
-    class Offsets : ListColumn<Invoice.Offset, Invoices>("offsets", Invoice.Offset::class) {
+    class Prints : ListColumn<Invoice.Print, Invoices>("prints", Invoice.Print::class) {
         val title = string("title")
         val qty = integer("qty")
         val total = string("total")
         val machine = string("machine")
         val technique = string("technique")
+    }
+
+    class Plates : ListColumn<Invoice.Plate, Invoices>("plates", Invoice.Plate::class) {
+        val title = string("title")
+        val qty = integer("qty")
+        val total = string("total")
+        val machine = string("machine")
     }
 
     class Others : ListColumn<Invoice.Other, Invoices>("others", Invoice.Other::class) {
@@ -57,8 +57,8 @@ data class Invoice(
     val employeeId: Id<String, Employees>,
     val customerId: Id<String, Customers>,
     val dateTime: DateTime,
+    var prints: List<Print>,
     var plates: List<Plate>,
-    var offsets: List<Offset>,
     var others: List<Other>,
     var note: String,
     val printed: Boolean,
@@ -71,21 +71,54 @@ data class Invoice(
             employeeId: Id<String, Employees>,
             customerId: Id<String, Customers>,
             dateTime: DateTime,
+            prints: List<Print>,
             plates: List<Plate>,
-            offsets: List<Offset>,
             others: List<Other>,
             note: String
         ): Invoice = Invoice(
             Numbered.next(Invoices),
-            employeeId, customerId, dateTime, plates, offsets, others, note, false, false, false
+            employeeId, customerId, dateTime, prints, plates, others, note, false, false, false
         )
     }
 
     override lateinit var id: Id<String, Invoices>
 
-    val total: Double get() = plates.sum() + offsets.sum() + others.sum()
+    val total: Double get() = plates.sum() + prints.sum() + others.sum()
 
     private fun List<Order>.sum() = sumByDouble { it.total }
+
+    data class Print(
+        override val title: String,
+        override val qty: Int,
+        override val total: Double,
+        val machine: String,
+        val technique: String
+    ) : Titled, Order {
+
+        companion object {
+            fun new(
+                title: String,
+                qty: Int,
+                total: Double,
+                machine: String,
+                technique: Technique
+            ): Print = Print(title, qty, total, machine, technique.id)
+        }
+
+        val typedTechnique: Technique get() = enumValueOfId(technique)
+
+        enum class Technique : Resourced {
+            ONE_SIDE {
+                override val resourceId: String = R.string.one_side
+            },
+            TWO_SIDE_EQUAL {
+                override val resourceId: String = R.string.two_side_equal
+            },
+            TWO_SIDE_DISTINCT {
+                override val resourceId: String = R.string.two_side_distinct
+            }
+        }
+    }
 
     data class Plate(
         override val title: String,
@@ -101,39 +134,6 @@ data class Invoice(
                 total: Double,
                 machine: String
             ): Plate = Plate(title, qty, total, machine)
-        }
-    }
-
-    data class Offset(
-        override val title: String,
-        override val qty: Int,
-        override val total: Double,
-        val machine: String,
-        val technique: String
-    ) : Titled, Order {
-
-        companion object {
-            fun new(
-                title: String,
-                qty: Int,
-                total: Double,
-                machine: String,
-                technique: Technique
-            ): Offset = Offset(title, qty, total, machine, technique.id)
-        }
-
-        val typedTechnique: Technique get() = enumValueOfId(technique)
-
-        enum class Technique : Resourced {
-            ONE_SIDE {
-                override val resourceId: String = R.string.one_side
-            },
-            TWO_SIDE_EQUAL {
-                override val resourceId: String = R.string.two_side_equal
-            },
-            TWO_SIDE_DISTINCT {
-                override val resourceId: String = R.string.two_side_distinct
-            }
         }
     }
 

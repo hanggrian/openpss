@@ -3,8 +3,8 @@
 package com.hendraanggrian.openpss.control
 
 import javafx.scene.layout.Region
+import ktfx.LayoutDsl
 import ktfx.NodeManager
-import ktfx.annotations.LayoutDsl
 
 open class Space @JvmOverloads constructor(width: Double = 0.0, height: Double = 0.0) : Region() {
 

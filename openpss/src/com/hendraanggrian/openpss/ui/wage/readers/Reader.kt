@@ -7,7 +7,7 @@ import javafx.stage.FileChooser
 import ktfx.collections.toMutableObservableList
 import java.io.File
 
-/** A file readers that generates collection of [Attendee] given input file. */
+/** A file readers that generates actions of [Attendee] given input file. */
 abstract class Reader {
 
     /** Identifier of a reader. */

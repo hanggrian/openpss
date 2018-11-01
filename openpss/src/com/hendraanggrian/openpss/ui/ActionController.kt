@@ -9,8 +9,10 @@ import java.util.ResourceBundle
 @Suppress("LeakingThis")
 open class ActionController : Controller(), ActionManager {
 
-    val actionManager = object : NodeManager {
-        override val collection = mutableListOf<Node>()
+    val actions = mutableListOf<Node>()
+
+    private val actionManager = object : NodeManager {
+        override fun <R : Node> R.invoke(): R = also { actions += it }
     }
 
     override fun initialize(location: URL, resources: ResourceBundle) {

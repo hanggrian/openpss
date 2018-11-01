@@ -8,8 +8,8 @@ import javafx.beans.property.DoubleProperty
 import javafx.beans.property.SimpleDoubleProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.beans.property.StringProperty
+import ktfx.LayoutDsl
 import ktfx.NodeManager
-import ktfx.annotations.LayoutDsl
 
 @DefaultProperty("graphic")
 class StretchableCheckBox @JvmOverloads constructor(

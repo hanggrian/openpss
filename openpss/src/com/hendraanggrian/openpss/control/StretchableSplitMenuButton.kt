@@ -11,9 +11,9 @@ import javafx.scene.Node
 import javafx.scene.control.MenuItem
 import javafx.scene.control.SplitMenuButton
 import javafx.scene.image.ImageView
+import ktfx.LayoutDsl
 import ktfx.MenuItemManager
 import ktfx.NodeManager
-import ktfx.annotations.LayoutDsl
 import ktfx.layouts.menuItem
 
 /**
@@ -27,7 +27,7 @@ class StretchableSplitMenuButton @JvmOverloads constructor(
     graphic: Node? = null
 ) : SplitMenuButton(), StretchableLabeled, MenuItemManager {
 
-    override val collection: MutableCollection<MenuItem> get() = items
+    override fun <R : MenuItem> R.invoke(): R = also { items += it }
 
     private val stretchPointProperty = SimpleDoubleProperty(stretchPoint)
     override fun stretchPointProperty(): DoubleProperty = stretchPointProperty

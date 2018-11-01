@@ -69,27 +69,27 @@
                         </VBox>
                     </AnchorPane>
                     <SelectionListView fx:id="drawerList" VBox.vgrow="ALWAYS" styleClass="list-view-borderless">
-                        <Label styleClass="drawer-item" text="%customer">
+                        <Label styleClass="label-drawer-item" text="%customer">
                             <graphic>
                                 <ImageView fx:id="customerGraphic"/>
                             </graphic>
                         </Label>
-                        <Label styleClass="drawer-item" text="%invoice">
+                        <Label styleClass="label-drawer-item" text="%invoice">
                             <graphic>
                                 <ImageView fx:id="invoiceGraphic"/>
                             </graphic>
                         </Label>
-                        <Label styleClass="drawer-item" text="%schedule">
+                        <Label styleClass="label-drawer-item" text="%schedule">
                             <graphic>
                                 <ImageView fx:id="scheduleGraphic"/>
                             </graphic>
                         </Label>
-                        <Label styleClass="drawer-item" text="%finance">
+                        <Label styleClass="label-drawer-item" text="%finance">
                             <graphic>
                                 <ImageView fx:id="financeGraphic"/>
                             </graphic>
                         </Label>
-                        <Label styleClass="drawer-item" text="%wage">
+                        <Label styleClass="label-drawer-item" text="%wage">
                             <graphic>
                                 <ImageView fx:id="wageGraphic"/>
                             </graphic>

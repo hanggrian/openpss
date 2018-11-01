@@ -185,7 +185,7 @@ class MainController : Controller(), Selectable<Tab>, Selectable2<Label> {
         }
     }
 
-    private fun ActionController.replaceButtons() = toolbar.setRightItems(*actionManager.collection.toTypedArray())
+    private fun ActionController.replaceButtons() = toolbar.setRightItems(*actions.toTypedArray())
 
     private fun <T : ActionController> select(controller: T, run: T.() -> Unit) {
         select(controllers.indexOf(controller))

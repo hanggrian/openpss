@@ -5,8 +5,8 @@ package com.hendraanggrian.openpss.control
 import com.jfoenix.controls.JFXTextField
 import javafx.beans.property.IntegerProperty
 import javafx.beans.property.SimpleIntegerProperty
+import ktfx.LayoutDsl
 import ktfx.NodeManager
-import ktfx.annotations.LayoutDsl
 import ktfx.beans.value.getValue
 import ktfx.beans.value.setValue
 import ktfx.coroutines.listener

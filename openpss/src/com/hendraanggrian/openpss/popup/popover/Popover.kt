@@ -30,7 +30,7 @@ open class Popover(
     titleId: String
 ) : JFXPopup(), Context by context, NodeManager {
 
-    override val collection: MutableCollection<Node> get() = contentPane.children
+    override fun <R : Node> R.invoke(): R = also { contentPane.children += it }
 
     private lateinit var contentPane: VBox
     protected lateinit var buttonManager: NodeManager

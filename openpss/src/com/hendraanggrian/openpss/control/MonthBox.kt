@@ -10,8 +10,8 @@ import javafx.geometry.Pos.CENTER
 import javafx.scene.control.Button
 import javafx.scene.control.ComboBox
 import javafx.scene.image.ImageView
+import ktfx.LayoutDsl
 import ktfx.NodeManager
-import ktfx.annotations.LayoutDsl
 import ktfx.beans.binding.bindingOf
 import ktfx.beans.value.getValue
 import ktfx.collections.toObservableList

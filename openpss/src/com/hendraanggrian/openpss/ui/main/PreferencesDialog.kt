@@ -27,8 +27,8 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.javafx.JavaFx
 import kotlinx.coroutines.launch
 import kotlinx.nosql.update
+import ktfx.LayoutDsl
 import ktfx.NodeManager
-import ktfx.annotations.LayoutDsl
 import ktfx.beans.property.toMutableProperty
 import ktfx.beans.value.and
 import ktfx.collections.toObservableList

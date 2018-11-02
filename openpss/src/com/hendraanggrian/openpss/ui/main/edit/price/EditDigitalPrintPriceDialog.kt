@@ -4,7 +4,6 @@ import com.hendraanggrian.openpss.Context
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.db.schemas.DigitalPrintPrice
 import com.hendraanggrian.openpss.db.schemas.DigitalPrintPrices
-import com.hendraanggrian.openpss.db.schemas.PlatePrices
 import com.hendraanggrian.openpss.db.transaction
 import javafx.beans.value.ObservableValue
 import kotlinx.nosql.equal
@@ -22,29 +21,33 @@ class EditDigitalPrintPriceDialog(
         getString(R.string.one_sided_price)<Double> {
             minWidth = 128.0
             style = "-fx-alignment: center-right;"
-            setCellValueFactory { it.value.oneSidedPrice.toProperty() as ObservableValue<Double> }
+            setCellValueFactory { it.value.oneSidePrice.toProperty() as ObservableValue<Double> }
             textFieldCellFactory {
                 fromString { it.toDoubleOrNull() ?: 0.0 }
             }
             onEditCommit { cell ->
                 transaction {
-                    PlatePrices { it.name.equal(cell.rowValue.name) }.projection { price }.update(cell.newValue)
+                    DigitalPrintPrices { it.name.equal(cell.rowValue.name) }
+                        .projection { oneSidePrice }
+                        .update(cell.newValue)
                 }
-                cell.rowValue.oneSidedPrice = cell.newValue
+                cell.rowValue.oneSidePrice = cell.newValue
             }
         }
         getString(R.string.two_sided_price)<Double> {
             minWidth = 128.0
             style = "-fx-alignment: center-right;"
-            setCellValueFactory { it.value.twoSidedPrice.toProperty() as ObservableValue<Double> }
+            setCellValueFactory { it.value.twoSidePrice.toProperty() as ObservableValue<Double> }
             textFieldCellFactory {
                 fromString { it.toDoubleOrNull() ?: 0.0 }
             }
             onEditCommit { cell ->
                 transaction {
-                    PlatePrices { it.name.equal(cell.rowValue.name) }.projection { price }.update(cell.newValue)
+                    DigitalPrintPrices { it.name.equal(cell.rowValue.name) }
+                        .projection { twoSidePrice }
+                        .update(cell.newValue)
                 }
-                cell.rowValue.twoSidedPrice = cell.newValue
+                cell.rowValue.twoSidePrice = cell.newValue
             }
         }
     }

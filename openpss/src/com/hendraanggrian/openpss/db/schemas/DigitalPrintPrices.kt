@@ -13,14 +13,14 @@ object DigitalPrintPrices : DocumentSchema<DigitalPrintPrice>(
     DigitalPrintPrice::class
 ), NamedSchema {
     override val name = string("name")
-    val one_side_price = double("one_side_price")
-    val two_side_price = double("two_side_price")
+    val oneSidePrice = double("one_side_price")
+    val twoSidePrice = double("two_side_price")
 }
 
 data class DigitalPrintPrice(
     override var name: String,
-    var oneSidedPrice: Double,
-    var twoSidedPrice: Double
+    var oneSidePrice: Double,
+    var twoSidePrice: Double
 ) : Document<DigitalPrintPrices>, Named {
 
     companion object {

@@ -6,7 +6,6 @@ import ktfx.NodeManager
 import java.net.URL
 import java.util.ResourceBundle
 
-@Suppress("LeakingThis")
 open class ActionController : Controller(), ActionManager {
 
     val actions = mutableListOf<Node>()

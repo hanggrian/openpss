@@ -5,7 +5,7 @@ const val VERSION_NOSQL = "0.1-SNAPSHOT"
 
 const val VERSION_RETROFIT = "2.4.0"
 const val VERSION_GSON = "2.8.5"
-const val VERSION_GUAVA = "26.0-jre"
+const val VERSION_GUAVA = "27.0-jre"
 const val VERSION_R = "0.5"
 const val VERSION_BUILDCONFIG = "0.4"
 const val VERSION_PACKR = "0.4"

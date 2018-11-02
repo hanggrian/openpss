@@ -27,7 +27,9 @@ class EditPlatePriceDialog(
             }
             onEditCommit { cell ->
                 transaction {
-                    PlatePrices { it.name.equal(cell.rowValue.name) }.projection { price }.update(cell.newValue)
+                    PlatePrices { it.name.equal(cell.rowValue.name) }
+                        .projection { price }
+                        .update(cell.newValue)
                 }
                 cell.rowValue.price = cell.newValue
             }

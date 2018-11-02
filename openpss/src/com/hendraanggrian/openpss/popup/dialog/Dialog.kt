@@ -3,7 +3,6 @@ package com.hendraanggrian.openpss.popup.dialog
 import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.Context
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.control.space
 import com.jfoenix.controls.JFXDialog
 import javafx.beans.property.ObjectProperty
 import javafx.beans.property.SimpleObjectProperty
@@ -48,7 +47,7 @@ open class Dialog(
                     styleClass += App.STYLE_LABEL_DISPLAY
                 } align Pos.CENTER_LEFT
                 centerProperty().bind(bindingOf(graphicProperty) {
-                    graphic?.let { space(R.dimen.padding_large.toDouble()) }
+                    graphic?.let { com.hendraanggrian.openpss.control.space(R.dimen.padding_large.toDouble()) }
                 })
                 rightProperty().run {
                     bindBidirectional(graphicProperty)

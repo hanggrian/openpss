@@ -87,7 +87,7 @@ class MainController : Controller(), Selectable<Tab>, Selectable2<Label> {
     override val selectionModel: SelectionModel<Tab> get() = tabPane.selectionModel
     override val selectionModel2: SelectionModel<Label> get() = drawerList.selectionModel
 
-    private val controllers
+    private val controllers: List<ActionController>
         get() = mutableListOf(
             customerController,
             invoiceController,
@@ -105,7 +105,7 @@ class MainController : Controller(), Selectable<Tab>, Selectable2<Label> {
             select(selectedIndex2)
             drawer.toggle()
         }
-        hamburger.addEventHandler(MouseEvent.MOUSE_PRESSED) { _ -> drawer.toggle() }
+        hamburger.addEventHandler(MouseEvent.MOUSE_PRESSED) { drawer.toggle() }
         titleLabel.textProperty().bind(stringBindingOf(selectedProperty2) { selected2?.text })
 
         customerGraphic.bind(0, R.image.tab_customer2, R.image.tab_customer)

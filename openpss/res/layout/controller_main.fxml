@@ -68,7 +68,7 @@
                             <Label fx:id="employeeLabel" styleClass="label-display2"/>
                         </VBox>
                     </AnchorPane>
-                    <SelectionListView fx:id="drawerList" VBox.vgrow="ALWAYS" styleClass="list-view-borderless">
+                    <SelectionListView fx:id="drawerList" styleClass="list-view-borderless">
                         <Label styleClass="label-drawer-item" text="%customer">
                             <graphic>
                                 <ImageView fx:id="customerGraphic"/>

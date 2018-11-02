@@ -27,7 +27,9 @@ class EditOffsetPrintPriceDialog(
             }
             onEditCommit { cell ->
                 transaction {
-                    OffsetPrintPrices { it.name.equal(cell.rowValue.name) }.projection { minQty }.update(cell.newValue)
+                    OffsetPrintPrices { it.name.equal(cell.rowValue.name) }
+                        .projection { minQty }
+                        .update(cell.newValue)
                 }
                 cell.rowValue.minQty = cell.newValue
             }
@@ -42,7 +44,8 @@ class EditOffsetPrintPriceDialog(
             }
             onEditCommit { cell ->
                 transaction {
-                    OffsetPrintPrices { it.name.equal(cell.rowValue.name) }.projection { minPrice }
+                    OffsetPrintPrices { it.name.equal(cell.rowValue.name) }
+                        .projection { minPrice }
                         .update(cell.newValue)
                 }
                 cell.rowValue.minPrice = cell.newValue
@@ -58,7 +61,8 @@ class EditOffsetPrintPriceDialog(
             }
             onEditCommit { cell ->
                 transaction {
-                    OffsetPrintPrices { it.name.equal(cell.rowValue.name) }.projection { excessPrice }
+                    OffsetPrintPrices { it.name.equal(cell.rowValue.name) }
+                        .projection { excessPrice }
                         .update(cell.newValue)
                 }
                 cell.rowValue.excessPrice = cell.newValue

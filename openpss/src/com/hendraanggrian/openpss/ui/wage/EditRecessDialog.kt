@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.ui.wage
 
-import com.hendraanggrian.openpss.Context
-import com.hendraanggrian.openpss.PATTERN_TIME
+import com.hendraanggrian.openpss.content.Context
+import com.hendraanggrian.openpss.content.PATTERN_TIME
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.stringCell
 import com.hendraanggrian.openpss.db.schemas.Recess

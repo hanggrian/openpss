@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.ui.main.edit
 
 import com.hendraanggrian.openpss.App
-import com.hendraanggrian.openpss.Context
+import com.hendraanggrian.openpss.content.Context
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.doneCell
 import com.hendraanggrian.openpss.control.stringCell

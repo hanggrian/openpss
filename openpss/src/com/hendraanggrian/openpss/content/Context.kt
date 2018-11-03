@@ -1,9 +1,9 @@
-package com.hendraanggrian.openpss
+package com.hendraanggrian.openpss.content
 
+import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.db.schemas.Employees
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.i18n.Resources
 import javafx.beans.property.ReadOnlyBooleanProperty
 import javafx.scene.layout.StackPane
 import ktfx.beans.property.toProperty
@@ -25,7 +25,9 @@ interface Context : Resources {
     val desktop: Desktop?
         get() {
             if (!Desktop.isDesktopSupported()) {
-                root.jfxSnackbar("java.awt.Desktop is not supported.", App.DURATION_SHORT)
+                root.jfxSnackbar("java.awt.Desktop is not supported.",
+                    App.DURATION_SHORT
+                )
                 return null
             }
             return Desktop.getDesktop()

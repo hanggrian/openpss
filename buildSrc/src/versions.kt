@@ -17,7 +17,7 @@ const val VERSION_POI = "4.0.0"
 
 internal const val VERSION_CONTROLSFX = "8.40.14"
 internal const val VERSION_COMMONS_VALIDATOR = "1.6"
-internal const val VERSION_JODA = "2.10"
+internal const val VERSION_JODA = "2.10.1"
 internal const val VERSION_LOG4J12 = "1.7.25"
 internal const val VERSION_SHADOW = "2.0.4"
 internal const val VERSION_JUNIT_PLATFORM = "1.0.0"

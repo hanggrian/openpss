@@ -7,7 +7,7 @@ import com.hendraanggrian.openpss.BuildConfig.ARTIFACT
 import com.hendraanggrian.openpss.BuildConfig.AUTHOR
 import com.hendraanggrian.openpss.BuildConfig.DEBUG
 import com.hendraanggrian.openpss.BuildConfig.VERSION
-import com.hendraanggrian.openpss.Context
+import com.hendraanggrian.openpss.content.Context
 import com.hendraanggrian.openpss.R
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope

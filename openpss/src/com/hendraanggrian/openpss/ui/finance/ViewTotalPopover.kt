@@ -1,14 +1,14 @@
 package com.hendraanggrian.openpss.ui.finance
 
-import com.hendraanggrian.openpss.Context
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.content.Context
+import com.hendraanggrian.openpss.content.currencyConverter
 import com.hendraanggrian.openpss.control.bold
 import com.hendraanggrian.openpss.popup.popover.Popover
 import javafx.geometry.HPos
 import ktfx.layouts.columnConstraints
 import ktfx.layouts.gridPane
 import ktfx.layouts.label
-import ktfx.util.invoke
 
 class ViewTotalPopover(
     context: Context,
@@ -25,13 +25,13 @@ class ViewTotalPopover(
             vgap = 20.0
             hgap = 40.0
             label(getString(R.string.cash)) col 0 row 0
-            label(com.hendraanggrian.openpss.currencyConverter(cash)) col 1 row 0
+            label(currencyConverter(cash)) col 1 row 0
             label(getString(R.string.non_cash)) col 0 row 1
-            label(com.hendraanggrian.openpss.currencyConverter(nonCash)) col 1 row 1
+            label(currencyConverter(nonCash)) col 1 row 1
             label(getString(R.string.total)) {
                 font = bold()
             } col 0 row 2
-            label(com.hendraanggrian.openpss.currencyConverter(cash + nonCash)) {
+            label(currencyConverter(cash + nonCash)) {
                 font = bold()
             } col 1 row 2
         }

@@ -1,6 +1,6 @@
 package com.hendraanggrian.openpss.ui.wage
 
-import com.hendraanggrian.openpss.Context
+import com.hendraanggrian.openpss.content.Context
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.TimeBox
 import com.hendraanggrian.openpss.control.timeBox

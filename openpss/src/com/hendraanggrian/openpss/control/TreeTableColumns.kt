@@ -2,7 +2,7 @@
 
 package com.hendraanggrian.openpss.control
 
-import com.hendraanggrian.openpss.numberConverter
+import com.hendraanggrian.openpss.content.numberConverter
 import javafx.scene.control.TreeTableColumn
 import ktfx.beans.property.toProperty
 import ktfx.util.invoke

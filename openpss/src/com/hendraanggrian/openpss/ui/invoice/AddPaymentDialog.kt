@@ -1,12 +1,12 @@
 package com.hendraanggrian.openpss.ui.invoice
 
 import com.hendraanggrian.openpss.App
-import com.hendraanggrian.openpss.Context
+import com.hendraanggrian.openpss.content.Context
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.DoubleField
 import com.hendraanggrian.openpss.control.bold
 import com.hendraanggrian.openpss.control.doubleField
-import com.hendraanggrian.openpss.currencyConverter
+import com.hendraanggrian.openpss.content.currencyConverter
 import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.db.schemas.Payment
 import com.hendraanggrian.openpss.db.transaction

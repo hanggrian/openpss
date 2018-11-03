@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.ui.schedule
 
 import com.hendraanggrian.openpss.db.schemas.Invoices
-import com.hendraanggrian.openpss.numberConverter
+import com.hendraanggrian.openpss.content.numberConverter
 import kotlinx.nosql.Id
 import ktfx.util.invoke
 

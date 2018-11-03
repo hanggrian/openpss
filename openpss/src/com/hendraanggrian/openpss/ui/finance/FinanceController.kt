@@ -1,8 +1,8 @@
 package com.hendraanggrian.openpss.ui.finance
 
 import com.hendraanggrian.openpss.App.Companion.STRETCH_POINT
-import com.hendraanggrian.openpss.PATTERN_DATE
-import com.hendraanggrian.openpss.PATTERN_TIME
+import com.hendraanggrian.openpss.content.PATTERN_DATE
+import com.hendraanggrian.openpss.content.PATTERN_TIME
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.DateBox
 import com.hendraanggrian.openpss.control.MonthBox

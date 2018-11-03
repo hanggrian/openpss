@@ -3,9 +3,12 @@
 package com.hendraanggrian.openpss.control
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.currencyConverter
-import com.hendraanggrian.openpss.numberConverter
+import com.hendraanggrian.openpss.content.currencyConverter
+import com.hendraanggrian.openpss.content.numberConverter
+import javafx.scene.control.Control
+import javafx.scene.control.TableCell
 import javafx.scene.control.TableColumn
+import javafx.scene.text.Text
 import ktfx.beans.property.toProperty
 import ktfx.layouts.imageView
 import ktfx.listeners.cellFactory
@@ -45,4 +48,14 @@ fun <T> TableColumn<T, String>.numberCell(target: T.() -> Int) {
 fun <T> TableColumn<T, String>.currencyCell(target: T.() -> Double) {
     style = "-fx-alignment: center-right;"
     setCellValueFactory { currencyConverter(it.value.target()).toProperty() }
+}
+
+fun <S> TableColumn<S, String>.wrapText() = setCellFactory {
+    val cell = TableCell<S, String>()
+    val text = Text()
+    cell.graphic = text
+    cell.prefHeight = Control.USE_COMPUTED_SIZE
+    text.wrappingWidthProperty().bind(widthProperty())
+    text.textProperty().bind(cell.itemProperty())
+    cell
 }

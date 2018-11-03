@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.hendraanggrian.openpss.control.PaginatedPane?>
 <?import com.hendraanggrian.openpss.control.SelectionListView?>
 <?import com.hendraanggrian.openpss.control.Space?>
-<?import com.jfoenix.controls.JFXDrawer?>
-<?import com.jfoenix.controls.JFXHamburger?>
-<?import com.jfoenix.controls.JFXToolbar?>
+<?import com.jfoenix.controls.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
@@ -58,17 +57,16 @@
                 </MenuItem>
             </Menu>
         </MenuBar>
-        <JFXDrawer fx:id="drawer" defaultDrawerSize="250" VBox.vgrow="ALWAYS"
+        <JFXDrawer fx:id="drawer" defaultDrawerSize="320" VBox.vgrow="ALWAYS"
                    onDrawerOpening="#toggleHamburger" onDrawerClosing="#toggleHamburger">
             <sidePane>
                 <VBox>
-                    <AnchorPane prefWidth="250" prefHeight="100">
-                        <VBox AnchorPane.leftAnchor="20" AnchorPane.bottomAnchor="20">
-                            <Label text="%signed_in_as" styleClass="label-accent"/>
+                    <JFXToolbar>
+                        <leftItems>
                             <Label fx:id="employeeLabel" styleClass="label-display2"/>
-                        </VBox>
-                    </AnchorPane>
-                    <SelectionListView fx:id="drawerList" styleClass="list-view-borderless">
+                        </leftItems>
+                    </JFXToolbar>
+                    <SelectionListView fx:id="drawerList" styleClass="pane-borderless">
                         <Label styleClass="label-drawer-item" text="%customer">
                             <graphic>
                                 <ImageView fx:id="customerGraphic"/>
@@ -95,6 +93,12 @@
                             </graphic>
                         </Label>
                     </SelectionListView>
+                    <JFXToolbar>
+                        <leftItems>
+                            <Label text="%events" styleClass="label-accent"/>
+                        </leftItems>
+                    </JFXToolbar>
+                    <PaginatedPane fx:id="eventPagination"/>
                 </VBox>
             </sidePane>
             <content>

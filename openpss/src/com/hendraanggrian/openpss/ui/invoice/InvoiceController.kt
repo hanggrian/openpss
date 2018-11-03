@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.ui.invoice
 
 import com.hendraanggrian.openpss.App.Companion.STRETCH_POINT
-import com.hendraanggrian.openpss.PATTERN_DATETIME_EXTENDED
+import com.hendraanggrian.openpss.content.PATTERN_DATETIME_EXTENDED
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.DateBox
 import com.hendraanggrian.openpss.control.IntField
@@ -180,7 +180,7 @@ class InvoiceController : ActionController(), Refreshable, Selectable<Invoice>, 
                             }
                         }
                         paymentTable = tableView {
-                            columnResizePolicy = CONSTRAINED_RESIZE_POLICY
+                            columnResizePolicy = TableView.CONSTRAINED_RESIZE_POLICY
                             columns {
                                 getString(R.string.date)<String> {
                                     stringCell { dateTime.toString(PATTERN_DATETIME_EXTENDED) }
@@ -232,7 +232,8 @@ class InvoiceController : ActionController(), Refreshable, Selectable<Invoice>, 
                             invoicePagination.pageCount = ceil(invoices.count() / count.toDouble()).toInt()
                             invoiceTable.items = invoices
                                 .skip(count * page)
-                                .take(count).toMutableObservableList()
+                                .take(count)
+                                .toMutableObservableList()
                             invoiceTable.contextMenu {
                                 getString(R.string.view)(ImageView(R.image.menu_invoice)) {
                                     later { disableProperty().bind(!selectedBinding) }

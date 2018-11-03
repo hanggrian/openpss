@@ -3,7 +3,7 @@ package com.hendraanggrian.openpss
 import com.hendraanggrian.openpss.BuildConfig.DEBUG
 import com.hendraanggrian.openpss.db.schemas.Employees
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.i18n.Resources
+import com.hendraanggrian.openpss.content.Resources
 import com.hendraanggrian.openpss.io.properties.PreferencesFile
 import com.hendraanggrian.openpss.ui.controller
 import com.hendraanggrian.openpss.ui.login.LoginPane

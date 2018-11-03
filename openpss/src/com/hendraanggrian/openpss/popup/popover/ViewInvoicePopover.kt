@@ -1,11 +1,13 @@
 package com.hendraanggrian.openpss.popup.popover
 
-import com.hendraanggrian.openpss.Context
-import com.hendraanggrian.openpss.PATTERN_DATETIME_EXTENDED
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.content.Context
+import com.hendraanggrian.openpss.content.Language
+import com.hendraanggrian.openpss.content.PATTERN_DATETIME_EXTENDED
+import com.hendraanggrian.openpss.content.currencyConverter
+import com.hendraanggrian.openpss.content.numberConverter
 import com.hendraanggrian.openpss.control.bold
 import com.hendraanggrian.openpss.control.space
-import com.hendraanggrian.openpss.currencyConverter
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.schemas.Employee
@@ -15,8 +17,6 @@ import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_LANGUAG
 import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.db.schemas.Invoices
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.i18n.Language
-import com.hendraanggrian.openpss.numberConverter
 import com.sun.javafx.print.PrintHelper
 import com.sun.javafx.print.Units.MM
 import javafx.geometry.HPos.LEFT

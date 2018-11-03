@@ -1,10 +1,10 @@
 package com.hendraanggrian.openpss.db.schemas
 
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.content.Resources
 import com.hendraanggrian.openpss.db.Document
 import com.hendraanggrian.openpss.db.Numbered
 import com.hendraanggrian.openpss.db.Titled
-import com.hendraanggrian.openpss.i18n.Resourced
 import com.hendraanggrian.openpss.util.enumValueOfId
 import com.hendraanggrian.openpss.util.id
 import kotlinx.nosql.Id
@@ -76,6 +76,7 @@ data class Invoice(
 ) : Document<Invoices>, Numbered {
 
     companion object {
+
         fun new(
             employeeId: Id<String, Employees>,
             customerId: Id<String, Customers>,
@@ -116,7 +117,7 @@ data class Invoice(
 
         val typedTechnique: Technique get() = enumValueOfId(technique)
 
-        enum class Technique : Resourced {
+        enum class Technique : Resources.Enum {
             ONE_SIDE {
                 override val resourceId: String = R.string.one_side
             },

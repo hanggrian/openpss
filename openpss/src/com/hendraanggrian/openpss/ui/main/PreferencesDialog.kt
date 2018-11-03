@@ -1,14 +1,14 @@
 package com.hendraanggrian.openpss.ui.main
 
 import com.hendraanggrian.openpss.App
-import com.hendraanggrian.openpss.Context
+import com.hendraanggrian.openpss.content.Context
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.clearConverters
+import com.hendraanggrian.openpss.content.clearConverters
 import com.hendraanggrian.openpss.control.bold
 import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_INVOICE_HEADERS
 import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_LANGUAGE
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.i18n.Language
+import com.hendraanggrian.openpss.content.Language
 import com.hendraanggrian.openpss.io.properties.PreferencesFile
 import com.hendraanggrian.openpss.io.properties.PreferencesFile.WAGE_READER
 import com.hendraanggrian.openpss.popup.dialog.Dialog

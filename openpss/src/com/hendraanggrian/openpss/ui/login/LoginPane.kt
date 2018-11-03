@@ -2,13 +2,13 @@ package com.hendraanggrian.openpss.ui.login
 
 import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.BuildConfig
-import com.hendraanggrian.openpss.Context
+import com.hendraanggrian.openpss.content.Context
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.bold
 import com.hendraanggrian.openpss.db.login
 import com.hendraanggrian.openpss.db.schemas.Employee
-import com.hendraanggrian.openpss.i18n.Language
-import com.hendraanggrian.openpss.i18n.Resources
+import com.hendraanggrian.openpss.content.Language
+import com.hendraanggrian.openpss.content.Resources
 import com.hendraanggrian.openpss.io.properties.LoginFile
 import com.hendraanggrian.openpss.io.properties.PreferencesFile
 import com.hendraanggrian.openpss.popup.dialog.ResultableDialog

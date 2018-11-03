@@ -1,6 +1,6 @@
 package com.hendraanggrian.openpss.popup.dialog
 
-import com.hendraanggrian.openpss.Context
+import com.hendraanggrian.openpss.content.Context
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.ActionManager
 import com.hendraanggrian.openpss.db.Document

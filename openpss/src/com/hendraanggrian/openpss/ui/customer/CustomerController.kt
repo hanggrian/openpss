@@ -2,8 +2,8 @@ package com.hendraanggrian.openpss.ui.customer
 
 import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.App.Companion.STRETCH_POINT
-import com.hendraanggrian.openpss.PATTERN_DATE
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.content.PATTERN_DATE
 import com.hendraanggrian.openpss.control.PaginatedPane
 import com.hendraanggrian.openpss.control.space
 import com.hendraanggrian.openpss.control.stretchableButton
@@ -36,7 +36,6 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.javafx.JavaFx
 import kotlinx.coroutines.launch
-import kotlinx.nosql.update
 import ktfx.NodeInvokable
 import ktfx.application.later
 import ktfx.beans.binding.buildBinding
@@ -159,8 +158,7 @@ class CustomerController : ActionController(), Refreshable, Selectable<Customer>
                 Customers { it.name.matches("^$name$", CASE_INSENSITIVE) }.isNotEmpty() ->
                     root.jfxSnackbar(getString(R.string.name_taken), App.DURATION_SHORT)
                 else -> {
-                    Customer.new(name!!).let {
-                        it.id = Customers.insert(it)
+                    (AddCustomerAction(this@CustomerController, name!!)) {
                         customerList.items.add(it)
                         customerList.selectionModel.select(customerList.items.lastIndex)
                     }
@@ -170,24 +168,21 @@ class CustomerController : ActionController(), Refreshable, Selectable<Customer>
     }
 
     private fun edit() = EditCustomerDialog(this, selected!!).show {
-        transaction {
-            Customers[selected!!].projection { name + address + note }.update(it!!.name, it.address, it.note)
-        }
-        reload()
+        (EditCustomerAction(
+            this@CustomerController,
+            selected!!,
+            it!!.name,
+            it.address,
+            it.note
+        )) { reload() }
     }
 
     @FXML fun addContact() = AddContactPopover(this).show(contactTable) {
-        transaction {
-            Customers[selected!!].projection { contacts }.update(selected!!.contacts + it!!)
-        }
-        reload()
+        (AddContactAction(this@CustomerController, selected!!, it!!)) { reload() }
     }
 
     @FXML fun deleteContact() = ConfirmDialog(this, R.string.delete_contact).show {
-        transaction {
-            Customers[selected!!].projection { contacts }.update(selected!!.contacts - selected2!!)
-        }
-        reload()
+        (DeleteContactAction(this@CustomerController, selected!!, selected2!!)) { reload() }
     }
 
     private fun Label.bindLabel(target: () -> String) = textProperty()

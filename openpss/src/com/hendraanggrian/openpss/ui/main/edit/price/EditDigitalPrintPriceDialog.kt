@@ -1,6 +1,6 @@
 package com.hendraanggrian.openpss.ui.main.edit.price
 
-import com.hendraanggrian.openpss.Context
+import com.hendraanggrian.openpss.content.Context
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.db.schemas.DigitalPrintPrice
 import com.hendraanggrian.openpss.db.schemas.DigitalPrintPrices

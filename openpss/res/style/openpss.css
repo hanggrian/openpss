@@ -159,7 +159,7 @@
     -fx-graphic-text-gap: 20
 }
 
-.list-view-borderless {
+.pane-borderless {
     -fx-background-color: transparent;
 }
 

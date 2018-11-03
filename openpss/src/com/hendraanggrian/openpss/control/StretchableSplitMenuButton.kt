@@ -17,8 +17,8 @@ import ktfx.NodeInvokable
 import ktfx.layouts.menuItem
 
 /**
- * A button that will display text when the window have sufficient width.
- * When it doesn't, [StretchableSplitMenuButton] will store its text as tooltip.
+ * A button that will display message when the window have sufficient width.
+ * When it doesn't, [StretchableSplitMenuButton] will store its message as tooltip.
  */
 @DefaultProperty("graphic")
 class StretchableSplitMenuButton @JvmOverloads constructor(

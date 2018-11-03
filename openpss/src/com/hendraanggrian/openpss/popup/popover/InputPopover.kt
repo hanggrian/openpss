@@ -1,6 +1,6 @@
 package com.hendraanggrian.openpss.popup.popover
 
-import com.hendraanggrian.openpss.Context
+import com.hendraanggrian.openpss.content.Context
 import com.hendraanggrian.openpss.R
 import javafx.beans.binding.BooleanBinding
 import javafx.scene.control.TextField

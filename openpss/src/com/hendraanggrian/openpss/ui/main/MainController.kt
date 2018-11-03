@@ -1,9 +1,17 @@
 package com.hendraanggrian.openpss.ui.main
 
 import com.hendraanggrian.openpss.App
+import com.hendraanggrian.openpss.content.PATTERN_DATETIME
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.control.PaginatedPane
+import com.hendraanggrian.openpss.control.UnselectableTableView
+import com.hendraanggrian.openpss.control.stringCell
+import com.hendraanggrian.openpss.control.wrapText
 import com.hendraanggrian.openpss.db.dbDateTime
 import com.hendraanggrian.openpss.db.schemas.Customers
+import com.hendraanggrian.openpss.db.schemas.Employees
+import com.hendraanggrian.openpss.db.schemas.Event
+import com.hendraanggrian.openpss.db.schemas.Events
 import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.db.schemas.Invoice.Offset.Technique.TWO_SIDE_EQUAL
 import com.hendraanggrian.openpss.db.transaction
@@ -27,31 +35,36 @@ import com.hendraanggrian.openpss.ui.wage.EditRecessDialog
 import com.hendraanggrian.openpss.ui.wage.WageController
 import com.jfoenix.controls.JFXDrawer
 import com.jfoenix.controls.JFXHamburger
-import com.jfoenix.controls.JFXListView
 import com.jfoenix.controls.JFXToolbar
 import javafx.event.ActionEvent
 import javafx.fxml.FXML
 import javafx.scene.control.Label
+import javafx.scene.control.ListView
 import javafx.scene.control.MenuBar
 import javafx.scene.control.MenuItem
 import javafx.scene.control.SelectionModel
 import javafx.scene.control.Tab
 import javafx.scene.control.TabPane
+import javafx.scene.control.TableView
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import javafx.scene.input.MouseEvent
 import javafx.scene.layout.StackPane
+import javafx.util.Callback
 import ktfx.application.later
 import ktfx.beans.binding.`when`
 import ktfx.beans.binding.buildStringBinding
 import ktfx.beans.binding.otherwise
 import ktfx.beans.binding.then
 import ktfx.beans.value.eq
+import ktfx.collections.toObservableList
 import ktfx.coroutines.listener
 import ktfx.jfoenix.jfxSnackbar
-import org.apache.commons.lang3.SystemUtils.IS_OS_MAC
+import ktfx.layouts.columns
+import org.apache.commons.lang3.SystemUtils
 import java.net.URL
 import java.util.ResourceBundle
+import kotlin.math.ceil
 
 class MainController : Controller(), Selectable<Tab>, Selectable2<Label> {
 
@@ -67,7 +80,8 @@ class MainController : Controller(), Selectable<Tab>, Selectable2<Label> {
     @FXML lateinit var recessItem: MenuItem
     @FXML lateinit var preferencesItem: MenuItem
     @FXML lateinit var drawer: JFXDrawer
-    @FXML lateinit var drawerList: JFXListView<Label>
+    @FXML lateinit var drawerList: ListView<Label>
+    @FXML lateinit var eventPagination: PaginatedPane
     @FXML lateinit var toolbar: JFXToolbar
     @FXML lateinit var hamburger: JFXHamburger
     @FXML lateinit var employeeLabel: Label
@@ -98,7 +112,7 @@ class MainController : Controller(), Selectable<Tab>, Selectable2<Label> {
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
-        menuBar.isUseSystemMenuBar = IS_OS_MAC
+        menuBar.isUseSystemMenuBar = SystemUtils.IS_OS_MAC
 
         selectFirst2()
         selectedProperty2.listener { _, _, _ ->
@@ -180,8 +194,38 @@ class MainController : Controller(), Selectable<Tab>, Selectable2<Label> {
     @FXML fun about() = AboutDialog(this).show()
 
     @FXML fun toggleHamburger() {
-        if (drawer.isOpening && !drawerList.isFocused) {
-            drawerList.requestFocus()
+        if (drawer.isOpening) {
+            eventPagination.contentFactory = Callback { (page, count) ->
+                UnselectableTableView<Event>().apply {
+                    styleClass += "pane-borderless"
+                    columnResizePolicy = TableView.CONSTRAINED_RESIZE_POLICY
+                    columns {
+                        getString(R.string.date)<String> {
+                            stringCell { dateTime.toString(PATTERN_DATETIME) }
+                        }
+                        getString(R.string.employee)<String> {
+                            stringCell { transaction { Employees[employeeId].single().toString() } }
+                        }
+                        getString(R.string.value)<String> {
+                            stringCell { message }
+                            wrapText()
+                        }
+                    }
+                    later {
+                        transaction {
+                            val events = Events.find()
+                            eventPagination.pageCount = ceil(events.count() / count.toDouble()).toInt()
+                            items = events
+                                .skip(count * page)
+                                .take(count)
+                                .toObservableList()
+                        }
+                    }
+                }
+            }
+            if (!drawerList.isFocused) {
+                drawerList.requestFocus()
+            }
         }
     }
 

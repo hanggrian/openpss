@@ -1,6 +1,6 @@
 package com.hendraanggrian.openpss.ui
 
-import com.hendraanggrian.openpss.Context
+import com.hendraanggrian.openpss.content.Context
 import com.hendraanggrian.openpss.db.schemas.Employee
 import javafx.fxml.Initializable
 import javafx.scene.layout.StackPane

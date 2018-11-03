@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.ui.wage
 
-import com.hendraanggrian.openpss.Context
-import com.hendraanggrian.openpss.PATTERN_DATETIME_EXTENDED
+import com.hendraanggrian.openpss.content.Context
+import com.hendraanggrian.openpss.content.PATTERN_DATETIME_EXTENDED
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.intField
 import com.hendraanggrian.openpss.db.schemas.Recesses
@@ -188,7 +188,7 @@ class AttendeePane(
             val titleRegion = find<Node>(".title")
             val padding = (titleRegion as StackPane).padding
             val graphicWidth = graphic.layoutBounds.width
-            val labelWidth = titleRegion.find<Node>(".text").layoutBounds.width
+            val labelWidth = titleRegion.find<Node>(".message").layoutBounds.width
             graphicTextGap = width - graphicWidth - padding.left - padding.right - labelWidth
         }
     }

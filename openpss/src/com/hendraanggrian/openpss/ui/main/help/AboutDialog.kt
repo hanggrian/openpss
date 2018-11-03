@@ -2,7 +2,7 @@ package com.hendraanggrian.openpss.ui.main.help
 
 import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.BuildConfig
-import com.hendraanggrian.openpss.Context
+import com.hendraanggrian.openpss.content.Context
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.bold
 import com.hendraanggrian.openpss.ui.Selectable

@@ -32,8 +32,8 @@ import javafx.scene.control.TreeTableView
 import javafx.scene.layout.VBox
 import javafx.stage.Stage
 import ktfx.application.later
-import ktfx.beans.binding.booleanBindingOf
-import ktfx.beans.binding.stringBindingOf
+import ktfx.beans.binding.buildBooleanBinding
+import ktfx.beans.binding.buildStringBinding
 import ktfx.beans.value.or
 import ktfx.collections.isEmpty
 import ktfx.coroutines.onAction
@@ -78,7 +78,7 @@ class WageRecordController : Controller() {
         undoButton.disableProperty().bind(undoButton.items.isEmpty)
         arrayOf(lockStartButton, lockEndButton).forEach { button ->
             button.disableProperty().bind(recordTable.selectionModel.selectedItemProperty().isNull or
-                booleanBindingOf(recordTable.selectionModel.selectedItemProperty()) {
+                buildBooleanBinding(recordTable.selectionModel.selectedItemProperty()) {
                     recordTable.selectionModel.selectedItems?.any { !it.value.isChild() } ?: true
                 })
         }
@@ -125,7 +125,7 @@ class WageRecordController : Controller() {
                 }
             }
             (vbox.scene.window as Stage).titleProperty().bind(
-                stringBindingOf(*records.filter { it.isChild() }.map { it.totalProperty }.toTypedArray()) {
+                buildStringBinding(*records.filter { it.isChild() }.map { it.totalProperty }.toTypedArray()) {
                     "${getString(R.string.record)} - ${currencyConverter(records
                         .asSequence()
                         .filter { it.isTotal() }

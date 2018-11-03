@@ -11,8 +11,8 @@ import javafx.scene.control.Button
 import javafx.scene.control.ComboBox
 import javafx.scene.image.ImageView
 import ktfx.LayoutDsl
-import ktfx.NodeManager
-import ktfx.beans.binding.bindingOf
+import ktfx.NodeInvokable
+import ktfx.beans.binding.buildBinding
 import ktfx.beans.value.getValue
 import ktfx.collections.toObservableList
 import ktfx.coroutines.onAction
@@ -75,7 +75,7 @@ open class MonthBox @JvmOverloads constructor(prefill: YearMonth = now()) : _HBo
             }
         }
 
-        valueProperty.bind(bindingOf(monthBox.selectionModel.selectedIndexProperty(), yearField.valueProperty()) {
+        valueProperty.bind(buildBinding(monthBox.selectionModel.selectedIndexProperty(), yearField.valueProperty()) {
             YearMonth(yearField.value, monthBox.value + 1)
         })
     }
@@ -97,8 +97,8 @@ fun monthBox(
     init?.invoke(it)
 }
 
-/** Creates a [MonthBox] and add it to this [LayoutManager]. */
-inline fun NodeManager.monthBox(
+/** Creates a [MonthBox] and add it to this manager. */
+inline fun NodeInvokable.monthBox(
     prefill: YearMonth = YearMonth.now(),
     noinline init: ((@LayoutDsl MonthBox).() -> Unit)? = null
 ): MonthBox = (com.hendraanggrian.openpss.control.monthBox(prefill, init))()

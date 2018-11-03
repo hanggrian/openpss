@@ -37,10 +37,10 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.javafx.JavaFx
 import kotlinx.coroutines.launch
 import kotlinx.nosql.update
-import ktfx.NodeManager
+import ktfx.NodeInvokable
 import ktfx.application.later
-import ktfx.beans.binding.bindingOf
-import ktfx.beans.binding.stringBindingOf
+import ktfx.beans.binding.buildBinding
+import ktfx.beans.binding.buildStringBinding
 import ktfx.beans.value.or
 import ktfx.collections.emptyObservableList
 import ktfx.collections.toMutableObservableList
@@ -86,7 +86,7 @@ class CustomerController : ActionController(), Refreshable, Selectable<Customer>
     override val selectionModel: SelectionModel<Customer> get() = customerList.selectionModel
     override val selectionModel2: SelectionModel<Customer.Contact> get() = contactTable.selectionModel
 
-    override fun NodeManager.onCreateActions() {
+    override fun NodeInvokable.onCreateActions() {
         refreshButton = stretchableButton(STRETCH_POINT, getString(R.string.refresh), ImageView(R.image.act_refresh)) {
             onAction { refresh() }
         }
@@ -111,7 +111,7 @@ class CustomerController : ActionController(), Refreshable, Selectable<Customer>
     }
 
     override fun refresh() = later {
-        customerPagination.contentFactoryProperty().bind(bindingOf(searchField.textProperty()) {
+        customerPagination.contentFactoryProperty().bind(buildBinding(searchField.textProperty()) {
             Callback<Pair<Int, Int>, Node> { (page, count) ->
                 customerList = listView {
                     later {
@@ -144,7 +144,7 @@ class CustomerController : ActionController(), Refreshable, Selectable<Customer>
                 sinceLabel.bindLabel { selected?.since?.toString(PATTERN_DATE).orEmpty() }
                 addressLabel.bindLabel { selected?.address ?: "-" }
                 noteLabel.bindLabel { selected?.note ?: "-" }
-                contactTable.itemsProperty().bind(bindingOf(selectedProperty) {
+                contactTable.itemsProperty().bind(buildBinding(selectedProperty) {
                     selected?.contacts?.toObservableList() ?: emptyObservableList()
                 })
                 masterDetailPane.showDetailNodeProperty().bind(selectedBinding)
@@ -191,7 +191,7 @@ class CustomerController : ActionController(), Refreshable, Selectable<Customer>
     }
 
     private fun Label.bindLabel(target: () -> String) = textProperty()
-        .bind(stringBindingOf(customerList.selectionModel.selectedItemProperty()) { target() })
+        .bind(buildStringBinding(customerList.selectionModel.selectedItemProperty()) { target() })
 
     private fun reload() {
         val index = selectedIndex

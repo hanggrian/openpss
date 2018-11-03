@@ -14,15 +14,15 @@ import javafx.geometry.Pos.CENTER
 import javafx.scene.control.Button
 import javafx.scene.image.ImageView
 import ktfx.LayoutDsl
-import ktfx.NodeManager
-import ktfx.beans.binding.bindingOf
+import ktfx.NodeInvokable
+import ktfx.beans.binding.buildBinding
 import ktfx.beans.value.getValue
 import ktfx.coroutines.onAction
 import ktfx.coroutines.onMouseClicked
 import ktfx.jfoenix.jfxButton
 import ktfx.jfoenix.jfxTimePicker
 import ktfx.layouts._HBox
-import ktfx.listeners.stringConverter
+import ktfx.listeners.buildStringConverter
 import org.joda.time.LocalTime
 import org.joda.time.LocalTime.MIDNIGHT
 
@@ -65,7 +65,7 @@ open class TimeBox @JvmOverloads constructor(prefill: LocalTime = MIDNIGHT) : _H
             value = prefill.toJava()
             isEditable = false
             maxWidth = 116.0
-            converter = stringConverter {
+            converter = buildStringConverter {
                 fromString {
                     val a = it.split(':')
                     java.time.LocalTime.of(a[0].toInt(), a[1].toInt(), 0)
@@ -92,7 +92,7 @@ open class TimeBox @JvmOverloads constructor(prefill: LocalTime = MIDNIGHT) : _H
             }
         }
 
-        valueProperty.bind(bindingOf(picker.valueProperty()) { picker.value.toJoda() })
+        valueProperty.bind(buildBinding(picker.valueProperty()) { picker.value.toJoda() })
     }
 }
 
@@ -105,7 +105,7 @@ fun timeBox(
 }
 
 /** Creates a [TimeBox] and add it to this manager. */
-inline fun NodeManager.timeBox(
+inline fun NodeInvokable.timeBox(
     prefill: LocalTime = MIDNIGHT,
     noinline init: ((@LayoutDsl TimeBox).() -> Unit)? = null
 ): TimeBox = (com.hendraanggrian.openpss.control.timeBox(prefill, init))()

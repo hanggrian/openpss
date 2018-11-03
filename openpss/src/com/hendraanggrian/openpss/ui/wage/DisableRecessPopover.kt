@@ -44,7 +44,7 @@ class DisableRecessPopover(
             )
             ) col 1 row 1
         }
-        buttonManager.run {
+        buttonInvokable.run {
             jfxButton(getString(R.string.apply)) {
                 isDefaultButton = true
                 buttonType = JFXButton.ButtonType.RAISED

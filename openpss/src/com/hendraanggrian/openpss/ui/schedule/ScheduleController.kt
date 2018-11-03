@@ -25,7 +25,7 @@ import javafx.scene.control.TreeTableView.TreeTableViewSelectionModel
 import javafx.scene.image.ImageView
 import kotlinx.nosql.equal
 import kotlinx.nosql.update
-import ktfx.NodeManager
+import ktfx.NodeInvokable
 import ktfx.application.later
 import ktfx.beans.value.or
 import ktfx.collections.isEmpty
@@ -48,7 +48,7 @@ class ScheduleController : ActionController(), Refreshable, TreeSelectable<Sched
 
     override val selectionModel: TreeTableViewSelectionModel<Schedule> get() = scheduleTable.selectionModel
 
-    override fun NodeManager.onCreateActions() {
+    override fun NodeInvokable.onCreateActions() {
         refreshButton = stretchableButton(STRETCH_POINT, getString(R.string.refresh), ImageView(R.image.act_refresh)) {
             onAction { refresh() }
         }
@@ -102,7 +102,7 @@ class ScheduleController : ActionController(), Refreshable, TreeSelectable<Sched
                                 Schedule(invoice.id, getString(R.string.plate), it.title, it.qty, it.machine)
                             )
                         }
-                        invoice.prints.forEach {
+                        invoice.offsets.forEach {
                             children += TreeItem<Schedule>(
                                 Schedule(invoice.id, getString(R.string.offset), it.title, it.qty, it.machine)
                             )

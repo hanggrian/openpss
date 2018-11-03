@@ -18,7 +18,7 @@ import kotlinx.coroutines.javafx.JavaFx
 import kotlinx.coroutines.launch
 import kotlinx.nosql.notEqual
 import kotlinx.nosql.update
-import ktfx.NodeManager
+import ktfx.NodeInvokable
 import ktfx.beans.value.or
 import ktfx.collections.toMutableObservableList
 import ktfx.coroutines.onAction
@@ -34,7 +34,7 @@ class EditEmployeeDialog(
         const val DELAY = 200L
     }
 
-    override fun NodeManager.onCreateActions() {
+    override fun NodeInvokable.onCreateActions() {
         jfxButton(getString(R.string.toggle_admin)) {
             bindDisable()
             onAction {

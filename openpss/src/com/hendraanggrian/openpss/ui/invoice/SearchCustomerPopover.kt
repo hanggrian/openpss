@@ -11,7 +11,7 @@ import javafx.scene.control.ListView
 import javafx.scene.control.SelectionModel
 import javafx.scene.control.TextField
 import javafx.scene.input.KeyCode.ENTER
-import ktfx.beans.binding.bindingOf
+import ktfx.beans.binding.buildBinding
 import ktfx.collections.toMutableObservableList
 import ktfx.coroutines.listener
 import ktfx.coroutines.onKeyPressed
@@ -39,7 +39,7 @@ class SearchCustomerPopover(context: Context) : ResultablePopover<Customer>(cont
             }
             customerList = listView<Customer> {
                 prefHeight = 252.0
-                itemsProperty().bind(bindingOf(searchField.textProperty()) {
+                itemsProperty().bind(buildBinding(searchField.textProperty()) {
                     transaction {
                         when {
                             searchField.text.isEmpty() -> Customers()

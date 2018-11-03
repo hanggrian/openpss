@@ -9,7 +9,7 @@ import javafx.beans.property.SimpleDoubleProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.beans.property.StringProperty
 import ktfx.LayoutDsl
-import ktfx.NodeManager
+import ktfx.NodeInvokable
 
 @DefaultProperty("graphic")
 class StretchableCheckBox @JvmOverloads constructor(
@@ -41,7 +41,7 @@ fun stretchableCheckBox(
 }
 
 /** Creates an [StretchableCheckBox] and add it to this manager. */
-inline fun NodeManager.stretchableCheckBox(
+inline fun NodeInvokable.stretchableCheckBox(
     stretchPoint: Double,
     adaptableText: String,
     noinline init: ((@LayoutDsl StretchableCheckBox).() -> Unit)? = null

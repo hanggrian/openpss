@@ -18,7 +18,7 @@ class EditDigitalPrintPriceDialog(
 ) : EditPriceDialog<DigitalPrintPrice, DigitalPrintPrices>(context, R.string.digital_print_price, DigitalPrintPrices) {
 
     init {
-        getString(R.string.one_sided_price)<Double> {
+        getString(R.string.one_side_price)<Double> {
             minWidth = 128.0
             style = "-fx-alignment: center-right;"
             setCellValueFactory { it.value.oneSidePrice.toProperty() as ObservableValue<Double> }
@@ -34,7 +34,7 @@ class EditDigitalPrintPriceDialog(
                 cell.rowValue.oneSidePrice = cell.newValue
             }
         }
-        getString(R.string.two_sided_price)<Double> {
+        getString(R.string.two_side_price)<Double> {
             minWidth = 128.0
             style = "-fx-alignment: center-right;"
             setCellValueFactory { it.value.twoSidePrice.toProperty() as ObservableValue<Double> }

@@ -41,7 +41,7 @@ import javafx.scene.paint.Color.BLACK
 import javafx.scene.text.TextAlignment
 import javafx.scene.transform.Scale
 import kotlinx.nosql.update
-import ktfx.NodeManager
+import ktfx.NodeInvokable
 import ktfx.application.later
 import ktfx.coroutines.onAction
 import ktfx.layouts._GridPane
@@ -150,7 +150,7 @@ class ViewInvoicePopover(
                         } row i col 2
                         label(numberConverter(order.total)) row i col 3
                     }
-                    row += orderGridPane(row, R.string.offset, invoice.prints) { order, i ->
+                    row += orderGridPane(row, R.string.offset, invoice.offsets) { order, i ->
                         label(numberConverter(order.qty)) row i col 0
                         label("${order.machine}\n${order.typedTechnique.toString(this@ViewInvoicePopover)}") {
                             textAlignment = TextAlignment.CENTER
@@ -195,7 +195,7 @@ class ViewInvoicePopover(
                 } row 1 col 2
             }
         }
-        buttonManager.run {
+        buttonInvokable.run {
             button(getString(R.string.print)) {
                 isDefaultButton = true
                 later { isDisable = invoice.printed }
@@ -245,5 +245,5 @@ class ViewInvoicePopover(
 
     private fun BorderStrokeStyle.toBorder() = Border(BorderStroke(BLACK, this, EMPTY, DEFAULT))
 
-    private fun NodeManager.fullLine() = line(endX = WIDTH - R.dimen.padding_medium.toDouble() * 2)
+    private fun NodeInvokable.fullLine() = line(endX = WIDTH - R.dimen.padding_medium.toDouble() * 2)
 }

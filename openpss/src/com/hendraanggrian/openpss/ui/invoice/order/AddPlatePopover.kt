@@ -48,7 +48,7 @@ class AddPlatePopover(context: Context) : AddOrderPopover<Invoice.Plate>(context
             totalField.valueProperty().lessEq(0)
 
     override val nullableResult: Invoice.Plate?
-        get() = Invoice.Plate.new(titleField.text, qty, total, machineChoice.value.name)
+        get() = Invoice.Plate.new(qty, title, total, machineChoice.value.name)
 
     override fun calculateTotal(): Double = qtyField.value * priceField.value
 }

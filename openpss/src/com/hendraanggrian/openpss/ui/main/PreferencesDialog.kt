@@ -15,7 +15,7 @@ import com.hendraanggrian.openpss.popup.dialog.Dialog
 import com.hendraanggrian.openpss.ui.wage.readers.Reader
 import com.jfoenix.controls.JFXButton
 import javafx.event.ActionEvent
-import javafx.geometry.Pos.CENTER_LEFT
+import javafx.geometry.Pos
 import javafx.scene.Node
 import javafx.scene.control.ComboBox
 import javafx.scene.control.TextArea
@@ -28,7 +28,7 @@ import kotlinx.coroutines.javafx.JavaFx
 import kotlinx.coroutines.launch
 import kotlinx.nosql.update
 import ktfx.LayoutDsl
-import ktfx.NodeManager
+import ktfx.NodeInvokable
 import ktfx.beans.property.toMutableProperty
 import ktfx.beans.value.and
 import ktfx.collections.toObservableList
@@ -99,7 +99,7 @@ class PreferencesDialog(context: Context) : Dialog(context, R.string.preferences
                 }
             }
         }
-        buttonManager.run {
+        buttonInvokable.run {
             jfxButton(getString(R.string.ok)) {
                 isDefaultButton = true
                 styleClass += App.STYLE_BUTTON_RAISED
@@ -127,7 +127,7 @@ class PreferencesDialog(context: Context) : Dialog(context, R.string.preferences
         init()
     }
 
-    private fun NodeManager.group(
+    private fun NodeInvokable.group(
         titleId: String,
         init: (@LayoutDsl _VBox).() -> Unit
     ): VBox = vbox(R.dimen.padding_small.toDouble()) {
@@ -135,11 +135,11 @@ class PreferencesDialog(context: Context) : Dialog(context, R.string.preferences
         init()
     }
 
-    private fun NodeManager.item(
+    private fun NodeInvokable.item(
         labelId: String? = null,
         init: (@LayoutDsl _HBox).() -> Unit
     ): HBox = hbox(R.dimen.padding_medium.toDouble()) {
-        alignment = CENTER_LEFT
+        alignment = Pos.CENTER_LEFT
         if (labelId != null) label(getString(labelId))
         init()
     }

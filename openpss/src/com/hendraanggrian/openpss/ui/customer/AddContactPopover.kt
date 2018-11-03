@@ -8,7 +8,7 @@ import com.hendraanggrian.openpss.db.schemas.Customer.Contact.Type.values
 import com.hendraanggrian.openpss.popup.popover.ResultablePopover
 import javafx.scene.control.ComboBox
 import javafx.scene.control.TextField
-import ktfx.beans.binding.booleanBindingOf
+import ktfx.beans.binding.buildBooleanBinding
 import ktfx.collections.toObservableList
 import ktfx.jfoenix.jfxComboBox
 import ktfx.jfoenix.jfxTextField
@@ -44,7 +44,7 @@ class AddContactPopover(context: Context) : ResultablePopover<Customer.Contact>(
         }
         defaultButton.run {
             text = getString(R.string.add)
-            disableProperty().bind(booleanBindingOf(typeChoice.valueProperty(), contactField.textProperty()) {
+            disableProperty().bind(buildBooleanBinding(typeChoice.valueProperty(), contactField.textProperty()) {
                 when (typeChoice.value) {
                     null -> true
                     PHONE -> contactField.text.isBlank() || !contactField.text.matches(REGEX_PHONE)

@@ -6,7 +6,7 @@ import com.jfoenix.controls.JFXTextField
 import javafx.beans.property.IntegerProperty
 import javafx.beans.property.SimpleIntegerProperty
 import ktfx.LayoutDsl
-import ktfx.NodeManager
+import ktfx.NodeInvokable
 import ktfx.beans.value.getValue
 import ktfx.beans.value.setValue
 import ktfx.coroutines.listener
@@ -38,6 +38,6 @@ fun intField(
 }
 
 /** Creates a [IntField] and add it to this manager. */
-inline fun NodeManager.intField(
+inline fun NodeInvokable.intField(
     noinline init: ((@LayoutDsl IntField).() -> Unit)? = null
 ): IntField = com.hendraanggrian.openpss.control.intField(init)()

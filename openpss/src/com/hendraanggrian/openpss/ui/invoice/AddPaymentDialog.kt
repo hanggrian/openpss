@@ -16,9 +16,9 @@ import javafx.scene.Node
 import javafx.scene.control.CheckBox
 import javafx.scene.control.TextField
 import javafx.scene.image.ImageView
-import ktfx.beans.binding.bindingOf
-import ktfx.beans.binding.booleanBindingOf
-import ktfx.beans.binding.stringBindingOf
+import ktfx.beans.binding.buildBinding
+import ktfx.beans.binding.buildBooleanBinding
+import ktfx.beans.binding.buildStringBinding
 import ktfx.coroutines.onAction
 import ktfx.jfoenix.jfxButton
 import ktfx.jfoenix.jfxCheckBox
@@ -62,7 +62,7 @@ class AddPaymentDialog(
             label(getString(R.string.remaining)) row 3 col 0
             label {
                 font = bold()
-                textProperty().bind(stringBindingOf(valueField.valueProperty()) {
+                textProperty().bind(buildStringBinding(valueField.valueProperty()) {
                     (receivable - valueField.value).let { remaining ->
                         when {
                             remaining <= 0.0 -> getString(R.string.paid)
@@ -70,7 +70,7 @@ class AddPaymentDialog(
                         }
                     }
                 })
-                textFillProperty().bind(bindingOf(textProperty()) {
+                textFillProperty().bind(buildBinding(textProperty()) {
                     getColor(
                         when {
                             receivable - valueField.value <= 0.0 -> R.color.green
@@ -84,7 +84,7 @@ class AddPaymentDialog(
             label(getString(R.string.reference)) { bindDisable() } row 7 col 0
             referenceField = jfxTextField { bindDisable() } row 7 col 1 colSpans 2
         }
-        defaultButton.disableProperty().bind(booleanBindingOf(
+        defaultButton.disableProperty().bind(buildBooleanBinding(
             valueField.valueProperty(), cashBox.selectedProperty(),
             referenceField.textProperty()
         ) {

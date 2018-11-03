@@ -29,10 +29,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.javafx.JavaFx
 import kotlinx.coroutines.launch
-import ktfx.NodeManager
+import ktfx.NodeInvokable
 import ktfx.application.later
-import ktfx.beans.binding.booleanBindingOf
-import ktfx.beans.binding.stringBindingOf
+import ktfx.beans.binding.buildBooleanBinding
+import ktfx.beans.binding.buildStringBinding
 import ktfx.beans.property.hasValue
 import ktfx.beans.value.getValue
 import ktfx.beans.value.lessEq
@@ -66,7 +66,7 @@ class WageController : ActionController() {
     private val filePathProperty: StringProperty = SimpleStringProperty()
     private var filePath: String by filePathProperty
 
-    override fun NodeManager.onCreateActions() {
+    override fun NodeInvokable.onCreateActions() {
         browseButton = stretchableButton(STRETCH_POINT, getString(R.string.browse), ImageView(R.image.act_browse)) {
             onAction { browse() }
         }
@@ -90,7 +90,7 @@ class WageController : ActionController() {
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
-        titleLabel.textProperty().bind(stringBindingOf(flowPane.children) {
+        titleLabel.textProperty().bind(buildStringBinding(flowPane.children) {
             "${flowPane.children.size} ${getString(R.string.employee)}".let {
                 if (filePathProperty.hasValue()) "$filePath ($it)" else it
             }
@@ -147,14 +147,14 @@ class WageController : ActionController() {
                             }
                             deleteOthersMenu.run {
                                 disableProperty().bind(flowPane.children.size() lessEq 1)
-                                onAction { _ ->
+                                onAction {
                                     flowPane.children -= flowPane.children.toMutableList()
                                         .also { it -= this@apply }
                                     bindProcessButton()
                                 }
                             }
                             deleteToTheRightMenu.run {
-                                disableProperty().bind(booleanBindingOf(flowPane.children) {
+                                disableProperty().bind(buildBooleanBinding(flowPane.children) {
                                     flowPane.children.indexOf(this@apply) == flowPane.children.lastIndex
                                 })
                                 onAction {
@@ -188,7 +188,7 @@ class WageController : ActionController() {
 
     /** As attendees are populated, process button need to be rebinded according to new requirements. */
     private fun bindProcessButton() = processButton.disableProperty().bind(flowPane.children.isEmpty or
-        booleanBindingOf(flowPane.children, *flowPane.children
+        buildBooleanBinding(flowPane.children, *flowPane.children
             .map { (it as AttendeePane).attendanceList.items }
             .toTypedArray()) { attendees.any { it.attendances.size % 2 != 0 } })
 }

@@ -38,7 +38,7 @@ import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
 import javafx.scene.image.ImageView
 import javafx.scene.layout.BorderPane
-import ktfx.NodeManager
+import ktfx.NodeInvokable
 import ktfx.application.later
 import ktfx.beans.binding.`when`
 import ktfx.beans.value.eq
@@ -91,7 +91,7 @@ class FinanceController : ActionController(), Refreshable, Selectable<Tab>, Sele
     override val selectionModel2: SelectionModel<Payment> get() = dailyTable.selectionModel
     override val selectionModel3: SelectionModel<Report> get() = monthlyTable.selectionModel
 
-    override fun NodeManager.onCreateActions() {
+    override fun NodeInvokable.onCreateActions() {
         refreshButton = stretchableButton(STRETCH_POINT, getString(R.string.refresh), ImageView(R.image.act_refresh)) {
             onAction { refresh() }
         }

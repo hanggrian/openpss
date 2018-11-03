@@ -24,10 +24,10 @@ import ktfx.layouts.label
 import ktfx.listeners.converter
 
 class AddOffsetPrintPopover(context: Context) :
-    AddOrderPopover<Invoice.Print>(context, R.string.add_offset_print), Invoice.Order {
+    AddOrderPopover<Invoice.Offset>(context, R.string.add_offset_print), Invoice.Order {
 
     private lateinit var machineChoice: ComboBox<OffsetPrintPrice>
-    private lateinit var techniqueChoice: ComboBox<Invoice.Print.Technique>
+    private lateinit var techniqueChoice: ComboBox<Invoice.Offset.Technique>
     private lateinit var minQtyField: IntField
     private lateinit var minPriceField: DoubleField
     private lateinit var excessPriceField: DoubleField
@@ -43,7 +43,7 @@ class AddOffsetPrintPopover(context: Context) :
         } col 1 colSpans 2 row currentRow
         currentRow++
         label(getString(R.string.technique)) col 0 row currentRow
-        techniqueChoice = jfxComboBox(Invoice.Print.Technique.values().toObservableList()) {
+        techniqueChoice = jfxComboBox(Invoice.Offset.Technique.values().toObservableList()) {
             converter { toString { it!!.toString(this@AddOffsetPrintPopover) } }
             selectionModel.selectFirst()
         } col 1 colSpans 2 row currentRow
@@ -74,24 +74,24 @@ class AddOffsetPrintPopover(context: Context) :
             techniqueChoice.valueProperty().isNull or
             totalField.valueProperty().lessEq(0)
 
-    override val nullableResult: Invoice.Print?
-        get() = Invoice.Print.new(titleField.text, qty, total, machineChoice.value.name, techniqueChoice.value)
+    override val nullableResult: Invoice.Offset?
+        get() = Invoice.Offset.new(qty, title, total, machineChoice.value.name, techniqueChoice.value)
 
     override fun calculateTotal(): Double = when (techniqueChoice.value) {
         null -> 0.0
-        Invoice.Print.Technique.ONE_SIDE -> calculateSide(
+        Invoice.Offset.Technique.ONE_SIDE -> calculateSide(
             qty,
             minQtyField.value,
             minPriceField.value,
             excessPriceField.value
         )
-        Invoice.Print.Technique.TWO_SIDE_EQUAL -> calculateSide(
+        Invoice.Offset.Technique.TWO_SIDE_EQUAL -> calculateSide(
             qty * 2,
             minQtyField.value,
             minPriceField.value,
             excessPriceField.value
         )
-        Invoice.Print.Technique.TWO_SIDE_DISTINCT -> calculateSide(
+        Invoice.Offset.Technique.TWO_SIDE_DISTINCT -> calculateSide(
             qty,
             minQtyField.value,
             minPriceField.value,

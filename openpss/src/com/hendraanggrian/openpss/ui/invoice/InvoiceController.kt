@@ -47,10 +47,10 @@ import javafx.scene.layout.Priority.ALWAYS
 import javafx.util.Callback
 import kotlinx.nosql.equal
 import kotlinx.nosql.update
-import ktfx.NodeManager
+import ktfx.NodeInvokable
 import ktfx.application.later
-import ktfx.beans.binding.bindingOf
-import ktfx.beans.binding.stringBindingOf
+import ktfx.beans.binding.buildBinding
+import ktfx.beans.binding.buildStringBinding
 import ktfx.beans.value.and
 import ktfx.beans.value.eq
 import ktfx.beans.value.neq
@@ -98,7 +98,7 @@ class InvoiceController : ActionController(), Refreshable, Selectable<Invoice>, 
     override val selectionModel: SelectionModel<Invoice> get() = invoiceTable.selectionModel
     override val selectionModel2: SelectionModel<Payment> get() = paymentTable.selectionModel
 
-    override fun NodeManager.onCreateActions() {
+    override fun NodeInvokable.onCreateActions() {
         refreshButton = stretchableButton(STRETCH_POINT, getString(R.string.refresh), ImageView(R.image.act_refresh)) {
             onAction { refresh() }
         }
@@ -120,7 +120,7 @@ class InvoiceController : ActionController(), Refreshable, Selectable<Invoice>, 
                 .toObservableList()
             selectionModel.selectFirst()
         }
-        customerField.textProperty().bind(stringBindingOf(customerProperty) {
+        customerField.textProperty().bind(buildStringBinding(customerProperty) {
             customerProperty.value?.toString() ?: getString(R.string.search_customer)
         })
         dateBox.disableProperty().bind(!pickDateRadio.selectedProperty())
@@ -133,7 +133,7 @@ class InvoiceController : ActionController(), Refreshable, Selectable<Invoice>, 
     }
 
     override fun refresh() = later {
-        invoicePagination.contentFactoryProperty().bind(bindingOf(
+        invoicePagination.contentFactoryProperty().bind(buildBinding(
             searchField.valueProperty(),
             customerProperty,
             paymentCombo.valueProperty(),
@@ -198,7 +198,7 @@ class InvoiceController : ActionController(), Refreshable, Selectable<Invoice>, 
                                     stringCell { reference }
                                 }
                             }
-                            itemsProperty().bind(bindingOf(invoiceTable.selectionModel.selectedItemProperty()) {
+                            itemsProperty().bind(buildBinding(invoiceTable.selectionModel.selectedItemProperty()) {
                                 when (selected) {
                                     null -> emptyObservableList()
                                     else -> transaction { Payments { invoiceId.equal(selected!!.id) }.toObservableList() }

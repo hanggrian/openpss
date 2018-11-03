@@ -14,8 +14,8 @@ import javafx.scene.control.Button
 import javafx.scene.control.DatePicker
 import javafx.scene.image.ImageView
 import ktfx.LayoutDsl
-import ktfx.NodeManager
-import ktfx.beans.binding.bindingOf
+import ktfx.NodeInvokable
+import ktfx.beans.binding.buildBinding
 import ktfx.beans.value.getValue
 import ktfx.coroutines.onAction
 import ktfx.coroutines.onMouseClicked
@@ -59,7 +59,7 @@ open class DateBox @JvmOverloads constructor(prefill: LocalDate = now()) : _HBox
             styleClass += App.STYLE_BUTTON_FLAT
             onAction { picker.value = picker.value.plusDays(1) }
         }
-        valueProperty.bind(bindingOf(picker.valueProperty()) { picker.value.toJoda() })
+        valueProperty.bind(buildBinding(picker.valueProperty()) { picker.value.toJoda() })
     }
 }
 
@@ -72,7 +72,7 @@ fun dateBox(
 }
 
 /** Creates a [DateBox] and add it to this manager. */
-inline fun NodeManager.dateBox(
+inline fun NodeInvokable.dateBox(
     prefill: LocalDate = now(),
     noinline init: ((@LayoutDsl DateBox).() -> Unit)? = null
 ): DateBox = (com.hendraanggrian.openpss.control.dateBox(prefill, init))()

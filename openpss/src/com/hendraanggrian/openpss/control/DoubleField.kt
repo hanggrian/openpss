@@ -8,8 +8,8 @@ import javafx.beans.property.DoubleProperty
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleDoubleProperty
 import ktfx.LayoutDsl
-import ktfx.NodeManager
-import ktfx.beans.binding.booleanBindingOf
+import ktfx.NodeInvokable
+import ktfx.beans.binding.buildBooleanBinding
 import ktfx.beans.value.getValue
 import ktfx.beans.value.setValue
 import ktfx.coroutines.listener
@@ -29,7 +29,7 @@ open class DoubleField : JFXTextField() {
         textProperty().bindBidirectional(valueProperty) {
             fromString { it.toDoubleOrNull() ?: 0.0 }
         }
-        validProperty.bind(booleanBindingOf(textProperty()) {
+        validProperty.bind(buildBooleanBinding(textProperty()) {
             try {
                 java.lang.Double.parseDouble(text)
                 true
@@ -49,6 +49,6 @@ fun doubleField(
 }
 
 /** Creates a [DoubleField] and add it to this manager. */
-inline fun NodeManager.doubleField(
+inline fun NodeInvokable.doubleField(
     noinline init: ((@LayoutDsl DoubleField).() -> Unit)? = null
 ): DoubleField = (com.hendraanggrian.openpss.control.doubleField(init))()

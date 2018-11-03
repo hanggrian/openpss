@@ -4,7 +4,7 @@ package com.hendraanggrian.openpss.control
 
 import javafx.scene.layout.Region
 import ktfx.LayoutDsl
-import ktfx.NodeManager
+import ktfx.NodeInvokable
 
 open class Space @JvmOverloads constructor(width: Double = 0.0, height: Double = 0.0) : Region() {
 
@@ -24,7 +24,7 @@ fun space(
 }
 
 /** Creates a [Space] and add it to this manager. */
-inline fun NodeManager.space(
+inline fun NodeInvokable.space(
     width: Double = 0.0,
     height: Double = 0.0,
     noinline init: ((@LayoutDsl Space).() -> Unit)? = null

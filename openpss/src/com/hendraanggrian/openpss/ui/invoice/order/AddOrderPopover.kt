@@ -13,7 +13,7 @@ import javafx.beans.Observable
 import javafx.beans.value.ObservableBooleanValue
 import javafx.scene.control.CheckBox
 import javafx.scene.control.TextField
-import ktfx.beans.binding.stringBindingOf
+import ktfx.beans.binding.buildStringBinding
 import ktfx.coroutines.listener
 import ktfx.jfoenix.jfxCheckBox
 import ktfx.jfoenix.jfxTextField
@@ -75,9 +75,11 @@ abstract class AddOrderPopover<T : Titled>(context: Context, titleId: String) :
 
     override val qty: Int get() = qtyField.value
 
+    override val title: String get() = titleField.text
+
     override val total: Double get() = totalField.value
 
-    private fun DoubleField.bindTotal() = textProperty().bind(stringBindingOf(*totalBindingDependencies) {
+    private fun DoubleField.bindTotal() = textProperty().bind(buildStringBinding(*totalBindingDependencies) {
         calculateTotal().toString()
     })
 }

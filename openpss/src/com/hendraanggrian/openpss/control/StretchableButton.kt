@@ -11,7 +11,7 @@ import javafx.beans.property.SimpleStringProperty
 import javafx.beans.property.StringProperty
 import javafx.scene.Node
 import ktfx.LayoutDsl
-import ktfx.NodeManager
+import ktfx.NodeInvokable
 
 /**
  * A button that will display text when the window have sufficient width.
@@ -47,7 +47,7 @@ fun stretchableButton(
 }
 
 /** Creates an [StretchableButton] and add it to this manager. */
-inline fun NodeManager.stretchableButton(
+inline fun NodeInvokable.stretchableButton(
     stretchPoint: Double,
     adaptableText: String,
     graphic: Node? = null,

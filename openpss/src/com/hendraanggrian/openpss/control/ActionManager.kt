@@ -1,10 +1,10 @@
 package com.hendraanggrian.openpss.control
 
-import ktfx.NodeManager
+import ktfx.NodeInvokable
 
 interface ActionManager {
 
     /** Override this function to add actions. */
-    fun NodeManager.onCreateActions() {
+    fun NodeInvokable.onCreateActions() {
     }
 }

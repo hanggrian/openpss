@@ -18,7 +18,7 @@ open class ResultableDialog<T>(
     protected val defaultButton: Button
 
     init {
-        buttonManager.run {
+        buttonInvokable.run {
             defaultButton = jfxButton(getString(R.string.ok)) {
                 isDefaultButton = true
                 styleClass += App.STYLE_BUTTON_RAISED

@@ -27,7 +27,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.javafx.JavaFx
 import kotlinx.coroutines.launch
-import ktfx.beans.binding.bindingOf
+import ktfx.beans.binding.buildBinding
 import ktfx.collections.sort
 import ktfx.coroutines.eventFilter
 import ktfx.coroutines.listener
@@ -56,7 +56,7 @@ import kotlin.math.absoluteValue
 class AttendeePane(
     context: Context,
     val attendee: Attendee
-) : _TitledPane(attendee.toString(), null), Context by context, Selectable<DateTime> {
+) : _TitledPane(attendee.toString()), Context by context, Selectable<DateTime> {
 
     val recessChecks: MutableList<CheckBox> = mutableListOf()
     lateinit var deleteMenu: MenuItem
@@ -171,7 +171,7 @@ class AttendeePane(
         }
         contentDisplay = ContentDisplay.RIGHT
         graphic = ktfx.layouts.imageView {
-            imageProperty().bind(bindingOf(hoverProperty()) {
+            imageProperty().bind(buildBinding(hoverProperty()) {
                 Image(
                     when {
                         isHover -> R.image.btn_clear_active

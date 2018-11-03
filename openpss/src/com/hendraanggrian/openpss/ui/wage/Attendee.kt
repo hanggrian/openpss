@@ -14,13 +14,13 @@ import com.hendraanggrian.openpss.util.round
 import javafx.beans.property.IntegerProperty
 import javafx.beans.property.SimpleIntegerProperty
 import javafx.collections.ObservableList
-import ktfx.beans.binding.doubleBindingOf
+import kotlinx.nosql.equal
+import kotlinx.nosql.update
+import ktfx.beans.binding.buildDoubleBinding
 import ktfx.beans.property.toMutableProperty
 import ktfx.beans.value.getValue
 import ktfx.beans.value.setValue
 import ktfx.collections.mutableObservableListOf
-import kotlinx.nosql.equal
-import kotlinx.nosql.update
 import org.joda.time.DateTime
 import org.joda.time.Minutes.minutes
 import org.joda.time.Period
@@ -95,19 +95,19 @@ data class Attendee(
     fun toTotalRecords(resources: Resources, children: Collection<Record>): Record =
         Record(resources, INDEX_TOTAL, this, START_OF_TIME.toMutableProperty(), START_OF_TIME.toMutableProperty())
             .apply {
-                dailyProperty.bind(doubleBindingOf(*children.map { it.dailyProperty }.toTypedArray()) {
+                dailyProperty.bind(buildDoubleBinding(*children.map { it.dailyProperty }.toTypedArray()) {
                     children.sumByDouble { it.daily }.round()
                 })
-                dailyIncomeProperty.bind(doubleBindingOf(*children.map { it.dailyIncomeProperty }.toTypedArray()) {
+                dailyIncomeProperty.bind(buildDoubleBinding(*children.map { it.dailyIncomeProperty }.toTypedArray()) {
                     children.sumByDouble { it.dailyIncome }.round()
                 })
-                overtimeProperty.bind(doubleBindingOf(*children.map { it.overtimeProperty }.toTypedArray()) {
+                overtimeProperty.bind(buildDoubleBinding(*children.map { it.overtimeProperty }.toTypedArray()) {
                     children.sumByDouble { it.overtime }.round()
                 })
-                overtimeIncomeProperty.bind(doubleBindingOf(*children.map { it.overtimeIncomeProperty }.toTypedArray()) {
+                overtimeIncomeProperty.bind(buildDoubleBinding(*children.map { it.overtimeIncomeProperty }.toTypedArray()) {
                     children.sumByDouble { it.overtimeIncome }.round()
                 })
-                totalProperty.bind(doubleBindingOf(*children.map { it.totalProperty }.toTypedArray()) {
+                totalProperty.bind(buildDoubleBinding(*children.map { it.totalProperty }.toTypedArray()) {
                     children.sumByDouble { it.total }.round()
                 })
             }

@@ -11,8 +11,8 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.javafx.JavaFx
 import kotlinx.coroutines.launch
-import ktfx.beans.binding.bindingOf
-import ktfx.beans.binding.stringBindingOf
+import ktfx.beans.binding.buildBinding
+import ktfx.beans.binding.buildStringBinding
 
 interface StretchableLabeled {
 
@@ -43,13 +43,13 @@ interface StretchableLabeled {
     }
 
     private operator fun ReadOnlyDoubleProperty.invoke() {
-        textProperty().bind(stringBindingOf(this, stretchPointProperty(), stretchableTextProperty()) {
+        textProperty().bind(buildStringBinding(this, stretchPointProperty(), stretchableTextProperty()) {
             when (get() >= stretchPoint) {
                 true -> stretchableText
                 else -> null
             }
         })
-        tooltipProperty().bind(bindingOf(this, stretchPointProperty(), stretchableTextProperty()) {
+        tooltipProperty().bind(buildBinding(this, stretchPointProperty(), stretchableTextProperty()) {
             when (get() >= stretchPoint) {
                 true -> null
                 else -> Tooltip(stretchableText)

@@ -1,8 +1,8 @@
 package com.hendraanggrian.openpss.ui.main
 
 import com.hendraanggrian.openpss.App
-import com.hendraanggrian.openpss.content.PATTERN_DATETIME
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.content.PATTERN_DATETIME_MULTILINE
 import com.hendraanggrian.openpss.control.PaginatedPane
 import com.hendraanggrian.openpss.control.UnselectableTableView
 import com.hendraanggrian.openpss.control.stringCell
@@ -201,9 +201,12 @@ class MainController : Controller(), Selectable<Tab>, Selectable2<Label> {
                     columnResizePolicy = TableView.CONSTRAINED_RESIZE_POLICY
                     columns {
                         getString(R.string.date)<String> {
-                            stringCell { dateTime.toString(PATTERN_DATETIME) }
+                            prefWidth = 50.0
+                            stringCell { dateTime.toString(PATTERN_DATETIME_MULTILINE) }
+                            wrapText()
                         }
                         getString(R.string.employee)<String> {
+                            prefWidth = 50.0
                             stringCell { transaction { Employees[employeeId].single().toString() } }
                         }
                         getString(R.string.value)<String> {

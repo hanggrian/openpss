@@ -9,6 +9,7 @@ import javafx.geometry.HPos
 import ktfx.layouts.columnConstraints
 import ktfx.layouts.gridPane
 import ktfx.layouts.label
+import ktfx.util.invoke
 
 class ViewTotalPopover(
     context: Context,

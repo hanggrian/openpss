@@ -23,7 +23,8 @@ val numberConverter: StringConverter<Number>
 val currencyConverter: StringConverter<Number>
     get() = stringConverters.getOrPut("currency") {
         CurrencyStringConverter(transaction {
-            Language.ofFullCode(findGlobalSettings(GlobalSetting.KEY_LANGUAGE).single().value).toLocale()
+            Language.ofFullCode(findGlobalSettings(GlobalSetting.KEY_LANGUAGE).single().value)
+                .toLocale()
         })
     }
 

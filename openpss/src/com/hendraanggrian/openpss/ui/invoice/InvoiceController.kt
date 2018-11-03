@@ -1,8 +1,8 @@
 package com.hendraanggrian.openpss.ui.invoice
 
 import com.hendraanggrian.openpss.App.Companion.STRETCH_POINT
-import com.hendraanggrian.openpss.content.PATTERN_DATETIME_EXTENDED
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.content.PATTERN_DATETIME_EXTENDED
 import com.hendraanggrian.openpss.control.DateBox
 import com.hendraanggrian.openpss.control.IntField
 import com.hendraanggrian.openpss.control.PaginatedPane
@@ -253,19 +253,16 @@ class InvoiceController : ActionController(), Refreshable, Selectable<Invoice>, 
     }
 
     fun addInvoice() = AddInvoiceDialog(this).show {
-        transaction {
-            it!!.id = Invoices.insert(it)
+        (AddInvoiceAction(this@InvoiceController, it!!)) {
             invoiceTable.items.add(it)
             invoiceTable.selectionModel.selectFirst()
         }
     }
 
-    private fun deleteInvoice() = ConfirmDialog(this).show { _ ->
-        transaction {
-            Invoices -= selected!!
-            Payments { invoiceId.equal(selected!!.id) }.remove()
+    private fun deleteInvoice() = ConfirmDialog(this).show {
+        (DeleteInvoiceAction(this@InvoiceController, selected!!)) {
+            invoiceTable.items.remove(selected)
         }
-        invoiceTable.items.remove(selected)
     }
 
     @FXML fun clearFilters() {

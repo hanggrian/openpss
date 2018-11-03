@@ -7,7 +7,7 @@ import com.hendraanggrian.openpss.db.schemas.Customers
 import kotlinx.nosql.update
 
 class AddCustomerAction(context: Context, name: String) :
-    Action<Customer>(context, "Created a customer \'$name\'", {
+    Action<Customer>(context, "Created a customer '$name'", {
         Customer.new(name).also { it.id = Customers.insert(it) }
     })
 
@@ -31,7 +31,7 @@ class AddContactAction(context: Context, customer: Customer, contact: Customer.C
     })
 
 class DeleteContactAction(context: Context, customer: Customer, contact: Customer.Contact) :
-    Action<Unit>(context, "Deleted contact '$contact' to '$customer'", {
+    Action<Unit>(context, "Deleted contact '$contact' from '$customer'", {
         Customers[customer]
             .projection { contacts }
             .update(customer.contacts - contact)

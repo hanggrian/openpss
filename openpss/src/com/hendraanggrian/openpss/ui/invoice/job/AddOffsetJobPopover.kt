@@ -26,7 +26,7 @@ import ktfx.listeners.converter
 class AddOffsetJobPopover(context: Context) :
     AddJobPopover<Invoice.OffsetJob>(context, R.string.add_offset_job), Invoice.Job {
 
-    private lateinit var machineChoice: ComboBox<OffsetPrintPrice>
+    private lateinit var typeChoice: ComboBox<OffsetPrintPrice>
     private lateinit var techniqueChoice: ComboBox<Invoice.OffsetJob.Technique>
     private lateinit var minQtyField: IntField
     private lateinit var minPriceField: DoubleField
@@ -34,7 +34,7 @@ class AddOffsetJobPopover(context: Context) :
 
     override fun _GridPane.onCreateContent() {
         label(getString(R.string.machine)) col 0 row currentRow
-        machineChoice = jfxComboBox(transaction { OffsetPrintPrices().toObservableList() }) {
+        typeChoice = jfxComboBox(transaction { OffsetPrintPrices().toObservableList() }) {
             valueProperty().listener { _, _, offset ->
                 minQtyField.value = offset.minQty
                 minPriceField.value = offset.minPrice
@@ -68,14 +68,14 @@ class AddOffsetJobPopover(context: Context) :
         )
 
     override val defaultButtonDisableBinding: ObservableBooleanValue
-        get() = machineChoice.valueProperty().isNull or
+        get() = typeChoice.valueProperty().isNull or
             titleField.textProperty().isBlank() or
             qtyField.valueProperty().lessEq(0) or
             techniqueChoice.valueProperty().isNull or
             totalField.valueProperty().lessEq(0)
 
     override val nullableResult: Invoice.OffsetJob?
-        get() = Invoice.OffsetJob.new(qty, title, total, machineChoice.value.name, techniqueChoice.value)
+        get() = Invoice.OffsetJob.new(qty, title, total, typeChoice.value.name, techniqueChoice.value)
 
     override fun calculateTotal(): Double = when (techniqueChoice.value) {
         null -> 0.0

@@ -102,12 +102,12 @@ class ScheduleController : ActionController(), Refreshable, TreeSelectable<Sched
                     ).apply {
                         invoice.plateJobs.forEach {
                             children += TreeItem<Schedule>(
-                                Schedule(invoice, getString(R.string.plate), it.title, it.qty, it.machine)
+                                Schedule(invoice, getString(R.string.plate), it.title, it.qty, it.type)
                             )
                         }
                         invoice.offsetJobs.forEach {
                             children += TreeItem<Schedule>(
-                                Schedule(invoice, getString(R.string.offset), it.title, it.qty, it.machine)
+                                Schedule(invoice, getString(R.string.offset), it.title, it.qty, it.type)
                             )
                         }
                         invoice.otherJobs.forEach {

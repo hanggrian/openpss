@@ -141,7 +141,7 @@ class ViewInvoicePopover(
                     var row = 0
                     row += jobGridPane(row, R.string.plate, invoice.plateJobs) { job, i ->
                         label(numberConverter(job.qty)) row i col 0
-                        label(job.machine) row i col 1
+                        label(job.type) row i col 1
                         label(job.title) {
                             isWrapText = true
                         } row i col 2
@@ -149,7 +149,7 @@ class ViewInvoicePopover(
                     }
                     row += jobGridPane(row, R.string.offset, invoice.offsetJobs) { job, i ->
                         label(numberConverter(job.qty)) row i col 0
-                        label("${job.machine}\n${job.typedTechnique.toString(this@ViewInvoicePopover)}") {
+                        label("${job.type}\n${job.typedTechnique.toString(this@ViewInvoicePopover)}") {
                             textAlignment = TextAlignment.CENTER
                         } row i col 1
                         label(job.title) {

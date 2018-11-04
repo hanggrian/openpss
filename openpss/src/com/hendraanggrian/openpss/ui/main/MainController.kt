@@ -179,12 +179,12 @@ class MainController : Controller(), Selectable<Tab>, Selectable2<Label> {
                     dateTime = dbDateTime,
                     offsetJobs = listOf(
                         Invoice.OffsetJob.new(
-                            5, "Title", 92000.0, "Machine",
+                            5, "Title", 92000.0, "Type",
                             Invoice.OffsetJob.Technique.TWO_SIDE_EQUAL
                         )
                     ),
-                    digitalJobs = listOf(Invoice.DigitalJob.new(5, "Title", 92000.0, 0, 0)),
-                    plateJobs = listOf(Invoice.PlateJob.new(5, "Title", 92000.0, "Machine")),
+                    digitalJobs = listOf(Invoice.DigitalJob.new(5, "Title", 92000.0, "Type", false)),
+                    plateJobs = listOf(Invoice.PlateJob.new(5, "Title", 92000.0, "Type")),
                     otherJobs = listOf(Invoice.OtherJob.new(5, "Title", 92000.0)),
                     note = "This is a test",
                     printed = false,

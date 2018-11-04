@@ -4,7 +4,6 @@ import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.Resources
 import com.hendraanggrian.openpss.db.Document
 import com.hendraanggrian.openpss.db.Numbered
-import com.hendraanggrian.openpss.db.Titled
 import com.hendraanggrian.openpss.util.enumValueOfId
 import com.hendraanggrian.openpss.util.id
 import kotlinx.nosql.Id
@@ -35,7 +34,7 @@ object Invoices : DocumentSchema<Invoice>("invoices", Invoice::class) {
         val qty = integer("qty")
         val title = string("title")
         val total = string("total")
-        val machine = string("machine")
+        val type = string("type")
         val technique = string("technique")
     }
 
@@ -43,15 +42,15 @@ object Invoices : DocumentSchema<Invoice>("invoices", Invoice::class) {
         val qty = integer("qty")
         val title = string("title")
         val total = string("total")
-        val machine = string("machine")
-        val technique = string("technique")
+        val type = string("type")
+        val isTwoSide = boolean("two_side")
     }
 
     class PlateJobs : ListColumn<Invoice.PlateJob, Invoices>("plates", Invoice.PlateJob::class) {
         val qty = integer("qty")
         val title = string("title")
         val total = string("total")
-        val machine = string("machine")
+        val type = string("type")
     }
 
     class OtherJobs : ListColumn<Invoice.OtherJob, Invoices>("others", Invoice.OtherJob::class) {
@@ -111,18 +110,18 @@ data class Invoice(
         override val qty: Int,
         override val title: String,
         override val total: Double,
-        val machine: String,
+        override val type: String,
         val technique: String
-    ) : Titled, Job {
+    ) : TypedJob {
 
         companion object {
             fun new(
                 qty: Int,
                 title: String,
                 total: Double,
-                machine: String,
+                type: String,
                 technique: Technique
-            ): OffsetJob = OffsetJob(qty, title, total, machine, technique.id)
+            ): OffsetJob = OffsetJob(qty, title, total, type, technique.id)
         }
 
         val typedTechnique: Technique get() = enumValueOfId(technique)
@@ -144,18 +143,18 @@ data class Invoice(
         override val qty: Int,
         override val title: String,
         override val total: Double,
-        val oneSidePrice: Int,
-        val twoSidePrice: Int
-    ) : Titled, Job {
+        override val type: String,
+        val isTwoSide: Boolean
+    ) : TypedJob {
 
         companion object {
             fun new(
                 qty: Int,
                 title: String,
                 total: Double,
-                oneSidePrice: Int,
-                twoSidePrice: Int
-            ): DigitalJob = DigitalJob(qty, title, total, oneSidePrice, twoSidePrice)
+                type: String,
+                isTwoSide: Boolean
+            ): DigitalJob = DigitalJob(qty, title, total, type, isTwoSide)
         }
     }
 
@@ -163,16 +162,16 @@ data class Invoice(
         override val qty: Int,
         override val title: String,
         override val total: Double,
-        val machine: String
-    ) : Titled, Job {
+        override val type: String
+    ) : TypedJob {
 
         companion object {
             fun new(
                 qty: Int,
                 title: String,
                 total: Double,
-                machine: String
-            ): PlateJob = PlateJob(qty, title, total, machine)
+                type: String
+            ): PlateJob = PlateJob(qty, title, total, type)
         }
     }
 
@@ -180,7 +179,7 @@ data class Invoice(
         override val qty: Int,
         override val title: String,
         override val total: Double
-    ) : Titled, Job {
+    ) : Job {
 
         companion object {
             fun new(
@@ -189,6 +188,10 @@ data class Invoice(
                 total: Double
             ): Invoice.OtherJob = Invoice.OtherJob(qty, title, total)
         }
+    }
+
+    interface TypedJob : Job {
+        val type: String
     }
 
     interface Job {

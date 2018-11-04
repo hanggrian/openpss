@@ -60,8 +60,9 @@ class AddInvoiceDialog(
     context: Context
 ) : ResultableDialog<Invoice>(context, R.string.add_invoice) {
 
-    private lateinit var plateTable: TableView<Invoice.PlateJob>
     private lateinit var offsetTable: TableView<Invoice.OffsetJob>
+    private lateinit var digitalTable: TableView<Invoice.DigitalJob>
+    private lateinit var plateTable: TableView<Invoice.PlateJob>
     private lateinit var otherTable: TableView<Invoice.OtherJob>
     private lateinit var noteArea: TextArea
 
@@ -89,26 +90,39 @@ class AddInvoiceDialog(
             label(getString(R.string.jobs)) col 0 row 2
             jfxTabPane {
                 styleClass += "jfx-tab-pane-small"
-                (getString(R.string.plate)) {
-                    plateTable = invoiceTableView({ AddPlateJobPopover(this@AddInvoiceDialog) }) {
-                        columns {
-                            column<Invoice.PlateJob, String>(R.string.qty, 72) { numberCell { qty } }
-                            column<Invoice.PlateJob, String>(R.string.machine, 72) { stringCell { machine } }
-                            column<Invoice.PlateJob, String>(R.string.title, 264) { stringCell { title } }
-                            column<Invoice.PlateJob, String>(R.string.total, 156) { currencyCell { total } }
-                        }
-                    }
-                }
                 (getString(R.string.offset)) {
                     offsetTable = invoiceTableView({ AddOffsetJobPopover(this@AddInvoiceDialog) }) {
                         columns {
                             column<Invoice.OffsetJob, String>(R.string.qty, 72) { numberCell { qty } }
-                            column<Invoice.OffsetJob, String>(R.string.machine, 72) { stringCell { machine } }
+                            column<Invoice.OffsetJob, String>(R.string.machine, 72) { stringCell { type } }
                             column<Invoice.OffsetJob, String>(R.string.technique, 72) {
                                 stringCell { typedTechnique.toString(this@AddInvoiceDialog) }
                             }
                             column<Invoice.OffsetJob, String>(R.string.title, 192) { stringCell { title } }
                             column<Invoice.OffsetJob, String>(R.string.total, 156) { currencyCell { total } }
+                        }
+                    }
+                }
+                (getString(R.string.digital)) {
+                    offsetTable = invoiceTableView({ AddOffsetJobPopover(this@AddInvoiceDialog) }) {
+                        columns {
+                            column<Invoice.OffsetJob, String>(R.string.qty, 72) { numberCell { qty } }
+                            column<Invoice.OffsetJob, String>(R.string.machine, 72) { stringCell { type } }
+                            column<Invoice.OffsetJob, String>(R.string.technique, 72) {
+                                stringCell { typedTechnique.toString(this@AddInvoiceDialog) }
+                            }
+                            column<Invoice.OffsetJob, String>(R.string.title, 192) { stringCell { title } }
+                            column<Invoice.OffsetJob, String>(R.string.total, 156) { currencyCell { total } }
+                        }
+                    }
+                }
+                (getString(R.string.plate)) {
+                    plateTable = invoiceTableView({ AddPlateJobPopover(this@AddInvoiceDialog) }) {
+                        columns {
+                            column<Invoice.PlateJob, String>(R.string.qty, 72) { numberCell { qty } }
+                            column<Invoice.PlateJob, String>(R.string.machine, 72) { stringCell { type } }
+                            column<Invoice.PlateJob, String>(R.string.title, 264) { stringCell { title } }
+                            column<Invoice.PlateJob, String>(R.string.total, 156) { currencyCell { total } }
                         }
                     }
                 }

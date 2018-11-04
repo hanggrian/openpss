@@ -23,12 +23,12 @@ import ktfx.layouts.label
 class AddPlateJobPopover(context: Context) : AddJobPopover<Invoice.PlateJob>(context, R.string.add_plate_job),
     Invoice.Job {
 
-    private lateinit var machineChoice: ComboBox<PlatePrice>
+    private lateinit var typeChoice: ComboBox<PlatePrice>
     private lateinit var priceField: DoubleField
 
     override fun _GridPane.onCreateContent() {
         label(getString(R.string.machine)) col 0 row currentRow
-        machineChoice = jfxComboBox(transaction { PlatePrices().toObservableList() }) {
+        typeChoice = jfxComboBox(transaction { PlatePrices().toObservableList() }) {
             valueProperty().listener { _, _, plate ->
                 priceField.value = plate.price
             }
@@ -42,13 +42,13 @@ class AddPlateJobPopover(context: Context) : AddJobPopover<Invoice.PlateJob>(con
         get() = arrayOf(qtyField.valueProperty(), priceField.valueProperty())
 
     override val defaultButtonDisableBinding: ObservableBooleanValue
-        get() = machineChoice.valueProperty().isNull or
+        get() = typeChoice.valueProperty().isNull or
             titleField.textProperty().isBlank() or
             qtyField.valueProperty().lessEq(0) or
             totalField.valueProperty().lessEq(0)
 
     override val nullableResult: Invoice.PlateJob?
-        get() = Invoice.PlateJob.new(qty, title, total, machineChoice.value.name)
+        get() = Invoice.PlateJob.new(qty, title, total, typeChoice.value.name)
 
     override fun calculateTotal(): Double = qtyField.value * priceField.value
 }

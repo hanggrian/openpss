@@ -7,13 +7,13 @@ import com.hendraanggrian.openpss.content.PATTERN_DATE
 import com.hendraanggrian.openpss.control.PaginatedPane
 import com.hendraanggrian.openpss.control.space
 import com.hendraanggrian.openpss.control.stretchableButton
-import com.hendraanggrian.openpss.control.stringCell
+import com.hendraanggrian.openpss.util.stringCell
 import com.hendraanggrian.openpss.db.matches
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.popup.dialog.ConfirmDialog
-import com.hendraanggrian.openpss.popup.popover.InputUserPopover
+import com.hendraanggrian.openpss.control.dialog.ConfirmDialog
+import com.hendraanggrian.openpss.control.popover.InputUserPopover
 import com.hendraanggrian.openpss.ui.ActionController
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.Selectable

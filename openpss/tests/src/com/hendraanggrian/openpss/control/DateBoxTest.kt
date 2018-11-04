@@ -1,6 +1,6 @@
 package com.hendraanggrian.openpss.control
 
-import com.hendraanggrian.openpss.util.toJava
+import com.hendraanggrian.openpss.content.toJava
 import org.joda.time.LocalDate
 import org.junit.Test
 import kotlin.test.assertEquals

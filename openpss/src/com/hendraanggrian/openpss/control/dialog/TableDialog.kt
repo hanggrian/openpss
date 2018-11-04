@@ -1,8 +1,8 @@
-package com.hendraanggrian.openpss.popup.dialog
+package com.hendraanggrian.openpss.control.dialog
 
-import com.hendraanggrian.openpss.content.Context
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.control.ActionManager
+import com.hendraanggrian.openpss.content.ActionManager
+import com.hendraanggrian.openpss.content.Context
 import com.hendraanggrian.openpss.db.Document
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.ui.Refreshable
@@ -33,7 +33,8 @@ abstract class TableDialog<D : Document<S>, S : DocumentSchema<D>>(
     context: Context,
     titleId: String,
     protected val schema: S
-) : Dialog(context, titleId), TableColumnsBuilder<D>, Selectable<D>, Refreshable, ActionManager {
+) : Dialog(context, titleId), TableColumnsBuilder<D>, Selectable<D>, Refreshable,
+    ActionManager {
 
     protected lateinit var refreshButton: Button
     protected lateinit var addButton: Button

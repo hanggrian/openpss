@@ -7,13 +7,13 @@ import com.hendraanggrian.openpss.control.UncollapsibleTreeItem
 import com.hendraanggrian.openpss.control.space
 import com.hendraanggrian.openpss.control.stretchableButton
 import com.hendraanggrian.openpss.control.stretchableCheckBox
-import com.hendraanggrian.openpss.control.stringCell
 import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.schemas.Invoices
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.ui.ActionController
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.TreeSelectable
+import com.hendraanggrian.openpss.util.stringCell
 import javafx.fxml.FXML
 import javafx.scene.control.Button
 import javafx.scene.control.CheckBox

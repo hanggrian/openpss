@@ -1,9 +1,9 @@
-package com.hendraanggrian.openpss.popup.popover
+package com.hendraanggrian.openpss.control.popover
 
 import com.hendraanggrian.openpss.App
-import com.hendraanggrian.openpss.content.Context
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.popup.ResultablePopup
+import com.hendraanggrian.openpss.content.Context
+import com.hendraanggrian.openpss.control.ResultablePopup
 import com.jfoenix.controls.JFXButton
 import javafx.scene.Node
 import javafx.scene.control.Button

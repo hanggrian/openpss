@@ -9,7 +9,7 @@ import java.util.ResourceBundle
 abstract class Action<R>(private val context: Context) : Context by context {
 
     @Suppress("LeakingThis")
-    override val resources: ResourceBundle = Language.server().toResourcesBundle()
+    override val resources: ResourceBundle = Language.ofServer().toResourcesBundle()
 
     abstract val log: String
 

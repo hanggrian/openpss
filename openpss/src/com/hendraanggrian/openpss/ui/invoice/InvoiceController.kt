@@ -6,12 +6,12 @@ import com.hendraanggrian.openpss.content.PATTERN_DATETIME_EXTENDED
 import com.hendraanggrian.openpss.control.DateBox
 import com.hendraanggrian.openpss.control.IntField
 import com.hendraanggrian.openpss.control.PaginatedPane
-import com.hendraanggrian.openpss.control.currencyCell
-import com.hendraanggrian.openpss.control.doneCell
+import com.hendraanggrian.openpss.util.currencyCell
+import com.hendraanggrian.openpss.util.doneCell
 import com.hendraanggrian.openpss.control.intField
 import com.hendraanggrian.openpss.control.space
 import com.hendraanggrian.openpss.control.stretchableButton
-import com.hendraanggrian.openpss.control.stringCell
+import com.hendraanggrian.openpss.util.stringCell
 import com.hendraanggrian.openpss.db.SessionWrapper
 import com.hendraanggrian.openpss.db.matches
 import com.hendraanggrian.openpss.db.schemas.Customer
@@ -23,8 +23,8 @@ import com.hendraanggrian.openpss.db.schemas.Payment
 import com.hendraanggrian.openpss.db.schemas.Payments
 import com.hendraanggrian.openpss.db.schemas.Payments.invoiceId
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.popup.dialog.ConfirmDialog
-import com.hendraanggrian.openpss.popup.popover.ViewInvoicePopover
+import com.hendraanggrian.openpss.control.dialog.ConfirmDialog
+import com.hendraanggrian.openpss.control.popover.ViewInvoicePopover
 import com.hendraanggrian.openpss.ui.ActionController
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.Selectable

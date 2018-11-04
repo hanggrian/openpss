@@ -1,6 +1,6 @@
 package com.hendraanggrian.openpss.ui
 
-import com.hendraanggrian.openpss.control.ActionManager
+import com.hendraanggrian.openpss.content.ActionManager
 import javafx.scene.Node
 import ktfx.NodeInvokable
 import java.net.URL

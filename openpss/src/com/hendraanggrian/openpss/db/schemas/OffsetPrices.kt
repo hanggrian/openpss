@@ -9,9 +9,9 @@ import kotlinx.nosql.integer
 import kotlinx.nosql.mongodb.DocumentSchema
 import kotlinx.nosql.string
 
-object OffsetPrintPrices : DocumentSchema<OffsetPrintPrice>(
-    "offset_print_prices",
-    OffsetPrintPrice::class
+object OffsetPrices : DocumentSchema<OffsetPrice>(
+    "offset_prices",
+    OffsetPrice::class
 ), NamedSchema {
     override val name = string("name")
     val minQty = integer("min_qty")
@@ -19,18 +19,18 @@ object OffsetPrintPrices : DocumentSchema<OffsetPrintPrice>(
     val excessPrice = double("excess_price")
 }
 
-data class OffsetPrintPrice(
+data class OffsetPrice(
     override var name: String,
     var minQty: Int,
     var minPrice: Double,
     var excessPrice: Double
-) : Document<OffsetPrintPrices>, Named {
+) : Document<OffsetPrices>, Named {
 
     companion object {
-        fun new(name: String): OffsetPrintPrice = OffsetPrintPrice(name, 1000, 0.0, 0.0)
+        fun new(name: String): OffsetPrice = OffsetPrice(name, 1000, 0.0, 0.0)
     }
 
-    override lateinit var id: Id<String, OffsetPrintPrices>
+    override lateinit var id: Id<String, OffsetPrices>
 
     override fun toString(): String = name
 }

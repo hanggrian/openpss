@@ -1,4 +1,4 @@
-package com.hendraanggrian.openpss.popup
+package com.hendraanggrian.openpss.control
 
 /** Defines a popup component that expects result to be returned. */
 interface ResultablePopup<T> {

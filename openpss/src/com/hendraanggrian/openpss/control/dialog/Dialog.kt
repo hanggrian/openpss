@@ -1,8 +1,8 @@
-package com.hendraanggrian.openpss.popup.dialog
+package com.hendraanggrian.openpss.control.dialog
 
 import com.hendraanggrian.openpss.App
-import com.hendraanggrian.openpss.content.Context
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.content.Context
 import com.jfoenix.controls.JFXDialog
 import javafx.beans.property.ObjectProperty
 import javafx.beans.property.SimpleObjectProperty

@@ -7,7 +7,7 @@ import com.hendraanggrian.openpss.control.space
 import com.hendraanggrian.openpss.control.stretchableButton
 import com.hendraanggrian.openpss.io.WageDirectory
 import com.hendraanggrian.openpss.io.properties.PreferencesFile.WAGE_READER
-import com.hendraanggrian.openpss.popup.dialog.TextDialog
+import com.hendraanggrian.openpss.control.dialog.TextDialog
 import com.hendraanggrian.openpss.ui.ActionController
 import com.hendraanggrian.openpss.ui.controller
 import com.hendraanggrian.openpss.ui.pane

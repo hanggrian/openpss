@@ -4,15 +4,16 @@ import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.Context
 import com.hendraanggrian.openpss.content.PATTERN_DATE
 import com.hendraanggrian.openpss.content.currencyConverter
-import com.hendraanggrian.openpss.control.bold
-import com.hendraanggrian.openpss.control.currencyCell
-import com.hendraanggrian.openpss.control.numberCell
-import com.hendraanggrian.openpss.control.stringCell
+import com.hendraanggrian.openpss.util.bold
+import com.hendraanggrian.openpss.util.currencyCell
+import com.hendraanggrian.openpss.util.numberCell
+import com.hendraanggrian.openpss.util.stringCell
 import com.hendraanggrian.openpss.db.dbDateTime
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Invoice
-import com.hendraanggrian.openpss.popup.dialog.ResultableDialog
-import com.hendraanggrian.openpss.popup.popover.ResultablePopover
+import com.hendraanggrian.openpss.control.dialog.ResultableDialog
+import com.hendraanggrian.openpss.control.popover.ResultablePopover
+import com.hendraanggrian.openpss.ui.invoice.job.AddDigitalJobPopover
 import com.hendraanggrian.openpss.ui.invoice.job.AddOffsetJobPopover
 import com.hendraanggrian.openpss.ui.invoice.job.AddOtherJobPopover
 import com.hendraanggrian.openpss.ui.invoice.job.AddPlateJobPopover
@@ -104,15 +105,12 @@ class AddInvoiceDialog(
                     }
                 }
                 (getString(R.string.digital)) {
-                    offsetTable = invoiceTableView({ AddOffsetJobPopover(this@AddInvoiceDialog) }) {
+                    digitalTable = invoiceTableView({ AddDigitalJobPopover(this@AddInvoiceDialog) }) {
                         columns {
-                            column<Invoice.OffsetJob, String>(R.string.qty, 72) { numberCell { qty } }
-                            column<Invoice.OffsetJob, String>(R.string.machine, 72) { stringCell { type } }
-                            column<Invoice.OffsetJob, String>(R.string.technique, 72) {
-                                stringCell { typedTechnique.toString(this@AddInvoiceDialog) }
-                            }
-                            column<Invoice.OffsetJob, String>(R.string.title, 192) { stringCell { title } }
-                            column<Invoice.OffsetJob, String>(R.string.total, 156) { currencyCell { total } }
+                            column<Invoice.DigitalJob, String>(R.string.qty, 72) { numberCell { qty } }
+                            column<Invoice.DigitalJob, String>(R.string.machine, 72) { stringCell { type } }
+                            column<Invoice.DigitalJob, String>(R.string.title, 192) { stringCell { title } }
+                            column<Invoice.DigitalJob, String>(R.string.total, 156) { currencyCell { total } }
                         }
                     }
                 }
@@ -143,7 +141,7 @@ class AddInvoiceDialog(
             })
             label(getString(R.string.note)) col 0 row 3
             noteArea = textArea {
-                prefHeight = 48.0
+                prefHeight = 75.0
             } col 1 row 3 colSpans 3
             label(getString(R.string.total)) col 0 row 4
             label {
@@ -176,7 +174,7 @@ class AddInvoiceDialog(
         newAddJobPopover: () -> ResultablePopover<S>,
         init: TableView<S>.() -> Unit
     ): TableView<S> = tableView {
-        prefHeight = 96.0
+        prefHeight = 200.0
         init()
         contextMenu {
             getString(R.string.add)(ImageView(R.image.menu_add)) {

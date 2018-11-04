@@ -1,8 +1,8 @@
-package com.hendraanggrian.openpss.popup.popover
+package com.hendraanggrian.openpss.control.popover
 
 import com.hendraanggrian.openpss.App
-import com.hendraanggrian.openpss.content.Context
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.content.Context
 import com.jfoenix.controls.JFXPopup
 import javafx.beans.property.ObjectProperty
 import javafx.beans.property.SimpleObjectProperty

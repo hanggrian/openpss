@@ -4,7 +4,7 @@ import com.hendraanggrian.openpss.content.Context
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.TimeBox
 import com.hendraanggrian.openpss.control.timeBox
-import com.hendraanggrian.openpss.popup.popover.ResultablePopover
+import com.hendraanggrian.openpss.control.popover.ResultablePopover
 import ktfx.beans.binding.buildBooleanBinding
 import ktfx.layouts.gridPane
 import ktfx.layouts.label

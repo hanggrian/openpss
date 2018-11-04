@@ -4,14 +4,14 @@ import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.content.Context
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.clearConverters
-import com.hendraanggrian.openpss.control.bold
+import com.hendraanggrian.openpss.util.bold
 import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_INVOICE_HEADERS
 import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_LANGUAGE
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.content.Language
 import com.hendraanggrian.openpss.io.properties.PreferencesFile
 import com.hendraanggrian.openpss.io.properties.PreferencesFile.WAGE_READER
-import com.hendraanggrian.openpss.popup.dialog.Dialog
+import com.hendraanggrian.openpss.control.dialog.Dialog
 import com.hendraanggrian.openpss.ui.wage.readers.Reader
 import com.jfoenix.controls.JFXButton
 import javafx.event.ActionEvent

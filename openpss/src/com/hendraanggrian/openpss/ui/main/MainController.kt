@@ -5,7 +5,7 @@ import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.PATTERN_DATETIME
 import com.hendraanggrian.openpss.control.PaginatedPane
 import com.hendraanggrian.openpss.control.UnselectableListView
-import com.hendraanggrian.openpss.control.bold
+import com.hendraanggrian.openpss.util.bold
 import com.hendraanggrian.openpss.db.dbDateTime
 import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.schemas.Employees
@@ -13,7 +13,7 @@ import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.db.schemas.Log
 import com.hendraanggrian.openpss.db.schemas.Logs
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.popup.popover.ViewInvoicePopover
+import com.hendraanggrian.openpss.control.popover.ViewInvoicePopover
 import com.hendraanggrian.openpss.ui.ActionController
 import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.Refreshable
@@ -167,7 +167,7 @@ class MainController : Controller(), Selectable<Tab>, Selectable2<Label> {
     @FXML fun preferences() = PreferencesDialog(this).show()
 
     @FXML fun testViewInvoice() {
-        val customer = transaction { Customers.find().firstOrNull() }
+        val customer = transaction { Customers().firstOrNull() }
         when (customer) {
             null -> root.jfxSnackbar(getString(R.string.no_customer_to_test), App.DURATION_SHORT)
             else -> ViewInvoicePopover(
@@ -223,9 +223,9 @@ class MainController : Controller(), Selectable<Tab>, Selectable2<Label> {
                     }
                     later {
                         transaction {
-                            val events = Logs.find()
-                            eventPagination.pageCount = ceil(events.count() / count.toDouble()).toInt()
-                            items = events
+                            val logs = Logs()
+                            eventPagination.pageCount = ceil(logs.count() / count.toDouble()).toInt()
+                            items = logs
                                 .skip(count * page)
                                 .take(count)
                                 .toObservableList()

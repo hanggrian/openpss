@@ -4,13 +4,13 @@ import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.content.Context
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.DoubleField
-import com.hendraanggrian.openpss.control.bold
+import com.hendraanggrian.openpss.util.bold
 import com.hendraanggrian.openpss.control.doubleField
 import com.hendraanggrian.openpss.content.currencyConverter
 import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.db.schemas.Payment
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.popup.dialog.ResultableDialog
+import com.hendraanggrian.openpss.control.dialog.ResultableDialog
 import com.hendraanggrian.openpss.util.getColor
 import javafx.scene.Node
 import javafx.scene.control.CheckBox

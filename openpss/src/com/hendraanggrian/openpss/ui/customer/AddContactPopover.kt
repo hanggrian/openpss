@@ -5,7 +5,7 @@ import com.hendraanggrian.openpss.content.Context
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Customer.Contact.Type.PHONE
 import com.hendraanggrian.openpss.db.schemas.Customer.Contact.Type.values
-import com.hendraanggrian.openpss.popup.popover.ResultablePopover
+import com.hendraanggrian.openpss.control.popover.ResultablePopover
 import javafx.scene.control.ComboBox
 import javafx.scene.control.TextField
 import ktfx.beans.binding.buildBooleanBinding

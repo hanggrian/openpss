@@ -7,8 +7,8 @@ import com.hendraanggrian.openpss.control.IntField
 import com.hendraanggrian.openpss.control.doubleField
 import com.hendraanggrian.openpss.control.intField
 import com.hendraanggrian.openpss.db.schemas.Invoice
-import com.hendraanggrian.openpss.db.schemas.OffsetPrintPrice
-import com.hendraanggrian.openpss.db.schemas.OffsetPrintPrices
+import com.hendraanggrian.openpss.db.schemas.OffsetPrice
+import com.hendraanggrian.openpss.db.schemas.OffsetPrices
 import com.hendraanggrian.openpss.db.transaction
 import javafx.beans.Observable
 import javafx.beans.value.ObservableBooleanValue
@@ -26,7 +26,7 @@ import ktfx.listeners.converter
 class AddOffsetJobPopover(context: Context) :
     AddJobPopover<Invoice.OffsetJob>(context, R.string.add_offset_job), Invoice.Job {
 
-    private lateinit var typeChoice: ComboBox<OffsetPrintPrice>
+    private lateinit var typeChoice: ComboBox<OffsetPrice>
     private lateinit var techniqueChoice: ComboBox<Invoice.OffsetJob.Technique>
     private lateinit var minQtyField: IntField
     private lateinit var minPriceField: DoubleField
@@ -34,11 +34,11 @@ class AddOffsetJobPopover(context: Context) :
 
     override fun _GridPane.onCreateContent() {
         label(getString(R.string.machine)) col 0 row currentRow
-        typeChoice = jfxComboBox(transaction { OffsetPrintPrices().toObservableList() }) {
-            valueProperty().listener { _, _, offset ->
-                minQtyField.value = offset.minQty
-                minPriceField.value = offset.minPrice
-                excessPriceField.value = offset.excessPrice
+        typeChoice = jfxComboBox(transaction { OffsetPrices().toObservableList() }) {
+            valueProperty().listener { _, _, job ->
+                minQtyField.value = job.minQty
+                minPriceField.value = job.minPrice
+                excessPriceField.value = job.excessPrice
             }
         } col 1 colSpans 2 row currentRow
         currentRow++

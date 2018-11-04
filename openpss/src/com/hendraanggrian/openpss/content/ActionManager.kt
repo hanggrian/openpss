@@ -1,4 +1,4 @@
-package com.hendraanggrian.openpss.control
+package com.hendraanggrian.openpss.content
 
 import ktfx.NodeInvokable
 

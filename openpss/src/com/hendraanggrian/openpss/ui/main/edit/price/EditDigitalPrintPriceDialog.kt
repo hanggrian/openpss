@@ -2,8 +2,8 @@ package com.hendraanggrian.openpss.ui.main.edit.price
 
 import com.hendraanggrian.openpss.content.Context
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.db.schemas.DigitalPrintPrice
-import com.hendraanggrian.openpss.db.schemas.DigitalPrintPrices
+import com.hendraanggrian.openpss.db.schemas.DigitalPrice
+import com.hendraanggrian.openpss.db.schemas.DigitalPrices
 import com.hendraanggrian.openpss.db.transaction
 import javafx.beans.value.ObservableValue
 import kotlinx.nosql.equal
@@ -15,7 +15,7 @@ import ktfx.listeners.textFieldCellFactory
 @Suppress("UNCHECKED_CAST")
 class EditDigitalPrintPriceDialog(
     context: Context
-) : EditPriceDialog<DigitalPrintPrice, DigitalPrintPrices>(context, R.string.digital_print_price, DigitalPrintPrices) {
+) : EditPriceDialog<DigitalPrice, DigitalPrices>(context, R.string.digital_print_price, DigitalPrices) {
 
     init {
         getString(R.string.one_side_price)<Double> {
@@ -27,7 +27,7 @@ class EditDigitalPrintPriceDialog(
             }
             onEditCommit { cell ->
                 transaction {
-                    DigitalPrintPrices { it.name.equal(cell.rowValue.name) }
+                    DigitalPrices { it.name.equal(cell.rowValue.name) }
                         .projection { oneSidePrice }
                         .update(cell.newValue)
                 }
@@ -43,7 +43,7 @@ class EditDigitalPrintPriceDialog(
             }
             onEditCommit { cell ->
                 transaction {
-                    DigitalPrintPrices { it.name.equal(cell.rowValue.name) }
+                    DigitalPrices { it.name.equal(cell.rowValue.name) }
                         .projection { twoSidePrice }
                         .update(cell.newValue)
                 }
@@ -52,5 +52,5 @@ class EditDigitalPrintPriceDialog(
         }
     }
 
-    override fun newPrice(name: String): DigitalPrintPrice = DigitalPrintPrice.new(name)
+    override fun newPrice(name: String): DigitalPrice = DigitalPrice.new(name)
 }

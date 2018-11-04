@@ -5,14 +5,14 @@ import com.hendraanggrian.openpss.BuildConfig.ARTIFACT
 import com.hendraanggrian.openpss.BuildConfig.DEBUG
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.db.schemas.Customers
-import com.hendraanggrian.openpss.db.schemas.DigitalPrintPrices
+import com.hendraanggrian.openpss.db.schemas.DigitalPrices
 import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.db.schemas.Employees
-import com.hendraanggrian.openpss.db.schemas.Logs
 import com.hendraanggrian.openpss.db.schemas.GlobalSetting
 import com.hendraanggrian.openpss.db.schemas.GlobalSettings
 import com.hendraanggrian.openpss.db.schemas.Invoices
-import com.hendraanggrian.openpss.db.schemas.OffsetPrintPrices
+import com.hendraanggrian.openpss.db.schemas.Logs
+import com.hendraanggrian.openpss.db.schemas.OffsetPrices
 import com.hendraanggrian.openpss.db.schemas.Payments
 import com.hendraanggrian.openpss.db.schemas.PlatePrices
 import com.hendraanggrian.openpss.db.schemas.Recesses
@@ -37,12 +37,12 @@ private lateinit var DB: MongoDB
 private val TABLES =
     arrayOf(
         Customers,
-        DigitalPrintPrices,
+        DigitalPrices,
         Employees,
         Logs,
         GlobalSettings,
         Invoices,
-        OffsetPrintPrices,
+        OffsetPrices,
         Payments,
         PlatePrices,
         Recesses,

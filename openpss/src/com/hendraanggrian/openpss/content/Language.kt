@@ -48,7 +48,7 @@ enum class Language(private val nativeLocale: Locale) {
         fun ofFullCode(fullCode: String): Language =
             find { it.fullCode == fullCode }
 
-        fun server(): Language = Language.ofFullCode(transaction {
+        fun ofServer(): Language = Language.ofFullCode(transaction {
             findGlobalSettings(GlobalSetting.KEY_LANGUAGE).single().value
         })
 

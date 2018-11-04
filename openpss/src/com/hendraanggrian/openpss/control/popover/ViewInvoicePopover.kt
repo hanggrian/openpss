@@ -1,4 +1,4 @@
-package com.hendraanggrian.openpss.popup.popover
+package com.hendraanggrian.openpss.control.popover
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.Context
@@ -6,7 +6,6 @@ import com.hendraanggrian.openpss.content.Language
 import com.hendraanggrian.openpss.content.PATTERN_DATETIME_EXTENDED
 import com.hendraanggrian.openpss.content.currencyConverter
 import com.hendraanggrian.openpss.content.numberConverter
-import com.hendraanggrian.openpss.control.bold
 import com.hendraanggrian.openpss.control.space
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Customers
@@ -16,6 +15,7 @@ import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_INVOICE
 import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.db.schemas.Invoices
 import com.hendraanggrian.openpss.db.transaction
+import com.hendraanggrian.openpss.util.bold
 import com.sun.javafx.print.PrintHelper
 import com.sun.javafx.print.Units.MM
 import javafx.geometry.HPos.LEFT
@@ -81,7 +81,7 @@ class ViewInvoicePopover(
     private lateinit var employee: Employee
     private val invoiceBox: VBox
 
-    override val resources: ResourceBundle = Language.server().toResourcesBundle()
+    override val resources: ResourceBundle = Language.ofServer().toResourcesBundle()
 
     init {
         graphic = label("${getString(R.string.server_language)}: $language")
@@ -104,7 +104,12 @@ class ViewInvoicePopover(
             hbox(R.dimen.padding_medium.toDouble()) {
                 vbox {
                     alignment = CENTER_LEFT
-                    invoiceHeaders.forEachIndexed { index, s -> label(s) { if (index == 0) font = bold() } }
+                    invoiceHeaders.forEachIndexed { index, s ->
+                        label(s) {
+                            if (index == 0) font =
+                                bold()
+                        }
+                    }
                 } hpriority ALWAYS
                 vbox {
                     alignment = CENTER_RIGHT

@@ -22,7 +22,7 @@ object DatabaseSpec : Spek({
                     println(dbDateTime)
                 }
             } catch (e: Exception) {
-                error(e.message.toString())
+                error(e.log.toString())
             }
         }
     }

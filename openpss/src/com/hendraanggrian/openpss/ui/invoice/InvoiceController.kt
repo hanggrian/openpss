@@ -281,16 +281,14 @@ class InvoiceController : ActionController(), Refreshable, Selectable<Invoice>, 
     }.show(invoiceTable)
 
     private fun addPayment() = AddPaymentDialog(this, selected!!).show {
-        transaction {
-            Payments += it!!
+        (AddPaymentAction(this@InvoiceController, it!!, selected!!.no)) {
             updatePaymentStatus()
             reload(selected!!)
         }
     }
 
     private fun deletePayment() = ConfirmDialog(this).show {
-        transaction {
-            Payments -= selected2!!
+        (DeletePaymentAction(this@InvoiceController, selected2!!, selected!!.no)) {
             updatePaymentStatus()
             reload(selected!!)
         }

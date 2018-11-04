@@ -10,7 +10,7 @@ import kotlinx.nosql.update
 
 class AddCustomerAction(context: Context, val name: String) : Action<Customer>(context) {
 
-    override val message: String = getString(R.string._event_customer_add, name)
+    override val log: String = getString(R.string._log_customer_add, name)
 
     override fun SessionWrapper.handle(): Customer = Customer.new(name).also { it.id = Customers.insert(it) }
 }
@@ -23,7 +23,7 @@ class EditCustomerAction(
     val note: String?
 ) : Action<Unit>(context) {
 
-    override val message: String = getString(R.string._event_customer_edit, customer.name)
+    override val log: String = getString(R.string._log_customer_edit, customer.name)
 
     override fun SessionWrapper.handle() {
         Customers[customer]
@@ -38,7 +38,7 @@ class AddContactAction(
     val contact: Customer.Contact
 ) : Action<Unit>(context) {
 
-    override val message: String = getString(R.string._event_contact_add, contact.value, customer.name)
+    override val log: String = getString(R.string._log_contact_add, contact.value, customer.name)
 
     override fun SessionWrapper.handle() {
         Customers[customer]
@@ -53,7 +53,7 @@ class DeleteContactAction(
     val contact: Customer.Contact
 ) : Action<Unit>(context) {
 
-    override val message: String = getString(R.string._event_contact_deleted, contact.value, customer.name)
+    override val log: String = getString(R.string._log_contact_deleted, contact.value, customer.name)
 
     override fun SessionWrapper.handle() {
         Customers[customer]

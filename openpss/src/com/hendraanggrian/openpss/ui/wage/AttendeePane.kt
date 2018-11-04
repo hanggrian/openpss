@@ -189,7 +189,7 @@ class AttendeePane(
             val titleRegion = find<Node>(".title")
             val padding = (titleRegion as StackPane).padding
             val graphicWidth = graphic.layoutBounds.width
-            val labelWidth = titleRegion.find<Node>(".message").layoutBounds.width
+            val labelWidth = titleRegion.find<Node>(".log").layoutBounds.width
             graphicTextGap = width - graphicWidth - padding.left - padding.right - labelWidth
         }
     }

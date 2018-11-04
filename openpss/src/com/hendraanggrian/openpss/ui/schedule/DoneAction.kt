@@ -10,7 +10,7 @@ import kotlinx.nosql.update
 
 class DoneAction(context: Context, val invoice: Invoice) : Action<Unit>(context) {
 
-    override val message: String = getString(R.string._event_schedule_done, invoice.jobs.size, invoice.no)
+    override val log: String = getString(R.string._log_schedule_done, invoice.jobs.size, invoice.no)
 
     override fun SessionWrapper.handle() {
         Invoices[invoice].projection { done }.update(true)

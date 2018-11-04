@@ -1,12 +1,11 @@
 package com.hendraanggrian.openpss.ui.schedule
 
-import com.hendraanggrian.openpss.db.schemas.Invoices
 import com.hendraanggrian.openpss.content.numberConverter
-import kotlinx.nosql.Id
+import com.hendraanggrian.openpss.db.schemas.Invoice
 import ktfx.util.invoke
 
 data class Schedule(
-    val invoiceId: Id<String, Invoices>?,
+    val invoice: Invoice,
     val firstColumn: String,
     val title: String,
     val qty: String = "",
@@ -14,14 +13,10 @@ data class Schedule(
 ) {
 
     constructor(
-        invoiceId: Id<String, Invoices>?,
+        invoice: Invoice,
         firstColumn: String,
         title: String,
         qty: Int,
         type: String = ""
-    ) : this(invoiceId, firstColumn, title, numberConverter(qty), type)
-
-    fun isNode(): Boolean = invoiceId != null
-
-    fun isChild(): Boolean = invoiceId == null
+    ) : this(invoice, firstColumn, title, numberConverter(qty), type)
 }

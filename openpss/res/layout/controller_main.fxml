@@ -95,7 +95,7 @@
                     </SelectionListView>
                     <JFXToolbar>
                         <leftItems>
-                            <Label text="%events" styleClass="label-accent"/>
+                            <Label text="%logs" styleClass="label-accent"/>
                         </leftItems>
                     </JFXToolbar>
                     <PaginatedPane fx:id="eventPagination"/>

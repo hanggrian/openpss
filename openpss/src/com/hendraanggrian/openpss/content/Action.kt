@@ -11,15 +11,13 @@ abstract class Action<R>(private val context: Context) : Context by context {
     @Suppress("LeakingThis")
     override val resources: ResourceBundle = Language.server().toResourcesBundle()
 
-    abstract val message: String
+    abstract val log: String
 
     abstract fun SessionWrapper.handle(): R
 
-    operator fun invoke(): R = transaction {
+    operator fun invoke(block: SessionWrapper.(R) -> Unit) = transaction {
         val result = handle()
-        Logs += Log.new(context.login.id, message)
-        result
+        Logs += Log.new(context.login.id, log)
+        block(result)
     }
-
-    inline operator fun invoke(block: (R) -> Unit) = invoke().let(block)
 }

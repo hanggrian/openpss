@@ -27,6 +27,7 @@ data class Payment(
 ) : Document<Payments> {
 
     companion object {
+
         fun new(
             invoiceId: Id<String, Invoices>,
             employeeId: Id<String, Employees>,

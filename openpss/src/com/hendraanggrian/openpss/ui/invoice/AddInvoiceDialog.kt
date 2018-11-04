@@ -88,6 +88,7 @@ class AddInvoiceDialog(
             } col 1 row 1
             label(getString(R.string.jobs)) col 0 row 2
             jfxTabPane {
+                styleClass += "jfx-tab-pane-small"
                 (getString(R.string.plate)) {
                     plateTable = invoiceTableView({ AddPlateJobPopover(this@AddInvoiceDialog) }) {
                         columns {

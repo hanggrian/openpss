@@ -79,9 +79,6 @@
     -fx-stroke: -accent;
 }
 
-.jfx-tab-pane .tab-header-area {
-    -fx-padding: 0 -50 0 50;
-}
 .jfx-tab-pane .tab-header-area .jfx-rippler {
     -jfx-rippler-fill: -accent;
 }
@@ -183,4 +180,11 @@
 }
 .tab-pane-hidden > .tab-header-area {
     visibility: hidden;
+}
+
+.jfx-tab-pane-small .tab {
+    -fx-padding: 2;
+}
+.jfx-tab-pane-small .tab .tab-label {
+    -fx-font-size: 9pt;
 }

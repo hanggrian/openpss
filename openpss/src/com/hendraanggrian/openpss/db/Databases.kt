@@ -51,7 +51,7 @@ private val TABLES =
 
 /**
  * A failed transaction will most likely throw an exception instance listAll [MongoException].
- * This function will safely execute a transaction and display an error message on JavaFX if it throws those exceptions.
+ * This function will safely execute a transaction and display an error log on JavaFX if it throws those exceptions.
  *
  * @see [kotlinx.nosql.mongodb.MongoDB.withSession]
  */

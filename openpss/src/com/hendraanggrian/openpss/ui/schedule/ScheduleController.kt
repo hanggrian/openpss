@@ -24,7 +24,6 @@ import javafx.scene.control.TreeTableView
 import javafx.scene.control.TreeTableView.TreeTableViewSelectionModel
 import javafx.scene.image.ImageView
 import kotlinx.nosql.equal
-import kotlinx.nosql.update
 import ktfx.NodeInvokable
 import ktfx.application.later
 import ktfx.beans.value.or
@@ -54,7 +53,9 @@ class ScheduleController : ActionController(), Refreshable, TreeSelectable<Sched
         }
         doneButton = stretchableButton(STRETCH_POINT, getString(R.string.done), ImageView(R.image.act_done)) {
             onAction {
-                done()
+                (DoneAction(this@ScheduleController, selected!!.value.invoice)) {
+                    refresh()
+                }
             }
         }
         space(R.dimen.padding_large.toDouble())
@@ -95,34 +96,29 @@ class ScheduleController : ActionController(), Refreshable, TreeSelectable<Sched
                 }.forEach { invoice ->
                     addAll(UncollapsibleTreeItem(
                         Schedule(
-                            invoice.id, Customers[invoice.customerId].single().name, "", "",
+                            invoice, Customers[invoice.customerId].single().name, "", "",
                             invoice.dateTime.toString(PATTERN_DATETIME_EXTENDED)
                         )
                     ).apply {
                         invoice.plateJobs.forEach {
                             children += TreeItem<Schedule>(
-                                Schedule(invoice.id, getString(R.string.plate), it.title, it.qty, it.machine)
+                                Schedule(invoice, getString(R.string.plate), it.title, it.qty, it.machine)
                             )
                         }
                         invoice.offsetJobs.forEach {
                             children += TreeItem<Schedule>(
-                                Schedule(invoice.id, getString(R.string.offset), it.title, it.qty, it.machine)
+                                Schedule(invoice, getString(R.string.offset), it.title, it.qty, it.machine)
                             )
                         }
                         invoice.otherJobs.forEach {
                             children += TreeItem<Schedule>(
-                                Schedule(invoice.id, getString(R.string.others), it.title, it.qty)
+                                Schedule(invoice, getString(R.string.others), it.title, it.qty)
                             )
                         }
                     })
                 }
             }
         }
-    }
-
-    private fun done() {
-        transaction { Invoices[selected!!.value.invoiceId!!].projection { done }.update(true) }
-        refresh()
     }
 
     private fun <S> TreeTableView.TreeTableViewSelectionModel<S>.selectAll(parent: TreeItem<S>) {

@@ -11,7 +11,7 @@ import org.joda.time.DateTime
 object Logs : DocumentSchema<Log>("logs", Log::class) {
     val dateTime = dateTime("date_time")
     val employeeId = id("employee_id", Employees)
-    val message = string("message")
+    val message = string("log")
 }
 
 data class Log(

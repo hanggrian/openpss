@@ -14,8 +14,8 @@ import ktfx.LayoutDsl
 import ktfx.NodeInvokable
 
 /**
- * A button that will display message when the window have sufficient width.
- * When it doesn't, [StretchableButton] will store its message as tooltip.
+ * A button that will display log when the window have sufficient width.
+ * When it doesn't, [StretchableButton] will store its log as tooltip.
  */
 @DefaultProperty("graphic")
 class StretchableButton @JvmOverloads constructor(

@@ -1,21 +1,21 @@
 package com.hendraanggrian.openpss.ui.invoice
 
+import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.Context
 import com.hendraanggrian.openpss.content.PATTERN_DATE
-import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.content.currencyConverter
 import com.hendraanggrian.openpss.control.bold
 import com.hendraanggrian.openpss.control.currencyCell
 import com.hendraanggrian.openpss.control.numberCell
 import com.hendraanggrian.openpss.control.stringCell
-import com.hendraanggrian.openpss.content.currencyConverter
 import com.hendraanggrian.openpss.db.dbDateTime
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.popup.dialog.ResultableDialog
 import com.hendraanggrian.openpss.popup.popover.ResultablePopover
-import com.hendraanggrian.openpss.ui.invoice.order.AddOffsetPrintPopover
-import com.hendraanggrian.openpss.ui.invoice.order.AddOtherPopover
-import com.hendraanggrian.openpss.ui.invoice.order.AddPlatePopover
+import com.hendraanggrian.openpss.ui.invoice.job.AddOffsetJobPopover
+import com.hendraanggrian.openpss.ui.invoice.job.AddOtherJobPopover
+import com.hendraanggrian.openpss.ui.invoice.job.AddPlateJobPopover
 import com.hendraanggrian.openpss.util.getColor
 import javafx.beans.property.DoubleProperty
 import javafx.beans.property.ObjectProperty
@@ -60,9 +60,9 @@ class AddInvoiceDialog(
     context: Context
 ) : ResultableDialog<Invoice>(context, R.string.add_invoice) {
 
-    private lateinit var plateTable: TableView<Invoice.Plate>
-    private lateinit var offsetTable: TableView<Invoice.Offset>
-    private lateinit var otherTable: TableView<Invoice.Other>
+    private lateinit var plateTable: TableView<Invoice.PlateJob>
+    private lateinit var offsetTable: TableView<Invoice.OffsetJob>
+    private lateinit var otherTable: TableView<Invoice.OtherJob>
     private lateinit var noteArea: TextArea
 
     private val dateTime: DateTime = dbDateTime
@@ -86,37 +86,37 @@ class AddInvoiceDialog(
                     SearchCustomerPopover(this@AddInvoiceDialog).show(this@jfxTextField) { customerProperty.set(it) }
                 }
             } col 1 row 1
-            label(getString(R.string.order)) col 0 row 2
+            label(getString(R.string.jobs)) col 0 row 2
             jfxTabPane {
                 (getString(R.string.plate)) {
-                    plateTable = invoiceTableView({ AddPlatePopover(this@AddInvoiceDialog) }) {
+                    plateTable = invoiceTableView({ AddPlateJobPopover(this@AddInvoiceDialog) }) {
                         columns {
-                            column<Invoice.Plate, String>(R.string.qty, 72) { numberCell { qty } }
-                            column<Invoice.Plate, String>(R.string.machine, 72) { stringCell { machine } }
-                            column<Invoice.Plate, String>(R.string.title, 264) { stringCell { title } }
-                            column<Invoice.Plate, String>(R.string.total, 156) { currencyCell { total } }
+                            column<Invoice.PlateJob, String>(R.string.qty, 72) { numberCell { qty } }
+                            column<Invoice.PlateJob, String>(R.string.machine, 72) { stringCell { machine } }
+                            column<Invoice.PlateJob, String>(R.string.title, 264) { stringCell { title } }
+                            column<Invoice.PlateJob, String>(R.string.total, 156) { currencyCell { total } }
                         }
                     }
                 }
                 (getString(R.string.offset)) {
-                    offsetTable = invoiceTableView({ AddOffsetPrintPopover(this@AddInvoiceDialog) }) {
+                    offsetTable = invoiceTableView({ AddOffsetJobPopover(this@AddInvoiceDialog) }) {
                         columns {
-                            column<Invoice.Offset, String>(R.string.qty, 72) { numberCell { qty } }
-                            column<Invoice.Offset, String>(R.string.machine, 72) { stringCell { machine } }
-                            column<Invoice.Offset, String>(R.string.technique, 72) {
+                            column<Invoice.OffsetJob, String>(R.string.qty, 72) { numberCell { qty } }
+                            column<Invoice.OffsetJob, String>(R.string.machine, 72) { stringCell { machine } }
+                            column<Invoice.OffsetJob, String>(R.string.technique, 72) {
                                 stringCell { typedTechnique.toString(this@AddInvoiceDialog) }
                             }
-                            column<Invoice.Offset, String>(R.string.title, 192) { stringCell { title } }
-                            column<Invoice.Offset, String>(R.string.total, 156) { currencyCell { total } }
+                            column<Invoice.OffsetJob, String>(R.string.title, 192) { stringCell { title } }
+                            column<Invoice.OffsetJob, String>(R.string.total, 156) { currencyCell { total } }
                         }
                     }
                 }
                 (getString(R.string.others)) {
-                    otherTable = invoiceTableView({ AddOtherPopover(this@AddInvoiceDialog) }) {
+                    otherTable = invoiceTableView({ AddOtherJobPopover(this@AddInvoiceDialog) }) {
                         columns {
-                            column<Invoice.Other, String>(R.string.qty, 72) { numberCell { qty } }
-                            column<Invoice.Other, String>(R.string.title, 336) { stringCell { title } }
-                            column<Invoice.Other, String>(R.string.total, 156) { currencyCell { total } }
+                            column<Invoice.OtherJob, String>(R.string.qty, 72) { numberCell { qty } }
+                            column<Invoice.OtherJob, String>(R.string.title, 336) { stringCell { title } }
+                            column<Invoice.OtherJob, String>(R.string.total, 156) { currencyCell { total } }
                         }
                     }
                 }
@@ -147,7 +147,7 @@ class AddInvoiceDialog(
     }
 
     override val nullableResult: Invoice?
-        get() = Invoice.new(
+        get() = null/*Invoice.new(
             login.id,
             customerProperty.value.id,
             dateTime,
@@ -155,17 +155,17 @@ class AddInvoiceDialog(
             plateTable.items,
             otherTable.items,
             noteArea.text
-        )
+        )*/
 
     private fun <S> NodeInvokable.invoiceTableView(
-        newAddOrderPopOver: () -> ResultablePopover<S>,
+        newAddJobPopover: () -> ResultablePopover<S>,
         init: TableView<S>.() -> Unit
     ): TableView<S> = tableView {
         prefHeight = 96.0
         init()
         contextMenu {
             getString(R.string.add)(ImageView(R.image.menu_add)) {
-                onAction { _ -> newAddOrderPopOver().show(this@tableView) { this@tableView.items.add(it) } }
+                onAction { newAddJobPopover().show(this@tableView) { this@tableView.items.add(it) } }
             }
             separatorMenuItem()
             getString(R.string.delete)(ImageView(R.image.menu_delete)) {

@@ -1,8 +1,8 @@
 package com.hendraanggrian.openpss.ui.wage
 
+import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.Context
 import com.hendraanggrian.openpss.content.PATTERN_DATETIME_EXTENDED
-import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.intField
 import com.hendraanggrian.openpss.db.schemas.Recesses
 import com.hendraanggrian.openpss.db.transaction
@@ -105,6 +105,7 @@ class AttendeePane(
                 } col 1 row 3 colSpans 2
             }
             attendanceList = listView(attendee.attendances) {
+                styleClass += "list-view-no-horizontal-scrollbar"
                 prefWidth = 150.0
                 maxHeight = 360.0 // just enough for 7 days attendance
                 cellFactory {

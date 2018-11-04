@@ -14,7 +14,7 @@ interface Resources {
 
     fun getString(id: String): String = resources.getString(id)
 
-    fun getString(id: String, vararg args: String): String = getString(id).format(*args)
+    fun getString(id: String, vararg args: Any): String = getString(id).format(*args)
 
     /** Mark enum values to be translatable. */
     interface Enum {

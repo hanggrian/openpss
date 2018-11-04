@@ -159,6 +159,14 @@
     -fx-graphic-text-gap: 20
 }
 
+.list-view-no-vertical-scrollbar .scroll-bar:vertical {
+    -fx-scale-x: 0;
+}
+
+.list-view-no-horizontal-scrollbar .scroll-bar:horizontal {
+    -fx-scale-x: 0;
+}
+
 .pane-borderless {
     -fx-background-color: transparent;
 }

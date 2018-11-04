@@ -1,9 +1,9 @@
 package com.hendraanggrian.openpss.control
 
-import javafx.scene.control.TableView
+import javafx.scene.control.ListView
 import ktfx.coroutines.listener
 
-class UnselectableTableView<S> : TableView<S>() {
+class UnselectableListView<T> : ListView<T>() {
 
     init {
         selectionModel.run {

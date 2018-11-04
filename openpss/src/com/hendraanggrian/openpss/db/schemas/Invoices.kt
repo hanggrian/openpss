@@ -22,16 +22,16 @@ object Invoices : DocumentSchema<Invoice>("invoices", Invoice::class) {
     val employeeId = id("employee_id", Employees)
     val customerId = id("customer_id", Customers)
     val dateTime = dateTime("date_time")
-    val offsets = Offsets()
-    val digitals = Digitals()
-    val plates = Plates()
-    val others = Others()
+    val offset_jobs = OffsetJobs()
+    val digital_jobs = DigitalJobs()
+    val plate_jobs = PlateJobs()
+    val other_jobs = OtherJobs()
     val note = string("note")
     val printed = boolean("printed")
     val paid = boolean("paid")
     val done = boolean("done")
 
-    class Offsets : ListColumn<Invoice.Offset, Invoices>("offsets", Invoice.Offset::class) {
+    class OffsetJobs : ListColumn<Invoice.OffsetJob, Invoices>("offsets", Invoice.OffsetJob::class) {
         val qty = integer("qty")
         val title = string("title")
         val total = string("total")
@@ -39,7 +39,7 @@ object Invoices : DocumentSchema<Invoice>("invoices", Invoice::class) {
         val technique = string("technique")
     }
 
-    class Digitals : ListColumn<Invoice.Digital, Invoices>("digitals", Invoice.Digital::class) {
+    class DigitalJobs : ListColumn<Invoice.DigitalJob, Invoices>("digitals", Invoice.DigitalJob::class) {
         val qty = integer("qty")
         val title = string("title")
         val total = string("total")
@@ -47,14 +47,14 @@ object Invoices : DocumentSchema<Invoice>("invoices", Invoice::class) {
         val technique = string("technique")
     }
 
-    class Plates : ListColumn<Invoice.Plate, Invoices>("plates", Invoice.Plate::class) {
+    class PlateJobs : ListColumn<Invoice.PlateJob, Invoices>("plates", Invoice.PlateJob::class) {
         val qty = integer("qty")
         val title = string("title")
         val total = string("total")
         val machine = string("machine")
     }
 
-    class Others : ListColumn<Invoice.Other, Invoices>("others", Invoice.Other::class) {
+    class OtherJobs : ListColumn<Invoice.OtherJob, Invoices>("others", Invoice.OtherJob::class) {
         val qty = integer("qty")
         val title = string("title")
         val total = string("total")
@@ -66,9 +66,10 @@ data class Invoice(
     val employeeId: Id<String, Employees>,
     val customerId: Id<String, Customers>,
     val dateTime: DateTime,
-    var offsets: List<Offset>,
-    var plates: List<Plate>,
-    var others: List<Other>,
+    var offsetJobs: List<OffsetJob>,
+    var digitalJobs: List<DigitalJob>,
+    var plateJobs: List<PlateJob>,
+    var otherJobs: List<OtherJob>,
     var note: String,
     val printed: Boolean,
     val paid: Boolean,
@@ -81,29 +82,38 @@ data class Invoice(
             employeeId: Id<String, Employees>,
             customerId: Id<String, Customers>,
             dateTime: DateTime,
-            offsets: List<Offset>,
-            plates: List<Plate>,
-            others: List<Other>,
+            offsetJobs: List<OffsetJob>,
+            digitalJobs: List<DigitalJob>,
+            plateJobs: List<PlateJob>,
+            otherJobs: List<OtherJob>,
             note: String
         ): Invoice = Invoice(
             Numbered.next(Invoices),
-            employeeId, customerId, dateTime, offsets, plates, others, note, false, false, false
+            employeeId, customerId, dateTime, offsetJobs, digitalJobs, plateJobs, otherJobs, note, false, false, false
         )
     }
 
     override lateinit var id: Id<String, Invoices>
 
-    val total: Double get() = plates.sum() + offsets.sum() + others.sum()
+    val jobs: List<Job>
+        get() {
+            val list = mutableListOf<Job>()
+            offsetJobs.forEach { list += it }
+            digitalJobs.forEach { list += it }
+            plateJobs.forEach { list += it }
+            otherJobs.forEach { list += it }
+            return list
+        }
 
-    private fun List<Order>.sum() = sumByDouble { it.total }
+    val total: Double get() = jobs.sumByDouble { it.total }
 
-    data class Offset(
+    data class OffsetJob(
         override val qty: Int,
         override val title: String,
         override val total: Double,
         val machine: String,
         val technique: String
-    ) : Titled, Order {
+    ) : Titled, Job {
 
         companion object {
             fun new(
@@ -112,7 +122,7 @@ data class Invoice(
                 total: Double,
                 machine: String,
                 technique: Technique
-            ): Offset = Offset(qty, title, total, machine, technique.id)
+            ): OffsetJob = OffsetJob(qty, title, total, machine, technique.id)
         }
 
         val typedTechnique: Technique get() = enumValueOfId(technique)
@@ -130,13 +140,13 @@ data class Invoice(
         }
     }
 
-    data class Digital(
+    data class DigitalJob(
         override val qty: Int,
         override val title: String,
         override val total: Double,
         val oneSidePrice: Int,
         val twoSidePrice: Int
-    ) : Titled, Order {
+    ) : Titled, Job {
 
         companion object {
             fun new(
@@ -145,16 +155,16 @@ data class Invoice(
                 total: Double,
                 oneSidePrice: Int,
                 twoSidePrice: Int
-            ): Digital = Digital(qty, title, total, oneSidePrice, twoSidePrice)
+            ): DigitalJob = DigitalJob(qty, title, total, oneSidePrice, twoSidePrice)
         }
     }
 
-    data class Plate(
+    data class PlateJob(
         override val qty: Int,
         override val title: String,
         override val total: Double,
         val machine: String
-    ) : Titled, Order {
+    ) : Titled, Job {
 
         companion object {
             fun new(
@@ -162,26 +172,26 @@ data class Invoice(
                 title: String,
                 total: Double,
                 machine: String
-            ): Plate = Plate(qty, title, total, machine)
+            ): PlateJob = PlateJob(qty, title, total, machine)
         }
     }
 
-    data class Other(
+    data class OtherJob(
         override val qty: Int,
         override val title: String,
         override val total: Double
-    ) : Titled, Order {
+    ) : Titled, Job {
 
         companion object {
             fun new(
                 qty: Int,
                 title: String,
                 total: Double
-            ): Invoice.Other = Invoice.Other(qty, title, total)
+            ): Invoice.OtherJob = Invoice.OtherJob(qty, title, total)
         }
     }
 
-    interface Order {
+    interface Job {
         val qty: Int
         val title: String
         val total: Double

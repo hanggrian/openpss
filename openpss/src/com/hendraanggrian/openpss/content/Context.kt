@@ -25,7 +25,8 @@ interface Context : Resources {
     val desktop: Desktop?
         get() {
             if (!Desktop.isDesktopSupported()) {
-                root.jfxSnackbar("java.awt.Desktop is not supported.",
+                root.jfxSnackbar(
+                    "java.awt.Desktop is not supported.",
                     App.DURATION_SHORT
                 )
                 return null

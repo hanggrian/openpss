@@ -1,7 +1,7 @@
-package com.hendraanggrian.openpss.ui.invoice.order
+package com.hendraanggrian.openpss.ui.invoice.job
 
-import com.hendraanggrian.openpss.content.Context
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.content.Context
 import com.hendraanggrian.openpss.control.DoubleField
 import com.hendraanggrian.openpss.control.IntField
 import com.hendraanggrian.openpss.control.doubleField
@@ -23,11 +23,11 @@ import ktfx.layouts._GridPane
 import ktfx.layouts.label
 import ktfx.listeners.converter
 
-class AddOffsetPrintPopover(context: Context) :
-    AddOrderPopover<Invoice.Offset>(context, R.string.add_offset_print), Invoice.Order {
+class AddOffsetJobPopover(context: Context) :
+    AddJobPopover<Invoice.OffsetJob>(context, R.string.add_offset_job), Invoice.Job {
 
     private lateinit var machineChoice: ComboBox<OffsetPrintPrice>
-    private lateinit var techniqueChoice: ComboBox<Invoice.Offset.Technique>
+    private lateinit var techniqueChoice: ComboBox<Invoice.OffsetJob.Technique>
     private lateinit var minQtyField: IntField
     private lateinit var minPriceField: DoubleField
     private lateinit var excessPriceField: DoubleField
@@ -43,8 +43,8 @@ class AddOffsetPrintPopover(context: Context) :
         } col 1 colSpans 2 row currentRow
         currentRow++
         label(getString(R.string.technique)) col 0 row currentRow
-        techniqueChoice = jfxComboBox(Invoice.Offset.Technique.values().toObservableList()) {
-            converter { toString { it!!.toString(this@AddOffsetPrintPopover) } }
+        techniqueChoice = jfxComboBox(Invoice.OffsetJob.Technique.values().toObservableList()) {
+            converter { toString { it!!.toString(this@AddOffsetJobPopover) } }
             selectionModel.selectFirst()
         } col 1 colSpans 2 row currentRow
         currentRow++
@@ -74,24 +74,24 @@ class AddOffsetPrintPopover(context: Context) :
             techniqueChoice.valueProperty().isNull or
             totalField.valueProperty().lessEq(0)
 
-    override val nullableResult: Invoice.Offset?
-        get() = Invoice.Offset.new(qty, title, total, machineChoice.value.name, techniqueChoice.value)
+    override val nullableResult: Invoice.OffsetJob?
+        get() = Invoice.OffsetJob.new(qty, title, total, machineChoice.value.name, techniqueChoice.value)
 
     override fun calculateTotal(): Double = when (techniqueChoice.value) {
         null -> 0.0
-        Invoice.Offset.Technique.ONE_SIDE -> calculateSide(
+        Invoice.OffsetJob.Technique.ONE_SIDE -> calculateSide(
             qty,
             minQtyField.value,
             minPriceField.value,
             excessPriceField.value
         )
-        Invoice.Offset.Technique.TWO_SIDE_EQUAL -> calculateSide(
+        Invoice.OffsetJob.Technique.TWO_SIDE_EQUAL -> calculateSide(
             qty * 2,
             minQtyField.value,
             minPriceField.value,
             excessPriceField.value
         )
-        Invoice.Offset.Technique.TWO_SIDE_DISTINCT -> calculateSide(
+        Invoice.OffsetJob.Technique.TWO_SIDE_DISTINCT -> calculateSide(
             qty,
             minQtyField.value,
             minPriceField.value,

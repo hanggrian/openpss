@@ -1,8 +1,8 @@
 package com.hendraanggrian.openpss.ui.main.edit.price
 
 import com.hendraanggrian.openpss.App
-import com.hendraanggrian.openpss.content.Context
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.content.Context
 import com.hendraanggrian.openpss.control.stringCell
 import com.hendraanggrian.openpss.db.Document
 import com.hendraanggrian.openpss.db.Named
@@ -34,9 +34,9 @@ abstract class EditPriceDialog<D, S>(
 
     override fun add() = InputPopover(
         this, when (this) {
-            is EditPlatePriceDialog -> R.string.add_plate
-            is EditOffsetPrintPriceDialog -> R.string.add_offset_print
-            else -> R.string.add_digital_print
+            is EditPlatePriceDialog -> R.string.add_plate_price
+            is EditOffsetPrintPriceDialog -> R.string.add_offset_price
+            else -> R.string.add_digital_price
         }
     ).show(addButton) { name ->
         transaction @Suppress("IMPLICIT_CAST_TO_ANY") {

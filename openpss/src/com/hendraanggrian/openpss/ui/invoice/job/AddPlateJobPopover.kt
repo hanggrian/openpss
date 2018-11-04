@@ -1,7 +1,7 @@
-package com.hendraanggrian.openpss.ui.invoice.order
+package com.hendraanggrian.openpss.ui.invoice.job
 
-import com.hendraanggrian.openpss.content.Context
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.content.Context
 import com.hendraanggrian.openpss.control.DoubleField
 import com.hendraanggrian.openpss.control.doubleField
 import com.hendraanggrian.openpss.db.schemas.Invoice
@@ -20,8 +20,8 @@ import ktfx.jfoenix.jfxComboBox
 import ktfx.layouts._GridPane
 import ktfx.layouts.label
 
-class AddPlatePopover(context: Context) : AddOrderPopover<Invoice.Plate>(context, R.string.add_plate),
-    Invoice.Order {
+class AddPlateJobPopover(context: Context) : AddJobPopover<Invoice.PlateJob>(context, R.string.add_plate_job),
+    Invoice.Job {
 
     private lateinit var machineChoice: ComboBox<PlatePrice>
     private lateinit var priceField: DoubleField
@@ -47,8 +47,8 @@ class AddPlatePopover(context: Context) : AddOrderPopover<Invoice.Plate>(context
             qtyField.valueProperty().lessEq(0) or
             totalField.valueProperty().lessEq(0)
 
-    override val nullableResult: Invoice.Plate?
-        get() = Invoice.Plate.new(qty, title, total, machineChoice.value.name)
+    override val nullableResult: Invoice.PlateJob?
+        get() = Invoice.PlateJob.new(qty, title, total, machineChoice.value.name)
 
     override fun calculateTotal(): Double = qtyField.value * priceField.value
 }

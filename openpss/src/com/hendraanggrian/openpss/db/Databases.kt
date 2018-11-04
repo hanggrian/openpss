@@ -8,7 +8,7 @@ import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.schemas.DigitalPrintPrices
 import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.db.schemas.Employees
-import com.hendraanggrian.openpss.db.schemas.Events
+import com.hendraanggrian.openpss.db.schemas.Logs
 import com.hendraanggrian.openpss.db.schemas.GlobalSetting
 import com.hendraanggrian.openpss.db.schemas.GlobalSettings
 import com.hendraanggrian.openpss.db.schemas.Invoices
@@ -39,7 +39,7 @@ private val TABLES =
         Customers,
         DigitalPrintPrices,
         Employees,
-        Events,
+        Logs,
         GlobalSettings,
         Invoices,
         OffsetPrintPrices,

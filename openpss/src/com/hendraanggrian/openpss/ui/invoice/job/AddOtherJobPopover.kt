@@ -1,7 +1,7 @@
-package com.hendraanggrian.openpss.ui.invoice.order
+package com.hendraanggrian.openpss.ui.invoice.job
 
-import com.hendraanggrian.openpss.content.Context
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.content.Context
 import com.hendraanggrian.openpss.control.DoubleField
 import com.hendraanggrian.openpss.control.doubleField
 import com.hendraanggrian.openpss.db.schemas.Invoice
@@ -13,8 +13,8 @@ import ktfx.beans.value.or
 import ktfx.layouts._GridPane
 import ktfx.layouts.label
 
-class AddOtherPopover(context: Context) : AddOrderPopover<Invoice.Other>(context, R.string.add_other),
-    Invoice.Order {
+class AddOtherJobPopover(context: Context) : AddJobPopover<Invoice.OtherJob>(context, R.string.add_other_job),
+    Invoice.Job {
 
     private lateinit var priceField: DoubleField
 
@@ -31,8 +31,8 @@ class AddOtherPopover(context: Context) : AddOrderPopover<Invoice.Other>(context
             qtyField.valueProperty().lessEq(0) or
             totalField.valueProperty().lessEq(0)
 
-    override val nullableResult: Invoice.Other?
-        get() = Invoice.Other.new(qty, title, total)
+    override val nullableResult: Invoice.OtherJob?
+        get() = Invoice.OtherJob.new(qty, title, total)
 
     override fun calculateTotal(): Double = qtyField.value * priceField.value
 }

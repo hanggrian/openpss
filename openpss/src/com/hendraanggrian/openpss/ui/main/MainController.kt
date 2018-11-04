@@ -2,18 +2,16 @@ package com.hendraanggrian.openpss.ui.main
 
 import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.content.PATTERN_DATETIME_MULTILINE
+import com.hendraanggrian.openpss.content.PATTERN_DATETIME
 import com.hendraanggrian.openpss.control.PaginatedPane
-import com.hendraanggrian.openpss.control.UnselectableTableView
-import com.hendraanggrian.openpss.control.stringCell
-import com.hendraanggrian.openpss.control.wrapText
+import com.hendraanggrian.openpss.control.UnselectableListView
+import com.hendraanggrian.openpss.control.bold
 import com.hendraanggrian.openpss.db.dbDateTime
 import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.schemas.Employees
-import com.hendraanggrian.openpss.db.schemas.Event
-import com.hendraanggrian.openpss.db.schemas.Events
 import com.hendraanggrian.openpss.db.schemas.Invoice
-import com.hendraanggrian.openpss.db.schemas.Invoice.Offset.Technique.TWO_SIDE_EQUAL
+import com.hendraanggrian.openpss.db.schemas.Log
+import com.hendraanggrian.openpss.db.schemas.Logs
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.popup.popover.ViewInvoicePopover
 import com.hendraanggrian.openpss.ui.ActionController
@@ -45,7 +43,6 @@ import javafx.scene.control.MenuItem
 import javafx.scene.control.SelectionModel
 import javafx.scene.control.Tab
 import javafx.scene.control.TabPane
-import javafx.scene.control.TableView
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import javafx.scene.input.MouseEvent
@@ -54,13 +51,16 @@ import javafx.util.Callback
 import ktfx.application.later
 import ktfx.beans.binding.`when`
 import ktfx.beans.binding.buildStringBinding
+import ktfx.beans.binding.minus
 import ktfx.beans.binding.otherwise
 import ktfx.beans.binding.then
 import ktfx.beans.value.eq
 import ktfx.collections.toObservableList
 import ktfx.coroutines.listener
 import ktfx.jfoenix.jfxSnackbar
-import ktfx.layouts.columns
+import ktfx.layouts.text
+import ktfx.listeners.cellFactory
+import ktfx.scene.text.fontSize
 import org.apache.commons.lang3.SystemUtils
 import java.net.URL
 import java.util.ResourceBundle
@@ -177,9 +177,15 @@ class MainController : Controller(), Selectable<Tab>, Selectable2<Label> {
                     employeeId = login.id,
                     customerId = customer.id,
                     dateTime = dbDateTime,
-                    plates = listOf(Invoice.Plate.new(5, "Title", 92000.0, "Machine")),
-                    offsets = listOf(Invoice.Offset.new(5, "Title", 92000.0, "Machine", TWO_SIDE_EQUAL)),
-                    others = listOf(Invoice.Other.new(5, "Title", 92000.0)),
+                    offsetJobs = listOf(
+                        Invoice.OffsetJob.new(
+                            5, "Title", 92000.0, "Machine",
+                            Invoice.OffsetJob.Technique.TWO_SIDE_EQUAL
+                        )
+                    ),
+                    digitalJobs = listOf(Invoice.DigitalJob.new(5, "Title", 92000.0, 0, 0)),
+                    plateJobs = listOf(Invoice.PlateJob.new(5, "Title", 92000.0, "Machine")),
+                    otherJobs = listOf(Invoice.OtherJob.new(5, "Title", 92000.0)),
                     note = "This is a test",
                     printed = false,
                     paid = false,
@@ -196,27 +202,28 @@ class MainController : Controller(), Selectable<Tab>, Selectable2<Label> {
     @FXML fun toggleHamburger() {
         if (drawer.isOpening) {
             eventPagination.contentFactory = Callback { (page, count) ->
-                UnselectableTableView<Event>().apply {
-                    styleClass += "pane-borderless"
-                    columnResizePolicy = TableView.CONSTRAINED_RESIZE_POLICY
-                    columns {
-                        getString(R.string.date)<String> {
-                            prefWidth = 50.0
-                            stringCell { dateTime.toString(PATTERN_DATETIME_MULTILINE) }
-                            wrapText()
-                        }
-                        getString(R.string.employee)<String> {
-                            prefWidth = 50.0
-                            stringCell { transaction { Employees[employeeId].single().toString() } }
-                        }
-                        getString(R.string.value)<String> {
-                            stringCell { message }
-                            wrapText()
+                UnselectableListView<Log>().apply {
+                    styleClass.addAll("pane-borderless", "list-view-no-horizontal-scrollbar")
+                    cellFactory {
+                        onUpdate { event, empty ->
+                            if (event != null && !empty) graphic = ktfx.layouts.textFlow {
+                                text(event.message) {
+                                    isWrapText = true
+                                    fontSize = 12.0
+                                    this@textFlow.prefWidthProperty().bind(this@apply.widthProperty() - 12)
+                                    wrappingWidthProperty().bind(this@apply.widthProperty())
+                                }
+                                newLine()
+                                text(
+                                    event.dateTime.toString(PATTERN_DATETIME) + " " +
+                                        transaction { Employees[event.employeeId].single().name }
+                                ) { font = bold(12) }
+                            }
                         }
                     }
                     later {
                         transaction {
-                            val events = Events.find()
+                            val events = Logs.find()
                             eventPagination.pageCount = ceil(events.count() / count.toDouble()).toInt()
                             items = events
                                 .skip(count * page)

@@ -1,8 +1,8 @@
 package com.hendraanggrian.openpss.ui.schedule
 
 import com.hendraanggrian.openpss.App.Companion.STRETCH_POINT
-import com.hendraanggrian.openpss.content.PATTERN_DATETIME_EXTENDED
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.content.PATTERN_DATETIME_EXTENDED
 import com.hendraanggrian.openpss.control.UncollapsibleTreeItem
 import com.hendraanggrian.openpss.control.space
 import com.hendraanggrian.openpss.control.stretchableButton
@@ -53,7 +53,9 @@ class ScheduleController : ActionController(), Refreshable, TreeSelectable<Sched
             onAction { refresh() }
         }
         doneButton = stretchableButton(STRETCH_POINT, getString(R.string.done), ImageView(R.image.act_done)) {
-            onAction { done() }
+            onAction {
+                done()
+            }
         }
         space(R.dimen.padding_large.toDouble())
         historyCheck = stretchableCheckBox(STRETCH_POINT, getString(R.string.history)) {
@@ -97,17 +99,17 @@ class ScheduleController : ActionController(), Refreshable, TreeSelectable<Sched
                             invoice.dateTime.toString(PATTERN_DATETIME_EXTENDED)
                         )
                     ).apply {
-                        invoice.plates.forEach {
+                        invoice.plateJobs.forEach {
                             children += TreeItem<Schedule>(
                                 Schedule(invoice.id, getString(R.string.plate), it.title, it.qty, it.machine)
                             )
                         }
-                        invoice.offsets.forEach {
+                        invoice.offsetJobs.forEach {
                             children += TreeItem<Schedule>(
                                 Schedule(invoice.id, getString(R.string.offset), it.title, it.qty, it.machine)
                             )
                         }
-                        invoice.others.forEach {
+                        invoice.otherJobs.forEach {
                             children += TreeItem<Schedule>(
                                 Schedule(invoice.id, getString(R.string.others), it.title, it.qty)
                             )

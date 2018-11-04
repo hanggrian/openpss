@@ -57,7 +57,7 @@
                 </MenuItem>
             </Menu>
         </MenuBar>
-        <JFXDrawer fx:id="drawer" defaultDrawerSize="320" VBox.vgrow="ALWAYS"
+        <JFXDrawer fx:id="drawer" defaultDrawerSize="300" VBox.vgrow="ALWAYS"
                    onDrawerOpening="#toggleHamburger" onDrawerClosing="#toggleHamburger">
             <sidePane>
                 <VBox>

@@ -13,7 +13,6 @@ import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.db.schemas.Employees
 import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_INVOICE_HEADERS
-import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_LANGUAGE
 import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.db.schemas.Invoices
 import com.hendraanggrian.openpss.db.transaction
@@ -82,9 +81,7 @@ class ViewInvoicePopover(
     private lateinit var employee: Employee
     private val invoiceBox: VBox
 
-    override val resources: ResourceBundle = Language.ofFullCode(transaction {
-        findGlobalSettings(KEY_LANGUAGE).single().value
-    }).toResourcesBundle()
+    override val resources: ResourceBundle = Language.server().toResourcesBundle()
 
     init {
         graphic = label("${getString(R.string.server_language)}: $language")
@@ -142,30 +139,30 @@ class ViewInvoicePopover(
                         }
                     }
                     var row = 0
-                    row += orderGridPane(row, R.string.plate, invoice.plates) { order, i ->
-                        label(numberConverter(order.qty)) row i col 0
-                        label(order.machine) row i col 1
-                        label(order.title) {
+                    row += jobGridPane(row, R.string.plate, invoice.plateJobs) { job, i ->
+                        label(numberConverter(job.qty)) row i col 0
+                        label(job.machine) row i col 1
+                        label(job.title) {
                             isWrapText = true
                         } row i col 2
-                        label(numberConverter(order.total)) row i col 3
+                        label(numberConverter(job.total)) row i col 3
                     }
-                    row += orderGridPane(row, R.string.offset, invoice.offsets) { order, i ->
-                        label(numberConverter(order.qty)) row i col 0
-                        label("${order.machine}\n${order.typedTechnique.toString(this@ViewInvoicePopover)}") {
+                    row += jobGridPane(row, R.string.offset, invoice.offsetJobs) { job, i ->
+                        label(numberConverter(job.qty)) row i col 0
+                        label("${job.machine}\n${job.typedTechnique.toString(this@ViewInvoicePopover)}") {
                             textAlignment = TextAlignment.CENTER
                         } row i col 1
-                        label(order.title) {
+                        label(job.title) {
                             isWrapText = true
                         } row i col 2
-                        label(numberConverter(order.total)) row i col 3
+                        label(numberConverter(job.total)) row i col 3
                     }
-                    row += orderGridPane(row, R.string.others, invoice.others) { order, i ->
-                        label(numberConverter(order.qty)) row i col 0
-                        label(order.title) {
+                    row += jobGridPane(row, R.string.others, invoice.otherJobs) { job, i ->
+                        label(numberConverter(job.qty)) row i col 0
+                        label(job.title) {
                             isWrapText = true
                         } row i col 2
-                        label(numberConverter(order.total)) row i col 3
+                        label(numberConverter(job.total)) row i col 3
                     }
                 }
             } vpriority ALWAYS
@@ -225,16 +222,16 @@ class ViewInvoicePopover(
         }
     }
 
-    private fun <T : Invoice.Order> _GridPane.orderGridPane(
+    private fun <T : Invoice.Job> _GridPane.jobGridPane(
         currentRow: Int,
         titleId: String,
-        orders: List<T>,
+        jobs: List<T>,
         lineBuilder: _GridPane.(order: T, row: Int) -> Unit
     ): Int {
         var row = currentRow
         label(getString(titleId)) { font = bold() } row row col 0 colSpans 4 halign LEFT
         row++
-        orders.forEach {
+        jobs.forEach {
             lineBuilder(it, row)
             row++
         }

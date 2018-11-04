@@ -1,4 +1,4 @@
-package com.hendraanggrian.openpss.ui.invoice.order
+package com.hendraanggrian.openpss.ui.invoice.job
 
 import com.hendraanggrian.openpss.content.Context
 import com.hendraanggrian.openpss.R
@@ -23,8 +23,8 @@ import ktfx.layouts.label
 import ktfx.layouts.tooltip
 import ktfx.scene.layout.gap
 
-abstract class AddOrderPopover<T : Titled>(context: Context, titleId: String) :
-    ResultablePopover<T>(context, titleId), Invoice.Order {
+abstract class AddJobPopover<T : Titled>(context: Context, titleId: String) :
+    ResultablePopover<T>(context, titleId), Invoice.Job {
 
     abstract fun _GridPane.onCreateContent()
 

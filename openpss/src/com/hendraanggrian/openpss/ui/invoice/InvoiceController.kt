@@ -242,7 +242,11 @@ class InvoiceController : ActionController(), Refreshable, Selectable<Invoice>, 
                                 separatorMenuItem()
                                 getString(R.string.delete)(ImageView(R.image.menu_delete)) {
                                     disableProperty().bind(!selectedBinding or !isAdminProperty())
-                                    onAction { deleteInvoice() }
+                                    onAction {
+                                        (DeleteInvoiceAction(this@InvoiceController, selected!!)) {
+                                            invoiceTable.items.remove(selected)
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -256,12 +260,6 @@ class InvoiceController : ActionController(), Refreshable, Selectable<Invoice>, 
         (AddInvoiceAction(this@InvoiceController, it!!)) {
             invoiceTable.items.add(it)
             invoiceTable.selectionModel.selectFirst()
-        }
-    }
-
-    private fun deleteInvoice() = ConfirmDialog(this).show {
-        (DeleteInvoiceAction(this@InvoiceController, selected!!)) {
-            invoiceTable.items.remove(selected)
         }
     }
 

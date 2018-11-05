@@ -33,8 +33,8 @@ import org.joda.time.LocalDate
 import org.joda.time.LocalTime
 import java.util.Date
 
-private lateinit var DB: MongoDB
-private val TABLES =
+private lateinit var database: MongoDB
+private val tables =
     arrayOf(
         Customers,
         DigitalPrices,
@@ -56,7 +56,7 @@ private val TABLES =
  * @see [kotlinx.nosql.mongodb.MongoDB.withSession]
  */
 fun <T> transaction(statement: SessionWrapper.() -> T): T = try {
-    DB.withSession { SessionWrapper(this).statement() }
+    database.withSession { SessionWrapper(this).statement() }
 } catch (e: MongoException) {
     if (DEBUG) e.printStackTrace()
     errorAlert(e.message.toString()) {
@@ -77,13 +77,11 @@ suspend fun login(
     employeeName: String,
     employeePassword: String
 ): Employee {
-    DB = connect(host, port, user, password)
+    database = connect(host, port, user, password)
     var employee: Employee? = null
     transaction {
         // check first time installation
-        GlobalSetting.listKeys().forEach { key ->
-            if (GlobalSettings { it.key.equal(key) }.isEmpty()) GlobalSettings += GlobalSetting.new(key)
-        }
+        GlobalSetting.setupDefault(this)
         // add default employee
         if (Employees { it.name.equal(Employee.BACKDOOR.name) }.isEmpty())
             Employees += Employee.BACKDOOR
@@ -107,7 +105,7 @@ private suspend fun connect(
         ARTIFACT,
         arrayOf(createCredential(user, "admin", password.toCharArray())),
         Builder().serverSelectionTimeout(3000).build(),
-        TABLES
+        tables
     )
 }
 
@@ -120,4 +118,4 @@ val dbDate: LocalDate get() = LocalDate.fromDateFields(evalDate)
 /** Local time new server. */
 val dbTime: LocalTime get() = LocalTime.fromDateFields(evalDate)
 
-private val evalDate: Date get() = DB.db.doEval("new Date()").getDate("retval")
+private val evalDate: Date get() = database.db.doEval("new Date()").getDate("retval")

@@ -28,7 +28,7 @@ import java.util.Locale
 open class MonthBox @JvmOverloads constructor(prefill: YearMonth = now()) : _HBox(0.0) {
 
     lateinit var monthBox: ComboBox<Int>
-    lateinit var yearField: IntField
+    lateinit var yearField: JFXIntField
     var previousButton: Button
     var nextButton: Button
 
@@ -58,7 +58,7 @@ open class MonthBox @JvmOverloads constructor(prefill: YearMonth = now()) : _HBo
                 fromString { months.indexOf(it) }
             }
         }
-        yearField = intField {
+        yearField = jfxIntField {
             alignment = CENTER
             maxWidth = 56.0
             value = prefill.year

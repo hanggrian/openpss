@@ -3,6 +3,7 @@
 package com.hendraanggrian.openpss.control
 
 import com.hendraanggrian.openpss.App
+import com.hendraanggrian.openpss.control.base.StretchableLabeled
 import com.jfoenix.controls.JFXButton
 import javafx.beans.DefaultProperty
 import javafx.beans.property.DoubleProperty

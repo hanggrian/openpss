@@ -3,6 +3,7 @@
 package com.hendraanggrian.openpss.control
 
 import com.hendraanggrian.openpss.control.base.DoubleFieldBase
+import com.jfoenix.controls.JFXTextField
 import javafx.beans.property.BooleanProperty
 import javafx.beans.property.DoubleProperty
 import javafx.beans.property.SimpleBooleanProperty
@@ -13,7 +14,7 @@ import ktfx.NodeInvokable
 import ktfx.beans.value.getValue
 import ktfx.beans.value.setValue
 
-class DoubleField : TextField(), DoubleFieldBase {
+class JFXDoubleField : JFXTextField(), DoubleFieldBase {
 
     override val actual: TextField get() = this
 
@@ -30,14 +31,14 @@ class DoubleField : TextField(), DoubleFieldBase {
     }
 }
 
-/** Creates a [DoubleField]. */
-fun doubleField(
-    init: ((@LayoutDsl DoubleField).() -> Unit)? = null
-): DoubleField = DoubleField().also {
+/** Creates a [JFXDoubleField]. */
+fun jfxDoubleField(
+    init: ((@LayoutDsl JFXDoubleField).() -> Unit)? = null
+): JFXDoubleField = JFXDoubleField().also {
     init?.invoke(it)
 }
 
-/** Creates a [DoubleField] and add it to this manager. */
-inline fun NodeInvokable.doubleField(
-    noinline init: ((@LayoutDsl DoubleField).() -> Unit)? = null
-): DoubleField = (com.hendraanggrian.openpss.control.doubleField(init))()
+/** Creates a [JFXDoubleField] and add it to this manager. */
+inline fun NodeInvokable.jfxDoubleField(
+    noinline init: ((@LayoutDsl JFXDoubleField).() -> Unit)? = null
+): JFXDoubleField = (com.hendraanggrian.openpss.control.jfxDoubleField(init))()

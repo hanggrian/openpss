@@ -2,20 +2,20 @@ package com.hendraanggrian.openpss.ui.login
 
 import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.BuildConfig
-import com.hendraanggrian.openpss.content.Context
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.util.bold
-import com.hendraanggrian.openpss.db.login
-import com.hendraanggrian.openpss.db.schemas.Employee
+import com.hendraanggrian.openpss.content.Context
 import com.hendraanggrian.openpss.content.Language
 import com.hendraanggrian.openpss.content.Resources
-import com.hendraanggrian.openpss.io.properties.LoginFile
-import com.hendraanggrian.openpss.io.properties.PreferencesFile
 import com.hendraanggrian.openpss.control.dialog.ResultableDialog
 import com.hendraanggrian.openpss.control.dialog.TextDialog
 import com.hendraanggrian.openpss.control.popover.Popover
+import com.hendraanggrian.openpss.db.login
+import com.hendraanggrian.openpss.db.schemas.Employee
+import com.hendraanggrian.openpss.io.properties.LoginFile
+import com.hendraanggrian.openpss.io.properties.PreferencesFile
 import com.hendraanggrian.openpss.ui.main.help.AboutDialog
 import com.hendraanggrian.openpss.ui.main.help.GitHubApi
+import com.hendraanggrian.openpss.util.bold
 import com.jfoenix.controls.JFXButton
 import javafx.geometry.HPos
 import javafx.geometry.Pos
@@ -81,7 +81,7 @@ class LoginPane(private val resourced: Resources) : _StackPane(), Context {
         prefWidth = 128.0
         textProperty().listener { _, _, newValue -> LoginFile.DB_HOST = newValue }
     }
-    private val serverPortField = com.hendraanggrian.openpss.control.intField {
+    private val serverPortField = com.hendraanggrian.openpss.control.jfxIntField {
         value = LoginFile.DB_PORT
         promptText = getString(R.string.port)
         prefWidth = 64.0

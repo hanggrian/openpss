@@ -4,14 +4,13 @@ import com.hendraanggrian.openpss.App.Companion.STRETCH_POINT
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.PATTERN_DATETIME_EXTENDED
 import com.hendraanggrian.openpss.control.DateBox
-import com.hendraanggrian.openpss.control.IntField
+import com.hendraanggrian.openpss.control.JFXIntField
 import com.hendraanggrian.openpss.control.PaginatedPane
-import com.hendraanggrian.openpss.util.currencyCell
-import com.hendraanggrian.openpss.util.doneCell
-import com.hendraanggrian.openpss.control.intField
+import com.hendraanggrian.openpss.control.dialog.ConfirmDialog
+import com.hendraanggrian.openpss.control.jfxIntField
+import com.hendraanggrian.openpss.control.popover.ViewInvoicePopover
 import com.hendraanggrian.openpss.control.space
 import com.hendraanggrian.openpss.control.stretchableButton
-import com.hendraanggrian.openpss.util.stringCell
 import com.hendraanggrian.openpss.db.SessionWrapper
 import com.hendraanggrian.openpss.db.matches
 import com.hendraanggrian.openpss.db.schemas.Customer
@@ -23,12 +22,13 @@ import com.hendraanggrian.openpss.db.schemas.Payment
 import com.hendraanggrian.openpss.db.schemas.Payments
 import com.hendraanggrian.openpss.db.schemas.Payments.invoiceId
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.control.dialog.ConfirmDialog
-import com.hendraanggrian.openpss.control.popover.ViewInvoicePopover
 import com.hendraanggrian.openpss.ui.ActionController
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.Selectable
 import com.hendraanggrian.openpss.ui.Selectable2
+import com.hendraanggrian.openpss.util.currencyCell
+import com.hendraanggrian.openpss.util.doneCell
+import com.hendraanggrian.openpss.util.stringCell
 import javafx.beans.property.SimpleObjectProperty
 import javafx.fxml.FXML
 import javafx.geometry.Pos.CENTER
@@ -88,7 +88,7 @@ class InvoiceController : ActionController(), Refreshable, Selectable<Invoice>, 
 
     private lateinit var refreshButton: Button
     private lateinit var addButton: Button
-    private lateinit var searchField: IntField
+    private lateinit var searchField: JFXIntField
 
     private val customerProperty = SimpleObjectProperty<Customer>()
     private lateinit var invoiceTable: TableView<Invoice>
@@ -106,7 +106,7 @@ class InvoiceController : ActionController(), Refreshable, Selectable<Invoice>, 
             onAction { addInvoice() }
         }
         space(R.dimen.padding_large.toDouble())
-        searchField = intField {
+        searchField = jfxIntField {
             filterBox.disableProperty().bind(valueProperty() neq 0)
             promptText = getString(R.string.search_no)
         }

@@ -2,8 +2,8 @@ package com.hendraanggrian.openpss.ui.invoice.job
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.Context
-import com.hendraanggrian.openpss.control.DoubleField
-import com.hendraanggrian.openpss.control.doubleField
+import com.hendraanggrian.openpss.control.JFXDoubleField
+import com.hendraanggrian.openpss.control.jfxDoubleField
 import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.db.schemas.PlatePrice
 import com.hendraanggrian.openpss.db.schemas.PlatePrices
@@ -24,7 +24,7 @@ class AddPlateJobPopover(context: Context) : AddJobPopover<Invoice.PlateJob>(con
     Invoice.Job {
 
     private lateinit var typeChoice: ComboBox<PlatePrice>
-    private lateinit var priceField: DoubleField
+    private lateinit var priceField: JFXDoubleField
 
     override fun _GridPane.onCreateContent() {
         label(getString(R.string.machine)) col 0 row currentRow
@@ -35,7 +35,7 @@ class AddPlateJobPopover(context: Context) : AddJobPopover<Invoice.PlateJob>(con
         } col 1 colSpans 2 row currentRow
         currentRow++
         label(getString(R.string.price)) col 0 row currentRow
-        priceField = doubleField { promptText = getString(R.string.price) } col 1 colSpans 2 row currentRow
+        priceField = jfxDoubleField { promptText = getString(R.string.price) } col 1 colSpans 2 row currentRow
     }
 
     override val totalBindingDependencies: Array<Observable>

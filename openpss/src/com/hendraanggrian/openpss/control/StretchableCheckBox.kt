@@ -2,6 +2,7 @@
 
 package com.hendraanggrian.openpss.control
 
+import com.hendraanggrian.openpss.control.base.StretchableLabeled
 import com.jfoenix.controls.JFXCheckBox
 import javafx.beans.DefaultProperty
 import javafx.beans.property.DoubleProperty

@@ -2,8 +2,8 @@ package com.hendraanggrian.openpss.ui.invoice.job
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.Context
-import com.hendraanggrian.openpss.control.DoubleField
-import com.hendraanggrian.openpss.control.doubleField
+import com.hendraanggrian.openpss.control.JFXDoubleField
+import com.hendraanggrian.openpss.control.jfxDoubleField
 import com.hendraanggrian.openpss.db.schemas.DigitalPrice
 import com.hendraanggrian.openpss.db.schemas.DigitalPrices
 import com.hendraanggrian.openpss.db.schemas.Invoice
@@ -27,8 +27,8 @@ class AddDigitalJobPopover(context: Context) :
 
     private lateinit var typeChoice: ComboBox<DigitalPrice>
     private lateinit var twoSideCheck: CheckBox
-    private lateinit var oneSidePriceField: DoubleField
-    private lateinit var twoSidePriceField: DoubleField
+    private lateinit var oneSidePriceField: JFXDoubleField
+    private lateinit var twoSidePriceField: JFXDoubleField
 
     override fun _GridPane.onCreateContent() {
         label(getString(R.string.machine)) col 0 row currentRow
@@ -43,12 +43,14 @@ class AddDigitalJobPopover(context: Context) :
         twoSideCheck = jfxCheckBox() col 1 colSpans 2 row currentRow
         currentRow++
         label(getString(R.string.one_side_price)) col 0 row currentRow
-        oneSidePriceField = doubleField { promptText = getString(R.string.one_side_price) } col 1 colSpans 2 row
-            currentRow
+        oneSidePriceField = jfxDoubleField {
+            promptText = getString(R.string.one_side_price)
+        } col 1 colSpans 2 row currentRow
         currentRow++
         label(getString(R.string.two_side_price)) col 0 row currentRow
-        twoSidePriceField = doubleField { promptText = getString(R.string.two_side_price) } col 1 colSpans 2 row
-            currentRow
+        twoSidePriceField = jfxDoubleField {
+            promptText = getString(R.string.two_side_price)
+        } col 1 colSpans 2 row currentRow
         currentRow++
     }
 

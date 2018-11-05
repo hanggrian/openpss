@@ -3,6 +3,7 @@
 package com.hendraanggrian.openpss.control
 
 import com.hendraanggrian.openpss.control.base.IntFieldBase
+import com.jfoenix.controls.JFXTextField
 import javafx.beans.property.IntegerProperty
 import javafx.beans.property.SimpleIntegerProperty
 import javafx.scene.control.TextField
@@ -11,7 +12,7 @@ import ktfx.NodeInvokable
 import ktfx.beans.value.getValue
 import ktfx.beans.value.setValue
 
-class IntField : TextField(), IntFieldBase {
+class JFXIntField : JFXTextField(), IntFieldBase {
 
     override val actual: TextField get() = this
 
@@ -24,14 +25,14 @@ class IntField : TextField(), IntFieldBase {
     }
 }
 
-/** Creates a [IntField]. */
-fun intField(
-    init: ((@LayoutDsl IntField).() -> Unit)? = null
-): IntField = IntField().also {
+/** Creates a [JFXIntField]. */
+fun jfxIntField(
+    init: ((@LayoutDsl JFXIntField).() -> Unit)? = null
+): JFXIntField = JFXIntField().also {
     init?.invoke(it)
 }
 
-/** Creates a [IntField] and add it to this manager. */
-inline fun NodeInvokable.intField(
-    noinline init: ((@LayoutDsl IntField).() -> Unit)? = null
-): IntField = com.hendraanggrian.openpss.control.intField(init)()
+/** Creates a [JFXIntField] and add it to this manager. */
+inline fun NodeInvokable.jfxIntField(
+    noinline init: ((@LayoutDsl JFXIntField).() -> Unit)? = null
+): JFXIntField = com.hendraanggrian.openpss.control.jfxIntField(init)()

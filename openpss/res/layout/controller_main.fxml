@@ -70,7 +70,7 @@
                         <Label styleClass="label-drawer-item" text="%customer">
                             <graphic>
                                 <ImageView fx:id="customerGraphic"/>
-                            </graphic>
+                            </graphic>tab_schedule.png
                         </Label>
                         <Label styleClass="label-drawer-item" text="%invoice">
                             <graphic>

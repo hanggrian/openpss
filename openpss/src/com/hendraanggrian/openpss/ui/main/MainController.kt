@@ -121,11 +121,11 @@ class MainController : Controller(), Selectable<Tab>, Selectable2<Label> {
         hamburger.addEventHandler(MouseEvent.MOUSE_PRESSED) { drawer.toggle() }
         titleLabel.textProperty().bind(buildStringBinding(selectedProperty2) { selected2?.text })
 
-        customerGraphic.bind(0, R.image.tab_customer2, R.image.tab_customer)
-        invoiceGraphic.bind(1, R.image.tab_invoice2, R.image.tab_invoice)
-        scheduleGraphic.bind(2, R.image.tab_schedule2, R.image.tab_schedule)
-        financeGraphic.bind(3, R.image.tab_finance2, R.image.tab_finance)
-        wageGraphic.bind(4, R.image.tab_wage2, R.image.tab_wage)
+        customerGraphic.bind(0, R.image.tab_customer_selected, R.image.tab_customer)
+        invoiceGraphic.bind(1, R.image.tab_invoice_selected, R.image.tab_invoice)
+        scheduleGraphic.bind(2, R.image.tab_schedule_selected, R.image.tab_schedule)
+        financeGraphic.bind(3, R.image.tab_finance_selected, R.image.tab_finance)
+        wageGraphic.bind(4, R.image.tab_wage_selected, R.image.tab_wage)
 
         customerController.replaceButtons()
         selectedIndexProperty.listener { _, _, value ->

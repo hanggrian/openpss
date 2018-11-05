@@ -8,13 +8,12 @@ import com.hendraanggrian.openpss.content.currencyConverter
 import com.hendraanggrian.openpss.content.numberConverter
 import com.hendraanggrian.openpss.control.TimeBox
 import com.hendraanggrian.openpss.control.UncollapsibleTreeItem
+import com.hendraanggrian.openpss.control.popover.DatePopover
 import com.hendraanggrian.openpss.io.WageDirectory
 import com.hendraanggrian.openpss.io.WageFile
-import com.hendraanggrian.openpss.control.popover.DatePopover
 import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.wage.Attendee
 import com.hendraanggrian.openpss.ui.wage.record.Record.Companion.getDummy
-import com.hendraanggrian.openpss.util.bold
 import com.hendraanggrian.openpss.util.concatenate
 import com.hendraanggrian.openpss.util.getResource
 import com.hendraanggrian.openpss.util.stringCell
@@ -97,7 +96,7 @@ class WageRecordController : Controller() {
                             }
                         ) {
                             if (treeTableRow.treeItem?.value?.isTotal() == true) {
-                                font = bold()
+                                styleClass += "bold"
                             }
                         }
                     }

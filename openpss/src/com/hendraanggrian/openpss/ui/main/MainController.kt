@@ -5,7 +5,7 @@ import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.PATTERN_DATETIME
 import com.hendraanggrian.openpss.control.PaginatedPane
 import com.hendraanggrian.openpss.control.UnselectableListView
-import com.hendraanggrian.openpss.util.bold
+import com.hendraanggrian.openpss.control.popover.ViewInvoicePopover
 import com.hendraanggrian.openpss.db.dbDateTime
 import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.schemas.Employees
@@ -13,7 +13,6 @@ import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.db.schemas.Log
 import com.hendraanggrian.openpss.db.schemas.Logs
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.control.popover.ViewInvoicePopover
 import com.hendraanggrian.openpss.ui.ActionController
 import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.Refreshable
@@ -217,7 +216,9 @@ class MainController : Controller(), Selectable<Tab>, Selectable2<Label> {
                                 text(
                                     event.dateTime.toString(PATTERN_DATETIME) + " " +
                                         transaction { Employees[event.employeeId].single().name }
-                                ) { font = bold(12) }
+                                ) {
+                                    styleClass += "bold"
+                                }
                             }
                         }
                     }

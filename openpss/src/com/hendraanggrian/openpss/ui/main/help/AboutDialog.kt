@@ -2,9 +2,8 @@ package com.hendraanggrian.openpss.ui.main.help
 
 import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.BuildConfig
-import com.hendraanggrian.openpss.content.Context
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.util.bold
+import com.hendraanggrian.openpss.content.Context
 import com.hendraanggrian.openpss.ui.Selectable
 import com.hendraanggrian.openpss.ui.main.License
 import com.jfoenix.controls.JFXButton
@@ -49,7 +48,7 @@ class AboutDialog(context: Context) : Dialog<Unit>(), Selectable<License>, Conte
             onUpdate { license, empty ->
                 if (license != null && !empty) graphic = ktfx.layouts.vbox {
                     label(license.repo) { fontSize = 12.0 }
-                    label(license.owner) { font = bold(12) }
+                    label(license.owner) { styleClass += "bold" }
                 }
             }
         }
@@ -74,11 +73,11 @@ class AboutDialog(context: Context) : Dialog<Unit>(), Selectable<License>, Conte
                 vbox {
                     alignment = Pos.CENTER_LEFT
                     textFlow {
-                        "${BuildConfig.FULL_NAME.substringBefore(' ')} " { font =
-                            bold(24)
+                        "${BuildConfig.FULL_NAME.substringBefore(' ')} " {
+                            styleClass.addAll("bold", "display2")
                         }
                         (BuildConfig.FULL_NAME.substringAfter(' ')) {
-                            font = com.hendraanggrian.openpss.util.getFont(R.font.sf_pro_text_light, 24)
+                            styleClass.addAll("light", "display2")
                         }
                     }
                     text("${getString(R.string.version)} ${BuildConfig.VERSION}") {
@@ -87,11 +86,11 @@ class AboutDialog(context: Context) : Dialog<Unit>(), Selectable<License>, Conte
                     text(getString(R.string.built_with_open_source_software_expand_to_see_licenses)) marginTop 20.0
                     textFlow {
                         "${getString(R.string.powered_by)} " { font = Font.font(12.0) }
-                        "JavaFX" { font = bold(12) }
+                        "JavaFX" { styleClass += "bold" }
                     } marginTop 4.0
                     textFlow {
                         "${getString(R.string.author)} " { font = Font.font(12.0) }
-                        BuildConfig.AUTHOR { font = bold(12) }
+                        BuildConfig.AUTHOR { styleClass += "bold" }
                     } marginTop 4.0
                     hbox {
                         spacing = R.dimen.padding_medium.toDouble()

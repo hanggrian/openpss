@@ -15,7 +15,6 @@ import com.hendraanggrian.openpss.io.properties.LoginFile
 import com.hendraanggrian.openpss.io.properties.PreferencesFile
 import com.hendraanggrian.openpss.ui.main.help.AboutDialog
 import com.hendraanggrian.openpss.ui.main.help.GitHubApi
-import com.hendraanggrian.openpss.util.bold
 import com.jfoenix.controls.JFXButton
 import javafx.geometry.HPos
 import javafx.geometry.Pos
@@ -123,7 +122,9 @@ class LoginPane(private val resourced: Resources) : _StackPane(), Context {
                 alignment = Pos.CENTER
                 updatePadding(32.0, 24.0, 32.0, 24.0)
                 imageView(R.image.logo_small)
-                label(getString(R.string.openpss_login)) { font = bold(18.0) }
+                label(getString(R.string.openpss_login)) {
+                    styleClass.addAll("bold", "display2")
+                }
                 label(getString(R.string._login_desc1)) {
                     textAlignment = TextAlignment.CENTER
                     isWrapText = true

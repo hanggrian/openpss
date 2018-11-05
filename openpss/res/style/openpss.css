@@ -1,3 +1,25 @@
+/** FONT */
+
+@font-face {
+    font-family: "Roboto";
+    src: url("../font/Roboto-Regular.ttf");
+}
+
+@font-face {
+    font-family: "Roboto Medium";
+    src: url("../font/Roboto-Medium.ttf");
+}
+
+@font-face {
+    font-family: "Roboto Light";
+    src: url("../font/Roboto-Light.ttf");
+}
+
+@font-face {
+    font-family: "Roboto Bold";
+    src: url("../font/Roboto-Bold.ttf");
+}
+
 /* GLOBAL */
 
 * {
@@ -24,6 +46,10 @@
 
 .split-pane *.split-pane-divider {
     -fx-padding: 0 1 0 1;
+}
+
+.label {
+    -fx-font-family: "Roboto";
 }
 
 /* OVERRIDING JFOENIX */
@@ -139,20 +165,8 @@
     -fx-background-color: -accent-dark;
 }
 
-.label-accent {
-    -fx-text-fill: -accent;
-}
-
-.label-display {
-    -fx-font-size: 13pt;
-}
-
-.label-display2 {
-    -fx-font-size: 13pt;
-    -fx-text-fill: -accent;
-}
-
 .label-drawer-item {
+    -fx-font-family: "Roboto";
     -fx-graphic-text-gap: 20
 }
 
@@ -187,4 +201,26 @@
 }
 .jfx-tab-pane-small .tab .tab-label {
     -fx-font-size: 9pt;
+}
+
+/* TEXT */
+
+.display {
+    -fx-font-size: 13pt;
+}
+
+.display2 {
+    -fx-font-size: 18pt;
+}
+
+.accent {
+    -fx-text-fill: -accent;
+}
+
+.bold {
+    -fx-font-family: "Roboto Bold";
+}
+
+.light {
+    -fx-font-family: "Roboto Light";
 }

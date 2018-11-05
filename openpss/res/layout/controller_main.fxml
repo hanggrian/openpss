@@ -63,7 +63,7 @@
                 <VBox>
                     <JFXToolbar>
                         <leftItems>
-                            <Label fx:id="employeeLabel" styleClass="label-display2"/>
+                            <Label fx:id="employeeLabel" styleClass="bold, display, accent"/>
                         </leftItems>
                     </JFXToolbar>
                     <SelectionListView fx:id="drawerList" styleClass="pane-borderless">
@@ -95,7 +95,7 @@
                     </SelectionListView>
                     <JFXToolbar>
                         <leftItems>
-                            <Label text="%logs" styleClass="label-accent"/>
+                            <Label text="%logs" styleClass="accent"/>
                         </leftItems>
                     </JFXToolbar>
                     <PaginatedPane fx:id="eventPagination"/>
@@ -106,7 +106,7 @@
                     <JFXToolbar fx:id="toolbar">
                         <leftItems>
                             <JFXHamburger fx:id="hamburger" prefWidth="25"/>
-                            <Label fx:id="titleLabel" styleClass="label-display2"/>
+                            <Label fx:id="titleLabel" styleClass="bold, display, accent"/>
                             <Space/>
                         </leftItems>
                     </JFXToolbar>

@@ -15,7 +15,6 @@ import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_INVOICE
 import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.db.schemas.Invoices
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.util.bold
 import com.sun.javafx.print.PrintHelper
 import com.sun.javafx.print.Units.MM
 import javafx.geometry.HPos.LEFT
@@ -100,8 +99,9 @@ class ViewInvoicePopover(
                     alignment = CENTER_LEFT
                     invoiceHeaders.forEachIndexed { index, s ->
                         label(s) {
-                            if (index == 0) font =
-                                bold()
+                            if (index == 0) {
+                                styleClass += "bold"
+                            }
                         }
                     }
                 } hpriority ALWAYS
@@ -118,7 +118,9 @@ class ViewInvoicePopover(
                     "${invoice.dateTime.toString(PATTERN_DATETIME_EXTENDED)} " +
                         "(${transaction { Employees[invoice.employeeId].single().name }})"
                 )
-                label("${customer.no}. ${customer.name}") { font = bold() }
+                label("${customer.no}. ${customer.name}") {
+                    styleClass += "bold"
+                }
             }
             vbox {
                 gridPane {
@@ -181,11 +183,13 @@ class ViewInvoicePopover(
                 textFlow {
                     paddingAll = R.dimen.padding_small.toDouble()
                     border = SOLID.toBorder()
-                    "${getString(R.string.note)}\n" { font = bold() }
+                    "${getString(R.string.note)}\n" {
+                        styleClass += "bold"
+                    }
                     invoice.note()
                 } row 0 col 0 rowSpans 2 hpriority ALWAYS
                 label(currencyConverter(invoice.total)) {
-                    font = bold()
+                    styleClass += "bold"
                 } row 0 col 1 colSpans 2 halign RIGHT
                 vbox {
                     alignment = CENTER
@@ -238,7 +242,9 @@ class ViewInvoicePopover(
         lineBuilder: _GridPane.(order: T, row: Int) -> Unit
     ): Int {
         var row = currentRow
-        label(getString(titleId)) { font = bold() } row row col 0 colSpans 4 halign LEFT
+        label(getString(titleId)) {
+            styleClass += "bold"
+        } row row col 0 colSpans 4 halign LEFT
         row++
         jobs.forEach {
             lineBuilder(it, row)

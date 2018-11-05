@@ -13,7 +13,6 @@ import com.hendraanggrian.openpss.ui.invoice.job.AddDigitalJobPopover
 import com.hendraanggrian.openpss.ui.invoice.job.AddOffsetJobPopover
 import com.hendraanggrian.openpss.ui.invoice.job.AddOtherJobPopover
 import com.hendraanggrian.openpss.ui.invoice.job.AddPlateJobPopover
-import com.hendraanggrian.openpss.util.bold
 import com.hendraanggrian.openpss.util.currencyCell
 import com.hendraanggrian.openpss.util.getColor
 import com.hendraanggrian.openpss.util.numberCell
@@ -77,9 +76,13 @@ class AddInvoiceDialog(
         gridPane {
             gap = R.dimen.padding_medium.toDouble()
             label(getString(R.string.employee)) col 0 row 0
-            label(login.name) { font = bold() } col 1 row 0
+            label(login.name) {
+                styleClass += "bold"
+            } col 1 row 0
             label(getString(R.string.date)) col 2 row 0 hpriority ALWAYS halign RIGHT
-            label(dateTime.toString(PATTERN_DATE)) { font = bold() } col 3 row 0
+            label(dateTime.toString(PATTERN_DATE)) {
+                styleClass += "bold"
+            } col 3 row 0
             label(getString(R.string.customer)) col 0 row 1
             jfxTextField {
                 isEditable = false
@@ -151,7 +154,7 @@ class AddInvoiceDialog(
             } col 1 row 3 colSpans 3
             label(getString(R.string.total)) col 0 row 4
             label {
-                font = bold()
+                styleClass += "bold"
                 textProperty().bind(buildStringBinding(totalProperty) {
                     currencyConverter(totalProperty.value)
                 })

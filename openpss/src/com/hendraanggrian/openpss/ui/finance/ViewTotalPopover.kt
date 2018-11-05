@@ -3,7 +3,6 @@ package com.hendraanggrian.openpss.ui.finance
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.Context
 import com.hendraanggrian.openpss.content.currencyConverter
-import com.hendraanggrian.openpss.util.bold
 import com.hendraanggrian.openpss.control.popover.Popover
 import javafx.geometry.HPos
 import ktfx.layouts.columnConstraints
@@ -30,10 +29,10 @@ class ViewTotalPopover(
             label(getString(R.string.non_cash)) col 0 row 1
             label(currencyConverter(nonCash)) col 1 row 1
             label(getString(R.string.total)) {
-                font = bold()
+                styleClass += "bold"
             } col 0 row 2
             label(currencyConverter(cash + nonCash)) {
-                font = bold()
+                styleClass += "bold"
             } col 1 row 2
         }
     }

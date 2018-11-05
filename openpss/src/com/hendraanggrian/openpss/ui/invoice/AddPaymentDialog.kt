@@ -10,7 +10,6 @@ import com.hendraanggrian.openpss.control.jfxDoubleField
 import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.db.schemas.Payment
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.util.bold
 import com.hendraanggrian.openpss.util.getColor
 import javafx.scene.Node
 import javafx.scene.control.CheckBox
@@ -44,11 +43,11 @@ class AddPaymentDialog(
             gap = R.dimen.padding_medium.toDouble()
             label(getString(R.string.employee)) row 0 col 0
             label(login.name) {
-                font = bold()
+                styleClass += "bold"
             } row 0 col 1 colSpans 2
             label(getString(R.string.receivable)) row 1 col 0
             label(currencyConverter(receivable)) {
-                font = bold()
+                styleClass += "bold"
             } row 1 col 1 colSpans 2
             label(getString(R.string.payment)) row 2 col 0
             valueField = jfxDoubleField { promptText = getString(R.string.payment) } row 2 col 1
@@ -61,7 +60,7 @@ class AddPaymentDialog(
             } row 2 col 2
             label(getString(R.string.remaining)) row 3 col 0
             label {
-                font = bold()
+                styleClass += "bold"
                 textProperty().bind(buildStringBinding(valueField.valueProperty()) {
                     (receivable - valueField.value).let { remaining ->
                         when {

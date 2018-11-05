@@ -8,7 +8,6 @@ import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.schemas.DigitalPrices
 import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.db.schemas.Employees
-import com.hendraanggrian.openpss.db.schemas.GlobalSetting
 import com.hendraanggrian.openpss.db.schemas.GlobalSettings
 import com.hendraanggrian.openpss.db.schemas.Invoices
 import com.hendraanggrian.openpss.db.schemas.Logs
@@ -18,7 +17,6 @@ import com.hendraanggrian.openpss.db.schemas.PlatePrices
 import com.hendraanggrian.openpss.db.schemas.Recesses
 import com.hendraanggrian.openpss.db.schemas.Wages
 import com.hendraanggrian.openpss.util.getStyle
-import com.hendraanggrian.openpss.util.isEmpty
 import com.mongodb.MongoClientOptions.Builder
 import com.mongodb.MongoCredential.createCredential
 import com.mongodb.MongoException
@@ -81,10 +79,7 @@ suspend fun login(
     var employee: Employee? = null
     transaction {
         // check first time installation
-        GlobalSetting.setupDefault(this)
-        // add default employee
-        if (Employees { it.name.equal(Employee.BACKDOOR.name) }.isEmpty())
-            Employees += Employee.BACKDOOR
+        tables.mapNotNull { it as? Setupable }.forEach { it.setup(this) }
         // check login credentials
         employee = checkNotNull(Employees { it.name.equal(employeeName) }.singleOrNull()) { "Employee not found" }
         check(employee!!.password == employeePassword) { "Invalid password" }

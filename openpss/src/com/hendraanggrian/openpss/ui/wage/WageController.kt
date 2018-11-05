@@ -9,8 +9,8 @@ import com.hendraanggrian.openpss.io.WageDirectory
 import com.hendraanggrian.openpss.io.properties.PreferencesFile.WAGE_READER
 import com.hendraanggrian.openpss.control.dialog.TextDialog
 import com.hendraanggrian.openpss.ui.ActionController
-import com.hendraanggrian.openpss.ui.controller
-import com.hendraanggrian.openpss.ui.pane
+import com.hendraanggrian.openpss.util.controller
+import com.hendraanggrian.openpss.util.pane
 import com.hendraanggrian.openpss.ui.wage.readers.Reader
 import com.hendraanggrian.openpss.ui.wage.record.WageRecordController.Companion.EXTRA_ATTENDEES
 import com.hendraanggrian.openpss.util.getResource

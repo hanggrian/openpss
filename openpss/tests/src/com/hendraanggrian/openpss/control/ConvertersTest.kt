@@ -1,4 +1,4 @@
-package com.hendraanggrian.openpss
+package com.hendraanggrian.openpss.control
 
 import com.hendraanggrian.openpss.content.numberConverter
 import ktfx.util.invoke

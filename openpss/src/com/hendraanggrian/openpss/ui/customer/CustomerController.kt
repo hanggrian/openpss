@@ -8,7 +8,7 @@ import com.hendraanggrian.openpss.control.PaginatedPane
 import com.hendraanggrian.openpss.control.space
 import com.hendraanggrian.openpss.control.stretchableButton
 import com.hendraanggrian.openpss.util.stringCell
-import com.hendraanggrian.openpss.db.matches
+import com.hendraanggrian.openpss.util.matches
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.transaction

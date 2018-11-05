@@ -239,7 +239,7 @@ class LoginPane(private val resourced: Resources) : _StackPane(), Context {
                         isVisible = false
                         passwordField.textProperty().bindBidirectional(textProperty())
                         if (BuildConfig.DEBUG) {
-                            text = "hendraganteng"
+                            text = "1234"
                         }
                     }
                 }

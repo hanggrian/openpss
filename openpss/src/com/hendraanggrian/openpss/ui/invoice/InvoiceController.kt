@@ -12,7 +12,6 @@ import com.hendraanggrian.openpss.control.popover.ViewInvoicePopover
 import com.hendraanggrian.openpss.control.space
 import com.hendraanggrian.openpss.control.stretchableButton
 import com.hendraanggrian.openpss.db.SessionWrapper
-import com.hendraanggrian.openpss.db.matches
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.schemas.Employees
@@ -28,6 +27,7 @@ import com.hendraanggrian.openpss.ui.Selectable
 import com.hendraanggrian.openpss.ui.Selectable2
 import com.hendraanggrian.openpss.util.currencyCell
 import com.hendraanggrian.openpss.util.doneCell
+import com.hendraanggrian.openpss.util.matches
 import com.hendraanggrian.openpss.util.stringCell
 import javafx.beans.property.SimpleObjectProperty
 import javafx.fxml.FXML

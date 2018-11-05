@@ -3,15 +3,25 @@ package com.hendraanggrian.openpss.db.schemas
 import com.hendraanggrian.openpss.db.Document
 import com.hendraanggrian.openpss.db.Named
 import com.hendraanggrian.openpss.db.NamedSchema
+import com.hendraanggrian.openpss.db.SessionWrapper
+import com.hendraanggrian.openpss.db.Setupable
+import com.hendraanggrian.openpss.util.isEmpty
 import kotlinx.nosql.Id
 import kotlinx.nosql.boolean
+import kotlinx.nosql.equal
 import kotlinx.nosql.mongodb.DocumentSchema
 import kotlinx.nosql.string
 
-object Employees : DocumentSchema<Employee>("employees", Employee::class), NamedSchema {
+object Employees : DocumentSchema<Employee>("employees", Employee::class), NamedSchema, Setupable {
     override val name = string("name")
     val password = string("password")
     val admin = boolean("admin")
+
+    override fun setup(wrapper: SessionWrapper) = wrapper.run {
+        if (Employees { it.name.equal(Employee.BACKDOOR.name) }.isEmpty()) {
+            Employees += Employee.BACKDOOR
+        }
+    }
 }
 
 data class Employee(

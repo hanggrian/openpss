@@ -1,16 +1,16 @@
 package com.hendraanggrian.openpss
 
 import com.hendraanggrian.openpss.BuildConfig.DEBUG
+import com.hendraanggrian.openpss.content.Resources
 import com.hendraanggrian.openpss.db.schemas.Employees
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.content.Resources
 import com.hendraanggrian.openpss.io.properties.PreferencesFile
-import com.hendraanggrian.openpss.ui.controller
 import com.hendraanggrian.openpss.ui.login.LoginPane
 import com.hendraanggrian.openpss.ui.main.ChangePasswordDialog
-import com.hendraanggrian.openpss.ui.pane
+import com.hendraanggrian.openpss.util.controller
 import com.hendraanggrian.openpss.util.getResource
 import com.hendraanggrian.openpss.util.getStyle
+import com.hendraanggrian.openpss.util.pane
 import javafx.application.Application
 import javafx.application.Platform
 import javafx.fxml.FXMLLoader

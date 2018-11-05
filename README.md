@@ -2,7 +2,7 @@ OpenPSS
 =======
 ![OpenPSS][logo]
 
-Point of Sale software specifically for offset printing business.
+Point of Sale software specifically designed for offset and digital printing business.
 Powered by JavaFX and Kotlin frameworks.
 Heavily under development.
 
@@ -24,24 +24,24 @@ install it on server system and grant privileges to the main user in admin datab
 
 ```json
 {
-	user: "my_name",
-	pwd: "my_password",
-	roles: [
+	"user": "my_name",
+	"pwd": "my_password",
+	"roles": [
 		{
-			role: "userAdminAnyDatabase",
-			db: "admin"
+			"role": "userAdminAnyDatabase",
+			"db": "admin"
 		},
 		{
-			role: "dbAdminAnyDatabase",
-			db: "admin"
+			"role": "dbAdminAnyDatabase",
+			"db": "admin"
 		},
 		{
-			role: "readWriteAnyDatabase",
-			db: "admin"
+			"role": "readWriteAnyDatabase",
+			"db": "admin"
 		},
 		{
-			role: "executeFunctions",
-			db: "admin"
+			"role": "executeFunctions",
+			"db": "admin"
 		}
 	]
 }
@@ -51,18 +51,18 @@ Where `executeFunctions` is a custom role:
 
 ```json
 {
-	role: "executeFunctions",
-	privileges: [
+	"role": "executeFunctions",
+	"privileges": [
 		{
-			resource: {
-				anyResource: true
+			"resource": {
+				"anyResource": true
 			},
-			actions: [
+			"actions": [
 				"anyAction"
 			]
 		}
 	],
-	roles: [ ]
+	"roles": [ ]
 }
 ```
 

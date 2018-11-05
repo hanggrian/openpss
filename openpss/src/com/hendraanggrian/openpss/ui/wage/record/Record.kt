@@ -56,7 +56,7 @@ class Record(
     companion object {
         const val WORKING_HOURS = 8
 
-        /** Parent row displaying name and its preferences. */
+        /** Parent row displaying name and its settings. */
         const val INDEX_NODE = -2
         /** Last child row of a node, displaying calculated total. */
         const val INDEX_TOTAL = -1

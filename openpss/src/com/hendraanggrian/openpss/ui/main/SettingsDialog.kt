@@ -6,6 +6,7 @@ import com.hendraanggrian.openpss.content.Context
 import com.hendraanggrian.openpss.content.Language
 import com.hendraanggrian.openpss.content.clearConverters
 import com.hendraanggrian.openpss.control.dialog.Dialog
+import com.hendraanggrian.openpss.control.space
 import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_INVOICE_HEADERS
 import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_LANGUAGE
 import com.hendraanggrian.openpss.db.transaction
@@ -36,6 +37,7 @@ import ktfx.jfoenix.jfxButton
 import ktfx.jfoenix.jfxComboBox
 import ktfx.layouts._HBox
 import ktfx.layouts._VBox
+import ktfx.layouts.borderPane
 import ktfx.layouts.gridPane
 import ktfx.layouts.hbox
 import ktfx.layouts.label
@@ -45,33 +47,35 @@ import ktfx.listeners.converter
 import ktfx.scene.layout.gap
 import kotlin.coroutines.CoroutineContext
 
-class PreferencesDialog(context: Context) : Dialog(context, R.string.preferences) {
+class SettingsDialog(context: Context) : Dialog(context, R.string.settings) {
 
     private var isLocalChanged = false.toMutableProperty()
     private var isGlobalChanged = false.toMutableProperty()
 
     private lateinit var invoiceHeadersArea: TextArea
-    private lateinit var wageReaderChoice: ComboBox<Any>
+    private lateinit var wageReaderChoice: ComboBox<Reader>
     private lateinit var languageBox: ComboBox<Language>
 
     init {
-        vbox {
-            spacing = R.dimen.padding_large.toDouble()
-            group(R.string.wage) {
-                item {
-                    label(getString(R.string.reader))
-                    wageReaderChoice = jfxComboBox(Reader.listAll()) {
-                        value = Reader.of(WAGE_READER)
-                        valueProperty().listener { _, _, value ->
-                            isLocalChanged.set(true)
-                            WAGE_READER = (value as Reader).name
+        borderPane {
+            left = ktfx.layouts.vbox {
+                spacing = R.dimen.padding_large.toDouble()
+                group(R.string.wage) {
+                    item {
+                        label(getString(R.string.reader))
+                        wageReaderChoice = jfxComboBox(Reader.listAll()) {
+                            value = Reader.of(WAGE_READER)
+                            valueProperty().listener { _, _, value ->
+                                isLocalChanged.set(true)
+                                WAGE_READER = (value as Reader).name
+                            }
                         }
                     }
                 }
             }
-        }
-        if (isAdmin()) {
-            group(R.string.global_settings) {
+            space(R.dimen.padding_large.toDouble())
+            right = this@SettingsDialog.group(R.string.global_settings) {
+                isDisable = !isAdmin()
                 gridPane {
                     gap = R.dimen.padding_medium.toDouble()
                     transaction {
@@ -86,6 +90,7 @@ class PreferencesDialog(context: Context) : Dialog(context, R.string.preferences
                             findGlobalSettings(KEY_INVOICE_HEADERS).single().valueList
                                 .joinToString("\n").trim()
                         ) {
+                            promptText = getString(R.string.invoice_headers)
                             setMaxSize(256.0, 88.0)
                             textProperty().listener { _, oldValue, value ->
                                 when (INVOICE_HEADERS_DIVIDER) {

@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.hendraanggrian.openpss.control.Toolbar?>
 <?import com.jfoenix.controls.JFXButton?>
-<?import com.jfoenix.controls.JFXToolbar?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.*?>
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.hendraanggrian.openpss.ui.wage.WageController">
     <!-- AnchorPane is necessary for displaying loadingPane in the center. -->
-    <JFXToolbar>
+    <Toolbar>
         <leftItems>
             <Label fx:id="titleLabel"/>
         </leftItems>
@@ -16,7 +16,7 @@
             <JFXButton fx:id="processButton" mnemonicParsing="false" styleClass="button-raised" text="%process"
                        onAction="#process"/>
         </rightItems>
-    </JFXToolbar>
+    </Toolbar>
     <AnchorPane fx:id="anchorPane" VBox.vgrow="ALWAYS">
         <ScrollPane AnchorPane.leftAnchor="0" AnchorPane.bottomAnchor="0" AnchorPane.rightAnchor="0"
                     AnchorPane.topAnchor="0">

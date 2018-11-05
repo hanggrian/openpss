@@ -5,7 +5,7 @@ import com.hendraanggrian.openpss.content.Language.EN_US
 import com.hendraanggrian.openpss.ui.wage.readers.EClockingReader
 
 /** User manually configurable settings file. */
-object PreferencesFile : PropertiesFile("preferences") {
+object PreferencesFile : PropertiesFile("settings") {
 
     var LANGUAGE: String by EN_US.fullCode
 

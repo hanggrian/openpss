@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.hendraanggrian.openpss.control.PaginatedPane?>
-<?import com.hendraanggrian.openpss.control.SelectionListView?>
-<?import com.hendraanggrian.openpss.control.Space?>
-<?import com.jfoenix.controls.*?>
+<?import com.hendraanggrian.openpss.control.*?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXDrawer?>
+<?import com.jfoenix.controls.JFXHamburger?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
@@ -18,8 +19,7 @@
                 <MenuItem fx:id="addInvoiceItem" mnemonicParsing="false" onAction="#add" text="%add_invoice"
                           accelerator="SHORTCUT+I"/>
                 <SeparatorMenuItem/>
-                <MenuItem fx:id="preferencesItem" mnemonicParsing="false" onAction="#preferences"
-                          text="%preferences"
+                <MenuItem fx:id="settingsItem" mnemonicParsing="false" onAction="#settings" text="%settings"
                           accelerator="SHORTCUT+,">
                     <graphic>
                         <ImageView pickOnBounds="true" preserveRatio="true">
@@ -61,55 +61,69 @@
                    onDrawerOpening="#toggleHamburger" onDrawerClosing="#toggleHamburger">
             <sidePane>
                 <VBox>
-                    <JFXToolbar>
+                    <Toolbar>
                         <leftItems>
                             <Label fx:id="employeeLabel" styleClass="bold, display, accent"/>
                         </leftItems>
-                    </JFXToolbar>
-                    <SelectionListView fx:id="drawerList" styleClass="pane-borderless">
-                        <Label styleClass="label-drawer-item" text="%customer">
+                        <rightItems>
+                            <JFXButton mnemonicParsing="false" buttonType="FLAT" styleClass="button-flat"
+                                       onAction="#settings">
+                                <graphic>
+                                    <ImageView pickOnBounds="true" preserveRatio="true">
+                                        <Image url="@/image/act_settings.png"/>
+                                    </ImageView>
+                                </graphic>
+                            </JFXButton>
+                        </rightItems>
+                    </Toolbar>
+                    <SelectionListView fx:id="drawerList" styleClass="borderless">
+                        <Label styleClass="drawer-item" text="%customer">
                             <graphic>
-                                <ImageView fx:id="customerGraphic"/>
-                            </graphic>tab_schedule.png
-                        </Label>
-                        <Label styleClass="label-drawer-item" text="%invoice">
-                            <graphic>
-                                <ImageView fx:id="invoiceGraphic"/>
+                                <MarginedImageView leftMargin="10" fx:id="customerGraphic"/>
                             </graphic>
                         </Label>
-                        <Label styleClass="label-drawer-item" text="%schedule">
+                        <Label styleClass="drawer-item" text="%invoice">
                             <graphic>
-                                <ImageView fx:id="scheduleGraphic"/>
+                                <MarginedImageView leftMargin="10" fx:id="invoiceGraphic"/>
                             </graphic>
                         </Label>
-                        <Label styleClass="label-drawer-item" text="%finance">
+                        <Label styleClass="drawer-item" text="%schedule">
                             <graphic>
-                                <ImageView fx:id="financeGraphic"/>
+                                <MarginedImageView leftMargin="10" fx:id="scheduleGraphic"/>
                             </graphic>
                         </Label>
-                        <Label styleClass="label-drawer-item" text="%wage">
+                        <Label styleClass="drawer-item" text="%finance">
                             <graphic>
-                                <ImageView fx:id="wageGraphic"/>
+                                <MarginedImageView leftMargin="10" fx:id="financeGraphic"/>
+                            </graphic>
+                        </Label>
+                        <Label styleClass="drawer-item" text="%wage">
+                            <graphic>
+                                <MarginedImageView leftMargin="10" fx:id="wageGraphic"/>
                             </graphic>
                         </Label>
                     </SelectionListView>
-                    <JFXToolbar>
+                    <Toolbar>
                         <leftItems>
                             <Label text="%logs" styleClass="accent"/>
                         </leftItems>
-                    </JFXToolbar>
-                    <PaginatedPane fx:id="eventPagination"/>
+                    </Toolbar>
+                    <PaginatedPane fx:id="eventPagination" VBox.vgrow="ALWAYS"/>
                 </VBox>
             </sidePane>
             <content>
                 <VBox>
-                    <JFXToolbar fx:id="toolbar">
+                    <Toolbar fx:id="toolbar">
                         <leftItems>
                             <JFXHamburger fx:id="hamburger" prefWidth="25"/>
-                            <Label fx:id="titleLabel" styleClass="bold, display, accent"/>
+                            <Label fx:id="titleLabel" styleClass="bold, display, accent">
+                                <padding>
+                                    <Insets left="10"/>
+                                </padding>
+                            </Label>
                             <Space/>
                         </leftItems>
-                    </JFXToolbar>
+                    </Toolbar>
                     <TabPane fx:id="tabPane" VBox.vgrow="ALWAYS" styleClass="tab-pane-hidden">
                         <Tab closable="false">
                             <!--suppress ALL -->

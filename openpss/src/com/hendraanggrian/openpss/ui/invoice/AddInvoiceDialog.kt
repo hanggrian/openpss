@@ -143,13 +143,21 @@ class AddInvoiceDialog(
                     }
                 }
             } col 1 row 2 colSpans 3
-            totalProperty.bind(buildDoubleBinding(plateTable.items, offsetTable.items, otherTable.items) {
-                plateTable.items.sumByDouble { it.total } +
+            totalProperty.bind(
+                buildDoubleBinding(
+                    offsetTable.items,
+                    digitalTable.items,
+                    plateTable.items,
+                    otherTable.items
+                ) {
                     offsetTable.items.sumByDouble { it.total } +
-                    otherTable.items.sumByDouble { it.total }
-            })
+                        digitalTable.items.sumByDouble { it.total } +
+                        plateTable.items.sumByDouble { it.total } +
+                        otherTable.items.sumByDouble { it.total }
+                })
             label(getString(R.string.note)) col 0 row 3
             noteArea = textArea {
+                promptText = getString(R.string.note)
                 prefHeight = 75.0
             } col 1 row 3 colSpans 3
             label(getString(R.string.total)) col 0 row 4

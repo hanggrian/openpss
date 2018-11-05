@@ -27,7 +27,6 @@
     -accent-light: #6ab7ff;
     -accent-dark: #005cb2;
 
-    -light: fafafa;
     -dark: rgba(0.0, 0.0, 0.0, 0.54);
 }
 
@@ -82,9 +81,9 @@
     -fx-cursor: hand;
 }
 .jfx-hamburger StackPane {
-    -fx-pref-height: 2px;
+    -fx-pref-height: 2;
     -fx-background-color: -accent;
-    -fx-background-radius: 5px;
+    -fx-background-radius: 5;
 }
 
 .jfx-radio-button {
@@ -95,7 +94,7 @@
     -fx-background-color: #323232;
 }
 .jfx-snackbar-toast {
-    -fx-text-fill: -light;
+    -fx-text-fill: white;
 }
 .jfx-snackbar-action {
     -fx-text-fill: -accent;
@@ -155,7 +154,7 @@
 }
 
 .button-raised {
-    -fx-text-fill: -light;
+    -fx-text-fill: white;
     -fx-background-color: -accent;
 }
 .button-raised:hover {
@@ -165,27 +164,12 @@
     -fx-background-color: -accent-dark;
 }
 
-.label-drawer-item {
-    -fx-font-family: "Roboto";
-    -fx-graphic-text-gap: 20
-}
-
 .list-view-no-vertical-scrollbar .scroll-bar:vertical {
     -fx-scale-x: 0;
 }
 
 .list-view-no-horizontal-scrollbar .scroll-bar:horizontal {
     -fx-scale-x: 0;
-}
-
-.pane-borderless {
-    -fx-background-color: transparent;
-}
-
-.pane-bordered {
-    -fx-border-color: #c8c8c8;
-    -fx-border-width: 1;
-    -fx-border-style: solid;
 }
 
 .tab-pane-hidden {
@@ -223,4 +207,24 @@
 
 .light {
     -fx-font-family: "Roboto Light";
+}
+
+/* BACKGROUND */
+
+.borderless {
+    -fx-background-color: transparent;
+}
+
+.bordered {
+    -fx-border-color: #c8c8c8;
+    -fx-border-width: 1;
+    -fx-border-style: solid;
+}
+
+/** DRAWER */
+
+.drawer-item {
+    -fx-font-family: "Roboto";
+    -fx-font-size: 11pt;
+    -fx-graphic-text-gap: 30
 }

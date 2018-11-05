@@ -3,7 +3,9 @@ package com.hendraanggrian.openpss.ui.main
 import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.PATTERN_DATETIME
+import com.hendraanggrian.openpss.control.MarginedImageView
 import com.hendraanggrian.openpss.control.PaginatedPane
+import com.hendraanggrian.openpss.control.Toolbar
 import com.hendraanggrian.openpss.control.UnselectableListView
 import com.hendraanggrian.openpss.control.popover.ViewInvoicePopover
 import com.hendraanggrian.openpss.db.dbDateTime
@@ -32,7 +34,6 @@ import com.hendraanggrian.openpss.ui.wage.EditRecessDialog
 import com.hendraanggrian.openpss.ui.wage.WageController
 import com.jfoenix.controls.JFXDrawer
 import com.jfoenix.controls.JFXHamburger
-import com.jfoenix.controls.JFXToolbar
 import javafx.event.ActionEvent
 import javafx.fxml.FXML
 import javafx.scene.control.Label
@@ -43,10 +44,11 @@ import javafx.scene.control.SelectionModel
 import javafx.scene.control.Tab
 import javafx.scene.control.TabPane
 import javafx.scene.image.Image
-import javafx.scene.image.ImageView
 import javafx.scene.input.MouseEvent
 import javafx.scene.layout.StackPane
 import javafx.util.Callback
+import kotlinx.nosql.equal
+import kotlinx.nosql.update
 import ktfx.application.later
 import ktfx.beans.binding.`when`
 import ktfx.beans.binding.buildStringBinding
@@ -77,20 +79,20 @@ class MainController : Controller(), Selectable<Tab>, Selectable2<Label> {
     @FXML lateinit var digitalPrintPriceItem: MenuItem
     @FXML lateinit var employeeItem: MenuItem
     @FXML lateinit var recessItem: MenuItem
-    @FXML lateinit var preferencesItem: MenuItem
+    @FXML lateinit var settingsItem: MenuItem
     @FXML lateinit var drawer: JFXDrawer
     @FXML lateinit var drawerList: ListView<Label>
     @FXML lateinit var eventPagination: PaginatedPane
-    @FXML lateinit var toolbar: JFXToolbar
+    @FXML lateinit var toolbar: Toolbar
     @FXML lateinit var hamburger: JFXHamburger
     @FXML lateinit var employeeLabel: Label
     @FXML lateinit var titleLabel: Label
     @FXML lateinit var tabPane: TabPane
-    @FXML lateinit var customerGraphic: ImageView
-    @FXML lateinit var invoiceGraphic: ImageView
-    @FXML lateinit var scheduleGraphic: ImageView
-    @FXML lateinit var financeGraphic: ImageView
-    @FXML lateinit var wageGraphic: ImageView
+    @FXML lateinit var customerGraphic: MarginedImageView
+    @FXML lateinit var invoiceGraphic: MarginedImageView
+    @FXML lateinit var scheduleGraphic: MarginedImageView
+    @FXML lateinit var financeGraphic: MarginedImageView
+    @FXML lateinit var wageGraphic: MarginedImageView
     @FXML lateinit var customerController: CustomerController
     @FXML lateinit var invoiceController: InvoiceController
     @FXML lateinit var scheduleController: ScheduleController
@@ -143,6 +145,17 @@ class MainController : Controller(), Selectable<Tab>, Selectable2<Label> {
                 it.root = root
             }
             financeController.addExtra(FinanceController.EXTRA_MAIN_CONTROLLER, this)
+
+            if (login.isFirstTimeLogin) {
+                ChangePasswordDialog(this).show { newPassword ->
+                    transaction {
+                        Employees { it.name.equal(login.name) }
+                            .projection { password }
+                            .update(newPassword!!)
+                        root.jfxSnackbar(getString(R.string.successfully_changed_password), App.DURATION_LONG)
+                    }
+                }
+            }
         }
     }
 
@@ -163,7 +176,7 @@ class MainController : Controller(), Selectable<Tab>, Selectable2<Label> {
 
     @FXML fun editRecess() = EditRecessDialog(this).show()
 
-    @FXML fun preferences() = PreferencesDialog(this).show()
+    @FXML fun settings() = SettingsDialog(this).show()
 
     @FXML fun testViewInvoice() {
         val customer = transaction { Customers().firstOrNull() }
@@ -202,7 +215,7 @@ class MainController : Controller(), Selectable<Tab>, Selectable2<Label> {
         if (drawer.isOpening) {
             eventPagination.contentFactory = Callback { (page, count) ->
                 UnselectableListView<Log>().apply {
-                    styleClass.addAll("pane-borderless", "list-view-no-horizontal-scrollbar")
+                    styleClass.addAll("borderless", "list-view-no-horizontal-scrollbar")
                     cellFactory {
                         onUpdate { event, empty ->
                             if (event != null && !empty) graphic = ktfx.layouts.textFlow {
@@ -213,10 +226,8 @@ class MainController : Controller(), Selectable<Tab>, Selectable2<Label> {
                                     wrappingWidthProperty().bind(this@apply.widthProperty())
                                 }
                                 newLine()
-                                text(
-                                    event.dateTime.toString(PATTERN_DATETIME) + " " +
-                                        transaction { Employees[event.employeeId].single().name }
-                                ) {
+                                text("${event.dateTime.toString(PATTERN_DATETIME)} ")
+                                text(transaction { Employees[event.employeeId].single().name }) {
                                     styleClass += "bold"
                                 }
                             }
@@ -247,9 +258,10 @@ class MainController : Controller(), Selectable<Tab>, Selectable2<Label> {
         controller.run(run)
     }
 
-    private fun ImageView.bind(index: Int, selectedImageId: String, unselectedImageId: String) = imageProperty().bind(
-        `when`(selectedIndexProperty2 eq index)
-            then Image(selectedImageId)
-            otherwise Image(unselectedImageId)
-    )
+    private fun MarginedImageView.bind(index: Int, selectedImageId: String, unselectedImageId: String) =
+        imageProperty().bind(
+            `when`(selectedIndexProperty2 eq index)
+                then Image(selectedImageId)
+                otherwise Image(unselectedImageId)
+        )
 }

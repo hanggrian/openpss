@@ -2,9 +2,8 @@ package com.hendraanggrian.openpss.ui.wage.readers
 
 import com.hendraanggrian.openpss.ui.wage.Attendee
 import javafx.collections.ObservableList
-import javafx.scene.control.Separator
 import javafx.stage.FileChooser
-import ktfx.collections.toMutableObservableList
+import ktfx.collections.toObservableList
 import java.io.File
 
 /** A file readers that generates actions of [Attendee] given input file. */
@@ -28,7 +27,7 @@ abstract class Reader {
     companion object {
         private val READERS: List<Reader> get() = listOf(EClockingReader, TestReader)
 
-        fun listAll(): ObservableList<Any> = READERS.toMutableObservableList<Any>().apply { add(1, Separator()) }
+        fun listAll(): ObservableList<Reader> = READERS.toObservableList()
 
         fun of(name: String): Reader = READERS.single { it.name == name }
     }

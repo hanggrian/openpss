@@ -36,6 +36,7 @@
     -fx-accent: -accent;
     -fx-focus-color: -accent;
     -fx-default-button: -accent;
+    -fx-background-color: white;
 }
 
 .pagination {
@@ -210,6 +211,10 @@
 }
 
 /* BACKGROUND */
+
+.white-background {
+    -fx-background-color: white;
+}
 
 .borderless {
     -fx-background-color: transparent;

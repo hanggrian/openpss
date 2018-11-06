@@ -7,8 +7,8 @@ plugins {
     java
     kotlin("jvm")
     idea
-    generation("r")
-    generation("buildconfig")
+    generating("r")
+    generating("buildconfig")
     shadow
     application
     packr
@@ -74,13 +74,32 @@ dependencies {
     testImplementation(junitPlatform("runner"))
 }
 
+packr {
+    buildDir.resolve("install/$RELEASE_ARTIFACT/lib")?.listFiles()?.forEach { classpath(it.path) }
+    executable = RELEASE_NAME
+    mainClass = application.mainClassName
+    vmArgs("Xmx2G")
+    resources(projectDir.resolve("res"))
+    macOS {
+        name = "$RELEASE_NAME.app"
+        icon = projectDir.resolve("art/$RELEASE_NAME.icns")
+        bundleId = RELEASE_GROUP
+    }
+    windows64 {
+        jdk = "/Users/hendraanggrian/Desktop/jdk1.8.0_181"
+        name = RELEASE_NAME
+    }
+    verbose = true
+    openOnDone = true
+}
+
 tasks {
-    "generateR"(com.hendraanggrian.generation.r.RTask::class) {
+    "generateR"(com.hendraanggrian.generating.r.RTask::class) {
         resourcesDir = projectDir.resolve("res")
         isLowercase = true
     }
 
-    "generateBuildConfig"(com.hendraanggrian.generation.buildconfig.BuildConfigTask::class) {
+    "generateBuildConfig"(com.hendraanggrian.generating.buildconfig.BuildConfigTask::class) {
         appName = RELEASE_NAME
         debug = RELEASE_DEBUG
         artifactId = RELEASE_ARTIFACT
@@ -98,25 +117,8 @@ tasks {
         classifier = null
     }
 
-    "pack"(com.hendraanggrian.packr.PackTask::class) {
+    withType<com.hendraanggrian.packr.PackTask> {
         dependsOn("installDist")
-
-        buildDir.resolve("install/$RELEASE_ARTIFACT/lib")?.listFiles()?.forEach { classpath(it.path) }
-        executable = RELEASE_NAME
-        mainClass = application.mainClassName
-        vmArgs("Xmx2G")
-        resources(projectDir.resolve("res"))
-        macOS {
-            name = "$RELEASE_NAME.app"
-            icon = projectDir.resolve("art/$RELEASE_NAME.icns")
-            bundleId = RELEASE_GROUP
-        }
-        windows64 {
-            jdk = "/Users/hendraanggrian/Desktop/jdk1.8.0_181"
-            name = RELEASE_NAME
-        }
-        verbose = true
-        openOnDone = true
     }
 }
 

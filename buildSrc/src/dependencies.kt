@@ -21,7 +21,7 @@ fun DependencyHandler.hendraanggrian(
     version: String
 ): String = "com.hendraanggrian.$repository:$module:$version"
 
-fun PluginDependenciesSpec.generation(id: String) = id("com.hendraanggrian.generation.$id")
+fun PluginDependenciesSpec.generating(id: String) = id("com.hendraanggrian.generating.$id")
 
 inline val PluginDependenciesSpec.packr get() = id("com.hendraanggrian.packr")
 

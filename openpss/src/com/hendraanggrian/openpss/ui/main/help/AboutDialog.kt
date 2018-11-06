@@ -33,7 +33,6 @@ import ktfx.scene.control.closeButton
 import ktfx.scene.control.icon
 import ktfx.scene.find
 import ktfx.scene.layout.paddingAll
-import ktfx.scene.text.fontSize
 import java.net.URI
 
 /**
@@ -47,7 +46,7 @@ class AboutDialog(context: Context) : Dialog<Unit>(), Selectable<License>, Conte
         cellFactory {
             onUpdate { license, empty ->
                 if (license != null && !empty) graphic = ktfx.layouts.vbox {
-                    label(license.repo) { fontSize = 12.0 }
+                    label(license.repo)
                     label(license.owner) { styleClass += "bold" }
                 }
             }

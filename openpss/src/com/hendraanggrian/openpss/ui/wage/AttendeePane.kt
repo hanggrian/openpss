@@ -41,6 +41,7 @@ import ktfx.layouts.gridPane
 import ktfx.layouts.label
 import ktfx.layouts.listView
 import ktfx.layouts.separatorMenuItem
+import ktfx.layouts.text
 import ktfx.layouts.vbox
 import ktfx.listeners.cellFactory
 import ktfx.scene.find
@@ -117,23 +118,27 @@ class AttendeePane(
                             val itemLabel = label(dateTime.toString(PATTERN_DATETIME_EXTENDED)) {
                                 maxWidth = Double.MAX_VALUE
                             } hpriority ALWAYS
-                            if (index % 2 == 0) listView.items.getOrNull(index + 1).let { nextItem ->
-                                when (nextItem) {
-                                    null -> itemLabel.textFill = getColor(R.color.red)
-                                    else -> {
-                                        val interval = IntervalWrapper.of(dateTime, nextItem)
-                                        var minutes = interval.minutes
-                                        attendee.recesses
-                                            .map { it.getInterval(dateTime) }
-                                            .forEach {
-                                                minutes -= interval.overlap(it)?.toDuration()?.toStandardMinutes()
-                                                    ?.minutes?.absoluteValue ?: 0
-                                            }
-                                        val hours = (minutes / 60.0).round()
-                                        label(hours.toString()) {
-                                            fontSize = 10.0
-                                            if (hours > 12) textFill = getColor(R.color.red)
-                                        } marginLeft R.dimen.padding_medium.toDouble()
+                            if (index % 2 == 0) {
+                                listView.items.getOrNull(index + 1).let { nextItem ->
+                                    when (nextItem) {
+                                        null -> itemLabel.textFill = getColor(R.color.red)
+                                        else -> {
+                                            val interval = IntervalWrapper.of(dateTime, nextItem)
+                                            var minutes = interval.minutes
+                                            attendee.recesses
+                                                .map { it.getInterval(dateTime) }
+                                                .forEach {
+                                                    minutes -= interval.overlap(it)?.toDuration()?.toStandardMinutes()
+                                                        ?.minutes?.absoluteValue ?: 0
+                                                }
+                                            val hours = (minutes / 60.0).round()
+                                            text(hours.toString()) {
+                                                fontSize = 10.0
+                                                if (hours > 12) {
+                                                    style = "-fx-fill: #F44336;"
+                                                }
+                                            } marginLeft R.dimen.padding_medium.toDouble()
+                                        }
                                     }
                                 }
                             }

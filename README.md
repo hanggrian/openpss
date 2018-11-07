@@ -1,5 +1,9 @@
 OpenPSS
 =======
+[![release](http://github-release-version.herokuapp.com/github/hendraanggrian/openpss/release.svg)](https://github.com/hendraanggrian/openpss/releases/latest)
+[![build](https://travis-ci.com/hendraanggrian/openpss.svg)](https://travis-ci.com/hendraanggrian/openpss)
+[![license](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0)
+
 ![OpenPSS][logo]
 
 Point of Sale software specifically designed for offset and digital printing business.

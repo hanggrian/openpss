@@ -6,6 +6,7 @@ import com.hendraanggrian.openpss.control.dialog.ResultableDialog
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.util.clean
 import com.hendraanggrian.openpss.util.isPersonName
+import javafx.scene.Node
 import javafx.scene.control.Label
 import javafx.scene.control.Tab
 import javafx.scene.control.TabPane
@@ -16,6 +17,7 @@ import ktfx.beans.binding.then
 import ktfx.beans.value.eq
 import ktfx.beans.value.isBlank
 import ktfx.beans.value.or
+import ktfx.coroutines.listener
 import ktfx.jfoenix.jfxTabPane
 import ktfx.jfoenix.jfxTextField
 import ktfx.layouts.label
@@ -29,6 +31,8 @@ class AddCustomerDialog(context: Context) : ResultableDialog<Customer>(context, 
 
     private val tabPane: TabPane
     private val editor: TextField
+
+    override val focusedNode: Node? get() = editor
 
     init {
         contentPane.run {
@@ -59,6 +63,9 @@ class AddCustomerDialog(context: Context) : ResultableDialog<Customer>(context, 
                 then (editor.textProperty().isBlank() or !editor.textProperty().isPersonName())
                 otherwise editor.textProperty().isBlank()
         )
+        tabPane.selectionModel.selectedIndexProperty().listener {
+            editor.requestFocus()
+        }
     }
 
     private fun Tab.bindGraphic(selectedImageId: String, unselectedImageId: String) {
@@ -78,6 +85,6 @@ class AddCustomerDialog(context: Context) : ResultableDialog<Customer>(context, 
     override val nullableResult: Customer?
         get() = Customer.new(
             editor.text.clean(),
-            tabPane.selectionModel.selectedIndex == 0
+            tabPane.selectionModel.selectedIndex == 1
         )
 }

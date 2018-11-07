@@ -24,6 +24,8 @@ open class Popover(
         popupContent = region
     }
 
+    override fun setOnShown(onShown: () -> Unit) = super.setOnShown { onShown() }
+
     override fun dismiss() = hide()
 
     override lateinit var contentPane: VBox

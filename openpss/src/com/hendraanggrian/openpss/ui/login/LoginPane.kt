@@ -18,6 +18,7 @@ import com.hendraanggrian.openpss.ui.main.help.GitHubApi
 import com.jfoenix.controls.JFXButton
 import javafx.geometry.HPos
 import javafx.geometry.Pos
+import javafx.scene.Node
 import javafx.scene.control.Button
 import javafx.scene.control.PasswordField
 import javafx.scene.control.TextField
@@ -221,10 +222,9 @@ class LoginPane(private val resourced: Resources) : _StackPane(), Context {
 
     inner class PasswordDialog : ResultableDialog<Unit>(this, R.string.password_required) {
 
+        override val focusedNode: Node? get() = passwordField
+
         init {
-            setOnDialogOpened {
-                passwordField.requestFocus()
-            }
             setOnDialogClosed {
                 employeeField.requestFocus()
             }

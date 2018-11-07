@@ -2,10 +2,11 @@ package com.hendraanggrian.openpss.ui.invoice
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.Context
+import com.hendraanggrian.openpss.control.CustomerListView
+import com.hendraanggrian.openpss.control.popover.ResultablePopover
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.control.popover.ResultablePopover
 import com.hendraanggrian.openpss.ui.Selectable
 import javafx.scene.control.ListView
 import javafx.scene.control.SelectionModel
@@ -17,7 +18,6 @@ import ktfx.coroutines.listener
 import ktfx.coroutines.onKeyPressed
 import ktfx.coroutines.onMouseClicked
 import ktfx.jfoenix.jfxTextField
-import ktfx.layouts.listView
 import ktfx.layouts.vbox
 import ktfx.scene.input.isDoubleClick
 import kotlin.text.RegexOption.IGNORE_CASE
@@ -37,8 +37,8 @@ class SearchCustomerPopover(context: Context) : ResultablePopover<Customer>(cont
             searchField = jfxTextField {
                 promptText = getString(R.string.name)
             }
-            customerList = listView<Customer> {
-                prefHeight = 252.0
+            customerList = CustomerListView().apply {
+                prefHeight = 262.0
                 itemsProperty().bind(buildBinding(searchField.textProperty()) {
                     transaction {
                         when {
@@ -50,7 +50,7 @@ class SearchCustomerPopover(context: Context) : ResultablePopover<Customer>(cont
                 itemsProperty().listener { _, _, value -> if (value.isNotEmpty()) selectionModel.selectFirst() }
                 onMouseClicked { if (it.isDoubleClick() && selected != null) defaultButton.fire() }
                 onKeyPressed { if (it.code == ENTER && selected != null) defaultButton.fire() }
-            } marginTop R.dimen.padding_medium.toDouble()
+            }() marginTop R.dimen.padding_medium.toDouble()
         }
         defaultButton.disableProperty().bind(!selectedBinding)
     }

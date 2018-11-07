@@ -8,7 +8,7 @@
 <?import org.controlsfx.control.MasterDetailPane?>
 <MasterDetailPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1"
                   fx:controller="com.hendraanggrian.openpss.ui.customer.CustomerController"
-                  fx:id="masterDetailPane" dividerPosition="0.2">
+                  fx:id="masterDetailPane" dividerPosition="0.3">
     <masterNode>
         <PaginatedPane fx:id="customerPagination" VBox.vgrow="ALWAYS" count="26.5"/>
     </masterNode>

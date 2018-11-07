@@ -165,8 +165,18 @@
     -fx-background-color: -accent-dark;
 }
 
-.list-view-no-vertical-scrollbar .scroll-bar:vertical {
-    -fx-scale-x: 0;
+.list-view-no-vertical-scrollbar .scroll-bar:vertical .increment-arrow,
+.list-view-no-vertical-scrollbar .scroll-bar:vertical .decrement-arrow,
+.list-view-no-vertical-scrollbar .scroll-bar:vertical .increment-button,
+.list-view-no-vertical-scrollbar .scroll-bar:vertical .decrement-button {
+    -fx-padding:0;
+}
+
+.list-view-no-horizontal-scrollbar .scroll-bar:horizontal .increment-arrow,
+.list-view-no-horizontal-scrollbar .scroll-bar:horizontal .decrement-arrow,
+.list-view-no-horizontal-scrollbar .scroll-bar:horizontal .increment-button,
+.list-view-no-horizontal-scrollbar .scroll-bar:horizontal .decrement-button {
+    -fx-padding:0;
 }
 
 .list-view-no-horizontal-scrollbar .scroll-bar:horizontal {

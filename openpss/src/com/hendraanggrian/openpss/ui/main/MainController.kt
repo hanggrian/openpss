@@ -138,7 +138,6 @@ class MainController : Controller(), Selectable<Tab>, Selectable2<Label> {
         }
 
         later {
-            drawer.open()
             employeeLabel.text = login.name
             controllers.forEach {
                 it.login = login

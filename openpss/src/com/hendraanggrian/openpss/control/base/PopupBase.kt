@@ -24,7 +24,10 @@ interface PopupBase : BaseControl, Context, NodeInvokable {
     override fun <R : Node> R.invoke(): R = also { contentPane.children += it }
 
     fun setActualContent(region: Region)
+    fun setOnShown(onShown: () -> Unit)
     fun dismiss()
+
+    val focusedNode: Node? get() = null
 
     val titleId: String
 
@@ -63,5 +66,8 @@ interface PopupBase : BaseControl, Context, NodeInvokable {
                 }
             } marginTop R.dimen.padding_medium.toDouble()
         })
+        setOnShown {
+            focusedNode?.requestFocus()
+        }
     }
 }

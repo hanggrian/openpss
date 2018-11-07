@@ -23,6 +23,8 @@ open class Dialog(
         content = region
     }
 
+    override fun setOnShown(onShown: () -> Unit) = setOnDialogOpened { onShown() }
+
     override fun dismiss() = close()
 
     override lateinit var contentPane: VBox

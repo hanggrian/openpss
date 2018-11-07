@@ -3,8 +3,8 @@ package com.hendraanggrian.openpss.ui.main
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.Context
 import com.hendraanggrian.openpss.control.dialog.ResultableDialog
+import javafx.scene.Node
 import javafx.scene.control.PasswordField
-import ktfx.application.later
 import ktfx.beans.value.isBlank
 import ktfx.beans.value.neq
 import ktfx.beans.value.or
@@ -18,6 +18,8 @@ class ChangePasswordDialog(context: Context) : ResultableDialog<String>(context,
     private lateinit var changePasswordField: PasswordField
     private lateinit var confirmPasswordField: PasswordField
 
+    override val focusedNode: Node? get() = changePasswordField
+
     init {
         gridPane {
             gap = R.dimen.padding_medium.toDouble()
@@ -27,7 +29,6 @@ class ChangePasswordDialog(context: Context) : ResultableDialog<String>(context,
             label(getString(R.string.password)) col 0 row 1
             changePasswordField = jfxPasswordField {
                 promptText = getString(R.string.password)
-                later { requestFocus() }
             } col 1 row 1
             label(getString(R.string.confirm_password)) col 0 row 2
             confirmPasswordField = jfxPasswordField {

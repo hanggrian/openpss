@@ -4,6 +4,7 @@ import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.App.Companion.STRETCH_POINT
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.PATTERN_DATE
+import com.hendraanggrian.openpss.control.CustomerListView
 import com.hendraanggrian.openpss.control.PaginatedPane
 import com.hendraanggrian.openpss.control.dialog.ConfirmDialog
 import com.hendraanggrian.openpss.control.space
@@ -47,7 +48,6 @@ import ktfx.coroutines.onAction
 import ktfx.jfoenix.jfxSnackbar
 import ktfx.jfoenix.jfxTextField
 import ktfx.layouts.contextMenu
-import ktfx.layouts.listView
 import ktfx.layouts.tooltip
 import org.controlsfx.control.MasterDetailPane
 import java.net.URL
@@ -112,7 +112,8 @@ class CustomerController : ActionController(), Refreshable, Selectable<Customer>
     override fun refresh() = later {
         customerPagination.contentFactoryProperty().bind(buildBinding(searchField.textProperty()) {
             Callback<Pair<Int, Int>, Node> { (page, count) ->
-                customerList = listView {
+                customerList = CustomerListView().apply {
+                    styleClass += "list-view-no-vertical-scrollbar"
                     later {
                         transaction {
                             val customers = Customers.buildQuery {

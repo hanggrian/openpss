@@ -13,6 +13,6 @@ fun String.orNull(): String? = if (isBlank()) null else this
 fun String.clean(): String = replace("\\s+".toRegex(), " ").trim()
 
 /** User's name must be at least 2 words. */
-fun String.isName(): Boolean = split(" ").let { s -> s.size > 1 && s.all { it.isNotEmpty() } }
+fun String.isPersonName(): Boolean = clean().split(" ").let { s -> s.size > 1 && s.all { it.first().isUpperCase() } }
 
-fun StringProperty.isName(): BooleanBinding = buildBooleanBinding(this) { value.isName() }
+fun StringProperty.isPersonName(): BooleanBinding = buildBooleanBinding(this) { value.isPersonName() }

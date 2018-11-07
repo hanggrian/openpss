@@ -37,4 +37,12 @@ open class Dialog(
         initialize()
         dialogContainer = root
     }
+
+    override fun show() {
+        root.children
+            .mapNotNull { it as? Dialog }
+            .filter { it != this }
+            .forEach { it.dismiss() }
+        super.show()
+    }
 }

@@ -21,14 +21,14 @@ import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.Selectable
 import com.hendraanggrian.openpss.ui.Selectable2
 import com.hendraanggrian.openpss.ui.customer.CustomerController
+import com.hendraanggrian.openpss.ui.employee.EditEmployeeDialog
 import com.hendraanggrian.openpss.ui.finance.FinanceController
 import com.hendraanggrian.openpss.ui.invoice.InvoiceController
-import com.hendraanggrian.openpss.ui.main.edit.EditEmployeeDialog
-import com.hendraanggrian.openpss.ui.main.edit.price.EditDigitalPrintPriceDialog
-import com.hendraanggrian.openpss.ui.main.edit.price.EditOffsetPrintPriceDialog
-import com.hendraanggrian.openpss.ui.main.edit.price.EditPlatePriceDialog
 import com.hendraanggrian.openpss.ui.main.help.AboutDialog
 import com.hendraanggrian.openpss.ui.main.help.GitHubApi
+import com.hendraanggrian.openpss.ui.price.EditDigitalPrintPriceDialog
+import com.hendraanggrian.openpss.ui.price.EditOffsetPrintPriceDialog
+import com.hendraanggrian.openpss.ui.price.EditPlatePriceDialog
 import com.hendraanggrian.openpss.ui.schedule.ScheduleController
 import com.hendraanggrian.openpss.ui.wage.EditRecessDialog
 import com.hendraanggrian.openpss.ui.wage.WageController
@@ -118,9 +118,9 @@ class MainController : Controller(), Selectable<Tab>, Selectable2<Label> {
         selectFirst2()
         selectedProperty2.listener { _, _, _ ->
             select(selectedIndex2)
-            drawer.toggle()
+            drawer.close()
         }
-        hamburger.addEventHandler(MouseEvent.MOUSE_PRESSED) { drawer.toggle() }
+        hamburger.addEventHandler(MouseEvent.MOUSE_PRESSED) { drawer.open() }
         titleLabel.textProperty().bind(buildStringBinding(selectedProperty2) { selected2?.text })
 
         customerGraphic.bind(0, R.image.tab_customer_selected, R.image.tab_customer)
@@ -138,7 +138,7 @@ class MainController : Controller(), Selectable<Tab>, Selectable2<Label> {
         }
 
         later {
-            drawer.toggle()
+            drawer.open()
             employeeLabel.text = login.name
             controllers.forEach {
                 it.login = login
@@ -200,8 +200,8 @@ class MainController : Controller(), Selectable<Tab>, Selectable2<Label> {
                     otherJobs = listOf(Invoice.OtherJob.new(5, "Title", 92000.0)),
                     note = "This is a test",
                     printed = false,
-                    paid = false,
-                    done = false
+                    isPaid = false,
+                    isDone = false
                 ), true
             ).show(menuBar)
         }
@@ -254,7 +254,7 @@ class MainController : Controller(), Selectable<Tab>, Selectable2<Label> {
     private fun ActionController.replaceButtons() = toolbar.setRightItems(*actions.toTypedArray())
 
     private fun <T : ActionController> select(controller: T, run: T.() -> Unit) {
-        select(controllers.indexOf(controller))
+        select2(controllers.indexOf(controller))
         controller.run(run)
     }
 

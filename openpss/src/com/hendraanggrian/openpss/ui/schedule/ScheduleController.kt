@@ -91,8 +91,8 @@ class ScheduleController : ActionController(), Refreshable, TreeSelectable<Sched
             clear()
             transaction {
                 when (historyCheck.isSelected) {
-                    true -> Invoices { it.done.equal(true) }.take(20)
-                    else -> Invoices { it.done.equal(false) }
+                    true -> Invoices { it.isDone.equal(true) }.take(20)
+                    else -> Invoices { it.isDone.equal(false) }
                 }.forEach { invoice ->
                     addAll(UncollapsibleTreeItem(
                         Schedule(

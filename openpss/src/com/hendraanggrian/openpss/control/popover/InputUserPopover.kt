@@ -3,7 +3,7 @@ package com.hendraanggrian.openpss.control.popover
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.Context
 import com.hendraanggrian.openpss.util.clean
-import com.hendraanggrian.openpss.util.isName
+import com.hendraanggrian.openpss.util.isPersonName
 import javafx.beans.binding.BooleanBinding
 import ktfx.controlsfx.registerPredicateValidator
 import org.controlsfx.validation.Severity
@@ -28,7 +28,7 @@ class InputUserPopover(
 
     override val defaultDisableBinding: BooleanBinding
         get() = when {
-            restrictiveInput -> !editor.textProperty().isName()
+            restrictiveInput -> !editor.textProperty().isPersonName()
             else -> super.defaultDisableBinding
         }
 

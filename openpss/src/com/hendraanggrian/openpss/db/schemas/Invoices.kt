@@ -27,8 +27,8 @@ object Invoices : DocumentSchema<Invoice>("invoices", Invoice::class) {
     val other_jobs = OtherJobs()
     val note = string("note")
     val printed = boolean("printed")
-    val paid = boolean("paid")
-    val done = boolean("done")
+    val isPaid = boolean("is_paid")
+    val isDone = boolean("is_done")
 
     class OffsetJobs : ListColumn<Invoice.OffsetJob, Invoices>("offsets", Invoice.OffsetJob::class) {
         val qty = integer("qty")
@@ -71,8 +71,8 @@ data class Invoice(
     var otherJobs: List<OtherJob>,
     var note: String,
     val printed: Boolean,
-    val paid: Boolean,
-    val done: Boolean
+    val isPaid: Boolean,
+    val isDone: Boolean
 ) : Document<Invoices>, Numbered {
 
     companion object {

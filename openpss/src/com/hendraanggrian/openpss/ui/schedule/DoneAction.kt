@@ -13,6 +13,6 @@ class DoneAction(context: Context, val invoice: Invoice) : Action<Unit>(context)
     override val log: String = getString(R.string._log_schedule_done, invoice.jobs.size, invoice.no)
 
     override fun SessionWrapper.handle() {
-        Invoices[invoice].projection { done }.update(true)
+        Invoices[invoice].projection { isDone }.update(true)
     }
 }

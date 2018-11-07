@@ -8,11 +8,11 @@ import java.net.URL
 import java.util.ResourceBundle
 
 /** Base class of all controllers. */
-abstract class Controller : Initializable, Context {
+open class Controller : Initializable, Context {
 
     override lateinit var resources: ResourceBundle
-    override lateinit var login: Employee
     override lateinit var root: StackPane
+    override lateinit var login: Employee
 
     private lateinit var extras: MutableMap<String, Any>
 

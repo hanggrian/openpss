@@ -105,7 +105,7 @@
                     </SelectionListView>
                     <Toolbar>
                         <leftItems>
-                            <Label text="%logs" styleClass="accent"/>
+                            <Label text="%logs" styleClass="bold, accent"/>
                         </leftItems>
                     </Toolbar>
                     <PaginatedPane fx:id="eventPagination" VBox.vgrow="ALWAYS"/>

@@ -5,20 +5,19 @@ import com.hendraanggrian.openpss.App.Companion.STRETCH_POINT
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.PATTERN_DATE
 import com.hendraanggrian.openpss.control.PaginatedPane
+import com.hendraanggrian.openpss.control.dialog.ConfirmDialog
 import com.hendraanggrian.openpss.control.space
 import com.hendraanggrian.openpss.control.stretchableButton
-import com.hendraanggrian.openpss.util.stringCell
-import com.hendraanggrian.openpss.util.matches
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.control.dialog.ConfirmDialog
-import com.hendraanggrian.openpss.control.popover.InputUserPopover
 import com.hendraanggrian.openpss.ui.ActionController
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.Selectable
 import com.hendraanggrian.openpss.ui.Selectable2
 import com.hendraanggrian.openpss.util.isNotEmpty
+import com.hendraanggrian.openpss.util.matches
+import com.hendraanggrian.openpss.util.stringCell
 import javafx.fxml.FXML
 import javafx.scene.Node
 import javafx.scene.control.Button
@@ -60,6 +59,7 @@ class CustomerController : ActionController(), Refreshable, Selectable<Customer>
 
     @FXML lateinit var masterDetailPane: MasterDetailPane
     @FXML lateinit var customerPagination: PaginatedPane
+    @FXML lateinit var typeImage: ImageView
     @FXML lateinit var nameLabel: Label
     @FXML lateinit var noImage: ImageView
     @FXML lateinit var noLabel: Label
@@ -152,13 +152,13 @@ class CustomerController : ActionController(), Refreshable, Selectable<Customer>
         })
     }
 
-    fun add() = InputUserPopover(this, R.string.add_customer).show(addButton) { name ->
+    fun add() = AddCustomerDialog(this).show { customer ->
         transaction {
             when {
-                Customers { it.name.matches("^$name$", CASE_INSENSITIVE) }.isNotEmpty() ->
+                Customers { Customers.name.matches("^$customer$", CASE_INSENSITIVE) }.isNotEmpty() ->
                     root.jfxSnackbar(getString(R.string.name_taken), App.DURATION_SHORT)
                 else -> {
-                    (AddCustomerAction(this@CustomerController, name!!)) {
+                    (AddCustomerAction(this@CustomerController, customer!!)) {
                         customerList.items.add(it)
                         customerList.selectionModel.select(customerList.items.lastIndex)
                     }

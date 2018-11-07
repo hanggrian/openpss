@@ -8,11 +8,11 @@ import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Customers
 import kotlinx.nosql.update
 
-class AddCustomerAction(context: Context, val name: String) : Action<Customer>(context) {
+class AddCustomerAction(context: Context, val customer: Customer) : Action<Customer>(context) {
 
-    override val log: String = getString(R.string._log_customer_add, name)
+    override val log: String = getString(R.string._log_customer_add, customer.name)
 
-    override fun SessionWrapper.handle(): Customer = Customer.new(name).also { it.id = Customers.insert(it) }
+    override fun SessionWrapper.handle(): Customer = customer.also { it.id = Customers.insert(it) }
 }
 
 class EditCustomerAction(

@@ -1,4 +1,4 @@
-package com.hendraanggrian.openpss.ui.main.edit.price
+package com.hendraanggrian.openpss.ui.price
 
 import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.R

@@ -158,8 +158,8 @@ class InvoiceController : ActionController(), Refreshable, Selectable<Invoice>, 
                             }
                             getString(R.string.total)<String> { currencyCell { total } }
                             getString(R.string.print)<Boolean> { doneCell { printed } }
-                            getString(R.string.paid)<Boolean> { doneCell { paid } }
-                            getString(R.string.done)<Boolean> { doneCell { done } }
+                            getString(R.string.paid)<Boolean> { doneCell { isPaid } }
+                            getString(R.string.done)<Boolean> { doneCell { isDone } }
                         }
                         onMouseClicked { if (it.isDoubleClick() && selected != null) viewInvoice() }
                     }
@@ -222,8 +222,8 @@ class InvoiceController : ActionController(), Refreshable, Selectable<Invoice>, 
                                         if (customerProperty.value != null)
                                             and(it.customerId.equal(customerProperty.value.id))
                                         when (paymentCombo.selectionModel.selectedIndex) {
-                                            1 -> and(it.paid.equal(true))
-                                            2 -> and(it.paid.equal(false))
+                                            1 -> and(it.isPaid.equal(true))
+                                            2 -> and(it.isPaid.equal(false))
                                         }
                                         if (pickDateRadio.isSelected) and(it.dateTime.matches(dateBox.value!!))
                                     }
@@ -295,7 +295,7 @@ class InvoiceController : ActionController(), Refreshable, Selectable<Invoice>, 
     }
 
     private fun SessionWrapper.updatePaymentStatus() = Invoices[selected!!]
-        .projection { Invoices.paid }
+        .projection { isPaid }
         .update(selected!!.calculateDue() <= 0.0)
 
     private fun SessionWrapper.reload(invoice: Invoice) = invoiceTable.run {

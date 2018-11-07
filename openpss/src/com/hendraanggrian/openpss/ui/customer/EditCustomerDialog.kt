@@ -4,7 +4,7 @@ import com.hendraanggrian.openpss.content.Context
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.control.dialog.ResultableDialog
-import com.hendraanggrian.openpss.util.isName
+import com.hendraanggrian.openpss.util.isPersonName
 import com.hendraanggrian.openpss.util.orNull
 import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
@@ -35,7 +35,7 @@ class EditCustomerDialog(
         }
         defaultButton.run {
             text = getString(R.string.edit)
-            disableProperty().bind(!nameField.textProperty().isName())
+            disableProperty().bind(!nameField.textProperty().isPersonName())
         }
     }
 

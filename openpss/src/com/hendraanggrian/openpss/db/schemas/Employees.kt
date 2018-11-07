@@ -15,7 +15,7 @@ import kotlinx.nosql.string
 object Employees : DocumentSchema<Employee>("employees", Employee::class), NamedSchema, Setupable {
     override val name = string("name")
     val password = string("password")
-    val admin = boolean("admin")
+    val isAdmin = boolean("is_admin")
 
     override fun setup(wrapper: SessionWrapper) = wrapper.run {
         if (Employees { it.name.equal(Employee.BACKDOOR.name) }.isEmpty()) {
@@ -27,7 +27,7 @@ object Employees : DocumentSchema<Employee>("employees", Employee::class), Named
 data class Employee(
     override var name: String,
     var password: String,
-    var admin: Boolean
+    var isAdmin: Boolean
 ) : Document<Employees>, Named {
 
     companion object {

@@ -13,11 +13,11 @@ import java.awt.Desktop
 /** Usually being passed around as first constructor of many components. */
 interface Context : Resources {
 
-    val login: Employee
-
     val root: StackPane
 
-    fun isAdmin(): Boolean = transaction { Employees[login].single().admin }
+    val login: Employee
+
+    fun isAdmin(): Boolean = transaction { Employees[login].single().isAdmin }
 
     fun isAdminProperty(): ReadOnlyBooleanProperty = isAdmin().toProperty()
 

@@ -1,7 +1,6 @@
 package com.hendraanggrian.openpss.control.dialog
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.content.ActionManager
 import com.hendraanggrian.openpss.content.Context
 import com.hendraanggrian.openpss.db.Document
 import com.hendraanggrian.openpss.db.transaction
@@ -33,8 +32,7 @@ abstract class TableDialog<D : Document<S>, S : DocumentSchema<D>>(
     context: Context,
     titleId: String,
     protected val schema: S
-) : Dialog(context, titleId), TableColumnsBuilder<D>, Selectable<D>, Refreshable,
-    ActionManager {
+) : Dialog(context, titleId), TableColumnsBuilder<D>, Selectable<D>, Refreshable {
 
     protected lateinit var refreshButton: Button
     protected lateinit var addButton: Button
@@ -67,7 +65,6 @@ abstract class TableDialog<D : Document<S>, S : DocumentSchema<D>>(
                     }
                 }
             }
-            onCreateActions()
         }
         anchorPane {
             table = tableView<D> {

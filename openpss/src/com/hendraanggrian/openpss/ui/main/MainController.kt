@@ -3,6 +3,7 @@ package com.hendraanggrian.openpss.ui.main
 import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.PATTERN_DATETIME
+import com.hendraanggrian.openpss.control.Drawer
 import com.hendraanggrian.openpss.control.MarginedImageView
 import com.hendraanggrian.openpss.control.PaginatedPane
 import com.hendraanggrian.openpss.control.Toolbar
@@ -32,10 +33,10 @@ import com.hendraanggrian.openpss.ui.price.EditPlatePriceDialog
 import com.hendraanggrian.openpss.ui.schedule.ScheduleController
 import com.hendraanggrian.openpss.ui.wage.EditRecessDialog
 import com.hendraanggrian.openpss.ui.wage.WageController
-import com.jfoenix.controls.JFXDrawer
 import com.jfoenix.controls.JFXHamburger
 import javafx.event.ActionEvent
 import javafx.fxml.FXML
+import javafx.scene.Node
 import javafx.scene.control.Label
 import javafx.scene.control.ListView
 import javafx.scene.control.MenuBar
@@ -47,10 +48,16 @@ import javafx.scene.image.Image
 import javafx.scene.input.MouseEvent
 import javafx.scene.layout.StackPane
 import javafx.util.Callback
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.javafx.JavaFx
+import kotlinx.coroutines.launch
 import kotlinx.nosql.equal
 import kotlinx.nosql.update
 import ktfx.application.later
 import ktfx.beans.binding.`when`
+import ktfx.beans.binding.buildBinding
 import ktfx.beans.binding.buildStringBinding
 import ktfx.beans.binding.minus
 import ktfx.beans.binding.otherwise
@@ -60,6 +67,7 @@ import ktfx.collections.toObservableList
 import ktfx.coroutines.listener
 import ktfx.jfoenix.jfxSnackbar
 import ktfx.layouts.text
+import ktfx.layouts.textFlow
 import ktfx.listeners.cellFactory
 import ktfx.scene.text.fontSize
 import org.apache.commons.lang3.SystemUtils
@@ -80,7 +88,7 @@ class MainController : Controller(), Selectable<Tab>, Selectable2<Label> {
     @FXML lateinit var employeeItem: MenuItem
     @FXML lateinit var recessItem: MenuItem
     @FXML lateinit var settingsItem: MenuItem
-    @FXML lateinit var drawer: JFXDrawer
+    @FXML lateinit var drawer: Drawer
     @FXML lateinit var drawerList: ListView<Label>
     @FXML lateinit var eventPagination: PaginatedPane
     @FXML lateinit var toolbar: Toolbar
@@ -120,7 +128,12 @@ class MainController : Controller(), Selectable<Tab>, Selectable2<Label> {
             select(selectedIndex2)
             drawer.close()
         }
-        hamburger.addEventHandler(MouseEvent.MOUSE_PRESSED) { drawer.open() }
+        hamburger.addEventHandler(MouseEvent.MOUSE_PRESSED) {
+            drawer.open()
+            if (!drawerList.isFocused) {
+                drawerList.requestFocus()
+            }
+        }
         titleLabel.textProperty().bind(buildStringBinding(selectedProperty2) { selected2?.text })
 
         customerGraphic.bind(0, R.image.tab_customer_selected, R.image.tab_customer)
@@ -128,6 +141,41 @@ class MainController : Controller(), Selectable<Tab>, Selectable2<Label> {
         scheduleGraphic.bind(2, R.image.tab_schedule_selected, R.image.tab_schedule)
         financeGraphic.bind(3, R.image.tab_finance_selected, R.image.tab_finance)
         wageGraphic.bind(4, R.image.tab_wage_selected, R.image.tab_wage)
+
+        eventPagination.contentFactoryProperty().bind(buildBinding(drawer.openedProperty()) {
+            Callback<Pair<Int, Int>, Node> { (page, count) ->
+                UnselectableListView<Log>().apply {
+                    styleClass.addAll("borderless", "list-view-no-scrollbar")
+                    cellFactory {
+                        onUpdate { event, empty ->
+                            if (event != null && !empty) graphic = textFlow {
+                                text(event.message) {
+                                    isWrapText = true
+                                    fontSize = 12.0
+                                    this@textFlow.prefWidthProperty().bind(this@apply.widthProperty() - 12)
+                                    wrappingWidthProperty().bind(this@apply.widthProperty())
+                                }
+                                newLine()
+                                text("${event.dateTime.toString(PATTERN_DATETIME)} ")
+                                text(transaction { Employees[event.employeeId].single().name }) {
+                                    styleClass += "bold"
+                                }
+                            }
+                        }
+                    }
+                    later {
+                        transaction {
+                            val logs = Logs()
+                            eventPagination.pageCount = ceil(logs.count() / count.toDouble()).toInt()
+                            items = logs
+                                .skip(count * page)
+                                .take(count)
+                                .toObservableList()
+                        }
+                    }
+                }
+            }
+        })
 
         customerController.replaceButtons()
         selectedIndexProperty.listener { _, _, value ->
@@ -143,6 +191,8 @@ class MainController : Controller(), Selectable<Tab>, Selectable2<Label> {
                 it.login = login
                 it.root = root
             }
+
+            customerController.refresh()
             financeController.addExtra(FinanceController.EXTRA_MAIN_CONTROLLER, this)
 
             if (login.isFirstTimeLogin) {
@@ -155,6 +205,13 @@ class MainController : Controller(), Selectable<Tab>, Selectable2<Label> {
                     }
                 }
             }
+        }
+    }
+
+    @FXML fun onDrawerOpened() {
+        GlobalScope.launch(Dispatchers.JavaFx) {
+            delay(200)
+            eventPagination.selectLast()
         }
     }
 
@@ -209,46 +266,6 @@ class MainController : Controller(), Selectable<Tab>, Selectable2<Label> {
     @FXML fun checkUpdate() = GitHubApi.checkUpdates(this)
 
     @FXML fun about() = AboutDialog(this).show()
-
-    @FXML fun toggleHamburger() {
-        if (drawer.isOpening) {
-            eventPagination.contentFactory = Callback { (page, count) ->
-                UnselectableListView<Log>().apply {
-                    styleClass.addAll("borderless", "list-view-no-horizontal-scrollbar")
-                    cellFactory {
-                        onUpdate { event, empty ->
-                            if (event != null && !empty) graphic = ktfx.layouts.textFlow {
-                                text(event.message) {
-                                    isWrapText = true
-                                    fontSize = 12.0
-                                    this@textFlow.prefWidthProperty().bind(this@apply.widthProperty() - 12)
-                                    wrappingWidthProperty().bind(this@apply.widthProperty())
-                                }
-                                newLine()
-                                text("${event.dateTime.toString(PATTERN_DATETIME)} ")
-                                text(transaction { Employees[event.employeeId].single().name }) {
-                                    styleClass += "bold"
-                                }
-                            }
-                        }
-                    }
-                    later {
-                        transaction {
-                            val logs = Logs()
-                            eventPagination.pageCount = ceil(logs.count() / count.toDouble()).toInt()
-                            items = logs
-                                .skip(count * page)
-                                .take(count)
-                                .toObservableList()
-                        }
-                    }
-                }
-            }
-            if (!drawerList.isFocused) {
-                drawerList.requestFocus()
-            }
-        }
-    }
 
     private fun ActionController.replaceButtons() = toolbar.setRightItems(*actions.toTypedArray())
 

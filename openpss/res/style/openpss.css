@@ -165,21 +165,28 @@
     -fx-background-color: -accent-dark;
 }
 
-.list-view-no-vertical-scrollbar .scroll-bar:vertical .increment-arrow,
-.list-view-no-vertical-scrollbar .scroll-bar:vertical .decrement-arrow,
-.list-view-no-vertical-scrollbar .scroll-bar:vertical .increment-button,
-.list-view-no-vertical-scrollbar .scroll-bar:vertical .decrement-button {
+.list-view-no-scrollbar .scroll-bar .increment-arrow,
+.list-view-no-scrollbar .scroll-bar .decrement-arrow,
+.list-view-no-scrollbar .scroll-bar .increment-button,
+.list-view-no-scrollbar .scroll-bar .decrement-button {
     -fx-padding:0;
 }
 
-.list-view-no-horizontal-scrollbar .scroll-bar:horizontal .increment-arrow,
-.list-view-no-horizontal-scrollbar .scroll-bar:horizontal .decrement-arrow,
-.list-view-no-horizontal-scrollbar .scroll-bar:horizontal .increment-button,
-.list-view-no-horizontal-scrollbar .scroll-bar:horizontal .decrement-button {
+.list-view-no-scrollbar-vertical .scroll-bar:vertical .increment-arrow,
+.list-view-no-scrollbar-vertical .scroll-bar:vertical .decrement-arrow,
+.list-view-no-scrollbar-vertical .scroll-bar:vertical .increment-button,
+.list-view-no-scrollbar-vertical .scroll-bar:vertical .decrement-button {
     -fx-padding:0;
 }
 
-.list-view-no-horizontal-scrollbar .scroll-bar:horizontal {
+.list-view-no-scrollbar-horizontal .scroll-bar:horizontal .increment-arrow,
+.list-view-no-scrollbar-horizontal .scroll-bar:horizontal .decrement-arrow,
+.list-view-no-scrollbar-horizontal .scroll-bar:horizontal .increment-button,
+.list-view-no-scrollbar-horizontal .scroll-bar:horizontal .decrement-button {
+    -fx-padding:0;
+}
+
+.list-view-no-scrollbar-horizontal .scroll-bar:horizontal {
     -fx-scale-x: 0;
 }
 

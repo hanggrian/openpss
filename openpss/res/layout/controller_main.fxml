@@ -57,8 +57,7 @@
                 </MenuItem>
             </Menu>
         </MenuBar>
-        <JFXDrawer fx:id="drawer" defaultDrawerSize="300" VBox.vgrow="ALWAYS"
-                   onDrawerOpening="#toggleHamburger" onDrawerClosing="#toggleHamburger">
+        <Drawer fx:id="drawer" defaultDrawerSize="300" VBox.vgrow="ALWAYS" onDrawerOpened="#onDrawerOpened">
             <sidePane>
                 <VBox>
                     <Toolbar>
@@ -108,7 +107,7 @@
                             <Label text="%logs" styleClass="bold, accent"/>
                         </leftItems>
                     </Toolbar>
-                    <PaginatedPane fx:id="eventPagination" VBox.vgrow="ALWAYS"/>
+                    <PaginatedPane fx:id="eventPagination" VBox.vgrow="ALWAYS" magic="40"/>
                 </VBox>
             </sidePane>
             <content>
@@ -148,6 +147,6 @@
                     </TabPane>
                 </VBox>
             </content>
-        </JFXDrawer>
+        </Drawer>
     </VBox>
 </StackPane>

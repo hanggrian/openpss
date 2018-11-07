@@ -1,7 +1,8 @@
-package com.hendraanggrian.openpss.control.popover
+package com.hendraanggrian.openpss.ui.employee
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.Context
+import com.hendraanggrian.openpss.control.popover.InputPopover
 import com.hendraanggrian.openpss.util.clean
 import com.hendraanggrian.openpss.util.isPersonName
 import javafx.beans.binding.BooleanBinding

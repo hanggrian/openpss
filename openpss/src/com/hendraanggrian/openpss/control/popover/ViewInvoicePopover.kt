@@ -140,40 +140,48 @@ class ViewInvoicePopover(
                         }
                     }
                     var row = 0
-                    row += jobGridPane(row, R.string.offset, invoice.offsetJobs) { job, i ->
-                        label(numberConverter(job.qty)) row i col 0
-                        label("${job.type}\n${job.typedTechnique.toString(this@ViewInvoicePopover)}") {
-                            textAlignment = TextAlignment.CENTER
-                        } row i col 1
-                        label(job.title) {
-                            isWrapText = true
-                        } row i col 2
-                        label(numberConverter(job.total)) row i col 3
+                    if (invoice.offsetJobs.isNotEmpty()) {
+                        row += jobGridPane(row, R.string.offset, invoice.offsetJobs) { job, i ->
+                            label(numberConverter(job.qty)) row i col 0
+                            label("${job.type}\n${job.typedTechnique.toString(this@ViewInvoicePopover)}") {
+                                textAlignment = TextAlignment.CENTER
+                            } row i col 1
+                            label(job.title) {
+                                isWrapText = true
+                            } row i col 2
+                            label(numberConverter(job.total)) row i col 3
+                        }
                     }
-                    row += jobGridPane(row, R.string.digital, invoice.digitalJobs) { job, i ->
-                        label(numberConverter(job.qty)) row i col 0
-                        label("${job.type}\n${getString(if (job.isTwoSide) R.string.two_side else R.string.one_side)}") {
-                            textAlignment = TextAlignment.CENTER
-                        } row i col 1
-                        label(job.title) {
-                            isWrapText = true
-                        } row i col 2
-                        label(numberConverter(job.total)) row i col 3
+                    if (invoice.digitalJobs.isNotEmpty()) {
+                        row += jobGridPane(row, R.string.digital, invoice.digitalJobs) { job, i ->
+                            label(numberConverter(job.qty)) row i col 0
+                            label("${job.type}\n${getString(if (job.isTwoSide) R.string.two_side else R.string.one_side)}") {
+                                textAlignment = TextAlignment.CENTER
+                            } row i col 1
+                            label(job.title) {
+                                isWrapText = true
+                            } row i col 2
+                            label(numberConverter(job.total)) row i col 3
+                        }
                     }
-                    row += jobGridPane(row, R.string.plate, invoice.plateJobs) { job, i ->
-                        label(numberConverter(job.qty)) row i col 0
-                        label(job.type) row i col 1
-                        label(job.title) {
-                            isWrapText = true
-                        } row i col 2
-                        label(numberConverter(job.total)) row i col 3
+                    if (invoice.plateJobs.isNotEmpty()) {
+                        row += jobGridPane(row, R.string.plate, invoice.plateJobs) { job, i ->
+                            label(numberConverter(job.qty)) row i col 0
+                            label(job.type) row i col 1
+                            label(job.title) {
+                                isWrapText = true
+                            } row i col 2
+                            label(numberConverter(job.total)) row i col 3
+                        }
                     }
-                    row += jobGridPane(row, R.string.others, invoice.otherJobs) { job, i ->
-                        label(numberConverter(job.qty)) row i col 0
-                        label(job.title) {
-                            isWrapText = true
-                        } row i col 2
-                        label(numberConverter(job.total)) row i col 3
+                    if (invoice.otherJobs.isNotEmpty()) {
+                        row += jobGridPane(row, R.string.others, invoice.otherJobs) { job, i ->
+                            label(numberConverter(job.qty)) row i col 0
+                            label(job.title) {
+                                isWrapText = true
+                            } row i col 2
+                            label(numberConverter(job.total)) row i col 3
+                        }
                     }
                 }
             } vpriority ALWAYS

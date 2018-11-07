@@ -113,7 +113,7 @@ class CustomerController : ActionController(), Refreshable, Selectable<Customer>
         customerPagination.contentFactoryProperty().bind(buildBinding(searchField.textProperty()) {
             Callback<Pair<Int, Int>, Node> { (page, count) ->
                 customerList = CustomerListView().apply {
-                    styleClass += "list-view-no-vertical-scrollbar"
+                    styleClass += "list-view-no-scrollbar-vertical"
                     later {
                         transaction {
                             val customers = Customers.buildQuery {
@@ -126,7 +126,8 @@ class CustomerController : ActionController(), Refreshable, Selectable<Customer>
                             customerPagination.pageCount = ceil(customers.count() / count.toDouble()).toInt()
                             items = customers
                                 .skip(count * page)
-                                .take(count).toMutableObservableList()
+                                .take(count)
+                                .toMutableObservableList()
                             val fullAccess = isAdminProperty()
                             contextMenu {
                                 getString(R.string.edit)(ImageView(R.image.menu_edit)) {

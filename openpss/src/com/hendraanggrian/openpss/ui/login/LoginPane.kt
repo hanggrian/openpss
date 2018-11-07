@@ -225,9 +225,6 @@ class LoginPane(private val resourced: Resources) : _StackPane(), Context {
         override val focusedNode: Node? get() = passwordField
 
         init {
-            setOnDialogClosed {
-                employeeField.requestFocus()
-            }
             hbox(R.dimen.padding_medium.toDouble()) {
                 stackPane {
                     alignment = Pos.CENTER

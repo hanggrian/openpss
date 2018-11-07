@@ -1,8 +1,3 @@
-import org.gradle.api.plugins.ExtensionAware
-import org.junit.platform.gradle.plugin.FiltersExtension
-import org.junit.platform.gradle.plugin.EnginesExtension
-import org.junit.platform.gradle.plugin.JUnitPlatformExtension
-
 plugins {
     java
     kotlin("jvm")
@@ -12,7 +7,6 @@ plugins {
     shadow
     application
     packr
-    `junit-platform`
 }
 
 group = RELEASE_GROUP
@@ -63,15 +57,6 @@ dependencies {
 
     testImplementation(testFx("core"))
     testImplementation(testFx("junit"))
-
-    testImplementation(spek("api")) {
-        exclude("org.jetbrains.kotlin")
-    }
-    testRuntime(spek("junit-platform-engine")) {
-        exclude("org.jetbrains.kotlin")
-        exclude("org.junit.platform")
-    }
-    testImplementation(junitPlatform("runner"))
 }
 
 packr {
@@ -119,11 +104,5 @@ tasks {
 
     withType<com.hendraanggrian.packr.PackTask> {
         dependsOn("installDist")
-    }
-}
-
-configure<JUnitPlatformExtension> {
-    if (this is ExtensionAware) extensions.getByType(FiltersExtension::class.java).apply {
-        if (this is ExtensionAware) extensions.getByType(EnginesExtension::class.java).include("spek")
     }
 }

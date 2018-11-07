@@ -34,11 +34,6 @@ fun DependencyHandler.log4j12() = "org.slf4j:slf4j-log4j12:$VERSION_LOG4J12"
 fun DependencyHandler.shadow() = "com.github.jengelman.gradle.plugins:shadow:$VERSION_SHADOW"
 inline val PluginDependenciesSpec.shadow get() = id("com.github.johnrengelman.shadow")
 
-fun DependencyHandler.junitPlatform(module: String) = "org.junit.platform:junit-platform-$module:$VERSION_JUNIT_PLATFORM"
-val PluginDependenciesSpec.`junit-platform` get() = id("org.junit.platform.gradle.plugin")
-
-fun DependencyHandler.spek(module: String) = "org.jetbrains.spek:spek-$module:$VERSION_SPEK"
-
 fun DependencyHandler.testFx(module: String) = "org.testfx:testfx-$module:$VERSION_TESTFX"
 
 private fun optionalRepo(

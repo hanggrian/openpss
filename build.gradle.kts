@@ -3,7 +3,6 @@ buildscript {
         jcenter()
         maven("https://oss.sonatype.org/content/repositories/snapshots") // required for packr
         maven("https://dl.bintray.com/hendraanggrian/packr")
-        maven("https://dl.bintray.com/hendraanggrian/generating")
     }
     dependencies {
         classpath(kotlin("gradle-plugin", VERSION_KOTLIN))
@@ -11,7 +10,6 @@ buildscript {
         classpath(hendraanggrian("generating", "buildconfig-gradle-plugin", VERSION_BUILDCONFIG))
         classpath(hendraanggrian("packr", "packr-gradle-plugin", VERSION_PACKR))
         classpath(shadow())
-        classpath(junitPlatform("gradle-plugin"))
     }
 }
 

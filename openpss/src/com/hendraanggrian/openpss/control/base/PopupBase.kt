@@ -51,7 +51,7 @@ interface PopupBase : BaseControl, Context, NodeInvokable {
                     listener { _, _, value -> value align Pos.CENTER_RIGHT }
                 }
             }
-            contentPane = vbox(R.dimen.padding_medium.toDouble())
+            contentPane = vbox(R.dimen.padding_medium.toDouble()) marginTop R.dimen.padding_medium.toDouble()
             buttonBar {
                 buttonInvokable = this
                 cancelButton = jfxButton(getString(R.string.close)) {

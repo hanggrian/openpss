@@ -60,7 +60,6 @@ class LoginPane(private val resourced: Resources) : _StackPane(), Context {
 
     private companion object {
         const val WIDTH = 400.0
-        const val HEIGHT = 500.0
     }
 
     private lateinit var employeeField: TextField
@@ -97,12 +96,12 @@ class LoginPane(private val resourced: Resources) : _StackPane(), Context {
     }
 
     init {
-        setMinSize(WIDTH, HEIGHT)
-        setMaxSize(WIDTH, HEIGHT)
+        minWidth = WIDTH
+        maxWidth = WIDTH
         gridPane {
             alignment = Pos.CENTER_RIGHT
-            gap = 8.0
-            paddingAll = 8.0
+            gap = R.dimen.padding_medium.toDouble()
+            paddingAll = R.dimen.padding_medium.toDouble()
             label(getString(R.string.language)) row 0 col 0 hpriority Priority.ALWAYS halign HPos.RIGHT
             jfxComboBox(Language.values().toObservableList()) {
                 selectionModel.select(PreferencesFile.language)

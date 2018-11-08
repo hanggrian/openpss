@@ -20,7 +20,10 @@ abstract class PropertiesFile(name: String) : File(MainDirectory, ".$name") {
     private val properties = Properties()
 
     init {
-        @Suppress("LeakingThis") if (!exists()) createNewFile()
+        @Suppress("LeakingThis")
+        if (!exists()) {
+            createNewFile()
+        }
         inputStream().use { properties.load(it) }
     }
 

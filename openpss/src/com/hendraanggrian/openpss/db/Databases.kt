@@ -75,17 +75,17 @@ suspend fun login(
     employeeName: String,
     employeePassword: String
 ): Employee {
+    lateinit var employee: Employee
     database = connect(host, port, user, password)
-    var employee: Employee? = null
     transaction {
         // check first time installation
         tables.mapNotNull { it as? Setupable }.forEach { it.setup(this) }
         // check login credentials
         employee = checkNotNull(Employees { it.name.equal(employeeName) }.singleOrNull()) { "Employee not found" }
-        check(employee!!.password == employeePassword) { "Invalid password" }
+        check(employee.password == employeePassword) { "Invalid password" }
     }
-    employee!!.clearPassword()
-    return employee!!
+    employee.clearPassword()
+    return employee
 }
 
 @Throws(Exception::class)

@@ -1,41 +1,36 @@
 package com.hendraanggrian.openpss.db
 
-import com.hendraanggrian.openpss.ConditionalIgnoreRule
 import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.io.properties.LoginFile
 import kotlinx.coroutines.runBlocking
 import org.apache.log4j.BasicConfigurator
-import org.junit.Rule
+import org.junit.Assume
+import org.junit.Before
 import org.junit.Test
 
 class DatabaseTest {
 
-    @Rule var rule = ConditionalIgnoreRule()
+    @Before
+    @Throws(Exception::class)
+    fun before() {
+        Assume.assumeTrue(System.getProperty("user.name") != "travis")
+        BasicConfigurator.configure()
+    }
 
-    @Test
-    @ConditionalIgnoreRule.ConditionalIgnore(RunningInTravis::class)
-    fun login() {
+    @Test fun login() {
         if (LoginFile.isDbValid()) {
-            BasicConfigurator.configure()
             runBlocking {
                 try {
                     login(
-                        LoginFile.DB_HOST,
-                        LoginFile.DB_PORT,
-                        LoginFile.DB_USER,
-                        LoginFile.DB_PASSWORD,
-                        Employee.BACKDOOR.name,
-                        Employee.BACKDOOR.password
+                        LoginFile.DB_HOST, LoginFile.DB_PORT, LoginFile.DB_USER, LoginFile.DB_PASSWORD,
+                        Employee.BACKDOOR.name, Employee.BACKDOOR.password
                     )
                     println(dbDateTime)
                 } catch (e: Exception) {
+                    e.printStackTrace()
                     error(e.message.toString())
                 }
             }
         }
-    }
-
-    open class RunningInTravis : ConditionalIgnoreRule.IgnoreCondition {
-        override fun isSatisfied(): Boolean = System.getProperty("user.name") == "travis"
     }
 }

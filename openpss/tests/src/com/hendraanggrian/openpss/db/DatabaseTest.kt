@@ -13,7 +13,7 @@ class DatabaseTest {
     @Rule var rule = ConditionalIgnoreRule()
 
     @Test
-    @ConditionalIgnoreRule.ConditionalIgnore(NotRunningInTravis::class)
+    @ConditionalIgnoreRule.ConditionalIgnore(RunningInTravis::class)
     fun login() {
         if (LoginFile.isDbValid()) {
             BasicConfigurator.configure()
@@ -35,7 +35,7 @@ class DatabaseTest {
         }
     }
 
-    class NotRunningInTravis : ConditionalIgnoreRule.IgnoreCondition {
-        override fun isSatisfied(): Boolean = System.getProperty("user.name") != "travis"
+    class RunningInTravis : ConditionalIgnoreRule.IgnoreCondition {
+        override fun isSatisfied(): Boolean = System.getProperty("user.name") == "travis"
     }
 }

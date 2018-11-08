@@ -11,8 +11,3 @@ before_install:
 
 os:
   - linux
-
-services: mongodb
-
-script:
-  - mongo --eval 'db.hostInfo()'

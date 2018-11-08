@@ -35,7 +35,7 @@ class DatabaseTest {
         }
     }
 
-    class RunningInTravis : ConditionalIgnoreRule.IgnoreCondition {
+    open class RunningInTravis : ConditionalIgnoreRule.IgnoreCondition {
         override fun isSatisfied(): Boolean = System.getProperty("user.name") == "travis"
     }
 }

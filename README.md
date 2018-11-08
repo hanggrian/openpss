@@ -76,9 +76,8 @@ Developer note
 Built with Kotlin in mind, this app is fully written in Kotlin and using some Kotlin-based frameworks:
  * Kotlin for JVM
  * Preview version of Kotlin NoSQL Framework
- * Experimental Kotlin Coroutines
+ * Kotlin Coroutines
  * Gradle Kotlin DSL
- * Spek Test Framework
 
 Others include:
  * MongoDB server.

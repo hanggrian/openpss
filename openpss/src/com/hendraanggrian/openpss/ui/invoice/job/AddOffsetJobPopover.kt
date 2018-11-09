@@ -33,7 +33,7 @@ class AddOffsetJobPopover(context: Context) :
     private lateinit var excessPriceField: JFXDoubleField
 
     override fun _GridPane.onCreateContent() {
-        label(getString(R.string.machine)) col 0 row currentRow
+        label(getString(R.string.type)) col 0 row currentRow
         typeChoice = jfxComboBox(transaction { OffsetPrices().toObservableList() }) {
             valueProperty().listener { _, _, job ->
                 minQtyField.value = job.minQty

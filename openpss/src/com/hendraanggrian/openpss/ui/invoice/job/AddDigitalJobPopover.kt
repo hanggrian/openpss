@@ -31,7 +31,7 @@ class AddDigitalJobPopover(context: Context) :
     private lateinit var twoSidePriceField: JFXDoubleField
 
     override fun _GridPane.onCreateContent() {
-        label(getString(R.string.machine)) col 0 row currentRow
+        label(getString(R.string.type)) col 0 row currentRow
         typeChoice = jfxComboBox(transaction { DigitalPrices().toObservableList() }) {
             valueProperty().listener { _, _, job ->
                 oneSidePriceField.value = job.oneSidePrice

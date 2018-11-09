@@ -36,10 +36,10 @@ import java.util.ResourceBundle
 class ScheduleController : ActionController(), Refreshable, TreeSelectable<Schedule> {
 
     @FXML lateinit var scheduleTable: TreeTableView<Schedule>
-    @FXML lateinit var typeColumn: TreeTableColumn<Schedule, String>
+    @FXML lateinit var jobType: TreeTableColumn<Schedule, String>
     @FXML lateinit var titleColumn: TreeTableColumn<Schedule, String>
     @FXML lateinit var qtyColumn: TreeTableColumn<Schedule, String>
-    @FXML lateinit var machineColumn: TreeTableColumn<Schedule, String>
+    @FXML lateinit var typeColumn: TreeTableColumn<Schedule, String>
 
     private lateinit var refreshButton: Button
     private lateinit var doneButton: Button
@@ -79,10 +79,10 @@ class ScheduleController : ActionController(), Refreshable, TreeSelectable<Sched
                 }
             }
         }
-        typeColumn.stringCell { firstColumn }
+        jobType.stringCell { jobType }
         titleColumn.stringCell { title }
         qtyColumn.stringCell { qty }
-        machineColumn.stringCell { type }
+        typeColumn.stringCell { type }
     }
 
     override fun refresh() = later {
@@ -100,21 +100,7 @@ class ScheduleController : ActionController(), Refreshable, TreeSelectable<Sched
                             invoice.dateTime.toString(PATTERN_DATETIME_EXTENDED)
                         )
                     ).apply {
-                        invoice.plateJobs.forEach {
-                            children += TreeItem<Schedule>(
-                                Schedule(invoice, getString(R.string.plate), it.title, it.qty, it.type)
-                            )
-                        }
-                        invoice.offsetJobs.forEach {
-                            children += TreeItem<Schedule>(
-                                Schedule(invoice, getString(R.string.offset), it.title, it.qty, it.type)
-                            )
-                        }
-                        invoice.otherJobs.forEach {
-                            children += TreeItem<Schedule>(
-                                Schedule(invoice, getString(R.string.others), it.title, it.qty)
-                            )
-                        }
+                        Schedule.of(this@ScheduleController, invoice).forEach { children += TreeItem<Schedule>(it) }
                     })
                 }
             }

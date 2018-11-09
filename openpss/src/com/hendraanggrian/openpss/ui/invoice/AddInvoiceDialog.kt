@@ -101,7 +101,7 @@ class AddInvoiceDialog(
                         bindTitle(this, R.string.offset)
                         columns {
                             column<Invoice.OffsetJob, String>(R.string.qty, 72) { numberCell { qty } }
-                            column<Invoice.OffsetJob, String>(R.string.machine, 72) { stringCell { type } }
+                            column<Invoice.OffsetJob, String>(R.string.type, 72) { stringCell { type } }
                             column<Invoice.OffsetJob, String>(R.string.technique, 72) {
                                 stringCell { typedTechnique.toString(this@AddInvoiceDialog) }
                             }
@@ -115,7 +115,7 @@ class AddInvoiceDialog(
                         bindTitle(this, R.string.digital)
                         columns {
                             column<Invoice.DigitalJob, String>(R.string.qty, 72) { numberCell { qty } }
-                            column<Invoice.DigitalJob, String>(R.string.machine, 72) { stringCell { type } }
+                            column<Invoice.DigitalJob, String>(R.string.type, 72) { stringCell { type } }
                             column<Invoice.DigitalJob, String>(R.string.title, 264) { stringCell { title } }
                             column<Invoice.DigitalJob, String>(R.string.total, 156) { currencyCell { total } }
                         }
@@ -126,7 +126,7 @@ class AddInvoiceDialog(
                         bindTitle(this, R.string.plate)
                         columns {
                             column<Invoice.PlateJob, String>(R.string.qty, 72) { numberCell { qty } }
-                            column<Invoice.PlateJob, String>(R.string.machine, 72) { stringCell { type } }
+                            column<Invoice.PlateJob, String>(R.string.type, 72) { stringCell { type } }
                             column<Invoice.PlateJob, String>(R.string.title, 264) { stringCell { title } }
                             column<Invoice.PlateJob, String>(R.string.total, 156) { currencyCell { total } }
                         }

@@ -9,10 +9,10 @@
     <Pane prefHeight="1"/>
     <TreeTableView fx:id="scheduleTable" showRoot="false" VBox.vgrow="ALWAYS">
         <columns>
-            <TreeTableColumn sortable="false" fx:id="typeColumn" text="%type"/>
+            <TreeTableColumn sortable="false" fx:id="jobType" text="%jobs"/>
             <TreeTableColumn sortable="false" fx:id="titleColumn" text="%title"/>
             <TreeTableColumn sortable="false" fx:id="qtyColumn" text="%qty"/>
-            <TreeTableColumn sortable="false" fx:id="machineColumn" text="%machine"/>
+            <TreeTableColumn sortable="false" fx:id="typeColumn" text="%type"/>
         </columns>
         <columnResizePolicy>
             <TreeTableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>

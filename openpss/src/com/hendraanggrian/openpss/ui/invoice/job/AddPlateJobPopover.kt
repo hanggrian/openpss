@@ -27,7 +27,7 @@ class AddPlateJobPopover(context: Context) : AddJobPopover<Invoice.PlateJob>(con
     private lateinit var priceField: JFXDoubleField
 
     override fun _GridPane.onCreateContent() {
-        label(getString(R.string.machine)) col 0 row currentRow
+        label(getString(R.string.type)) col 0 row currentRow
         typeChoice = jfxComboBox(transaction { PlatePrices().toObservableList() }) {
             valueProperty().listener { _, _, job ->
                 priceField.value = job.price

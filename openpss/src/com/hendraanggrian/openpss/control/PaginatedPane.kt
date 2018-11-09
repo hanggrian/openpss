@@ -21,6 +21,8 @@ class PaginatedPane : Pagination() {
     fun contentFactoryProperty(): ObjectProperty<Callback<Pair<Int, Int>, Node>> = contentFactoryProperty
     var contentFactory: Callback<Pair<Int, Int>, Node>? by contentFactoryProperty
 
+    val lastPageIndex: Int get() = pageCount - 1
+
     init {
         pageFactoryProperty().bind(buildBinding(magicProperty, contentFactoryProperty) {
             Callback<Int, Node> { page ->
@@ -30,8 +32,8 @@ class PaginatedPane : Pagination() {
     }
 
     fun selectLast() {
-        if (currentPageIndex != pageCount - 1) {
-            currentPageIndex = pageCount - 1
+        if (currentPageIndex != lastPageIndex && pageCount != Pagination.INDETERMINATE) {
+            currentPageIndex = lastPageIndex
         }
     }
 }

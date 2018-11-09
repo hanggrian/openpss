@@ -17,7 +17,7 @@ Features
 How to use
 ----------
 #### Download
-Head to [releases] to download this app in 3 variants:
+Head to releases to download this app in 3 variants:
  * `app` - Native MacOS app.
  * `zip` - Compressed folder containing Windows 64-bit libraries and executables.
  * `jar` - Smaller Java executable that requires JRE 1.8.
@@ -115,7 +115,6 @@ License
     limitations under the License.
 
 [logo]: /openpss/res/image/logo.png
-[releases]: https://github.com/hendraanggrian/wijayaprinting/releases
 [MongoDB]: https://www.mongodb.com/
 [ktlint]: https://github.com/shyiko/ktlint
 [packr]: https://github.com/hendraanggrian/packr

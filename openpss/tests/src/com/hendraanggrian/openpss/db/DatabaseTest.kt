@@ -1,19 +1,16 @@
 package com.hendraanggrian.openpss.db
 
+import com.hendraanggrian.openpss.SkipTravisTest
 import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.io.properties.LoginFile
 import kotlinx.coroutines.runBlocking
 import org.apache.log4j.BasicConfigurator
-import org.junit.Assume
-import org.junit.Before
 import org.junit.Test
 
-class DatabaseTest {
+class DatabaseTest : SkipTravisTest {
 
-    @Before
-    @Throws(Exception::class)
-    fun before() {
-        Assume.assumeTrue(System.getProperty("user.name") != "travis")
+    override fun before() {
+        super.before()
         BasicConfigurator.configure()
     }
 

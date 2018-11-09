@@ -48,11 +48,6 @@ import javafx.scene.image.Image
 import javafx.scene.input.MouseEvent
 import javafx.scene.layout.StackPane
 import javafx.util.Callback
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.javafx.JavaFx
-import kotlinx.coroutines.launch
 import kotlinx.nosql.equal
 import kotlinx.nosql.update
 import ktfx.application.later
@@ -142,7 +137,7 @@ class MainController : Controller(), Selectable<Tab>, Selectable2<Label> {
         financeGraphic.bind(3, R.image.tab_finance_selected, R.image.tab_finance)
         wageGraphic.bind(4, R.image.tab_wage_selected, R.image.tab_wage)
 
-        eventPagination.contentFactoryProperty().bind(buildBinding(drawer.openedProperty()) {
+        eventPagination.contentFactoryProperty().bind(buildBinding(drawer.openingProperty()) {
             Callback<Pair<Int, Int>, Node> { (page, count) ->
                 UnselectableListView<Log>().apply {
                     styleClass.addAll("borderless", "list-view-no-scrollbar")
@@ -208,12 +203,7 @@ class MainController : Controller(), Selectable<Tab>, Selectable2<Label> {
         }
     }
 
-    @FXML fun onDrawerOpened() {
-        GlobalScope.launch(Dispatchers.JavaFx) {
-            delay(200)
-            eventPagination.selectLast()
-        }
-    }
+    @FXML fun onDrawerOpened() = eventPagination.selectLast()
 
     @FXML fun add(event: ActionEvent) = when (event.source) {
         addCustomerItem -> select(customerController) { later { add() } }
@@ -235,21 +225,16 @@ class MainController : Controller(), Selectable<Tab>, Selectable2<Label> {
     @FXML fun settings() = SettingsDialog(this).show()
 
     @FXML fun testViewInvoice() {
-        val customer = transaction { Customers().firstOrNull() }
-        when (customer) {
-            null -> root.jfxSnackbar(getString(R.string.no_customer_to_test), App.DURATION_SHORT)
-            else -> ViewInvoicePopover(
+        transaction { Customers().firstOrNull() }?.let {
+            ViewInvoicePopover(
                 this,
                 Invoice(
                     no = 1234,
                     employeeId = login.id,
-                    customerId = customer.id,
+                    customerId = it.id,
                     dateTime = dbDateTime,
                     offsetJobs = listOf(
-                        Invoice.OffsetJob.new(
-                            5, "Title", 92000.0, "Type",
-                            Invoice.OffsetJob.Technique.TWO_SIDE_EQUAL
-                        )
+                        Invoice.OffsetJob.new(5, "Title", 92000.0, "Type", Invoice.OffsetJob.Technique.TWO_SIDE_EQUAL)
                     ),
                     digitalJobs = listOf(Invoice.DigitalJob.new(5, "Title", 92000.0, "Type", false)),
                     plateJobs = listOf(Invoice.PlateJob.new(5, "Title", 92000.0, "Type")),
@@ -260,7 +245,7 @@ class MainController : Controller(), Selectable<Tab>, Selectable2<Label> {
                     isDone = false
                 ), true
             ).show(menuBar)
-        }
+        } ?: root.jfxSnackbar(getString(R.string.no_customer_to_test), App.DURATION_SHORT)
     }
 
     @FXML fun checkUpdate() = GitHubApi.checkUpdates(this)

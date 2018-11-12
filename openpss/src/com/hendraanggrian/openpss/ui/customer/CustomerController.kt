@@ -40,7 +40,6 @@ import ktfx.NodeInvokable
 import ktfx.application.later
 import ktfx.beans.binding.buildBinding
 import ktfx.beans.binding.buildStringBinding
-import ktfx.beans.value.or
 import ktfx.collections.emptyObservableList
 import ktfx.collections.toMutableObservableList
 import ktfx.collections.toObservableList
@@ -128,15 +127,14 @@ class CustomerController : ActionController(), Refreshable, Selectable<Customer>
                                 .skip(count * page)
                                 .take(count)
                                 .toMutableObservableList()
-                            val fullAccess = isAdminProperty()
                             contextMenu {
                                 getString(R.string.edit)(ImageView(R.image.menu_edit)) {
-                                    disableProperty().bind(!selectedBinding or !fullAccess)
+                                    disableProperty().bind(!selectedBinding)
                                     onAction { edit() }
                                 }
                             }
                             addContactItem.disableProperty().bind(!selectedBinding)
-                            deleteContactItem.disableProperty().bind(!selectedBinding2 or !fullAccess)
+                            deleteContactItem.disableProperty().bind(!selectedBinding2)
                         }
                     }
                 }

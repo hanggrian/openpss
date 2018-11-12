@@ -2,7 +2,6 @@
 
 package com.hendraanggrian.openpss.control
 
-import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.toJava
 import com.hendraanggrian.openpss.content.toJoda
@@ -44,7 +43,7 @@ open class TimeBox @JvmOverloads constructor(prefill: LocalTime = MIDNIGHT) : _H
     init {
         alignment = Pos.CENTER
         previousButton = jfxButton(graphic = ImageView(R.image.btn_previous)) {
-            styleClass += App.STYLE_BUTTON_FLAT
+            styleClass += "flat"
             onAction {
                 picker.value = when (picker.value.hour) {
                     0 -> {
@@ -76,7 +75,7 @@ open class TimeBox @JvmOverloads constructor(prefill: LocalTime = MIDNIGHT) : _H
             }
         }
         nextButton = jfxButton(graphic = ImageView(R.image.btn_next)) {
-            styleClass += App.STYLE_BUTTON_FLAT
+            styleClass += "flat"
             onAction {
                 picker.value = when (picker.value.hour) {
                     23 -> {

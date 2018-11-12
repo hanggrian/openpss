@@ -23,13 +23,11 @@ import java.util.ResourceBundle
 class App : Application(), Resources {
 
     companion object {
+
         const val STRETCH_POINT = 1100.0
 
         const val DURATION_SHORT = 3000L
         const val DURATION_LONG = 6000L
-
-        const val STYLE_BUTTON_FLAT = "button-flat"
-        const val STYLE_BUTTON_RAISED = "button-raised"
 
         @JvmStatic fun main(args: Array<String>) = launch<App>(*args)
 

@@ -11,13 +11,8 @@ import com.hendraanggrian.openpss.util.clean
 import com.hendraanggrian.openpss.util.doneCell
 import com.hendraanggrian.openpss.util.stringCell
 import javafx.scene.control.MenuItem
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.javafx.JavaFx
-import kotlinx.coroutines.launch
 import kotlinx.nosql.notEqual
-import ktfx.beans.value.or
+import ktfx.application.later
 import ktfx.collections.toMutableObservableList
 import ktfx.coroutines.onAction
 import ktfx.jfoenix.jfxSnackbar
@@ -27,11 +22,6 @@ class EditEmployeeDialog(
     context: Context
 ) : TableDialog<Employee, Employees>(context, R.string.employee, Employees) {
 
-    private companion object {
-        // temporary fix
-        const val DELAY = 200L
-    }
-
     init {
         getString(R.string.name)<String> {
             stringCell { name }
@@ -39,12 +29,8 @@ class EditEmployeeDialog(
         getString(R.string.admin)<Boolean> {
             doneCell { isAdmin }
         }
-        GlobalScope.launch(Dispatchers.JavaFx) {
-            delay(DELAY)
-            isAdminProperty().let {
-                addButton.disableProperty().bind(!it)
-                deleteButton.disableProperty().bind(!selectedBinding or !it)
-            }
+        later {
+            deleteButton.isDisable = true
         }
 
         table.contextMenu {
@@ -81,10 +67,5 @@ class EditEmployeeDialog(
         }
     }
 
-    private fun MenuItem.bindDisable() {
-        GlobalScope.launch(Dispatchers.JavaFx) {
-            delay(DELAY)
-            disableProperty().bind(!selectedBinding or !isAdminProperty())
-        }
-    }
+    private fun MenuItem.bindDisable() = disableProperty().bind(!selectedBinding)
 }

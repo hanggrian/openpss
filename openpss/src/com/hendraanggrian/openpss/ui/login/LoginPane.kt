@@ -156,13 +156,13 @@ class LoginPane(private val resourced: Resources) : _StackPane(), Context {
                     jfxButton(getString(R.string.about)) {
                         updatePadding(8.0, 16.0, 8.0, 16.0)
                         fontSize = 16.0
-                        styleClass += App.STYLE_BUTTON_FLAT
+                        styleClass += "flat"
                         onAction { AboutDialog(this@LoginPane).show() }
                     } anchorLeft 0.0
                     loginButton = jfxButton(getString(R.string.login)) {
                         updatePadding(8.0, 16.0, 8.0, 16.0)
                         fontSize = 16.0
-                        styleClass += App.STYLE_BUTTON_RAISED
+                        styleClass += "raised"
                         buttonType = JFXButton.ButtonType.RAISED
                         disableProperty().bind(
                             employeeField.textProperty().isBlank()

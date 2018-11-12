@@ -1,6 +1,5 @@
 package com.hendraanggrian.openpss.control.dialog
 
-import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.Context
 import com.hendraanggrian.openpss.control.ResultablePopup
@@ -21,7 +20,7 @@ open class ResultableDialog<T>(
         buttonInvokable.run {
             defaultButton = jfxButton(getString(R.string.ok)) {
                 isDefaultButton = true
-                styleClass += App.STYLE_BUTTON_RAISED
+                styleClass += "raised"
                 buttonType = JFXButton.ButtonType.RAISED
             }
         }

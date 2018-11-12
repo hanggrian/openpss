@@ -4,9 +4,7 @@ import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.db.schemas.Employees
 import com.hendraanggrian.openpss.db.transaction
-import javafx.beans.property.ReadOnlyBooleanProperty
 import javafx.scene.layout.StackPane
-import ktfx.beans.property.toProperty
 import ktfx.jfoenix.jfxSnackbar
 import java.awt.Desktop
 
@@ -18,8 +16,6 @@ interface Context : Resources {
     val login: Employee
 
     fun isAdmin(): Boolean = transaction { Employees[login].single().isAdmin }
-
-    fun isAdminProperty(): ReadOnlyBooleanProperty = isAdmin().toProperty()
 
     /** Returns [Desktop] instance, may be null if it is unsupported. */
     val desktop: Desktop?

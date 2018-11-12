@@ -13,7 +13,7 @@
             <Label fx:id="titleLabel"/>
         </leftItems>
         <rightItems>
-            <JFXButton fx:id="processButton" mnemonicParsing="false" styleClass="button-raised" text="%process"
+            <JFXButton fx:id="processButton" mnemonicParsing="false" styleClass="raised" text="%process"
                        onAction="#process"/>
         </rightItems>
     </Toolbar>

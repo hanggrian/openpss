@@ -2,7 +2,6 @@
 
 package com.hendraanggrian.openpss.control
 
-import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.toJava
 import com.hendraanggrian.openpss.content.toJoda
@@ -42,7 +41,7 @@ open class DateBox @JvmOverloads constructor(prefill: LocalDate = now()) : _HBox
     init {
         alignment = Pos.CENTER
         previousButton = jfxButton(graphic = ImageView(R.image.btn_previous)) {
-            styleClass += App.STYLE_BUTTON_FLAT
+            styleClass += "flat"
             onAction { picker.value = picker.value.minusDays(1) }
         }
         picker = jfxDatePicker {
@@ -52,7 +51,7 @@ open class DateBox @JvmOverloads constructor(prefill: LocalDate = now()) : _HBox
             maxWidth = 116.0
         }
         nextButton = jfxButton(graphic = ImageView(R.image.btn_next)) {
-            styleClass += App.STYLE_BUTTON_FLAT
+            styleClass += "flat"
             onAction { picker.value = picker.value.plusDays(1) }
         }
         valueProperty.bind(buildBinding(picker.valueProperty()) { picker.value.toJoda() })

@@ -64,7 +64,7 @@
                             <Label fx:id="employeeLabel" styleClass="bold, display, accent"/>
                         </leftItems>
                         <rightItems>
-                            <JFXButton mnemonicParsing="false" buttonType="FLAT" styleClass="button-flat"
+                            <JFXButton mnemonicParsing="false" buttonType="FLAT" styleClass="flat"
                                        onAction="#settings">
                                 <graphic>
                                     <ImageView pickOnBounds="true" preserveRatio="true">

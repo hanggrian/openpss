@@ -54,7 +54,6 @@ import ktfx.beans.binding.buildStringBinding
 import ktfx.beans.value.and
 import ktfx.beans.value.eq
 import ktfx.beans.value.neq
-import ktfx.beans.value.or
 import ktfx.collections.emptyObservableList
 import ktfx.collections.toMutableObservableList
 import ktfx.collections.toObservableList
@@ -241,7 +240,6 @@ class InvoiceController : ActionController(), Refreshable, Selectable<Invoice>, 
                                 }
                                 separatorMenuItem()
                                 getString(R.string.delete)(ImageView(R.image.menu_delete)) {
-                                    disableProperty().bind(!selectedBinding or !isAdminProperty())
                                     onAction {
                                         (DeleteInvoiceAction(this@InvoiceController, selected!!)) {
                                             invoiceTable.items.remove(selected)

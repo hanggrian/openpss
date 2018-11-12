@@ -21,7 +21,7 @@ class AddInvoiceAction(context: Context, val invoice: Invoice) : Action<Invoice>
     override fun SessionWrapper.handle(): Invoice = invoice.apply { id = Invoices.insert(invoice) }
 }
 
-class DeleteInvoiceAction(context: Context, val invoice: Invoice) : Action<Unit>(context) {
+class DeleteInvoiceAction(context: Context, val invoice: Invoice) : Action<Unit>(context, true) {
 
     override val log: String = getString(R.string._log_invoice_delete, invoice.no, transaction {
         Customers[invoice.customerId].single().name
@@ -42,7 +42,7 @@ class AddPaymentAction(context: Context, val payment: Payment, invoiceNo: Int) :
     }
 }
 
-class DeletePaymentAction(context: Context, val payment: Payment, invoiceNo: Int) : Action<Unit>(context) {
+class DeletePaymentAction(context: Context, val payment: Payment, invoiceNo: Int) : Action<Unit>(context, true) {
 
     override val log: String = getString(R.string._log_payment_delete, payment.value, invoiceNo)
 

@@ -30,7 +30,7 @@
         </HBox>
         <JFXTextField fx:id="customerField" editable="false" onMouseClicked="#selectCustomer"/>
         <JFXComboBox fx:id="paymentCombo"/>
-        <JFXButton mnemonicParsing="false" fx:id="clearFiltersButton" onAction="#clearFilters" styleClass="button-flat">
+        <JFXButton mnemonicParsing="false" fx:id="clearFiltersButton" onAction="#clearFilters" styleClass="flat">
             <tooltip>
                 <Tooltip text="%clear_filters"/>
             </tooltip>

@@ -8,14 +8,14 @@ import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.db.schemas.Employees
 import kotlinx.nosql.update
 
-class AddEmployeeAction(context: Context, val employee: Employee) : Action<Employee>(context) {
+class AddEmployeeAction(context: Context, val employee: Employee) : Action<Employee>(context, true) {
 
     override val log: String = getString(R.string._log_employee_add, employee.name)
 
     override fun SessionWrapper.handle(): Employee = employee.also { it.id = Employees.insert(it) }
 }
 
-class ToggleAdminEmployeeAction(context: Context, val employee: Employee) : Action<Unit>(context) {
+class ToggleAdminEmployeeAction(context: Context, val employee: Employee) : Action<Unit>(context, true) {
 
     override val log: String = getString(R.string._log_employee_toggle, employee.name)
 
@@ -24,7 +24,7 @@ class ToggleAdminEmployeeAction(context: Context, val employee: Employee) : Acti
     }
 }
 
-class ResetAdminEmployeeAction(context: Context, val employee: Employee) : Action<Unit>(context) {
+class ResetAdminEmployeeAction(context: Context, val employee: Employee) : Action<Unit>(context, true) {
 
     override val log: String = getString(R.string._log_employee_reset, employee.name)
 

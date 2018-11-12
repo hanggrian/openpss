@@ -1,6 +1,5 @@
 package com.hendraanggrian.openpss.ui.main.help
 
-import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.BuildConfig
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.Context
@@ -95,12 +94,12 @@ class AboutDialog(context: Context) : Dialog<Unit>(), Selectable<License>, Conte
                     hbox {
                         spacing = R.dimen.padding_medium.toDouble()
                         jfxButton("GitHub") {
-                            styleClass += App.STYLE_BUTTON_RAISED
+                            styleClass += "raised"
                             buttonType = JFXButton.ButtonType.RAISED
                             onAction { desktop?.browse(URI(BuildConfig.WEBSITE)) }
                         }
                         jfxButton("Email") {
-                            styleClass += App.STYLE_BUTTON_FLAT
+                            styleClass += "flat"
                             onAction { desktop?.mail(URI("mailto:${BuildConfig.EMAIL}")) }
                         }
                     } marginTop 20.0

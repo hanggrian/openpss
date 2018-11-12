@@ -1,6 +1,5 @@
 package com.hendraanggrian.openpss.ui.main
 
-import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.Context
 import com.hendraanggrian.openpss.content.Language
@@ -106,7 +105,7 @@ class SettingsDialog(context: Context) : Dialog(context, R.string.settings) {
         buttonInvokable.run {
             jfxButton(getString(R.string.ok)) {
                 isDefaultButton = true
-                styleClass += App.STYLE_BUTTON_RAISED
+                styleClass += "raised"
                 buttonType = JFXButton.ButtonType.RAISED
                 disableProperty().bind(!isLocalChanged and !isGlobalChanged)
                 onActionFilter {

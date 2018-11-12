@@ -1,11 +1,10 @@
 package com.hendraanggrian.openpss.ui.wage
 
-import com.hendraanggrian.openpss.App
-import com.hendraanggrian.openpss.content.Context
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.content.Context
+import com.hendraanggrian.openpss.control.popover.Popover
 import com.hendraanggrian.openpss.db.schemas.Recesses
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.control.popover.Popover
 import com.jfoenix.controls.JFXButton
 import javafx.scene.control.ComboBox
 import javafx.scene.control.Separator
@@ -48,7 +47,7 @@ class DisableRecessPopover(
             jfxButton(getString(R.string.apply)) {
                 isDefaultButton = true
                 buttonType = JFXButton.ButtonType.RAISED
-                styleClass += App.STYLE_BUTTON_RAISED
+                styleClass += "raised"
                 disableProperty().bind(recessChoice.valueProperty().isNull or roleChoice.valueProperty().isNull)
                 onAction {
                     attendeePanes

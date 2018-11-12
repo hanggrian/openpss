@@ -1,6 +1,5 @@
 package com.hendraanggrian.openpss.control.base
 
-import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.Context
 import javafx.beans.property.ObjectProperty
@@ -58,7 +57,7 @@ interface PopupBase : BaseControl, Context, NodeInvokable {
             buttonBar {
                 buttonInvokable = this
                 cancelButton = jfxButton(getString(R.string.close)) {
-                    styleClass += App.STYLE_BUTTON_FLAT
+                    styleClass += "flat"
                     isCancelButton = true
                     onAction {
                         dismiss()

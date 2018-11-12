@@ -21,7 +21,7 @@ class EditCustomerAction(
     val name: String,
     val address: String?,
     val note: String?
-) : Action<Unit>(context) {
+) : Action<Unit>(context, true) {
 
     override val log: String = getString(R.string._log_customer_edit, customer.name)
 
@@ -51,7 +51,7 @@ class DeleteContactAction(
     context: Context,
     val customer: Customer,
     val contact: Customer.Contact
-) : Action<Unit>(context) {
+) : Action<Unit>(context, true) {
 
     override val log: String = getString(R.string._log_contact_deleted, contact.value, customer.name)
 

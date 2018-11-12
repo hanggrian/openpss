@@ -1,6 +1,5 @@
 package com.hendraanggrian.openpss.ui.invoice
 
-import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.Context
 import com.hendraanggrian.openpss.content.currencyConverter
@@ -52,7 +51,7 @@ class AddPaymentDialog(
             label(getString(R.string.payment)) row 2 col 0
             valueField = jfxDoubleField { promptText = getString(R.string.payment) } row 2 col 1
             jfxButton(graphic = ImageView(R.image.btn_match_receivable)) {
-                styleClass += App.STYLE_BUTTON_FLAT
+                styleClass += "flat"
                 tooltip(getString(R.string.match_receivable))
                 onAction {
                     valueField.value = receivable

@@ -6,6 +6,7 @@ import com.hendraanggrian.openpss.db.Document
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.Selectable
+import com.hendraanggrian.openpss.ui.employee.EditEmployeeDialog
 import javafx.geometry.Pos.CENTER_RIGHT
 import javafx.scene.control.Button
 import javafx.scene.control.SelectionModel
@@ -16,7 +17,6 @@ import javafx.scene.image.ImageView
 import javafx.stage.Stage
 import kotlinx.nosql.mongodb.DocumentSchema
 import ktfx.application.later
-import ktfx.beans.value.or
 import ktfx.collections.toMutableObservableList
 import ktfx.coroutines.onAction
 import ktfx.jfoenix.jfxButton
@@ -59,8 +59,9 @@ abstract class TableDialog<D : Document<S>, S : DocumentSchema<D>>(
                     tooltip(getString(R.string.delete))
                     onAction { delete() }
                     later {
-                        transaction {
-                            disableProperty().bind(selectedProperty.isNull or !isAdminProperty())
+                        when {
+                            this@TableDialog is EditEmployeeDialog -> isDisable = true
+                            else -> disableProperty().bind(selectedProperty.isNull)
                         }
                     }
                 }

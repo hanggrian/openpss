@@ -4,6 +4,7 @@ import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.BuildConfig
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.Context
+import com.hendraanggrian.openpss.content.STYLESHEET_OPENPSS
 import com.hendraanggrian.openpss.ui.Selectable
 import com.hendraanggrian.openpss.ui.main.License
 import com.jfoenix.controls.JFXButton
@@ -65,7 +66,7 @@ class AboutDialog(context: Context) : Dialog<Unit>(), Selectable<License>, Conte
         icon = Image(R.image.menu_about)
         title = getString(R.string.about)
         dialogPane.run {
-            stylesheets += com.hendraanggrian.openpss.util.getStyle(R.style.openpss)
+            stylesheets += STYLESHEET_OPENPSS
             content = hbox {
                 paddingAll = 48.0
                 imageView(R.image.logo)

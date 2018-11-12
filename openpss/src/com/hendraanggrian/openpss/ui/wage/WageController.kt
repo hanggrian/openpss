@@ -3,18 +3,18 @@ package com.hendraanggrian.openpss.ui.wage
 import com.hendraanggrian.openpss.App.Companion.STRETCH_POINT
 import com.hendraanggrian.openpss.BuildConfig.DEBUG
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.content.STYLESHEET_OPENPSS
+import com.hendraanggrian.openpss.control.dialog.TextDialog
 import com.hendraanggrian.openpss.control.space
 import com.hendraanggrian.openpss.control.stretchableButton
 import com.hendraanggrian.openpss.io.WageDirectory
 import com.hendraanggrian.openpss.io.properties.PreferencesFile.WAGE_READER
-import com.hendraanggrian.openpss.control.dialog.TextDialog
 import com.hendraanggrian.openpss.ui.ActionController
-import com.hendraanggrian.openpss.util.controller
-import com.hendraanggrian.openpss.util.pane
 import com.hendraanggrian.openpss.ui.wage.readers.Reader
 import com.hendraanggrian.openpss.ui.wage.record.WageRecordController.Companion.EXTRA_ATTENDEES
+import com.hendraanggrian.openpss.util.controller
 import com.hendraanggrian.openpss.util.getResource
-import com.hendraanggrian.openpss.util.getStyle
+import com.hendraanggrian.openpss.util.pane
 import javafx.beans.property.SimpleStringProperty
 import javafx.beans.property.StringProperty
 import javafx.fxml.FXML
@@ -109,7 +109,7 @@ class WageController : ActionController() {
         val loader = FXMLLoader(getResource(R.layout.controller_wage_record), resources)
         scene = scene {
             loader.pane()
-            stylesheets += getStyle(R.style.openpss)
+            stylesheets += STYLESHEET_OPENPSS
         }
         setMinSize(1000.0, 650.0)
         loader.controller.addExtra(EXTRA_ATTENDEES, attendees)

@@ -3,6 +3,7 @@ package com.hendraanggrian.openpss.ui.wage
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.Context
 import com.hendraanggrian.openpss.content.PATTERN_DATETIME_EXTENDED
+import com.hendraanggrian.openpss.content.trimMinutes
 import com.hendraanggrian.openpss.control.jfxIntField
 import com.hendraanggrian.openpss.control.popover.DateTimePopover
 import com.hendraanggrian.openpss.db.schemas.Recesses
@@ -205,7 +206,7 @@ class AttendeePane(
         this,
         R.string.add_record,
         R.string.add,
-        now().run { minusMinutes(minuteOfHour) }
+        now().trimMinutes()
     ).show(attendanceList) {
         attendanceList.run {
             items.add(it)
@@ -217,7 +218,7 @@ class AttendeePane(
         this,
         R.string.add_record,
         R.string.add,
-        selected!!.run { minusMinutes(minuteOfHour) }
+        selected!!.trimMinutes()
     ).show(attendanceList) {
         attendanceList.run {
             items.add(it)

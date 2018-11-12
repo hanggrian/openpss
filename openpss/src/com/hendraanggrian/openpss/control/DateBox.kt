@@ -18,7 +18,6 @@ import ktfx.NodeInvokable
 import ktfx.beans.binding.buildBinding
 import ktfx.beans.value.getValue
 import ktfx.coroutines.onAction
-import ktfx.coroutines.onMouseClicked
 import ktfx.jfoenix.jfxButton
 import ktfx.jfoenix.jfxDatePicker
 import ktfx.layouts._HBox
@@ -47,10 +46,7 @@ open class DateBox @JvmOverloads constructor(prefill: LocalDate = now()) : _HBox
             onAction { picker.value = picker.value.minusDays(1) }
         }
         picker = jfxDatePicker {
-            editor.run {
-                alignment = CENTER
-                onMouseClicked { picker.show() }
-            }
+            editor.alignment = CENTER
             value = prefill.toJava()
             isEditable = false
             maxWidth = 116.0

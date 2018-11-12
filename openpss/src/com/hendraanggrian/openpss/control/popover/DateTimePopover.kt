@@ -28,7 +28,7 @@ class DateTimePopover(
             gap = R.dimen.padding_medium.toDouble()
             dateBox = dateBox(prefill.toLocalDate()) row 0 col 1
             jfxButton("-${Record.WORKING_HOURS}") {
-                onAction { _ ->
+                onAction {
                     repeat(Record.WORKING_HOURS) {
                         timeBox.previousButton.fire()
                     }
@@ -43,7 +43,7 @@ class DateTimePopover(
                 }
             } row 1 col 1
             jfxButton("+${Record.WORKING_HOURS}") {
-                onAction { _ ->
+                onAction {
                     repeat(Record.WORKING_HOURS) {
                         timeBox.nextButton.fire()
                     }

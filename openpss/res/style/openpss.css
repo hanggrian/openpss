@@ -1,25 +1,3 @@
-/** FONT */
-
-@font-face {
-    font-family: "Roboto";
-    src: url("../font/Roboto-Regular.ttf");
-}
-
-@font-face {
-    font-family: "Roboto Medium";
-    src: url("../font/Roboto-Medium.ttf");
-}
-
-@font-face {
-    font-family: "Roboto Light";
-    src: url("../font/Roboto-Light.ttf");
-}
-
-@font-face {
-    font-family: "Roboto Bold";
-    src: url("../font/Roboto-Bold.ttf");
-}
-
 /* GLOBAL */
 
 * {
@@ -203,44 +181,6 @@
 }
 .jfx-tab-pane-small .tab .tab-label {
     -fx-font-size: 9pt;
-}
-
-/* TEXT */
-
-.display {
-    -fx-font-size: 13pt;
-}
-
-.display2 {
-    -fx-font-size: 18pt;
-}
-
-.accent {
-    -fx-text-fill: -accent;
-}
-
-.bold {
-    -fx-font-family: "Roboto Bold";
-}
-
-.light {
-    -fx-font-family: "Roboto Light";
-}
-
-/* BACKGROUND */
-
-.white-background {
-    -fx-background-color: white;
-}
-
-.borderless {
-    -fx-background-color: transparent;
-}
-
-.bordered {
-    -fx-border-color: #c8c8c8;
-    -fx-border-width: 1;
-    -fx-border-style: solid;
 }
 
 /** DRAWER */

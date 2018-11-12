@@ -3,7 +3,7 @@ package com.hendraanggrian.openpss.db
 import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.BuildConfig.ARTIFACT
 import com.hendraanggrian.openpss.BuildConfig.DEBUG
-import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.content.STYLESHEET_OPENPSS
 import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.schemas.DigitalPrices
 import com.hendraanggrian.openpss.db.schemas.Employee
@@ -16,7 +16,6 @@ import com.hendraanggrian.openpss.db.schemas.Payments
 import com.hendraanggrian.openpss.db.schemas.PlatePrices
 import com.hendraanggrian.openpss.db.schemas.Recesses
 import com.hendraanggrian.openpss.db.schemas.Wages
-import com.hendraanggrian.openpss.util.getStyle
 import com.mongodb.MongoClientOptions.Builder
 import com.mongodb.MongoCredential.createCredential
 import com.mongodb.MongoException
@@ -58,7 +57,7 @@ fun <T> transaction(statement: SessionWrapper.() -> T): T = try {
 } catch (e: MongoException) {
     if (DEBUG) e.printStackTrace()
     errorAlert(e.message.toString()) {
-        dialogPane.stylesheets += getStyle(R.style.openpss)
+        dialogPane.stylesheets += STYLESHEET_OPENPSS
         headerText = "Connection closed. Please sign in again."
     }.showAndWait().ifPresent {
         App.exit()

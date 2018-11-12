@@ -4,18 +4,19 @@ import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.PATTERN_DATE
 import com.hendraanggrian.openpss.content.PATTERN_DATETIME
 import com.hendraanggrian.openpss.content.PATTERN_TIME
+import com.hendraanggrian.openpss.content.STYLESHEET_PRINT_TREETABLEVIEW
 import com.hendraanggrian.openpss.content.currencyConverter
 import com.hendraanggrian.openpss.content.numberConverter
-import com.hendraanggrian.openpss.control.TimeBox
+import com.hendraanggrian.openpss.content.trimMinutes
 import com.hendraanggrian.openpss.control.UncollapsibleTreeItem
 import com.hendraanggrian.openpss.control.popover.DatePopover
+import com.hendraanggrian.openpss.control.popover.TimePopover
 import com.hendraanggrian.openpss.io.WageDirectory
 import com.hendraanggrian.openpss.io.WageFile
 import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.wage.Attendee
 import com.hendraanggrian.openpss.ui.wage.record.Record.Companion.getDummy
 import com.hendraanggrian.openpss.util.concatenate
-import com.hendraanggrian.openpss.util.getResource
 import com.hendraanggrian.openpss.util.stringCell
 import com.jfoenix.controls.JFXToolbar
 import com.sun.javafx.scene.control.skin.TreeTableViewSkin
@@ -28,6 +29,7 @@ import javafx.scene.control.SplitMenuButton
 import javafx.scene.control.TreeItem
 import javafx.scene.control.TreeTableColumn
 import javafx.scene.control.TreeTableView
+import javafx.scene.layout.StackPane
 import javafx.scene.layout.VBox
 import javafx.stage.Stage
 import ktfx.application.later
@@ -43,6 +45,7 @@ import ktfx.layouts.menuItem
 import ktfx.listeners.cellFactory
 import ktfx.scene.snapshot
 import ktfx.util.invoke
+import org.joda.time.LocalTime
 import java.awt.image.BufferedImage
 import java.net.URL
 import java.util.ResourceBundle
@@ -55,10 +58,10 @@ class WageRecordController : Controller() {
         const val EXTRA_ATTENDEES = "EXTRA_ATTENDEES"
     }
 
+    @FXML override lateinit var root: StackPane
     @FXML lateinit var vbox: VBox
     @FXML lateinit var toolbar: JFXToolbar
     @FXML lateinit var undoButton: SplitMenuButton
-    @FXML lateinit var timeBox: TimeBox
     @FXML lateinit var lockStartButton: Button
     @FXML lateinit var lockEndButton: Button
     @FXML lateinit var disableDailyIncomeButton: Button
@@ -123,7 +126,7 @@ class WageRecordController : Controller() {
                     children += TreeItem(total)
                 }
             }
-            (vbox.scene.window as Stage).titleProperty().bind(
+            (root.scene.window as Stage).titleProperty().bind(
                 buildStringBinding(*records.filter { it.isChild() }.map { it.totalProperty }.toTypedArray()) {
                     "${getString(R.string.record)} - ${currencyConverter(records
                         .asSequence()
@@ -135,64 +138,61 @@ class WageRecordController : Controller() {
 
     @FXML fun undo() = undoButton.items[0].fire()
 
-    @FXML fun lockStart() {
-        val undoable = Undoable()
-        recordTable.selectionModel.selectedItems
-            .map { it.value }
-            .forEach { record ->
-                val initial = record.startProperty.value
-                if (initial.toLocalTime() < timeBox.value) {
-                    record.startProperty.set(record.cloneStart(timeBox.value!!))
-                    undoable.name = when {
-                        undoable.name == null -> "${record.attendee.name} ${initial.toString(PATTERN_DATETIME)} -> " +
-                            timeBox.value!!.toString(PATTERN_TIME)
-                        else -> getString(R.string.multiple_lock_start_time)
-                    }
-                    undoable.addAction { record.startProperty.set(initial) }
+    @FXML fun disableDailyIncome() =
+        DatePopover(this, R.string.disable_daily_income).show(disableDailyIncomeButton) { date ->
+            val undoable = Undoable()
+            records.filter { it.startProperty.value.toLocalDate() == date }
+                .forEach { record ->
+                    val initial = record.dailyDisabledProperty.value
+                    record.dailyDisabledProperty.set(!initial)
+                    if (undoable.name == null) undoable.name = "${getString(R.string.daily_disabled)} " +
+                        record.startProperty.value.toString(PATTERN_DATE)
+                    undoable.addAction { record.dailyDisabledProperty.set(initial) }
                 }
-            }
-        undoable.append()
-    }
+            undoable.append()
+        }
 
-    @FXML fun lockEnd() {
-        val undoable = Undoable()
-        recordTable.selectionModel.selectedItems
-            .map { it.value }
-            .forEach { record ->
-                val initial = record.endProperty.value
-                if (initial.toLocalTime() > timeBox.value) {
-                    record.endProperty.set(record.cloneEnd(timeBox.value!!))
-                    undoable.name = when {
-                        undoable.name == null -> "${record.attendee.name} ${initial.toString(PATTERN_DATETIME)} -> " +
-                            timeBox.value!!.toString(PATTERN_TIME)
-                        else -> getString(R.string.multiple_lock_end_time)
+    @FXML fun lockStart() =
+        TimePopover(this, R.string.lock_start_time, LocalTime.now().trimMinutes()).show(lockStartButton) { time ->
+            val undoable = Undoable()
+            recordTable.selectionModel.selectedItems.map { it.value }
+                .forEach { record ->
+                    val initial = record.startProperty.value
+                    if (initial.toLocalTime() < time!!) {
+                        record.startProperty.set(record.cloneStart(time))
+                        undoable.name = when {
+                            undoable.name == null -> "${record.attendee.name} ${initial.toString(PATTERN_DATETIME)} -> " +
+                                time.toString(PATTERN_TIME)
+                            else -> getString(R.string.multiple_lock_start_time)
+                        }
+                        undoable.addAction { record.startProperty.set(initial) }
                     }
-                    undoable.addAction { record.endProperty.set(initial) }
                 }
-            }
-        undoable.append()
-    }
+            undoable.append()
+        }
 
-    @FXML fun disableDailyIncome() = DatePopover(
-        this,
-        R.string.disable_daily_income
-    ).show(disableDailyIncomeButton) { date ->
-        val undoable = Undoable()
-        records.filter { it.startProperty.value.toLocalDate() == date }
-            .forEach { record ->
-                val initial = record.dailyDisabledProperty.value
-                record.dailyDisabledProperty.set(!initial)
-                if (undoable.name == null) undoable.name = "${getString(R.string.daily_disabled)} " +
-                    record.startProperty.value.toString(PATTERN_DATE)
-                undoable.addAction { record.dailyDisabledProperty.set(initial) }
-            }
-        undoable.append()
-    }
+    @FXML fun lockEnd() =
+        TimePopover(this, R.string.lock_end_time, LocalTime.now().trimMinutes()).show(lockEndButton) { time ->
+            val undoable = Undoable()
+            recordTable.selectionModel.selectedItems.map { it.value }
+                .forEach { record ->
+                    val initial = record.endProperty.value
+                    if (initial.toLocalTime() > time!!) {
+                        record.endProperty.set(record.cloneEnd(time))
+                        undoable.name = when {
+                            undoable.name == null -> "${record.attendee.name} ${initial.toString(PATTERN_DATETIME)} -> " +
+                                time.toString(PATTERN_TIME)
+                            else -> getString(R.string.multiple_lock_end_time)
+                        }
+                        undoable.addAction { record.endProperty.set(initial) }
+                    }
+                }
+            undoable.append()
+        }
 
     @FXML fun screenshot() {
         val images = mutableListOf<BufferedImage>()
-        val stylesheet = getResource(R.style.treetableview_print).toExternalForm()
-        togglePrintMode(true, stylesheet)
+        togglePrintMode(true, STYLESHEET_PRINT_TREETABLEVIEW)
         recordTable.scrollTo(0)
         val flow = (recordTable.skin as TreeTableViewSkin<*>).children[1] as VirtualFlow<*>
         var i = 0
@@ -203,7 +203,7 @@ class WageRecordController : Controller() {
         } while (flow.lastVisibleCell.index + 1 <
             recordTable.root.children.size + recordTable.root.children.sumBy { it.children.size }
         )
-        togglePrintMode(false, stylesheet)
+        togglePrintMode(false, STYLESHEET_PRINT_TREETABLEVIEW)
         ImageIO.write(images.concatenate(), "png", WageFile())
         root.jfxIndefiniteSnackbar(getString(R.string.screenshot_finished), getString(R.string.open_folder)) {
             desktop?.open(WageDirectory)
@@ -213,13 +213,15 @@ class WageRecordController : Controller() {
     private inline val records: List<Record> get() = recordTable.root.children.flatMap { it.children }.map { it.value }
 
     private fun Undoable.append() {
-        if (isValid) undoButton.items.add(0, menuItem(name) {
-            onAction {
-                undo()
-                undoButton.items.getOrNull(undoButton.items.indexOf(this@menuItem) - 1)?.fire()
-                undoButton.items -= this@menuItem
-            }
-        })
+        if (isValid) {
+            undoButton.items.add(0, menuItem(name) {
+                onAction {
+                    undo()
+                    undoButton.items.getOrNull(undoButton.items.indexOf(this@menuItem) - 1)?.fire()
+                    undoButton.items -= this@menuItem
+                }
+            })
+        }
     }
 
     private fun togglePrintMode(on: Boolean, printStylesheet: String) = when {

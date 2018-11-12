@@ -1,0 +1,13 @@
+.white-background {
+    -fx-background-color: white;
+}
+
+.borderless {
+    -fx-background-color: transparent;
+}
+
+.bordered {
+    -fx-border-color: #c8c8c8;
+    -fx-border-width: 1;
+    -fx-border-style: solid;
+}

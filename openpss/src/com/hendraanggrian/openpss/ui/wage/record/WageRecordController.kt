@@ -132,7 +132,7 @@ class WageRecordController : Controller() {
                 }
             }
             totalLabel.textProperty()
-                .bind(buildStringBinding(*records.filter { it.isChild() }.map { it.totalProperty }.toTypedArray()) {
+                .bind(buildStringBinding(records.filter { it.isChild() }.map { it.totalProperty }) {
                     currencyConverter(records
                         .asSequence()
                         .filter { it.isTotal() }

@@ -11,7 +11,7 @@ import javafx.scene.control.Label
 import javafx.scene.control.Tab
 import javafx.scene.control.TabPane
 import javafx.scene.control.TextField
-import ktfx.beans.binding.`when`
+import ktfx.beans.binding.conditional
 import ktfx.beans.binding.otherwise
 import ktfx.beans.binding.then
 import ktfx.beans.value.eq
@@ -59,7 +59,7 @@ class AddCustomerDialog(context: Context) : ResultableDialog<Customer>(context, 
             promptText = getString(R.string.name)
         }
         defaultButton.disableProperty().bind(
-            `when`(tabPane.selectionModel.selectedIndexProperty() eq 0)
+            conditional(tabPane.selectionModel.selectedIndexProperty() eq 0)
                 then (editor.textProperty().isBlank() or !editor.textProperty().isPersonName())
                 otherwise editor.textProperty().isBlank()
         )
@@ -70,14 +70,14 @@ class AddCustomerDialog(context: Context) : ResultableDialog<Customer>(context, 
 
     private fun Tab.bindGraphic(selectedImageId: String, unselectedImageId: String) {
         graphicProperty().bind(
-            ktfx.beans.binding.`when`(selectedProperty())
+            conditional(selectedProperty())
                 then ktfx.layouts.imageView(selectedImageId)
                 otherwise ktfx.layouts.imageView(unselectedImageId)
         )
     }
 
     private fun Label.bindText(personTextId: String, companyTextId: String) = textProperty().bind(
-        `when`(tabPane.selectionModel.selectedIndexProperty() eq 0)
+        conditional(tabPane.selectionModel.selectedIndexProperty() eq 0)
             then getString(personTextId)
             otherwise getString(companyTextId)
     )

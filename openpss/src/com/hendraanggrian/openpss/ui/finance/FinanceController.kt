@@ -9,15 +9,14 @@ import com.hendraanggrian.openpss.control.DateBox
 import com.hendraanggrian.openpss.control.MonthBox
 import com.hendraanggrian.openpss.control.dateBox
 import com.hendraanggrian.openpss.control.monthBox
+import com.hendraanggrian.openpss.control.popover.ViewInvoicePopover
 import com.hendraanggrian.openpss.control.stretchableButton
-import com.hendraanggrian.openpss.util.matches
 import com.hendraanggrian.openpss.db.schemas.Employees
 import com.hendraanggrian.openpss.db.schemas.Invoices
 import com.hendraanggrian.openpss.db.schemas.Payment
 import com.hendraanggrian.openpss.db.schemas.Payments
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.io.properties.PreferencesFile
-import com.hendraanggrian.openpss.control.popover.ViewInvoicePopover
 import com.hendraanggrian.openpss.ui.ActionController
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.Selectable
@@ -25,6 +24,7 @@ import com.hendraanggrian.openpss.ui.Selectable2
 import com.hendraanggrian.openpss.ui.Selectable3
 import com.hendraanggrian.openpss.util.currencyCell
 import com.hendraanggrian.openpss.util.doneCell
+import com.hendraanggrian.openpss.util.matches
 import com.hendraanggrian.openpss.util.numberCell
 import com.hendraanggrian.openpss.util.stringCell
 import javafx.fxml.FXML
@@ -40,7 +40,7 @@ import javafx.scene.image.ImageView
 import javafx.scene.layout.BorderPane
 import ktfx.NodeInvokable
 import ktfx.application.later
-import ktfx.beans.binding.`when`
+import ktfx.beans.binding.conditional
 import ktfx.beans.value.eq
 import ktfx.collections.toMutableObservableList
 import ktfx.coroutines.listener
@@ -103,7 +103,7 @@ class FinanceController : ActionController(), Refreshable, Selectable<Tab>, Sele
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
-        switchablePane.centerProperty().bind(`when`(selectedIndexProperty eq 0).then<Node>(dateBox).otherwise(monthBox))
+        switchablePane.centerProperty().bind(conditional(selectedIndexProperty eq 0).then<Node>(dateBox).otherwise(monthBox))
 
         dailyNoColumn.numberCell { transaction { Invoices[invoiceId].single().no } }
         dailyTimeColumn.stringCell { dateTime.toString(PATTERN_TIME) }

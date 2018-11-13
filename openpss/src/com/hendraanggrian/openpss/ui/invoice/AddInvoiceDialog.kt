@@ -30,9 +30,9 @@ import javafx.scene.image.ImageView
 import javafx.scene.layout.Priority.ALWAYS
 import ktfx.NodeInvokable
 import ktfx.application.later
-import ktfx.beans.binding.`when`
 import ktfx.beans.binding.buildDoubleBinding
 import ktfx.beans.binding.buildStringBinding
+import ktfx.beans.binding.conditional
 import ktfx.beans.binding.otherwise
 import ktfx.beans.binding.then
 import ktfx.beans.value.greater
@@ -166,7 +166,7 @@ class AddInvoiceDialog(
                     currencyConverter(totalProperty.value)
                 })
                 textFillProperty().bind(
-                    `when`(totalProperty greater 0)
+                    conditional(totalProperty greater 0)
                         then getColor(R.color.green)
                         otherwise getColor(R.color.red)
                 )

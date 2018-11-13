@@ -51,9 +51,9 @@ import javafx.util.Callback
 import kotlinx.nosql.equal
 import kotlinx.nosql.update
 import ktfx.application.later
-import ktfx.beans.binding.`when`
 import ktfx.beans.binding.buildBinding
 import ktfx.beans.binding.buildStringBinding
+import ktfx.beans.binding.conditional
 import ktfx.beans.binding.minus
 import ktfx.beans.binding.otherwise
 import ktfx.beans.binding.then
@@ -261,7 +261,7 @@ class MainController : Controller(), Selectable<Tab>, Selectable2<Label> {
 
     private fun MarginedImageView.bind(index: Int, selectedImageId: String, unselectedImageId: String) =
         imageProperty().bind(
-            `when`(selectedIndexProperty2 eq index)
+            conditional(selectedIndexProperty2 eq index)
                 then Image(selectedImageId)
                 otherwise Image(unselectedImageId)
         )

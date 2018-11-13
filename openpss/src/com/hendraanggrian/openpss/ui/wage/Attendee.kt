@@ -1,11 +1,11 @@
 package com.hendraanggrian.openpss.ui.wage
 
+import com.hendraanggrian.openpss.content.Resources
 import com.hendraanggrian.openpss.content.START_OF_TIME
 import com.hendraanggrian.openpss.db.schemas.Recess
 import com.hendraanggrian.openpss.db.schemas.Wage
 import com.hendraanggrian.openpss.db.schemas.Wages
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.content.Resources
 import com.hendraanggrian.openpss.ui.wage.record.Record
 import com.hendraanggrian.openpss.ui.wage.record.Record.Companion.INDEX_NODE
 import com.hendraanggrian.openpss.ui.wage.record.Record.Companion.INDEX_TOTAL
@@ -95,19 +95,19 @@ data class Attendee(
     fun toTotalRecords(resources: Resources, children: Collection<Record>): Record =
         Record(resources, INDEX_TOTAL, this, START_OF_TIME.toMutableProperty(), START_OF_TIME.toMutableProperty())
             .apply {
-                dailyProperty.bind(buildDoubleBinding(*children.map { it.dailyProperty }.toTypedArray()) {
+                dailyProperty.bind(buildDoubleBinding(children.map { it.dailyProperty }) {
                     children.sumByDouble { it.daily }.round()
                 })
-                dailyIncomeProperty.bind(buildDoubleBinding(*children.map { it.dailyIncomeProperty }.toTypedArray()) {
+                dailyIncomeProperty.bind(buildDoubleBinding(children.map { it.dailyIncomeProperty }) {
                     children.sumByDouble { it.dailyIncome }.round()
                 })
-                overtimeProperty.bind(buildDoubleBinding(*children.map { it.overtimeProperty }.toTypedArray()) {
+                overtimeProperty.bind(buildDoubleBinding(children.map { it.overtimeProperty }) {
                     children.sumByDouble { it.overtime }.round()
                 })
-                overtimeIncomeProperty.bind(buildDoubleBinding(*children.map { it.overtimeIncomeProperty }.toTypedArray()) {
+                overtimeIncomeProperty.bind(buildDoubleBinding(children.map { it.overtimeIncomeProperty }) {
                     children.sumByDouble { it.overtimeIncome }.round()
                 })
-                totalProperty.bind(buildDoubleBinding(*children.map { it.totalProperty }.toTypedArray()) {
+                totalProperty.bind(buildDoubleBinding(children.map { it.totalProperty }) {
                     children.sumByDouble { it.total }.round()
                 })
             }

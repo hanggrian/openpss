@@ -105,7 +105,7 @@ class WageController : ActionController() {
         }
     }
 
-    @FXML fun process() = stage(getString(R.string.record)) {
+    @FXML fun process() = stage(getString(R.string.wage_record)) {
         val loader = FXMLLoader(getResource(R.layout.controller_wage_record), resources)
         scene = scene {
             loader.pane()

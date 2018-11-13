@@ -9,15 +9,23 @@
            fx:controller="com.hendraanggrian.openpss.ui.wage.record.WageRecordController"
            fx:id="root" styleClass="white-background">
     <VBox fx:id="vbox">
+        <MenuBar fx:id="menuBar" styleClass="white-background">
+            <Menu mnemonicParsing="false" text="File">
+                <MenuItem mnemonicParsing="false" text="%save_screenshot" onAction="#screenshot">
+                    <graphic>
+                        <ImageView>
+                            <Image url="@/image/menu_save.png"/>
+                        </ImageView>
+                    </graphic>
+                </MenuItem>
+            </Menu>
+            <Menu fx:id="undoMenu" mnemonicParsing="false" text="%undo"/>
+        </MenuBar>
         <Toolbar fx:id="toolbar">
             <leftItems>
-                <StretchableSplitMenuButton mnemonicParsing="false" fx:id="undoButton" onAction="#undo"
-                                            stretchPoint="1100"
-                                            stretchableText="%undo">
-                    <ImageView>
-                        <Image url="@/image/btn_undo.png"/>
-                    </ImageView>
-                </StretchableSplitMenuButton>
+                <Label fx:id="totalLabel" styleClass="display"/>
+            </leftItems>
+            <rightItems>
                 <StretchableButton mnemonicParsing="false" fx:id="disableDailyIncomeButton"
                                    onAction="#disableDailyIncome"
                                    stretchPoint="1100" stretchableText="%disable_daily_income">
@@ -25,6 +33,7 @@
                         <Image url="@/image/act_disable_daily.png"/>
                     </ImageView>
                 </StretchableButton>
+                <Space prefWidth="20"/>
                 <StretchableButton mnemonicParsing="false" fx:id="lockStartButton" onAction="#lockStart"
                                    stretchPoint="1100"
                                    stretchableText="%lock_start_time">
@@ -36,14 +45,6 @@
                                    stretchableText="%lock_end_time">
                     <ImageView>
                         <Image url="@/image/act_lock_end.png"/>
-                    </ImageView>
-                </StretchableButton>
-            </leftItems>
-            <rightItems>
-                <StretchableButton mnemonicParsing="false" onAction="#screenshot" stretchPoint="1100"
-                                   stretchableText="%screenshot">
-                    <ImageView>
-                        <Image url="@/image/act_screenshot.png"/>
                     </ImageView>
                 </StretchableButton>
             </rightItems>

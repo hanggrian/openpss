@@ -24,14 +24,15 @@ import com.sun.javafx.scene.control.skin.VirtualFlow
 import javafx.beans.value.ObservableValue
 import javafx.fxml.FXML
 import javafx.scene.control.Button
+import javafx.scene.control.Label
+import javafx.scene.control.Menu
+import javafx.scene.control.MenuBar
 import javafx.scene.control.SelectionMode.MULTIPLE
-import javafx.scene.control.SplitMenuButton
 import javafx.scene.control.TreeItem
 import javafx.scene.control.TreeTableColumn
 import javafx.scene.control.TreeTableView
 import javafx.scene.layout.StackPane
 import javafx.scene.layout.VBox
-import javafx.stage.Stage
 import ktfx.application.later
 import ktfx.beans.binding.buildBooleanBinding
 import ktfx.beans.binding.buildStringBinding
@@ -45,6 +46,7 @@ import ktfx.layouts.menuItem
 import ktfx.listeners.cellFactory
 import ktfx.scene.snapshot
 import ktfx.util.invoke
+import org.apache.commons.lang3.SystemUtils
 import org.joda.time.LocalTime
 import java.awt.image.BufferedImage
 import java.net.URL
@@ -60,11 +62,13 @@ class WageRecordController : Controller() {
 
     @FXML override lateinit var root: StackPane
     @FXML lateinit var vbox: VBox
+    @FXML lateinit var menuBar: MenuBar
+    @FXML lateinit var undoMenu: Menu
     @FXML lateinit var toolbar: JFXToolbar
-    @FXML lateinit var undoButton: SplitMenuButton
+    @FXML lateinit var totalLabel: Label
+    @FXML lateinit var disableDailyIncomeButton: Button
     @FXML lateinit var lockStartButton: Button
     @FXML lateinit var lockEndButton: Button
-    @FXML lateinit var disableDailyIncomeButton: Button
     @FXML lateinit var recordTable: TreeTableView<Record>
     @FXML lateinit var nameColumn: TreeTableColumn<Record, String>
     @FXML lateinit var startColumn: TreeTableColumn<Record, String>
@@ -77,7 +81,8 @@ class WageRecordController : Controller() {
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
-        undoButton.disableProperty().bind(undoButton.items.isEmpty)
+        menuBar.isUseSystemMenuBar = SystemUtils.IS_OS_MAC
+        undoMenu.disableProperty().bind(undoMenu.items.isEmpty)
         arrayOf(lockStartButton, lockEndButton).forEach { button ->
             button.disableProperty().bind(recordTable.selectionModel.selectedItemProperty().isNull or
                 buildBooleanBinding(recordTable.selectionModel.selectedItemProperty()) {
@@ -126,17 +131,17 @@ class WageRecordController : Controller() {
                     children += TreeItem(total)
                 }
             }
-            (root.scene.window as Stage).titleProperty().bind(
-                buildStringBinding(*records.filter { it.isChild() }.map { it.totalProperty }.toTypedArray()) {
-                    "${getString(R.string.record)} - ${currencyConverter(records
+            totalLabel.textProperty()
+                .bind(buildStringBinding(*records.filter { it.isChild() }.map { it.totalProperty }.toTypedArray()) {
+                    currencyConverter(records
                         .asSequence()
                         .filter { it.isTotal() }
-                        .sumByDouble { it.totalProperty.value })}"
+                        .sumByDouble { it.totalProperty.value })
                 })
         }
     }
 
-    @FXML fun undo() = undoButton.items[0].fire()
+    // @FXML fun undo() = undoButton.items[0].fire()
 
     @FXML fun disableDailyIncome() =
         DatePopover(this, R.string.disable_daily_income).show(disableDailyIncomeButton) { date ->
@@ -214,11 +219,11 @@ class WageRecordController : Controller() {
 
     private fun Undoable.append() {
         if (isValid) {
-            undoButton.items.add(0, menuItem(name) {
+            undoMenu.items.add(0, menuItem(name) {
                 onAction {
                     undo()
-                    undoButton.items.getOrNull(undoButton.items.indexOf(this@menuItem) - 1)?.fire()
-                    undoButton.items -= this@menuItem
+                    undoMenu.items.getOrNull(undoMenu.items.indexOf(this@menuItem) - 1)?.fire()
+                    undoMenu.items -= this@menuItem
                 }
             })
         }

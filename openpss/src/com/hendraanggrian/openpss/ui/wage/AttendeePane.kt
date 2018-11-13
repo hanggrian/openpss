@@ -71,6 +71,7 @@ class AttendeePane(
         vbox {
             isFillWidth = true
             gridPane {
+                styleClass += "white-background"
                 gap = R.dimen.padding_small.toDouble()
                 paddingAll = R.dimen.padding_medium.toDouble()
                 attendee.role?.let { role ->

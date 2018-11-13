@@ -4,7 +4,6 @@ import com.hendraanggrian.openpss.App.Companion.STRETCH_POINT
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.PATTERN_DATETIME_EXTENDED
 import com.hendraanggrian.openpss.control.UncollapsibleTreeItem
-import com.hendraanggrian.openpss.control.space
 import com.hendraanggrian.openpss.control.stretchableButton
 import com.hendraanggrian.openpss.control.stretchableCheckBox
 import com.hendraanggrian.openpss.db.schemas.Customers
@@ -58,7 +57,6 @@ class ScheduleController : ActionController(), Refreshable, TreeSelectable<Sched
                 }
             }
         }
-        space(R.dimen.padding_large.toDouble())
         historyCheck = stretchableCheckBox(STRETCH_POINT, getString(R.string.history)) {
             selectedProperty().listener { refresh() }
             doneButton.disableProperty().bind(selecteds.isEmpty or selectedProperty())

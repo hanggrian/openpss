@@ -2,12 +2,13 @@
 
 <?import com.hendraanggrian.openpss.control.DateBox?>
 <?import com.hendraanggrian.openpss.control.PaginatedPane?>
-<?import com.jfoenix.controls.*?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXRadioButton?>
+<?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.ToggleGroup?>
-<?import javafx.scene.control.Tooltip?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.hendraanggrian.openpss.ui.invoice.InvoiceController">
     <HBox fx:id="filterBox" alignment="CENTER_LEFT" spacing="10">
@@ -30,16 +31,6 @@
         </HBox>
         <JFXTextField fx:id="customerField" editable="false" onMouseClicked="#selectCustomer"/>
         <JFXComboBox fx:id="paymentCombo"/>
-        <JFXButton mnemonicParsing="false" fx:id="clearFiltersButton" onAction="#clearFilters" styleClass="flat">
-            <tooltip>
-                <Tooltip text="%clear_filters"/>
-            </tooltip>
-            <graphic>
-                <ImageView>
-                    <Image url="@/image/btn_clear_inactive.png"/>
-                </ImageView>
-            </graphic>
-        </JFXButton>
     </HBox>
     <PaginatedPane fx:id="invoicePagination" VBox.vgrow="ALWAYS"/>
 </VBox>

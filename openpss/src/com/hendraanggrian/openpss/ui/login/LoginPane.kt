@@ -131,6 +131,7 @@ class LoginPane(private val resourced: Resources) : _StackPane(), Context {
                     fontSize = 16.0
                 }
                 employeeField = jfxTextField(LoginFile.EMPLOYEE) {
+                    textProperty().listener { _, _, value -> LoginFile.EMPLOYEE = value }
                     fontSize = 16.0
                     promptText = getString(R.string.employee)
                     later { requestFocus() }

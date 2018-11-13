@@ -9,7 +9,6 @@ import com.hendraanggrian.openpss.control.PaginatedPane
 import com.hendraanggrian.openpss.control.dialog.ConfirmDialog
 import com.hendraanggrian.openpss.control.jfxIntField
 import com.hendraanggrian.openpss.control.popover.ViewInvoicePopover
-import com.hendraanggrian.openpss.control.space
 import com.hendraanggrian.openpss.control.stretchableButton
 import com.hendraanggrian.openpss.db.SessionWrapper
 import com.hendraanggrian.openpss.db.schemas.Customer
@@ -83,10 +82,10 @@ class InvoiceController : ActionController(), Refreshable, Selectable<Invoice>, 
     @FXML lateinit var customerField: TextField
     @FXML lateinit var paymentCombo: ComboBox<String>
     @FXML lateinit var invoicePagination: PaginatedPane
-    @FXML lateinit var clearFiltersButton: Button
 
     private lateinit var refreshButton: Button
     private lateinit var addButton: Button
+    private lateinit var clearFiltersButton: Button
     private lateinit var searchField: JFXIntField
 
     private val customerProperty = SimpleObjectProperty<Customer>()
@@ -104,7 +103,10 @@ class InvoiceController : ActionController(), Refreshable, Selectable<Invoice>, 
         addButton = stretchableButton(STRETCH_POINT, getString(R.string.add), ImageView(R.image.act_add)) {
             onAction { addInvoice() }
         }
-        space(R.dimen.padding_large.toDouble())
+        clearFiltersButton =
+            stretchableButton(STRETCH_POINT, getString(R.string.clear_filters), ImageView(R.image.act_clear_filters)) {
+                onAction { clearFilters() }
+            }
         searchField = jfxIntField {
             filterBox.disableProperty().bind(valueProperty() neq 0)
             promptText = getString(R.string.search_no)
@@ -261,7 +263,7 @@ class InvoiceController : ActionController(), Refreshable, Selectable<Invoice>, 
         }
     }
 
-    @FXML fun clearFilters() {
+    private fun clearFilters() {
         customerProperty.set(null)
         pickDateRadio.isSelected = true
         dateBox.picker.value = java.time.LocalDate.now()

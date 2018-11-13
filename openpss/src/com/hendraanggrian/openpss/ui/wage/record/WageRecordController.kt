@@ -27,6 +27,7 @@ import javafx.scene.control.Button
 import javafx.scene.control.Label
 import javafx.scene.control.Menu
 import javafx.scene.control.MenuBar
+import javafx.scene.control.MenuItem
 import javafx.scene.control.SelectionMode.MULTIPLE
 import javafx.scene.control.TreeItem
 import javafx.scene.control.TreeTableColumn
@@ -36,8 +37,9 @@ import javafx.scene.layout.VBox
 import ktfx.application.later
 import ktfx.beans.binding.buildBooleanBinding
 import ktfx.beans.binding.buildStringBinding
+import ktfx.beans.value.lessEq
 import ktfx.beans.value.or
-import ktfx.collections.isEmpty
+import ktfx.collections.size
 import ktfx.coroutines.onAction
 import ktfx.embed.swing.toSwingImage
 import ktfx.jfoenix.jfxIndefiniteSnackbar
@@ -63,12 +65,13 @@ class WageRecordController : Controller() {
     @FXML override lateinit var root: StackPane
     @FXML lateinit var vbox: VBox
     @FXML lateinit var menuBar: MenuBar
-    @FXML lateinit var undoMenu: Menu
+    @FXML lateinit var editMenu: Menu
+    @FXML lateinit var undoMenu: MenuItem
     @FXML lateinit var toolbar: JFXToolbar
-    @FXML lateinit var totalLabel: Label
     @FXML lateinit var disableDailyIncomeButton: Button
     @FXML lateinit var lockStartButton: Button
     @FXML lateinit var lockEndButton: Button
+    @FXML lateinit var totalLabel: Label
     @FXML lateinit var recordTable: TreeTableView<Record>
     @FXML lateinit var nameColumn: TreeTableColumn<Record, String>
     @FXML lateinit var startColumn: TreeTableColumn<Record, String>
@@ -82,7 +85,7 @@ class WageRecordController : Controller() {
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
         menuBar.isUseSystemMenuBar = SystemUtils.IS_OS_MAC
-        undoMenu.disableProperty().bind(undoMenu.items.isEmpty)
+        undoMenu.disableProperty().bind(editMenu.items.size() lessEq 2)
         arrayOf(lockStartButton, lockEndButton).forEach { button ->
             button.disableProperty().bind(recordTable.selectionModel.selectedItemProperty().isNull or
                 buildBooleanBinding(recordTable.selectionModel.selectedItemProperty()) {
@@ -141,7 +144,7 @@ class WageRecordController : Controller() {
         }
     }
 
-    // @FXML fun undo() = undoButton.items[0].fire()
+    @FXML fun undo() = editMenu.items[2].fire()
 
     @FXML fun disableDailyIncome() =
         DatePopover(this, R.string.disable_daily_income).show(disableDailyIncomeButton) { date ->
@@ -197,6 +200,7 @@ class WageRecordController : Controller() {
 
     @FXML fun screenshot() {
         val images = mutableListOf<BufferedImage>()
+        recordTable.selectionModel.clearSelection()
         togglePrintMode(true, STYLESHEET_PRINT_TREETABLEVIEW)
         recordTable.scrollTo(0)
         val flow = (recordTable.skin as TreeTableViewSkin<*>).children[1] as VirtualFlow<*>
@@ -219,11 +223,11 @@ class WageRecordController : Controller() {
 
     private fun Undoable.append() {
         if (isValid) {
-            undoMenu.items.add(0, menuItem(name) {
+            editMenu.items.add(2, menuItem(name) {
                 onAction {
                     undo()
-                    undoMenu.items.getOrNull(undoMenu.items.indexOf(this@menuItem) - 1)?.fire()
-                    undoMenu.items -= this@menuItem
+                    editMenu.items.getOrNull(editMenu.items.indexOf(this@menuItem) - 1)?.fire()
+                    editMenu.items -= this@menuItem
                 }
             })
         }

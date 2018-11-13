@@ -19,13 +19,19 @@
                     </graphic>
                 </MenuItem>
             </Menu>
-            <Menu fx:id="undoMenu" mnemonicParsing="false" text="%undo"/>
+            <Menu mnemonicParsing="false" fx:id="editMenu" text="Edit">
+                <MenuItem fx:id="undoMenu" mnemonicParsing="false" text="%undo" onAction="#undo">
+                    <graphic>
+                        <ImageView>
+                            <Image url="@/image/menu_undo.png"/>
+                        </ImageView>
+                    </graphic>
+                </MenuItem>
+                <SeparatorMenuItem/>
+            </Menu>
         </MenuBar>
         <Toolbar fx:id="toolbar">
             <leftItems>
-                <Label fx:id="totalLabel" styleClass="display"/>
-            </leftItems>
-            <rightItems>
                 <StretchableButton mnemonicParsing="false" fx:id="disableDailyIncomeButton"
                                    onAction="#disableDailyIncome"
                                    stretchPoint="1100" stretchableText="%disable_daily_income">
@@ -47,6 +53,9 @@
                         <Image url="@/image/act_lock_end.png"/>
                     </ImageView>
                 </StretchableButton>
+            </leftItems>
+            <rightItems>
+                <Label fx:id="totalLabel" styleClass="display"/>
             </rightItems>
         </Toolbar>
         <TreeTableView fx:id="recordTable" showRoot="false" VBox.vgrow="ALWAYS">

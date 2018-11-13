@@ -5,7 +5,6 @@ import com.hendraanggrian.openpss.BuildConfig.DEBUG
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.STYLESHEET_OPENPSS
 import com.hendraanggrian.openpss.control.dialog.TextDialog
-import com.hendraanggrian.openpss.control.space
 import com.hendraanggrian.openpss.control.stretchableButton
 import com.hendraanggrian.openpss.io.WageDirectory
 import com.hendraanggrian.openpss.io.properties.PreferencesFile.WAGE_READER
@@ -82,7 +81,6 @@ class WageController : ActionController() {
             disableProperty().bind(flowPane.children.isEmpty)
             onAction { saveWage() }
         }
-        space(R.dimen.padding_large.toDouble())
         historyButton = stretchableButton(STRETCH_POINT, getString(R.string.history), ImageView(R.image.act_history)) {
             onAction { history() }
         }

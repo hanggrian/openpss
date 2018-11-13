@@ -63,16 +63,6 @@
                         <leftItems>
                             <Label fx:id="employeeLabel" styleClass="bold, display, accent"/>
                         </leftItems>
-                        <rightItems>
-                            <JFXButton mnemonicParsing="false" buttonType="FLAT" styleClass="flat"
-                                       onAction="#settings">
-                                <graphic>
-                                    <ImageView pickOnBounds="true" preserveRatio="true">
-                                        <Image url="@/image/act_settings.png"/>
-                                    </ImageView>
-                                </graphic>
-                            </JFXButton>
-                        </rightItems>
                     </Toolbar>
                     <SelectionListView fx:id="drawerList" styleClass="borderless">
                         <Label styleClass="drawer-item" text="%customer">

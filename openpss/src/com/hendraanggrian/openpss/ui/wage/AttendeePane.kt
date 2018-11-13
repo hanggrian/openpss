@@ -169,7 +169,7 @@ class AttendeePane(
                 onAction { attendanceList.items.remove(selected) }
             }
             separatorMenuItem()
-            getString(R.string.revert)(ImageView(R.image.menu_revert)) {
+            getString(R.string.revert)(ImageView(R.image.menu_undo)) {
                 onAction { attendee.attendances.revert() }
             }
             separatorMenuItem()

@@ -7,7 +7,6 @@ import com.hendraanggrian.openpss.content.PATTERN_DATE
 import com.hendraanggrian.openpss.control.CustomerListView
 import com.hendraanggrian.openpss.control.PaginatedPane
 import com.hendraanggrian.openpss.control.dialog.ConfirmDialog
-import com.hendraanggrian.openpss.control.space
 import com.hendraanggrian.openpss.control.stretchableButton
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Customers
@@ -91,7 +90,6 @@ class CustomerController : ActionController(), Refreshable, Selectable<Customer>
         addButton = stretchableButton(STRETCH_POINT, getString(R.string.add), ImageView(R.image.act_add)) {
             onAction { add() }
         }
-        space(R.dimen.padding_large.toDouble())
         searchField = jfxTextField {
             promptText = getString(R.string.search)
         }

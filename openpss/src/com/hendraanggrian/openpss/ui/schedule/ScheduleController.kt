@@ -5,7 +5,6 @@ import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.PATTERN_DATETIME_EXTENDED
 import com.hendraanggrian.openpss.control.UncollapsibleTreeItem
 import com.hendraanggrian.openpss.control.stretchableButton
-import com.hendraanggrian.openpss.control.stretchableCheckBox
 import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.schemas.Invoices
 import com.hendraanggrian.openpss.db.transaction
@@ -15,8 +14,8 @@ import com.hendraanggrian.openpss.ui.TreeSelectable
 import com.hendraanggrian.openpss.util.stringCell
 import javafx.fxml.FXML
 import javafx.scene.control.Button
-import javafx.scene.control.CheckBox
 import javafx.scene.control.SelectionMode.MULTIPLE
+import javafx.scene.control.ToggleButton
 import javafx.scene.control.TreeItem
 import javafx.scene.control.TreeTableColumn
 import javafx.scene.control.TreeTableView
@@ -29,6 +28,8 @@ import ktfx.beans.value.or
 import ktfx.collections.isEmpty
 import ktfx.coroutines.listener
 import ktfx.coroutines.onAction
+import ktfx.jfoenix.jfxToggleButton
+import ktfx.layouts.borderPane
 import java.net.URL
 import java.util.ResourceBundle
 
@@ -42,7 +43,7 @@ class ScheduleController : ActionController(), Refreshable, TreeSelectable<Sched
 
     private lateinit var refreshButton: Button
     private lateinit var doneButton: Button
-    private lateinit var historyCheck: CheckBox
+    private lateinit var historyCheck: ToggleButton
 
     override val selectionModel: TreeTableViewSelectionModel<Schedule> get() = scheduleTable.selectionModel
 
@@ -57,9 +58,14 @@ class ScheduleController : ActionController(), Refreshable, TreeSelectable<Sched
                 }
             }
         }
-        historyCheck = stretchableCheckBox(STRETCH_POINT, getString(R.string.history)) {
-            selectedProperty().listener { refresh() }
-            doneButton.disableProperty().bind(selecteds.isEmpty or selectedProperty())
+        borderPane {
+            minHeight = 50.0
+            maxHeight = 50.0
+            historyCheck = jfxToggleButton {
+                text = getString(R.string.history)
+                selectedProperty().listener { refresh() }
+                doneButton.disableProperty().bind(selecteds.isEmpty or selectedProperty())
+            }
         }
     }
 

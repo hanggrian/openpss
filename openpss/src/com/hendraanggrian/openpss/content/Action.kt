@@ -22,13 +22,14 @@ abstract class Action<T>(
 
     abstract fun SessionWrapper.handle(): T
 
-    operator fun invoke(block: SessionWrapper.(T) -> Unit) = transaction {
-        if (requireAdmin && !Employees[login].single().isAdmin) {
-            root.jfxSnackbar(getString(R.string.admin_status_required), App.DURATION_SHORT)
-        } else {
-            val result = handle()
-            Logs += Log.new(context.login.id, log)
-            block(result)
+    operator fun invoke(block: SessionWrapper.(T) -> Unit) {
+        transaction {
+            if (requireAdmin && !Employees[login].single().isAdmin) {
+                root.jfxSnackbar(getString(R.string.admin_status_required), App.DURATION_SHORT)
+            } else {
+                block(handle())
+                Logs += Log.new(context.login.id, log)
+            }
         }
     }
 }

@@ -24,7 +24,7 @@ class App : Application(), Resources {
 
     companion object {
 
-        const val STRETCH_POINT = 1100.0
+        const val STRETCH_POINT = 900.0
 
         const val DURATION_SHORT = 3000L
         const val DURATION_LONG = 6000L
@@ -63,7 +63,7 @@ class App : Application(), Resources {
 
                     stage.isResizable = true
                     stage.title = BuildConfig.NAME.let { if (BuildConfig.DEBUG) "$it - DEBUG" else it }
-                    stage.setMinSize(800.0, 600.0)
+                    stage.setMinSize(720.0, 480.0)
                 }
             }()
         }

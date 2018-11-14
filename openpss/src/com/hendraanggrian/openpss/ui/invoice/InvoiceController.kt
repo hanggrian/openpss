@@ -8,7 +8,7 @@ import com.hendraanggrian.openpss.control.JFXIntField
 import com.hendraanggrian.openpss.control.PaginatedPane
 import com.hendraanggrian.openpss.control.dialog.ConfirmDialog
 import com.hendraanggrian.openpss.control.jfxIntField
-import com.hendraanggrian.openpss.control.popover.ViewInvoicePopover
+import com.hendraanggrian.openpss.control.popover.ViewInvoiceDialog
 import com.hendraanggrian.openpss.control.stretchableButton
 import com.hendraanggrian.openpss.db.SessionWrapper
 import com.hendraanggrian.openpss.db.schemas.Customer
@@ -58,7 +58,6 @@ import ktfx.collections.toMutableObservableList
 import ktfx.collections.toObservableList
 import ktfx.controlsfx.masterDetailPane
 import ktfx.coroutines.onAction
-import ktfx.coroutines.onHidden
 import ktfx.coroutines.onMouseClicked
 import ktfx.layouts.columns
 import ktfx.layouts.contextMenu
@@ -272,13 +271,13 @@ class InvoiceController : ActionController(), Refreshable, Selectable<Invoice>, 
 
     @FXML fun selectCustomer() = SearchCustomerPopover(this).show(customerField) { customerProperty.set(it) }
 
-    private fun viewInvoice() = ViewInvoicePopover(this, selected!!).apply {
-        onHidden {
+    private fun viewInvoice() = ViewInvoiceDialog(this, selected!!).apply {
+        setOnDialogClosed {
             transaction {
                 reload(selected!!)
             }
         }
-    }.show(invoiceTable)
+    }.show()
 
     private fun addPayment() = AddPaymentDialog(this, selected!!).show {
         (AddPaymentAction(this@InvoiceController, it!!, selected!!.no)) {

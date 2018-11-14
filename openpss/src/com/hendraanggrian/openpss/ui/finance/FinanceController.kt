@@ -9,7 +9,7 @@ import com.hendraanggrian.openpss.control.DateBox
 import com.hendraanggrian.openpss.control.MonthBox
 import com.hendraanggrian.openpss.control.dateBox
 import com.hendraanggrian.openpss.control.monthBox
-import com.hendraanggrian.openpss.control.popover.ViewInvoicePopover
+import com.hendraanggrian.openpss.control.popover.ViewInvoiceDialog
 import com.hendraanggrian.openpss.control.stretchableButton
 import com.hendraanggrian.openpss.db.schemas.Employees
 import com.hendraanggrian.openpss.db.schemas.Invoices
@@ -133,8 +133,7 @@ class FinanceController : ActionController(), Refreshable, Selectable<Tab>, Sele
         }
     }
 
-    @FXML fun viewInvoice() = ViewInvoicePopover(this, transaction { Invoices[selected2!!.invoiceId].single() })
-        .show(dailyTable)
+    @FXML fun viewInvoice() = ViewInvoiceDialog(this, transaction { Invoices[selected2!!.invoiceId].single() }).show()
 
     @FXML fun viewPayments() {
         selectFirst()

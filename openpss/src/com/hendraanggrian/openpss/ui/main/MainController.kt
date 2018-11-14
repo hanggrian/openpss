@@ -8,7 +8,7 @@ import com.hendraanggrian.openpss.control.MarginedImageView
 import com.hendraanggrian.openpss.control.PaginatedPane
 import com.hendraanggrian.openpss.control.Toolbar
 import com.hendraanggrian.openpss.control.UnselectableListView
-import com.hendraanggrian.openpss.control.popover.ViewInvoicePopover
+import com.hendraanggrian.openpss.control.popover.ViewInvoiceDialog
 import com.hendraanggrian.openpss.db.dbDateTime
 import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.schemas.Employees
@@ -226,7 +226,7 @@ class MainController : Controller(), Selectable<Tab>, Selectable2<Label> {
 
     @FXML fun testViewInvoice() {
         transaction { Customers().firstOrNull() }?.let {
-            ViewInvoicePopover(
+            ViewInvoiceDialog(
                 this,
                 Invoice(
                     no = 1234,
@@ -244,7 +244,7 @@ class MainController : Controller(), Selectable<Tab>, Selectable2<Label> {
                     isPaid = false,
                     isDone = false
                 ), true
-            ).show(menuBar)
+            ).show()
         } ?: root.jfxSnackbar(getString(R.string.no_customer_to_test), App.DURATION_SHORT)
     }
 

@@ -9,10 +9,10 @@ import javafx.beans.property.DoubleProperty
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleDoubleProperty
 import javafx.scene.control.TextField
-import ktfx.LayoutDsl
-import ktfx.NodeInvokable
 import ktfx.beans.value.getValue
 import ktfx.beans.value.setValue
+import ktfx.layouts.LayoutDsl
+import ktfx.layouts.NodeInvokable
 
 class JFXDoubleField : JFXTextField(), DoubleFieldBase {
 

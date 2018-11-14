@@ -17,6 +17,7 @@ allprojects {
     repositories {
         jcenter()
         maven("http://repository.jetbrains.com/kotlin-nosql") // required for kotlin-nosql
+        maven("https://dl.bintray.com/hendraanggrian/ktfx")
     }
     tasks {
         withType<Delete> {

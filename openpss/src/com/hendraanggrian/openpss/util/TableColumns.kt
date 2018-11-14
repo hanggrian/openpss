@@ -9,7 +9,7 @@ import javafx.scene.control.Control
 import javafx.scene.control.TableCell
 import javafx.scene.control.TableColumn
 import javafx.scene.text.Text
-import ktfx.beans.property.toProperty
+import ktfx.beans.property.asProperty
 import ktfx.layouts.imageView
 import ktfx.listeners.cellFactory
 import ktfx.util.invoke
@@ -22,7 +22,7 @@ fun <T> TableColumn<T, Boolean>.doneCell(size: Int = 64, target: T.() -> Boolean
     }
     isResizable = false
     style = "-fx-alignment: center;"
-    setCellValueFactory { it.value.target().toProperty() }
+    setCellValueFactory { it.value.target().asProperty() }
     cellFactory {
         onUpdate { done, empty ->
             text = null
@@ -38,16 +38,16 @@ fun <T> TableColumn<T, Boolean>.doneCell(size: Int = 64, target: T.() -> Boolean
 }
 
 fun <T> TableColumn<T, String>.stringCell(target: T.() -> String?) =
-    setCellValueFactory { it.value.target().orEmpty().toProperty() }
+    setCellValueFactory { it.value.target().orEmpty().asProperty() }
 
 fun <T> TableColumn<T, String>.numberCell(target: T.() -> Int) {
     style = "-fx-alignment: center-right;"
-    setCellValueFactory { numberConverter(it.value.target()).toProperty() }
+    setCellValueFactory { numberConverter(it.value.target()).asProperty() }
 }
 
 fun <T> TableColumn<T, String>.currencyCell(target: T.() -> Double) {
     style = "-fx-alignment: center-right;"
-    setCellValueFactory { currencyConverter(it.value.target()).toProperty() }
+    setCellValueFactory { currencyConverter(it.value.target()).asProperty() }
 }
 
 fun <S> TableColumn<S, String>.wrapText() = setCellFactory {

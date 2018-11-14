@@ -7,10 +7,10 @@ import com.jfoenix.controls.JFXTextField
 import javafx.beans.property.IntegerProperty
 import javafx.beans.property.SimpleIntegerProperty
 import javafx.scene.control.TextField
-import ktfx.LayoutDsl
-import ktfx.NodeInvokable
 import ktfx.beans.value.getValue
 import ktfx.beans.value.setValue
+import ktfx.layouts.LayoutDsl
+import ktfx.layouts.NodeInvokable
 
 class JFXIntField : JFXTextField(), IntFieldBase {
 

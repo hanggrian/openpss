@@ -28,7 +28,7 @@ class DisableRecessPopover(
 
     init {
         gridPane {
-            gap = R.dimen.padding_medium.toDouble()
+            gap = getDouble(R.dimen.padding_medium)
             label(getString(R.string.recess)) col 0 row 0
             recessChoice = jfxComboBox(
                 mutableObservableListOf(getString(R.string.all),
@@ -47,7 +47,7 @@ class DisableRecessPopover(
             jfxButton(getString(R.string.apply)) {
                 isDefaultButton = true
                 buttonType = JFXButton.ButtonType.RAISED
-                styleClass += "raised"
+                styleClass += R.style.raised
                 disableProperty().bind(recessChoice.valueProperty().isNull or roleChoice.valueProperty().isNull)
                 onAction {
                     attendeePanes

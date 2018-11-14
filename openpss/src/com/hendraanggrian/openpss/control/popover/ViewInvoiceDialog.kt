@@ -41,9 +41,9 @@ import javafx.scene.paint.Color.BLACK
 import javafx.scene.text.TextAlignment
 import javafx.scene.transform.Scale
 import kotlinx.nosql.update
-import ktfx.NodeInvokable
 import ktfx.application.later
 import ktfx.coroutines.onAction
+import ktfx.layouts.NodeInvokable
 import ktfx.layouts._GridPane
 import ktfx.layouts.button
 import ktfx.layouts.columnConstraints
@@ -82,7 +82,7 @@ class ViewInvoiceDialog(
     private lateinit var employee: Employee
     private val invoiceBox: VBox
 
-    override val resources: ResourceBundle = Language.ofServer().toResourcesBundle()
+    override val resourceBundle: ResourceBundle = Language.ofServer().toResourcesBundle()
 
     init {
         graphic = label("${getString(R.string.server_language)}: $language")
@@ -91,18 +91,18 @@ class ViewInvoiceDialog(
             employee = Employees[invoice.employeeId].single()
             customer = Customers[invoice.customerId].single()
         }
-        invoiceBox = vbox(R.dimen.padding_medium.toDouble()) {
+        invoiceBox = vbox(getDouble(R.dimen.padding_medium)) {
             border = DASHED.toBorder()
-            paddingAll = R.dimen.padding_medium.toDouble()
+            paddingAll = getDouble(R.dimen.padding_medium)
             setMinSize(WIDTH, HEIGHT)
             setMaxSize(WIDTH, HEIGHT)
-            hbox(R.dimen.padding_medium.toDouble()) {
+            hbox(getDouble(R.dimen.padding_medium)) {
                 vbox {
                     alignment = CENTER_LEFT
                     invoiceHeaders.forEachIndexed { index, s ->
                         label(s) {
                             if (index == 0) {
-                                styleClass += "bold"
+                                styleClass += R.style.bold
                             }
                         }
                     }
@@ -121,12 +121,12 @@ class ViewInvoiceDialog(
                         "(${transaction { Employees[invoice.employeeId].single().name }})"
                 )
                 label("${customer.no}. ${customer.name}") {
-                    styleClass += "bold"
+                    styleClass += R.style.bold
                 }
             }
             vbox {
                 gridPane {
-                    hgap = R.dimen.padding_medium.toDouble()
+                    hgap = getDouble(R.dimen.padding_medium)
                     columnConstraints {
                         constraints {
                             minWidth = USE_PREF_SIZE
@@ -189,17 +189,17 @@ class ViewInvoiceDialog(
             } vpriority ALWAYS
             fullLine()
             gridPane {
-                gap = R.dimen.padding_medium.toDouble()
+                gap = getDouble(R.dimen.padding_medium)
                 textFlow {
-                    paddingAll = R.dimen.padding_small.toDouble()
+                    paddingAll = getDouble(R.dimen.padding_small)
                     border = SOLID.toBorder()
                     "${getString(R.string.note)}\n" {
-                        styleClass += "bold"
+                        styleClass += R.style.bold
                     }
                     invoice.note()
                 } row 0 col 0 rowSpans 2 hpriority ALWAYS
                 label(currencyConverter(invoice.total)) {
-                    styleClass += "bold"
+                    styleClass += R.style.bold
                 } row 0 col 1 colSpans 2 halign RIGHT
                 vbox {
                     alignment = CENTER
@@ -253,19 +253,19 @@ class ViewInvoiceDialog(
     ): Int {
         var row = currentRow
         label(getString(titleId)) {
-            styleClass += "bold"
+            styleClass += R.style.bold
         } row row col 0 colSpans 4 halign LEFT
         row++
         jobs.forEach {
             lineBuilder(it, row)
             row++
         }
-        space(height = R.dimen.padding_small.toDouble()) row row col 0 colSpans 4
+        space(height = getDouble(R.dimen.padding_small)) row row col 0 colSpans 4
         row++
         return row
     }
 
     private fun BorderStrokeStyle.toBorder() = Border(BorderStroke(BLACK, this, EMPTY, DEFAULT))
 
-    private fun NodeInvokable.fullLine() = line(endX = WIDTH - R.dimen.padding_medium.toDouble() * 2)
+    private fun NodeInvokable.fullLine() = line(endX = WIDTH - getDouble(R.dimen.padding_medium) * 2)
 }

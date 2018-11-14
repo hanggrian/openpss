@@ -22,13 +22,13 @@ import javafx.scene.control.TreeTableView
 import javafx.scene.control.TreeTableView.TreeTableViewSelectionModel
 import javafx.scene.image.ImageView
 import kotlinx.nosql.equal
-import ktfx.NodeInvokable
 import ktfx.application.later
 import ktfx.beans.value.or
-import ktfx.collections.isEmpty
+import ktfx.collections.isEmptyBinding
 import ktfx.coroutines.listener
 import ktfx.coroutines.onAction
 import ktfx.jfoenix.jfxToggleButton
+import ktfx.layouts.NodeInvokable
 import ktfx.layouts.borderPane
 import java.net.URL
 import java.util.ResourceBundle
@@ -64,7 +64,7 @@ class ScheduleController : ActionController(), Refreshable, TreeSelectable<Sched
             historyCheck = jfxToggleButton {
                 text = getString(R.string.history)
                 selectedProperty().listener { refresh() }
-                doneButton.disableProperty().bind(selecteds.isEmpty or selectedProperty())
+                doneButton.disableProperty().bind(selecteds.isEmptyBinding or selectedProperty())
             }
         }
     }

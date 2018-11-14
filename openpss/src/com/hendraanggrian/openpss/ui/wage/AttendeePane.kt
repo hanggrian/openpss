@@ -9,7 +9,6 @@ import com.hendraanggrian.openpss.control.popover.DateTimePopover
 import com.hendraanggrian.openpss.db.schemas.Recesses
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.ui.Selectable
-import com.hendraanggrian.openpss.util.getColor
 import com.hendraanggrian.openpss.util.round
 import javafx.geometry.Pos.CENTER
 import javafx.scene.Node
@@ -71,9 +70,9 @@ class AttendeePane(
         vbox {
             isFillWidth = true
             gridPane {
-                styleClass += "white-background"
-                gap = R.dimen.padding_small.toDouble()
-                paddingAll = R.dimen.padding_medium.toDouble()
+                styleClass += R.style.white_background
+                gap = getDouble(R.dimen.padding_small)
+                paddingAll = getDouble(R.dimen.padding_medium)
                 attendee.role?.let { role ->
                     label(getString(R.string.role)) col 0 row 0 marginRight 4.0
                     label(role) col 1 row 0 colSpans 2
@@ -108,7 +107,7 @@ class AttendeePane(
                 } col 1 row 3 colSpans 2
             }
             attendanceList = listView(attendee.attendances) {
-                styleClass += "list-view-no-scrollbar-horizontal"
+                styleClass += R.style.list_view_no_scrollbar_horizontal
                 prefWidth = 150.0
                 maxHeight = 360.0 // just enough for 7 days attendance
                 cellFactory {
@@ -139,7 +138,7 @@ class AttendeePane(
                                                 if (hours > 12) {
                                                     style = "-fx-fill: #F44336;"
                                                 }
-                                            } marginLeft R.dimen.padding_medium.toDouble()
+                                            } marginLeft getDouble(R.dimen.padding_medium)
                                         }
                                     }
                                 }

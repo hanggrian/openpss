@@ -35,7 +35,6 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.javafx.JavaFx
 import kotlinx.coroutines.launch
-import ktfx.NodeInvokable
 import ktfx.application.later
 import ktfx.beans.binding.buildBinding
 import ktfx.beans.binding.buildStringBinding
@@ -45,6 +44,7 @@ import ktfx.collections.toObservableList
 import ktfx.coroutines.onAction
 import ktfx.jfoenix.jfxSnackbar
 import ktfx.jfoenix.jfxTextField
+import ktfx.layouts.NodeInvokable
 import ktfx.layouts.contextMenu
 import ktfx.layouts.tooltip
 import org.controlsfx.control.MasterDetailPane
@@ -110,7 +110,7 @@ class CustomerController : ActionController(), Refreshable, Selectable<Customer>
         customerPagination.contentFactoryProperty().bind(buildBinding(searchField.textProperty()) {
             Callback<Pair<Int, Int>, Node> { (page, count) ->
                 customerList = CustomerListView().apply {
-                    styleClass += "list-view-no-scrollbar-vertical"
+                    styleClass += R.style.list_view_no_scrollbar_vertical
                     later {
                         transaction {
                             val customers = Customers.buildQuery {

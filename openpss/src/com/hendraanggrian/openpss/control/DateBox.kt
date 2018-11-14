@@ -12,13 +12,13 @@ import javafx.geometry.Pos.CENTER
 import javafx.scene.control.Button
 import javafx.scene.control.DatePicker
 import javafx.scene.image.ImageView
-import ktfx.LayoutDsl
-import ktfx.NodeInvokable
 import ktfx.beans.binding.buildBinding
 import ktfx.beans.value.getValue
 import ktfx.coroutines.onAction
 import ktfx.jfoenix.jfxButton
 import ktfx.jfoenix.jfxDatePicker
+import ktfx.layouts.LayoutDsl
+import ktfx.layouts.NodeInvokable
 import ktfx.layouts._HBox
 import org.joda.time.LocalDate
 import org.joda.time.LocalDate.now
@@ -41,7 +41,7 @@ open class DateBox @JvmOverloads constructor(prefill: LocalDate = now()) : _HBox
     init {
         alignment = Pos.CENTER
         previousButton = jfxButton(graphic = ImageView(R.image.btn_previous)) {
-            styleClass += "flat"
+            styleClass += R.style.flat
             onAction { picker.value = picker.value.minusDays(1) }
         }
         picker = jfxDatePicker {
@@ -51,7 +51,7 @@ open class DateBox @JvmOverloads constructor(prefill: LocalDate = now()) : _HBox
             maxWidth = 116.0
         }
         nextButton = jfxButton(graphic = ImageView(R.image.btn_next)) {
-            styleClass += "flat"
+            styleClass += R.style.flat
             onAction { picker.value = picker.value.plusDays(1) }
         }
         valueProperty.bind(buildBinding(picker.valueProperty()) { picker.value.toJoda() })

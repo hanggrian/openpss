@@ -2,6 +2,7 @@
 
 package com.hendraanggrian.openpss.control
 
+import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.base.StretchableLabeled
 import com.jfoenix.controls.JFXButton
 import javafx.beans.DefaultProperty
@@ -10,8 +11,8 @@ import javafx.beans.property.SimpleDoubleProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.beans.property.StringProperty
 import javafx.scene.Node
-import ktfx.LayoutDsl
-import ktfx.NodeInvokable
+import ktfx.layouts.LayoutDsl
+import ktfx.layouts.NodeInvokable
 
 /**
  * A button that will display log when the window have sufficient width.
@@ -32,7 +33,7 @@ class StretchableButton @JvmOverloads constructor(
 
     init {
         initialize()
-        styleClass += "flat"
+        styleClass += R.style.flat
     }
 }
 

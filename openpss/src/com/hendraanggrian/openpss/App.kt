@@ -13,11 +13,12 @@ import javafx.application.Platform
 import javafx.fxml.FXMLLoader
 import javafx.scene.image.Image
 import javafx.stage.Stage
-import ktfx.application.launch
+import ktfx.application.launchApp
 import ktfx.layouts.scene
 import ktfx.stage.icon
 import ktfx.stage.setMinSize
 import org.apache.log4j.BasicConfigurator
+import java.util.Properties
 import java.util.ResourceBundle
 
 class App : Application(), Resources {
@@ -29,7 +30,7 @@ class App : Application(), Resources {
         const val DURATION_SHORT = 3000L
         const val DURATION_LONG = 6000L
 
-        @JvmStatic fun main(args: Array<String>) = launch<App>(*args)
+        @JvmStatic fun main(args: Array<String>) = launchApp<App>(*args)
 
         fun exit() {
             Platform.exit() // exit JavaFX
@@ -37,10 +38,16 @@ class App : Application(), Resources {
         }
     }
 
-    override lateinit var resources: ResourceBundle
+    override lateinit var resourceBundle: ResourceBundle
+
+    override lateinit var dimenResources: Properties
+
+    override lateinit var colorResources: Properties
 
     override fun init() {
-        resources = PreferencesFile.language.toResourcesBundle()
+        resourceBundle = PreferencesFile.language.toResourcesBundle()
+        dimenResources = getProperties(R.dimen.properties_dimen)
+        colorResources = getProperties(R.color.properties_color)
         if (DEBUG) {
             BasicConfigurator.configure()
         }
@@ -54,7 +61,7 @@ class App : Application(), Resources {
             stylesheets += STYLESHEET_OPENPSS
             LoginPane(this@App).apply {
                 onSuccess = { employee ->
-                    val loader = FXMLLoader(getResource(R.layout.controller_main), resources)
+                    val loader = FXMLLoader(getResource(R.layout.controller_main), resourceBundle)
                     this@scene.run {
                         loader.pane()
                     }

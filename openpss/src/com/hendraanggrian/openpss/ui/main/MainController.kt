@@ -34,6 +34,7 @@ import com.hendraanggrian.openpss.ui.schedule.ScheduleController
 import com.hendraanggrian.openpss.ui.wage.EditRecessDialog
 import com.hendraanggrian.openpss.ui.wage.WageController
 import com.jfoenix.controls.JFXHamburger
+import javafx.beans.binding.When
 import javafx.event.ActionEvent
 import javafx.fxml.FXML
 import javafx.scene.Node
@@ -53,7 +54,6 @@ import kotlinx.nosql.update
 import ktfx.application.later
 import ktfx.beans.binding.buildBinding
 import ktfx.beans.binding.buildStringBinding
-import ktfx.beans.binding.conditional
 import ktfx.beans.binding.minus
 import ktfx.beans.binding.otherwise
 import ktfx.beans.binding.then
@@ -140,7 +140,7 @@ class MainController : Controller(), Selectable<Tab>, Selectable2<Label> {
         eventPagination.contentFactoryProperty().bind(buildBinding(drawer.openingProperty()) {
             Callback<Pair<Int, Int>, Node> { (page, count) ->
                 UnselectableListView<Log>().apply {
-                    styleClass.addAll("borderless", "list-view-no-scrollbar")
+                    styleClass.addAll(R.style.borderless, R.style.list_view_no_scrollbar)
                     cellFactory {
                         onUpdate { event, empty ->
                             if (event != null && !empty) graphic = textFlow {
@@ -153,7 +153,7 @@ class MainController : Controller(), Selectable<Tab>, Selectable2<Label> {
                                 newLine()
                                 text("${event.dateTime.toString(PATTERN_DATETIME)} ")
                                 text(transaction { Employees[event.employeeId].single().name }) {
-                                    styleClass += "bold"
+                                    styleClass += R.style.bold
                                 }
                             }
                         }
@@ -261,7 +261,7 @@ class MainController : Controller(), Selectable<Tab>, Selectable2<Label> {
 
     private fun MarginedImageView.bind(index: Int, selectedImageId: String, unselectedImageId: String) =
         imageProperty().bind(
-            conditional(selectedIndexProperty2 eq index)
+            When(selectedIndexProperty2 eq index)
                 then Image(selectedImageId)
                 otherwise Image(unselectedImageId)
         )

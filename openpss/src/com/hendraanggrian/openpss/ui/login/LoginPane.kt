@@ -55,6 +55,7 @@ import ktfx.scene.layout.gap
 import ktfx.scene.layout.paddingAll
 import ktfx.scene.layout.updatePadding
 import ktfx.scene.text.fontSize
+import java.util.Properties
 import java.util.ResourceBundle
 
 class LoginPane(private val resourced: Resources) : _StackPane(), Context {
@@ -70,7 +71,10 @@ class LoginPane(private val resourced: Resources) : _StackPane(), Context {
 
     var onSuccess: ((Employee) -> Unit)? = null
 
-    override val resources: ResourceBundle get() = resourced.resources
+    override val resourceBundle: ResourceBundle get() = resourced.resourceBundle
+    override val dimenResources: Properties get() = resourced.dimenResources
+    override val colorResources: Properties get() = resourced.colorResources
+
     override val login: Employee get() = throw UnsupportedOperationException()
     override val root: StackPane get() = this
 
@@ -101,8 +105,8 @@ class LoginPane(private val resourced: Resources) : _StackPane(), Context {
         maxWidth = WIDTH
         gridPane {
             alignment = Pos.CENTER_RIGHT
-            gap = R.dimen.padding_medium.toDouble()
-            paddingAll = R.dimen.padding_medium.toDouble()
+            gap = getDouble(R.dimen.padding_medium)
+            paddingAll = getDouble(R.dimen.padding_medium)
             label(getString(R.string.language)) row 0 col 0 hpriority Priority.ALWAYS halign HPos.RIGHT
             jfxComboBox(Language.values().toObservableList()) {
                 selectionModel.select(PreferencesFile.language)
@@ -123,7 +127,7 @@ class LoginPane(private val resourced: Resources) : _StackPane(), Context {
                 updatePadding(32.0, 24.0, 32.0, 24.0)
                 imageView(R.image.logo_small)
                 label(getString(R.string.openpss_login)) {
-                    styleClass.addAll("bold", "display2")
+                    styleClass.addAll(R.style.bold, R.style.display2)
                 }
                 label(getString(R.string._login_desc1)) {
                     textAlignment = TextAlignment.CENTER
@@ -157,13 +161,13 @@ class LoginPane(private val resourced: Resources) : _StackPane(), Context {
                     jfxButton(getString(R.string.about)) {
                         updatePadding(8.0, 16.0, 8.0, 16.0)
                         fontSize = 16.0
-                        styleClass += "flat"
+                        styleClass += R.style.flat
                         onAction { AboutDialog(this@LoginPane).show() }
                     } anchorLeft 0.0
                     loginButton = jfxButton(getString(R.string.login)) {
                         updatePadding(8.0, 16.0, 8.0, 16.0)
                         fontSize = 16.0
-                        styleClass += "raised"
+                        styleClass += R.style.raised
                         buttonType = JFXButton.ButtonType.RAISED
                         disableProperty().bind(
                             employeeField.textProperty().isBlank()
@@ -209,7 +213,7 @@ class LoginPane(private val resourced: Resources) : _StackPane(), Context {
 
         init {
             gridPane {
-                gap = R.dimen.padding_medium.toDouble()
+                gap = getDouble(R.dimen.padding_medium)
                 label(getString(R.string.server_host_port)) col 0 row 0
                 serverHostField() col 1 row 0
                 serverPortField() col 2 row 0
@@ -226,7 +230,7 @@ class LoginPane(private val resourced: Resources) : _StackPane(), Context {
         override val focusedNode: Node? get() = passwordField
 
         init {
-            hbox(R.dimen.padding_medium.toDouble()) {
+            hbox(getDouble(R.dimen.padding_medium)) {
                 stackPane {
                     alignment = Pos.CENTER
                     passwordField = jfxPasswordField {

@@ -39,7 +39,7 @@ import ktfx.beans.binding.buildBooleanBinding
 import ktfx.beans.binding.buildStringBinding
 import ktfx.beans.value.lessEq
 import ktfx.beans.value.or
-import ktfx.collections.size
+import ktfx.collections.sizeBinding
 import ktfx.coroutines.onAction
 import ktfx.embed.swing.toSwingImage
 import ktfx.jfoenix.jfxIndefiniteSnackbar
@@ -85,7 +85,7 @@ class WageRecordController : Controller() {
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
         menuBar.isUseSystemMenuBar = SystemUtils.IS_OS_MAC
-        undoMenu.disableProperty().bind(editMenu.items.size() lessEq 2)
+        undoMenu.disableProperty().bind(editMenu.items.sizeBinding lessEq 2)
         arrayOf(lockStartButton, lockEndButton).forEach { button ->
             button.disableProperty().bind(recordTable.selectionModel.selectedItemProperty().isNull or
                 buildBooleanBinding(recordTable.selectionModel.selectedItemProperty()) {
@@ -107,7 +107,7 @@ class WageRecordController : Controller() {
                             }
                         ) {
                             if (treeTableRow.treeItem?.value?.isTotal() == true) {
-                                styleClass += "bold"
+                                styleClass += R.style.bold
                             }
                         }
                     }

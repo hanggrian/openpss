@@ -26,7 +26,7 @@ class AddContactPopover(context: Context) : ResultablePopover<Customer.Contact>(
 
     init {
         gridPane {
-            gap = R.dimen.padding_medium.toDouble()
+            gap = getDouble(R.dimen.padding_medium)
             label(getString(R.string.type)) col 0 row 0
             typeChoice = jfxComboBox(values().toObservableList()) {
                 converter { toString { it!!.toString(this@AddContactPopover) } }

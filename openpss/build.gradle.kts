@@ -55,7 +55,7 @@ dependencies {
     testImplementation(kotlin("test", VERSION_KOTLIN))
     testImplementation(kotlin("reflect", VERSION_KOTLIN))
 
-    testImplementation(testFx("core"))
+    testImplementation(hendraanggrian("ktfx", "ktfx-testfx", VERSION_KTFX))
     testImplementation(testFx("junit"))
 }
 
@@ -82,15 +82,17 @@ tasks {
     "generateR"(com.hendraanggrian.generating.r.RTask::class) {
         resourcesDir = projectDir.resolve("res")
         isLowercase = true
+        exclude("font")
     }
 
     "generateBuildConfig"(com.hendraanggrian.generating.buildconfig.BuildConfigTask::class) {
         appName = RELEASE_NAME
         debug = RELEASE_DEBUG
         artifactId = RELEASE_ARTIFACT
-        author = RELEASE_USER
         email = "$RELEASE_USER@gmail.com"
         website = RELEASE_WEBSITE
+
+        field("AUTHOR", RELEASE_USER)
         field("FULL_NAME", RELEASE_FULL_NAME)
     }
 

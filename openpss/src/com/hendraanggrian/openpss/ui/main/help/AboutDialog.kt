@@ -47,7 +47,7 @@ class AboutDialog(context: Context) : Dialog<Unit>(), Selectable<License>, Conte
             onUpdate { license, empty ->
                 if (license != null && !empty) graphic = ktfx.layouts.vbox {
                     label(license.repo)
-                    label(license.owner) { styleClass += "bold" }
+                    label(license.owner) { styleClass += R.style.bold }
                 }
             }
         }
@@ -73,10 +73,10 @@ class AboutDialog(context: Context) : Dialog<Unit>(), Selectable<License>, Conte
                     alignment = Pos.CENTER_LEFT
                     textFlow {
                         "${BuildConfig.FULL_NAME.substringBefore(' ')} " {
-                            styleClass.addAll("bold", "display2")
+                            styleClass.addAll(R.style.bold, R.style.display2)
                         }
                         (BuildConfig.FULL_NAME.substringAfter(' ')) {
-                            styleClass.addAll("light", "display2")
+                            styleClass.addAll(R.style.light, R.style.display2)
                         }
                     }
                     text("${getString(R.string.version)} ${BuildConfig.VERSION}") {
@@ -85,21 +85,21 @@ class AboutDialog(context: Context) : Dialog<Unit>(), Selectable<License>, Conte
                     text(getString(R.string.built_with_open_source_software_expand_to_see_licenses)) marginTop 20.0
                     textFlow {
                         "${getString(R.string.powered_by)} " { font = Font.font(12.0) }
-                        "JavaFX" { styleClass += "bold" }
+                        "JavaFX" { styleClass += R.style.bold }
                     } marginTop 4.0
                     textFlow {
                         "${getString(R.string.author)} " { font = Font.font(12.0) }
-                        BuildConfig.AUTHOR { styleClass += "bold" }
+                        BuildConfig.AUTHOR { styleClass += R.style.bold }
                     } marginTop 4.0
                     hbox {
-                        spacing = R.dimen.padding_medium.toDouble()
+                        spacing = getDouble(R.dimen.padding_medium)
                         jfxButton("GitHub") {
-                            styleClass += "raised"
+                            styleClass += R.style.raised
                             buttonType = JFXButton.ButtonType.RAISED
                             onAction { desktop?.browse(URI(BuildConfig.WEBSITE)) }
                         }
                         jfxButton("Email") {
-                            styleClass += "flat"
+                            styleClass += R.style.flat
                             onAction { desktop?.mail(URI("mailto:${BuildConfig.EMAIL}")) }
                         }
                     } marginTop 20.0

@@ -9,7 +9,6 @@ import com.hendraanggrian.openpss.control.jfxDoubleField
 import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.db.schemas.Payment
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.util.getColor
 import javafx.scene.Node
 import javafx.scene.control.CheckBox
 import javafx.scene.control.TextField
@@ -39,19 +38,19 @@ class AddPaymentDialog(
 
     init {
         gridPane {
-            gap = R.dimen.padding_medium.toDouble()
+            gap = getDouble(R.dimen.padding_medium)
             label(getString(R.string.employee)) row 0 col 0
             label(login.name) {
-                styleClass += "bold"
+                styleClass += R.style.bold
             } row 0 col 1 colSpans 2
             label(getString(R.string.receivable)) row 1 col 0
             label(currencyConverter(receivable)) {
-                styleClass += "bold"
+                styleClass += R.style.bold
             } row 1 col 1 colSpans 2
             label(getString(R.string.payment)) row 2 col 0
             valueField = jfxDoubleField { promptText = getString(R.string.payment) } row 2 col 1
             jfxButton(graphic = ImageView(R.image.btn_match_receivable)) {
-                styleClass += "flat"
+                styleClass += R.style.flat
                 tooltip(getString(R.string.match_receivable))
                 onAction {
                     valueField.value = receivable
@@ -59,7 +58,7 @@ class AddPaymentDialog(
             } row 2 col 2
             label(getString(R.string.remaining)) row 3 col 0
             label {
-                styleClass += "bold"
+                styleClass += R.style.bold
                 textProperty().bind(buildStringBinding(valueField.valueProperty()) {
                     (receivable - valueField.value).let { remaining ->
                         when {

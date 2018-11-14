@@ -26,14 +26,14 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.javafx.JavaFx
 import kotlinx.coroutines.launch
 import kotlinx.nosql.update
-import ktfx.LayoutDsl
-import ktfx.NodeInvokable
-import ktfx.beans.property.toMutableProperty
+import ktfx.beans.property.asMutableProperty
 import ktfx.beans.value.and
 import ktfx.collections.toObservableList
 import ktfx.coroutines.listener
 import ktfx.jfoenix.jfxButton
 import ktfx.jfoenix.jfxComboBox
+import ktfx.layouts.LayoutDsl
+import ktfx.layouts.NodeInvokable
 import ktfx.layouts._HBox
 import ktfx.layouts._VBox
 import ktfx.layouts.borderPane
@@ -48,8 +48,8 @@ import kotlin.coroutines.CoroutineContext
 
 class SettingsDialog(context: Context) : Dialog(context, R.string.settings) {
 
-    private var isLocalChanged = false.toMutableProperty()
-    private var isGlobalChanged = false.toMutableProperty()
+    private var isLocalChanged = false.asMutableProperty()
+    private var isGlobalChanged = false.asMutableProperty()
 
     private lateinit var invoiceHeadersArea: TextArea
     private lateinit var wageReaderChoice: ComboBox<Reader>
@@ -58,7 +58,7 @@ class SettingsDialog(context: Context) : Dialog(context, R.string.settings) {
     init {
         borderPane {
             left = ktfx.layouts.vbox {
-                spacing = R.dimen.padding_large.toDouble()
+                spacing = getDouble(R.dimen.padding_large)
                 group(R.string.wage) {
                     item {
                         label(getString(R.string.reader))
@@ -72,11 +72,11 @@ class SettingsDialog(context: Context) : Dialog(context, R.string.settings) {
                     }
                 }
             }
-            space(R.dimen.padding_large.toDouble())
+            space(getDouble(R.dimen.padding_large))
             right = this@SettingsDialog.group(R.string.global_settings) {
                 isDisable = !isAdmin()
                 gridPane {
-                    gap = R.dimen.padding_medium.toDouble()
+                    gap = getDouble(R.dimen.padding_medium)
                     transaction {
                         label(getString(R.string.server_language)) row 0 col 0
                         languageBox = jfxComboBox(Language.values().toObservableList()) {
@@ -105,7 +105,7 @@ class SettingsDialog(context: Context) : Dialog(context, R.string.settings) {
         buttonInvokable.run {
             jfxButton(getString(R.string.ok)) {
                 isDefaultButton = true
-                styleClass += "raised"
+                styleClass += R.style.raised
                 buttonType = JFXButton.ButtonType.RAISED
                 disableProperty().bind(!isLocalChanged and !isGlobalChanged)
                 onActionFilter {
@@ -125,9 +125,9 @@ class SettingsDialog(context: Context) : Dialog(context, R.string.settings) {
     private fun group(
         titleId: String,
         init: (@LayoutDsl _VBox).() -> Unit
-    ): VBox = ktfx.layouts.vbox(R.dimen.padding_small.toDouble()) {
+    ): VBox = ktfx.layouts.vbox(getDouble(R.dimen.padding_small)) {
         label(getString(titleId)) {
-            styleClass += "bold"
+            styleClass += R.style.bold
         }
         init()
     }
@@ -135,9 +135,9 @@ class SettingsDialog(context: Context) : Dialog(context, R.string.settings) {
     private fun NodeInvokable.group(
         titleId: String,
         init: (@LayoutDsl _VBox).() -> Unit
-    ): VBox = vbox(R.dimen.padding_small.toDouble()) {
+    ): VBox = vbox(getDouble(R.dimen.padding_small)) {
         label(getString(titleId)) {
-            styleClass += "bold"
+            styleClass += R.style.bold
         }
         init()
     }
@@ -145,7 +145,7 @@ class SettingsDialog(context: Context) : Dialog(context, R.string.settings) {
     private fun NodeInvokable.item(
         labelId: String? = null,
         init: (@LayoutDsl _HBox).() -> Unit
-    ): HBox = hbox(R.dimen.padding_medium.toDouble()) {
+    ): HBox = hbox(getDouble(R.dimen.padding_medium)) {
         alignment = Pos.CENTER_LEFT
         if (labelId != null) label(getString(labelId))
         init()

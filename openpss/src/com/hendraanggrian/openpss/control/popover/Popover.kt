@@ -9,9 +9,9 @@ import javafx.scene.Node
 import javafx.scene.control.Button
 import javafx.scene.layout.Region
 import javafx.scene.layout.VBox
-import ktfx.NodeInvokable
 import ktfx.beans.value.getValue
 import ktfx.beans.value.setValue
+import ktfx.layouts.NodeInvokable
 
 /** Base popup class used across applications. */
 @Suppress("LeakingThis")

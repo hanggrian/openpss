@@ -50,7 +50,7 @@ class SearchCustomerPopover(context: Context) : ResultablePopover<Customer>(cont
                 itemsProperty().listener { _, _, value -> if (value.isNotEmpty()) selectionModel.selectFirst() }
                 onMouseClicked { if (it.isDoubleClick() && selected != null) defaultButton.fire() }
                 onKeyPressed { if (it.code == ENTER && selected != null) defaultButton.fire() }
-            }() marginTop R.dimen.padding_medium.toDouble()
+            }() marginTop getDouble(R.dimen.padding_medium)
         }
         defaultButton.disableProperty().bind(!selectedBinding)
     }

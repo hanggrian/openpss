@@ -16,7 +16,7 @@ abstract class Action<T>(
 ) : Context by context {
 
     @Suppress("LeakingThis")
-    override val resources: ResourceBundle = Language.ofServer().toResourcesBundle()
+    override val resourceBundle: ResourceBundle = Language.ofServer().toResourcesBundle()
 
     abstract val log: String
 

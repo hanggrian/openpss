@@ -12,13 +12,13 @@ import javafx.geometry.Pos
 import javafx.geometry.Pos.CENTER
 import javafx.scene.control.Button
 import javafx.scene.image.ImageView
-import ktfx.LayoutDsl
-import ktfx.NodeInvokable
 import ktfx.beans.binding.buildBinding
 import ktfx.beans.value.getValue
 import ktfx.coroutines.onAction
 import ktfx.jfoenix.jfxButton
 import ktfx.jfoenix.jfxTimePicker
+import ktfx.layouts.LayoutDsl
+import ktfx.layouts.NodeInvokable
 import ktfx.layouts._HBox
 import ktfx.listeners.buildStringConverter
 import org.joda.time.LocalTime
@@ -43,7 +43,7 @@ open class TimeBox @JvmOverloads constructor(prefill: LocalTime = MIDNIGHT) : _H
     init {
         alignment = Pos.CENTER
         previousButton = jfxButton(graphic = ImageView(R.image.btn_previous)) {
-            styleClass += "flat"
+            styleClass += R.style.flat
             onAction {
                 picker.value = when (picker.value.hour) {
                     0 -> {
@@ -75,7 +75,7 @@ open class TimeBox @JvmOverloads constructor(prefill: LocalTime = MIDNIGHT) : _H
             }
         }
         nextButton = jfxButton(graphic = ImageView(R.image.btn_next)) {
-            styleClass += "flat"
+            styleClass += R.style.flat
             onAction {
                 picker.value = when (picker.value.hour) {
                     23 -> {

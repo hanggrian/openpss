@@ -28,7 +28,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.javafx.JavaFx
 import kotlinx.coroutines.launch
-import ktfx.NodeInvokable
 import ktfx.application.later
 import ktfx.beans.binding.buildBooleanBinding
 import ktfx.beans.binding.buildStringBinding
@@ -37,9 +36,10 @@ import ktfx.beans.value.getValue
 import ktfx.beans.value.lessEq
 import ktfx.beans.value.or
 import ktfx.beans.value.setValue
-import ktfx.collections.isEmpty
-import ktfx.collections.size
+import ktfx.collections.isEmptyBinding
+import ktfx.collections.sizeBinding
 import ktfx.coroutines.onAction
+import ktfx.layouts.NodeInvokable
 import ktfx.layouts.borderPane
 import ktfx.layouts.scene
 import ktfx.scene.layout.maxSize
@@ -74,11 +74,11 @@ class WageController : ActionController() {
             getString(R.string.disable_recess),
             ImageView(R.image.act_disable_recess)
         ) {
-            disableProperty().bind(flowPane.children.isEmpty)
+            disableProperty().bind(flowPane.children.isEmptyBinding)
             onAction { disableRecess() }
         }
         saveWageButton = stretchableButton(STRETCH_POINT, getString(R.string.save_wage), ImageView(R.image.act_save)) {
-            disableProperty().bind(flowPane.children.isEmpty)
+            disableProperty().bind(flowPane.children.isEmptyBinding)
             onAction { saveWage() }
         }
         historyButton = stretchableButton(STRETCH_POINT, getString(R.string.history), ImageView(R.image.act_history)) {
@@ -104,7 +104,7 @@ class WageController : ActionController() {
     }
 
     @FXML fun process() = stage(getString(R.string.wage_record)) {
-        val loader = FXMLLoader(getResource(R.layout.controller_wage_record), resources)
+        val loader = FXMLLoader(getResource(R.layout.controller_wage_record), resourceBundle)
         scene = scene {
             loader.pane()
             stylesheets += STYLESHEET_OPENPSS
@@ -144,7 +144,7 @@ class WageController : ActionController() {
                                 bindProcessButton()
                             }
                             deleteOthersMenu.run {
-                                disableProperty().bind(flowPane.children.size() lessEq 1)
+                                disableProperty().bind(flowPane.children.sizeBinding lessEq 1)
                                 onAction {
                                     flowPane.children -= flowPane.children.toMutableList()
                                         .also { it -= this@apply }
@@ -185,7 +185,7 @@ class WageController : ActionController() {
     private inline val attendees: List<Attendee> get() = attendeePanes.map { it.attendee }
 
     /** As attendees are populated, process button need to be rebinded according to new requirements. */
-    private fun bindProcessButton() = processButton.disableProperty().bind(flowPane.children.isEmpty or
+    private fun bindProcessButton() = processButton.disableProperty().bind(flowPane.children.isEmptyBinding or
         buildBooleanBinding(flowPane.children, *flowPane.children
             .map { (it as AttendeePane).attendanceList.items }
             .toTypedArray()) { attendees.any { it.attendances.size % 2 != 0 } })

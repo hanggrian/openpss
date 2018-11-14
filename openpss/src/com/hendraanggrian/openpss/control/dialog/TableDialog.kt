@@ -43,9 +43,9 @@ abstract class TableDialog<D : Document<S>, S : DocumentSchema<D>>(
     override val selectionModel: SelectionModel<D> get() = table.selectionModel
 
     init {
-        graphic = ktfx.layouts.vbox(R.dimen.padding_medium.toDouble()) {
+        graphic = ktfx.layouts.vbox(getDouble(R.dimen.padding_medium)) {
             alignment = CENTER_RIGHT
-            hbox(R.dimen.padding_medium.toDouble()) {
+            hbox(getDouble(R.dimen.padding_medium)) {
                 alignment = CENTER_RIGHT
                 refreshButton = jfxButton(graphic = ImageView(R.image.act_refresh)) {
                     tooltip(getString(R.string.refresh))

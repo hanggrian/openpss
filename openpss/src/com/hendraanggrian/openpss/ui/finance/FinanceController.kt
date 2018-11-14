@@ -27,6 +27,7 @@ import com.hendraanggrian.openpss.util.doneCell
 import com.hendraanggrian.openpss.util.matches
 import com.hendraanggrian.openpss.util.numberCell
 import com.hendraanggrian.openpss.util.stringCell
+import javafx.beans.binding.When
 import javafx.fxml.FXML
 import javafx.scene.Node
 import javafx.scene.control.Button
@@ -38,14 +39,13 @@ import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
 import javafx.scene.image.ImageView
 import javafx.scene.layout.BorderPane
-import ktfx.NodeInvokable
 import ktfx.application.later
-import ktfx.beans.binding.conditional
 import ktfx.beans.value.eq
 import ktfx.collections.toMutableObservableList
 import ktfx.coroutines.listener
 import ktfx.coroutines.onAction
 import ktfx.coroutines.onMouseClicked
+import ktfx.layouts.NodeInvokable
 import ktfx.layouts.borderPane
 import ktfx.scene.input.isDoubleClick
 import java.net.URL
@@ -103,7 +103,7 @@ class FinanceController : ActionController(), Refreshable, Selectable<Tab>, Sele
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
-        switchablePane.centerProperty().bind(conditional(selectedIndexProperty eq 0).then<Node>(dateBox).otherwise(monthBox))
+        switchablePane.centerProperty().bind(When(selectedIndexProperty eq 0).then<Node>(dateBox).otherwise(monthBox))
 
         dailyNoColumn.numberCell { transaction { Invoices[invoiceId].single().no } }
         dailyTimeColumn.stringCell { dateTime.toString(PATTERN_TIME) }

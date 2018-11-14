@@ -1,9 +1,9 @@
 package com.hendraanggrian.openpss.ui.wage.record
 
-import com.hendraanggrian.openpss.content.PATTERN_DATETIME
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.content.START_OF_TIME
+import com.hendraanggrian.openpss.content.PATTERN_DATETIME
 import com.hendraanggrian.openpss.content.Resources
+import com.hendraanggrian.openpss.content.START_OF_TIME
 import com.hendraanggrian.openpss.ui.wage.Attendee
 import com.hendraanggrian.openpss.ui.wage.IntervalWrapper
 import com.hendraanggrian.openpss.util.round
@@ -17,7 +17,7 @@ import javafx.beans.property.StringProperty
 import ktfx.beans.binding.buildDoubleBinding
 import ktfx.beans.binding.buildStringBinding
 import ktfx.beans.binding.plus
-import ktfx.beans.property.toMutableProperty
+import ktfx.beans.property.asMutableProperty
 import ktfx.beans.value.getValue
 import ktfx.beans.value.setValue
 import org.joda.time.DateTime
@@ -64,7 +64,7 @@ class Record(
         /** Dummy for invisible [javafx.scene.control.TreeTableView] root. */
         fun getDummy(resources: Resources) = Record(
             resources, Int.MIN_VALUE, Attendee.DUMMY,
-            START_OF_TIME.toMutableProperty(), START_OF_TIME.toMutableProperty()
+            START_OF_TIME.asMutableProperty(), START_OF_TIME.asMutableProperty()
         )
     }
 

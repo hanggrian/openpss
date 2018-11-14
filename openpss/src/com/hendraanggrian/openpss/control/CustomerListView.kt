@@ -2,9 +2,9 @@ package com.hendraanggrian.openpss.control
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.db.schemas.Customer
+import javafx.beans.binding.When
 import javafx.scene.control.Label
 import javafx.scene.control.ListView
-import ktfx.beans.binding.conditional
 import ktfx.beans.binding.otherwise
 import ktfx.beans.binding.then
 import ktfx.beans.value.eq
@@ -38,7 +38,7 @@ class CustomerListView : ListView<Customer>() {
 
     private fun Label.bindGraphic(index: Int, selectedImageId: String, unselectedImageId: String) =
         graphicProperty().bind(
-            conditional(selectionModel.selectedIndexProperty() eq index)
+            When(selectionModel.selectedIndexProperty() eq index)
                 then ktfx.layouts.imageView(selectedImageId)
                 otherwise ktfx.layouts.imageView(unselectedImageId)
         )

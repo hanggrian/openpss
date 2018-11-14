@@ -29,10 +29,10 @@ class ViewTotalPopover(
             label(getString(R.string.non_cash)) col 0 row 1
             label(currencyConverter(nonCash)) col 1 row 1
             label(getString(R.string.total)) {
-                styleClass += "bold"
+                styleClass += R.style.bold
             } col 0 row 2
             label(currencyConverter(cash + nonCash)) {
-                styleClass += "bold"
+                styleClass += R.style.bold
             } col 1 row 2
         }
     }

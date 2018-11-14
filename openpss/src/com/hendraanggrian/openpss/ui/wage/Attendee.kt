@@ -17,7 +17,7 @@ import javafx.collections.ObservableList
 import kotlinx.nosql.equal
 import kotlinx.nosql.update
 import ktfx.beans.binding.buildDoubleBinding
-import ktfx.beans.property.toMutableProperty
+import ktfx.beans.property.asMutableProperty
 import ktfx.beans.value.getValue
 import ktfx.beans.value.setValue
 import ktfx.collections.mutableObservableListOf
@@ -27,7 +27,7 @@ import org.joda.time.Period
 
 /** Data class representing an Attendee with id as its identifier to avoid duplicates in [Set] scenario. */
 data class Attendee(
-    /** Id and name are final values that should be determined upon xlsx reading. */
+    /** Id and name are final value that should be determined upon xlsx reading. */
     val id: Int,
     val name: String,
     val role: String? = null,
@@ -81,19 +81,19 @@ data class Attendee(
     override fun toString(): String = "$id. $name"
 
     fun toNodeRecord(resources: Resources): Record =
-        Record(resources, INDEX_NODE, this, DateTime.now().toMutableProperty(), DateTime.now().toMutableProperty())
+        Record(resources, INDEX_NODE, this, DateTime.now().asMutableProperty(), DateTime.now().asMutableProperty())
 
     fun toChildRecords(resources: Resources): Set<Record> {
         val records = mutableSetOf<Record>()
         val iterator = attendances.iterator()
         var index = 0
         while (iterator.hasNext()) records +=
-            Record(resources, index++, this, iterator.next().toMutableProperty(), iterator.next().toMutableProperty())
+            Record(resources, index++, this, iterator.next().asMutableProperty(), iterator.next().asMutableProperty())
         return records
     }
 
     fun toTotalRecords(resources: Resources, children: Collection<Record>): Record =
-        Record(resources, INDEX_TOTAL, this, START_OF_TIME.toMutableProperty(), START_OF_TIME.toMutableProperty())
+        Record(resources, INDEX_TOTAL, this, START_OF_TIME.asMutableProperty(), START_OF_TIME.asMutableProperty())
             .apply {
                 dailyProperty.bind(buildDoubleBinding(children.map { it.dailyProperty }) {
                     children.sumByDouble { it.daily }.round()

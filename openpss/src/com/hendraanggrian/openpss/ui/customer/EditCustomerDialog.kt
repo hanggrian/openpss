@@ -10,7 +10,7 @@ import javafx.scene.control.Label
 import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
 import javafx.scene.image.ImageView
-import ktfx.beans.property.toProperty
+import ktfx.beans.property.asProperty
 import ktfx.beans.value.and
 import ktfx.jfoenix.jfxTextArea
 import ktfx.jfoenix.jfxTextField
@@ -32,7 +32,7 @@ class EditCustomerDialog(
 
     init {
         gridPane {
-            gap = R.dimen.padding_medium.toDouble()
+            gap = getDouble(R.dimen.padding_medium)
             image = imageView(
                 when {
                     customer.isCompany -> R.image.display_company
@@ -56,7 +56,7 @@ class EditCustomerDialog(
         }
         defaultButton.run {
             text = getString(R.string.edit)
-            disableProperty().bind(!nameField.textProperty().isPersonName() and !customer.isCompany.toProperty())
+            disableProperty().bind(!nameField.textProperty().isPersonName() and !customer.isCompany.asProperty())
         }
     }
 

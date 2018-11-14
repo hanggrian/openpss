@@ -46,7 +46,6 @@ import javafx.scene.layout.Priority.ALWAYS
 import javafx.util.Callback
 import kotlinx.nosql.equal
 import kotlinx.nosql.update
-import ktfx.NodeInvokable
 import ktfx.application.later
 import ktfx.beans.binding.buildBinding
 import ktfx.beans.binding.buildStringBinding
@@ -59,6 +58,7 @@ import ktfx.collections.toObservableList
 import ktfx.controlsfx.masterDetailPane
 import ktfx.coroutines.onAction
 import ktfx.coroutines.onMouseClicked
+import ktfx.layouts.NodeInvokable
 import ktfx.layouts.columns
 import ktfx.layouts.contextMenu
 import ktfx.layouts.hbox
@@ -166,9 +166,9 @@ class InvoiceController : ActionController(), Refreshable, Selectable<Invoice>, 
                     showDetailNodeProperty().bind(selectedBinding)
                     masterNode = invoiceTable
                     detailNode = ktfx.layouts.vbox {
-                        hbox(R.dimen.padding_medium.toDouble()) {
+                        hbox(getDouble(R.dimen.padding_medium)) {
                             alignment = CENTER
-                            paddingAll = R.dimen.padding_medium.toDouble()
+                            paddingAll = getDouble(R.dimen.padding_medium)
                             region() hpriority ALWAYS
                             addPaymentButton = stretchableButton(
                                 STRETCH_POINT,

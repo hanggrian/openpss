@@ -12,9 +12,9 @@ import javafx.scene.Node
 import javafx.scene.control.MenuItem
 import javafx.scene.control.SplitMenuButton
 import javafx.scene.image.ImageView
-import ktfx.LayoutDsl
-import ktfx.MenuItemInvokable
-import ktfx.NodeInvokable
+import ktfx.layouts.LayoutDsl
+import ktfx.layouts.MenuItemInvokable
+import ktfx.layouts.NodeInvokable
 import ktfx.layouts.menuItem
 
 /**

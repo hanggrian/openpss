@@ -20,7 +20,7 @@ open class ResultableDialog<T>(
         buttonInvokable.run {
             defaultButton = jfxButton(getString(R.string.ok)) {
                 isDefaultButton = true
-                styleClass += "raised"
+                styleClass += R.style.raised
                 buttonType = JFXButton.ButtonType.RAISED
             }
         }

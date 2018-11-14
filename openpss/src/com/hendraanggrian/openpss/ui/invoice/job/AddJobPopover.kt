@@ -41,7 +41,7 @@ abstract class AddJobPopover<T : Invoice.Job>(context: Context, titleId: String)
 
     init {
         gridPane {
-            gap = R.dimen.padding_medium.toDouble()
+            gap = getDouble(R.dimen.padding_medium)
             label(getString(R.string.qty)) col 0 row currentRow
             qtyField = jfxIntField { promptText = getString(R.string.qty) } col 1 colSpans 2 row currentRow
             currentRow++

@@ -1,22 +1,37 @@
 package com.hendraanggrian.openpss.content
 
+import com.hendraanggrian.openpss.util.getResource
+import javafx.scene.paint.Color
+import java.io.File
+import java.util.Properties
 import java.util.ResourceBundle
 
 /** Easier access to [ResourceBundle] across components. */
 interface Resources {
 
-    val resources: ResourceBundle
+    val resourceBundle: ResourceBundle
+
+    val dimenResources: Properties
+
+    val colorResources: Properties
 
     val language: Language
         get() = Language.ofCode(
-            resources.baseBundleName.substringAfter('_')
+            resourceBundle.baseBundleName.substringAfter('_')
         )
 
-    fun getString(id: String): String = resources.getString(id)
+    fun getString(id: String): String = resourceBundle.getString(id)
 
     fun getString(id: String, vararg args: Any): String = getString(id).format(*args)
 
-    /** Mark enum values to be translatable. */
+    fun getDouble(id: String): Double = dimenResources.getProperty(id).toDouble()
+
+    fun getColor(id: String): Color = Color.web(colorResources.getProperty(id))
+
+    fun getProperties(propertiesId: String): Properties =
+        File(getResource(propertiesId).toURI()).inputStream().use { stream -> Properties().apply { load(stream) } }
+
+    /** Mark enum value to be translatable. */
     interface Enum {
 
         val resourceId: String

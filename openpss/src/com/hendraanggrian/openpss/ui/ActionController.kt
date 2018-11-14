@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.ui
 
 import javafx.scene.Node
-import ktfx.NodeInvokable
+import ktfx.layouts.NodeInvokable
 import java.net.URL
 import java.util.ResourceBundle
 

@@ -8,11 +8,11 @@ import javafx.scene.Node
 import javafx.scene.control.Button
 import javafx.scene.layout.Region
 import javafx.scene.layout.VBox
-import ktfx.NodeInvokable
 import ktfx.beans.binding.buildBinding
 import ktfx.coroutines.listener
 import ktfx.coroutines.onAction
 import ktfx.jfoenix.jfxButton
+import ktfx.layouts.NodeInvokable
 import ktfx.layouts.borderPane
 import ktfx.layouts.buttonBar
 import ktfx.layouts.vbox
@@ -37,15 +37,15 @@ interface PopupBase : BaseControl, Context, NodeInvokable {
     fun graphicProperty(): ObjectProperty<Node>
 
     override fun initialize() {
-        setActualContent(ktfx.layouts.vbox(R.dimen.padding_medium.toDouble()) {
-            paddingAll = R.dimen.padding_large.toDouble()
+        setActualContent(ktfx.layouts.vbox(getDouble(R.dimen.padding_medium)) {
+            paddingAll = getDouble(R.dimen.padding_large)
             borderPane {
                 left = ktfx.layouts.label(getString(titleId)) {
-                    styleClass.addAll("bold", "display")
+                    styleClass.addAll(R.style.bold, R.style.display)
                 } align Pos.CENTER_LEFT
                 centerProperty().bind(buildBinding(graphicProperty()) {
                     graphicProperty().get()?.let {
-                        com.hendraanggrian.openpss.control.space(R.dimen.padding_large.toDouble())
+                        com.hendraanggrian.openpss.control.space(getDouble(R.dimen.padding_large))
                     }
                 })
                 rightProperty().run {
@@ -53,17 +53,17 @@ interface PopupBase : BaseControl, Context, NodeInvokable {
                     listener { _, _, value -> value align Pos.CENTER_RIGHT }
                 }
             }
-            contentPane = vbox(R.dimen.padding_medium.toDouble()) marginTop R.dimen.padding_medium.toDouble()
+            contentPane = vbox(getDouble(R.dimen.padding_medium)) marginTop getDouble(R.dimen.padding_medium)
             buttonBar {
                 buttonInvokable = this
                 cancelButton = jfxButton(getString(R.string.close)) {
-                    styleClass += "flat"
+                    styleClass += R.style.flat
                     isCancelButton = true
                     onAction {
                         dismiss()
                     }
                 }
-            } marginTop R.dimen.padding_medium.toDouble()
+            } marginTop getDouble(R.dimen.padding_medium)
         })
         setOnShown {
             focusedNode?.requestFocus()

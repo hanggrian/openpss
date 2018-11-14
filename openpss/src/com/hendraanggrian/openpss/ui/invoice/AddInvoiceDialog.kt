@@ -14,9 +14,9 @@ import com.hendraanggrian.openpss.ui.invoice.job.AddOffsetJobPopover
 import com.hendraanggrian.openpss.ui.invoice.job.AddOtherJobPopover
 import com.hendraanggrian.openpss.ui.invoice.job.AddPlateJobPopover
 import com.hendraanggrian.openpss.util.currencyCell
-import com.hendraanggrian.openpss.util.getColor
 import com.hendraanggrian.openpss.util.numberCell
 import com.hendraanggrian.openpss.util.stringCell
+import javafx.beans.binding.When
 import javafx.beans.property.DoubleProperty
 import javafx.beans.property.ObjectProperty
 import javafx.beans.property.SimpleDoubleProperty
@@ -28,22 +28,21 @@ import javafx.scene.control.TableView
 import javafx.scene.control.TextArea
 import javafx.scene.image.ImageView
 import javafx.scene.layout.Priority.ALWAYS
-import ktfx.NodeInvokable
 import ktfx.application.later
 import ktfx.beans.binding.buildDoubleBinding
 import ktfx.beans.binding.buildStringBinding
-import ktfx.beans.binding.conditional
 import ktfx.beans.binding.otherwise
 import ktfx.beans.binding.then
 import ktfx.beans.value.greater
 import ktfx.beans.value.lessEq
 import ktfx.beans.value.or
-import ktfx.collections.isEmpty
+import ktfx.collections.isEmptyBinding
 import ktfx.coroutines.onAction
 import ktfx.coroutines.onKeyPressed
 import ktfx.coroutines.onMouseClicked
 import ktfx.jfoenix.jfxTabPane
 import ktfx.jfoenix.jfxTextField
+import ktfx.layouts.NodeInvokable
 import ktfx.layouts.TableColumnsBuilder
 import ktfx.layouts.columns
 import ktfx.layouts.contextMenu
@@ -74,14 +73,14 @@ class AddInvoiceDialog(
 
     init {
         gridPane {
-            gap = R.dimen.padding_medium.toDouble()
+            gap = getDouble(R.dimen.padding_medium)
             label(getString(R.string.employee)) col 0 row 0
             label(login.name) {
-                styleClass += "bold"
+                styleClass += R.style.bold
             } col 1 row 0
             label(getString(R.string.date)) col 2 row 0 hpriority ALWAYS halign RIGHT
             label(dateTime.toString(PATTERN_DATE)) {
-                styleClass += "bold"
+                styleClass += R.style.bold
             } col 3 row 0
             label(getString(R.string.customer)) col 0 row 1
             jfxTextField {
@@ -95,7 +94,7 @@ class AddInvoiceDialog(
             } col 1 row 1
             label(getString(R.string.jobs)) col 0 row 2
             jfxTabPane {
-                styleClass += "jfx-tab-pane-small"
+                styleClass += R.style.jfx_tab_pane_small
                 tab {
                     offsetTable = invoiceTableView({ AddOffsetJobPopover(this@AddInvoiceDialog) }) {
                         bindTitle(this, R.string.offset)
@@ -161,12 +160,12 @@ class AddInvoiceDialog(
             } col 1 row 3 colSpans 3
             label(getString(R.string.total)) col 0 row 4
             label {
-                styleClass += "bold"
+                styleClass += R.style.bold
                 textProperty().bind(buildStringBinding(totalProperty) {
                     currencyConverter(totalProperty.value)
                 })
                 textFillProperty().bind(
-                    conditional(totalProperty greater 0)
+                    When(totalProperty greater 0)
                         then getColor(R.color.green)
                         otherwise getColor(R.color.red)
                 )
@@ -203,7 +202,7 @@ class AddInvoiceDialog(
                 onAction { this@tableView.items.remove(this@tableView.selectionModel.selectedItem) }
             }
             getString(R.string.clear)(ImageView(R.image.menu_clear)) {
-                later { disableProperty().bind(this@tableView.items.isEmpty) }
+                later { disableProperty().bind(this@tableView.items.isEmptyBinding) }
                 onAction { this@tableView.items.clear() }
             }
         }

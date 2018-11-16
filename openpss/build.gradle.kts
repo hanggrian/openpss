@@ -81,8 +81,13 @@ packr {
 tasks {
     "generateR"(com.hendraanggrian.generating.r.RTask::class) {
         resourcesDir = projectDir.resolve("res")
-        isLowercase = true
         exclude("font")
+        css {
+            isJavaFx = true
+        }
+        properties {
+            supportResourceBundle = true
+        }
     }
 
     "generateBuildConfig"(com.hendraanggrian.generating.buildconfig.BuildConfigTask::class) {

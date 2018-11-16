@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.hendraanggrian.openpss.control.*?>
+<?import com.jfoenix.controls.JFXDrawer?>
 <?import com.jfoenix.controls.JFXHamburger?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
@@ -56,7 +57,8 @@
                 </MenuItem>
             </Menu>
         </MenuBar>
-        <Drawer fx:id="drawer" defaultDrawerSize="300" VBox.vgrow="ALWAYS" onDrawerOpened="#onDrawerOpened">
+        <JFXDrawer fx:id="drawer" defaultDrawerSize="300" VBox.vgrow="ALWAYS"
+                   onDrawerOpening="#onDrawerOpening" onDrawerOpened="#onDrawerOpened">
             <sidePane>
                 <VBox>
                     <Toolbar>
@@ -136,6 +138,6 @@
                     </TabPane>
                 </VBox>
             </content>
-        </Drawer>
+        </JFXDrawer>
     </VBox>
 </StackPane>

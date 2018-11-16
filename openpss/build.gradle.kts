@@ -1,5 +1,4 @@
 plugins {
-    java
     kotlin("jvm")
     idea
     generating("r")
@@ -81,12 +80,12 @@ packr {
 tasks {
     "generateR"(com.hendraanggrian.generating.r.RTask::class) {
         resourcesDir = projectDir.resolve("res")
-        exclude("font")
+        exclude("font", "license")
         css {
             isJavaFx = true
         }
         properties {
-            supportResourceBundle = true
+            readResourceBundle = true
         }
     }
 

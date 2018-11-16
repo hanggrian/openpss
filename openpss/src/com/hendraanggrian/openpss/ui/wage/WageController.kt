@@ -67,7 +67,11 @@ class WageController : ActionController() {
 
     override fun NodeInvokable.onCreateActions() {
         browseButton = stretchableButton(STRETCH_POINT, getString(R.string.browse), ImageView(R.image.act_browse)) {
-            onAction { browse() }
+            onAction {
+                (ReadWageAction(this@WageController)) {
+                    browse()
+                }
+            }
         }
         disableRecessButton = stretchableButton(
             STRETCH_POINT,

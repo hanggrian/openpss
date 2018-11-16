@@ -3,7 +3,6 @@ package com.hendraanggrian.openpss.ui.main
 import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.PATTERN_DATETIME
-import com.hendraanggrian.openpss.control.Drawer
 import com.hendraanggrian.openpss.control.MarginedImageView
 import com.hendraanggrian.openpss.control.PaginatedPane
 import com.hendraanggrian.openpss.control.Toolbar
@@ -33,11 +32,11 @@ import com.hendraanggrian.openpss.ui.price.EditPlatePriceDialog
 import com.hendraanggrian.openpss.ui.schedule.ScheduleController
 import com.hendraanggrian.openpss.ui.wage.EditRecessDialog
 import com.hendraanggrian.openpss.ui.wage.WageController
+import com.jfoenix.controls.JFXDrawer
 import com.jfoenix.controls.JFXHamburger
 import javafx.beans.binding.When
 import javafx.event.ActionEvent
 import javafx.fxml.FXML
-import javafx.scene.Node
 import javafx.scene.control.Label
 import javafx.scene.control.ListView
 import javafx.scene.control.MenuBar
@@ -52,7 +51,6 @@ import javafx.util.Callback
 import kotlinx.nosql.equal
 import kotlinx.nosql.update
 import ktfx.application.later
-import ktfx.beans.binding.buildBinding
 import ktfx.beans.binding.buildStringBinding
 import ktfx.beans.binding.minus
 import ktfx.beans.binding.otherwise
@@ -70,7 +68,7 @@ import java.net.URL
 import java.util.ResourceBundle
 import kotlin.math.ceil
 
-class MainController : Controller(), Selectable<Tab>, Selectable2<Label> {
+class MainController : Controller(), Selectable<Tab>, Selectable2<Label>, Refreshable {
 
     @FXML override lateinit var root: StackPane
     @FXML lateinit var menuBar: MenuBar
@@ -83,7 +81,7 @@ class MainController : Controller(), Selectable<Tab>, Selectable2<Label> {
     @FXML lateinit var employeeItem: MenuItem
     @FXML lateinit var recessItem: MenuItem
     @FXML lateinit var settingsItem: MenuItem
-    @FXML lateinit var drawer: Drawer
+    @FXML lateinit var drawer: JFXDrawer
     @FXML lateinit var drawerList: ListView<Label>
     @FXML lateinit var eventPagination: PaginatedPane
     @FXML lateinit var toolbar: Toolbar
@@ -137,40 +135,7 @@ class MainController : Controller(), Selectable<Tab>, Selectable2<Label> {
         financeGraphic.bind(3, R.image.tab_finance_selected, R.image.tab_finance)
         wageGraphic.bind(4, R.image.tab_wage_selected, R.image.tab_wage)
 
-        eventPagination.contentFactoryProperty().bind(buildBinding(drawer.openingProperty()) {
-            Callback<Pair<Int, Int>, Node> { (page, count) ->
-                UnselectableListView<Log>().apply {
-                    styleClass.addAll(R.style.borderless, R.style.list_view_no_scrollbar)
-                    cellFactory {
-                        onUpdate { event, empty ->
-                            if (event != null && !empty) graphic = textFlow {
-                                text(event.message) {
-                                    isWrapText = true
-                                    fontSize = 12.0
-                                    this@textFlow.prefWidthProperty().bind(this@apply.widthProperty() - 12)
-                                    wrappingWidthProperty().bind(this@apply.widthProperty())
-                                }
-                                newLine()
-                                text("${event.dateTime.toString(PATTERN_DATETIME)} ")
-                                text(transaction { Employees[event.employeeId].single().name }) {
-                                    styleClass += R.style.bold
-                                }
-                            }
-                        }
-                    }
-                    later {
-                        transaction {
-                            val logs = Logs()
-                            eventPagination.pageCount = ceil(logs.count() / count.toDouble()).toInt()
-                            items = logs
-                                .skip(count * page)
-                                .take(count)
-                                .toObservableList()
-                        }
-                    }
-                }
-            }
-        })
+        refresh()
 
         customerController.replaceButtons()
         selectedIndexProperty.listener { _, _, value ->
@@ -202,6 +167,46 @@ class MainController : Controller(), Selectable<Tab>, Selectable2<Label> {
             }
         }
     }
+
+    override fun refresh() {
+        eventPagination.contentFactory = Callback { (page, count) ->
+            UnselectableListView<Log>().apply {
+                styleClass.addAll(R.style.borderless, R.style.list_view_no_scrollbar)
+                cellFactory {
+                    onUpdate { log, empty ->
+                        if (log != null && !empty) graphic = textFlow {
+                            text(log.message) {
+                                isWrapText = true
+                                fontSize = 12.0
+                                this@textFlow.prefWidthProperty().bind(this@apply.widthProperty() - 12)
+                                wrappingWidthProperty().bind(this@apply.widthProperty())
+                            }
+                            newLine()
+                            text("${log.dateTime.toString(PATTERN_DATETIME)} ") {
+                                styleClass += R.style.bold
+                            }
+                            text(transaction { Employees[log.employeeId].single().name })
+                            if (log.adminId != null) {
+                                text(", ${transaction { Employees[log.adminId].single().name }}")
+                            }
+                        }
+                    }
+                }
+                later {
+                    transaction {
+                        val logs = Logs()
+                        eventPagination.pageCount = ceil(logs.count() / count.toDouble()).toInt()
+                        items = logs
+                            .skip(count * page)
+                            .take(count)
+                            .toObservableList()
+                    }
+                }
+            }
+        }
+    }
+
+    @FXML fun onDrawerOpening() = refresh()
 
     @FXML fun onDrawerOpened() = eventPagination.selectLast()
 

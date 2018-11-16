@@ -1,7 +1,7 @@
 buildscript {
     repositories {
         jcenter()
-        maven("https://oss.sonatype.org/content/repositories/snapshots") // required for packr
+        maven("https://oss.sonatype.org/content/repositories/snapshots")
         maven("https://dl.bintray.com/hendraanggrian/packr")
     }
     dependencies {
@@ -16,8 +16,7 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
-        maven("http://repository.jetbrains.com/kotlin-nosql") // required for kotlin-nosql
-        maven("https://dl.bintray.com/hendraanggrian/ktfx")
+        maven("http://repository.jetbrains.com/kotlin-nosql")
     }
     tasks {
         withType<Delete> {

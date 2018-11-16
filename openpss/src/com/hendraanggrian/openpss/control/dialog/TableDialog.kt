@@ -6,7 +6,6 @@ import com.hendraanggrian.openpss.db.Document
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.Selectable
-import com.hendraanggrian.openpss.ui.employee.EditEmployeeDialog
 import javafx.geometry.Pos.CENTER_RIGHT
 import javafx.scene.control.Button
 import javafx.scene.control.SelectionModel
@@ -59,10 +58,7 @@ abstract class TableDialog<D : Document<S>, S : DocumentSchema<D>>(
                     tooltip(getString(R.string.delete))
                     onAction { delete() }
                     later {
-                        when {
-                            this@TableDialog is EditEmployeeDialog -> isDisable = true
-                            else -> disableProperty().bind(selectedProperty.isNull)
-                        }
+                        disableProperty().bind(selectedProperty.isNull)
                     }
                 }
             }
@@ -93,7 +89,7 @@ abstract class TableDialog<D : Document<S>, S : DocumentSchema<D>>(
 
     abstract fun add()
 
-    private fun delete() = ConfirmDialog(this).show {
+    open fun delete() = ConfirmDialog(this).show {
         transaction { schema -= selected!! }
         table.items.remove(selected!!)
     }

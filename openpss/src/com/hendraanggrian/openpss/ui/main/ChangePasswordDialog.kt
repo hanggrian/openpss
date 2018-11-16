@@ -24,7 +24,7 @@ class ChangePasswordDialog(context: Context) : ResultableDialog<String>(context,
         gridPane {
             gap = getDouble(R.dimen.padding_medium)
             label {
-                text = getString(R.string.new_employee_must_assign_new_password_this_will_only_occur_once)
+                text = getString(R.string._change_password)
             } col 0 row 0 colSpans 2
             label(getString(R.string.password)) col 0 row 1
             changePasswordField = jfxPasswordField {

@@ -12,11 +12,14 @@ import com.hendraanggrian.openpss.util.doneCell
 import com.hendraanggrian.openpss.util.stringCell
 import javafx.scene.control.MenuItem
 import kotlinx.nosql.notEqual
-import ktfx.application.later
+import ktfx.beans.binding.buildBinding
+import ktfx.beans.binding.buildStringBinding
 import ktfx.collections.toMutableObservableList
 import ktfx.coroutines.onAction
 import ktfx.jfoenix.jfxSnackbar
 import ktfx.layouts.contextMenu
+import ktfx.layouts.menuItem
+import ktfx.layouts.separatorMenuItem
 
 class EditEmployeeDialog(
     context: Context
@@ -29,12 +32,30 @@ class EditEmployeeDialog(
         getString(R.string.admin)<Boolean> {
             doneCell { isAdmin }
         }
-        later {
-            deleteButton.isDisable = true
-        }
-
         table.contextMenu {
-            (getString(R.string.toggle_admin)) {
+            menuItem {
+                textProperty().bind(buildStringBinding(selectedProperty) {
+                    when {
+                        selected != null -> getString(
+                            when {
+                                selected!!.isAdmin -> R.string.disable_admin_status
+                                else -> R.string.enable_admin_status
+                            }
+                        )
+                        else -> null
+                    }
+                })
+                graphicProperty().bind(buildBinding(selectedProperty) {
+                    when {
+                        selected != null -> ktfx.layouts.imageView(
+                            when {
+                                selected!!.isAdmin -> R.image.menu_admin_off
+                                else -> R.image.menu_admin_on
+                            }
+                        )
+                        else -> null
+                    }
+                })
                 bindDisable()
                 onAction {
                     (ToggleAdminEmployeeAction(this@EditEmployeeDialog, selected!!)) {
@@ -42,6 +63,7 @@ class EditEmployeeDialog(
                     }
                 }
             }
+            separatorMenuItem()
             (getString(R.string.reset_password)) {
                 bindDisable()
                 onAction {
@@ -65,6 +87,10 @@ class EditEmployeeDialog(
             table.items.add(it)
             select(it)
         }
+    }
+
+    override fun delete() = (DeleteEmployeeAction(this, selected!!)) {
+        super.delete()
     }
 
     private fun MenuItem.bindDisable() = disableProperty().bind(!selectedBinding)

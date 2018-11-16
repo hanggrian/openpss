@@ -9,9 +9,11 @@ import com.hendraanggrian.openpss.util.orNull
 import javafx.scene.control.Label
 import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
+import javafx.scene.control.TextInputControl
 import javafx.scene.image.ImageView
-import ktfx.beans.property.asProperty
-import ktfx.beans.value.and
+import ktfx.beans.property.asMutableProperty
+import ktfx.beans.value.or
+import ktfx.coroutines.listener
 import ktfx.jfoenix.jfxTextArea
 import ktfx.jfoenix.jfxTextField
 import ktfx.layouts.gridPane
@@ -23,6 +25,8 @@ class EditCustomerDialog(
     context: Context,
     private val customer: Customer
 ) : ResultableDialog<Customer>(context, R.string.edit_customer) {
+
+    private val unchangedProperty = true.asMutableProperty()
 
     private lateinit var image: ImageView
     private lateinit var description: Label
@@ -48,22 +52,35 @@ class EditCustomerDialog(
                 )
             ) col 0 row 1 colSpans 2
             label(getString(R.string.name)) col 0 row 2
-            nameField = jfxTextField(customer.name) col 1 row 2
+            nameField = jfxTextField(customer.name) { bindTextField() } col 1 row 2
             label(getString(R.string.address)) col 0 row 3
-            addressField = jfxTextField(customer.address.orEmpty()) col 1 row 3
+            addressField = jfxTextField(customer.address.orEmpty()) { bindTextField() } col 1 row 3
             label(getString(R.string.note)) col 0 row 4
-            noteArea = jfxTextArea(customer.note.orEmpty()) col 1 row 4
+            noteArea = jfxTextArea(customer.note.orEmpty()) { bindTextField() } col 1 row 4
         }
         defaultButton.run {
             text = getString(R.string.edit)
-            disableProperty().bind(!nameField.textProperty().isPersonName() and !customer.isCompany.asProperty())
+            disableProperty().bind(
+                when {
+                    customer.isCompany -> unchangedProperty
+                    else -> unchangedProperty or !nameField.textProperty().isPersonName()
+                }
+            )
         }
     }
 
     override val nullableResult: Customer?
-        get() = customer.apply {
-            name = nameField.text
-            address = addressField.text.orNull()
-            note = noteArea.text.orNull()
-        }
+        get() = Customer(
+            customer.no,
+            nameField.text,
+            customer.isCompany,
+            customer.since,
+            addressField.text.orNull(),
+            customer.note,
+            customer.contacts
+        )
+
+    private fun TextInputControl.bindTextField() {
+        textProperty().listener { unchangedProperty.set(false) }
+    }
 }

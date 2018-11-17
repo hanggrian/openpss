@@ -4,6 +4,9 @@ import org.gradle.plugin.use.PluginDependenciesSpec
 fun DependencyHandler.kotlinx(module: String, version: String? = null) =
     "org.jetbrains.kotlinx:kotlinx-$module${version?.let { ":$it" }.orEmpty()}"
 
+fun DependencyHandler.dokka() = "org.jetbrains.dokka:dokka-gradle-plugin:$VERSION_DOKKA"
+inline val PluginDependenciesSpec.dokka get() = id("org.jetbrains.dokka")
+
 fun DependencyHandler.controlsFx() = "org.controlsfx:controlsfx:$VERSION_CONTROLSFX"
 
 fun DependencyHandler.apache(module: String, version: String) = "org.apache.${module.split("-")[0]}:$module:$version"
@@ -35,6 +38,9 @@ fun DependencyHandler.shadow() = "com.github.jengelman.gradle.plugins:shadow:$VE
 inline val PluginDependenciesSpec.shadow get() = id("com.github.johnrengelman.shadow")
 
 fun DependencyHandler.testFx(module: String) = "org.testfx:testfx-$module:$VERSION_TESTFX"
+
+fun DependencyHandler.gitPublish() = "org.ajoberstar:gradle-git-publish:$VERSION_GIT_PUBLISH"
+inline val PluginDependenciesSpec.`git-publish` get() = id("org.ajoberstar.git-publish")
 
 private fun optionalRepo(
     group: String,

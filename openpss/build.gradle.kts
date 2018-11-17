@@ -1,11 +1,15 @@
+import org.jetbrains.kotlin.codegen.StackValue.field
+
 plugins {
     kotlin("jvm")
+    dokka
     idea
     generating("r")
     generating("buildconfig")
     shadow
     application
     packr
+    `git-publish`
 }
 
 group = RELEASE_GROUP
@@ -77,7 +81,19 @@ packr {
     openOnDone = true
 }
 
+gitPublish {
+    repoUri = RELEASE_WEBSITE
+    branch = "gh-pages"
+    contents.from("pages", "$buildDir/docs")
+}
+
 tasks {
+    "dokka"(org.jetbrains.dokka.gradle.DokkaTask::class) {
+        outputDirectory = "$buildDir/docs"
+        doFirst { file(outputDirectory).deleteRecursively() }
+    }
+    get("gitPublishCopy").dependsOn("dokka")
+
     "generateR"(com.hendraanggrian.generating.r.RTask::class) {
         resourcesDir = projectDir.resolve("res")
         exclude("font", "license")

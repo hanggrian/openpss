@@ -6,11 +6,12 @@ buildscript {
     }
     dependencies {
         classpath(kotlin("gradle-plugin", VERSION_KOTLIN))
+        classpath(dokka())
         classpath(hendraanggrian("generating", "r-gradle-plugin", VERSION_R))
         classpath(hendraanggrian("generating", "buildconfig-gradle-plugin", VERSION_BUILDCONFIG))
         classpath(hendraanggrian("packr", "packr-gradle-plugin", VERSION_PACKR))
         classpath(shadow())
-
+        classpath(gitPublish())
         classpath("com.helger:ph-css:6.1.1")
     }
 }

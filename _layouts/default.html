@@ -23,7 +23,8 @@
 	<body>
 		<nav>
 			<div class="container">
-				<a href="{{ site.baseurl }}/">{% include logo.html %}</a>
+                <a href="https://github.com/hendraanggrian/openpss">{% include logo_github.html %}</a>
+                <a href="http://hendraanggrian.com">{% include logo_website.html %}</a>
 			</div>
 		</nav>
 		<div class="content">
@@ -42,19 +43,24 @@
 							{% include icons/footer.html icon="place" %} {{ site.data.company.address }}
 						</a>
 					</address-->
+					<p class="github">
+						<a href="https://github.com/hendraanggrian">
+							{% include icons/footer.html icon="github" %} {{ "github.com/hendraanggrian" }}
+						</a>
+					</p>
+					<p class="website">
+						<a href="http://hendraanggrian.com">
+							{% include icons/footer.html icon="website" %} {{ "hendraanggrian.com" }}
+						</a>
+					</p>
 					<p class="email">
 						<a href="mailto:{{ site.data.company.email }}">
 							{% include icons/footer.html icon="email" %} {{ site.data.company.email }}
 						</a>
 					</p>
-					<!--p class="phone">
-						<a href="tel:{{ site.data.company.phone | replace: ' ', '-' }}">
-							{% include icons/footer.html icon="phone" %} {{ site.data.company.phone }}
-						</a>
-					</p-->
 				</div>
 
-				<div class="sharing">
+				<!--div class="sharing">
 					<a class="facebook" href="https://www.facebook.com/{{ site.data.company.facebook }}">
 						{% include icons/social-media.html social_icon="facebook" %}
 					</a>
@@ -64,7 +70,7 @@
 					<a class="google-plus" href="https://plus.google.com/{{ site.data.company.google_plus }}">
 						{% include icons/social-media.html social_icon="google-plus" %}
 					</a>
-				</div>
+				</div-->
 			</div>
 		</footer>
 		<p class="copyright">

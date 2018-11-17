@@ -80,7 +80,7 @@ form {
 		border-bottom-right-radius: 30px;
 
 		&:hover {
-			background: darken($brand-color, 5%);
+			background: #005cb2;
 		}
 	}
 }
@@ -107,7 +107,7 @@ form {
 	transition: 200ms ease-in background;
 
 	&:hover {
-		background: darken($brand-color, 5%);
+		background: #005cb2;
 	}
 }
 
@@ -132,6 +132,6 @@ form {
 	transition: 200ms ease-in background;
 
 	&:hover {
-		background: darken($brand-color, 5%);
+		background: #6ab7ff;
 	}
 }

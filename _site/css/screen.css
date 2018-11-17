@@ -61,7 +61,7 @@ form {
     border-top-right-radius: 30px;
     border-bottom-right-radius: 30px; }
     form input[type="submit"]:hover {
-      background: #187bd1; }
+      background: #005cb2; }
 
 .button .raised, input[type="submit"], input[type="text"] {
   border: 0;
@@ -82,7 +82,7 @@ form {
   border-radius: 30px;
   transition: 200ms ease-in background; }
   .button .raised:hover {
-    background: #187bd1; }
+    background: #005cb2; }
 
 .button .flat, input[type="submit"], input[type="text"] {
   border: 0;
@@ -102,7 +102,7 @@ form {
   border-radius: 30px;
   transition: 200ms ease-in background; }
   .button .flat:hover {
-    background: #187bd1; }
+    background: #6ab7ff; }
 
 .container {
   max-width: 1000px;
@@ -120,15 +120,13 @@ header {
     header .column {
       flex: 1; }
       header .column img {
-        max-width: none;
-        width: 120%; }
+        max-width: none; }
       header .column:first-child {
         display: flex;
         justify-content: center;
         align-items: center;
         margin-right: 50px; } }
   header img {
-    margin: 100px auto 0 auto;
     display: block;
     max-width: 100%; }
 

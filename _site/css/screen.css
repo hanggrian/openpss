@@ -119,9 +119,23 @@ header {
       display: flex; }
     header .column {
       flex: 1; }
-      header .column img {
-        max-width: none; }
       header .column:first-child {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-right: 50px; }
+    header .column1 {
+      max-width: 25%;
+      flex: 1; }
+      header .column1:first-child {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-right: 50px; }
+    header .column2 {
+      max-width: 75%;
+      flex: 1; }
+      header .column2:first-child {
         display: flex;
         justify-content: center;
         align-items: center;
@@ -131,6 +145,8 @@ header {
     max-width: 100%; }
 
 header .container, nav .container {
+  display: flex;
+  align-items: center;
   padding-top: 0;
   padding-bottom: 0; }
 

@@ -18,9 +18,29 @@ header {
 		.column {
 			flex: 1;
 
-			img {
-				max-width: none;
+			&:first-child {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				margin-right: 50px;
 			}
+		}
+
+		.column1 {
+		    max-width: 25%;
+			flex: 1;
+
+			&:first-child {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				margin-right: 50px;
+			}
+		}
+
+		.column2 {
+		    max-width: 75%;
+			flex: 1;
 
 			&:first-child {
 				display: flex;
@@ -39,6 +59,8 @@ header {
 
 header, nav {
 	.container {
+        display: flex;
+        align-items: center;
 		padding-top: 0;
 		padding-bottom: 0;
 	}
@@ -173,7 +195,7 @@ blockquote {
 }
 
 footer {
-	background: #1e88e5;
+	background: #323232;
 
 	padding: 40px 0;
 
@@ -234,7 +256,7 @@ footer {
 .copyright {
 	padding: 5px 0;
 	margin: 0;
-	background: #1e88e5;
+	background: #323232;
 	text-align: center;
 	font-size: .8em;
 	a {

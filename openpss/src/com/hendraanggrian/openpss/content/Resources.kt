@@ -1,8 +1,7 @@
 package com.hendraanggrian.openpss.content
 
-import com.hendraanggrian.openpss.util.getResource
+import com.hendraanggrian.openpss.util.getResourceAsStream
 import javafx.scene.paint.Color
-import java.io.File
 import java.util.Properties
 import java.util.ResourceBundle
 
@@ -28,8 +27,9 @@ interface Resources {
 
     fun getColor(id: String): Color = Color.web(colorResources.getProperty(id))
 
-    fun getProperties(propertiesId: String): Properties =
-        File(getResource(propertiesId).toURI()).inputStream().use { stream -> Properties().apply { load(stream) } }
+    fun getProperties(propertiesId: String): Properties = getResourceAsStream(propertiesId).use { stream ->
+        Properties().apply { load(stream) }
+    }
 
     /** Mark enum value to be translatable. */
     interface Enum {

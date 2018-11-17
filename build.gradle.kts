@@ -10,6 +10,8 @@ buildscript {
         classpath(hendraanggrian("generating", "buildconfig-gradle-plugin", VERSION_BUILDCONFIG))
         classpath(hendraanggrian("packr", "packr-gradle-plugin", VERSION_PACKR))
         classpath(shadow())
+
+        classpath("com.helger:ph-css:6.1.1")
     }
 }
 

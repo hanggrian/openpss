@@ -67,11 +67,7 @@ class WageController : ActionController() {
 
     override fun NodeInvokable.onCreateActions() {
         browseButton = stretchableButton(STRETCH_POINT, getString(R.string.browse), ImageView(R.image.act_browse)) {
-            onAction {
-                (ReadWageAction(this@WageController)) {
-                    browse()
-                }
-            }
+            onAction { browse() }
         }
         disableRecessButton = stretchableButton(
             STRETCH_POINT,
@@ -126,7 +122,7 @@ class WageController : ActionController() {
     private fun browse() =
         fileChooser(ExtensionFilter(getString(R.string.input_file), *Reader.of(WAGE_READER).extensions))
             .showOpenDialog(anchorPane.scene.window)
-            ?.let { read(it) }
+            ?.let { file -> (ReadWageAction(this)) { read(file) } }
 
     private fun read(file: File) {
         filePath = file.absolutePath

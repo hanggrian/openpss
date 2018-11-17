@@ -239,7 +239,7 @@ class WageRecordController : Controller() {
             recordTable.stylesheets += printStylesheet
         }
         else -> {
-            vbox.children.add(0, toolbar)
+            vbox.children.add(1, toolbar)
             recordTable.stylesheets -= printStylesheet
         }
     }

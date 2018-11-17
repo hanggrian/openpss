@@ -63,25 +63,45 @@ form {
     form input[type="submit"]:hover {
       background: #187bd1; }
 
-.button a, input[type="submit"], input[type="text"] {
+.button .raised, input[type="submit"], input[type="text"] {
   border: 0;
   padding: 15px 40px;
   box-sizing: content-box;
   font-size: 1em;
   font-weight: 100; }
 
-.button a, input[type="submit"] {
+.button .raised, input[type="submit"] {
   background: #1e88e5;
   color: #fff;
   cursor: pointer;
   font-weight: bold; }
 
-.button a {
+.button .raised {
   display: inline-block;
   text-decoration: none;
   border-radius: 30px;
   transition: 200ms ease-in background; }
-  .button a:hover {
+  .button .raised:hover {
+    background: #187bd1; }
+
+.button .flat, input[type="submit"], input[type="text"] {
+  border: 0;
+  padding: 15px 40px;
+  box-sizing: content-box;
+  font-size: 1em;
+  font-weight: 100; }
+
+.button .flat, input[type="submit"] {
+  color: #1e88e5;
+  cursor: pointer;
+  font-weight: bold; }
+
+.button .flat {
+  display: inline-block;
+  text-decoration: none;
+  border-radius: 30px;
+  transition: 200ms ease-in background; }
+  .button .flat:hover {
     background: #187bd1; }
 
 .container {
@@ -217,10 +237,10 @@ blockquote {
   padding: 100px 0; }
 
 footer {
-  background: #000;
+  background: #1e88e5;
   padding: 40px 0; }
-  footer, footer a {
-    color: #8e8e8e; }
+  footer, footer p, footer a {
+    color: #fff; }
   footer a:hover {
     color: #fff; }
     footer a:hover svg {
@@ -231,7 +251,7 @@ footer {
   footer p, footer address {
     font-size: .9em; }
   footer svg {
-    fill: #8e8e8e;
+    fill: #fff;
     height: 20px;
     position: relative;
     top: 4px; }
@@ -255,11 +275,11 @@ footer {
 .copyright {
   padding: 5px 0;
   margin: 0;
-  background: #000;
+  background: #1e88e5;
   text-align: center;
   font-size: .8em; }
   .copyright a {
-    color: #8e8e8e;
+    color: #fff;
     text-decoration: none; }
     .copyright a:hover {
       color: #fff; }

@@ -175,12 +175,12 @@ blockquote {
 }
 
 footer {
-	background: #000;
+	background: #1e88e5;
 
 	padding: 40px 0;
 
-	&, a {
-		color: #8e8e8e;
+	&, p, a {
+		color: #fff;
 	}
 
 	a:hover {
@@ -201,7 +201,7 @@ footer {
 	}
 
 	svg {
-		fill: #8e8e8e;
+		fill: #fff;
 		height: 20px;
 		position: relative;
 		top: 4px;
@@ -236,11 +236,11 @@ footer {
 .copyright {
 	padding: 5px 0;
 	margin: 0;
-	background: #000;
+	background: #1e88e5;
 	text-align: center;
 	font-size: .8em;
 	a {
-		color: #8e8e8e;
+		color: #fff;
 		text-decoration: none;
 
 		&:hover {

@@ -85,7 +85,7 @@ form {
 	}
 }
 
-.button a, input[type="submit"], input[type="text"] {
+.button .raised, input[type="submit"], input[type="text"] {
 	border: 0;
 	padding: 15px 40px;
 	box-sizing: content-box;
@@ -93,14 +93,39 @@ form {
 	font-weight: 100;
 }
 
-.button a, input[type="submit"] {
+.button .raised, input[type="submit"] {
 	background: $brand-color;
 	color: #fff;
 	cursor: pointer;
 	font-weight: bold;
 }
 
-.button a {
+.button .raised {
+	display: inline-block;
+	text-decoration: none;
+	border-radius: 30px;
+	transition: 200ms ease-in background;
+
+	&:hover {
+		background: darken($brand-color, 5%);
+	}
+}
+
+.button .flat, input[type="submit"], input[type="text"] {
+	border: 0;
+	padding: 15px 40px;
+	box-sizing: content-box;
+	font-size: 1em;
+	font-weight: 100;
+}
+
+.button .flat, input[type="submit"] {
+	color: $brand-color;
+	cursor: pointer;
+	font-weight: bold;
+}
+
+.button .flat {
 	display: inline-block;
 	text-decoration: none;
 	border-radius: 30px;

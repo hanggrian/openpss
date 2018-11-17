@@ -251,7 +251,7 @@ blockquote {
   padding: 100px 0; }
 
 footer {
-  background: #1e88e5;
+  background: #323232;
   padding: 40px 0; }
   footer, footer p, footer a {
     color: #fff; }
@@ -289,7 +289,7 @@ footer {
 .copyright {
   padding: 5px 0;
   margin: 0;
-  background: #1e88e5;
+  background: #323232;
   text-align: center;
   font-size: .8em; }
   .copyright a {

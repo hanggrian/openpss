@@ -1,0 +1,72 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>Refreshable - openpss</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">openpss</a>&nbsp;/&nbsp;<a href="../index.html">com.hendraanggrian.openpss.ui</a>&nbsp;/&nbsp;<a href="./index.html">Refreshable</a><br/>
+<br/>
+<h1>Refreshable</h1>
+<code><span class="keyword">interface </span><span class="identifier">Refreshable</span></code>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="refresh.html">refresh</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">refresh</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Inheritors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="../../com.hendraanggrian.openpss.ui.customer/-customer-controller/index.html">CustomerController</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">CustomerController</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../-action-controller/index.html"><span class="identifier">ActionController</span></a><span class="symbol">, </span><a href="./index.html"><span class="identifier">Refreshable</span></a><span class="symbol">, </span><a href="../-selectable/index.html"><span class="identifier">Selectable</span></a><span class="symbol">&lt;</span><a href="../../com.hendraanggrian.openpss.db.schemas/-customer/index.html"><span class="identifier">Customer</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><a href="../-selectable2/index.html"><span class="identifier">Selectable2</span></a><span class="symbol">&lt;</span><a href="../../com.hendraanggrian.openpss.db.schemas/-customer/-contact/index.html"><span class="identifier">Contact</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../../com.hendraanggrian.openpss.ui.finance/-finance-controller/index.html">FinanceController</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">FinanceController</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../-action-controller/index.html"><span class="identifier">ActionController</span></a><span class="symbol">, </span><a href="./index.html"><span class="identifier">Refreshable</span></a><span class="symbol">, </span><a href="../-selectable/index.html"><span class="identifier">Selectable</span></a><span class="symbol">&lt;</span><span class="identifier">Tab</span><span class="symbol">&gt;</span><span class="symbol">, </span><a href="../-selectable2/index.html"><span class="identifier">Selectable2</span></a><span class="symbol">&lt;</span><a href="../../com.hendraanggrian.openpss.db.schemas/-payment/index.html"><span class="identifier">Payment</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><a href="../-selectable3/index.html"><span class="identifier">Selectable3</span></a><span class="symbol">&lt;</span><a href="../../com.hendraanggrian.openpss.ui.finance/-report/index.html"><span class="identifier">Report</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../../com.hendraanggrian.openpss.ui.invoice/-invoice-controller/index.html">InvoiceController</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">InvoiceController</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../-action-controller/index.html"><span class="identifier">ActionController</span></a><span class="symbol">, </span><a href="./index.html"><span class="identifier">Refreshable</span></a><span class="symbol">, </span><a href="../-selectable/index.html"><span class="identifier">Selectable</span></a><span class="symbol">&lt;</span><a href="../../com.hendraanggrian.openpss.db.schemas/-invoice/index.html"><span class="identifier">Invoice</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><a href="../-selectable2/index.html"><span class="identifier">Selectable2</span></a><span class="symbol">&lt;</span><a href="../../com.hendraanggrian.openpss.db.schemas/-payment/index.html"><span class="identifier">Payment</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../../com.hendraanggrian.openpss.ui.main/-main-controller/index.html">MainController</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">MainController</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../-controller/index.html"><span class="identifier">Controller</span></a><span class="symbol">, </span><a href="../-selectable/index.html"><span class="identifier">Selectable</span></a><span class="symbol">&lt;</span><span class="identifier">Tab</span><span class="symbol">&gt;</span><span class="symbol">, </span><a href="../-selectable2/index.html"><span class="identifier">Selectable2</span></a><span class="symbol">&lt;</span><span class="identifier">Label</span><span class="symbol">&gt;</span><span class="symbol">, </span><a href="./index.html"><span class="identifier">Refreshable</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../../com.hendraanggrian.openpss.ui.schedule/-schedule-controller/index.html">ScheduleController</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">ScheduleController</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../-action-controller/index.html"><span class="identifier">ActionController</span></a><span class="symbol">, </span><a href="./index.html"><span class="identifier">Refreshable</span></a><span class="symbol">, </span><a href="../-tree-selectable/index.html"><span class="identifier">TreeSelectable</span></a><span class="symbol">&lt;</span><a href="../../com.hendraanggrian.openpss.ui.schedule/-schedule/index.html"><span class="identifier">Schedule</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../../com.hendraanggrian.openpss.control.dialog/-table-dialog/index.html">TableDialog</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">class </span><span class="identifier">TableDialog</span><span class="symbol">&lt;</span><span class="identifier">D</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../../com.hendraanggrian.openpss.db/-document/index.html"><span class="identifier">Document</span></a><span class="symbol">&lt;</span><a href="../../com.hendraanggrian.openpss.control.dialog/-table-dialog/index.html#S"><span class="identifier">S</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier">S</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">DocumentSchema</span><span class="symbol">&lt;</span><a href="../../com.hendraanggrian.openpss.control.dialog/-table-dialog/index.html#D"><span class="identifier">D</span></a><span class="symbol">&gt;</span><span class="symbol">&gt;</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../../com.hendraanggrian.openpss.control.dialog/-dialog/index.html"><span class="identifier">Dialog</span></a><span class="symbol">, </span><span class="identifier">TableColumnsBuilder</span><span class="symbol">&lt;</span><a href="../../com.hendraanggrian.openpss.control.dialog/-table-dialog/index.html#D"><span class="identifier">D</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><a href="../-selectable/index.html"><span class="identifier">Selectable</span></a><span class="symbol">&lt;</span><a href="../../com.hendraanggrian.openpss.control.dialog/-table-dialog/index.html#D"><span class="identifier">D</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><a href="./index.html"><span class="identifier">Refreshable</span></a></code></td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

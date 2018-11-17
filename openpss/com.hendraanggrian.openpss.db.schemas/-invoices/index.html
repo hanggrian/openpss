@@ -1,0 +1,135 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>Invoices - openpss</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">openpss</a>&nbsp;/&nbsp;<a href="../index.html">com.hendraanggrian.openpss.db.schemas</a>&nbsp;/&nbsp;<a href="./index.html">Invoices</a><br/>
+<br/>
+<h1>Invoices</h1>
+<code><span class="keyword">object </span><span class="identifier">Invoices</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">DocumentSchema</span><span class="symbol">&lt;</span><a href="../-invoice/index.html"><span class="identifier">Invoice</span></a><span class="symbol">&gt;</span></code>
+<h3>Types</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-digital-jobs/index.html">DigitalJobs</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">DigitalJobs</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">ListColumn</span><span class="symbol">&lt;</span><a href="../-invoice/-digital-job/index.html"><span class="identifier">DigitalJob</span></a><span class="symbol">,</span>&nbsp;<a href="./index.html"><span class="identifier">Invoices</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="-offset-jobs/index.html">OffsetJobs</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">OffsetJobs</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">ListColumn</span><span class="symbol">&lt;</span><a href="../-invoice/-offset-job/index.html"><span class="identifier">OffsetJob</span></a><span class="symbol">,</span>&nbsp;<a href="./index.html"><span class="identifier">Invoices</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="-other-jobs/index.html">OtherJobs</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">OtherJobs</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">ListColumn</span><span class="symbol">&lt;</span><a href="../-invoice/-other-job/index.html"><span class="identifier">OtherJob</span></a><span class="symbol">,</span>&nbsp;<a href="./index.html"><span class="identifier">Invoices</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="-plate-jobs/index.html">PlateJobs</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">PlateJobs</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">ListColumn</span><span class="symbol">&lt;</span><a href="../-invoice/-plate-job/index.html"><span class="identifier">PlateJob</span></a><span class="symbol">,</span>&nbsp;<a href="./index.html"><span class="identifier">Invoices</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="customer-id.html">customerId</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">customerId</span><span class="symbol">: </span><span class="identifier">AbstractColumn</span><span class="symbol">&lt;</span><span class="identifier">Id</span><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">,</span>&nbsp;<a href="../-customers/index.html"><span class="identifier">Customers</span></a><span class="symbol">&gt;</span><span class="symbol">,</span>&nbsp;<a href="./index.html"><span class="identifier">Invoices</span></a><span class="symbol">,</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="date-time.html">dateTime</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">dateTime</span><span class="symbol">: </span><span class="identifier">AbstractColumn</span><span class="symbol">&lt;</span><span class="identifier">DateTime</span><span class="symbol">,</span>&nbsp;<a href="./index.html"><span class="identifier">Invoices</span></a><span class="symbol">,</span>&nbsp;<span class="identifier">DateTime</span><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="digital-jobs.html">digitalJobs</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">digitalJobs</span><span class="symbol">: </span><a href="-digital-jobs/index.html"><span class="identifier">DigitalJobs</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="employee-id.html">employeeId</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">employeeId</span><span class="symbol">: </span><span class="identifier">AbstractColumn</span><span class="symbol">&lt;</span><span class="identifier">Id</span><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">,</span>&nbsp;<a href="../-employees/index.html"><span class="identifier">Employees</span></a><span class="symbol">&gt;</span><span class="symbol">,</span>&nbsp;<a href="./index.html"><span class="identifier">Invoices</span></a><span class="symbol">,</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="is-done.html">isDone</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">isDone</span><span class="symbol">: </span><span class="identifier">AbstractColumn</span><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">,</span>&nbsp;<a href="./index.html"><span class="identifier">Invoices</span></a><span class="symbol">,</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="is-paid.html">isPaid</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">isPaid</span><span class="symbol">: </span><span class="identifier">AbstractColumn</span><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">,</span>&nbsp;<a href="./index.html"><span class="identifier">Invoices</span></a><span class="symbol">,</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="no.html">no</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">no</span><span class="symbol">: </span><span class="identifier">AbstractColumn</span><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">,</span>&nbsp;<a href="./index.html"><span class="identifier">Invoices</span></a><span class="symbol">,</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="note.html">note</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">note</span><span class="symbol">: </span><span class="identifier">AbstractColumn</span><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">,</span>&nbsp;<a href="./index.html"><span class="identifier">Invoices</span></a><span class="symbol">,</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="offset-jobs.html">offsetJobs</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">offsetJobs</span><span class="symbol">: </span><a href="-offset-jobs/index.html"><span class="identifier">OffsetJobs</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="other-jobs.html">otherJobs</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">otherJobs</span><span class="symbol">: </span><a href="-other-jobs/index.html"><span class="identifier">OtherJobs</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="plate-jobs.html">plateJobs</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">plateJobs</span><span class="symbol">: </span><a href="-plate-jobs/index.html"><span class="identifier">PlateJobs</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="printed.html">printed</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">printed</span><span class="symbol">: </span><span class="identifier">AbstractColumn</span><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">,</span>&nbsp;<a href="./index.html"><span class="identifier">Invoices</span></a><span class="symbol">,</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

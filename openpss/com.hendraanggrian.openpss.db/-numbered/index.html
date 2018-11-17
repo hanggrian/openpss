@@ -1,0 +1,66 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>Numbered - openpss</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">openpss</a>&nbsp;/&nbsp;<a href="../index.html">com.hendraanggrian.openpss.db</a>&nbsp;/&nbsp;<a href="./index.html">Numbered</a><br/>
+<br/>
+<h1>Numbered</h1>
+<code><span class="keyword">interface </span><span class="identifier">Numbered</span></code>
+<p>Implementation of incremental integer used as document's identifier.</p>
+<p><strong>See Also</strong><br/>
+<p><a href="../../com.hendraanggrian.openpss.db.schemas/-customer/index.html">com.hendraanggrian.openpss.db.schemas.Customer</a></p>
+<p><a href="../../com.hendraanggrian.openpss.db.schemas/-invoice/index.html">com.hendraanggrian.openpss.db.schemas.Invoice</a></p>
+</p>
+<h3>Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="no.html">no</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">val </span><span class="identifier">no</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code>
+<p>Since <code>id</code> is reserved in <a href="../-document/index.html">Document</a>, <code>no</code> is direct replacement.
+Basically means the same thing.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Companion Object Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="next.html">next</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">S</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">DocumentSchema</span><span class="symbol">&lt;</span><a href="next.html#D"><span class="identifier">D</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier">D</span><span class="symbol">&gt;</span> <span class="identifier">next</span><span class="symbol">(</span><span class="identifier" id="com.hendraanggrian.openpss.db.Numbered.Companion$next(com.hendraanggrian.openpss.db.Numbered.Companion.next.S)/schema">schema</span><span class="symbol">:</span>&nbsp;<a href="next.html#S"><span class="identifier">S</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="keyword"> where </span><span class="identifier">D</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../-document/index.html"><span class="identifier">Document</span></a><span class="symbol">&lt;</span><a href="next.html#S"><span class="identifier">S</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier">D</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">Numbered</span></a></code>
+<p>Determine next integer based on the last one.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Inheritors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="../../com.hendraanggrian.openpss.db.schemas/-customer/index.html">Customer</a></p>
+</td>
+<td>
+<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">Customer</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../-document/index.html"><span class="identifier">Document</span></a><span class="symbol">&lt;</span><a href="../../com.hendraanggrian.openpss.db.schemas/-customers/index.html"><span class="identifier">Customers</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><a href="./index.html"><span class="identifier">Numbered</span></a><span class="symbol">, </span><a href="../-named/index.html"><span class="identifier">Named</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../../com.hendraanggrian.openpss.db.schemas/-invoice/index.html">Invoice</a></p>
+</td>
+<td>
+<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">Invoice</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../-document/index.html"><span class="identifier">Document</span></a><span class="symbol">&lt;</span><a href="../../com.hendraanggrian.openpss.db.schemas/-invoices/index.html"><span class="identifier">Invoices</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><a href="./index.html"><span class="identifier">Numbered</span></a></code></td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

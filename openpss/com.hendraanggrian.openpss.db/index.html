@@ -1,0 +1,135 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>com.hendraanggrian.openpss.db - openpss</title>
+<link rel="stylesheet" href="../../style.css">
+</HEAD>
+<BODY>
+<a href="../index.html">openpss</a>&nbsp;/&nbsp;<a href="./index.html">com.hendraanggrian.openpss.db</a><br/>
+<br/>
+<h2>Package com.hendraanggrian.openpss.db</h2>
+<h3>Types</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-document/index.html">Document</a></p>
+</td>
+<td>
+<code><span class="keyword">interface </span><span class="identifier">Document</span><span class="symbol">&lt;</span><span class="identifier">S</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">DocumentSchema</span><span class="symbol">&lt;</span><span class="identifier">*</span><span class="symbol">&gt;</span><span class="symbol">&gt;</span></code>
+<p>Base interface new all DAOs, referred to as a document new NoSQL database.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-named/index.html">Named</a></p>
+</td>
+<td>
+<code><span class="keyword">interface </span><span class="identifier">Named</span></code>
+<p>When a schema extends <a href="-named-schema/index.html">NamedSchema</a>, its document class must also extend this interface.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-named-schema/index.html">NamedSchema</a></p>
+</td>
+<td>
+<code><span class="keyword">interface </span><span class="identifier">NamedSchema</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="-numbered/index.html">Numbered</a></p>
+</td>
+<td>
+<code><span class="keyword">interface </span><span class="identifier">Numbered</span></code>
+<p>Implementation of incremental integer used as document's identifier.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-query-builder/index.html">QueryBuilder</a></p>
+</td>
+<td>
+<code><span class="keyword">interface </span><span class="identifier">QueryBuilder</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="-session-wrapper/index.html">SessionWrapper</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">SessionWrapper</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">Session</span><span class="symbol">, </span><span class="identifier">DocumentSchemaOperations</span><span class="symbol">, </span><span class="identifier">TableSchemaOperations</span><span class="symbol">, </span><span class="identifier">IndexOperations</span></code>
+<p>Extended version of <a href="#">MongoDBSession</a>.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-setupable/index.html">Setupable</a></p>
+</td>
+<td>
+<code><span class="keyword">interface </span><span class="identifier">Setupable</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="_-query-builder/index.html">_QueryBuilder</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">_QueryBuilder</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="-query-builder/index.html"><span class="identifier">QueryBuilder</span></a><span class="symbol">, </span><span class="identifier">Builder</span><span class="symbol">&lt;</span><span class="identifier">Query</span><span class="symbol">&gt;</span></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="db-date.html">dbDate</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">dbDate</span><span class="symbol">: </span><span class="identifier">LocalDate</span></code>
+<p>Local date new server.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="db-date-time.html">dbDateTime</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">dbDateTime</span><span class="symbol">: </span><span class="identifier">DateTime</span></code>
+<p>Date and time new server.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="db-time.html">dbTime</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">dbTime</span><span class="symbol">: </span><span class="identifier">LocalTime</span></code>
+<p>Local time new server.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="login.html">login</a></p>
+</td>
+<td>
+<code><span class="keyword">suspend</span> <span class="keyword">fun </span><span class="identifier">login</span><span class="symbol">(</span><span class="identifier" id="com.hendraanggrian.openpss.db$login(kotlin.String, kotlin.Int, kotlin.String, kotlin.String, kotlin.String, kotlin.String)/host">host</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.hendraanggrian.openpss.db$login(kotlin.String, kotlin.Int, kotlin.String, kotlin.String, kotlin.String, kotlin.String)/port">port</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="com.hendraanggrian.openpss.db$login(kotlin.String, kotlin.Int, kotlin.String, kotlin.String, kotlin.String, kotlin.String)/user">user</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.hendraanggrian.openpss.db$login(kotlin.String, kotlin.Int, kotlin.String, kotlin.String, kotlin.String, kotlin.String)/password">password</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.hendraanggrian.openpss.db$login(kotlin.String, kotlin.Int, kotlin.String, kotlin.String, kotlin.String, kotlin.String)/employeeName">employeeName</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.hendraanggrian.openpss.db$login(kotlin.String, kotlin.Int, kotlin.String, kotlin.String, kotlin.String, kotlin.String)/employeePassword">employeePassword</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../com.hendraanggrian.openpss.db.schemas/-employee/index.html"><span class="identifier">Employee</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="transaction.html">transaction</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span> <span class="identifier">transaction</span><span class="symbol">(</span><span class="identifier" id="com.hendraanggrian.openpss.db$transaction(kotlin.Function1((com.hendraanggrian.openpss.db.SessionWrapper, com.hendraanggrian.openpss.db.transaction.T)))/statement">statement</span><span class="symbol">:</span>&nbsp;<a href="-session-wrapper/index.html"><span class="identifier">SessionWrapper</span></a><span class="symbol">.</span><span class="symbol">(</span><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="transaction.html#T"><span class="identifier">T</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="transaction.html#T"><span class="identifier">T</span></a></code>
+<p>A failed transaction will most likely throw an exception instance listAll <a href="#">MongoException</a>.
+This function will safely execute a transaction and display an error log on JavaFX if it throws those exceptions.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

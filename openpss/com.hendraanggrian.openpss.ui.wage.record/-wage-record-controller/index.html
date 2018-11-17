@@ -1,0 +1,278 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>WageRecordController - openpss</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">openpss</a>&nbsp;/&nbsp;<a href="../index.html">com.hendraanggrian.openpss.ui.wage.record</a>&nbsp;/&nbsp;<a href="./index.html">WageRecordController</a><br/>
+<br/>
+<h1>WageRecordController</h1>
+<code><span class="keyword">class </span><span class="identifier">WageRecordController</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../../com.hendraanggrian.openpss.ui/-controller/index.html"><span class="identifier">Controller</span></a></code>
+<h3>Constructors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-init-.html">&lt;init&gt;</a></p>
+</td>
+<td>
+<code><span class="identifier">WageRecordController</span><span class="symbol">(</span><span class="symbol">)</span></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="daily-column.html">dailyColumn</a></p>
+</td>
+<td>
+<code><span class="keyword">lateinit</span> <span class="keyword">var </span><span class="identifier">dailyColumn</span><span class="symbol">: </span><span class="identifier">TreeTableColumn</span><span class="symbol">&lt;</span><a href="../-record/index.html"><span class="identifier">Record</span></a><span class="symbol">,</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html"><span class="identifier">Double</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="daily-income-column.html">dailyIncomeColumn</a></p>
+</td>
+<td>
+<code><span class="keyword">lateinit</span> <span class="keyword">var </span><span class="identifier">dailyIncomeColumn</span><span class="symbol">: </span><span class="identifier">TreeTableColumn</span><span class="symbol">&lt;</span><a href="../-record/index.html"><span class="identifier">Record</span></a><span class="symbol">,</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html"><span class="identifier">Double</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="disable-daily-income-button.html">disableDailyIncomeButton</a></p>
+</td>
+<td>
+<code><span class="keyword">lateinit</span> <span class="keyword">var </span><span class="identifier">disableDailyIncomeButton</span><span class="symbol">: </span><span class="identifier">Button</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="edit-menu.html">editMenu</a></p>
+</td>
+<td>
+<code><span class="keyword">lateinit</span> <span class="keyword">var </span><span class="identifier">editMenu</span><span class="symbol">: </span><span class="identifier">Menu</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="end-column.html">endColumn</a></p>
+</td>
+<td>
+<code><span class="keyword">lateinit</span> <span class="keyword">var </span><span class="identifier">endColumn</span><span class="symbol">: </span><span class="identifier">TreeTableColumn</span><span class="symbol">&lt;</span><a href="../-record/index.html"><span class="identifier">Record</span></a><span class="symbol">,</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="lock-end-button.html">lockEndButton</a></p>
+</td>
+<td>
+<code><span class="keyword">lateinit</span> <span class="keyword">var </span><span class="identifier">lockEndButton</span><span class="symbol">: </span><span class="identifier">Button</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="lock-start-button.html">lockStartButton</a></p>
+</td>
+<td>
+<code><span class="keyword">lateinit</span> <span class="keyword">var </span><span class="identifier">lockStartButton</span><span class="symbol">: </span><span class="identifier">Button</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="menu-bar.html">menuBar</a></p>
+</td>
+<td>
+<code><span class="keyword">lateinit</span> <span class="keyword">var </span><span class="identifier">menuBar</span><span class="symbol">: </span><span class="identifier">MenuBar</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="name-column.html">nameColumn</a></p>
+</td>
+<td>
+<code><span class="keyword">lateinit</span> <span class="keyword">var </span><span class="identifier">nameColumn</span><span class="symbol">: </span><span class="identifier">TreeTableColumn</span><span class="symbol">&lt;</span><a href="../-record/index.html"><span class="identifier">Record</span></a><span class="symbol">,</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="overtime-column.html">overtimeColumn</a></p>
+</td>
+<td>
+<code><span class="keyword">lateinit</span> <span class="keyword">var </span><span class="identifier">overtimeColumn</span><span class="symbol">: </span><span class="identifier">TreeTableColumn</span><span class="symbol">&lt;</span><a href="../-record/index.html"><span class="identifier">Record</span></a><span class="symbol">,</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html"><span class="identifier">Double</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="overtime-income-column.html">overtimeIncomeColumn</a></p>
+</td>
+<td>
+<code><span class="keyword">lateinit</span> <span class="keyword">var </span><span class="identifier">overtimeIncomeColumn</span><span class="symbol">: </span><span class="identifier">TreeTableColumn</span><span class="symbol">&lt;</span><a href="../-record/index.html"><span class="identifier">Record</span></a><span class="symbol">,</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html"><span class="identifier">Double</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="record-table.html">recordTable</a></p>
+</td>
+<td>
+<code><span class="keyword">lateinit</span> <span class="keyword">var </span><span class="identifier">recordTable</span><span class="symbol">: </span><span class="identifier">TreeTableView</span><span class="symbol">&lt;</span><a href="../-record/index.html"><span class="identifier">Record</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="root.html">root</a></p>
+</td>
+<td>
+<code><span class="keyword">lateinit</span> <span class="keyword">var </span><span class="identifier">root</span><span class="symbol">: </span><span class="identifier">StackPane</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="start-column.html">startColumn</a></p>
+</td>
+<td>
+<code><span class="keyword">lateinit</span> <span class="keyword">var </span><span class="identifier">startColumn</span><span class="symbol">: </span><span class="identifier">TreeTableColumn</span><span class="symbol">&lt;</span><a href="../-record/index.html"><span class="identifier">Record</span></a><span class="symbol">,</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="toolbar.html">toolbar</a></p>
+</td>
+<td>
+<code><span class="keyword">lateinit</span> <span class="keyword">var </span><span class="identifier">toolbar</span><span class="symbol">: </span><span class="identifier">JFXToolbar</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="total-column.html">totalColumn</a></p>
+</td>
+<td>
+<code><span class="keyword">lateinit</span> <span class="keyword">var </span><span class="identifier">totalColumn</span><span class="symbol">: </span><span class="identifier">TreeTableColumn</span><span class="symbol">&lt;</span><a href="../-record/index.html"><span class="identifier">Record</span></a><span class="symbol">,</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html"><span class="identifier">Double</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="total-label.html">totalLabel</a></p>
+</td>
+<td>
+<code><span class="keyword">lateinit</span> <span class="keyword">var </span><span class="identifier">totalLabel</span><span class="symbol">: </span><span class="identifier">Label</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="undo-menu.html">undoMenu</a></p>
+</td>
+<td>
+<code><span class="keyword">lateinit</span> <span class="keyword">var </span><span class="identifier">undoMenu</span><span class="symbol">: </span><span class="identifier">MenuItem</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="vbox.html">vbox</a></p>
+</td>
+<td>
+<code><span class="keyword">lateinit</span> <span class="keyword">var </span><span class="identifier">vbox</span><span class="symbol">: </span><span class="identifier">VBox</span></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Inherited Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="../../com.hendraanggrian.openpss.ui/-controller/color-resources.html">colorResources</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">val </span><span class="identifier">colorResources</span><span class="symbol">: </span><a href="http://docs.oracle.com/javase/6/docs/api/java/util/Properties.html"><span class="identifier">Properties</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../../com.hendraanggrian.openpss.ui/-controller/dimen-resources.html">dimenResources</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">val </span><span class="identifier">dimenResources</span><span class="symbol">: </span><a href="http://docs.oracle.com/javase/6/docs/api/java/util/Properties.html"><span class="identifier">Properties</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../../com.hendraanggrian.openpss.ui/-controller/login.html">login</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">lateinit</span> <span class="keyword">var </span><span class="identifier">login</span><span class="symbol">: </span><a href="../../com.hendraanggrian.openpss.db.schemas/-employee/index.html"><span class="identifier">Employee</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../../com.hendraanggrian.openpss.ui/-controller/resource-bundle.html">resourceBundle</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">lateinit</span> <span class="keyword">var </span><span class="identifier">resourceBundle</span><span class="symbol">: </span><a href="http://docs.oracle.com/javase/6/docs/api/java/util/ResourceBundle.html"><span class="identifier">ResourceBundle</span></a></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="disable-daily-income.html">disableDailyIncome</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">disableDailyIncome</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="initialize.html">initialize</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">initialize</span><span class="symbol">(</span><span class="identifier" id="com.hendraanggrian.openpss.ui.wage.record.WageRecordController$initialize(java.net.URL, java.util.ResourceBundle)/location">location</span><span class="symbol">:</span>&nbsp;<a href="http://docs.oracle.com/javase/6/docs/api/java/net/URL.html"><span class="identifier">URL</span></a><span class="symbol">, </span><span class="identifier" id="com.hendraanggrian.openpss.ui.wage.record.WageRecordController$initialize(java.net.URL, java.util.ResourceBundle)/resources">resources</span><span class="symbol">:</span>&nbsp;<a href="http://docs.oracle.com/javase/6/docs/api/java/util/ResourceBundle.html"><span class="identifier">ResourceBundle</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="lock-end.html">lockEnd</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">lockEnd</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="lock-start.html">lockStart</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">lockStart</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="screenshot.html">screenshot</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">screenshot</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="undo.html">undo</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">undo</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Inherited Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="../../com.hendraanggrian.openpss.ui/-controller/add-extra.html">addExtra</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">addExtra</span><span class="symbol">(</span><span class="identifier" id="com.hendraanggrian.openpss.ui.Controller$addExtra(kotlin.String, kotlin.Any)/key">key</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.hendraanggrian.openpss.ui.Controller$addExtra(kotlin.String, kotlin.Any)/value">value</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../com.hendraanggrian.openpss.ui/-controller/index.html"><span class="identifier">Controller</span></a></code>
+<p>Register extra <a href="../../com.hendraanggrian.openpss.ui/-controller/add-extra.html#com.hendraanggrian.openpss.ui.Controller$addExtra(kotlin.String, kotlin.Any)/value">value</a> with <a href="../../com.hendraanggrian.openpss.ui/-controller/add-extra.html#com.hendraanggrian.openpss.ui.Controller$addExtra(kotlin.String, kotlin.Any)/key">key</a>.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../../com.hendraanggrian.openpss.ui/-controller/get-extra.html">getExtra</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">&gt;</span> <span class="identifier">getExtra</span><span class="symbol">(</span><span class="identifier" id="com.hendraanggrian.openpss.ui.Controller$getExtra(kotlin.String)/key">key</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../com.hendraanggrian.openpss.ui/-controller/get-extra.html#T"><span class="identifier">T</span></a></code>
+<p>Get extra registered with <a href="../../com.hendraanggrian.openpss.ui/-controller/get-extra.html#com.hendraanggrian.openpss.ui.Controller$getExtra(kotlin.String)/key">key</a>, should be executed in platform thread.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Companion Object Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-e-x-t-r-a_-a-t-t-e-n-d-e-e-s.html">EXTRA_ATTENDEES</a></p>
+</td>
+<td>
+<code><span class="keyword">const</span> <span class="keyword">val </span><span class="identifier">EXTRA_ATTENDEES</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

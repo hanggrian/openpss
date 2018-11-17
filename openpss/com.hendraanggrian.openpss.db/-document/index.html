@@ -1,0 +1,112 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>Document - openpss</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">openpss</a>&nbsp;/&nbsp;<a href="../index.html">com.hendraanggrian.openpss.db</a>&nbsp;/&nbsp;<a href="./index.html">Document</a><br/>
+<br/>
+<h1>Document</h1>
+<code><span class="keyword">interface </span><span class="identifier">Document</span><span class="symbol">&lt;</span><span class="identifier">S</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">DocumentSchema</span><span class="symbol">&lt;</span><span class="identifier">*</span><span class="symbol">&gt;</span><span class="symbol">&gt;</span></code>
+<p>Base interface new all DAOs, referred to as a document new NoSQL database.</p>
+<p>It's important for <a href="./index.html">Document</a> to be interface and not abstract class to avoid multiple constructors,
+which aren't yet supported with <code>kotlin-nosql</code>.</p>
+<h3>Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="id.html">id</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">var </span><span class="identifier">id</span><span class="symbol">: </span><span class="identifier">Id</span><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">,</span>&nbsp;<a href="index.html#S"><span class="identifier">S</span></a><span class="symbol">&gt;</span></code>
+<p>NoSQL object identifier.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Inheritors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="../../com.hendraanggrian.openpss.db.schemas/-customer/index.html">Customer</a></p>
+</td>
+<td>
+<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">Customer</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">Document</span></a><span class="symbol">&lt;</span><a href="../../com.hendraanggrian.openpss.db.schemas/-customers/index.html"><span class="identifier">Customers</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><a href="../-numbered/index.html"><span class="identifier">Numbered</span></a><span class="symbol">, </span><a href="../-named/index.html"><span class="identifier">Named</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../../com.hendraanggrian.openpss.db.schemas/-digital-price/index.html">DigitalPrice</a></p>
+</td>
+<td>
+<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">DigitalPrice</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">Document</span></a><span class="symbol">&lt;</span><a href="../../com.hendraanggrian.openpss.db.schemas/-digital-prices/index.html"><span class="identifier">DigitalPrices</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><a href="../-named/index.html"><span class="identifier">Named</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../../com.hendraanggrian.openpss.db.schemas/-employee/index.html">Employee</a></p>
+</td>
+<td>
+<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">Employee</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">Document</span></a><span class="symbol">&lt;</span><a href="../../com.hendraanggrian.openpss.db.schemas/-employees/index.html"><span class="identifier">Employees</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><a href="../-named/index.html"><span class="identifier">Named</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../../com.hendraanggrian.openpss.db.schemas/-global-setting/index.html">GlobalSetting</a></p>
+</td>
+<td>
+<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">GlobalSetting</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">Document</span></a><span class="symbol">&lt;</span><a href="../../com.hendraanggrian.openpss.db.schemas/-global-settings/index.html"><span class="identifier">GlobalSettings</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../../com.hendraanggrian.openpss.db.schemas/-invoice/index.html">Invoice</a></p>
+</td>
+<td>
+<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">Invoice</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">Document</span></a><span class="symbol">&lt;</span><a href="../../com.hendraanggrian.openpss.db.schemas/-invoices/index.html"><span class="identifier">Invoices</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><a href="../-numbered/index.html"><span class="identifier">Numbered</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../../com.hendraanggrian.openpss.db.schemas/-log/index.html">Log</a></p>
+</td>
+<td>
+<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">Log</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">Document</span></a><span class="symbol">&lt;</span><a href="../../com.hendraanggrian.openpss.db.schemas/-logs/index.html"><span class="identifier">Logs</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../../com.hendraanggrian.openpss.db.schemas/-offset-price/index.html">OffsetPrice</a></p>
+</td>
+<td>
+<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">OffsetPrice</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">Document</span></a><span class="symbol">&lt;</span><a href="../../com.hendraanggrian.openpss.db.schemas/-offset-prices/index.html"><span class="identifier">OffsetPrices</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><a href="../-named/index.html"><span class="identifier">Named</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../../com.hendraanggrian.openpss.db.schemas/-payment/index.html">Payment</a></p>
+</td>
+<td>
+<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">Payment</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">Document</span></a><span class="symbol">&lt;</span><a href="../../com.hendraanggrian.openpss.db.schemas/-payments/index.html"><span class="identifier">Payments</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../../com.hendraanggrian.openpss.db.schemas/-plate-price/index.html">PlatePrice</a></p>
+</td>
+<td>
+<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">PlatePrice</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">Document</span></a><span class="symbol">&lt;</span><a href="../../com.hendraanggrian.openpss.db.schemas/-plate-prices/index.html"><span class="identifier">PlatePrices</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><a href="../-named/index.html"><span class="identifier">Named</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../../com.hendraanggrian.openpss.db.schemas/-recess/index.html">Recess</a></p>
+</td>
+<td>
+<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">Recess</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">Document</span></a><span class="symbol">&lt;</span><a href="../../com.hendraanggrian.openpss.db.schemas/-recesses/index.html"><span class="identifier">Recesses</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../../com.hendraanggrian.openpss.db.schemas/-wage/index.html">Wage</a></p>
+</td>
+<td>
+<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">Wage</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">Document</span></a><span class="symbol">&lt;</span><a href="../../com.hendraanggrian.openpss.db.schemas/-wages/index.html"><span class="identifier">Wages</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

@@ -1,0 +1,127 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>Customer - openpss</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">openpss</a>&nbsp;/&nbsp;<a href="../index.html">com.hendraanggrian.openpss.db.schemas</a>&nbsp;/&nbsp;<a href="./index.html">Customer</a><br/>
+<br/>
+<h1>Customer</h1>
+<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">Customer</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../../com.hendraanggrian.openpss.db/-document/index.html"><span class="identifier">Document</span></a><span class="symbol">&lt;</span><a href="../-customers/index.html"><span class="identifier">Customers</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><a href="../../com.hendraanggrian.openpss.db/-numbered/index.html"><span class="identifier">Numbered</span></a><span class="symbol">, </span><a href="../../com.hendraanggrian.openpss.db/-named/index.html"><span class="identifier">Named</span></a></code>
+<h3>Types</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-contact/index.html">Contact</a></p>
+</td>
+<td>
+<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">Contact</span></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Constructors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-init-.html">&lt;init&gt;</a></p>
+</td>
+<td>
+<code><span class="identifier">Customer</span><span class="symbol">(</span><span class="identifier" id="com.hendraanggrian.openpss.db.schemas.Customer$<init>(kotlin.Int, kotlin.String, kotlin.Boolean, org.joda.time.LocalDate, kotlin.String, kotlin.String, kotlin.collections.List((com.hendraanggrian.openpss.db.schemas.Customer.Contact)))/no">no</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="com.hendraanggrian.openpss.db.schemas.Customer$<init>(kotlin.Int, kotlin.String, kotlin.Boolean, org.joda.time.LocalDate, kotlin.String, kotlin.String, kotlin.collections.List((com.hendraanggrian.openpss.db.schemas.Customer.Contact)))/name">name</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.hendraanggrian.openpss.db.schemas.Customer$<init>(kotlin.Int, kotlin.String, kotlin.Boolean, org.joda.time.LocalDate, kotlin.String, kotlin.String, kotlin.collections.List((com.hendraanggrian.openpss.db.schemas.Customer.Contact)))/isCompany">isCompany</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">, </span><span class="identifier" id="com.hendraanggrian.openpss.db.schemas.Customer$<init>(kotlin.Int, kotlin.String, kotlin.Boolean, org.joda.time.LocalDate, kotlin.String, kotlin.String, kotlin.collections.List((com.hendraanggrian.openpss.db.schemas.Customer.Contact)))/since">since</span><span class="symbol">:</span>&nbsp;<span class="identifier">LocalDate</span><span class="symbol">, </span><span class="identifier" id="com.hendraanggrian.openpss.db.schemas.Customer$<init>(kotlin.Int, kotlin.String, kotlin.Boolean, org.joda.time.LocalDate, kotlin.String, kotlin.String, kotlin.collections.List((com.hendraanggrian.openpss.db.schemas.Customer.Contact)))/address">address</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span><span class="symbol">, </span><span class="identifier" id="com.hendraanggrian.openpss.db.schemas.Customer$<init>(kotlin.Int, kotlin.String, kotlin.Boolean, org.joda.time.LocalDate, kotlin.String, kotlin.String, kotlin.collections.List((com.hendraanggrian.openpss.db.schemas.Customer.Contact)))/note">note</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span><span class="symbol">, </span><span class="identifier" id="com.hendraanggrian.openpss.db.schemas.Customer$<init>(kotlin.Int, kotlin.String, kotlin.Boolean, org.joda.time.LocalDate, kotlin.String, kotlin.String, kotlin.collections.List((com.hendraanggrian.openpss.db.schemas.Customer.Contact)))/contacts">contacts</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="-contact/index.html"><span class="identifier">Contact</span></a><span class="symbol">&gt;</span><span class="symbol">)</span></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="address.html">address</a></p>
+</td>
+<td>
+<code><span class="keyword">var </span><span class="identifier">address</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="contacts.html">contacts</a></p>
+</td>
+<td>
+<code><span class="keyword">var </span><span class="identifier">contacts</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="-contact/index.html"><span class="identifier">Contact</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="id.html">id</a></p>
+</td>
+<td>
+<code><span class="keyword">lateinit</span> <span class="keyword">var </span><span class="identifier">id</span><span class="symbol">: </span><span class="identifier">Id</span><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">,</span>&nbsp;<a href="../-customers/index.html"><span class="identifier">Customers</span></a><span class="symbol">&gt;</span></code>
+<p>NoSQL object identifier.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="is-company.html">isCompany</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">isCompany</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="name.html">name</a></p>
+</td>
+<td>
+<code><span class="keyword">var </span><span class="identifier">name</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="no.html">no</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">no</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code>
+<p>Since <code>id</code> is reserved in <a href="../../com.hendraanggrian.openpss.db/-document/index.html">Document</a>, <code>no</code> is direct replacement.
+Basically means the same thing.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="note.html">note</a></p>
+</td>
+<td>
+<code><span class="keyword">var </span><span class="identifier">note</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="since.html">since</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">since</span><span class="symbol">: </span><span class="identifier">LocalDate</span></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="to-string.html">toString</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">toString</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Companion Object Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="new.html">new</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">new</span><span class="symbol">(</span><span class="identifier" id="com.hendraanggrian.openpss.db.schemas.Customer.Companion$new(kotlin.String, kotlin.Boolean)/name">name</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.hendraanggrian.openpss.db.schemas.Customer.Companion$new(kotlin.String, kotlin.Boolean)/isCompany">isCompany</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">Customer</span></a></code></td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

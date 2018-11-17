@@ -1,0 +1,189 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>Context - openpss</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">openpss</a>&nbsp;/&nbsp;<a href="../index.html">com.hendraanggrian.openpss.content</a>&nbsp;/&nbsp;<a href="./index.html">Context</a><br/>
+<br/>
+<h1>Context</h1>
+<code><span class="keyword">interface </span><span class="identifier">Context</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../-resources/index.html"><span class="identifier">Resources</span></a></code>
+<p>Usually being passed around as first constructor of many components.</p>
+<h3>Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="desktop.html">desktop</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">val </span><span class="identifier">desktop</span><span class="symbol">: </span><a href="http://docs.oracle.com/javase/6/docs/api/java/awt/Desktop.html"><span class="identifier">Desktop</span></a><span class="symbol">?</span></code>
+<p>Returns <a href="http://docs.oracle.com/javase/6/docs/api/java/awt/Desktop.html">Desktop</a> instance, may be null if it is unsupported.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="login.html">login</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">val </span><span class="identifier">login</span><span class="symbol">: </span><a href="../../com.hendraanggrian.openpss.db.schemas/-employee/index.html"><span class="identifier">Employee</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="root.html">root</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">val </span><span class="identifier">root</span><span class="symbol">: </span><span class="identifier">StackPane</span></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Inherited Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="../-resources/color-resources.html">colorResources</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">val </span><span class="identifier">colorResources</span><span class="symbol">: </span><a href="http://docs.oracle.com/javase/6/docs/api/java/util/Properties.html"><span class="identifier">Properties</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../-resources/dimen-resources.html">dimenResources</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">val </span><span class="identifier">dimenResources</span><span class="symbol">: </span><a href="http://docs.oracle.com/javase/6/docs/api/java/util/Properties.html"><span class="identifier">Properties</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../-resources/language.html">language</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">val </span><span class="identifier">language</span><span class="symbol">: </span><a href="../-language/index.html"><span class="identifier">Language</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../-resources/resource-bundle.html">resourceBundle</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">val </span><span class="identifier">resourceBundle</span><span class="symbol">: </span><a href="http://docs.oracle.com/javase/6/docs/api/java/util/ResourceBundle.html"><span class="identifier">ResourceBundle</span></a></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="is-admin.html">isAdmin</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">isAdmin</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Inherited Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="../-resources/get-color.html">getColor</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">getColor</span><span class="symbol">(</span><span class="identifier" id="com.hendraanggrian.openpss.content.Resources$getColor(kotlin.String)/id">id</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">Color</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../-resources/get-double.html">getDouble</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">getDouble</span><span class="symbol">(</span><span class="identifier" id="com.hendraanggrian.openpss.content.Resources$getDouble(kotlin.String)/id">id</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html"><span class="identifier">Double</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../-resources/get-properties.html">getProperties</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">getProperties</span><span class="symbol">(</span><span class="identifier" id="com.hendraanggrian.openpss.content.Resources$getProperties(kotlin.String)/propertiesId">propertiesId</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="http://docs.oracle.com/javase/6/docs/api/java/util/Properties.html"><span class="identifier">Properties</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../-resources/get-string.html">getString</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">getString</span><span class="symbol">(</span><span class="identifier" id="com.hendraanggrian.openpss.content.Resources$getString(kotlin.String)/id">id</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code><br/>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">getString</span><span class="symbol">(</span><span class="identifier" id="com.hendraanggrian.openpss.content.Resources$getString(kotlin.String, kotlin.Array((kotlin.Any)))/id">id</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="keyword">vararg</span> <span class="identifier" id="com.hendraanggrian.openpss.content.Resources$getString(kotlin.String, kotlin.Array((kotlin.Any)))/args">args</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Inheritors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="../../com.hendraanggrian.openpss.ui.main.help/-about-dialog/index.html">AboutDialog</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">AboutDialog</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">Dialog</span><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><a href="../../com.hendraanggrian.openpss.ui/-selectable/index.html"><span class="identifier">Selectable</span></a><span class="symbol">&lt;</span><a href="../../com.hendraanggrian.openpss.ui.main/-license/index.html"><span class="identifier">License</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><a href="./index.html"><span class="identifier">Context</span></a></code>
+<p>The only dialog not using <a href="#">com.hendraanggrian.openpss.popup.dialog.Dialog</a>.
+This is because it uses native dialog's expandable content.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-action/index.html">Action</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">class </span><span class="identifier">Action</span><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">Context</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../../com.hendraanggrian.openpss.ui.wage/-attendee-pane/index.html">AttendeePane</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">AttendeePane</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">_TitledPane</span><span class="symbol">, </span><a href="./index.html"><span class="identifier">Context</span></a><span class="symbol">, </span><a href="../../com.hendraanggrian.openpss.ui/-selectable/index.html"><span class="identifier">Selectable</span></a><span class="symbol">&lt;</span><span class="identifier">DateTime</span><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../../com.hendraanggrian.openpss.ui/-controller/index.html">Controller</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">class </span><span class="identifier">Controller</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">Initializable</span><span class="symbol">, </span><a href="./index.html"><span class="identifier">Context</span></a></code>
+<p>Base class of all controllers.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../../com.hendraanggrian.openpss.control.dialog/-dialog/index.html">Dialog</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">class </span><span class="identifier">Dialog</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">JFXDialog</span><span class="symbol">, </span><a href="../../com.hendraanggrian.openpss.control.base/-popup-base/index.html"><span class="identifier">PopupBase</span></a><span class="symbol">, </span><a href="./index.html"><span class="identifier">Context</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../../com.hendraanggrian.openpss.ui.login/-login-pane/index.html">LoginPane</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">LoginPane</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">_StackPane</span><span class="symbol">, </span><a href="./index.html"><span class="identifier">Context</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../../com.hendraanggrian.openpss.control.popover/-popover/index.html">Popover</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">class </span><span class="identifier">Popover</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">JFXPopup</span><span class="symbol">, </span><a href="../../com.hendraanggrian.openpss.control.base/-popup-base/index.html"><span class="identifier">PopupBase</span></a><span class="symbol">, </span><a href="./index.html"><span class="identifier">Context</span></a></code>
+<p>Base popup class used across applications.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../../com.hendraanggrian.openpss.control.base/-popup-base/index.html">PopupBase</a></p>
+</td>
+<td>
+<code><span class="keyword">interface </span><span class="identifier">PopupBase</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../../com.hendraanggrian.openpss.control.base/-base-control/index.html"><span class="identifier">BaseControl</span></a><span class="symbol">, </span><a href="./index.html"><span class="identifier">Context</span></a><span class="symbol">, </span><span class="identifier">NodeInvokable</span></code></td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

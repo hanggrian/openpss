@@ -1,0 +1,58 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>IntervalWrapper - openpss</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">openpss</a>&nbsp;/&nbsp;<a href="../index.html">com.hendraanggrian.openpss.ui.wage</a>&nbsp;/&nbsp;<a href="./index.html">IntervalWrapper</a><br/>
+<br/>
+<h1>IntervalWrapper</h1>
+<code><span class="keyword">class </span><span class="identifier">IntervalWrapper</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">ReadableInterval</span><span class="symbol">, </span><a href="http://docs.oracle.com/javase/6/docs/api/java/io/Serializable.html"><span class="identifier">Serializable</span></a></code>
+<p>An <a href="#">Interval</a> wrapper where start time may be bigger than end time, making the time difference value negative.
+Such behavior is currently unsupported with <a href="#">Interval</a> constructor.</p>
+<h3>Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="hours.html">hours</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">hours</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html"><span class="identifier">Double</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="minutes.html">minutes</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">minutes</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="overlap.html">overlap</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">overlap</span><span class="symbol">(</span><span class="identifier" id="com.hendraanggrian.openpss.ui.wage.IntervalWrapper$overlap(org.joda.time.Interval)/other">other</span><span class="symbol">:</span>&nbsp;<span class="identifier">Interval</span><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">Interval</span><span class="symbol">?</span></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Companion Object Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="of.html">of</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">of</span><span class="symbol">(</span><span class="identifier" id="com.hendraanggrian.openpss.ui.wage.IntervalWrapper.Companion$of(org.joda.time.ReadableInstant, org.joda.time.ReadableInstant)/start">start</span><span class="symbol">:</span>&nbsp;<span class="identifier">ReadableInstant</span><span class="symbol">, </span><span class="identifier" id="com.hendraanggrian.openpss.ui.wage.IntervalWrapper.Companion$of(org.joda.time.ReadableInstant, org.joda.time.ReadableInstant)/end">end</span><span class="symbol">:</span>&nbsp;<span class="identifier">ReadableInstant</span><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">IntervalWrapper</span></a></code></td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

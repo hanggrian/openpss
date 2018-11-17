@@ -1,0 +1,105 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>SessionWrapper - openpss</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">openpss</a>&nbsp;/&nbsp;<a href="../index.html">com.hendraanggrian.openpss.db</a>&nbsp;/&nbsp;<a href="./index.html">SessionWrapper</a><br/>
+<br/>
+<h1>SessionWrapper</h1>
+<code><span class="keyword">class </span><span class="identifier">SessionWrapper</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">Session</span><span class="symbol">, </span><span class="identifier">DocumentSchemaOperations</span><span class="symbol">, </span><span class="identifier">TableSchemaOperations</span><span class="symbol">, </span><span class="identifier">IndexOperations</span></code>
+<p>Extended version of <a href="#">MongoDBSession</a>.</p>
+<h3>Constructors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-init-.html">&lt;init&gt;</a></p>
+</td>
+<td>
+<code><span class="identifier">SessionWrapper</span><span class="symbol">(</span><span class="identifier" id="com.hendraanggrian.openpss.db.SessionWrapper$<init>(kotlinx.nosql.mongodb.MongoDBSession)/session">session</span><span class="symbol">:</span>&nbsp;<span class="identifier">MongoDBSession</span><span class="symbol">)</span></code>
+<p>Extended version of <a href="#">MongoDBSession</a>.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="session.html">session</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">session</span><span class="symbol">: </span><span class="identifier">MongoDBSession</span></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="build-query.html">buildQuery</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">S</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">DocumentSchema</span><span class="symbol">&lt;</span><a href="build-query.html#D"><span class="identifier">D</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier">D</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../-document/index.html"><span class="identifier">Document</span></a><span class="symbol">&lt;</span><a href="build-query.html#S"><span class="identifier">S</span></a><span class="symbol">&gt;</span><span class="symbol">&gt;</span> <a href="build-query.html#S"><span class="identifier">S</span></a><span class="symbol">.</span><span class="identifier">buildQuery</span><span class="symbol">(</span><span class="identifier" id="com.hendraanggrian.openpss.db.SessionWrapper$buildQuery(com.hendraanggrian.openpss.db.SessionWrapper.buildQuery.S, kotlin.Function2((com.hendraanggrian.openpss.db.QueryBuilder, com.hendraanggrian.openpss.db.SessionWrapper.buildQuery.S, kotlin.Unit)))/builder">builder</span><span class="symbol">:</span>&nbsp;<a href="../-query-builder/index.html"><span class="identifier">QueryBuilder</span></a><span class="symbol">.</span><span class="symbol">(</span><a href="build-query.html#S"><span class="identifier">S</span></a><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">DocumentSchemaQueryWrapper</span><span class="symbol">&lt;</span><a href="build-query.html#S"><span class="identifier">S</span></a><span class="symbol">,</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">,</span>&nbsp;<a href="build-query.html#D"><span class="identifier">D</span></a><span class="symbol">&gt;</span></code>
+<p>Build query for optional and/or query operation.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="calculate-due.html">calculateDue</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><a href="../../com.hendraanggrian.openpss.db.schemas/-invoice/index.html"><span class="identifier">Invoice</span></a><span class="symbol">.</span><span class="identifier">calculateDue</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html"><span class="identifier">Double</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="find-global-settings.html">findGlobalSettings</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">findGlobalSettings</span><span class="symbol">(</span><span class="identifier" id="com.hendraanggrian.openpss.db.SessionWrapper$findGlobalSettings(kotlin.String)/key">key</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">DocumentSchemaQueryWrapper</span><span class="symbol">&lt;</span><a href="../../com.hendraanggrian.openpss.db.schemas/-global-settings/index.html"><span class="identifier">GlobalSettings</span></a><span class="symbol">,</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">,</span>&nbsp;<a href="../../com.hendraanggrian.openpss.db.schemas/-global-setting/index.html"><span class="identifier">GlobalSetting</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="get.html">get</a></p>
+</td>
+<td>
+<code><span class="keyword">operator</span> <span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">S</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">DocumentSchema</span><span class="symbol">&lt;</span><a href="get.html#D"><span class="identifier">D</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier">D</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../-document/index.html"><span class="identifier">Document</span></a><span class="symbol">&lt;</span><a href="get.html#S"><span class="identifier">S</span></a><span class="symbol">&gt;</span><span class="symbol">&gt;</span> <a href="get.html#S"><span class="identifier">S</span></a><span class="symbol">.</span><span class="identifier">get</span><span class="symbol">(</span><span class="identifier" id="com.hendraanggrian.openpss.db.SessionWrapper$get(com.hendraanggrian.openpss.db.SessionWrapper.get.S, kotlinx.nosql.Id((kotlin.String, com.hendraanggrian.openpss.db.SessionWrapper.get.S)))/id">id</span><span class="symbol">:</span>&nbsp;<span class="identifier">Id</span><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">,</span>&nbsp;<a href="get.html#S"><span class="identifier">S</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">DocumentSchemaQueryWrapper</span><span class="symbol">&lt;</span><a href="get.html#S"><span class="identifier">S</span></a><span class="symbol">,</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">,</span>&nbsp;<a href="get.html#D"><span class="identifier">D</span></a><span class="symbol">&gt;</span></code>
+<p>Realm-style find by id.</p>
+<code><span class="keyword">operator</span> <span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">S</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">DocumentSchema</span><span class="symbol">&lt;</span><a href="get.html#D"><span class="identifier">D</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier">D</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../-document/index.html"><span class="identifier">Document</span></a><span class="symbol">&lt;</span><a href="get.html#S"><span class="identifier">S</span></a><span class="symbol">&gt;</span><span class="symbol">&gt;</span> <a href="get.html#S"><span class="identifier">S</span></a><span class="symbol">.</span><span class="identifier">get</span><span class="symbol">(</span><span class="identifier" id="com.hendraanggrian.openpss.db.SessionWrapper$get(com.hendraanggrian.openpss.db.SessionWrapper.get.S, com.hendraanggrian.openpss.db.SessionWrapper.get.D)/document">document</span><span class="symbol">:</span>&nbsp;<a href="get.html#D"><span class="identifier">D</span></a><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">DocumentSchemaQueryWrapper</span><span class="symbol">&lt;</span><a href="get.html#S"><span class="identifier">S</span></a><span class="symbol">,</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">,</span>&nbsp;<a href="get.html#D"><span class="identifier">D</span></a><span class="symbol">&gt;</span></code>
+<p>Find by id associated with document.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="invoke.html">invoke</a></p>
+</td>
+<td>
+<code><span class="keyword">operator</span> <span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">S</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">DocumentSchema</span><span class="symbol">&lt;</span><a href="invoke.html#D"><span class="identifier">D</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier">D</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../-document/index.html"><span class="identifier">Document</span></a><span class="symbol">&lt;</span><a href="invoke.html#S"><span class="identifier">S</span></a><span class="symbol">&gt;</span><span class="symbol">&gt;</span> <a href="invoke.html#S"><span class="identifier">S</span></a><span class="symbol">.</span><span class="identifier">invoke</span><span class="symbol">(</span><span class="identifier" id="com.hendraanggrian.openpss.db.SessionWrapper$invoke(com.hendraanggrian.openpss.db.SessionWrapper.invoke.S, kotlin.Function1((com.hendraanggrian.openpss.db.SessionWrapper.invoke.S, kotlinx.nosql.Query)))/query">query</span><span class="symbol">:</span>&nbsp;<span class="symbol">(</span><a href="invoke.html#S"><span class="identifier">S</span></a><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<span class="identifier">Query</span>&nbsp;<span class="symbol">=</span>&nbsp;{ NoQuery }<span class="symbol">)</span><span class="symbol">: </span><span class="identifier">DocumentSchemaQueryWrapper</span><span class="symbol">&lt;</span><a href="invoke.html#S"><span class="identifier">S</span></a><span class="symbol">,</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">,</span>&nbsp;<a href="invoke.html#D"><span class="identifier">D</span></a><span class="symbol">&gt;</span></code>
+<p>Same with <code>MongoDBSession</code>'s <code>find</code> but moved schema instance from receiver to parameter.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="minus-assign.html">minusAssign</a></p>
+</td>
+<td>
+<code><span class="keyword">operator</span> <span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">S</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">DocumentSchema</span><span class="symbol">&lt;</span><a href="minus-assign.html#D"><span class="identifier">D</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier">D</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../-document/index.html"><span class="identifier">Document</span></a><span class="symbol">&lt;</span><a href="minus-assign.html#S"><span class="identifier">S</span></a><span class="symbol">&gt;</span><span class="symbol">&gt;</span> <a href="minus-assign.html#S"><span class="identifier">S</span></a><span class="symbol">.</span><span class="identifier">minusAssign</span><span class="symbol">(</span><span class="identifier" id="com.hendraanggrian.openpss.db.SessionWrapper$minusAssign(com.hendraanggrian.openpss.db.SessionWrapper.minusAssign.S, kotlinx.nosql.Id((kotlin.String, com.hendraanggrian.openpss.db.SessionWrapper.minusAssign.S)))/id">id</span><span class="symbol">:</span>&nbsp;<span class="identifier">Id</span><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">,</span>&nbsp;<a href="minus-assign.html#S"><span class="identifier">S</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code><br/>
+<code><span class="keyword">operator</span> <span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">S</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">DocumentSchema</span><span class="symbol">&lt;</span><a href="minus-assign.html#D"><span class="identifier">D</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier">D</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../-document/index.html"><span class="identifier">Document</span></a><span class="symbol">&lt;</span><a href="minus-assign.html#S"><span class="identifier">S</span></a><span class="symbol">&gt;</span><span class="symbol">&gt;</span> <a href="minus-assign.html#S"><span class="identifier">S</span></a><span class="symbol">.</span><span class="identifier">minusAssign</span><span class="symbol">(</span><span class="identifier" id="com.hendraanggrian.openpss.db.SessionWrapper$minusAssign(com.hendraanggrian.openpss.db.SessionWrapper.minusAssign.S, com.hendraanggrian.openpss.db.SessionWrapper.minusAssign.D)/document">document</span><span class="symbol">:</span>&nbsp;<a href="minus-assign.html#D"><span class="identifier">D</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="plus-assign.html">plusAssign</a></p>
+</td>
+<td>
+<code><span class="keyword">operator</span> <span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">S</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">DocumentSchema</span><span class="symbol">&lt;</span><a href="plus-assign.html#D"><span class="identifier">D</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier">D</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../-document/index.html"><span class="identifier">Document</span></a><span class="symbol">&lt;</span><a href="plus-assign.html#S"><span class="identifier">S</span></a><span class="symbol">&gt;</span><span class="symbol">&gt;</span> <a href="plus-assign.html#S"><span class="identifier">S</span></a><span class="symbol">.</span><span class="identifier">plusAssign</span><span class="symbol">(</span><span class="identifier" id="com.hendraanggrian.openpss.db.SessionWrapper$plusAssign(com.hendraanggrian.openpss.db.SessionWrapper.plusAssign.S, com.hendraanggrian.openpss.db.SessionWrapper.plusAssign.D)/document">document</span><span class="symbol">:</span>&nbsp;<a href="plus-assign.html#D"><span class="identifier">D</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Use shorter <code>plusAssign</code> operator when inserted document's id is unused.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

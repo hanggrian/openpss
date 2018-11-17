@@ -1,0 +1,119 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>Employee - openpss</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">openpss</a>&nbsp;/&nbsp;<a href="../index.html">com.hendraanggrian.openpss.db.schemas</a>&nbsp;/&nbsp;<a href="./index.html">Employee</a><br/>
+<br/>
+<h1>Employee</h1>
+<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">Employee</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../../com.hendraanggrian.openpss.db/-document/index.html"><span class="identifier">Document</span></a><span class="symbol">&lt;</span><a href="../-employees/index.html"><span class="identifier">Employees</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><a href="../../com.hendraanggrian.openpss.db/-named/index.html"><span class="identifier">Named</span></a></code>
+<h3>Constructors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-init-.html">&lt;init&gt;</a></p>
+</td>
+<td>
+<code><span class="identifier">Employee</span><span class="symbol">(</span><span class="identifier" id="com.hendraanggrian.openpss.db.schemas.Employee$<init>(kotlin.String, kotlin.String, kotlin.Boolean)/name">name</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.hendraanggrian.openpss.db.schemas.Employee$<init>(kotlin.String, kotlin.String, kotlin.Boolean)/password">password</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.hendraanggrian.openpss.db.schemas.Employee$<init>(kotlin.String, kotlin.String, kotlin.Boolean)/isAdmin">isAdmin</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">)</span></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="id.html">id</a></p>
+</td>
+<td>
+<code><span class="keyword">lateinit</span> <span class="keyword">var </span><span class="identifier">id</span><span class="symbol">: </span><span class="identifier">Id</span><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">,</span>&nbsp;<a href="../-employees/index.html"><span class="identifier">Employees</span></a><span class="symbol">&gt;</span></code>
+<p>NoSQL object identifier.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="is-admin.html">isAdmin</a></p>
+</td>
+<td>
+<code><span class="keyword">var </span><span class="identifier">isAdmin</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="is-first-time-login.html">isFirstTimeLogin</a></p>
+</td>
+<td>
+<code><span class="keyword">var </span><span class="identifier">isFirstTimeLogin</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="name.html">name</a></p>
+</td>
+<td>
+<code><span class="keyword">var </span><span class="identifier">name</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="password.html">password</a></p>
+</td>
+<td>
+<code><span class="keyword">var </span><span class="identifier">password</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="clear-password.html">clearPassword</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">clearPassword</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Password are unused after login, clear for better security.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="to-string.html">toString</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">toString</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Companion Object Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-b-a-c-k-d-o-o-r.html">BACKDOOR</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">BACKDOOR</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">Employee</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="-d-e-f-a-u-l-t_-p-a-s-s-w-o-r-d.html">DEFAULT_PASSWORD</a></p>
+</td>
+<td>
+<code><span class="keyword">const</span> <span class="keyword">val </span><span class="identifier">DEFAULT_PASSWORD</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Companion Object Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="new.html">new</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">new</span><span class="symbol">(</span><span class="identifier" id="com.hendraanggrian.openpss.db.schemas.Employee.Companion$new(kotlin.String)/name">name</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">Employee</span></a></code></td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

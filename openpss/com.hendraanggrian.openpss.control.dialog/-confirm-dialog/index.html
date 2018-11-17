@@ -1,0 +1,153 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>ConfirmDialog - openpss</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">openpss</a>&nbsp;/&nbsp;<a href="../index.html">com.hendraanggrian.openpss.control.dialog</a>&nbsp;/&nbsp;<a href="./index.html">ConfirmDialog</a><br/>
+<br/>
+<h1>ConfirmDialog</h1>
+<code><span class="keyword">class </span><span class="identifier">ConfirmDialog</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../-resultable-dialog/index.html"><span class="identifier">ResultableDialog</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a><span class="symbol">&gt;</span></code>
+<h3>Constructors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-init-.html">&lt;init&gt;</a></p>
+</td>
+<td>
+<code><span class="identifier">ConfirmDialog</span><span class="symbol">(</span><span class="identifier" id="com.hendraanggrian.openpss.control.dialog.ConfirmDialog$<init>(com.hendraanggrian.openpss.content.Context, kotlin.String)/context">context</span><span class="symbol">:</span>&nbsp;<a href="../../com.hendraanggrian.openpss.content/-context/index.html"><span class="identifier">Context</span></a><span class="symbol">, </span><span class="identifier" id="com.hendraanggrian.openpss.control.dialog.ConfirmDialog$<init>(com.hendraanggrian.openpss.content.Context, kotlin.String)/textId">textId</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">)</span></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Inherited Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="../-resultable-dialog/default-button.html">defaultButton</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">defaultButton</span><span class="symbol">: </span><span class="identifier">Button</span></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Inherited Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="../-resultable-dialog/show.html">show</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">show</span><span class="symbol">(</span><span class="identifier" id="com.hendraanggrian.openpss.control.dialog.ResultableDialog$show(kotlin.SuspendFunction2((kotlinx.coroutines.CoroutineScope, com.hendraanggrian.openpss.control.dialog.ResultableDialog.T, kotlin.Unit)))/onAction">onAction</span><span class="symbol">:</span>&nbsp;<span class="keyword">suspend </span><span class="identifier">CoroutineScope</span><span class="symbol">.</span><span class="symbol">(</span><a href="../-resultable-dialog/index.html#T"><span class="identifier">T</span></a><span class="symbol">?</span><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Extension Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="../../com.hendraanggrian.openpss.control/ktfx.layouts.-node-invokable/date-box.html">dateBox</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">NodeInvokable</span><span class="symbol">.</span><span class="identifier">dateBox</span><span class="symbol">(</span><span class="identifier" id="com.hendraanggrian.openpss.control$dateBox(ktfx.layouts.NodeInvokable, org.joda.time.LocalDate, kotlin.Function1((com.hendraanggrian.openpss.control.DateBox, kotlin.Unit)))/prefill">prefill</span><span class="symbol">:</span>&nbsp;<span class="identifier">LocalDate</span>&nbsp;<span class="symbol">=</span>&nbsp;now()<span class="symbol">, </span><span class="identifier" id="com.hendraanggrian.openpss.control$dateBox(ktfx.layouts.NodeInvokable, org.joda.time.LocalDate, kotlin.Function1((com.hendraanggrian.openpss.control.DateBox, kotlin.Unit)))/init">init</span><span class="symbol">:</span>&nbsp;<a href="../../com.hendraanggrian.openpss.control/-date-box/index.html"><span class="identifier">DateBox</span></a><span class="symbol">.</span><span class="symbol">(</span><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">)</span><span class="symbol">: </span><a href="../../com.hendraanggrian.openpss.control/-date-box/index.html"><span class="identifier">DateBox</span></a></code>
+<p>Creates a <a href="../../com.hendraanggrian.openpss.control/-date-box/index.html">DateBox</a> and add it to this manager.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../../com.hendraanggrian.openpss.control/ktfx.layouts.-node-invokable/double-field.html">doubleField</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">NodeInvokable</span><span class="symbol">.</span><span class="identifier">doubleField</span><span class="symbol">(</span><span class="identifier" id="com.hendraanggrian.openpss.control$doubleField(ktfx.layouts.NodeInvokable, kotlin.Function1((com.hendraanggrian.openpss.control.DoubleField, kotlin.Unit)))/init">init</span><span class="symbol">:</span>&nbsp;<a href="../../com.hendraanggrian.openpss.control/-double-field/index.html"><span class="identifier">DoubleField</span></a><span class="symbol">.</span><span class="symbol">(</span><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">)</span><span class="symbol">: </span><a href="../../com.hendraanggrian.openpss.control/-double-field/index.html"><span class="identifier">DoubleField</span></a></code>
+<p>Creates a <a href="../../com.hendraanggrian.openpss.control/-double-field/index.html">DoubleField</a> and add it to this manager.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../../com.hendraanggrian.openpss.control/ktfx.layouts.-node-invokable/int-field.html">intField</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">NodeInvokable</span><span class="symbol">.</span><span class="identifier">intField</span><span class="symbol">(</span><span class="identifier" id="com.hendraanggrian.openpss.control$intField(ktfx.layouts.NodeInvokable, kotlin.Function1((com.hendraanggrian.openpss.control.IntField, kotlin.Unit)))/init">init</span><span class="symbol">:</span>&nbsp;<a href="../../com.hendraanggrian.openpss.control/-int-field/index.html"><span class="identifier">IntField</span></a><span class="symbol">.</span><span class="symbol">(</span><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">)</span><span class="symbol">: </span><a href="../../com.hendraanggrian.openpss.control/-int-field/index.html"><span class="identifier">IntField</span></a></code>
+<p>Creates a <a href="../../com.hendraanggrian.openpss.control/-int-field/index.html">IntField</a> and add it to this manager.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../../com.hendraanggrian.openpss.control/ktfx.layouts.-node-invokable/jfx-double-field.html">jfxDoubleField</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">NodeInvokable</span><span class="symbol">.</span><span class="identifier">jfxDoubleField</span><span class="symbol">(</span><span class="identifier" id="com.hendraanggrian.openpss.control$jfxDoubleField(ktfx.layouts.NodeInvokable, kotlin.Function1((com.hendraanggrian.openpss.control.JFXDoubleField, kotlin.Unit)))/init">init</span><span class="symbol">:</span>&nbsp;<a href="../../com.hendraanggrian.openpss.control/-j-f-x-double-field/index.html"><span class="identifier">JFXDoubleField</span></a><span class="symbol">.</span><span class="symbol">(</span><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">)</span><span class="symbol">: </span><a href="../../com.hendraanggrian.openpss.control/-j-f-x-double-field/index.html"><span class="identifier">JFXDoubleField</span></a></code>
+<p>Creates a <a href="../../com.hendraanggrian.openpss.control/-j-f-x-double-field/index.html">JFXDoubleField</a> and add it to this manager.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../../com.hendraanggrian.openpss.control/ktfx.layouts.-node-invokable/jfx-int-field.html">jfxIntField</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">NodeInvokable</span><span class="symbol">.</span><span class="identifier">jfxIntField</span><span class="symbol">(</span><span class="identifier" id="com.hendraanggrian.openpss.control$jfxIntField(ktfx.layouts.NodeInvokable, kotlin.Function1((com.hendraanggrian.openpss.control.JFXIntField, kotlin.Unit)))/init">init</span><span class="symbol">:</span>&nbsp;<a href="../../com.hendraanggrian.openpss.control/-j-f-x-int-field/index.html"><span class="identifier">JFXIntField</span></a><span class="symbol">.</span><span class="symbol">(</span><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">)</span><span class="symbol">: </span><a href="../../com.hendraanggrian.openpss.control/-j-f-x-int-field/index.html"><span class="identifier">JFXIntField</span></a></code>
+<p>Creates a <a href="../../com.hendraanggrian.openpss.control/-j-f-x-int-field/index.html">JFXIntField</a> and add it to this manager.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../../com.hendraanggrian.openpss.control/ktfx.layouts.-node-invokable/month-box.html">monthBox</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">NodeInvokable</span><span class="symbol">.</span><span class="identifier">monthBox</span><span class="symbol">(</span><span class="identifier" id="com.hendraanggrian.openpss.control$monthBox(ktfx.layouts.NodeInvokable, org.joda.time.YearMonth, kotlin.Function1((com.hendraanggrian.openpss.control.MonthBox, kotlin.Unit)))/prefill">prefill</span><span class="symbol">:</span>&nbsp;<span class="identifier">YearMonth</span>&nbsp;<span class="symbol">=</span>&nbsp;YearMonth.now()<span class="symbol">, </span><span class="identifier" id="com.hendraanggrian.openpss.control$monthBox(ktfx.layouts.NodeInvokable, org.joda.time.YearMonth, kotlin.Function1((com.hendraanggrian.openpss.control.MonthBox, kotlin.Unit)))/init">init</span><span class="symbol">:</span>&nbsp;<a href="../../com.hendraanggrian.openpss.control/-month-box/index.html"><span class="identifier">MonthBox</span></a><span class="symbol">.</span><span class="symbol">(</span><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">)</span><span class="symbol">: </span><a href="../../com.hendraanggrian.openpss.control/-month-box/index.html"><span class="identifier">MonthBox</span></a></code>
+<p>Creates a <a href="../../com.hendraanggrian.openpss.control/-month-box/index.html">MonthBox</a> and add it to this manager.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../../com.hendraanggrian.openpss.control/ktfx.layouts.-node-invokable/space.html">space</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">NodeInvokable</span><span class="symbol">.</span><span class="identifier">space</span><span class="symbol">(</span><span class="identifier" id="com.hendraanggrian.openpss.control$space(ktfx.layouts.NodeInvokable, kotlin.Double, kotlin.Double, kotlin.Function1((com.hendraanggrian.openpss.control.Space, kotlin.Unit)))/width">width</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html"><span class="identifier">Double</span></a>&nbsp;<span class="symbol">=</span>&nbsp;0.0<span class="symbol">, </span><span class="identifier" id="com.hendraanggrian.openpss.control$space(ktfx.layouts.NodeInvokable, kotlin.Double, kotlin.Double, kotlin.Function1((com.hendraanggrian.openpss.control.Space, kotlin.Unit)))/height">height</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html"><span class="identifier">Double</span></a>&nbsp;<span class="symbol">=</span>&nbsp;0.0<span class="symbol">, </span><span class="identifier" id="com.hendraanggrian.openpss.control$space(ktfx.layouts.NodeInvokable, kotlin.Double, kotlin.Double, kotlin.Function1((com.hendraanggrian.openpss.control.Space, kotlin.Unit)))/init">init</span><span class="symbol">:</span>&nbsp;<a href="../../com.hendraanggrian.openpss.control/-space/index.html"><span class="identifier">Space</span></a><span class="symbol">.</span><span class="symbol">(</span><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">)</span><span class="symbol">: </span><a href="../../com.hendraanggrian.openpss.control/-space/index.html"><span class="identifier">Space</span></a></code>
+<p>Creates a <a href="../../com.hendraanggrian.openpss.control/-space/index.html">Space</a> and add it to this manager.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../../com.hendraanggrian.openpss.control/ktfx.layouts.-node-invokable/stretchable-button.html">stretchableButton</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">NodeInvokable</span><span class="symbol">.</span><span class="identifier">stretchableButton</span><span class="symbol">(</span><span class="identifier" id="com.hendraanggrian.openpss.control$stretchableButton(ktfx.layouts.NodeInvokable, kotlin.Double, kotlin.String, javafx.scene.Node, kotlin.Function1((com.hendraanggrian.openpss.control.StretchableButton, kotlin.Unit)))/stretchPoint">stretchPoint</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html"><span class="identifier">Double</span></a><span class="symbol">, </span><span class="identifier" id="com.hendraanggrian.openpss.control$stretchableButton(ktfx.layouts.NodeInvokable, kotlin.Double, kotlin.String, javafx.scene.Node, kotlin.Function1((com.hendraanggrian.openpss.control.StretchableButton, kotlin.Unit)))/adaptableText">adaptableText</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.hendraanggrian.openpss.control$stretchableButton(ktfx.layouts.NodeInvokable, kotlin.Double, kotlin.String, javafx.scene.Node, kotlin.Function1((com.hendraanggrian.openpss.control.StretchableButton, kotlin.Unit)))/graphic">graphic</span><span class="symbol">:</span>&nbsp;<span class="identifier">Node</span><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">, </span><span class="identifier" id="com.hendraanggrian.openpss.control$stretchableButton(ktfx.layouts.NodeInvokable, kotlin.Double, kotlin.String, javafx.scene.Node, kotlin.Function1((com.hendraanggrian.openpss.control.StretchableButton, kotlin.Unit)))/init">init</span><span class="symbol">:</span>&nbsp;<a href="../../com.hendraanggrian.openpss.control/-stretchable-button/index.html"><span class="identifier">StretchableButton</span></a><span class="symbol">.</span><span class="symbol">(</span><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">)</span><span class="symbol">: </span><a href="../../com.hendraanggrian.openpss.control/-stretchable-button/index.html"><span class="identifier">StretchableButton</span></a></code>
+<p>Creates an <a href="../../com.hendraanggrian.openpss.control/-stretchable-button/index.html">StretchableButton</a> and add it to this manager.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../../com.hendraanggrian.openpss.control/ktfx.layouts.-node-invokable/stretchable-check-box.html">stretchableCheckBox</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">NodeInvokable</span><span class="symbol">.</span><span class="identifier">stretchableCheckBox</span><span class="symbol">(</span><span class="identifier" id="com.hendraanggrian.openpss.control$stretchableCheckBox(ktfx.layouts.NodeInvokable, kotlin.Double, kotlin.String, kotlin.Function1((com.hendraanggrian.openpss.control.StretchableCheckBox, kotlin.Unit)))/stretchPoint">stretchPoint</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html"><span class="identifier">Double</span></a><span class="symbol">, </span><span class="identifier" id="com.hendraanggrian.openpss.control$stretchableCheckBox(ktfx.layouts.NodeInvokable, kotlin.Double, kotlin.String, kotlin.Function1((com.hendraanggrian.openpss.control.StretchableCheckBox, kotlin.Unit)))/adaptableText">adaptableText</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.hendraanggrian.openpss.control$stretchableCheckBox(ktfx.layouts.NodeInvokable, kotlin.Double, kotlin.String, kotlin.Function1((com.hendraanggrian.openpss.control.StretchableCheckBox, kotlin.Unit)))/init">init</span><span class="symbol">:</span>&nbsp;<a href="../../com.hendraanggrian.openpss.control/-stretchable-check-box/index.html"><span class="identifier">StretchableCheckBox</span></a><span class="symbol">.</span><span class="symbol">(</span><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">)</span><span class="symbol">: </span><a href="../../com.hendraanggrian.openpss.control/-stretchable-check-box/index.html"><span class="identifier">StretchableCheckBox</span></a></code>
+<p>Creates an <a href="../../com.hendraanggrian.openpss.control/-stretchable-check-box/index.html">StretchableCheckBox</a> and add it to this manager.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../../com.hendraanggrian.openpss.control/ktfx.layouts.-node-invokable/stretchable-split-menu-button.html">stretchableSplitMenuButton</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">NodeInvokable</span><span class="symbol">.</span><span class="identifier">stretchableSplitMenuButton</span><span class="symbol">(</span><span class="identifier" id="com.hendraanggrian.openpss.control$stretchableSplitMenuButton(ktfx.layouts.NodeInvokable, kotlin.Double, kotlin.String, javafx.scene.Node, kotlin.Function1((com.hendraanggrian.openpss.control.StretchableSplitMenuButton, kotlin.Unit)))/stretchPoint">stretchPoint</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html"><span class="identifier">Double</span></a><span class="symbol">, </span><span class="identifier" id="com.hendraanggrian.openpss.control$stretchableSplitMenuButton(ktfx.layouts.NodeInvokable, kotlin.Double, kotlin.String, javafx.scene.Node, kotlin.Function1((com.hendraanggrian.openpss.control.StretchableSplitMenuButton, kotlin.Unit)))/adaptableText">adaptableText</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.hendraanggrian.openpss.control$stretchableSplitMenuButton(ktfx.layouts.NodeInvokable, kotlin.Double, kotlin.String, javafx.scene.Node, kotlin.Function1((com.hendraanggrian.openpss.control.StretchableSplitMenuButton, kotlin.Unit)))/graphic">graphic</span><span class="symbol">:</span>&nbsp;<span class="identifier">Node</span><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">, </span><span class="identifier" id="com.hendraanggrian.openpss.control$stretchableSplitMenuButton(ktfx.layouts.NodeInvokable, kotlin.Double, kotlin.String, javafx.scene.Node, kotlin.Function1((com.hendraanggrian.openpss.control.StretchableSplitMenuButton, kotlin.Unit)))/init">init</span><span class="symbol">:</span>&nbsp;<a href="../../com.hendraanggrian.openpss.control/-stretchable-split-menu-button/index.html"><span class="identifier">StretchableSplitMenuButton</span></a><span class="symbol">.</span><span class="symbol">(</span><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">)</span><span class="symbol">: </span><a href="../../com.hendraanggrian.openpss.control/-stretchable-split-menu-button/index.html"><span class="identifier">StretchableSplitMenuButton</span></a></code>
+<p>Creates an <a href="../../com.hendraanggrian.openpss.control/-stretchable-split-menu-button/index.html">StretchableSplitMenuButton</a> and add it to this manager.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../../com.hendraanggrian.openpss.control/ktfx.layouts.-node-invokable/time-box.html">timeBox</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">NodeInvokable</span><span class="symbol">.</span><span class="identifier">timeBox</span><span class="symbol">(</span><span class="identifier" id="com.hendraanggrian.openpss.control$timeBox(ktfx.layouts.NodeInvokable, org.joda.time.LocalTime, kotlin.Function1((com.hendraanggrian.openpss.control.TimeBox, kotlin.Unit)))/prefill">prefill</span><span class="symbol">:</span>&nbsp;<span class="identifier">LocalTime</span>&nbsp;<span class="symbol">=</span>&nbsp;MIDNIGHT<span class="symbol">, </span><span class="identifier" id="com.hendraanggrian.openpss.control$timeBox(ktfx.layouts.NodeInvokable, org.joda.time.LocalTime, kotlin.Function1((com.hendraanggrian.openpss.control.TimeBox, kotlin.Unit)))/init">init</span><span class="symbol">:</span>&nbsp;<a href="../../com.hendraanggrian.openpss.control/-time-box/index.html"><span class="identifier">TimeBox</span></a><span class="symbol">.</span><span class="symbol">(</span><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">)</span><span class="symbol">: </span><a href="../../com.hendraanggrian.openpss.control/-time-box/index.html"><span class="identifier">TimeBox</span></a></code>
+<p>Creates a <a href="../../com.hendraanggrian.openpss.control/-time-box/index.html">TimeBox</a> and add it to this manager.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

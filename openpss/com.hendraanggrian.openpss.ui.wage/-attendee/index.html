@@ -1,0 +1,177 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>Attendee - openpss</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">openpss</a>&nbsp;/&nbsp;<a href="../index.html">com.hendraanggrian.openpss.ui.wage</a>&nbsp;/&nbsp;<a href="./index.html">Attendee</a><br/>
+<br/>
+<h1>Attendee</h1>
+<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">Attendee</span></code>
+<p>Data class representing an Attendee with id as its identifier to avoid duplicates in <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-set/index.html">Set</a> scenario.</p>
+<h3>Constructors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-init-.html">&lt;init&gt;</a></p>
+</td>
+<td>
+<code><span class="identifier">Attendee</span><span class="symbol">(</span><span class="identifier" id="com.hendraanggrian.openpss.ui.wage.Attendee$<init>(kotlin.Int, kotlin.String, kotlin.String, javafx.collections.ObservableList((com.hendraanggrian.openpss.db.schemas.Recess)), com.hendraanggrian.openpss.ui.wage.RevertibleObservableList((org.joda.time.DateTime)), javafx.beans.property.IntegerProperty, javafx.beans.property.IntegerProperty)/id">id</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="com.hendraanggrian.openpss.ui.wage.Attendee$<init>(kotlin.Int, kotlin.String, kotlin.String, javafx.collections.ObservableList((com.hendraanggrian.openpss.db.schemas.Recess)), com.hendraanggrian.openpss.ui.wage.RevertibleObservableList((org.joda.time.DateTime)), javafx.beans.property.IntegerProperty, javafx.beans.property.IntegerProperty)/name">name</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.hendraanggrian.openpss.ui.wage.Attendee$<init>(kotlin.Int, kotlin.String, kotlin.String, javafx.collections.ObservableList((com.hendraanggrian.openpss.db.schemas.Recess)), com.hendraanggrian.openpss.ui.wage.RevertibleObservableList((org.joda.time.DateTime)), javafx.beans.property.IntegerProperty, javafx.beans.property.IntegerProperty)/role">role</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">, </span><span class="identifier" id="com.hendraanggrian.openpss.ui.wage.Attendee$<init>(kotlin.Int, kotlin.String, kotlin.String, javafx.collections.ObservableList((com.hendraanggrian.openpss.db.schemas.Recess)), com.hendraanggrian.openpss.ui.wage.RevertibleObservableList((org.joda.time.DateTime)), javafx.beans.property.IntegerProperty, javafx.beans.property.IntegerProperty)/recesses">recesses</span><span class="symbol">:</span>&nbsp;<span class="identifier">ObservableList</span><span class="symbol">&lt;</span><a href="../../com.hendraanggrian.openpss.db.schemas/-recess/index.html"><span class="identifier">Recess</span></a><span class="symbol">&gt;</span>&nbsp;<span class="symbol">=</span>&nbsp;mutableObservableListOf()<span class="symbol">, </span><span class="identifier" id="com.hendraanggrian.openpss.ui.wage.Attendee$<init>(kotlin.Int, kotlin.String, kotlin.String, javafx.collections.ObservableList((com.hendraanggrian.openpss.db.schemas.Recess)), com.hendraanggrian.openpss.ui.wage.RevertibleObservableList((org.joda.time.DateTime)), javafx.beans.property.IntegerProperty, javafx.beans.property.IntegerProperty)/attendances">attendances</span><span class="symbol">:</span>&nbsp;<a href="../-revertible-observable-list/index.html"><span class="identifier">RevertibleObservableList</span></a><span class="symbol">&lt;</span><span class="identifier">DateTime</span><span class="symbol">&gt;</span>&nbsp;<span class="symbol">=</span>&nbsp;RevertibleObservableList()<span class="symbol">, </span><span class="identifier" id="com.hendraanggrian.openpss.ui.wage.Attendee$<init>(kotlin.Int, kotlin.String, kotlin.String, javafx.collections.ObservableList((com.hendraanggrian.openpss.db.schemas.Recess)), com.hendraanggrian.openpss.ui.wage.RevertibleObservableList((org.joda.time.DateTime)), javafx.beans.property.IntegerProperty, javafx.beans.property.IntegerProperty)/dailyProperty">dailyProperty</span><span class="symbol">:</span>&nbsp;<span class="identifier">IntegerProperty</span>&nbsp;<span class="symbol">=</span>&nbsp;SimpleIntegerProperty()<span class="symbol">, </span><span class="identifier" id="com.hendraanggrian.openpss.ui.wage.Attendee$<init>(kotlin.Int, kotlin.String, kotlin.String, javafx.collections.ObservableList((com.hendraanggrian.openpss.db.schemas.Recess)), com.hendraanggrian.openpss.ui.wage.RevertibleObservableList((org.joda.time.DateTime)), javafx.beans.property.IntegerProperty, javafx.beans.property.IntegerProperty)/hourlyOvertimeProperty">hourlyOvertimeProperty</span><span class="symbol">:</span>&nbsp;<span class="identifier">IntegerProperty</span>&nbsp;<span class="symbol">=</span>&nbsp;SimpleIntegerProperty()<span class="symbol">)</span></code>
+<p>Data class representing an Attendee with id as its identifier to avoid duplicates in <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-set/index.html">Set</a> scenario.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="attendances.html">attendances</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">attendances</span><span class="symbol">: </span><a href="../-revertible-observable-list/index.html"><span class="identifier">RevertibleObservableList</span></a><span class="symbol">&lt;</span><span class="identifier">DateTime</span><span class="symbol">&gt;</span></code>
+<p>Attendances and shift should be set in <a href="../-attendee-pane/index.html">com.hendraanggrian.openpss.ui.wage.AttendeePane</a>.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="daily.html">daily</a></p>
+</td>
+<td>
+<code><span class="keyword">var </span><span class="identifier">daily</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="daily-property.html">dailyProperty</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">dailyProperty</span><span class="symbol">: </span><span class="identifier">IntegerProperty</span></code>
+<p>Wages below are retrieved from sql, or dailyEmpty if there is none.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="hourly-overtime.html">hourlyOvertime</a></p>
+</td>
+<td>
+<code><span class="keyword">var </span><span class="identifier">hourlyOvertime</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="hourly-overtime-property.html">hourlyOvertimeProperty</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">hourlyOvertimeProperty</span><span class="symbol">: </span><span class="identifier">IntegerProperty</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="id.html">id</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">id</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code>
+<p>Id and name are final value that should be determined upon xlsx reading.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="name.html">name</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">name</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="recesses.html">recesses</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">recesses</span><span class="symbol">: </span><span class="identifier">ObservableList</span><span class="symbol">&lt;</span><a href="../../com.hendraanggrian.openpss.db.schemas/-recess/index.html"><span class="identifier">Recess</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="role.html">role</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">role</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="equals.html">equals</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">equals</span><span class="symbol">(</span><span class="identifier" id="com.hendraanggrian.openpss.ui.wage.Attendee$equals(kotlin.Any)/other">other</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">?</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="hash-code.html">hashCode</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">hashCode</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="merge-duplicates.html">mergeDuplicates</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">mergeDuplicates</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="save-wage.html">saveWage</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">saveWage</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="to-child-records.html">toChildRecords</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">toChildRecords</span><span class="symbol">(</span><span class="identifier" id="com.hendraanggrian.openpss.ui.wage.Attendee$toChildRecords(com.hendraanggrian.openpss.content.Resources)/resources">resources</span><span class="symbol">:</span>&nbsp;<a href="../../com.hendraanggrian.openpss.content/-resources/index.html"><span class="identifier">Resources</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-set/index.html"><span class="identifier">Set</span></a><span class="symbol">&lt;</span><a href="../../com.hendraanggrian.openpss.ui.wage.record/-record/index.html"><span class="identifier">Record</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="to-node-record.html">toNodeRecord</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">toNodeRecord</span><span class="symbol">(</span><span class="identifier" id="com.hendraanggrian.openpss.ui.wage.Attendee$toNodeRecord(com.hendraanggrian.openpss.content.Resources)/resources">resources</span><span class="symbol">:</span>&nbsp;<a href="../../com.hendraanggrian.openpss.content/-resources/index.html"><span class="identifier">Resources</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../com.hendraanggrian.openpss.ui.wage.record/-record/index.html"><span class="identifier">Record</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="to-string.html">toString</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">toString</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="to-total-records.html">toTotalRecords</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">toTotalRecords</span><span class="symbol">(</span><span class="identifier" id="com.hendraanggrian.openpss.ui.wage.Attendee$toTotalRecords(com.hendraanggrian.openpss.content.Resources, kotlin.collections.Collection((com.hendraanggrian.openpss.ui.wage.record.Record)))/resources">resources</span><span class="symbol">:</span>&nbsp;<a href="../../com.hendraanggrian.openpss.content/-resources/index.html"><span class="identifier">Resources</span></a><span class="symbol">, </span><span class="identifier" id="com.hendraanggrian.openpss.ui.wage.Attendee$toTotalRecords(com.hendraanggrian.openpss.content.Resources, kotlin.collections.Collection((com.hendraanggrian.openpss.ui.wage.record.Record)))/children">children</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-collection/index.html"><span class="identifier">Collection</span></a><span class="symbol">&lt;</span><a href="../../com.hendraanggrian.openpss.ui.wage.record/-record/index.html"><span class="identifier">Record</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="../../com.hendraanggrian.openpss.ui.wage.record/-record/index.html"><span class="identifier">Record</span></a></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Companion Object Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-d-u-m-m-y.html">DUMMY</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">DUMMY</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">Attendee</span></a></code>
+<p>Dummy for invisible <a href="#">javafx.scene.control.TreeTableView</a> root.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

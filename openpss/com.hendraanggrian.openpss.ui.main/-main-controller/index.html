@@ -1,0 +1,597 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>MainController - openpss</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">openpss</a>&nbsp;/&nbsp;<a href="../index.html">com.hendraanggrian.openpss.ui.main</a>&nbsp;/&nbsp;<a href="./index.html">MainController</a><br/>
+<br/>
+<h1>MainController</h1>
+<code><span class="keyword">class </span><span class="identifier">MainController</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../../com.hendraanggrian.openpss.ui/-controller/index.html"><span class="identifier">Controller</span></a><span class="symbol">, </span><a href="../../com.hendraanggrian.openpss.ui/-selectable/index.html"><span class="identifier">Selectable</span></a><span class="symbol">&lt;</span><span class="identifier">Tab</span><span class="symbol">&gt;</span><span class="symbol">, </span><a href="../../com.hendraanggrian.openpss.ui/-selectable2/index.html"><span class="identifier">Selectable2</span></a><span class="symbol">&lt;</span><span class="identifier">Label</span><span class="symbol">&gt;</span><span class="symbol">, </span><a href="../../com.hendraanggrian.openpss.ui/-refreshable/index.html"><span class="identifier">Refreshable</span></a></code>
+<h3>Constructors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-init-.html">&lt;init&gt;</a></p>
+</td>
+<td>
+<code><span class="identifier">MainController</span><span class="symbol">(</span><span class="symbol">)</span></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="add-customer-item.html">addCustomerItem</a></p>
+</td>
+<td>
+<code><span class="keyword">lateinit</span> <span class="keyword">var </span><span class="identifier">addCustomerItem</span><span class="symbol">: </span><span class="identifier">MenuItem</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="add-invoice-item.html">addInvoiceItem</a></p>
+</td>
+<td>
+<code><span class="keyword">lateinit</span> <span class="keyword">var </span><span class="identifier">addInvoiceItem</span><span class="symbol">: </span><span class="identifier">MenuItem</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="customer-controller.html">customerController</a></p>
+</td>
+<td>
+<code><span class="keyword">lateinit</span> <span class="keyword">var </span><span class="identifier">customerController</span><span class="symbol">: </span><a href="../../com.hendraanggrian.openpss.ui.customer/-customer-controller/index.html"><span class="identifier">CustomerController</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="customer-graphic.html">customerGraphic</a></p>
+</td>
+<td>
+<code><span class="keyword">lateinit</span> <span class="keyword">var </span><span class="identifier">customerGraphic</span><span class="symbol">: </span><a href="../../com.hendraanggrian.openpss.control/-margined-image-view/index.html"><span class="identifier">MarginedImageView</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="digital-print-price-item.html">digitalPrintPriceItem</a></p>
+</td>
+<td>
+<code><span class="keyword">lateinit</span> <span class="keyword">var </span><span class="identifier">digitalPrintPriceItem</span><span class="symbol">: </span><span class="identifier">MenuItem</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="drawer.html">drawer</a></p>
+</td>
+<td>
+<code><span class="keyword">lateinit</span> <span class="keyword">var </span><span class="identifier">drawer</span><span class="symbol">: </span><span class="identifier">JFXDrawer</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="drawer-list.html">drawerList</a></p>
+</td>
+<td>
+<code><span class="keyword">lateinit</span> <span class="keyword">var </span><span class="identifier">drawerList</span><span class="symbol">: </span><span class="identifier">ListView</span><span class="symbol">&lt;</span><span class="identifier">Label</span><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="employee-item.html">employeeItem</a></p>
+</td>
+<td>
+<code><span class="keyword">lateinit</span> <span class="keyword">var </span><span class="identifier">employeeItem</span><span class="symbol">: </span><span class="identifier">MenuItem</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="employee-label.html">employeeLabel</a></p>
+</td>
+<td>
+<code><span class="keyword">lateinit</span> <span class="keyword">var </span><span class="identifier">employeeLabel</span><span class="symbol">: </span><span class="identifier">Label</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="event-pagination.html">eventPagination</a></p>
+</td>
+<td>
+<code><span class="keyword">lateinit</span> <span class="keyword">var </span><span class="identifier">eventPagination</span><span class="symbol">: </span><a href="../../com.hendraanggrian.openpss.control/-paginated-pane/index.html"><span class="identifier">PaginatedPane</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="finance-controller.html">financeController</a></p>
+</td>
+<td>
+<code><span class="keyword">lateinit</span> <span class="keyword">var </span><span class="identifier">financeController</span><span class="symbol">: </span><a href="../../com.hendraanggrian.openpss.ui.finance/-finance-controller/index.html"><span class="identifier">FinanceController</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="finance-graphic.html">financeGraphic</a></p>
+</td>
+<td>
+<code><span class="keyword">lateinit</span> <span class="keyword">var </span><span class="identifier">financeGraphic</span><span class="symbol">: </span><a href="../../com.hendraanggrian.openpss.control/-margined-image-view/index.html"><span class="identifier">MarginedImageView</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="hamburger.html">hamburger</a></p>
+</td>
+<td>
+<code><span class="keyword">lateinit</span> <span class="keyword">var </span><span class="identifier">hamburger</span><span class="symbol">: </span><span class="identifier">JFXHamburger</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="invoice-controller.html">invoiceController</a></p>
+</td>
+<td>
+<code><span class="keyword">lateinit</span> <span class="keyword">var </span><span class="identifier">invoiceController</span><span class="symbol">: </span><a href="../../com.hendraanggrian.openpss.ui.invoice/-invoice-controller/index.html"><span class="identifier">InvoiceController</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="invoice-graphic.html">invoiceGraphic</a></p>
+</td>
+<td>
+<code><span class="keyword">lateinit</span> <span class="keyword">var </span><span class="identifier">invoiceGraphic</span><span class="symbol">: </span><a href="../../com.hendraanggrian.openpss.control/-margined-image-view/index.html"><span class="identifier">MarginedImageView</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="menu-bar.html">menuBar</a></p>
+</td>
+<td>
+<code><span class="keyword">lateinit</span> <span class="keyword">var </span><span class="identifier">menuBar</span><span class="symbol">: </span><span class="identifier">MenuBar</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="offset-print-price-item.html">offsetPrintPriceItem</a></p>
+</td>
+<td>
+<code><span class="keyword">lateinit</span> <span class="keyword">var </span><span class="identifier">offsetPrintPriceItem</span><span class="symbol">: </span><span class="identifier">MenuItem</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="plate-price-item.html">platePriceItem</a></p>
+</td>
+<td>
+<code><span class="keyword">lateinit</span> <span class="keyword">var </span><span class="identifier">platePriceItem</span><span class="symbol">: </span><span class="identifier">MenuItem</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="quit-item.html">quitItem</a></p>
+</td>
+<td>
+<code><span class="keyword">lateinit</span> <span class="keyword">var </span><span class="identifier">quitItem</span><span class="symbol">: </span><span class="identifier">MenuItem</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="recess-item.html">recessItem</a></p>
+</td>
+<td>
+<code><span class="keyword">lateinit</span> <span class="keyword">var </span><span class="identifier">recessItem</span><span class="symbol">: </span><span class="identifier">MenuItem</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="root.html">root</a></p>
+</td>
+<td>
+<code><span class="keyword">lateinit</span> <span class="keyword">var </span><span class="identifier">root</span><span class="symbol">: </span><span class="identifier">StackPane</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="schedule-controller.html">scheduleController</a></p>
+</td>
+<td>
+<code><span class="keyword">lateinit</span> <span class="keyword">var </span><span class="identifier">scheduleController</span><span class="symbol">: </span><a href="../../com.hendraanggrian.openpss.ui.schedule/-schedule-controller/index.html"><span class="identifier">ScheduleController</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="schedule-graphic.html">scheduleGraphic</a></p>
+</td>
+<td>
+<code><span class="keyword">lateinit</span> <span class="keyword">var </span><span class="identifier">scheduleGraphic</span><span class="symbol">: </span><a href="../../com.hendraanggrian.openpss.control/-margined-image-view/index.html"><span class="identifier">MarginedImageView</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="selection-model.html">selectionModel</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">selectionModel</span><span class="symbol">: </span><span class="identifier">SelectionModel</span><span class="symbol">&lt;</span><span class="identifier">Tab</span><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="selection-model2.html">selectionModel2</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">selectionModel2</span><span class="symbol">: </span><span class="identifier">SelectionModel</span><span class="symbol">&lt;</span><span class="identifier">Label</span><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="settings-item.html">settingsItem</a></p>
+</td>
+<td>
+<code><span class="keyword">lateinit</span> <span class="keyword">var </span><span class="identifier">settingsItem</span><span class="symbol">: </span><span class="identifier">MenuItem</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="tab-pane.html">tabPane</a></p>
+</td>
+<td>
+<code><span class="keyword">lateinit</span> <span class="keyword">var </span><span class="identifier">tabPane</span><span class="symbol">: </span><span class="identifier">TabPane</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="title-label.html">titleLabel</a></p>
+</td>
+<td>
+<code><span class="keyword">lateinit</span> <span class="keyword">var </span><span class="identifier">titleLabel</span><span class="symbol">: </span><span class="identifier">Label</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="toolbar.html">toolbar</a></p>
+</td>
+<td>
+<code><span class="keyword">lateinit</span> <span class="keyword">var </span><span class="identifier">toolbar</span><span class="symbol">: </span><a href="../../com.hendraanggrian.openpss.control/-toolbar/index.html"><span class="identifier">Toolbar</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="wage-controller.html">wageController</a></p>
+</td>
+<td>
+<code><span class="keyword">lateinit</span> <span class="keyword">var </span><span class="identifier">wageController</span><span class="symbol">: </span><a href="../../com.hendraanggrian.openpss.ui.wage/-wage-controller/index.html"><span class="identifier">WageController</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="wage-graphic.html">wageGraphic</a></p>
+</td>
+<td>
+<code><span class="keyword">lateinit</span> <span class="keyword">var </span><span class="identifier">wageGraphic</span><span class="symbol">: </span><a href="../../com.hendraanggrian.openpss.control/-margined-image-view/index.html"><span class="identifier">MarginedImageView</span></a></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Inherited Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="../../com.hendraanggrian.openpss.ui/-controller/color-resources.html">colorResources</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">val </span><span class="identifier">colorResources</span><span class="symbol">: </span><a href="http://docs.oracle.com/javase/6/docs/api/java/util/Properties.html"><span class="identifier">Properties</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../../com.hendraanggrian.openpss.ui/-controller/dimen-resources.html">dimenResources</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">val </span><span class="identifier">dimenResources</span><span class="symbol">: </span><a href="http://docs.oracle.com/javase/6/docs/api/java/util/Properties.html"><span class="identifier">Properties</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../../com.hendraanggrian.openpss.ui/-controller/login.html">login</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">lateinit</span> <span class="keyword">var </span><span class="identifier">login</span><span class="symbol">: </span><a href="../../com.hendraanggrian.openpss.db.schemas/-employee/index.html"><span class="identifier">Employee</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../../com.hendraanggrian.openpss.ui/-controller/resource-bundle.html">resourceBundle</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">lateinit</span> <span class="keyword">var </span><span class="identifier">resourceBundle</span><span class="symbol">: </span><a href="http://docs.oracle.com/javase/6/docs/api/java/util/ResourceBundle.html"><span class="identifier">ResourceBundle</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../../com.hendraanggrian.openpss.ui/-selectable/selected.html">selected</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">val </span><span class="identifier">selected</span><span class="symbol">: </span><a href="../../com.hendraanggrian.openpss.ui/-selectable/index.html#T"><span class="identifier">T</span></a><span class="symbol">?</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../../com.hendraanggrian.openpss.ui/-selectable2/selected2.html">selected2</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">val </span><span class="identifier">selected2</span><span class="symbol">: </span><a href="../../com.hendraanggrian.openpss.ui/-selectable2/index.html#T"><span class="identifier">T</span></a><span class="symbol">?</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../../com.hendraanggrian.openpss.ui/-selectable/selected-binding.html">selectedBinding</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">val </span><span class="identifier">selectedBinding</span><span class="symbol">: </span><span class="identifier">BooleanBinding</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../../com.hendraanggrian.openpss.ui/-selectable2/selected-binding2.html">selectedBinding2</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">val </span><span class="identifier">selectedBinding2</span><span class="symbol">: </span><span class="identifier">BooleanBinding</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../../com.hendraanggrian.openpss.ui/-selectable/selected-index.html">selectedIndex</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">val </span><span class="identifier">selectedIndex</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../../com.hendraanggrian.openpss.ui/-selectable2/selected-index2.html">selectedIndex2</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">val </span><span class="identifier">selectedIndex2</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../../com.hendraanggrian.openpss.ui/-selectable/selected-index-property.html">selectedIndexProperty</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">val </span><span class="identifier">selectedIndexProperty</span><span class="symbol">: </span><span class="identifier">ReadOnlyIntegerProperty</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../../com.hendraanggrian.openpss.ui/-selectable2/selected-index-property2.html">selectedIndexProperty2</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">val </span><span class="identifier">selectedIndexProperty2</span><span class="symbol">: </span><span class="identifier">ReadOnlyIntegerProperty</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../../com.hendraanggrian.openpss.ui/-selectable/selected-property.html">selectedProperty</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">val </span><span class="identifier">selectedProperty</span><span class="symbol">: </span><span class="identifier">ReadOnlyObjectProperty</span><span class="symbol">&lt;</span><a href="../../com.hendraanggrian.openpss.ui/-selectable/index.html#T"><span class="identifier">T</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../../com.hendraanggrian.openpss.ui/-selectable2/selected-property2.html">selectedProperty2</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">val </span><span class="identifier">selectedProperty2</span><span class="symbol">: </span><span class="identifier">ReadOnlyObjectProperty</span><span class="symbol">&lt;</span><a href="../../com.hendraanggrian.openpss.ui/-selectable2/index.html#T"><span class="identifier">T</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="about.html">about</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">about</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="add.html">add</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">add</span><span class="symbol">(</span><span class="identifier" id="com.hendraanggrian.openpss.ui.main.MainController$add(javafx.event.ActionEvent)/event">event</span><span class="symbol">:</span>&nbsp;<span class="identifier">ActionEvent</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="check-update.html">checkUpdate</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">checkUpdate</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="edit-employee.html">editEmployee</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">editEmployee</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="edit-price.html">editPrice</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">editPrice</span><span class="symbol">(</span><span class="identifier" id="com.hendraanggrian.openpss.ui.main.MainController$editPrice(javafx.event.ActionEvent)/event">event</span><span class="symbol">:</span>&nbsp;<span class="identifier">ActionEvent</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="edit-recess.html">editRecess</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">editRecess</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="initialize.html">initialize</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">initialize</span><span class="symbol">(</span><span class="identifier" id="com.hendraanggrian.openpss.ui.main.MainController$initialize(java.net.URL, java.util.ResourceBundle)/location">location</span><span class="symbol">:</span>&nbsp;<a href="http://docs.oracle.com/javase/6/docs/api/java/net/URL.html"><span class="identifier">URL</span></a><span class="symbol">, </span><span class="identifier" id="com.hendraanggrian.openpss.ui.main.MainController$initialize(java.net.URL, java.util.ResourceBundle)/resources">resources</span><span class="symbol">:</span>&nbsp;<a href="http://docs.oracle.com/javase/6/docs/api/java/util/ResourceBundle.html"><span class="identifier">ResourceBundle</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="on-drawer-opened.html">onDrawerOpened</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">onDrawerOpened</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="on-drawer-opening.html">onDrawerOpening</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">onDrawerOpening</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="quit.html">quit</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">quit</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="refresh.html">refresh</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">refresh</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="settings.html">settings</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">settings</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="test-view-invoice.html">testViewInvoice</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">testViewInvoice</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Inherited Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="../../com.hendraanggrian.openpss.ui/-controller/add-extra.html">addExtra</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">addExtra</span><span class="symbol">(</span><span class="identifier" id="com.hendraanggrian.openpss.ui.Controller$addExtra(kotlin.String, kotlin.Any)/key">key</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.hendraanggrian.openpss.ui.Controller$addExtra(kotlin.String, kotlin.Any)/value">value</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../com.hendraanggrian.openpss.ui/-controller/index.html"><span class="identifier">Controller</span></a></code>
+<p>Register extra <a href="../../com.hendraanggrian.openpss.ui/-controller/add-extra.html#com.hendraanggrian.openpss.ui.Controller$addExtra(kotlin.String, kotlin.Any)/value">value</a> with <a href="../../com.hendraanggrian.openpss.ui/-controller/add-extra.html#com.hendraanggrian.openpss.ui.Controller$addExtra(kotlin.String, kotlin.Any)/key">key</a>.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../../com.hendraanggrian.openpss.ui/-selectable/clear-selection.html">clearSelection</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">clearSelection</span><span class="symbol">(</span><span class="identifier" id="com.hendraanggrian.openpss.ui.Selectable$clearSelection(kotlin.Int)/index">index</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a>&nbsp;<span class="symbol">=</span>&nbsp;-1<span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../../com.hendraanggrian.openpss.ui/-selectable2/clear-selection2.html">clearSelection2</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">clearSelection2</span><span class="symbol">(</span><span class="identifier" id="com.hendraanggrian.openpss.ui.Selectable2$clearSelection2(kotlin.Int)/index">index</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a>&nbsp;<span class="symbol">=</span>&nbsp;-1<span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../../com.hendraanggrian.openpss.ui/-controller/get-extra.html">getExtra</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">&gt;</span> <span class="identifier">getExtra</span><span class="symbol">(</span><span class="identifier" id="com.hendraanggrian.openpss.ui.Controller$getExtra(kotlin.String)/key">key</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../com.hendraanggrian.openpss.ui/-controller/get-extra.html#T"><span class="identifier">T</span></a></code>
+<p>Get extra registered with <a href="../../com.hendraanggrian.openpss.ui/-controller/get-extra.html#com.hendraanggrian.openpss.ui.Controller$getExtra(kotlin.String)/key">key</a>, should be executed in platform thread.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../../com.hendraanggrian.openpss.ui/-selectable/is-empty.html">isEmpty</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">isEmpty</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../../com.hendraanggrian.openpss.ui/-selectable2/is-empty2.html">isEmpty2</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">isEmpty2</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../../com.hendraanggrian.openpss.ui/-selectable/is-selected.html">isSelected</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">isSelected</span><span class="symbol">(</span><span class="identifier" id="com.hendraanggrian.openpss.ui.Selectable$isSelected(kotlin.Int)/index">index</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../../com.hendraanggrian.openpss.ui/-selectable2/is-selected2.html">isSelected2</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">isSelected2</span><span class="symbol">(</span><span class="identifier" id="com.hendraanggrian.openpss.ui.Selectable2$isSelected2(kotlin.Int)/index">index</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../../com.hendraanggrian.openpss.ui/-selectable/reselect.html">reselect</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">reselect</span><span class="symbol">(</span><span class="identifier" id="com.hendraanggrian.openpss.ui.Selectable$reselect(kotlin.Int)/index">index</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../../com.hendraanggrian.openpss.ui/-selectable2/reselect2.html">reselect2</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">reselect2</span><span class="symbol">(</span><span class="identifier" id="com.hendraanggrian.openpss.ui.Selectable2$reselect2(kotlin.Int)/index">index</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../../com.hendraanggrian.openpss.ui/-selectable/select.html">select</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">select</span><span class="symbol">(</span><span class="identifier" id="com.hendraanggrian.openpss.ui.Selectable$select(kotlin.Int)/index">index</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code><br/>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">select</span><span class="symbol">(</span><span class="identifier" id="com.hendraanggrian.openpss.ui.Selectable$select(com.hendraanggrian.openpss.ui.Selectable.T)/item">item</span><span class="symbol">:</span>&nbsp;<a href="../../com.hendraanggrian.openpss.ui/-selectable/index.html#T"><span class="identifier">T</span></a><span class="symbol">?</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../../com.hendraanggrian.openpss.ui/-selectable2/select2.html">select2</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">select2</span><span class="symbol">(</span><span class="identifier" id="com.hendraanggrian.openpss.ui.Selectable2$select2(kotlin.Int)/index">index</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code><br/>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">select2</span><span class="symbol">(</span><span class="identifier" id="com.hendraanggrian.openpss.ui.Selectable2$select2(com.hendraanggrian.openpss.ui.Selectable2.T)/item">item</span><span class="symbol">:</span>&nbsp;<a href="../../com.hendraanggrian.openpss.ui/-selectable2/index.html#T"><span class="identifier">T</span></a><span class="symbol">?</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../../com.hendraanggrian.openpss.ui/-selectable/select-first.html">selectFirst</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">selectFirst</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../../com.hendraanggrian.openpss.ui/-selectable2/select-first2.html">selectFirst2</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">selectFirst2</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../../com.hendraanggrian.openpss.ui/-selectable/select-last.html">selectLast</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">selectLast</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../../com.hendraanggrian.openpss.ui/-selectable2/select-last2.html">selectLast2</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">selectLast2</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../../com.hendraanggrian.openpss.ui/-selectable/select-next.html">selectNext</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">selectNext</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../../com.hendraanggrian.openpss.ui/-selectable2/select-next2.html">selectNext2</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">selectNext2</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../../com.hendraanggrian.openpss.ui/-selectable/select-previous.html">selectPrevious</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">selectPrevious</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../../com.hendraanggrian.openpss.ui/-selectable2/select-previous2.html">selectPrevious2</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">selectPrevious2</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

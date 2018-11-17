@@ -1,0 +1,171 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>com.hendraanggrian.openpss.db.schemas - openpss</title>
+<link rel="stylesheet" href="../../style.css">
+</HEAD>
+<BODY>
+<a href="../index.html">openpss</a>&nbsp;/&nbsp;<a href="./index.html">com.hendraanggrian.openpss.db.schemas</a><br/>
+<br/>
+<h2>Package com.hendraanggrian.openpss.db.schemas</h2>
+<h3>Types</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-customer/index.html">Customer</a></p>
+</td>
+<td>
+<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">Customer</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../com.hendraanggrian.openpss.db/-document/index.html"><span class="identifier">Document</span></a><span class="symbol">&lt;</span><a href="-customers/index.html"><span class="identifier">Customers</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><a href="../com.hendraanggrian.openpss.db/-numbered/index.html"><span class="identifier">Numbered</span></a><span class="symbol">, </span><a href="../com.hendraanggrian.openpss.db/-named/index.html"><span class="identifier">Named</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="-customers/index.html">Customers</a></p>
+</td>
+<td>
+<code><span class="keyword">object </span><span class="identifier">Customers</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">DocumentSchema</span><span class="symbol">&lt;</span><a href="-customer/index.html"><span class="identifier">Customer</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><a href="../com.hendraanggrian.openpss.db/-named-schema/index.html"><span class="identifier">NamedSchema</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="-digital-price/index.html">DigitalPrice</a></p>
+</td>
+<td>
+<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">DigitalPrice</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../com.hendraanggrian.openpss.db/-document/index.html"><span class="identifier">Document</span></a><span class="symbol">&lt;</span><a href="-digital-prices/index.html"><span class="identifier">DigitalPrices</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><a href="../com.hendraanggrian.openpss.db/-named/index.html"><span class="identifier">Named</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="-digital-prices/index.html">DigitalPrices</a></p>
+</td>
+<td>
+<code><span class="keyword">object </span><span class="identifier">DigitalPrices</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">DocumentSchema</span><span class="symbol">&lt;</span><a href="-digital-price/index.html"><span class="identifier">DigitalPrice</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><a href="../com.hendraanggrian.openpss.db/-named-schema/index.html"><span class="identifier">NamedSchema</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="-employee/index.html">Employee</a></p>
+</td>
+<td>
+<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">Employee</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../com.hendraanggrian.openpss.db/-document/index.html"><span class="identifier">Document</span></a><span class="symbol">&lt;</span><a href="-employees/index.html"><span class="identifier">Employees</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><a href="../com.hendraanggrian.openpss.db/-named/index.html"><span class="identifier">Named</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="-employees/index.html">Employees</a></p>
+</td>
+<td>
+<code><span class="keyword">object </span><span class="identifier">Employees</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">DocumentSchema</span><span class="symbol">&lt;</span><a href="-employee/index.html"><span class="identifier">Employee</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><a href="../com.hendraanggrian.openpss.db/-named-schema/index.html"><span class="identifier">NamedSchema</span></a><span class="symbol">, </span><a href="../com.hendraanggrian.openpss.db/-setupable/index.html"><span class="identifier">Setupable</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="-global-setting/index.html">GlobalSetting</a></p>
+</td>
+<td>
+<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">GlobalSetting</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../com.hendraanggrian.openpss.db/-document/index.html"><span class="identifier">Document</span></a><span class="symbol">&lt;</span><a href="-global-settings/index.html"><span class="identifier">GlobalSettings</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="-global-settings/index.html">GlobalSettings</a></p>
+</td>
+<td>
+<code><span class="keyword">object </span><span class="identifier">GlobalSettings</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">DocumentSchema</span><span class="symbol">&lt;</span><a href="-global-setting/index.html"><span class="identifier">GlobalSetting</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><a href="../com.hendraanggrian.openpss.db/-setupable/index.html"><span class="identifier">Setupable</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="-invoice/index.html">Invoice</a></p>
+</td>
+<td>
+<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">Invoice</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../com.hendraanggrian.openpss.db/-document/index.html"><span class="identifier">Document</span></a><span class="symbol">&lt;</span><a href="-invoices/index.html"><span class="identifier">Invoices</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><a href="../com.hendraanggrian.openpss.db/-numbered/index.html"><span class="identifier">Numbered</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="-invoices/index.html">Invoices</a></p>
+</td>
+<td>
+<code><span class="keyword">object </span><span class="identifier">Invoices</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">DocumentSchema</span><span class="symbol">&lt;</span><a href="-invoice/index.html"><span class="identifier">Invoice</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="-log/index.html">Log</a></p>
+</td>
+<td>
+<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">Log</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../com.hendraanggrian.openpss.db/-document/index.html"><span class="identifier">Document</span></a><span class="symbol">&lt;</span><a href="-logs/index.html"><span class="identifier">Logs</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="-logs/index.html">Logs</a></p>
+</td>
+<td>
+<code><span class="keyword">object </span><span class="identifier">Logs</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">DocumentSchema</span><span class="symbol">&lt;</span><a href="-log/index.html"><span class="identifier">Log</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="-offset-price/index.html">OffsetPrice</a></p>
+</td>
+<td>
+<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">OffsetPrice</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../com.hendraanggrian.openpss.db/-document/index.html"><span class="identifier">Document</span></a><span class="symbol">&lt;</span><a href="-offset-prices/index.html"><span class="identifier">OffsetPrices</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><a href="../com.hendraanggrian.openpss.db/-named/index.html"><span class="identifier">Named</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="-offset-prices/index.html">OffsetPrices</a></p>
+</td>
+<td>
+<code><span class="keyword">object </span><span class="identifier">OffsetPrices</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">DocumentSchema</span><span class="symbol">&lt;</span><a href="-offset-price/index.html"><span class="identifier">OffsetPrice</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><a href="../com.hendraanggrian.openpss.db/-named-schema/index.html"><span class="identifier">NamedSchema</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="-payment/index.html">Payment</a></p>
+</td>
+<td>
+<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">Payment</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../com.hendraanggrian.openpss.db/-document/index.html"><span class="identifier">Document</span></a><span class="symbol">&lt;</span><a href="-payments/index.html"><span class="identifier">Payments</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="-payments/index.html">Payments</a></p>
+</td>
+<td>
+<code><span class="keyword">object </span><span class="identifier">Payments</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">DocumentSchema</span><span class="symbol">&lt;</span><a href="-payment/index.html"><span class="identifier">Payment</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="-plate-price/index.html">PlatePrice</a></p>
+</td>
+<td>
+<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">PlatePrice</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../com.hendraanggrian.openpss.db/-document/index.html"><span class="identifier">Document</span></a><span class="symbol">&lt;</span><a href="-plate-prices/index.html"><span class="identifier">PlatePrices</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><a href="../com.hendraanggrian.openpss.db/-named/index.html"><span class="identifier">Named</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="-plate-prices/index.html">PlatePrices</a></p>
+</td>
+<td>
+<code><span class="keyword">object </span><span class="identifier">PlatePrices</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">DocumentSchema</span><span class="symbol">&lt;</span><a href="-plate-price/index.html"><span class="identifier">PlatePrice</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><a href="../com.hendraanggrian.openpss.db/-named-schema/index.html"><span class="identifier">NamedSchema</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="-recess/index.html">Recess</a></p>
+</td>
+<td>
+<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">Recess</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../com.hendraanggrian.openpss.db/-document/index.html"><span class="identifier">Document</span></a><span class="symbol">&lt;</span><a href="-recesses/index.html"><span class="identifier">Recesses</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="-recesses/index.html">Recesses</a></p>
+</td>
+<td>
+<code><span class="keyword">object </span><span class="identifier">Recesses</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">DocumentSchema</span><span class="symbol">&lt;</span><a href="-recess/index.html"><span class="identifier">Recess</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="-wage/index.html">Wage</a></p>
+</td>
+<td>
+<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">Wage</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../com.hendraanggrian.openpss.db/-document/index.html"><span class="identifier">Document</span></a><span class="symbol">&lt;</span><a href="-wages/index.html"><span class="identifier">Wages</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="-wages/index.html">Wages</a></p>
+</td>
+<td>
+<code><span class="keyword">object </span><span class="identifier">Wages</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">DocumentSchema</span><span class="symbol">&lt;</span><a href="-wage/index.html"><span class="identifier">Wage</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

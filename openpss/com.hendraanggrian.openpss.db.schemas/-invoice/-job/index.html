@@ -1,0 +1,93 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>Invoice.Job - openpss</title>
+<link rel="stylesheet" href="../../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../../index.html">openpss</a>&nbsp;/&nbsp;<a href="../../index.html">com.hendraanggrian.openpss.db.schemas</a>&nbsp;/&nbsp;<a href="../index.html">Invoice</a>&nbsp;/&nbsp;<a href="./index.html">Job</a><br/>
+<br/>
+<h1>Job</h1>
+<code><span class="keyword">interface </span><span class="identifier">Job</span></code>
+<h3>Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="qty.html">qty</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">val </span><span class="identifier">qty</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="title.html">title</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">val </span><span class="identifier">title</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="total.html">total</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">val </span><span class="identifier">total</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html"><span class="identifier">Double</span></a></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Inheritors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="../../../com.hendraanggrian.openpss.ui.invoice.job/-add-digital-job-popover/index.html">AddDigitalJobPopover</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">AddDigitalJobPopover</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../../../com.hendraanggrian.openpss.ui.invoice.job/-add-job-popover/index.html"><span class="identifier">AddJobPopover</span></a><span class="symbol">&lt;</span><a href="../-digital-job/index.html"><span class="identifier">DigitalJob</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><a href="./index.html"><span class="identifier">Job</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../../../com.hendraanggrian.openpss.ui.invoice.job/-add-job-popover/index.html">AddJobPopover</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">class </span><span class="identifier">AddJobPopover</span><span class="symbol">&lt;</span><span class="identifier">T</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">Job</span></a><span class="symbol">&gt;</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../../../com.hendraanggrian.openpss.control.popover/-resultable-popover/index.html"><span class="identifier">ResultablePopover</span></a><span class="symbol">&lt;</span><a href="../../../com.hendraanggrian.openpss.ui.invoice.job/-add-job-popover/index.html#T"><span class="identifier">T</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><a href="./index.html"><span class="identifier">Job</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../../../com.hendraanggrian.openpss.ui.invoice.job/-add-offset-job-popover/index.html">AddOffsetJobPopover</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">AddOffsetJobPopover</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../../../com.hendraanggrian.openpss.ui.invoice.job/-add-job-popover/index.html"><span class="identifier">AddJobPopover</span></a><span class="symbol">&lt;</span><a href="../-offset-job/index.html"><span class="identifier">OffsetJob</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><a href="./index.html"><span class="identifier">Job</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../../../com.hendraanggrian.openpss.ui.invoice.job/-add-other-job-popover/index.html">AddOtherJobPopover</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">AddOtherJobPopover</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../../../com.hendraanggrian.openpss.ui.invoice.job/-add-job-popover/index.html"><span class="identifier">AddJobPopover</span></a><span class="symbol">&lt;</span><a href="../-other-job/index.html"><span class="identifier">OtherJob</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><a href="./index.html"><span class="identifier">Job</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../../../com.hendraanggrian.openpss.ui.invoice.job/-add-plate-job-popover/index.html">AddPlateJobPopover</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">AddPlateJobPopover</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../../../com.hendraanggrian.openpss.ui.invoice.job/-add-job-popover/index.html"><span class="identifier">AddJobPopover</span></a><span class="symbol">&lt;</span><a href="../-plate-job/index.html"><span class="identifier">PlateJob</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><a href="./index.html"><span class="identifier">Job</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../-other-job/index.html">OtherJob</a></p>
+</td>
+<td>
+<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">OtherJob</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">Job</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../-typed-job/index.html">TypedJob</a></p>
+</td>
+<td>
+<code><span class="keyword">interface </span><span class="identifier">TypedJob</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">Job</span></a></code></td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

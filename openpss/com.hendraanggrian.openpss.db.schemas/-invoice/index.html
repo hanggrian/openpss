@@ -1,0 +1,199 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>Invoice - openpss</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">openpss</a>&nbsp;/&nbsp;<a href="../index.html">com.hendraanggrian.openpss.db.schemas</a>&nbsp;/&nbsp;<a href="./index.html">Invoice</a><br/>
+<br/>
+<h1>Invoice</h1>
+<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">Invoice</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../../com.hendraanggrian.openpss.db/-document/index.html"><span class="identifier">Document</span></a><span class="symbol">&lt;</span><a href="../-invoices/index.html"><span class="identifier">Invoices</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><a href="../../com.hendraanggrian.openpss.db/-numbered/index.html"><span class="identifier">Numbered</span></a></code>
+<h3>Types</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-digital-job/index.html">DigitalJob</a></p>
+</td>
+<td>
+<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">DigitalJob</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="-typed-job/index.html"><span class="identifier">TypedJob</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="-job/index.html">Job</a></p>
+</td>
+<td>
+<code><span class="keyword">interface </span><span class="identifier">Job</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="-offset-job/index.html">OffsetJob</a></p>
+</td>
+<td>
+<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">OffsetJob</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="-typed-job/index.html"><span class="identifier">TypedJob</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="-other-job/index.html">OtherJob</a></p>
+</td>
+<td>
+<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">OtherJob</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="-job/index.html"><span class="identifier">Job</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="-plate-job/index.html">PlateJob</a></p>
+</td>
+<td>
+<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">PlateJob</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="-typed-job/index.html"><span class="identifier">TypedJob</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="-typed-job/index.html">TypedJob</a></p>
+</td>
+<td>
+<code><span class="keyword">interface </span><span class="identifier">TypedJob</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="-job/index.html"><span class="identifier">Job</span></a></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Constructors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-init-.html">&lt;init&gt;</a></p>
+</td>
+<td>
+<code><span class="identifier">Invoice</span><span class="symbol">(</span><span class="identifier" id="com.hendraanggrian.openpss.db.schemas.Invoice$<init>(kotlin.Int, kotlinx.nosql.Id((kotlin.String, com.hendraanggrian.openpss.db.schemas.Employees)), kotlinx.nosql.Id((kotlin.String, com.hendraanggrian.openpss.db.schemas.Customers)), org.joda.time.DateTime, kotlin.collections.List((com.hendraanggrian.openpss.db.schemas.Invoice.OffsetJob)), kotlin.collections.List((com.hendraanggrian.openpss.db.schemas.Invoice.DigitalJob)), kotlin.collections.List((com.hendraanggrian.openpss.db.schemas.Invoice.PlateJob)), kotlin.collections.List((com.hendraanggrian.openpss.db.schemas.Invoice.OtherJob)), kotlin.String, kotlin.Boolean, kotlin.Boolean, kotlin.Boolean)/no">no</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="com.hendraanggrian.openpss.db.schemas.Invoice$<init>(kotlin.Int, kotlinx.nosql.Id((kotlin.String, com.hendraanggrian.openpss.db.schemas.Employees)), kotlinx.nosql.Id((kotlin.String, com.hendraanggrian.openpss.db.schemas.Customers)), org.joda.time.DateTime, kotlin.collections.List((com.hendraanggrian.openpss.db.schemas.Invoice.OffsetJob)), kotlin.collections.List((com.hendraanggrian.openpss.db.schemas.Invoice.DigitalJob)), kotlin.collections.List((com.hendraanggrian.openpss.db.schemas.Invoice.PlateJob)), kotlin.collections.List((com.hendraanggrian.openpss.db.schemas.Invoice.OtherJob)), kotlin.String, kotlin.Boolean, kotlin.Boolean, kotlin.Boolean)/employeeId">employeeId</span><span class="symbol">:</span>&nbsp;<span class="identifier">Id</span><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">,</span>&nbsp;<a href="../-employees/index.html"><span class="identifier">Employees</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier" id="com.hendraanggrian.openpss.db.schemas.Invoice$<init>(kotlin.Int, kotlinx.nosql.Id((kotlin.String, com.hendraanggrian.openpss.db.schemas.Employees)), kotlinx.nosql.Id((kotlin.String, com.hendraanggrian.openpss.db.schemas.Customers)), org.joda.time.DateTime, kotlin.collections.List((com.hendraanggrian.openpss.db.schemas.Invoice.OffsetJob)), kotlin.collections.List((com.hendraanggrian.openpss.db.schemas.Invoice.DigitalJob)), kotlin.collections.List((com.hendraanggrian.openpss.db.schemas.Invoice.PlateJob)), kotlin.collections.List((com.hendraanggrian.openpss.db.schemas.Invoice.OtherJob)), kotlin.String, kotlin.Boolean, kotlin.Boolean, kotlin.Boolean)/customerId">customerId</span><span class="symbol">:</span>&nbsp;<span class="identifier">Id</span><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">,</span>&nbsp;<a href="../-customers/index.html"><span class="identifier">Customers</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier" id="com.hendraanggrian.openpss.db.schemas.Invoice$<init>(kotlin.Int, kotlinx.nosql.Id((kotlin.String, com.hendraanggrian.openpss.db.schemas.Employees)), kotlinx.nosql.Id((kotlin.String, com.hendraanggrian.openpss.db.schemas.Customers)), org.joda.time.DateTime, kotlin.collections.List((com.hendraanggrian.openpss.db.schemas.Invoice.OffsetJob)), kotlin.collections.List((com.hendraanggrian.openpss.db.schemas.Invoice.DigitalJob)), kotlin.collections.List((com.hendraanggrian.openpss.db.schemas.Invoice.PlateJob)), kotlin.collections.List((com.hendraanggrian.openpss.db.schemas.Invoice.OtherJob)), kotlin.String, kotlin.Boolean, kotlin.Boolean, kotlin.Boolean)/dateTime">dateTime</span><span class="symbol">:</span>&nbsp;<span class="identifier">DateTime</span><span class="symbol">, </span><span class="identifier" id="com.hendraanggrian.openpss.db.schemas.Invoice$<init>(kotlin.Int, kotlinx.nosql.Id((kotlin.String, com.hendraanggrian.openpss.db.schemas.Employees)), kotlinx.nosql.Id((kotlin.String, com.hendraanggrian.openpss.db.schemas.Customers)), org.joda.time.DateTime, kotlin.collections.List((com.hendraanggrian.openpss.db.schemas.Invoice.OffsetJob)), kotlin.collections.List((com.hendraanggrian.openpss.db.schemas.Invoice.DigitalJob)), kotlin.collections.List((com.hendraanggrian.openpss.db.schemas.Invoice.PlateJob)), kotlin.collections.List((com.hendraanggrian.openpss.db.schemas.Invoice.OtherJob)), kotlin.String, kotlin.Boolean, kotlin.Boolean, kotlin.Boolean)/offsetJobs">offsetJobs</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="-offset-job/index.html"><span class="identifier">OffsetJob</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier" id="com.hendraanggrian.openpss.db.schemas.Invoice$<init>(kotlin.Int, kotlinx.nosql.Id((kotlin.String, com.hendraanggrian.openpss.db.schemas.Employees)), kotlinx.nosql.Id((kotlin.String, com.hendraanggrian.openpss.db.schemas.Customers)), org.joda.time.DateTime, kotlin.collections.List((com.hendraanggrian.openpss.db.schemas.Invoice.OffsetJob)), kotlin.collections.List((com.hendraanggrian.openpss.db.schemas.Invoice.DigitalJob)), kotlin.collections.List((com.hendraanggrian.openpss.db.schemas.Invoice.PlateJob)), kotlin.collections.List((com.hendraanggrian.openpss.db.schemas.Invoice.OtherJob)), kotlin.String, kotlin.Boolean, kotlin.Boolean, kotlin.Boolean)/digitalJobs">digitalJobs</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="-digital-job/index.html"><span class="identifier">DigitalJob</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier" id="com.hendraanggrian.openpss.db.schemas.Invoice$<init>(kotlin.Int, kotlinx.nosql.Id((kotlin.String, com.hendraanggrian.openpss.db.schemas.Employees)), kotlinx.nosql.Id((kotlin.String, com.hendraanggrian.openpss.db.schemas.Customers)), org.joda.time.DateTime, kotlin.collections.List((com.hendraanggrian.openpss.db.schemas.Invoice.OffsetJob)), kotlin.collections.List((com.hendraanggrian.openpss.db.schemas.Invoice.DigitalJob)), kotlin.collections.List((com.hendraanggrian.openpss.db.schemas.Invoice.PlateJob)), kotlin.collections.List((com.hendraanggrian.openpss.db.schemas.Invoice.OtherJob)), kotlin.String, kotlin.Boolean, kotlin.Boolean, kotlin.Boolean)/plateJobs">plateJobs</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="-plate-job/index.html"><span class="identifier">PlateJob</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier" id="com.hendraanggrian.openpss.db.schemas.Invoice$<init>(kotlin.Int, kotlinx.nosql.Id((kotlin.String, com.hendraanggrian.openpss.db.schemas.Employees)), kotlinx.nosql.Id((kotlin.String, com.hendraanggrian.openpss.db.schemas.Customers)), org.joda.time.DateTime, kotlin.collections.List((com.hendraanggrian.openpss.db.schemas.Invoice.OffsetJob)), kotlin.collections.List((com.hendraanggrian.openpss.db.schemas.Invoice.DigitalJob)), kotlin.collections.List((com.hendraanggrian.openpss.db.schemas.Invoice.PlateJob)), kotlin.collections.List((com.hendraanggrian.openpss.db.schemas.Invoice.OtherJob)), kotlin.String, kotlin.Boolean, kotlin.Boolean, kotlin.Boolean)/otherJobs">otherJobs</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="-other-job/index.html"><span class="identifier">OtherJob</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier" id="com.hendraanggrian.openpss.db.schemas.Invoice$<init>(kotlin.Int, kotlinx.nosql.Id((kotlin.String, com.hendraanggrian.openpss.db.schemas.Employees)), kotlinx.nosql.Id((kotlin.String, com.hendraanggrian.openpss.db.schemas.Customers)), org.joda.time.DateTime, kotlin.collections.List((com.hendraanggrian.openpss.db.schemas.Invoice.OffsetJob)), kotlin.collections.List((com.hendraanggrian.openpss.db.schemas.Invoice.DigitalJob)), kotlin.collections.List((com.hendraanggrian.openpss.db.schemas.Invoice.PlateJob)), kotlin.collections.List((com.hendraanggrian.openpss.db.schemas.Invoice.OtherJob)), kotlin.String, kotlin.Boolean, kotlin.Boolean, kotlin.Boolean)/note">note</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.hendraanggrian.openpss.db.schemas.Invoice$<init>(kotlin.Int, kotlinx.nosql.Id((kotlin.String, com.hendraanggrian.openpss.db.schemas.Employees)), kotlinx.nosql.Id((kotlin.String, com.hendraanggrian.openpss.db.schemas.Customers)), org.joda.time.DateTime, kotlin.collections.List((com.hendraanggrian.openpss.db.schemas.Invoice.OffsetJob)), kotlin.collections.List((com.hendraanggrian.openpss.db.schemas.Invoice.DigitalJob)), kotlin.collections.List((com.hendraanggrian.openpss.db.schemas.Invoice.PlateJob)), kotlin.collections.List((com.hendraanggrian.openpss.db.schemas.Invoice.OtherJob)), kotlin.String, kotlin.Boolean, kotlin.Boolean, kotlin.Boolean)/printed">printed</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">, </span><span class="identifier" id="com.hendraanggrian.openpss.db.schemas.Invoice$<init>(kotlin.Int, kotlinx.nosql.Id((kotlin.String, com.hendraanggrian.openpss.db.schemas.Employees)), kotlinx.nosql.Id((kotlin.String, com.hendraanggrian.openpss.db.schemas.Customers)), org.joda.time.DateTime, kotlin.collections.List((com.hendraanggrian.openpss.db.schemas.Invoice.OffsetJob)), kotlin.collections.List((com.hendraanggrian.openpss.db.schemas.Invoice.DigitalJob)), kotlin.collections.List((com.hendraanggrian.openpss.db.schemas.Invoice.PlateJob)), kotlin.collections.List((com.hendraanggrian.openpss.db.schemas.Invoice.OtherJob)), kotlin.String, kotlin.Boolean, kotlin.Boolean, kotlin.Boolean)/isPaid">isPaid</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">, </span><span class="identifier" id="com.hendraanggrian.openpss.db.schemas.Invoice$<init>(kotlin.Int, kotlinx.nosql.Id((kotlin.String, com.hendraanggrian.openpss.db.schemas.Employees)), kotlinx.nosql.Id((kotlin.String, com.hendraanggrian.openpss.db.schemas.Customers)), org.joda.time.DateTime, kotlin.collections.List((com.hendraanggrian.openpss.db.schemas.Invoice.OffsetJob)), kotlin.collections.List((com.hendraanggrian.openpss.db.schemas.Invoice.DigitalJob)), kotlin.collections.List((com.hendraanggrian.openpss.db.schemas.Invoice.PlateJob)), kotlin.collections.List((com.hendraanggrian.openpss.db.schemas.Invoice.OtherJob)), kotlin.String, kotlin.Boolean, kotlin.Boolean, kotlin.Boolean)/isDone">isDone</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">)</span></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="customer-id.html">customerId</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">customerId</span><span class="symbol">: </span><span class="identifier">Id</span><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">,</span>&nbsp;<a href="../-customers/index.html"><span class="identifier">Customers</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="date-time.html">dateTime</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">dateTime</span><span class="symbol">: </span><span class="identifier">DateTime</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="digital-jobs.html">digitalJobs</a></p>
+</td>
+<td>
+<code><span class="keyword">var </span><span class="identifier">digitalJobs</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="-digital-job/index.html"><span class="identifier">DigitalJob</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="employee-id.html">employeeId</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">employeeId</span><span class="symbol">: </span><span class="identifier">Id</span><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">,</span>&nbsp;<a href="../-employees/index.html"><span class="identifier">Employees</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="id.html">id</a></p>
+</td>
+<td>
+<code><span class="keyword">lateinit</span> <span class="keyword">var </span><span class="identifier">id</span><span class="symbol">: </span><span class="identifier">Id</span><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">,</span>&nbsp;<a href="../-invoices/index.html"><span class="identifier">Invoices</span></a><span class="symbol">&gt;</span></code>
+<p>NoSQL object identifier.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="is-done.html">isDone</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">isDone</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="is-paid.html">isPaid</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">isPaid</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="jobs.html">jobs</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">jobs</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="-job/index.html"><span class="identifier">Job</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="no.html">no</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">no</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code>
+<p>Since <code>id</code> is reserved in <a href="../../com.hendraanggrian.openpss.db/-document/index.html">Document</a>, <code>no</code> is direct replacement.
+Basically means the same thing.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="note.html">note</a></p>
+</td>
+<td>
+<code><span class="keyword">var </span><span class="identifier">note</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="offset-jobs.html">offsetJobs</a></p>
+</td>
+<td>
+<code><span class="keyword">var </span><span class="identifier">offsetJobs</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="-offset-job/index.html"><span class="identifier">OffsetJob</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="other-jobs.html">otherJobs</a></p>
+</td>
+<td>
+<code><span class="keyword">var </span><span class="identifier">otherJobs</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="-other-job/index.html"><span class="identifier">OtherJob</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="plate-jobs.html">plateJobs</a></p>
+</td>
+<td>
+<code><span class="keyword">var </span><span class="identifier">plateJobs</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="-plate-job/index.html"><span class="identifier">PlateJob</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="printed.html">printed</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">printed</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="total.html">total</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">total</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html"><span class="identifier">Double</span></a></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Companion Object Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="new.html">new</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">new</span><span class="symbol">(</span><span class="identifier" id="com.hendraanggrian.openpss.db.schemas.Invoice.Companion$new(kotlinx.nosql.Id((kotlin.String, com.hendraanggrian.openpss.db.schemas.Employees)), kotlinx.nosql.Id((kotlin.String, com.hendraanggrian.openpss.db.schemas.Customers)), org.joda.time.DateTime, kotlin.collections.List((com.hendraanggrian.openpss.db.schemas.Invoice.OffsetJob)), kotlin.collections.List((com.hendraanggrian.openpss.db.schemas.Invoice.DigitalJob)), kotlin.collections.List((com.hendraanggrian.openpss.db.schemas.Invoice.PlateJob)), kotlin.collections.List((com.hendraanggrian.openpss.db.schemas.Invoice.OtherJob)), kotlin.String)/employeeId">employeeId</span><span class="symbol">:</span>&nbsp;<span class="identifier">Id</span><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">,</span>&nbsp;<a href="../-employees/index.html"><span class="identifier">Employees</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier" id="com.hendraanggrian.openpss.db.schemas.Invoice.Companion$new(kotlinx.nosql.Id((kotlin.String, com.hendraanggrian.openpss.db.schemas.Employees)), kotlinx.nosql.Id((kotlin.String, com.hendraanggrian.openpss.db.schemas.Customers)), org.joda.time.DateTime, kotlin.collections.List((com.hendraanggrian.openpss.db.schemas.Invoice.OffsetJob)), kotlin.collections.List((com.hendraanggrian.openpss.db.schemas.Invoice.DigitalJob)), kotlin.collections.List((com.hendraanggrian.openpss.db.schemas.Invoice.PlateJob)), kotlin.collections.List((com.hendraanggrian.openpss.db.schemas.Invoice.OtherJob)), kotlin.String)/customerId">customerId</span><span class="symbol">:</span>&nbsp;<span class="identifier">Id</span><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">,</span>&nbsp;<a href="../-customers/index.html"><span class="identifier">Customers</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier" id="com.hendraanggrian.openpss.db.schemas.Invoice.Companion$new(kotlinx.nosql.Id((kotlin.String, com.hendraanggrian.openpss.db.schemas.Employees)), kotlinx.nosql.Id((kotlin.String, com.hendraanggrian.openpss.db.schemas.Customers)), org.joda.time.DateTime, kotlin.collections.List((com.hendraanggrian.openpss.db.schemas.Invoice.OffsetJob)), kotlin.collections.List((com.hendraanggrian.openpss.db.schemas.Invoice.DigitalJob)), kotlin.collections.List((com.hendraanggrian.openpss.db.schemas.Invoice.PlateJob)), kotlin.collections.List((com.hendraanggrian.openpss.db.schemas.Invoice.OtherJob)), kotlin.String)/dateTime">dateTime</span><span class="symbol">:</span>&nbsp;<span class="identifier">DateTime</span><span class="symbol">, </span><span class="identifier" id="com.hendraanggrian.openpss.db.schemas.Invoice.Companion$new(kotlinx.nosql.Id((kotlin.String, com.hendraanggrian.openpss.db.schemas.Employees)), kotlinx.nosql.Id((kotlin.String, com.hendraanggrian.openpss.db.schemas.Customers)), org.joda.time.DateTime, kotlin.collections.List((com.hendraanggrian.openpss.db.schemas.Invoice.OffsetJob)), kotlin.collections.List((com.hendraanggrian.openpss.db.schemas.Invoice.DigitalJob)), kotlin.collections.List((com.hendraanggrian.openpss.db.schemas.Invoice.PlateJob)), kotlin.collections.List((com.hendraanggrian.openpss.db.schemas.Invoice.OtherJob)), kotlin.String)/offsetJobs">offsetJobs</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="-offset-job/index.html"><span class="identifier">OffsetJob</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier" id="com.hendraanggrian.openpss.db.schemas.Invoice.Companion$new(kotlinx.nosql.Id((kotlin.String, com.hendraanggrian.openpss.db.schemas.Employees)), kotlinx.nosql.Id((kotlin.String, com.hendraanggrian.openpss.db.schemas.Customers)), org.joda.time.DateTime, kotlin.collections.List((com.hendraanggrian.openpss.db.schemas.Invoice.OffsetJob)), kotlin.collections.List((com.hendraanggrian.openpss.db.schemas.Invoice.DigitalJob)), kotlin.collections.List((com.hendraanggrian.openpss.db.schemas.Invoice.PlateJob)), kotlin.collections.List((com.hendraanggrian.openpss.db.schemas.Invoice.OtherJob)), kotlin.String)/digitalJobs">digitalJobs</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="-digital-job/index.html"><span class="identifier">DigitalJob</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier" id="com.hendraanggrian.openpss.db.schemas.Invoice.Companion$new(kotlinx.nosql.Id((kotlin.String, com.hendraanggrian.openpss.db.schemas.Employees)), kotlinx.nosql.Id((kotlin.String, com.hendraanggrian.openpss.db.schemas.Customers)), org.joda.time.DateTime, kotlin.collections.List((com.hendraanggrian.openpss.db.schemas.Invoice.OffsetJob)), kotlin.collections.List((com.hendraanggrian.openpss.db.schemas.Invoice.DigitalJob)), kotlin.collections.List((com.hendraanggrian.openpss.db.schemas.Invoice.PlateJob)), kotlin.collections.List((com.hendraanggrian.openpss.db.schemas.Invoice.OtherJob)), kotlin.String)/plateJobs">plateJobs</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="-plate-job/index.html"><span class="identifier">PlateJob</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier" id="com.hendraanggrian.openpss.db.schemas.Invoice.Companion$new(kotlinx.nosql.Id((kotlin.String, com.hendraanggrian.openpss.db.schemas.Employees)), kotlinx.nosql.Id((kotlin.String, com.hendraanggrian.openpss.db.schemas.Customers)), org.joda.time.DateTime, kotlin.collections.List((com.hendraanggrian.openpss.db.schemas.Invoice.OffsetJob)), kotlin.collections.List((com.hendraanggrian.openpss.db.schemas.Invoice.DigitalJob)), kotlin.collections.List((com.hendraanggrian.openpss.db.schemas.Invoice.PlateJob)), kotlin.collections.List((com.hendraanggrian.openpss.db.schemas.Invoice.OtherJob)), kotlin.String)/otherJobs">otherJobs</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="-other-job/index.html"><span class="identifier">OtherJob</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier" id="com.hendraanggrian.openpss.db.schemas.Invoice.Companion$new(kotlinx.nosql.Id((kotlin.String, com.hendraanggrian.openpss.db.schemas.Employees)), kotlinx.nosql.Id((kotlin.String, com.hendraanggrian.openpss.db.schemas.Customers)), org.joda.time.DateTime, kotlin.collections.List((com.hendraanggrian.openpss.db.schemas.Invoice.OffsetJob)), kotlin.collections.List((com.hendraanggrian.openpss.db.schemas.Invoice.DigitalJob)), kotlin.collections.List((com.hendraanggrian.openpss.db.schemas.Invoice.PlateJob)), kotlin.collections.List((com.hendraanggrian.openpss.db.schemas.Invoice.OtherJob)), kotlin.String)/note">note</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">Invoice</span></a></code></td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

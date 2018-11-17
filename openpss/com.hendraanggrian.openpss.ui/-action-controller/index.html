@@ -1,0 +1,161 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>ActionController - openpss</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">openpss</a>&nbsp;/&nbsp;<a href="../index.html">com.hendraanggrian.openpss.ui</a>&nbsp;/&nbsp;<a href="./index.html">ActionController</a><br/>
+<br/>
+<h1>ActionController</h1>
+<code><span class="keyword">open</span> <span class="keyword">class </span><span class="identifier">ActionController</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../-controller/index.html"><span class="identifier">Controller</span></a></code>
+<h3>Constructors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-init-.html">&lt;init&gt;</a></p>
+</td>
+<td>
+<code><span class="identifier">ActionController</span><span class="symbol">(</span><span class="symbol">)</span></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="actions.html">actions</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">actions</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html"><span class="identifier">MutableList</span></a><span class="symbol">&lt;</span><span class="identifier">Node</span><span class="symbol">&gt;</span></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Inherited Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="../-controller/color-resources.html">colorResources</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">val </span><span class="identifier">colorResources</span><span class="symbol">: </span><a href="http://docs.oracle.com/javase/6/docs/api/java/util/Properties.html"><span class="identifier">Properties</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../-controller/dimen-resources.html">dimenResources</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">val </span><span class="identifier">dimenResources</span><span class="symbol">: </span><a href="http://docs.oracle.com/javase/6/docs/api/java/util/Properties.html"><span class="identifier">Properties</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../-controller/login.html">login</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">lateinit</span> <span class="keyword">var </span><span class="identifier">login</span><span class="symbol">: </span><a href="../../com.hendraanggrian.openpss.db.schemas/-employee/index.html"><span class="identifier">Employee</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../-controller/resource-bundle.html">resourceBundle</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">lateinit</span> <span class="keyword">var </span><span class="identifier">resourceBundle</span><span class="symbol">: </span><a href="http://docs.oracle.com/javase/6/docs/api/java/util/ResourceBundle.html"><span class="identifier">ResourceBundle</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../-controller/root.html">root</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">lateinit</span> <span class="keyword">var </span><span class="identifier">root</span><span class="symbol">: </span><span class="identifier">StackPane</span></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="initialize.html">initialize</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">initialize</span><span class="symbol">(</span><span class="identifier" id="com.hendraanggrian.openpss.ui.ActionController$initialize(java.net.URL, java.util.ResourceBundle)/location">location</span><span class="symbol">:</span>&nbsp;<a href="http://docs.oracle.com/javase/6/docs/api/java/net/URL.html"><span class="identifier">URL</span></a><span class="symbol">, </span><span class="identifier" id="com.hendraanggrian.openpss.ui.ActionController$initialize(java.net.URL, java.util.ResourceBundle)/resources">resources</span><span class="symbol">:</span>&nbsp;<a href="http://docs.oracle.com/javase/6/docs/api/java/util/ResourceBundle.html"><span class="identifier">ResourceBundle</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="on-create-actions.html">onCreateActions</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">NodeInvokable</span><span class="symbol">.</span><span class="identifier">onCreateActions</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Override this function to add actions.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Inherited Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="../-controller/add-extra.html">addExtra</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">addExtra</span><span class="symbol">(</span><span class="identifier" id="com.hendraanggrian.openpss.ui.Controller$addExtra(kotlin.String, kotlin.Any)/key">key</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.hendraanggrian.openpss.ui.Controller$addExtra(kotlin.String, kotlin.Any)/value">value</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../-controller/index.html"><span class="identifier">Controller</span></a></code>
+<p>Register extra <a href="../-controller/add-extra.html#com.hendraanggrian.openpss.ui.Controller$addExtra(kotlin.String, kotlin.Any)/value">value</a> with <a href="../-controller/add-extra.html#com.hendraanggrian.openpss.ui.Controller$addExtra(kotlin.String, kotlin.Any)/key">key</a>.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-controller/get-extra.html">getExtra</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">&gt;</span> <span class="identifier">getExtra</span><span class="symbol">(</span><span class="identifier" id="com.hendraanggrian.openpss.ui.Controller$getExtra(kotlin.String)/key">key</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../-controller/get-extra.html#T"><span class="identifier">T</span></a></code>
+<p>Get extra registered with <a href="../-controller/get-extra.html#com.hendraanggrian.openpss.ui.Controller$getExtra(kotlin.String)/key">key</a>, should be executed in platform thread.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Inheritors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="../../com.hendraanggrian.openpss.ui.customer/-customer-controller/index.html">CustomerController</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">CustomerController</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">ActionController</span></a><span class="symbol">, </span><a href="../-refreshable/index.html"><span class="identifier">Refreshable</span></a><span class="symbol">, </span><a href="../-selectable/index.html"><span class="identifier">Selectable</span></a><span class="symbol">&lt;</span><a href="../../com.hendraanggrian.openpss.db.schemas/-customer/index.html"><span class="identifier">Customer</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><a href="../-selectable2/index.html"><span class="identifier">Selectable2</span></a><span class="symbol">&lt;</span><a href="../../com.hendraanggrian.openpss.db.schemas/-customer/-contact/index.html"><span class="identifier">Contact</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../../com.hendraanggrian.openpss.ui.finance/-finance-controller/index.html">FinanceController</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">FinanceController</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">ActionController</span></a><span class="symbol">, </span><a href="../-refreshable/index.html"><span class="identifier">Refreshable</span></a><span class="symbol">, </span><a href="../-selectable/index.html"><span class="identifier">Selectable</span></a><span class="symbol">&lt;</span><span class="identifier">Tab</span><span class="symbol">&gt;</span><span class="symbol">, </span><a href="../-selectable2/index.html"><span class="identifier">Selectable2</span></a><span class="symbol">&lt;</span><a href="../../com.hendraanggrian.openpss.db.schemas/-payment/index.html"><span class="identifier">Payment</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><a href="../-selectable3/index.html"><span class="identifier">Selectable3</span></a><span class="symbol">&lt;</span><a href="../../com.hendraanggrian.openpss.ui.finance/-report/index.html"><span class="identifier">Report</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../../com.hendraanggrian.openpss.ui.invoice/-invoice-controller/index.html">InvoiceController</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">InvoiceController</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">ActionController</span></a><span class="symbol">, </span><a href="../-refreshable/index.html"><span class="identifier">Refreshable</span></a><span class="symbol">, </span><a href="../-selectable/index.html"><span class="identifier">Selectable</span></a><span class="symbol">&lt;</span><a href="../../com.hendraanggrian.openpss.db.schemas/-invoice/index.html"><span class="identifier">Invoice</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><a href="../-selectable2/index.html"><span class="identifier">Selectable2</span></a><span class="symbol">&lt;</span><a href="../../com.hendraanggrian.openpss.db.schemas/-payment/index.html"><span class="identifier">Payment</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../../com.hendraanggrian.openpss.ui.schedule/-schedule-controller/index.html">ScheduleController</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">ScheduleController</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">ActionController</span></a><span class="symbol">, </span><a href="../-refreshable/index.html"><span class="identifier">Refreshable</span></a><span class="symbol">, </span><a href="../-tree-selectable/index.html"><span class="identifier">TreeSelectable</span></a><span class="symbol">&lt;</span><a href="../../com.hendraanggrian.openpss.ui.schedule/-schedule/index.html"><span class="identifier">Schedule</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../../com.hendraanggrian.openpss.ui.wage/-wage-controller/index.html">WageController</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">WageController</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">ActionController</span></a></code></td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

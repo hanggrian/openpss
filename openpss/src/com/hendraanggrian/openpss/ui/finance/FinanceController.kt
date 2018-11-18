@@ -107,10 +107,10 @@ class FinanceController : ActionController(), Refreshable {
                 .otherwise(monthBox)
         )
 
-        dailyNoColumn.numberCell { transaction { Invoices[invoiceId].single().no } }
+        dailyNoColumn.numberCell(this) { transaction { Invoices[invoiceId].single().no } }
         dailyTimeColumn.stringCell { dateTime.toString(PATTERN_TIME) }
         dailyEmployeeColumn.stringCell { transaction { Employees[employeeId].single().toString() } }
-        dailyValueColumn.currencyCell { value }
+        dailyValueColumn.currencyCell(this) { value }
         dailyCashColumn.doneCell { isCash() }
         dailyReferenceColumn.stringCell { reference }
         viewInvoiceItem.disableProperty().bind(dailyTable.selectionModel.selectedItemProperty().isNull)
@@ -121,9 +121,9 @@ class FinanceController : ActionController(), Refreshable {
         }
 
         monthlyDateColumn.stringCell { date.toString(PATTERN_DATE) }
-        monthlyCashColumn.currencyCell { cash }
-        monthlyNonCashColumn.currencyCell { nonCash }
-        monthlyTotalColumn.currencyCell { total }
+        monthlyCashColumn.currencyCell(this) { cash }
+        monthlyNonCashColumn.currencyCell(this) { nonCash }
+        monthlyTotalColumn.currencyCell(this) { total }
         viewPaymentsItem.disableProperty().bind(monthlyTable.selectionModel.selectedItemProperty().isNull)
         monthlyTable.onMouseClicked {
             if (it.isDoubleClick() && monthlyTable.selectionModel.isSelected()) {

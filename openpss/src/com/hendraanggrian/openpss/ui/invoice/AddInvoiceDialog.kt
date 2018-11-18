@@ -3,7 +3,6 @@ package com.hendraanggrian.openpss.ui.invoice
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.Context
 import com.hendraanggrian.openpss.content.PATTERN_DATE
-import com.hendraanggrian.openpss.content.currencyConverter
 import com.hendraanggrian.openpss.db.dbDateTime
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Invoice
@@ -100,13 +99,21 @@ class AddInvoiceDialog(
                     offsetTable = invoiceTableView({ AddOffsetJobPopover(this@AddInvoiceDialog) }) {
                         bindTitle(this, R.string.offset)
                         columns {
-                            column<Invoice.OffsetJob, String>(R.string.qty, 72) { numberCell { qty } }
-                            column<Invoice.OffsetJob, String>(R.string.type, 72) { stringCell { type } }
+                            column<Invoice.OffsetJob, String>(R.string.qty, 72) {
+                                numberCell(this@AddInvoiceDialog) { qty }
+                            }
+                            column<Invoice.OffsetJob, String>(R.string.type, 72) {
+                                stringCell { type }
+                            }
                             column<Invoice.OffsetJob, String>(R.string.technique, 72) {
                                 stringCell { typedTechnique.toString(this@AddInvoiceDialog) }
                             }
-                            column<Invoice.OffsetJob, String>(R.string.description, 192) { stringCell { desc } }
-                            column<Invoice.OffsetJob, String>(R.string.total, 156) { currencyCell { total } }
+                            column<Invoice.OffsetJob, String>(R.string.description, 192) {
+                                stringCell { desc }
+                            }
+                            column<Invoice.OffsetJob, String>(R.string.total, 156) {
+                                currencyCell(this@AddInvoiceDialog) { total }
+                            }
                         }
                     }
                 }
@@ -114,10 +121,18 @@ class AddInvoiceDialog(
                     digitalTable = invoiceTableView({ AddDigitalJobPopover(this@AddInvoiceDialog) }) {
                         bindTitle(this, R.string.digital)
                         columns {
-                            column<Invoice.DigitalJob, String>(R.string.qty, 72) { numberCell { qty } }
-                            column<Invoice.DigitalJob, String>(R.string.type, 72) { stringCell { type } }
-                            column<Invoice.DigitalJob, String>(R.string.description, 264) { stringCell { desc } }
-                            column<Invoice.DigitalJob, String>(R.string.total, 156) { currencyCell { total } }
+                            column<Invoice.DigitalJob, String>(R.string.qty, 72) {
+                                numberCell(this@AddInvoiceDialog) { qty }
+                            }
+                            column<Invoice.DigitalJob, String>(R.string.type, 72) {
+                                stringCell { type }
+                            }
+                            column<Invoice.DigitalJob, String>(R.string.description, 264) {
+                                stringCell { desc }
+                            }
+                            column<Invoice.DigitalJob, String>(R.string.total, 156) {
+                                currencyCell(this@AddInvoiceDialog) { total }
+                            }
                         }
                     }
                 }
@@ -125,10 +140,18 @@ class AddInvoiceDialog(
                     plateTable = invoiceTableView({ AddPlateJobPopover(this@AddInvoiceDialog) }) {
                         bindTitle(this, R.string.plate)
                         columns {
-                            column<Invoice.PlateJob, String>(R.string.qty, 72) { numberCell { qty } }
-                            column<Invoice.PlateJob, String>(R.string.type, 72) { stringCell { type } }
-                            column<Invoice.PlateJob, String>(R.string.description, 264) { stringCell { desc } }
-                            column<Invoice.PlateJob, String>(R.string.total, 156) { currencyCell { total } }
+                            column<Invoice.PlateJob, String>(R.string.qty, 72) {
+                                numberCell(this@AddInvoiceDialog) { qty }
+                            }
+                            column<Invoice.PlateJob, String>(R.string.type, 72) {
+                                stringCell { type }
+                            }
+                            column<Invoice.PlateJob, String>(R.string.description, 264) {
+                                stringCell { desc }
+                            }
+                            column<Invoice.PlateJob, String>(R.string.total, 156) {
+                                currencyCell(this@AddInvoiceDialog) { total }
+                            }
                         }
                     }
                 }
@@ -136,9 +159,15 @@ class AddInvoiceDialog(
                     otherTable = invoiceTableView({ AddOtherJobPopover(this@AddInvoiceDialog) }) {
                         bindTitle(this, R.string.others)
                         columns {
-                            column<Invoice.OtherJob, String>(R.string.qty, 72) { numberCell { qty } }
-                            column<Invoice.OtherJob, String>(R.string.description, 336) { stringCell { desc } }
-                            column<Invoice.OtherJob, String>(R.string.total, 156) { currencyCell { total } }
+                            column<Invoice.OtherJob, String>(R.string.qty, 72) {
+                                numberCell(this@AddInvoiceDialog) { qty }
+                            }
+                            column<Invoice.OtherJob, String>(R.string.description, 336) {
+                                stringCell { desc }
+                            }
+                            column<Invoice.OtherJob, String>(R.string.total, 156) {
+                                currencyCell(this@AddInvoiceDialog) { total }
+                            }
                         }
                     }
                 }

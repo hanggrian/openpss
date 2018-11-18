@@ -157,7 +157,7 @@ class InvoiceController : ActionController(), Refreshable {
                             getString(R.string.customer)<String> {
                                 stringCell { transaction { Customers[customerId].single().toString() } }
                             }
-                            getString(R.string.total)<String> { currencyCell { total } }
+                            getString(R.string.total)<String> { currencyCell(this@InvoiceController) { total } }
                             getString(R.string.print)<Boolean> { doneCell { printed } }
                             getString(R.string.paid)<Boolean> { doneCell { isPaid } }
                             getString(R.string.done)<Boolean> { doneCell { isDone } }
@@ -191,7 +191,7 @@ class InvoiceController : ActionController(), Refreshable {
                                     stringCell { transaction { Employees[employeeId].single().toString() } }
                                 }
                                 getString(R.string.value)<String> {
-                                    currencyCell { value }
+                                    currencyCell(this@InvoiceController) { value }
                                 }
                                 getString(R.string.cash)<Boolean> {
                                     doneCell { isCash() }

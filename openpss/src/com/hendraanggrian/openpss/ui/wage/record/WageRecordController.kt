@@ -5,14 +5,12 @@ import com.hendraanggrian.openpss.content.PATTERN_DATE
 import com.hendraanggrian.openpss.content.PATTERN_DATETIME
 import com.hendraanggrian.openpss.content.PATTERN_TIME
 import com.hendraanggrian.openpss.content.STYLESHEET_PRINT_TREETABLEVIEW
-import com.hendraanggrian.openpss.content.currencyConverter
-import com.hendraanggrian.openpss.content.numberConverter
 import com.hendraanggrian.openpss.content.trimMinutes
 import com.hendraanggrian.openpss.control.UncollapsibleTreeItem
-import com.hendraanggrian.openpss.popup.popover.DatePopover
-import com.hendraanggrian.openpss.popup.popover.TimePopover
 import com.hendraanggrian.openpss.io.WageDirectory
 import com.hendraanggrian.openpss.io.WageFile
+import com.hendraanggrian.openpss.popup.popover.DatePopover
+import com.hendraanggrian.openpss.popup.popover.TimePopover
 import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.wage.Attendee
 import com.hendraanggrian.openpss.ui.wage.record.Record.Companion.getDummy

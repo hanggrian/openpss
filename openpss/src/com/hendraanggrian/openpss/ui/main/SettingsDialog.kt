@@ -3,7 +3,6 @@ package com.hendraanggrian.openpss.ui.main
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.Context
 import com.hendraanggrian.openpss.content.Language
-import com.hendraanggrian.openpss.content.clearConverters
 import com.hendraanggrian.openpss.control.Space
 import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_INVOICE_HEADERS
 import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_LANGUAGE

@@ -4,8 +4,6 @@ import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.Context
 import com.hendraanggrian.openpss.content.Language
 import com.hendraanggrian.openpss.content.PATTERN_DATETIME_EXTENDED
-import com.hendraanggrian.openpss.content.currencyConverter
-import com.hendraanggrian.openpss.content.numberConverter
 import com.hendraanggrian.openpss.control.Space
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Customers

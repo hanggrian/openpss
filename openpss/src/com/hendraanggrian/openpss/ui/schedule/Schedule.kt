@@ -2,7 +2,6 @@ package com.hendraanggrian.openpss.ui.schedule
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.Context
-import com.hendraanggrian.openpss.content.numberConverter
 import com.hendraanggrian.openpss.db.schemas.Invoice
 import javafx.collections.ObservableList
 import ktfx.collections.mutableObservableListOf
@@ -16,14 +15,6 @@ data class Schedule(
     val type: String = ""
 ) {
 
-    constructor(
-        invoice: Invoice,
-        firstColumn: String,
-        title: String,
-        qty: Int,
-        type: String = ""
-    ) : this(invoice, firstColumn, title, numberConverter(qty), type)
-
     companion object {
 
         fun of(context: Context, invoice: Invoice): ObservableList<Schedule> {
@@ -33,7 +24,7 @@ data class Schedule(
                     invoice,
                     context.getString(R.string.offset),
                     it.desc,
-                    it.qty,
+                    context.numberConverter(it.qty),
                     "${it.type} (${it.typedTechnique.toString(context)})"
                 )
             }
@@ -42,7 +33,7 @@ data class Schedule(
                     invoice,
                     context.getString(R.string.digital),
                     it.desc,
-                    it.qty,
+                    context.numberConverter(it.qty),
                     when {
                         it.isTwoSide -> "${it.type} (${context.getString(R.string.two_side)})"
                         else -> it.type
@@ -50,10 +41,21 @@ data class Schedule(
                 )
             }
             invoice.plateJobs.forEach {
-                schedules += Schedule(invoice, context.getString(R.string.plate), it.desc, it.qty, it.type)
+                schedules += Schedule(
+                    invoice,
+                    context.getString(R.string.plate),
+                    it.desc,
+                    context.numberConverter(it.qty),
+                    it.type
+                )
             }
             invoice.otherJobs.forEach {
-                schedules += Schedule(invoice, context.getString(R.string.others), it.desc, it.qty)
+                schedules += Schedule(
+                    invoice,
+                    context.getString(R.string.others),
+                    it.desc,
+                    context.numberConverter(it.qty)
+                )
             }
             return schedules
         }

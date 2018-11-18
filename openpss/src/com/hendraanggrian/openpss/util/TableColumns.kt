@@ -3,8 +3,7 @@
 package com.hendraanggrian.openpss.util
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.content.currencyConverter
-import com.hendraanggrian.openpss.content.numberConverter
+import com.hendraanggrian.openpss.content.Context
 import javafx.scene.control.Control
 import javafx.scene.control.TableCell
 import javafx.scene.control.TableColumn
@@ -40,14 +39,14 @@ fun <T> TableColumn<T, Boolean>.doneCell(size: Int = 64, target: T.() -> Boolean
 fun <T> TableColumn<T, String>.stringCell(target: T.() -> String?) =
     setCellValueFactory { it.value.target().orEmpty().asProperty() }
 
-fun <T> TableColumn<T, String>.numberCell(target: T.() -> Int) {
+fun <T> TableColumn<T, String>.numberCell(context: Context, target: T.() -> Int) {
     style = "-fx-alignment: center-right;"
-    setCellValueFactory { numberConverter(it.value.target()).asProperty() }
+    setCellValueFactory { context.numberConverter(it.value.target()).asProperty() }
 }
 
-fun <T> TableColumn<T, String>.currencyCell(target: T.() -> Double) {
+fun <T> TableColumn<T, String>.currencyCell(context: Context, target: T.() -> Double) {
     style = "-fx-alignment: center-right;"
-    setCellValueFactory { currencyConverter(it.value.target()).asProperty() }
+    setCellValueFactory { context.currencyConverter(it.value.target()).asProperty() }
 }
 
 fun <S> TableColumn<S, String>.wrapText() = setCellFactory {

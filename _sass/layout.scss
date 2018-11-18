@@ -199,19 +199,19 @@ blockquote {
 }
 
 footer {
-	background: black;
+	background: #131313;
 
 	padding: 40px 0;
 
 	&, p, a {
-		color: #fff;
+		color: white;
 	}
 
 	a:hover {
-		color: #fff;
+		color: $brand-color;
 
 		svg {
-			fill: #fff;
+			fill: white;
 		}
 	}
 
@@ -225,7 +225,7 @@ footer {
 	}
 
 	svg {
-		fill: #fff;
+		fill: white;
 		height: 20px;
 		position: relative;
 		top: 4px;
@@ -235,7 +235,7 @@ footer {
 		text-decoration: none;
 
 		svg:hover {
-			fill: #fff;
+			fill: white;
 		}
 	}
 
@@ -260,15 +260,15 @@ footer {
 .copyright {
 	padding: 5px 0;
 	margin: 0;
-	background: black;
+	background: #131313;
 	text-align: center;
 	font-size: .8em;
 	a {
-		color: #fff;
+		color: $brand-color;
 		text-decoration: none;
 
 		&:hover {
-			color: #fff;
+			color: white;
 		}
 	}
 }
@@ -282,7 +282,7 @@ footer {
 		flex: 1;
 		border: 1px solid #eee;
 		margin: 0 0 50px 0;
-		background: #fff;
+		background: white;
 		border-radius: 3px;
 
 		@media #{$desktop} {
@@ -319,7 +319,6 @@ footer {
 }
 
 .post-title {
-
 	h3 {
 		margin: 0;
 	}

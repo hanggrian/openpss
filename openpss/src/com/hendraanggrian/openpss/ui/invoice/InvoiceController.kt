@@ -7,6 +7,7 @@ import com.hendraanggrian.openpss.control.DateBox
 import com.hendraanggrian.openpss.control.IntField
 import com.hendraanggrian.openpss.control.PaginatedPane
 import com.hendraanggrian.openpss.control.StretchableButton
+import com.hendraanggrian.openpss.control.Toolbar
 import com.hendraanggrian.openpss.db.SessionWrapper
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Customers
@@ -29,7 +30,6 @@ import com.hendraanggrian.openpss.util.matches
 import com.hendraanggrian.openpss.util.stringCell
 import javafx.beans.property.SimpleObjectProperty
 import javafx.fxml.FXML
-import javafx.geometry.Pos.CENTER
 import javafx.geometry.Side.BOTTOM
 import javafx.scene.Node
 import javafx.scene.control.Button
@@ -41,7 +41,6 @@ import javafx.scene.control.TableView.CONSTRAINED_RESIZE_POLICY
 import javafx.scene.control.TextField
 import javafx.scene.image.ImageView
 import javafx.scene.layout.HBox
-import javafx.scene.layout.Priority.ALWAYS
 import javafx.util.Callback
 import kotlinx.nosql.equal
 import kotlinx.nosql.update
@@ -60,12 +59,10 @@ import ktfx.coroutines.onMouseClicked
 import ktfx.layouts.NodeInvokable
 import ktfx.layouts.columns
 import ktfx.layouts.contextMenu
-import ktfx.layouts.hbox
-import ktfx.layouts.region
+import ktfx.layouts.label
 import ktfx.layouts.separatorMenuItem
 import ktfx.layouts.tableView
 import ktfx.scene.input.isDoubleClick
-import ktfx.scene.layout.paddingAll
 import org.joda.time.LocalDate
 import java.net.URL
 import java.util.ResourceBundle
@@ -172,23 +169,20 @@ class InvoiceController : ActionController(), Refreshable, Selectable<Invoice>, 
                             getString(R.string.done)<Boolean> { doneCell { isDone } }
                         }
                         onMouseClicked { if (it.isDoubleClick() && selected != null) viewInvoice() }
+                        titleProperty().bind(buildStringBinding(selectionModel.selectedItemProperty()) {
+                            Invoice.no(this@InvoiceController, selectionModel.selectedItem?.no)
+                        })
                     }
                     showDetailNodeProperty().bind(selectedBinding)
                     masterNode = invoiceTable
                     detailNode = ktfx.layouts.vbox {
-                        hbox(getDouble(R.dimen.padding_medium)) {
-                            alignment = CENTER
-                            paddingAll = getDouble(R.dimen.padding_medium)
-                            region() hpriority ALWAYS
-                            addPaymentButton = StretchableButton(
-                                STRETCH_POINT,
-                                getString(R.string.add_payment),
-                                ImageView(R.image.act_add)
-                            ).apply {
-                                disableProperty().bind(!selectedBinding)
-                                onAction { addPayment() }
-                            }()
-                        }
+                        Toolbar().apply {
+                            leftItems {
+                                label(getString(R.string.payment)) {
+                                    styleClass.addAll("bold", "accent")
+                                }
+                            }
+                        }()
                         paymentTable = tableView {
                             columnResizePolicy = TableView.CONSTRAINED_RESIZE_POLICY
                             columns {
@@ -215,6 +209,10 @@ class InvoiceController : ActionController(), Refreshable, Selectable<Invoice>, 
                                 }
                             })
                             contextMenu {
+                                getString(R.string.add)(ImageView(R.image.menu_add)) {
+                                    disableProperty().bind(!selectedBinding)
+                                    onAction { addPayment() }
+                                }
                                 getString(R.string.delete)(ImageView(R.image.menu_delete)) {
                                     disableProperty().bind(!this@tableView.selectionModel.selectedItemProperty().isNotNull)
                                     onAction { deletePayment() }
@@ -289,7 +287,7 @@ class InvoiceController : ActionController(), Refreshable, Selectable<Invoice>, 
         }
     }.show()
 
-    private fun addPayment() = AddPaymentDialog(this, selected!!).show {
+    private fun addPayment() = AddPaymentPopover(this, selected!!).show(paymentTable) {
         (AddPaymentAction(this@InvoiceController, it!!, selected!!.no)) {
             updatePaymentStatus()
             reload(selected!!)

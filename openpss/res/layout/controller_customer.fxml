@@ -13,7 +13,7 @@
         <PaginatedPane fx:id="customerPagination" VBox.vgrow="ALWAYS" magic="26.5"/>
     </masterNode>
     <detailNode>
-        <GridPane hgap="20" vgap="20" styleClass="bordered, white-background">
+        <GridPane hgap="20" vgap="20" styleClass="bordered,white-background">
             <columnConstraints>
                 <ColumnConstraints hgrow="NEVER"/>
                 <ColumnConstraints hgrow="ALWAYS"/>

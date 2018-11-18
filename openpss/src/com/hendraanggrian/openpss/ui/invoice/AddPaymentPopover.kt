@@ -7,7 +7,7 @@ import com.hendraanggrian.openpss.control.DoubleField
 import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.db.schemas.Payment
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.popup.dialog.ResultableDialog
+import com.hendraanggrian.openpss.popup.popover.ResultablePopover
 import javafx.scene.Node
 import javafx.scene.control.CheckBox
 import javafx.scene.control.TextField
@@ -25,10 +25,10 @@ import ktfx.layouts.tooltip
 import ktfx.scene.layout.gap
 import ktfx.util.invoke
 
-class AddPaymentDialog(
+class AddPaymentPopover(
     context: Context,
     private val invoice: Invoice
-) : ResultableDialog<Payment>(context, R.string.add_payment) {
+) : ResultablePopover<Payment>(context, R.string.add_payment) {
 
     private lateinit var valueField: DoubleField
     private lateinit var cashBox: CheckBox

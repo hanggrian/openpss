@@ -142,7 +142,7 @@ class CustomerController : ActionController(), Refreshable, Selectable<Customer>
                         }
                     }
                 }
-                titleProperty.bind(buildStringBinding(selectionModel.selectedItemProperty()) {
+                titleProperty().bind(buildStringBinding(selectionModel.selectedItemProperty()) {
                     selectionModel.selectedItem?.name
                 })
                 noLabel.bindLabel { selected?.no?.toString().orEmpty() }

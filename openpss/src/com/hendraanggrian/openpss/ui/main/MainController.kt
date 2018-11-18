@@ -1,6 +1,7 @@
 package com.hendraanggrian.openpss.ui.main
 
 import com.hendraanggrian.openpss.App
+import com.hendraanggrian.openpss.BuildConfig
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.PATTERN_DATETIME
 import com.hendraanggrian.openpss.control.MarginedImageView
@@ -63,6 +64,7 @@ import ktfx.jfoenix.jfxSnackbar
 import ktfx.layouts.text
 import ktfx.layouts.textFlow
 import ktfx.listeners.cellFactory
+import ktfx.scene.stage
 import ktfx.scene.text.fontSize
 import org.apache.commons.lang3.SystemUtils
 import java.net.URL
@@ -131,6 +133,13 @@ class MainController : Controller(), Selectable<Tab>, Selectable2<Label>, Refres
             }
         }
 
+        later {
+            titleLabel.scene.stage.titleProperty().bind(buildStringBinding(
+                drawerList.selectionModel.selectedIndexProperty()
+            ) {
+                "${BuildConfig.NAME} - ${drawerList.selectionModel.selectedItem?.text}"
+            })
+        }
         titleLabel.textProperty().bind(buildStringBinding(
             tabPane.selectionModel.selectedIndexProperty(),
             *controllers.map { it.titleProperty() }.toTypedArray()

@@ -90,6 +90,8 @@ data class Invoice(
             Numbered.next(Invoices),
             employeeId, customerId, dateTime, offsetJobs, digitalJobs, plateJobs, otherJobs, note, false, false, false
         )
+
+        fun no(resources: Resources, no: Number?): String? = no?.let { "${resources.getString(R.string.invoice)} #$it" }
     }
 
     override lateinit var id: Id<String, Invoices>

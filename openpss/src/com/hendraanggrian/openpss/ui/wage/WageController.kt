@@ -91,10 +91,16 @@ class WageController : ActionController() {
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
+        titleProperty().bind(buildStringBinding(flowPane.children) {
+            when {
+                flowPane.children.isEmpty() -> null
+                else -> "${flowPane.children.size} ${getString(R.string.employee)}"
+            }
+        })
         titleLabel.textProperty().bind(buildStringBinding(flowPane.children) {
             when {
                 flowPane.children.isEmpty() -> getString(R.string._wage_record_empty)
-                else -> "$filePath (${flowPane.children.size} ${getString(R.string.employee)})"
+                else -> filePath
             }
         })
         disableRecessButton.disableProperty().bind(flowPane.children.isEmptyBinding)

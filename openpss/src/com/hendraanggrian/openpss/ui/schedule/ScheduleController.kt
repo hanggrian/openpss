@@ -6,6 +6,7 @@ import com.hendraanggrian.openpss.content.PATTERN_DATETIME_EXTENDED
 import com.hendraanggrian.openpss.control.StretchableButton
 import com.hendraanggrian.openpss.control.UncollapsibleTreeItem
 import com.hendraanggrian.openpss.db.schemas.Customers
+import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.db.schemas.Invoices
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.ui.ActionController
@@ -23,6 +24,7 @@ import javafx.scene.control.TreeTableView.TreeTableViewSelectionModel
 import javafx.scene.image.ImageView
 import kotlinx.nosql.equal
 import ktfx.application.later
+import ktfx.beans.binding.buildStringBinding
 import ktfx.beans.value.or
 import ktfx.collections.isEmptyBinding
 import ktfx.coroutines.listener
@@ -81,15 +83,16 @@ class ScheduleController : ActionController(), Refreshable, TreeSelectable<Sched
         super.initialize(location, resources)
         scheduleTable.run {
             root = TreeItem()
-            selectionModel.run {
-                selectionMode = MULTIPLE
-                selectedItemProperty().listener { _, _, value ->
-                    if (value != null) when {
-                        value.children.isEmpty() -> selectAll(value.parent)
-                        else -> selectAll(value)
-                    }
+            selectionModel.selectionMode = MULTIPLE
+            selectionModel.selectedItemProperty().listener { _, _, value ->
+                if (value != null) when {
+                    value.children.isEmpty() -> selectionModel.selectAll(value.parent)
+                    else -> selectionModel.selectAll(value)
                 }
             }
+            titleProperty().bind(buildStringBinding(selectionModel.selectedItemProperty()) {
+                Invoice.no(this@ScheduleController, selectionModel.selectedItem?.value?.invoice?.no)
+            })
         }
         jobType.stringCell { jobType }
         descColumn.stringCell { title }

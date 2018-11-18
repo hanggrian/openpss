@@ -11,7 +11,7 @@ import java.util.ResourceBundle
 
 open class ActionController : Controller() {
 
-    protected val titleProperty: StringProperty = SimpleStringProperty(null)
+    private val titleProperty: StringProperty = SimpleStringProperty(null)
     fun titleProperty(): StringProperty = titleProperty
     var title: String? by titleProperty
 

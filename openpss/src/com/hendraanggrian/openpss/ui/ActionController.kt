@@ -1,11 +1,19 @@
 package com.hendraanggrian.openpss.ui
 
+import javafx.beans.property.SimpleStringProperty
+import javafx.beans.property.StringProperty
 import javafx.scene.Node
+import ktfx.beans.value.getValue
+import ktfx.beans.value.setValue
 import ktfx.layouts.NodeInvokable
 import java.net.URL
 import java.util.ResourceBundle
 
 open class ActionController : Controller() {
+
+    protected val titleProperty: StringProperty = SimpleStringProperty(null)
+    fun titleProperty(): StringProperty = titleProperty
+    var title: String? by titleProperty
 
     val actions = mutableListOf<Node>()
 

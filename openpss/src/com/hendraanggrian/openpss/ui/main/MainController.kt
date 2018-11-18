@@ -55,6 +55,7 @@ import ktfx.beans.binding.buildStringBinding
 import ktfx.beans.binding.minus
 import ktfx.beans.binding.otherwise
 import ktfx.beans.binding.then
+import ktfx.beans.property.hasValue
 import ktfx.beans.value.eq
 import ktfx.collections.toObservableList
 import ktfx.coroutines.listener
@@ -104,13 +105,15 @@ class MainController : Controller(), Selectable<Tab>, Selectable2<Label>, Refres
     override val selectionModel2: SelectionModel<Label> get() = drawerList.selectionModel
 
     private val controllers: List<ActionController>
-        get() = mutableListOf(
+        get() = listOf(
             customerController,
             invoiceController,
             scheduleController,
             financeController,
             wageController
         )
+
+    private inline val selectedController: ActionController get() = controllers[tabPane.selectionModel.selectedIndex]
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
@@ -128,11 +131,16 @@ class MainController : Controller(), Selectable<Tab>, Selectable2<Label>, Refres
             }
         }
 
-        titleLabel.textProperty().bind(
-            buildStringBinding(drawerList.selectionModel.selectedIndexProperty()) {
-                drawerList.selectionModel.selectedItem?.text
+        titleLabel.textProperty().bind(buildStringBinding(
+            tabPane.selectionModel.selectedIndexProperty(),
+            *controllers.map { it.titleProperty() }.toTypedArray()
+        ) {
+            val controller = selectedController
+            when {
+                controller.titleProperty().hasValue() -> controller.title
+                else -> drawerList.selectionModel.selectedItem?.text
             }
-        )
+        })
 
         customerGraphic.bind(0, R.image.tab_customer_selected, R.image.tab_customer)
         invoiceGraphic.bind(1, R.image.tab_invoice_selected, R.image.tab_invoice)

@@ -69,7 +69,7 @@ class App : Application(), Resources {
                     controller.login = employee
 
                     stage.isResizable = true
-                    stage.title = BuildConfig.NAME.let { if (BuildConfig.DEBUG) "$it - DEBUG" else it }
+                    stage.title = BuildConfig.NAME
                     stage.setMinSize(800.0, 480.0)
                 }
             }()

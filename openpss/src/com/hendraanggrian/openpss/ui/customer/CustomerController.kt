@@ -57,7 +57,6 @@ class CustomerController : ActionController(), Refreshable, Selectable<Customer>
 
     @FXML lateinit var masterDetailPane: MasterDetailPane
     @FXML lateinit var customerPagination: PaginatedPane
-    @FXML lateinit var nameLabel: Label
     @FXML lateinit var noImage: ImageView
     @FXML lateinit var noLabel: Label
     @FXML lateinit var sinceImage: ImageView
@@ -143,7 +142,9 @@ class CustomerController : ActionController(), Refreshable, Selectable<Customer>
                         }
                     }
                 }
-                nameLabel.bindLabel { selected?.name.orEmpty() }
+                titleProperty.bind(buildStringBinding(selectionModel.selectedItemProperty()) {
+                    selectionModel.selectedItem?.name
+                })
                 noLabel.bindLabel { selected?.no?.toString().orEmpty() }
                 sinceLabel.bindLabel { selected?.since?.toString(PATTERN_DATE).orEmpty() }
                 addressLabel.bindLabel { selected?.address ?: "-" }

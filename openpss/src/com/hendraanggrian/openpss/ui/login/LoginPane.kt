@@ -150,7 +150,11 @@ class LoginPane(private val resourced: Resources) : _StackPane(), Context {
                     }
                 }
                 textFlow {
-                    text(getString(R.string._login_desc2, BuildConfig.VERSION)) {
+                    var version = BuildConfig.VERSION
+                    if (BuildConfig.DEBUG) {
+                        version += " DEBUG"
+                    }
+                    text(getString(R.string._login_desc2, version)) {
                         wrappingWidth = employeeField.prefWidth
                     }
                     hyperlink(getString(R.string.check_for_updates)) {

@@ -2,15 +2,12 @@
 
 package com.hendraanggrian.openpss.control
 
-import com.hendraanggrian.openpss.control.base.StretchableLabeled
 import com.jfoenix.controls.JFXCheckBox
 import javafx.beans.DefaultProperty
 import javafx.beans.property.DoubleProperty
 import javafx.beans.property.SimpleDoubleProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.beans.property.StringProperty
-import ktfx.layouts.LayoutDsl
-import ktfx.layouts.NodeInvokable
 
 @DefaultProperty("graphic")
 class StretchableCheckBox @JvmOverloads constructor(
@@ -28,22 +25,3 @@ class StretchableCheckBox @JvmOverloads constructor(
         initialize()
     }
 }
-
-/** Creates an [StretchableCheckBox]. */
-fun stretchableCheckBox(
-    stretchPoint: Double,
-    adaptableText: String,
-    init: ((@LayoutDsl StretchableCheckBox).() -> Unit)? = null
-): StretchableCheckBox = StretchableCheckBox(
-    stretchPoint,
-    adaptableText
-).also {
-    init?.invoke(it)
-}
-
-/** Creates an [StretchableCheckBox] and add it to this manager. */
-inline fun NodeInvokable.stretchableCheckBox(
-    stretchPoint: Double,
-    adaptableText: String,
-    noinline init: ((@LayoutDsl StretchableCheckBox).() -> Unit)? = null
-): StretchableCheckBox = com.hendraanggrian.openpss.control.stretchableCheckBox(stretchPoint, adaptableText, init)()

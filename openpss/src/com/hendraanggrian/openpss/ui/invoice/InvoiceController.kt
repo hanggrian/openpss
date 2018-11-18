@@ -4,12 +4,9 @@ import com.hendraanggrian.openpss.App.Companion.STRETCH_POINT
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.PATTERN_DATETIME_EXTENDED
 import com.hendraanggrian.openpss.control.DateBox
-import com.hendraanggrian.openpss.control.JFXIntField
+import com.hendraanggrian.openpss.control.IntField
 import com.hendraanggrian.openpss.control.PaginatedPane
-import com.hendraanggrian.openpss.control.dialog.ConfirmDialog
-import com.hendraanggrian.openpss.control.jfxIntField
-import com.hendraanggrian.openpss.control.popover.ViewInvoiceDialog
-import com.hendraanggrian.openpss.control.stretchableButton
+import com.hendraanggrian.openpss.control.StretchableButton
 import com.hendraanggrian.openpss.db.SessionWrapper
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Customers
@@ -20,6 +17,8 @@ import com.hendraanggrian.openpss.db.schemas.Payment
 import com.hendraanggrian.openpss.db.schemas.Payments
 import com.hendraanggrian.openpss.db.schemas.Payments.invoiceId
 import com.hendraanggrian.openpss.db.transaction
+import com.hendraanggrian.openpss.popup.dialog.ConfirmDialog
+import com.hendraanggrian.openpss.popup.popover.ViewInvoiceDialog
 import com.hendraanggrian.openpss.ui.ActionController
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.Selectable
@@ -85,7 +84,7 @@ class InvoiceController : ActionController(), Refreshable, Selectable<Invoice>, 
     private lateinit var refreshButton: Button
     private lateinit var addButton: Button
     private lateinit var clearFiltersButton: Button
-    private lateinit var searchField: JFXIntField
+    private lateinit var searchField: IntField
 
     private val customerProperty = SimpleObjectProperty<Customer>()
     private lateinit var invoiceTable: TableView<Invoice>
@@ -96,20 +95,31 @@ class InvoiceController : ActionController(), Refreshable, Selectable<Invoice>, 
     override val selectionModel2: SelectionModel<Payment> get() = paymentTable.selectionModel
 
     override fun NodeInvokable.onCreateActions() {
-        refreshButton = stretchableButton(STRETCH_POINT, getString(R.string.refresh), ImageView(R.image.act_refresh)) {
+        refreshButton = StretchableButton(
+            STRETCH_POINT,
+            getString(R.string.refresh),
+            ImageView(R.image.act_refresh)
+        ).apply {
             onAction { refresh() }
-        }
-        addButton = stretchableButton(STRETCH_POINT, getString(R.string.add), ImageView(R.image.act_add)) {
+        }()
+        addButton = StretchableButton(
+            STRETCH_POINT,
+            getString(R.string.add),
+            ImageView(R.image.act_add)
+        ).apply {
             onAction { addInvoice() }
-        }
-        clearFiltersButton =
-            stretchableButton(STRETCH_POINT, getString(R.string.clear_filters), ImageView(R.image.act_clear_filters)) {
-                onAction { clearFilters() }
-            }
-        searchField = jfxIntField {
+        }()
+        clearFiltersButton = StretchableButton(
+            STRETCH_POINT,
+            getString(R.string.clear_filters),
+            ImageView(R.image.act_clear_filters)
+        ).apply {
+            onAction { clearFilters() }
+        }()
+        searchField = IntField().apply {
             filterBox.disableProperty().bind(valueProperty() neq 0)
             promptText = getString(R.string.search_no)
-        }
+        }()
     }
 
     override fun initialize(location: URL, resources: ResourceBundle) {
@@ -170,14 +180,14 @@ class InvoiceController : ActionController(), Refreshable, Selectable<Invoice>, 
                             alignment = CENTER
                             paddingAll = getDouble(R.dimen.padding_medium)
                             region() hpriority ALWAYS
-                            addPaymentButton = stretchableButton(
+                            addPaymentButton = StretchableButton(
                                 STRETCH_POINT,
                                 getString(R.string.add_payment),
                                 ImageView(R.image.act_add)
-                            ) {
+                            ).apply {
                                 disableProperty().bind(!selectedBinding)
                                 onAction { addPayment() }
-                            }
+                            }()
                         }
                         paymentTable = tableView {
                             columnResizePolicy = TableView.CONSTRAINED_RESIZE_POLICY

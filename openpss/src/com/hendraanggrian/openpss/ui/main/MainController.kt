@@ -7,7 +7,6 @@ import com.hendraanggrian.openpss.control.MarginedImageView
 import com.hendraanggrian.openpss.control.PaginatedPane
 import com.hendraanggrian.openpss.control.Toolbar
 import com.hendraanggrian.openpss.control.UnselectableListView
-import com.hendraanggrian.openpss.control.popover.ViewInvoiceDialog
 import com.hendraanggrian.openpss.db.dbDateTime
 import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.schemas.Employees
@@ -15,6 +14,7 @@ import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.db.schemas.Log
 import com.hendraanggrian.openpss.db.schemas.Logs
 import com.hendraanggrian.openpss.db.transaction
+import com.hendraanggrian.openpss.popup.popover.ViewInvoiceDialog
 import com.hendraanggrian.openpss.ui.ActionController
 import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.Refreshable
@@ -127,7 +127,12 @@ class MainController : Controller(), Selectable<Tab>, Selectable2<Label>, Refres
                 drawerList.requestFocus()
             }
         }
-        titleLabel.textProperty().bind(buildStringBinding(selectedProperty2) { selected2?.text })
+
+        titleLabel.textProperty().bind(
+            buildStringBinding(drawerList.selectionModel.selectedIndexProperty()) {
+                drawerList.selectionModel.selectedItem?.text
+            }
+        )
 
         customerGraphic.bind(0, R.image.tab_customer_selected, R.image.tab_customer)
         invoiceGraphic.bind(1, R.image.tab_invoice_selected, R.image.tab_invoice)

@@ -4,10 +4,10 @@ import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.Context
 import com.hendraanggrian.openpss.content.PATTERN_DATETIME_EXTENDED
 import com.hendraanggrian.openpss.content.trimMinutes
-import com.hendraanggrian.openpss.control.jfxIntField
-import com.hendraanggrian.openpss.control.popover.DateTimePopover
+import com.hendraanggrian.openpss.control.IntField
 import com.hendraanggrian.openpss.db.schemas.Recesses
 import com.hendraanggrian.openpss.db.transaction
+import com.hendraanggrian.openpss.popup.popover.DateTimePopover
 import com.hendraanggrian.openpss.ui.Selectable
 import com.hendraanggrian.openpss.util.round
 import javafx.geometry.Pos.CENTER
@@ -78,18 +78,18 @@ class AttendeePane(
                     label(role) col 1 row 0 colSpans 2
                 }
                 label(getString(R.string.income)) col 0 row 1 marginRight 4.0
-                jfxIntField {
+                IntField().apply {
                     prefWidth = 80.0
                     promptText = getString(R.string.income)
                     valueProperty().bindBidirectional(attendee.dailyProperty)
-                } col 1 row 1
+                }() col 1 row 1
                 label("@${getString(R.string.day)}") { fontSize = 10.0 } col 2 row 1
                 label(getString(R.string.overtime)) col 0 row 2 marginRight 4.0
-                jfxIntField {
+                IntField().apply {
                     prefWidth = 80.0
                     promptText = getString(R.string.overtime)
                     valueProperty().bindBidirectional(attendee.hourlyOvertimeProperty)
-                } col 1 row 2
+                }() col 1 row 2
                 label("@${getString(R.string.hour)}") { fontSize = 10.0 } col 2 row 2
                 label(getString(R.string.recess)) col 0 row 3 marginRight 4.0
                 vbox {
@@ -192,7 +192,7 @@ class AttendeePane(
             delay(250)
             applyCss()
             layout()
-            val titleRegion = find<Node>(".desc")
+            val titleRegion = find<Node>(".title")
             val padding = (titleRegion as StackPane).padding
             val graphicWidth = graphic.layoutBounds.width
             val labelWidth = titleRegion.find<Node>(".text").layoutBounds.width

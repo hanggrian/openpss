@@ -2,7 +2,7 @@ package com.hendraanggrian.openpss.content
 
 import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.control.dialog.ResultableDialog
+import com.hendraanggrian.openpss.popup.dialog.ResultableDialog
 import com.hendraanggrian.openpss.db.SessionWrapper
 import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.db.schemas.Employees

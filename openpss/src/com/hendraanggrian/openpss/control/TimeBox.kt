@@ -17,8 +17,6 @@ import ktfx.beans.value.getValue
 import ktfx.coroutines.onAction
 import ktfx.jfoenix.jfxButton
 import ktfx.jfoenix.jfxTimePicker
-import ktfx.layouts.LayoutDsl
-import ktfx.layouts.NodeInvokable
 import ktfx.layouts._HBox
 import ktfx.listeners.buildStringConverter
 import org.joda.time.LocalTime
@@ -90,17 +88,3 @@ open class TimeBox @JvmOverloads constructor(prefill: LocalTime = MIDNIGHT) : _H
         valueProperty.bind(buildBinding(picker.valueProperty()) { picker.value.toJoda() })
     }
 }
-
-/** Creates a [TimeBox]. */
-fun timeBox(
-    prefill: LocalTime = MIDNIGHT,
-    init: ((@LayoutDsl TimeBox).() -> Unit)? = null
-): TimeBox = TimeBox(prefill).also {
-    init?.invoke(it)
-}
-
-/** Creates a [TimeBox] and add it to this manager. */
-inline fun NodeInvokable.timeBox(
-    prefill: LocalTime = MIDNIGHT,
-    noinline init: ((@LayoutDsl TimeBox).() -> Unit)? = null
-): TimeBox = (com.hendraanggrian.openpss.control.timeBox(prefill, init))()

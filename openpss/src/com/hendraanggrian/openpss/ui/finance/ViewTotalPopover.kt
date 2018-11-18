@@ -3,7 +3,7 @@ package com.hendraanggrian.openpss.ui.finance
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.Context
 import com.hendraanggrian.openpss.content.currencyConverter
-import com.hendraanggrian.openpss.control.popover.Popover
+import com.hendraanggrian.openpss.popup.popover.Popover
 import javafx.geometry.HPos
 import ktfx.layouts.columnConstraints
 import ktfx.layouts.gridPane

@@ -1,4 +1,4 @@
-package com.hendraanggrian.openpss.control.base
+package com.hendraanggrian.openpss.control
 
 import javafx.beans.property.DoubleProperty
 import javafx.beans.property.ObjectProperty
@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 import ktfx.beans.binding.buildBinding
 import ktfx.beans.binding.buildStringBinding
 
-interface StretchableLabeled : BaseControl {
+interface StretchableLabeled {
 
     fun stretchPointProperty(): DoubleProperty
     var stretchPoint: Double
@@ -32,7 +32,7 @@ interface StretchableLabeled : BaseControl {
 
     fun tooltipProperty(): ObjectProperty<Tooltip>
 
-    override fun initialize() {
+    fun initialize() {
         when {
             getScene()?.widthProperty() != null -> getScene()!!.widthProperty()()
             else -> GlobalScope.launch(Dispatchers.JavaFx) {

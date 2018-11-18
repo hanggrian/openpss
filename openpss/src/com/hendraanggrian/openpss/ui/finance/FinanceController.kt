@@ -7,16 +7,14 @@ import com.hendraanggrian.openpss.content.PATTERN_TIME
 import com.hendraanggrian.openpss.content.toJava
 import com.hendraanggrian.openpss.control.DateBox
 import com.hendraanggrian.openpss.control.MonthBox
-import com.hendraanggrian.openpss.control.dateBox
-import com.hendraanggrian.openpss.control.monthBox
-import com.hendraanggrian.openpss.control.popover.ViewInvoiceDialog
-import com.hendraanggrian.openpss.control.stretchableButton
+import com.hendraanggrian.openpss.control.StretchableButton
 import com.hendraanggrian.openpss.db.schemas.Employees
 import com.hendraanggrian.openpss.db.schemas.Invoices
 import com.hendraanggrian.openpss.db.schemas.Payment
 import com.hendraanggrian.openpss.db.schemas.Payments
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.io.properties.PreferencesFile
+import com.hendraanggrian.openpss.popup.popover.ViewInvoiceDialog
 import com.hendraanggrian.openpss.ui.ActionController
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.Selectable
@@ -79,10 +77,10 @@ class FinanceController : ActionController(), Refreshable, Selectable<Tab>, Sele
     private lateinit var refreshButton: Button
     private lateinit var viewTotalButton: Button
 
-    private val dateBox: DateBox = dateBox {
+    private val dateBox: DateBox = DateBox().apply {
         valueProperty().listener { refresh() }
     }
-    private val monthBox: MonthBox = monthBox {
+    private val monthBox: MonthBox = MonthBox().apply {
         setLocale(PreferencesFile.language.toLocale())
         valueProperty().listener { refresh() }
     }
@@ -92,12 +90,20 @@ class FinanceController : ActionController(), Refreshable, Selectable<Tab>, Sele
     override val selectionModel3: SelectionModel<Report> get() = monthlyTable.selectionModel
 
     override fun NodeInvokable.onCreateActions() {
-        refreshButton = stretchableButton(STRETCH_POINT, getString(R.string.refresh), ImageView(R.image.act_refresh)) {
+        refreshButton = StretchableButton(
+            STRETCH_POINT,
+            getString(R.string.refresh),
+            ImageView(R.image.act_refresh)
+        ).apply {
             onAction { refresh() }
-        }
-        viewTotalButton = stretchableButton(STRETCH_POINT, getString(R.string.total), ImageView(R.image.act_money)) {
+        }()
+        viewTotalButton = StretchableButton(
+            STRETCH_POINT,
+            getString(R.string.total),
+            ImageView(R.image.act_money)
+        ).apply {
             onAction { viewTotal() }
-        }
+        }()
         switchablePane = borderPane()
     }
 

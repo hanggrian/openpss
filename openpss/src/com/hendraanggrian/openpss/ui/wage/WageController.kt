@@ -4,10 +4,10 @@ import com.hendraanggrian.openpss.App.Companion.STRETCH_POINT
 import com.hendraanggrian.openpss.BuildConfig.DEBUG
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.STYLESHEET_OPENPSS
-import com.hendraanggrian.openpss.control.dialog.TextDialog
-import com.hendraanggrian.openpss.control.stretchableButton
+import com.hendraanggrian.openpss.control.StretchableButton
 import com.hendraanggrian.openpss.io.WageDirectory
 import com.hendraanggrian.openpss.io.properties.PreferencesFile.WAGE_READER
+import com.hendraanggrian.openpss.popup.dialog.TextDialog
 import com.hendraanggrian.openpss.ui.ActionController
 import com.hendraanggrian.openpss.ui.wage.readers.Reader
 import com.hendraanggrian.openpss.ui.wage.record.WageRecordController.Companion.EXTRA_ATTENDEES
@@ -31,7 +31,6 @@ import kotlinx.coroutines.launch
 import ktfx.application.later
 import ktfx.beans.binding.buildBooleanBinding
 import ktfx.beans.binding.buildStringBinding
-import ktfx.beans.property.hasValue
 import ktfx.beans.value.getValue
 import ktfx.beans.value.lessEq
 import ktfx.beans.value.or
@@ -53,12 +52,12 @@ import java.util.ResourceBundle
 class WageController : ActionController() {
 
     @FXML lateinit var titleLabel: Label
+    @FXML lateinit var disableRecessButton: Button
     @FXML lateinit var processButton: Button
     @FXML lateinit var anchorPane: AnchorPane
     @FXML lateinit var flowPane: FlowPane
 
     private lateinit var browseButton: Button
-    private lateinit var disableRecessButton: Button
     private lateinit var saveWageButton: Button
     private lateinit var historyButton: Button
 
@@ -66,33 +65,39 @@ class WageController : ActionController() {
     private var filePath: String by filePathProperty
 
     override fun NodeInvokable.onCreateActions() {
-        browseButton = stretchableButton(STRETCH_POINT, getString(R.string.browse), ImageView(R.image.act_browse)) {
-            onAction { browse() }
-        }
-        disableRecessButton = stretchableButton(
+        browseButton = StretchableButton(
             STRETCH_POINT,
-            getString(R.string.disable_recess),
-            ImageView(R.image.act_disable_recess)
-        ) {
-            disableProperty().bind(flowPane.children.isEmptyBinding)
-            onAction { disableRecess() }
-        }
-        saveWageButton = stretchableButton(STRETCH_POINT, getString(R.string.save_wage), ImageView(R.image.act_save)) {
+            getString(R.string.browse),
+            ImageView(R.image.act_browse)
+        ).apply {
+            onAction { browse() }
+        }()
+        saveWageButton = StretchableButton(
+            STRETCH_POINT,
+            getString(R.string.save_wage),
+            ImageView(R.image.act_save)
+        ).apply {
             disableProperty().bind(flowPane.children.isEmptyBinding)
             onAction { saveWage() }
-        }
-        historyButton = stretchableButton(STRETCH_POINT, getString(R.string.history), ImageView(R.image.act_history)) {
+        }()
+        historyButton = StretchableButton(
+            STRETCH_POINT,
+            getString(R.string.history),
+            ImageView(R.image.act_history)
+        ).apply {
             onAction { history() }
-        }
+        }()
     }
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
         titleLabel.textProperty().bind(buildStringBinding(flowPane.children) {
-            "${flowPane.children.size} ${getString(R.string.employee)}".let {
-                if (filePathProperty.hasValue()) "$filePath ($it)" else it
+            when {
+                flowPane.children.isEmpty() -> getString(R.string._wage_record_empty)
+                else -> "$filePath (${flowPane.children.size} ${getString(R.string.employee)})"
             }
         })
+        disableRecessButton.disableProperty().bind(flowPane.children.isEmptyBinding)
         bindProcessButton()
         later {
             flowPane.prefWrapLengthProperty().bind(flowPane.scene.widthProperty())
@@ -103,6 +108,8 @@ class WageController : ActionController() {
         }
     }
 
+    @FXML fun disableRecess() = DisableRecessPopover(this, attendeePanes).show(disableRecessButton)
+
     @FXML fun process() = stage(getString(R.string.wage_record)) {
         val loader = FXMLLoader(getResource(R.layout.controller_wage_record), resourceBundle)
         scene = scene {
@@ -112,8 +119,6 @@ class WageController : ActionController() {
         setMinSize(1000.0, 650.0)
         loader.controller.addExtra(EXTRA_ATTENDEES, attendees)
     }.showAndWait()
-
-    private fun disableRecess() = DisableRecessPopover(this, attendeePanes).show(disableRecessButton)
 
     private fun saveWage() = attendees.forEach { it.saveWage() }
 

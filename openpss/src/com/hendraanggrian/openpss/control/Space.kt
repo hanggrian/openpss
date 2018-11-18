@@ -3,8 +3,6 @@
 package com.hendraanggrian.openpss.control
 
 import javafx.scene.layout.Region
-import ktfx.layouts.LayoutDsl
-import ktfx.layouts.NodeInvokable
 
 open class Space @JvmOverloads constructor(width: Double = 0.0, height: Double = 0.0) : Region() {
 
@@ -13,19 +11,3 @@ open class Space @JvmOverloads constructor(width: Double = 0.0, height: Double =
         minHeight = height
     }
 }
-
-/** Creates a [Space]. */
-fun space(
-    width: Double = 0.0,
-    height: Double = 0.0,
-    init: ((@LayoutDsl Space).() -> Unit)? = null
-): Space = Space(width, height).also {
-    init?.invoke(it)
-}
-
-/** Creates a [Space] and add it to this manager. */
-inline fun NodeInvokable.space(
-    width: Double = 0.0,
-    height: Double = 0.0,
-    noinline init: ((@LayoutDsl Space).() -> Unit)? = null
-): Space = com.hendraanggrian.openpss.control.space(width, height, init)()

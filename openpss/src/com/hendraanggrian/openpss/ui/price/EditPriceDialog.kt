@@ -8,8 +8,8 @@ import com.hendraanggrian.openpss.db.Document
 import com.hendraanggrian.openpss.db.Named
 import com.hendraanggrian.openpss.db.NamedSchema
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.control.dialog.TableDialog
-import com.hendraanggrian.openpss.control.popover.InputPopover
+import com.hendraanggrian.openpss.popup.dialog.TableDialog
+import com.hendraanggrian.openpss.popup.popover.InputPopover
 import com.hendraanggrian.openpss.util.isNotEmpty
 import kotlinx.nosql.equal
 import kotlinx.nosql.mongodb.DocumentSchema

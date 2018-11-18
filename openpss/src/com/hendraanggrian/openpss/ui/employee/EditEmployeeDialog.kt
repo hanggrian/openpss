@@ -3,7 +3,7 @@ package com.hendraanggrian.openpss.ui.employee
 import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.Context
-import com.hendraanggrian.openpss.control.dialog.TableDialog
+import com.hendraanggrian.openpss.popup.dialog.TableDialog
 import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.db.schemas.Employees
 import com.hendraanggrian.openpss.db.transaction

@@ -3,8 +3,7 @@ package com.hendraanggrian.openpss.ui.wage
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.Context
 import com.hendraanggrian.openpss.control.TimeBox
-import com.hendraanggrian.openpss.control.popover.ResultablePopover
-import com.hendraanggrian.openpss.control.timeBox
+import com.hendraanggrian.openpss.popup.popover.ResultablePopover
 import ktfx.beans.binding.buildBooleanBinding
 import ktfx.layouts.gridPane
 import ktfx.layouts.label
@@ -22,9 +21,9 @@ class AddRecessPopover(
         gridPane {
             gap = getDouble(R.dimen.padding_medium)
             label(getString(R.string.start)) col 0 row 0
-            startBox = timeBox() col 1 row 0
+            startBox = TimeBox()() col 1 row 0
             label(getString(R.string.end)) col 0 row 1
-            endBox = timeBox() col 1 row 1
+            endBox = TimeBox()() col 1 row 1
         }
         defaultButton.disableProperty().bind(buildBooleanBinding(startBox.valueProperty(), endBox.valueProperty()) {
             startBox.value!! >= endBox.value!!

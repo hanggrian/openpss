@@ -1,11 +1,9 @@
-package com.hendraanggrian.openpss.control.popover
+package com.hendraanggrian.openpss.popup.popover
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.Context
 import com.hendraanggrian.openpss.control.DateBox
 import com.hendraanggrian.openpss.control.TimeBox
-import com.hendraanggrian.openpss.control.dateBox
-import com.hendraanggrian.openpss.control.timeBox
 import com.hendraanggrian.openpss.ui.wage.record.Record
 import ktfx.coroutines.onAction
 import ktfx.jfoenix.jfxButton
@@ -26,7 +24,7 @@ class DateTimePopover(
     init {
         gridPane {
             gap = getDouble(R.dimen.padding_medium)
-            dateBox = dateBox(prefill.toLocalDate()) row 0 col 1
+            dateBox = DateBox(prefill.toLocalDate())() row 0 col 1
             jfxButton("-${Record.WORKING_HOURS}") {
                 onAction {
                     repeat(Record.WORKING_HOURS) {
@@ -34,14 +32,14 @@ class DateTimePopover(
                     }
                 }
             } row 1 col 0
-            timeBox = timeBox(prefill.toLocalTime()) {
+            timeBox = TimeBox(prefill.toLocalTime()).apply {
                 onOverlap = { plus ->
                     dateBox.picker.value = when {
                         plus -> dateBox.picker.value.plusDays(1)
                         else -> dateBox.picker.value.minusDays(1)
                     }
                 }
-            } row 1 col 1
+            }() row 1 col 1
             jfxButton("+${Record.WORKING_HOURS}") {
                 onAction {
                     repeat(Record.WORKING_HOURS) {

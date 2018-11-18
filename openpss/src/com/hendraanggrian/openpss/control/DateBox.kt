@@ -17,8 +17,6 @@ import ktfx.beans.value.getValue
 import ktfx.coroutines.onAction
 import ktfx.jfoenix.jfxButton
 import ktfx.jfoenix.jfxDatePicker
-import ktfx.layouts.LayoutDsl
-import ktfx.layouts.NodeInvokable
 import ktfx.layouts._HBox
 import org.joda.time.LocalDate
 import org.joda.time.LocalDate.now
@@ -57,17 +55,3 @@ open class DateBox @JvmOverloads constructor(prefill: LocalDate = now()) : _HBox
         valueProperty.bind(buildBinding(picker.valueProperty()) { picker.value.toJoda() })
     }
 }
-
-/** Creates a [DateBox]. */
-fun dateBox(
-    prefill: LocalDate = now(),
-    init: ((@LayoutDsl DateBox).() -> Unit)? = null
-): DateBox = DateBox(prefill).also {
-    init?.invoke(it)
-}
-
-/** Creates a [DateBox] and add it to this manager. */
-inline fun NodeInvokable.dateBox(
-    prefill: LocalDate = now(),
-    noinline init: ((@LayoutDsl DateBox).() -> Unit)? = null
-): DateBox = (com.hendraanggrian.openpss.control.dateBox(prefill, init))()

@@ -2,36 +2,35 @@
 
 package com.hendraanggrian.openpss.control
 
-import com.hendraanggrian.openpss.control.base.IntFieldBase
+import com.jfoenix.controls.JFXTextField
 import javafx.beans.property.IntegerProperty
 import javafx.beans.property.SimpleIntegerProperty
-import javafx.scene.control.TextField
 import ktfx.beans.value.getValue
 import ktfx.beans.value.setValue
-import ktfx.layouts.LayoutDsl
-import ktfx.layouts.NodeInvokable
+import ktfx.coroutines.listener
+import ktfx.listeners.bindBidirectional
 
-class IntField : TextField(), IntFieldBase {
-
-    override val actual: TextField get() = this
+class IntField : JFXTextField() {
 
     private val valueProperty = SimpleIntegerProperty()
-    override fun valueProperty(): IntegerProperty = valueProperty
+    fun valueProperty(): IntegerProperty = valueProperty
     var value: Int by valueProperty
 
     init {
-        initialize()
+        textProperty().bindBidirectional(valueProperty()) {
+            fromString { it.toIntOrNull() ?: 0 }
+        }
+        textProperty().addListener { _, oldValue, value ->
+            text = when {
+                value.isEmpty() -> "0"
+                else -> value.toIntOrNull()?.toString() ?: oldValue
+            }
+            end()
+        }
+        focusedProperty().listener { _, _, focused ->
+            if (focused && text.isNotEmpty()) {
+                selectAll()
+            }
+        }
     }
 }
-
-/** Creates a [IntField]. */
-fun intField(
-    init: ((@LayoutDsl IntField).() -> Unit)? = null
-): IntField = IntField().also {
-    init?.invoke(it)
-}
-
-/** Creates a [IntField] and add it to this manager. */
-inline fun NodeInvokable.intField(
-    noinline init: ((@LayoutDsl IntField).() -> Unit)? = null
-): IntField = com.hendraanggrian.openpss.control.intField(init)()

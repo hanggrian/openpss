@@ -4,8 +4,8 @@ import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.Context
 import com.hendraanggrian.openpss.content.PATTERN_DATE
 import com.hendraanggrian.openpss.content.currencyConverter
-import com.hendraanggrian.openpss.control.dialog.ResultableDialog
-import com.hendraanggrian.openpss.control.popover.ResultablePopover
+import com.hendraanggrian.openpss.popup.dialog.ResultableDialog
+import com.hendraanggrian.openpss.popup.popover.ResultablePopover
 import com.hendraanggrian.openpss.db.dbDateTime
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Invoice

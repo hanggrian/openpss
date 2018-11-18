@@ -1,7 +1,8 @@
-package com.hendraanggrian.openpss.control.base
+package com.hendraanggrian.openpss.popup
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.Context
+import com.hendraanggrian.openpss.control.Space
 import javafx.beans.property.ObjectProperty
 import javafx.geometry.Pos
 import javafx.scene.Node
@@ -18,7 +19,7 @@ import ktfx.layouts.buttonBar
 import ktfx.layouts.vbox
 import ktfx.scene.layout.paddingAll
 
-interface PopupBase : BaseControl, Context, NodeInvokable {
+interface Popup : Context, NodeInvokable {
 
     override fun <R : Node> R.invoke(): R = also { contentPane.children += it }
 
@@ -36,7 +37,7 @@ interface PopupBase : BaseControl, Context, NodeInvokable {
 
     fun graphicProperty(): ObjectProperty<Node>
 
-    override fun initialize() {
+    fun initialize() {
         setActualContent(ktfx.layouts.vbox(getDouble(R.dimen.padding_medium)) {
             paddingAll = getDouble(R.dimen.padding_large)
             borderPane {
@@ -44,9 +45,7 @@ interface PopupBase : BaseControl, Context, NodeInvokable {
                     styleClass.addAll(R.style.bold, R.style.display)
                 } align Pos.CENTER_LEFT
                 centerProperty().bind(buildBinding(graphicProperty()) {
-                    graphicProperty().get()?.let {
-                        com.hendraanggrian.openpss.control.space(getDouble(R.dimen.padding_large))
-                    }
+                    graphicProperty().get()?.let { Space(getDouble(R.dimen.padding_large)) }
                 })
                 rightProperty().run {
                     bindBidirectional(graphicProperty())

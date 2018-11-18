@@ -16,8 +16,6 @@ import ktfx.collections.toObservableList
 import ktfx.coroutines.onAction
 import ktfx.jfoenix.jfxButton
 import ktfx.jfoenix.jfxComboBox
-import ktfx.layouts.LayoutDsl
-import ktfx.layouts.NodeInvokable
 import ktfx.layouts._HBox
 import ktfx.listeners.converter
 import org.joda.time.YearMonth
@@ -28,7 +26,7 @@ import java.util.Locale
 open class MonthBox @JvmOverloads constructor(prefill: YearMonth = now()) : _HBox(0.0) {
 
     lateinit var monthBox: ComboBox<Int>
-    lateinit var yearField: JFXIntField
+    lateinit var yearField: IntField
     var previousButton: Button
     var nextButton: Button
 
@@ -58,11 +56,11 @@ open class MonthBox @JvmOverloads constructor(prefill: YearMonth = now()) : _HBo
                 fromString { months.indexOf(it) }
             }
         }
-        yearField = jfxIntField {
+        yearField = IntField().apply {
             alignment = CENTER
             maxWidth = 56.0
             value = prefill.year
-        }
+        }()
         nextButton = jfxButton(graphic = ImageView(R.image.btn_next)) {
             onAction {
                 monthBox.value = when (monthBox.value) {
@@ -88,17 +86,3 @@ open class MonthBox @JvmOverloads constructor(prefill: YearMonth = now()) : _HBo
         }
     }
 }
-
-/** Creates a [MonthBox]. */
-fun monthBox(
-    prefill: YearMonth = YearMonth.now(),
-    init: ((@LayoutDsl MonthBox).() -> Unit)? = null
-): MonthBox = MonthBox(prefill).also {
-    init?.invoke(it)
-}
-
-/** Creates a [MonthBox] and add it to this manager. */
-inline fun NodeInvokable.monthBox(
-    prefill: YearMonth = YearMonth.now(),
-    noinline init: ((@LayoutDsl MonthBox).() -> Unit)? = null
-): MonthBox = (com.hendraanggrian.openpss.control.monthBox(prefill, init))()

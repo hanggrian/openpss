@@ -2,7 +2,7 @@ package com.hendraanggrian.openpss.ui.wage
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.Context
-import com.hendraanggrian.openpss.control.popover.Popover
+import com.hendraanggrian.openpss.popup.popover.Popover
 import com.hendraanggrian.openpss.db.schemas.Recesses
 import com.hendraanggrian.openpss.db.transaction
 import com.jfoenix.controls.JFXButton

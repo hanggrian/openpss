@@ -1,4 +1,4 @@
-package com.hendraanggrian.openpss.control.popover
+package com.hendraanggrian.openpss.popup.popover
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.Context
@@ -6,8 +6,7 @@ import com.hendraanggrian.openpss.content.Language
 import com.hendraanggrian.openpss.content.PATTERN_DATETIME_EXTENDED
 import com.hendraanggrian.openpss.content.currencyConverter
 import com.hendraanggrian.openpss.content.numberConverter
-import com.hendraanggrian.openpss.control.dialog.Dialog
-import com.hendraanggrian.openpss.control.space
+import com.hendraanggrian.openpss.control.Space
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.schemas.Employee
@@ -16,6 +15,7 @@ import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_INVOICE
 import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.db.schemas.Invoices
 import com.hendraanggrian.openpss.db.transaction
+import com.hendraanggrian.openpss.popup.dialog.Dialog
 import com.sun.javafx.print.PrintHelper
 import com.sun.javafx.print.Units.MM
 import com.sun.javaws.ui.SplashScreen.hide
@@ -260,7 +260,7 @@ class ViewInvoiceDialog(
             lineBuilder(it, row)
             row++
         }
-        space(height = getDouble(R.dimen.padding_small)) row row col 0 colSpans 4
+        Space(height = getDouble(R.dimen.padding_small))() row row col 0 colSpans 4
         row++
         return row
     }

@@ -2,8 +2,7 @@ package com.hendraanggrian.openpss.ui.invoice.job
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.Context
-import com.hendraanggrian.openpss.control.JFXDoubleField
-import com.hendraanggrian.openpss.control.jfxDoubleField
+import com.hendraanggrian.openpss.control.DoubleField
 import com.hendraanggrian.openpss.db.schemas.Invoice
 import javafx.beans.Observable
 import javafx.beans.value.ObservableBooleanValue
@@ -16,11 +15,11 @@ import ktfx.layouts.label
 class AddOtherJobPopover(context: Context) : AddJobPopover<Invoice.OtherJob>(context, R.string.add_other_job),
     Invoice.Job {
 
-    private lateinit var priceField: JFXDoubleField
+    private lateinit var priceField: DoubleField
 
     override fun _GridPane.onCreateContent() {
         label(getString(R.string.price)) col 0 row currentRow
-        priceField = jfxDoubleField { promptText = getString(R.string.price) } col 1 colSpans 2 row currentRow
+        priceField = DoubleField().apply { promptText = getString(R.string.price) }() col 1 colSpans 2 row currentRow
     }
 
     override val totalBindingDependencies: Array<Observable>

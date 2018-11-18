@@ -2,7 +2,7 @@ package com.hendraanggrian.openpss.ui.main.help
 
 import com.hendraanggrian.openpss.content.Context
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.control.dialog.ResultableDialog
+import com.hendraanggrian.openpss.popup.dialog.ResultableDialog
 import javafx.scene.control.ListView
 import ktfx.collections.toObservableList
 import ktfx.jfoenix.jfxListView

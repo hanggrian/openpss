@@ -1,8 +1,7 @@
-package com.hendraanggrian.openpss.control.popover
+package com.hendraanggrian.openpss.popup.popover
 
 import com.hendraanggrian.openpss.content.Context
 import com.hendraanggrian.openpss.control.DateBox
-import com.hendraanggrian.openpss.control.dateBox
 import org.joda.time.LocalDate
 
 class DatePopover(
@@ -11,7 +10,7 @@ class DatePopover(
     prefill: LocalDate = LocalDate.now()
 ) : ResultablePopover<LocalDate>(context, titleId) {
 
-    private val dateBox: DateBox = dateBox(prefill)
+    private val dateBox: DateBox = DateBox(prefill)()
 
     override val nullableResult: LocalDate? get() = dateBox.valueProperty().value
 }

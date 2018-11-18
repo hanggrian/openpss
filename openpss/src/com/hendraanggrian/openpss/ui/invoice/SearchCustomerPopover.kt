@@ -3,7 +3,7 @@ package com.hendraanggrian.openpss.ui.invoice
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.Context
 import com.hendraanggrian.openpss.control.CustomerListView
-import com.hendraanggrian.openpss.control.popover.ResultablePopover
+import com.hendraanggrian.openpss.popup.popover.ResultablePopover
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.transaction

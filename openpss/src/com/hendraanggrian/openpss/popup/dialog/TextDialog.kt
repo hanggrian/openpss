@@ -1,4 +1,4 @@
-package com.hendraanggrian.openpss.control.dialog
+package com.hendraanggrian.openpss.popup.dialog
 
 import com.hendraanggrian.openpss.content.Context
 import ktfx.layouts.label

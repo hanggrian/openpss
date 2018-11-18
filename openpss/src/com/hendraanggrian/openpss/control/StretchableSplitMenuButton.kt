@@ -2,7 +2,6 @@
 
 package com.hendraanggrian.openpss.control
 
-import com.hendraanggrian.openpss.control.base.StretchableLabeled
 import javafx.beans.DefaultProperty
 import javafx.beans.property.DoubleProperty
 import javafx.beans.property.SimpleDoubleProperty
@@ -14,7 +13,6 @@ import javafx.scene.control.SplitMenuButton
 import javafx.scene.image.ImageView
 import ktfx.layouts.LayoutDsl
 import ktfx.layouts.MenuItemInvokable
-import ktfx.layouts.NodeInvokable
 import ktfx.layouts.menuItem
 
 /**
@@ -46,26 +44,3 @@ class StretchableSplitMenuButton @JvmOverloads constructor(
         noinline init: ((@LayoutDsl MenuItem).() -> Unit)? = null
     ): MenuItem = menuItem(this, graphic, init)
 }
-
-/** Creates an [StretchableSplitMenuButton]. */
-fun stretchableSplitMenuButton(
-    stretchPoint: Double,
-    adaptableText: String,
-    graphic: Node? = null,
-    init: ((@LayoutDsl StretchableSplitMenuButton).() -> Unit)? = null
-): StretchableSplitMenuButton = StretchableSplitMenuButton(
-    stretchPoint,
-    adaptableText,
-    graphic
-).also {
-    init?.invoke(it)
-}
-
-/** Creates an [StretchableSplitMenuButton] and add it to this manager. */
-inline fun NodeInvokable.stretchableSplitMenuButton(
-    stretchPoint: Double,
-    adaptableText: String,
-    graphic: Node? = null,
-    noinline init: ((@LayoutDsl StretchableSplitMenuButton).() -> Unit)? = null
-): StretchableSplitMenuButton =
-    com.hendraanggrian.openpss.control.stretchableSplitMenuButton(stretchPoint, adaptableText, graphic, init)()

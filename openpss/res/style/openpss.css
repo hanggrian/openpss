@@ -57,12 +57,12 @@
 }
 
 .jfx-hamburger {
+    -fx-spacing: 3;
     -fx-cursor: hand;
 }
 .jfx-hamburger StackPane {
-    -fx-pref-height: 2;
+    -fx-pref-height: 3;
     -fx-background-color: -accent;
-    -fx-background-radius: 5;
 }
 
 .jfx-radio-button {

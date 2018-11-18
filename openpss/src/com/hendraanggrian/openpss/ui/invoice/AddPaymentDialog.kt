@@ -3,12 +3,11 @@ package com.hendraanggrian.openpss.ui.invoice
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.Context
 import com.hendraanggrian.openpss.content.currencyConverter
-import com.hendraanggrian.openpss.control.JFXDoubleField
-import com.hendraanggrian.openpss.control.dialog.ResultableDialog
-import com.hendraanggrian.openpss.control.jfxDoubleField
+import com.hendraanggrian.openpss.control.DoubleField
 import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.db.schemas.Payment
 import com.hendraanggrian.openpss.db.transaction
+import com.hendraanggrian.openpss.popup.dialog.ResultableDialog
 import javafx.scene.Node
 import javafx.scene.control.CheckBox
 import javafx.scene.control.TextField
@@ -31,7 +30,7 @@ class AddPaymentDialog(
     private val invoice: Invoice
 ) : ResultableDialog<Payment>(context, R.string.add_payment) {
 
-    private lateinit var valueField: JFXDoubleField
+    private lateinit var valueField: DoubleField
     private lateinit var cashBox: CheckBox
     private lateinit var referenceField: TextField
     private val receivable = transaction { invoice.calculateDue() }
@@ -48,7 +47,7 @@ class AddPaymentDialog(
                 styleClass += R.style.bold
             } row 1 col 1 colSpans 2
             label(getString(R.string.payment)) row 2 col 0
-            valueField = jfxDoubleField { promptText = getString(R.string.payment) } row 2 col 1
+            valueField = DoubleField().apply { promptText = getString(R.string.payment) }() row 2 col 1
             jfxButton(graphic = ImageView(R.image.btn_match_receivable)) {
                 styleClass += R.style.flat
                 tooltip(getString(R.string.match_receivable))

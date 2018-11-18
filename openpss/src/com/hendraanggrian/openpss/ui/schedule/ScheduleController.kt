@@ -3,8 +3,8 @@ package com.hendraanggrian.openpss.ui.schedule
 import com.hendraanggrian.openpss.App.Companion.STRETCH_POINT
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.PATTERN_DATETIME_EXTENDED
+import com.hendraanggrian.openpss.control.StretchableButton
 import com.hendraanggrian.openpss.control.UncollapsibleTreeItem
-import com.hendraanggrian.openpss.control.stretchableButton
 import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.schemas.Invoices
 import com.hendraanggrian.openpss.db.transaction
@@ -48,16 +48,24 @@ class ScheduleController : ActionController(), Refreshable, TreeSelectable<Sched
     override val selectionModel: TreeTableViewSelectionModel<Schedule> get() = scheduleTable.selectionModel
 
     override fun NodeInvokable.onCreateActions() {
-        refreshButton = stretchableButton(STRETCH_POINT, getString(R.string.refresh), ImageView(R.image.act_refresh)) {
+        refreshButton = StretchableButton(
+            STRETCH_POINT,
+            getString(R.string.refresh),
+            ImageView(R.image.act_refresh)
+        ).apply {
             onAction { refresh() }
-        }
-        doneButton = stretchableButton(STRETCH_POINT, getString(R.string.done), ImageView(R.image.act_done)) {
+        }()
+        doneButton = StretchableButton(
+            STRETCH_POINT,
+            getString(R.string.done),
+            ImageView(R.image.act_done)
+        ).apply {
             onAction {
                 (DoneAction(this@ScheduleController, selected!!.value.invoice)) {
                     refresh()
                 }
             }
-        }
+        }()
         borderPane {
             minHeight = 50.0
             maxHeight = 50.0

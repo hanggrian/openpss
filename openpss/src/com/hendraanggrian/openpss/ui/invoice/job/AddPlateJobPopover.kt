@@ -48,7 +48,7 @@ class AddPlateJobPopover(context: Context) : AddJobPopover<Invoice.PlateJob>(con
             totalField.valueProperty().lessEq(0)
 
     override val nullableResult: Invoice.PlateJob?
-        get() = Invoice.PlateJob.new(qty, title, total, typeChoice.value.name)
+        get() = Invoice.PlateJob.new(qty, desc, total, typeChoice.value.name)
 
     override fun calculateTotal(): Double = qtyField.value * priceField.value
 }

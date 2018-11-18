@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.VBox?>
 <StackPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1"
            fx:controller="com.hendraanggrian.openpss.ui.wage.record.WageRecordController"
-           fx:id="root" styleClass="white-background">
+           fx:id="stack" styleClass="white-background">
     <VBox fx:id="vbox">
         <MenuBar fx:id="menuBar" styleClass="white-background">
             <Menu mnemonicParsing="false" text="File">

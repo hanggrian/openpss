@@ -71,7 +71,7 @@ class AddDigitalJobPopover(context: Context) :
             totalField.valueProperty().lessEq(0)
 
     override val nullableResult: Invoice.DigitalJob?
-        get() = Invoice.DigitalJob.new(qty, title, total, typeChoice.value.name, twoSideCheck.isSelected)
+        get() = Invoice.DigitalJob.new(qty, desc, total, typeChoice.value.name, twoSideCheck.isSelected)
 
     override fun calculateTotal(): Double = qtyField.value * when {
         twoSideCheck.isSelected -> twoSidePriceField.value

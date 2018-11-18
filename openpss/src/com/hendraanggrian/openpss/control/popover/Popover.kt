@@ -2,7 +2,6 @@ package com.hendraanggrian.openpss.control.popover
 
 import com.hendraanggrian.openpss.content.Context
 import com.hendraanggrian.openpss.control.base.PopupBase
-import com.jfoenix.controls.JFXPopup
 import javafx.beans.property.ObjectProperty
 import javafx.beans.property.SimpleObjectProperty
 import javafx.scene.Node
@@ -12,16 +11,17 @@ import javafx.scene.layout.VBox
 import ktfx.beans.value.getValue
 import ktfx.beans.value.setValue
 import ktfx.layouts.NodeInvokable
+import org.controlsfx.control.PopOver
 
 /** Base popup class used across applications. */
 @Suppress("LeakingThis")
 open class Popover(
     context: Context,
     override val titleId: String
-) : JFXPopup(), PopupBase, Context by context {
+) : PopOver(), PopupBase, Context by context {
 
     override fun setActualContent(region: Region) {
-        popupContent = region
+        contentNode = region
     }
 
     override fun setOnShown(onShown: () -> Unit) = super.setOnShown { onShown() }

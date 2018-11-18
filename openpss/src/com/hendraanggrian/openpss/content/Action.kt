@@ -43,7 +43,7 @@ abstract class Action<T>(
                 requireAdmin && !Employees[login].single().isAdmin -> {
                     PermissionDialog(context).show { admin ->
                         when (admin) {
-                            null -> root.jfxSnackbar(getString(R.string.invalid_password), App.DURATION_SHORT)
+                            null -> stack.jfxSnackbar(getString(R.string.invalid_password), App.DURATION_SHORT)
                             else -> transaction { execute(block, admin.id) }
                         }
                     }

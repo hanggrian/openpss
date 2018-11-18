@@ -76,7 +76,7 @@ class LoginPane(private val resourced: Resources) : _StackPane(), Context {
     override val colorResources: Properties get() = resourced.colorResources
 
     override val login: Employee get() = throw UnsupportedOperationException()
-    override val root: StackPane get() = this
+    override val stack: StackPane get() = this
 
     private val serverHostField = HostField().apply {
         text = LoginFile.DB_HOST

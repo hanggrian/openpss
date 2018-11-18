@@ -75,7 +75,7 @@ interface GitHubApi {
                     val release = create().getLatestRelease().get(TIMEOUT, SECONDS)
                     GlobalScope.launch(Dispatchers.JavaFx) {
                         when {
-                            release.isNewer() -> context.root.jfxSnackbar(
+                            release.isNewer() -> context.stack.jfxSnackbar(
                                 context.getString(R.string.openpss_is_available, release.version),
                                 App.DURATION_LONG,
                                 context.getString(R.string.download)
@@ -84,7 +84,7 @@ interface GitHubApi {
                                     context.desktop?.browse(URI(url))
                                 }
                             }
-                            else -> context.root.jfxSnackbar(
+                            else -> context.stack.jfxSnackbar(
                                 context.getString(
                                     R.string.openpss_is_currently_the_newest_version_available,
                                     VERSION
@@ -96,7 +96,7 @@ interface GitHubApi {
                 } catch (e: Exception) {
                     if (DEBUG) e.printStackTrace()
                     GlobalScope.launch(Dispatchers.JavaFx) {
-                        context.root.jfxSnackbar(context.getString(R.string.no_internet_connection), App.DURATION_SHORT)
+                        context.stack.jfxSnackbar(context.getString(R.string.no_internet_connection), App.DURATION_SHORT)
                     }
                 }
             }

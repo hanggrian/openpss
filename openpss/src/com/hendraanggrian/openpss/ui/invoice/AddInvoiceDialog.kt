@@ -104,7 +104,7 @@ class AddInvoiceDialog(
                             column<Invoice.OffsetJob, String>(R.string.technique, 72) {
                                 stringCell { typedTechnique.toString(this@AddInvoiceDialog) }
                             }
-                            column<Invoice.OffsetJob, String>(R.string.title, 192) { stringCell { title } }
+                            column<Invoice.OffsetJob, String>(R.string.description, 192) { stringCell { desc } }
                             column<Invoice.OffsetJob, String>(R.string.total, 156) { currencyCell { total } }
                         }
                     }
@@ -115,7 +115,7 @@ class AddInvoiceDialog(
                         columns {
                             column<Invoice.DigitalJob, String>(R.string.qty, 72) { numberCell { qty } }
                             column<Invoice.DigitalJob, String>(R.string.type, 72) { stringCell { type } }
-                            column<Invoice.DigitalJob, String>(R.string.title, 264) { stringCell { title } }
+                            column<Invoice.DigitalJob, String>(R.string.description, 264) { stringCell { desc } }
                             column<Invoice.DigitalJob, String>(R.string.total, 156) { currencyCell { total } }
                         }
                     }
@@ -126,7 +126,7 @@ class AddInvoiceDialog(
                         columns {
                             column<Invoice.PlateJob, String>(R.string.qty, 72) { numberCell { qty } }
                             column<Invoice.PlateJob, String>(R.string.type, 72) { stringCell { type } }
-                            column<Invoice.PlateJob, String>(R.string.title, 264) { stringCell { title } }
+                            column<Invoice.PlateJob, String>(R.string.description, 264) { stringCell { desc } }
                             column<Invoice.PlateJob, String>(R.string.total, 156) { currencyCell { total } }
                         }
                     }
@@ -136,7 +136,7 @@ class AddInvoiceDialog(
                         bindTitle(this, R.string.others)
                         columns {
                             column<Invoice.OtherJob, String>(R.string.qty, 72) { numberCell { qty } }
-                            column<Invoice.OtherJob, String>(R.string.title, 336) { stringCell { title } }
+                            column<Invoice.OtherJob, String>(R.string.description, 336) { stringCell { desc } }
                             column<Invoice.OtherJob, String>(R.string.total, 156) { currencyCell { total } }
                         }
                     }

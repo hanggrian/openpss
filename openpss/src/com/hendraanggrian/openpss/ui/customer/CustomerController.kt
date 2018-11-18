@@ -154,7 +154,7 @@ class CustomerController : ActionController(), Refreshable, Selectable<Customer>
         transaction {
             when {
                 Customers { Customers.name.matches("^$customer$", CASE_INSENSITIVE) }.isNotEmpty() ->
-                    root.jfxSnackbar(getString(R.string.name_taken), App.DURATION_SHORT)
+                    stack.jfxSnackbar(getString(R.string.name_taken), App.DURATION_SHORT)
                 else -> {
                     (AddCustomerAction(this@CustomerController, customer!!)) {
                         customerList.items.add(it)

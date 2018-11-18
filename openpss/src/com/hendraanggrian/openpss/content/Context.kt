@@ -11,7 +11,7 @@ import java.awt.Desktop
 /** Usually being passed around as first constructor of many components. */
 interface Context : Resources {
 
-    val root: StackPane
+    val stack: StackPane
 
     val login: Employee
 
@@ -21,7 +21,7 @@ interface Context : Resources {
     val desktop: Desktop?
         get() {
             if (!Desktop.isDesktopSupported()) {
-                root.jfxSnackbar(
+                stack.jfxSnackbar(
                     "java.awt.Desktop is not supported.",
                     App.DURATION_SHORT
                 )

@@ -192,7 +192,7 @@ class AttendeePane(
             delay(250)
             applyCss()
             layout()
-            val titleRegion = find<Node>(".title")
+            val titleRegion = find<Node>(".desc")
             val padding = (titleRegion as StackPane).padding
             val graphicWidth = graphic.layoutBounds.width
             val labelWidth = titleRegion.find<Node>(".text").layoutBounds.width

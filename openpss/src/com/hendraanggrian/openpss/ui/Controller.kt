@@ -16,7 +16,7 @@ open class Controller : Initializable, Context {
     override val dimenResources: Properties = getProperties(R.dimen.properties_dimen)
     override val colorResources: Properties = getProperties(R.color.properties_color)
 
-    override lateinit var root: StackPane
+    override lateinit var stack: StackPane
     override lateinit var login: Employee
 
     private lateinit var extras: MutableMap<String, Any>

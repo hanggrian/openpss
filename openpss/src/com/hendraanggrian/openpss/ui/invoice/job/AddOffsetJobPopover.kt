@@ -77,7 +77,7 @@ class AddOffsetJobPopover(context: Context) :
             totalField.valueProperty().lessEq(0)
 
     override val nullableResult: Invoice.OffsetJob?
-        get() = Invoice.OffsetJob.new(qty, title, total, typeChoice.value.name, techniqueChoice.value)
+        get() = Invoice.OffsetJob.new(qty, desc, total, typeChoice.value.name, techniqueChoice.value)
 
     override fun calculateTotal(): Double = when (techniqueChoice.value) {
         null -> 0.0

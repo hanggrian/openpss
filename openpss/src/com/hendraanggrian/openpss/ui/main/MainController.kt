@@ -70,7 +70,7 @@ import kotlin.math.ceil
 
 class MainController : Controller(), Selectable<Tab>, Selectable2<Label>, Refreshable {
 
-    @FXML override lateinit var root: StackPane
+    @FXML override lateinit var stack: StackPane
     @FXML lateinit var menuBar: MenuBar
     @FXML lateinit var addCustomerItem: MenuItem
     @FXML lateinit var addInvoiceItem: MenuItem
@@ -149,7 +149,7 @@ class MainController : Controller(), Selectable<Tab>, Selectable2<Label>, Refres
             employeeLabel.text = login.name
             controllers.forEach {
                 it.login = login
-                it.root = root
+                it.stack = stack
             }
 
             customerController.refresh()
@@ -161,7 +161,7 @@ class MainController : Controller(), Selectable<Tab>, Selectable2<Label>, Refres
                         Employees { it.name.equal(login.name) }
                             .projection { password }
                             .update(newPassword!!)
-                        root.jfxSnackbar(getString(R.string.successfully_changed_password), App.DURATION_LONG)
+                        stack.jfxSnackbar(getString(R.string.successfully_changed_password), App.DURATION_LONG)
                     }
                 }
             }
@@ -250,7 +250,7 @@ class MainController : Controller(), Selectable<Tab>, Selectable2<Label>, Refres
                     isDone = false
                 ), true
             ).show()
-        } ?: root.jfxSnackbar(getString(R.string.no_customer_to_test), App.DURATION_SHORT)
+        } ?: stack.jfxSnackbar(getString(R.string.no_customer_to_test), App.DURATION_SHORT)
     }
 
     @FXML fun checkUpdate() = GitHubApi.checkUpdates(this)

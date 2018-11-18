@@ -32,7 +32,7 @@ object Invoices : DocumentSchema<Invoice>("invoices", Invoice::class) {
 
     class OffsetJobs : ListColumn<Invoice.OffsetJob, Invoices>("offset_jobs", Invoice.OffsetJob::class) {
         val qty = integer("qty")
-        val title = string("title")
+        val desc = string("desc")
         val total = string("total")
         val type = string("type")
         val technique = string("technique")
@@ -40,7 +40,7 @@ object Invoices : DocumentSchema<Invoice>("invoices", Invoice::class) {
 
     class DigitalJobs : ListColumn<Invoice.DigitalJob, Invoices>("digital_jobs", Invoice.DigitalJob::class) {
         val qty = integer("qty")
-        val title = string("title")
+        val desc = string("desc")
         val total = string("total")
         val type = string("type")
         val isTwoSide = boolean("two_side")
@@ -48,14 +48,14 @@ object Invoices : DocumentSchema<Invoice>("invoices", Invoice::class) {
 
     class PlateJobs : ListColumn<Invoice.PlateJob, Invoices>("plate_jobs", Invoice.PlateJob::class) {
         val qty = integer("qty")
-        val title = string("title")
+        val desc = string("desc")
         val total = string("total")
         val type = string("type")
     }
 
     class OtherJobs : ListColumn<Invoice.OtherJob, Invoices>("other_jobs", Invoice.OtherJob::class) {
         val qty = integer("qty")
-        val title = string("title")
+        val desc = string("desc")
         val total = string("total")
     }
 }
@@ -108,7 +108,7 @@ data class Invoice(
 
     data class OffsetJob(
         override val qty: Int,
-        override val title: String,
+        override val desc: String,
         override val total: Double,
         override val type: String,
         val technique: String
@@ -141,7 +141,7 @@ data class Invoice(
 
     data class DigitalJob(
         override val qty: Int,
-        override val title: String,
+        override val desc: String,
         override val total: Double,
         override val type: String,
         val isTwoSide: Boolean
@@ -160,7 +160,7 @@ data class Invoice(
 
     data class PlateJob(
         override val qty: Int,
-        override val title: String,
+        override val desc: String,
         override val total: Double,
         override val type: String
     ) : TypedJob {
@@ -177,7 +177,7 @@ data class Invoice(
 
     data class OtherJob(
         override val qty: Int,
-        override val title: String,
+        override val desc: String,
         override val total: Double
     ) : Job {
 
@@ -196,7 +196,7 @@ data class Invoice(
 
     interface Job {
         val qty: Int
-        val title: String
+        val desc: String
         val total: Double
     }
 }

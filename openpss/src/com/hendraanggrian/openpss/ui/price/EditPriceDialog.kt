@@ -42,7 +42,7 @@ abstract class EditPriceDialog<D, S>(
         transaction @Suppress("IMPLICIT_CAST_TO_ANY") {
             when {
                 schema { it.name.equal(name) }.isNotEmpty() ->
-                    root.jfxSnackbar(getString(R.string.name_taken), App.DURATION_SHORT)
+                    stack.jfxSnackbar(getString(R.string.name_taken), App.DURATION_SHORT)
                 else -> {
                     val price = newPrice(name!!)
                     price.id = schema.insert(price)

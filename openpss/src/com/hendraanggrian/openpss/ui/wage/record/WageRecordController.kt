@@ -62,7 +62,7 @@ class WageRecordController : Controller() {
         const val EXTRA_ATTENDEES = "EXTRA_ATTENDEES"
     }
 
-    @FXML override lateinit var root: StackPane
+    @FXML override lateinit var stack: StackPane
     @FXML lateinit var vbox: VBox
     @FXML lateinit var menuBar: MenuBar
     @FXML lateinit var editMenu: Menu
@@ -214,7 +214,7 @@ class WageRecordController : Controller() {
         )
         togglePrintMode(false, STYLESHEET_PRINT_TREETABLEVIEW)
         ImageIO.write(images.concatenate(), "png", WageFile())
-        root.jfxIndefiniteSnackbar(getString(R.string.screenshot_finished), getString(R.string.open_folder)) {
+        stack.jfxIndefiniteSnackbar(getString(R.string.screenshot_finished), getString(R.string.open_folder)) {
             desktop?.open(WageDirectory)
         }
     }

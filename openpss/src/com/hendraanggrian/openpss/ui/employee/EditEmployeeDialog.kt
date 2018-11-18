@@ -68,7 +68,7 @@ class EditEmployeeDialog(
                 bindDisable()
                 onAction {
                     (ResetAdminEmployeeAction(this@EditEmployeeDialog, selected!!)) {
-                        root.jfxSnackbar(
+                        stack.jfxSnackbar(
                             getString(R.string.change_password_popup_will_appear_when_is_logged_back_in, login.name),
                             App.DURATION_LONG
                         )

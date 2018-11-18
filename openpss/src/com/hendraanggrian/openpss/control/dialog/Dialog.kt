@@ -37,6 +37,6 @@ open class Dialog(
 
     init {
         initialize()
-        dialogContainer = root
+        dialogContainer = stack
     }
 }

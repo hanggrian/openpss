@@ -45,8 +45,8 @@ abstract class AddJobPopover<T : Invoice.Job>(context: Context, titleId: String)
             label(getString(R.string.qty)) col 0 row currentRow
             qtyField = jfxIntField { promptText = getString(R.string.qty) } col 1 colSpans 2 row currentRow
             currentRow++
-            label(getString(R.string.title)) col 0 row currentRow
-            titleField = jfxTextField { promptText = getString(R.string.title) } col 1 colSpans 2 row currentRow
+            label(getString(R.string.description)) col 0 row currentRow
+            titleField = jfxTextField { promptText = getString(R.string.description) } col 1 colSpans 2 row currentRow
             currentRow++
             onCreateContent()
             currentRow++
@@ -74,7 +74,7 @@ abstract class AddJobPopover<T : Invoice.Job>(context: Context, titleId: String)
 
     override val qty: Int get() = qtyField.value
 
-    override val title: String get() = titleField.text
+    override val desc: String get() = titleField.text
 
     override val total: Double get() = totalField.value
 

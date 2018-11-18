@@ -32,7 +32,7 @@ data class Schedule(
                 schedules += Schedule(
                     invoice,
                     context.getString(R.string.offset),
-                    it.title,
+                    it.desc,
                     it.qty,
                     "${it.type} (${it.typedTechnique.toString(context)})"
                 )
@@ -41,7 +41,7 @@ data class Schedule(
                 schedules += Schedule(
                     invoice,
                     context.getString(R.string.digital),
-                    it.title,
+                    it.desc,
                     it.qty,
                     when {
                         it.isTwoSide -> "${it.type} (${context.getString(R.string.two_side)})"
@@ -50,10 +50,10 @@ data class Schedule(
                 )
             }
             invoice.plateJobs.forEach {
-                schedules += Schedule(invoice, context.getString(R.string.plate), it.title, it.qty, it.type)
+                schedules += Schedule(invoice, context.getString(R.string.plate), it.desc, it.qty, it.type)
             }
             invoice.otherJobs.forEach {
-                schedules += Schedule(invoice, context.getString(R.string.others), it.title, it.qty)
+                schedules += Schedule(invoice, context.getString(R.string.others), it.desc, it.qty)
             }
             return schedules
         }

@@ -148,7 +148,7 @@ class ViewInvoiceDialog(
                             label("${job.type}\n${job.typedTechnique.toString(this@ViewInvoiceDialog)}") {
                                 textAlignment = TextAlignment.CENTER
                             } row i col 1
-                            label(job.title) {
+                            label(job.desc) {
                                 isWrapText = true
                             } row i col 2
                             label(numberConverter(job.total)) row i col 3
@@ -160,7 +160,7 @@ class ViewInvoiceDialog(
                             label("${job.type}\n${getString(if (job.isTwoSide) R.string.two_side else R.string.one_side)}") {
                                 textAlignment = TextAlignment.CENTER
                             } row i col 1
-                            label(job.title) {
+                            label(job.desc) {
                                 isWrapText = true
                             } row i col 2
                             label(numberConverter(job.total)) row i col 3
@@ -170,7 +170,7 @@ class ViewInvoiceDialog(
                         row += jobGridPane(row, R.string.plate, invoice.plateJobs) { job, i ->
                             label(numberConverter(job.qty)) row i col 0
                             label(job.type) row i col 1
-                            label(job.title) {
+                            label(job.desc) {
                                 isWrapText = true
                             } row i col 2
                             label(numberConverter(job.total)) row i col 3
@@ -179,7 +179,7 @@ class ViewInvoiceDialog(
                     if (invoice.otherJobs.isNotEmpty()) {
                         row += jobGridPane(row, R.string.others, invoice.otherJobs) { job, i ->
                             label(numberConverter(job.qty)) row i col 0
-                            label(job.title) {
+                            label(job.desc) {
                                 isWrapText = true
                             } row i col 2
                             label(numberConverter(job.total)) row i col 3

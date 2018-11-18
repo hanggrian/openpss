@@ -7,6 +7,10 @@
 	box-sizing: border-box;
 }
 
+body {
+	background-color: #212121;
+}
+
 header {
 	padding-bottom: 50px;
 
@@ -88,7 +92,7 @@ nav .button {
 		box-sizing: border-box;
 		margin: 70px 0px;
 		width: 100%;
-		border: 1px solid #dfdfdf;
+		border: 1px solid #424242;
 		border-radius: 3px;
 		padding: 0 30px 25px 30px;
 		@media #{$desktop} {
@@ -101,10 +105,10 @@ nav .button {
 		.image {
 			display: inline-block;
 			line-height: 0;
-			background: white;
+			background: $brand-color;
 			margin-top: -40px;
 			padding: 10px;
-			box-shadow: 2px 7px 39px 9px #f7f7f7;
+			box-shadow: 1px 3.5px 19.5px 4.5px #000000;
 			border-radius: 50px;
 		}
 
@@ -113,7 +117,7 @@ nav .button {
 		}
 
 		svg {
-			fill: $brand-color;
+			fill: white;
 			padding: 5px;
 		}
 	}
@@ -195,7 +199,7 @@ blockquote {
 }
 
 footer {
-	background: #323232;
+	background: black;
 
 	padding: 40px 0;
 
@@ -256,7 +260,7 @@ footer {
 .copyright {
 	padding: 5px 0;
 	margin: 0;
-	background: #323232;
+	background: black;
 	text-align: center;
 	font-size: .8em;
 	a {

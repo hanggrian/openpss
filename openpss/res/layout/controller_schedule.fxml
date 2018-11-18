@@ -10,7 +10,7 @@
     <TreeTableView fx:id="scheduleTable" showRoot="false" VBox.vgrow="ALWAYS">
         <columns>
             <TreeTableColumn sortable="false" fx:id="jobType" text="%jobs"/>
-            <TreeTableColumn sortable="false" fx:id="titleColumn" text="%title"/>
+            <TreeTableColumn sortable="false" fx:id="descColumn" text="%description"/>
             <TreeTableColumn sortable="false" fx:id="qtyColumn" text="%qty"/>
             <TreeTableColumn sortable="false" fx:id="typeColumn" text="%type"/>
         </columns>

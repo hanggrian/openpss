@@ -4,6 +4,7 @@ import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.Context
 import javafx.beans.binding.BooleanBinding
 import javafx.scene.control.TextField
+import ktfx.beans.binding.buildBinding
 import ktfx.beans.value.isBlank
 import ktfx.jfoenix.jfxTextField
 
@@ -17,6 +18,7 @@ open class InputPopover(context: Context, titleId: String) : ResultablePopover<S
         defaultButton.run {
             text = getString(R.string.add)
             disableProperty().bind(defaultDisableBinding)
+            editor.onActionProperty().bind(buildBinding(disableProperty()) { if (isDisable) null else onAction })
         }
     }
 

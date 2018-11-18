@@ -30,6 +30,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.javafx.JavaFx
 import kotlinx.coroutines.launch
 import ktfx.application.later
+import ktfx.beans.binding.buildBinding
 import ktfx.beans.value.isBlank
 import ktfx.beans.value.or
 import ktfx.collections.toObservableList
@@ -259,7 +260,12 @@ class LoginPane(private val resourced: Resources) : _StackPane(), Context {
             }
             defaultButton.run {
                 disableProperty().bind(textField.textProperty().isBlank())
-                passwordField.onActionProperty().bindBidirectional(onActionProperty())
+                passwordField.onActionProperty().bind(buildBinding(disableProperty()) {
+                    if (isDisable) null else onAction
+                })
+                textField.onActionProperty().bind(buildBinding(disableProperty()) {
+                    if (isDisable) null else onAction
+                })
             }
         }
     }

@@ -37,7 +37,7 @@ class ScheduleController : ActionController(), Refreshable, TreeSelectable<Sched
 
     @FXML lateinit var scheduleTable: TreeTableView<Schedule>
     @FXML lateinit var jobType: TreeTableColumn<Schedule, String>
-    @FXML lateinit var titleColumn: TreeTableColumn<Schedule, String>
+    @FXML lateinit var descColumn: TreeTableColumn<Schedule, String>
     @FXML lateinit var qtyColumn: TreeTableColumn<Schedule, String>
     @FXML lateinit var typeColumn: TreeTableColumn<Schedule, String>
 
@@ -84,7 +84,7 @@ class ScheduleController : ActionController(), Refreshable, TreeSelectable<Sched
             }
         }
         jobType.stringCell { jobType }
-        titleColumn.stringCell { title }
+        descColumn.stringCell { title }
         qtyColumn.stringCell { qty }
         typeColumn.stringCell { type }
     }

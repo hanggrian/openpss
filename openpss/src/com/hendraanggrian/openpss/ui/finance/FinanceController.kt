@@ -17,9 +17,6 @@ import com.hendraanggrian.openpss.io.properties.PreferencesFile
 import com.hendraanggrian.openpss.popup.popover.ViewInvoiceDialog
 import com.hendraanggrian.openpss.ui.ActionController
 import com.hendraanggrian.openpss.ui.Refreshable
-import com.hendraanggrian.openpss.ui.Selectable
-import com.hendraanggrian.openpss.ui.Selectable2
-import com.hendraanggrian.openpss.ui.Selectable3
 import com.hendraanggrian.openpss.util.currencyCell
 import com.hendraanggrian.openpss.util.doneCell
 import com.hendraanggrian.openpss.util.matches
@@ -30,8 +27,6 @@ import javafx.fxml.FXML
 import javafx.scene.Node
 import javafx.scene.control.Button
 import javafx.scene.control.MenuItem
-import javafx.scene.control.SelectionModel
-import javafx.scene.control.Tab
 import javafx.scene.control.TabPane
 import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
@@ -45,11 +40,12 @@ import ktfx.coroutines.onAction
 import ktfx.coroutines.onMouseClicked
 import ktfx.layouts.NodeInvokable
 import ktfx.layouts.borderPane
+import ktfx.scene.control.isSelected
 import ktfx.scene.input.isDoubleClick
 import java.net.URL
 import java.util.ResourceBundle
 
-class FinanceController : ActionController(), Refreshable, Selectable<Tab>, Selectable2<Payment>, Selectable3<Report> {
+class FinanceController : ActionController(), Refreshable {
 
     companion object {
         const val EXTRA_MAIN_CONTROLLER = "EXTRA_MAIN_CONTROLLER"
@@ -85,10 +81,6 @@ class FinanceController : ActionController(), Refreshable, Selectable<Tab>, Sele
         valueProperty().listener { refresh() }
     }
 
-    override val selectionModel: SelectionModel<Tab> get() = tabPane.selectionModel
-    override val selectionModel2: SelectionModel<Payment> get() = dailyTable.selectionModel
-    override val selectionModel3: SelectionModel<Report> get() = monthlyTable.selectionModel
-
     override fun NodeInvokable.onCreateActions() {
         refreshButton = StretchableButton(
             STRETCH_POINT,
@@ -109,7 +101,11 @@ class FinanceController : ActionController(), Refreshable, Selectable<Tab>, Sele
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
-        switchablePane.centerProperty().bind(When(selectedIndexProperty eq 0).then<Node>(dateBox).otherwise(monthBox))
+        switchablePane.centerProperty().bind(
+            When(tabPane.selectionModel.selectedIndexProperty() eq 0)
+                .then<Node>(dateBox)
+                .otherwise(monthBox)
+        )
 
         dailyNoColumn.numberCell { transaction { Invoices[invoiceId].single().no } }
         dailyTimeColumn.stringCell { dateTime.toString(PATTERN_TIME) }
@@ -117,38 +113,48 @@ class FinanceController : ActionController(), Refreshable, Selectable<Tab>, Sele
         dailyValueColumn.currencyCell { value }
         dailyCashColumn.doneCell { isCash() }
         dailyReferenceColumn.stringCell { reference }
-        viewInvoiceItem.disableProperty().bind(!selectedBinding2)
-        dailyTable.onMouseClicked { if (it.isDoubleClick() && selected2 != null) viewInvoice() }
+        viewInvoiceItem.disableProperty().bind(dailyTable.selectionModel.selectedItemProperty().isNull)
+        dailyTable.onMouseClicked {
+            if (it.isDoubleClick() && dailyTable.selectionModel.isSelected()) {
+                viewInvoice()
+            }
+        }
 
         monthlyDateColumn.stringCell { date.toString(PATTERN_DATE) }
         monthlyCashColumn.currencyCell { cash }
         monthlyNonCashColumn.currencyCell { nonCash }
         monthlyTotalColumn.currencyCell { total }
-        viewPaymentsItem.disableProperty().bind(!selectedBinding3)
-        monthlyTable.onMouseClicked { if (it.isDoubleClick() && selected3 != null) viewPayments() }
+        viewPaymentsItem.disableProperty().bind(monthlyTable.selectionModel.selectedItemProperty().isNull)
+        monthlyTable.onMouseClicked {
+            if (it.isDoubleClick() && monthlyTable.selectionModel.isSelected()) {
+                viewPayments()
+            }
+        }
 
-        selectedProperty.listener { refresh() }
+        tabPane.selectionModel.selectedIndexProperty().listener { refresh() }
     }
 
     override fun refresh() = later {
         transaction {
-            when (selectedIndex) {
+            when (tabPane.selectionModel.selectedIndex) {
                 0 -> dailyTable.items = Payments { it.dateTime.matches(dateBox.value!!) }.toMutableObservableList()
                 else -> monthlyTable.items = Report.listAll(Payments { it.dateTime.matches(monthBox.value!!) })
             }
         }
     }
 
-    @FXML fun viewInvoice() = ViewInvoiceDialog(this, transaction { Invoices[selected2!!.invoiceId].single() }).show()
+    @FXML fun viewInvoice() = ViewInvoiceDialog(this, transaction {
+        Invoices[dailyTable.selectionModel.selectedItem.invoiceId].single()
+    }).show()
 
     @FXML fun viewPayments() {
-        selectFirst()
-        dateBox.picker.value = selected3!!.date.toJava()
+        tabPane.selectionModel.selectFirst()
+        dateBox.picker.value = monthlyTable.selectionModel.selectedItem.date.toJava()
     }
 
     private fun viewTotal() = ViewTotalPopover(this, getTotal(true), getTotal(false)).show(viewTotalButton)
 
-    private fun getTotal(isCash: Boolean): Double = when (selectedIndex) {
+    private fun getTotal(isCash: Boolean): Double = when (tabPane.selectionModel.selectedIndex) {
         0 -> Payment.gather(dailyTable.items, isCash)
         else -> monthlyTable.items.sumByDouble {
             when {
@@ -156,10 +162,5 @@ class FinanceController : ActionController(), Refreshable, Selectable<Tab>, Sele
                 else -> it.nonCash
             }
         }
-    }
-
-    private fun List<Node>.addAll(vararg buttons: Node) {
-        this as MutableList
-        buttons.forEach { this += it }
     }
 }

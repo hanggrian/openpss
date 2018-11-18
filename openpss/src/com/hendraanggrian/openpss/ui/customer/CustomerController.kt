@@ -13,8 +13,6 @@ import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.popup.dialog.ConfirmDialog
 import com.hendraanggrian.openpss.ui.ActionController
 import com.hendraanggrian.openpss.ui.Refreshable
-import com.hendraanggrian.openpss.ui.Selectable
-import com.hendraanggrian.openpss.ui.Selectable2
 import com.hendraanggrian.openpss.util.isNotEmpty
 import com.hendraanggrian.openpss.util.matches
 import com.hendraanggrian.openpss.util.stringCell
@@ -24,7 +22,6 @@ import javafx.scene.control.Button
 import javafx.scene.control.Label
 import javafx.scene.control.ListView
 import javafx.scene.control.MenuItem
-import javafx.scene.control.SelectionModel
 import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
 import javafx.scene.control.TextField
@@ -53,7 +50,7 @@ import java.util.ResourceBundle
 import java.util.regex.Pattern.CASE_INSENSITIVE
 import kotlin.math.ceil
 
-class CustomerController : ActionController(), Refreshable, Selectable<Customer>, Selectable2<Customer.Contact> {
+class CustomerController : ActionController(), Refreshable {
 
     @FXML lateinit var masterDetailPane: MasterDetailPane
     @FXML lateinit var customerPagination: PaginatedPane
@@ -77,9 +74,6 @@ class CustomerController : ActionController(), Refreshable, Selectable<Customer>
     private lateinit var searchField: TextField
 
     private lateinit var customerList: ListView<Customer>
-
-    override val selectionModel: SelectionModel<Customer> get() = customerList.selectionModel
-    override val selectionModel2: SelectionModel<Customer.Contact> get() = contactTable.selectionModel
 
     override fun NodeInvokable.onCreateActions() {
         refreshButton = StretchableButton(
@@ -133,26 +127,29 @@ class CustomerController : ActionController(), Refreshable, Selectable<Customer>
                                 .toMutableObservableList()
                             contextMenu {
                                 getString(R.string.edit)(ImageView(R.image.menu_edit)) {
-                                    disableProperty().bind(!selectedBinding)
+                                    disableProperty().bind(selectionModel.selectedItemProperty().isNull)
                                     onAction { edit() }
                                 }
                             }
-                            addContactItem.disableProperty().bind(!selectedBinding)
-                            deleteContactItem.disableProperty().bind(!selectedBinding2)
+                            deleteContactItem.disableProperty()
+                                .bind(contactTable.selectionModel.selectedItemProperty().isNull)
                         }
                     }
                 }
-                titleProperty().bind(buildStringBinding(selectionModel.selectedItemProperty()) {
-                    selectionModel.selectedItem?.name
+                titleProperty().bind(buildStringBinding(customerList.selectionModel.selectedItemProperty()) {
+                    customerList.selectionModel.selectedItem?.name
                 })
-                noLabel.bindLabel { selected?.no?.toString().orEmpty() }
-                sinceLabel.bindLabel { selected?.since?.toString(PATTERN_DATE).orEmpty() }
-                addressLabel.bindLabel { selected?.address ?: "-" }
-                noteLabel.bindLabel { selected?.note ?: "-" }
-                contactTable.itemsProperty().bind(buildBinding(selectedProperty) {
-                    selected?.contacts?.toObservableList() ?: emptyObservableList()
+                noLabel.bindLabel { customerList.selectionModel.selectedItem?.no?.toString().orEmpty() }
+                sinceLabel.bindLabel {
+                    customerList.selectionModel.selectedItem?.since?.toString(PATTERN_DATE).orEmpty()
+                }
+                addressLabel.bindLabel { customerList.selectionModel.selectedItem?.address ?: "-" }
+                noteLabel.bindLabel { customerList.selectionModel.selectedItem?.note ?: "-" }
+                contactTable.itemsProperty().bind(buildBinding(customerList.selectionModel.selectedItemProperty()) {
+                    customerList.selectionModel.selectedItem?.contacts?.toObservableList() ?: emptyObservableList()
                 })
-                masterDetailPane.showDetailNodeProperty().bind(selectedBinding)
+                masterDetailPane.showDetailNodeProperty()
+                    .bind(customerList.selectionModel.selectedItemProperty().isNotNull)
                 customerList
             }
         })
@@ -173,10 +170,10 @@ class CustomerController : ActionController(), Refreshable, Selectable<Customer>
         }
     }
 
-    private fun edit() = EditCustomerDialog(this, selected!!).show {
+    private fun edit() = EditCustomerDialog(this, customerList.selectionModel.selectedItem).show {
         (EditCustomerAction(
             this@CustomerController,
-            selected!!,
+            customerList.selectionModel.selectedItem,
             it!!.name,
             it.address,
             it.note
@@ -184,22 +181,26 @@ class CustomerController : ActionController(), Refreshable, Selectable<Customer>
     }
 
     @FXML fun addContact() = AddContactPopover(this).show(contactTable) {
-        (AddContactAction(this@CustomerController, selected!!, it!!)) { reload() }
+        (AddContactAction(this@CustomerController, customerList.selectionModel.selectedItem, it!!)) { reload() }
     }
 
     @FXML fun deleteContact() = ConfirmDialog(this, R.string.delete_contact).show {
-        (DeleteContactAction(this@CustomerController, selected!!, selected2!!)) { reload() }
+        (DeleteContactAction(
+            this@CustomerController,
+            customerList.selectionModel.selectedItem,
+            contactTable.selectionModel.selectedItem
+        )) { reload() }
     }
 
     private fun Label.bindLabel(target: () -> String) = textProperty()
         .bind(buildStringBinding(customerList.selectionModel.selectedItemProperty()) { target() })
 
     private fun reload() {
-        val index = selectedIndex
+        val index = customerList.selectionModel.selectedIndex
         refresh()
         GlobalScope.launch(Dispatchers.JavaFx) {
             delay(250)
-            reselect(index)
+            customerList.selectionModel.clearAndSelect(index)
         }
     }
 }

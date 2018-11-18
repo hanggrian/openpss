@@ -3,10 +3,10 @@ package com.hendraanggrian.openpss.ui.employee
 import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.Context
-import com.hendraanggrian.openpss.popup.dialog.TableDialog
 import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.db.schemas.Employees
 import com.hendraanggrian.openpss.db.transaction
+import com.hendraanggrian.openpss.popup.dialog.TableDialog
 import com.hendraanggrian.openpss.util.clean
 import com.hendraanggrian.openpss.util.doneCell
 import com.hendraanggrian.openpss.util.stringCell
@@ -20,6 +20,7 @@ import ktfx.jfoenix.jfxSnackbar
 import ktfx.layouts.contextMenu
 import ktfx.layouts.menuItem
 import ktfx.layouts.separatorMenuItem
+import ktfx.scene.control.isSelected
 
 class EditEmployeeDialog(
     context: Context
@@ -34,22 +35,22 @@ class EditEmployeeDialog(
         }
         table.contextMenu {
             menuItem {
-                textProperty().bind(buildStringBinding(selectedProperty) {
+                textProperty().bind(buildStringBinding(table.selectionModel.selectedIndexProperty()) {
                     when {
-                        selected != null -> getString(
+                        table.selectionModel.isSelected() -> getString(
                             when {
-                                selected!!.isAdmin -> R.string.disable_admin_status
+                                table.selectionModel.selectedItem.isAdmin -> R.string.disable_admin_status
                                 else -> R.string.enable_admin_status
                             }
                         )
                         else -> null
                     }
                 })
-                graphicProperty().bind(buildBinding(selectedProperty) {
+                graphicProperty().bind(buildBinding(table.selectionModel.selectedIndexProperty()) {
                     when {
-                        selected != null -> ktfx.layouts.imageView(
+                        table.selectionModel.isSelected() -> ktfx.layouts.imageView(
                             when {
-                                selected!!.isAdmin -> R.image.menu_admin_off
+                                table.selectionModel.selectedItem.isAdmin -> R.image.menu_admin_off
                                 else -> R.image.menu_admin_on
                             }
                         )
@@ -58,7 +59,7 @@ class EditEmployeeDialog(
                 })
                 bindDisable()
                 onAction {
-                    (ToggleAdminEmployeeAction(this@EditEmployeeDialog, selected!!)) {
+                    (ToggleAdminEmployeeAction(this@EditEmployeeDialog, table.selectionModel.selectedItem)) {
                         refresh()
                     }
                 }
@@ -67,7 +68,7 @@ class EditEmployeeDialog(
             (getString(R.string.reset_password)) {
                 bindDisable()
                 onAction {
-                    (ResetAdminEmployeeAction(this@EditEmployeeDialog, selected!!)) {
+                    (ResetAdminEmployeeAction(this@EditEmployeeDialog, table.selectionModel.selectedItem)) {
                         stack.jfxSnackbar(
                             getString(R.string.change_password_popup_will_appear_when_is_logged_back_in, login.name),
                             App.DURATION_LONG
@@ -85,13 +86,13 @@ class EditEmployeeDialog(
     override fun add() = InputUserPopover(this, R.string.add_employee, false).show(addButton) { employee ->
         (AddEmployeeAction(this, Employee.new(employee!!.clean()))) {
             table.items.add(it)
-            select(it)
+            table.selectionModel.select(it)
         }
     }
 
-    override fun delete() = (DeleteEmployeeAction(this, selected!!)) {
+    override fun delete() = (DeleteEmployeeAction(this, table.selectionModel.selectedItem)) {
         super.delete()
     }
 
-    private fun MenuItem.bindDisable() = disableProperty().bind(!selectedBinding)
+    private fun MenuItem.bindDisable() = disableProperty().bind(table.selectionModel.selectedItemProperty().isNull)
 }

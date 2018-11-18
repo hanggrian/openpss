@@ -5,10 +5,8 @@ import com.hendraanggrian.openpss.content.Context
 import com.hendraanggrian.openpss.db.Document
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.ui.Refreshable
-import com.hendraanggrian.openpss.ui.Selectable
 import javafx.geometry.Pos.CENTER_RIGHT
 import javafx.scene.control.Button
-import javafx.scene.control.SelectionModel
 import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
 import javafx.scene.control.TableView.CONSTRAINED_RESIZE_POLICY
@@ -31,15 +29,13 @@ abstract class TableDialog<D : Document<S>, S : DocumentSchema<D>>(
     context: Context,
     titleId: String,
     protected val schema: S
-) : Dialog(context, titleId), TableColumnsBuilder<D>, Selectable<D>, Refreshable {
+) : Dialog(context, titleId), TableColumnsBuilder<D>, Refreshable {
 
     protected lateinit var refreshButton: Button
     protected lateinit var addButton: Button
     protected lateinit var deleteButton: Button
 
     protected lateinit var table: TableView<D>
-
-    override val selectionModel: SelectionModel<D> get() = table.selectionModel
 
     init {
         graphic = ktfx.layouts.vbox(getDouble(R.dimen.padding_medium)) {
@@ -58,7 +54,7 @@ abstract class TableDialog<D : Document<S>, S : DocumentSchema<D>>(
                     tooltip(getString(R.string.delete))
                     onAction { delete() }
                     later {
-                        disableProperty().bind(selectedProperty.isNull)
+                        disableProperty().bind(table.selectionModel.selectedItemProperty().isNull)
                     }
                 }
             }
@@ -90,7 +86,7 @@ abstract class TableDialog<D : Document<S>, S : DocumentSchema<D>>(
     abstract fun add()
 
     open fun delete() = ConfirmDialog(this).show {
-        transaction { schema -= selected!! }
-        table.items.remove(selected!!)
+        transaction { schema -= table.selectionModel.selectedItem }
+        table.items.remove(table.selectionModel.selectedItem)
     }
 }

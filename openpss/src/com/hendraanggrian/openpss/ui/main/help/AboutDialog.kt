@@ -4,14 +4,12 @@ import com.hendraanggrian.openpss.BuildConfig
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.Context
 import com.hendraanggrian.openpss.content.STYLESHEET_OPENPSS
-import com.hendraanggrian.openpss.ui.Selectable
 import com.hendraanggrian.openpss.ui.main.License
 import com.jfoenix.controls.JFXButton
 import javafx.geometry.Pos
 import javafx.scene.control.Dialog
 import javafx.scene.control.Hyperlink
 import javafx.scene.control.ListView
-import javafx.scene.control.SelectionModel
 import javafx.scene.image.Image
 import javafx.scene.text.Font
 import ktfx.application.later
@@ -39,7 +37,7 @@ import java.net.URI
  * The only dialog not using [com.hendraanggrian.openpss.popup.dialog.Dialog].
  * This is because it uses native dialog's expandable content.
  */
-class AboutDialog(context: Context) : Dialog<Unit>(), Selectable<License>, Context by context {
+class AboutDialog(context: Context) : Dialog<Unit>(), Context by context {
 
     private val licenseList: ListView<License> = jfxListView {
         items = License.values().toObservableList()
@@ -54,12 +52,10 @@ class AboutDialog(context: Context) : Dialog<Unit>(), Selectable<License>, Conte
         contextMenu {
             "Homepage" {
                 disableProperty().bind(!this@jfxListView.selectionModel.selectedItemProperty().isNotNull)
-                onAction { desktop?.browse(URI(selected!!.homepage)) }
+                onAction { desktop?.browse(URI(this@jfxListView.selectionModel.selectedItem.homepage)) }
             }
         }
     }
-
-    override val selectionModel: SelectionModel<License> get() = licenseList.selectionModel
 
     init {
         icon = Image(R.image.menu_about)
@@ -108,11 +104,13 @@ class AboutDialog(context: Context) : Dialog<Unit>(), Selectable<License>, Conte
             expandableContent = masterDetailPane {
                 maxHeight = 256.0
                 dividerPosition = 0.3
-                showDetailNodeProperty().bind(selectedBinding)
+                showDetailNodeProperty().bind(licenseList.selectionModel.selectedItemProperty().isNotNull)
                 masterNode = licenseList
                 detailNode = ktfx.jfoenix.jfxTextArea {
                     isEditable = false
-                    selectedProperty.listener { _, _, license -> text = license?.getContent() }
+                    licenseList.selectionModel.selectedItemProperty().listener { _, _, license ->
+                        text = license?.getContent()
+                    }
                 }
             }
         }

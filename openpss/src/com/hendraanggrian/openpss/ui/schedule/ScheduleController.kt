@@ -11,7 +11,6 @@ import com.hendraanggrian.openpss.db.schemas.Invoices
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.ui.ActionController
 import com.hendraanggrian.openpss.ui.Refreshable
-import com.hendraanggrian.openpss.ui.TreeSelectable
 import com.hendraanggrian.openpss.util.stringCell
 import javafx.fxml.FXML
 import javafx.scene.control.Button
@@ -20,7 +19,6 @@ import javafx.scene.control.ToggleButton
 import javafx.scene.control.TreeItem
 import javafx.scene.control.TreeTableColumn
 import javafx.scene.control.TreeTableView
-import javafx.scene.control.TreeTableView.TreeTableViewSelectionModel
 import javafx.scene.image.ImageView
 import kotlinx.nosql.equal
 import ktfx.application.later
@@ -35,7 +33,7 @@ import ktfx.layouts.borderPane
 import java.net.URL
 import java.util.ResourceBundle
 
-class ScheduleController : ActionController(), Refreshable, TreeSelectable<Schedule> {
+class ScheduleController : ActionController(), Refreshable {
 
     @FXML lateinit var scheduleTable: TreeTableView<Schedule>
     @FXML lateinit var jobType: TreeTableColumn<Schedule, String>
@@ -46,8 +44,6 @@ class ScheduleController : ActionController(), Refreshable, TreeSelectable<Sched
     private lateinit var refreshButton: Button
     private lateinit var doneButton: Button
     private lateinit var historyCheck: ToggleButton
-
-    override val selectionModel: TreeTableViewSelectionModel<Schedule> get() = scheduleTable.selectionModel
 
     override fun NodeInvokable.onCreateActions() {
         refreshButton = StretchableButton(
@@ -63,7 +59,7 @@ class ScheduleController : ActionController(), Refreshable, TreeSelectable<Sched
             ImageView(R.image.act_done)
         ).apply {
             onAction {
-                (DoneAction(this@ScheduleController, selected!!.value.invoice)) {
+                (DoneAction(this@ScheduleController, scheduleTable.selectionModel.selectedItem.value.invoice)) {
                     refresh()
                 }
             }
@@ -74,7 +70,8 @@ class ScheduleController : ActionController(), Refreshable, TreeSelectable<Sched
             historyCheck = jfxToggleButton {
                 text = getString(R.string.history)
                 selectedProperty().listener { refresh() }
-                doneButton.disableProperty().bind(selecteds.isEmptyBinding or selectedProperty())
+                doneButton.disableProperty()
+                    .bind(scheduleTable.selectionModel.selectedItems.isEmptyBinding or selectedProperty())
             }
         }
     }
@@ -101,7 +98,7 @@ class ScheduleController : ActionController(), Refreshable, TreeSelectable<Sched
     }
 
     override fun refresh() = later {
-        clearSelection()
+        scheduleTable.selectionModel.clearSelection()
         scheduleTable.root.children.run {
             clear()
             transaction {

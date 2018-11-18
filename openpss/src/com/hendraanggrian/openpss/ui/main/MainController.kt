@@ -19,8 +19,6 @@ import com.hendraanggrian.openpss.popup.popover.ViewInvoiceDialog
 import com.hendraanggrian.openpss.ui.ActionController
 import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.Refreshable
-import com.hendraanggrian.openpss.ui.Selectable
-import com.hendraanggrian.openpss.ui.Selectable2
 import com.hendraanggrian.openpss.ui.customer.CustomerController
 import com.hendraanggrian.openpss.ui.employee.EditEmployeeDialog
 import com.hendraanggrian.openpss.ui.finance.FinanceController
@@ -42,8 +40,6 @@ import javafx.scene.control.Label
 import javafx.scene.control.ListView
 import javafx.scene.control.MenuBar
 import javafx.scene.control.MenuItem
-import javafx.scene.control.SelectionModel
-import javafx.scene.control.Tab
 import javafx.scene.control.TabPane
 import javafx.scene.image.Image
 import javafx.scene.input.MouseEvent
@@ -71,7 +67,7 @@ import java.net.URL
 import java.util.ResourceBundle
 import kotlin.math.ceil
 
-class MainController : Controller(), Selectable<Tab>, Selectable2<Label>, Refreshable {
+class MainController : Controller(), Refreshable {
 
     @FXML override lateinit var stack: StackPane
     @FXML lateinit var menuBar: MenuBar
@@ -103,9 +99,6 @@ class MainController : Controller(), Selectable<Tab>, Selectable2<Label>, Refres
     @FXML lateinit var financeController: FinanceController
     @FXML lateinit var wageController: WageController
 
-    override val selectionModel: SelectionModel<Tab> get() = tabPane.selectionModel
-    override val selectionModel2: SelectionModel<Label> get() = drawerList.selectionModel
-
     private val controllers: List<ActionController>
         get() = listOf(
             customerController,
@@ -121,9 +114,9 @@ class MainController : Controller(), Selectable<Tab>, Selectable2<Label>, Refres
         super.initialize(location, resources)
         menuBar.isUseSystemMenuBar = SystemUtils.IS_OS_MAC
 
-        selectFirst2()
-        selectedProperty2.listener { _, _, _ ->
-            select(selectedIndex2)
+        drawerList.selectionModel.selectFirst()
+        drawerList.selectionModel.selectedItemProperty().listener { _, _, _ ->
+            tabPane.selectionModel.select(drawerList.selectionModel.selectedIndex)
             drawer.close()
         }
         hamburger.addEventHandler(MouseEvent.MOUSE_PRESSED) {
@@ -160,7 +153,7 @@ class MainController : Controller(), Selectable<Tab>, Selectable2<Label>, Refres
         refresh()
 
         customerController.replaceButtons()
-        selectedIndexProperty.listener { _, _, value ->
+        tabPane.selectionModel.selectedIndexProperty().listener { _, _, value ->
             controllers[value.toInt()].let {
                 it.replaceButtons()
                 (it as? Refreshable)?.refresh()
@@ -282,13 +275,13 @@ class MainController : Controller(), Selectable<Tab>, Selectable2<Label>, Refres
     private fun ActionController.replaceButtons() = toolbar.setRightItems(*actions.toTypedArray())
 
     private fun <T : ActionController> select(controller: T, run: T.() -> Unit) {
-        select2(controllers.indexOf(controller))
+        drawerList.selectionModel.select(controllers.indexOf(controller))
         controller.run(run)
     }
 
     private fun MarginedImageView.bind(index: Int, selectedImageId: String, unselectedImageId: String) =
         imageProperty().bind(
-            When(selectedIndexProperty2 eq index)
+            When(drawerList.selectionModel.selectedIndexProperty() eq index)
                 then Image(selectedImageId)
                 otherwise Image(unselectedImageId)
         )

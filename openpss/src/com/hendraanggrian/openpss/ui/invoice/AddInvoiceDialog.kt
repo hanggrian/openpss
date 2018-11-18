@@ -4,11 +4,11 @@ import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.Context
 import com.hendraanggrian.openpss.content.PATTERN_DATE
 import com.hendraanggrian.openpss.content.currencyConverter
-import com.hendraanggrian.openpss.popup.dialog.ResultableDialog
-import com.hendraanggrian.openpss.popup.popover.ResultablePopover
 import com.hendraanggrian.openpss.db.dbDateTime
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Invoice
+import com.hendraanggrian.openpss.popup.dialog.ResultableDialog
+import com.hendraanggrian.openpss.popup.popover.ResultablePopover
 import com.hendraanggrian.openpss.ui.invoice.job.AddDigitalJobPopover
 import com.hendraanggrian.openpss.ui.invoice.job.AddOffsetJobPopover
 import com.hendraanggrian.openpss.ui.invoice.job.AddOtherJobPopover
@@ -52,6 +52,7 @@ import ktfx.layouts.separatorMenuItem
 import ktfx.layouts.tab
 import ktfx.layouts.tableView
 import ktfx.layouts.textArea
+import ktfx.scene.control.isSelected
 import ktfx.scene.input.isDelete
 import ktfx.scene.layout.gap
 import ktfx.util.invoke
@@ -207,7 +208,7 @@ class AddInvoiceDialog(
             }
         }
         onKeyPressed {
-            if (it.code.isDelete() && selectionModel.selectedItem != null) {
+            if (it.code.isDelete() && selectionModel.isSelected()) {
                 items.remove(selectionModel.selectedItem)
             }
         }

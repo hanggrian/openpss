@@ -9,7 +9,6 @@ import org.joda.time.LocalTime
 const val PATTERN_DATE = "MM/dd/yyyy" // to comply with JavaFX's DatePicker
 const val PATTERN_TIME = "HH:mm"
 const val PATTERN_DATETIME = "$PATTERN_DATE $PATTERN_TIME"
-const val PATTERN_DATETIME_MULTILINE = "$PATTERN_DATE\n$PATTERN_TIME"
 const val PATTERN_DATETIME_EXTENDED = "$PATTERN_DATE EEE $PATTERN_TIME"
 
 /** For dummy purposes. */

@@ -10,6 +10,7 @@ import java.util.Properties
 import java.util.ResourceBundle
 
 /** Base class of all controllers. */
+@Suppress("LeakingThis")
 open class Controller : Initializable, Context {
 
     override lateinit var resourceBundle: ResourceBundle

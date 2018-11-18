@@ -8,7 +8,6 @@ import com.hendraanggrian.openpss.control.IntField
 import com.hendraanggrian.openpss.db.schemas.Recesses
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.popup.popover.DateTimePopover
-import com.hendraanggrian.openpss.ui.Selectable
 import com.hendraanggrian.openpss.util.round
 import javafx.geometry.Pos.CENTER
 import javafx.scene.Node
@@ -16,7 +15,6 @@ import javafx.scene.control.CheckBox
 import javafx.scene.control.ContentDisplay
 import javafx.scene.control.ListView
 import javafx.scene.control.MenuItem
-import javafx.scene.control.SelectionModel
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import javafx.scene.input.MouseEvent.MOUSE_CLICKED
@@ -44,6 +42,7 @@ import ktfx.layouts.separatorMenuItem
 import ktfx.layouts.text
 import ktfx.layouts.vbox
 import ktfx.listeners.cellFactory
+import ktfx.scene.control.isSelected
 import ktfx.scene.find
 import ktfx.scene.input.isDelete
 import ktfx.scene.input.isDoubleClick
@@ -57,7 +56,7 @@ import kotlin.math.absoluteValue
 class AttendeePane(
     context: Context,
     val attendee: Attendee
-) : _TitledPane(attendee.toString()), Context by context, Selectable<DateTime> {
+) : _TitledPane(attendee.toString()), Context by context {
 
     val recessChecks: MutableList<CheckBox> = mutableListOf()
     lateinit var deleteMenu: MenuItem
@@ -146,8 +145,16 @@ class AttendeePane(
                         }
                     }
                 }
-                onKeyPressed { if (it.code.isDelete() && selected != null) items.remove(selected) }
-                onMouseClicked { if (it.isDoubleClick() && selected != null) editAttendance() }
+                onKeyPressed {
+                    if (it.code.isDelete() && attendanceList.selectionModel.isSelected()) {
+                        items.remove(attendanceList.selectionModel.selectedItem)
+                    }
+                }
+                onMouseClicked {
+                    if (it.isDoubleClick() && attendanceList.selectionModel.isSelected()) {
+                        editAttendance()
+                    }
+                }
             }
         }
         contextMenu {
@@ -156,16 +163,16 @@ class AttendeePane(
             }
             separatorMenuItem()
             getString(R.string.copy)(ImageView(R.image.menu_copy)) {
-                disableProperty().bind(!selectedBinding)
+                disableProperty().bind(attendanceList.selectionModel.selectedItemProperty().isNull)
                 onAction { copyAttendance() }
             }
             getString(R.string.edit)(ImageView(R.image.menu_edit)) {
-                disableProperty().bind(!selectedBinding)
+                disableProperty().bind(!attendanceList.selectionModel.selectedItemProperty().isNull)
                 onAction { editAttendance() }
             }
             getString(R.string.delete)(ImageView(R.image.menu_delete)) {
-                disableProperty().bind(!selectedBinding)
-                onAction { attendanceList.items.remove(selected) }
+                disableProperty().bind(!attendanceList.selectionModel.selectedItemProperty().isNull)
+                onAction { attendanceList.items.remove(attendanceList.selectionModel.selectedItem) }
             }
             separatorMenuItem()
             getString(R.string.revert)(ImageView(R.image.menu_undo)) {
@@ -200,8 +207,6 @@ class AttendeePane(
         }
     }
 
-    override val selectionModel: SelectionModel<DateTime> get() = attendanceList.selectionModel
-
     private fun addAttendance() = DateTimePopover(
         this,
         R.string.add_record,
@@ -218,7 +223,7 @@ class AttendeePane(
         this,
         R.string.add_record,
         R.string.add,
-        selected!!.trimMinutes()
+        attendanceList.selectionModel.selectedItem.trimMinutes()
     ).show(attendanceList) {
         attendanceList.run {
             items.add(it)
@@ -230,7 +235,7 @@ class AttendeePane(
         this,
         R.string.edit_record,
         R.string.edit,
-        selected!!
+        attendanceList.selectionModel.selectedItem
     ).show(attendanceList) {
         attendanceList.run {
             items[attendanceList.selectionModel.selectedIndex] = it

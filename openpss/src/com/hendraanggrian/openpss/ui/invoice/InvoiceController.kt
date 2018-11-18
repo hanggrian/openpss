@@ -22,8 +22,6 @@ import com.hendraanggrian.openpss.popup.dialog.ConfirmDialog
 import com.hendraanggrian.openpss.popup.popover.ViewInvoiceDialog
 import com.hendraanggrian.openpss.ui.ActionController
 import com.hendraanggrian.openpss.ui.Refreshable
-import com.hendraanggrian.openpss.ui.Selectable
-import com.hendraanggrian.openpss.ui.Selectable2
 import com.hendraanggrian.openpss.util.currencyCell
 import com.hendraanggrian.openpss.util.doneCell
 import com.hendraanggrian.openpss.util.matches
@@ -35,7 +33,6 @@ import javafx.scene.Node
 import javafx.scene.control.Button
 import javafx.scene.control.ComboBox
 import javafx.scene.control.RadioButton
-import javafx.scene.control.SelectionModel
 import javafx.scene.control.TableView
 import javafx.scene.control.TableView.CONSTRAINED_RESIZE_POLICY
 import javafx.scene.control.TextField
@@ -62,13 +59,14 @@ import ktfx.layouts.contextMenu
 import ktfx.layouts.label
 import ktfx.layouts.separatorMenuItem
 import ktfx.layouts.tableView
+import ktfx.scene.control.isSelected
 import ktfx.scene.input.isDoubleClick
 import org.joda.time.LocalDate
 import java.net.URL
 import java.util.ResourceBundle
 import kotlin.math.ceil
 
-class InvoiceController : ActionController(), Refreshable, Selectable<Invoice>, Selectable2<Payment> {
+class InvoiceController : ActionController(), Refreshable {
 
     @FXML lateinit var filterBox: HBox
     @FXML lateinit var allDateRadio: RadioButton
@@ -86,10 +84,6 @@ class InvoiceController : ActionController(), Refreshable, Selectable<Invoice>, 
     private val customerProperty = SimpleObjectProperty<Customer>()
     private lateinit var invoiceTable: TableView<Invoice>
     private lateinit var paymentTable: TableView<Payment>
-    private lateinit var addPaymentButton: Button
-
-    override val selectionModel: SelectionModel<Invoice> get() = invoiceTable.selectionModel
-    override val selectionModel2: SelectionModel<Payment> get() = paymentTable.selectionModel
 
     override fun NodeInvokable.onCreateActions() {
         refreshButton = StretchableButton(
@@ -168,12 +162,16 @@ class InvoiceController : ActionController(), Refreshable, Selectable<Invoice>, 
                             getString(R.string.paid)<Boolean> { doneCell { isPaid } }
                             getString(R.string.done)<Boolean> { doneCell { isDone } }
                         }
-                        onMouseClicked { if (it.isDoubleClick() && selected != null) viewInvoice() }
+                        onMouseClicked {
+                            if (it.isDoubleClick() && invoiceTable.selectionModel.isSelected()) {
+                                viewInvoice()
+                            }
+                        }
                         titleProperty().bind(buildStringBinding(selectionModel.selectedItemProperty()) {
                             Invoice.no(this@InvoiceController, selectionModel.selectedItem?.no)
                         })
                     }
-                    showDetailNodeProperty().bind(selectedBinding)
+                    showDetailNodeProperty().bind(invoiceTable.selectionModel.selectedItemProperty().isNotNull)
                     masterNode = invoiceTable
                     detailNode = ktfx.layouts.vbox {
                         Toolbar().apply {
@@ -203,14 +201,18 @@ class InvoiceController : ActionController(), Refreshable, Selectable<Invoice>, 
                                 }
                             }
                             itemsProperty().bind(buildBinding(invoiceTable.selectionModel.selectedItemProperty()) {
-                                when (selected) {
+                                when (invoiceTable.selectionModel.selectedItem) {
                                     null -> emptyObservableList()
-                                    else -> transaction { Payments { invoiceId.equal(selected!!.id) }.toObservableList() }
+                                    else -> transaction {
+                                        Payments {
+                                            invoiceId.equal(invoiceTable.selectionModel.selectedItem.id)
+                                        }.toObservableList()
+                                    }
                                 }
                             })
                             contextMenu {
                                 getString(R.string.add)(ImageView(R.image.menu_add)) {
-                                    disableProperty().bind(!selectedBinding)
+                                    disableProperty().bind(invoiceTable.selectionModel.selectedItemProperty().isNull)
                                     onAction { addPayment() }
                                 }
                                 getString(R.string.delete)(ImageView(R.image.menu_delete)) {
@@ -244,14 +246,20 @@ class InvoiceController : ActionController(), Refreshable, Selectable<Invoice>, 
                                 .toMutableObservableList()
                             invoiceTable.contextMenu {
                                 getString(R.string.view)(ImageView(R.image.menu_invoice)) {
-                                    later { disableProperty().bind(!selectedBinding) }
+                                    later {
+                                        disableProperty().bind(invoiceTable.selectionModel.selectedItemProperty().isNull)
+                                    }
                                     onAction { viewInvoice() }
                                 }
                                 separatorMenuItem()
                                 getString(R.string.delete)(ImageView(R.image.menu_delete)) {
+                                    disableProperty().bind(invoiceTable.selectionModel.selectedItemProperty().isNull)
                                     onAction {
-                                        (DeleteInvoiceAction(this@InvoiceController, selected!!)) {
-                                            invoiceTable.items.remove(selected)
+                                        (DeleteInvoiceAction(
+                                            this@InvoiceController,
+                                            invoiceTable.selectionModel.selectedItem
+                                        )) {
+                                            invoiceTable.items.remove(invoiceTable.selectionModel.selectedItem)
                                         }
                                     }
                                 }
@@ -279,31 +287,35 @@ class InvoiceController : ActionController(), Refreshable, Selectable<Invoice>, 
 
     @FXML fun selectCustomer() = SearchCustomerPopover(this).show(customerField) { customerProperty.set(it) }
 
-    private fun viewInvoice() = ViewInvoiceDialog(this, selected!!).apply {
+    private fun viewInvoice() = ViewInvoiceDialog(this, invoiceTable.selectionModel.selectedItem).apply {
         setOnDialogClosed {
             transaction {
-                reload(selected!!)
+                reload(invoiceTable.selectionModel.selectedItem)
             }
         }
     }.show()
 
-    private fun addPayment() = AddPaymentPopover(this, selected!!).show(paymentTable) {
-        (AddPaymentAction(this@InvoiceController, it!!, selected!!.no)) {
+    private fun addPayment() = AddPaymentPopover(this, invoiceTable.selectionModel.selectedItem).show(paymentTable) {
+        (AddPaymentAction(this@InvoiceController, it!!, invoiceTable.selectionModel.selectedItem.no)) {
             updatePaymentStatus()
-            reload(selected!!)
+            reload(invoiceTable.selectionModel.selectedItem)
         }
     }
 
     private fun deletePayment() = ConfirmDialog(this).show {
-        (DeletePaymentAction(this@InvoiceController, selected2!!, selected!!.no)) {
+        (DeletePaymentAction(
+            this@InvoiceController,
+            paymentTable.selectionModel.selectedItem,
+            invoiceTable.selectionModel.selectedItem.no
+        )) {
             updatePaymentStatus()
-            reload(selected!!)
+            reload(invoiceTable.selectionModel.selectedItem)
         }
     }
 
-    private fun SessionWrapper.updatePaymentStatus() = Invoices[selected!!]
+    private fun SessionWrapper.updatePaymentStatus() = Invoices[invoiceTable.selectionModel.selectedItem]
         .projection { isPaid }
-        .update(selected!!.calculateDue() <= 0.0)
+        .update(invoiceTable.selectionModel.selectedItem.calculateDue() <= 0.0)
 
     private fun SessionWrapper.reload(invoice: Invoice) = invoiceTable.run {
         items.indexOf(invoice).let { index ->

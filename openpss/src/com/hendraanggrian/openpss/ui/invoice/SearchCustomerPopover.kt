@@ -3,13 +3,11 @@ package com.hendraanggrian.openpss.ui.invoice
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.Context
 import com.hendraanggrian.openpss.control.CustomerListView
-import com.hendraanggrian.openpss.popup.popover.ResultablePopover
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.ui.Selectable
+import com.hendraanggrian.openpss.popup.popover.ResultablePopover
 import javafx.scene.control.ListView
-import javafx.scene.control.SelectionModel
 import javafx.scene.control.TextField
 import javafx.scene.input.KeyCode.ENTER
 import ktfx.beans.binding.buildBinding
@@ -19,11 +17,11 @@ import ktfx.coroutines.onKeyPressed
 import ktfx.coroutines.onMouseClicked
 import ktfx.jfoenix.jfxTextField
 import ktfx.layouts.vbox
+import ktfx.scene.control.isSelected
 import ktfx.scene.input.isDoubleClick
 import kotlin.text.RegexOption.IGNORE_CASE
 
-class SearchCustomerPopover(context: Context) : ResultablePopover<Customer>(context, R.string.search_customer),
-    Selectable<Customer> {
+class SearchCustomerPopover(context: Context) : ResultablePopover<Customer>(context, R.string.search_customer) {
 
     private companion object {
         const val ITEMS_PER_PAGE = 10
@@ -48,14 +46,20 @@ class SearchCustomerPopover(context: Context) : ResultablePopover<Customer>(cont
                     }
                 })
                 itemsProperty().listener { _, _, value -> if (value.isNotEmpty()) selectionModel.selectFirst() }
-                onMouseClicked { if (it.isDoubleClick() && selected != null) defaultButton.fire() }
-                onKeyPressed { if (it.code == ENTER && selected != null) defaultButton.fire() }
+                onMouseClicked {
+                    if (it.isDoubleClick() && customerList.selectionModel.isSelected()) {
+                        defaultButton.fire()
+                    }
+                }
+                onKeyPressed {
+                    if (it.code == ENTER && customerList.selectionModel.isSelected()) {
+                        defaultButton.fire()
+                    }
+                }
             }() marginTop getDouble(R.dimen.padding_medium)
         }
-        defaultButton.disableProperty().bind(!selectedBinding)
+        defaultButton.disableProperty().bind(customerList.selectionModel.selectedItemProperty().isNull)
     }
 
-    override val nullableResult: Customer? get() = selected!!
-
-    override val selectionModel: SelectionModel<Customer> get() = customerList.selectionModel
+    override val nullableResult: Customer? get() = customerList.selectionModel.selectedItem
 }

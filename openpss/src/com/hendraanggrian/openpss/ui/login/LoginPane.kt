@@ -26,7 +26,6 @@ import javafx.scene.control.TextField
 import javafx.scene.layout.Priority
 import javafx.scene.layout.StackPane
 import javafx.scene.text.TextAlignment
-import javafx.util.StringConverter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.javafx.JavaFx
@@ -60,7 +59,6 @@ import ktfx.scene.layout.updatePadding
 import ktfx.scene.text.fontSize
 import java.util.Properties
 import java.util.ResourceBundle
-import java.util.WeakHashMap
 
 class LoginPane(private val resourced: Resources) : _StackPane(), Context {
 
@@ -78,7 +76,6 @@ class LoginPane(private val resourced: Resources) : _StackPane(), Context {
     override val resourceBundle: ResourceBundle get() = resourced.resourceBundle
     override val dimenResources: Properties get() = resourced.dimenResources
     override val colorResources: Properties get() = resourced.colorResources
-    override val stringConverters: MutableMap<String, StringConverter<Number>> = WeakHashMap()
 
     override val login: Employee get() = throw UnsupportedOperationException()
     override val stack: StackPane get() = this

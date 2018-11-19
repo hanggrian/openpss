@@ -4,7 +4,6 @@ import com.hendraanggrian.openpss.App.Companion.STRETCH_POINT
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.PATTERN_DATE
 import com.hendraanggrian.openpss.content.PATTERN_TIME
-import com.hendraanggrian.openpss.content.toJava
 import com.hendraanggrian.openpss.control.DateBox
 import com.hendraanggrian.openpss.control.MonthBox
 import com.hendraanggrian.openpss.control.StretchableButton
@@ -22,6 +21,7 @@ import com.hendraanggrian.openpss.util.doneCell
 import com.hendraanggrian.openpss.util.matches
 import com.hendraanggrian.openpss.util.numberCell
 import com.hendraanggrian.openpss.util.stringCell
+import com.hendraanggrian.openpss.util.toJava
 import javafx.beans.binding.When
 import javafx.fxml.FXML
 import javafx.scene.Node

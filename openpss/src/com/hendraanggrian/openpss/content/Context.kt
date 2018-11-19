@@ -21,27 +21,16 @@ interface Context : Resources {
 
     fun isAdmin(): Boolean = transaction { Employees[login].single().isAdmin }
 
-    /**
-     * Some string converters are used quite often in some cases (controllers, dialogs, etc.).
-     * To avoid creating the same instances over and over again, we cache those converters in this weak map for reuse,
-     * using its class name as key.
-     */
-    val stringConverters: MutableMap<String, StringConverter<Number>>
-
     /** Number decimal string converter. */
     val numberConverter: StringConverter<Number>
-        get() = stringConverters.getOrPut("number") { NumberStringConverter() }
+        get() = NumberStringConverter()
 
     /** Number decimal with currency prefix string converter. */
     val currencyConverter: StringConverter<Number>
-        get() = stringConverters.getOrPut("currency") {
-            CurrencyStringConverter(transaction {
-                Language.ofFullCode(findGlobalSettings(GlobalSetting.KEY_LANGUAGE).single().value)
-                    .toLocale()
-            })
-        }
-
-    fun clearConverters() = stringConverters.clear()
+        get() = CurrencyStringConverter(transaction {
+            Language.ofFullCode(findGlobalSettings(GlobalSetting.KEY_LANGUAGE).single().value)
+                .toLocale()
+        })
 
     /** Returns [Desktop] instance, may be null if it is unsupported. */
     val desktop: Desktop?

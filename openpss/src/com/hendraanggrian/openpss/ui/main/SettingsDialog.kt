@@ -110,10 +110,12 @@ class SettingsDialog(context: Context) : Dialog(context, R.string.settings) {
                 onActionFilter {
                     if (isLocalChanged.value) PreferencesFile.save()
                     if (isGlobalChanged.value) transaction {
-                        findGlobalSettings(KEY_LANGUAGE).projection { value }.update(languageBox.value.fullCode)
-                        findGlobalSettings(KEY_INVOICE_HEADERS).projection { value }
+                        findGlobalSettings(KEY_LANGUAGE)
+                            .projection { value }
+                            .update(languageBox.value.fullCode)
+                        findGlobalSettings(KEY_INVOICE_HEADERS)
+                            .projection { value }
                             .update(invoiceHeadersArea.text.trim().replace("\n", "|"))
-                        clearConverters()
                     }
                     close()
                 }

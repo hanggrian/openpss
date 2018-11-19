@@ -5,11 +5,9 @@ import com.hendraanggrian.openpss.content.Context
 import com.hendraanggrian.openpss.db.schemas.Employee
 import javafx.fxml.Initializable
 import javafx.scene.layout.StackPane
-import javafx.util.StringConverter
 import java.net.URL
 import java.util.Properties
 import java.util.ResourceBundle
-import java.util.WeakHashMap
 
 /** Base class of all controllers. */
 @Suppress("LeakingThis")
@@ -18,8 +16,6 @@ open class Controller : Initializable, Context {
     override lateinit var resourceBundle: ResourceBundle
     override val dimenResources: Properties = getProperties(R.dimen.properties_dimen)
     override val colorResources: Properties = getProperties(R.color.properties_color)
-    override val stringConverters: MutableMap<String, StringConverter<Number>> =
-        WeakHashMap<String, StringConverter<Number>>()
 
     override lateinit var stack: StackPane
     override lateinit var login: Employee

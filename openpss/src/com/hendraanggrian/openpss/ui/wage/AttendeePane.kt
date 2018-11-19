@@ -3,12 +3,12 @@ package com.hendraanggrian.openpss.ui.wage
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.Context
 import com.hendraanggrian.openpss.content.PATTERN_DATETIME_EXTENDED
-import com.hendraanggrian.openpss.content.trimMinutes
 import com.hendraanggrian.openpss.control.IntField
 import com.hendraanggrian.openpss.db.schemas.Recesses
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.popup.popover.DateTimePopover
 import com.hendraanggrian.openpss.util.round
+import com.hendraanggrian.openpss.util.trimMinutes
 import javafx.geometry.Pos.CENTER
 import javafx.scene.Node
 import javafx.scene.control.CheckBox

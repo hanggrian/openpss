@@ -9,11 +9,9 @@ import javafx.scene.Node
 import javafx.scene.control.Button
 import javafx.scene.layout.Region
 import javafx.scene.layout.VBox
-import javafx.util.StringConverter
 import ktfx.beans.value.getValue
 import ktfx.beans.value.setValue
 import ktfx.layouts.NodeInvokable
-import java.util.WeakHashMap
 
 @Suppress("LeakingThis")
 open class Dialog(
@@ -36,8 +34,6 @@ open class Dialog(
     private val graphicProperty = SimpleObjectProperty<Node>()
     override fun graphicProperty(): ObjectProperty<Node> = graphicProperty
     var graphic: Node? by graphicProperty
-
-    override val stringConverters: MutableMap<String, StringConverter<Number>> = WeakHashMap()
 
     init {
         initialize()

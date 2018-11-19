@@ -3,8 +3,8 @@
 package com.hendraanggrian.openpss.control
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.content.toJava
-import com.hendraanggrian.openpss.content.toJoda
+import com.hendraanggrian.openpss.util.toJava
+import com.hendraanggrian.openpss.util.toJoda
 import javafx.beans.property.ObjectProperty
 import javafx.beans.property.SimpleObjectProperty
 import javafx.geometry.Pos

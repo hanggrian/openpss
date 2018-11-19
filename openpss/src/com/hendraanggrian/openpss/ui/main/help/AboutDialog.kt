@@ -102,7 +102,7 @@ class AboutDialog(context: Context) : Dialog<Unit>(), Context by context {
                 } marginLeft 48.0
             }
             expandableContent = masterDetailPane {
-                maxHeight = 256.0
+                prefHeight = 200.0
                 dividerPosition = 0.3
                 showDetailNodeProperty().bind(licenseList.selectionModel.selectedItemProperty().isNotNull)
                 masterNode = licenseList

@@ -19,7 +19,7 @@ import com.hendraanggrian.openpss.db.schemas.Payments
 import com.hendraanggrian.openpss.db.schemas.Payments.invoiceId
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.popup.dialog.ConfirmDialog
-import com.hendraanggrian.openpss.popup.popover.ViewInvoiceDialog
+import com.hendraanggrian.openpss.popup.popover.ViewInvoicePopover
 import com.hendraanggrian.openpss.ui.ActionController
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.util.currencyCell
@@ -251,6 +251,23 @@ class InvoiceController : ActionController(), Refreshable {
                                     }
                                     onAction { viewInvoice() }
                                 }
+                                getString(R.string.done)(ImageView(R.image.menu_done)) {
+                                    later {
+                                        disableProperty().bind(buildBinding(invoiceTable.selectionModel.selectedItemProperty()) {
+                                            when {
+                                                invoiceTable.selectionModel.selectedItem != null &&
+                                                    !invoiceTable.selectionModel.selectedItem.isDone -> false
+                                                else -> true
+                                            }
+                                        })
+                                    }
+                                    onAction {
+                                        transaction {
+                                            invoiceTable.selectionModel.selectedItem.done(this@InvoiceController)
+                                        }
+                                        refreshButton.fire()
+                                    }
+                                }
                                 separatorMenuItem()
                                 getString(R.string.delete)(ImageView(R.image.menu_delete)) {
                                     disableProperty().bind(invoiceTable.selectionModel.selectedItemProperty().isNull)
@@ -287,13 +304,13 @@ class InvoiceController : ActionController(), Refreshable {
 
     @FXML fun selectCustomer() = SearchCustomerPopover(this).show(customerField) { customerProperty.set(it) }
 
-    private fun viewInvoice() = ViewInvoiceDialog(this, invoiceTable.selectionModel.selectedItem).apply {
-        setOnDialogClosed {
+    private fun viewInvoice() = ViewInvoicePopover(this, invoiceTable.selectionModel.selectedItem).apply {
+        setOnHidden {
             transaction {
                 reload(invoiceTable.selectionModel.selectedItem)
             }
         }
-    }.show()
+    }.show(invoiceTable)
 
     private fun addPayment() = AddPaymentPopover(this, invoiceTable.selectionModel.selectedItem).show(paymentTable) {
         (AddPaymentAction(this@InvoiceController, it!!, invoiceTable.selectionModel.selectedItem.no)) {

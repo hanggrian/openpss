@@ -186,7 +186,7 @@ class AddInvoiceDialog(
             label(getString(R.string.note)) col 0 row 3
             noteArea = textArea {
                 promptText = getString(R.string.note)
-                prefHeight = 75.0
+                prefHeight = 64.0
             } col 1 row 3 colSpans 3
             label(getString(R.string.total)) col 0 row 4
             label {
@@ -220,7 +220,7 @@ class AddInvoiceDialog(
         newAddJobPopover: () -> ResultablePopover<S>,
         init: TableView<S>.() -> Unit
     ): TableView<S> = tableView {
-        prefHeight = 200.0
+        prefHeight = 128.0
         init()
         contextMenu {
             getString(R.string.add)(ImageView(R.image.menu_add)) {

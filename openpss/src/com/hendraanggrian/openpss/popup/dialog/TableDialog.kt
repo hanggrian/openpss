@@ -61,6 +61,7 @@ abstract class TableDialog<D : Document<S>, S : DocumentSchema<D>>(
         }
         anchorPane {
             table = tableView<D> {
+                prefHeight = 256.0
                 columnResizePolicy = CONSTRAINED_RESIZE_POLICY
                 isEditable = true
             } anchorAll 1.0

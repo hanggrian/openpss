@@ -2,8 +2,8 @@ package com.hendraanggrian.openpss.ui.customer
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.Context
-import com.hendraanggrian.openpss.popup.dialog.ResultableDialog
 import com.hendraanggrian.openpss.db.schemas.Customer
+import com.hendraanggrian.openpss.popup.dialog.ResultableDialog
 import com.hendraanggrian.openpss.util.isPersonName
 import com.hendraanggrian.openpss.util.orNull
 import javafx.scene.control.Label
@@ -11,7 +11,7 @@ import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
 import javafx.scene.control.TextInputControl
 import javafx.scene.image.ImageView
-import ktfx.beans.property.asMutableProperty
+import ktfx.beans.property.asProperty
 import ktfx.beans.value.or
 import ktfx.coroutines.listener
 import ktfx.jfoenix.jfxTextArea
@@ -26,7 +26,7 @@ class EditCustomerDialog(
     private val customer: Customer
 ) : ResultableDialog<Customer>(context, R.string.edit_customer) {
 
-    private val unchangedProperty = true.asMutableProperty()
+    private val unchangedProperty = true.asProperty()
 
     private lateinit var image: ImageView
     private lateinit var description: Label

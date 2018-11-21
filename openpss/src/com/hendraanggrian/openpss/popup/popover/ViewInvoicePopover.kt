@@ -13,10 +13,8 @@ import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_INVOICE
 import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.db.schemas.Invoices
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.popup.dialog.Dialog
 import com.sun.javafx.print.PrintHelper
 import com.sun.javafx.print.Units.MM
-import com.sun.javaws.ui.SplashScreen.hide
 import javafx.geometry.HPos.LEFT
 import javafx.geometry.HPos.RIGHT
 import javafx.geometry.Pos.CENTER
@@ -62,11 +60,11 @@ import java.util.ResourceBundle
  * Popup displaying invoice using server's language instead of local.
  * Size of invoice is equivalent to 10x14cm, possibly the smallest continuous form available.
  */
-class ViewInvoiceDialog(
+class ViewInvoicePopover(
     context: Context,
     private val invoice: Invoice,
     private val isTest: Boolean = false
-) : Dialog(context, R.string.invoice) {
+) : Popover(context, R.string.invoice) {
 
     private companion object {
         const val WIDTH = 378.0
@@ -143,7 +141,7 @@ class ViewInvoiceDialog(
                     if (invoice.offsetJobs.isNotEmpty()) {
                         row += jobGridPane(row, R.string.offset, invoice.offsetJobs) { job, i ->
                             label(numberConverter(job.qty)) row i col 0
-                            label("${job.type}\n${job.typedTechnique.toString(this@ViewInvoiceDialog)}") {
+                            label("${job.type}\n${job.typedTechnique.toString(this@ViewInvoicePopover)}") {
                                 textAlignment = TextAlignment.CENTER
                             } row i col 1
                             label(job.desc) {
@@ -231,7 +229,7 @@ class ViewInvoiceDialog(
                     // disable auto-hide when print dialog is showing
                     // isAutoHide = false
                     val job = PrinterJob.createPrinterJob(printer)!!
-                    if (job.showPrintDialog(this@ViewInvoiceDialog.scene.window) && job.printPage(layout, invoiceBox)) {
+                    if (job.showPrintDialog(this@ViewInvoicePopover.scene.window) && job.printPage(layout, invoiceBox)) {
                         job.endJob()
                         if (!isTest) transaction {
                             Invoices[invoice].projection { printed }.update(true)

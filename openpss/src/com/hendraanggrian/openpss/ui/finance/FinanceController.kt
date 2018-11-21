@@ -13,7 +13,7 @@ import com.hendraanggrian.openpss.db.schemas.Payment
 import com.hendraanggrian.openpss.db.schemas.Payments
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.io.properties.PreferencesFile
-import com.hendraanggrian.openpss.popup.popover.ViewInvoiceDialog
+import com.hendraanggrian.openpss.popup.popover.ViewInvoicePopover
 import com.hendraanggrian.openpss.ui.ActionController
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.util.currencyCell
@@ -143,9 +143,14 @@ class FinanceController : ActionController(), Refreshable {
         }
     }
 
-    @FXML fun viewInvoice() = ViewInvoiceDialog(this, transaction {
+    @FXML fun viewInvoice() = ViewInvoicePopover(this, transaction {
         Invoices[dailyTable.selectionModel.selectedItem.invoiceId].single()
-    }).show()
+    }).show(
+        when (tabPane.selectionModel.selectedIndex) {
+            0 -> dailyTable
+            else -> monthlyTable
+        }
+    )
 
     @FXML fun viewPayments() {
         tabPane.selectionModel.selectFirst()

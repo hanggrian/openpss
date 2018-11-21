@@ -1,8 +1,12 @@
 package com.hendraanggrian.openpss.db
 
+import com.hendraanggrian.openpss.App
+import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.content.Context
 import com.hendraanggrian.openpss.db.schemas.GlobalSetting
 import com.hendraanggrian.openpss.db.schemas.GlobalSettings
 import com.hendraanggrian.openpss.db.schemas.Invoice
+import com.hendraanggrian.openpss.db.schemas.Invoices
 import com.hendraanggrian.openpss.db.schemas.Payments
 import kotlinx.nosql.DocumentSchemaOperations
 import kotlinx.nosql.DocumentSchemaQueryWrapper
@@ -16,11 +20,12 @@ import kotlinx.nosql.id
 import kotlinx.nosql.mongodb.DocumentSchema
 import kotlinx.nosql.mongodb.MongoDBSession
 import kotlinx.nosql.query.NoQuery
+import kotlinx.nosql.update
+import ktfx.jfoenix.jfxSnackbar
 
 /** Extended version of [MongoDBSession]. */
 @Suppress("NOTHING_TO_INLINE")
-class SessionWrapper(val session: MongoDBSession) :
-    Session by session,
+class SessionWrapper(val session: MongoDBSession) : Session by session,
     DocumentSchemaOperations by session,
     TableSchemaOperations by session,
     IndexOperations by session {
@@ -70,6 +75,15 @@ class SessionWrapper(val session: MongoDBSession) :
         key: String
     ): DocumentSchemaQueryWrapper<GlobalSettings, String, GlobalSetting> = GlobalSettings { it.key.equal(key) }
 
-    fun Invoice.calculateDue(): Double =
-        total - Payments { it.invoiceId.equal(id) }.sumByDouble { it.value }
+    fun Invoice.done(context: Context): Boolean {
+        val query = Invoices[this]
+        if (query.single().isDone) {
+            context.stack.jfxSnackbar(context.getString(R.string.already_done), App.DURATION_LONG)
+            return false
+        }
+        query.projection { Invoices.isDone }.update(true)
+        return true
+    }
+
+    fun Invoice.calculateDue(): Double = total - Payments { it.invoiceId.equal(id) }.sumByDouble { it.value }
 }

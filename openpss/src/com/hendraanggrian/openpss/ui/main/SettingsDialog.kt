@@ -25,7 +25,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.javafx.JavaFx
 import kotlinx.coroutines.launch
 import kotlinx.nosql.update
-import ktfx.beans.property.asMutableProperty
+import ktfx.beans.property.asProperty
 import ktfx.beans.value.and
 import ktfx.collections.toObservableList
 import ktfx.coroutines.listener
@@ -47,8 +47,8 @@ import kotlin.coroutines.CoroutineContext
 
 class SettingsDialog(context: Context) : Dialog(context, R.string.settings) {
 
-    private var isLocalChanged = false.asMutableProperty()
-    private var isGlobalChanged = false.asMutableProperty()
+    private var isLocalChanged = false.asProperty()
+    private var isGlobalChanged = false.asProperty()
 
     private lateinit var invoiceHeadersArea: TextArea
     private lateinit var wageReaderChoice: ComboBox<Reader>

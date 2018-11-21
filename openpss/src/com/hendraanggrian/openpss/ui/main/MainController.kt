@@ -15,7 +15,7 @@ import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.db.schemas.Log
 import com.hendraanggrian.openpss.db.schemas.Logs
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.popup.popover.ViewInvoiceDialog
+import com.hendraanggrian.openpss.popup.popover.ViewInvoicePopover
 import com.hendraanggrian.openpss.ui.ActionController
 import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.Refreshable
@@ -246,7 +246,7 @@ class MainController : Controller(), Refreshable {
 
     @FXML fun testViewInvoice() {
         transaction { Customers().firstOrNull() }?.let {
-            ViewInvoiceDialog(
+            ViewInvoicePopover(
                 this,
                 Invoice(
                     no = 1234,
@@ -264,7 +264,7 @@ class MainController : Controller(), Refreshable {
                     isPaid = false,
                     isDone = false
                 ), true
-            ).show()
+            ).show(menuBar)
         } ?: stack.jfxSnackbar(getString(R.string.no_customer_to_test), App.DURATION_SHORT)
     }
 

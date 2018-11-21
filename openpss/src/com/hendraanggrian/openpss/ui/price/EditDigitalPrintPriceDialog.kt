@@ -8,7 +8,7 @@ import com.hendraanggrian.openpss.db.transaction
 import javafx.beans.value.ObservableValue
 import kotlinx.nosql.equal
 import kotlinx.nosql.update
-import ktfx.beans.property.asProperty
+import ktfx.beans.property.asReadOnlyProperty
 import ktfx.coroutines.onEditCommit
 import ktfx.listeners.textFieldCellFactory
 
@@ -21,7 +21,7 @@ class EditDigitalPrintPriceDialog(
         getString(R.string.one_side_price)<Double> {
             minWidth = 128.0
             style = "-fx-alignment: center-right;"
-            setCellValueFactory { it.value.oneSidePrice.asProperty() as ObservableValue<Double> }
+            setCellValueFactory { it.value.oneSidePrice.asReadOnlyProperty() as ObservableValue<Double> }
             textFieldCellFactory {
                 fromString { it.toDoubleOrNull() ?: 0.0 }
             }
@@ -37,7 +37,7 @@ class EditDigitalPrintPriceDialog(
         getString(R.string.two_side_price)<Double> {
             minWidth = 128.0
             style = "-fx-alignment: center-right;"
-            setCellValueFactory { it.value.twoSidePrice.asProperty() as ObservableValue<Double> }
+            setCellValueFactory { it.value.twoSidePrice.asReadOnlyProperty() as ObservableValue<Double> }
             textFieldCellFactory {
                 fromString { it.toDoubleOrNull() ?: 0.0 }
             }

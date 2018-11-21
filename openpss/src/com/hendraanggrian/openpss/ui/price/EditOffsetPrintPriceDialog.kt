@@ -8,7 +8,7 @@ import com.hendraanggrian.openpss.db.transaction
 import javafx.beans.value.ObservableValue
 import kotlinx.nosql.equal
 import kotlinx.nosql.update
-import ktfx.beans.property.asProperty
+import ktfx.beans.property.asReadOnlyProperty
 import ktfx.coroutines.onEditCommit
 import ktfx.listeners.textFieldCellFactory
 
@@ -21,7 +21,7 @@ class EditOffsetPrintPriceDialog(
         getString(R.string.min_qty)<Int> {
             minWidth = 128.0
             style = "-fx-alignment: center-right;"
-            setCellValueFactory { it.value.minQty.asProperty() as ObservableValue<Int> }
+            setCellValueFactory { it.value.minQty.asReadOnlyProperty() as ObservableValue<Int> }
             textFieldCellFactory {
                 fromString { it.toIntOrNull() ?: 0 }
             }
@@ -38,7 +38,7 @@ class EditOffsetPrintPriceDialog(
         getString(R.string.min_price)<Double> {
             minWidth = 128.0
             style = "-fx-alignment: center-right;"
-            setCellValueFactory { it.value.minPrice.asProperty() as ObservableValue<Double> }
+            setCellValueFactory { it.value.minPrice.asReadOnlyProperty() as ObservableValue<Double> }
             textFieldCellFactory {
                 fromString { it.toDoubleOrNull() ?: 0.0 }
             }
@@ -55,7 +55,7 @@ class EditOffsetPrintPriceDialog(
         getString(R.string.excess_price)<Double> {
             minWidth = 128.0
             style = "-fx-alignment: center-right;"
-            setCellValueFactory { it.value.excessPrice.asProperty() as ObservableValue<Double> }
+            setCellValueFactory { it.value.excessPrice.asReadOnlyProperty() as ObservableValue<Double> }
             textFieldCellFactory {
                 fromString { it.toDoubleOrNull() ?: 0.0 }
             }

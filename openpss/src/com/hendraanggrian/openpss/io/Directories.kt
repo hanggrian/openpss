@@ -12,11 +12,8 @@ sealed class Directory : File {
     constructor(parent: Directory, child: String) : super(parent, child)
 
     init {
-        check(isDirectory)
-        mkdirs()
+        @Suppress("LeakingThis") mkdirs()
     }
-
-    final override fun mkdirs(): Boolean = super.mkdirs()
 }
 
 object MainDirectory : Directory(SystemUtils.USER_HOME, ".${BuildConfig.ARTIFACT}")

@@ -3,21 +3,20 @@ package com.hendraanggrian.openpss.popup
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.Context
 import com.hendraanggrian.openpss.control.Space
+import com.hendraanggrian.openpss.control.Toolbar
 import javafx.beans.property.ObjectProperty
-import javafx.geometry.Pos
 import javafx.scene.Node
 import javafx.scene.control.Button
 import javafx.scene.layout.Region
 import javafx.scene.layout.VBox
-import ktfx.beans.binding.buildBinding
-import ktfx.coroutines.listener
 import ktfx.coroutines.onAction
 import ktfx.jfoenix.jfxButton
 import ktfx.layouts.NodeInvokable
 import ktfx.layouts.borderPane
 import ktfx.layouts.buttonBar
+import ktfx.layouts.label
 import ktfx.layouts.vbox
-import ktfx.scene.layout.paddingAll
+import ktfx.scene.layout.updatePadding
 
 interface Popup : Context, NodeInvokable {
 
@@ -38,22 +37,34 @@ interface Popup : Context, NodeInvokable {
     fun graphicProperty(): ObjectProperty<Node>
 
     fun initialize() {
-        setActualContent(ktfx.layouts.vbox(getDouble(R.dimen.padding_medium)) {
-            paddingAll = getDouble(R.dimen.padding_large)
-            borderPane {
-                left = ktfx.layouts.label(getString(titleId)) {
-                    styleClass.addAll(R.style.bold, R.style.display)
-                } align Pos.CENTER_LEFT
-                centerProperty().bind(buildBinding(graphicProperty()) {
-                    graphicProperty().get()?.let { Space(getDouble(R.dimen.padding_large)) }
-                })
-                rightProperty().run {
-                    bindBidirectional(graphicProperty())
-                    listener { _, _, value -> value align Pos.CENTER_RIGHT }
+        setActualContent(ktfx.layouts.vbox {
+            // material dialog have extra top padding: https://material.io/develop/web/components/dialogs/
+            Toolbar().apply {
+                leftItems {
+                    label(getString(titleId)) {
+                        styleClass.addAll(R.style.bold, R.style.display)
+                    }
                 }
+                rightItems {
+                    Space(getDouble(R.dimen.padding_large))()
+                    borderPane {
+                        centerProperty().bindBidirectional(graphicProperty())
+                    }
+                }
+            }() marginTop getDouble(R.dimen.padding_small) marginBottom getDouble(R.dimen.padding_small)
+            contentPane = vbox(getDouble(R.dimen.padding_medium)) {
+                updatePadding(
+                    left = getDouble(R.dimen.padding_large),
+                    right = getDouble(R.dimen.padding_large)
+                )
             }
-            contentPane = vbox(getDouble(R.dimen.padding_medium)) marginTop getDouble(R.dimen.padding_medium)
             buttonBar {
+                updatePadding(
+                    top = getDouble(R.dimen.padding_medium),
+                    left = getDouble(R.dimen.padding_large),
+                    right = getDouble(R.dimen.padding_large),
+                    bottom = getDouble(R.dimen.padding_large)
+                )
                 buttonInvokable = this
                 cancelButton = jfxButton(getString(R.string.close)) {
                     styleClass += R.style.flat

@@ -2,13 +2,13 @@ package com.hendraanggrian.openpss.popup
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.Context
-import com.hendraanggrian.openpss.control.Space
 import com.hendraanggrian.openpss.control.Toolbar
 import javafx.beans.property.ObjectProperty
 import javafx.scene.Node
 import javafx.scene.control.Button
 import javafx.scene.layout.Region
 import javafx.scene.layout.VBox
+import ktfx.coroutines.listener
 import ktfx.coroutines.onAction
 import ktfx.jfoenix.jfxButton
 import ktfx.layouts.NodeInvokable
@@ -46,8 +46,12 @@ interface Popup : Context, NodeInvokable {
                     }
                 }
                 rightItems {
-                    Space(getDouble(R.dimen.padding_large))()
                     borderPane {
+                        centerProperty().listener { _, _, value ->
+                            if (value != null) {
+                                value marginLeft getDouble(R.dimen.padding_large)
+                            }
+                        }
                         centerProperty().bindBidirectional(graphicProperty())
                     }
                 }

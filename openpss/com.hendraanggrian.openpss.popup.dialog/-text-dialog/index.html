@@ -1,0 +1,105 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>TextDialog - openpss</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">openpss</a>&nbsp;/&nbsp;<a href="../index.html">com.hendraanggrian.openpss.popup.dialog</a>&nbsp;/&nbsp;<a href="./index.html">TextDialog</a><br/>
+<br/>
+<h1>TextDialog</h1>
+<code><span class="keyword">class </span><span class="identifier">TextDialog</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../-dialog/index.html"><span class="identifier">Dialog</span></a></code>
+<h3>Constructors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-init-.html">&lt;init&gt;</a></p>
+</td>
+<td>
+<code><span class="identifier">TextDialog</span><span class="symbol">(</span><span class="identifier" id="com.hendraanggrian.openpss.popup.dialog.TextDialog$<init>(com.hendraanggrian.openpss.content.Context, kotlin.String, kotlin.String)/context">context</span><span class="symbol">:</span>&nbsp;<a href="../../com.hendraanggrian.openpss.content/-context/index.html"><span class="identifier">Context</span></a><span class="symbol">, </span><span class="identifier" id="com.hendraanggrian.openpss.popup.dialog.TextDialog$<init>(com.hendraanggrian.openpss.content.Context, kotlin.String, kotlin.String)/titleId">titleId</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.hendraanggrian.openpss.popup.dialog.TextDialog$<init>(com.hendraanggrian.openpss.content.Context, kotlin.String, kotlin.String)/content">content</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a>&nbsp;<span class="symbol">=</span>&nbsp;""<span class="symbol">)</span></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Inherited Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="../-dialog/button-invokable.html">buttonInvokable</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">lateinit</span> <span class="keyword">var </span><span class="identifier">buttonInvokable</span><span class="symbol">: </span><span class="identifier">NodeInvokable</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../-dialog/cancel-button.html">cancelButton</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">lateinit</span> <span class="keyword">var </span><span class="identifier">cancelButton</span><span class="symbol">: </span><span class="identifier">Button</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../-dialog/content-pane.html">contentPane</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">lateinit</span> <span class="keyword">var </span><span class="identifier">contentPane</span><span class="symbol">: </span><span class="identifier">VBox</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../-dialog/graphic.html">graphic</a></p>
+</td>
+<td>
+<code><span class="keyword">var </span><span class="identifier">graphic</span><span class="symbol">: </span><span class="identifier">Node</span><span class="symbol">?</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../-dialog/title-id.html">titleId</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">val </span><span class="identifier">titleId</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Inherited Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="../-dialog/dismiss.html">dismiss</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">dismiss</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../-dialog/graphic-property.html">graphicProperty</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">graphicProperty</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">ObjectProperty</span><span class="symbol">&lt;</span><span class="identifier">Node</span><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../-dialog/set-actual-content.html">setActualContent</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">setActualContent</span><span class="symbol">(</span><span class="identifier" id="com.hendraanggrian.openpss.popup.dialog.Dialog$setActualContent(javafx.scene.layout.Region)/region">region</span><span class="symbol">:</span>&nbsp;<span class="identifier">Region</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../-dialog/set-on-shown.html">setOnShown</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">setOnShown</span><span class="symbol">(</span><span class="identifier" id="com.hendraanggrian.openpss.popup.dialog.Dialog$setOnShown(kotlin.Function0((kotlin.Unit)))/onShown">onShown</span><span class="symbol">:</span>&nbsp;<span class="symbol">(</span><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../-dialog/show.html">show</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">show</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

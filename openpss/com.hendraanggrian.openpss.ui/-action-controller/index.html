@@ -31,6 +31,13 @@
 <td>
 <code><span class="keyword">val </span><span class="identifier">actions</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html"><span class="identifier">MutableList</span></a><span class="symbol">&lt;</span><span class="identifier">Node</span><span class="symbol">&gt;</span></code></td>
 </tr>
+<tr>
+<td>
+<p><a href="title.html">title</a></p>
+</td>
+<td>
+<code><span class="keyword">var </span><span class="identifier">title</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span></code></td>
+</tr>
 </tbody>
 </table>
 <h3>Inherited Properties</h3>
@@ -66,10 +73,10 @@
 </tr>
 <tr>
 <td>
-<p><a href="../-controller/root.html">root</a></p>
+<p><a href="../-controller/stack.html">stack</a></p>
 </td>
 <td>
-<code><span class="keyword">open</span> <span class="keyword">lateinit</span> <span class="keyword">var </span><span class="identifier">root</span><span class="symbol">: </span><span class="identifier">StackPane</span></code></td>
+<code><span class="keyword">open</span> <span class="keyword">lateinit</span> <span class="keyword">var </span><span class="identifier">stack</span><span class="symbol">: </span><span class="identifier">StackPane</span></code></td>
 </tr>
 </tbody>
 </table>
@@ -91,6 +98,13 @@
 <code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">NodeInvokable</span><span class="symbol">.</span><span class="identifier">onCreateActions</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
 <p>Override this function to add actions.</p>
 </td>
+</tr>
+<tr>
+<td>
+<p><a href="title-property.html">titleProperty</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">titleProperty</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">StringProperty</span></code></td>
 </tr>
 </tbody>
 </table>
@@ -125,28 +139,28 @@
 <p><a href="../../com.hendraanggrian.openpss.ui.customer/-customer-controller/index.html">CustomerController</a></p>
 </td>
 <td>
-<code><span class="keyword">class </span><span class="identifier">CustomerController</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">ActionController</span></a><span class="symbol">, </span><a href="../-refreshable/index.html"><span class="identifier">Refreshable</span></a><span class="symbol">, </span><a href="../-selectable/index.html"><span class="identifier">Selectable</span></a><span class="symbol">&lt;</span><a href="../../com.hendraanggrian.openpss.db.schemas/-customer/index.html"><span class="identifier">Customer</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><a href="../-selectable2/index.html"><span class="identifier">Selectable2</span></a><span class="symbol">&lt;</span><a href="../../com.hendraanggrian.openpss.db.schemas/-customer/-contact/index.html"><span class="identifier">Contact</span></a><span class="symbol">&gt;</span></code></td>
+<code><span class="keyword">class </span><span class="identifier">CustomerController</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">ActionController</span></a><span class="symbol">, </span><a href="../-refreshable/index.html"><span class="identifier">Refreshable</span></a></code></td>
 </tr>
 <tr>
 <td>
 <p><a href="../../com.hendraanggrian.openpss.ui.finance/-finance-controller/index.html">FinanceController</a></p>
 </td>
 <td>
-<code><span class="keyword">class </span><span class="identifier">FinanceController</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">ActionController</span></a><span class="symbol">, </span><a href="../-refreshable/index.html"><span class="identifier">Refreshable</span></a><span class="symbol">, </span><a href="../-selectable/index.html"><span class="identifier">Selectable</span></a><span class="symbol">&lt;</span><span class="identifier">Tab</span><span class="symbol">&gt;</span><span class="symbol">, </span><a href="../-selectable2/index.html"><span class="identifier">Selectable2</span></a><span class="symbol">&lt;</span><a href="../../com.hendraanggrian.openpss.db.schemas/-payment/index.html"><span class="identifier">Payment</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><a href="../-selectable3/index.html"><span class="identifier">Selectable3</span></a><span class="symbol">&lt;</span><a href="../../com.hendraanggrian.openpss.ui.finance/-report/index.html"><span class="identifier">Report</span></a><span class="symbol">&gt;</span></code></td>
+<code><span class="keyword">class </span><span class="identifier">FinanceController</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">ActionController</span></a><span class="symbol">, </span><a href="../-refreshable/index.html"><span class="identifier">Refreshable</span></a></code></td>
 </tr>
 <tr>
 <td>
 <p><a href="../../com.hendraanggrian.openpss.ui.invoice/-invoice-controller/index.html">InvoiceController</a></p>
 </td>
 <td>
-<code><span class="keyword">class </span><span class="identifier">InvoiceController</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">ActionController</span></a><span class="symbol">, </span><a href="../-refreshable/index.html"><span class="identifier">Refreshable</span></a><span class="symbol">, </span><a href="../-selectable/index.html"><span class="identifier">Selectable</span></a><span class="symbol">&lt;</span><a href="../../com.hendraanggrian.openpss.db.schemas/-invoice/index.html"><span class="identifier">Invoice</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><a href="../-selectable2/index.html"><span class="identifier">Selectable2</span></a><span class="symbol">&lt;</span><a href="../../com.hendraanggrian.openpss.db.schemas/-payment/index.html"><span class="identifier">Payment</span></a><span class="symbol">&gt;</span></code></td>
+<code><span class="keyword">class </span><span class="identifier">InvoiceController</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">ActionController</span></a><span class="symbol">, </span><a href="../-refreshable/index.html"><span class="identifier">Refreshable</span></a></code></td>
 </tr>
 <tr>
 <td>
 <p><a href="../../com.hendraanggrian.openpss.ui.schedule/-schedule-controller/index.html">ScheduleController</a></p>
 </td>
 <td>
-<code><span class="keyword">class </span><span class="identifier">ScheduleController</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">ActionController</span></a><span class="symbol">, </span><a href="../-refreshable/index.html"><span class="identifier">Refreshable</span></a><span class="symbol">, </span><a href="../-tree-selectable/index.html"><span class="identifier">TreeSelectable</span></a><span class="symbol">&lt;</span><a href="../../com.hendraanggrian.openpss.ui.schedule/-schedule/index.html"><span class="identifier">Schedule</span></a><span class="symbol">&gt;</span></code></td>
+<code><span class="keyword">class </span><span class="identifier">ScheduleController</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">ActionController</span></a><span class="symbol">, </span><a href="../-refreshable/index.html"><span class="identifier">Refreshable</span></a></code></td>
 </tr>
 <tr>
 <td>

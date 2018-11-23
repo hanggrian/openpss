@@ -8,7 +8,7 @@
 <a href="../../index.html">openpss</a>&nbsp;/&nbsp;<a href="../index.html">com.hendraanggrian.openpss.ui.schedule</a>&nbsp;/&nbsp;<a href="./index.html">ScheduleController</a><br/>
 <br/>
 <h1>ScheduleController</h1>
-<code><span class="keyword">class </span><span class="identifier">ScheduleController</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../../com.hendraanggrian.openpss.ui/-action-controller/index.html"><span class="identifier">ActionController</span></a><span class="symbol">, </span><a href="../../com.hendraanggrian.openpss.ui/-refreshable/index.html"><span class="identifier">Refreshable</span></a><span class="symbol">, </span><a href="../../com.hendraanggrian.openpss.ui/-tree-selectable/index.html"><span class="identifier">TreeSelectable</span></a><span class="symbol">&lt;</span><a href="../-schedule/index.html"><span class="identifier">Schedule</span></a><span class="symbol">&gt;</span></code>
+<code><span class="keyword">class </span><span class="identifier">ScheduleController</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../../com.hendraanggrian.openpss.ui/-action-controller/index.html"><span class="identifier">ActionController</span></a><span class="symbol">, </span><a href="../../com.hendraanggrian.openpss.ui/-refreshable/index.html"><span class="identifier">Refreshable</span></a></code>
 <h3>Constructors</h3>
 <table>
 <tbody>
@@ -24,6 +24,13 @@
 <h3>Properties</h3>
 <table>
 <tbody>
+<tr>
+<td>
+<p><a href="desc-column.html">descColumn</a></p>
+</td>
+<td>
+<code><span class="keyword">lateinit</span> <span class="keyword">var </span><span class="identifier">descColumn</span><span class="symbol">: </span><span class="identifier">TreeTableColumn</span><span class="symbol">&lt;</span><a href="../-schedule/index.html"><span class="identifier">Schedule</span></a><span class="symbol">,</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
 <tr>
 <td>
 <p><a href="job-type.html">jobType</a></p>
@@ -47,20 +54,6 @@
 </tr>
 <tr>
 <td>
-<p><a href="selection-model.html">selectionModel</a></p>
-</td>
-<td>
-<code><span class="keyword">val </span><span class="identifier">selectionModel</span><span class="symbol">: </span><span class="identifier">TreeTableViewSelectionModel</span><span class="symbol">&lt;</span><a href="../-schedule/index.html"><span class="identifier">Schedule</span></a><span class="symbol">&gt;</span></code></td>
-</tr>
-<tr>
-<td>
-<p><a href="title-column.html">titleColumn</a></p>
-</td>
-<td>
-<code><span class="keyword">lateinit</span> <span class="keyword">var </span><span class="identifier">titleColumn</span><span class="symbol">: </span><span class="identifier">TreeTableColumn</span><span class="symbol">&lt;</span><a href="../-schedule/index.html"><span class="identifier">Schedule</span></a><span class="symbol">,</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">&gt;</span></code></td>
-</tr>
-<tr>
-<td>
 <p><a href="type-column.html">typeColumn</a></p>
 </td>
 <td>
@@ -80,31 +73,10 @@
 </tr>
 <tr>
 <td>
-<p><a href="../../com.hendraanggrian.openpss.ui/-tree-selectable/selected.html">selected</a></p>
+<p><a href="../../com.hendraanggrian.openpss.ui/-action-controller/title.html">title</a></p>
 </td>
 <td>
-<code><span class="keyword">open</span> <span class="keyword">val </span><span class="identifier">selected</span><span class="symbol">: </span><span class="identifier">TreeItem</span><span class="symbol">&lt;</span><a href="../../com.hendraanggrian.openpss.ui/-tree-selectable/index.html#T"><span class="identifier">T</span></a><span class="symbol">&gt;</span><span class="symbol">?</span></code></td>
-</tr>
-<tr>
-<td>
-<p><a href="../../com.hendraanggrian.openpss.ui/-tree-selectable/selected-binding.html">selectedBinding</a></p>
-</td>
-<td>
-<code><span class="keyword">open</span> <span class="keyword">val </span><span class="identifier">selectedBinding</span><span class="symbol">: </span><span class="identifier">BooleanBinding</span></code></td>
-</tr>
-<tr>
-<td>
-<p><a href="../../com.hendraanggrian.openpss.ui/-tree-selectable/selected-property.html">selectedProperty</a></p>
-</td>
-<td>
-<code><span class="keyword">open</span> <span class="keyword">val </span><span class="identifier">selectedProperty</span><span class="symbol">: </span><span class="identifier">ReadOnlyObjectProperty</span><span class="symbol">&lt;</span><span class="identifier">TreeItem</span><span class="symbol">&lt;</span><a href="../../com.hendraanggrian.openpss.ui/-tree-selectable/index.html#T"><span class="identifier">T</span></a><span class="symbol">&gt;</span><span class="symbol">&gt;</span></code></td>
-</tr>
-<tr>
-<td>
-<p><a href="../../com.hendraanggrian.openpss.ui/-tree-selectable/selecteds.html">selecteds</a></p>
-</td>
-<td>
-<code><span class="keyword">open</span> <span class="keyword">val </span><span class="identifier">selecteds</span><span class="symbol">: </span><span class="identifier">ObservableList</span><span class="symbol">&lt;</span><span class="identifier">TreeItem</span><span class="symbol">&lt;</span><a href="../../com.hendraanggrian.openpss.ui/-tree-selectable/index.html#T"><span class="identifier">T</span></a><span class="symbol">&gt;</span><span class="symbol">&gt;</span></code></td>
+<code><span class="keyword">var </span><span class="identifier">title</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span></code></td>
 </tr>
 </tbody>
 </table>
@@ -141,17 +113,10 @@
 <tbody>
 <tr>
 <td>
-<p><a href="../../com.hendraanggrian.openpss.ui/-tree-selectable/clear-selection.html">clearSelection</a></p>
+<p><a href="../../com.hendraanggrian.openpss.ui/-action-controller/title-property.html">titleProperty</a></p>
 </td>
 <td>
-<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">clearSelection</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
-</tr>
-<tr>
-<td>
-<p><a href="../../com.hendraanggrian.openpss.ui/-tree-selectable/select.html">select</a></p>
-</td>
-<td>
-<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">select</span><span class="symbol">(</span><span class="identifier" id="com.hendraanggrian.openpss.ui.TreeSelectable$select(kotlin.Int)/index">index</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+<code><span class="keyword">fun </span><span class="identifier">titleProperty</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">StringProperty</span></code></td>
 </tr>
 </tbody>
 </table>

@@ -15,6 +15,15 @@
 <tbody>
 <tr>
 <td>
+<p><a href="currency-converter.html">currencyConverter</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">val </span><span class="identifier">currencyConverter</span><span class="symbol">: </span><span class="identifier">StringConverter</span><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-number/index.html"><span class="identifier">Number</span></a><span class="symbol">&gt;</span></code>
+<p>Number decimal with currency prefix string converter.</p>
+</td>
+</tr>
+<tr>
+<td>
 <p><a href="desktop.html">desktop</a></p>
 </td>
 <td>
@@ -31,10 +40,19 @@
 </tr>
 <tr>
 <td>
-<p><a href="root.html">root</a></p>
+<p><a href="number-converter.html">numberConverter</a></p>
 </td>
 <td>
-<code><span class="keyword">abstract</span> <span class="keyword">val </span><span class="identifier">root</span><span class="symbol">: </span><span class="identifier">StackPane</span></code></td>
+<code><span class="keyword">open</span> <span class="keyword">val </span><span class="identifier">numberConverter</span><span class="symbol">: </span><span class="identifier">StringConverter</span><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-number/index.html"><span class="identifier">Number</span></a><span class="symbol">&gt;</span></code>
+<p>Number decimal string converter.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="stack.html">stack</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">val </span><span class="identifier">stack</span><span class="symbol">: </span><span class="identifier">StackPane</span></code></td>
 </tr>
 </tbody>
 </table>
@@ -125,8 +143,8 @@
 <p><a href="../../com.hendraanggrian.openpss.ui.main.help/-about-dialog/index.html">AboutDialog</a></p>
 </td>
 <td>
-<code><span class="keyword">class </span><span class="identifier">AboutDialog</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">Dialog</span><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><a href="../../com.hendraanggrian.openpss.ui/-selectable/index.html"><span class="identifier">Selectable</span></a><span class="symbol">&lt;</span><a href="../../com.hendraanggrian.openpss.ui.main/-license/index.html"><span class="identifier">License</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><a href="./index.html"><span class="identifier">Context</span></a></code>
-<p>The only dialog not using <a href="#">com.hendraanggrian.openpss.popup.dialog.Dialog</a>.
+<code><span class="keyword">class </span><span class="identifier">AboutDialog</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">Dialog</span><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><a href="./index.html"><span class="identifier">Context</span></a></code>
+<p>The only dialog not using <a href="../../com.hendraanggrian.openpss.popup.dialog/-dialog/index.html">com.hendraanggrian.openpss.popup.dialog.Dialog</a>.
 This is because it uses native dialog's expandable content.</p>
 </td>
 </tr>
@@ -142,7 +160,7 @@ This is because it uses native dialog's expandable content.</p>
 <p><a href="../../com.hendraanggrian.openpss.ui.wage/-attendee-pane/index.html">AttendeePane</a></p>
 </td>
 <td>
-<code><span class="keyword">class </span><span class="identifier">AttendeePane</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">_TitledPane</span><span class="symbol">, </span><a href="./index.html"><span class="identifier">Context</span></a><span class="symbol">, </span><a href="../../com.hendraanggrian.openpss.ui/-selectable/index.html"><span class="identifier">Selectable</span></a><span class="symbol">&lt;</span><span class="identifier">DateTime</span><span class="symbol">&gt;</span></code></td>
+<code><span class="keyword">class </span><span class="identifier">AttendeePane</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">_TitledPane</span><span class="symbol">, </span><a href="./index.html"><span class="identifier">Context</span></a></code></td>
 </tr>
 <tr>
 <td>
@@ -155,10 +173,10 @@ This is because it uses native dialog's expandable content.</p>
 </tr>
 <tr>
 <td>
-<p><a href="../../com.hendraanggrian.openpss.control.dialog/-dialog/index.html">Dialog</a></p>
+<p><a href="../../com.hendraanggrian.openpss.popup.dialog/-dialog/index.html">Dialog</a></p>
 </td>
 <td>
-<code><span class="keyword">open</span> <span class="keyword">class </span><span class="identifier">Dialog</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">JFXDialog</span><span class="symbol">, </span><a href="../../com.hendraanggrian.openpss.control.base/-popup-base/index.html"><span class="identifier">PopupBase</span></a><span class="symbol">, </span><a href="./index.html"><span class="identifier">Context</span></a></code></td>
+<code><span class="keyword">open</span> <span class="keyword">class </span><span class="identifier">Dialog</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">JFXDialog</span><span class="symbol">, </span><a href="../../com.hendraanggrian.openpss.popup/-popup/index.html"><span class="identifier">Popup</span></a><span class="symbol">, </span><a href="./index.html"><span class="identifier">Context</span></a></code></td>
 </tr>
 <tr>
 <td>
@@ -169,19 +187,19 @@ This is because it uses native dialog's expandable content.</p>
 </tr>
 <tr>
 <td>
-<p><a href="../../com.hendraanggrian.openpss.control.popover/-popover/index.html">Popover</a></p>
+<p><a href="../../com.hendraanggrian.openpss.popup.popover/-popover/index.html">Popover</a></p>
 </td>
 <td>
-<code><span class="keyword">open</span> <span class="keyword">class </span><span class="identifier">Popover</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">JFXPopup</span><span class="symbol">, </span><a href="../../com.hendraanggrian.openpss.control.base/-popup-base/index.html"><span class="identifier">PopupBase</span></a><span class="symbol">, </span><a href="./index.html"><span class="identifier">Context</span></a></code>
+<code><span class="keyword">open</span> <span class="keyword">class </span><span class="identifier">Popover</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">PopOver</span><span class="symbol">, </span><a href="../../com.hendraanggrian.openpss.popup/-popup/index.html"><span class="identifier">Popup</span></a><span class="symbol">, </span><a href="./index.html"><span class="identifier">Context</span></a></code>
 <p>Base popup class used across applications.</p>
 </td>
 </tr>
 <tr>
 <td>
-<p><a href="../../com.hendraanggrian.openpss.control.base/-popup-base/index.html">PopupBase</a></p>
+<p><a href="../../com.hendraanggrian.openpss.popup/-popup/index.html">Popup</a></p>
 </td>
 <td>
-<code><span class="keyword">interface </span><span class="identifier">PopupBase</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../../com.hendraanggrian.openpss.control.base/-base-control/index.html"><span class="identifier">BaseControl</span></a><span class="symbol">, </span><a href="./index.html"><span class="identifier">Context</span></a><span class="symbol">, </span><span class="identifier">NodeInvokable</span></code></td>
+<code><span class="keyword">interface </span><span class="identifier">Popup</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">Context</span></a><span class="symbol">, </span><span class="identifier">NodeInvokable</span></code></td>
 </tr>
 </tbody>
 </table>

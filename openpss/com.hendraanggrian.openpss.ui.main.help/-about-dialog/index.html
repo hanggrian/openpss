@@ -8,8 +8,8 @@
 <a href="../../index.html">openpss</a>&nbsp;/&nbsp;<a href="../index.html">com.hendraanggrian.openpss.ui.main.help</a>&nbsp;/&nbsp;<a href="./index.html">AboutDialog</a><br/>
 <br/>
 <h1>AboutDialog</h1>
-<code><span class="keyword">class </span><span class="identifier">AboutDialog</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">Dialog</span><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><a href="../../com.hendraanggrian.openpss.ui/-selectable/index.html"><span class="identifier">Selectable</span></a><span class="symbol">&lt;</span><a href="../../com.hendraanggrian.openpss.ui.main/-license/index.html"><span class="identifier">License</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><a href="../../com.hendraanggrian.openpss.content/-context/index.html"><span class="identifier">Context</span></a></code>
-<p>The only dialog not using <a href="#">com.hendraanggrian.openpss.popup.dialog.Dialog</a>.
+<code><span class="keyword">class </span><span class="identifier">AboutDialog</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">Dialog</span><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><a href="../../com.hendraanggrian.openpss.content/-context/index.html"><span class="identifier">Context</span></a></code>
+<p>The only dialog not using <a href="../../com.hendraanggrian.openpss.popup.dialog/-dialog/index.html">com.hendraanggrian.openpss.popup.dialog.Dialog</a>.
 This is because it uses native dialog's expandable content.</p>
 <h3>Constructors</h3>
 <table>
@@ -20,130 +20,9 @@ This is because it uses native dialog's expandable content.</p>
 </td>
 <td>
 <code><span class="identifier">AboutDialog</span><span class="symbol">(</span><span class="identifier" id="com.hendraanggrian.openpss.ui.main.help.AboutDialog$<init>(com.hendraanggrian.openpss.content.Context)/context">context</span><span class="symbol">:</span>&nbsp;<a href="../../com.hendraanggrian.openpss.content/-context/index.html"><span class="identifier">Context</span></a><span class="symbol">)</span></code>
-<p>The only dialog not using <a href="#">com.hendraanggrian.openpss.popup.dialog.Dialog</a>.
+<p>The only dialog not using <a href="../../com.hendraanggrian.openpss.popup.dialog/-dialog/index.html">com.hendraanggrian.openpss.popup.dialog.Dialog</a>.
 This is because it uses native dialog's expandable content.</p>
 </td>
-</tr>
-</tbody>
-</table>
-<h3>Properties</h3>
-<table>
-<tbody>
-<tr>
-<td>
-<p><a href="selection-model.html">selectionModel</a></p>
-</td>
-<td>
-<code><span class="keyword">val </span><span class="identifier">selectionModel</span><span class="symbol">: </span><span class="identifier">SelectionModel</span><span class="symbol">&lt;</span><a href="../../com.hendraanggrian.openpss.ui.main/-license/index.html"><span class="identifier">License</span></a><span class="symbol">&gt;</span></code></td>
-</tr>
-</tbody>
-</table>
-<h3>Inherited Properties</h3>
-<table>
-<tbody>
-<tr>
-<td>
-<p><a href="../../com.hendraanggrian.openpss.ui/-selectable/selected.html">selected</a></p>
-</td>
-<td>
-<code><span class="keyword">open</span> <span class="keyword">val </span><span class="identifier">selected</span><span class="symbol">: </span><a href="../../com.hendraanggrian.openpss.ui/-selectable/index.html#T"><span class="identifier">T</span></a><span class="symbol">?</span></code></td>
-</tr>
-<tr>
-<td>
-<p><a href="../../com.hendraanggrian.openpss.ui/-selectable/selected-binding.html">selectedBinding</a></p>
-</td>
-<td>
-<code><span class="keyword">open</span> <span class="keyword">val </span><span class="identifier">selectedBinding</span><span class="symbol">: </span><span class="identifier">BooleanBinding</span></code></td>
-</tr>
-<tr>
-<td>
-<p><a href="../../com.hendraanggrian.openpss.ui/-selectable/selected-index.html">selectedIndex</a></p>
-</td>
-<td>
-<code><span class="keyword">open</span> <span class="keyword">val </span><span class="identifier">selectedIndex</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code></td>
-</tr>
-<tr>
-<td>
-<p><a href="../../com.hendraanggrian.openpss.ui/-selectable/selected-index-property.html">selectedIndexProperty</a></p>
-</td>
-<td>
-<code><span class="keyword">open</span> <span class="keyword">val </span><span class="identifier">selectedIndexProperty</span><span class="symbol">: </span><span class="identifier">ReadOnlyIntegerProperty</span></code></td>
-</tr>
-<tr>
-<td>
-<p><a href="../../com.hendraanggrian.openpss.ui/-selectable/selected-property.html">selectedProperty</a></p>
-</td>
-<td>
-<code><span class="keyword">open</span> <span class="keyword">val </span><span class="identifier">selectedProperty</span><span class="symbol">: </span><span class="identifier">ReadOnlyObjectProperty</span><span class="symbol">&lt;</span><a href="../../com.hendraanggrian.openpss.ui/-selectable/index.html#T"><span class="identifier">T</span></a><span class="symbol">&gt;</span></code></td>
-</tr>
-</tbody>
-</table>
-<h3>Inherited Functions</h3>
-<table>
-<tbody>
-<tr>
-<td>
-<p><a href="../../com.hendraanggrian.openpss.ui/-selectable/clear-selection.html">clearSelection</a></p>
-</td>
-<td>
-<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">clearSelection</span><span class="symbol">(</span><span class="identifier" id="com.hendraanggrian.openpss.ui.Selectable$clearSelection(kotlin.Int)/index">index</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a>&nbsp;<span class="symbol">=</span>&nbsp;-1<span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
-</tr>
-<tr>
-<td>
-<p><a href="../../com.hendraanggrian.openpss.ui/-selectable/is-empty.html">isEmpty</a></p>
-</td>
-<td>
-<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">isEmpty</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code></td>
-</tr>
-<tr>
-<td>
-<p><a href="../../com.hendraanggrian.openpss.ui/-selectable/is-selected.html">isSelected</a></p>
-</td>
-<td>
-<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">isSelected</span><span class="symbol">(</span><span class="identifier" id="com.hendraanggrian.openpss.ui.Selectable$isSelected(kotlin.Int)/index">index</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code></td>
-</tr>
-<tr>
-<td>
-<p><a href="../../com.hendraanggrian.openpss.ui/-selectable/reselect.html">reselect</a></p>
-</td>
-<td>
-<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">reselect</span><span class="symbol">(</span><span class="identifier" id="com.hendraanggrian.openpss.ui.Selectable$reselect(kotlin.Int)/index">index</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
-</tr>
-<tr>
-<td>
-<p><a href="../../com.hendraanggrian.openpss.ui/-selectable/select.html">select</a></p>
-</td>
-<td>
-<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">select</span><span class="symbol">(</span><span class="identifier" id="com.hendraanggrian.openpss.ui.Selectable$select(kotlin.Int)/index">index</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code><br/>
-<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">select</span><span class="symbol">(</span><span class="identifier" id="com.hendraanggrian.openpss.ui.Selectable$select(com.hendraanggrian.openpss.ui.Selectable.T)/item">item</span><span class="symbol">:</span>&nbsp;<a href="../../com.hendraanggrian.openpss.ui/-selectable/index.html#T"><span class="identifier">T</span></a><span class="symbol">?</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
-</tr>
-<tr>
-<td>
-<p><a href="../../com.hendraanggrian.openpss.ui/-selectable/select-first.html">selectFirst</a></p>
-</td>
-<td>
-<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">selectFirst</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
-</tr>
-<tr>
-<td>
-<p><a href="../../com.hendraanggrian.openpss.ui/-selectable/select-last.html">selectLast</a></p>
-</td>
-<td>
-<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">selectLast</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
-</tr>
-<tr>
-<td>
-<p><a href="../../com.hendraanggrian.openpss.ui/-selectable/select-next.html">selectNext</a></p>
-</td>
-<td>
-<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">selectNext</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
-</tr>
-<tr>
-<td>
-<p><a href="../../com.hendraanggrian.openpss.ui/-selectable/select-previous.html">selectPrevious</a></p>
-</td>
-<td>
-<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">selectPrevious</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
 </tr>
 </tbody>
 </table>

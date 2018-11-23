@@ -1,0 +1,115 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>ViewInvoicePopover - openpss</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">openpss</a>&nbsp;/&nbsp;<a href="../index.html">com.hendraanggrian.openpss.popup.popover</a>&nbsp;/&nbsp;<a href="./index.html">ViewInvoicePopover</a><br/>
+<br/>
+<h1>ViewInvoicePopover</h1>
+<code><span class="keyword">class </span><span class="identifier">ViewInvoicePopover</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../-popover/index.html"><span class="identifier">Popover</span></a></code>
+<p>Popup displaying invoice using server's language instead of local.
+Size of invoice is equivalent to 10x14cm, possibly the smallest continuous form available.</p>
+<h3>Constructors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-init-.html">&lt;init&gt;</a></p>
+</td>
+<td>
+<code><span class="identifier">ViewInvoicePopover</span><span class="symbol">(</span><span class="identifier" id="com.hendraanggrian.openpss.popup.popover.ViewInvoicePopover$<init>(com.hendraanggrian.openpss.content.Context, com.hendraanggrian.openpss.db.schemas.Invoice, kotlin.Boolean)/context">context</span><span class="symbol">:</span>&nbsp;<a href="../../com.hendraanggrian.openpss.content/-context/index.html"><span class="identifier">Context</span></a><span class="symbol">, </span><span class="identifier" id="com.hendraanggrian.openpss.popup.popover.ViewInvoicePopover$<init>(com.hendraanggrian.openpss.content.Context, com.hendraanggrian.openpss.db.schemas.Invoice, kotlin.Boolean)/invoice">invoice</span><span class="symbol">:</span>&nbsp;<a href="../../com.hendraanggrian.openpss.db.schemas/-invoice/index.html"><span class="identifier">Invoice</span></a><span class="symbol">, </span><span class="identifier" id="com.hendraanggrian.openpss.popup.popover.ViewInvoicePopover$<init>(com.hendraanggrian.openpss.content.Context, com.hendraanggrian.openpss.db.schemas.Invoice, kotlin.Boolean)/isTest">isTest</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a>&nbsp;<span class="symbol">=</span>&nbsp;false<span class="symbol">)</span></code>
+<p>Popup displaying invoice using server's language instead of local.
+Size of invoice is equivalent to 10x14cm, possibly the smallest continuous form available.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="resource-bundle.html">resourceBundle</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">resourceBundle</span><span class="symbol">: </span><a href="http://docs.oracle.com/javase/6/docs/api/java/util/ResourceBundle.html"><span class="identifier">ResourceBundle</span></a></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Inherited Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="../-popover/button-invokable.html">buttonInvokable</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">lateinit</span> <span class="keyword">var </span><span class="identifier">buttonInvokable</span><span class="symbol">: </span><span class="identifier">NodeInvokable</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../-popover/cancel-button.html">cancelButton</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">lateinit</span> <span class="keyword">var </span><span class="identifier">cancelButton</span><span class="symbol">: </span><span class="identifier">Button</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../-popover/content-pane.html">contentPane</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">lateinit</span> <span class="keyword">var </span><span class="identifier">contentPane</span><span class="symbol">: </span><span class="identifier">VBox</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../-popover/graphic.html">graphic</a></p>
+</td>
+<td>
+<code><span class="keyword">var </span><span class="identifier">graphic</span><span class="symbol">: </span><span class="identifier">Node</span><span class="symbol">?</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../-popover/title-id.html">titleId</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">val </span><span class="identifier">titleId</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Inherited Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="../-popover/dismiss.html">dismiss</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">dismiss</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../-popover/graphic-property.html">graphicProperty</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">graphicProperty</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">ObjectProperty</span><span class="symbol">&lt;</span><span class="identifier">Node</span><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../-popover/set-actual-content.html">setActualContent</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">setActualContent</span><span class="symbol">(</span><span class="identifier" id="com.hendraanggrian.openpss.popup.popover.Popover$setActualContent(javafx.scene.layout.Region)/region">region</span><span class="symbol">:</span>&nbsp;<span class="identifier">Region</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../-popover/set-on-shown.html">setOnShown</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">setOnShown</span><span class="symbol">(</span><span class="identifier" id="com.hendraanggrian.openpss.popup.popover.Popover$setOnShown(kotlin.Function0((kotlin.Unit)))/onShown">onShown</span><span class="symbol">:</span>&nbsp;<span class="symbol">(</span><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

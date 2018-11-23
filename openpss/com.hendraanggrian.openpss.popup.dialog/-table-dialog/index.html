@@ -1,0 +1,211 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>TableDialog - openpss</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">openpss</a>&nbsp;/&nbsp;<a href="../index.html">com.hendraanggrian.openpss.popup.dialog</a>&nbsp;/&nbsp;<a href="./index.html">TableDialog</a><br/>
+<br/>
+<h1>TableDialog</h1>
+<code><span class="keyword">abstract</span> <span class="keyword">class </span><span class="identifier">TableDialog</span><span class="symbol">&lt;</span><span class="identifier">D</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../../com.hendraanggrian.openpss.db/-document/index.html"><span class="identifier">Document</span></a><span class="symbol">&lt;</span><a href="index.html#S"><span class="identifier">S</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier">S</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">DocumentSchema</span><span class="symbol">&lt;</span><a href="index.html#D"><span class="identifier">D</span></a><span class="symbol">&gt;</span><span class="symbol">&gt;</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../-dialog/index.html"><span class="identifier">Dialog</span></a><span class="symbol">, </span><span class="identifier">TableColumnsBuilder</span><span class="symbol">&lt;</span><a href="index.html#D"><span class="identifier">D</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><a href="../../com.hendraanggrian.openpss.ui/-refreshable/index.html"><span class="identifier">Refreshable</span></a></code>
+<h3>Constructors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-init-.html">&lt;init&gt;</a></p>
+</td>
+<td>
+<code><span class="identifier">TableDialog</span><span class="symbol">(</span><span class="identifier" id="com.hendraanggrian.openpss.popup.dialog.TableDialog$<init>(com.hendraanggrian.openpss.content.Context, kotlin.String, com.hendraanggrian.openpss.popup.dialog.TableDialog.S)/context">context</span><span class="symbol">:</span>&nbsp;<a href="../../com.hendraanggrian.openpss.content/-context/index.html"><span class="identifier">Context</span></a><span class="symbol">, </span><span class="identifier" id="com.hendraanggrian.openpss.popup.dialog.TableDialog$<init>(com.hendraanggrian.openpss.content.Context, kotlin.String, com.hendraanggrian.openpss.popup.dialog.TableDialog.S)/titleId">titleId</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="com.hendraanggrian.openpss.popup.dialog.TableDialog$<init>(com.hendraanggrian.openpss.content.Context, kotlin.String, com.hendraanggrian.openpss.popup.dialog.TableDialog.S)/schema">schema</span><span class="symbol">:</span>&nbsp;<a href="index.html#S"><span class="identifier">S</span></a><span class="symbol">)</span></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="add-button.html">addButton</a></p>
+</td>
+<td>
+<code><span class="keyword">lateinit</span> <span class="keyword">var </span><span class="identifier">addButton</span><span class="symbol">: </span><span class="identifier">Button</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="delete-button.html">deleteButton</a></p>
+</td>
+<td>
+<code><span class="keyword">lateinit</span> <span class="keyword">var </span><span class="identifier">deleteButton</span><span class="symbol">: </span><span class="identifier">Button</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="focused-node.html">focusedNode</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">val </span><span class="identifier">focusedNode</span><span class="symbol">: </span><span class="identifier">Node</span><span class="symbol">?</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="refresh-button.html">refreshButton</a></p>
+</td>
+<td>
+<code><span class="keyword">lateinit</span> <span class="keyword">var </span><span class="identifier">refreshButton</span><span class="symbol">: </span><span class="identifier">Button</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="schema.html">schema</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">schema</span><span class="symbol">: </span><a href="index.html#S"><span class="identifier">S</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="table.html">table</a></p>
+</td>
+<td>
+<code><span class="keyword">lateinit</span> <span class="keyword">var </span><span class="identifier">table</span><span class="symbol">: </span><span class="identifier">TableView</span><span class="symbol">&lt;</span><a href="index.html#D"><span class="identifier">D</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Inherited Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="../-dialog/button-invokable.html">buttonInvokable</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">lateinit</span> <span class="keyword">var </span><span class="identifier">buttonInvokable</span><span class="symbol">: </span><span class="identifier">NodeInvokable</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../-dialog/cancel-button.html">cancelButton</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">lateinit</span> <span class="keyword">var </span><span class="identifier">cancelButton</span><span class="symbol">: </span><span class="identifier">Button</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../-dialog/content-pane.html">contentPane</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">lateinit</span> <span class="keyword">var </span><span class="identifier">contentPane</span><span class="symbol">: </span><span class="identifier">VBox</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../-dialog/graphic.html">graphic</a></p>
+</td>
+<td>
+<code><span class="keyword">var </span><span class="identifier">graphic</span><span class="symbol">: </span><span class="identifier">Node</span><span class="symbol">?</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../-dialog/title-id.html">titleId</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">val </span><span class="identifier">titleId</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="add.html">add</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">add</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="column.html">column</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span> <span class="identifier">column</span><span class="symbol">(</span><span class="identifier" id="com.hendraanggrian.openpss.popup.dialog.TableDialog$column(kotlin.String, kotlin.Function1((javafx.scene.control.TableColumn((com.hendraanggrian.openpss.popup.dialog.TableDialog.D, com.hendraanggrian.openpss.popup.dialog.TableDialog.column.T)), kotlin.Unit)))/text">text</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span><span class="symbol">, </span><span class="identifier" id="com.hendraanggrian.openpss.popup.dialog.TableDialog$column(kotlin.String, kotlin.Function1((javafx.scene.control.TableColumn((com.hendraanggrian.openpss.popup.dialog.TableDialog.D, com.hendraanggrian.openpss.popup.dialog.TableDialog.column.T)), kotlin.Unit)))/init">init</span><span class="symbol">:</span>&nbsp;<span class="identifier">TableColumn</span><span class="symbol">&lt;</span><a href="index.html#D"><span class="identifier">D</span></a><span class="symbol">,</span>&nbsp;<a href="column.html#T"><span class="identifier">T</span></a><span class="symbol">&gt;</span><span class="symbol">.</span><span class="symbol">(</span><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">TableColumn</span><span class="symbol">&lt;</span><a href="index.html#D"><span class="identifier">D</span></a><span class="symbol">,</span>&nbsp;<a href="column.html#T"><span class="identifier">T</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="delete.html">delete</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">delete</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="refresh.html">refresh</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">refresh</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Inherited Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="../-dialog/dismiss.html">dismiss</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">dismiss</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../-dialog/graphic-property.html">graphicProperty</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">graphicProperty</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">ObjectProperty</span><span class="symbol">&lt;</span><span class="identifier">Node</span><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../-dialog/set-actual-content.html">setActualContent</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">setActualContent</span><span class="symbol">(</span><span class="identifier" id="com.hendraanggrian.openpss.popup.dialog.Dialog$setActualContent(javafx.scene.layout.Region)/region">region</span><span class="symbol">:</span>&nbsp;<span class="identifier">Region</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../-dialog/set-on-shown.html">setOnShown</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">setOnShown</span><span class="symbol">(</span><span class="identifier" id="com.hendraanggrian.openpss.popup.dialog.Dialog$setOnShown(kotlin.Function0((kotlin.Unit)))/onShown">onShown</span><span class="symbol">:</span>&nbsp;<span class="symbol">(</span><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../-dialog/show.html">show</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">show</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Inheritors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="../../com.hendraanggrian.openpss.ui.employee/-edit-employee-dialog/index.html">EditEmployeeDialog</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">EditEmployeeDialog</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">TableDialog</span></a><span class="symbol">&lt;</span><a href="../../com.hendraanggrian.openpss.db.schemas/-employee/index.html"><span class="identifier">Employee</span></a><span class="symbol">,</span>&nbsp;<a href="../../com.hendraanggrian.openpss.db.schemas/-employees/index.html"><span class="identifier">Employees</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../../com.hendraanggrian.openpss.ui.price/-edit-price-dialog/index.html">EditPriceDialog</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">class </span><span class="identifier">EditPriceDialog</span><span class="symbol">&lt;</span><span class="identifier">D</span><span class="symbol">, </span><span class="identifier">S</span><span class="symbol">&gt;</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">TableDialog</span></a><span class="symbol">&lt;</span><a href="../../com.hendraanggrian.openpss.ui.price/-edit-price-dialog/index.html#D"><span class="identifier">D</span></a><span class="symbol">,</span>&nbsp;<a href="../../com.hendraanggrian.openpss.ui.price/-edit-price-dialog/index.html#S"><span class="identifier">S</span></a><span class="symbol">&gt;</span><span class="keyword"> where </span><span class="identifier">D</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../../com.hendraanggrian.openpss.db/-document/index.html"><span class="identifier">Document</span></a><span class="symbol">&lt;</span><a href="../../com.hendraanggrian.openpss.ui.price/-edit-price-dialog/index.html#S"><span class="identifier">S</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier">D</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../../com.hendraanggrian.openpss.db/-named/index.html"><span class="identifier">Named</span></a><span class="symbol">, </span><span class="identifier">S</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">DocumentSchema</span><span class="symbol">&lt;</span><a href="../../com.hendraanggrian.openpss.ui.price/-edit-price-dialog/index.html#D"><span class="identifier">D</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier">S</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../../com.hendraanggrian.openpss.db/-named-schema/index.html"><span class="identifier">NamedSchema</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../../com.hendraanggrian.openpss.ui.wage/-edit-recess-dialog/index.html">EditRecessDialog</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">EditRecessDialog</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">TableDialog</span></a><span class="symbol">&lt;</span><a href="../../com.hendraanggrian.openpss.db.schemas/-recess/index.html"><span class="identifier">Recess</span></a><span class="symbol">,</span>&nbsp;<a href="../../com.hendraanggrian.openpss.db.schemas/-recesses/index.html"><span class="identifier">Recesses</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

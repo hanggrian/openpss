@@ -1,26 +1,9 @@
 $dokka.format:html
 $dokka.linkExtension:html
-$dokka.location:com.hendraanggrian.openpss.content$toJava(org.joda.time.LocalDate)com.hendraanggrian.openpss.content/org.joda.time.-local-date/to-java.html
-$dokka.location:com.hendraanggrian.openpss.content$toJava(org.joda.time.LocalTime)com.hendraanggrian.openpss.content/org.joda.time.-local-time/to-java.html
-$dokka.location:com.hendraanggrian.openpss.content$toJoda(java.time.LocalDate)com.hendraanggrian.openpss.content/java.time.-local-date/to-joda.html
-$dokka.location:com.hendraanggrian.openpss.content$toJoda(java.time.LocalTime)com.hendraanggrian.openpss.content/java.time.-local-time/to-joda.html
-$dokka.location:com.hendraanggrian.openpss.content$trimMinutes(org.joda.time.DateTime)com.hendraanggrian.openpss.content/org.joda.time.-date-time/trim-minutes.html
-$dokka.location:com.hendraanggrian.openpss.content$trimMinutes(org.joda.time.LocalTime)com.hendraanggrian.openpss.content/org.joda.time.-local-time/trim-minutes.html
-$dokka.location:com.hendraanggrian.openpss.control$dateBox(ktfx.layouts.NodeInvokable, org.joda.time.LocalDate, kotlin.Function1((com.hendraanggrian.openpss.control.DateBox, kotlin.Unit)))com.hendraanggrian.openpss.control/ktfx.layouts.-node-invokable/date-box.html
-$dokka.location:com.hendraanggrian.openpss.control$doubleField(ktfx.layouts.NodeInvokable, kotlin.Function1((com.hendraanggrian.openpss.control.DoubleField, kotlin.Unit)))com.hendraanggrian.openpss.control/ktfx.layouts.-node-invokable/double-field.html
-$dokka.location:com.hendraanggrian.openpss.control$intField(ktfx.layouts.NodeInvokable, kotlin.Function1((com.hendraanggrian.openpss.control.IntField, kotlin.Unit)))com.hendraanggrian.openpss.control/ktfx.layouts.-node-invokable/int-field.html
-$dokka.location:com.hendraanggrian.openpss.control$jfxDoubleField(ktfx.layouts.NodeInvokable, kotlin.Function1((com.hendraanggrian.openpss.control.JFXDoubleField, kotlin.Unit)))com.hendraanggrian.openpss.control/ktfx.layouts.-node-invokable/jfx-double-field.html
-$dokka.location:com.hendraanggrian.openpss.control$jfxIntField(ktfx.layouts.NodeInvokable, kotlin.Function1((com.hendraanggrian.openpss.control.JFXIntField, kotlin.Unit)))com.hendraanggrian.openpss.control/ktfx.layouts.-node-invokable/jfx-int-field.html
-$dokka.location:com.hendraanggrian.openpss.control$monthBox(ktfx.layouts.NodeInvokable, org.joda.time.YearMonth, kotlin.Function1((com.hendraanggrian.openpss.control.MonthBox, kotlin.Unit)))com.hendraanggrian.openpss.control/ktfx.layouts.-node-invokable/month-box.html
-$dokka.location:com.hendraanggrian.openpss.control$space(ktfx.layouts.NodeInvokable, kotlin.Double, kotlin.Double, kotlin.Function1((com.hendraanggrian.openpss.control.Space, kotlin.Unit)))com.hendraanggrian.openpss.control/ktfx.layouts.-node-invokable/space.html
-$dokka.location:com.hendraanggrian.openpss.control$stretchableButton(ktfx.layouts.NodeInvokable, kotlin.Double, kotlin.String, javafx.scene.Node, kotlin.Function1((com.hendraanggrian.openpss.control.StretchableButton, kotlin.Unit)))com.hendraanggrian.openpss.control/ktfx.layouts.-node-invokable/stretchable-button.html
-$dokka.location:com.hendraanggrian.openpss.control$stretchableCheckBox(ktfx.layouts.NodeInvokable, kotlin.Double, kotlin.String, kotlin.Function1((com.hendraanggrian.openpss.control.StretchableCheckBox, kotlin.Unit)))com.hendraanggrian.openpss.control/ktfx.layouts.-node-invokable/stretchable-check-box.html
-$dokka.location:com.hendraanggrian.openpss.control$stretchableSplitMenuButton(ktfx.layouts.NodeInvokable, kotlin.Double, kotlin.String, javafx.scene.Node, kotlin.Function1((com.hendraanggrian.openpss.control.StretchableSplitMenuButton, kotlin.Unit)))com.hendraanggrian.openpss.control/ktfx.layouts.-node-invokable/stretchable-split-menu-button.html
-$dokka.location:com.hendraanggrian.openpss.control$timeBox(ktfx.layouts.NodeInvokable, org.joda.time.LocalTime, kotlin.Function1((com.hendraanggrian.openpss.control.TimeBox, kotlin.Unit)))com.hendraanggrian.openpss.control/ktfx.layouts.-node-invokable/time-box.html
 $dokka.location:com.hendraanggrian.openpss.util$clean(kotlin.String)com.hendraanggrian.openpss.util/kotlin.-string/clean.html
 $dokka.location:com.hendraanggrian.openpss.util$concatenate(kotlin.collections.Iterable((java.awt.image.BufferedImage)), kotlin.Int)com.hendraanggrian.openpss.util/kotlin.collections.-iterable/concatenate.html
 $dokka.location:com.hendraanggrian.openpss.util$controller#javafx.fxml.FXMLLoadercom.hendraanggrian.openpss.util/javafx.fxml.-f-x-m-l-loader/controller.html
-$dokka.location:com.hendraanggrian.openpss.util$currencyCell(javafx.scene.control.TableColumn((com.hendraanggrian.openpss.util.currencyCell.T, kotlin.String)), kotlin.Function1((com.hendraanggrian.openpss.util.currencyCell.T, kotlin.Double)))com.hendraanggrian.openpss.util/javafx.scene.control.-table-column/currency-cell.html
+$dokka.location:com.hendraanggrian.openpss.util$currencyCell(javafx.scene.control.TableColumn((com.hendraanggrian.openpss.util.currencyCell.T, kotlin.String)), com.hendraanggrian.openpss.content.Context, kotlin.Function1((com.hendraanggrian.openpss.util.currencyCell.T, kotlin.Double)))com.hendraanggrian.openpss.util/javafx.scene.control.-table-column/currency-cell.html
 $dokka.location:com.hendraanggrian.openpss.util$doneCell(javafx.scene.control.TableColumn((com.hendraanggrian.openpss.util.doneCell.T, kotlin.Boolean)), kotlin.Int, kotlin.Function1((com.hendraanggrian.openpss.util.doneCell.T, kotlin.Boolean)))com.hendraanggrian.openpss.util/javafx.scene.control.-table-column/done-cell.html
 $dokka.location:com.hendraanggrian.openpss.util$id#kotlin.Enum(())com.hendraanggrian.openpss.util/kotlin.-enum/id.html
 $dokka.location:com.hendraanggrian.openpss.util$isEmpty(kotlin.collections.Iterable((com.hendraanggrian.openpss.util.isEmpty.T)))com.hendraanggrian.openpss.util/kotlin.collections.-iterable/is-empty.html
@@ -28,24 +11,30 @@ $dokka.location:com.hendraanggrian.openpss.util$isNotEmpty(kotlin.collections.It
 $dokka.location:com.hendraanggrian.openpss.util$isPersonName(javafx.beans.property.StringProperty)com.hendraanggrian.openpss.util/javafx.beans.property.-string-property/is-person-name.html
 $dokka.location:com.hendraanggrian.openpss.util$isPersonName(kotlin.String)com.hendraanggrian.openpss.util/kotlin.-string/is-person-name.html
 $dokka.location:com.hendraanggrian.openpss.util$matches(kotlinx.nosql.AbstractColumn((com.hendraanggrian.openpss.util.matches.C, com.hendraanggrian.openpss.util.matches.T, kotlin.Any)), kotlin.Any, kotlin.Int)com.hendraanggrian.openpss.util/kotlinx.nosql.-abstract-column/matches.html
-$dokka.location:com.hendraanggrian.openpss.util$numberCell(javafx.scene.control.TableColumn((com.hendraanggrian.openpss.util.numberCell.T, kotlin.String)), kotlin.Function1((com.hendraanggrian.openpss.util.numberCell.T, kotlin.Int)))com.hendraanggrian.openpss.util/javafx.scene.control.-table-column/number-cell.html
-$dokka.location:com.hendraanggrian.openpss.util$numberCell(javafx.scene.control.TreeTableColumn((com.hendraanggrian.openpss.util.numberCell.T, kotlin.String)), kotlin.Function1((com.hendraanggrian.openpss.util.numberCell.T, kotlin.Int)))com.hendraanggrian.openpss.util/javafx.scene.control.-tree-table-column/number-cell.html
+$dokka.location:com.hendraanggrian.openpss.util$numberCell(javafx.scene.control.TableColumn((com.hendraanggrian.openpss.util.numberCell.T, kotlin.String)), com.hendraanggrian.openpss.content.Context, kotlin.Function1((com.hendraanggrian.openpss.util.numberCell.T, kotlin.Int)))com.hendraanggrian.openpss.util/javafx.scene.control.-table-column/number-cell.html
+$dokka.location:com.hendraanggrian.openpss.util$numberCell(javafx.scene.control.TreeTableColumn((com.hendraanggrian.openpss.util.numberCell.T, kotlin.String)), com.hendraanggrian.openpss.content.Context, kotlin.Function1((com.hendraanggrian.openpss.util.numberCell.T, kotlin.Int)))com.hendraanggrian.openpss.util/javafx.scene.control.-tree-table-column/number-cell.html
 $dokka.location:com.hendraanggrian.openpss.util$orNull(kotlin.String)com.hendraanggrian.openpss.util/kotlin.-string/or-null.html
 $dokka.location:com.hendraanggrian.openpss.util$pane#javafx.fxml.FXMLLoadercom.hendraanggrian.openpss.util/javafx.fxml.-f-x-m-l-loader/pane.html
 $dokka.location:com.hendraanggrian.openpss.util$round(kotlin.Double)com.hendraanggrian.openpss.util/kotlin.-double/round.html
 $dokka.location:com.hendraanggrian.openpss.util$stringCell(javafx.scene.control.TableColumn((com.hendraanggrian.openpss.util.stringCell.T, kotlin.String)), kotlin.Function1((com.hendraanggrian.openpss.util.stringCell.T, kotlin.String)))com.hendraanggrian.openpss.util/javafx.scene.control.-table-column/string-cell.html
 $dokka.location:com.hendraanggrian.openpss.util$stringCell(javafx.scene.control.TreeTableColumn((com.hendraanggrian.openpss.util.stringCell.T, kotlin.String)), kotlin.Function1((com.hendraanggrian.openpss.util.stringCell.T, kotlin.Any)))com.hendraanggrian.openpss.util/javafx.scene.control.-tree-table-column/string-cell.html
+$dokka.location:com.hendraanggrian.openpss.util$toJava(org.joda.time.LocalDate)com.hendraanggrian.openpss.util/org.joda.time.-local-date/to-java.html
+$dokka.location:com.hendraanggrian.openpss.util$toJava(org.joda.time.LocalTime)com.hendraanggrian.openpss.util/org.joda.time.-local-time/to-java.html
+$dokka.location:com.hendraanggrian.openpss.util$toJoda(java.time.LocalDate)com.hendraanggrian.openpss.util/java.time.-local-date/to-joda.html
+$dokka.location:com.hendraanggrian.openpss.util$toJoda(java.time.LocalTime)com.hendraanggrian.openpss.util/java.time.-local-time/to-joda.html
+$dokka.location:com.hendraanggrian.openpss.util$trimMinutes(org.joda.time.DateTime)com.hendraanggrian.openpss.util/org.joda.time.-date-time/trim-minutes.html
+$dokka.location:com.hendraanggrian.openpss.util$trimMinutes(org.joda.time.LocalTime)com.hendraanggrian.openpss.util/org.joda.time.-local-time/trim-minutes.html
 $dokka.location:com.hendraanggrian.openpss.util$wrapText(javafx.scene.control.TableColumn((com.hendraanggrian.openpss.util.wrapText.S, kotlin.String)))com.hendraanggrian.openpss.util/javafx.scene.control.-table-column/wrap-text.html
 com.hendraanggrian.openpss
 com.hendraanggrian.openpss.content
 com.hendraanggrian.openpss.control
-com.hendraanggrian.openpss.control.base
-com.hendraanggrian.openpss.control.dialog
-com.hendraanggrian.openpss.control.popover
 com.hendraanggrian.openpss.db
 com.hendraanggrian.openpss.db.schemas
 com.hendraanggrian.openpss.io
 com.hendraanggrian.openpss.io.properties
+com.hendraanggrian.openpss.popup
+com.hendraanggrian.openpss.popup.dialog
+com.hendraanggrian.openpss.popup.popover
 com.hendraanggrian.openpss.ui
 com.hendraanggrian.openpss.ui.customer
 com.hendraanggrian.openpss.ui.employee

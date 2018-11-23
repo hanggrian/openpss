@@ -9,7 +9,7 @@ import javafx.beans.binding.BooleanBinding
 import ktfx.controlsfx.registerPredicateValidator
 import org.controlsfx.validation.Severity
 
-class InputUserPopover(
+class AddEmployeePopover(
     context: Context,
     titleId: String,
     private val restrictiveInput: Boolean = true

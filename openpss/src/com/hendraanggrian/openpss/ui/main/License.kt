@@ -30,7 +30,7 @@ enum class License(val owner: String, val repo: String, val homepage: String) {
     ),
     HENDRAANGGRIAN_KTFX(
         "Hendra Anggrian",
-        "ktfx",
+        "Ktfx",
         "https://github.com/hendraanggrian/ktfx"
     ),
     JETBRAINS_KOTLIN(

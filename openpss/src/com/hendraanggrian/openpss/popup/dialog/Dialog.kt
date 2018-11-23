@@ -19,6 +19,10 @@ open class Dialog(
     override val titleId: String
 ) : JFXDialog(), Popup, Context by context {
 
+    private companion object {
+        const val MAX_OPENED_DIALOGS = 3
+    }
+
     override fun setActualContent(region: Region) {
         content = region
     }
@@ -38,5 +42,13 @@ open class Dialog(
     init {
         initialize()
         dialogContainer = stack
+    }
+
+    override fun show() {
+        val openedDialogs = stack.children.filterIsInstance<Dialog>()
+        if (openedDialogs.size > MAX_OPENED_DIALOGS) {
+            stack.children -= openedDialogs
+        }
+        super.show()
     }
 }

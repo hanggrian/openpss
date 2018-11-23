@@ -21,8 +21,8 @@ object Invoices : DocumentSchema<Invoice>("invoices", Invoice::class) {
     val employeeId = id("employee_id", Employees)
     val customerId = id("customer_id", Customers)
     val dateTime = dateTime("date_time")
-    val offsetJobs = OffsetJobs()
     val digitalJobs = DigitalJobs()
+    val offsetJobs = OffsetJobs()
     val plateJobs = PlateJobs()
     val otherJobs = OtherJobs()
     val note = string("note")
@@ -30,20 +30,20 @@ object Invoices : DocumentSchema<Invoice>("invoices", Invoice::class) {
     val isPaid = boolean("is_paid")
     val isDone = boolean("is_done")
 
-    class OffsetJobs : ListColumn<Invoice.OffsetJob, Invoices>("offset_jobs", Invoice.OffsetJob::class) {
-        val qty = integer("qty")
-        val desc = string("desc")
-        val total = string("total")
-        val type = string("type")
-        val technique = string("technique")
-    }
-
     class DigitalJobs : ListColumn<Invoice.DigitalJob, Invoices>("digital_jobs", Invoice.DigitalJob::class) {
         val qty = integer("qty")
         val desc = string("desc")
         val total = string("total")
         val type = string("type")
         val isTwoSide = boolean("two_side")
+    }
+
+    class OffsetJobs : ListColumn<Invoice.OffsetJob, Invoices>("offset_jobs", Invoice.OffsetJob::class) {
+        val qty = integer("qty")
+        val desc = string("desc")
+        val total = string("total")
+        val type = string("type")
+        val technique = string("technique")
     }
 
     class PlateJobs : ListColumn<Invoice.PlateJob, Invoices>("plate_jobs", Invoice.PlateJob::class) {
@@ -65,8 +65,8 @@ data class Invoice(
     val employeeId: Id<String, Employees>,
     val customerId: Id<String, Customers>,
     val dateTime: DateTime,
-    var offsetJobs: List<OffsetJob>,
     var digitalJobs: List<DigitalJob>,
+    var offsetJobs: List<OffsetJob>,
     var plateJobs: List<PlateJob>,
     var otherJobs: List<OtherJob>,
     var note: String,
@@ -81,14 +81,14 @@ data class Invoice(
             employeeId: Id<String, Employees>,
             customerId: Id<String, Customers>,
             dateTime: DateTime,
-            offsetJobs: List<OffsetJob>,
             digitalJobs: List<DigitalJob>,
+            offsetJobs: List<OffsetJob>,
             plateJobs: List<PlateJob>,
             otherJobs: List<OtherJob>,
             note: String
         ): Invoice = Invoice(
             Numbered.next(Invoices),
-            employeeId, customerId, dateTime, offsetJobs, digitalJobs, plateJobs, otherJobs, note, false, false, false
+            employeeId, customerId, dateTime, digitalJobs, offsetJobs, plateJobs, otherJobs, note, false, false, false
         )
 
         fun no(resources: Resources, no: Number?): String? = no?.let { "${resources.getString(R.string.invoice)} #$it" }
@@ -99,14 +99,33 @@ data class Invoice(
     val jobs: List<Job>
         get() {
             val list = mutableListOf<Job>()
-            offsetJobs.forEach { list += it }
             digitalJobs.forEach { list += it }
+            offsetJobs.forEach { list += it }
             plateJobs.forEach { list += it }
             otherJobs.forEach { list += it }
             return list
         }
 
-    val total: Double get() = jobs.sumByDouble { it.total }
+    inline val total: Double get() = jobs.sumByDouble { it.total }
+
+    data class DigitalJob(
+        override val qty: Int,
+        override val desc: String,
+        override val total: Double,
+        override val type: String,
+        val isTwoSide: Boolean
+    ) : TypedJob {
+
+        companion object {
+            fun new(
+                qty: Int,
+                title: String,
+                total: Double,
+                type: String,
+                isTwoSide: Boolean
+            ): DigitalJob = DigitalJob(qty, title, total, type, isTwoSide)
+        }
+    }
 
     data class OffsetJob(
         override val qty: Int,
@@ -138,25 +157,6 @@ data class Invoice(
             TWO_SIDE_DISTINCT {
                 override val resourceId: String = R.string.two_side_distinct
             }
-        }
-    }
-
-    data class DigitalJob(
-        override val qty: Int,
-        override val desc: String,
-        override val total: Double,
-        override val type: String,
-        val isTwoSide: Boolean
-    ) : TypedJob {
-
-        companion object {
-            fun new(
-                qty: Int,
-                title: String,
-                total: Double,
-                type: String,
-                isTwoSide: Boolean
-            ): DigitalJob = DigitalJob(qty, title, total, type, isTwoSide)
         }
     }
 

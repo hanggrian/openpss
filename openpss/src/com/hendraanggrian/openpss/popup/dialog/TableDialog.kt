@@ -6,6 +6,7 @@ import com.hendraanggrian.openpss.db.Document
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.ui.Refreshable
 import javafx.geometry.Pos.CENTER_RIGHT
+import javafx.scene.Node
 import javafx.scene.control.Button
 import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
@@ -34,8 +35,9 @@ abstract class TableDialog<D : Document<S>, S : DocumentSchema<D>>(
     protected lateinit var refreshButton: Button
     protected lateinit var addButton: Button
     protected lateinit var deleteButton: Button
-
     protected lateinit var table: TableView<D>
+
+    override val focusedNode: Node? get() = table
 
     init {
         graphic = ktfx.layouts.vbox(getDouble(R.dimen.padding_medium)) {

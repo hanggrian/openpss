@@ -217,6 +217,8 @@ class LoginPane(private val resourced: Resources) : _StackPane(), Context {
 
     inner class ConnectionSettingsPopover : Popover(this, R.string.connection_settings) {
 
+        override val focusedNode: Node? get() = serverHostField
+
         init {
             gridPane {
                 gap = getDouble(R.dimen.padding_medium)
@@ -231,7 +233,7 @@ class LoginPane(private val resourced: Resources) : _StackPane(), Context {
         }
     }
 
-    inner class PasswordDialog : ResultableDialog<Unit>(this, R.string.password_required) {
+    inner class PasswordDialog : ResultableDialog<Unit>(this@LoginPane, R.string.password_required) {
 
         override val focusedNode: Node? get() = passwordField
 

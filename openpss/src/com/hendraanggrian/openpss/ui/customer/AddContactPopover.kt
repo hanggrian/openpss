@@ -6,6 +6,7 @@ import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Customer.Contact.Type.PHONE
 import com.hendraanggrian.openpss.db.schemas.Customer.Contact.Type.values
 import com.hendraanggrian.openpss.popup.popover.ResultablePopover
+import javafx.scene.Node
 import javafx.scene.control.ComboBox
 import javafx.scene.control.TextField
 import ktfx.beans.binding.buildBooleanBinding
@@ -32,6 +33,8 @@ class AddContactPopover(context: Context) : ResultablePopover<Customer.Contact>(
 
     private lateinit var typeChoice: ComboBox<Customer.Contact.Type>
     private lateinit var contactField: TextField
+
+    override val focusedNode: Node? get() = typeChoice
 
     init {
         gridPane {

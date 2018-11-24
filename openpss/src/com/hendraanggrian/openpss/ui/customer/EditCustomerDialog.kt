@@ -6,6 +6,7 @@ import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.popup.dialog.ResultableDialog
 import com.hendraanggrian.openpss.util.isPersonName
 import com.hendraanggrian.openpss.util.orNull
+import javafx.scene.Node
 import javafx.scene.control.Label
 import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
@@ -33,6 +34,8 @@ class EditCustomerDialog(
     private lateinit var nameField: TextField
     private lateinit var addressField: TextField
     private lateinit var noteArea: TextArea
+
+    override val focusedNode: Node? get() = nameField
 
     init {
         gridPane {

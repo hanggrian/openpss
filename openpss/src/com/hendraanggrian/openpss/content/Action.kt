@@ -2,13 +2,14 @@ package com.hendraanggrian.openpss.content
 
 import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.popup.dialog.ResultableDialog
 import com.hendraanggrian.openpss.db.SessionWrapper
 import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.db.schemas.Employees
 import com.hendraanggrian.openpss.db.schemas.Log
 import com.hendraanggrian.openpss.db.schemas.Logs
 import com.hendraanggrian.openpss.db.transaction
+import com.hendraanggrian.openpss.popup.dialog.ResultableDialog
+import javafx.scene.Node
 import javafx.scene.control.ComboBox
 import javafx.scene.control.PasswordField
 import kotlinx.nosql.Id
@@ -66,6 +67,8 @@ abstract class Action<T>(
 
         private lateinit var adminCombo: ComboBox<Employee>
         private lateinit var passwordField: PasswordField
+
+        override val focusedNode: Node? get() = adminCombo
 
         init {
             gridPane {

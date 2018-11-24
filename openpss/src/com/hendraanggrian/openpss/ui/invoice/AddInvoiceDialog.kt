@@ -21,10 +21,12 @@ import javafx.beans.property.ObjectProperty
 import javafx.beans.property.SimpleDoubleProperty
 import javafx.beans.property.SimpleObjectProperty
 import javafx.geometry.HPos.RIGHT
+import javafx.scene.Node
 import javafx.scene.control.Tab
 import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
 import javafx.scene.control.TextArea
+import javafx.scene.control.TextField
 import javafx.scene.image.ImageView
 import javafx.scene.layout.Priority.ALWAYS
 import ktfx.application.later
@@ -61,6 +63,7 @@ class AddInvoiceDialog(
     context: Context
 ) : ResultableDialog<Invoice>(context, R.string.add_invoice) {
 
+    private lateinit var customerField: TextField
     private lateinit var offsetTable: TableView<Invoice.OffsetJob>
     private lateinit var digitalTable: TableView<Invoice.DigitalJob>
     private lateinit var plateTable: TableView<Invoice.PlateJob>
@@ -70,6 +73,8 @@ class AddInvoiceDialog(
     private val dateTime: DateTime = dbDateTime
     private val customerProperty: ObjectProperty<Customer> = SimpleObjectProperty(null)
     private val totalProperty: DoubleProperty = SimpleDoubleProperty()
+
+    override val focusedNode: Node? get() = customerField
 
     init {
         gridPane {
@@ -83,7 +88,7 @@ class AddInvoiceDialog(
                 styleClass += R.style.bold
             } col 3 row 0
             label(getString(R.string.customer)) col 0 row 1
-            jfxTextField {
+            customerField = jfxTextField {
                 isEditable = false
                 textProperty().bind(buildStringBinding(customerProperty) {
                     customerProperty.value?.toString() ?: getString(R.string.search_customer)
@@ -95,6 +100,25 @@ class AddInvoiceDialog(
             label(getString(R.string.jobs)) col 0 row 2
             jfxTabPane {
                 styleClass += R.style.jfx_tab_pane_small
+                tab {
+                    digitalTable = invoiceTableView({ AddDigitalJobPopover(this@AddInvoiceDialog) }) {
+                        bindTitle(this, R.string.digital)
+                        columns {
+                            column<Invoice.DigitalJob, String>(R.string.qty, 72) {
+                                numberCell(this@AddInvoiceDialog) { qty }
+                            }
+                            column<Invoice.DigitalJob, String>(R.string.type, 72) {
+                                stringCell { type }
+                            }
+                            column<Invoice.DigitalJob, String>(R.string.description, 264) {
+                                stringCell { desc }
+                            }
+                            column<Invoice.DigitalJob, String>(R.string.total, 156) {
+                                currencyCell(this@AddInvoiceDialog) { total }
+                            }
+                        }
+                    }
+                }
                 tab {
                     offsetTable = invoiceTableView({ AddOffsetJobPopover(this@AddInvoiceDialog) }) {
                         bindTitle(this, R.string.offset)
@@ -112,25 +136,6 @@ class AddInvoiceDialog(
                                 stringCell { desc }
                             }
                             column<Invoice.OffsetJob, String>(R.string.total, 156) {
-                                currencyCell(this@AddInvoiceDialog) { total }
-                            }
-                        }
-                    }
-                }
-                tab {
-                    digitalTable = invoiceTableView({ AddDigitalJobPopover(this@AddInvoiceDialog) }) {
-                        bindTitle(this, R.string.digital)
-                        columns {
-                            column<Invoice.DigitalJob, String>(R.string.qty, 72) {
-                                numberCell(this@AddInvoiceDialog) { qty }
-                            }
-                            column<Invoice.DigitalJob, String>(R.string.type, 72) {
-                                stringCell { type }
-                            }
-                            column<Invoice.DigitalJob, String>(R.string.description, 264) {
-                                stringCell { desc }
-                            }
-                            column<Invoice.DigitalJob, String>(R.string.total, 156) {
                                 currencyCell(this@AddInvoiceDialog) { total }
                             }
                         }
@@ -209,8 +214,8 @@ class AddInvoiceDialog(
             login.id,
             customerProperty.value.id,
             dateTime,
-            offsetTable.items,
             digitalTable.items,
+            offsetTable.items,
             plateTable.items,
             otherTable.items,
             noteArea.text

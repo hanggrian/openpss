@@ -83,7 +83,7 @@ class EditEmployeeDialog(
         table.items = transaction { Employees { it.name.notEqual(Employee.BACKDOOR.name) }.toMutableObservableList() }
     }
 
-    override fun add() = InputUserPopover(this, R.string.add_employee, false).show(addButton) { employee ->
+    override fun add() = AddEmployeePopover(this, R.string.add_employee, false).show(addButton) { employee ->
         (AddEmployeeAction(this, Employee.new(employee!!.clean()))) {
             table.items.add(it)
             table.selectionModel.select(it)

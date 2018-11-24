@@ -4,6 +4,7 @@ import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.Context
 import com.hendraanggrian.openpss.control.TimeBox
 import com.hendraanggrian.openpss.popup.popover.ResultablePopover
+import javafx.scene.Node
 import ktfx.beans.binding.buildBooleanBinding
 import ktfx.layouts.gridPane
 import ktfx.layouts.label
@@ -16,6 +17,8 @@ class AddRecessPopover(
 
     private lateinit var startBox: TimeBox
     private lateinit var endBox: TimeBox
+
+    override val focusedNode: Node? get() = startBox
 
     init {
         gridPane {

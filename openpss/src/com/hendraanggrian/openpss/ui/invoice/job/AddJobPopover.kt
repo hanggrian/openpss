@@ -8,6 +8,7 @@ import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.popup.popover.ResultablePopover
 import javafx.beans.Observable
 import javafx.beans.value.ObservableBooleanValue
+import javafx.scene.Node
 import javafx.scene.control.CheckBox
 import javafx.scene.control.TextField
 import ktfx.beans.binding.buildStringBinding
@@ -35,6 +36,8 @@ abstract class AddJobPopover<T : Invoice.Job>(context: Context, titleId: String)
     protected lateinit var titleField: TextField
     protected lateinit var totalField: DoubleField
     protected lateinit var customizeCheck: CheckBox
+
+    override val focusedNode: Node? get() = qtyField
 
     init {
         gridPane {

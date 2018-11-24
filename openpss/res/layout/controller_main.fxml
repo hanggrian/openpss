@@ -45,7 +45,9 @@
                 <MenuItem fx:id="recessItem" mnemonicParsing="false" onAction="#editRecess" text="%recess"/>
             </Menu>
             <Menu mnemonicParsing="false" text="%help">
-                <MenuItem mnemonicParsing="false" onAction="#testViewInvoice" text="%test_view_invoice"/>
+                <Menu mnemonicParsing="false" text="%test">
+                    <MenuItem mnemonicParsing="false" onAction="#testViewInvoice" text="%invoice"/>
+                </Menu>
                 <SeparatorMenuItem/>
                 <MenuItem mnemonicParsing="false" onAction="#checkUpdate" text="%check_for_updates"/>
                 <MenuItem mnemonicParsing="false" onAction="#about" text="%about">

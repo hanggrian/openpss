@@ -14,3 +14,5 @@ val STYLESHEET_OPENPSS = listOf(
 ).map { getStyle(it) }
 
 val STYLESHEET_PRINT_TREETABLEVIEW = getStyle(R.style.css_print_treetableview)
+
+val STYLESHEET_INVOICE = getStyle(R.style.css_invoice)

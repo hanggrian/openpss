@@ -4,6 +4,7 @@ import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.Context
 import com.hendraanggrian.openpss.content.Language
 import com.hendraanggrian.openpss.content.PATTERN_DATETIME_EXTENDED
+import com.hendraanggrian.openpss.content.STYLESHEET_INVOICE
 import com.hendraanggrian.openpss.control.Space
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Customers
@@ -19,6 +20,7 @@ import javafx.geometry.Pos.CENTER
 import javafx.geometry.Pos.CENTER_LEFT
 import javafx.geometry.Pos.CENTER_RIGHT
 import javafx.print.PageOrientation
+import javafx.print.PageRange
 import javafx.print.Printer
 import javafx.print.PrinterJob
 import javafx.scene.layout.Border
@@ -94,6 +96,7 @@ class ViewInvoicePopover(
             customer = Customers[invoice.customerId].single()
         }
         invoiceBox = vbox(getDouble(R.dimen.padding_medium)) {
+            stylesheets += STYLESHEET_INVOICE
             border = DASHED.toBorder()
             paddingAll = getDouble(R.dimen.padding_medium)
             setMinSize(WIDTH_PX, HEIGHT_PX)
@@ -239,7 +242,15 @@ class ViewInvoicePopover(
                     // disable auto-hide when print dialog is showing
                     isAutoHide = false
                     val job = PrinterJob.createPrinterJob(printer)!!
-                    if (job.showPrintDialog(this@ViewInvoicePopover) && job.printPage(layout, invoiceBox)) {
+                    job.jobSettings.run {
+                        jobName = "${getString(R.string.invoice)} #${invoice.no}"
+                        setPageRanges(PageRange(1, 1))
+                        pageLayout = layout
+                    }
+                    if (job.showPageSetupDialog(this@ViewInvoicePopover) && job.showPrintDialog(this@ViewInvoicePopover) && job.printPage(
+                            invoiceBox
+                        )
+                    ) {
                         job.endJob()
                         isDisable = true
                         if (!isTest) transaction {

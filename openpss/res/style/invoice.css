@@ -1,0 +1,11 @@
+.label {
+    -fx-font-family: "System";
+}
+
+.bold {
+    -fx-font-weight: bold;
+}
+
+.light {
+    -fx-font-weight: light;
+}

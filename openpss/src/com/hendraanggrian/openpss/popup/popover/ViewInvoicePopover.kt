@@ -219,23 +219,26 @@ class ViewInvoicePopover(
                     // resize node to actual print size
                     val printer = Printer.getDefaultPrinter()
                     val layout = printer.createPageLayout(PAPER, PORTRAIT, 0.0, 0.0, 0.0, 0.0)
+                    val scale = Scale(
+                        layout.printableWidth / invoiceBox.boundsInParent.width,
+                        layout.printableHeight / invoiceBox.boundsInParent.height
+                    )
                     invoiceBox.run {
                         border = null
-                        transforms += Scale(
-                            layout.printableWidth / boundsInParent.width,
-                            layout.printableHeight / boundsInParent.height
-                        )
+                        transforms += scale
                     }
                     // disable auto-hide when print dialog is showing
-                    // isAutoHide = false
+                    isAutoHide = false
                     val job = PrinterJob.createPrinterJob(printer)!!
-                    if (job.showPrintDialog(this@ViewInvoicePopover.scene.window) && job.printPage(layout, invoiceBox)) {
+                    if (job.showPrintDialog(this@ViewInvoicePopover) && job.printPage(layout, invoiceBox)) {
                         job.endJob()
+                        isDisable = true
                         if (!isTest) transaction {
                             Invoices[invoice].projection { printed }.update(true)
                         }
                     }
-                    hide()
+                    // restore state
+                    isAutoHide = true
                 }
             }
         }

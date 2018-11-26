@@ -36,6 +36,7 @@ import javafx.scene.layout.VBox
 import javafx.scene.paint.Color.BLACK
 import javafx.scene.text.TextAlignment
 import javafx.scene.transform.Scale
+import javafx.stage.Screen
 import kotlinx.nosql.update
 import ktfx.application.later
 import ktfx.coroutines.onAction
@@ -67,10 +68,17 @@ class ViewInvoicePopover(
 ) : Popover(context, R.string.invoice) {
 
     private companion object {
-        const val WIDTH = 378.0
-        const val HEIGHT = 530.0
+        const val WIDTH_MM: Double = 100.0
+        const val HEIGHT_MM: Double = 140.0
+        val WIDTH_PX: Double
+        val HEIGHT_PX: Double
+        val PAPER: Paper = PrintHelper.createPaper("Invoice", WIDTH_MM, HEIGHT_MM, MM)
 
-        val PAPER: Paper = PrintHelper.createPaper("Invoice", 100.0, 140.0, MM)
+        init {
+            val dpi = Screen.getPrimary().dpi
+            WIDTH_PX = WIDTH_MM / 10 * dpi / 2.54
+            HEIGHT_PX = HEIGHT_MM / 10 * dpi / 2.54
+        }
     }
 
     private lateinit var invoiceHeaders: List<String>
@@ -90,8 +98,8 @@ class ViewInvoicePopover(
         invoiceBox = vbox(getDouble(R.dimen.padding_medium)) {
             border = DASHED.toBorder()
             paddingAll = getDouble(R.dimen.padding_medium)
-            setMinSize(WIDTH, HEIGHT)
-            setMaxSize(WIDTH, HEIGHT)
+            setMinSize(WIDTH_PX, HEIGHT_PX)
+            setMaxSize(WIDTH_PX, HEIGHT_PX)
             hbox(getDouble(R.dimen.padding_medium)) {
                 vbox {
                     alignment = CENTER_LEFT
@@ -219,13 +227,12 @@ class ViewInvoicePopover(
                     // resize node to actual print size
                     val printer = Printer.getDefaultPrinter()
                     val layout = printer.createPageLayout(PAPER, PORTRAIT, 0.0, 0.0, 0.0, 0.0)
-                    val scale = Scale(
-                        layout.printableWidth / invoiceBox.boundsInParent.width,
-                        layout.printableHeight / invoiceBox.boundsInParent.height
-                    )
                     invoiceBox.run {
                         border = null
-                        transforms += scale
+                        transforms += Scale(
+                            layout.printableWidth / boundsInParent.width,
+                            layout.printableHeight / boundsInParent.height
+                        )
                     }
                     // disable auto-hide when print dialog is showing
                     isAutoHide = false
@@ -266,5 +273,5 @@ class ViewInvoicePopover(
 
     private fun BorderStrokeStyle.toBorder() = Border(BorderStroke(BLACK, this, EMPTY, DEFAULT))
 
-    private fun NodeInvokable.fullLine() = line(endX = WIDTH - getDouble(R.dimen.padding_medium) * 2)
+    private fun NodeInvokable.fullLine() = line(endX = WIDTH_PX - getDouble(R.dimen.padding_medium) * 2)
 }

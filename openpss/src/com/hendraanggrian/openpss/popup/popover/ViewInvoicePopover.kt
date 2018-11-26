@@ -13,15 +13,12 @@ import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_INVOICE
 import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.db.schemas.Invoices
 import com.hendraanggrian.openpss.db.transaction
-import com.sun.javafx.print.PrintHelper
-import com.sun.javafx.print.Units.MM
 import javafx.geometry.HPos.LEFT
 import javafx.geometry.HPos.RIGHT
 import javafx.geometry.Pos.CENTER
 import javafx.geometry.Pos.CENTER_LEFT
 import javafx.geometry.Pos.CENTER_RIGHT
-import javafx.print.PageOrientation.PORTRAIT
-import javafx.print.Paper
+import javafx.print.PageOrientation
 import javafx.print.Printer
 import javafx.print.PrinterJob
 import javafx.scene.layout.Border
@@ -60,6 +57,8 @@ import java.util.ResourceBundle
 /**
  * Popup displaying invoice using server's language instead of local.
  * Size of invoice is equivalent to 10x14cm, possibly the smallest continuous form available.
+ *
+ * Must create custom paper in Windows machine called `Invoice`, which is 10x14cm without margins.
  */
 class ViewInvoicePopover(
     context: Context,
@@ -72,7 +71,6 @@ class ViewInvoicePopover(
         const val HEIGHT_MM: Double = 140.0
         val WIDTH_PX: Double
         val HEIGHT_PX: Double
-        val PAPER: Paper = PrintHelper.createPaper("Invoice", WIDTH_MM, HEIGHT_MM, MM)
 
         init {
             val dpi = Screen.getPrimary().dpi
@@ -226,7 +224,11 @@ class ViewInvoicePopover(
                 onAction {
                     // resize node to actual print size
                     val printer = Printer.getDefaultPrinter()
-                    val layout = printer.createPageLayout(PAPER, PORTRAIT, 0.0, 0.0, 0.0, 0.0)
+                    val layout = printer.createPageLayout(
+                        printer.printerAttributes.supportedPapers.single { paper -> paper.name == "Invoice" },
+                        PageOrientation.PORTRAIT,
+                        Printer.MarginType.HARDWARE_MINIMUM
+                    )
                     invoiceBox.run {
                         border = null
                         transforms += Scale(

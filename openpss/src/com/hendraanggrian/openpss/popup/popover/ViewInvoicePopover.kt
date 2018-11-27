@@ -228,10 +228,10 @@ class ViewInvoicePopover(
                         0.0, 0.0, 0.0, 0.0
                     )
                     val scale = Scale(
-                        (layout.printableWidth - layout.leftMargin * 3 / 2 - layout.rightMargin * 3 / 2)
-                            / invoiceBox.boundsInParent.width,
-                        (layout.printableHeight - layout.bottomMargin)
-                            / invoiceBox.boundsInParent.height
+                        (layout.printableWidth - layout.leftMargin * 3 / 2 - layout.rightMargin * 3 / 2) /
+                            invoiceBox.boundsInParent.width,
+                        (layout.printableHeight - layout.bottomMargin) /
+                            invoiceBox.boundsInParent.height
                     )
                     invoiceBox.transforms += scale
                     // disable auto-hide when print dialog is showing

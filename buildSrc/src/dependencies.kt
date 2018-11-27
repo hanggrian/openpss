@@ -1,6 +1,17 @@
 import org.gradle.api.artifacts.dsl.DependencyHandler
 import org.gradle.plugin.use.PluginDependenciesSpec
 
+fun DependencyHandler.android() = "com.android.tools.build:gradle:$VERSION_ANDROID_PLUGIN"
+fun PluginDependenciesSpec.android(submodule: String) = id("com.android.$submodule")
+
+fun DependencyHandler.androidx(
+    repository: String,
+    module: String = repository,
+    version: String = VERSION_ANDROIDX
+): String = "androidx.$repository:$module:$version"
+
+fun DependencyHandler.material() = "com.google.android.material:material:$VERSION_ANDROIDX"
+
 fun DependencyHandler.kotlinx(module: String, version: String? = null) =
     "org.jetbrains.kotlinx:kotlinx-$module${version?.let { ":$it" }.orEmpty()}"
 

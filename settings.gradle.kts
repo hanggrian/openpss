@@ -1,2 +1,3 @@
-include(RELEASE_ARTIFACT)
+include("desktop")
+include("android")
 include("website")

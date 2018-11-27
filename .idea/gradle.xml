@@ -8,12 +8,13 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/android" />
             <option value="$PROJECT_DIR$/buildSrc" />
-            <option value="$PROJECT_DIR$/openpss" />
+            <option value="$PROJECT_DIR$/desktop" />
             <option value="$PROJECT_DIR$/website" />
           </set>
         </option>
-        <option name="useQualifiedModuleNames" value="true" />
+        <option name="resolveModulePerSourceSet" value="false" />
       </GradleProjectSettings>
     </option>
   </component>

@@ -28,7 +28,6 @@ import javafx.print.PrinterJob
 import javafx.scene.layout.Border
 import javafx.scene.layout.BorderStroke
 import javafx.scene.layout.BorderStrokeStyle
-import javafx.scene.layout.BorderStrokeStyle.DASHED
 import javafx.scene.layout.BorderStrokeStyle.SOLID
 import javafx.scene.layout.BorderWidths.DEFAULT
 import javafx.scene.layout.CornerRadii.EMPTY
@@ -95,8 +94,6 @@ class ViewInvoicePopover(
         }
         invoiceBox = vbox(getDouble(R.dimen.padding_medium)) {
             if (!SystemUtils.IS_OS_MAC) stylesheets += STYLESHEET_INVOICE
-            border = DASHED.toBorder()
-            paddingAll = getDouble(R.dimen.padding_medium)
             setMinSize(WIDTH_PX, HEIGHT_PX)
             setMaxSize(WIDTH_PX, HEIGHT_PX)
             hbox(getDouble(R.dimen.padding_medium)) {
@@ -230,13 +227,13 @@ class ViewInvoicePopover(
                         PageOrientation.PORTRAIT,
                         0.0, 0.0, 0.0, 0.0
                     )
-                    invoiceBox.run {
-                        border = null
-                        transforms += Scale(
-                            layout.printableWidth / boundsInParent.width,
-                            layout.printableHeight / boundsInParent.height
-                        )
-                    }
+                    val scale = Scale(
+                        (layout.printableWidth - layout.leftMargin * 3 / 2 - layout.rightMargin * 3 / 2)
+                            / invoiceBox.boundsInParent.width,
+                        (layout.printableHeight - layout.bottomMargin)
+                            / invoiceBox.boundsInParent.height
+                    )
+                    invoiceBox.transforms += scale
                     // disable auto-hide when print dialog is showing
                     isAutoHide = false
                     val job = PrinterJob.createPrinterJob(printer)!!
@@ -245,10 +242,7 @@ class ViewInvoicePopover(
                         setPageRanges(PageRange(1, 1))
                         pageLayout = layout
                     }
-                    if (job.showPageSetupDialog(this@ViewInvoicePopover) &&
-                        job.showPrintDialog(this@ViewInvoicePopover) &&
-                        job.printPage(invoiceBox)
-                    ) {
+                    if (job.showPrintDialog(this@ViewInvoicePopover) && job.printPage(invoiceBox)) {
                         job.endJob()
                         isDisable = true
                         if (!isTest) transaction {
@@ -257,6 +251,7 @@ class ViewInvoicePopover(
                     }
                     // restore state
                     isAutoHide = true
+                    invoiceBox.transforms -= scale
                 }
             }
         }
@@ -284,5 +279,5 @@ class ViewInvoicePopover(
 
     private fun BorderStrokeStyle.toBorder() = Border(BorderStroke(BLACK, this, EMPTY, DEFAULT))
 
-    private fun NodeInvokable.fullLine() = line(endX = WIDTH_PX - getDouble(R.dimen.padding_medium) * 2)
+    private fun NodeInvokable.fullLine() = line(endX = WIDTH_PX)
 }

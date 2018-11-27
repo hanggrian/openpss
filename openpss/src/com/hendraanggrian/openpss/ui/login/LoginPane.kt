@@ -248,9 +248,9 @@ class LoginPane(private val resourced: Resources) : _StackPane(), Context {
                         promptText = getString(R.string.password)
                         isVisible = false
                         passwordField.textProperty().bindBidirectional(textProperty())
-                        if (BuildConfig.DEBUG) {
-                            text = Employee.DEFAULT_PASSWORD
-                        }
+                    }
+                    if (BuildConfig.DEBUG) {
+                        passwordField.text = Employee.DEFAULT_PASSWORD
                     }
                 }
                 jfxToggleButton {

@@ -4,7 +4,7 @@ import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.PATTERN_DATE
 import com.hendraanggrian.openpss.content.PATTERN_DATETIME
 import com.hendraanggrian.openpss.content.PATTERN_TIME
-import com.hendraanggrian.openpss.content.STYLESHEET_PRINT_TREETABLEVIEW
+import com.hendraanggrian.openpss.content.STYLESHEET_WAGE_RECORD
 import com.hendraanggrian.openpss.control.UncollapsibleTreeItem
 import com.hendraanggrian.openpss.io.WageDirectory
 import com.hendraanggrian.openpss.io.WageFile
@@ -199,7 +199,7 @@ class WageRecordController : Controller() {
     @FXML fun screenshot() {
         val images = mutableListOf<BufferedImage>()
         recordTable.selectionModel.clearSelection()
-        togglePrintMode(true, STYLESHEET_PRINT_TREETABLEVIEW)
+        togglePrintMode(true, STYLESHEET_WAGE_RECORD)
         recordTable.scrollTo(0)
         val flow = (recordTable.skin as TreeTableViewSkin<*>).children[1] as VirtualFlow<*>
         var i = 0
@@ -210,7 +210,7 @@ class WageRecordController : Controller() {
         } while (flow.lastVisibleCell.index + 1 <
             recordTable.root.children.size + recordTable.root.children.sumBy { it.children.size }
         )
-        togglePrintMode(false, STYLESHEET_PRINT_TREETABLEVIEW)
+        togglePrintMode(false, STYLESHEET_WAGE_RECORD)
         ImageIO.write(images.concatenate(), "png", WageFile())
         stack.jfxIndefiniteSnackbar(getString(R.string.screenshot_finished), getString(R.string.open_folder)) {
             desktop?.open(WageDirectory)

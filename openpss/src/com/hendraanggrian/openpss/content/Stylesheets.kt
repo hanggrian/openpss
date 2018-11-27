@@ -13,6 +13,6 @@ val STYLESHEET_OPENPSS = listOf(
     R.style.css_openpss_tab
 ).map { getStyle(it) }
 
-val STYLESHEET_PRINT_TREETABLEVIEW = getStyle(R.style.css_print_treetableview)
-
 val STYLESHEET_INVOICE = getStyle(R.style.css_invoice)
+
+val STYLESHEET_WAGE_RECORD = getStyle(R.style.css_wage_record)

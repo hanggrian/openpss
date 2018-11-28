@@ -9,4 +9,7 @@
     <string name="server_user">Server user</string>
     <string name="server_password">Server password</string>
     <string name="password">Password</string>
+
+    <string name="customer">Customer</string>
+    <string name="invoice">Invoice</string>
 </resources>

@@ -2,6 +2,7 @@ package com.hendraanggrian.openpss.ui.login
 
 import android.app.Dialog
 import android.content.Context.INPUT_METHOD_SERVICE
+import android.content.Intent
 import android.os.Bundle
 import android.text.InputType
 import android.view.View.OnFocusChangeListener
@@ -12,6 +13,7 @@ import android.widget.FrameLayout
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDialogFragment
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.ui.main.MainActivity
 
 class PasswordDialogFragment : AppCompatDialogFragment() {
 
@@ -35,7 +37,7 @@ class PasswordDialogFragment : AppCompatDialogFragment() {
             })
             .setNegativeButton(android.R.string.cancel, null)
             .setPositiveButton(R.string.login) { _, _ ->
-
+                startActivity(Intent(context, MainActivity::class.java))
             }
             .create()
         dialog.setOnShowListener { editText.requestFocus() }

@@ -9,4 +9,7 @@
     <string name="server_user">Pengguna server</string>
     <string name="server_password">Kata sandi server</string>
     <string name="password">Kata sandi</string>
+
+    <string name="customer">Pelanggan</string>
+    <string name="invoice">Faktur</string>
 </resources>

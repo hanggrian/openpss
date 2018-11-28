@@ -2,9 +2,9 @@ package com.hendraanggrian.openpss.ui.customer
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.Context
+import com.hendraanggrian.openpss.db.schema.ContactType
+import com.hendraanggrian.openpss.db.schema.new
 import com.hendraanggrian.openpss.db.schemas.Customer
-import com.hendraanggrian.openpss.db.schemas.Customer.Contact.Type.PHONE
-import com.hendraanggrian.openpss.db.schemas.Customer.Contact.Type.values
 import com.hendraanggrian.openpss.popup.popover.ResultablePopover
 import javafx.scene.Node
 import javafx.scene.control.ComboBox
@@ -31,7 +31,7 @@ class AddContactPopover(context: Context) : ResultablePopover<Customer.Contact>(
         )
     }
 
-    private lateinit var typeChoice: ComboBox<Customer.Contact.Type>
+    private lateinit var typeChoice: ComboBox<ContactType>
     private lateinit var contactField: TextField
 
     override val focusedNode: Node? get() = typeChoice
@@ -40,7 +40,7 @@ class AddContactPopover(context: Context) : ResultablePopover<Customer.Contact>(
         gridPane {
             gap = getDouble(R.dimen.padding_medium)
             label(getString(R.string.type)) col 0 row 0
-            typeChoice = jfxComboBox(values().toObservableList()) {
+            typeChoice = jfxComboBox(ContactType.values().toObservableList()) {
                 converter { toString { it!!.toString(this@AddContactPopover) } }
             } col 1 row 0
             label(getString(R.string.contact)) col 0 row 1
@@ -51,7 +51,7 @@ class AddContactPopover(context: Context) : ResultablePopover<Customer.Contact>(
             disableProperty().bind(buildBooleanBinding(typeChoice.valueProperty(), contactField.textProperty()) {
                 when (typeChoice.value) {
                     null -> true
-                    PHONE -> contactField.text.isBlank() || !contactField.text.matches(REGEX_PHONE)
+                    ContactType.PHONE -> contactField.text.isBlank() || !contactField.text.matches(REGEX_PHONE)
                     else -> contactField.text.isBlank() || !EmailValidator.getInstance().isValid(contactField.text)
                 }
             })

@@ -1,9 +1,5 @@
 package com.hendraanggrian.openpss.db
 
-import com.hendraanggrian.openpss.App
-import com.hendraanggrian.openpss.BuildConfig.ARTIFACT
-import com.hendraanggrian.openpss.BuildConfig.DEBUG
-import com.hendraanggrian.openpss.content.STYLESHEET_OPENPSS
 import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.schemas.DigitalPrices
 import com.hendraanggrian.openpss.db.schemas.Employee
@@ -24,7 +20,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.nosql.equal
 import kotlinx.nosql.mongodb.MongoDB
-import ktfx.scene.control.errorAlert
 import org.joda.time.DateTime
 import org.joda.time.LocalDate
 import org.joda.time.LocalTime
@@ -47,21 +42,15 @@ private val tables =
     )
 
 /**
- * A failed transaction will most likely throw an exception instance listAll [MongoException].
+ * A failed transaction will most likely throw an exception instance of [MongoException].
  * This function will safely execute a transaction and display an error log on JavaFX if it throws those exceptions.
  *
  * @see [kotlinx.nosql.mongodb.MongoDB.withSession]
  */
+@Throws(MongoException::class)
 fun <T> transaction(statement: SessionWrapper.() -> T): T = try {
     database.withSession { SessionWrapper(this).statement() }
 } catch (e: MongoException) {
-    if (DEBUG) e.printStackTrace()
-    errorAlert(e.message.toString()) {
-        dialogPane.stylesheets += STYLESHEET_OPENPSS
-        headerText = "Connection closed. Please sign in again."
-    }.showAndWait().ifPresent {
-        App.exit()
-    }
     error("Connection closed. Please sign in again.")
 }
 
@@ -96,7 +85,7 @@ private suspend fun connect(
 ): MongoDB = withContext(Dispatchers.Default) {
     MongoDB(
         arrayOf(ServerAddress(host, port)),
-        ARTIFACT,
+        "openpss",
         arrayOf(createCredential(user, "admin", password.toCharArray())),
         Builder().serverSelectionTimeout(3000).build(),
         tables

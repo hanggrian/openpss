@@ -1,6 +1,6 @@
 @file:Suppress("NOTHING_TO_INLINE")
 
-package com.hendraanggrian.openpss.content
+package com.hendraanggrian.openpss
 
 const val PATTERN_DATE = "MM/dd/yyyy" // to comply with JavaFX's DatePicker
 const val PATTERN_TIME = "HH:mm"

@@ -1,8 +1,5 @@
 package com.hendraanggrian.openpss.db
 
-import com.hendraanggrian.openpss.App
-import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.content.Context
 import com.hendraanggrian.openpss.db.schemas.GlobalSetting
 import com.hendraanggrian.openpss.db.schemas.GlobalSettings
 import com.hendraanggrian.openpss.db.schemas.Invoice
@@ -21,7 +18,6 @@ import kotlinx.nosql.mongodb.DocumentSchema
 import kotlinx.nosql.mongodb.MongoDBSession
 import kotlinx.nosql.query.NoQuery
 import kotlinx.nosql.update
-import ktfx.jfoenix.jfxSnackbar
 
 /** Extended version of [MongoDBSession]. */
 @Suppress("NOTHING_TO_INLINE")
@@ -75,10 +71,10 @@ class SessionWrapper(val session: MongoDBSession) : Session by session,
         key: String
     ): DocumentSchemaQueryWrapper<GlobalSettings, String, GlobalSetting> = GlobalSettings { it.key.equal(key) }
 
-    fun Invoice.done(context: Context): Boolean {
+    fun Invoice.done(): Boolean {
         val query = Invoices[this]
         if (query.single().isDone) {
-            context.stack.jfxSnackbar(context.getString(R.string.already_done), App.DURATION_LONG)
+            // container.snackbar(context.getString(R.string.already_done), App.DURATION_LONG)
             return false
         }
         query.projection { Invoices.isDone }.update(true)

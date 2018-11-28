@@ -2,6 +2,7 @@ plugins {
     android("application")
     kotlin("android")
     kotlin("android.extensions")
+    dokka("android")
 }
 
 android {
@@ -38,7 +39,15 @@ android {
 }
 
 dependencies {
-    // implementation(project(":$RELEASE_ARTIFACT-commons"))
-    implementation(kotlin("stdlib", VERSION_KOTLIN))
+    api(project(":core"))
+
+    implementation(kotlinx("coroutines-android", VERSION_COROUTINES))
+
+    implementation(androidx("core", "core-ktx"))
+    implementation(androidx("appcompat"))
+    implementation(androidx("coordinatorlayout"))
+    implementation(androidx("preference"))
     implementation(material())
+
+    implementation("com.takisoft.preferencex:preferencex:$VERSION_ANDROIDX")
 }

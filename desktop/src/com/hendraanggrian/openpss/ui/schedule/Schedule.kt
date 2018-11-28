@@ -2,6 +2,7 @@ package com.hendraanggrian.openpss.ui.schedule
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.Context
+import com.hendraanggrian.openpss.db.schema.typedTechnique
 import com.hendraanggrian.openpss.db.schemas.Invoice
 import javafx.collections.ObservableList
 import ktfx.collections.mutableObservableListOf

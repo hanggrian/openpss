@@ -1,6 +1,5 @@
 package com.hendraanggrian.openpss.db.schemas
 
-import com.hendraanggrian.openpss.content.Language
 import com.hendraanggrian.openpss.db.Document
 import com.hendraanggrian.openpss.db.SessionWrapper
 import com.hendraanggrian.openpss.db.Setupable
@@ -15,7 +14,7 @@ object GlobalSettings : DocumentSchema<GlobalSetting>("global_settings", GlobalS
     val key = string("key")
     val value = string("value")
 
-    val LANGUAGE = "language" to Language.EN_US.fullCode
+    val LANGUAGE = "language" to "en-US" // or equivalent to Language.EN_US.fullCode
     val INVOICE_HEADERS = "invoice_headers" to ""
 
     override fun setup(wrapper: SessionWrapper) = wrapper.run {

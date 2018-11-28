@@ -1,14 +1,11 @@
 package com.hendraanggrian.openpss.db.schemas
 
-import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.content.Resources
 import com.hendraanggrian.openpss.db.Document
 import com.hendraanggrian.openpss.db.Named
 import com.hendraanggrian.openpss.db.NamedSchema
 import com.hendraanggrian.openpss.db.Numbered
 import com.hendraanggrian.openpss.db.dbDate
-import com.hendraanggrian.openpss.util.enumValueOfId
-import com.hendraanggrian.openpss.util.id
+import com.hendraanggrian.openpss.db.nextNo
 import kotlinx.nosql.Id
 import kotlinx.nosql.ListColumn
 import kotlinx.nosql.boolean
@@ -49,7 +46,7 @@ data class Customer(
         fun new(
             name: String,
             isCompany: Boolean
-        ): Customer = Customer(Numbered.next(Customers), name, isCompany, dbDate, null, null, listOf())
+        ): Customer = Customer(Customers.nextNo, name, isCompany, dbDate, null, null, listOf())
     }
 
     override lateinit var id: Id<String, Customers>
@@ -60,21 +57,8 @@ data class Customer(
         val type: String,
         val value: String
     ) {
-        companion object {
-            fun new(type: Type, value: String): Contact = Contact(type.id, value)
-        }
-
-        val typedType: Type get() = enumValueOfId(type)
+        companion object;
 
         override fun toString(): String = value
-
-        enum class Type : Resources.Enum {
-            PHONE {
-                override val resourceId: String = R.string.phone
-            },
-            EMAIL {
-                override val resourceId: String = R.string.email
-            }
-        }
     }
 }

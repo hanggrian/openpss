@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="openpss_login">OpenPSS Login</string>
+    <string name="login">Login</string>
+    <string name="employee">Employee</string>
+    <string name="server">Server</string>
+    <string name="server_host">Server host</string>
+    <string name="server_port">Server port</string>
+    <string name="server_user">Server user</string>
+    <string name="server_password">Server password</string>
+    <string name="password">Password</string>
+</resources>

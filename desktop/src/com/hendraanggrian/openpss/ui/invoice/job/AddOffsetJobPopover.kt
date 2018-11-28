@@ -4,6 +4,8 @@ import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.Context
 import com.hendraanggrian.openpss.control.DoubleField
 import com.hendraanggrian.openpss.control.IntField
+import com.hendraanggrian.openpss.db.schema.Technique
+import com.hendraanggrian.openpss.db.schema.new
 import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.db.schemas.OffsetPrice
 import com.hendraanggrian.openpss.db.schemas.OffsetPrices
@@ -25,7 +27,7 @@ class AddOffsetJobPopover(context: Context) :
     AddJobPopover<Invoice.OffsetJob>(context, R.string.add_offset_job), Invoice.Job {
 
     private lateinit var typeChoice: ComboBox<OffsetPrice>
-    private lateinit var techniqueChoice: ComboBox<Invoice.OffsetJob.Technique>
+    private lateinit var techniqueChoice: ComboBox<Technique>
     private lateinit var minQtyField: IntField
     private lateinit var minPriceField: DoubleField
     private lateinit var excessPriceField: DoubleField
@@ -41,7 +43,7 @@ class AddOffsetJobPopover(context: Context) :
         } col 1 colSpans 2 row currentRow
         currentRow++
         label(getString(R.string.technique)) col 0 row currentRow
-        techniqueChoice = jfxComboBox(Invoice.OffsetJob.Technique.values().toObservableList()) {
+        techniqueChoice = jfxComboBox(Technique.values().toObservableList()) {
             converter { toString { it!!.toString(this@AddOffsetJobPopover) } }
             selectionModel.selectFirst()
         } col 1 colSpans 2 row currentRow
@@ -80,19 +82,19 @@ class AddOffsetJobPopover(context: Context) :
 
     override fun calculateTotal(): Double = when (techniqueChoice.value) {
         null -> 0.0
-        Invoice.OffsetJob.Technique.ONE_SIDE -> calculateSide(
+        Technique.ONE_SIDE -> calculateSide(
             qty,
             minQtyField.value,
             minPriceField.value,
             excessPriceField.value
         )
-        Invoice.OffsetJob.Technique.TWO_SIDE_EQUAL -> calculateSide(
+        Technique.TWO_SIDE_EQUAL -> calculateSide(
             qty * 2,
             minQtyField.value,
             minPriceField.value,
             excessPriceField.value
         )
-        Invoice.OffsetJob.Technique.TWO_SIDE_DISTINCT -> calculateSide(
+        Technique.TWO_SIDE_DISTINCT -> calculateSide(
             qty,
             minQtyField.value,
             minPriceField.value,

@@ -2,11 +2,12 @@ package com.hendraanggrian.openpss.ui.customer
 
 import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.App.Companion.STRETCH_POINT
+import com.hendraanggrian.openpss.PATTERN_DATE
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.content.PATTERN_DATE
 import com.hendraanggrian.openpss.control.CustomerListView
 import com.hendraanggrian.openpss.control.PaginatedPane
 import com.hendraanggrian.openpss.control.StretchableButton
+import com.hendraanggrian.openpss.db.schema.typedType
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.transaction

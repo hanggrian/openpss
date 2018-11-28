@@ -1,8 +1,6 @@
-import org.jetbrains.kotlin.codegen.StackValue.field
-
 plugins {
     kotlin("jvm")
-    dokka
+    dokka()
     idea
     generating("r")
     generating("buildconfig")
@@ -30,8 +28,8 @@ application.mainClassName = "$group.App"
 ktlint()
 
 dependencies {
-    implementation(kotlin("stdlib", VERSION_KOTLIN))
-    implementation(kotlin("nosql-mongodb", VERSION_NOSQL))
+    api(project(":core"))
+
     implementation(kotlinx("coroutines-javafx", VERSION_COROUTINES))
 
     implementation(square("adapter-guava", VERSION_RETROFIT, "retrofit2"))

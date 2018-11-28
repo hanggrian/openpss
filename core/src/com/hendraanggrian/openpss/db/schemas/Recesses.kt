@@ -1,6 +1,6 @@
 package com.hendraanggrian.openpss.db.schemas
 
-import com.hendraanggrian.openpss.content.PATTERN_TIME
+import com.hendraanggrian.openpss.PATTERN_TIME
 import com.hendraanggrian.openpss.db.Document
 import kotlinx.nosql.Id
 import kotlinx.nosql.mongodb.DocumentSchema
@@ -21,9 +21,7 @@ data class Recess(
 
     override lateinit var id: Id<String, Recesses>
 
-    override fun toString(): String = "${start.toString(PATTERN_TIME)} - ${end.toString(
-        PATTERN_TIME
-    )}"
+    override fun toString(): String = "${start.toString(PATTERN_TIME)} - ${end.toString(PATTERN_TIME)}"
 
     /** Get interval from [start] to [end], using [dateTime] as a basis of date. */
     fun getInterval(dateTime: DateTime): Interval = Interval(start.toDateTime(dateTime), end.toDateTime(dateTime))

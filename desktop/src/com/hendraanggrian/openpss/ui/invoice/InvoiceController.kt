@@ -1,14 +1,15 @@
 package com.hendraanggrian.openpss.ui.invoice
 
 import com.hendraanggrian.openpss.App.Companion.STRETCH_POINT
+import com.hendraanggrian.openpss.PATTERN_DATETIME_EXTENDED
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.content.PATTERN_DATETIME_EXTENDED
 import com.hendraanggrian.openpss.control.DateBox
 import com.hendraanggrian.openpss.control.IntField
 import com.hendraanggrian.openpss.control.PaginatedPane
 import com.hendraanggrian.openpss.control.StretchableButton
 import com.hendraanggrian.openpss.control.Toolbar
 import com.hendraanggrian.openpss.db.SessionWrapper
+import com.hendraanggrian.openpss.db.schema.no
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.schemas.Employees
@@ -263,7 +264,7 @@ class InvoiceController : ActionController(), Refreshable {
                                     }
                                     onAction {
                                         transaction {
-                                            invoiceTable.selectionModel.selectedItem.done(this@InvoiceController)
+                                            invoiceTable.selectionModel.selectedItem.done()
                                         }
                                         refreshButton.fire()
                                     }

@@ -15,12 +15,8 @@ interface Numbered {
      * Basically means the same thing.
      */
     val no: Int
-
-    companion object {
-
-        /** Determine next integer based on the last one. */
-        fun <S : DocumentSchema<D>, D> next(schema: S): Int where
-            D : Document<S>,
-            D : Numbered = transaction { schema().lastOrNull()?.no ?: 0 } + 1
-    }
 }
+
+/** Determine next integer based on the last one. */
+val <S : DocumentSchema<D>, D> S.nextNo: Int where D : Document<S>, D : Numbered
+    get() = transaction { this@nextNo().lastOrNull()?.no ?: 0 } + 1

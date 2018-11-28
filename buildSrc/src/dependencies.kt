@@ -15,8 +15,10 @@ fun DependencyHandler.material() = "com.google.android.material:material:$VERSIO
 fun DependencyHandler.kotlinx(module: String, version: String? = null) =
     "org.jetbrains.kotlinx:kotlinx-$module${version?.let { ":$it" }.orEmpty()}"
 
-fun DependencyHandler.dokka() = "org.jetbrains.dokka:dokka-gradle-plugin:$VERSION_DOKKA"
-inline val PluginDependenciesSpec.dokka get() = id("org.jetbrains.dokka")
+fun DependencyHandler.dokka(module: String? = null) =
+    "org.jetbrains.dokka:dokka-${module?.let { "$it-" }.orEmpty()}gradle-plugin:$VERSION_DOKKA"
+
+fun PluginDependenciesSpec.dokka(module: String? = null) = id("org.jetbrains.dokka${module?.let { "-$it" }.orEmpty()}")
 
 fun DependencyHandler.controlsFx() = "org.controlsfx:controlsfx:$VERSION_CONTROLSFX"
 
@@ -52,6 +54,8 @@ fun DependencyHandler.testFx(module: String) = "org.testfx:testfx-$module:$VERSI
 
 fun DependencyHandler.gitPublish() = "org.ajoberstar:gradle-git-publish:$VERSION_GIT_PUBLISH"
 inline val PluginDependenciesSpec.`git-publish` get() = id("org.ajoberstar.git-publish")
+
+fun DependencyHandler.junit() = "junit:junit:$VERSION_JUNIT"
 
 private fun optionalRepo(
     group: String,

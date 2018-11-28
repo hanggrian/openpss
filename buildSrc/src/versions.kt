@@ -1,6 +1,7 @@
 const val VERSION_GRADLE = "4.10.2"
+
 const val VERSION_KOTLIN = "1.3.10"
-const val VERSION_COROUTINES = "1.0"
+const val VERSION_COROUTINES = "1.0.0"
 const val VERSION_NOSQL = "0.1-SNAPSHOT"
 
 const val SDK_MIN = 14
@@ -34,3 +35,4 @@ internal const val VERSION_SHADOW = "2.0.4"
 internal const val VERSION_TESTFX = "4.0.15-alpha"
 internal const val VERSION_GIT_PUBLISH = "0.3.3"
 internal const val VERSION_KTLINT = "0.29.0"
+internal const val VERSION_JUNIT = "4.12"

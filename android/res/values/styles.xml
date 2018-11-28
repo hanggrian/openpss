@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <style name="Theme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
+        <item name="android:statusBarColor" tools:targetApi="l">?colorPrimary</item>
+        <!--item name="android:windowDrawsSystemBarBackgrounds" tools:targetApi="l">true</item-->
+
+        <item name="colorAccent">#1e88e5</item>
+    </style>
+</resources>

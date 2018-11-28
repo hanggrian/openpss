@@ -1,11 +1,8 @@
 package com.hendraanggrian.openpss.db.schemas
 
-import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.content.Resources
 import com.hendraanggrian.openpss.db.Document
 import com.hendraanggrian.openpss.db.Numbered
-import com.hendraanggrian.openpss.util.enumValueOfId
-import com.hendraanggrian.openpss.util.id
+import com.hendraanggrian.openpss.db.nextNo
 import kotlinx.nosql.Id
 import kotlinx.nosql.ListColumn
 import kotlinx.nosql.boolean
@@ -87,11 +84,9 @@ data class Invoice(
             otherJobs: List<OtherJob>,
             note: String
         ): Invoice = Invoice(
-            Numbered.next(Invoices),
+            Invoices.nextNo,
             employeeId, customerId, dateTime, digitalJobs, offsetJobs, plateJobs, otherJobs, note, false, false, false
         )
-
-        fun no(resources: Resources, no: Number?): String? = no?.let { "${resources.getString(R.string.invoice)} #$it" }
     }
 
     override lateinit var id: Id<String, Invoices>
@@ -114,7 +109,7 @@ data class Invoice(
         override val total: Double,
         override val type: String,
         val isTwoSide: Boolean
-    ) : TypedJob {
+    ) : JobWithType {
 
         companion object {
             fun new(
@@ -133,31 +128,9 @@ data class Invoice(
         override val total: Double,
         override val type: String,
         val technique: String
-    ) : TypedJob {
+    ) : JobWithType {
 
-        companion object {
-            fun new(
-                qty: Int,
-                title: String,
-                total: Double,
-                type: String,
-                technique: Technique
-            ): OffsetJob = OffsetJob(qty, title, total, type, technique.id)
-        }
-
-        val typedTechnique: Technique get() = enumValueOfId(technique)
-
-        enum class Technique : Resources.Enum {
-            ONE_SIDE {
-                override val resourceId: String = R.string.one_side
-            },
-            TWO_SIDE_EQUAL {
-                override val resourceId: String = R.string.two_side_equal
-            },
-            TWO_SIDE_DISTINCT {
-                override val resourceId: String = R.string.two_side_distinct
-            }
-        }
+        companion object
     }
 
     data class PlateJob(
@@ -165,7 +138,7 @@ data class Invoice(
         override val desc: String,
         override val total: Double,
         override val type: String
-    ) : TypedJob {
+    ) : JobWithType {
 
         companion object {
             fun new(
@@ -192,7 +165,7 @@ data class Invoice(
         }
     }
 
-    interface TypedJob : Job {
+    interface JobWithType : Job {
         val type: String
     }
 

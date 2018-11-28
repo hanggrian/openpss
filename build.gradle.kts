@@ -9,6 +9,7 @@ buildscript {
         classpath(android())
         classpath(kotlin("gradle-plugin", VERSION_KOTLIN))
         classpath(dokka())
+        classpath(dokka("android"))
         classpath(hendraanggrian("generating", "r-gradle-plugin", VERSION_R))
         classpath(hendraanggrian("generating", "buildconfig-gradle-plugin", VERSION_BUILDCONFIG))
         classpath(hendraanggrian("packr", "packr-gradle-plugin", VERSION_PACKR))

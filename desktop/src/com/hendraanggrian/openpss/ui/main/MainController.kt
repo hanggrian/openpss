@@ -2,13 +2,15 @@ package com.hendraanggrian.openpss.ui.main
 
 import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.BuildConfig
+import com.hendraanggrian.openpss.PATTERN_DATETIME
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.content.PATTERN_DATETIME
 import com.hendraanggrian.openpss.control.MarginedImageView
 import com.hendraanggrian.openpss.control.PaginatedPane
 import com.hendraanggrian.openpss.control.Toolbar
 import com.hendraanggrian.openpss.control.UnselectableListView
 import com.hendraanggrian.openpss.db.dbDateTime
+import com.hendraanggrian.openpss.db.schema.Technique
+import com.hendraanggrian.openpss.db.schema.new
 import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.schemas.Employees
 import com.hendraanggrian.openpss.db.schemas.Invoice
@@ -202,7 +204,7 @@ class MainController : Controller(), Refreshable {
                             }
                             text(transaction { Employees[log.employeeId].single().name })
                             if (log.adminId != null) {
-                                text(", ${transaction { Employees[log.adminId].single().name }}")
+                                text(", ${transaction { Employees[log.adminId!!].single().name }}")
                             }
                         }
                     }
@@ -254,7 +256,7 @@ class MainController : Controller(), Refreshable {
                     customerId = it.id,
                     dateTime = dbDateTime,
                     offsetJobs = listOf(
-                        Invoice.OffsetJob.new(5, "Title", 92000.0, "Type", Invoice.OffsetJob.Technique.TWO_SIDE_EQUAL)
+                        Invoice.OffsetJob.new(5, "Title", 92000.0, "Type", Technique.TWO_SIDE_EQUAL)
                     ),
                     digitalJobs = listOf(Invoice.DigitalJob.new(5, "Title", 92000.0, "Type", false)),
                     plateJobs = listOf(Invoice.PlateJob.new(5, "Title", 92000.0, "Type")),

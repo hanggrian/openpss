@@ -6,7 +6,7 @@
     <application
         android:name=".App"
         android:allowBackup="false"
-        android:label="Test"
+        android:label="OpenPSS"
         android:supportsRtl="true"
         android:icon="@mipmap/ic_launcher"
         android:theme="@style/Theme"

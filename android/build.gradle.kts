@@ -45,8 +45,9 @@ dependencies {
 
     implementation(androidx("core", "core-ktx"))
     implementation(androidx("appcompat"))
-    implementation(androidx("coordinatorlayout"))
     implementation(androidx("preference"))
+    implementation(androidx("coordinatorlayout"))
+    implementation(androidx("recyclerview"))
     implementation(material())
 
     implementation("com.takisoft.preferencex:preferencex:$VERSION_ANDROIDX")

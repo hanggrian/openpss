@@ -1,6 +1,5 @@
 package com.hendraanggrian.openpss
 
-import com.hendraanggrian.openpss.BuildConfig.DEBUG
 import com.hendraanggrian.openpss.content.Resources
 import com.hendraanggrian.openpss.content.STYLESHEET_OPENPSS
 import com.hendraanggrian.openpss.io.properties.PreferencesFile
@@ -48,7 +47,7 @@ class App : Application(), Resources {
         resourceBundle = PreferencesFile.language.toResourcesBundle()
         dimenResources = getProperties(R.dimen.properties_dimen)
         colorResources = getProperties(R.color.properties_color)
-        if (DEBUG) {
+        if (BuildConfig.DEBUG) {
             BasicConfigurator.configure()
         }
     }

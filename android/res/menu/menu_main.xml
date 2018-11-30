@@ -2,10 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:title="@string/customer"
-        android:icon="@drawable/tab_customer" />
+        android:id="@+id/tab_customer"
+        android:icon="@drawable/tab_customer"
+        android:title="@string/customer" />
 
     <item
-        android:title="@string/invoice"
-        android:icon="@drawable/tab_invoice" />
+        android:id="@+id/tab_invoice"
+        android:icon="@drawable/tab_invoice"
+        android:title="@string/invoice" />
 </menu>

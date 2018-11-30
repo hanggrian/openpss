@@ -6,6 +6,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceManager
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.util.replaceFragment
 import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : AppCompatActivity() {
@@ -24,10 +25,7 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
         setSupportActionBar(toolbar)
-        supportFragmentManager
-            .beginTransaction()
-            .replace(R.id.preferenceLayout, LoginFragment())
-            .commitNow()
+        replaceFragment(R.id.preferenceLayout, LoginFragment())
         preferences = PreferenceManager.getDefaultSharedPreferences(this)
         preferenceListener.onSharedPreferenceChanged(preferences, null) // trigger once
     }
@@ -42,5 +40,5 @@ class LoginActivity : AppCompatActivity() {
         preferences.unregisterOnSharedPreferenceChangeListener(preferenceListener)
     }
 
-    fun login(view: View) = PasswordDialogFragment().show(supportFragmentManager, null)
+    fun login(@Suppress("UNUSED_PARAMETER") view: View) = PasswordDialogFragment().show(supportFragmentManager, null)
 }

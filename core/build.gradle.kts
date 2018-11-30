@@ -25,6 +25,9 @@ dependencies {
     api(kotlin("nosql-mongodb", VERSION_NOSQL))
     api(kotlinx("coroutines-core", VERSION_COROUTINES))
 
+    api(jodaTime())
+    api(log4j12())
+
     testImplementation(junit())
     testImplementation(kotlin("test", VERSION_KOTLIN))
     testImplementation(kotlin("reflect", VERSION_KOTLIN))

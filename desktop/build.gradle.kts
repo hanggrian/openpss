@@ -56,14 +56,14 @@ dependencies {
 }
 
 packr {
-    buildDir.resolve("install/$RELEASE_ARTIFACT/lib")?.listFiles()?.forEach { classpath(it.path) }
-    executable = RELEASE_NAME
     mainClass = application.mainClassName
+    executable = RELEASE_NAME
+    classpath("$buildDir/install/desktop/lib")
+    resources("$projectDir/res")
     vmArgs("Xmx2G")
-    resources(projectDir.resolve("res"))
     macOS {
         name = "$RELEASE_NAME.app"
-        icon = projectDir.resolve("art/$RELEASE_NAME.icns")
+        icon = "${rootProject.projectDir}/art/$RELEASE_NAME.icns"
         bundleId = RELEASE_GROUP
     }
     windows64 {
@@ -103,7 +103,7 @@ tasks {
     }
 
     "shadowJar"(com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar::class) {
-        destinationDir = buildDir.resolve("release")
+        destinationDir = buildDir.resolve("releases")
         manifest.attributes(mapOf("Main-Class" to application.mainClassName))
         baseName = RELEASE_ARTIFACT
         version = RELEASE_VERSION

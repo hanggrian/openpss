@@ -1,6 +1,14 @@
 import org.gradle.api.artifacts.dsl.DependencyHandler
 import org.gradle.plugin.use.PluginDependenciesSpec
 
+fun DependencyHandler.kotlinx(module: String, version: String? = null) =
+    "org.jetbrains.kotlinx:kotlinx-$module${version?.let { ":$it" }.orEmpty()}"
+
+fun DependencyHandler.dokka(module: String? = null) =
+    "org.jetbrains.dokka:dokka-${module?.let { "$it-" }.orEmpty()}gradle-plugin:$VERSION_DOKKA"
+
+fun PluginDependenciesSpec.dokka(module: String? = null) = id("org.jetbrains.dokka${module?.let { "-$it" }.orEmpty()}")
+
 fun DependencyHandler.android() = "com.android.tools.build:gradle:$VERSION_ANDROID_PLUGIN"
 fun PluginDependenciesSpec.android(submodule: String) = id("com.android.$submodule")
 
@@ -12,13 +20,11 @@ fun DependencyHandler.androidx(
 
 fun DependencyHandler.material() = "com.google.android.material:material:$VERSION_ANDROIDX"
 
-fun DependencyHandler.kotlinx(module: String, version: String? = null) =
-    "org.jetbrains.kotlinx:kotlinx-$module${version?.let { ":$it" }.orEmpty()}"
-
-fun DependencyHandler.dokka(module: String? = null) =
-    "org.jetbrains.dokka:dokka-${module?.let { "$it-" }.orEmpty()}gradle-plugin:$VERSION_DOKKA"
-
-fun PluginDependenciesSpec.dokka(module: String? = null) = id("org.jetbrains.dokka${module?.let { "-$it" }.orEmpty()}")
+fun DependencyHandler.hendraanggrian(
+    repository: String,
+    module: String = repository,
+    version: String
+): String = "com.hendraanggrian.$repository:$module:$version"
 
 fun DependencyHandler.controlsFx() = "org.controlsfx:controlsfx:$VERSION_CONTROLSFX"
 
@@ -30,12 +36,6 @@ fun DependencyHandler.square(module: String, version: String, repo: String? = nu
 
 fun DependencyHandler.google(module: String, version: String, repo: String? = null) =
     optionalRepo("com.google", module, version, repo ?: module)
-
-fun DependencyHandler.hendraanggrian(
-    repository: String,
-    module: String = repository,
-    version: String
-): String = "com.hendraanggrian.$repository:$module:$version"
 
 fun PluginDependenciesSpec.generating(id: String) = id("com.hendraanggrian.generating.$id")
 

@@ -13,10 +13,25 @@ import android.widget.EditText
 import android.widget.FrameLayout
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDialogFragment
+import com.hendraanggrian.bundler.Bundler
+import com.hendraanggrian.bundler.Extra
+import com.hendraanggrian.openpss.BuildConfig
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.db.login
 import com.hendraanggrian.openpss.ui.main.MainActivity
+import com.hendraanggrian.openpss.ui.popup.TextDialogFragment
+import com.hendraanggrian.openpss.ui.popup.show
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class PasswordDialogFragment : AppCompatDialogFragment() {
+
+    @Extra lateinit var serverHost: String
+    @Extra lateinit var serverPort: String
+    @Extra lateinit var serverUser: String
+    @Extra lateinit var serverPassword: String
+    @Extra lateinit var employeeName: String
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val editText = EditText(context).apply {
@@ -28,6 +43,7 @@ class PasswordDialogFragment : AppCompatDialogFragment() {
                 }
             }
         }
+        val manager = activity!!.supportFragmentManager
         val dialog = AlertDialog.Builder(context!!)
             .setTitle(R.string.password)
             .setView(FrameLayout(context!!).apply {
@@ -38,8 +54,35 @@ class PasswordDialogFragment : AppCompatDialogFragment() {
             })
             .setNegativeButton(android.R.string.cancel, null)
             .setPositiveButton(R.string.login) { _, _ ->
-                startActivity(Intent(context, MainActivity::class.java))
-                (context as Activity).finish()
+                GlobalScope.launch(Dispatchers.IO) {
+                    try {
+                        val employee = login(
+                            serverHost,
+                            serverPort.toInt(),
+                            serverUser,
+                            serverPassword,
+                            employeeName,
+                            editText.text.toString()
+                        )
+                        GlobalScope.launch(Dispatchers.Main) {
+                            startActivity(
+                                Intent(context, MainActivity::class.java)
+                                    .putExtras(Bundler.extrasOf(MainActivity::class.java, employee))
+                            )
+                            (context as Activity).finish()
+                        }
+                    } catch (e: Exception) {
+                        if (BuildConfig.DEBUG) e.printStackTrace()
+                        GlobalScope.launch(Dispatchers.Main) {
+                            TextDialogFragment()
+                                .apply {
+                                    arguments =
+                                        Bundler.extrasOf(TextDialogFragment::class.java, e.message.toString())
+                                }
+                                .show(manager)
+                        }
+                    }
+                }
             }
             .create()
         dialog.setOnShowListener { editText.requestFocus() }

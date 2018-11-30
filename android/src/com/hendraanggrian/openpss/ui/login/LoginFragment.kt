@@ -16,7 +16,7 @@ class LoginFragment : PreferenceFragmentCompat() {
         find<EditTextPreference>("server_port").bindSummary({ text })
         find<EditTextPreference>("server_user").bindSummary({ text })
         find<com.takisoft.preferencex.EditTextPreference>("server_password") {
-            bindSummary({ text }) { text?.toList()?.joinToString("") { "•" } }
+            bindSummary({ text }) { it?.toList()?.joinToString("") { "•" } }
             editText.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
         }
     }

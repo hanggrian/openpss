@@ -5,6 +5,5 @@ import androidx.recyclerview.widget.RecyclerView
 
 class CustomerAdapter {
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    }
+    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 }

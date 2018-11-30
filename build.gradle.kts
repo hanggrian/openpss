@@ -1,23 +1,26 @@
 buildscript {
     repositories {
+        google()
         jcenter()
         maven("https://oss.sonatype.org/content/repositories/snapshots")
         maven("https://dl.bintray.com/hendraanggrian/packr")
     }
     dependencies {
+        classpath(android())
         classpath(kotlin("gradle-plugin", VERSION_KOTLIN))
         classpath(dokka())
+        classpath(dokka("android"))
         classpath(hendraanggrian("generating", "r-gradle-plugin", VERSION_R))
         classpath(hendraanggrian("generating", "buildconfig-gradle-plugin", VERSION_BUILDCONFIG))
         classpath(hendraanggrian("packr", "packr-gradle-plugin", VERSION_PACKR))
         classpath(shadow())
         classpath(gitPublish())
-        classpath("com.helger:ph-css:6.1.1")
     }
 }
 
 allprojects {
     repositories {
+        google()
         jcenter()
         maven("http://repository.jetbrains.com/kotlin-nosql")
     }

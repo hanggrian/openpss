@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <androidx.preference.EditTextPreference
+        android:icon="@drawable/ic_action_person"
+        android:key="employee"
+        android:title="@string/employee" />
+
+    <androidx.preference.PreferenceCategory android:title="@string/server">
+
+        <androidx.preference.EditTextPreference
+            android:key="server_host"
+            android:title="@string/server_host" />
+
+        <androidx.preference.EditTextPreference
+            android:key="server_port"
+            android:title="@string/server_port" />
+
+        <androidx.preference.EditTextPreference
+            android:key="server_user"
+            android:title="@string/server_user" />
+
+        <com.takisoft.preferencex.EditTextPreference
+            android:key="server_password"
+            android:title="@string/server_password" />
+    </androidx.preference.PreferenceCategory>
+</androidx.preference.PreferenceScreen>

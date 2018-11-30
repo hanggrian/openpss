@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/tab_customer"
+        android:icon="@drawable/tab_customer"
+        android:title="@string/customer" />
+
+    <item
+        android:id="@+id/tab_invoice"
+        android:icon="@drawable/tab_invoice"
+        android:title="@string/invoice" />
+</menu>

@@ -6,7 +6,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceManager
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.ui.popup.show
+import com.hendraanggrian.openpss.popup.show
 import com.hendraanggrian.openpss.util.replaceFragment
 import kotlinx.android.synthetic.main.activity_login.*
 

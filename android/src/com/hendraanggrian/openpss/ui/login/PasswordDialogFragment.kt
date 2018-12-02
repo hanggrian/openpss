@@ -13,14 +13,15 @@ import android.widget.EditText
 import android.widget.FrameLayout
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDialogFragment
-import com.hendraanggrian.bundler.Bundler
 import com.hendraanggrian.bundler.Extra
+import com.hendraanggrian.bundler.bindExtras
+import com.hendraanggrian.bundler.extrasOf
 import com.hendraanggrian.openpss.BuildConfig
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.db.login
+import com.hendraanggrian.openpss.popup.TextDialogFragment
+import com.hendraanggrian.openpss.popup.show
 import com.hendraanggrian.openpss.ui.main.MainActivity
-import com.hendraanggrian.openpss.ui.popup.TextDialogFragment
-import com.hendraanggrian.openpss.ui.popup.show
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -34,6 +35,7 @@ class PasswordDialogFragment : AppCompatDialogFragment() {
     @Extra lateinit var employeeName: String
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        bindExtras()
         val editText = EditText(context).apply {
             inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
             onFocusChangeListener = OnFocusChangeListener { view, _ ->
@@ -67,7 +69,7 @@ class PasswordDialogFragment : AppCompatDialogFragment() {
                         GlobalScope.launch(Dispatchers.Main) {
                             startActivity(
                                 Intent(context, MainActivity::class.java)
-                                    .putExtras(Bundler.extrasOf(MainActivity::class.java, employee))
+                                    .putExtras(extrasOf<MainActivity>(employee))
                             )
                             (context as Activity).finish()
                         }
@@ -76,8 +78,7 @@ class PasswordDialogFragment : AppCompatDialogFragment() {
                         GlobalScope.launch(Dispatchers.Main) {
                             TextDialogFragment()
                                 .apply {
-                                    arguments =
-                                        Bundler.extrasOf(TextDialogFragment::class.java, e.message.toString())
+                                    arguments = extrasOf<TextDialogFragment>(e.message.toString())
                                 }
                                 .show(manager)
                         }

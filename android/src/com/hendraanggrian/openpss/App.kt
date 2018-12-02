@@ -3,6 +3,7 @@ package com.hendraanggrian.openpss
 import android.app.Application
 import androidx.core.content.edit
 import androidx.preference.PreferenceManager
+import com.hendraanggrian.bundler.Bundler
 import com.mongodb.ServerAddress
 import org.apache.log4j.BasicConfigurator
 
@@ -12,6 +13,7 @@ class App : Application() {
         super.onCreate()
 
         if (BuildConfig.DEBUG) {
+            Bundler.setDebug(true)
             BasicConfigurator.configure()
         }
 

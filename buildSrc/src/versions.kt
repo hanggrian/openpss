@@ -16,7 +16,7 @@ const val VERSION_RULES = "1.1.0"
 
 const val VERSION_PIKASSO = "0.2"
 const val VERSION_RECYCLERVIEW_PAGINATED = "0.2"
-const val VERSION_BUNDLER = "0.2"
+const val VERSION_BUNDLER = "0.3-rc1"
 
 const val VERSION_RETROFIT = "2.5.0"
 const val VERSION_GSON = "2.8.5"

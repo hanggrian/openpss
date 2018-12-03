@@ -27,9 +27,9 @@ import ktfx.scene.layout.gap
 import java.util.ResourceBundle
 
 abstract class Action<T>(
-    private val context: Context,
+    private val component: FxComponent,
     private val requireAdmin: Boolean = false
-) : Context by context {
+) : FxComponent by component {
 
     @Suppress("LeakingThis")
     override val resourceBundle: ResourceBundle = Language.ofServer().toResourcesBundle()
@@ -42,9 +42,9 @@ abstract class Action<T>(
         transaction {
             when {
                 requireAdmin && !Employees[login].single().isAdmin -> {
-                    PermissionDialog(context).show { admin ->
+                    PermissionDialog(component).show { admin ->
                         when (admin) {
-                            null -> stack.jfxSnackbar(getString(R.string.invalid_password), App.DURATION_SHORT)
+                            null -> rootLayout.jfxSnackbar(getString(R.string.invalid_password), App.DURATION_SHORT)
                             else -> transaction { execute(block, admin.id) }
                         }
                     }
@@ -59,11 +59,11 @@ abstract class Action<T>(
         adminId: Id<String, Employees>? = null
     ) {
         block(handle())
-        Logs += Log.new(log, context.login.id, adminId)
+        Logs += Log.new(log, component.login.id, adminId)
     }
 
-    private class PermissionDialog(context: Context) :
-        ResultableDialog<Employee>(context, R.string.permission_required) {
+    private class PermissionDialog(component: FxComponent) :
+        ResultableDialog<Employee>(component, R.string.permission_required) {
 
         private lateinit var adminCombo: ComboBox<Employee>
         private lateinit var passwordField: PasswordField

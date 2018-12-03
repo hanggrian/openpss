@@ -160,7 +160,7 @@ class CustomerController : ActionController(), Refreshable {
         transaction {
             when {
                 Customers { Customers.name.matches("^$customer$", CASE_INSENSITIVE) }.isNotEmpty() ->
-                    stack.jfxSnackbar(getString(R.string.name_taken), App.DURATION_SHORT)
+                    rootLayout.jfxSnackbar(getString(R.string.name_taken), App.DURATION_SHORT)
                 else -> {
                     (AddCustomerAction(this@CustomerController, customer!!)) {
                         customerList.items.add(it)

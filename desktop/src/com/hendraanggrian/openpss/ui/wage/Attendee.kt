@@ -113,7 +113,7 @@ data class Attendee(
             }
 
     companion object {
-        /** Dummy for invisible [javafx.scene.control.TreeTableView] root. */
+        /** Dummy for invisible [javafx.scene.control.TreeTableView] rootLayout. */
         val DUMMY = Attendee(0, "")
     }
 }

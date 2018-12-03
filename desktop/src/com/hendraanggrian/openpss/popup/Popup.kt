@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.popup
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.content.Context
+import com.hendraanggrian.openpss.content.FxComponent
 import com.hendraanggrian.openpss.control.Toolbar
 import javafx.beans.property.ObjectProperty
 import javafx.scene.Node
@@ -18,7 +18,7 @@ import ktfx.layouts.label
 import ktfx.layouts.vbox
 import ktfx.scene.layout.updatePadding
 
-interface Popup : Context, NodeInvokable {
+interface Popup : FxComponent, NodeInvokable {
 
     override fun <R : Node> R.invoke(): R = also { contentPane.children += it }
 

@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.ui.invoice
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.content.Context
+import com.hendraanggrian.openpss.content.FxComponent
 import com.hendraanggrian.openpss.control.CustomerListView
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Customers
@@ -21,7 +21,7 @@ import ktfx.scene.control.isSelected
 import ktfx.scene.input.isDoubleClick
 import kotlin.text.RegexOption.IGNORE_CASE
 
-class SearchCustomerPopover(context: Context) : ResultablePopover<Customer>(context, R.string.search_customer) {
+class SearchCustomerPopover(component: FxComponent) : ResultablePopover<Customer>(component, R.string.search_customer) {
 
     private companion object {
         const val ITEMS_PER_PAGE = 10

@@ -19,11 +19,11 @@ class DatabaseTest {
             runBlocking {
                 BasicConfigurator.configure()
                 try {
-                    login(
+                    Database.login(
                         LoginFile.DB_HOST, LoginFile.DB_PORT, LoginFile.DB_USER, LoginFile.DB_PASSWORD,
                         Employee.BACKDOOR.name, Employee.BACKDOOR.password
                     )
-                    println(dbDateTime)
+                    println(Database.dateTime())
                 } catch (e: Exception) {
                     e.printStackTrace()
                     error(e.message.toString())

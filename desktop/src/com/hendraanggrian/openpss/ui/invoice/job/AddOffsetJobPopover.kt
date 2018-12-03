@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.ui.invoice.job
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.content.Context
+import com.hendraanggrian.openpss.content.FxComponent
 import com.hendraanggrian.openpss.control.DoubleField
 import com.hendraanggrian.openpss.control.IntField
 import com.hendraanggrian.openpss.db.schema.Technique
@@ -23,8 +23,8 @@ import ktfx.layouts._GridPane
 import ktfx.layouts.label
 import ktfx.listeners.converter
 
-class AddOffsetJobPopover(context: Context) :
-    AddJobPopover<Invoice.OffsetJob>(context, R.string.add_offset_job), Invoice.Job {
+class AddOffsetJobPopover(component: FxComponent) :
+    AddJobPopover<Invoice.OffsetJob>(component, R.string.add_offset_job), Invoice.Job {
 
     private lateinit var typeChoice: ComboBox<OffsetPrice>
     private lateinit var techniqueChoice: ComboBox<Technique>

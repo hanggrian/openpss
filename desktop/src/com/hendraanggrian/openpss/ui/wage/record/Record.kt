@@ -61,7 +61,7 @@ class Record(
         /** Last child row of a node, displaying calculated total. */
         const val INDEX_TOTAL = -1
 
-        /** Dummy for invisible [javafx.scene.control.TreeTableView] root. */
+        /** Dummy for invisible [javafx.scene.control.TreeTableView] rootLayout. */
         fun getDummy(resources: Resources) = Record(
             resources, Int.MIN_VALUE, Attendee.DUMMY,
             START_OF_TIME.asProperty(), START_OF_TIME.asProperty()

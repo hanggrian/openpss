@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.ui
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.content.Context
+import com.hendraanggrian.openpss.content.FxComponent
 import com.hendraanggrian.openpss.db.schemas.Employee
 import javafx.fxml.Initializable
 import javafx.scene.layout.StackPane
@@ -11,13 +11,13 @@ import java.util.ResourceBundle
 
 /** Base class of all controllers. */
 @Suppress("LeakingThis")
-open class Controller : Initializable, Context {
+open class Controller : Initializable, FxComponent {
 
     override lateinit var resourceBundle: ResourceBundle
     override val dimenResources: Properties = getProperties(R.dimen.properties_dimen)
     override val colorResources: Properties = getProperties(R.color.properties_color)
 
-    override lateinit var stack: StackPane
+    override lateinit var rootLayout: StackPane
     override lateinit var login: Employee
 
     private lateinit var extras: MutableMap<String, Any>

@@ -40,7 +40,6 @@ before_script:
   - sudo service elasticsearch stop || true
   - sudo service cassandra stop || true
   - sudo service rsync stop || true
-  - sudo service x11-common stop || true
 
 script:
   - echo no | android create avd --force -n test -t $ANDROID_EMULATOR_TARGET --abi $ANDROID_ABI

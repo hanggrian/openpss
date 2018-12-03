@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.ui.customer
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.content.Context
+import com.hendraanggrian.openpss.content.FxComponent
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.popup.dialog.ResultableDialog
 import com.hendraanggrian.openpss.util.isPersonName
@@ -23,9 +23,9 @@ import ktfx.layouts.label
 import ktfx.scene.layout.gap
 
 class EditCustomerDialog(
-    context: Context,
+    component: FxComponent,
     private val customer: Customer
-) : ResultableDialog<Customer>(context, R.string.edit_customer) {
+) : ResultableDialog<Customer>(component, R.string.edit_customer) {
 
     private val unchangedProperty = true.asProperty()
 

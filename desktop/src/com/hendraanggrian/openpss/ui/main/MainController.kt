@@ -8,7 +8,7 @@ import com.hendraanggrian.openpss.control.MarginedImageView
 import com.hendraanggrian.openpss.control.PaginatedPane
 import com.hendraanggrian.openpss.control.Toolbar
 import com.hendraanggrian.openpss.control.UnselectableListView
-import com.hendraanggrian.openpss.db.dbDateTime
+import com.hendraanggrian.openpss.db.Database
 import com.hendraanggrian.openpss.db.schema.Technique
 import com.hendraanggrian.openpss.db.schema.new
 import com.hendraanggrian.openpss.db.schemas.Customers
@@ -71,7 +71,7 @@ import kotlin.math.ceil
 
 class MainController : Controller(), Refreshable {
 
-    @FXML override lateinit var stack: StackPane
+    @FXML override lateinit var rootLayout: StackPane
     @FXML lateinit var menuBar: MenuBar
     @FXML lateinit var addCustomerItem: MenuItem
     @FXML lateinit var addInvoiceItem: MenuItem
@@ -166,7 +166,7 @@ class MainController : Controller(), Refreshable {
             employeeLabel.text = login.name
             controllers.forEach {
                 it.login = login
-                it.stack = stack
+                it.rootLayout = rootLayout
             }
 
             customerController.refresh()
@@ -178,7 +178,7 @@ class MainController : Controller(), Refreshable {
                         Employees { it.name.equal(login.name) }
                             .projection { password }
                             .update(newPassword!!)
-                        stack.jfxSnackbar(getString(R.string.successfully_changed_password), App.DURATION_LONG)
+                        rootLayout.jfxSnackbar(getString(R.string.successfully_changed_password), App.DURATION_LONG)
                     }
                 }
             }
@@ -254,7 +254,7 @@ class MainController : Controller(), Refreshable {
                     no = 1234,
                     employeeId = login.id,
                     customerId = it.id,
-                    dateTime = dbDateTime,
+                    dateTime = Database.dateTime(),
                     offsetJobs = listOf(
                         Invoice.OffsetJob.new(5, "Title", 92000.0, "Type", Technique.TWO_SIDE_EQUAL)
                     ),
@@ -267,7 +267,7 @@ class MainController : Controller(), Refreshable {
                     isDone = false
                 ), true
             ).show(menuBar)
-        } ?: stack.jfxSnackbar(getString(R.string.no_customer_to_test), App.DURATION_SHORT)
+        } ?: rootLayout.jfxSnackbar(getString(R.string.no_customer_to_test), App.DURATION_SHORT)
     }
 
     @FXML fun checkUpdate() = GitHubApi.checkUpdates(this)

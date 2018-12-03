@@ -3,11 +3,11 @@ package com.hendraanggrian.openpss.ui.login
 import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.BuildConfig
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.content.Context
+import com.hendraanggrian.openpss.content.FxComponent
 import com.hendraanggrian.openpss.content.Language
 import com.hendraanggrian.openpss.content.Resources
 import com.hendraanggrian.openpss.control.IntField
-import com.hendraanggrian.openpss.db.login
+import com.hendraanggrian.openpss.db.Database
 import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.io.properties.LoginFile
 import com.hendraanggrian.openpss.io.properties.PreferencesFile
@@ -60,7 +60,7 @@ import ktfx.scene.text.fontSize
 import java.util.Properties
 import java.util.ResourceBundle
 
-class LoginPane(private val resourced: Resources) : _StackPane(), Context {
+class LoginPane(private val resourced: Resources) : _StackPane(), FxComponent {
 
     private companion object {
         const val WIDTH = 400.0
@@ -78,7 +78,7 @@ class LoginPane(private val resourced: Resources) : _StackPane(), Context {
     override val colorResources: Properties get() = resourced.colorResources
 
     override val login: Employee get() = throw UnsupportedOperationException()
-    override val stack: StackPane get() = this
+    override val rootLayout: StackPane get() = this
 
     private val serverHostField = HostField().apply {
         text = LoginFile.DB_HOST
@@ -187,7 +187,7 @@ class LoginPane(private val resourced: Resources) : _StackPane(), Context {
                                 GlobalScope.launch(Dispatchers.IO) {
                                     LoginFile.save()
                                     try {
-                                        val employee = login(
+                                        val employee = Database.login(
                                             serverHostField.text,
                                             serverPortField.value,
                                             serverUserField.text,

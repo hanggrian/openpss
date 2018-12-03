@@ -2,7 +2,7 @@ package com.hendraanggrian.openpss.popup.popover
 
 import com.hendraanggrian.openpss.PATTERN_DATETIME_EXTENDED
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.content.Context
+import com.hendraanggrian.openpss.content.FxComponent
 import com.hendraanggrian.openpss.content.Language
 import com.hendraanggrian.openpss.content.STYLESHEET_INVOICE
 import com.hendraanggrian.openpss.control.Space
@@ -65,10 +65,10 @@ import java.util.ResourceBundle
  * Must create custom paper in Windows machine called `Invoice`, which is 10x14cm without margins.
  */
 class ViewInvoicePopover(
-    context: Context,
+    component: FxComponent,
     private val invoice: Invoice,
     private val isTest: Boolean = false
-) : Popover(context, R.string.invoice) {
+) : Popover(component, R.string.invoice) {
 
     private companion object {
 

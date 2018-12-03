@@ -2,11 +2,13 @@ package com.hendraanggrian.openpss.ui.invoice
 
 import com.hendraanggrian.openpss.PATTERN_DATE
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.content.Context
-import com.hendraanggrian.openpss.db.dbDateTime
+import com.hendraanggrian.openpss.content.FxComponent
+import com.hendraanggrian.openpss.db.Database
+import com.hendraanggrian.openpss.db.schema.nextNo
 import com.hendraanggrian.openpss.db.schema.typedTechnique
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Invoice
+import com.hendraanggrian.openpss.db.schemas.Invoices
 import com.hendraanggrian.openpss.popup.dialog.ResultableDialog
 import com.hendraanggrian.openpss.popup.popover.ResultablePopover
 import com.hendraanggrian.openpss.ui.invoice.job.AddDigitalJobPopover
@@ -61,8 +63,8 @@ import ktfx.util.invoke
 import org.joda.time.DateTime
 
 class AddInvoiceDialog(
-    context: Context
-) : ResultableDialog<Invoice>(context, R.string.add_invoice) {
+    component: FxComponent
+) : ResultableDialog<Invoice>(component, R.string.add_invoice) {
 
     private lateinit var customerField: TextField
     private lateinit var offsetTable: TableView<Invoice.OffsetJob>
@@ -71,7 +73,7 @@ class AddInvoiceDialog(
     private lateinit var otherTable: TableView<Invoice.OtherJob>
     private lateinit var noteArea: TextArea
 
-    private val dateTime: DateTime = dbDateTime
+    private val dateTime: DateTime = Database.dateTime()
     private val customerProperty: ObjectProperty<Customer> = SimpleObjectProperty(null)
     private val totalProperty: DoubleProperty = SimpleDoubleProperty()
 
@@ -212,6 +214,7 @@ class AddInvoiceDialog(
 
     override val nullableResult: Invoice?
         get() = Invoice.new(
+            Invoices.nextNo(),
             login.id,
             customerProperty.value.id,
             dateTime,

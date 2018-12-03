@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.db.schemas
 
+import com.hendraanggrian.openpss.db.Database
 import com.hendraanggrian.openpss.db.Document
-import com.hendraanggrian.openpss.db.dbDateTime
 import kotlinx.nosql.Id
 import kotlinx.nosql.dateTime
 import kotlinx.nosql.double
@@ -33,7 +33,7 @@ data class Payment(
             employeeId: Id<String, Employees>,
             value: Double,
             reference: String?
-        ): Payment = Payment(invoiceId, employeeId, dbDateTime, value, reference)
+        ): Payment = Payment(invoiceId, employeeId, Database.dateTime(), value, reference)
 
         fun gather(payments: List<Payment>, isCash: Boolean) = payments
             .filter { it.isCash() == isCash }

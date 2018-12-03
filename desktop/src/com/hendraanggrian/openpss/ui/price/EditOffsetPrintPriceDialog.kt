@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.ui.price
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.content.Context
+import com.hendraanggrian.openpss.content.FxComponent
 import com.hendraanggrian.openpss.db.schemas.OffsetPrice
 import com.hendraanggrian.openpss.db.schemas.OffsetPrices
 import com.hendraanggrian.openpss.db.transaction
@@ -14,8 +14,8 @@ import ktfx.listeners.textFieldCellFactory
 
 @Suppress("UNCHECKED_CAST")
 class EditOffsetPrintPriceDialog(
-    context: Context
-) : EditPriceDialog<OffsetPrice, OffsetPrices>(context, R.string.offset_print_price, OffsetPrices) {
+    component: FxComponent
+) : EditPriceDialog<OffsetPrice, OffsetPrices>(component, R.string.offset_print_price, OffsetPrices) {
 
     init {
         getString(R.string.min_qty)<Int> {

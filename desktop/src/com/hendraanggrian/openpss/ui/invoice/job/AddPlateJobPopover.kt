@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.ui.invoice.job
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.content.Context
+import com.hendraanggrian.openpss.content.FxComponent
 import com.hendraanggrian.openpss.control.DoubleField
 import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.db.schemas.PlatePrice
@@ -19,7 +19,7 @@ import ktfx.jfoenix.jfxComboBox
 import ktfx.layouts._GridPane
 import ktfx.layouts.label
 
-class AddPlateJobPopover(context: Context) : AddJobPopover<Invoice.PlateJob>(context, R.string.add_plate_job),
+class AddPlateJobPopover(component: FxComponent) : AddJobPopover<Invoice.PlateJob>(component, R.string.add_plate_job),
     Invoice.Job {
 
     private lateinit var typeChoice: ComboBox<PlatePrice>

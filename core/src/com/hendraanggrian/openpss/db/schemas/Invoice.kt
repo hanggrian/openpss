@@ -2,7 +2,6 @@ package com.hendraanggrian.openpss.db.schemas
 
 import com.hendraanggrian.openpss.db.Document
 import com.hendraanggrian.openpss.db.Numbered
-import com.hendraanggrian.openpss.db.nextNo
 import kotlinx.nosql.Id
 import kotlinx.nosql.ListColumn
 import kotlinx.nosql.boolean
@@ -75,6 +74,7 @@ data class Invoice(
     companion object {
 
         fun new(
+            no: Int,
             employeeId: Id<String, Employees>,
             customerId: Id<String, Customers>,
             dateTime: DateTime,
@@ -84,7 +84,7 @@ data class Invoice(
             otherJobs: List<OtherJob>,
             note: String
         ): Invoice = Invoice(
-            Invoices.nextNo,
+            no,
             employeeId, customerId, dateTime, digitalJobs, offsetJobs, plateJobs, otherJobs, note, false, false, false
         )
     }

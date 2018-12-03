@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.ui.wage
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.content.Context
+import com.hendraanggrian.openpss.content.FxComponent
 import com.hendraanggrian.openpss.control.TimeBox
 import com.hendraanggrian.openpss.popup.popover.ResultablePopover
 import javafx.scene.Node
@@ -12,8 +12,8 @@ import ktfx.scene.layout.gap
 import org.joda.time.LocalTime
 
 class AddRecessPopover(
-    context: Context
-) : ResultablePopover<Pair<LocalTime, LocalTime>>(context, R.string.add_reccess) {
+    component: FxComponent
+) : ResultablePopover<Pair<LocalTime, LocalTime>>(component, R.string.add_reccess) {
 
     private lateinit var startBox: TimeBox
     private lateinit var endBox: TimeBox

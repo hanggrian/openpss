@@ -1,11 +1,10 @@
 package com.hendraanggrian.openpss.db.schemas
 
+import com.hendraanggrian.openpss.db.Database
 import com.hendraanggrian.openpss.db.Document
 import com.hendraanggrian.openpss.db.Named
 import com.hendraanggrian.openpss.db.NamedSchema
 import com.hendraanggrian.openpss.db.Numbered
-import com.hendraanggrian.openpss.db.dbDate
-import com.hendraanggrian.openpss.db.nextNo
 import kotlinx.nosql.Id
 import kotlinx.nosql.ListColumn
 import kotlinx.nosql.boolean
@@ -44,9 +43,10 @@ data class Customer(
     companion object {
 
         fun new(
+            no: Int,
             name: String,
             isCompany: Boolean
-        ): Customer = Customer(Customers.nextNo, name, isCompany, dbDate, null, null, listOf())
+        ): Customer = Customer(no, name, isCompany, Database.date(), null, null, listOf())
     }
 
     override lateinit var id: Id<String, Customers>

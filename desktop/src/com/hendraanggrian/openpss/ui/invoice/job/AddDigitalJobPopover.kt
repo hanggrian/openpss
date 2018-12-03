@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.ui.invoice.job
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.content.Context
+import com.hendraanggrian.openpss.content.FxComponent
 import com.hendraanggrian.openpss.control.DoubleField
 import com.hendraanggrian.openpss.db.schemas.DigitalPrice
 import com.hendraanggrian.openpss.db.schemas.DigitalPrices
@@ -21,8 +21,8 @@ import ktfx.jfoenix.jfxComboBox
 import ktfx.layouts._GridPane
 import ktfx.layouts.label
 
-class AddDigitalJobPopover(context: Context) :
-    AddJobPopover<Invoice.DigitalJob>(context, R.string.add_digital_job), Invoice.Job {
+class AddDigitalJobPopover(component: FxComponent) :
+    AddJobPopover<Invoice.DigitalJob>(component, R.string.add_digital_job), Invoice.Job {
 
     private lateinit var typeChoice: ComboBox<DigitalPrice>
     private lateinit var twoSideCheck: CheckBox

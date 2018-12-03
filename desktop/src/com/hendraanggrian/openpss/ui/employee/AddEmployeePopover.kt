@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.ui.employee
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.content.Context
+import com.hendraanggrian.openpss.content.FxComponent
 import com.hendraanggrian.openpss.popup.popover.InputPopover
 import com.hendraanggrian.openpss.util.clean
 import com.hendraanggrian.openpss.util.isPersonName
@@ -10,10 +10,10 @@ import ktfx.controlsfx.registerPredicateValidator
 import org.controlsfx.validation.Severity
 
 class AddEmployeePopover(
-    context: Context,
+    component: FxComponent,
     titleId: String,
     private val restrictiveInput: Boolean = true
-) : InputPopover(context, titleId) {
+) : InputPopover(component, titleId) {
 
     init {
         if (restrictiveInput) {

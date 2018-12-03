@@ -1,6 +1,6 @@
 package com.hendraanggrian.openpss.popup.popover
 
-import com.hendraanggrian.openpss.content.Context
+import com.hendraanggrian.openpss.content.FxComponent
 import com.hendraanggrian.openpss.popup.ResultablePopup
 import javafx.scene.Node
 import javafx.scene.control.Button
@@ -9,9 +9,9 @@ import org.controlsfx.control.PopOver
 
 /** [PopOver] with default button and return type. */
 open class ResultablePopover<T>(
-    context: Context,
+    component: FxComponent,
     titleId: String
-) : Popover(context, titleId), ResultablePopup<T> {
+) : Popover(component, titleId), ResultablePopup<T> {
 
     override lateinit var defaultButton: Button
 

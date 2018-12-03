@@ -1,6 +1,6 @@
 package com.hendraanggrian.openpss.popup.dialog
 
-import com.hendraanggrian.openpss.content.Context
+import com.hendraanggrian.openpss.content.FxComponent
 import com.hendraanggrian.openpss.popup.Popup
 import com.jfoenix.controls.JFXDialog
 import javafx.beans.property.ObjectProperty
@@ -15,9 +15,9 @@ import ktfx.layouts.NodeInvokable
 
 @Suppress("LeakingThis")
 open class Dialog(
-    context: Context,
+    component: FxComponent,
     override val titleId: String
-) : JFXDialog(), Popup, Context by context {
+) : JFXDialog(), Popup, FxComponent by component {
 
     private companion object {
         const val MAX_OPENED_DIALOGS = 3
@@ -41,13 +41,13 @@ open class Dialog(
 
     init {
         initialize()
-        dialogContainer = stack
+        dialogContainer = rootLayout
     }
 
     override fun show() {
-        val openedDialogs = stack.children.filterIsInstance<Dialog>()
+        val openedDialogs = rootLayout.children.filterIsInstance<Dialog>()
         if (openedDialogs.size > MAX_OPENED_DIALOGS) {
-            stack.children -= openedDialogs
+            rootLayout.children -= openedDialogs
         }
         super.show()
     }

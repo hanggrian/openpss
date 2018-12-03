@@ -2,7 +2,7 @@ package com.hendraanggrian.openpss.ui.main.help
 
 import com.hendraanggrian.openpss.BuildConfig
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.content.Context
+import com.hendraanggrian.openpss.content.FxComponent
 import com.hendraanggrian.openpss.content.STYLESHEET_OPENPSS
 import com.hendraanggrian.openpss.ui.main.License
 import com.jfoenix.controls.JFXButton
@@ -37,7 +37,7 @@ import java.net.URI
  * The only dialog not using [com.hendraanggrian.openpss.popup.dialog.Dialog].
  * This is because it uses native dialog's expandable content.
  */
-class AboutDialog(context: Context) : Dialog<Unit>(), Context by context {
+class AboutDialog(component: FxComponent) : Dialog<Unit>(), FxComponent by component {
 
     private val licenseList: ListView<License> = jfxListView {
         items = License.values().toObservableList()

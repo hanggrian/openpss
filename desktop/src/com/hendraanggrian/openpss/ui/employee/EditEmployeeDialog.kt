@@ -2,7 +2,7 @@ package com.hendraanggrian.openpss.ui.employee
 
 import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.content.Context
+import com.hendraanggrian.openpss.content.FxComponent
 import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.db.schemas.Employees
 import com.hendraanggrian.openpss.db.transaction
@@ -23,8 +23,8 @@ import ktfx.layouts.separatorMenuItem
 import ktfx.scene.control.isSelected
 
 class EditEmployeeDialog(
-    context: Context
-) : TableDialog<Employee, Employees>(context, R.string.employee, Employees) {
+    component: FxComponent
+) : TableDialog<Employee, Employees>(component, R.string.employee, Employees) {
 
     init {
         getString(R.string.name)<String> {
@@ -69,7 +69,7 @@ class EditEmployeeDialog(
                 bindDisable()
                 onAction {
                     (ResetAdminEmployeeAction(this@EditEmployeeDialog, table.selectionModel.selectedItem)) {
-                        stack.jfxSnackbar(
+                        rootLayout.jfxSnackbar(
                             getString(R.string.change_password_popup_will_appear_when_is_logged_back_in, login.name),
                             App.DURATION_LONG
                         )

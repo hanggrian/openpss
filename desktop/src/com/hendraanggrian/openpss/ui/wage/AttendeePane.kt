@@ -2,7 +2,7 @@ package com.hendraanggrian.openpss.ui.wage
 
 import com.hendraanggrian.openpss.PATTERN_DATETIME_EXTENDED
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.content.Context
+import com.hendraanggrian.openpss.content.FxComponent
 import com.hendraanggrian.openpss.control.IntField
 import com.hendraanggrian.openpss.db.schemas.Recesses
 import com.hendraanggrian.openpss.db.transaction
@@ -54,9 +54,9 @@ import org.joda.time.DateTime.now
 import kotlin.math.absoluteValue
 
 class AttendeePane(
-    context: Context,
+    component: FxComponent,
     val attendee: Attendee
-) : _TitledPane(attendee.toString()), Context by context {
+) : _TitledPane(attendee.toString()), FxComponent by component {
 
     val recessChecks: MutableList<CheckBox> = mutableListOf()
     lateinit var deleteMenu: MenuItem

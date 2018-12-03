@@ -26,6 +26,11 @@ fun DependencyHandler.hendraanggrian(
     version: String
 ): String = "com.hendraanggrian.$repository:$module:$version"
 
+fun DependencyHandler.jakeWharton(
+    module: String,
+    version: String
+): String = "com.jakewharton:$module:$version"
+
 fun DependencyHandler.controlsFx() = "org.controlsfx:controlsfx:$VERSION_CONTROLSFX"
 
 fun DependencyHandler.apache(module: String, version: String) = "org.apache.${module.split("-")[0]}:$module:$version"

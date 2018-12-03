@@ -2,20 +2,20 @@ package com.hendraanggrian.openpss.ui.employee
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.Action
-import com.hendraanggrian.openpss.content.Context
+import com.hendraanggrian.openpss.content.FxComponent
 import com.hendraanggrian.openpss.db.SessionWrapper
 import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.db.schemas.Employees
 import kotlinx.nosql.update
 
-class AddEmployeeAction(context: Context, val employee: Employee) : Action<Employee>(context, true) {
+class AddEmployeeAction(component: FxComponent, val employee: Employee) : Action<Employee>(component, true) {
 
     override val log: String = getString(R.string._log_employee_add, employee.name)
 
     override fun SessionWrapper.handle(): Employee = employee.also { it.id = Employees.insert(it) }
 }
 
-class ToggleAdminEmployeeAction(context: Context, val employee: Employee) : Action<Unit>(context, true) {
+class ToggleAdminEmployeeAction(component: FxComponent, val employee: Employee) : Action<Unit>(component, true) {
 
     override val log: String = getString(R.string._log_employee_toggle, employee.name, !employee.isAdmin)
 
@@ -24,7 +24,7 @@ class ToggleAdminEmployeeAction(context: Context, val employee: Employee) : Acti
     }
 }
 
-class ResetAdminEmployeeAction(context: Context, val employee: Employee) : Action<Unit>(context, true) {
+class ResetAdminEmployeeAction(component: FxComponent, val employee: Employee) : Action<Unit>(component, true) {
 
     override val log: String = getString(R.string._log_employee_reset, employee.name)
 
@@ -33,7 +33,7 @@ class ResetAdminEmployeeAction(context: Context, val employee: Employee) : Actio
     }
 }
 
-class DeleteEmployeeAction(context: Context, val employee: Employee) : Action<Unit>(context, true) {
+class DeleteEmployeeAction(component: FxComponent, val employee: Employee) : Action<Unit>(component, true) {
 
     override val log: String = getString(R.string._log_employee_delete, employee.name)
 

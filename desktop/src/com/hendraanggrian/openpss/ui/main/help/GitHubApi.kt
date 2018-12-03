@@ -7,8 +7,8 @@ import com.hendraanggrian.openpss.BuildConfig.ARTIFACT
 import com.hendraanggrian.openpss.BuildConfig.AUTHOR
 import com.hendraanggrian.openpss.BuildConfig.DEBUG
 import com.hendraanggrian.openpss.BuildConfig.VERSION
-import com.hendraanggrian.openpss.content.Context
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.content.FxComponent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.javafx.JavaFx
@@ -69,23 +69,23 @@ interface GitHubApi {
             .build()
             .create(GitHubApi::class.java)
 
-        fun checkUpdates(context: Context) {
+        fun checkUpdates(component: FxComponent) {
             GlobalScope.launch(Dispatchers.Default) {
                 try {
                     val release = create().getLatestRelease().get(TIMEOUT, SECONDS)
                     GlobalScope.launch(Dispatchers.JavaFx) {
                         when {
-                            release.isNewer() -> context.stack.jfxSnackbar(
-                                context.getString(R.string.openpss_is_available, release.version),
+                            release.isNewer() -> component.rootLayout.jfxSnackbar(
+                                component.getString(R.string.openpss_is_available, release.version),
                                 App.DURATION_LONG,
-                                context.getString(R.string.download)
+                                component.getString(R.string.download)
                             ) {
-                                UpdateDialog(context, release.assets).show { url ->
-                                    context.desktop?.browse(URI(url))
+                                UpdateDialog(component, release.assets).show { url ->
+                                    component.desktop?.browse(URI(url))
                                 }
                             }
-                            else -> context.stack.jfxSnackbar(
-                                context.getString(
+                            else -> component.rootLayout.jfxSnackbar(
+                                component.getString(
                                     R.string.openpss_is_currently_the_newest_version_available,
                                     VERSION
                                 ),
@@ -96,7 +96,10 @@ interface GitHubApi {
                 } catch (e: Exception) {
                     if (DEBUG) e.printStackTrace()
                     GlobalScope.launch(Dispatchers.JavaFx) {
-                        context.stack.jfxSnackbar(context.getString(R.string.no_internet_connection), App.DURATION_SHORT)
+                        component.rootLayout.jfxSnackbar(
+                            component.getString(R.string.no_internet_connection),
+                            App.DURATION_SHORT
+                        )
                     }
                 }
             }

@@ -1,6 +1,7 @@
 package com.hendraanggrian.openpss.content
 
 import com.hendraanggrian.openpss.App
+import com.hendraanggrian.openpss.db.schemas.Employees
 import com.hendraanggrian.openpss.db.schemas.GlobalSetting
 import com.hendraanggrian.openpss.db.transaction
 import javafx.scene.layout.StackPane
@@ -10,10 +11,10 @@ import javafx.util.converter.NumberStringConverter
 import ktfx.jfoenix.jfxSnackbar
 import java.awt.Desktop
 
-/** Usually being passed around as first constructor of many components. */
-interface Context : Resources, EmployeeContainer {
+/** StackPane is the root layout for [ktfx.jfoenix.jfxSnackbar]. */
+interface FxComponent : Resources, Component<StackPane> {
 
-    val stack: StackPane
+    override fun isAdmin(): Boolean = transaction { Employees[login].single().isAdmin }
 
     /** Number decimal string converter. */
     val numberConverter: StringConverter<Number>
@@ -30,7 +31,7 @@ interface Context : Resources, EmployeeContainer {
     val desktop: Desktop?
         get() {
             if (!Desktop.isDesktopSupported()) {
-                stack.jfxSnackbar(
+                rootLayout.jfxSnackbar(
                     "java.awt.Desktop is not supported.",
                     App.DURATION_SHORT
                 )

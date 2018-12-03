@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.ui.main
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.content.Context
+import com.hendraanggrian.openpss.content.FxComponent
 import com.hendraanggrian.openpss.content.Language
 import com.hendraanggrian.openpss.control.Space
 import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_INVOICE_HEADERS
@@ -45,7 +45,7 @@ import ktfx.listeners.converter
 import ktfx.scene.layout.gap
 import kotlin.coroutines.CoroutineContext
 
-class SettingsDialog(context: Context) : Dialog(context, R.string.settings) {
+class SettingsDialog(component: FxComponent) : Dialog(component, R.string.settings) {
 
     private var isLocalChanged = false.asProperty()
     private var isGlobalChanged = false.asProperty()

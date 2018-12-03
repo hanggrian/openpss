@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.ui.customer
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.content.Context
+import com.hendraanggrian.openpss.content.FxComponent
 import com.hendraanggrian.openpss.db.schema.ContactType
 import com.hendraanggrian.openpss.db.schema.new
 import com.hendraanggrian.openpss.db.schemas.Customer
@@ -19,7 +19,7 @@ import ktfx.listeners.converter
 import ktfx.scene.layout.gap
 import org.apache.commons.validator.routines.EmailValidator
 
-class AddContactPopover(context: Context) : ResultablePopover<Customer.Contact>(context, R.string.add_contact) {
+class AddContactPopover(component: FxComponent) : ResultablePopover<Customer.Contact>(component, R.string.add_contact) {
 
     private companion object {
 

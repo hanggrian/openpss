@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.ui.invoice.job
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.content.Context
+import com.hendraanggrian.openpss.content.FxComponent
 import com.hendraanggrian.openpss.control.DoubleField
 import com.hendraanggrian.openpss.control.IntField
 import com.hendraanggrian.openpss.db.schemas.Invoice
@@ -20,8 +20,8 @@ import ktfx.layouts.gridPane
 import ktfx.layouts.label
 import ktfx.scene.layout.gap
 
-abstract class AddJobPopover<T : Invoice.Job>(context: Context, titleId: String) :
-    ResultablePopover<T>(context, titleId), Invoice.Job {
+abstract class AddJobPopover<T : Invoice.Job>(component: FxComponent, titleId: String) :
+    ResultablePopover<T>(component, titleId), Invoice.Job {
 
     abstract fun _GridPane.onCreateContent()
 

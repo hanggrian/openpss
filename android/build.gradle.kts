@@ -54,10 +54,13 @@ dependencies {
     implementation(androidx("recyclerview"))
     implementation(material())
 
+    implementation(hendraanggrian("material", "errorbar-ktx", VERSION_ANDROIDX))
     implementation(hendraanggrian("pikasso", version = VERSION_PIKASSO))
     implementation(hendraanggrian("recyclerview", "recyclerview-paginated", VERSION_RECYCLERVIEW_PAGINATED))
     implementation(hendraanggrian("bundler", "bundler-ktx", VERSION_BUNDLER))
     kapt(hendraanggrian("bundler", "bundler-compiler", VERSION_BUNDLER))
+
+    implementation(jakeWharton("process-phoenix", VERSION_PROCESS_PHOENIX))
 
     implementation("com.takisoft.preferencex:preferencex:$VERSION_ANDROIDX")
 }

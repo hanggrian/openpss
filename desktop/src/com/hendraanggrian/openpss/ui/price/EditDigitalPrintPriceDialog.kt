@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.ui.price
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.content.Context
+import com.hendraanggrian.openpss.content.FxComponent
 import com.hendraanggrian.openpss.db.schemas.DigitalPrice
 import com.hendraanggrian.openpss.db.schemas.DigitalPrices
 import com.hendraanggrian.openpss.db.transaction
@@ -14,8 +14,8 @@ import ktfx.listeners.textFieldCellFactory
 
 @Suppress("UNCHECKED_CAST")
 class EditDigitalPrintPriceDialog(
-    context: Context
-) : EditPriceDialog<DigitalPrice, DigitalPrices>(context, R.string.digital_print_price, DigitalPrices) {
+    component: FxComponent
+) : EditPriceDialog<DigitalPrice, DigitalPrices>(component, R.string.digital_print_price, DigitalPrices) {
 
     init {
         getString(R.string.one_side_price)<Double> {

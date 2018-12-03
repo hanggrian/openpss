@@ -1,13 +1,13 @@
 package com.hendraanggrian.openpss.popup.dialog
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.content.Context
+import com.hendraanggrian.openpss.content.FxComponent
 import ktfx.layouts.label
 
 class ConfirmDialog(
-    context: Context,
+    component: FxComponent,
     textId: String? = null
-) : ResultableDialog<Unit>(context, R.string.are_you_sure) {
+) : ResultableDialog<Unit>(component, R.string.are_you_sure) {
 
     init {
         textId?.let { label(getString(it)) }

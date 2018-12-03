@@ -2,13 +2,13 @@ package com.hendraanggrian.openpss.ui.customer
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.Action
-import com.hendraanggrian.openpss.content.Context
+import com.hendraanggrian.openpss.content.FxComponent
 import com.hendraanggrian.openpss.db.SessionWrapper
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Customers
 import kotlinx.nosql.update
 
-class AddCustomerAction(context: Context, val customer: Customer) : Action<Customer>(context) {
+class AddCustomerAction(component: FxComponent, val customer: Customer) : Action<Customer>(component) {
 
     override val log: String = getString(R.string._log_customer_add, customer.name)
 
@@ -16,12 +16,12 @@ class AddCustomerAction(context: Context, val customer: Customer) : Action<Custo
 }
 
 class EditCustomerAction(
-    context: Context,
+    component: FxComponent,
     val customer: Customer,
     val name: String,
     val address: String?,
     val note: String?
-) : Action<Unit>(context, true) {
+) : Action<Unit>(component, true) {
 
     override val log: String = getString(R.string._log_customer_edit, customer.name)
 
@@ -33,10 +33,10 @@ class EditCustomerAction(
 }
 
 class AddContactAction(
-    context: Context,
+    component: FxComponent,
     val customer: Customer,
     val contact: Customer.Contact
-) : Action<Unit>(context) {
+) : Action<Unit>(component) {
 
     override val log: String = getString(R.string._log_contact_add, contact.value, customer.name)
 
@@ -48,10 +48,10 @@ class AddContactAction(
 }
 
 class DeleteContactAction(
-    context: Context,
+    component: FxComponent,
     val customer: Customer,
     val contact: Customer.Contact
-) : Action<Unit>(context, true) {
+) : Action<Unit>(component, true) {
 
     override val log: String = getString(R.string._log_contact_deleted, contact.value, customer.name)
 

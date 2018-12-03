@@ -7,11 +7,11 @@
 <?import javafx.scene.layout.VBox?>
 <StackPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1"
            fx:controller="com.hendraanggrian.openpss.ui.wage.record.WageRecordController"
-           fx:id="stack" styleClass="white-background">
+           fx:id="rootLayout" styleClass="white-background">
     <VBox fx:id="vbox">
         <MenuBar fx:id="menuBar" styleClass="white-background">
             <Menu mnemonicParsing="false" text="File">
-                <MenuItem mnemonicParsing="false" text="%save_screenshot" onAction="#screenshot">
+                <MenuItem mnemonicParsing="false" text="%save_componentshot" onAction="#componentshot">
                     <graphic>
                         <ImageView>
                             <Image url="@/image/menu_save.png"/>

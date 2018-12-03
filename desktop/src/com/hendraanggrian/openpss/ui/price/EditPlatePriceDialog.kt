@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.ui.price
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.content.Context
+import com.hendraanggrian.openpss.content.FxComponent
 import com.hendraanggrian.openpss.db.schemas.PlatePrice
 import com.hendraanggrian.openpss.db.schemas.PlatePrices
 import com.hendraanggrian.openpss.db.transaction
@@ -14,8 +14,8 @@ import ktfx.listeners.textFieldCellFactory
 
 @Suppress("UNCHECKED_CAST")
 class EditPlatePriceDialog(
-    context: Context
-) : EditPriceDialog<PlatePrice, PlatePrices>(context, R.string.plate_price, PlatePrices) {
+    component: FxComponent
+) : EditPriceDialog<PlatePrice, PlatePrices>(component, R.string.plate_price, PlatePrices) {
 
     init {
         getString(R.string.price)<Double> {

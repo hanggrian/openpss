@@ -18,7 +18,7 @@ import com.hendraanggrian.bundler.bindExtras
 import com.hendraanggrian.bundler.extrasOf
 import com.hendraanggrian.openpss.BuildConfig
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.db.login
+import com.hendraanggrian.openpss.db.Database
 import com.hendraanggrian.openpss.popup.TextDialogFragment
 import com.hendraanggrian.openpss.popup.show
 import com.hendraanggrian.openpss.ui.main.MainActivity
@@ -58,7 +58,7 @@ class PasswordDialogFragment : AppCompatDialogFragment() {
             .setPositiveButton(R.string.login) { _, _ ->
                 GlobalScope.launch(Dispatchers.IO) {
                     try {
-                        val employee = login(
+                        val employee = Database.login(
                             serverHost,
                             serverPort.toInt(),
                             serverUser,

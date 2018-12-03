@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.ui.invoice
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.content.Context
+import com.hendraanggrian.openpss.content.FxComponent
 import com.hendraanggrian.openpss.control.DoubleField
 import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.db.schemas.Payment
@@ -25,9 +25,9 @@ import ktfx.scene.layout.gap
 import ktfx.util.invoke
 
 class AddPaymentPopover(
-    context: Context,
+    component: FxComponent,
     private val invoice: Invoice
-) : ResultablePopover<Payment>(context, R.string.add_payment) {
+) : ResultablePopover<Payment>(component, R.string.add_payment) {
 
     private lateinit var valueField: DoubleField
     private lateinit var cashBox: CheckBox

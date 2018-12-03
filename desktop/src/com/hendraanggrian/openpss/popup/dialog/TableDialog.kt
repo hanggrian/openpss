@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.popup.dialog
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.content.Context
+import com.hendraanggrian.openpss.content.FxComponent
 import com.hendraanggrian.openpss.db.Document
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.ui.Refreshable
@@ -27,10 +27,10 @@ import ktfx.stage.setMinSize
 
 @Suppress("LeakingThis")
 abstract class TableDialog<D : Document<S>, S : DocumentSchema<D>>(
-    context: Context,
+    component: FxComponent,
     titleId: String,
     protected val schema: S
-) : Dialog(context, titleId), TableColumnsBuilder<D>, Refreshable {
+) : Dialog(component, titleId), TableColumnsBuilder<D>, Refreshable {
 
     protected lateinit var refreshButton: Button
     protected lateinit var addButton: Button

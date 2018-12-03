@@ -25,9 +25,9 @@ import org.joda.time.LocalDate
 import org.joda.time.LocalTime
 import java.util.Date
 
-private lateinit var database: MongoDB
-private val tables =
-    arrayOf(
+object Database {
+    private lateinit var database: MongoDB
+    private val tables = arrayOf(
         Customers,
         DigitalPrices,
         Employees,
@@ -41,56 +41,57 @@ private val tables =
         Wages
     )
 
-/**
- * A failed transaction will most likely throw an exception instance of [MongoException].
- * This function will safely execute a transaction and display an error log on JavaFX if it throws those exceptions.
- *
- * @see [kotlinx.nosql.mongodb.MongoDB.withSession]
- */
-@Throws(MongoException::class)
-fun <T> transaction(statement: SessionWrapper.() -> T): T = try {
-    database.withSession { SessionWrapper(this).statement() }
-} catch (e: MongoException) {
-    error("Connection closed. Please sign in again.")
-}
-
-@Throws(Exception::class)
-suspend fun login(
-    host: String,
-    port: Int,
-    user: String,
-    password: String,
-    employeeName: String,
-    employeePassword: String
-): Employee {
-    database = withContext(Dispatchers.Default) {
-        MongoDB(
-            arrayOf(ServerAddress(host, port)),
-            "openpss",
-            arrayOf(createCredential(user, "admin", password.toCharArray())),
-            Builder().serverSelectionTimeout(3000).build(),
-            tables
-        )
+    /**
+     * A failed transaction will most likely throw an exception instance of [MongoException].
+     * This function will safely execute a transaction and display an error log on JavaFX if it throws those exceptions.
+     *
+     * @see [MongoDB.withSession]
+     */
+    @Throws(MongoException::class)
+    fun <T> withSession(statement: SessionWrapper.() -> T): T = try {
+        database.withSession { SessionWrapper(this).statement() }
+    } catch (e: MongoException) {
+        error("Connection closed. Please sign in again.")
     }
-    lateinit var employee: Employee
-    transaction {
-        // check first time installation
-        tables.mapNotNull { it as? Setupable }.forEach { it.setup(this) }
-        // check login credentials
-        employee = checkNotNull(Employees { it.name.equal(employeeName) }.singleOrNull()) { "Employee not found" }
-        check(employee.password == employeePassword) { "Invalid password" }
+
+    @Throws(Exception::class)
+    suspend fun login(
+        host: String,
+        port: Int,
+        user: String,
+        password: String,
+        employeeName: String,
+        employeePassword: String
+    ): Employee {
+        database = withContext(Dispatchers.Default) {
+            MongoDB(
+                arrayOf(ServerAddress(host, port)),
+                "openpss",
+                arrayOf(createCredential(user, "admin", password.toCharArray())),
+                Builder().serverSelectionTimeout(3000).build(),
+                tables
+            )
+        }
+        lateinit var employee: Employee
+        withSession {
+            // check first time installation
+            tables.mapNotNull { it as? Setupable }.forEach { it.setup(this) }
+            // check login credentials
+            employee = checkNotNull(Employees { it.name.equal(employeeName) }.singleOrNull()) { "Employee not found" }
+            check(employee.password == employeePassword) { "Invalid password" }
+        }
+        employee.clearPassword()
+        return employee
     }
-    employee.clearPassword()
-    return employee
+
+    /** Date and time of server. */
+    fun dateTime(): DateTime = DateTime(evalDate)
+
+    /** Local date of server. */
+    fun date(): LocalDate = LocalDate.fromDateFields(evalDate)
+
+    /** Local time of server. */
+    fun time(): LocalTime = LocalTime.fromDateFields(evalDate)
+
+    private inline val evalDate: Date get() = database.db.doEval("new Date()").getDate("retval")
 }
-
-/** Date and time new server. */
-val dbDateTime: DateTime get() = DateTime(evalDate)
-
-/** Local date new server. */
-val dbDate: LocalDate get() = LocalDate.fromDateFields(evalDate)
-
-/** Local time new server. */
-val dbTime: LocalTime get() = LocalTime.fromDateFields(evalDate)
-
-private val evalDate: Date get() = database.db.doEval("new Date()").getDate("retval")

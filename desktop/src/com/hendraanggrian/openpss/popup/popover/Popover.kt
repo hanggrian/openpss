@@ -1,6 +1,6 @@
 package com.hendraanggrian.openpss.popup.popover
 
-import com.hendraanggrian.openpss.content.Context
+import com.hendraanggrian.openpss.content.FxComponent
 import com.hendraanggrian.openpss.popup.Popup
 import javafx.beans.property.ObjectProperty
 import javafx.beans.property.SimpleObjectProperty
@@ -16,9 +16,9 @@ import org.controlsfx.control.PopOver
 /** Base popup class used across applications. */
 @Suppress("LeakingThis")
 open class Popover(
-    context: Context,
+    component: FxComponent,
     override val titleId: String
-) : PopOver(), Popup, Context by context {
+) : PopOver(), Popup, FxComponent by component {
 
     override fun setActualContent(region: Region) {
         contentNode = region

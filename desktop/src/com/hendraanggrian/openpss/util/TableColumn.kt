@@ -3,7 +3,7 @@
 package com.hendraanggrian.openpss.util
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.content.Context
+import com.hendraanggrian.openpss.content.FxComponent
 import javafx.scene.control.Control
 import javafx.scene.control.TableCell
 import javafx.scene.control.TableColumn
@@ -39,14 +39,14 @@ fun <T> TableColumn<T, Boolean>.doneCell(size: Int = 64, target: T.() -> Boolean
 fun <T> TableColumn<T, String>.stringCell(target: T.() -> String?) =
     setCellValueFactory { it.value.target().orEmpty().asReadOnlyProperty() }
 
-fun <T> TableColumn<T, String>.numberCell(context: Context, target: T.() -> Int) {
+fun <T> TableColumn<T, String>.numberCell(component: FxComponent, target: T.() -> Int) {
     style = "-fx-alignment: center-right;"
-    setCellValueFactory { context.numberConverter(it.value.target()).asReadOnlyProperty() }
+    setCellValueFactory { component.numberConverter(it.value.target()).asReadOnlyProperty() }
 }
 
-fun <T> TableColumn<T, String>.currencyCell(context: Context, target: T.() -> Double) {
+fun <T> TableColumn<T, String>.currencyCell(component: FxComponent, target: T.() -> Double) {
     style = "-fx-alignment: center-right;"
-    setCellValueFactory { context.currencyConverter(it.value.target()).asReadOnlyProperty() }
+    setCellValueFactory { component.currencyConverter(it.value.target()).asReadOnlyProperty() }
 }
 
 fun <S> TableColumn<S, String>.wrapText() = setCellFactory {

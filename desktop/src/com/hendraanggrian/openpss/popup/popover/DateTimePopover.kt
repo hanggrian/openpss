@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.popup.popover
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.content.Context
+import com.hendraanggrian.openpss.content.FxComponent
 import com.hendraanggrian.openpss.control.DateBox
 import com.hendraanggrian.openpss.control.TimeBox
 import com.hendraanggrian.openpss.ui.wage.record.Record
@@ -12,11 +12,11 @@ import ktfx.scene.layout.gap
 import org.joda.time.DateTime
 
 class DateTimePopover(
-    context: Context,
+    component: FxComponent,
     titleId: String,
     defaultButtonTextId: String,
     prefill: DateTime
-) : ResultablePopover<DateTime>(context, titleId) {
+) : ResultablePopover<DateTime>(component, titleId) {
 
     private lateinit var dateBox: DateBox
     private lateinit var timeBox: TimeBox

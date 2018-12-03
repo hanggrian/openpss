@@ -1,13 +1,13 @@
 package com.hendraanggrian.openpss.popup.dialog
 
-import com.hendraanggrian.openpss.content.Context
+import com.hendraanggrian.openpss.content.FxComponent
 import ktfx.layouts.label
 
 class TextDialog(
-    context: Context,
+    component: FxComponent,
     titleId: String,
     content: String = ""
-) : Dialog(context, titleId) {
+) : Dialog(component, titleId) {
 
     init {
         label {

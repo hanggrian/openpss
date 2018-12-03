@@ -12,15 +12,17 @@ Heavily under development.
 
 Features
 --------
- * Multi-language: currently supports English and Bahasa.
+ * Multi-platform, client available in Android, Windows, and macOS.
+ * Multi-language, currently supports English and Bahasa.
  
 How to use
 ----------
 #### Download
 Head to releases to download this app in 3 variants:
- * `app` - Native MacOS app.
- * `zip` - Compressed folder containing Windows 64-bit libraries and executables.
- * `jar` - Smaller Java executable that requires JRE 1.8.
+ * `apk`: Android app installer.
+ * `dmg`: macOS images, mount and obtain the `app` file.
+ * `exe`: Windows executables wrapped in 7-zip SFX installer.
+ * `jar`: Single Java executable file that requires JRE 1.8.
 
 #### Database
 [MongoDB] is required to run the app,
@@ -114,7 +116,7 @@ License
     See the License for the specific language governing permissions and
     limitations under the License.
 
-[logo]: /openpss/res/image/logo.png
+[logo]: /desktop/res/image/logo.png
 [MongoDB]: https://www.mongodb.com/
 [ktlint]: https://github.com/shyiko/ktlint
 [packr]: https://github.com/hendraanggrian/packr

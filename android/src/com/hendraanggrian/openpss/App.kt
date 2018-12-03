@@ -5,8 +5,8 @@ import androidx.core.content.edit
 import androidx.preference.PreferenceManager
 import com.hendraanggrian.bundler.Bundler
 import com.mongodb.ServerAddress
-import org.apache.log4j.BasicConfigurator
 
+@Suppress("unused")
 class App : Application() {
 
     override fun onCreate() {
@@ -14,7 +14,6 @@ class App : Application() {
 
         if (BuildConfig.DEBUG) {
             Bundler.setDebug(true)
-            BasicConfigurator.configure()
         }
 
         val preferences = PreferenceManager.getDefaultSharedPreferences(this)

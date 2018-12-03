@@ -31,6 +31,7 @@ dependencies {
     api(project(":core"))
 
     implementation(kotlinx("coroutines-javafx", VERSION_COROUTINES))
+    implementation(slf4j("log4j12"))
 
     implementation(square("adapter-guava", VERSION_RETROFIT, "retrofit2"))
     implementation(square("converter-gson", VERSION_RETROFIT, "retrofit2"))

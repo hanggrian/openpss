@@ -23,7 +23,6 @@ import java.util.ResourceBundle
 class App : Application(), Resources {
 
     companion object {
-
         const val STRETCH_POINT = 900.0
 
         const val DURATION_SHORT = 3000L

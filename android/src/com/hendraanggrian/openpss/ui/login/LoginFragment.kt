@@ -21,8 +21,8 @@ class LoginFragment : PreferenceFragmentCompat() {
         }
     }
 
-    @Suppress("NOTHING_TO_INLINE", "UNCHECKED_CAST")
-    private inline fun <T : Preference> find(key: CharSequence): T =
+    @Suppress("UNCHECKED_CAST")
+    private fun <T : Preference> find(key: CharSequence): T =
         findPreference(key) as T
 
     private inline fun <T : Preference> find(key: CharSequence, block: T.() -> Unit): T =
@@ -34,12 +34,12 @@ class LoginFragment : PreferenceFragmentCompat() {
      */
     private fun <P : Preference, T> P.bindSummary(
         initial: P.() -> T?,
-        convert: (T) -> CharSequence? = { it?.toString() }
+        convert: (T?) -> CharSequence? = { it?.toString() }
     ) {
         initial()?.let { summary = convert(it) }
         onPreferenceChangeListener = Preference.OnPreferenceChangeListener { preference, newValue ->
             @Suppress("UNCHECKED_CAST")
-            preference.summary = convert(newValue as T)
+            preference.summary = convert(newValue as? T)
             true
         }
     }

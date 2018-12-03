@@ -45,7 +45,7 @@ fun DependencyHandler.guava() = "com.google.guava:guava:$VERSION_GUAVA-jre"
 
 fun DependencyHandler.jodaTime() = "joda-time:joda-time:$VERSION_JODA"
 
-fun DependencyHandler.log4j12() = "org.slf4j:slf4j-log4j12:$VERSION_LOG4J12"
+fun DependencyHandler.slf4j(module: String) = "org.slf4j:slf4j-$module:$VERSION_SLF4J"
 
 fun DependencyHandler.shadow() = "com.github.jengelman.gradle.plugins:shadow:$VERSION_SHADOW"
 inline val PluginDependenciesSpec.shadow get() = id("com.github.johnrengelman.shadow")

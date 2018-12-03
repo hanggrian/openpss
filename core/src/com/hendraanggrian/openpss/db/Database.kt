@@ -63,8 +63,16 @@ suspend fun login(
     employeeName: String,
     employeePassword: String
 ): Employee {
+    database = withContext(Dispatchers.Default) {
+        MongoDB(
+            arrayOf(ServerAddress(host, port)),
+            "openpss",
+            arrayOf(createCredential(user, "admin", password.toCharArray())),
+            Builder().serverSelectionTimeout(3000).build(),
+            tables
+        )
+    }
     lateinit var employee: Employee
-    database = connect(host, port, user, password)
     transaction {
         // check first time installation
         tables.mapNotNull { it as? Setupable }.forEach { it.setup(this) }
@@ -74,22 +82,6 @@ suspend fun login(
     }
     employee.clearPassword()
     return employee
-}
-
-@Throws(Exception::class)
-private suspend fun connect(
-    host: String,
-    port: Int,
-    user: String,
-    password: String
-): MongoDB = withContext(Dispatchers.Default) {
-    MongoDB(
-        arrayOf(ServerAddress(host, port)),
-        "openpss",
-        arrayOf(createCredential(user, "admin", password.toCharArray())),
-        Builder().serverSelectionTimeout(3000).build(),
-        tables
-    )
 }
 
 /** Date and time new server. */

@@ -1,8 +1,8 @@
 plugins {
     android("application")
-    kotlin("kapt")
     kotlin("android")
     kotlin("android.extensions")
+    kotlin("kapt")
     dokka("android")
 }
 
@@ -45,6 +45,7 @@ dependencies {
     api(project(":core"))
 
     implementation(kotlinx("coroutines-android", VERSION_COROUTINES))
+    implementation(slf4j("android"))
 
     implementation(androidx("core", "core-ktx"))
     implementation(androidx("appcompat"))

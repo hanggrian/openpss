@@ -23,8 +23,7 @@ android:
     - extra
     - sys-img-$ANDROID_ABI-$ANDROID_EMULATOR_TARGET
 
-licenses:
-  - 'android-sdk-license-.+'
+licenses: 'android-sdk-license-.+'
 
 before_install:
   - echo yes | sdkmanager "platforms;$ANDROID_TARGET" "build-tools;$ANDROID_BUILD_TOOLS_VERSION"
@@ -48,3 +47,5 @@ script:
   - android-wait-for-emulator
   - adb shell input keyevent 82 &
   - ./gradlew :android:connectedAndroidTest
+
+os: linux

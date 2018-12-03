@@ -98,7 +98,7 @@ Then, simply follow steps below to build [releases]:
    * Generate sources in `app/build/generated`.
    * Check Kotlin code style.
    * Ensure all test specs are successful.
- * Use [shadowJar] and [packr] to build native packages from jar with following steps.
+ * Use [packr] to build native packages from jar.
 
 License
 -------

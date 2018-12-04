@@ -33,12 +33,6 @@ dependencies {
     implementation(kotlinx("coroutines-javafx", VERSION_COROUTINES))
     implementation(slf4j("log4j12"))
 
-    implementation(square("adapter-guava", VERSION_RETROFIT, "retrofit2"))
-    implementation(square("converter-gson", VERSION_RETROFIT, "retrofit2"))
-
-    implementation(google("gson", VERSION_GSON, "code.gson"))
-    implementation(google("guava", VERSION_GUAVA, "guava"))
-
     implementation(hendraanggrian("ktfx", version = VERSION_KTFX))
     implementation(hendraanggrian("ktfx", "ktfx-controlsfx", VERSION_KTFX))
     implementation(hendraanggrian("ktfx", "ktfx-jfoenix", VERSION_KTFX))

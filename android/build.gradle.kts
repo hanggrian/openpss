@@ -60,7 +60,7 @@ dependencies {
     implementation(hendraanggrian("bundler", "bundler-ktx", VERSION_BUNDLER))
     kapt(hendraanggrian("bundler", "bundler-compiler", VERSION_BUNDLER))
 
-    implementation(jakeWharton("process-phoenix", VERSION_PROCESS_PHOENIX))
+    implementation(jakeWharton(null, "process-phoenix", VERSION_PROCESS_PHOENIX))
 
     implementation("com.takisoft.preferencex:preferencex:$VERSION_ANDROIDX")
 }

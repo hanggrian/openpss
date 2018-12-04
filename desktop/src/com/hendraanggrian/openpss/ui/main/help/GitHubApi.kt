@@ -1,6 +1,5 @@
 package com.hendraanggrian.openpss.ui.main.help
 
-import com.google.common.util.concurrent.ListenableFuture
 import com.google.gson.annotations.SerializedName
 import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.BuildConfig.ARTIFACT
@@ -8,26 +7,23 @@ import com.hendraanggrian.openpss.BuildConfig.AUTHOR
 import com.hendraanggrian.openpss.BuildConfig.DEBUG
 import com.hendraanggrian.openpss.BuildConfig.VERSION
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.api.ApiFactory
 import com.hendraanggrian.openpss.content.FxComponent
+import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.javafx.JavaFx
 import kotlinx.coroutines.launch
 import ktfx.jfoenix.jfxSnackbar
-import okhttp3.OkHttpClient
 import org.apache.maven.artifact.versioning.ComparableVersion
-import retrofit2.Retrofit
-import retrofit2.adapter.guava.GuavaCallAdapterFactory
-import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import java.net.URI
-import java.util.concurrent.TimeUnit.SECONDS
 
 /** As seen in `https://developer.github.com/v3/`. */
 interface GitHubApi {
 
     @GET("repos/$AUTHOR/$ARTIFACT/releases/latest")
-    fun getLatestRelease(): ListenableFuture<Release>
+    fun getLatestRelease(): Deferred<Release>
 
     data class Release(
         @SerializedName("name") val version: String,
@@ -50,29 +46,12 @@ interface GitHubApi {
         override fun toString(): String = name
     }
 
-    companion object {
-        private const val END_POINT = "https://api.github.com"
-        private const val TIMEOUT = 5L
-
-        private fun create(): GitHubApi = Retrofit.Builder()
-            .client(OkHttpClient.Builder().addInterceptor {
-                it.proceed(
-                    it.request()
-                        .newBuilder()
-                        .addHeader("Accept", "application/json")
-                        .build()
-                )
-            }.build())
-            .baseUrl(END_POINT)
-            .addCallAdapterFactory(GuavaCallAdapterFactory.create())
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-            .create(GitHubApi::class.java)
+    companion object : ApiFactory<GitHubApi>(GitHubApi::class.java, "https://api.github.com") {
 
         fun checkUpdates(component: FxComponent) {
             GlobalScope.launch(Dispatchers.Default) {
                 try {
-                    val release = create().getLatestRelease().get(TIMEOUT, SECONDS)
+                    val release = api.getLatestRelease().await()
                     GlobalScope.launch(Dispatchers.JavaFx) {
                         when {
                             release.isNewer() -> component.rootLayout.jfxSnackbar(

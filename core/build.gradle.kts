@@ -27,6 +27,12 @@ dependencies {
     api(mongodb())
     api(jodaTime())
 
+    api(square("converter-gson", VERSION_RETROFIT, "retrofit2"))
+    api(jakeWharton("retrofit", "retrofit2-kotlin-coroutines-experimental-adapter", "1.0.0"))
+
+    api(google("gson", VERSION_GSON, "code.gson"))
+    api(google("guava", VERSION_GUAVA, "guava"))
+
     testImplementation(junit())
     testImplementation(kotlin("test", VERSION_KOTLIN))
     testImplementation(kotlin("reflect", VERSION_KOTLIN))

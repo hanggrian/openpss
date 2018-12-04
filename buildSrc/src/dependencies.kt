@@ -33,9 +33,10 @@ fun DependencyHandler.hendraanggrian(
 ): String = "com.hendraanggrian.$repository:$module:$version"
 
 fun DependencyHandler.jakeWharton(
+    repo: String?,
     module: String,
     version: String
-): String = "com.jakewharton:$module:$version"
+): String = "com.jakewharton${repo?.let { ".$it" } ?: ""}:$module:$version"
 
 fun DependencyHandler.controlsFx() = "org.controlsfx:controlsfx:$VERSION_CONTROLSFX"
 

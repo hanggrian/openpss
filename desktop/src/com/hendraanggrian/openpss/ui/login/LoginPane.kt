@@ -3,11 +3,11 @@ package com.hendraanggrian.openpss.ui.login
 import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.BuildConfig
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.api.Api
 import com.hendraanggrian.openpss.content.FxComponent
 import com.hendraanggrian.openpss.content.Language
 import com.hendraanggrian.openpss.content.Resources
 import com.hendraanggrian.openpss.control.IntField
-import com.hendraanggrian.openpss.db.Database
 import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.io.properties.LoginFile
 import com.hendraanggrian.openpss.io.properties.PreferencesFile
@@ -185,7 +185,8 @@ class LoginPane(private val resourced: Resources) : _StackPane(), FxComponent {
                         onAction {
                             PasswordDialog().show {
                                 GlobalScope.launch(Dispatchers.IO) {
-                                    LoginFile.save()
+                                    Api.api.login()
+                                    /*LoginFile.save()
                                     try {
                                         val employee = Database.login(
                                             serverHostField.text,
@@ -204,7 +205,7 @@ class LoginPane(private val resourced: Resources) : _StackPane(), FxComponent {
                                             TextDialog(this@LoginPane, R.string.login_failed, e.message.toString())
                                                 .show(this@LoginPane)
                                         }
-                                    }
+                                    }*/
                                 }
                             }
                         }

@@ -30,6 +30,11 @@ dependencies {
     api(square("converter-gson", VERSION_RETROFIT, "retrofit2"))
     api(jakeWharton("retrofit", "retrofit2-kotlin-coroutines-adapter", "0.9.2"))
 
+    api(ktor("client-okhttp"))
+    api(ktor("client-gson"))
+
+    api(apache("maven-artifact", VERSION_MAVEN))
+
     api(google("gson", VERSION_GSON, "code.gson"))
     api(google("guava", VERSION_GUAVA, "guava"))
 

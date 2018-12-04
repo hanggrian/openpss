@@ -3,6 +3,8 @@ import org.gradle.plugin.use.PluginDependenciesSpec
 
 fun DependencyHandler.ktor(module: String) = "io.ktor:ktor-$module:$VERSION_KTOR"
 
+fun DependencyHandler.logback(module: String) = "ch.qos.logback:logback-$module:$VERSION_LOGBACK"
+
 fun DependencyHandler.mongodb() = "org.mongodb:mongo-java-driver:$VERSION_MONGODB"
 
 fun DependencyHandler.kotlinx(module: String, version: String? = null) =

@@ -1,5 +1,6 @@
 package com.hendraanggrian.openpss
 
+import com.hendraanggrian.openpss.api.OpenPSSApi
 import com.hendraanggrian.openpss.content.Resources
 import com.hendraanggrian.openpss.content.STYLESHEET_OPENPSS
 import com.hendraanggrian.openpss.io.properties.PreferencesFile
@@ -27,6 +28,8 @@ class App : Application(), Resources {
 
         const val DURATION_SHORT = 3000L
         const val DURATION_LONG = 6000L
+
+        val API = OpenPSSApi()
 
         @JvmStatic fun main(args: Array<String>) = launchApp<App>(*args)
 

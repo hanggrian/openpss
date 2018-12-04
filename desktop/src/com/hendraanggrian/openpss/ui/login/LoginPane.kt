@@ -3,7 +3,6 @@ package com.hendraanggrian.openpss.ui.login
 import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.BuildConfig
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.api.Api
 import com.hendraanggrian.openpss.content.FxComponent
 import com.hendraanggrian.openpss.content.Language
 import com.hendraanggrian.openpss.content.Resources
@@ -15,7 +14,7 @@ import com.hendraanggrian.openpss.popup.dialog.ResultableDialog
 import com.hendraanggrian.openpss.popup.dialog.TextDialog
 import com.hendraanggrian.openpss.popup.popover.Popover
 import com.hendraanggrian.openpss.ui.main.help.AboutDialog
-import com.hendraanggrian.openpss.ui.main.help.GitHubApi
+import com.hendraanggrian.openpss.ui.main.help.GitHubHelper
 import com.jfoenix.controls.JFXButton
 import javafx.geometry.HPos
 import javafx.geometry.Pos
@@ -159,7 +158,7 @@ class LoginPane(private val resourced: Resources) : _StackPane(), FxComponent {
                     }
                     hyperlink(getString(R.string.check_for_updates)) {
                         onAction {
-                            GitHubApi.checkUpdates(this@LoginPane)
+                            GitHubHelper.checkUpdates(this@LoginPane)
                         }
                     }
                 } marginTop 24.0
@@ -187,7 +186,7 @@ class LoginPane(private val resourced: Resources) : _StackPane(), FxComponent {
                                 LoginFile.save()
                                 GlobalScope.launch(Dispatchers.JavaFx) {
                                     try {
-                                        val employee = Api.get().login(employeeField.text, passwordField.text).await()
+                                        val employee = App.API.login(employeeField.text, passwordField.text)
                                         onSuccess?.invoke(employee)
                                     } catch (e: Exception) {
                                         if (BuildConfig.DEBUG) {

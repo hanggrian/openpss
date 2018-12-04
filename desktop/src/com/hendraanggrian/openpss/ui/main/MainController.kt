@@ -26,7 +26,7 @@ import com.hendraanggrian.openpss.ui.employee.EditEmployeeDialog
 import com.hendraanggrian.openpss.ui.finance.FinanceController
 import com.hendraanggrian.openpss.ui.invoice.InvoiceController
 import com.hendraanggrian.openpss.ui.main.help.AboutDialog
-import com.hendraanggrian.openpss.ui.main.help.GitHubApi
+import com.hendraanggrian.openpss.ui.main.help.GitHubHelper
 import com.hendraanggrian.openpss.ui.price.EditDigitalPrintPriceDialog
 import com.hendraanggrian.openpss.ui.price.EditOffsetPrintPriceDialog
 import com.hendraanggrian.openpss.ui.price.EditPlatePriceDialog
@@ -268,7 +268,7 @@ class MainController : Controller(), Refreshable {
         } ?: rootLayout.jfxSnackbar(getString(R.string.no_customer_to_test), App.DURATION_SHORT)
     }
 
-    @FXML fun checkUpdate() = GitHubApi.checkUpdates(this)
+    @FXML fun checkUpdate() = GitHubHelper.checkUpdates(this)
 
     @FXML fun about() = AboutDialog(this).show()
 

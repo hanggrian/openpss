@@ -1,10 +1,13 @@
 plugins {
     kotlin("jvm")
+    id("kotlinx-serialization")
     dokka()
 }
 
 group = RELEASE_GROUP
 version = RELEASE_VERSION
+
+kotlin.experimental.coroutines = org.jetbrains.kotlin.gradle.dsl.Coroutines.ENABLE
 
 sourceSets {
     getByName("main") {
@@ -23,6 +26,10 @@ dependencies {
     api(project(":core"))
 
     implementation(ktor("server-netty"))
+    implementation(ktor("locations"))
+    implementation(ktor("gson"))
+
+    implementation(logback("classic"))
 
     testImplementation(junit())
     testImplementation(kotlin("test", VERSION_KOTLIN))

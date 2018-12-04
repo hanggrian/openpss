@@ -1,9 +1,7 @@
 import org.gradle.api.artifacts.dsl.DependencyHandler
 import org.gradle.plugin.use.PluginDependenciesSpec
 
-fun DependencyHandler.springBoot(module: String) = "org.springframework.boot:spring-boot-$module:$VERSION_SPRING"
-inline val PluginDependenciesSpec.`spring-boot` get() = "org.springframework.boot"
-inline val PluginDependenciesSpec.`dependency-management` get() = "io.spring.dependency-management"
+fun DependencyHandler.ktor(module: String) = "io.ktor:ktor-$module:$VERSION_KTOR"
 
 fun DependencyHandler.mongodb() = "org.mongodb:mongo-java-driver:$VERSION_MONGODB"
 

@@ -8,9 +8,7 @@ buildscript {
     }
     dependencies {
         classpath(kotlin("gradle-plugin", VERSION_KOTLIN))
-        classpath(kotlin("allopen", VERSION_KOTLIN))
         classpath(android())
-        classpath(springBoot("gradle-plugin"))
         classpath(dokka())
         classpath(dokka("android"))
         classpath(hendraanggrian("generating", "r-gradle-plugin", VERSION_R))

@@ -1,9 +1,6 @@
 plugins {
     kotlin("jvm")
-    kotlin("plugin.spring")
     dokka()
-    `spring-boot`
-    `dependency-management`
 }
 
 group = RELEASE_GROUP
@@ -25,12 +22,11 @@ ktlint()
 dependencies {
     api(project(":core"))
 
-    implementation(springBoot("starter-web"))
+    implementation(ktor("server-netty"))
 
     testImplementation(junit())
     testImplementation(kotlin("test", VERSION_KOTLIN))
     testImplementation(kotlin("reflect", VERSION_KOTLIN))
-    testImplementation(springBoot("starter-test"))
 }
 
 tasks {

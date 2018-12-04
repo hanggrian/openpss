@@ -12,7 +12,9 @@ import com.hendraanggrian.openpss.db.schemas.Payments
 import com.hendraanggrian.openpss.db.schemas.PlatePrices
 import com.hendraanggrian.openpss.db.schemas.Recesses
 import com.hendraanggrian.openpss.db.schemas.Wages
+import com.mongodb.MongoClientOptions
 import com.mongodb.MongoClientOptions.Builder
+import com.mongodb.MongoCredential
 import com.mongodb.MongoCredential.createCredential
 import com.mongodb.MongoException
 import com.mongodb.ServerAddress
@@ -27,8 +29,8 @@ import java.util.Date
 
 object Database {
 
-    private lateinit var database: MongoDB
-    private val tables = arrayOf(
+    private lateinit var DATABASE: MongoDB
+    val TABLES = arrayOf(
         Customers,
         DigitalPrices,
         Employees,
@@ -50,9 +52,19 @@ object Database {
      */
     @Throws(MongoException::class)
     fun <T> withSession(statement: SessionWrapper.() -> T): T = try {
-        database.withSession { SessionWrapper(this).statement() }
+        DATABASE.withSession { SessionWrapper(this).statement() }
     } catch (e: MongoException) {
         error("Connection closed. Please sign in again.")
+    }
+
+    fun setup() {
+        DATABASE = MongoDB(
+            arrayOf(ServerAddress(ServerAddress.defaultHost(), ServerAddress.defaultPort())),
+            "openpss",
+            arrayOf(MongoCredential.createCredential("hendraanggrian", "admin", "justforN0sql!".toCharArray())),
+            MongoClientOptions.Builder().serverSelectionTimeout(3000).build(),
+            TABLES
+        )
     }
 
     @Throws(Exception::class)
@@ -64,19 +76,19 @@ object Database {
         employeeName: String,
         employeePassword: String
     ): Employee {
-        database = withContext(Dispatchers.Default) {
+        DATABASE = withContext(Dispatchers.Default) {
             MongoDB(
                 arrayOf(ServerAddress(host, port)),
                 "openpss",
                 arrayOf(createCredential(user, "admin", password.toCharArray())),
                 Builder().serverSelectionTimeout(3000).build(),
-                tables
+                TABLES
             )
         }
         lateinit var employee: Employee
         withSession {
             // check first time installation
-            tables.mapNotNull { it as? Setupable }.forEach { it.setup(this) }
+            TABLES.mapNotNull { it as? Setupable }.forEach { it.setup(this) }
             // check login credentials
             employee = checkNotNull(Employees { it.name.equal(employeeName) }.singleOrNull()) { "Employee not found" }
             check(employee.password == employeePassword) { "Invalid password" }
@@ -95,5 +107,9 @@ object Database {
     fun time(): LocalTime = LocalTime.fromDateFields(evalDate)
 
     @Suppress("DEPRECATION")
-    private inline val evalDate: Date get() = database.db.doEval("new Date()").getDate("retval")
+    private inline val evalDate: Date
+        get() = DATABASE.db.doEval("new Date()").getDate("retval")
 }
+
+@Throws(Exception::class)
+fun <T> transaction(statement: SessionWrapper.() -> T): T = Database.withSession(statement)

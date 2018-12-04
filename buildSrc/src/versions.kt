@@ -5,7 +5,7 @@ const val VERSION_COROUTINES = "1.0.0"
 const val VERSION_NOSQL = "0.1-SNAPSHOT"
 internal const val VERSION_DOKKA = "0.9.17"
 
-const val VERSION_SPRING = "2.1.0.RELEASE"
+const val VERSION_SPRING = "2.1.1.RELEASE"
 
 const val SDK_MIN = 14
 const val SDK_TARGET = 28

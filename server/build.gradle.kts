@@ -1,6 +1,6 @@
 plugins {
     kotlin("jvm")
-    kotlin("spring")
+    kotlin("plugin.spring")
     dokka()
     `spring-boot`
     `dependency-management`

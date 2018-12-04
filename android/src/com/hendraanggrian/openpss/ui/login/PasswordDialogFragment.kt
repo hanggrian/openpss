@@ -20,6 +20,7 @@ import com.hendraanggrian.openpss.BuildConfig
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.db.Database
 import com.hendraanggrian.openpss.popup.TextDialogFragment
+import com.hendraanggrian.openpss.popup.args
 import com.hendraanggrian.openpss.popup.show
 import com.hendraanggrian.openpss.ui.main.MainActivity
 import kotlinx.coroutines.Dispatchers
@@ -77,9 +78,7 @@ class PasswordDialogFragment : AppCompatDialogFragment() {
                         if (BuildConfig.DEBUG) e.printStackTrace()
                         GlobalScope.launch(Dispatchers.Main) {
                             TextDialogFragment()
-                                .apply {
-                                    arguments = extrasOf<TextDialogFragment>(e.message.toString())
-                                }
+                                .args(extrasOf<TextDialogFragment>(e.message.toString()))
                                 .show(manager)
                         }
                     }

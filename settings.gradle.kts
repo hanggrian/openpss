@@ -1,4 +1,5 @@
 include("core")
+include("server")
 include("desktop")
 include("android")
 include("website")

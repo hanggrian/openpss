@@ -26,6 +26,7 @@ import org.joda.time.LocalTime
 import java.util.Date
 
 object Database {
+
     private lateinit var database: MongoDB
     private val tables = arrayOf(
         Customers,
@@ -93,5 +94,6 @@ object Database {
     /** Local time of server. */
     fun time(): LocalTime = LocalTime.fromDateFields(evalDate)
 
+    @Suppress("DEPRECATION")
     private inline val evalDate: Date get() = database.db.doEval("new Date()").getDate("retval")
 }

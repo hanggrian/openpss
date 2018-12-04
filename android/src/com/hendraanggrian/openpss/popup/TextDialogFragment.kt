@@ -15,6 +15,7 @@ class TextDialogFragment : AppCompatDialogFragment() {
         bindExtras()
         return AlertDialog.Builder(context!!)
             .setMessage(text)
+            .setPositiveButton(android.R.string.ok) { _, _ -> }
             .create()
     }
 }

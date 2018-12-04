@@ -1,7 +1,9 @@
 plugins {
-    `java-library`
     kotlin("jvm")
+    kotlin("spring")
     dokka()
+    `spring-boot`
+    `dependency-management`
 }
 
 group = RELEASE_GROUP
@@ -21,15 +23,14 @@ sourceSets {
 ktlint()
 
 dependencies {
-    api(kotlin("stdlib", VERSION_KOTLIN))
-    api(kotlin("nosql-mongodb", VERSION_NOSQL))
-    api(kotlinx("coroutines-core", VERSION_COROUTINES))
-    api(mongodb())
-    api(jodaTime())
+    api(project(":core"))
+
+    implementation(springBoot("starter-web"))
 
     testImplementation(junit())
     testImplementation(kotlin("test", VERSION_KOTLIN))
     testImplementation(kotlin("reflect", VERSION_KOTLIN))
+    testImplementation(springBoot("starter-test"))
 }
 
 tasks {

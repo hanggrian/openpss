@@ -2,12 +2,15 @@ buildscript {
     repositories {
         google()
         jcenter()
+        mavenCentral()
         maven("https://oss.sonatype.org/content/repositories/snapshots")
         maven("https://dl.bintray.com/hendraanggrian/packr")
     }
     dependencies {
-        classpath(android())
         classpath(kotlin("gradle-plugin", VERSION_KOTLIN))
+        classpath(kotlin("allopen", VERSION_KOTLIN))
+        classpath(android())
+        classpath(springBoot("gradle-plugin"))
         classpath(dokka())
         classpath(dokka("android"))
         classpath(hendraanggrian("generating", "r-gradle-plugin", VERSION_R))
@@ -22,6 +25,7 @@ allprojects {
     repositories {
         google()
         jcenter()
+        mavenCentral()
         maven("http://repository.jetbrains.com/kotlin-nosql")
     }
     tasks {

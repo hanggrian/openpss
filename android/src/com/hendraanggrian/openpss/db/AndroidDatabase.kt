@@ -7,7 +7,7 @@ import com.jakewharton.processphoenix.ProcessPhoenix
 fun <T> AndroidComponent.transaction(statement: SessionWrapper.() -> T): T = try {
     Database.withSession(statement)
 } catch (e: IllegalStateException) {
-    rootLayout.errorbar(e.message.toString()){
+    rootLayout.errorbar(e.message.toString()) {
         setAction(android.R.string.ok) {
             ProcessPhoenix.triggerRebirth(context)
         }

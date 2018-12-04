@@ -4,9 +4,11 @@ import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.App.Companion.STRETCH_POINT
 import com.hendraanggrian.openpss.PATTERN_DATE
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.api.Api
 import com.hendraanggrian.openpss.control.CustomerListView
 import com.hendraanggrian.openpss.control.PaginatedPane
 import com.hendraanggrian.openpss.control.StretchableButton
+import com.hendraanggrian.openpss.db.matches
 import com.hendraanggrian.openpss.db.schema.typedType
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Customers
@@ -15,7 +17,6 @@ import com.hendraanggrian.openpss.popup.dialog.ConfirmDialog
 import com.hendraanggrian.openpss.ui.ActionController
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.util.isNotEmpty
-import com.hendraanggrian.openpss.util.matches
 import com.hendraanggrian.openpss.util.stringCell
 import javafx.fxml.FXML
 import javafx.scene.Node
@@ -49,7 +50,6 @@ import org.controlsfx.control.MasterDetailPane
 import java.net.URL
 import java.util.ResourceBundle
 import java.util.regex.Pattern.CASE_INSENSITIVE
-import kotlin.math.ceil
 
 class CustomerController : ActionController(), Refreshable {
 
@@ -113,28 +113,19 @@ class CustomerController : ActionController(), Refreshable {
                 customerList = CustomerListView().apply {
                     styleClass += R.style.list_view_no_scrollbar_vertical
                     later {
-                        transaction {
-                            val customers = Customers.buildQuery {
-                                if (searchField.text.isNotBlank()) {
-                                    or(it.name.matches(searchField.text, CASE_INSENSITIVE))
-                                    or(it.address.matches(searchField.text, CASE_INSENSITIVE))
-                                    or(it.note.matches(searchField.text, CASE_INSENSITIVE))
-                                }
+                        contextMenu {
+                            getString(R.string.edit)(ImageView(R.image.menu_edit)) {
+                                disableProperty().bind(selectionModel.selectedItemProperty().isNull)
+                                onAction { edit() }
                             }
-                            customerPagination.pageCount = ceil(customers.count() / count.toDouble()).toInt()
-                            items = customers
-                                .skip(count * page)
-                                .take(count)
-                                .toMutableObservableList()
-                            contextMenu {
-                                getString(R.string.edit)(ImageView(R.image.menu_edit)) {
-                                    disableProperty().bind(selectionModel.selectedItemProperty().isNull)
-                                    onAction { edit() }
-                                }
-                            }
-                            deleteContactItem.disableProperty()
-                                .bind(contactTable.selectionModel.selectedItemProperty().isNull)
                         }
+                        deleteContactItem.disableProperty()
+                            .bind(contactTable.selectionModel.selectedItemProperty().isNull)
+                    }
+                    GlobalScope.launch(Dispatchers.JavaFx) {
+                        val (pageCount, customers) = Api.get().getCustomers(searchField.text, page, count).await()
+                        customerPagination.pageCount = pageCount
+                        items = customers.toMutableObservableList()
                     }
                 }
                 titleProperty().bind(buildStringBinding(customerList.selectionModel.selectedItemProperty()) {

@@ -1,13 +1,13 @@
 package com.hendraanggrian.openpss.api
 
-import com.jakewharton.retrofit2.adapter.kotlin.coroutines.experimental.CoroutineCallAdapterFactory
+import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-open class ApiFactory<T>(cls: Class<T>, endPoint: String = "localhost:8080") {
+open class ApiFactory<T>(cls: Class<T>, endPoint: String = "http://localhost:8080") {
 
-    val api = Retrofit.Builder()
+    private val api = Retrofit.Builder()
         .client(OkHttpClient.Builder().addInterceptor {
             it.proceed(
                 it.request()
@@ -21,4 +21,6 @@ open class ApiFactory<T>(cls: Class<T>, endPoint: String = "localhost:8080") {
         .addConverterFactory(GsonConverterFactory.create())
         .build()
         .create(cls)
+
+    fun get(): T = api
 }

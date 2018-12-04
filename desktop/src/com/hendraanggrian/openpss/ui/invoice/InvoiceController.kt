@@ -25,7 +25,7 @@ import com.hendraanggrian.openpss.ui.ActionController
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.util.currencyCell
 import com.hendraanggrian.openpss.util.doneCell
-import com.hendraanggrian.openpss.util.matches
+import com.hendraanggrian.openpss.db.matches
 import com.hendraanggrian.openpss.util.stringCell
 import javafx.beans.property.SimpleObjectProperty
 import javafx.fxml.FXML

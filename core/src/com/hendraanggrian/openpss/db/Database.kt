@@ -21,6 +21,7 @@ import com.mongodb.ServerAddress
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.nosql.equal
+import kotlinx.nosql.mongodb.DocumentSchema
 import kotlinx.nosql.mongodb.MongoDB
 import org.joda.time.DateTime
 import org.joda.time.LocalDate
@@ -30,7 +31,7 @@ import java.util.Date
 object Database {
 
     private lateinit var DATABASE: MongoDB
-    val TABLES = arrayOf(
+    val TABLES: Array<DocumentSchema<out Document<out DocumentSchema<out Document<out DocumentSchema<*>>>>>> = arrayOf(
         Customers,
         DigitalPrices,
         Employees,
@@ -110,6 +111,3 @@ object Database {
     private inline val evalDate: Date
         get() = DATABASE.db.doEval("new Date()").getDate("retval")
 }
-
-@Throws(Exception::class)
-fun <T> transaction(statement: SessionWrapper.() -> T): T = Database.withSession(statement)

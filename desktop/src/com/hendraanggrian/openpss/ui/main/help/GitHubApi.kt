@@ -51,7 +51,7 @@ interface GitHubApi {
         fun checkUpdates(component: FxComponent) {
             GlobalScope.launch(Dispatchers.Default) {
                 try {
-                    val release = api.getLatestRelease().await()
+                    val release = get().getLatestRelease().await()
                     GlobalScope.launch(Dispatchers.JavaFx) {
                         when {
                             release.isNewer() -> component.rootLayout.jfxSnackbar(

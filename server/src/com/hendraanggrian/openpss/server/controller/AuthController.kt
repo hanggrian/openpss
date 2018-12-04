@@ -4,12 +4,19 @@ import com.hendraanggrian.openpss.db.Database
 import com.hendraanggrian.openpss.db.Setupable
 import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.db.schemas.Employees
-import com.hendraanggrian.openpss.db.transaction
+import com.hendraanggrian.openpss.server.db.transaction
 import kotlinx.nosql.equal
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 
+@Suppress("unused")
 interface AuthController {
 
-    fun login(name: String, password: String): Employee {
+    @RequestMapping("/login")
+    fun login(
+        @RequestParam(value = "name") name: String,
+        @RequestParam(value = "password") password: String
+    ): Employee {
         lateinit var employee: Employee
         transaction {
             // check first time installation

@@ -184,28 +184,18 @@ class LoginPane(private val resourced: Resources) : _StackPane(), FxComponent {
                         )
                         onAction {
                             PasswordDialog().show {
-                                GlobalScope.launch(Dispatchers.IO) {
-                                    Api.api.login()
-                                    /*LoginFile.save()
+                                LoginFile.save()
+                                GlobalScope.launch(Dispatchers.JavaFx) {
                                     try {
-                                        val employee = Database.login(
-                                            serverHostField.text,
-                                            serverPortField.value,
-                                            serverUserField.text,
-                                            serverPasswordField.text,
-                                            employeeField.text,
-                                            passwordField.text
-                                        )
-                                        GlobalScope.launch(Dispatchers.JavaFx) {
-                                            onSuccess?.invoke(employee)
-                                        }
+                                        val employee = Api.get().login(employeeField.text, passwordField.text).await()
+                                        onSuccess?.invoke(employee)
                                     } catch (e: Exception) {
-                                        if (BuildConfig.DEBUG) e.printStackTrace()
-                                        GlobalScope.launch(Dispatchers.JavaFx) {
-                                            TextDialog(this@LoginPane, R.string.login_failed, e.message.toString())
-                                                .show(this@LoginPane)
+                                        if (BuildConfig.DEBUG) {
+                                            e.printStackTrace()
                                         }
-                                    }*/
+                                        TextDialog(this@LoginPane, R.string.login_failed, e.message.toString())
+                                            .show(this@LoginPane)
+                                    }
                                 }
                             }
                         }

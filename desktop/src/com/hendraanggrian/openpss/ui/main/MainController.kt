@@ -4,6 +4,7 @@ import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.BuildConfig
 import com.hendraanggrian.openpss.PATTERN_DATETIME
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.api.Api
 import com.hendraanggrian.openpss.control.MarginedImageView
 import com.hendraanggrian.openpss.control.PaginatedPane
 import com.hendraanggrian.openpss.control.Toolbar
@@ -15,7 +16,6 @@ import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.schemas.Employees
 import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.db.schemas.Log
-import com.hendraanggrian.openpss.db.schemas.Logs
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.popup.popover.ViewInvoicePopover
 import com.hendraanggrian.openpss.ui.ActionController
@@ -47,6 +47,10 @@ import javafx.scene.image.Image
 import javafx.scene.input.MouseEvent
 import javafx.scene.layout.StackPane
 import javafx.util.Callback
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.javafx.JavaFx
+import kotlinx.coroutines.launch
 import kotlinx.nosql.equal
 import kotlinx.nosql.update
 import ktfx.application.later
@@ -67,7 +71,6 @@ import ktfx.scene.text.fontSize
 import org.apache.commons.lang3.SystemUtils
 import java.net.URL
 import java.util.ResourceBundle
-import kotlin.math.ceil
 
 class MainController : Controller(), Refreshable {
 
@@ -202,22 +205,17 @@ class MainController : Controller(), Refreshable {
                             text("${log.dateTime.toString(PATTERN_DATETIME)} ") {
                                 styleClass += R.style.bold
                             }
-                            text(transaction { Employees[log.employeeId].single().name })
+                            text(log.employeeId.toString())
                             if (log.adminId != null) {
-                                text(", ${transaction { Employees[log.adminId!!].single().name }}")
+                                text(", ${log.adminId.toString()}")
                             }
                         }
                     }
                 }
-                later {
-                    transaction {
-                        val logs = Logs()
-                        eventPagination.pageCount = ceil(logs.count() / count.toDouble()).toInt()
-                        items = logs
-                            .skip(count * page)
-                            .take(count)
-                            .toObservableList()
-                    }
+                GlobalScope.launch(Dispatchers.JavaFx) {
+                    val (pageCount, logs) = Api.get().getLogs(page, count).await()
+                    eventPagination.pageCount = pageCount
+                    items = logs.toObservableList()
                 }
             }
         }

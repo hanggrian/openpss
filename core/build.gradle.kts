@@ -28,7 +28,7 @@ dependencies {
     api(jodaTime())
 
     api(square("converter-gson", VERSION_RETROFIT, "retrofit2"))
-    api(jakeWharton("retrofit", "retrofit2-kotlin-coroutines-experimental-adapter", "1.0.0"))
+    api(jakeWharton("retrofit", "retrofit2-kotlin-coroutines-adapter", "0.9.2"))
 
     api(google("gson", VERSION_GSON, "code.gson"))
     api(google("guava", VERSION_GUAVA, "guava"))

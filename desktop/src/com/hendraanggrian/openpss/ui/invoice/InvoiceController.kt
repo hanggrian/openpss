@@ -1,5 +1,6 @@
 package com.hendraanggrian.openpss.ui.invoice
 
+import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.App.Companion.STRETCH_POINT
 import com.hendraanggrian.openpss.PATTERN_DATETIME_EXTENDED
 import com.hendraanggrian.openpss.R
@@ -25,7 +26,6 @@ import com.hendraanggrian.openpss.ui.ActionController
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.util.currencyCell
 import com.hendraanggrian.openpss.util.doneCell
-import com.hendraanggrian.openpss.db.matches
 import com.hendraanggrian.openpss.util.stringCell
 import javafx.beans.property.SimpleObjectProperty
 import javafx.fxml.FXML
@@ -40,6 +40,10 @@ import javafx.scene.control.TextField
 import javafx.scene.image.ImageView
 import javafx.scene.layout.HBox
 import javafx.util.Callback
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.javafx.JavaFx
+import kotlinx.coroutines.launch
 import kotlinx.nosql.equal
 import kotlinx.nosql.update
 import ktfx.application.later
@@ -65,7 +69,6 @@ import ktfx.scene.input.isDoubleClick
 import org.joda.time.LocalDate
 import java.net.URL
 import java.util.ResourceBundle
-import kotlin.math.ceil
 
 class InvoiceController : ActionController(), Refreshable {
 
@@ -224,27 +227,18 @@ class InvoiceController : ActionController(), Refreshable {
                         }
                     }
                     dividerPosition = 0.6
+                    GlobalScope.launch(Dispatchers.JavaFx) {
+                        val (pageCount, invoices) = App.API.getInvoices(
+                            searchField.value, customerProperty.value?.name, true, when {
+                                pickDateRadio.isSelected -> null
+                                else -> dateBox.value
+                            }, page, count
+                        )
+                        invoicePagination.pageCount = pageCount
+                        invoiceTable.items = invoices.toMutableObservableList()
+                    }
                     later {
                         transaction {
-                            val invoices = Invoices.buildQuery {
-                                when {
-                                    searchField.value != 0 -> and(it.no.equal(searchField.value))
-                                    else -> {
-                                        if (customerProperty.value != null)
-                                            and(it.customerId.equal(customerProperty.value.id))
-                                        when (paymentCombo.selectionModel.selectedIndex) {
-                                            1 -> and(it.isPaid.equal(true))
-                                            2 -> and(it.isPaid.equal(false))
-                                        }
-                                        if (pickDateRadio.isSelected) and(it.dateTime.matches(dateBox.value!!))
-                                    }
-                                }
-                            }
-                            invoicePagination.pageCount = ceil(invoices.count() / count.toDouble()).toInt()
-                            invoiceTable.items = invoices
-                                .skip(count * page)
-                                .take(count)
-                                .toMutableObservableList()
                             invoiceTable.contextMenu {
                                 getString(R.string.view)(ImageView(R.image.menu_invoice)) {
                                     later {

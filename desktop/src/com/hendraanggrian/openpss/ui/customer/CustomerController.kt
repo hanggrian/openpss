@@ -7,15 +7,11 @@ import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.CustomerListView
 import com.hendraanggrian.openpss.control.PaginatedPane
 import com.hendraanggrian.openpss.control.StretchableButton
-import com.hendraanggrian.openpss.db.matches
 import com.hendraanggrian.openpss.db.schema.typedType
 import com.hendraanggrian.openpss.db.schemas.Customer
-import com.hendraanggrian.openpss.db.schemas.Customers
-import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.popup.dialog.ConfirmDialog
 import com.hendraanggrian.openpss.ui.ActionController
 import com.hendraanggrian.openpss.ui.Refreshable
-import com.hendraanggrian.openpss.util.isNotEmpty
 import com.hendraanggrian.openpss.util.stringCell
 import javafx.fxml.FXML
 import javafx.scene.Node
@@ -40,7 +36,6 @@ import ktfx.collections.emptyObservableList
 import ktfx.collections.toMutableObservableList
 import ktfx.collections.toObservableList
 import ktfx.coroutines.onAction
-import ktfx.jfoenix.jfxSnackbar
 import ktfx.jfoenix.jfxTextField
 import ktfx.layouts.NodeInvokable
 import ktfx.layouts.contextMenu
@@ -48,7 +43,6 @@ import ktfx.layouts.tooltip
 import org.controlsfx.control.MasterDetailPane
 import java.net.URL
 import java.util.ResourceBundle
-import java.util.regex.Pattern.CASE_INSENSITIVE
 
 class CustomerController : ActionController(), Refreshable {
 
@@ -146,15 +140,15 @@ class CustomerController : ActionController(), Refreshable {
         })
     }
 
-    fun add() = AddCustomerDialog(this).show { customer ->
-        when {
+    fun add() = AddCustomerDialog(this).show { result ->
+        GlobalScope.launch(Dispatchers.JavaFx) {
+            customerList.items.add(App.API.addCustomer(result!!.first, result.second))
+            customerList.selectionModel.select(customerList.items.lastIndex)
+        }
+        /*when {
             transaction { Customers { Customers.name.matches("^$customer$", CASE_INSENSITIVE) } }.isNotEmpty() ->
                 rootLayout.jfxSnackbar(getString(R.string.name_taken), App.DURATION_SHORT)
-            else -> GlobalScope.launch(Dispatchers.JavaFx) {
-                customerList.items.add(App.API.addCustomer(customer!!))
-                customerList.selectionModel.select(customerList.items.lastIndex)
-            }
-        }
+        }*/
     }
 
     private fun edit() = EditCustomerDialog(this, customerList.selectionModel.selectedItem).show {

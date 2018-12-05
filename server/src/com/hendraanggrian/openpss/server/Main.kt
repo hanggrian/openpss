@@ -1,5 +1,7 @@
 package com.hendraanggrian.openpss.server
 
+import com.fatboyindustrial.gsonjodatime.Converters
+import com.google.gson.GsonBuilder
 import com.hendraanggrian.openpss.server.routing.routeAuth
 import com.hendraanggrian.openpss.server.routing.routeCustomer
 import com.hendraanggrian.openpss.server.routing.routeInvoice
@@ -21,7 +23,15 @@ fun Application.main() {
     install(Locations)
     install(ContentNegotiation) {
         gson {
-            register(ContentType.Application.Json, GsonConverter())
+            register(
+                ContentType.Application.Json,
+                GsonConverter(GsonBuilder().apply {
+                    Converters.registerLocalDate(this)
+                    Converters.registerLocalTime(this)
+                    Converters.registerLocalDateTime(this)
+                    Converters.registerDateTime(this)
+                }.create())
+            )
             setPrettyPrinting()
         }
     }

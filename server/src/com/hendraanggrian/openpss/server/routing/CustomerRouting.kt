@@ -6,6 +6,7 @@ import com.hendraanggrian.openpss.api.Page
 import com.hendraanggrian.openpss.db.matches
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Customers
+import com.hendraanggrian.openpss.server.db.nextNo
 import com.hendraanggrian.openpss.server.db.transaction
 import io.ktor.application.call
 import io.ktor.locations.Location
@@ -20,7 +21,7 @@ import kotlin.math.ceil
 data class customers(val search: String, val page: Int, val count: Int)
 
 @Location("/customer")
-data class customer(val customer: Customer)
+data class customer(val name: String, val isCompany: Boolean)
 
 fun Routing.routeCustomer() {
     get<customers> { input ->
@@ -41,9 +42,10 @@ fun Routing.routeCustomer() {
         )
     }
     post<customer> { input ->
+        val customer = Customer.new(Customers.nextNo(), input.name, input.isCompany)
         transaction {
-            input.customer.id = Customers.insert(input.customer)
+            customer.id = Customers.insert(customer)
         }
-        call.respond(input.customer)
+        call.respond(customer)
     }
 }

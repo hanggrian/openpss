@@ -2,6 +2,7 @@ package com.hendraanggrian.openpss.server
 
 import com.hendraanggrian.openpss.server.routing.routeAuth
 import com.hendraanggrian.openpss.server.routing.routeCustomer
+import com.hendraanggrian.openpss.server.routing.routeInvoice
 import com.hendraanggrian.openpss.server.routing.routeLog
 import io.ktor.application.Application
 import io.ktor.application.install
@@ -28,5 +29,6 @@ fun Application.main() {
         routeAuth()
         routeCustomer()
         routeLog()
+        routeInvoice()
     }
 }

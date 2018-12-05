@@ -4,12 +4,11 @@ import com.google.gson.annotations.SerializedName
 import io.ktor.client.request.get
 import org.apache.maven.artifact.versioning.ComparableVersion
 
-class GitHubApi : Api() {
+class GitHubApi : Api("https://api.github.com") {
 
-    suspend fun getLatestRelease() = client.get<Release>(
-        "https", "api.github.com",
-        path = "repos/hendraanggrian/openpss/releases/latest"
-    )
+    suspend fun getLatestRelease() = client.get<Release> {
+        apiUrl("repos/hendraanggrian/openpss/releases/latest")
+    }
 
     data class Release(
         @SerializedName("name") val version: String,

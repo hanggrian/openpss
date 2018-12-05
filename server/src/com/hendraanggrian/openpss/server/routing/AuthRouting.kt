@@ -15,7 +15,7 @@ import io.ktor.routing.Routing
 import kotlinx.nosql.equal
 
 @Location("/login")
-class login(val name: String, val password: String)
+data class login(val name: String, val password: String)
 
 fun Routing.routeAuth() {
     get<login> { input ->

@@ -147,16 +147,12 @@ class CustomerController : ActionController(), Refreshable {
     }
 
     fun add() = AddCustomerDialog(this).show { customer ->
-        transaction {
-            when {
-                Customers { Customers.name.matches("^$customer$", CASE_INSENSITIVE) }.isNotEmpty() ->
-                    rootLayout.jfxSnackbar(getString(R.string.name_taken), App.DURATION_SHORT)
-                else -> {
-                    (AddCustomerAction(this@CustomerController, customer!!)) {
-                        customerList.items.add(it)
-                        customerList.selectionModel.select(customerList.items.lastIndex)
-                    }
-                }
+        when {
+            transaction { Customers { Customers.name.matches("^$customer$", CASE_INSENSITIVE) } }.isNotEmpty() ->
+                rootLayout.jfxSnackbar(getString(R.string.name_taken), App.DURATION_SHORT)
+            else -> GlobalScope.launch(Dispatchers.JavaFx) {
+                customerList.items.add(App.API.addCustomer(customer!!))
+                customerList.selectionModel.select(customerList.items.lastIndex)
             }
         }
     }

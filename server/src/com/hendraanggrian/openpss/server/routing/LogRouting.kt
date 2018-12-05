@@ -13,7 +13,7 @@ import io.ktor.routing.Routing
 import kotlin.math.ceil
 
 @Location("/logs")
-class logs(val page: Int, val count: Int)
+data class logs(val page: Int, val count: Int)
 
 fun Routing.routeLog() {
     get<logs> { input ->

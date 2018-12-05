@@ -1,5 +1,6 @@
 package com.hendraanggrian.openpss.api
 
+import com.hendraanggrian.openpss.data.Page
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.db.schemas.Invoice

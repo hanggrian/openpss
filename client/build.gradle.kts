@@ -4,7 +4,7 @@ plugins {
     dokka()
 }
 
-group = RELEASE_GROUP
+group = "$RELEASE_GROUP.client"
 version = RELEASE_VERSION
 
 sourceSets {
@@ -21,23 +21,12 @@ sourceSets {
 ktlint()
 
 dependencies {
-    api(kotlin("stdlib", VERSION_KOTLIN))
-    api(kotlin("nosql-mongodb", VERSION_NOSQL))
-    api(kotlinx("coroutines-core", VERSION_COROUTINES))
-    api(mongodb())
-    api(jodaTime())
+    api(project(":data"))
 
     api(ktor("client-okhttp"))
     api(ktor("client-gson"))
 
-    api(apache("maven-artifact", VERSION_MAVEN))
-
-    api(google("gson", VERSION_GSON, "code.gson"))
-    api("com.fatboyindustrial.gson-jodatime-serialisers:gson-jodatime-serialisers:1.6.0")
-
     testImplementation(junit())
-    testImplementation(kotlin("test", VERSION_KOTLIN))
-    testImplementation(kotlin("reflect", VERSION_KOTLIN))
 }
 
 tasks {

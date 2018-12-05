@@ -1,13 +1,11 @@
 plugins {
+    `java-library`
     kotlin("jvm")
-    id("kotlinx-serialization")
     dokka()
 }
 
-group = "$RELEASE_GROUP.server"
+group = "$RELEASE_GROUP.data"
 version = RELEASE_VERSION
-
-kotlin.experimental.coroutines = org.jetbrains.kotlin.gradle.dsl.Coroutines.ENABLE
 
 sourceSets {
     getByName("main") {
@@ -23,13 +21,16 @@ sourceSets {
 ktlint()
 
 dependencies {
-    api(project(":data"))
+    api(kotlin("stdlib", VERSION_KOTLIN))
+    api(kotlin("nosql-mongodb", VERSION_NOSQL))
+    api(kotlinx("coroutines-core", VERSION_COROUTINES))
+    api(mongodb())
+    api(jodaTime())
 
-    implementation(ktor("server-netty"))
-    implementation(ktor("locations"))
-    implementation(ktor("gson"))
+    api(apache("maven-artifact", VERSION_MAVEN))
 
-    implementation(logback("classic"))
+    api(google("gson", VERSION_GSON, "code.gson"))
+    api("com.fatboyindustrial.gson-jodatime-serialisers:gson-jodatime-serialisers:1.6.0")
 
     testImplementation(junit())
     testImplementation(kotlin("test", VERSION_KOTLIN))

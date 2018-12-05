@@ -2,7 +2,7 @@
 
 package com.hendraanggrian.openpss.server.routing
 
-import com.hendraanggrian.openpss.api.Page
+import com.hendraanggrian.openpss.data.Page
 import com.hendraanggrian.openpss.db.matches
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Customers

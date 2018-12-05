@@ -28,7 +28,7 @@ application.mainClassName = "$group.App"
 ktlint()
 
 dependencies {
-    api(project(":core"))
+    api(project(":client"))
 
     implementation(kotlinx("coroutines-javafx", VERSION_COROUTINES))
     implementation(slf4j("log4j12"))

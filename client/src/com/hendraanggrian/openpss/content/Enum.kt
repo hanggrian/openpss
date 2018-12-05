@@ -1,4 +1,4 @@
-package com.hendraanggrian.openpss.util
+package com.hendraanggrian.openpss.content
 
 /** This id will be used as NoSQL json key. */
 inline val Enum<*>.id: String get() = name.toLowerCase()

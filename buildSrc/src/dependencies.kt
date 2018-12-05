@@ -43,9 +43,6 @@ fun DependencyHandler.controlsFx() = "org.controlsfx:controlsfx:$VERSION_CONTROL
 fun DependencyHandler.apache(module: String, version: String) = "org.apache.${module.split("-")[0]}:$module:$version"
 fun DependencyHandler.commonsValidator() = "commons-validator:commons-validator:$VERSION_COMMONS_VALIDATOR"
 
-fun DependencyHandler.square(module: String, version: String, repo: String? = null) =
-    optionalRepo("com.squareup", module, version, repo)
-
 fun DependencyHandler.google(module: String, version: String, repo: String? = null) =
     optionalRepo("com.google", module, version, repo ?: module)
 

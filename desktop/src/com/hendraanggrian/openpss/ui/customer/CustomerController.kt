@@ -4,7 +4,6 @@ import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.App.Companion.STRETCH_POINT
 import com.hendraanggrian.openpss.PATTERN_DATE
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.api.Api
 import com.hendraanggrian.openpss.control.CustomerListView
 import com.hendraanggrian.openpss.control.PaginatedPane
 import com.hendraanggrian.openpss.control.StretchableButton
@@ -123,7 +122,7 @@ class CustomerController : ActionController(), Refreshable {
                             .bind(contactTable.selectionModel.selectedItemProperty().isNull)
                     }
                     GlobalScope.launch(Dispatchers.JavaFx) {
-                        val (pageCount, customers) = Api.get().getCustomers(searchField.text, page, count).await()
+                        val (pageCount, customers) = App.API.getCustomers(searchField.text, page, count)
                         customerPagination.pageCount = pageCount
                         items = customers.toMutableObservableList()
                     }

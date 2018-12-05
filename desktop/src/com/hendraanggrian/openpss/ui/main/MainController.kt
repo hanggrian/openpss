@@ -4,7 +4,6 @@ import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.BuildConfig
 import com.hendraanggrian.openpss.PATTERN_DATETIME
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.api.Api
 import com.hendraanggrian.openpss.control.MarginedImageView
 import com.hendraanggrian.openpss.control.PaginatedPane
 import com.hendraanggrian.openpss.control.Toolbar
@@ -213,7 +212,7 @@ class MainController : Controller(), Refreshable {
                     }
                 }
                 GlobalScope.launch(Dispatchers.JavaFx) {
-                    val (pageCount, logs) = Api.get().getLogs(page, count).await()
+                    val (pageCount, logs) = App.API.getLogs(page, count)
                     eventPagination.pageCount = pageCount
                     items = logs.toObservableList()
                 }

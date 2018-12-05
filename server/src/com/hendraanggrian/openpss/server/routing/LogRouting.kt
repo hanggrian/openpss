@@ -13,18 +13,16 @@ import io.ktor.routing.Routing
 import kotlin.math.ceil
 
 @Location("/logs")
-class logs(val page: String, val count: String)
+class logs(val page: Int, val count: Int)
 
 fun Routing.routeLog() {
     get<logs> { input ->
-        val page = input.page.toInt()
-        val count = input.count.toInt()
         call.respond(
             transaction {
                 val logs = Logs()
                 Page(
-                    ceil(logs.count() / count.toDouble()).toInt(),
-                    logs.skip(count * page).take(count).toList()
+                    ceil(logs.count() / input.count.toDouble()).toInt(),
+                    logs.skip(input.count * input.page).take(input.count).toList()
                 )
             }
         )

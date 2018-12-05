@@ -42,6 +42,8 @@ dependencies {
     implementation(apache("poi-ooxml", VERSION_POI))
     implementation(commonsValidator())
 
+    implementation(google("guava", "$VERSION_GUAVA-jre", "guava"))
+
     testImplementation(kotlin("test", VERSION_KOTLIN))
     testImplementation(kotlin("reflect", VERSION_KOTLIN))
 

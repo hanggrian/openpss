@@ -15,12 +15,10 @@ import java.util.regex.Pattern
 import kotlin.math.ceil
 
 @Location("/customers")
-class customers(val search: String, val page: String, val count: String)
+class customers(val search: String, val page: Int, val count: Int)
 
 fun Routing.routeCustomer() {
     get<customers> { input ->
-        val page = input.page.toInt()
-        val count = input.count.toInt()
         call.respond(
             transaction {
                 val customers = Customers.buildQuery {
@@ -31,8 +29,8 @@ fun Routing.routeCustomer() {
                     }
                 }
                 Page(
-                    ceil(customers.count() / count.toDouble()).toInt(),
-                    customers.skip(count * page).take(count).toList()
+                    ceil(customers.count() / input.count.toDouble()).toInt(),
+                    customers.skip(input.count * input.page).take(input.count).toList()
                 )
             }
         )

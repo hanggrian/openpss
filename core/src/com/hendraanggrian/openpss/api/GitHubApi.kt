@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 import io.ktor.client.request.get
 import org.apache.maven.artifact.versioning.ComparableVersion
 
-class GitHubApi : Api2() {
+class GitHubApi : Api() {
 
     suspend fun getLatestRelease() = client.get<Release>(
         "https", "api.github.com",

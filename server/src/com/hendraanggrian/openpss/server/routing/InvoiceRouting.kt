@@ -8,13 +8,16 @@ import com.hendraanggrian.openpss.server.db.transaction
 import io.ktor.application.call
 import io.ktor.response.respond
 import io.ktor.routing.Routing
+import io.ktor.routing.delete
 import io.ktor.routing.get
+import io.ktor.routing.post
+import io.ktor.routing.put
 import io.ktor.routing.route
 import kotlinx.nosql.equal
 import kotlin.math.ceil
 
 fun Routing.routeInvoice() {
-    route("invoices") {
+    route("invoice") {
         get {
             val search = call.parameters["search"]!!.toInt()
             val customer = call.parameters["customer"]
@@ -46,6 +49,14 @@ fun Routing.routeInvoice() {
                     )
                 }
             )
+        }
+        post {
+        }
+        route("{no}") {
+            put {
+            }
+            delete {
+            }
         }
     }
 }

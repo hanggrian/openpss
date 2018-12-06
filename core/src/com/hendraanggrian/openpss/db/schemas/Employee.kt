@@ -11,6 +11,7 @@ import kotlinx.nosql.boolean
 import kotlinx.nosql.equal
 import kotlinx.nosql.mongodb.DocumentSchema
 import kotlinx.nosql.string
+import java.io.Serializable
 
 object Employees : DocumentSchema<Employee>("employees", Employee::class), NamedSchema, Setupable {
     override val name = string("name")
@@ -28,7 +29,7 @@ data class Employee(
     override var name: String,
     var password: String,
     var isAdmin: Boolean
-) : Document<Employees>, Named {
+) : Document<Employees>, Named, Serializable {
 
     companion object {
         const val DEFAULT_PASSWORD = "1234"

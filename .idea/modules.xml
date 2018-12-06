@@ -5,8 +5,8 @@
       <module fileurl="file://$PROJECT_DIR$/buildSrc/buildSrc.iml" filepath="$PROJECT_DIR$/buildSrc/buildSrc.iml" />
       <module fileurl="file://$PROJECT_DIR$/client/client.iml" filepath="$PROJECT_DIR$/client/client.iml" />
       <module fileurl="file://$PROJECT_DIR$/client-android/client-android.iml" filepath="$PROJECT_DIR$/client-android/client-android.iml" />
-      <module fileurl="file://$PROJECT_DIR$/client-desktop/client-desktop.iml" filepath="$PROJECT_DIR$/client-desktop/client-desktop.iml" />
-      <module fileurl="file://$PROJECT_DIR$/data/data.iml" filepath="$PROJECT_DIR$/data/data.iml" />
+      <module fileurl="file://$PROJECT_DIR$/client-javafx/client-javafx.iml" filepath="$PROJECT_DIR$/client-javafx/client-javafx.iml" />
+      <module fileurl="file://$PROJECT_DIR$/core/core.iml" filepath="$PROJECT_DIR$/core/core.iml" />
       <module fileurl="file://$PROJECT_DIR$/openpss.iml" filepath="$PROJECT_DIR$/openpss.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/openpss.buildSrc.iml" filepath="$PROJECT_DIR$/.idea/modules/openpss.buildSrc.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/website/openpss.website.iml" filepath="$PROJECT_DIR$/.idea/modules/website/openpss.website.iml" />

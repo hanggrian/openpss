@@ -1,4 +1,4 @@
-package com.hendraanggrian.openpss.data
+package com.hendraanggrian.openpss.content
 
 import com.google.gson.annotations.SerializedName
 

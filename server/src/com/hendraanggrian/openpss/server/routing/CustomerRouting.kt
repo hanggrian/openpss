@@ -1,51 +1,61 @@
-@file:Suppress("ClassName")
-
 package com.hendraanggrian.openpss.server.routing
 
-import com.hendraanggrian.openpss.data.Page
+import com.hendraanggrian.openpss.content.Page
 import com.hendraanggrian.openpss.db.matches
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.server.db.nextNo
 import com.hendraanggrian.openpss.server.db.transaction
+import com.hendraanggrian.openpss.util.isNotEmpty
 import io.ktor.application.call
-import io.ktor.locations.Location
-import io.ktor.locations.get
-import io.ktor.locations.post
+import io.ktor.http.HttpStatusCode
 import io.ktor.response.respond
 import io.ktor.routing.Routing
+import io.ktor.routing.get
+import io.ktor.routing.route
 import java.util.regex.Pattern
 import kotlin.math.ceil
 
-@Location("/customers")
-data class customers(val search: String, val page: Int, val count: Int)
-
-@Location("/customer")
-data class customer(val name: String, val isCompany: Boolean)
-
 fun Routing.routeCustomer() {
-    get<customers> { input ->
-        call.respond(
-            transaction {
-                val customers = Customers.buildQuery {
-                    if (input.search.isNotBlank()) {
-                        or(it.name.matches(input.search, Pattern.CASE_INSENSITIVE))
-                        or(it.address.matches(input.search, Pattern.CASE_INSENSITIVE))
-                        or(it.note.matches(input.search, Pattern.CASE_INSENSITIVE))
+    route("customers") {
+        get {
+            val search = call.parameters["search"]!!
+            val page = call.parameters["page"]!!.toInt()
+            val count = call.parameters["count"]!!.toInt()
+            call.respond(
+                transaction {
+                    val customers = Customers.buildQuery {
+                        if (search.isNotBlank()) {
+                            or(it.name.matches(search, Pattern.CASE_INSENSITIVE))
+                            or(it.address.matches(search, Pattern.CASE_INSENSITIVE))
+                            or(it.note.matches(search, Pattern.CASE_INSENSITIVE))
+                        }
                     }
+                    Page(
+                        ceil(customers.count() / count.toDouble()).toInt(),
+                        customers.skip(count * page).take(count).toList()
+                    )
                 }
-                Page(
-                    ceil(customers.count() / input.count.toDouble()).toInt(),
-                    customers.skip(input.count * input.page).take(input.count).toList()
-                )
-            }
-        )
-    }
-    post<customer> { input ->
-        val customer = Customer.new(Customers.nextNo(), input.name, input.isCompany)
-        transaction {
-            customer.id = Customers.insert(customer)
+            )
         }
-        call.respond(customer)
+    }
+    route("customer") {
+        get {
+            val customer = Customer.new(
+                Customers.nextNo(),
+                call.parameters["name"]!!,
+                call.parameters["isCompany"]!!.toBoolean()
+            )
+            when {
+                transaction { Customers { it.name.matches("^$customer$", Pattern.CASE_INSENSITIVE) }.isNotEmpty() } ->
+                    call.respond(HttpStatusCode.NotAcceptable, "Name taken")
+                else -> {
+                    transaction {
+                        customer.id = Customers.insert(customer)
+                    }
+                    call.respond(customer)
+                }
+            }
+        }
     }
 }

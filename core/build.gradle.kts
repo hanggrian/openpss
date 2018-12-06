@@ -4,7 +4,7 @@ plugins {
     dokka()
 }
 
-group = "$RELEASE_GROUP.data"
+group = RELEASE_GROUP
 version = RELEASE_VERSION
 
 sourceSets {

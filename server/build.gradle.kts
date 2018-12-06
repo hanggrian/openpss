@@ -4,10 +4,8 @@ plugins {
     dokka()
 }
 
-group = "$RELEASE_GROUP.server"
+group = RELEASE_GROUP
 version = RELEASE_VERSION
-
-kotlin.experimental.coroutines = org.jetbrains.kotlin.gradle.dsl.Coroutines.ENABLE
 
 sourceSets {
     getByName("main") {
@@ -23,10 +21,9 @@ sourceSets {
 ktlint()
 
 dependencies {
-    api(project(":data"))
+    api(project(":core"))
 
     implementation(ktor("server-netty"))
-    implementation(ktor("locations"))
     implementation(ktor("gson"))
 
     implementation(logback("classic"))

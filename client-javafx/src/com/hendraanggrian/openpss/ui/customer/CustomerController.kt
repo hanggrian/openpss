@@ -145,10 +145,6 @@ class CustomerController : ActionController(), Refreshable {
             customerList.items.add(App.API.addCustomer(result!!.first, result.second))
             customerList.selectionModel.select(customerList.items.lastIndex)
         }
-        /*when {
-            transaction { Customers { Customers.name.matches("^$customer$", CASE_INSENSITIVE) } }.isNotEmpty() ->
-                rootLayout.jfxSnackbar(getString(R.string.name_taken), App.DURATION_SHORT)
-        }*/
     }
 
     private fun edit() = EditCustomerDialog(this, customerList.selectionModel.selectedItem).show {

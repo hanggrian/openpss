@@ -4,7 +4,7 @@ plugins {
     dokka()
 }
 
-group = "$RELEASE_GROUP.client"
+group = RELEASE_GROUP
 version = RELEASE_VERSION
 
 sourceSets {
@@ -21,7 +21,7 @@ sourceSets {
 ktlint()
 
 dependencies {
-    api(project(":data"))
+    api(project(":core"))
 
     api(ktor("client-okhttp"))
     api(ktor("client-gson"))

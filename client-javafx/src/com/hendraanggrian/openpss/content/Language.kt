@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.content
 
+import com.hendraanggrian.openpss.db.Database
 import com.hendraanggrian.openpss.db.schemas.GlobalSetting
-import com.hendraanggrian.openpss.db.transaction
 import sun.util.locale.LocaleUtils
 import java.util.Currency
 import java.util.Locale
@@ -48,9 +48,10 @@ enum class Language(private val nativeLocale: Locale) {
         fun ofFullCode(fullCode: String): Language =
             find { it.fullCode == fullCode }
 
-        fun ofServer(): Language = Language.ofFullCode(transaction {
-            findGlobalSettings(GlobalSetting.KEY_LANGUAGE).single().value
-        })
+        fun ofServer(): Language =
+            ofFullCode(Database.withSession {
+                findGlobalSettings(GlobalSetting.KEY_LANGUAGE).single().value
+            })
 
         private inline fun find(predicate: (Language) -> Boolean): Language = Language.values()
             .singleOrNull(predicate) ?: EN_US

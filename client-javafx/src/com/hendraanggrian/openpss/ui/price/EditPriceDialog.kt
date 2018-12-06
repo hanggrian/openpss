@@ -1,9 +1,7 @@
 package com.hendraanggrian.openpss.ui.price
 
-import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.FxComponent
-import com.hendraanggrian.openpss.util.stringCell
 import com.hendraanggrian.openpss.db.Document
 import com.hendraanggrian.openpss.db.Named
 import com.hendraanggrian.openpss.db.NamedSchema
@@ -11,9 +9,9 @@ import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.popup.dialog.TableDialog
 import com.hendraanggrian.openpss.popup.popover.InputPopover
 import com.hendraanggrian.openpss.util.isNotEmpty
+import com.hendraanggrian.openpss.util.stringCell
 import kotlinx.nosql.equal
 import kotlinx.nosql.mongodb.DocumentSchema
-import ktfx.jfoenix.jfxSnackbar
 
 abstract class EditPriceDialog<D, S>(
     component: FxComponent,
@@ -41,8 +39,9 @@ abstract class EditPriceDialog<D, S>(
     ).show(addButton) { name ->
         transaction @Suppress("IMPLICIT_CAST_TO_ANY") {
             when {
-                schema { it.name.equal(name) }.isNotEmpty() ->
-                    rootLayout.jfxSnackbar(getString(R.string.name_taken), App.DURATION_SHORT)
+                schema { it.name.equal(name) }.isNotEmpty() -> {
+                }
+                /*rootLayout.jfxSnackbar(getString(R.string.name_taken), App.DURATION_SHORT)*/
                 else -> {
                     val price = newPrice(name!!)
                     price.id = schema.insert(price)

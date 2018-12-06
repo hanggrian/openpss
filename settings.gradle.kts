@@ -1,6 +1,6 @@
-include("data")
+include("core")
 include("server")
 include("client")
 include("client-android")
-include("client-desktop")
+include("client-javafx")
 include("website")

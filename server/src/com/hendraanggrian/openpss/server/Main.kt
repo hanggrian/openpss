@@ -1,13 +1,16 @@
 package com.hendraanggrian.openpss.server
 
-import com.fatboyindustrial.gsonjodatime.Converters
 import com.google.gson.GsonBuilder
 import com.hendraanggrian.openpss.server.routing.routeAuth
 import com.hendraanggrian.openpss.server.routing.routeCustomer
+import com.hendraanggrian.openpss.server.routing.routeDigitalPrice
+import com.hendraanggrian.openpss.server.routing.routeEmployee
 import com.hendraanggrian.openpss.server.routing.routeInvoice
 import com.hendraanggrian.openpss.server.routing.routeLog
 import com.hendraanggrian.openpss.server.routing.routeOffsetPrice
 import com.hendraanggrian.openpss.server.routing.routePlatePrice
+import com.hendraanggrian.openpss.server.routing.routeRecess
+import com.hendraanggrian.openpss.util.jodaTimeSupport
 import io.ktor.application.Application
 import io.ktor.application.install
 import io.ktor.features.CallLogging
@@ -25,22 +28,25 @@ fun Application.main() {
         gson {
             register(
                 ContentType.Application.Json,
-                GsonConverter(GsonBuilder().apply {
-                    Converters.registerLocalDate(this)
-                    Converters.registerLocalTime(this)
-                    Converters.registerLocalDateTime(this)
-                    Converters.registerDateTime(this)
-                }.create())
+                GsonConverter(GsonBuilder().jodaTimeSupport().create())
             )
             setPrettyPrinting()
         }
     }
     routing {
         routeAuth()
+
         routeCustomer()
+
         routeLog()
+
         routeInvoice()
+
         routePlatePrice()
         routeOffsetPrice()
+        routeDigitalPrice()
+        routeEmployee()
+
+        routeRecess()
     }
 }

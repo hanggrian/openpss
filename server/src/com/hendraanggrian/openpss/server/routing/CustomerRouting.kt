@@ -6,6 +6,9 @@ import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.server.db.nextNo
 import com.hendraanggrian.openpss.server.db.transaction
+import com.hendraanggrian.openpss.server.util.getBoolean
+import com.hendraanggrian.openpss.server.util.getInt
+import com.hendraanggrian.openpss.server.util.getString
 import com.hendraanggrian.openpss.util.isNotEmpty
 import io.ktor.application.call
 import io.ktor.http.HttpStatusCode
@@ -22,9 +25,9 @@ import kotlin.math.ceil
 fun Routing.routeCustomer() {
     route("customer") {
         get {
-            val search = call.parameters["search"]!!
-            val page = call.parameters["page"]!!.toInt()
-            val count = call.parameters["count"]!!.toInt()
+            val search = call.getString("search")
+            val page = call.getInt("page")
+            val count = call.getInt("count")
             call.respond(
                 transaction {
                     val customers = Customers.buildQuery {
@@ -42,11 +45,7 @@ fun Routing.routeCustomer() {
             )
         }
         post {
-            val customer = Customer.new(
-                Customers.nextNo(),
-                call.parameters["name"]!!,
-                call.parameters["isCompany"]!!.toBoolean()
-            )
+            val customer = Customer.new(Customers.nextNo(), call.getString("name"), call.getBoolean("isCompany"))
             when {
                 transaction { Customers { it.name.matches("^$customer$", Pattern.CASE_INSENSITIVE) }.isNotEmpty() } ->
                     call.respond(HttpStatusCode.NotAcceptable, "Name taken")

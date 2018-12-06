@@ -1,12 +1,13 @@
 package com.hendraanggrian.openpss.api
 
-import com.fatboyindustrial.gsonjodatime.Converters
+import com.hendraanggrian.openpss.util.jodaTimeSupport
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.okhttp.OkHttp
 import io.ktor.client.features.json.GsonSerializer
 import io.ktor.client.features.json.JsonFeature
 import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.request.header
+import io.ktor.client.request.parameter
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.http.contentType
@@ -14,14 +15,9 @@ import io.ktor.http.takeFrom
 
 abstract class Api(private val endPoint: String) {
 
-    protected val client = HttpClient(OkHttp) {
+    protected val client: HttpClient = HttpClient(OkHttp) {
         install(JsonFeature) {
-            serializer = GsonSerializer {
-                Converters.registerLocalDate(this)
-                Converters.registerLocalTime(this)
-                Converters.registerLocalDateTime(this)
-                Converters.registerDateTime(this)
-            }
+            serializer = GsonSerializer { jodaTimeSupport() }
         }
     }
 
@@ -33,5 +29,9 @@ abstract class Api(private val endPoint: String) {
             takeFrom(endPoint)
             encodedPath = path
         }
+    }
+
+    protected fun HttpRequestBuilder.parameters(vararg pairs: Pair<String, Any?>) = pairs.forEach { (key, value) ->
+        parameter(key, value)
     }
 }

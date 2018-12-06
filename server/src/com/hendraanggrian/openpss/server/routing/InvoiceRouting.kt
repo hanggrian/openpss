@@ -5,6 +5,9 @@ import com.hendraanggrian.openpss.db.matches
 import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.schemas.Invoices
 import com.hendraanggrian.openpss.server.db.transaction
+import com.hendraanggrian.openpss.server.util.getBooleanOrNull
+import com.hendraanggrian.openpss.server.util.getInt
+import com.hendraanggrian.openpss.server.util.getStringOrNull
 import io.ktor.application.call
 import io.ktor.response.respond
 import io.ktor.routing.Routing
@@ -19,12 +22,12 @@ import kotlin.math.ceil
 fun Routing.routeInvoice() {
     route("invoice") {
         get {
-            val search = call.parameters["search"]!!.toInt()
-            val customer = call.parameters["customer"]
-            val isPaid = call.parameters["isPaid"]?.toBoolean()
-            val date = call.parameters["date"]
-            val page = call.parameters["page"]!!.toInt()
-            val count = call.parameters["count"]!!.toInt()
+            val search = call.getInt("search")
+            val customer = call.getStringOrNull("customer")
+            val isPaid = call.getBooleanOrNull("isPaid")
+            val date = call.getStringOrNull("date")
+            val page = call.getInt("page")
+            val count = call.getInt("count")
             call.respond(
                 transaction {
                     val invoices = Invoices.buildQuery {

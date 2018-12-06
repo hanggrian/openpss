@@ -3,6 +3,7 @@ package com.hendraanggrian.openpss.server.routing
 import com.hendraanggrian.openpss.content.Page
 import com.hendraanggrian.openpss.db.schemas.Logs
 import com.hendraanggrian.openpss.server.db.transaction
+import com.hendraanggrian.openpss.server.util.getInt
 import io.ktor.application.call
 import io.ktor.response.respond
 import io.ktor.routing.Routing
@@ -13,8 +14,8 @@ import kotlin.math.ceil
 fun Routing.routeLog() {
     route("log") {
         get {
-            val page = call.parameters["page"]!!.toInt()
-            val count = call.parameters["count"]!!.toInt()
+            val page = call.getInt("page")
+            val count = call.getInt("count")
             call.respond(
                 transaction {
                     val logs = Logs()

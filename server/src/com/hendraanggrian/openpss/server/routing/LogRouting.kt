@@ -12,7 +12,7 @@ import io.ktor.routing.route
 import kotlin.math.ceil
 
 fun Routing.routeLog() {
-    route("log") {
+    route("logs") {
         get {
             val page = call.getInt("page")
             val count = call.getInt("count")

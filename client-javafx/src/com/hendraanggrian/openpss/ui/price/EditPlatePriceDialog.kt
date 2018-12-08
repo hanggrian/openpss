@@ -1,13 +1,11 @@
 package com.hendraanggrian.openpss.ui.price
 
+import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.FxComponent
 import com.hendraanggrian.openpss.db.schemas.PlatePrice
-import com.hendraanggrian.openpss.db.schemas.PlatePrices
-import com.hendraanggrian.openpss.db.transaction
 import javafx.beans.value.ObservableValue
-import kotlinx.nosql.equal
-import kotlinx.nosql.update
+import kotlinx.coroutines.CoroutineScope
 import ktfx.beans.property.asReadOnlyProperty
 import ktfx.coroutines.onEditCommit
 import ktfx.listeners.textFieldCellFactory
@@ -15,7 +13,7 @@ import ktfx.listeners.textFieldCellFactory
 @Suppress("UNCHECKED_CAST")
 class EditPlatePriceDialog(
     component: FxComponent
-) : EditPriceDialog<PlatePrice, PlatePrices>(component, R.string.plate_price, PlatePrices) {
+) : EditPriceDialog<PlatePrice>(component, R.string.plate_price) {
 
     init {
         getString(R.string.price)<Double> {
@@ -26,15 +24,17 @@ class EditPlatePriceDialog(
                 fromString { it.toDoubleOrNull() ?: 0.0 }
             }
             onEditCommit { cell ->
-                transaction {
-                    PlatePrices { it.name.equal(cell.rowValue.name) }
-                        .projection { price }
-                        .update(cell.newValue)
+                val plate = cell.rowValue
+                if (App.API.editPlatePrice(plate.name, cell.newValue)) {
+                    cell.rowValue.price = cell.newValue
                 }
-                cell.rowValue.price = cell.newValue
             }
         }
     }
 
-    override fun newPrice(name: String): PlatePrice = PlatePrice.new(name)
+    override suspend fun CoroutineScope.refresh(): List<PlatePrice> = App.API.getPlatePrices()
+
+    override suspend fun CoroutineScope.add(name: String): PlatePrice? = App.API.addPlatePrice(name)
+
+    override suspend fun CoroutineScope.delete(selected: PlatePrice): Boolean = App.API.deletePlatePrice(selected.name)
 }

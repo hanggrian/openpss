@@ -1,6 +1,7 @@
 package com.hendraanggrian.openpss.server.routing
 
 import com.hendraanggrian.openpss.db.Document
+import com.hendraanggrian.openpss.db.Named
 import com.hendraanggrian.openpss.db.NamedSchema
 import com.hendraanggrian.openpss.db.SessionWrapper
 import com.hendraanggrian.openpss.db.schemas.DigitalPrice
@@ -16,8 +17,10 @@ import com.hendraanggrian.openpss.server.util.getBoolean
 import com.hendraanggrian.openpss.server.util.getDouble
 import com.hendraanggrian.openpss.server.util.getInt
 import com.hendraanggrian.openpss.server.util.getString
+import com.hendraanggrian.openpss.util.isNotEmpty
 import io.ktor.application.ApplicationCall
 import io.ktor.application.call
+import io.ktor.http.HttpStatusCode
 import io.ktor.response.respond
 import io.ktor.routing.Routing
 import io.ktor.routing.delete
@@ -31,7 +34,7 @@ import kotlinx.nosql.mongodb.DocumentSchema
 import kotlinx.nosql.update
 
 fun Routing.routePlatePrice() = routeNamed(
-    "plate-price",
+    "plate-prices",
     PlatePrices,
     { call -> PlatePrice.new(call.getString("name")) },
     { call, wrapper ->
@@ -40,7 +43,7 @@ fun Routing.routePlatePrice() = routeNamed(
     })
 
 fun Routing.routeOffsetPrice() = routeNamed(
-    "offset-price",
+    "offset-prices",
     OffsetPrices,
     { call -> OffsetPrice.new(call.getString("name")) },
     { call, wrapper ->
@@ -49,7 +52,7 @@ fun Routing.routeOffsetPrice() = routeNamed(
     })
 
 fun Routing.routeDigitalPrice() = routeNamed(
-    "digital-price",
+    "digital-prices",
     DigitalPrices,
     { call -> DigitalPrice.new(call.getString("name")) },
     { call, wrapper ->
@@ -58,7 +61,7 @@ fun Routing.routeDigitalPrice() = routeNamed(
     })
 
 fun Routing.routeEmployee() = routeNamed(
-    "employee",
+    "employees",
     Employees,
     { call -> Employee.new(call.getString("name")) },
     { call, wrapper ->
@@ -71,30 +74,37 @@ private fun <S, D> Routing.routeNamed(
     schema: S,
     create: (ApplicationCall) -> D,
     edit: SessionWrapper.(ApplicationCall, DocumentSchemaQueryWrapper<S, String, D>) -> Unit
-) where S : DocumentSchema<D>, S : NamedSchema, D : Document<S> {
+) where S : DocumentSchema<D>, S : NamedSchema, D : Document<S>, D : Named {
     route(route) {
         get {
             call.respond(transaction { schema() })
         }
         post {
             val doc = create(call)
-            doc.id = transaction { schema.insert(doc) }
-            call.respond(doc)
+            when {
+                transaction { schema { it.name.equal(doc.name) }.isNotEmpty() } ->
+                    call.respond(HttpStatusCode.NotAcceptable, "Name taken")
+                else -> {
+                    doc.id = transaction { schema.insert(doc) }
+                    call.respond(doc)
+                }
+            }
         }
         route("{name}") {
+            get {
+                call.respond(transaction { schema { it.name.equal(call.getString("name")) }.single() })
+            }
             put {
-                call.respond(transaction {
-                    val doc = schema { it.name.equal(call.getString("name")) }
-                    edit(call, doc)
-                    doc.single()
-                })
+                transaction {
+                    edit(call, schema { it.name.equal(call.getString("name")) })
+                }
+                call.respond(HttpStatusCode.OK)
             }
             delete {
-                call.respond(transaction {
-                    val doc = schema { it.name.equal(call.getString("name")) }.single()
-                    schema -= doc
-                    doc
-                })
+                transaction {
+                    schema -= schema { it.name.equal(call.getString("name")) }.single()
+                }
+                call.respond(HttpStatusCode.OK)
             }
         }
     }

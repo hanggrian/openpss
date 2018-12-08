@@ -1,21 +1,19 @@
 package com.hendraanggrian.openpss.ui.price
 
+import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.FxComponent
 import com.hendraanggrian.openpss.db.schemas.OffsetPrice
-import com.hendraanggrian.openpss.db.schemas.OffsetPrices
-import com.hendraanggrian.openpss.db.transaction
 import javafx.beans.value.ObservableValue
-import kotlinx.nosql.equal
-import kotlinx.nosql.update
+import kotlinx.coroutines.CoroutineScope
 import ktfx.beans.property.asReadOnlyProperty
 import ktfx.coroutines.onEditCommit
 import ktfx.listeners.textFieldCellFactory
 
 @Suppress("UNCHECKED_CAST")
-class EditOffsetPrintPriceDialog(
+class EditOffsetPriceDialog(
     component: FxComponent
-) : EditPriceDialog<OffsetPrice, OffsetPrices>(component, R.string.offset_print_price, OffsetPrices) {
+) : EditPriceDialog<OffsetPrice>(component, R.string.offset_print_price) {
 
     init {
         getString(R.string.min_qty)<Int> {
@@ -26,12 +24,10 @@ class EditOffsetPrintPriceDialog(
                 fromString { it.toIntOrNull() ?: 0 }
             }
             onEditCommit { cell ->
-                transaction {
-                    OffsetPrices { it.name.equal(cell.rowValue.name) }
-                        .projection { minQty }
-                        .update(cell.newValue)
+                val offset = cell.rowValue
+                if (App.API.editOffsetPrice(offset.name, cell.newValue, offset.minPrice, offset.excessPrice)) {
+                    cell.rowValue.minQty = cell.newValue
                 }
-                cell.rowValue.minQty = cell.newValue
             }
         }
 
@@ -43,12 +39,10 @@ class EditOffsetPrintPriceDialog(
                 fromString { it.toDoubleOrNull() ?: 0.0 }
             }
             onEditCommit { cell ->
-                transaction {
-                    OffsetPrices { it.name.equal(cell.rowValue.name) }
-                        .projection { minPrice }
-                        .update(cell.newValue)
+                val offset = cell.rowValue
+                if (App.API.editOffsetPrice(offset.name, offset.minQty, cell.newValue, offset.excessPrice)) {
+                    cell.rowValue.minPrice = cell.newValue
                 }
-                cell.rowValue.minPrice = cell.newValue
             }
         }
 
@@ -60,15 +54,18 @@ class EditOffsetPrintPriceDialog(
                 fromString { it.toDoubleOrNull() ?: 0.0 }
             }
             onEditCommit { cell ->
-                transaction {
-                    OffsetPrices { it.name.equal(cell.rowValue.name) }
-                        .projection { excessPrice }
-                        .update(cell.newValue)
+                val offset = cell.rowValue
+                if (App.API.editOffsetPrice(offset.name, offset.minQty, offset.minPrice, cell.newValue)) {
+                    cell.rowValue.excessPrice = cell.newValue
                 }
-                cell.rowValue.excessPrice = cell.newValue
             }
         }
     }
 
-    override fun newPrice(name: String): OffsetPrice = OffsetPrice.new(name)
+    override suspend fun CoroutineScope.refresh(): List<OffsetPrice> = App.API.getOffsetPrices()
+
+    override suspend fun CoroutineScope.add(name: String): OffsetPrice? = App.API.addOffsetPrice(name)
+
+    override suspend fun CoroutineScope.delete(selected: OffsetPrice): Boolean =
+        App.API.deleteOffsetPrice(selected.name)
 }

@@ -4,23 +4,16 @@ import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.FxComponent
 import com.hendraanggrian.openpss.db.Document
 import com.hendraanggrian.openpss.db.Named
-import com.hendraanggrian.openpss.db.NamedSchema
-import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.popup.dialog.TableDialog
 import com.hendraanggrian.openpss.popup.popover.InputPopover
-import com.hendraanggrian.openpss.util.isNotEmpty
 import com.hendraanggrian.openpss.util.stringCell
-import kotlinx.nosql.equal
-import kotlinx.nosql.mongodb.DocumentSchema
+import kotlinx.coroutines.CoroutineScope
 
-abstract class EditPriceDialog<D, S>(
+abstract class EditPriceDialog<D>(
     component: FxComponent,
-    headerId: String,
-    schema: S
-) : TableDialog<D, S>(component, headerId, schema)
-    where D : Document<S>, D : Named, S : DocumentSchema<D>, S : NamedSchema {
-
-    abstract fun newPrice(name: String): D
+    headerId: String
+) : TableDialog<D>(component, headerId)
+    where D : Document<*>, D : Named {
 
     init {
         @Suppress("LeakingThis")
@@ -33,21 +26,15 @@ abstract class EditPriceDialog<D, S>(
     override fun add() = InputPopover(
         this, when (this) {
             is EditPlatePriceDialog -> R.string.add_plate_price
-            is EditOffsetPrintPriceDialog -> R.string.add_offset_price
+            is EditOffsetPriceDialog -> R.string.add_offset_price
             else -> R.string.add_digital_price
         }
     ).show(addButton) { name ->
-        transaction @Suppress("IMPLICIT_CAST_TO_ANY") {
-            when {
-                schema { it.name.equal(name) }.isNotEmpty() -> {
-                }
-                /*rootLayout.jfxSnackbar(getString(R.string.name_taken), App.DURATION_SHORT)*/
-                else -> {
-                    val price = newPrice(name!!)
-                    price.id = schema.insert(price)
-                    table.items.add(price)
-                }
-            }
+        val add = add(name!!)
+        if (add != null) {
+            table.items.add(add)
         }
     }
+
+    abstract suspend fun CoroutineScope.add(name: String): D?
 }

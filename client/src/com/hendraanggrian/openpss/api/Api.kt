@@ -8,9 +8,11 @@ import io.ktor.client.features.json.JsonFeature
 import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.request.header
 import io.ktor.client.request.parameter
+import io.ktor.client.response.HttpResponse
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.http.contentType
+import io.ktor.http.isSuccess
 import io.ktor.http.takeFrom
 
 abstract class Api(private val endPoint: String) {
@@ -34,4 +36,6 @@ abstract class Api(private val endPoint: String) {
     protected fun HttpRequestBuilder.parameters(vararg pairs: Pair<String, Any?>) = pairs.forEach { (key, value) ->
         parameter(key, value)
     }
+
+    protected fun HttpResponse.useStatus(): Boolean = use { it.status.isSuccess() }
 }

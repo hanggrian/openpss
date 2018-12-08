@@ -1,7 +1,6 @@
 package com.hendraanggrian.openpss.content
 
 import com.hendraanggrian.openpss.App
-import com.hendraanggrian.openpss.db.schemas.Employees
 import com.hendraanggrian.openpss.db.schemas.GlobalSetting
 import com.hendraanggrian.openpss.db.transaction
 import javafx.scene.layout.StackPane
@@ -13,8 +12,6 @@ import java.awt.Desktop
 
 /** StackPane is the root layout for [ktfx.jfoenix.jfxSnackbar]. */
 interface FxComponent : Resources, Component<StackPane> {
-
-    override fun isAdmin(): Boolean = transaction { Employees[login].single().isAdmin }
 
     /** Number decimal string converter. */
     val numberConverter: StringConverter<Number>

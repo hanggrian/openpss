@@ -4,6 +4,7 @@ import com.hendraanggrian.openpss.content.FxComponent
 import com.hendraanggrian.openpss.popup.ResultablePopup
 import javafx.scene.Node
 import javafx.scene.control.Button
+import kotlinx.coroutines.CoroutineScope
 import ktfx.coroutines.onAction
 import org.controlsfx.control.PopOver
 
@@ -15,7 +16,7 @@ open class ResultablePopover<T>(
 
     override lateinit var defaultButton: Button
 
-    fun show(node: Node, onAction: (T?) -> Unit) {
+    fun show(node: Node, onAction: suspend CoroutineScope.(T?) -> Unit) {
         show(node)
         defaultButton.onAction {
             onAction(nullableResult!!)

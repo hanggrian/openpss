@@ -1,5 +1,6 @@
 package com.hendraanggrian.openpss.ui.main
 
+import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.FxComponent
 import com.hendraanggrian.openpss.content.Language
@@ -73,7 +74,9 @@ class SettingsDialog(component: FxComponent) : Dialog(component, R.string.settin
             }
             Space(getDouble(R.dimen.padding_large))()
             right = this@SettingsDialog.group(R.string.global_settings) {
-                isDisable = !isAdmin()
+                GlobalScope.launch(Dispatchers.JavaFx) {
+                    isDisable = !isAdmin(App.API)
+                }
                 gridPane {
                     gap = getDouble(R.dimen.padding_medium)
                     transaction {

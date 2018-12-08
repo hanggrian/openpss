@@ -20,7 +20,7 @@ import kotlinx.nosql.equal
 import kotlin.math.ceil
 
 fun Routing.routeInvoice() {
-    route("invoice") {
+    route("invoices") {
         get {
             val search = call.getInt("search")
             val customer = call.getStringOrNull("customer")

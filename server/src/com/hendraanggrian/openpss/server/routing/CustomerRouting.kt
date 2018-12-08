@@ -23,7 +23,7 @@ import java.util.regex.Pattern
 import kotlin.math.ceil
 
 fun Routing.routeCustomer() {
-    route("customer") {
+    route("customers") {
         get {
             val search = call.getString("search")
             val page = call.getInt("page")
@@ -50,9 +50,7 @@ fun Routing.routeCustomer() {
                 transaction { Customers { it.name.matches("^$customer$", Pattern.CASE_INSENSITIVE) }.isNotEmpty() } ->
                     call.respond(HttpStatusCode.NotAcceptable, "Name taken")
                 else -> {
-                    transaction {
-                        customer.id = Customers.insert(customer)
-                    }
+                    customer.id = transaction { Customers.insert(customer) }
                     call.respond(customer)
                 }
             }

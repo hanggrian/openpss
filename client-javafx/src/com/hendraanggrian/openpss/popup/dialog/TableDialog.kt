@@ -3,7 +3,6 @@ package com.hendraanggrian.openpss.popup.dialog
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.FxComponent
 import com.hendraanggrian.openpss.db.Document
-import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.ui.Refreshable
 import javafx.geometry.Pos.CENTER_RIGHT
 import javafx.scene.Node
@@ -13,7 +12,11 @@ import javafx.scene.control.TableView
 import javafx.scene.control.TableView.CONSTRAINED_RESIZE_POLICY
 import javafx.scene.image.ImageView
 import javafx.stage.Stage
-import kotlinx.nosql.mongodb.DocumentSchema
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.javafx.JavaFx
+import kotlinx.coroutines.launch
 import ktfx.application.later
 import ktfx.collections.toMutableObservableList
 import ktfx.coroutines.onAction
@@ -26,10 +29,9 @@ import ktfx.layouts.tooltip
 import ktfx.stage.setMinSize
 
 @Suppress("LeakingThis")
-abstract class TableDialog<D : Document<S>, S : DocumentSchema<D>>(
+abstract class TableDialog<D : Document<*>>(
     component: FxComponent,
-    titleId: String,
-    protected val schema: S
+    titleId: String
 ) : Dialog(component, titleId), TableColumnsBuilder<D>, Refreshable {
 
     protected lateinit var refreshButton: Button
@@ -54,7 +56,14 @@ abstract class TableDialog<D : Document<S>, S : DocumentSchema<D>>(
                 }
                 deleteButton = jfxButton(graphic = ImageView(R.image.act_delete)) {
                     tooltip(getString(R.string.delete))
-                    onAction { delete() }
+                    onAction {
+                        ConfirmDialog(this@TableDialog).show {
+                            val selected = table.selectionModel.selectedItem
+                            if (delete(selected)) {
+                                table.items.remove(selected)
+                            }
+                        }
+                    }
                     later {
                         disableProperty().bind(table.selectionModel.selectedItemProperty().isNull)
                     }
@@ -83,13 +92,14 @@ abstract class TableDialog<D : Document<S>, S : DocumentSchema<D>>(
     }
 
     override fun refresh() {
-        table.items = transaction { schema().toMutableObservableList() }
+        GlobalScope.launch(Dispatchers.JavaFx) {
+            table.items = refresh().toMutableObservableList()
+        }
     }
+
+    abstract suspend fun CoroutineScope.refresh(): List<D>
 
     abstract fun add()
 
-    open fun delete() = ConfirmDialog(this).show {
-        transaction { schema -= table.selectionModel.selectedItem }
-        table.items.remove(table.selectionModel.selectedItem)
-    }
+    abstract suspend fun CoroutineScope.delete(selected: D): Boolean
 }

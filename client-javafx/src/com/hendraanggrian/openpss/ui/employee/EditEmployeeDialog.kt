@@ -4,17 +4,14 @@ import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.FxComponent
 import com.hendraanggrian.openpss.db.schemas.Employee
-import com.hendraanggrian.openpss.db.schemas.Employees
-import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.popup.dialog.TableDialog
 import com.hendraanggrian.openpss.util.clean
 import com.hendraanggrian.openpss.util.doneCell
 import com.hendraanggrian.openpss.util.stringCell
 import javafx.scene.control.MenuItem
-import kotlinx.nosql.notEqual
+import kotlinx.coroutines.CoroutineScope
 import ktfx.beans.binding.buildBinding
 import ktfx.beans.binding.buildStringBinding
-import ktfx.collections.toMutableObservableList
 import ktfx.coroutines.onAction
 import ktfx.jfoenix.jfxSnackbar
 import ktfx.layouts.contextMenu
@@ -24,7 +21,7 @@ import ktfx.scene.control.isSelected
 
 class EditEmployeeDialog(
     component: FxComponent
-) : TableDialog<Employee, Employees>(component, R.string.employee, Employees) {
+) : TableDialog<Employee>(component, R.string.employee) {
 
     init {
         getString(R.string.name)<String> {
@@ -59,40 +56,35 @@ class EditEmployeeDialog(
                 })
                 bindDisable()
                 onAction {
-                    (ToggleAdminEmployeeAction(this@EditEmployeeDialog, table.selectionModel.selectedItem)) {
-                        refresh()
-                    }
+                    val selected = table.selectionModel.selectedItem
+                    App.API.editEmployee(selected.name, selected.password, !selected.isAdmin)
+                    refresh()
                 }
             }
             separatorMenuItem()
             (getString(R.string.reset_password)) {
                 bindDisable()
                 onAction {
-                    (ResetAdminEmployeeAction(this@EditEmployeeDialog, table.selectionModel.selectedItem)) {
-                        rootLayout.jfxSnackbar(
-                            getString(R.string.change_password_popup_will_appear_when_is_logged_back_in, login.name),
-                            App.DURATION_LONG
-                        )
-                    }
+                    val selected = table.selectionModel.selectedItem
+                    App.API.editEmployee(selected.name, Employee.DEFAULT_PASSWORD, selected.isAdmin)
+                    rootLayout.jfxSnackbar(
+                        getString(R.string.change_password_popup_will_appear_when_is_logged_back_in, login.name),
+                        App.DURATION_LONG
+                    )
                 }
             }
         }
     }
 
-    override fun refresh() {
-        table.items = transaction { Employees { it.name.notEqual(Employee.BACKDOOR.name) }.toMutableObservableList() }
-    }
+    override suspend fun CoroutineScope.refresh(): List<Employee> = App.API.getEmployees()
 
     override fun add() = AddEmployeePopover(this, R.string.add_employee, false).show(addButton) { employee ->
-        (AddEmployeeAction(this, Employee.new(employee!!.clean()))) {
-            table.items.add(it)
-            table.selectionModel.select(it)
-        }
+        val added = App.API.addEmployee(employee!!.clean())
+        table.items.add(added)
+        table.selectionModel.select(added)
     }
 
-    override fun delete() = (DeleteEmployeeAction(this, table.selectionModel.selectedItem)) {
-        super.delete()
-    }
+    override suspend fun CoroutineScope.delete(selected: Employee): Boolean = App.API.deleteEmployee(selected.name)
 
     private fun MenuItem.bindDisable() = disableProperty().bind(table.selectionModel.selectedItemProperty().isNull)
 }

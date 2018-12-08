@@ -26,8 +26,8 @@ import com.hendraanggrian.openpss.ui.finance.FinanceController
 import com.hendraanggrian.openpss.ui.invoice.InvoiceController
 import com.hendraanggrian.openpss.ui.main.help.AboutDialog
 import com.hendraanggrian.openpss.ui.main.help.GitHubHelper
-import com.hendraanggrian.openpss.ui.price.EditDigitalPrintPriceDialog
-import com.hendraanggrian.openpss.ui.price.EditOffsetPrintPriceDialog
+import com.hendraanggrian.openpss.ui.price.EditDigitalPriceDialog
+import com.hendraanggrian.openpss.ui.price.EditOffsetPriceDialog
 import com.hendraanggrian.openpss.ui.price.EditPlatePriceDialog
 import com.hendraanggrian.openpss.ui.schedule.ScheduleController
 import com.hendraanggrian.openpss.ui.wage.EditRecessDialog
@@ -233,8 +233,8 @@ class MainController : Controller(), Refreshable {
 
     @FXML fun editPrice(event: ActionEvent) = when (event.source) {
         platePriceItem -> EditPlatePriceDialog(this)
-        offsetPrintPriceItem -> EditOffsetPrintPriceDialog(this)
-        else -> EditDigitalPrintPriceDialog(this)
+        offsetPrintPriceItem -> EditOffsetPriceDialog(this)
+        else -> EditDigitalPriceDialog(this)
     }.show()
 
     @FXML fun editEmployee() = EditEmployeeDialog(this).show()

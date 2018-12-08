@@ -8,10 +8,13 @@ import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.db.schemas.Log
 import com.hendraanggrian.openpss.db.schemas.OffsetPrice
 import com.hendraanggrian.openpss.db.schemas.PlatePrice
-import io.ktor.client.request.delete
+import com.hendraanggrian.openpss.db.schemas.Recess
 import io.ktor.client.request.get
 import io.ktor.client.request.post
-import io.ktor.client.request.put
+import io.ktor.client.request.request
+import io.ktor.client.response.HttpResponse
+import io.ktor.http.HttpMethod
+import org.joda.time.LocalTime
 
 class OpenPSSApi : Api("http://localhost:8080") {
 
@@ -23,16 +26,21 @@ class OpenPSSApi : Api("http://localhost:8080") {
         )
     }
 
+    suspend fun isAdmin(name: String): Boolean = client.get<Employee> {
+        apiUrl("employees/$name")
+    }.isAdmin
+
     suspend fun getCustomers(search: String, page: Int, count: Int): Page<Customer> = client.get {
-        apiUrl("customer")
+        apiUrl("customers")
         parameters(
             "search" to search,
-            "page" to page
+            "page" to page,
+            "count" to count
         )
     }
 
     suspend fun addCustomer(name: String, isCompany: Boolean): Customer = client.post {
-        apiUrl("customer")
+        apiUrl("customers")
         json()
         parameters(
             "name" to name,
@@ -41,7 +49,7 @@ class OpenPSSApi : Api("http://localhost:8080") {
     }
 
     suspend fun getLogs(page: Int, count: Int): Page<Log> = client.get {
-        apiUrl("log")
+        apiUrl("logs")
         parameters(
             "page" to page,
             "count" to count
@@ -56,7 +64,7 @@ class OpenPSSApi : Api("http://localhost:8080") {
         page: Int,
         count: Int
     ): Page<Invoice> = client.get {
-        apiUrl("log")
+        apiUrl("logs")
         parameters(
             "search" to search,
             "customer" to customer,
@@ -68,85 +76,115 @@ class OpenPSSApi : Api("http://localhost:8080") {
     }
 
     suspend fun getPlatePrices(): List<PlatePrice> = client.get {
-        apiUrl("plate-price")
+        apiUrl("plate-prices")
     }
 
-    suspend fun addPlatePrice(name: String): PlatePrice = client.post {
-        apiUrl("plate-price")
+    suspend fun addPlatePrice(name: String): PlatePrice? = client.post {
+        apiUrl("plate-prices")
         parameters("name" to name)
     }
 
-    suspend fun editPlatePrice(name: String, price: Double): PlatePrice = client.put {
-        apiUrl("plate-price/$name")
+    suspend fun editPlatePrice(name: String, price: Double): Boolean = client.request<HttpResponse> {
+        apiUrl("plate-prices/$name")
+        method = HttpMethod.Put
         parameters("price" to price)
-    }
+    }.useStatus()
 
-    suspend fun deletePlatePrice(name: String): PlatePrice = client.delete {
-        apiUrl("plate-price/$name")
-    }
+    suspend fun deletePlatePrice(name: String): Boolean = client.request<HttpResponse> {
+        apiUrl("plate-prices/$name")
+        method = HttpMethod.Delete
+    }.useStatus()
 
     suspend fun getOffsetPrices(): List<OffsetPrice> = client.get {
-        apiUrl("offset-price")
+        apiUrl("offset-prices")
     }
 
-    suspend fun addOffsetPrice(name: String): OffsetPrice = client.post {
-        apiUrl("offset-price")
+    suspend fun addOffsetPrice(name: String): OffsetPrice? = client.post {
+        apiUrl("offset-prices")
         parameters("name" to name)
     }
 
-    suspend fun editOffsetPrice(name: String, minQty: Int, minPrice: Double, excessPrice: Double): OffsetPrice =
-        client.put {
-            apiUrl("offset-price/$name")
+    suspend fun editOffsetPrice(name: String, minQty: Int, minPrice: Double, excessPrice: Double): Boolean =
+        client.request<HttpResponse> {
+            apiUrl("offset-prices/$name")
+            method = HttpMethod.Put
             parameters(
                 "minQty" to minQty,
                 "minPrice" to minPrice,
                 "excessPrice" to excessPrice
             )
-        }
+        }.useStatus()
 
-    suspend fun deleteOffsetPrice(name: String): OffsetPrice = client.delete {
-        apiUrl("offset-price/$name")
-    }
+    suspend fun deleteOffsetPrice(name: String): Boolean = client.request<HttpResponse> {
+        apiUrl("offset-prices/$name")
+        method = HttpMethod.Delete
+    }.useStatus()
 
     suspend fun getDigitalPrices(): List<DigitalPrice> = client.get {
-        apiUrl("digital-price")
+        apiUrl("digital-prices")
     }
 
-    suspend fun addDigitalPrice(name: String): DigitalPrice = client.post {
-        apiUrl("digital-price")
+    suspend fun addDigitalPrice(name: String): DigitalPrice? = client.post {
+        apiUrl("digital-prices")
         parameters("name" to name)
     }
 
-    suspend fun editDigitalPrice(name: String, oneSidePrice: Double, twoSidePrice: Double): DigitalPrice = client.put {
-        apiUrl("digital-price/$name")
-        parameters(
-            "oneSidePrice" to oneSidePrice,
-            "twoSidePrice" to twoSidePrice
-        )
-    }
+    suspend fun editDigitalPrice(name: String, oneSidePrice: Double, twoSidePrice: Double): Boolean =
+        client.request<HttpResponse> {
+            apiUrl("digital-prices/$name")
+            method = HttpMethod.Put
+            parameters(
+                "oneSidePrice" to oneSidePrice,
+                "twoSidePrice" to twoSidePrice
+            )
+        }.useStatus()
 
-    suspend fun deleteDigitalPrice(name: String): DigitalPrice = client.delete {
-        apiUrl("digital-price/$name")
-    }
+    suspend fun deleteDigitalPrice(name: String): Boolean = client.request<HttpResponse> {
+        apiUrl("digital-prices/$name")
+        method = HttpMethod.Delete
+    }.useStatus()
 
     suspend fun getEmployees(): List<Employee> = client.get {
-        apiUrl("employee")
+        apiUrl("employees")
     }
 
-    suspend fun addEmployee(name: String): Employee = client.post {
-        apiUrl("employee")
+    suspend fun addEmployee(name: String): Employee? = client.post {
+        apiUrl("employees")
         parameters("name" to name)
     }
 
-    suspend fun editEmployee(name: String, password: String, isAdmin: Boolean): Employee = client.put {
-        apiUrl("employee/$name")
+    suspend fun editEmployee(name: String, password: String, isAdmin: Boolean): Boolean = client.request<HttpResponse> {
+        apiUrl("employees/$name")
+        method = HttpMethod.Put
         parameters(
             "password" to password,
             "isAdmin" to isAdmin
         )
+    }.useStatus()
+
+    suspend fun deleteEmployee(name: String): Boolean = client.request<HttpResponse> {
+        apiUrl("employees/$name")
+        method = HttpMethod.Delete
+    }.useStatus()
+
+    suspend fun getRecesses(): List<Recess> = client.get {
+        apiUrl("recesses")
     }
 
-    suspend fun deleteEmployee(name: String): Employee = client.delete {
-        apiUrl("employee/$name")
+    suspend fun addRecess(start: LocalTime, end: LocalTime): Recess = client.post {
+        apiUrl("recesses")
+        parameters(
+            "start" to start,
+            "end" to end
+        )
     }
+
+    suspend fun deleteRecess(start: LocalTime, end: LocalTime): Boolean = client.request<HttpResponse> {
+        apiUrl("recesses")
+        method = HttpMethod.Delete
+        parameters(
+            "start" to start,
+            "end" to end
+        )
+    }.useStatus()
 }

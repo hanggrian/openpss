@@ -4,7 +4,6 @@ import com.hendraanggrian.openpss.db.Database
 import com.hendraanggrian.openpss.db.Document
 import com.hendraanggrian.openpss.db.Named
 import com.hendraanggrian.openpss.db.NamedSchema
-import com.hendraanggrian.openpss.db.Numbered
 import kotlinx.nosql.Id
 import kotlinx.nosql.ListColumn
 import kotlinx.nosql.boolean
@@ -16,7 +15,6 @@ import kotlinx.nosql.string
 import org.joda.time.LocalDate
 
 object Customers : DocumentSchema<Customer>("customers", Customer::class), NamedSchema {
-    val no = integer("no")
     override val name = string("name")
     val isCompany = boolean("is_company")
     val since = date("since")
@@ -31,22 +29,20 @@ object Customers : DocumentSchema<Customer>("customers", Customer::class), Named
 }
 
 data class Customer(
-    override val no: Int,
     override var name: String,
     val isCompany: Boolean,
     val since: LocalDate,
     var address: String?,
     var note: String?,
     var contacts: List<Contact>
-) : Document<Customers>, Numbered, Named {
+) : Document<Customers>, Named {
 
     companion object {
 
         fun new(
-            no: Int,
             name: String,
             isCompany: Boolean
-        ): Customer = Customer(no, name, isCompany, Database.date(), null, null, listOf())
+        ): Customer = Customer(name, isCompany, Database.date(), null, null, listOf())
     }
 
     override lateinit var id: Id<String, Customers>
@@ -57,7 +53,6 @@ data class Customer(
         val type: String,
         val value: String
     ) {
-        companion object;
 
         override fun toString(): String = value
     }

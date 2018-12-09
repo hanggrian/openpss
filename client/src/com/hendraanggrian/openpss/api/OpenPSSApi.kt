@@ -48,6 +48,26 @@ class OpenPSSApi : Api("http://localhost:8080") {
         )
     }
 
+    suspend fun editCustomer(name: String, address: String?, note: String?): Boolean = client.request<HttpResponse> {
+        apiUrl("customers/$name")
+        method = HttpMethod.Put
+        parameters(
+            "address" to address,
+            "note" to note
+        )
+    }.useStatus()
+
+    suspend fun addContact(name: String, contact: Customer.Contact): Customer.Contact = client.post {
+        apiUrl("customers/$name/contacts")
+        body = contact
+    }
+
+    suspend fun deleteContact(name: String, contact: Customer.Contact): Boolean = client.request<HttpResponse> {
+        apiUrl("customers/$name/contacts")
+        method = HttpMethod.Delete
+        body = contact
+    }.useStatus()
+
     suspend fun getLogs(page: Int, count: Int): Page<Log> = client.get {
         apiUrl("logs")
         parameters(

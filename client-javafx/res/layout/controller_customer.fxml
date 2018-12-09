@@ -28,26 +28,22 @@
             <padding>
                 <Insets topRightBottomLeft="16"/>
             </padding>
-            <ImageView fx:id="noImage" GridPane.rowIndex="0" GridPane.columnIndex="0">
-                <Image url="@/image/text_customer.png"/>
-            </ImageView>
-            <Label fx:id="noLabel" wrapText="true" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
-            <ImageView fx:id="sinceImage" GridPane.rowIndex="1" GridPane.columnIndex="0">
+            <ImageView fx:id="sinceImage" GridPane.rowIndex="0" GridPane.columnIndex="0">
                 <Image url="@/image/text_since.png"/>
             </ImageView>
-            <Label fx:id="sinceLabel" wrapText="true" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
-            <ImageView fx:id="addressImage" GridPane.rowIndex="2" GridPane.columnIndex="0">
+            <Label fx:id="sinceLabel" wrapText="true" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+            <ImageView fx:id="addressImage" GridPane.rowIndex="1" GridPane.columnIndex="0">
                 <Image url="@/image/text_address.png"/>
             </ImageView>
-            <Label fx:id="addressLabel" wrapText="true" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
-            <ImageView fx:id="noteImage" GridPane.rowIndex="3" GridPane.columnIndex="0">
+            <Label fx:id="addressLabel" wrapText="true" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+            <ImageView fx:id="noteImage" GridPane.rowIndex="2" GridPane.columnIndex="0">
                 <Image url="@/image/text_note.png"/>
             </ImageView>
-            <Label fx:id="noteLabel" wrapText="true" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
-            <ImageView fx:id="contactImage" GridPane.rowIndex="4" GridPane.columnIndex="0" GridPane.valignment="TOP">
+            <Label fx:id="noteLabel" wrapText="true" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+            <ImageView fx:id="contactImage" GridPane.rowIndex="3" GridPane.columnIndex="0" GridPane.valignment="TOP">
                 <Image url="@/image/text_contact.png"/>
             </ImageView>
-            <TableView fx:id="contactTable" prefHeight="-NaN" GridPane.rowIndex="4" GridPane.columnIndex="1">
+            <TableView fx:id="contactTable" prefHeight="-NaN" GridPane.rowIndex="3" GridPane.columnIndex="1">
                 <columns>
                     <TableColumn fx:id="typeColumn" text="%type"/>
                     <TableColumn fx:id="valueColumn" text="%value"/>

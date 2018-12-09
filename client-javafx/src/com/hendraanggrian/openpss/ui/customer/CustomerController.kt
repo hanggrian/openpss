@@ -48,8 +48,6 @@ class CustomerController : ActionController(), Refreshable {
 
     @FXML lateinit var masterDetailPane: MasterDetailPane
     @FXML lateinit var customerPagination: PaginatedPane
-    @FXML lateinit var noImage: ImageView
-    @FXML lateinit var noLabel: Label
     @FXML lateinit var sinceImage: ImageView
     @FXML lateinit var sinceLabel: Label
     @FXML lateinit var addressImage: ImageView
@@ -91,7 +89,6 @@ class CustomerController : ActionController(), Refreshable {
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
-        noImage.tooltip(getString(R.string.id))
         sinceImage.tooltip(getString(R.string.since))
         addressImage.tooltip(getString(R.string.address))
         noteImage.tooltip(getString(R.string.note))
@@ -124,7 +121,6 @@ class CustomerController : ActionController(), Refreshable {
                 titleProperty().bind(buildStringBinding(customerList.selectionModel.selectedItemProperty()) {
                     customerList.selectionModel.selectedItem?.name
                 })
-                noLabel.bindLabel { customerList.selectionModel.selectedItem?.no?.toString().orEmpty() }
                 sinceLabel.bindLabel {
                     customerList.selectionModel.selectedItem?.since?.toString(PATTERN_DATE).orEmpty()
                 }
@@ -148,25 +144,18 @@ class CustomerController : ActionController(), Refreshable {
     }
 
     private fun edit() = EditCustomerDialog(this, customerList.selectionModel.selectedItem).show {
-        (EditCustomerAction(
-            this@CustomerController,
-            customerList.selectionModel.selectedItem,
-            it!!.name,
-            it.address,
-            it.note
-        )) { reload() }
+        App.API.editCustomer(it!!.name, it.address, it.note)
+        reload()
     }
 
     @FXML fun addContact() = AddContactPopover(this).show(contactTable) {
-        (AddContactAction(this@CustomerController, customerList.selectionModel.selectedItem, it!!)) { reload() }
+        App.API.addContact(customerList.selectionModel.selectedItem.name, it!!)
+        reload()
     }
 
     @FXML fun deleteContact() = ConfirmDialog(this, R.string.delete_contact).show {
-        (DeleteContactAction(
-            this@CustomerController,
-            customerList.selectionModel.selectedItem,
-            contactTable.selectionModel.selectedItem
-        )) { reload() }
+        App.API.deleteContact(customerList.selectionModel.selectedItem.name, contactTable.selectionModel.selectedItem)
+        reload()
     }
 
     private fun Label.bindLabel(target: () -> String) = textProperty()

@@ -121,7 +121,7 @@ class ViewInvoicePopover(
                     "${invoice.dateTime.toString(PATTERN_DATETIME_EXTENDED)} " +
                         "(${transaction { Employees[invoice.employeeId].single().name }})"
                 )
-                label("${customer.no}. ${customer.name}") {
+                label(customer.name) {
                     styleClass += R.style.bold
                 }
             }

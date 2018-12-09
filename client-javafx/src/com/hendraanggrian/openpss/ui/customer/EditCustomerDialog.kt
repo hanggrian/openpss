@@ -74,7 +74,6 @@ class EditCustomerDialog(
 
     override val nullableResult: Customer?
         get() = Customer(
-            customer.no,
             nameField.text,
             customer.isCompany,
             customer.since,

@@ -5,6 +5,7 @@ import com.hendraanggrian.openpss.server.route.routeAuth
 import com.hendraanggrian.openpss.server.route.routeCustomer
 import com.hendraanggrian.openpss.server.route.routeDigitalPrice
 import com.hendraanggrian.openpss.server.route.routeEmployee
+import com.hendraanggrian.openpss.server.route.routeGlobalSetting
 import com.hendraanggrian.openpss.server.route.routeInvoice
 import com.hendraanggrian.openpss.server.route.routeLog
 import com.hendraanggrian.openpss.server.route.routeOffsetPrice
@@ -39,6 +40,8 @@ fun Application.main() {
         routeCustomer()
 
         routeLog()
+
+        routeGlobalSetting()
 
         routeInvoice()
 

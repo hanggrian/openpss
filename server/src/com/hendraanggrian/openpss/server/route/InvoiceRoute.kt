@@ -3,12 +3,16 @@ package com.hendraanggrian.openpss.server.route
 import com.hendraanggrian.openpss.content.Page
 import com.hendraanggrian.openpss.db.matches
 import com.hendraanggrian.openpss.db.schemas.Customers
+import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.db.schemas.Invoices
+import com.hendraanggrian.openpss.db.schemas.Payments
 import com.hendraanggrian.openpss.server.db.transaction
 import com.hendraanggrian.openpss.server.util.getBooleanOrNull
 import com.hendraanggrian.openpss.server.util.getInt
 import com.hendraanggrian.openpss.server.util.getStringOrNull
 import io.ktor.application.call
+import io.ktor.http.HttpStatusCode
+import io.ktor.request.receive
 import io.ktor.response.respond
 import io.ktor.routing.Routing
 import io.ktor.routing.delete
@@ -54,11 +58,20 @@ fun Routing.routeInvoice() {
             )
         }
         post {
+            val invoice = call.receive<Invoice>()
+            invoice.id = transaction { Invoices.insert(invoice) }
+            call.respond(invoice)
         }
         route("{no}") {
             put {
             }
             delete {
+                val invoice = call.receive<Invoice>()
+                transaction {
+                    Invoices -= invoice.id
+                    Payments { Payments.invoiceId.equal(invoice.id) }.remove()
+                }
+                call.respond(HttpStatusCode.OK)
             }
         }
     }

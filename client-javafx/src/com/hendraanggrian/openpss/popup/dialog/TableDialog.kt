@@ -31,7 +31,8 @@ import ktfx.stage.setMinSize
 @Suppress("LeakingThis")
 abstract class TableDialog<D : Document<*>>(
     component: FxComponent,
-    titleId: String
+    titleId: String,
+    requestPermissionWhenDelete: Boolean = false
 ) : Dialog(component, titleId), TableColumnsBuilder<D>, Refreshable {
 
     protected lateinit var refreshButton: Button
@@ -57,11 +58,17 @@ abstract class TableDialog<D : Document<*>>(
                 deleteButton = jfxButton(graphic = ImageView(R.image.act_delete)) {
                     tooltip(getString(R.string.delete))
                     onAction {
-                        ConfirmDialog(this@TableDialog).show {
-                            val selected = table.selectionModel.selectedItem
-                            if (delete(selected)) {
-                                table.items.remove(selected)
+                        val action = {
+                            ConfirmDialog(this@TableDialog).show {
+                                val selected = table.selectionModel.selectedItem
+                                if (delete(selected)) {
+                                    table.items.remove(selected)
+                                }
                             }
+                        }
+                        when {
+                            requestPermissionWhenDelete -> withPermission { action() }
+                            else -> action()
                         }
                     }
                     later {

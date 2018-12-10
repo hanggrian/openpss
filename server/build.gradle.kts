@@ -2,6 +2,8 @@ plugins {
     kotlin("jvm")
     id("kotlinx-serialization")
     dokka()
+    idea
+    generating("r")
 }
 
 group = RELEASE_GROUP
@@ -34,6 +36,13 @@ dependencies {
 }
 
 tasks {
+    named<com.hendraanggrian.generating.r.RTask>("generateR") {
+        resourcesDirectory = projectDir.resolve("res")
+        properties {
+            readResourceBundle = true
+        }
+    }
+
     named<org.jetbrains.dokka.gradle.DokkaTask>("dokka") {
         outputDirectory = "$buildDir/docs"
         doFirst { file(outputDirectory).deleteRecursively() }

@@ -19,9 +19,7 @@ import ktfx.layouts.menuItem
 import ktfx.layouts.separatorMenuItem
 import ktfx.scene.control.isSelected
 
-class EditEmployeeDialog(
-    component: FxComponent
-) : TableDialog<Employee>(component, R.string.employee) {
+class EditEmployeeDialog(component: FxComponent) : TableDialog<Employee>(component, R.string.employee, true) {
 
     init {
         getString(R.string.name)<String> {

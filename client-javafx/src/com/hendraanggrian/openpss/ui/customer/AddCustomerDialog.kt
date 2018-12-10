@@ -2,6 +2,7 @@ package com.hendraanggrian.openpss.ui.customer
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.FxComponent
+import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.popup.dialog.ResultableDialog
 import com.hendraanggrian.openpss.util.clean
 import com.hendraanggrian.openpss.util.isPersonName
@@ -22,8 +23,7 @@ import ktfx.jfoenix.jfxTextField
 import ktfx.layouts.label
 import ktfx.layouts.tab
 
-class AddCustomerDialog(component: FxComponent) :
-    ResultableDialog<Pair<String, Boolean>>(component, R.string.add_customer) {
+class AddCustomerDialog(component: FxComponent) : ResultableDialog<Customer>(component, R.string.add_customer) {
 
     private companion object {
         const val WIDTH = 300.0
@@ -82,6 +82,6 @@ class AddCustomerDialog(component: FxComponent) :
             otherwise getString(companyTextId)
     )
 
-    override val nullableResult: Pair<String, Boolean>
-        get() = editor.text.clean() to (tabPane.selectionModel.selectedIndex == 1)
+    override val nullableResult: Customer
+        get() = Customer.new(editor.text.clean(), tabPane.selectionModel.selectedIndex == 1)
 }

@@ -136,16 +136,18 @@ class CustomerController : ActionController(), Refreshable {
         })
     }
 
-    fun add() = AddCustomerDialog(this).show { result ->
+    fun add() = AddCustomerDialog(this).show { customer ->
         GlobalScope.launch(Dispatchers.JavaFx) {
-            customerList.items.add(App.API.addCustomer(result!!.first, result.second))
+            customerList.items.add(App.API.addCustomer(customer!!))
             customerList.selectionModel.select(customerList.items.lastIndex)
         }
     }
 
     private fun edit() = EditCustomerDialog(this, customerList.selectionModel.selectedItem).show {
-        App.API.editCustomer(it!!.name, it.address, it.note)
-        reload()
+        withPermission {
+            App.API.editCustomer(it!!.name, it.address, it.note)
+            reload()
+        }
     }
 
     @FXML fun addContact() = AddContactPopover(this).show(contactTable) {
@@ -154,8 +156,13 @@ class CustomerController : ActionController(), Refreshable {
     }
 
     @FXML fun deleteContact() = ConfirmDialog(this, R.string.delete_contact).show {
-        App.API.deleteContact(customerList.selectionModel.selectedItem.name, contactTable.selectionModel.selectedItem)
-        reload()
+        withPermission {
+            App.API.deleteContact(
+                customerList.selectionModel.selectedItem.name,
+                contactTable.selectionModel.selectedItem
+            )
+            reload()
+        }
     }
 
     private fun Label.bindLabel(target: () -> String) = textProperty()

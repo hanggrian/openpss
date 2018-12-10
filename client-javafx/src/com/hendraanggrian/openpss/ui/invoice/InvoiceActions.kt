@@ -12,15 +12,6 @@ import com.hendraanggrian.openpss.db.schemas.Payments
 import com.hendraanggrian.openpss.db.transaction
 import kotlinx.nosql.equal
 
-class AddInvoiceAction(component: FxComponent, val invoice: Invoice) : Action<Invoice>(component) {
-
-    override val log: String = getString(R.string._log_invoice_add, invoice.no, transaction {
-        Customers[invoice.customerId].single().name
-    })
-
-    override fun SessionWrapper.handle(): Invoice = invoice.apply { id = Invoices.insert(invoice) }
-}
-
 class DeleteInvoiceAction(component: FxComponent, val invoice: Invoice) : Action<Unit>(component, true) {
 
     override val log: String = getString(R.string._log_invoice_delete, invoice.no, transaction {

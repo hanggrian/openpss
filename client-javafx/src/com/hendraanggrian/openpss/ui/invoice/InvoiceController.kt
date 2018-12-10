@@ -267,11 +267,10 @@ class InvoiceController : ActionController(), Refreshable {
                                 getString(R.string.delete)(ImageView(R.image.menu_delete)) {
                                     disableProperty().bind(invoiceTable.selectionModel.selectedItemProperty().isNull)
                                     onAction {
-                                        (DeleteInvoiceAction(
-                                            this@InvoiceController,
-                                            invoiceTable.selectionModel.selectedItem
-                                        )) {
-                                            invoiceTable.items.remove(invoiceTable.selectionModel.selectedItem)
+                                        withPermission {
+                                            if (App.API.deleteInvoice(invoiceTable.selectionModel.selectedItem)) {
+                                                invoiceTable.items.remove(invoiceTable.selectionModel.selectedItem)
+                                            }
                                         }
                                     }
                                 }
@@ -284,10 +283,8 @@ class InvoiceController : ActionController(), Refreshable {
     }
 
     fun addInvoice() = AddInvoiceDialog(this).show {
-        (AddInvoiceAction(this@InvoiceController, it!!)) {
-            invoiceTable.items.add(it)
-            invoiceTable.selectionModel.selectFirst()
-        }
+        invoiceTable.items.add(App.API.addInvoice(it!!))
+        invoiceTable.selectionModel.selectFirst()
     }
 
     private fun clearFilters() {

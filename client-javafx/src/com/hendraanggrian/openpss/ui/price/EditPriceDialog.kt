@@ -9,10 +9,7 @@ import com.hendraanggrian.openpss.popup.popover.InputPopover
 import com.hendraanggrian.openpss.util.stringCell
 import kotlinx.coroutines.CoroutineScope
 
-abstract class EditPriceDialog<D>(
-    component: FxComponent,
-    headerId: String
-) : TableDialog<D>(component, headerId)
+abstract class EditPriceDialog<D>(component: FxComponent, headerId: String) : TableDialog<D>(component, headerId)
     where D : Document<*>, D : Named {
 
     init {

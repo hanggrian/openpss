@@ -5,7 +5,6 @@ import com.hendraanggrian.openpss.db.matches
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.server.db.transaction
-import com.hendraanggrian.openpss.server.util.getBoolean
 import com.hendraanggrian.openpss.server.util.getInt
 import com.hendraanggrian.openpss.server.util.getString
 import com.hendraanggrian.openpss.util.isNotEmpty
@@ -47,7 +46,7 @@ fun Routing.routeCustomer() {
             )
         }
         post {
-            val customer = Customer.new(call.getString("name"), call.getBoolean("isCompany"))
+            val customer = call.receive<Customer>()
             when {
                 transaction { Customers { it.name.matches("^$customer$", Pattern.CASE_INSENSITIVE) }.isNotEmpty() } ->
                     call.respond(HttpStatusCode.NotAcceptable, "Name taken")
@@ -57,7 +56,7 @@ fun Routing.routeCustomer() {
                 }
             }
         }
-        route("{no}") {
+        route("{name}") {
             put {
                 val name = call.getString("name")
                 val address = call.getString("address")

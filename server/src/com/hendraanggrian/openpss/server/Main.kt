@@ -1,15 +1,15 @@
 package com.hendraanggrian.openpss.server
 
 import com.google.gson.GsonBuilder
-import com.hendraanggrian.openpss.server.routing.routeAuth
-import com.hendraanggrian.openpss.server.routing.routeCustomer
-import com.hendraanggrian.openpss.server.routing.routeDigitalPrice
-import com.hendraanggrian.openpss.server.routing.routeEmployee
-import com.hendraanggrian.openpss.server.routing.routeInvoice
-import com.hendraanggrian.openpss.server.routing.routeLog
-import com.hendraanggrian.openpss.server.routing.routeOffsetPrice
-import com.hendraanggrian.openpss.server.routing.routePlatePrice
-import com.hendraanggrian.openpss.server.routing.routeRecess
+import com.hendraanggrian.openpss.server.route.routeAuth
+import com.hendraanggrian.openpss.server.route.routeCustomer
+import com.hendraanggrian.openpss.server.route.routeDigitalPrice
+import com.hendraanggrian.openpss.server.route.routeEmployee
+import com.hendraanggrian.openpss.server.route.routeInvoice
+import com.hendraanggrian.openpss.server.route.routeLog
+import com.hendraanggrian.openpss.server.route.routeOffsetPrice
+import com.hendraanggrian.openpss.server.route.routePlatePrice
+import com.hendraanggrian.openpss.server.route.routeRecess
 import com.hendraanggrian.openpss.util.jodaTimeSupport
 import io.ktor.application.Application
 import io.ktor.application.install

@@ -1,7 +1,9 @@
 package com.hendraanggrian.openpss
 
 import android.app.Application
+import android.content.Context
 import androidx.core.content.edit
+import androidx.multidex.MultiDex
 import androidx.preference.PreferenceManager
 import com.hendraanggrian.bundler.Bundler
 import com.mongodb.ServerAddress
@@ -22,5 +24,10 @@ class App : Application() {
                 putString("server_port", ServerAddress.defaultPort().toString())
             }
         }
+    }
+
+    override fun attachBaseContext(base: Context?) {
+        super.attachBaseContext(base)
+        MultiDex.install(this)
     }
 }

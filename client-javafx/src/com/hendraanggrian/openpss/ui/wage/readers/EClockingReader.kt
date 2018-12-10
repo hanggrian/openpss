@@ -13,7 +13,7 @@ import java.io.File
 
 /**
  * Compatible with e Clocking fingerprint reader.
- * Tested version: `2.1.015`.
+ * Tested name: `2.1.015`.
  */
 object EClockingReader : Reader() {
 

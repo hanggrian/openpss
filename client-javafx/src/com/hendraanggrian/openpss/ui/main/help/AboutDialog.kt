@@ -85,7 +85,7 @@ class AboutDialog(component: FxComponent) : Dialog<Unit>(), FxComponent by compo
                     } marginTop 4.0
                     textFlow {
                         "${getString(R.string.author)} " { font = Font.font(12.0) }
-                        BuildConfig.AUTHOR { styleClass += R.style.bold }
+                        BuildConfig.USER { styleClass += R.style.bold }
                     } marginTop 4.0
                     hbox {
                         spacing = getDouble(R.dimen.padding_medium)

@@ -71,13 +71,13 @@ packr {
 }
 
 tasks {
-    "dokka"(org.jetbrains.dokka.gradle.DokkaTask::class) {
+    named<org.jetbrains.dokka.gradle.DokkaTask>("dokka") {
         outputDirectory = "$buildDir/docs"
         doFirst { file(outputDirectory).deleteRecursively() }
     }
 
-    "generateR"(com.hendraanggrian.generating.r.RTask::class) {
-        resourcesDir = projectDir.resolve("res")
+    named<com.hendraanggrian.generating.r.RTask>("generateR") {
+        resourcesDirectory = projectDir.resolve("res")
         exclude("font", "license")
         css {
             isJavaFx = true
@@ -87,20 +87,25 @@ tasks {
         }
     }
 
-    "generateBuildConfig"(com.hendraanggrian.generating.buildconfig.BuildConfigTask::class) {
+    named<com.hendraanggrian.generating.buildconfig.BuildConfigTask>("generateBuildConfig") {
         appName = RELEASE_NAME
         debug = RELEASE_DEBUG
         artifactId = RELEASE_ARTIFACT
         email = "$RELEASE_USER@gmail.com"
         website = RELEASE_WEBSITE
 
-        field("AUTHOR", RELEASE_USER)
+        field("USER", RELEASE_USER)
         field("FULL_NAME", RELEASE_FULL_NAME)
     }
 
-    "shadowJar"(com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar::class) {
+    named<Jar>("jar") {
+        manifest {
+            attributes(mapOf("Main-Class" to application.mainClassName))
+        }
+    }
+
+    named<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar>("shadowJar") {
         destinationDir = buildDir.resolve("releases")
-        manifest.attributes(mapOf("Main-Class" to application.mainClassName))
         baseName = RELEASE_ARTIFACT
         version = RELEASE_VERSION
         classifier = null

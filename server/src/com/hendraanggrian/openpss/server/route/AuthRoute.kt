@@ -1,4 +1,4 @@
-package com.hendraanggrian.openpss.server.routing
+package com.hendraanggrian.openpss.server.route
 
 import com.hendraanggrian.openpss.db.Database
 import com.hendraanggrian.openpss.db.Setupable

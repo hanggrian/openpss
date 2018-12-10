@@ -34,7 +34,7 @@ dependencies {
 }
 
 tasks {
-    "dokka"(org.jetbrains.dokka.gradle.DokkaTask::class) {
+    named<org.jetbrains.dokka.gradle.DokkaTask>("dokka") {
         outputDirectory = "$buildDir/docs"
         doFirst { file(outputDirectory).deleteRecursively() }
     }

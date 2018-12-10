@@ -54,6 +54,8 @@ data class Customer(
         val value: String
     ) {
 
+        companion object;
+
         override fun toString(): String = value
     }
 }

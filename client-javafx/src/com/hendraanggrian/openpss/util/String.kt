@@ -6,7 +6,7 @@ import javafx.beans.binding.BooleanBinding
 import javafx.beans.property.StringProperty
 import ktfx.beans.binding.buildBooleanBinding
 
-/** Reversed version of [String.orEmpty]. */
+/** Reversed name of [String.orEmpty]. */
 fun String.orNull(): String? = if (isBlank()) null else this
 
 /** Remove trailing and double whitespaces. */

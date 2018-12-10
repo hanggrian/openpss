@@ -206,7 +206,7 @@ class MainController : Controller(), Refreshable {
                             }
                             text(log.employeeId.toString())
                             if (log.adminId != null) {
-                                text(", ${log.adminId.toString()}")
+                                text(", ${log.adminId}")
                             }
                         }
                     }

@@ -11,20 +11,20 @@ class GitHubApi : Api("https://api.github.com") {
     }
 
     data class Release(
-        @SerializedName("name") val version: String,
-        @SerializedName("assets") val assets: List<Asset>
+        val name: String,
+        val assets: List<Asset>
     ) {
 
         fun isNewerThan(currentVersion: String): Boolean =
-            ComparableVersion(version) > ComparableVersion(currentVersion) &&
+            ComparableVersion(name) > ComparableVersion(currentVersion) &&
                 assets.isNotEmpty() &&
                 assets.all { it.isUploaded() }
     }
 
     data class Asset(
         @SerializedName("browser_download_url") val downloadUrl: String,
-        @SerializedName("name") val name: String,
-        @SerializedName("state") val state: String
+        val name: String,
+        val state: String
     ) {
 
         fun isUploaded(): Boolean = state == "uploaded"

@@ -31,7 +31,7 @@ object GitHubHelper {
                 val release = api.getLatestRelease()
                 when {
                     release.isNewerThan(BuildConfig.VERSION) -> component.rootLayout.jfxSnackbar(
-                        component.getString(R.string.openpss_is_available, release.version),
+                        component.getString(R.string.openpss_is_available, release.name),
                         App.DURATION_LONG,
                         component.getString(R.string.download)
                     ) {

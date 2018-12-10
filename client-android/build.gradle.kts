@@ -12,6 +12,7 @@ android {
     defaultConfig {
         minSdkVersion(SDK_MIN)
         targetSdkVersion(SDK_TARGET)
+        multiDexEnabled = true
         applicationId = RELEASE_GROUP
         versionCode = 1
         versionName = RELEASE_VERSION
@@ -47,6 +48,7 @@ dependencies {
     implementation(kotlinx("coroutines-android", VERSION_COROUTINES))
     implementation(slf4j("android"))
 
+    implementation(androidx("multidex", version = "2.0.0"))
     implementation(androidx("core", "core-ktx"))
     implementation(androidx("appcompat"))
     implementation(androidx("preference"))
@@ -63,4 +65,11 @@ dependencies {
     implementation(jakeWharton(null, "process-phoenix", VERSION_PROCESS_PHOENIX))
 
     implementation("com.takisoft.preferencex:preferencex:$VERSION_ANDROIDX")
+}
+
+tasks {
+    named<org.jetbrains.dokka.gradle.DokkaTask>("dokka") {
+        outputDirectory = "$buildDir/docs"
+        doFirst { file(outputDirectory).deleteRecursively() }
+    }
 }

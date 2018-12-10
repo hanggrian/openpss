@@ -8,8 +8,8 @@ import com.hendraanggrian.openpss.control.Space
 import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_INVOICE_HEADERS
 import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_LANGUAGE
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.io.properties.PreferencesFile
-import com.hendraanggrian.openpss.io.properties.PreferencesFile.WAGE_READER
+import com.hendraanggrian.openpss.io.properties.SettingsFile
+import com.hendraanggrian.openpss.io.properties.ReaderFile
 import com.hendraanggrian.openpss.popup.dialog.Dialog
 import com.hendraanggrian.openpss.ui.wage.readers.Reader
 import com.jfoenix.controls.JFXButton
@@ -63,10 +63,10 @@ class SettingsDialog(component: FxComponent) : Dialog(component, R.string.settin
                     item {
                         label(getString(R.string.reader))
                         wageReaderChoice = jfxComboBox(Reader.listAll()) {
-                            value = Reader.of(WAGE_READER)
+                            value = Reader.of(ReaderFile.WAGE_READER)
                             valueProperty().listener { _, _, value ->
                                 isLocalChanged.set(true)
-                                WAGE_READER = (value as Reader).name
+                                ReaderFile.WAGE_READER = (value as Reader).name
                             }
                         }
                     }
@@ -111,7 +111,7 @@ class SettingsDialog(component: FxComponent) : Dialog(component, R.string.settin
                 buttonType = JFXButton.ButtonType.RAISED
                 disableProperty().bind(!isLocalChanged and !isGlobalChanged)
                 onActionFilter {
-                    if (isLocalChanged.value) PreferencesFile.save()
+                    if (isLocalChanged.value) SettingsFile.save()
                     if (isGlobalChanged.value) transaction {
                         findGlobalSettings(KEY_LANGUAGE)
                             .projection { value }

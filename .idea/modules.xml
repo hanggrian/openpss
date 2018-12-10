@@ -8,9 +8,12 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/client-javafx/com.hendraanggrian.openpss.client-javafx.test.iml" filepath="$PROJECT_DIR$/.idea/modules/client-javafx/com.hendraanggrian.openpss.client-javafx.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/client/com.hendraanggrian.openpss.client.main.iml" filepath="$PROJECT_DIR$/.idea/modules/client/com.hendraanggrian.openpss.client.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/client/com.hendraanggrian.openpss.client.test.iml" filepath="$PROJECT_DIR$/.idea/modules/client/com.hendraanggrian.openpss.client.test.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/core/com.hendraanggrian.openpss.core.iml" filepath="$PROJECT_DIR$/.idea/modules/core/com.hendraanggrian.openpss.core.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/core/com.hendraanggrian.openpss.core.main.iml" filepath="$PROJECT_DIR$/.idea/modules/core/com.hendraanggrian.openpss.core.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/core/com.hendraanggrian.openpss.core.test.iml" filepath="$PROJECT_DIR$/.idea/modules/core/com.hendraanggrian.openpss.core.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/common/com.hendraanggrian.openpss.common.iml" filepath="$PROJECT_DIR$/.idea/modules/common/com.hendraanggrian.openpss.common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/common-jvm/com.hendraanggrian.openpss.common-jvm.iml" filepath="$PROJECT_DIR$/.idea/modules/common-jvm/com.hendraanggrian.openpss.common-jvm.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/common-jvm/com.hendraanggrian.openpss.common-jvm.main.iml" filepath="$PROJECT_DIR$/.idea/modules/common-jvm/com.hendraanggrian.openpss.common-jvm.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/common-jvm/com.hendraanggrian.openpss.common-jvm.test.iml" filepath="$PROJECT_DIR$/.idea/modules/common-jvm/com.hendraanggrian.openpss.common-jvm.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/common/com.hendraanggrian.openpss.common.main.iml" filepath="$PROJECT_DIR$/.idea/modules/common/com.hendraanggrian.openpss.common.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/common/com.hendraanggrian.openpss.common.test.iml" filepath="$PROJECT_DIR$/.idea/modules/common/com.hendraanggrian.openpss.common.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/server/com.hendraanggrian.openpss.server.iml" filepath="$PROJECT_DIR$/.idea/modules/server/com.hendraanggrian.openpss.server.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/server/com.hendraanggrian.openpss.server.main.iml" filepath="$PROJECT_DIR$/.idea/modules/server/com.hendraanggrian.openpss.server.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/server/com.hendraanggrian.openpss.server.test.iml" filepath="$PROJECT_DIR$/.idea/modules/server/com.hendraanggrian.openpss.server.test.iml" />

@@ -1,5 +1,6 @@
 package com.hendraanggrian.openpss.api
 
+import com.hendraanggrian.openpss.route.Route
 import com.hendraanggrian.openpss.util.jodaTimeSupport
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.okhttp.OkHttp

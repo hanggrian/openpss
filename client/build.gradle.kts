@@ -23,7 +23,7 @@ sourceSets {
 ktlint()
 
 dependencies {
-    api(project(":core"))
+    api(project(":common"))
 
     api(ktor("client-okhttp"))
     api(ktor("client-gson"))

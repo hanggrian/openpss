@@ -3,7 +3,7 @@ package com.hendraanggrian.openpss
 import com.hendraanggrian.openpss.api.OpenPSSApi
 import com.hendraanggrian.openpss.content.Resources
 import com.hendraanggrian.openpss.content.STYLESHEET_OPENPSS
-import com.hendraanggrian.openpss.io.properties.PreferencesFile
+import com.hendraanggrian.openpss.io.properties.SettingsFile
 import com.hendraanggrian.openpss.ui.login.LoginPane
 import com.hendraanggrian.openpss.util.controller
 import com.hendraanggrian.openpss.util.getResource
@@ -46,7 +46,7 @@ class App : Application(), Resources {
     override lateinit var colorResources: Properties
 
     override fun init() {
-        resourceBundle = PreferencesFile.language.toResourcesBundle()
+        resourceBundle = SettingsFile.language.toResourcesBundle()
         dimenResources = getProperties(R.dimen.properties_dimen)
         colorResources = getProperties(R.color.properties_color)
         if (BuildConfig.DEBUG) {

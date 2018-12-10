@@ -6,7 +6,7 @@ import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.STYLESHEET_OPENPSS
 import com.hendraanggrian.openpss.control.StretchableButton
 import com.hendraanggrian.openpss.io.WageDirectory
-import com.hendraanggrian.openpss.io.properties.PreferencesFile.WAGE_READER
+import com.hendraanggrian.openpss.io.properties.ReaderFile
 import com.hendraanggrian.openpss.popup.dialog.TextDialog
 import com.hendraanggrian.openpss.ui.ActionController
 import com.hendraanggrian.openpss.ui.wage.readers.Reader
@@ -131,7 +131,7 @@ class WageController : ActionController() {
     private fun history() = desktop?.open(WageDirectory)
 
     private fun browse() =
-        fileChooser(ExtensionFilter(getString(R.string.input_file), *Reader.of(WAGE_READER).extensions))
+        fileChooser(ExtensionFilter(getString(R.string.input_file), *Reader.of(ReaderFile.WAGE_READER).extensions))
             .showOpenDialog(anchorPane.scene.window)
             ?.let { file -> (ReadWageAction(this)) { read(file) } }
 
@@ -146,7 +146,7 @@ class WageController : ActionController() {
         flowPane.children.clear()
         GlobalScope.launch(Dispatchers.Default) {
             try {
-                Reader.of(WAGE_READER).read(file).forEach { attendee ->
+                Reader.of(ReaderFile.WAGE_READER).read(file).forEach { attendee ->
                     attendee.mergeDuplicates()
                     GlobalScope.launch(Dispatchers.JavaFx) {
                         flowPane.children += AttendeePane(this@WageController, attendee).apply {

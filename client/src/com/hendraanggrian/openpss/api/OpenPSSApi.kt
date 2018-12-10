@@ -1,16 +1,18 @@
 package com.hendraanggrian.openpss.api
 
-import com.hendraanggrian.openpss.api.route.AuthRoute
-import com.hendraanggrian.openpss.api.route.CustomerRoute
-import com.hendraanggrian.openpss.api.route.InvoiceRoute
-import com.hendraanggrian.openpss.api.route.LogRoute
-import com.hendraanggrian.openpss.api.route.NamedRoute
-import com.hendraanggrian.openpss.api.route.RecessRoute
+import com.hendraanggrian.openpss.route.AuthRoute
+import com.hendraanggrian.openpss.route.CustomerRoute
+import com.hendraanggrian.openpss.route.GlobalSettingRoute
+import com.hendraanggrian.openpss.route.InvoiceRoute
+import com.hendraanggrian.openpss.route.LogRoute
+import com.hendraanggrian.openpss.route.NamedRoute
+import com.hendraanggrian.openpss.route.RecessRoute
 
 /** Main API. */
 class OpenPSSApi : Api("http://localhost:8080"),
     AuthRoute,
     CustomerRoute,
+    GlobalSettingRoute,
     InvoiceRoute,
     LogRoute,
     NamedRoute,

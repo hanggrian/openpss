@@ -9,7 +9,7 @@ import com.hendraanggrian.openpss.content.Resources
 import com.hendraanggrian.openpss.control.IntField
 import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.io.properties.LoginFile
-import com.hendraanggrian.openpss.io.properties.PreferencesFile
+import com.hendraanggrian.openpss.io.properties.SettingsFile
 import com.hendraanggrian.openpss.popup.dialog.ResultableDialog
 import com.hendraanggrian.openpss.popup.dialog.TextDialog
 import com.hendraanggrian.openpss.popup.popover.Popover
@@ -110,10 +110,10 @@ class LoginPane(private val resourced: Resources) : _StackPane(), FxComponent {
             paddingAll = getDouble(R.dimen.padding_medium)
             label(getString(R.string.language)) row 0 col 0 hpriority Priority.ALWAYS halign HPos.RIGHT
             jfxComboBox(Language.values().toObservableList()) {
-                selectionModel.select(PreferencesFile.language)
+                selectionModel.select(SettingsFile.language)
                 valueProperty().listener(Dispatchers.Default) { _, _, value ->
-                    PreferencesFile.language = value
-                    PreferencesFile.save()
+                    SettingsFile.language = value
+                    SettingsFile.save()
                     GlobalScope.launch(Dispatchers.JavaFx) {
                         later {
                             TextDialog(this@LoginPane, R.string.restart_required, getString(R.string._restart_required))

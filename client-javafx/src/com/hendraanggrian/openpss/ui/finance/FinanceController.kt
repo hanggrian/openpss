@@ -12,7 +12,7 @@ import com.hendraanggrian.openpss.db.schemas.Invoices
 import com.hendraanggrian.openpss.db.schemas.Payment
 import com.hendraanggrian.openpss.db.schemas.Payments
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.io.properties.PreferencesFile
+import com.hendraanggrian.openpss.io.properties.SettingsFile
 import com.hendraanggrian.openpss.popup.popover.ViewInvoicePopover
 import com.hendraanggrian.openpss.ui.ActionController
 import com.hendraanggrian.openpss.ui.Refreshable
@@ -77,7 +77,7 @@ class FinanceController : ActionController(), Refreshable {
         valueProperty().listener { refresh() }
     }
     private val monthBox: MonthBox = MonthBox().apply {
-        setLocale(PreferencesFile.language.toLocale())
+        setLocale(SettingsFile.language.toLocale())
         valueProperty().listener { refresh() }
     }
 

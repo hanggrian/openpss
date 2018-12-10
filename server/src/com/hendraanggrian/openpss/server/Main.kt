@@ -1,16 +1,16 @@
 package com.hendraanggrian.openpss.server
 
 import com.google.gson.GsonBuilder
-import com.hendraanggrian.openpss.server.route.routeAuth
-import com.hendraanggrian.openpss.server.route.routeCustomer
-import com.hendraanggrian.openpss.server.route.routeDigitalPrice
-import com.hendraanggrian.openpss.server.route.routeEmployee
-import com.hendraanggrian.openpss.server.route.routeGlobalSetting
-import com.hendraanggrian.openpss.server.route.routeInvoice
-import com.hendraanggrian.openpss.server.route.routeLog
-import com.hendraanggrian.openpss.server.route.routeOffsetPrice
-import com.hendraanggrian.openpss.server.route.routePlatePrice
-import com.hendraanggrian.openpss.server.route.routeRecess
+import com.hendraanggrian.openpss.server.routing.AuthRouting
+import com.hendraanggrian.openpss.server.routing.CustomerRouting
+import com.hendraanggrian.openpss.server.routing.DigitalPriceRouting
+import com.hendraanggrian.openpss.server.routing.EmployeeRouting
+import com.hendraanggrian.openpss.server.routing.GlobalSettingRouting
+import com.hendraanggrian.openpss.server.routing.InvoiceRouting
+import com.hendraanggrian.openpss.server.routing.LogRouting
+import com.hendraanggrian.openpss.server.routing.OffsetPriceRouting
+import com.hendraanggrian.openpss.server.routing.PlatePriceRouting
+import com.hendraanggrian.openpss.server.routing.RecessRouting
 import com.hendraanggrian.openpss.util.jodaTimeSupport
 import io.ktor.application.Application
 import io.ktor.application.install
@@ -35,21 +35,21 @@ fun Application.main() {
         }
     }
     routing {
-        routeAuth()
+        AuthRouting(this)
 
-        routeCustomer()
+        CustomerRouting(this)
 
-        routeLog()
+        GlobalSettingRouting(this)
 
-        routeGlobalSetting()
+        LogRouting(this)
 
-        routeInvoice()
+        InvoiceRouting(this)
 
-        routePlatePrice()
-        routeOffsetPrice()
-        routeDigitalPrice()
-        routeEmployee()
+        PlatePriceRouting(this)
+        OffsetPriceRouting(this)
+        DigitalPriceRouting(this)
+        EmployeeRouting(this)
 
-        routeRecess()
+        RecessRouting(this)
     }
 }

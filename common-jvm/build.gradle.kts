@@ -1,9 +1,9 @@
 plugins {
+    `java-library`
     kotlin("jvm")
-    id("kotlinx-serialization")
     dokka()
     idea
-    generating("r")
+    generating("buildconfig")
 }
 
 group = RELEASE_GROUP
@@ -24,12 +24,10 @@ ktlint()
 
 dependencies {
     api(project(":common"))
-    api(project(":common-jvm"))
 
-    implementation(ktor("server-netty"))
-    implementation(ktor("gson"))
+    api(kotlin("stdlib", VERSION_KOTLIN))
 
-    implementation(logback("classic"))
+    api(apache("commons-lang3", VERSION_COMMONS_LANG))
 
     testImplementation(junit())
     testImplementation(kotlin("test", VERSION_KOTLIN))
@@ -37,15 +35,14 @@ dependencies {
 }
 
 tasks {
-    named<com.hendraanggrian.generating.r.RTask>("generateR") {
-        resourcesDirectory = projectDir.resolve("res")
-        properties {
-            readResourceBundle = true
-        }
-    }
-
     named<org.jetbrains.dokka.gradle.DokkaTask>("dokka") {
         outputDirectory = "$buildDir/docs"
         doFirst { file(outputDirectory).deleteRecursively() }
+    }
+
+    named<com.hendraanggrian.generating.buildconfig.BuildConfigTask>("generateBuildConfig") {
+        packageName = "$RELEASE_GROUP.internal"
+        className = "CommonJvmBuildConfig"
+        artifactId = RELEASE_ARTIFACT
     }
 }

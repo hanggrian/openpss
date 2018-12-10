@@ -6,6 +6,10 @@
       <module name="com.hendraanggrian.openpss.client-javafx.test" target="1.8" />
       <module name="com.hendraanggrian.openpss.client.main" target="1.8" />
       <module name="com.hendraanggrian.openpss.client.test" target="1.8" />
+      <module name="com.hendraanggrian.openpss.common-jvm.main" target="1.8" />
+      <module name="com.hendraanggrian.openpss.common-jvm.test" target="1.8" />
+      <module name="com.hendraanggrian.openpss.common.main" target="1.8" />
+      <module name="com.hendraanggrian.openpss.common.test" target="1.8" />
       <module name="com.hendraanggrian.openpss.core.main" target="1.8" />
       <module name="com.hendraanggrian.openpss.core.test" target="1.8" />
       <module name="com.hendraanggrian.openpss.openpss.main" target="1.8" />

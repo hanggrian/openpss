@@ -38,6 +38,10 @@ android {
     lintOptions {
         isAbortOnError = false
     }
+    packagingOptions {
+        exclude("META-INF/NOTICE.txt")
+        exclude("META-INF/LICENSE.txt")
+    }
 }
 
 ktlint()

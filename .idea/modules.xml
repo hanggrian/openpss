@@ -2,16 +2,23 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/buildSrc/buildSrc.iml" filepath="$PROJECT_DIR$/buildSrc/buildSrc.iml" />
-      <module fileurl="file://$PROJECT_DIR$/client/client.iml" filepath="$PROJECT_DIR$/client/client.iml" />
-      <module fileurl="file://$PROJECT_DIR$/client-android/client-android.iml" filepath="$PROJECT_DIR$/client-android/client-android.iml" />
-      <module fileurl="file://$PROJECT_DIR$/client-javafx/client-javafx.iml" filepath="$PROJECT_DIR$/client-javafx/client-javafx.iml" />
-      <module fileurl="file://$PROJECT_DIR$/core/core.iml" filepath="$PROJECT_DIR$/core/core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/client/com.hendraanggrian.openpss.client.iml" filepath="$PROJECT_DIR$/.idea/modules/client/com.hendraanggrian.openpss.client.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/client-javafx/com.hendraanggrian.openpss.client-javafx.iml" filepath="$PROJECT_DIR$/.idea/modules/client-javafx/com.hendraanggrian.openpss.client-javafx.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/client-javafx/com.hendraanggrian.openpss.client-javafx.main.iml" filepath="$PROJECT_DIR$/.idea/modules/client-javafx/com.hendraanggrian.openpss.client-javafx.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/client-javafx/com.hendraanggrian.openpss.client-javafx.test.iml" filepath="$PROJECT_DIR$/.idea/modules/client-javafx/com.hendraanggrian.openpss.client-javafx.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/client/com.hendraanggrian.openpss.client.main.iml" filepath="$PROJECT_DIR$/.idea/modules/client/com.hendraanggrian.openpss.client.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/client/com.hendraanggrian.openpss.client.test.iml" filepath="$PROJECT_DIR$/.idea/modules/client/com.hendraanggrian.openpss.client.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/core/com.hendraanggrian.openpss.core.iml" filepath="$PROJECT_DIR$/.idea/modules/core/com.hendraanggrian.openpss.core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/core/com.hendraanggrian.openpss.core.main.iml" filepath="$PROJECT_DIR$/.idea/modules/core/com.hendraanggrian.openpss.core.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/core/com.hendraanggrian.openpss.core.test.iml" filepath="$PROJECT_DIR$/.idea/modules/core/com.hendraanggrian.openpss.core.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/server/com.hendraanggrian.openpss.server.iml" filepath="$PROJECT_DIR$/.idea/modules/server/com.hendraanggrian.openpss.server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/server/com.hendraanggrian.openpss.server.main.iml" filepath="$PROJECT_DIR$/.idea/modules/server/com.hendraanggrian.openpss.server.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/server/com.hendraanggrian.openpss.server.test.iml" filepath="$PROJECT_DIR$/.idea/modules/server/com.hendraanggrian.openpss.server.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/openpss.iml" filepath="$PROJECT_DIR$/openpss.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/openpss.buildSrc.iml" filepath="$PROJECT_DIR$/.idea/modules/openpss.buildSrc.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/openpss.buildSrc.main.iml" filepath="$PROJECT_DIR$/.idea/modules/openpss.buildSrc.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/openpss.buildSrc.test.iml" filepath="$PROJECT_DIR$/.idea/modules/openpss.buildSrc.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/website/openpss.website.iml" filepath="$PROJECT_DIR$/.idea/modules/website/openpss.website.iml" />
-      <module fileurl="file://$PROJECT_DIR$/server/server.iml" filepath="$PROJECT_DIR$/server/server.iml" />
-      <module fileurl="file://$PROJECT_DIR$/website/website.iml" filepath="$PROJECT_DIR$/website/website.iml" />
     </modules>
   </component>
 </project>

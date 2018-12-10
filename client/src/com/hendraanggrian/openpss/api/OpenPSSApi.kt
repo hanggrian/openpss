@@ -6,6 +6,7 @@ import com.hendraanggrian.openpss.route.GlobalSettingRoute
 import com.hendraanggrian.openpss.route.InvoiceRoute
 import com.hendraanggrian.openpss.route.LogRoute
 import com.hendraanggrian.openpss.route.NamedRoute
+import com.hendraanggrian.openpss.route.PaymentRoute
 import com.hendraanggrian.openpss.route.RecessRoute
 
 /** Main API. */
@@ -16,4 +17,5 @@ class OpenPSSApi : Api("http://localhost:8080"),
     InvoiceRoute,
     LogRoute,
     NamedRoute,
+    PaymentRoute,
     RecessRoute

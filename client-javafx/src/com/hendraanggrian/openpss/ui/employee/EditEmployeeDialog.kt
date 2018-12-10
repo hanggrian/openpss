@@ -55,7 +55,7 @@ class EditEmployeeDialog(component: FxComponent) : TableDialog<Employee>(compone
                 bindDisable()
                 onAction {
                     val selected = table.selectionModel.selectedItem
-                    App.API.editEmployee(selected.name, selected.password, !selected.isAdmin)
+                    api.editEmployee(login, selected.name, selected.password, !selected.isAdmin)
                     refresh()
                 }
             }
@@ -64,7 +64,7 @@ class EditEmployeeDialog(component: FxComponent) : TableDialog<Employee>(compone
                 bindDisable()
                 onAction {
                     val selected = table.selectionModel.selectedItem
-                    App.API.editEmployee(selected.name, Employee.DEFAULT_PASSWORD, selected.isAdmin)
+                    api.editEmployee(login, selected.name, Employee.DEFAULT_PASSWORD, selected.isAdmin)
                     rootLayout.jfxSnackbar(
                         getString(R.string.change_password_popup_will_appear_when_is_logged_back_in, login.name),
                         App.DURATION_LONG
@@ -74,15 +74,15 @@ class EditEmployeeDialog(component: FxComponent) : TableDialog<Employee>(compone
         }
     }
 
-    override suspend fun CoroutineScope.refresh(): List<Employee> = App.API.getEmployees()
+    override suspend fun CoroutineScope.refresh(): List<Employee> = api.getEmployees()
 
     override fun add() = AddEmployeePopover(this, R.string.add_employee, false).show(addButton) { employee ->
-        val added = App.API.addEmployee(employee!!.clean())
+        val added = api.addEmployee(employee!!.clean())
         table.items.add(added)
         table.selectionModel.select(added)
     }
 
-    override suspend fun CoroutineScope.delete(selected: Employee): Boolean = App.API.deleteEmployee(selected.name)
+    override suspend fun CoroutineScope.delete(selected: Employee): Boolean = api.deleteEmployee(login, selected.name)
 
     private fun MenuItem.bindDisable() = disableProperty().bind(table.selectionModel.selectedItemProperty().isNull)
 }

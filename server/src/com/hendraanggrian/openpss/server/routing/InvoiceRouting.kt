@@ -4,7 +4,6 @@ import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.Page
 import com.hendraanggrian.openpss.db.matches
 import com.hendraanggrian.openpss.db.schemas.Customers
-import com.hendraanggrian.openpss.db.schemas.Employees
 import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.db.schemas.Invoices
 import com.hendraanggrian.openpss.db.schemas.Log
@@ -22,7 +21,6 @@ import io.ktor.routing.post
 import io.ktor.routing.put
 import io.ktor.routing.route
 import kotlinx.nosql.equal
-import kotlinx.nosql.id
 import kotlin.math.ceil
 
 object InvoiceRouting : Routing("invoices") {
@@ -66,18 +64,23 @@ object InvoiceRouting : Routing("invoices") {
             call.respond(invoice)
         }
         route("{no}") {
+            get {
+                call.respond(transaction {
+                    Invoices { it.no.equal(call.getInt("no")) }.single()
+                })
+            }
             put {
+                val payment = call.getString("payment")
             }
             delete {
                 val invoice = call.receive<Invoice>()
                 transaction {
-                    val customerName = Customers { it.id.equal(invoice.customerId) }.single().name
-                    val employeeName = Employees { it.id.equal(invoice.employeeId) }.single().name
+                    val customerName = Customers[invoice.customerId].single().name
                     Invoices -= invoice.id
                     Payments { Payments.invoiceId.equal(invoice.id) }.remove()
                     Logs += Log.new(
                         resources.getString(R.string.invoice_delete).format(invoice.no, customerName),
-                        employeeName
+                        call.getString("login")
                     )
                 }
                 call.respond(HttpStatusCode.OK)

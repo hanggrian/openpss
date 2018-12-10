@@ -1,6 +1,5 @@
 package com.hendraanggrian.openpss.ui.price
 
-import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.FxComponent
 import com.hendraanggrian.openpss.db.schemas.OffsetPrice
@@ -25,7 +24,7 @@ class EditOffsetPriceDialog(
             }
             onEditCommit { cell ->
                 val offset = cell.rowValue
-                if (App.API.editOffsetPrice(offset.name, cell.newValue, offset.minPrice, offset.excessPrice)) {
+                if (api.editOffsetPrice(offset.name, cell.newValue, offset.minPrice, offset.excessPrice)) {
                     cell.rowValue.minQty = cell.newValue
                 }
             }
@@ -40,7 +39,7 @@ class EditOffsetPriceDialog(
             }
             onEditCommit { cell ->
                 val offset = cell.rowValue
-                if (App.API.editOffsetPrice(offset.name, offset.minQty, cell.newValue, offset.excessPrice)) {
+                if (api.editOffsetPrice(offset.name, offset.minQty, cell.newValue, offset.excessPrice)) {
                     cell.rowValue.minPrice = cell.newValue
                 }
             }
@@ -55,17 +54,17 @@ class EditOffsetPriceDialog(
             }
             onEditCommit { cell ->
                 val offset = cell.rowValue
-                if (App.API.editOffsetPrice(offset.name, offset.minQty, offset.minPrice, cell.newValue)) {
+                if (api.editOffsetPrice(offset.name, offset.minQty, offset.minPrice, cell.newValue)) {
                     cell.rowValue.excessPrice = cell.newValue
                 }
             }
         }
     }
 
-    override suspend fun CoroutineScope.refresh(): List<OffsetPrice> = App.API.getOffsetPrices()
+    override suspend fun CoroutineScope.refresh(): List<OffsetPrice> = api.getOffsetPrices()
 
-    override suspend fun CoroutineScope.add(name: String): OffsetPrice? = App.API.addOffsetPrice(name)
+    override suspend fun CoroutineScope.add(name: String): OffsetPrice? = api.addOffsetPrice(name)
 
     override suspend fun CoroutineScope.delete(selected: OffsetPrice): Boolean =
-        App.API.deleteOffsetPrice(selected.name)
+        api.deleteOffsetPrice(selected.name)
 }

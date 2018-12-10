@@ -88,17 +88,20 @@ interface NamedRoute : Route {
         parameters("name" to name)
     }
 
-    suspend fun editEmployee(name: String, password: String, isAdmin: Boolean): Boolean = client.requestStatus {
-        apiUrl("employees/$name")
-        method = HttpMethod.Put
-        parameters(
-            "password" to password,
-            "isAdmin" to isAdmin
-        )
-    }
+    suspend fun editEmployee(login: Employee, name: String, password: String, isAdmin: Boolean): Boolean =
+        client.requestStatus {
+            apiUrl("employees/$name")
+            method = HttpMethod.Put
+            parameters(
+                "password" to password,
+                "isAdmin" to isAdmin,
+                "login" to login.name
+            )
+        }
 
-    suspend fun deleteEmployee(name: String): Boolean = client.requestStatus {
+    suspend fun deleteEmployee(login: Employee, name: String): Boolean = client.requestStatus {
         apiUrl("employees/$name")
         method = HttpMethod.Delete
+        parameters("login" to login.name)
     }
 }

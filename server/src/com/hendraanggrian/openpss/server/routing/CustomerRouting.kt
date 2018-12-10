@@ -1,5 +1,6 @@
 package com.hendraanggrian.openpss.server.routing
 
+import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.Page
 import com.hendraanggrian.openpss.db.matches
 import com.hendraanggrian.openpss.db.schemas.Customer
@@ -66,6 +67,10 @@ object CustomerRouting : Routing("customers") {
                     Customers { it.name.equal(name) }
                         .projection { this.address + this.note }
                         .update(address, note)
+                    Logs += Log.new(
+                        InvoiceRouting.resources.getString(R.string.customer_edit).format(name),
+                        call.getString("login")
+                    )
                 }
                 call.respond(HttpStatusCode.OK)
             }
@@ -80,17 +85,23 @@ object CustomerRouting : Routing("customers") {
                     }
                     call.respond(contact)
                 }
-                route("{value}") {
-                    delete {
-                        val name = call.getString("name")
-                        val contact = call.receive<Customer.Contact>()
-                        transaction {
-                            val query = Customers { it.name.equal(name) }
-                            query.projection { contacts }
-                                .update(query.single().contacts - contact)
-                        }
-                        call.respond(HttpStatusCode.OK)
+                delete {
+                    val name = call.getString("name")
+                    val contact = call.receive<Customer.Contact>()
+                    transaction {
+                        val query = Customers { it.name.equal(name) }
+                        val customer = query.single()
+                        query.projection { contacts }
+                            .update(customer.contacts - contact)
+                        Logs += Log.new(
+                            InvoiceRouting.resources.getString(R.string.contact_deleted).format(
+                                contact.value,
+                                customer.name
+                            ),
+                            call.getString("login")
+                        )
                     }
+                    call.respond(HttpStatusCode.OK)
                 }
             }
         }

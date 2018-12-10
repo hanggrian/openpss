@@ -1,6 +1,5 @@
 package com.hendraanggrian.openpss.ui.customer
 
-import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.App.Companion.STRETCH_POINT
 import com.hendraanggrian.openpss.PATTERN_DATE
 import com.hendraanggrian.openpss.R
@@ -113,7 +112,7 @@ class CustomerController : ActionController(), Refreshable {
                             .bind(contactTable.selectionModel.selectedItemProperty().isNull)
                     }
                     GlobalScope.launch(Dispatchers.JavaFx) {
-                        val (pageCount, customers) = App.API.getCustomers(searchField.text, page, count)
+                        val (pageCount, customers) = api.getCustomers(searchField.text, page, count)
                         customerPagination.pageCount = pageCount
                         items = customers.toMutableObservableList()
                     }
@@ -138,26 +137,27 @@ class CustomerController : ActionController(), Refreshable {
 
     fun add() = AddCustomerDialog(this).show { customer ->
         GlobalScope.launch(Dispatchers.JavaFx) {
-            customerList.items.add(App.API.addCustomer(customer!!))
+            customerList.items.add(api.addCustomer(customer!!))
             customerList.selectionModel.select(customerList.items.lastIndex)
         }
     }
 
     private fun edit() = EditCustomerDialog(this, customerList.selectionModel.selectedItem).show {
         withPermission {
-            App.API.editCustomer(it!!.name, it.address, it.note)
+            api.editCustomer(login, it!!.name, it.address, it.note)
             reload()
         }
     }
 
     @FXML fun addContact() = AddContactPopover(this).show(contactTable) {
-        App.API.addContact(customerList.selectionModel.selectedItem.name, it!!)
+        api.addContact(customerList.selectionModel.selectedItem.name, it!!)
         reload()
     }
 
     @FXML fun deleteContact() = ConfirmDialog(this, R.string.delete_contact).show {
         withPermission {
-            App.API.deleteContact(
+            api.deleteContact(
+                login,
                 customerList.selectionModel.selectedItem.name,
                 contactTable.selectionModel.selectedItem
             )

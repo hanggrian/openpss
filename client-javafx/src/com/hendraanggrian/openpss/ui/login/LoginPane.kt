@@ -186,7 +186,7 @@ class LoginPane(private val resourced: Resources) : _StackPane(), FxComponent {
                                 LoginFile.save()
                                 GlobalScope.launch(Dispatchers.JavaFx) {
                                     try {
-                                        val employee = App.API.login(employeeField.text, passwordField.text)
+                                        val employee = api.login(employeeField.text, passwordField.text)
                                         onSuccess?.invoke(employee)
                                     } catch (e: Exception) {
                                         if (BuildConfig.DEBUG) {

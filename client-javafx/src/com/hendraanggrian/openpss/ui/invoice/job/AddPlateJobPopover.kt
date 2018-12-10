@@ -5,11 +5,13 @@ import com.hendraanggrian.openpss.content.FxComponent
 import com.hendraanggrian.openpss.control.DoubleField
 import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.db.schemas.PlatePrice
-import com.hendraanggrian.openpss.db.schemas.PlatePrices
-import com.hendraanggrian.openpss.db.transaction
 import javafx.beans.Observable
 import javafx.beans.value.ObservableBooleanValue
 import javafx.scene.control.ComboBox
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.javafx.JavaFx
+import kotlinx.coroutines.launch
 import ktfx.beans.value.isBlank
 import ktfx.beans.value.lessEq
 import ktfx.beans.value.or
@@ -27,11 +29,13 @@ class AddPlateJobPopover(component: FxComponent) : AddJobPopover<Invoice.PlateJo
 
     override fun _GridPane.onCreateContent() {
         label(getString(R.string.type)) col 0 row currentRow
-        typeChoice = jfxComboBox(transaction { PlatePrices().toObservableList() }) {
-            valueProperty().listener { _, _, job ->
-                priceField.value = job.price
-            }
-        } col 1 colSpans 2 row currentRow
+        GlobalScope.launch(Dispatchers.JavaFx) {
+            typeChoice = jfxComboBox(api.getPlatePrices().toObservableList()) {
+                valueProperty().listener { _, _, job ->
+                    priceField.value = job.price
+                }
+            } col 1 colSpans 2 row currentRow
+        }
         currentRow++
         label(getString(R.string.price)) col 0 row currentRow
         priceField = DoubleField().apply { promptText = getString(R.string.price) }() col 1 colSpans 2 row currentRow

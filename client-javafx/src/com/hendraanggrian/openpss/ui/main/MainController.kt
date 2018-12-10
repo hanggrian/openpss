@@ -204,15 +204,12 @@ class MainController : Controller(), Refreshable {
                             text("${log.dateTime.toString(PATTERN_DATETIME)} ") {
                                 styleClass += R.style.bold
                             }
-                            text(log.employeeId.toString())
-                            if (log.adminId != null) {
-                                text(", ${log.adminId}")
-                            }
+                            text(log.login)
                         }
                     }
                 }
                 GlobalScope.launch(Dispatchers.JavaFx) {
-                    val (pageCount, logs) = App.API.getLogs(page, count)
+                    val (pageCount, logs) = api.getLogs(page, count)
                     eventPagination.pageCount = pageCount
                     items = logs.toObservableList()
                 }

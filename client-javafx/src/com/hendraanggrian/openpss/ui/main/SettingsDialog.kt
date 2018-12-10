@@ -1,6 +1,5 @@
 package com.hendraanggrian.openpss.ui.main
 
-import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.FxComponent
 import com.hendraanggrian.openpss.content.Language
@@ -8,8 +7,8 @@ import com.hendraanggrian.openpss.control.Space
 import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_INVOICE_HEADERS
 import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_LANGUAGE
 import com.hendraanggrian.openpss.db.transaction
-import com.hendraanggrian.openpss.io.properties.SettingsFile
 import com.hendraanggrian.openpss.io.properties.ReaderFile
+import com.hendraanggrian.openpss.io.properties.SettingsFile
 import com.hendraanggrian.openpss.popup.dialog.Dialog
 import com.hendraanggrian.openpss.ui.wage.readers.Reader
 import com.jfoenix.controls.JFXButton
@@ -75,7 +74,7 @@ class SettingsDialog(component: FxComponent) : Dialog(component, R.string.settin
             Space(getDouble(R.dimen.padding_large))()
             right = this@SettingsDialog.group(R.string.global_settings) {
                 GlobalScope.launch(Dispatchers.JavaFx) {
-                    isDisable = !isAdmin(App.API)
+                    isDisable = !api.isAdmin(login)
                 }
                 gridPane {
                     gap = getDouble(R.dimen.padding_medium)

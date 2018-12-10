@@ -1,6 +1,7 @@
 package com.hendraanggrian.openpss.route
 
 import com.hendraanggrian.openpss.content.Page
+import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.db.schemas.Invoice
 import io.ktor.client.request.get
 import io.ktor.client.request.post
@@ -31,9 +32,14 @@ interface InvoiceRoute : Route {
         apiUrl("invoices")
     }
 
-    suspend fun deleteInvoice(invoice: Invoice): Boolean = client.requestStatus {
+    suspend fun getInvoice(no: Int): Invoice = client.get {
+        apiUrl("invoices/$no")
+    }
+
+    suspend fun deleteInvoice(login: Employee, invoice: Invoice): Boolean = client.requestStatus {
         apiUrl("invoices/${invoice.no}")
         method = HttpMethod.Delete
         body = invoice
+        parameters("login" to login.name)
     }
 }

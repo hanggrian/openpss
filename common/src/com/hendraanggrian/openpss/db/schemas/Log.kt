@@ -10,21 +10,21 @@ import org.joda.time.DateTime
 object Logs : DocumentSchema<Log>("logs", Log::class) {
     val dateTime = dateTime("date_time")
     val message = string("message")
-    val employee = string("employee")
+    val login = string("login")
 }
 
 data class Log(
     val dateTime: DateTime,
     val message: String,
-    val employee: String
+    val login: String
 ) : Document<Logs> {
 
     companion object {
 
         fun new(
             message: String,
-            employee: String
-        ): Log = Log(DateTime.now(), message, employee)
+            login: String
+        ): Log = Log(DateTime.now(), message, login)
     }
 
     override lateinit var id: Id<String, Logs>

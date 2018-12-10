@@ -1,6 +1,5 @@
 package com.hendraanggrian.openpss.ui.invoice
 
-import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.App.Companion.STRETCH_POINT
 import com.hendraanggrian.openpss.PATTERN_DATETIME_EXTENDED
 import com.hendraanggrian.openpss.R
@@ -228,7 +227,7 @@ class InvoiceController : ActionController(), Refreshable {
                     }
                     dividerPosition = 0.6
                     GlobalScope.launch(Dispatchers.JavaFx) {
-                        val (pageCount, invoices) = App.API.getInvoices(
+                        val (pageCount, invoices) = api.getInvoices(
                             searchField.value, customerProperty.value?.name, true, when {
                                 pickDateRadio.isSelected -> null
                                 else -> dateBox.value
@@ -268,7 +267,11 @@ class InvoiceController : ActionController(), Refreshable {
                                     disableProperty().bind(invoiceTable.selectionModel.selectedItemProperty().isNull)
                                     onAction {
                                         withPermission {
-                                            if (App.API.deleteInvoice(invoiceTable.selectionModel.selectedItem)) {
+                                            if (api.deleteInvoice(
+                                                    login,
+                                                    invoiceTable.selectionModel.selectedItem
+                                                )
+                                            ) {
                                                 invoiceTable.items.remove(invoiceTable.selectionModel.selectedItem)
                                             }
                                         }
@@ -283,7 +286,7 @@ class InvoiceController : ActionController(), Refreshable {
     }
 
     fun addInvoice() = AddInvoiceDialog(this).show {
-        invoiceTable.items.add(App.API.addInvoice(it!!))
+        invoiceTable.items.add(api.addInvoice(it!!))
         invoiceTable.selectionModel.selectFirst()
     }
 
@@ -298,27 +301,27 @@ class InvoiceController : ActionController(), Refreshable {
 
     private fun viewInvoice() = ViewInvoicePopover(this, invoiceTable.selectionModel.selectedItem).apply {
         setOnHidden {
-            transaction {
+            GlobalScope.launch(Dispatchers.JavaFx) {
                 reload(invoiceTable.selectionModel.selectedItem)
             }
         }
     }.show(invoiceTable)
 
     private fun addPayment() = AddPaymentPopover(this, invoiceTable.selectionModel.selectedItem).show(paymentTable) {
-        (AddPaymentAction(this@InvoiceController, it!!, invoiceTable.selectionModel.selectedItem.no)) {
+        api.addPayment(it!!)
+        reload(invoiceTable.selectionModel.selectedItem)
+        transaction {
             updatePaymentStatus()
-            reload(invoiceTable.selectionModel.selectedItem)
         }
     }
 
     private fun deletePayment() = ConfirmDialog(this).show {
-        (DeletePaymentAction(
-            this@InvoiceController,
-            paymentTable.selectionModel.selectedItem,
-            invoiceTable.selectionModel.selectedItem.no
-        )) {
-            updatePaymentStatus()
+        withPermission {
+            api.deletePayment(login, paymentTable.selectionModel.selectedItem)
             reload(invoiceTable.selectionModel.selectedItem)
+            transaction {
+                updatePaymentStatus()
+            }
         }
     }
 
@@ -326,9 +329,9 @@ class InvoiceController : ActionController(), Refreshable {
         .projection { isPaid }
         .update(invoiceTable.selectionModel.selectedItem.calculateDue() <= 0.0)
 
-    private fun SessionWrapper.reload(invoice: Invoice) = invoiceTable.run {
+    private suspend fun reload(invoice: Invoice) = invoiceTable.run {
         items.indexOf(invoice).let { index ->
-            items[index] = Invoices[invoice].single()
+            items[index] = api.getInvoice(invoice.no)
             selectionModel.select(index)
         }
     }

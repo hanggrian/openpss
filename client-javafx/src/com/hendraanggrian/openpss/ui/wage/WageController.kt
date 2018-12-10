@@ -133,7 +133,11 @@ class WageController : ActionController() {
     private fun browse() =
         fileChooser(ExtensionFilter(getString(R.string.input_file), *Reader.of(ReaderFile.WAGE_READER).extensions))
             .showOpenDialog(anchorPane.scene.window)
-            ?.let { file -> (ReadWageAction(this)) { read(file) } }
+            ?.let { file ->
+                GlobalScope.launch(Dispatchers.JavaFx) {
+                    withPermission { read(file) }
+                }
+            }
 
     private fun read(file: File) {
         filePath = file.absolutePath

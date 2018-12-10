@@ -5,30 +5,21 @@ import com.hendraanggrian.openpss.BuildConfig
 import com.hendraanggrian.openpss.BuildConfig.DEBUG
 import com.hendraanggrian.openpss.BuildConfig.VERSION
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.api.GitHubApi
 import com.hendraanggrian.openpss.content.FxComponent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.javafx.JavaFx
 import kotlinx.coroutines.launch
 import ktfx.jfoenix.jfxSnackbar
-import java.lang.ref.WeakReference
 import java.net.URI
 
 /** As seen in `https://developer.github.com/v3/`. */
 object GitHubHelper {
 
-    private var apiRef = WeakReference<GitHubApi?>(null)
-
     fun checkUpdates(component: FxComponent) {
-        var api = apiRef.get()
-        if (api == null) {
-            api = GitHubApi()
-            apiRef = WeakReference(api)
-        }
         GlobalScope.launch(Dispatchers.JavaFx) {
             try {
-                val release = api.getLatestRelease()
+                val release = component.gitHubApi.getLatestRelease()
                 when {
                     release.isNewerThan(BuildConfig.VERSION) -> component.rootLayout.jfxSnackbar(
                         component.getString(R.string.openpss_is_available, release.name),

@@ -2,6 +2,7 @@ package com.hendraanggrian.openpss.route
 
 import com.hendraanggrian.openpss.content.Page
 import com.hendraanggrian.openpss.db.schemas.Customer
+import com.hendraanggrian.openpss.db.schemas.Employee
 import io.ktor.client.request.get
 import io.ktor.client.request.post
 import io.ktor.http.HttpMethod
@@ -23,23 +24,27 @@ interface CustomerRoute : Route {
         body = customer
     }
 
-    suspend fun editCustomer(name: String, address: String?, note: String?): Boolean = client.requestStatus {
-        apiUrl("customers/$name")
-        method = HttpMethod.Put
-        parameters(
-            "address" to address,
-            "note" to note
-        )
-    }
+    suspend fun editCustomer(login: Employee, customer: String, address: String?, note: String?): Boolean =
+        client.requestStatus {
+            apiUrl("customers/$customer")
+            method = HttpMethod.Put
+            parameters(
+                "address" to address,
+                "note" to note,
+                "employee" to login.name
+            )
+        }
 
     suspend fun addContact(name: String, contact: Customer.Contact): Customer.Contact = client.post {
         apiUrl("customers/$name/contacts")
         body = contact
     }
 
-    suspend fun deleteContact(name: String, contact: Customer.Contact): Boolean = client.requestStatus {
-        apiUrl("customers/$name/contacts")
-        method = HttpMethod.Delete
-        body = contact
-    }
+    suspend fun deleteContact(login: Employee, name: String, contact: Customer.Contact): Boolean =
+        client.requestStatus {
+            apiUrl("customers/$name/contacts")
+            method = HttpMethod.Delete
+            body = contact
+            parameters("employee" to login.name)
+        }
 }

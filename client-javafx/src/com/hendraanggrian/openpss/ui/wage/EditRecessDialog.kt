@@ -1,6 +1,5 @@
 package com.hendraanggrian.openpss.ui.wage
 
-import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.PATTERN_TIME
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.FxComponent
@@ -21,12 +20,12 @@ class EditRecessDialog(component: FxComponent) : TableDialog<Recess>(component, 
         }
     }
 
-    override suspend fun CoroutineScope.refresh(): List<Recess> = App.API.getRecesses().toMutableObservableList()
+    override suspend fun CoroutineScope.refresh(): List<Recess> = api.getRecesses().toMutableObservableList()
 
     override fun add() = AddRecessPopover(this).show(addButton) { pair ->
-        table.items.add(App.API.addRecess(pair!!.first, pair.second))
+        table.items.add(api.addRecess(pair!!.first, pair.second))
     }
 
     override suspend fun CoroutineScope.delete(selected: Recess): Boolean =
-        App.API.deleteRecess(selected.start, selected.end)
+        api.deleteRecess(selected.start, selected.end)
 }

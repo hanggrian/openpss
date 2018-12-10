@@ -4,13 +4,15 @@ import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.FxComponent
 import com.hendraanggrian.openpss.control.DoubleField
 import com.hendraanggrian.openpss.db.schemas.DigitalPrice
-import com.hendraanggrian.openpss.db.schemas.DigitalPrices
 import com.hendraanggrian.openpss.db.schemas.Invoice
-import com.hendraanggrian.openpss.db.transaction
 import javafx.beans.Observable
 import javafx.beans.value.ObservableBooleanValue
 import javafx.scene.control.CheckBox
 import javafx.scene.control.ComboBox
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.javafx.JavaFx
+import kotlinx.coroutines.launch
 import ktfx.beans.value.isBlank
 import ktfx.beans.value.lessEq
 import ktfx.beans.value.or
@@ -31,12 +33,14 @@ class AddDigitalJobPopover(component: FxComponent) :
 
     override fun _GridPane.onCreateContent() {
         label(getString(R.string.type)) col 0 row currentRow
-        typeChoice = jfxComboBox(transaction { DigitalPrices().toObservableList() }) {
-            valueProperty().listener { _, _, job ->
-                oneSidePriceField.value = job.oneSidePrice
-                twoSidePriceField.value = job.twoSidePrice
-            }
-        } col 1 colSpans 2 row currentRow
+        GlobalScope.launch(Dispatchers.JavaFx) {
+            typeChoice = jfxComboBox(api.getDigitalPrices().toObservableList()) {
+                valueProperty().listener { _, _, job ->
+                    oneSidePriceField.value = job.oneSidePrice
+                    twoSidePriceField.value = job.twoSidePrice
+                }
+            } col 1 colSpans 2 row currentRow
+        }
         currentRow++
         label(getString(R.string.two_side)) col 0 row currentRow
         twoSideCheck = jfxCheckBox() col 1 colSpans 2 row currentRow

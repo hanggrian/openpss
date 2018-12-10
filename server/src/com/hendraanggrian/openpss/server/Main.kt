@@ -9,6 +9,7 @@ import com.hendraanggrian.openpss.server.routing.GlobalSettingRouting
 import com.hendraanggrian.openpss.server.routing.InvoiceRouting
 import com.hendraanggrian.openpss.server.routing.LogRouting
 import com.hendraanggrian.openpss.server.routing.OffsetPriceRouting
+import com.hendraanggrian.openpss.server.routing.PaymentRouting
 import com.hendraanggrian.openpss.server.routing.PlatePriceRouting
 import com.hendraanggrian.openpss.server.routing.RecessRouting
 import com.hendraanggrian.openpss.util.jodaTimeSupport
@@ -49,6 +50,8 @@ fun Application.main() {
         OffsetPriceRouting(this)
         DigitalPriceRouting(this)
         EmployeeRouting(this)
+
+        PaymentRouting(this)
 
         RecessRouting(this)
     }

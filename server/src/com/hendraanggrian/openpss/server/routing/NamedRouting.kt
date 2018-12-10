@@ -1,6 +1,8 @@
 package com.hendraanggrian.openpss.server.routing
 
+import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.db.Document
+import com.hendraanggrian.openpss.db.DocumentQuery
 import com.hendraanggrian.openpss.db.Named
 import com.hendraanggrian.openpss.db.NamedSchema
 import com.hendraanggrian.openpss.db.SessionWrapper
@@ -8,6 +10,8 @@ import com.hendraanggrian.openpss.db.schemas.DigitalPrice
 import com.hendraanggrian.openpss.db.schemas.DigitalPrices
 import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.db.schemas.Employees
+import com.hendraanggrian.openpss.db.schemas.Log
+import com.hendraanggrian.openpss.db.schemas.Logs
 import com.hendraanggrian.openpss.db.schemas.OffsetPrice
 import com.hendraanggrian.openpss.db.schemas.OffsetPrices
 import com.hendraanggrian.openpss.db.schemas.PlatePrice
@@ -24,7 +28,6 @@ import io.ktor.routing.get
 import io.ktor.routing.post
 import io.ktor.routing.put
 import io.ktor.routing.route
-import kotlinx.nosql.DocumentSchemaQueryWrapper
 import kotlinx.nosql.equal
 import kotlinx.nosql.mongodb.DocumentSchema
 import kotlinx.nosql.update
@@ -33,11 +36,8 @@ object PlatePriceRouting : NamedRouting<PlatePrices, PlatePrice>("plate-prices",
 
     override fun onCreate(call: ApplicationCall): PlatePrice = PlatePrice.new(call.getString("name"))
 
-    override fun SessionWrapper.onEdit(
-        call: ApplicationCall,
-        documents: DocumentSchemaQueryWrapper<PlatePrices, String, PlatePrice>
-    ) {
-        documents.projection { price }
+    override fun SessionWrapper.onEdit(call: ApplicationCall, query: DocumentQuery<PlatePrices, String, PlatePrice>) {
+        query.projection { price }
             .update(call.getDouble("price"))
     }
 }
@@ -46,11 +46,8 @@ object OffsetPriceRouting : NamedRouting<OffsetPrices, OffsetPrice>("offset-pric
 
     override fun onCreate(call: ApplicationCall): OffsetPrice = OffsetPrice.new(call.getString("name"))
 
-    override fun SessionWrapper.onEdit(
-        call: ApplicationCall,
-        documents: DocumentSchemaQueryWrapper<OffsetPrices, String, OffsetPrice>
-    ) {
-        documents.projection { minQty + minPrice + excessPrice }
+    override fun SessionWrapper.onEdit(call: ApplicationCall, query: DocumentQuery<OffsetPrices, String, OffsetPrice>) {
+        query.projection { minQty + minPrice + excessPrice }
             .update(call.getInt("minQty"), call.getDouble("minPrice"), call.getDouble("excessPrice"))
     }
 }
@@ -61,9 +58,9 @@ object DigitalPriceRouting : NamedRouting<DigitalPrices, DigitalPrice>("digital-
 
     override fun SessionWrapper.onEdit(
         call: ApplicationCall,
-        documents: DocumentSchemaQueryWrapper<DigitalPrices, String, DigitalPrice>
+        query: DocumentQuery<DigitalPrices, String, DigitalPrice>
     ) {
-        documents.projection { oneSidePrice + twoSidePrice }
+        query.projection { oneSidePrice + twoSidePrice }
             .update(call.getDouble("oneSidePrice"), call.getDouble("twoSidePrice"))
     }
 }
@@ -72,12 +69,20 @@ object EmployeeRouting : NamedRouting<Employees, Employee>("employees", Employee
 
     override fun onCreate(call: ApplicationCall): Employee = Employee.new(call.getString("name"))
 
-    override fun SessionWrapper.onEdit(
-        call: ApplicationCall,
-        documents: DocumentSchemaQueryWrapper<Employees, String, Employee>
-    ) {
-        documents.projection { password + isAdmin }
+    override fun SessionWrapper.onEdit(call: ApplicationCall, query: DocumentQuery<Employees, String, Employee>) {
+        query.projection { password + isAdmin }
             .update(call.getString("password"), call.getBoolean("isAdmin"))
+        Logs += Log.new(
+            resources.getString(R.string.employee_edit).format(query.single().name),
+            call.getString("login")
+        )
+    }
+
+    override fun SessionWrapper.onDeleted(call: ApplicationCall, query: DocumentQuery<Employees, String, Employee>) {
+        Logs += Log.new(
+            resources.getString(R.string.employee_delete).format(query.single().name),
+            call.getString("login")
+        )
     }
 }
 
@@ -86,7 +91,9 @@ sealed class NamedRouting<S, D>(path: String, val schema: S) : Routing(path)
 
     abstract fun onCreate(call: ApplicationCall): D
 
-    abstract fun SessionWrapper.onEdit(call: ApplicationCall, documents: DocumentSchemaQueryWrapper<S, String, D>)
+    abstract fun SessionWrapper.onEdit(call: ApplicationCall, query: DocumentQuery<S, String, D>)
+
+    open fun SessionWrapper.onDeleted(call: ApplicationCall, query: DocumentQuery<S, String, D>) {}
 
     override fun Route.onInvoke() {
         get {
@@ -115,7 +122,9 @@ sealed class NamedRouting<S, D>(path: String, val schema: S) : Routing(path)
             }
             delete {
                 transaction {
-                    schema -= schema { it.name.equal(call.getString("name")) }.single()
+                    val query = schema { it.name.equal(call.getString("name")) }
+                    schema -= query.single()
+                    onDeleted(call, query)
                 }
                 call.respond(HttpStatusCode.OK)
             }

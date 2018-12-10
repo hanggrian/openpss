@@ -41,6 +41,7 @@ import ktfx.jfoenix.jfxComboBox
 import ktfx.jfoenix.jfxPasswordField
 import ktfx.jfoenix.jfxTextField
 import ktfx.jfoenix.jfxToggleButton
+import ktfx.jfoenix.onDialogClosed
 import ktfx.layouts._StackPane
 import ktfx.layouts.anchorPane
 import ktfx.layouts.gridPane
@@ -117,7 +118,7 @@ class LoginPane(private val resourced: Resources) : _StackPane(), FxComponent {
                     GlobalScope.launch(Dispatchers.JavaFx) {
                         later {
                             TextDialog(this@LoginPane, R.string.restart_required, getString(R.string._restart_required))
-                                .apply { setOnDialogClosed { App.exit() } }
+                                .apply { onDialogClosed { App.exit() } }
                                 .show(this@LoginPane)
                         }
                     }

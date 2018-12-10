@@ -6,7 +6,6 @@ import com.hendraanggrian.openpss.content.Language
 import com.hendraanggrian.openpss.control.Space
 import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_INVOICE_HEADERS
 import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_LANGUAGE
-import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.io.properties.ReaderFile
 import com.hendraanggrian.openpss.io.properties.SettingsFile
 import com.hendraanggrian.openpss.popup.dialog.Dialog
@@ -24,7 +23,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.javafx.JavaFx
 import kotlinx.coroutines.launch
-import kotlinx.nosql.update
 import ktfx.beans.property.asProperty
 import ktfx.beans.value.and
 import ktfx.collections.toObservableList
@@ -78,17 +76,18 @@ class SettingsDialog(component: FxComponent) : Dialog(component, R.string.settin
                 }
                 gridPane {
                     gap = getDouble(R.dimen.padding_medium)
-                    transaction {
-                        label(getString(R.string.server_language)) row 0 col 0
-                        languageBox = jfxComboBox(Language.values().toObservableList()) {
-                            converter { toString { it!!.toString(true) } }
-                            selectionModel.select(Language.ofFullCode(findGlobalSettings(KEY_LANGUAGE).single().value))
-                            valueProperty().listener { isGlobalChanged.set(true) }
-                        } row 0 col 1
-                        label(getString(R.string.invoice_headers)) row 1 col 0
+                    label(getString(R.string.server_language)) row 0 col 0
+                    languageBox = jfxComboBox(Language.values().toObservableList()) {
+                        converter { toString { it!!.toString(true) } }
+                        GlobalScope.launch(Dispatchers.JavaFx) {
+                            selectionModel.select(Language.ofFullCode(api.getGlobalSetting(KEY_LANGUAGE).value))
+                        }
+                        valueProperty().listener { isGlobalChanged.set(true) }
+                    } row 0 col 1
+                    label(getString(R.string.invoice_headers)) row 1 col 0
+                    GlobalScope.launch(Dispatchers.JavaFx) {
                         invoiceHeadersArea = textArea(
-                            findGlobalSettings(KEY_INVOICE_HEADERS).single().valueList
-                                .joinToString("\n").trim()
+                            api.getGlobalSetting(KEY_INVOICE_HEADERS).valueList.joinToString("\n").trim()
                         ) {
                             promptText = getString(R.string.invoice_headers)
                             setMaxSize(256.0, 88.0)
@@ -110,14 +109,12 @@ class SettingsDialog(component: FxComponent) : Dialog(component, R.string.settin
                 buttonType = JFXButton.ButtonType.RAISED
                 disableProperty().bind(!isLocalChanged and !isGlobalChanged)
                 onActionFilter {
-                    if (isLocalChanged.value) SettingsFile.save()
-                    if (isGlobalChanged.value) transaction {
-                        findGlobalSettings(KEY_LANGUAGE)
-                            .projection { value }
-                            .update(languageBox.value.fullCode)
-                        findGlobalSettings(KEY_INVOICE_HEADERS)
-                            .projection { value }
-                            .update(invoiceHeadersArea.text.trim().replace("\n", "|"))
+                    if (isLocalChanged.value) {
+                        SettingsFile.save()
+                    }
+                    if (isGlobalChanged.value) GlobalScope.launch(Dispatchers.JavaFx) {
+                        api.setGlobalSetting(KEY_LANGUAGE, languageBox.value.fullCode)
+                        api.setGlobalSetting(KEY_INVOICE_HEADERS, invoiceHeadersArea.text.trim().replace("\n", "|"))
                     }
                     close()
                 }

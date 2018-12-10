@@ -56,6 +56,7 @@ import ktfx.collections.toMutableObservableList
 import ktfx.collections.toObservableList
 import ktfx.controlsfx.masterDetailPane
 import ktfx.coroutines.onAction
+import ktfx.coroutines.onHidden
 import ktfx.coroutines.onMouseClicked
 import ktfx.layouts.NodeInvokable
 import ktfx.layouts.columns
@@ -300,10 +301,8 @@ class InvoiceController : ActionController(), Refreshable {
     @FXML fun selectCustomer() = SearchCustomerPopover(this).show(customerField) { customerProperty.set(it) }
 
     private fun viewInvoice() = ViewInvoicePopover(this, invoiceTable.selectionModel.selectedItem).apply {
-        setOnHidden {
-            GlobalScope.launch(Dispatchers.JavaFx) {
-                reload(invoiceTable.selectionModel.selectedItem)
-            }
+        onHidden {
+            reload(invoiceTable.selectionModel.selectedItem)
         }
     }.show(invoiceTable)
 

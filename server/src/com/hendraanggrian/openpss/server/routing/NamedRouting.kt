@@ -22,7 +22,6 @@ import io.ktor.application.ApplicationCall
 import io.ktor.application.call
 import io.ktor.http.HttpStatusCode
 import io.ktor.response.respond
-import io.ktor.routing.Route
 import io.ktor.routing.delete
 import io.ktor.routing.get
 import io.ktor.routing.post
@@ -86,7 +85,7 @@ object EmployeeRouting : NamedRouting<Employees, Employee>("employees", Employee
     }
 }
 
-sealed class NamedRouting<S, D>(path: String, val schema: S) : Routing(path)
+sealed class NamedRouting<S, D>(val path: String, val schema: S) : Routing
     where S : DocumentSchema<D>, S : NamedSchema, D : Document<S>, D : Named {
 
     abstract fun onCreate(call: ApplicationCall): D
@@ -95,38 +94,40 @@ sealed class NamedRouting<S, D>(path: String, val schema: S) : Routing(path)
 
     open fun SessionWrapper.onDeleted(call: ApplicationCall, query: DocumentQuery<S, String, D>) {}
 
-    override fun Route.onInvoke() {
-        get {
-            call.respond(transaction { schema() })
-        }
-        post {
-            val doc = onCreate(call)
-            when {
-                transaction { schema { it.name.equal(doc.name) }.isNotEmpty() } ->
-                    call.respond(HttpStatusCode.NotAcceptable, "Name taken")
-                else -> {
-                    doc.id = transaction { schema.insert(doc) }
-                    call.respond(doc)
-                }
-            }
-        }
-        route("{name}") {
+    override fun RouteWrapper.onInvoke() {
+        path {
             get {
-                call.respond(transaction { schema { it.name.equal(call.getString("name")) }.single() })
+                call.respond(transaction { schema() })
             }
-            put {
-                transaction {
-                    onEdit(call, schema { it.name.equal(call.getString("name")) })
+            post {
+                val doc = onCreate(call)
+                when {
+                    transaction { schema { it.name.equal(doc.name) }.isNotEmpty() } ->
+                        call.respond(HttpStatusCode.NotAcceptable, "Name taken")
+                    else -> {
+                        doc.id = transaction { schema.insert(doc) }
+                        call.respond(doc)
+                    }
                 }
-                call.respond(HttpStatusCode.OK)
             }
-            delete {
-                transaction {
-                    val query = schema { it.name.equal(call.getString("name")) }
-                    schema -= query.single()
-                    onDeleted(call, query)
+            route("{id}") {
+                get {
+                    call.respond(transaction { schema[call.getString("id")].single() })
                 }
-                call.respond(HttpStatusCode.OK)
+                put {
+                    transaction {
+                        onEdit(call, schema[call.getString("id")])
+                    }
+                    call.respond(HttpStatusCode.OK)
+                }
+                delete {
+                    transaction {
+                        val query = schema[call.getString("id")]
+                        schema -= query.single()
+                        onDeleted(call, query)
+                    }
+                    call.respond(HttpStatusCode.OK)
+                }
             }
         }
     }

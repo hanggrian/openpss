@@ -3,24 +3,19 @@ package com.hendraanggrian.openpss.server.routing
 import com.hendraanggrian.openpss.content.Language
 import io.ktor.application.ApplicationCall
 import io.ktor.routing.Route
-import io.ktor.routing.route
 import org.joda.time.DateTime
 import org.joda.time.LocalDate
 import org.joda.time.LocalDateTime
 import org.joda.time.LocalTime
 import java.util.ResourceBundle
 
-abstract class Routing(private val path: String) {
+interface Routing {
 
-    val resources: ResourceBundle = Language.ofServer().toResourcesBundle()
+    val resources: ResourceBundle get() = Language.ofServer().toResourcesBundle()
 
-    abstract fun Route.onInvoke()
+    fun RouteWrapper.onInvoke()
 
-    operator fun invoke(routing: io.ktor.routing.Routing) {
-        routing.route(path) { onInvoke() }
-    }
-
-    fun io.ktor.routing.Routing.route(build: Route.() -> Unit) = route(path, build)
+    operator fun invoke(route: Route) = RouteWrapper(route).onInvoke()
 
     fun ApplicationCall.getString(name: String): String = parameters[name]!!
 

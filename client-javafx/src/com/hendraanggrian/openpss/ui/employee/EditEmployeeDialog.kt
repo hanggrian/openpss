@@ -55,7 +55,7 @@ class EditEmployeeDialog(component: FxComponent) : TableDialog<Employee>(compone
                 bindDisable()
                 onAction {
                     val selected = table.selectionModel.selectedItem
-                    api.editEmployee(login, selected.name, selected.password, !selected.isAdmin)
+                    api.editEmployee(login, selected.id, selected.password, !selected.isAdmin)
                     refresh()
                 }
             }
@@ -64,7 +64,7 @@ class EditEmployeeDialog(component: FxComponent) : TableDialog<Employee>(compone
                 bindDisable()
                 onAction {
                     val selected = table.selectionModel.selectedItem
-                    api.editEmployee(login, selected.name, Employee.DEFAULT_PASSWORD, selected.isAdmin)
+                    api.editEmployee(login, selected.id, Employee.DEFAULT_PASSWORD, selected.isAdmin)
                     rootLayout.jfxSnackbar(
                         getString(R.string.change_password_popup_will_appear_when_is_logged_back_in, login.name),
                         App.DURATION_LONG
@@ -82,7 +82,7 @@ class EditEmployeeDialog(component: FxComponent) : TableDialog<Employee>(compone
         table.selectionModel.select(added)
     }
 
-    override suspend fun CoroutineScope.delete(selected: Employee): Boolean = api.deleteEmployee(login, selected.name)
+    override suspend fun CoroutineScope.delete(selected: Employee): Boolean = api.deleteEmployee(login, selected.id)
 
     private fun MenuItem.bindDisable() = disableProperty().bind(table.selectionModel.selectedItemProperty().isNull)
 }

@@ -7,6 +7,7 @@ import com.hendraanggrian.openpss.db.schemas.PlatePrice
 import io.ktor.client.request.get
 import io.ktor.client.request.post
 import io.ktor.http.HttpMethod
+import kotlinx.nosql.Id
 
 interface NamedRoute : Route {
 
@@ -19,14 +20,18 @@ interface NamedRoute : Route {
         parameters("name" to name)
     }
 
-    suspend fun editPlatePrice(name: String, price: Double): Boolean = client.requestStatus {
-        apiUrl("plate-prices/$name")
+    suspend fun getPlatePrice(id: Id<String, *>): PlatePrice = client.get {
+        apiUrl("plate-prices/$id")
+    }
+
+    suspend fun editPlatePrice(id: Id<String, *>, price: Double): Boolean = client.requestStatus {
+        apiUrl("plate-prices/$id")
         method = HttpMethod.Put
         parameters("price" to price)
     }
 
-    suspend fun deletePlatePrice(name: String): Boolean = client.requestStatus {
-        apiUrl("plate-prices/$name")
+    suspend fun deletePlatePrice(id: Id<String, *>): Boolean = client.requestStatus {
+        apiUrl("plate-prices/$id")
         method = HttpMethod.Delete
     }
 
@@ -39,9 +44,13 @@ interface NamedRoute : Route {
         parameters("name" to name)
     }
 
-    suspend fun editOffsetPrice(name: String, minQty: Int, minPrice: Double, excessPrice: Double): Boolean =
+    suspend fun getOffsetPrice(id: Id<String, *>): OffsetPrice = client.get {
+        apiUrl("offset-prices/$id")
+    }
+
+    suspend fun editOffsetPrice(id: Id<String, *>, minQty: Int, minPrice: Double, excessPrice: Double): Boolean =
         client.requestStatus {
-            apiUrl("offset-prices/$name")
+            apiUrl("offset-prices/$id")
             method = HttpMethod.Put
             parameters(
                 "minQty" to minQty,
@@ -50,8 +59,8 @@ interface NamedRoute : Route {
             )
         }
 
-    suspend fun deleteOffsetPrice(name: String): Boolean = client.requestStatus {
-        apiUrl("offset-prices/$name")
+    suspend fun deleteOffsetPrice(id: Id<String, *>): Boolean = client.requestStatus {
+        apiUrl("offset-prices/$id")
         method = HttpMethod.Delete
     }
 
@@ -64,9 +73,13 @@ interface NamedRoute : Route {
         parameters("name" to name)
     }
 
-    suspend fun editDigitalPrice(name: String, oneSidePrice: Double, twoSidePrice: Double): Boolean =
+    suspend fun getDigitalPrice(id: Id<String, *>): DigitalPrice = client.get {
+        apiUrl("digital-prices/$id")
+    }
+
+    suspend fun editDigitalPrice(id: Id<String, *>, oneSidePrice: Double, twoSidePrice: Double): Boolean =
         client.requestStatus {
-            apiUrl("digital-prices/$name")
+            apiUrl("digital-prices/$id")
             method = HttpMethod.Put
             parameters(
                 "oneSidePrice" to oneSidePrice,
@@ -74,8 +87,8 @@ interface NamedRoute : Route {
             )
         }
 
-    suspend fun deleteDigitalPrice(name: String): Boolean = client.requestStatus {
-        apiUrl("digital-prices/$name")
+    suspend fun deleteDigitalPrice(id: Id<String, *>): Boolean = client.requestStatus {
+        apiUrl("digital-prices/$id")
         method = HttpMethod.Delete
     }
 
@@ -88,9 +101,13 @@ interface NamedRoute : Route {
         parameters("name" to name)
     }
 
-    suspend fun editEmployee(login: Employee, name: String, password: String, isAdmin: Boolean): Boolean =
+    suspend fun getEmployee(id: Id<String, *>): Employee = client.get {
+        apiUrl("employees/$id")
+    }
+
+    suspend fun editEmployee(login: Employee, id: Id<String, *>, password: String, isAdmin: Boolean): Boolean =
         client.requestStatus {
-            apiUrl("employees/$name")
+            apiUrl("employees/$id")
             method = HttpMethod.Put
             parameters(
                 "password" to password,
@@ -99,8 +116,8 @@ interface NamedRoute : Route {
             )
         }
 
-    suspend fun deleteEmployee(login: Employee, name: String): Boolean = client.requestStatus {
-        apiUrl("employees/$name")
+    suspend fun deleteEmployee(login: Employee, id: Id<String, *>): Boolean = client.requestStatus {
+        apiUrl("employees/$id")
         method = HttpMethod.Delete
         parameters("login" to login.name)
     }

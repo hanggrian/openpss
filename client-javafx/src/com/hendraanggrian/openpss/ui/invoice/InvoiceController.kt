@@ -11,8 +11,6 @@ import com.hendraanggrian.openpss.control.Toolbar
 import com.hendraanggrian.openpss.db.SessionWrapper
 import com.hendraanggrian.openpss.db.schema.no
 import com.hendraanggrian.openpss.db.schemas.Customer
-import com.hendraanggrian.openpss.db.schemas.Customers
-import com.hendraanggrian.openpss.db.schemas.Employees
 import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.db.schemas.Invoices
 import com.hendraanggrian.openpss.db.schemas.Payment
@@ -43,6 +41,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.javafx.JavaFx
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.nosql.equal
 import kotlinx.nosql.update
 import ktfx.application.later
@@ -156,10 +155,10 @@ class InvoiceController : ActionController(), Refreshable {
                                 stringCell { dateTime.toString(PATTERN_DATETIME_EXTENDED) }
                             }
                             getString(R.string.employee)<String> {
-                                stringCell { transaction { Employees[employeeId].single().toString() } }
+                                stringCell { runBlocking { api.getEmployee(employeeId).name } }
                             }
                             getString(R.string.customer)<String> {
-                                stringCell { transaction { Customers[customerId].single().toString() } }
+                                stringCell { runBlocking { api.getCustomer(customerId).name } }
                             }
                             getString(R.string.total)<String> { currencyCell(this@InvoiceController) { total } }
                             getString(R.string.print)<Boolean> { doneCell { printed } }
@@ -192,7 +191,7 @@ class InvoiceController : ActionController(), Refreshable {
                                     stringCell { dateTime.toString(PATTERN_DATETIME_EXTENDED) }
                                 }
                                 getString(R.string.employee)<String> {
-                                    stringCell { transaction { Employees[employeeId].single().toString() } }
+                                    stringCell { runBlocking { api.getEmployee(employeeId).name } }
                                 }
                                 getString(R.string.value)<String> {
                                     currencyCell(this@InvoiceController) { value }

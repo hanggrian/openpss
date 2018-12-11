@@ -6,6 +6,7 @@ import com.hendraanggrian.openpss.db.schemas.Employee
 import io.ktor.client.request.get
 import io.ktor.client.request.post
 import io.ktor.http.HttpMethod
+import kotlinx.nosql.Id
 
 interface CustomerRoute : Route {
 
@@ -24,9 +25,13 @@ interface CustomerRoute : Route {
         body = customer
     }
 
-    suspend fun editCustomer(login: Employee, customer: String, address: String?, note: String?): Boolean =
+    suspend fun getCustomer(id: Id<String, *>): Customer = client.get {
+        apiUrl("customers/$id")
+    }
+
+    suspend fun editCustomer(login: Employee, id: Id<String, *>, address: String?, note: String?): Boolean =
         client.requestStatus {
-            apiUrl("customers/$customer")
+            apiUrl("customers/$id")
             method = HttpMethod.Put
             parameters(
                 "address" to address,
@@ -35,14 +40,14 @@ interface CustomerRoute : Route {
             )
         }
 
-    suspend fun addContact(name: String, contact: Customer.Contact): Customer.Contact = client.post {
-        apiUrl("customers/$name/contacts")
+    suspend fun addContact(id: Id<String, *>, contact: Customer.Contact): Customer.Contact = client.post {
+        apiUrl("customers/$id/contacts")
         body = contact
     }
 
-    suspend fun deleteContact(login: Employee, name: String, contact: Customer.Contact): Boolean =
+    suspend fun deleteContact(login: Employee, id: Id<String, *>, contact: Customer.Contact): Boolean =
         client.requestStatus {
-            apiUrl("customers/$name/contacts")
+            apiUrl("customers/$id/contacts")
             method = HttpMethod.Delete
             body = contact
             parameters("employee" to login.name)

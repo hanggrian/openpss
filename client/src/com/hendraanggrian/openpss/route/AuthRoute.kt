@@ -14,6 +14,6 @@ interface AuthRoute : Route {
     }
 
     suspend fun isAdmin(login: Employee): Boolean = client.get<Employee> {
-        apiUrl("employees/${login.name}")
+        apiUrl("employees/${login.id}")
     }.isAdmin
 }

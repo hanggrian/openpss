@@ -26,6 +26,5 @@ class EditRecessDialog(component: FxComponent) : TableDialog<Recess>(component, 
         table.items.add(api.addRecess(pair!!.first, pair.second))
     }
 
-    override suspend fun CoroutineScope.delete(selected: Recess): Boolean =
-        api.deleteRecess(selected.start, selected.end)
+    override suspend fun CoroutineScope.delete(selected: Recess): Boolean = api.deleteRecess(selected.id)
 }

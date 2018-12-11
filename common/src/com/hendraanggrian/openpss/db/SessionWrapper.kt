@@ -47,6 +47,10 @@ class SessionWrapper(val session: MongoDBSession) : Session by session,
         document: D
     ): DocumentQuery<S, String, D> = get(document.id)
 
+    inline operator fun <S : DocumentSchema<D>, D : Document<S>> S.get(
+        idValue: String
+    ): DocumentQuery<S, String, D> = get(Id(idValue))
+
     inline operator fun <S : DocumentSchema<D>, D : Document<S>> S.minusAssign(
         id: Id<String, S>
     ) {

@@ -24,7 +24,7 @@ class EditDigitalPriceDialog(
             }
             onEditCommit { cell ->
                 val digital = cell.rowValue
-                if (api.editDigitalPrice(digital.name, cell.newValue, digital.twoSidePrice)) {
+                if (api.editDigitalPrice(digital.id, cell.newValue, digital.twoSidePrice)) {
                     cell.rowValue.oneSidePrice = cell.newValue
                 }
             }
@@ -38,7 +38,7 @@ class EditDigitalPriceDialog(
             }
             onEditCommit { cell ->
                 val digital = cell.rowValue
-                if (api.editDigitalPrice(digital.name, digital.oneSidePrice, cell.newValue)) {
+                if (api.editDigitalPrice(digital.id, digital.oneSidePrice, cell.newValue)) {
                     cell.rowValue.twoSidePrice = cell.newValue
                 }
             }
@@ -49,6 +49,5 @@ class EditDigitalPriceDialog(
 
     override suspend fun CoroutineScope.add(name: String): DigitalPrice? = api.addDigitalPrice(name)
 
-    override suspend fun CoroutineScope.delete(selected: DigitalPrice): Boolean =
-        api.deleteDigitalPrice(selected.name)
+    override suspend fun CoroutineScope.delete(selected: DigitalPrice): Boolean = api.deleteDigitalPrice(selected.id)
 }

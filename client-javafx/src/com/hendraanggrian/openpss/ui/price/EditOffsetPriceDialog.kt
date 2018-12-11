@@ -24,7 +24,7 @@ class EditOffsetPriceDialog(
             }
             onEditCommit { cell ->
                 val offset = cell.rowValue
-                if (api.editOffsetPrice(offset.name, cell.newValue, offset.minPrice, offset.excessPrice)) {
+                if (api.editOffsetPrice(offset.id, cell.newValue, offset.minPrice, offset.excessPrice)) {
                     cell.rowValue.minQty = cell.newValue
                 }
             }
@@ -39,7 +39,7 @@ class EditOffsetPriceDialog(
             }
             onEditCommit { cell ->
                 val offset = cell.rowValue
-                if (api.editOffsetPrice(offset.name, offset.minQty, cell.newValue, offset.excessPrice)) {
+                if (api.editOffsetPrice(offset.id, offset.minQty, cell.newValue, offset.excessPrice)) {
                     cell.rowValue.minPrice = cell.newValue
                 }
             }
@@ -54,7 +54,7 @@ class EditOffsetPriceDialog(
             }
             onEditCommit { cell ->
                 val offset = cell.rowValue
-                if (api.editOffsetPrice(offset.name, offset.minQty, offset.minPrice, cell.newValue)) {
+                if (api.editOffsetPrice(offset.id, offset.minQty, offset.minPrice, cell.newValue)) {
                     cell.rowValue.excessPrice = cell.newValue
                 }
             }
@@ -65,6 +65,5 @@ class EditOffsetPriceDialog(
 
     override suspend fun CoroutineScope.add(name: String): OffsetPrice? = api.addOffsetPrice(name)
 
-    override suspend fun CoroutineScope.delete(selected: OffsetPrice): Boolean =
-        api.deleteOffsetPrice(selected.name)
+    override suspend fun CoroutineScope.delete(selected: OffsetPrice): Boolean = api.deleteOffsetPrice(selected.id)
 }

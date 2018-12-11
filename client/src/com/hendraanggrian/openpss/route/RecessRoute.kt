@@ -4,6 +4,7 @@ import com.hendraanggrian.openpss.db.schemas.Recess
 import io.ktor.client.request.get
 import io.ktor.client.request.post
 import io.ktor.http.HttpMethod
+import kotlinx.nosql.Id
 import org.joda.time.LocalTime
 
 interface RecessRoute : Route {
@@ -20,12 +21,8 @@ interface RecessRoute : Route {
         )
     }
 
-    suspend fun deleteRecess(start: LocalTime, end: LocalTime): Boolean = client.requestStatus {
-        apiUrl("recesses")
+    suspend fun deleteRecess(id: Id<String, *>): Boolean = client.requestStatus {
+        apiUrl("recesses/$id")
         method = HttpMethod.Delete
-        parameters(
-            "start" to start,
-            "end" to end
-        )
     }
 }

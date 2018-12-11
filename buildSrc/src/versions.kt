@@ -35,7 +35,6 @@ const val VERSION_COMMONS_MATH = "3.6.1"
 const val VERSION_POI = "4.0.0"
 
 internal const val VERSION_MONGODB = "3.9.1"
-internal const val VERSION_CONTROLSFX = "8.40.14"
 internal const val VERSION_COMMONS_VALIDATOR = "1.6"
 internal const val VERSION_JODA = "2.10.1"
 internal const val VERSION_SLF4J = "1.7.25"

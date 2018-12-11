@@ -144,13 +144,13 @@ class CustomerController : ActionController(), Refreshable {
 
     private fun edit() = EditCustomerDialog(this, customerList.selectionModel.selectedItem).show {
         withPermission {
-            api.editCustomer(login, it!!.name, it.address, it.note)
+            api.editCustomer(login, it!!.id, it.address, it.note)
             reload()
         }
     }
 
     @FXML fun addContact() = AddContactPopover(this).show(contactTable) {
-        api.addContact(customerList.selectionModel.selectedItem.name, it!!)
+        api.addContact(customerList.selectionModel.selectedItem.id, it!!)
         reload()
     }
 
@@ -158,7 +158,7 @@ class CustomerController : ActionController(), Refreshable {
         withPermission {
             api.deleteContact(
                 login,
-                customerList.selectionModel.selectedItem.name,
+                customerList.selectionModel.selectedItem.id,
                 contactTable.selectionModel.selectedItem
             )
             reload()

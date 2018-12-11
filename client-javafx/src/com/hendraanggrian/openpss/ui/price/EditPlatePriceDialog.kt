@@ -24,7 +24,7 @@ class EditPlatePriceDialog(
             }
             onEditCommit { cell ->
                 val plate = cell.rowValue
-                if (api.editPlatePrice(plate.name, cell.newValue)) {
+                if (api.editPlatePrice(plate.id, cell.newValue)) {
                     cell.rowValue.price = cell.newValue
                 }
             }
@@ -35,5 +35,5 @@ class EditPlatePriceDialog(
 
     override suspend fun CoroutineScope.add(name: String): PlatePrice? = api.addPlatePrice(name)
 
-    override suspend fun CoroutineScope.delete(selected: PlatePrice): Boolean = api.deletePlatePrice(selected.name)
+    override suspend fun CoroutineScope.delete(selected: PlatePrice): Boolean = api.deletePlatePrice(selected.id)
 }

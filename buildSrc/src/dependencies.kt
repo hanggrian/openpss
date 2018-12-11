@@ -38,8 +38,6 @@ fun DependencyHandler.jakeWharton(
     version: String
 ): String = "com.jakewharton${repo?.let { ".$it" } ?: ""}:$module:$version"
 
-fun DependencyHandler.controlsFx() = "org.controlsfx:controlsfx:$VERSION_CONTROLSFX"
-
 fun DependencyHandler.apache(module: String, version: String) = "org.apache.${module.split("-")[0]}:$module:$version"
 fun DependencyHandler.commonsValidator() = "commons-validator:commons-validator:$VERSION_COMMONS_VALIDATOR"
 

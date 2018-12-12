@@ -8,23 +8,20 @@ import io.ktor.response.respond
 import io.ktor.routing.get
 import kotlin.math.ceil
 
-object LogRouting : Routing {
-
-    override fun RouteWrapper.onInvoke() {
-        "logs" {
-            get {
-                val page = call.getInt("page")
-                val count = call.getInt("count")
-                call.respond(
-                    transaction {
-                        val logs = Logs()
-                        Page(
-                            ceil(logs.count() / count.toDouble()).toInt(),
-                            logs.skip(count * page).take(count).toList()
-                        )
-                    }
-                )
-            }
+object LogRouting : Routing({
+    "logs" {
+        get {
+            val page = call.getInt("page")
+            val count = call.getInt("count")
+            call.respond(
+                transaction {
+                    val logs = Logs()
+                    Page(
+                        ceil(logs.count() / count.toDouble()).toInt(),
+                        logs.skip(count * page).take(count).toList()
+                    )
+                }
+            )
         }
     }
-}
+})

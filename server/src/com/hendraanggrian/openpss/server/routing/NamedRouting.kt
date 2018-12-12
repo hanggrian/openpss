@@ -26,109 +26,88 @@ import io.ktor.routing.delete
 import io.ktor.routing.get
 import io.ktor.routing.post
 import io.ktor.routing.put
-import io.ktor.routing.route
 import kotlinx.nosql.equal
 import kotlinx.nosql.mongodb.DocumentSchema
 import kotlinx.nosql.update
 
-object PlatePriceRouting : NamedRouting<PlatePrices, PlatePrice>("plate-prices", PlatePrices) {
-
-    override fun onCreate(call: ApplicationCall): PlatePrice = PlatePrice.new(call.getString("name"))
-
-    override fun SessionWrapper.onEdit(call: ApplicationCall, query: DocumentQuery<PlatePrices, String, PlatePrice>) {
+object PlatePriceRouting : NamedRouting<PlatePrices, PlatePrice>("plate-prices", PlatePrices,
+    { call -> PlatePrice.new(call.getString("name")) },
+    { call, query ->
         query.projection { price }
             .update(call.getDouble("price"))
-    }
-}
+    })
 
-object OffsetPriceRouting : NamedRouting<OffsetPrices, OffsetPrice>("offset-prices", OffsetPrices) {
-
-    override fun onCreate(call: ApplicationCall): OffsetPrice = OffsetPrice.new(call.getString("name"))
-
-    override fun SessionWrapper.onEdit(call: ApplicationCall, query: DocumentQuery<OffsetPrices, String, OffsetPrice>) {
+object OffsetPriceRouting : NamedRouting<OffsetPrices, OffsetPrice>("offset-prices", OffsetPrices,
+    { call -> OffsetPrice.new(call.getString("name")) },
+    { call, query ->
         query.projection { minQty + minPrice + excessPrice }
             .update(call.getInt("minQty"), call.getDouble("minPrice"), call.getDouble("excessPrice"))
-    }
-}
+    })
 
-object DigitalPriceRouting : NamedRouting<DigitalPrices, DigitalPrice>("digital-prices", DigitalPrices) {
-
-    override fun onCreate(call: ApplicationCall): DigitalPrice = DigitalPrice.new(call.getString("name"))
-
-    override fun SessionWrapper.onEdit(
-        call: ApplicationCall,
-        query: DocumentQuery<DigitalPrices, String, DigitalPrice>
-    ) {
+object DigitalPriceRouting : NamedRouting<DigitalPrices, DigitalPrice>("digital-prices", DigitalPrices,
+    { call -> DigitalPrice.new(call.getString("name")) },
+    { call, query ->
         query.projection { oneSidePrice + twoSidePrice }
             .update(call.getDouble("oneSidePrice"), call.getDouble("twoSidePrice"))
-    }
-}
+    })
 
-object EmployeeRouting : NamedRouting<Employees, Employee>("employees", Employees) {
-
-    override fun onCreate(call: ApplicationCall): Employee = Employee.new(call.getString("name"))
-
-    override fun SessionWrapper.onEdit(call: ApplicationCall, query: DocumentQuery<Employees, String, Employee>) {
+object EmployeeRouting : NamedRouting<Employees, Employee>("employees", Employees,
+    { call -> Employee.new(call.getString("name")) },
+    { call, query ->
         query.projection { password + isAdmin }
             .update(call.getString("password"), call.getBoolean("isAdmin"))
         Logs += Log.new(
-            resources.getString(R.string.employee_edit).format(query.single().name),
+            EmployeeRouting.resources.getString(R.string.employee_edit).format(query.single().name),
             call.getString("login")
         )
-    }
-
-    override fun SessionWrapper.onDeleted(call: ApplicationCall, query: DocumentQuery<Employees, String, Employee>) {
+    },
+    { call, query ->
         Logs += Log.new(
-            resources.getString(R.string.employee_delete).format(query.single().name),
+            EmployeeRouting.resources.getString(R.string.employee_delete).format(query.single().name),
             call.getString("login")
         )
-    }
-}
+    })
 
-sealed class NamedRouting<S, D>(val path: String, val schema: S) : Routing
-    where S : DocumentSchema<D>, S : NamedSchema, D : Document<S>, D : Named {
-
-    abstract fun onCreate(call: ApplicationCall): D
-
-    abstract fun SessionWrapper.onEdit(call: ApplicationCall, query: DocumentQuery<S, String, D>)
-
-    open fun SessionWrapper.onDeleted(call: ApplicationCall, query: DocumentQuery<S, String, D>) {}
-
-    override fun RouteWrapper.onInvoke() {
-        path {
-            get {
-                call.respond(transaction { schema() })
-            }
-            post {
-                val doc = onCreate(call)
-                when {
-                    transaction { schema { it.name.equal(doc.name) }.isNotEmpty() } ->
-                        call.respond(HttpStatusCode.NotAcceptable, "Name taken")
-                    else -> {
-                        doc.id = transaction { schema.insert(doc) }
-                        call.respond(doc)
-                    }
-                }
-            }
-            route("{id}") {
-                get {
-                    call.respond(transaction { schema[call.getString("id")].single() })
-                }
-                put {
-                    transaction {
-                        onEdit(call, schema[call.getString("id")])
-                    }
-                    call.respond(HttpStatusCode.OK)
-                }
-                delete {
-                    transaction {
-                        val query = schema[call.getString("id")]
-                        schema -= query.single()
-                        onDeleted(call, query)
-                    }
-                    call.respond(HttpStatusCode.OK)
+sealed class NamedRouting<S, D>(
+    val path: String,
+    val schema: S,
+    val onCreate: (call: ApplicationCall) -> D,
+    val onEdit: SessionWrapper.(call: ApplicationCall, query: DocumentQuery<S, String, D>) -> Unit,
+    val onDeleted: SessionWrapper.(call: ApplicationCall, query: DocumentQuery<S, String, D>) -> Unit = { _, _ -> }
+) : Routing({
+    path {
+        get {
+            call.respond(transaction { schema() })
+        }
+        post {
+            val doc = onCreate(call)
+            when {
+                transaction { schema { it.name.equal(doc.name) }.isNotEmpty() } ->
+                    call.respond(HttpStatusCode.NotAcceptable, "Name taken")
+                else -> {
+                    doc.id = transaction { schema.insert(doc) }
+                    call.respond(doc)
                 }
             }
         }
+        "{id}" {
+            get {
+                call.respond(transaction { schema[call.getString("id")].single() })
+            }
+            put {
+                transaction {
+                    onEdit(call, schema[call.getString("id")])
+                }
+                call.respond(HttpStatusCode.OK)
+            }
+            delete {
+                transaction {
+                    val query = schema[call.getString("id")]
+                    schema -= query.single()
+                    onDeleted(call, query)
+                }
+                call.respond(HttpStatusCode.OK)
+            }
+        }
     }
-}
+}) where S : DocumentSchema<D>, S : NamedSchema, D : Document<S>, D : Named

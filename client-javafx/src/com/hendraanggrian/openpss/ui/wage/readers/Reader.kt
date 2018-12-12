@@ -25,6 +25,7 @@ abstract class Reader {
     override fun toString(): String = name
 
     companion object {
+
         private val READERS: List<Reader> get() = listOf(EClockingReader, TestReader)
 
         fun listAll(): ObservableList<Reader> = READERS.toObservableList()

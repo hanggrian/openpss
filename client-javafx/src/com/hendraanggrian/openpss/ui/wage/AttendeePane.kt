@@ -4,8 +4,6 @@ import com.hendraanggrian.openpss.PATTERN_DATETIME_EXTENDED
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.FxComponent
 import com.hendraanggrian.openpss.control.IntField
-import com.hendraanggrian.openpss.db.schemas.Recesses
-import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.popup.popover.DateTimePopover
 import com.hendraanggrian.openpss.util.round
 import com.hendraanggrian.openpss.util.trimMinutes
@@ -92,8 +90,8 @@ class AttendeePane(
                 label("@${getString(R.string.hour)}") { fontSize = 10.0 } col 2 row 2
                 label(getString(R.string.recess)) col 0 row 3 marginRight 4.0
                 vbox {
-                    transaction {
-                        Recesses().forEach { recess ->
+                    GlobalScope.launch(Dispatchers.JavaFx) {
+                        api.getRecesses().forEach { recess ->
                             recessChecks += jfxCheckBox(recess.toString()) {
                                 selectedProperty().listener { _, _, selected ->
                                     if (selected) attendee.recesses += recess else attendee.recesses -= recess

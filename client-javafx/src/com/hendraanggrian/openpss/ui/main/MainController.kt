@@ -11,11 +11,8 @@ import com.hendraanggrian.openpss.control.UnselectableListView
 import com.hendraanggrian.openpss.db.Database
 import com.hendraanggrian.openpss.db.schema.Technique
 import com.hendraanggrian.openpss.db.schema.new
-import com.hendraanggrian.openpss.db.schemas.Customers
-import com.hendraanggrian.openpss.db.schemas.Employees
 import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.db.schemas.Log
-import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.popup.popover.ViewInvoicePopover
 import com.hendraanggrian.openpss.ui.ActionController
 import com.hendraanggrian.openpss.ui.Controller
@@ -50,8 +47,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.javafx.JavaFx
 import kotlinx.coroutines.launch
-import kotlinx.nosql.equal
-import kotlinx.nosql.update
 import ktfx.application.later
 import ktfx.beans.binding.buildStringBinding
 import ktfx.beans.binding.minus
@@ -176,12 +171,8 @@ class MainController : Controller(), Refreshable {
 
             if (login.isFirstTimeLogin) {
                 ChangePasswordDialog(this).show { newPassword ->
-                    transaction {
-                        Employees { it.name.equal(login.name) }
-                            .projection { password }
-                            .update(newPassword!!)
-                        rootLayout.jfxSnackbar(getString(R.string.successfully_changed_password), App.DURATION_LONG)
-                    }
+                    api.editEmployee(login, login.id, newPassword!!, login.isAdmin)
+                    rootLayout.jfxSnackbar(getString(R.string.successfully_changed_password), App.DURATION_LONG)
                 }
             }
         }
@@ -241,27 +232,29 @@ class MainController : Controller(), Refreshable {
     @FXML fun settings() = SettingsDialog(this).show()
 
     @FXML fun testViewInvoice() {
-        transaction { Customers().firstOrNull() }?.let {
-            ViewInvoicePopover(
-                this,
-                Invoice(
-                    no = 1234,
-                    employeeId = login.id,
-                    customerId = it.id,
-                    dateTime = Database.dateTime(),
-                    offsetJobs = listOf(
-                        Invoice.OffsetJob.new(5, "Title", 92000.0, "Type", Technique.TWO_SIDE_EQUAL)
-                    ),
-                    digitalJobs = listOf(Invoice.DigitalJob.new(5, "Title", 92000.0, "Type", false)),
-                    plateJobs = listOf(Invoice.PlateJob.new(5, "Title", 92000.0, "Type")),
-                    otherJobs = listOf(Invoice.OtherJob.new(5, "Title", 92000.0)),
-                    note = "This is a test",
-                    printed = false,
-                    isPaid = false,
-                    isDone = false
-                ), true
-            ).show(menuBar)
-        } ?: rootLayout.jfxSnackbar(getString(R.string.no_customer_to_test), App.DURATION_SHORT)
+        GlobalScope.launch(Dispatchers.JavaFx) {
+            api.getCustomers("", 1, 1).items.firstOrNull()?.let {
+                ViewInvoicePopover(
+                    this@MainController,
+                    Invoice(
+                        no = 1234,
+                        employeeId = login.id,
+                        customerId = it.id,
+                        dateTime = Database.dateTime(),
+                        offsetJobs = listOf(
+                            Invoice.OffsetJob.new(5, "Title", 92000.0, "Type", Technique.TWO_SIDE_EQUAL)
+                        ),
+                        digitalJobs = listOf(Invoice.DigitalJob.new(5, "Title", 92000.0, "Type", false)),
+                        plateJobs = listOf(Invoice.PlateJob.new(5, "Title", 92000.0, "Type")),
+                        otherJobs = listOf(Invoice.OtherJob.new(5, "Title", 92000.0)),
+                        note = "This is a test",
+                        printed = false,
+                        isPaid = false,
+                        isDone = false
+                    ), true
+                ).show(menuBar)
+            } ?: rootLayout.jfxSnackbar(getString(R.string.no_customer_to_test), App.DURATION_SHORT)
+        }
     }
 
     @FXML fun checkUpdate() = GitHubHelper.checkUpdates(this)

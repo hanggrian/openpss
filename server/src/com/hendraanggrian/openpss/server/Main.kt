@@ -12,6 +12,7 @@ import com.hendraanggrian.openpss.server.routing.OffsetPriceRouting
 import com.hendraanggrian.openpss.server.routing.PaymentRouting
 import com.hendraanggrian.openpss.server.routing.PlatePriceRouting
 import com.hendraanggrian.openpss.server.routing.RecessRouting
+import com.hendraanggrian.openpss.server.routing.installRoutings
 import com.hendraanggrian.openpss.util.jodaTimeSupport
 import io.ktor.application.Application
 import io.ktor.application.install
@@ -21,7 +22,6 @@ import io.ktor.features.DefaultHeaders
 import io.ktor.gson.GsonConverter
 import io.ktor.gson.gson
 import io.ktor.http.ContentType
-import io.ktor.routing.routing
 
 fun Application.main() {
     install(DefaultHeaders)
@@ -35,24 +35,17 @@ fun Application.main() {
             setPrettyPrinting()
         }
     }
-    routing {
-        AuthRouting(this)
-
-        CustomerRouting(this)
-
-        GlobalSettingRouting(this)
-
-        LogRouting(this)
-
-        InvoiceRouting(this)
-
-        PlatePriceRouting(this)
-        OffsetPriceRouting(this)
-        DigitalPriceRouting(this)
-        EmployeeRouting(this)
-
-        PaymentRouting(this)
-
-        RecessRouting(this)
-    }
+    installRoutings(
+        AuthRouting,
+        CustomerRouting,
+        GlobalSettingRouting,
+        InvoiceRouting,
+        LogRouting,
+        PlatePriceRouting,
+        OffsetPriceRouting,
+        DigitalPriceRouting,
+        EmployeeRouting,
+        PaymentRouting,
+        RecessRouting
+    )
 }

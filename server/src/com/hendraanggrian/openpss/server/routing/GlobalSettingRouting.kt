@@ -10,25 +10,22 @@ import io.ktor.routing.post
 import kotlinx.nosql.equal
 import kotlinx.nosql.update
 
-object GlobalSettingRouting : Routing {
-
-    override fun RouteWrapper.onInvoke() {
-        "global-settings" {
-            "{key}" {
-                get {
-                    call.respond(transaction {
-                        GlobalSettings { it.key.equal(call.getString("key")) }.single()
-                    })
+object GlobalSettingRouting : Routing({
+    "global-settings" {
+        "{key}" {
+            get {
+                call.respond(transaction {
+                    GlobalSettings { it.key.equal(call.getString("key")) }.single()
+                })
+            }
+            post {
+                transaction {
+                    GlobalSettings { it.key.equal(call.getString("key")) }
+                        .projection { this.value }
+                        .update(call.getString("value"))
                 }
-                post {
-                    transaction {
-                        GlobalSettings { it.key.equal(call.getString("key")) }
-                            .projection { this.value }
-                            .update(call.getString("value"))
-                    }
-                    call.respond(HttpStatusCode.OK)
-                }
+                call.respond(HttpStatusCode.OK)
             }
         }
     }
-}
+})

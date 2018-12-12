@@ -8,9 +8,7 @@ import com.hendraanggrian.openpss.content.STYLESHEET_INVOICE
 import com.hendraanggrian.openpss.control.Space
 import com.hendraanggrian.openpss.db.schema.typedTechnique
 import com.hendraanggrian.openpss.db.schemas.Customer
-import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.schemas.Employee
-import com.hendraanggrian.openpss.db.schemas.Employees
 import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_INVOICE_HEADERS
 import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.db.schemas.Invoices
@@ -37,6 +35,10 @@ import javafx.scene.layout.VBox
 import javafx.scene.paint.Color.BLACK
 import javafx.scene.text.TextAlignment
 import javafx.scene.transform.Scale
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.javafx.JavaFx
+import kotlinx.coroutines.launch
 import kotlinx.nosql.update
 import ktfx.application.later
 import ktfx.coroutines.onAction
@@ -88,10 +90,10 @@ class ViewInvoicePopover(
 
     init {
         graphic = label("${getString(R.string.server_language)}: $language")
-        transaction {
-            invoiceHeaders = findGlobalSettings(KEY_INVOICE_HEADERS).single().valueList
-            employee = Employees[invoice.employeeId].single()
-            customer = Customers[invoice.customerId].single()
+        GlobalScope.launch(Dispatchers.JavaFx) {
+            invoiceHeaders = api.getGlobalSetting(KEY_INVOICE_HEADERS).valueList
+            employee = api.getEmployee(invoice.employeeId)
+            customer = api.getCustomer(invoice.customerId)
         }
         invoiceBox = vbox(getDouble(R.dimen.padding_medium)) {
             if (!SystemUtils.IS_OS_MAC) stylesheets += STYLESHEET_INVOICE
@@ -117,10 +119,7 @@ class ViewInvoicePopover(
             fullLine()
             vbox {
                 alignment = CENTER
-                label(
-                    "${invoice.dateTime.toString(PATTERN_DATETIME_EXTENDED)} " +
-                        "(${transaction { Employees[invoice.employeeId].single().name }})"
-                )
+                label("${invoice.dateTime.toString(PATTERN_DATETIME_EXTENDED)} " + "(${employee.name})")
                 label(customer.name) {
                     styleClass += R.style.bold
                 }

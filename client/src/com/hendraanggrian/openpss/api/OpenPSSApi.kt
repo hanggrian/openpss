@@ -8,6 +8,7 @@ import com.hendraanggrian.openpss.route.LogRoute
 import com.hendraanggrian.openpss.route.NamedRoute
 import com.hendraanggrian.openpss.route.PaymentRoute
 import com.hendraanggrian.openpss.route.RecessRoute
+import com.hendraanggrian.openpss.route.WageRoute
 
 /** Main API. */
 class OpenPSSApi : Api("http://localhost:8080"),
@@ -18,4 +19,5 @@ class OpenPSSApi : Api("http://localhost:8080"),
     LogRoute,
     NamedRoute,
     PaymentRoute,
-    RecessRoute
+    RecessRoute,
+    WageRoute

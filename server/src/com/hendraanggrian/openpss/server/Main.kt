@@ -12,6 +12,7 @@ import com.hendraanggrian.openpss.server.routing.OffsetPriceRouting
 import com.hendraanggrian.openpss.server.routing.PaymentRouting
 import com.hendraanggrian.openpss.server.routing.PlatePriceRouting
 import com.hendraanggrian.openpss.server.routing.RecessRouting
+import com.hendraanggrian.openpss.server.routing.WageRouting
 import com.hendraanggrian.openpss.server.routing.installRoutings
 import com.hendraanggrian.openpss.util.jodaTimeSupport
 import io.ktor.application.Application
@@ -46,6 +47,7 @@ fun Application.main() {
         DigitalPriceRouting,
         EmployeeRouting,
         PaymentRouting,
-        RecessRouting
+        RecessRouting,
+        WageRouting
     )
 }

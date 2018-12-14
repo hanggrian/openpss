@@ -3,13 +3,14 @@ package com.hendraanggrian.openpss.popup.dialog
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.FxComponent
 import com.hendraanggrian.openpss.db.schemas.Employee
-import com.hendraanggrian.openpss.db.schemas.Employees
-import com.hendraanggrian.openpss.db.transaction
 import javafx.scene.Node
 import javafx.scene.control.ComboBox
 import javafx.scene.control.PasswordField
-import kotlinx.nosql.equal
-import kotlinx.nosql.notEqual
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.javafx.JavaFx
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import ktfx.beans.value.isBlank
 import ktfx.beans.value.or
 import ktfx.collections.toObservableList
@@ -34,14 +35,14 @@ class PermissionDialog(component: FxComponent) :
                 text = getString(R.string._permission_required)
             } col 0 row 0 colSpans 2
             label(getString(R.string.admin)) col 0 row 1
-            adminCombo = jfxComboBox(transaction {
-                Employees.buildQuery {
-                    and(it.isAdmin.equal(true))
-                    and(it.name.notEqual(Employee.BACKDOOR.name))
-                }.toObservableList()
-            }) {
-                promptText = getString(R.string.admin)
-            } col 1 row 1
+            GlobalScope.launch(Dispatchers.JavaFx) {
+                adminCombo = jfxComboBox(api.getEmployees()
+                    .filter { it.isAdmin && it.name != Employee.BACKDOOR.name }
+                    .toObservableList()
+                ) {
+                    promptText = getString(R.string.admin)
+                } col 1 row 1
+            }
             label(getString(R.string.password)) col 0 row 2
             passwordField = jfxPasswordField {
                 promptText = getString(R.string.password)
@@ -52,12 +53,5 @@ class PermissionDialog(component: FxComponent) :
         )
     }
 
-    override val nullableResult: Employee?
-        get() {
-            val employee = transaction { Employees[adminCombo.value].single() }
-            return when {
-                employee.password == passwordField.text -> employee
-                else -> null
-            }
-        }
+    override val nullableResult: Employee? get() = runBlocking { api.login(adminCombo.value.name, passwordField.text) }
 }

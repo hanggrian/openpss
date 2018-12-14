@@ -4,14 +4,13 @@ import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.FxComponent
 import com.hendraanggrian.openpss.control.CustomerListView
 import com.hendraanggrian.openpss.db.schemas.Customer
-import com.hendraanggrian.openpss.db.schemas.Customers
-import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.popup.popover.ResultablePopover
 import javafx.scene.control.ListView
 import javafx.scene.control.TextField
 import javafx.scene.input.KeyCode.ENTER
+import kotlinx.coroutines.runBlocking
 import ktfx.beans.binding.buildBinding
-import ktfx.collections.toMutableObservableList
+import ktfx.collections.toObservableList
 import ktfx.coroutines.listener
 import ktfx.coroutines.onKeyPressed
 import ktfx.coroutines.onMouseClicked
@@ -19,7 +18,6 @@ import ktfx.jfoenix.jfxTextField
 import ktfx.layouts.vbox
 import ktfx.scene.control.isSelected
 import ktfx.scene.input.isDoubleClick
-import kotlin.text.RegexOption.IGNORE_CASE
 
 class SearchCustomerPopover(component: FxComponent) : ResultablePopover<Customer>(component, R.string.search_customer) {
 
@@ -38,11 +36,11 @@ class SearchCustomerPopover(component: FxComponent) : ResultablePopover<Customer
             customerList = CustomerListView().apply {
                 prefHeight = 262.0
                 itemsProperty().bind(buildBinding(searchField.textProperty()) {
-                    transaction {
-                        when {
-                            searchField.text.isEmpty() -> Customers()
-                            else -> Customers { it.name.matches(searchField.text.toRegex(IGNORE_CASE).toPattern()) }
-                        }.take(ITEMS_PER_PAGE).toMutableObservableList()
+                    runBlocking {
+                        api.getCustomers(searchField.text, 1, ITEMS_PER_PAGE)
+                            .items
+                            .take(ITEMS_PER_PAGE)
+                            .toObservableList()
                     }
                 })
                 itemsProperty().listener { _, _, value -> if (value.isNotEmpty()) selectionModel.selectFirst() }

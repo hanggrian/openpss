@@ -30,10 +30,25 @@ interface InvoiceRoute : Route {
 
     suspend fun addInvoice(invoice: Invoice): Invoice = client.post {
         apiUrl("invoices")
+        body = invoice
     }
 
     suspend fun getInvoice(no: Int): Invoice = client.get {
         apiUrl("invoices/$no")
+    }
+
+    suspend fun editInvoice(
+        invoice: Invoice,
+        isPrinted: Boolean = invoice.isPrinted,
+        isPaid: Boolean = invoice.isPaid,
+        isDone: Boolean = invoice.isDone
+    ): Boolean = client.requestStatus {
+        apiUrl("invoices/${invoice.no}")
+        parameters(
+            "isPrinted" to isPrinted,
+            "isPaid" to isPaid,
+            "isDone" to isDone
+        )
     }
 
     suspend fun deleteInvoice(login: Employee, invoice: Invoice): Boolean = client.requestStatus {

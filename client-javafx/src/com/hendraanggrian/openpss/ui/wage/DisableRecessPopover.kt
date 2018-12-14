@@ -2,16 +2,17 @@ package com.hendraanggrian.openpss.ui.wage
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.FxComponent
-import com.hendraanggrian.openpss.db.schemas.Recesses
-import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.popup.popover.Popover
 import com.jfoenix.controls.JFXButton
 import javafx.scene.Node
 import javafx.scene.control.ComboBox
 import javafx.scene.control.Separator
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.javafx.JavaFx
+import kotlinx.coroutines.launch
 import ktfx.beans.value.or
 import ktfx.collections.mutableObservableListOf
-import ktfx.collections.toObservableList
 import ktfx.coroutines.onAction
 import ktfx.jfoenix.jfxButton
 import ktfx.jfoenix.jfxComboBox
@@ -33,11 +34,15 @@ class DisableRecessPopover(
         gridPane {
             gap = getDouble(R.dimen.padding_medium)
             label(getString(R.string.recess)) col 0 row 0
-            recessChoice = jfxComboBox(
-                mutableObservableListOf(getString(R.string.all),
-                    Separator(),
-                    *transaction { Recesses().toObservableList().toTypedArray() })
-            ) { selectionModel.selectFirst() } col 1 row 0
+            GlobalScope.launch(Dispatchers.JavaFx) {
+                recessChoice = jfxComboBox(
+                    mutableObservableListOf(
+                        getString(R.string.all),
+                        Separator(),
+                        *api.getRecesses().toTypedArray()
+                    )
+                ) { selectionModel.selectFirst() } col 1 row 0
+            }
             label(getString(R.string.employee)) col 0 row 1
             roleChoice = jfxComboBox(mutableObservableListOf(
                 *attendees.asSequence().filter { it.role != null }.map { it.role!! }.distinct().toList().toTypedArray(),

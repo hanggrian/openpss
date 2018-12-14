@@ -248,7 +248,7 @@ class MainController : Controller(), Refreshable {
                         plateJobs = listOf(Invoice.PlateJob.new(5, "Title", 92000.0, "Type")),
                         otherJobs = listOf(Invoice.OtherJob.new(5, "Title", 92000.0)),
                         note = "This is a test",
-                        printed = false,
+                        isPrinted = false,
                         isPaid = false,
                         isDone = false
                     ), true

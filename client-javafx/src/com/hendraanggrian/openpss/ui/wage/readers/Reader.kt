@@ -7,20 +7,23 @@ import ktfx.collections.toObservableList
 import java.io.File
 
 /** A file readers that generates actions of [Attendee] given input file. */
-abstract class Reader {
+open class Reader(
 
     /** Identifier of a reader. */
-    abstract val name: String
+    val name: String,
 
-    /** Expected file extensions for [FileChooser.ExtensionFilter]. */
-    abstract val extensions: Array<String>
+    /** Expected file extension for [FileChooser.ExtensionFilter]. */
+    val extension: String,
 
     /**
      * The reading process is executed in background thread.
      * During its long operation, exception throwing may happen in [read].
      */
+    private val internalRead: suspend File.() -> Collection<Attendee>
+) {
+
     @Throws(Exception::class)
-    abstract suspend fun read(file: File): Collection<Attendee>
+    suspend fun read(file: File): Collection<Attendee> = internalRead(file)
 
     override fun toString(): String = name
 

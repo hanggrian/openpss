@@ -22,7 +22,7 @@ object Invoices : DocumentSchema<Invoice>("invoices", Invoice::class) {
     val plateJobs = PlateJobs()
     val otherJobs = OtherJobs()
     val note = string("note")
-    val printed = boolean("printed")
+    val isPrinted = boolean("is_printed")
     val isPaid = boolean("is_paid")
     val isDone = boolean("is_done")
 
@@ -66,7 +66,7 @@ data class Invoice(
     var plateJobs: List<PlateJob>,
     var otherJobs: List<OtherJob>,
     var note: String,
-    val printed: Boolean,
+    val isPrinted: Boolean,
     val isPaid: Boolean,
     val isDone: Boolean
 ) : Document<Invoices>, Numbered {

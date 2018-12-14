@@ -126,12 +126,12 @@ class WageController : ActionController() {
         loader.controller.addExtra(EXTRA_ATTENDEES, attendees)
     }.showAndWait()
 
-    private fun saveWage() = attendees.forEach { it.saveWage() }
+    private fun saveWage() = attendees.forEach { it.saveWage(api) }
 
     private fun history() = desktop?.open(WageDirectory)
 
     private fun browse() =
-        fileChooser(ExtensionFilter(getString(R.string.input_file), *Reader.of(ReaderFile.WAGE_READER).extensions))
+        fileChooser(ExtensionFilter(getString(R.string.input_file), Reader.of(ReaderFile.WAGE_READER).extension))
             .showOpenDialog(anchorPane.scene.window)
             ?.let { file ->
                 GlobalScope.launch(Dispatchers.JavaFx) {
@@ -151,7 +151,7 @@ class WageController : ActionController() {
         GlobalScope.launch(Dispatchers.Default) {
             try {
                 Reader.of(ReaderFile.WAGE_READER).read(file).forEach { attendee ->
-                    attendee.mergeDuplicates()
+                    attendee.init(api)
                     GlobalScope.launch(Dispatchers.JavaFx) {
                         flowPane.children += AttendeePane(this@WageController, attendee).apply {
                             deleteMenu.onAction {

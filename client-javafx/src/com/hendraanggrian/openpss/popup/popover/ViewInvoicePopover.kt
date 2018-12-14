@@ -11,8 +11,6 @@ import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_INVOICE_HEADERS
 import com.hendraanggrian.openpss.db.schemas.Invoice
-import com.hendraanggrian.openpss.db.schemas.Invoices
-import com.hendraanggrian.openpss.db.transaction
 import com.sun.javafx.print.PrintHelper
 import com.sun.javafx.print.Units
 import javafx.geometry.HPos.LEFT
@@ -39,7 +37,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.javafx.JavaFx
 import kotlinx.coroutines.launch
-import kotlinx.nosql.update
 import ktfx.application.later
 import ktfx.coroutines.onAction
 import ktfx.layouts.NodeInvokable
@@ -218,7 +215,7 @@ class ViewInvoicePopover(
         buttonInvokable.run {
             button(getString(R.string.print)) {
                 isDefaultButton = true
-                later { isDisable = invoice.printed }
+                later { isDisable = invoice.isPrinted }
                 onAction {
                     // resize node to actual print size
                     val printer = Printer.getDefaultPrinter()
@@ -245,8 +242,8 @@ class ViewInvoicePopover(
                     if (job.showPrintDialog(this@ViewInvoicePopover) && job.printPage(invoiceBox)) {
                         job.endJob()
                         isDisable = true
-                        if (!isTest) transaction {
-                            Invoices[invoice].projection { printed }.update(true)
+                        if (!isTest) GlobalScope.launch(Dispatchers.JavaFx) {
+                            api.editInvoice(invoice, isPrinted = true)
                         }
                     }
                     // restore state

@@ -1,5 +1,6 @@
 package com.hendraanggrian.openpss.ui.wage
 
+import com.hendraanggrian.openpss.api.OpenPSSApi
 import com.hendraanggrian.openpss.content.Resources
 import com.hendraanggrian.openpss.db.schemas.Recess
 import com.hendraanggrian.openpss.db.schemas.Wage
@@ -14,6 +15,10 @@ import com.hendraanggrian.openpss.util.round
 import javafx.beans.property.IntegerProperty
 import javafx.beans.property.SimpleIntegerProperty
 import javafx.collections.ObservableList
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.javafx.JavaFx
+import kotlinx.coroutines.launch
 import kotlinx.nosql.equal
 import kotlinx.nosql.update
 import ktfx.beans.binding.buildDoubleBinding
@@ -45,16 +50,32 @@ data class Attendee(
     var daily: Int by dailyProperty
     var hourlyOvertime: Int by hourlyOvertimeProperty
 
-    init {
-        transaction {
-            Wages { it.wageId.equal(id) }.singleOrNull()?.let { wage ->
+    fun init(api: OpenPSSApi) {
+        GlobalScope.launch(Dispatchers.JavaFx) {
+            api.getWage(id)?.let { wage ->
                 daily = wage.daily
                 hourlyOvertime = wage.hourlyOvertime
             }
         }
+        // merge duplicates
+        attendances.removeAllRevertible((0 until attendances.lastIndex)
+            .filter { index -> Period(attendances[index], attendances[index + 1]).toStandardMinutes() < minutes(5) }
+            .map { index -> attendances[index] })
     }
 
-    fun saveWage() {
+    fun saveWage(api: OpenPSSApi) {
+        GlobalScope.launch(Dispatchers.JavaFx) {
+            api.getWages().let { wages ->
+                when {
+                    wages.isEmpty() -> api.addWage(Wage(id, daily, hourlyOvertime))
+                    else -> wages.single().let { wage ->
+                        if (wage.daily != daily || wage.hourlyOvertime != hourlyOvertime) {
+                            api.editWage(id, daily, hourlyOvertime)
+                        }
+                    }
+                }
+            }
+        }
         transaction @Suppress("IMPLICIT_CAST_TO_ANY") {
             Wages { it.wageId.equal(id) }.let { wages ->
                 if (wages.isEmpty()) Wages += Wage(id, daily, hourlyOvertime)
@@ -69,10 +90,6 @@ data class Attendee(
             }
         }
     }
-
-    fun mergeDuplicates() = attendances.removeAllRevertible((0 until attendances.lastIndex)
-        .filter { index -> Period(attendances[index], attendances[index + 1]).toStandardMinutes() < minutes(5) }
-        .map { index -> attendances[index] })
 
     override fun hashCode(): Int = id.hashCode()
 
@@ -113,7 +130,8 @@ data class Attendee(
             }
 
     companion object {
+
         /** Dummy for invisible [javafx.scene.control.TreeTableView] rootLayout. */
-        val DUMMY = Attendee(0, "")
+        val DUMMY: Attendee = Attendee(0, "")
     }
 }

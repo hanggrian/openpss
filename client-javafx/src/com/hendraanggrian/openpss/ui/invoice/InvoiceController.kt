@@ -161,7 +161,7 @@ class InvoiceController : ActionController(), Refreshable {
                                 stringCell { runBlocking { api.getCustomer(customerId).name } }
                             }
                             getString(R.string.total)<String> { currencyCell(this@InvoiceController) { total } }
-                            getString(R.string.print)<Boolean> { doneCell { printed } }
+                            getString(R.string.print)<Boolean> { doneCell { isPrinted } }
                             getString(R.string.paid)<Boolean> { doneCell { isPaid } }
                             getString(R.string.done)<Boolean> { doneCell { isDone } }
                         }

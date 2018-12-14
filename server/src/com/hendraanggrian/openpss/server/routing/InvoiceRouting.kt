@@ -19,6 +19,7 @@ import io.ktor.routing.get
 import io.ktor.routing.post
 import io.ktor.routing.put
 import kotlinx.nosql.equal
+import kotlinx.nosql.update
 import kotlin.math.ceil
 
 object InvoiceRouting : Routing({
@@ -67,7 +68,12 @@ object InvoiceRouting : Routing({
                 })
             }
             put {
-                val payment = call.getString("payment")
+                transaction {
+                    Invoices { it.no.equal(call.getInt("no")) }
+                        .projection { isPrinted + isPaid + isDone }
+                        .update(call.getBoolean("isPrinted"), call.getBoolean("isPaid"), call.getBoolean("isDone"))
+                }
+                call.respond(HttpStatusCode.OK)
             }
             delete {
                 val invoice = call.receive<Invoice>()

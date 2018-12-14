@@ -5,7 +5,6 @@ import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.api.GitHubApi
 import com.hendraanggrian.openpss.api.OpenPSSApi
 import com.hendraanggrian.openpss.db.schemas.GlobalSetting
-import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.popup.dialog.PermissionDialog
 import javafx.scene.layout.StackPane
 import javafx.util.StringConverter
@@ -16,6 +15,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.javafx.JavaFx
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import ktfx.jfoenix.jfxSnackbar
 import java.awt.Desktop
 import java.lang.ref.WeakReference
@@ -55,9 +55,8 @@ interface FxComponent : Resources, Component<StackPane> {
 
     /** Number decimal with currency prefix string converter. */
     val currencyConverter: StringConverter<Number>
-        get() = CurrencyStringConverter(transaction {
-            Language.ofFullCode(findGlobalSettings(GlobalSetting.KEY_LANGUAGE).single().value)
-                .toLocale()
+        get() = CurrencyStringConverter(runBlocking {
+            Language.ofFullCode(api.getGlobalSetting(GlobalSetting.KEY_LANGUAGE).value).toLocale()
         })
 
     /** Returns [Desktop] instance, may be null if it is unsupported. */

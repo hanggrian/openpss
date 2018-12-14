@@ -31,29 +31,34 @@ import kotlinx.nosql.mongodb.DocumentSchema
 import kotlinx.nosql.update
 
 object PlatePriceRouting : NamedRouting<PlatePrices, PlatePrice>("plate-prices", PlatePrices,
-    { call -> PlatePrice.new(call.getString("name")) },
-    { call, query ->
+    onCreate = { call -> PlatePrice.new(call.getString("name")) },
+    onEdit = { call, query ->
         query.projection { price }
             .update(call.getDouble("price"))
     })
 
 object OffsetPriceRouting : NamedRouting<OffsetPrices, OffsetPrice>("offset-prices", OffsetPrices,
-    { call -> OffsetPrice.new(call.getString("name")) },
-    { call, query ->
+    onCreate = { call -> OffsetPrice.new(call.getString("name")) },
+    onEdit = { call, query ->
         query.projection { minQty + minPrice + excessPrice }
             .update(call.getInt("minQty"), call.getDouble("minPrice"), call.getDouble("excessPrice"))
     })
 
 object DigitalPriceRouting : NamedRouting<DigitalPrices, DigitalPrice>("digital-prices", DigitalPrices,
-    { call -> DigitalPrice.new(call.getString("name")) },
-    { call, query ->
+    onCreate = { call -> DigitalPrice.new(call.getString("name")) },
+    onEdit = { call, query ->
         query.projection { oneSidePrice + twoSidePrice }
             .update(call.getDouble("oneSidePrice"), call.getDouble("twoSidePrice"))
     })
 
 object EmployeeRouting : NamedRouting<Employees, Employee>("employees", Employees,
-    { call -> Employee.new(call.getString("name")) },
-    { call, query ->
+    onGet = { call ->
+        val employees = Employees()
+        employees.forEach { it.clearPassword() }
+        employees.toList()
+    },
+    onCreate = { call -> Employee.new(call.getString("name")) },
+    onEdit = { call, query ->
         query.projection { password + isAdmin }
             .update(call.getString("password"), call.getBoolean("isAdmin"))
         Logs += Log.new(
@@ -61,7 +66,7 @@ object EmployeeRouting : NamedRouting<Employees, Employee>("employees", Employee
             call.getString("login")
         )
     },
-    { call, query ->
+    onDeleted = { call, query ->
         Logs += Log.new(
             EmployeeRouting.resources.getString(R.string.employee_delete).format(query.single().name),
             call.getString("login")
@@ -71,13 +76,14 @@ object EmployeeRouting : NamedRouting<Employees, Employee>("employees", Employee
 sealed class NamedRouting<S, D>(
     val path: String,
     val schema: S,
+    val onGet: SessionWrapper.(call: ApplicationCall) -> List<D> = { schema().toList() },
     val onCreate: (call: ApplicationCall) -> D,
     val onEdit: SessionWrapper.(call: ApplicationCall, query: DocumentQuery<S, String, D>) -> Unit,
     val onDeleted: SessionWrapper.(call: ApplicationCall, query: DocumentQuery<S, String, D>) -> Unit = { _, _ -> }
 ) : Routing({
     path {
         get {
-            call.respond(transaction { schema() })
+            call.respond(transaction { onGet(call) })
         }
         post {
             val doc = onCreate(call)

@@ -126,7 +126,7 @@ class WageController : ActionController() {
         loader.controller.addExtra(EXTRA_ATTENDEES, attendees)
     }.showAndWait()
 
-    private fun saveWage() = attendees.forEach { it.saveWage(api) }
+    private fun saveWage() = GlobalScope.launch(Dispatchers.JavaFx) { attendees.forEach { it.saveWage(api) } }
 
     private fun history() = desktop?.open(WageDirectory)
 

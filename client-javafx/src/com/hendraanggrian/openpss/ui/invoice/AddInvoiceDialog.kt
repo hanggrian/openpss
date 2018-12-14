@@ -4,11 +4,9 @@ import com.hendraanggrian.openpss.PATTERN_DATE
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.FxComponent
 import com.hendraanggrian.openpss.db.Database
-import com.hendraanggrian.openpss.db.schema.nextNo
 import com.hendraanggrian.openpss.db.schema.typedTechnique
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Invoice
-import com.hendraanggrian.openpss.db.schemas.Invoices
 import com.hendraanggrian.openpss.popup.dialog.ResultableDialog
 import com.hendraanggrian.openpss.popup.popover.ResultablePopover
 import com.hendraanggrian.openpss.ui.invoice.job.AddDigitalJobPopover
@@ -32,6 +30,7 @@ import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
 import javafx.scene.image.ImageView
 import javafx.scene.layout.Priority.ALWAYS
+import kotlinx.coroutines.runBlocking
 import ktfx.application.later
 import ktfx.beans.binding.buildDoubleBinding
 import ktfx.beans.binding.buildStringBinding
@@ -214,7 +213,7 @@ class AddInvoiceDialog(
 
     override val nullableResult: Invoice?
         get() = Invoice.new(
-            Invoices.nextNo(),
+            runBlocking { api.nextInvoice() },
             login.id,
             customerProperty.value.id,
             dateTime,

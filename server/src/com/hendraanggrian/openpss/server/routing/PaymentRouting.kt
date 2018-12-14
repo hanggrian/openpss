@@ -12,7 +12,9 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.request.receive
 import io.ktor.response.respond
 import io.ktor.routing.delete
+import io.ktor.routing.get
 import io.ktor.routing.post
+import kotlinx.nosql.equal
 
 object PaymentRouting : Routing({
     "payments" {
@@ -32,6 +34,21 @@ object PaymentRouting : Routing({
                 )
             }
             call.respond(HttpStatusCode.OK)
+        }
+        "{invoiceId}" {
+            get {
+                call.respond(transaction {
+                    Payments { it.invoiceId.equal(call.getString("invoiceId")) }
+                })
+            }
+            "due" {
+                get {
+                    call.respond(transaction {
+                        Payments { it.invoiceId.equal(call.getString("invoiceId")) }
+                            .sumByDouble { it.value }
+                    })
+                }
+            }
         }
     }
 })

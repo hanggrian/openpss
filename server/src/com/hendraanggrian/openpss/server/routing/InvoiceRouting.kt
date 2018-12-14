@@ -89,5 +89,10 @@ object InvoiceRouting : Routing({
                 call.respond(HttpStatusCode.OK)
             }
         }
+        "next" {
+            get {
+                call.respond(transaction { Invoices().lastOrNull()?.no ?: 0 } + 1)
+            }
+        }
     }
 })

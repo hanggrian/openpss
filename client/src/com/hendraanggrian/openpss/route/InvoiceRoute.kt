@@ -57,4 +57,8 @@ interface InvoiceRoute : Route {
         body = invoice
         parameters("login" to login.name)
     }
+
+    suspend fun nextInvoice(): Int = client.get {
+        apiUrl("invoices/next")
+    }
 }

@@ -4,23 +4,14 @@ import com.hendraanggrian.openpss.api.OpenPSSApi
 import com.hendraanggrian.openpss.content.Resources
 import com.hendraanggrian.openpss.db.schemas.Recess
 import com.hendraanggrian.openpss.db.schemas.Wage
-import com.hendraanggrian.openpss.db.schemas.Wages
-import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.ui.wage.record.Record
 import com.hendraanggrian.openpss.ui.wage.record.Record.Companion.INDEX_NODE
 import com.hendraanggrian.openpss.ui.wage.record.Record.Companion.INDEX_TOTAL
 import com.hendraanggrian.openpss.util.START_OF_TIME
-import com.hendraanggrian.openpss.util.isEmpty
 import com.hendraanggrian.openpss.util.round
 import javafx.beans.property.IntegerProperty
 import javafx.beans.property.SimpleIntegerProperty
 import javafx.collections.ObservableList
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.javafx.JavaFx
-import kotlinx.coroutines.launch
-import kotlinx.nosql.equal
-import kotlinx.nosql.update
 import ktfx.beans.binding.buildDoubleBinding
 import ktfx.beans.property.asProperty
 import ktfx.beans.value.getValue
@@ -50,12 +41,10 @@ data class Attendee(
     var daily: Int by dailyProperty
     var hourlyOvertime: Int by hourlyOvertimeProperty
 
-    fun init(api: OpenPSSApi) {
-        GlobalScope.launch(Dispatchers.JavaFx) {
-            api.getWage(id)?.let { wage ->
-                daily = wage.daily
-                hourlyOvertime = wage.hourlyOvertime
-            }
+    suspend fun init(api: OpenPSSApi) {
+        api.getWage(id)?.let { wage ->
+            daily = wage.daily
+            hourlyOvertime = wage.hourlyOvertime
         }
         // merge duplicates
         attendances.removeAllRevertible((0 until attendances.lastIndex)
@@ -63,29 +52,12 @@ data class Attendee(
             .map { index -> attendances[index] })
     }
 
-    fun saveWage(api: OpenPSSApi) {
-        GlobalScope.launch(Dispatchers.JavaFx) {
-            api.getWages().let { wages ->
-                when {
-                    wages.isEmpty() -> api.addWage(Wage(id, daily, hourlyOvertime))
-                    else -> wages.single().let { wage ->
-                        if (wage.daily != daily || wage.hourlyOvertime != hourlyOvertime) {
-                            api.editWage(id, daily, hourlyOvertime)
-                        }
-                    }
-                }
-            }
-        }
-        transaction @Suppress("IMPLICIT_CAST_TO_ANY") {
-            Wages { it.wageId.equal(id) }.let { wages ->
-                if (wages.isEmpty()) Wages += Wage(id, daily, hourlyOvertime)
-                else wages.single().let { wage ->
-                    when {
-                        wage.daily != daily && wage.hourlyOvertime != hourlyOvertime ->
-                            wages.projection { daily + hourlyOvertime }.update(daily, hourlyOvertime)
-                        wage.daily != daily -> wages.projection { daily }.update(daily)
-                        else -> wages.projection { hourlyOvertime }.update(hourlyOvertime)
-                    }
+    suspend fun saveWage(api: OpenPSSApi) = api.getWages().let { wages ->
+        when {
+            wages.isEmpty() -> api.addWage(Wage(id, daily, hourlyOvertime))
+            else -> wages.single().let { wage ->
+                if (wage.daily != daily || wage.hourlyOvertime != hourlyOvertime) {
+                    api.editWage(id, daily, hourlyOvertime)
                 }
             }
         }

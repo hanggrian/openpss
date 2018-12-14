@@ -8,14 +8,10 @@ import com.hendraanggrian.openpss.control.IntField
 import com.hendraanggrian.openpss.control.PaginatedPane
 import com.hendraanggrian.openpss.control.StretchableButton
 import com.hendraanggrian.openpss.control.Toolbar
-import com.hendraanggrian.openpss.db.SessionWrapper
 import com.hendraanggrian.openpss.db.schema.no
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Invoice
-import com.hendraanggrian.openpss.db.schemas.Invoices
 import com.hendraanggrian.openpss.db.schemas.Payment
-import com.hendraanggrian.openpss.db.schemas.Payments
-import com.hendraanggrian.openpss.db.schemas.Payments.invoiceId
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.popup.dialog.ConfirmDialog
 import com.hendraanggrian.openpss.popup.popover.ViewInvoicePopover
@@ -42,8 +38,6 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.javafx.JavaFx
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import kotlinx.nosql.equal
-import kotlinx.nosql.update
 import ktfx.application.later
 import ktfx.beans.binding.buildBinding
 import ktfx.beans.binding.buildStringBinding
@@ -206,10 +200,8 @@ class InvoiceController : ActionController(), Refreshable {
                             itemsProperty().bind(buildBinding(invoiceTable.selectionModel.selectedItemProperty()) {
                                 when (invoiceTable.selectionModel.selectedItem) {
                                     null -> emptyObservableList()
-                                    else -> transaction {
-                                        Payments {
-                                            invoiceId.equal(invoiceTable.selectionModel.selectedItem.id)
-                                        }.toObservableList()
+                                    else -> runBlocking {
+                                        api.getPayments(invoiceTable.selectionModel.selectedItem.id).toObservableList()
                                     }
                                 }
                             })
@@ -237,43 +229,41 @@ class InvoiceController : ActionController(), Refreshable {
                         invoiceTable.items = invoices.toMutableObservableList()
                     }
                     later {
-                        transaction {
-                            invoiceTable.contextMenu {
-                                getString(R.string.view)(ImageView(R.image.menu_invoice)) {
-                                    later {
-                                        disableProperty().bind(invoiceTable.selectionModel.selectedItemProperty().isNull)
-                                    }
-                                    onAction { viewInvoice() }
-                                }
-                                getString(R.string.done)(ImageView(R.image.menu_done)) {
-                                    later {
-                                        disableProperty().bind(buildBinding(invoiceTable.selectionModel.selectedItemProperty()) {
-                                            when {
-                                                invoiceTable.selectionModel.selectedItem != null &&
-                                                    !invoiceTable.selectionModel.selectedItem.isDone -> false
-                                                else -> true
-                                            }
-                                        })
-                                    }
-                                    onAction {
-                                        transaction {
-                                            invoiceTable.selectionModel.selectedItem.done()
-                                        }
-                                        refreshButton.fire()
-                                    }
-                                }
-                                separatorMenuItem()
-                                getString(R.string.delete)(ImageView(R.image.menu_delete)) {
+                        invoiceTable.contextMenu {
+                            getString(R.string.view)(ImageView(R.image.menu_invoice)) {
+                                later {
                                     disableProperty().bind(invoiceTable.selectionModel.selectedItemProperty().isNull)
-                                    onAction {
-                                        withPermission {
-                                            if (api.deleteInvoice(
-                                                    login,
-                                                    invoiceTable.selectionModel.selectedItem
-                                                )
-                                            ) {
-                                                invoiceTable.items.remove(invoiceTable.selectionModel.selectedItem)
-                                            }
+                                }
+                                onAction { viewInvoice() }
+                            }
+                            getString(R.string.done)(ImageView(R.image.menu_done)) {
+                                later {
+                                    disableProperty().bind(buildBinding(invoiceTable.selectionModel.selectedItemProperty()) {
+                                        when {
+                                            invoiceTable.selectionModel.selectedItem != null &&
+                                                !invoiceTable.selectionModel.selectedItem.isDone -> false
+                                            else -> true
+                                        }
+                                    })
+                                }
+                                onAction {
+                                    transaction {
+                                        invoiceTable.selectionModel.selectedItem.done()
+                                    }
+                                    refreshButton.fire()
+                                }
+                            }
+                            separatorMenuItem()
+                            getString(R.string.delete)(ImageView(R.image.menu_delete)) {
+                                disableProperty().bind(invoiceTable.selectionModel.selectedItemProperty().isNull)
+                                onAction {
+                                    withPermission {
+                                        if (api.deleteInvoice(
+                                                login,
+                                                invoiceTable.selectionModel.selectedItem
+                                            )
+                                        ) {
+                                            invoiceTable.items.remove(invoiceTable.selectionModel.selectedItem)
                                         }
                                     }
                                 }
@@ -308,24 +298,20 @@ class InvoiceController : ActionController(), Refreshable {
     private fun addPayment() = AddPaymentPopover(this, invoiceTable.selectionModel.selectedItem).show(paymentTable) {
         api.addPayment(it!!)
         reload(invoiceTable.selectionModel.selectedItem)
-        transaction {
-            updatePaymentStatus()
-        }
+        updatePaymentStatus()
     }
 
     private fun deletePayment() = ConfirmDialog(this).show {
         withPermission {
             api.deletePayment(login, paymentTable.selectionModel.selectedItem)
             reload(invoiceTable.selectionModel.selectedItem)
-            transaction {
-                updatePaymentStatus()
-            }
+            updatePaymentStatus()
         }
     }
 
-    private fun SessionWrapper.updatePaymentStatus() = Invoices[invoiceTable.selectionModel.selectedItem]
-        .projection { isPaid }
-        .update(invoiceTable.selectionModel.selectedItem.calculateDue() <= 0.0)
+    private suspend fun updatePaymentStatus() = invoiceTable.selectionModel.selectedItem.let {
+        api.editInvoice(it, isPaid = it.total - api.getPaymentDue(it.id) <= 0.0)
+    }
 
     private suspend fun reload(invoice: Invoice) = invoiceTable.run {
         items.indexOf(invoice).let { index ->

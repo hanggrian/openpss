@@ -5,12 +5,12 @@ import com.hendraanggrian.openpss.content.FxComponent
 import com.hendraanggrian.openpss.control.DoubleField
 import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.db.schemas.Payment
-import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.popup.popover.ResultablePopover
 import javafx.scene.Node
 import javafx.scene.control.CheckBox
 import javafx.scene.control.TextField
 import javafx.scene.image.ImageView
+import kotlinx.coroutines.runBlocking
 import ktfx.beans.binding.buildBinding
 import ktfx.beans.binding.buildBooleanBinding
 import ktfx.beans.binding.buildStringBinding
@@ -32,7 +32,7 @@ class AddPaymentPopover(
     private lateinit var valueField: DoubleField
     private lateinit var cashBox: CheckBox
     private lateinit var referenceField: TextField
-    private val receivable = transaction { invoice.calculateDue() }
+    private val receivable = invoice.total - runBlocking { api.getPaymentDue(invoice.id) }
 
     init {
         gridPane {

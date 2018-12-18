@@ -12,7 +12,6 @@ import com.hendraanggrian.openpss.db.schema.no
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.db.schemas.Payment
-import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.popup.dialog.ConfirmDialog
 import com.hendraanggrian.openpss.popup.popover.ViewInvoicePopover
 import com.hendraanggrian.openpss.ui.ActionController
@@ -247,9 +246,7 @@ class InvoiceController : ActionController(), Refreshable {
                                     })
                                 }
                                 onAction {
-                                    transaction {
-                                        invoiceTable.selectionModel.selectedItem.done()
-                                    }
+                                    api.editInvoice(invoiceTable.selectionModel.selectedItem, isDone = true)
                                     refreshButton.fire()
                                 }
                             }

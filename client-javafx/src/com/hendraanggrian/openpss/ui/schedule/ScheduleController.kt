@@ -60,9 +60,7 @@ class ScheduleController : ActionController(), Refreshable {
             ImageView(R.image.act_done)
         ).apply {
             onAction {
-                transaction {
-                    scheduleTable.selectionModel.selectedItem.value.invoice.done()
-                }
+                api.editInvoice(scheduleTable.selectionModel.selectedItem.value.invoice, isDone = true)
                 refresh()
             }
         }()

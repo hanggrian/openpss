@@ -7,7 +7,7 @@ import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.DateBox
 import com.hendraanggrian.openpss.control.MonthBox
 import com.hendraanggrian.openpss.control.StretchableButton
-import com.hendraanggrian.openpss.db.schemas.Employees
+import com.hendraanggrian.openpss.db.matches
 import com.hendraanggrian.openpss.db.schemas.Invoices
 import com.hendraanggrian.openpss.db.schemas.Payment
 import com.hendraanggrian.openpss.db.schemas.Payments
@@ -18,7 +18,6 @@ import com.hendraanggrian.openpss.ui.ActionController
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.util.currencyCell
 import com.hendraanggrian.openpss.util.doneCell
-import com.hendraanggrian.openpss.db.matches
 import com.hendraanggrian.openpss.util.numberCell
 import com.hendraanggrian.openpss.util.stringCell
 import com.hendraanggrian.openpss.util.toJava
@@ -32,6 +31,7 @@ import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
 import javafx.scene.image.ImageView
 import javafx.scene.layout.BorderPane
+import kotlinx.coroutines.runBlocking
 import ktfx.application.later
 import ktfx.beans.value.eq
 import ktfx.collections.toMutableObservableList
@@ -109,7 +109,7 @@ class FinanceController : ActionController(), Refreshable {
 
         dailyNoColumn.numberCell(this) { transaction { Invoices[invoiceId].single().no } }
         dailyTimeColumn.stringCell { dateTime.toString(PATTERN_TIME) }
-        dailyEmployeeColumn.stringCell { transaction { Employees[employeeId].single().toString() } }
+        dailyEmployeeColumn.stringCell { runBlocking { api.getEmployee(employeeId).toString() } }
         dailyValueColumn.currencyCell(this) { value }
         dailyCashColumn.doneCell { isCash() }
         dailyReferenceColumn.stringCell { reference }

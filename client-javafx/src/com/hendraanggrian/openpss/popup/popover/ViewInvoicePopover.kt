@@ -9,6 +9,7 @@ import com.hendraanggrian.openpss.control.Space
 import com.hendraanggrian.openpss.db.schema.typedTechnique
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Employee
+import com.hendraanggrian.openpss.db.schemas.GlobalSetting
 import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_INVOICE_HEADERS
 import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.sun.javafx.print.PrintHelper
@@ -37,6 +38,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.javafx.JavaFx
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import ktfx.application.later
 import ktfx.coroutines.onAction
 import ktfx.layouts.NodeInvokable
@@ -83,7 +85,9 @@ class ViewInvoicePopover(
     private lateinit var employee: Employee
     private val invoiceBox: VBox
 
-    override val resourceBundle: ResourceBundle = Language.ofServer().toResourcesBundle()
+    override val resourceBundle: ResourceBundle = Language
+        .ofFullCode(runBlocking { api.getGlobalSetting(GlobalSetting.KEY_LANGUAGE).value })
+        .toResourcesBundle()
 
     init {
         graphic = label("${getString(R.string.server_language)}: $language")

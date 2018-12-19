@@ -1,6 +1,8 @@
 package com.hendraanggrian.openpss.server.routing
 
 import com.hendraanggrian.openpss.content.Language
+import com.hendraanggrian.openpss.db.schemas.GlobalSetting
+import com.hendraanggrian.openpss.server.db.transaction
 import io.ktor.application.Application
 import io.ktor.application.ApplicationCall
 import io.ktor.routing.Route
@@ -15,7 +17,10 @@ import java.util.ResourceBundle
 /** Define API routing Spek-style. */
 open class Routing(val block: RouteWrapper.() -> Unit) {
 
-    val resources: ResourceBundle get() = Language.ofServer().toResourcesBundle()
+    val resources: ResourceBundle
+        get() = Language.ofFullCode(transaction {
+            findGlobalSettings(GlobalSetting.KEY_LANGUAGE).single().value
+        }).toResourcesBundle()
 }
 
 class RouteWrapper(private val route: Route) {

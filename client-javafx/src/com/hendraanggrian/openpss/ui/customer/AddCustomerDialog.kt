@@ -12,6 +12,7 @@ import javafx.scene.control.Label
 import javafx.scene.control.Tab
 import javafx.scene.control.TabPane
 import javafx.scene.control.TextField
+import kotlinx.coroutines.runBlocking
 import ktfx.beans.binding.otherwise
 import ktfx.beans.binding.then
 import ktfx.beans.value.eq
@@ -83,5 +84,8 @@ class AddCustomerDialog(component: FxComponent) : ResultableDialog<Customer>(com
     )
 
     override val nullableResult: Customer
-        get() = Customer.new(editor.text.clean(), tabPane.selectionModel.selectedIndex == 1)
+        get() = Customer.new(
+            editor.text.clean(),
+            tabPane.selectionModel.selectedIndex == 1,
+            runBlocking { api.getDate() })
 }

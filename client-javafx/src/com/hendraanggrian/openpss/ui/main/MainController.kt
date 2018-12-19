@@ -8,7 +8,6 @@ import com.hendraanggrian.openpss.control.MarginedImageView
 import com.hendraanggrian.openpss.control.PaginatedPane
 import com.hendraanggrian.openpss.control.Toolbar
 import com.hendraanggrian.openpss.control.UnselectableListView
-import com.hendraanggrian.openpss.db.Database
 import com.hendraanggrian.openpss.db.schema.Technique
 import com.hendraanggrian.openpss.db.schema.new
 import com.hendraanggrian.openpss.db.schemas.Invoice
@@ -47,6 +46,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.javafx.JavaFx
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import ktfx.application.later
 import ktfx.beans.binding.buildStringBinding
 import ktfx.beans.binding.minus
@@ -240,7 +240,7 @@ class MainController : Controller(), Refreshable {
                         no = 1234,
                         employeeId = login.id,
                         customerId = it.id,
-                        dateTime = Database.dateTime(),
+                        dateTime = runBlocking { api.getDateTime() },
                         offsetJobs = listOf(
                             Invoice.OffsetJob.new(5, "Title", 92000.0, "Type", Technique.TWO_SIDE_EQUAL)
                         ),

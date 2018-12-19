@@ -3,7 +3,6 @@ package com.hendraanggrian.openpss.ui.invoice
 import com.hendraanggrian.openpss.PATTERN_DATE
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.FxComponent
-import com.hendraanggrian.openpss.db.Database
 import com.hendraanggrian.openpss.db.schema.typedTechnique
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Invoice
@@ -72,7 +71,7 @@ class AddInvoiceDialog(
     private lateinit var otherTable: TableView<Invoice.OtherJob>
     private lateinit var noteArea: TextArea
 
-    private val dateTime: DateTime = Database.dateTime()
+    private val dateTime: DateTime = runBlocking { component.api.getDateTime() }
     private val customerProperty: ObjectProperty<Customer> = SimpleObjectProperty(null)
     private val totalProperty: DoubleProperty = SimpleDoubleProperty()
 

@@ -1,6 +1,5 @@
 package com.hendraanggrian.openpss.db.schemas
 
-import com.hendraanggrian.openpss.db.Database
 import com.hendraanggrian.openpss.db.Document
 import com.hendraanggrian.openpss.db.Named
 import com.hendraanggrian.openpss.db.NamedSchema
@@ -41,8 +40,9 @@ data class Customer(
 
         fun new(
             name: String,
-            isCompany: Boolean
-        ): Customer = Customer(name, isCompany, Database.date(), null, null, listOf())
+            isCompany: Boolean,
+            since: LocalDate
+        ): Customer = Customer(name, isCompany, since, null, null, listOf())
     }
 
     override lateinit var id: Id<String, Customers>

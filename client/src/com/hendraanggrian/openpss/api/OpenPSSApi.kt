@@ -2,6 +2,7 @@ package com.hendraanggrian.openpss.api
 
 import com.hendraanggrian.openpss.route.AuthRoute
 import com.hendraanggrian.openpss.route.CustomerRoute
+import com.hendraanggrian.openpss.route.DateTimeRoute
 import com.hendraanggrian.openpss.route.GlobalSettingRoute
 import com.hendraanggrian.openpss.route.InvoiceRoute
 import com.hendraanggrian.openpss.route.LogRoute
@@ -14,6 +15,7 @@ import com.hendraanggrian.openpss.route.WageRoute
 class OpenPSSApi : Api("http://localhost:8080"),
     AuthRoute,
     CustomerRoute,
+    DateTimeRoute,
     GlobalSettingRoute,
     InvoiceRoute,
     LogRoute,

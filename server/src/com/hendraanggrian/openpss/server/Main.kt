@@ -3,6 +3,7 @@ package com.hendraanggrian.openpss.server
 import com.google.gson.GsonBuilder
 import com.hendraanggrian.openpss.server.routing.AuthRouting
 import com.hendraanggrian.openpss.server.routing.CustomerRouting
+import com.hendraanggrian.openpss.server.routing.DateTimeRouting
 import com.hendraanggrian.openpss.server.routing.DigitalPriceRouting
 import com.hendraanggrian.openpss.server.routing.EmployeeRouting
 import com.hendraanggrian.openpss.server.routing.GlobalSettingRouting
@@ -39,6 +40,7 @@ fun Application.main() {
     installRoutings(
         AuthRouting,
         CustomerRouting,
+        DateTimeRouting,
         GlobalSettingRouting,
         InvoiceRouting,
         LogRouting,

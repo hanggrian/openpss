@@ -94,7 +94,7 @@ class AddPaymentPopover(
 
     override val nullableResult: Payment?
         get() = Payment.new(
-            invoice.id, login.id, valueField.value,
+            invoice.id, login.id, runBlocking { api.getDateTime() }, valueField.value,
             when {
                 cashBox.isSelected -> null
                 else -> referenceField.text

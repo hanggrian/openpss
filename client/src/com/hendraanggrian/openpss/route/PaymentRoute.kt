@@ -10,6 +10,11 @@ import kotlinx.nosql.Id
 
 interface PaymentRoute : Route {
 
+    suspend fun getPayments(dateTime: Any): List<Payment> = client.get {
+        apiUrl("payments")
+        parameters("dateTime" to dateTime)
+    }
+
     suspend fun addPayment(payment: Payment): Invoice = client.post {
         apiUrl("payments")
         body = payment

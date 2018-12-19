@@ -6,10 +6,7 @@ import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.StretchableButton
 import com.hendraanggrian.openpss.control.UncollapsibleTreeItem
 import com.hendraanggrian.openpss.db.schema.no
-import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.schemas.Invoice
-import com.hendraanggrian.openpss.db.schemas.Invoices
-import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.ui.ActionController
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.util.stringCell
@@ -21,7 +18,10 @@ import javafx.scene.control.TreeItem
 import javafx.scene.control.TreeTableColumn
 import javafx.scene.control.TreeTableView
 import javafx.scene.image.ImageView
-import kotlinx.nosql.equal
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.javafx.JavaFx
+import kotlinx.coroutines.launch
 import ktfx.application.later
 import ktfx.beans.binding.buildStringBinding
 import ktfx.beans.value.or
@@ -101,14 +101,14 @@ class ScheduleController : ActionController(), Refreshable {
         scheduleTable.selectionModel.clearSelection()
         scheduleTable.root.children.run {
             clear()
-            transaction {
+            GlobalScope.launch(Dispatchers.JavaFx) {
                 when (historyCheck.isSelected) {
-                    true -> Invoices { it.isDone.equal(true) }.take(20)
-                    else -> Invoices { it.isDone.equal(false) }
+                    true -> api.getInvoices(isDone = true, page = 1, count = 20).items
+                    else -> api.getInvoices(isDone = false, page = 1, count = 100).items
                 }.forEach { invoice ->
                     addAll(UncollapsibleTreeItem(
                         Schedule(
-                            invoice, Customers[invoice.customerId].single().name, "", "",
+                            invoice, api.getCustomer(invoice.customerId).name, "", "",
                             invoice.dateTime.toString(PATTERN_DATETIME_EXTENDED)
                         )
                     ).apply {

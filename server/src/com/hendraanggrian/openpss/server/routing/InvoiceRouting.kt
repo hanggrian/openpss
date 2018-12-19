@@ -28,6 +28,7 @@ object InvoiceRouting : Routing({
             val search = call.getInt("search")
             val customer = call.getStringOrNull("customer")
             val isPaid = call.getBooleanOrNull("isPaid")
+            val isDone = call.getBooleanOrNull("isDone")
             val date = call.getStringOrNull("date")
             val page = call.getInt("page")
             val count = call.getInt("count")
@@ -42,6 +43,9 @@ object InvoiceRouting : Routing({
                                 }
                                 if (isPaid != null) {
                                     and(it.isPaid.equal(isPaid))
+                                }
+                                if (isDone != null) {
+                                    and(it.isDone.equal(isDone))
                                 }
                                 if (date != null) {
                                     and(it.dateTime.matches(date))
@@ -61,30 +65,30 @@ object InvoiceRouting : Routing({
             invoice.id = transaction { Invoices.insert(invoice) }
             call.respond(invoice)
         }
-        "{no}" {
+        delete {
+            val invoice = call.receive<Invoice>()
+            transaction {
+                val customerName = Customers[invoice.customerId].single().name
+                Invoices -= invoice.id
+                Payments { Payments.invoiceId.equal(invoice.id) }.remove()
+                Logs += Log.new(
+                    InvoiceRouting.resources.getString(R.string.invoice_delete).format(invoice.no, customerName),
+                    call.getString("login")
+                )
+            }
+            call.respond(HttpStatusCode.OK)
+        }
+        "{id}" {
             get {
                 call.respond(transaction {
-                    Invoices { it.no.equal(call.getInt("no")) }.single()
+                    Invoices { it.no.equal(call.getInt("id")) }.single()
                 })
             }
             put {
                 transaction {
-                    Invoices { it.no.equal(call.getInt("no")) }
+                    Invoices { it.no.equal(call.getInt("id")) }
                         .projection { isPrinted + isPaid + isDone }
                         .update(call.getBoolean("isPrinted"), call.getBoolean("isPaid"), call.getBoolean("isDone"))
-                }
-                call.respond(HttpStatusCode.OK)
-            }
-            delete {
-                val invoice = call.receive<Invoice>()
-                transaction {
-                    val customerName = Customers[invoice.customerId].single().name
-                    Invoices -= invoice.id
-                    Payments { Payments.invoiceId.equal(invoice.id) }.remove()
-                    Logs += Log.new(
-                        InvoiceRouting.resources.getString(R.string.invoice_delete).format(invoice.no, customerName),
-                        call.getString("login")
-                    )
                 }
                 call.respond(HttpStatusCode.OK)
             }

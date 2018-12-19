@@ -6,14 +6,16 @@ import com.hendraanggrian.openpss.db.schemas.Invoice
 import io.ktor.client.request.get
 import io.ktor.client.request.post
 import io.ktor.http.HttpMethod
+import kotlinx.nosql.Id
 
 interface InvoiceRoute : Route {
 
     suspend fun getInvoices(
-        search: Int,
-        customer: String?,
-        isPaid: Boolean?,
-        date: Any?,
+        search: Int = 0,
+        customer: String? = null,
+        isPaid: Boolean? = null,
+        isDone: Boolean? = null,
+        date: Any? = null,
         page: Int,
         count: Int
     ): Page<Invoice> = client.get {
@@ -33,8 +35,15 @@ interface InvoiceRoute : Route {
         body = invoice
     }
 
-    suspend fun getInvoice(no: Int): Invoice = client.get {
-        apiUrl("invoices/$no")
+    suspend fun deleteInvoice(login: Employee, invoice: Invoice): Boolean = client.requestStatus {
+        apiUrl("invoices")
+        method = HttpMethod.Delete
+        body = invoice
+        parameters("login" to login.name)
+    }
+
+    suspend fun getInvoice(id: Id<String, *>): Invoice = client.get {
+        apiUrl("invoices/$id")
     }
 
     suspend fun editInvoice(
@@ -43,19 +52,12 @@ interface InvoiceRoute : Route {
         isPaid: Boolean = invoice.isPaid,
         isDone: Boolean = invoice.isDone
     ): Boolean = client.requestStatus {
-        apiUrl("invoices/${invoice.no}")
+        apiUrl("invoices/${invoice.id}")
         parameters(
             "isPrinted" to isPrinted,
             "isPaid" to isPaid,
             "isDone" to isDone
         )
-    }
-
-    suspend fun deleteInvoice(login: Employee, invoice: Invoice): Boolean = client.requestStatus {
-        apiUrl("invoices/${invoice.no}")
-        method = HttpMethod.Delete
-        body = invoice
-        parameters("login" to login.name)
     }
 
     suspend fun nextInvoice(): Int = client.get {

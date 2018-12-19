@@ -1,6 +1,7 @@
 package com.hendraanggrian.openpss.server.routing
 
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.db.matches
 import com.hendraanggrian.openpss.db.schemas.Invoices
 import com.hendraanggrian.openpss.db.schemas.Log
 import com.hendraanggrian.openpss.db.schemas.Logs
@@ -18,6 +19,11 @@ import kotlinx.nosql.equal
 
 object PaymentRouting : Routing({
     "payments" {
+        get {
+            call.respond(transaction {
+                Payments { it.dateTime.matches(call.parameters["dateTime"]!!) }
+            })
+        }
         post {
             val payment = call.receive<Payment>()
             payment.id = transaction { Payments.insert(payment) }

@@ -7,11 +7,7 @@ import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.DateBox
 import com.hendraanggrian.openpss.control.MonthBox
 import com.hendraanggrian.openpss.control.StretchableButton
-import com.hendraanggrian.openpss.db.matches
-import com.hendraanggrian.openpss.db.schemas.Invoices
 import com.hendraanggrian.openpss.db.schemas.Payment
-import com.hendraanggrian.openpss.db.schemas.Payments
-import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.io.properties.SettingsFile
 import com.hendraanggrian.openpss.popup.popover.ViewInvoicePopover
 import com.hendraanggrian.openpss.ui.ActionController
@@ -31,6 +27,10 @@ import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
 import javafx.scene.image.ImageView
 import javafx.scene.layout.BorderPane
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.javafx.JavaFx
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import ktfx.application.later
 import ktfx.beans.value.eq
@@ -107,7 +107,7 @@ class FinanceController : ActionController(), Refreshable {
                 .otherwise(monthBox)
         )
 
-        dailyNoColumn.numberCell(this) { transaction { Invoices[invoiceId].single().no } }
+        dailyNoColumn.numberCell(this) { runBlocking { api.getInvoice(invoiceId).no } }
         dailyTimeColumn.stringCell { dateTime.toString(PATTERN_TIME) }
         dailyEmployeeColumn.stringCell { runBlocking { api.getEmployee(employeeId).toString() } }
         dailyValueColumn.currencyCell(this) { value }
@@ -135,16 +135,16 @@ class FinanceController : ActionController(), Refreshable {
     }
 
     override fun refresh() = later {
-        transaction {
+        GlobalScope.launch(Dispatchers.JavaFx) {
             when (tabPane.selectionModel.selectedIndex) {
-                0 -> dailyTable.items = Payments { it.dateTime.matches(dateBox.value!!) }.toMutableObservableList()
-                else -> monthlyTable.items = Report.listAll(Payments { it.dateTime.matches(monthBox.value!!) })
+                0 -> dailyTable.items = api.getPayments(dateBox.value!!).toMutableObservableList()
+                else -> monthlyTable.items = Report.listAll(api.getPayments(monthBox.value!!))
             }
         }
     }
 
-    @FXML fun viewInvoice() = ViewInvoicePopover(this, transaction {
-        Invoices[dailyTable.selectionModel.selectedItem.invoiceId].single()
+    @FXML fun viewInvoice() = ViewInvoicePopover(this, runBlocking {
+        api.getInvoice(dailyTable.selectionModel.selectedItem.invoiceId)
     }).show(
         when (tabPane.selectionModel.selectedIndex) {
             0 -> dailyTable

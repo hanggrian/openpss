@@ -219,7 +219,7 @@ class InvoiceController : ActionController(), Refreshable {
                     dividerPosition = 0.6
                     GlobalScope.launch(Dispatchers.JavaFx) {
                         val (pageCount, invoices) = api.getInvoices(
-                            searchField.value, customerProperty.value?.name, true, when {
+                            searchField.value, customerProperty.value?.name, true, null, when {
                                 pickDateRadio.isSelected -> null
                                 else -> dateBox.value
                             }, page, count
@@ -312,7 +312,7 @@ class InvoiceController : ActionController(), Refreshable {
 
     private suspend fun reload(invoice: Invoice) = invoiceTable.run {
         items.indexOf(invoice).let { index ->
-            items[index] = api.getInvoice(invoice.no)
+            items[index] = api.getInvoice(invoice.id)
             selectionModel.select(index)
         }
     }

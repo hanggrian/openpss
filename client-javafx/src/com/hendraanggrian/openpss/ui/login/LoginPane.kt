@@ -6,13 +6,10 @@ import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.FxComponent
 import com.hendraanggrian.openpss.content.Language
 import com.hendraanggrian.openpss.content.Resources
-import com.hendraanggrian.openpss.control.IntField
 import com.hendraanggrian.openpss.db.schemas.Employee
-import com.hendraanggrian.openpss.io.properties.LoginFile
 import com.hendraanggrian.openpss.io.properties.SettingsFile
 import com.hendraanggrian.openpss.popup.dialog.ResultableDialog
 import com.hendraanggrian.openpss.popup.dialog.TextDialog
-import com.hendraanggrian.openpss.popup.popover.Popover
 import com.hendraanggrian.openpss.ui.main.help.AboutDialog
 import com.hendraanggrian.openpss.ui.main.help.GitHubHelper
 import com.jfoenix.controls.JFXButton
@@ -32,7 +29,6 @@ import kotlinx.coroutines.launch
 import ktfx.application.later
 import ktfx.beans.binding.buildBinding
 import ktfx.beans.value.isBlank
-import ktfx.beans.value.or
 import ktfx.collections.toObservableList
 import ktfx.coroutines.listener
 import ktfx.coroutines.onAction
@@ -80,28 +76,6 @@ class LoginPane(private val resourced: Resources) : _StackPane(), FxComponent {
     override val login: Employee get() = throw UnsupportedOperationException()
     override val rootLayout: StackPane get() = this
 
-    private val serverHostField = HostField().apply {
-        text = LoginFile.DB_HOST
-        promptText = getString(R.string.ip_address)
-        prefWidth = 128.0
-        textProperty().listener { _, _, newValue -> LoginFile.DB_HOST = newValue }
-    }
-    private val serverPortField = IntField().apply {
-        value = LoginFile.DB_PORT
-        promptText = getString(R.string.port)
-        prefWidth = 64.0
-        valueProperty().listener { _, _, newValue -> LoginFile.DB_PORT = newValue.toInt() }
-    }
-    private val serverUserField = ktfx.jfoenix.jfxTextField(LoginFile.DB_USER) {
-        promptText = getString(R.string.server_user)
-        textProperty().listener { _, _, newValue -> LoginFile.DB_USER = newValue }
-    }
-    private val serverPasswordField = ktfx.jfoenix.jfxPasswordField {
-        text = LoginFile.DB_PASSWORD
-        promptText = getString(R.string.server_password)
-        textProperty().listener { _, _, newValue -> LoginFile.DB_PASSWORD = newValue }
-    }
-
     init {
         minWidth = WIDTH
         maxWidth = WIDTH
@@ -136,19 +110,12 @@ class LoginPane(private val resourced: Resources) : _StackPane(), FxComponent {
                     isWrapText = true
                     fontSize = 16.0
                 }
-                employeeField = jfxTextField(LoginFile.EMPLOYEE) {
-                    textProperty().listener { _, _, value -> LoginFile.EMPLOYEE = value }
+                employeeField = jfxTextField(SettingsFile.EMPLOYEE) {
+                    textProperty().listener { _, _, value -> SettingsFile.EMPLOYEE = value }
                     fontSize = 16.0
                     promptText = getString(R.string.employee)
                     later { requestFocus() }
                 } marginTop 24.0
-                textFlow {
-                    hyperlink(getString(R.string.connection_settings)) {
-                        onAction {
-                            ConnectionSettingsPopover().show(this@hyperlink)
-                        }
-                    }
-                }
                 textFlow {
                     var version = BuildConfig.VERSION
                     if (BuildConfig.DEBUG) {
@@ -175,16 +142,10 @@ class LoginPane(private val resourced: Resources) : _StackPane(), FxComponent {
                         fontSize = 16.0
                         styleClass += R.style.raised
                         buttonType = JFXButton.ButtonType.RAISED
-                        disableProperty().bind(
-                            employeeField.textProperty().isBlank()
-                                or !serverHostField.validProperty()
-                                or serverPortField.textProperty().isBlank()
-                                or serverUserField.textProperty().isBlank()
-                                or serverPasswordField.textProperty().isBlank()
-                        )
+                        disableProperty().bind(employeeField.textProperty().isBlank())
                         onAction {
                             PasswordDialog().show {
-                                LoginFile.save()
+                                SettingsFile.save()
                                 GlobalScope.launch(Dispatchers.JavaFx) {
                                     try {
                                         val employee = api.login(employeeField.text, passwordField.text)
@@ -203,24 +164,6 @@ class LoginPane(private val resourced: Resources) : _StackPane(), FxComponent {
                     } anchorRight 0.0
                 } marginTop 24.0
             } row 1 col 0 colSpans 2
-        }
-    }
-
-    inner class ConnectionSettingsPopover : Popover(this, R.string.connection_settings) {
-
-        override val focusedNode: Node? get() = serverHostField
-
-        init {
-            gridPane {
-                gap = getDouble(R.dimen.padding_medium)
-                label(getString(R.string.server_host_port)) col 0 row 0
-                serverHostField() col 1 row 0
-                serverPortField() col 2 row 0
-                label(getString(R.string.server_user)) col 0 row 1
-                serverUserField() col 1 row 1 colSpans 2
-                label(getString(R.string.server_password)) col 0 row 2
-                serverPasswordField() col 1 row 2 colSpans 2
-            }
         }
     }
 

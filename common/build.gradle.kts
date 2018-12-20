@@ -24,7 +24,6 @@ dependencies {
     api(kotlin("stdlib", VERSION_KOTLIN))
     api(kotlin("nosql-mongodb", VERSION_NOSQL))
     api(kotlinx("coroutines-core", VERSION_COROUTINES))
-    api(mongodb())
     api(jodaTime())
 
     api(apache("maven-artifact", VERSION_MAVEN))

@@ -1,6 +1,6 @@
 package com.hendraanggrian.openpss.server.routing
 
-import com.hendraanggrian.openpss.db.Database
+import com.hendraanggrian.openpss.server.db.Database
 import io.ktor.application.call
 import io.ktor.response.respond
 import io.ktor.routing.get

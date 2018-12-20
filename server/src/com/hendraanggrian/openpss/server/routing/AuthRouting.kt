@@ -1,8 +1,8 @@
 package com.hendraanggrian.openpss.server.routing
 
-import com.hendraanggrian.openpss.db.Database
 import com.hendraanggrian.openpss.db.Setupable
 import com.hendraanggrian.openpss.db.schemas.Employees
+import com.hendraanggrian.openpss.server.db.Database
 import com.hendraanggrian.openpss.server.db.transaction
 import io.ktor.application.call
 import io.ktor.http.HttpStatusCode

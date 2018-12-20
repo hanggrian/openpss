@@ -1,8 +1,9 @@
-package com.hendraanggrian.openpss.db
+package com.hendraanggrian.openpss.server.db
 
+import com.hendraanggrian.openpss.db.Document
+import com.hendraanggrian.openpss.db.SessionWrapper
 import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.schemas.DigitalPrices
-import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.db.schemas.Employees
 import com.hendraanggrian.openpss.db.schemas.GlobalSettings
 import com.hendraanggrian.openpss.db.schemas.Invoices
@@ -13,14 +14,9 @@ import com.hendraanggrian.openpss.db.schemas.PlatePrices
 import com.hendraanggrian.openpss.db.schemas.Recesses
 import com.hendraanggrian.openpss.db.schemas.Wages
 import com.mongodb.MongoClientOptions
-import com.mongodb.MongoClientOptions.Builder
 import com.mongodb.MongoCredential
-import com.mongodb.MongoCredential.createCredential
 import com.mongodb.MongoException
 import com.mongodb.ServerAddress
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
-import kotlinx.nosql.equal
 import kotlinx.nosql.mongodb.DocumentSchema
 import kotlinx.nosql.mongodb.MongoDB
 import org.joda.time.DateTime
@@ -53,7 +49,11 @@ object Database {
      */
     @Throws(MongoException::class)
     fun <T> withSession(statement: SessionWrapper.() -> T): T = try {
-        DATABASE.withSession { SessionWrapper(this).statement() }
+        DATABASE.withSession {
+            SessionWrapper(
+                this
+            ).statement()
+        }
     } catch (e: MongoException) {
         error("Connection closed. Please sign in again.")
     }
@@ -66,36 +66,6 @@ object Database {
             MongoClientOptions.Builder().serverSelectionTimeout(3000).build(),
             TABLES
         )
-    }
-
-    @Throws(Exception::class)
-    suspend fun login(
-        host: String,
-        port: Int,
-        user: String,
-        password: String,
-        employeeName: String,
-        employeePassword: String
-    ): Employee {
-        DATABASE = withContext(Dispatchers.Default) {
-            MongoDB(
-                arrayOf(ServerAddress(host, port)),
-                "openpss",
-                arrayOf(createCredential(user, "admin", password.toCharArray())),
-                Builder().serverSelectionTimeout(3000).build(),
-                TABLES
-            )
-        }
-        lateinit var employee: Employee
-        withSession {
-            // check first time installation
-            TABLES.mapNotNull { it as? Setupable }.forEach { it.setup(this) }
-            // check login credentials
-            employee = checkNotNull(Employees { it.name.equal(employeeName) }.singleOrNull()) { "Employee not found" }
-            check(employee.password == employeePassword) { "Invalid password" }
-        }
-        employee.clearPassword()
-        return employee
     }
 
     /** Date and time of server. */

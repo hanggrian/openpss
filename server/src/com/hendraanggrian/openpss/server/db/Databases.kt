@@ -1,6 +1,5 @@
 package com.hendraanggrian.openpss.server.db
 
-import com.hendraanggrian.openpss.db.Database
 import com.hendraanggrian.openpss.db.SessionWrapper
 
 @Throws(Exception::class)

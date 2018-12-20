@@ -26,6 +26,8 @@ dependencies {
     api(project(":common"))
     api(project(":common-jvm"))
 
+    implementation(mongodb())
+
     implementation(ktor("server-netty"))
     implementation(ktor("gson"))
 
@@ -34,6 +36,7 @@ dependencies {
     testImplementation(junit())
     testImplementation(kotlin("test", VERSION_KOTLIN))
     testImplementation(kotlin("reflect", VERSION_KOTLIN))
+    testImplementation(slf4j("log4j12"))
 }
 
 tasks {

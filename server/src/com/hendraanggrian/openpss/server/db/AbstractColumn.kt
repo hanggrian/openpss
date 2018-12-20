@@ -1,6 +1,6 @@
 @file:Suppress("NOTHING_TO_INLINE")
 
-package com.hendraanggrian.openpss.db
+package com.hendraanggrian.openpss.server.db
 
 import kotlinx.nosql.AbstractColumn
 import kotlinx.nosql.AbstractSchema

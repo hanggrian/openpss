@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.control
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.db.schemas.Customer
+import com.hendraanggrian.openpss.data.Customer
 import javafx.beans.binding.When
 import javafx.scene.control.Label
 import javafx.scene.control.ListView

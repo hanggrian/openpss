@@ -1,8 +1,8 @@
 package com.hendraanggrian.openpss.api
 
-import com.hendraanggrian.openpss.db.schemas.Employee
-import com.hendraanggrian.openpss.db.schemas.Invoice
-import com.hendraanggrian.openpss.db.schemas.Payment
+import com.hendraanggrian.openpss.data.Employee
+import com.hendraanggrian.openpss.data.Invoice
+import com.hendraanggrian.openpss.data.Payment
 import io.ktor.client.request.get
 import io.ktor.client.request.post
 import io.ktor.http.HttpMethod

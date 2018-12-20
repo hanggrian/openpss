@@ -1,6 +1,6 @@
 package com.hendraanggrian.openpss.server.route
 
-import com.hendraanggrian.openpss.db.schemas.GlobalSettings
+import com.hendraanggrian.openpss.schema.GlobalSettings
 import com.hendraanggrian.openpss.server.transaction
 import io.ktor.application.call
 import io.ktor.http.HttpStatusCode

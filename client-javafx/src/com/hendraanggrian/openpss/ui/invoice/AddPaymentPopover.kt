@@ -3,8 +3,8 @@ package com.hendraanggrian.openpss.ui.invoice
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.FxComponent
 import com.hendraanggrian.openpss.control.DoubleField
-import com.hendraanggrian.openpss.db.schemas.Invoice
-import com.hendraanggrian.openpss.db.schemas.Payment
+import com.hendraanggrian.openpss.data.Invoice
+import com.hendraanggrian.openpss.data.Payment
 import com.hendraanggrian.openpss.popup.popover.ResultablePopover
 import javafx.scene.Node
 import javafx.scene.control.CheckBox

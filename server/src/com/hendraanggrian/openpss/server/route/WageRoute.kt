@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.server.route
 
-import com.hendraanggrian.openpss.db.schemas.Wage
-import com.hendraanggrian.openpss.db.schemas.Wages
+import com.hendraanggrian.openpss.data.Wage
+import com.hendraanggrian.openpss.schema.Wages
 import com.hendraanggrian.openpss.server.transaction
 import io.ktor.application.call
 import io.ktor.http.HttpStatusCode
@@ -16,7 +16,7 @@ import kotlinx.nosql.update
 object WageRoute : Route({
     "wages" {
         get {
-            call.respond(transaction { Wages() })
+            call.respond(transaction { Wages().toList() })
         }
         post {
             val wage = call.receive<Wage>()

@@ -3,8 +3,8 @@ package com.hendraanggrian.openpss.ui.invoice.job
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.FxComponent
 import com.hendraanggrian.openpss.control.DoubleField
-import com.hendraanggrian.openpss.db.schemas.DigitalPrice
-import com.hendraanggrian.openpss.db.schemas.Invoice
+import com.hendraanggrian.openpss.data.DigitalPrice
+import com.hendraanggrian.openpss.data.Invoice
 import javafx.beans.Observable
 import javafx.beans.value.ObservableBooleanValue
 import javafx.scene.control.CheckBox

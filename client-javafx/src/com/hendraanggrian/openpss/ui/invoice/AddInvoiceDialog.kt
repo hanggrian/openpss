@@ -3,9 +3,9 @@ package com.hendraanggrian.openpss.ui.invoice
 import com.hendraanggrian.openpss.PATTERN_DATE
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.FxComponent
+import com.hendraanggrian.openpss.data.Customer
+import com.hendraanggrian.openpss.data.Invoice
 import com.hendraanggrian.openpss.db.schema.typedTechnique
-import com.hendraanggrian.openpss.db.schemas.Customer
-import com.hendraanggrian.openpss.db.schemas.Invoice
 import com.hendraanggrian.openpss.popup.dialog.ResultableDialog
 import com.hendraanggrian.openpss.popup.popover.ResultablePopover
 import com.hendraanggrian.openpss.ui.invoice.job.AddDigitalJobPopover

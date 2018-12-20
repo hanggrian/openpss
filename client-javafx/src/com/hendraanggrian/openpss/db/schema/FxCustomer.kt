@@ -2,7 +2,7 @@ package com.hendraanggrian.openpss.db.schema
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.Resources
-import com.hendraanggrian.openpss.db.schemas.Customer
+import com.hendraanggrian.openpss.data.Customer
 import com.hendraanggrian.openpss.content.enumValueOfId
 import com.hendraanggrian.openpss.content.id
 

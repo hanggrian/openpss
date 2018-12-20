@@ -4,7 +4,8 @@ import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.api.GitHubApi
 import com.hendraanggrian.openpss.api.OpenPSSApi
-import com.hendraanggrian.openpss.db.schemas.GlobalSetting
+import com.hendraanggrian.openpss.data.GlobalSetting
+import com.hendraanggrian.openpss.i18n.Language
 import com.hendraanggrian.openpss.popup.dialog.PermissionDialog
 import javafx.scene.layout.StackPane
 import javafx.util.StringConverter

@@ -2,8 +2,8 @@ package com.hendraanggrian.openpss.ui.price
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.FxComponent
-import com.hendraanggrian.openpss.db.Document
-import com.hendraanggrian.openpss.db.Named
+import com.hendraanggrian.openpss.data.Document
+import com.hendraanggrian.openpss.data.Named
 import com.hendraanggrian.openpss.popup.dialog.TableDialog
 import com.hendraanggrian.openpss.popup.popover.InputPopover
 import com.hendraanggrian.openpss.util.stringCell

@@ -1,5 +1,6 @@
 package com.hendraanggrian.openpss.content
 
+import com.hendraanggrian.openpss.i18n.Language
 import com.hendraanggrian.openpss.util.getResourceAsStream
 import javafx.scene.paint.Color
 import java.util.Properties

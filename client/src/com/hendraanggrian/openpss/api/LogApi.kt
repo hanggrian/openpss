@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.api
 
+import com.hendraanggrian.openpss.data.Log
 import com.hendraanggrian.openpss.data.Page
-import com.hendraanggrian.openpss.db.schemas.Log
 import io.ktor.client.request.get
 
 interface LogApi : Api {

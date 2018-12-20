@@ -4,10 +4,10 @@ import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.BuildConfig
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.FxComponent
-import com.hendraanggrian.openpss.content.Language
+import com.hendraanggrian.openpss.i18n.Language
 import com.hendraanggrian.openpss.content.Resources
-import com.hendraanggrian.openpss.db.schemas.Employee
-import com.hendraanggrian.openpss.io.properties.SettingsFile
+import com.hendraanggrian.openpss.data.Employee
+import com.hendraanggrian.openpss.io.SettingsFile
 import com.hendraanggrian.openpss.popup.dialog.ResultableDialog
 import com.hendraanggrian.openpss.popup.dialog.TextDialog
 import com.hendraanggrian.openpss.ui.main.help.AboutDialog

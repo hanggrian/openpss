@@ -2,14 +2,14 @@ package com.hendraanggrian.openpss.ui.main
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.FxComponent
-import com.hendraanggrian.openpss.content.Language
+import com.hendraanggrian.openpss.i18n.Language
 import com.hendraanggrian.openpss.control.Space
-import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_INVOICE_HEADERS
-import com.hendraanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_LANGUAGE
-import com.hendraanggrian.openpss.io.properties.ReaderFile
-import com.hendraanggrian.openpss.io.properties.SettingsFile
+import com.hendraanggrian.openpss.data.GlobalSetting.Companion.KEY_INVOICE_HEADERS
+import com.hendraanggrian.openpss.data.GlobalSetting.Companion.KEY_LANGUAGE
+import com.hendraanggrian.openpss.io.ReaderFile
+import com.hendraanggrian.openpss.io.SettingsFile
 import com.hendraanggrian.openpss.popup.dialog.Dialog
-import com.hendraanggrian.openpss.ui.wage.readers.Reader
+import com.hendraanggrian.openpss.ui.wage.Reader
 import com.jfoenix.controls.JFXButton
 import javafx.event.ActionEvent
 import javafx.geometry.Pos

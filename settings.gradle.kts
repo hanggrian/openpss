@@ -1,4 +1,5 @@
-include("common", "common-jvm")
+include("data")
+include("i18n")
 include("client", "client-javafx"/*, "client-android"*/)
 include("server")
 include("website")

@@ -1,9 +1,9 @@
 package com.hendraanggrian.openpss.api
 
-import com.hendraanggrian.openpss.db.schemas.DigitalPrice
-import com.hendraanggrian.openpss.db.schemas.Employee
-import com.hendraanggrian.openpss.db.schemas.OffsetPrice
-import com.hendraanggrian.openpss.db.schemas.PlatePrice
+import com.hendraanggrian.openpss.data.DigitalPrice
+import com.hendraanggrian.openpss.data.Employee
+import com.hendraanggrian.openpss.data.OffsetPrice
+import com.hendraanggrian.openpss.data.PlatePrice
 import io.ktor.client.request.get
 import io.ktor.client.request.post
 import io.ktor.http.HttpMethod

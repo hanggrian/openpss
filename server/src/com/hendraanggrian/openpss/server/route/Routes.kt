@@ -1,16 +1,13 @@
 package com.hendraanggrian.openpss.server.route
 
-import com.hendraanggrian.openpss.content.Language
-import com.hendraanggrian.openpss.db.schemas.GlobalSetting
+import com.hendraanggrian.openpss.i18n.Language
+import com.hendraanggrian.openpss.data.GlobalSetting
 import com.hendraanggrian.openpss.server.transaction
 import io.ktor.application.Application
 import io.ktor.application.ApplicationCall
 import io.ktor.routing.Route
 import io.ktor.routing.route
 import io.ktor.routing.routing
-import kotlinx.nosql.AbstractColumn
-import kotlinx.nosql.AbstractSchema
-import kotlinx.nosql.Query
 import org.joda.time.DateTime
 import org.joda.time.LocalDate
 import org.joda.time.LocalDateTime
@@ -72,9 +69,3 @@ fun ApplicationCall.getDateTime(name: String): DateTime = DateTime.parse(getStri
 
 fun ApplicationCall.getDateTimeOrNull(name: String): DateTime? =
     getStringOrNull(name)?.let { DateTime.parse(it) }
-
-/** Matches with [regex] automatically transformed to pattern with certain [flags]. */
-fun <T : AbstractSchema, C> AbstractColumn<out C?, T, *>.matches(
-    regex: Any,
-    flags: Int = 0
-): Query = matches("$regex".toPattern(flags))

@@ -1,6 +1,6 @@
 package com.hendraanggrian.openpss.api
 
-import com.hendraanggrian.openpss.db.schemas.Employee
+import com.hendraanggrian.openpss.data.Employee
 import io.ktor.client.request.get
 
 interface AuthApi : Api {

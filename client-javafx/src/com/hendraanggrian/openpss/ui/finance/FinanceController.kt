@@ -7,8 +7,8 @@ import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.DateBox
 import com.hendraanggrian.openpss.control.MonthBox
 import com.hendraanggrian.openpss.control.StretchableButton
-import com.hendraanggrian.openpss.db.schemas.Payment
-import com.hendraanggrian.openpss.io.properties.SettingsFile
+import com.hendraanggrian.openpss.data.Payment
+import com.hendraanggrian.openpss.io.SettingsFile
 import com.hendraanggrian.openpss.popup.popover.ViewInvoicePopover
 import com.hendraanggrian.openpss.ui.ActionController
 import com.hendraanggrian.openpss.ui.Refreshable

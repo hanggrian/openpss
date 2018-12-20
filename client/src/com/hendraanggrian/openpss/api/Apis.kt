@@ -42,16 +42,6 @@ interface Api {
         request<HttpResponse>(block).use { it.status.isSuccess() }
 }
 
-/** Base class of REST APIs, where client is Android and Java-friendly OkHttp. */
-sealed class OkHttpApi(final override val endPoint: String) : Api {
-
-    final override val client: HttpClient = HttpClient(OkHttp) {
-        install(JsonFeature) {
-            serializer = GsonSerializer { jodaTimeSupport() }
-        }
-    }
-}
-
 /** GitHub API used to check latest version. */
 class GitHubApi : OkHttpApi("https://api.github.com") {
 
@@ -72,3 +62,13 @@ class OpenPSSApi : OkHttpApi("http://localhost:8080"),
     PaymentApi,
     RecessApi,
     WageApi
+
+/** Base class of REST APIs, where client is Android and Java-friendly OkHttp. */
+sealed class OkHttpApi(final override val endPoint: String) : Api {
+
+    final override val client: HttpClient = HttpClient(OkHttp) {
+        install(JsonFeature) {
+            serializer = GsonSerializer { jodaTimeSupport() }
+        }
+    }
+}

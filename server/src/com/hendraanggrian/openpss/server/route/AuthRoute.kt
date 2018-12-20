@@ -1,8 +1,6 @@
 package com.hendraanggrian.openpss.server.route
 
-import com.hendraanggrian.openpss.db.Setupable
-import com.hendraanggrian.openpss.db.schemas.Employees
-import com.hendraanggrian.openpss.server.TABLES
+import com.hendraanggrian.openpss.schema.Employees
 import com.hendraanggrian.openpss.server.transaction
 import io.ktor.application.call
 import io.ktor.http.HttpStatusCode
@@ -15,12 +13,7 @@ object AuthRoute : Route({
         get {
             val name = call.getString("name")
             val password = call.getString("password")
-            val employee = transaction {
-                // check first time installation
-                TABLES.mapNotNull { it as? Setupable }.forEach { it.setup(this) }
-                // check login credentials
-                Employees { it.name.equal(name) }.singleOrNull()
-            }
+            val employee = transaction { Employees { it.name.equal(name) }.singleOrNull() }
             when {
                 employee == null -> call.respond(HttpStatusCode.NotFound)
                 employee.password != password -> call.respond(HttpStatusCode.Unauthorized)

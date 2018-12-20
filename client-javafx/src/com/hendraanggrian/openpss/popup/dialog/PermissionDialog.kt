@@ -2,7 +2,7 @@ package com.hendraanggrian.openpss.popup.dialog
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.FxComponent
-import com.hendraanggrian.openpss.db.schemas.Employee
+import com.hendraanggrian.openpss.data.Employee
 import javafx.scene.Node
 import javafx.scene.control.ComboBox
 import javafx.scene.control.PasswordField

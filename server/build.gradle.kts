@@ -23,8 +23,8 @@ sourceSets {
 ktlint()
 
 dependencies {
-    api(project(":common"))
-    api(project(":common-jvm"))
+    api(project(":data"))
+    api(project(":i18n"))
 
     implementation(mongodb())
 

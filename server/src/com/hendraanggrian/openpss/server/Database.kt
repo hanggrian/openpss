@@ -1,23 +1,27 @@
 package com.hendraanggrian.openpss.server
 
 import com.hendraanggrian.openpss.BuildConfig
-import com.hendraanggrian.openpss.db.Document
-import com.hendraanggrian.openpss.db.SessionWrapper
-import com.hendraanggrian.openpss.db.schemas.Customers
-import com.hendraanggrian.openpss.db.schemas.DigitalPrices
-import com.hendraanggrian.openpss.db.schemas.Employees
-import com.hendraanggrian.openpss.db.schemas.GlobalSettings
-import com.hendraanggrian.openpss.db.schemas.Invoices
-import com.hendraanggrian.openpss.db.schemas.Logs
-import com.hendraanggrian.openpss.db.schemas.OffsetPrices
-import com.hendraanggrian.openpss.db.schemas.Payments
-import com.hendraanggrian.openpss.db.schemas.PlatePrices
-import com.hendraanggrian.openpss.db.schemas.Recesses
-import com.hendraanggrian.openpss.db.schemas.Wages
+import com.hendraanggrian.openpss.data.Document
+import com.hendraanggrian.openpss.data.Employee
+import com.hendraanggrian.openpss.data.GlobalSetting
+import com.hendraanggrian.openpss.schema.Customers
+import com.hendraanggrian.openpss.schema.DigitalPrices
+import com.hendraanggrian.openpss.schema.Employees
+import com.hendraanggrian.openpss.schema.GlobalSettings
+import com.hendraanggrian.openpss.schema.Invoices
+import com.hendraanggrian.openpss.schema.Logs
+import com.hendraanggrian.openpss.schema.OffsetPrices
+import com.hendraanggrian.openpss.schema.Payments
+import com.hendraanggrian.openpss.schema.PlatePrices
+import com.hendraanggrian.openpss.schema.Recesses
+import com.hendraanggrian.openpss.schema.Wages
+import com.hendraanggrian.openpss.server.db.SessionWrapper
+import com.hendraanggrian.openpss.util.isEmpty
 import com.mongodb.MongoClientOptions
 import com.mongodb.MongoCredential
 import com.mongodb.MongoException
 import com.mongodb.ServerAddress
+import kotlinx.nosql.equal
 import kotlinx.nosql.mongodb.DocumentSchema
 import kotlinx.nosql.mongodb.MongoDB
 import org.joda.time.DateTime
@@ -26,7 +30,7 @@ import org.joda.time.LocalTime
 import java.util.Date
 
 private lateinit var DATABASE: MongoDB
-val TABLES: Array<DocumentSchema<out Document<out DocumentSchema<out Document<out DocumentSchema<*>>>>>> = arrayOf(
+private val TABLES: Array<DocumentSchema<out Document<out DocumentSchema<out Document<out DocumentSchema<*>>>>>> = arrayOf(
     Customers,
     DigitalPrices,
     Employees,
@@ -63,14 +67,23 @@ fun connect() {
         BuildConfig.DATABASE,
         arrayOf(
             MongoCredential.createCredential(
-                BuildConfig.DATABASE_USERNAME,
+                BuildConfig.DATABASE_USER,
                 "admin",
-                BuildConfig.DATABASE_PASSWORD.toCharArray()
+                BuildConfig.DATABASE_PASS.toCharArray()
             )
         ),
         MongoClientOptions.Builder().serverSelectionTimeout(3000).build(),
         TABLES
     )
+}
+
+fun initialize() = transaction {
+    if (Employees { it.name.equal(Employee.BACKDOOR.name) }.isEmpty()) {
+        Employees += Employee.BACKDOOR
+    }
+    listOf(GlobalSettings.LANGUAGE, GlobalSettings.INVOICE_HEADERS)
+        .filter { pair -> GlobalSettings { it.key.equal(pair.first) }.isEmpty() }
+        .forEach { GlobalSettings += GlobalSetting(it.first, it.second) }
 }
 
 /** Date and time of server. */

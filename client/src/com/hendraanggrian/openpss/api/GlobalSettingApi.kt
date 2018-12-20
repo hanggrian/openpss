@@ -1,6 +1,6 @@
 package com.hendraanggrian.openpss.api
 
-import com.hendraanggrian.openpss.db.schemas.GlobalSetting
+import com.hendraanggrian.openpss.data.GlobalSetting
 import io.ktor.client.request.get
 import io.ktor.http.HttpMethod
 

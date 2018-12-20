@@ -1,11 +1,12 @@
 package com.hendraanggrian.openpss.server.route
 
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.data.Customer
+import com.hendraanggrian.openpss.data.Log
 import com.hendraanggrian.openpss.data.Page
-import com.hendraanggrian.openpss.db.schemas.Customer
-import com.hendraanggrian.openpss.db.schemas.Customers
-import com.hendraanggrian.openpss.db.schemas.Log
-import com.hendraanggrian.openpss.db.schemas.Logs
+import com.hendraanggrian.openpss.schema.Customers
+import com.hendraanggrian.openpss.schema.Logs
+import com.hendraanggrian.openpss.server.db.matches
 import com.hendraanggrian.openpss.server.transaction
 import com.hendraanggrian.openpss.util.isNotEmpty
 import io.ktor.application.call

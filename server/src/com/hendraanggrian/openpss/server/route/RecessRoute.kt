@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.server.route
 
-import com.hendraanggrian.openpss.db.schemas.Recess
-import com.hendraanggrian.openpss.db.schemas.Recesses
+import com.hendraanggrian.openpss.data.Recess
+import com.hendraanggrian.openpss.schema.Recesses
 import com.hendraanggrian.openpss.server.transaction
 import io.ktor.application.call
 import io.ktor.http.HttpStatusCode
@@ -13,7 +13,7 @@ import io.ktor.routing.post
 object RecessRoute : Route({
     "recesses" {
         get {
-            call.respond(transaction { Recesses() })
+            call.respond(transaction { Recesses().toList() })
         }
         post {
             val recess = Recess(call.getLocalTime("start"), call.getLocalTime("end"))

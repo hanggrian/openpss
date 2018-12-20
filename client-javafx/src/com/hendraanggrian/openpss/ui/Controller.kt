@@ -2,7 +2,7 @@ package com.hendraanggrian.openpss.ui
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.FxComponent
-import com.hendraanggrian.openpss.db.schemas.Employee
+import com.hendraanggrian.openpss.data.Employee
 import javafx.fxml.Initializable
 import javafx.scene.layout.StackPane
 import java.net.URL

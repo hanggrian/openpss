@@ -2,7 +2,7 @@ package com.hendraanggrian.openpss.popup.dialog
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.FxComponent
-import com.hendraanggrian.openpss.db.Document
+import com.hendraanggrian.openpss.data.Document
 import com.hendraanggrian.openpss.ui.Refreshable
 import javafx.geometry.Pos.CENTER_RIGHT
 import javafx.scene.Node

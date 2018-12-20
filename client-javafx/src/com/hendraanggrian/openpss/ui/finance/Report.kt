@@ -1,6 +1,6 @@
 package com.hendraanggrian.openpss.ui.finance
 
-import com.hendraanggrian.openpss.db.schemas.Payment
+import com.hendraanggrian.openpss.data.Payment
 import javafx.collections.ObservableList
 import ktfx.collections.toObservableList
 import org.joda.time.LocalDate

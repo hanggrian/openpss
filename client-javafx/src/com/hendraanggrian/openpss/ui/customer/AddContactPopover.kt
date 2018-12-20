@@ -4,7 +4,7 @@ import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.FxComponent
 import com.hendraanggrian.openpss.db.schema.ContactType
 import com.hendraanggrian.openpss.db.schema.new
-import com.hendraanggrian.openpss.db.schemas.Customer
+import com.hendraanggrian.openpss.data.Customer
 import com.hendraanggrian.openpss.popup.popover.ResultablePopover
 import javafx.scene.Node
 import javafx.scene.control.ComboBox

@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.server.route
 
 import com.hendraanggrian.openpss.data.Page
-import com.hendraanggrian.openpss.db.schemas.Logs
+import com.hendraanggrian.openpss.schema.Logs
 import com.hendraanggrian.openpss.server.transaction
 import io.ktor.application.call
 import io.ktor.response.respond

@@ -6,10 +6,9 @@ import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.STYLESHEET_OPENPSS
 import com.hendraanggrian.openpss.control.StretchableButton
 import com.hendraanggrian.openpss.io.WageDirectory
-import com.hendraanggrian.openpss.io.properties.ReaderFile
+import com.hendraanggrian.openpss.io.ReaderFile
 import com.hendraanggrian.openpss.popup.dialog.TextDialog
 import com.hendraanggrian.openpss.ui.ActionController
-import com.hendraanggrian.openpss.ui.wage.readers.Reader
 import com.hendraanggrian.openpss.ui.wage.record.WageRecordController.Companion.EXTRA_ATTENDEES
 import com.hendraanggrian.openpss.util.controller
 import com.hendraanggrian.openpss.util.getResource
@@ -131,7 +130,8 @@ class WageController : ActionController() {
     private fun history() = desktop?.open(WageDirectory)
 
     private fun browse() =
-        fileChooser(ExtensionFilter(getString(R.string.input_file), Reader.of(ReaderFile.WAGE_READER).extension))
+        fileChooser(ExtensionFilter(getString(R.string.input_file), Reader.of(
+            ReaderFile.WAGE_READER).extension))
             .showOpenDialog(anchorPane.scene.window)
             ?.let { file ->
                 GlobalScope.launch(Dispatchers.JavaFx) {

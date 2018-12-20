@@ -1,5 +1,6 @@
 package com.hendraanggrian.openpss.server.db
 
+import com.hendraanggrian.openpss.server.Database
 import kotlinx.coroutines.runBlocking
 import org.apache.log4j.BasicConfigurator
 import org.junit.Test

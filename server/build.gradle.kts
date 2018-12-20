@@ -1,9 +1,9 @@
 plugins {
     kotlin("jvm")
-    id("kotlinx-serialization")
     dokka()
     idea
     generating("r")
+    generating("buildconfig")
 }
 
 group = RELEASE_GROUP
@@ -45,6 +45,12 @@ tasks {
         properties {
             readResourceBundle = true
         }
+    }
+
+    named<com.hendraanggrian.generating.buildconfig.BuildConfigTask>("generateBuildConfig") {
+        field("DATABASE", RELEASE_ARTIFACT)
+        field("DATABASE_USER", envUser())
+        field("DATABASE_PASS", envPass())
     }
 
     named<org.jetbrains.dokka.gradle.DokkaTask>("dokka") {

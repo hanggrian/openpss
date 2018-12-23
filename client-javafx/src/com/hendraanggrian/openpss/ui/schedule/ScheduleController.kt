@@ -22,13 +22,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.javafx.JavaFx
 import kotlinx.coroutines.launch
-import ktfx.application.later
-import ktfx.beans.binding.buildStringBinding
-import ktfx.beans.value.or
+import ktfx.bindings.buildStringBinding
+import ktfx.bindings.or
 import ktfx.collections.isEmptyBinding
 import ktfx.coroutines.listener
 import ktfx.coroutines.onAction
 import ktfx.jfoenix.jfxToggleButton
+import ktfx.later
 import ktfx.layouts.NodeInvokable
 import ktfx.layouts.borderPane
 import java.net.URL

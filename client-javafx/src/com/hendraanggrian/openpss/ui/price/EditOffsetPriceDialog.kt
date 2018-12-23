@@ -5,9 +5,10 @@ import com.hendraanggrian.openpss.content.FxComponent
 import com.hendraanggrian.openpss.data.OffsetPrice
 import javafx.beans.value.ObservableValue
 import kotlinx.coroutines.CoroutineScope
-import ktfx.beans.property.asReadOnlyProperty
 import ktfx.coroutines.onEditCommit
 import ktfx.listeners.textFieldCellFactory
+import ktfx.readOnlyDoublePropertyOf
+import ktfx.readOnlyIntPropertyOf
 
 @Suppress("UNCHECKED_CAST")
 class EditOffsetPriceDialog(
@@ -18,7 +19,7 @@ class EditOffsetPriceDialog(
         getString(R.string.min_qty)<Int> {
             minWidth = 128.0
             style = "-fx-alignment: center-right;"
-            setCellValueFactory { it.value.minQty.asReadOnlyProperty() as ObservableValue<Int> }
+            setCellValueFactory { readOnlyIntPropertyOf(it.value.minQty) as ObservableValue<Int> }
             textFieldCellFactory {
                 fromString { it.toIntOrNull() ?: 0 }
             }
@@ -33,7 +34,7 @@ class EditOffsetPriceDialog(
         getString(R.string.min_price)<Double> {
             minWidth = 128.0
             style = "-fx-alignment: center-right;"
-            setCellValueFactory { it.value.minPrice.asReadOnlyProperty() as ObservableValue<Double> }
+            setCellValueFactory { readOnlyDoublePropertyOf(it.value.minPrice) as ObservableValue<Double> }
             textFieldCellFactory {
                 fromString { it.toDoubleOrNull() ?: 0.0 }
             }
@@ -48,7 +49,7 @@ class EditOffsetPriceDialog(
         getString(R.string.excess_price)<Double> {
             minWidth = 128.0
             style = "-fx-alignment: center-right;"
-            setCellValueFactory { it.value.excessPrice.asReadOnlyProperty() as ObservableValue<Double> }
+            setCellValueFactory { readOnlyDoublePropertyOf(it.value.excessPrice) as ObservableValue<Double> }
             textFieldCellFactory {
                 fromString { it.toDoubleOrNull() ?: 0.0 }
             }

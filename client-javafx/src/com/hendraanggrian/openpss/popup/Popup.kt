@@ -8,6 +8,7 @@ import javafx.scene.Node
 import javafx.scene.control.Button
 import javafx.scene.layout.Region
 import javafx.scene.layout.VBox
+import ktfx.controls.updatePadding
 import ktfx.coroutines.listener
 import ktfx.coroutines.onAction
 import ktfx.jfoenix.jfxButton
@@ -16,7 +17,6 @@ import ktfx.layouts.borderPane
 import ktfx.layouts.buttonBar
 import ktfx.layouts.label
 import ktfx.layouts.vbox
-import ktfx.scene.layout.updatePadding
 
 interface Popup : FxComponent, NodeInvokable {
 

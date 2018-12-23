@@ -5,13 +5,13 @@ import com.hendraanggrian.openpss.content.FxComponent
 import com.hendraanggrian.openpss.popup.dialog.ResultableDialog
 import javafx.scene.Node
 import javafx.scene.control.PasswordField
-import ktfx.beans.value.isBlank
-import ktfx.beans.value.neq
-import ktfx.beans.value.or
+import ktfx.bindings.isBlank
+import ktfx.bindings.neq
+import ktfx.bindings.or
+import ktfx.controls.gap
 import ktfx.jfoenix.jfxPasswordField
 import ktfx.layouts.gridPane
 import ktfx.layouts.label
-import ktfx.scene.layout.gap
 
 class ChangePasswordDialog(component: FxComponent) : ResultableDialog<String>(component, R.string.change_password) {
 

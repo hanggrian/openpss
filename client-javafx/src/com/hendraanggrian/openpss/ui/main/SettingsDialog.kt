@@ -2,10 +2,10 @@ package com.hendraanggrian.openpss.ui.main
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.FxComponent
-import com.hendraanggrian.openpss.i18n.Language
 import com.hendraanggrian.openpss.control.Space
 import com.hendraanggrian.openpss.data.GlobalSetting.Companion.KEY_INVOICE_HEADERS
 import com.hendraanggrian.openpss.data.GlobalSetting.Companion.KEY_LANGUAGE
+import com.hendraanggrian.openpss.i18n.Language
 import com.hendraanggrian.openpss.io.ReaderFile
 import com.hendraanggrian.openpss.io.SettingsFile
 import com.hendraanggrian.openpss.popup.dialog.Dialog
@@ -23,9 +23,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.javafx.JavaFx
 import kotlinx.coroutines.launch
-import ktfx.beans.property.asProperty
-import ktfx.beans.value.and
+import ktfx.bindings.and
+import ktfx.booleanPropertyOf
 import ktfx.collections.toObservableList
+import ktfx.controls.gap
 import ktfx.coroutines.listener
 import ktfx.jfoenix.jfxButton
 import ktfx.jfoenix.jfxComboBox
@@ -40,13 +41,12 @@ import ktfx.layouts.label
 import ktfx.layouts.textArea
 import ktfx.layouts.vbox
 import ktfx.listeners.converter
-import ktfx.scene.layout.gap
 import kotlin.coroutines.CoroutineContext
 
 class SettingsDialog(component: FxComponent) : Dialog(component, R.string.settings) {
 
-    private var isLocalChanged = false.asProperty()
-    private var isGlobalChanged = false.asProperty()
+    private var isLocalChanged = booleanPropertyOf()
+    private var isGlobalChanged = booleanPropertyOf()
 
     private lateinit var invoiceHeadersArea: TextArea
     private lateinit var wageReaderChoice: ComboBox<Reader>

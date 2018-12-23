@@ -15,9 +15,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.javafx.JavaFx
 import kotlinx.coroutines.launch
-import ktfx.beans.value.isBlank
-import ktfx.beans.value.lessEq
-import ktfx.beans.value.or
+import ktfx.bindings.isBlank
+import ktfx.bindings.lessEq
+import ktfx.bindings.or
 import ktfx.collections.toObservableList
 import ktfx.coroutines.listener
 import ktfx.jfoenix.jfxComboBox

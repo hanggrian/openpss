@@ -11,9 +11,10 @@ import javafx.scene.control.CheckBox
 import javafx.scene.control.TextField
 import javafx.scene.image.ImageView
 import kotlinx.coroutines.runBlocking
-import ktfx.beans.binding.buildBinding
-import ktfx.beans.binding.buildBooleanBinding
-import ktfx.beans.binding.buildStringBinding
+import ktfx.bindings.buildBinding
+import ktfx.bindings.buildBooleanBinding
+import ktfx.bindings.buildStringBinding
+import ktfx.controls.gap
 import ktfx.coroutines.onAction
 import ktfx.jfoenix.jfxButton
 import ktfx.jfoenix.jfxCheckBox
@@ -21,7 +22,6 @@ import ktfx.jfoenix.jfxTextField
 import ktfx.layouts.gridPane
 import ktfx.layouts.label
 import ktfx.layouts.tooltip
-import ktfx.scene.layout.gap
 import ktfx.util.invoke
 
 class AddPaymentPopover(

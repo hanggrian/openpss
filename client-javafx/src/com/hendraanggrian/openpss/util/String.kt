@@ -4,7 +4,7 @@ package com.hendraanggrian.openpss.util
 
 import javafx.beans.binding.BooleanBinding
 import javafx.beans.property.StringProperty
-import ktfx.beans.binding.buildBooleanBinding
+import ktfx.bindings.buildBooleanBinding
 
 /** Reversed name of [String.orEmpty]. */
 fun String.orNull(): String? = if (isBlank()) null else this

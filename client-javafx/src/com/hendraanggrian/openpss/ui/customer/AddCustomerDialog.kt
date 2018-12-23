@@ -13,16 +13,16 @@ import javafx.scene.control.Tab
 import javafx.scene.control.TabPane
 import javafx.scene.control.TextField
 import kotlinx.coroutines.runBlocking
-import ktfx.beans.binding.otherwise
-import ktfx.beans.binding.then
-import ktfx.beans.value.eq
-import ktfx.beans.value.isBlank
-import ktfx.beans.value.or
+import ktfx.bindings.eq
+import ktfx.bindings.isBlank
+import ktfx.bindings.or
 import ktfx.coroutines.listener
 import ktfx.jfoenix.jfxTabPane
 import ktfx.jfoenix.jfxTextField
 import ktfx.layouts.label
 import ktfx.layouts.tab
+import ktfx.otherwise
+import ktfx.then
 
 class AddCustomerDialog(component: FxComponent) : ResultableDialog<Customer>(component, R.string.add_customer) {
 

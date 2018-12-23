@@ -7,11 +7,11 @@ import javafx.beans.property.BooleanProperty
 import javafx.beans.property.DoubleProperty
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleDoubleProperty
-import ktfx.beans.binding.buildBooleanBinding
-import ktfx.beans.value.getValue
-import ktfx.beans.value.setValue
+import ktfx.bindings.buildBooleanBinding
 import ktfx.coroutines.listener
+import ktfx.getValue
 import ktfx.listeners.bindBidirectional
+import ktfx.setValue
 
 class DoubleField : JFXTextField() {
 

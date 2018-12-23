@@ -4,9 +4,9 @@ import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.BuildConfig
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.FxComponent
-import com.hendraanggrian.openpss.i18n.Language
 import com.hendraanggrian.openpss.content.Resources
 import com.hendraanggrian.openpss.data.Employee
+import com.hendraanggrian.openpss.i18n.Language
 import com.hendraanggrian.openpss.io.SettingsFile
 import com.hendraanggrian.openpss.popup.dialog.ResultableDialog
 import com.hendraanggrian.openpss.popup.dialog.TextDialog
@@ -26,10 +26,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.javafx.JavaFx
 import kotlinx.coroutines.launch
-import ktfx.application.later
-import ktfx.beans.binding.buildBinding
-import ktfx.beans.value.isBlank
+import ktfx.bindings.buildBinding
+import ktfx.bindings.isBlank
 import ktfx.collections.toObservableList
+import ktfx.controls.gap
+import ktfx.controls.paddingAll
+import ktfx.controls.updatePadding
 import ktfx.coroutines.listener
 import ktfx.coroutines.onAction
 import ktfx.jfoenix.jfxButton
@@ -38,6 +40,7 @@ import ktfx.jfoenix.jfxPasswordField
 import ktfx.jfoenix.jfxTextField
 import ktfx.jfoenix.jfxToggleButton
 import ktfx.jfoenix.onDialogClosed
+import ktfx.later
 import ktfx.layouts._StackPane
 import ktfx.layouts.anchorPane
 import ktfx.layouts.gridPane
@@ -49,10 +52,7 @@ import ktfx.layouts.stackPane
 import ktfx.layouts.text
 import ktfx.layouts.textFlow
 import ktfx.layouts.vbox
-import ktfx.scene.layout.gap
-import ktfx.scene.layout.paddingAll
-import ktfx.scene.layout.updatePadding
-import ktfx.scene.text.fontSize
+import ktfx.text.fontSize
 import java.util.Properties
 import java.util.ResourceBundle
 

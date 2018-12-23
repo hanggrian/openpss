@@ -12,11 +12,11 @@ import com.hendraanggrian.openpss.util.round
 import javafx.beans.property.IntegerProperty
 import javafx.beans.property.SimpleIntegerProperty
 import javafx.collections.ObservableList
-import ktfx.beans.binding.buildDoubleBinding
-import ktfx.beans.property.asProperty
-import ktfx.beans.value.getValue
-import ktfx.beans.value.setValue
+import ktfx.bindings.buildDoubleBinding
 import ktfx.collections.mutableObservableListOf
+import ktfx.getValue
+import ktfx.propertyOf
+import ktfx.setValue
 import org.joda.time.DateTime
 import org.joda.time.Minutes.minutes
 import org.joda.time.Period
@@ -70,19 +70,19 @@ data class Attendee(
     override fun toString(): String = "$id. $name"
 
     fun toNodeRecord(resources: Resources): Record =
-        Record(resources, INDEX_NODE, this, DateTime.now().asProperty(), DateTime.now().asProperty())
+        Record(resources, INDEX_NODE, this, propertyOf(DateTime.now()), propertyOf(DateTime.now()))
 
     fun toChildRecords(resources: Resources): Set<Record> {
         val records = mutableSetOf<Record>()
         val iterator = attendances.iterator()
         var index = 0
         while (iterator.hasNext()) records +=
-            Record(resources, index++, this, iterator.next().asProperty(), iterator.next().asProperty())
+            Record(resources, index++, this, propertyOf(iterator.next()), propertyOf(iterator.next()))
         return records
     }
 
     fun toTotalRecords(resources: Resources, children: Collection<Record>): Record =
-        Record(resources, INDEX_TOTAL, this, START_OF_TIME.asProperty(), START_OF_TIME.asProperty())
+        Record(resources, INDEX_TOTAL, this, propertyOf(START_OF_TIME), propertyOf(START_OF_TIME))
             .apply {
                 dailyProperty.bind(buildDoubleBinding(children.map { it.dailyProperty }) {
                     children.sumByDouble { it.daily }.round()

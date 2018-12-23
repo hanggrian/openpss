@@ -12,13 +12,17 @@ import javafx.scene.control.Hyperlink
 import javafx.scene.control.ListView
 import javafx.scene.image.Image
 import javafx.scene.text.Font
-import ktfx.application.later
 import ktfx.collections.toObservableList
+import ktfx.controls.find
+import ktfx.controls.paddingAll
 import ktfx.controlsfx.masterDetailPane
 import ktfx.coroutines.listener
 import ktfx.coroutines.onAction
+import ktfx.dialogs.closeButton
+import ktfx.dialogs.icon
 import ktfx.jfoenix.jfxButton
 import ktfx.jfoenix.jfxListView
+import ktfx.later
 import ktfx.layouts.contextMenu
 import ktfx.layouts.hbox
 import ktfx.layouts.imageView
@@ -27,10 +31,6 @@ import ktfx.layouts.text
 import ktfx.layouts.textFlow
 import ktfx.layouts.vbox
 import ktfx.listeners.cellFactory
-import ktfx.scene.control.closeButton
-import ktfx.scene.control.icon
-import ktfx.scene.find
-import ktfx.scene.layout.paddingAll
 import java.net.URI
 
 /**

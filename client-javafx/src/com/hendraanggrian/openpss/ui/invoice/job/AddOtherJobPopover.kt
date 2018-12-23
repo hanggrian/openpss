@@ -6,9 +6,9 @@ import com.hendraanggrian.openpss.control.DoubleField
 import com.hendraanggrian.openpss.data.Invoice
 import javafx.beans.Observable
 import javafx.beans.value.ObservableBooleanValue
-import ktfx.beans.value.isBlank
-import ktfx.beans.value.lessEq
-import ktfx.beans.value.or
+import ktfx.bindings.isBlank
+import ktfx.bindings.lessEq
+import ktfx.bindings.or
 import ktfx.layouts._GridPane
 import ktfx.layouts.label
 

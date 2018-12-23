@@ -3,9 +3,9 @@ package com.hendraanggrian.openpss.ui
 import javafx.beans.property.SimpleStringProperty
 import javafx.beans.property.StringProperty
 import javafx.scene.Node
-import ktfx.beans.value.getValue
-import ktfx.beans.value.setValue
+import ktfx.getValue
 import ktfx.layouts.NodeInvokable
+import ktfx.setValue
 import java.net.URL
 import java.util.ResourceBundle
 

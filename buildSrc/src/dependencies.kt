@@ -50,7 +50,10 @@ inline val PluginDependenciesSpec.packr get() = id("com.hendraanggrian.packr")
 
 fun DependencyHandler.guava() = "com.google.guava:guava:$VERSION_GUAVA-jre"
 
-fun DependencyHandler.jodaTime() = "joda-time:joda-time:$VERSION_JODA"
+fun DependencyHandler.jodaTime() = "joda-time:joda-time:$VERSION_JODA_TIME"
+
+fun DependencyHandler.jodaTimeGsonSerializers() =
+    "com.fatboyindustrial.gson-jodatime-serialisers:gson-jodatime-serialisers:$VERSION_JODA_TIME_GSON_SERIALIZERS"
 
 fun DependencyHandler.slf4j(module: String) = "org.slf4j:slf4j-$module:$VERSION_SLF4J"
 

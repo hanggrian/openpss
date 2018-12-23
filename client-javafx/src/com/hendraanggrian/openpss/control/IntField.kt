@@ -5,10 +5,10 @@ package com.hendraanggrian.openpss.control
 import com.jfoenix.controls.JFXTextField
 import javafx.beans.property.IntegerProperty
 import javafx.beans.property.SimpleIntegerProperty
-import ktfx.beans.value.getValue
-import ktfx.beans.value.setValue
 import ktfx.coroutines.listener
+import ktfx.getValue
 import ktfx.listeners.bindBidirectional
+import ktfx.setValue
 
 class IntField : JFXTextField() {
 

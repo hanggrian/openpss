@@ -29,7 +29,7 @@ dependencies {
     api(apache("maven-artifact", VERSION_MAVEN))
 
     api(google("gson", VERSION_GSON, "code.gson"))
-    api("com.fatboyindustrial.gson-jodatime-serialisers:gson-jodatime-serialisers:1.6.0")
+    api(jodaTimeGsonSerializers())
 
     testImplementation(junit())
     testImplementation(kotlin("test", VERSION_KOTLIN))

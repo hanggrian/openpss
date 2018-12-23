@@ -5,11 +5,11 @@ import com.hendraanggrian.openpss.data.Customer
 import javafx.beans.binding.When
 import javafx.scene.control.Label
 import javafx.scene.control.ListView
-import ktfx.beans.binding.otherwise
-import ktfx.beans.binding.then
-import ktfx.beans.value.eq
+import ktfx.bindings.eq
 import ktfx.layouts.label
 import ktfx.listeners.cellFactory
+import ktfx.otherwise
+import ktfx.then
 
 class CustomerListView : ListView<Customer>() {
 

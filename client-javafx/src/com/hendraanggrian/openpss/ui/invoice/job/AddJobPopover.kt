@@ -11,14 +11,14 @@ import javafx.beans.value.ObservableBooleanValue
 import javafx.scene.Node
 import javafx.scene.control.CheckBox
 import javafx.scene.control.TextField
-import ktfx.beans.binding.buildStringBinding
+import ktfx.bindings.buildStringBinding
+import ktfx.controls.gap
 import ktfx.coroutines.listener
 import ktfx.jfoenix.jfxCheckBox
 import ktfx.jfoenix.jfxTextField
 import ktfx.layouts._GridPane
 import ktfx.layouts.gridPane
 import ktfx.layouts.label
-import ktfx.scene.layout.gap
 
 abstract class AddJobPopover<T : Invoice.Job>(component: FxComponent, titleId: String) :
     ResultablePopover<T>(component, titleId), Invoice.Job {

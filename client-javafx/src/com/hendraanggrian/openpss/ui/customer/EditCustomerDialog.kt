@@ -12,22 +12,22 @@ import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
 import javafx.scene.control.TextInputControl
 import javafx.scene.image.ImageView
-import ktfx.beans.property.asProperty
-import ktfx.beans.value.or
+import ktfx.bindings.or
+import ktfx.booleanPropertyOf
+import ktfx.controls.gap
 import ktfx.coroutines.listener
 import ktfx.jfoenix.jfxTextArea
 import ktfx.jfoenix.jfxTextField
 import ktfx.layouts.gridPane
 import ktfx.layouts.imageView
 import ktfx.layouts.label
-import ktfx.scene.layout.gap
 
 class EditCustomerDialog(
     component: FxComponent,
     private val customer: Customer
 ) : ResultableDialog<Customer>(component, R.string.edit_customer) {
 
-    private val unchangedProperty = true.asProperty()
+    private val unchangedProperty = booleanPropertyOf(true)
 
     private lateinit var image: ImageView
     private lateinit var description: Label

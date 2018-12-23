@@ -2,21 +2,21 @@ package com.hendraanggrian.openpss.ui.customer
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.FxComponent
+import com.hendraanggrian.openpss.data.Customer
 import com.hendraanggrian.openpss.db.schema.ContactType
 import com.hendraanggrian.openpss.db.schema.new
-import com.hendraanggrian.openpss.data.Customer
 import com.hendraanggrian.openpss.popup.popover.ResultablePopover
 import javafx.scene.Node
 import javafx.scene.control.ComboBox
 import javafx.scene.control.TextField
-import ktfx.beans.binding.buildBooleanBinding
+import ktfx.bindings.buildBooleanBinding
 import ktfx.collections.toObservableList
+import ktfx.controls.gap
 import ktfx.jfoenix.jfxComboBox
 import ktfx.jfoenix.jfxTextField
 import ktfx.layouts.gridPane
 import ktfx.layouts.label
 import ktfx.listeners.converter
-import ktfx.scene.layout.gap
 import org.apache.commons.validator.routines.EmailValidator
 
 class AddContactPopover(component: FxComponent) : ResultablePopover<Customer.Contact>(component, R.string.add_contact) {

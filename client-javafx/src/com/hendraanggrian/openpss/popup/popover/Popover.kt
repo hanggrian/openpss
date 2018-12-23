@@ -8,9 +8,9 @@ import javafx.scene.Node
 import javafx.scene.control.Button
 import javafx.scene.layout.Region
 import javafx.scene.layout.VBox
-import ktfx.beans.value.getValue
-import ktfx.beans.value.setValue
+import ktfx.getValue
 import ktfx.layouts.NodeInvokable
+import ktfx.setValue
 import org.controlsfx.control.PopOver
 
 /** Base popup class used across applications. */

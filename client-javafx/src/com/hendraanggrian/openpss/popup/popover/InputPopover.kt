@@ -5,8 +5,8 @@ import com.hendraanggrian.openpss.content.FxComponent
 import javafx.beans.binding.BooleanBinding
 import javafx.scene.Node
 import javafx.scene.control.TextField
-import ktfx.beans.binding.buildBinding
-import ktfx.beans.value.isBlank
+import ktfx.bindings.buildBinding
+import ktfx.bindings.isBlank
 import ktfx.jfoenix.jfxTextField
 
 open class InputPopover(component: FxComponent, titleId: String) : ResultablePopover<String>(component, titleId) {

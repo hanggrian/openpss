@@ -11,8 +11,8 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.javafx.JavaFx
 import kotlinx.coroutines.launch
-import ktfx.beans.binding.buildBinding
-import ktfx.beans.binding.buildStringBinding
+import ktfx.bindings.buildBinding
+import ktfx.bindings.buildStringBinding
 
 interface StretchableLabeled {
 

@@ -6,8 +6,8 @@ import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.CustomerListView
 import com.hendraanggrian.openpss.control.PaginatedPane
 import com.hendraanggrian.openpss.control.StretchableButton
-import com.hendraanggrian.openpss.db.schema.typedType
 import com.hendraanggrian.openpss.data.Customer
+import com.hendraanggrian.openpss.db.schema.typedType
 import com.hendraanggrian.openpss.popup.dialog.ConfirmDialog
 import com.hendraanggrian.openpss.ui.ActionController
 import com.hendraanggrian.openpss.ui.Refreshable
@@ -28,14 +28,14 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.javafx.JavaFx
 import kotlinx.coroutines.launch
-import ktfx.application.later
-import ktfx.beans.binding.buildBinding
-import ktfx.beans.binding.buildStringBinding
+import ktfx.bindings.buildBinding
+import ktfx.bindings.buildStringBinding
 import ktfx.collections.emptyObservableList
 import ktfx.collections.toMutableObservableList
 import ktfx.collections.toObservableList
 import ktfx.coroutines.onAction
 import ktfx.jfoenix.jfxTextField
+import ktfx.later
 import ktfx.layouts.NodeInvokable
 import ktfx.layouts.contextMenu
 import ktfx.layouts.tooltip

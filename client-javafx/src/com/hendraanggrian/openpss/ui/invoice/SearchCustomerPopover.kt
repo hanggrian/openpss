@@ -9,15 +9,15 @@ import javafx.scene.control.ListView
 import javafx.scene.control.TextField
 import javafx.scene.input.KeyCode.ENTER
 import kotlinx.coroutines.runBlocking
-import ktfx.beans.binding.buildBinding
+import ktfx.bindings.buildBinding
 import ktfx.collections.toObservableList
+import ktfx.controls.isSelected
 import ktfx.coroutines.listener
 import ktfx.coroutines.onKeyPressed
 import ktfx.coroutines.onMouseClicked
+import ktfx.inputs.isDoubleClick
 import ktfx.jfoenix.jfxTextField
 import ktfx.layouts.vbox
-import ktfx.scene.control.isSelected
-import ktfx.scene.input.isDoubleClick
 
 class SearchCustomerPopover(component: FxComponent) : ResultablePopover<Customer>(component, R.string.search_customer) {
 

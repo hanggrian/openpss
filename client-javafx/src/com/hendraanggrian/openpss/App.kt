@@ -12,10 +12,10 @@ import javafx.application.Platform
 import javafx.fxml.FXMLLoader
 import javafx.scene.image.Image
 import javafx.stage.Stage
-import ktfx.application.launchApp
+import ktfx.controls.icon
+import ktfx.controls.setMinSize
+import ktfx.launch
 import ktfx.layouts.scene
-import ktfx.stage.icon
-import ktfx.stage.setMinSize
 import org.apache.log4j.BasicConfigurator
 import java.util.Properties
 import java.util.ResourceBundle
@@ -28,7 +28,7 @@ class App : Application(), Resources {
         const val DURATION_SHORT = 3000L
         const val DURATION_LONG = 6000L
 
-        @JvmStatic fun main(args: Array<String>) = launchApp<App>(*args)
+        @JvmStatic fun main(args: Array<String>) = launch<App>(*args)
 
         fun exit() {
             Platform.exit() // exit JavaFX

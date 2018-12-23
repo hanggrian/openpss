@@ -12,9 +12,9 @@ import javafx.geometry.Pos
 import javafx.geometry.Pos.CENTER
 import javafx.scene.control.Button
 import javafx.scene.image.ImageView
-import ktfx.beans.binding.buildBinding
-import ktfx.beans.value.getValue
+import ktfx.bindings.buildBinding
 import ktfx.coroutines.onAction
+import ktfx.getValue
 import ktfx.jfoenix.jfxButton
 import ktfx.jfoenix.jfxTimePicker
 import ktfx.layouts._HBox

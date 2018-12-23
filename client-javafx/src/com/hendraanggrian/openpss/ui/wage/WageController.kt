@@ -5,8 +5,8 @@ import com.hendraanggrian.openpss.BuildConfig.DEBUG
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.STYLESHEET_OPENPSS
 import com.hendraanggrian.openpss.control.StretchableButton
-import com.hendraanggrian.openpss.io.WageDirectory
 import com.hendraanggrian.openpss.io.ReaderFile
+import com.hendraanggrian.openpss.io.WageDirectory
 import com.hendraanggrian.openpss.popup.dialog.TextDialog
 import com.hendraanggrian.openpss.ui.ActionController
 import com.hendraanggrian.openpss.ui.wage.record.WageRecordController.Companion.EXTRA_ATTENDEES
@@ -22,28 +22,27 @@ import javafx.scene.control.Label
 import javafx.scene.image.ImageView
 import javafx.scene.layout.AnchorPane
 import javafx.scene.layout.FlowPane
-import javafx.stage.FileChooser.ExtensionFilter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.javafx.JavaFx
 import kotlinx.coroutines.launch
-import ktfx.application.later
-import ktfx.beans.binding.buildBooleanBinding
-import ktfx.beans.binding.buildStringBinding
-import ktfx.beans.value.getValue
-import ktfx.beans.value.lessEq
-import ktfx.beans.value.or
-import ktfx.beans.value.setValue
+import ktfx.bindings.buildBooleanBinding
+import ktfx.bindings.buildStringBinding
+import ktfx.bindings.lessEq
+import ktfx.bindings.or
 import ktfx.collections.isEmptyBinding
 import ktfx.collections.sizeBinding
+import ktfx.controls.maxSize
+import ktfx.controls.setMinSize
+import ktfx.controls.stage
 import ktfx.coroutines.onAction
+import ktfx.dialogs.chooseFile
+import ktfx.getValue
+import ktfx.later
 import ktfx.layouts.NodeInvokable
 import ktfx.layouts.borderPane
 import ktfx.layouts.scene
-import ktfx.scene.layout.maxSize
-import ktfx.stage.fileChooser
-import ktfx.stage.setMinSize
-import ktfx.stage.stage
+import ktfx.setValue
 import java.io.File
 import java.net.URL
 import java.util.ResourceBundle
@@ -129,15 +128,13 @@ class WageController : ActionController() {
 
     private fun history() = desktop?.open(WageDirectory)
 
-    private fun browse() =
-        fileChooser(ExtensionFilter(getString(R.string.input_file), Reader.of(
-            ReaderFile.WAGE_READER).extension))
-            .showOpenDialog(anchorPane.scene.window)
-            ?.let { file ->
-                GlobalScope.launch(Dispatchers.JavaFx) {
-                    withPermission { read(file) }
-                }
-            }
+    private fun browse() = anchorPane.scene.window.chooseFile(
+        getString(R.string.input_file) to Reader.of(ReaderFile.WAGE_READER).extension
+    )?.let { file ->
+        GlobalScope.launch(Dispatchers.JavaFx) {
+            withPermission { read(file) }
+        }
+    }
 
     private fun read(file: File) {
         filePath = file.absolutePath

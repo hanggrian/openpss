@@ -32,16 +32,16 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.javafx.JavaFx
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import ktfx.application.later
-import ktfx.beans.value.eq
+import ktfx.bindings.eq
 import ktfx.collections.toMutableObservableList
+import ktfx.controls.isSelected
 import ktfx.coroutines.listener
 import ktfx.coroutines.onAction
 import ktfx.coroutines.onMouseClicked
+import ktfx.inputs.isDoubleClick
+import ktfx.later
 import ktfx.layouts.NodeInvokable
 import ktfx.layouts.borderPane
-import ktfx.scene.control.isSelected
-import ktfx.scene.input.isDoubleClick
 import java.net.URL
 import java.util.ResourceBundle
 

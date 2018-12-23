@@ -11,14 +11,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.javafx.JavaFx
 import kotlinx.coroutines.launch
-import ktfx.beans.value.or
+import ktfx.bindings.or
 import ktfx.collections.mutableObservableListOf
+import ktfx.controls.gap
 import ktfx.coroutines.onAction
 import ktfx.jfoenix.jfxButton
 import ktfx.jfoenix.jfxComboBox
 import ktfx.layouts.gridPane
 import ktfx.layouts.label
-import ktfx.scene.layout.gap
 
 class DisableRecessPopover(
     component: FxComponent,

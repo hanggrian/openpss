@@ -3,7 +3,6 @@ package com.hendraanggrian.openpss.popup.popover
 import com.hendraanggrian.openpss.PATTERN_DATETIME_EXTENDED
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.FxComponent
-import com.hendraanggrian.openpss.i18n.Language
 import com.hendraanggrian.openpss.content.STYLESHEET_INVOICE
 import com.hendraanggrian.openpss.control.Space
 import com.hendraanggrian.openpss.data.Customer
@@ -12,6 +11,7 @@ import com.hendraanggrian.openpss.data.GlobalSetting
 import com.hendraanggrian.openpss.data.GlobalSetting.Companion.KEY_INVOICE_HEADERS
 import com.hendraanggrian.openpss.data.Invoice
 import com.hendraanggrian.openpss.db.schema.typedTechnique
+import com.hendraanggrian.openpss.i18n.Language
 import com.sun.javafx.print.PrintHelper
 import com.sun.javafx.print.Units
 import javafx.geometry.HPos.LEFT
@@ -39,8 +39,10 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.javafx.JavaFx
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import ktfx.application.later
+import ktfx.controls.gap
+import ktfx.controls.paddingAll
 import ktfx.coroutines.onAction
+import ktfx.later
 import ktfx.layouts.NodeInvokable
 import ktfx.layouts._GridPane
 import ktfx.layouts.button
@@ -52,9 +54,7 @@ import ktfx.layouts.line
 import ktfx.layouts.region
 import ktfx.layouts.textFlow
 import ktfx.layouts.vbox
-import ktfx.scene.layout.gap
-import ktfx.scene.layout.paddingAll
-import ktfx.scene.text.fontSize
+import ktfx.text.fontSize
 import ktfx.util.invoke
 import org.apache.commons.lang3.SystemUtils
 import java.util.ResourceBundle

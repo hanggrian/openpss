@@ -5,10 +5,10 @@ import com.hendraanggrian.openpss.content.FxComponent
 import com.hendraanggrian.openpss.control.DateBox
 import com.hendraanggrian.openpss.control.TimeBox
 import com.hendraanggrian.openpss.ui.wage.record.Record
+import ktfx.controls.gap
 import ktfx.coroutines.onAction
 import ktfx.jfoenix.jfxButton
 import ktfx.layouts.gridPane
-import ktfx.scene.layout.gap
 import org.joda.time.DateTime
 
 class DateTimePopover(

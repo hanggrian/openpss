@@ -11,14 +11,14 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.javafx.JavaFx
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import ktfx.beans.value.isBlank
-import ktfx.beans.value.or
+import ktfx.bindings.isBlank
+import ktfx.bindings.or
 import ktfx.collections.toObservableList
+import ktfx.controls.gap
 import ktfx.jfoenix.jfxComboBox
 import ktfx.jfoenix.jfxPasswordField
 import ktfx.layouts.gridPane
 import ktfx.layouts.label
-import ktfx.scene.layout.gap
 
 class PermissionDialog(component: FxComponent) :
     ResultableDialog<Employee>(component, R.string.permission_required) {

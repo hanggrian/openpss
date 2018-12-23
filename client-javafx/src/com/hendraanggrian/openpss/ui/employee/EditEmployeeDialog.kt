@@ -10,14 +10,14 @@ import com.hendraanggrian.openpss.util.doneCell
 import com.hendraanggrian.openpss.util.stringCell
 import javafx.scene.control.MenuItem
 import kotlinx.coroutines.CoroutineScope
-import ktfx.beans.binding.buildBinding
-import ktfx.beans.binding.buildStringBinding
+import ktfx.bindings.buildBinding
+import ktfx.bindings.buildStringBinding
+import ktfx.controls.isSelected
 import ktfx.coroutines.onAction
 import ktfx.jfoenix.jfxSnackbar
 import ktfx.layouts.contextMenu
 import ktfx.layouts.menuItem
 import ktfx.layouts.separatorMenuItem
-import ktfx.scene.control.isSelected
 
 class EditEmployeeDialog(component: FxComponent) : TableDialog<Employee>(component, R.string.employee, true) {
 

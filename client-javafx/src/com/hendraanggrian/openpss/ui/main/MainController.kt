@@ -50,8 +50,9 @@ import kotlinx.coroutines.runBlocking
 import ktfx.bindings.buildStringBinding
 import ktfx.bindings.eq
 import ktfx.bindings.minus
+import ktfx.bindings.otherwise
+import ktfx.bindings.then
 import ktfx.collections.toObservableList
-import ktfx.controls.stage
 import ktfx.coroutines.listener
 import ktfx.hasValue
 import ktfx.jfoenix.jfxSnackbar
@@ -59,9 +60,8 @@ import ktfx.later
 import ktfx.layouts.text
 import ktfx.layouts.textFlow
 import ktfx.listeners.cellFactory
-import ktfx.otherwise
-import ktfx.text.fontSize
-import ktfx.then
+import ktfx.text.updateFont
+import ktfx.windows.stage
 import org.apache.commons.lang3.SystemUtils
 import java.net.URL
 import java.util.ResourceBundle
@@ -187,7 +187,7 @@ class MainController : Controller(), Refreshable {
                         if (log != null && !empty) graphic = textFlow {
                             text(log.message) {
                                 isWrapText = true
-                                fontSize = 12.0
+                                updateFont { size = 12 }
                                 this@textFlow.prefWidthProperty().bind(this@apply.widthProperty() - 12)
                                 wrappingWidthProperty().bind(this@apply.widthProperty())
                             }

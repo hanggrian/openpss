@@ -16,13 +16,13 @@ import ktfx.bindings.buildBooleanBinding
 import ktfx.bindings.buildStringBinding
 import ktfx.controls.gap
 import ktfx.coroutines.onAction
+import ktfx.invoke
 import ktfx.jfoenix.jfxButton
 import ktfx.jfoenix.jfxCheckBox
 import ktfx.jfoenix.jfxTextField
 import ktfx.layouts.gridPane
 import ktfx.layouts.label
 import ktfx.layouts.tooltip
-import ktfx.util.invoke
 
 class AddPaymentPopover(
     component: FxComponent,

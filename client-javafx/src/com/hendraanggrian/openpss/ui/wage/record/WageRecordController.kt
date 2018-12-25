@@ -39,13 +39,13 @@ import ktfx.bindings.or
 import ktfx.collections.sizeBinding
 import ktfx.controls.snapshot
 import ktfx.coroutines.onAction
+import ktfx.invoke
 import ktfx.jfoenix.jfxIndefiniteSnackbar
 import ktfx.later
 import ktfx.layouts.label
 import ktfx.layouts.menuItem
 import ktfx.listeners.cellFactory
-import ktfx.util.invoke
-import ktfx.util.toSwingImage
+import ktfx.swing.toSwingImage
 import org.apache.commons.lang3.SystemUtils
 import org.joda.time.LocalTime
 import java.awt.image.BufferedImage

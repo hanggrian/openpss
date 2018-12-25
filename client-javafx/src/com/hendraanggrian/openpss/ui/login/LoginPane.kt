@@ -52,7 +52,7 @@ import ktfx.layouts.stackPane
 import ktfx.layouts.text
 import ktfx.layouts.textFlow
 import ktfx.layouts.vbox
-import ktfx.text.fontSize
+import ktfx.text.updateFont
 import java.util.Properties
 import java.util.ResourceBundle
 
@@ -108,11 +108,11 @@ class LoginPane(private val resourced: Resources) : _StackPane(), FxComponent {
                 label(getString(R.string._login_desc1)) {
                     textAlignment = TextAlignment.CENTER
                     isWrapText = true
-                    fontSize = 16.0
+                    updateFont { size = 16 }
                 }
                 employeeField = jfxTextField(SettingsFile.EMPLOYEE) {
                     textProperty().listener { _, _, value -> SettingsFile.EMPLOYEE = value }
-                    fontSize = 16.0
+                    updateFont { size = 16 }
                     promptText = getString(R.string.employee)
                     later { requestFocus() }
                 } marginTop 24.0
@@ -133,13 +133,13 @@ class LoginPane(private val resourced: Resources) : _StackPane(), FxComponent {
                 anchorPane {
                     jfxButton(getString(R.string.about)) {
                         updatePadding(8.0, 16.0, 8.0, 16.0)
-                        fontSize = 16.0
+                        updateFont { size = 16 }
                         styleClass += R.style.flat
                         onAction { AboutDialog(this@LoginPane).show() }
                     } anchorLeft 0.0
                     loginButton = jfxButton(getString(R.string.login)) {
                         updatePadding(8.0, 16.0, 8.0, 16.0)
-                        fontSize = 16.0
+                        updateFont { size = 16 }
                         styleClass += R.style.raised
                         buttonType = JFXButton.ButtonType.RAISED
                         disableProperty().bind(employeeField.textProperty().isBlank())

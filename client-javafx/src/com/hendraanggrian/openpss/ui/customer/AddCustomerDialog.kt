@@ -16,13 +16,13 @@ import kotlinx.coroutines.runBlocking
 import ktfx.bindings.eq
 import ktfx.bindings.isBlank
 import ktfx.bindings.or
+import ktfx.bindings.otherwise
+import ktfx.bindings.then
 import ktfx.coroutines.listener
 import ktfx.jfoenix.jfxTabPane
 import ktfx.jfoenix.jfxTextField
 import ktfx.layouts.label
 import ktfx.layouts.tab
-import ktfx.otherwise
-import ktfx.then
 
 class AddCustomerDialog(component: FxComponent) : ResultableDialog<Customer>(component, R.string.add_customer) {
 

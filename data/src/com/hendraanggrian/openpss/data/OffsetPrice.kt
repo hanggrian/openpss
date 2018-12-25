@@ -2,7 +2,9 @@ package com.hendraanggrian.openpss.data
 
 import com.hendraanggrian.openpss.schema.OffsetPrices
 import kotlinx.nosql.Id
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class OffsetPrice(
     override var name: String,
     var minQty: Int,

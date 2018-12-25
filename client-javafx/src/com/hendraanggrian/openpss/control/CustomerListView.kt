@@ -6,10 +6,10 @@ import javafx.beans.binding.When
 import javafx.scene.control.Label
 import javafx.scene.control.ListView
 import ktfx.bindings.eq
+import ktfx.bindings.otherwise
+import ktfx.bindings.then
 import ktfx.layouts.label
 import ktfx.listeners.cellFactory
-import ktfx.otherwise
-import ktfx.then
 
 class CustomerListView : ListView<Customer>() {
 

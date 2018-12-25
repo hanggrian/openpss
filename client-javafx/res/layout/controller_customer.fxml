@@ -22,7 +22,6 @@
                 <RowConstraints vgrow="NEVER"/>
                 <RowConstraints vgrow="NEVER"/>
                 <RowConstraints vgrow="NEVER"/>
-                <RowConstraints vgrow="NEVER"/>
                 <RowConstraints vgrow="ALWAYS"/>
             </rowConstraints>
             <padding>

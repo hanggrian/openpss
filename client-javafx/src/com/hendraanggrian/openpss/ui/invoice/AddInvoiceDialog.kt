@@ -35,6 +35,8 @@ import ktfx.bindings.buildStringBinding
 import ktfx.bindings.greater
 import ktfx.bindings.lessEq
 import ktfx.bindings.or
+import ktfx.bindings.otherwise
+import ktfx.bindings.then
 import ktfx.collections.isEmptyBinding
 import ktfx.controls.gap
 import ktfx.controls.isSelected
@@ -42,6 +44,7 @@ import ktfx.coroutines.onAction
 import ktfx.coroutines.onKeyPressed
 import ktfx.coroutines.onMouseClicked
 import ktfx.inputs.isDelete
+import ktfx.invoke
 import ktfx.jfoenix.jfxTabPane
 import ktfx.jfoenix.jfxTextField
 import ktfx.later
@@ -55,9 +58,6 @@ import ktfx.layouts.separatorMenuItem
 import ktfx.layouts.tab
 import ktfx.layouts.tableView
 import ktfx.layouts.textArea
-import ktfx.otherwise
-import ktfx.then
-import ktfx.util.invoke
 import org.joda.time.DateTime
 
 class AddInvoiceDialog(

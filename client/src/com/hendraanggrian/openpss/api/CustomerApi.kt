@@ -36,7 +36,7 @@ interface CustomerApi : Api {
             parameters(
                 "address" to address,
                 "note" to note,
-                "employee" to login.name
+                "login" to login.name
             )
         }
 

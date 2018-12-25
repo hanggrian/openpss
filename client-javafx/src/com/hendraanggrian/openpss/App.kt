@@ -12,10 +12,10 @@ import javafx.application.Platform
 import javafx.fxml.FXMLLoader
 import javafx.scene.image.Image
 import javafx.stage.Stage
-import ktfx.controls.icon
-import ktfx.controls.setMinSize
 import ktfx.launch
 import ktfx.layouts.scene
+import ktfx.windows.icon
+import ktfx.windows.setMinSize
 import org.apache.log4j.BasicConfigurator
 import java.util.Properties
 import java.util.ResourceBundle

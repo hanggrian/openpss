@@ -8,11 +8,11 @@ import javafx.scene.control.Control
 import javafx.scene.control.TableCell
 import javafx.scene.control.TableColumn
 import javafx.scene.text.Text
+import ktfx.finalBoolean
+import ktfx.finalString
+import ktfx.invoke
 import ktfx.layouts.imageView
 import ktfx.listeners.cellFactory
-import ktfx.readOnlyBooleanPropertyOf
-import ktfx.readOnlyPropertyOf
-import ktfx.util.invoke
 
 fun <T> TableColumn<T, Boolean>.doneCell(size: Int = 64, target: T.() -> Boolean) {
     size.toDouble().let {
@@ -22,7 +22,7 @@ fun <T> TableColumn<T, Boolean>.doneCell(size: Int = 64, target: T.() -> Boolean
     }
     isResizable = false
     style = "-fx-alignment: center;"
-    setCellValueFactory { readOnlyBooleanPropertyOf(it.value.target()) }
+    setCellValueFactory { finalBoolean(it.value.target()) }
     cellFactory {
         onUpdate { done, empty ->
             text = null
@@ -38,16 +38,16 @@ fun <T> TableColumn<T, Boolean>.doneCell(size: Int = 64, target: T.() -> Boolean
 }
 
 fun <T> TableColumn<T, String>.stringCell(target: T.() -> String?) =
-    setCellValueFactory { readOnlyPropertyOf(it.value.target().orEmpty()) }
+    setCellValueFactory { finalString(it.value.target().orEmpty()) }
 
 fun <T> TableColumn<T, String>.numberCell(component: FxComponent, target: T.() -> Int) {
     style = "-fx-alignment: center-right;"
-    setCellValueFactory { readOnlyPropertyOf(component.numberConverter(it.value.target())) }
+    setCellValueFactory { finalString(component.numberConverter(it.value.target())) }
 }
 
 fun <T> TableColumn<T, String>.currencyCell(component: FxComponent, target: T.() -> Double) {
     style = "-fx-alignment: center-right;"
-    setCellValueFactory { readOnlyPropertyOf(component.currencyConverter(it.value.target())) }
+    setCellValueFactory { finalString(component.currencyConverter(it.value.target())) }
 }
 
 fun <S> TableColumn<S, String>.wrapText() = setCellFactory {

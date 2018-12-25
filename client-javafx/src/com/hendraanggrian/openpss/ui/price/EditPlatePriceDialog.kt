@@ -6,8 +6,8 @@ import com.hendraanggrian.openpss.data.PlatePrice
 import javafx.beans.value.ObservableValue
 import kotlinx.coroutines.CoroutineScope
 import ktfx.coroutines.onEditCommit
+import ktfx.finalDouble
 import ktfx.listeners.textFieldCellFactory
-import ktfx.readOnlyDoublePropertyOf
 
 @Suppress("UNCHECKED_CAST")
 class EditPlatePriceDialog(
@@ -18,7 +18,7 @@ class EditPlatePriceDialog(
         getString(R.string.price)<Double> {
             minWidth = 128.0
             style = "-fx-alignment: center-right;"
-            setCellValueFactory { readOnlyDoublePropertyOf(it.value.price) as ObservableValue<Double> }
+            setCellValueFactory { finalDouble(it.value.price) as ObservableValue<Double> }
             textFieldCellFactory {
                 fromString { it.toDoubleOrNull() ?: 0.0 }
             }

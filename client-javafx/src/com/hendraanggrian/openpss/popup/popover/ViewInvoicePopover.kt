@@ -42,6 +42,7 @@ import kotlinx.coroutines.runBlocking
 import ktfx.controls.gap
 import ktfx.controls.paddingAll
 import ktfx.coroutines.onAction
+import ktfx.invoke
 import ktfx.later
 import ktfx.layouts.NodeInvokable
 import ktfx.layouts._GridPane
@@ -54,8 +55,7 @@ import ktfx.layouts.line
 import ktfx.layouts.region
 import ktfx.layouts.textFlow
 import ktfx.layouts.vbox
-import ktfx.text.fontSize
-import ktfx.util.invoke
+import ktfx.text.updateFont
 import org.apache.commons.lang3.SystemUtils
 import java.util.ResourceBundle
 
@@ -113,8 +113,12 @@ class ViewInvoicePopover(
                 } hpriority ALWAYS
                 vbox {
                     alignment = CENTER_RIGHT
-                    label(getString(R.string.invoice)) { fontSize = 18.0 }
-                    label("# ${invoice.no}") { fontSize = 32.0 }
+                    label(getString(R.string.invoice)) {
+                        updateFont { size = 18 }
+                    }
+                    label("# ${invoice.no}") {
+                        updateFont { size = 32 }
+                    }
                 }
             }
             fullLine()

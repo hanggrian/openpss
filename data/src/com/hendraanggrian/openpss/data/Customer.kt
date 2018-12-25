@@ -2,8 +2,10 @@ package com.hendraanggrian.openpss.data
 
 import com.hendraanggrian.openpss.schema.Customers
 import kotlinx.nosql.Id
+import kotlinx.serialization.Serializable
 import org.joda.time.LocalDate
 
+@Serializable
 data class Customer(
     override var name: String,
     val isCompany: Boolean,
@@ -27,6 +29,7 @@ data class Customer(
 
     override fun toString(): String = name
 
+    @Serializable
     data class Contact(
         val type: String,
         val value: String

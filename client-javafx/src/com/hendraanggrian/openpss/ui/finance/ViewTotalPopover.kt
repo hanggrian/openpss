@@ -4,10 +4,10 @@ import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.FxComponent
 import com.hendraanggrian.openpss.popup.popover.Popover
 import javafx.geometry.HPos
+import ktfx.invoke
 import ktfx.layouts.columnConstraints
 import ktfx.layouts.gridPane
 import ktfx.layouts.label
-import ktfx.util.invoke
 
 class ViewTotalPopover(
     component: FxComponent,

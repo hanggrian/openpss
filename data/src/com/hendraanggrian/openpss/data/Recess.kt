@@ -3,10 +3,12 @@ package com.hendraanggrian.openpss.data
 import com.hendraanggrian.openpss.PATTERN_TIME
 import com.hendraanggrian.openpss.schema.Recesses
 import kotlinx.nosql.Id
+import kotlinx.serialization.Serializable
 import org.joda.time.DateTime
 import org.joda.time.Interval
 import org.joda.time.LocalTime
 
+@Serializable
 data class Recess(
     val start: LocalTime,
     val end: LocalTime

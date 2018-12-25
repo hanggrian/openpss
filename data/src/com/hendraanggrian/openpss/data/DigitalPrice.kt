@@ -2,7 +2,9 @@ package com.hendraanggrian.openpss.data
 
 import com.hendraanggrian.openpss.schema.DigitalPrices
 import kotlinx.nosql.Id
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class DigitalPrice(
     override var name: String,
     var oneSidePrice: Double,

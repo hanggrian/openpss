@@ -18,7 +18,6 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.javafx.JavaFx
 import kotlinx.coroutines.launch
 import ktfx.collections.toMutableObservableList
-import ktfx.controls.setMinSize
 import ktfx.coroutines.onAction
 import ktfx.jfoenix.jfxButton
 import ktfx.later
@@ -27,6 +26,7 @@ import ktfx.layouts.anchorPane
 import ktfx.layouts.hbox
 import ktfx.layouts.tableView
 import ktfx.layouts.tooltip
+import ktfx.windows.setMinSize
 
 @Suppress("LeakingThis")
 abstract class TableDialog<D : Document<*>>(

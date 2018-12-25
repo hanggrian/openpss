@@ -46,7 +46,7 @@ import ktfx.layouts.separatorMenuItem
 import ktfx.layouts.text
 import ktfx.layouts.vbox
 import ktfx.listeners.cellFactory
-import ktfx.text.fontSize
+import ktfx.text.updateFont
 import org.joda.time.DateTime
 import org.joda.time.DateTime.now
 import kotlin.math.absoluteValue
@@ -80,14 +80,18 @@ class AttendeePane(
                     promptText = getString(R.string.income)
                     valueProperty().bindBidirectional(attendee.dailyProperty)
                 }() col 1 row 1
-                label("@${getString(R.string.day)}") { fontSize = 10.0 } col 2 row 1
+                label("@${getString(R.string.day)}") {
+                    updateFont { size = 10 }
+                } col 2 row 1
                 label(getString(R.string.overtime)) col 0 row 2 marginRight 4.0
                 IntField().apply {
                     prefWidth = 80.0
                     promptText = getString(R.string.overtime)
                     valueProperty().bindBidirectional(attendee.hourlyOvertimeProperty)
                 }() col 1 row 2
-                label("@${getString(R.string.hour)}") { fontSize = 10.0 } col 2 row 2
+                label("@${getString(R.string.hour)}") {
+                    updateFont { size = 10 }
+                } col 2 row 2
                 label(getString(R.string.recess)) col 0 row 3 marginRight 4.0
                 vbox {
                     GlobalScope.launch(Dispatchers.JavaFx) {
@@ -131,7 +135,7 @@ class AttendeePane(
                                                 }
                                             val hours = (minutes / 60.0).round()
                                             text(hours.toString()) {
-                                                fontSize = 10.0
+                                                updateFont { size = 10 }
                                                 if (hours > 12) {
                                                     style = "-fx-fill: #F44336;"
                                                 }

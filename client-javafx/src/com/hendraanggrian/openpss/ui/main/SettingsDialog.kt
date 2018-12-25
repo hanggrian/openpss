@@ -24,7 +24,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.javafx.JavaFx
 import kotlinx.coroutines.launch
 import ktfx.bindings.and
-import ktfx.booleanPropertyOf
+import ktfx.boolean
 import ktfx.collections.toObservableList
 import ktfx.controls.gap
 import ktfx.coroutines.listener
@@ -45,8 +45,8 @@ import kotlin.coroutines.CoroutineContext
 
 class SettingsDialog(component: FxComponent) : Dialog(component, R.string.settings) {
 
-    private var isLocalChanged = booleanPropertyOf()
-    private var isGlobalChanged = booleanPropertyOf()
+    private var isLocalChanged = boolean()
+    private var isGlobalChanged = boolean()
 
     private lateinit var invoiceHeadersArea: TextArea
     private lateinit var wageReaderChoice: ComboBox<Reader>

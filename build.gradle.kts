@@ -9,6 +9,7 @@ buildscript {
     }
     dependencies {
         classpath(kotlin("gradle-plugin", VERSION_KOTLIN))
+        classpath(kotlin("serialization", VERSION_KOTLIN))
         classpath(android())
         classpath(dokka())
         classpath(dokka("android"))

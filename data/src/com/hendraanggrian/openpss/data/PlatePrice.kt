@@ -2,7 +2,9 @@ package com.hendraanggrian.openpss.data
 
 import com.hendraanggrian.openpss.schema.PlatePrices
 import kotlinx.nosql.Id
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class PlatePrice(
     override var name: String,
     var price: Double

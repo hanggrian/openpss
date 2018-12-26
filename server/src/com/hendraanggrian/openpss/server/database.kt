@@ -15,7 +15,7 @@ import com.hendraanggrian.openpss.schema.Payments
 import com.hendraanggrian.openpss.schema.PlatePrices
 import com.hendraanggrian.openpss.schema.Recesses
 import com.hendraanggrian.openpss.schema.Wages
-import com.hendraanggrian.openpss.server.db.SessionWrapper
+import com.hendraanggrian.openpss.server.db.wrapper
 import com.hendraanggrian.openpss.util.isEmpty
 import com.mongodb.MongoClientOptions
 import com.mongodb.MongoCredential
@@ -51,9 +51,9 @@ private val TABLES: Array<DocumentSchema<out Document<out DocumentSchema<out Doc
  * @see [MongoDB.withSession]
  */
 @Throws(MongoException::class)
-fun <T> transaction(statement: SessionWrapper.() -> T): T = try {
+fun <T> transaction(statement: wrapper.() -> T): T = try {
     DATABASE.withSession {
-        SessionWrapper(
+        wrapper(
             this
         ).statement()
     }

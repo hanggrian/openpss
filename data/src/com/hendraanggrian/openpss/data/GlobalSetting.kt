@@ -2,10 +2,8 @@ package com.hendraanggrian.openpss.data
 
 import com.hendraanggrian.openpss.schema.GlobalSettings
 import kotlinx.nosql.Id
-import kotlinx.serialization.Serializable
 import kotlin.reflect.KProperty
 
-@Serializable
 data class GlobalSetting(
     val key: String,
     var value: String

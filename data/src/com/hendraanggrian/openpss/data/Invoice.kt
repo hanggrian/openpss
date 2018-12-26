@@ -4,10 +4,8 @@ import com.hendraanggrian.openpss.schema.Customers
 import com.hendraanggrian.openpss.schema.Employees
 import com.hendraanggrian.openpss.schema.Invoices
 import kotlinx.nosql.Id
-import kotlinx.serialization.Serializable
 import org.joda.time.DateTime
 
-@Serializable
 data class Invoice(
     /**
      * Since `id` is reserved in [Document], `no` is direct replacement.
@@ -59,7 +57,6 @@ data class Invoice(
 
     inline val total: Double get() = jobs.sumByDouble { it.total }
 
-    @Serializable
     data class DigitalJob(
         override val qty: Int,
         override val desc: String,
@@ -79,7 +76,6 @@ data class Invoice(
         }
     }
 
-    @Serializable
     data class OffsetJob(
         override val qty: Int,
         override val desc: String,
@@ -91,7 +87,6 @@ data class Invoice(
         companion object
     }
 
-    @Serializable
     data class PlateJob(
         override val qty: Int,
         override val desc: String,
@@ -109,7 +104,6 @@ data class Invoice(
         }
     }
 
-    @Serializable
     data class OtherJob(
         override val qty: Int,
         override val desc: String,

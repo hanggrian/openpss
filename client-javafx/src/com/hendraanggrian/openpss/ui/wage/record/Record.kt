@@ -1,6 +1,6 @@
 package com.hendraanggrian.openpss.ui.wage.record
 
-import com.hendraanggrian.openpss.PATTERN_DATETIME
+import com.hendraanggrian.openpss.util.PATTERN_DATETIME
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.Resources
 import com.hendraanggrian.openpss.ui.wage.Attendee

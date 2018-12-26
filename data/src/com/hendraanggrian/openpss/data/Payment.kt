@@ -4,10 +4,8 @@ import com.hendraanggrian.openpss.schema.Employees
 import com.hendraanggrian.openpss.schema.Invoices
 import com.hendraanggrian.openpss.schema.Payments
 import kotlinx.nosql.Id
-import kotlinx.serialization.Serializable
 import org.joda.time.DateTime
 
-@Serializable
 data class Payment(
     var invoiceId: Id<String, Invoices>,
     var employeeId: Id<String, Employees>,

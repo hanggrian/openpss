@@ -1,4 +1,4 @@
-package com.hendraanggrian.openpss.server.route
+package com.hendraanggrian.openpss.server.routing
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.data.DigitalPrice
@@ -15,43 +15,45 @@ import com.hendraanggrian.openpss.schema.NamedSchema
 import com.hendraanggrian.openpss.schema.OffsetPrices
 import com.hendraanggrian.openpss.schema.PlatePrices
 import com.hendraanggrian.openpss.server.db.DocumentQuery
-import com.hendraanggrian.openpss.server.db.SessionWrapper
+import com.hendraanggrian.openpss.server.db.wrapper
 import com.hendraanggrian.openpss.server.transaction
 import com.hendraanggrian.openpss.util.isNotEmpty
 import io.ktor.application.ApplicationCall
 import io.ktor.application.call
 import io.ktor.http.HttpStatusCode
 import io.ktor.response.respond
+import io.ktor.routing.Routing
 import io.ktor.routing.delete
 import io.ktor.routing.get
 import io.ktor.routing.post
 import io.ktor.routing.put
+import io.ktor.routing.route
 import kotlinx.nosql.equal
 import kotlinx.nosql.mongodb.DocumentSchema
 import kotlinx.nosql.update
 
-object PlatePriceRoute : NamedRoute<PlatePrices, PlatePrice>("plate-prices", PlatePrices,
+fun Routing.platePriceRouting() = namedRouting("plate-prices", PlatePrices,
     onCreate = { call -> PlatePrice.new(call.getString("name")) },
     onEdit = { call, query ->
         query.projection { price }
             .update(call.getDouble("price"))
     })
 
-object OffsetPriceRoute : NamedRoute<OffsetPrices, OffsetPrice>("offset-prices", OffsetPrices,
+fun Routing.offsetPriceRouting() = namedRouting("offset-prices", OffsetPrices,
     onCreate = { call -> OffsetPrice.new(call.getString("name")) },
     onEdit = { call, query ->
         query.projection { minQty + minPrice + excessPrice }
             .update(call.getInt("minQty"), call.getDouble("minPrice"), call.getDouble("excessPrice"))
     })
 
-object DigitalPriceRoute : NamedRoute<DigitalPrices, DigitalPrice>("digital-prices", DigitalPrices,
+fun Routing.digitalPriceRouting() = namedRouting("digital-prices", DigitalPrices,
     onCreate = { call -> DigitalPrice.new(call.getString("name")) },
     onEdit = { call, query ->
         query.projection { oneSidePrice + twoSidePrice }
             .update(call.getDouble("oneSidePrice"), call.getDouble("twoSidePrice"))
     })
 
-object EmployeeRoute : NamedRoute<Employees, Employee>("employees", Employees,
+fun Routing.employeeRouting() = namedRouting("employees", Employees,
     onGet = { call ->
         val employees = Employees()
         employees.forEach { it.clearPassword() }
@@ -62,26 +64,26 @@ object EmployeeRoute : NamedRoute<Employees, Employee>("employees", Employees,
         query.projection { password + isAdmin }
             .update(call.getString("password"), call.getBoolean("isAdmin"))
         Logs += Log.new(
-            EmployeeRoute.resources.getString(R.string.employee_edit).format(query.single().name),
+            resources.getString(R.string.employee_edit).format(query.single().name),
             call.getString("login")
         )
     },
     onDeleted = { call, query ->
         Logs += Log.new(
-            EmployeeRoute.resources.getString(R.string.employee_delete).format(query.single().name),
+            resources.getString(R.string.employee_delete).format(query.single().name),
             call.getString("login")
         )
     })
 
-sealed class NamedRoute<S, D>(
-    val path: String,
-    val schema: S,
-    val onGet: SessionWrapper.(call: ApplicationCall) -> List<D> = { schema().toList() },
-    val onCreate: (call: ApplicationCall) -> D,
-    val onEdit: SessionWrapper.(call: ApplicationCall, query: DocumentQuery<S, String, D>) -> Unit,
-    val onDeleted: SessionWrapper.(call: ApplicationCall, query: DocumentQuery<S, String, D>) -> Unit = { _, _ -> }
-) : Route({
-    path {
+private fun <S, D> Routing.namedRouting(
+    path: String,
+    schema: S,
+    onGet: wrapper.(call: ApplicationCall) -> List<D> = { schema().toList() },
+    onCreate: (call: ApplicationCall) -> D,
+    onEdit: wrapper.(call: ApplicationCall, query: DocumentQuery<S, String, D>) -> Unit,
+    onDeleted: wrapper.(call: ApplicationCall, query: DocumentQuery<S, String, D>) -> Unit = { _, _ -> }
+) where S : DocumentSchema<D>, S : NamedSchema, D : Document<S>, D : Named {
+    route(path) {
         get {
             call.respond(transaction { onGet(call) })
         }
@@ -96,7 +98,7 @@ sealed class NamedRoute<S, D>(
                 }
             }
         }
-        "{id}" {
+        route("{id}") {
             get {
                 call.respond(transaction { schema[call.getString("id")].single() })
             }
@@ -116,4 +118,4 @@ sealed class NamedRoute<S, D>(
             }
         }
     }
-}) where S : DocumentSchema<D>, S : NamedSchema, D : Document<S>, D : Named
+}

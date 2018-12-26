@@ -1,4 +1,4 @@
-package com.hendraanggrian.openpss.server.route
+package com.hendraanggrian.openpss.server.routing
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.data.Customer
@@ -13,16 +13,18 @@ import io.ktor.application.call
 import io.ktor.http.HttpStatusCode
 import io.ktor.request.receive
 import io.ktor.response.respond
+import io.ktor.routing.Routing
 import io.ktor.routing.delete
 import io.ktor.routing.get
 import io.ktor.routing.post
 import io.ktor.routing.put
+import io.ktor.routing.route
 import kotlinx.nosql.update
 import java.util.regex.Pattern
 import kotlin.math.ceil
 
-object CustomerRoute : Route({
-    "customers" {
+fun Routing.customerRouting() {
+    route("customers") {
         get {
             val search = call.getString("search")
             val page = call.getInt("page")
@@ -61,24 +63,25 @@ object CustomerRoute : Route({
                 }
             }
         }
-        "{id}" {
+        route("{id}") {
             get {
-                call.respond(transaction { Customers[call.getString("id")] })
+                call.respond(transaction { Customers[call.getString("id")].single() })
             }
             put {
+                val customer = call.receive<Customer>()
                 transaction {
                     val query = Customers[call.getString("id")]
                     val customerName = query.single().name
                     query.projection { address + note }
-                        .update(call.getString("address"), call.getString("note"))
+                        .update(customer.address, customer.note)
                     Logs += Log.new(
-                        InvoiceRoute.resources.getString(R.string.customer_edit).format(customerName),
+                        resources.getString(R.string.customer_edit).format(customerName),
                         call.getString("login")
                     )
                 }
                 call.respond(HttpStatusCode.OK)
             }
-            "contacts" {
+            route("contacts") {
                 post {
                     val contact = call.receive<Customer.Contact>()
                     transaction {
@@ -96,10 +99,7 @@ object CustomerRoute : Route({
                         query.projection { contacts }
                             .update(customer.contacts - contact)
                         Logs += Log.new(
-                            InvoiceRoute.resources.getString(R.string.contact_deleted).format(
-                                contact.value,
-                                customer.name
-                            ),
+                            resources.getString(R.string.contact_deleted).format(contact.value, customer.name),
                             call.getString("login")
                         )
                     }
@@ -108,4 +108,4 @@ object CustomerRoute : Route({
             }
         }
     }
-})
+}

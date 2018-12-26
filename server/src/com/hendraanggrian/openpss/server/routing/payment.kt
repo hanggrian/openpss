@@ -1,4 +1,4 @@
-package com.hendraanggrian.openpss.server.route
+package com.hendraanggrian.openpss.server.routing
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.data.Log
@@ -12,13 +12,15 @@ import io.ktor.application.call
 import io.ktor.http.HttpStatusCode
 import io.ktor.request.receive
 import io.ktor.response.respond
+import io.ktor.routing.Routing
 import io.ktor.routing.delete
 import io.ktor.routing.get
 import io.ktor.routing.post
+import io.ktor.routing.route
 import kotlinx.nosql.equal
 
-object PaymentRoute : Route({
-    "payments" {
+fun Routing.paymentRouting() {
+    route("payments") {
         get {
             call.respond(transaction {
                 Payments { it.dateTime.matches(call.parameters["dateTime"]!!) }.toList()
@@ -35,19 +37,19 @@ object PaymentRoute : Route({
                 val invoiceNo = Invoices[payment.invoiceId].single().no
                 Payments -= payment.id
                 Logs += Log.new(
-                    PaymentRoute.resources.getString(R.string.payment_delete).format(payment.value, invoiceNo),
+                    resources.getString(R.string.payment_delete).format(payment.value, invoiceNo),
                     call.getString("login")
                 )
             }
             call.respond(HttpStatusCode.OK)
         }
-        "{invoiceId}" {
+        route("{invoiceId}") {
             get {
                 call.respond(transaction {
                     Payments { it.invoiceId.equal(call.getString("invoiceId")) }
                 })
             }
-            "due" {
+            route("due") {
                 get {
                     call.respond(transaction {
                         Payments { it.invoiceId.equal(call.getString("invoiceId")) }
@@ -57,4 +59,4 @@ object PaymentRoute : Route({
             }
         }
     }
-})
+}

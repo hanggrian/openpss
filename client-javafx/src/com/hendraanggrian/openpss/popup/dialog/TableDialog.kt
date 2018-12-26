@@ -82,7 +82,7 @@ abstract class TableDialog<D : Document<*>>(
                 prefHeight = 275.0
                 columnResizePolicy = CONSTRAINED_RESIZE_POLICY
                 isEditable = true
-            } anchorAll 1.0
+            } anchorAll 1
         }
         refresh()
         later {

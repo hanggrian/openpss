@@ -32,7 +32,6 @@ import ktfx.bindings.lessEq
 import ktfx.bindings.or
 import ktfx.collections.isEmptyBinding
 import ktfx.collections.sizeBinding
-import ktfx.controls.maxSize
 import ktfx.coroutines.onAction
 import ktfx.getValue
 import ktfx.later
@@ -141,7 +140,9 @@ class WageController : ActionController() {
         val loadingPane = borderPane {
             prefWidthProperty().bind(anchorPane.widthProperty())
             prefHeightProperty().bind(anchorPane.heightProperty())
-            center = ktfx.jfoenix.jfxSpinner { maxSize = 96.0 }
+            center = ktfx.jfoenix.jfxSpinner {
+                setMaxSize(96.0, 96.0)
+            }
         }
         anchorPane.children += loadingPane
         flowPane.children.clear()

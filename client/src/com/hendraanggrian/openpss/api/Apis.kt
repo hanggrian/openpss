@@ -2,7 +2,7 @@ package com.hendraanggrian.openpss.api
 
 import com.hendraanggrian.openpss.data.Release
 import com.hendraanggrian.openpss.internal.ClientBuildConfig
-import com.hendraanggrian.openpss.util.jodaTimeSupport
+import com.hendraanggrian.openpss.util.jodaTimeSerializers
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.okhttp.OkHttp
 import io.ktor.client.features.json.GsonSerializer
@@ -68,7 +68,7 @@ sealed class OkHttpApi(final override val endPoint: String) : Api {
 
     final override val client: HttpClient = HttpClient(OkHttp) {
         install(JsonFeature) {
-            serializer = GsonSerializer { jodaTimeSupport() }
+            serializer = GsonSerializer { jodaTimeSerializers() }
         }
     }
 }

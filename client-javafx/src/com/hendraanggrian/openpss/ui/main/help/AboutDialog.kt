@@ -11,7 +11,6 @@ import javafx.scene.control.Dialog
 import javafx.scene.control.Hyperlink
 import javafx.scene.control.ListView
 import javafx.scene.image.Image
-import javafx.scene.text.Font
 import ktfx.collections.toObservableList
 import ktfx.controls.find
 import ktfx.controls.paddingAll
@@ -31,6 +30,7 @@ import ktfx.layouts.text
 import ktfx.layouts.textFlow
 import ktfx.layouts.vbox
 import ktfx.listeners.cellFactory
+import ktfx.text.updateFont
 import java.net.URI
 
 /**
@@ -63,7 +63,7 @@ class AboutDialog(component: FxComponent) : Dialog<Unit>(), FxComponent by compo
         dialogPane.run {
             stylesheets += STYLESHEET_OPENPSS
             content = hbox {
-                paddingAll = 48.0
+                paddingAll = 48
                 imageView(R.image.logo)
                 vbox {
                     alignment = Pos.CENTER_LEFT
@@ -76,17 +76,23 @@ class AboutDialog(component: FxComponent) : Dialog<Unit>(), FxComponent by compo
                         }
                     }
                     text("${getString(R.string.version)} ${BuildConfig.VERSION}") {
-                        font = Font.font(12.0)
-                    } marginTop 2.0
-                    text(getString(R.string.built_with_open_source_software_expand_to_see_licenses)) marginTop 20.0
+                        updateFont(12)
+                    } marginTop 2
+                    text(getString(R.string.built_with_open_source_software_expand_to_see_licenses)) marginTop 20
                     textFlow {
-                        "${getString(R.string.powered_by)} " { font = Font.font(12.0) }
+                        "${getString(R.string.powered_by)} " {
+                            updateFont(12)
+                        }
                         "JavaFX" { styleClass += R.style.bold }
-                    } marginTop 4.0
+                    } marginTop 4
                     textFlow {
-                        "${getString(R.string.author)} " { font = Font.font(12.0) }
-                        BuildConfig.USER { styleClass += R.style.bold }
-                    } marginTop 4.0
+                        "${getString(R.string.author)} " {
+                            updateFont(12)
+                        }
+                        BuildConfig.USER {
+                            styleClass += R.style.bold
+                        }
+                    } marginTop 4
                     hbox {
                         spacing = getDouble(R.dimen.padding_medium)
                         jfxButton("GitHub") {
@@ -98,8 +104,8 @@ class AboutDialog(component: FxComponent) : Dialog<Unit>(), FxComponent by compo
                             styleClass += R.style.flat
                             onAction { desktop?.mail(URI("mailto:${BuildConfig.EMAIL}")) }
                         }
-                    } marginTop 20.0
-                } marginLeft 48.0
+                    } marginTop 20
+                } marginLeft 48
             }
             expandableContent = masterDetailPane {
                 prefHeight = 200.0

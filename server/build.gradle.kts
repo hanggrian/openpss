@@ -48,6 +48,7 @@ tasks {
     }
 
     named<com.hendraanggrian.generating.buildconfig.BuildConfigTask>("generateBuildConfig") {
+        debug = RELEASE_DEBUG
         field("DATABASE", RELEASE_ARTIFACT)
         field("DATABASE_USER", envUser())
         field("DATABASE_PASS", envPass())

@@ -1,8 +1,8 @@
 package com.hendraanggrian.openpss.ui.wage.record
 
-import com.hendraanggrian.openpss.PATTERN_DATE
-import com.hendraanggrian.openpss.PATTERN_DATETIME
-import com.hendraanggrian.openpss.PATTERN_TIME
+import com.hendraanggrian.openpss.util.PATTERN_DATE
+import com.hendraanggrian.openpss.util.PATTERN_DATETIME
+import com.hendraanggrian.openpss.util.PATTERN_TIME
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.STYLESHEET_WAGE_RECORD
 import com.hendraanggrian.openpss.control.UncollapsibleTreeItem

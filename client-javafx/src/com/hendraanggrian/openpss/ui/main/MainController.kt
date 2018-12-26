@@ -2,7 +2,7 @@ package com.hendraanggrian.openpss.ui.main
 
 import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.BuildConfig
-import com.hendraanggrian.openpss.PATTERN_DATETIME
+import com.hendraanggrian.openpss.util.PATTERN_DATETIME
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.MarginedImageView
 import com.hendraanggrian.openpss.control.PaginatedPane
@@ -187,7 +187,7 @@ class MainController : Controller(), Refreshable {
                         if (log != null && !empty) graphic = textFlow {
                             text(log.message) {
                                 isWrapText = true
-                                updateFont { size = 12 }
+                                updateFont(12)
                                 this@textFlow.prefWidthProperty().bind(this@apply.widthProperty() - 12)
                                 wrappingWidthProperty().bind(this@apply.widthProperty())
                             }

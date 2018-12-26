@@ -1,6 +1,6 @@
 package com.hendraanggrian.openpss.ui.wage
 
-import com.hendraanggrian.openpss.PATTERN_TIME
+import com.hendraanggrian.openpss.util.PATTERN_TIME
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.FxComponent
 import com.hendraanggrian.openpss.data.Recess

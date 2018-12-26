@@ -1,6 +1,6 @@
 package com.hendraanggrian.openpss.ui.wage
 
-import com.hendraanggrian.openpss.PATTERN_DATETIME_EXTENDED
+import com.hendraanggrian.openpss.util.PATTERN_DATETIME_EXTENDED
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.FxComponent
 import com.hendraanggrian.openpss.control.IntField
@@ -71,28 +71,28 @@ class AttendeePane(
                 gap = getDouble(R.dimen.padding_small)
                 paddingAll = getDouble(R.dimen.padding_medium)
                 attendee.role?.let { role ->
-                    label(getString(R.string.role)) col 0 row 0 marginRight 4.0
+                    label(getString(R.string.role)) col 0 row 0 marginRight 4
                     label(role) col 1 row 0 colSpans 2
                 }
-                label(getString(R.string.income)) col 0 row 1 marginRight 4.0
+                label(getString(R.string.income)) col 0 row 1 marginRight 4
                 IntField().apply {
                     prefWidth = 80.0
                     promptText = getString(R.string.income)
                     valueProperty().bindBidirectional(attendee.dailyProperty)
                 }() col 1 row 1
                 label("@${getString(R.string.day)}") {
-                    updateFont { size = 10 }
+                    updateFont(10)
                 } col 2 row 1
-                label(getString(R.string.overtime)) col 0 row 2 marginRight 4.0
+                label(getString(R.string.overtime)) col 0 row 2 marginRight 4
                 IntField().apply {
                     prefWidth = 80.0
                     promptText = getString(R.string.overtime)
                     valueProperty().bindBidirectional(attendee.hourlyOvertimeProperty)
                 }() col 1 row 2
                 label("@${getString(R.string.hour)}") {
-                    updateFont { size = 10 }
+                    updateFont(10)
                 } col 2 row 2
-                label(getString(R.string.recess)) col 0 row 3 marginRight 4.0
+                label(getString(R.string.recess)) col 0 row 3 marginRight 4
                 vbox {
                     GlobalScope.launch(Dispatchers.JavaFx) {
                         api.getRecesses().forEach { recess ->
@@ -102,7 +102,7 @@ class AttendeePane(
                                     attendanceList.forceRefresh()
                                 }
                                 isSelected = true
-                            } marginTop if (children.size > 1) 4.0 else 0.0
+                            } marginTop if (children.size > 1) 4 else 0
                         }
                     }
                 } col 1 row 3 colSpans 2
@@ -135,7 +135,7 @@ class AttendeePane(
                                                 }
                                             val hours = (minutes / 60.0).round()
                                             text(hours.toString()) {
-                                                updateFont { size = 10 }
+                                                updateFont(10)
                                                 if (hours > 12) {
                                                     style = "-fx-fill: #F44336;"
                                                 }

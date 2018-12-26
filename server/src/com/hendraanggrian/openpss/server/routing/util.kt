@@ -1,38 +1,19 @@
-package com.hendraanggrian.openpss.server.route
+package com.hendraanggrian.openpss.server.routing
 
-import com.hendraanggrian.openpss.i18n.Language
 import com.hendraanggrian.openpss.data.GlobalSetting
+import com.hendraanggrian.openpss.i18n.Language
 import com.hendraanggrian.openpss.server.transaction
-import io.ktor.application.Application
 import io.ktor.application.ApplicationCall
-import io.ktor.routing.Route
-import io.ktor.routing.route
-import io.ktor.routing.routing
 import org.joda.time.DateTime
 import org.joda.time.LocalDate
 import org.joda.time.LocalDateTime
 import org.joda.time.LocalTime
 import java.util.ResourceBundle
 
-/** Define API routing Spek-style. */
-open class Route(val block: RouteWrapper.() -> Unit) {
-
-    val resources: ResourceBundle
-        get() = Language.ofFullCode(transaction {
-            findGlobalSettings(GlobalSetting.KEY_LANGUAGE).single().value
-        }).toResourcesBundle()
-}
-
-class RouteWrapper(private val route: Route) {
-
-    operator fun String.invoke(block: Route.() -> Unit): Route = route.route(this, block)
-}
-
-fun Application.installRoutes(vararg routes: com.hendraanggrian.openpss.server.route.Route) = routing {
-    routes.forEach {
-        it.block(RouteWrapper(this))
-    }
-}
+val resources: ResourceBundle
+    get() = Language.ofFullCode(transaction {
+        findGlobalSettings(GlobalSetting.KEY_LANGUAGE).single().value
+    }).toResourcesBundle()
 
 fun ApplicationCall.getString(name: String): String = parameters[name]!!
 

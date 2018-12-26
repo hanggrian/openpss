@@ -29,15 +29,12 @@ interface CustomerApi : Api {
         apiUrl("customers/$id")
     }
 
-    suspend fun editCustomer(login: Employee, id: Id<String, *>, address: String?, note: String?): Boolean =
+    suspend fun editCustomer(login: Employee, id: Id<String, *>, customer: Customer): Boolean =
         client.requestStatus {
             apiUrl("customers/$id")
             method = HttpMethod.Put
-            parameters(
-                "address" to address,
-                "note" to note,
-                "login" to login.name
-            )
+            body = customer
+            parameters("login" to login.name)
         }
 
     suspend fun addContact(id: Id<String, *>, contact: Customer.Contact): Customer.Contact = client.post {

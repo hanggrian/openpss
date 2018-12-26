@@ -100,7 +100,7 @@ class LoginPane(private val resourced: Resources) : _StackPane(), FxComponent {
             } row 0 col 1
             vbox(8.0) {
                 alignment = Pos.CENTER
-                updatePadding(32.0, 24.0, 32.0, 24.0)
+                updatePadding(32, 24, 32, 24)
                 imageView(R.image.logo_small)
                 label(getString(R.string.openpss_login)) {
                     styleClass.addAll(R.style.bold, R.style.display2)
@@ -108,14 +108,14 @@ class LoginPane(private val resourced: Resources) : _StackPane(), FxComponent {
                 label(getString(R.string._login_desc1)) {
                     textAlignment = TextAlignment.CENTER
                     isWrapText = true
-                    updateFont { size = 16 }
+                    updateFont(16)
                 }
                 employeeField = jfxTextField(SettingsFile.EMPLOYEE) {
                     textProperty().listener { _, _, value -> SettingsFile.EMPLOYEE = value }
-                    updateFont { size = 16 }
+                    updateFont(16)
                     promptText = getString(R.string.employee)
                     later { requestFocus() }
-                } marginTop 24.0
+                } marginTop 24
                 textFlow {
                     var version = BuildConfig.VERSION
                     if (BuildConfig.DEBUG) {
@@ -129,17 +129,17 @@ class LoginPane(private val resourced: Resources) : _StackPane(), FxComponent {
                             GitHubHelper.checkUpdates(this@LoginPane)
                         }
                     }
-                } marginTop 24.0
+                } marginTop 24
                 anchorPane {
                     jfxButton(getString(R.string.about)) {
-                        updatePadding(8.0, 16.0, 8.0, 16.0)
-                        updateFont { size = 16 }
+                        updatePadding(8, 16, 8, 16)
+                        updateFont(16)
                         styleClass += R.style.flat
                         onAction { AboutDialog(this@LoginPane).show() }
-                    } anchorLeft 0.0
+                    } anchorLeft 0
                     loginButton = jfxButton(getString(R.string.login)) {
-                        updatePadding(8.0, 16.0, 8.0, 16.0)
-                        updateFont { size = 16 }
+                        updatePadding(8, 16, 8, 16)
+                        updateFont(16)
                         styleClass += R.style.raised
                         buttonType = JFXButton.ButtonType.RAISED
                         disableProperty().bind(employeeField.textProperty().isBlank())
@@ -161,8 +161,8 @@ class LoginPane(private val resourced: Resources) : _StackPane(), FxComponent {
                             }
                         }
                         employeeField.onActionProperty().bindBidirectional(onActionProperty())
-                    } anchorRight 0.0
-                } marginTop 24.0
+                    } anchorRight 0
+                } marginTop 24
             } row 1 col 0 colSpans 2
         }
     }

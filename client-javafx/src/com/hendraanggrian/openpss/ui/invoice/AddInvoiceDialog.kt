@@ -1,6 +1,6 @@
 package com.hendraanggrian.openpss.ui.invoice
 
-import com.hendraanggrian.openpss.PATTERN_DATE
+import com.hendraanggrian.openpss.util.PATTERN_DATE
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.FxComponent
 import com.hendraanggrian.openpss.data.Customer

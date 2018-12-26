@@ -1,6 +1,6 @@
 package com.hendraanggrian.openpss.popup.popover
 
-import com.hendraanggrian.openpss.PATTERN_DATETIME_EXTENDED
+import com.hendraanggrian.openpss.util.PATTERN_DATETIME_EXTENDED
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.FxComponent
 import com.hendraanggrian.openpss.content.STYLESHEET_INVOICE
@@ -21,8 +21,6 @@ import javafx.geometry.Pos.CENTER_LEFT
 import javafx.geometry.Pos.CENTER_RIGHT
 import javafx.print.PageOrientation
 import javafx.print.PageRange
-import javafx.print.Printer
-import javafx.print.PrinterJob
 import javafx.scene.layout.Border
 import javafx.scene.layout.BorderStroke
 import javafx.scene.layout.BorderStrokeStyle
@@ -55,6 +53,8 @@ import ktfx.layouts.line
 import ktfx.layouts.region
 import ktfx.layouts.textFlow
 import ktfx.layouts.vbox
+import ktfx.print.createJob
+import ktfx.print.defaultPrinter
 import ktfx.text.updateFont
 import org.apache.commons.lang3.SystemUtils
 import java.util.ResourceBundle
@@ -114,10 +114,10 @@ class ViewInvoicePopover(
                 vbox {
                     alignment = CENTER_RIGHT
                     label(getString(R.string.invoice)) {
-                        updateFont { size = 18 }
+                        updateFont(18)
                     }
                     label("# ${invoice.no}") {
-                        updateFont { size = 32 }
+                        updateFont(32)
                     }
                 }
             }
@@ -226,7 +226,7 @@ class ViewInvoicePopover(
                 later { isDisable = invoice.isPrinted }
                 onAction {
                     // resize node to actual print size
-                    val printer = Printer.getDefaultPrinter()
+                    val printer = defaultPrinter
                     val layout = printer.createPageLayout(
                         PrintHelper.createPaper("Invoice", WIDTH_MM, HEIGHT_MM, Units.MM),
                         PageOrientation.PORTRAIT,
@@ -241,8 +241,7 @@ class ViewInvoicePopover(
                     invoiceBox.transforms += scale
                     // disable auto-hide when print dialog is showing
                     isAutoHide = false
-                    val job = PrinterJob.createPrinterJob(printer)!!
-                    job.jobSettings.run {
+                    val job = printer.createJob {
                         jobName = "${getString(R.string.invoice)} #${invoice.no}"
                         setPageRanges(PageRange(1, 1))
                         pageLayout = layout

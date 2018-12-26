@@ -4,7 +4,6 @@ import com.hendraanggrian.openpss.schema.Employees
 import kotlinx.nosql.Id
 import java.io.Serializable
 
-@kotlinx.serialization.Serializable
 data class Employee(
     override var name: String,
     var password: String,

@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.ui.main.help
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.data.Asset
+import com.github.Asset
 import com.hendraanggrian.openpss.content.FxComponent
 import com.hendraanggrian.openpss.popup.dialog.ResultableDialog
 import javafx.scene.Node

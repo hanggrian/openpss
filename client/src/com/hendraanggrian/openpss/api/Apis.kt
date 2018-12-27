@@ -1,6 +1,6 @@
 package com.hendraanggrian.openpss.api
 
-import com.hendraanggrian.openpss.data.Release
+import com.github.Release
 import com.hendraanggrian.openpss.internal.ClientBuildConfig
 import com.hendraanggrian.openpss.util.jodaTimeSerializers
 import io.ktor.client.HttpClient

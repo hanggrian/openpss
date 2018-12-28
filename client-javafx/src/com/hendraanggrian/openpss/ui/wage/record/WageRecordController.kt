@@ -1,10 +1,8 @@
 package com.hendraanggrian.openpss.ui.wage.record
 
-import com.hendraanggrian.openpss.util.PATTERN_DATE
-import com.hendraanggrian.openpss.util.PATTERN_DATETIME
-import com.hendraanggrian.openpss.util.PATTERN_TIME
+import com.hendraanggrian.openpss.Formats
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.content.STYLESHEET_WAGE_RECORD
+import com.hendraanggrian.openpss.content.Stylesheets
 import com.hendraanggrian.openpss.control.UncollapsibleTreeItem
 import com.hendraanggrian.openpss.io.WageDirectory
 import com.hendraanggrian.openpss.io.WageFile
@@ -152,7 +150,7 @@ class WageRecordController : Controller() {
                     val initial = record.dailyDisabledProperty.value
                     record.dailyDisabledProperty.set(!initial)
                     if (undoable.name == null) undoable.name = "${getString(R.string.daily_disabled)} " +
-                        record.startProperty.value.toString(PATTERN_DATE)
+                        record.startProperty.value.toString(Formats.DATE)
                     undoable.addAction { record.dailyDisabledProperty.set(initial) }
                 }
             undoable.append()
@@ -167,8 +165,8 @@ class WageRecordController : Controller() {
                     if (initial.toLocalTime() < time!!) {
                         record.startProperty.set(record.cloneStart(time))
                         undoable.name = when {
-                            undoable.name == null -> "${record.attendee.name} ${initial.toString(PATTERN_DATETIME)} -> " +
-                                time.toString(PATTERN_TIME)
+                            undoable.name == null -> "${record.attendee.name} ${initial.toString(Formats.DATETIME)} -> " +
+                                time.toString(Formats.TIME)
                             else -> getString(R.string.multiple_lock_start_time)
                         }
                         undoable.addAction { record.startProperty.set(initial) }
@@ -186,8 +184,8 @@ class WageRecordController : Controller() {
                     if (initial.toLocalTime() > time!!) {
                         record.endProperty.set(record.cloneEnd(time))
                         undoable.name = when {
-                            undoable.name == null -> "${record.attendee.name} ${initial.toString(PATTERN_DATETIME)} -> " +
-                                time.toString(PATTERN_TIME)
+                            undoable.name == null -> "${record.attendee.name} ${initial.toString(Formats.DATETIME)} -> " +
+                                time.toString(Formats.TIME)
                             else -> getString(R.string.multiple_lock_end_time)
                         }
                         undoable.addAction { record.endProperty.set(initial) }
@@ -199,7 +197,7 @@ class WageRecordController : Controller() {
     @FXML fun componentshot() {
         val images = mutableListOf<BufferedImage>()
         recordTable.selectionModel.clearSelection()
-        togglePrintMode(true, STYLESHEET_WAGE_RECORD)
+        togglePrintMode(true, Stylesheets.WAGE_RECORD)
         recordTable.scrollTo(0)
         val flow = (recordTable.skin as TreeTableViewSkin<*>).children[1] as VirtualFlow<*>
         var i = 0
@@ -210,7 +208,7 @@ class WageRecordController : Controller() {
         } while (flow.lastVisibleCell.index + 1 <
             recordTable.root.children.size + recordTable.root.children.sumBy { it.children.size }
         )
-        togglePrintMode(false, STYLESHEET_WAGE_RECORD)
+        togglePrintMode(false, Stylesheets.WAGE_RECORD)
         ImageIO.write(images.concatenate(), "png", WageFile())
         rootLayout.jfxIndefiniteSnackbar(getString(R.string.componentshot_finished), getString(R.string.open_folder)) {
             desktop?.open(WageDirectory)

@@ -9,7 +9,8 @@ import kotlinx.nosql.mongodb.DocumentSchema
 import kotlinx.nosql.nullableString
 import kotlinx.nosql.string
 
-object Customers : DocumentSchema<Customer>("customers", Customer::class), NamedSchema {
+object Customers : DocumentSchema<Customer>("$Customers", Customer::class),
+    NameSchemed {
     override val name = string("name")
     val isCompany = boolean("is_company")
     val since = date("since")
@@ -17,8 +18,15 @@ object Customers : DocumentSchema<Customer>("customers", Customer::class), Named
     val note = nullableString("note")
     val contacts = Contacts()
 
-    class Contacts : ListColumn<Customer.Contact, Invoices>("contacts", Customer.Contact::class) {
+    override fun toString(): String = "customers"
+
+    class Contacts : ListColumn<Customer.Contact, Invoices>("${Customers.Contacts}", Customer.Contact::class) {
         val type = string("type")
         val value = integer("value")
+
+        companion object : Schemed {
+
+            override fun toString(): String = "contacts"
+        }
     }
 }

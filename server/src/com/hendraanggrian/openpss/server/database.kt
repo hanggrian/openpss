@@ -14,7 +14,6 @@ import com.hendraanggrian.openpss.schema.Payments
 import com.hendraanggrian.openpss.schema.PlatePrices
 import com.hendraanggrian.openpss.schema.Recesses
 import com.hendraanggrian.openpss.schema.Wages
-import com.hendraanggrian.openpss.util.isEmpty
 import com.mongodb.MongoClientOptions
 import com.mongodb.MongoCredential
 import com.mongodb.MongoException

@@ -2,6 +2,7 @@ package com.hendraanggrian.openpss.server.routing
 
 import com.hendraanggrian.openpss.data.Wage
 import com.hendraanggrian.openpss.schema.Wages
+import com.hendraanggrian.openpss.server.getInt
 import com.hendraanggrian.openpss.server.transaction
 import io.ktor.application.call
 import io.ktor.http.HttpStatusCode
@@ -16,7 +17,7 @@ import kotlinx.nosql.equal
 import kotlinx.nosql.update
 
 fun Routing.wageRouting() {
-    route("wages") {
+    route("$Wages") {
         get {
             call.respond(transaction { Wages().toList() })
         }

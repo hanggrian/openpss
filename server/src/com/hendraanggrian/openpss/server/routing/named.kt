@@ -1,6 +1,5 @@
 package com.hendraanggrian.openpss.server.routing
 
-import com.hendraanggrian.openpss.server.R
 import com.hendraanggrian.openpss.data.DigitalPrice
 import com.hendraanggrian.openpss.data.Document
 import com.hendraanggrian.openpss.data.Employee
@@ -11,13 +10,19 @@ import com.hendraanggrian.openpss.data.PlatePrice
 import com.hendraanggrian.openpss.schema.DigitalPrices
 import com.hendraanggrian.openpss.schema.Employees
 import com.hendraanggrian.openpss.schema.Logs
-import com.hendraanggrian.openpss.schema.NamedSchema
+import com.hendraanggrian.openpss.schema.NameSchemed
 import com.hendraanggrian.openpss.schema.OffsetPrices
 import com.hendraanggrian.openpss.schema.PlatePrices
 import com.hendraanggrian.openpss.server.DocumentQuery
+import com.hendraanggrian.openpss.server.R
 import com.hendraanggrian.openpss.server.SessionWrapper
+import com.hendraanggrian.openpss.server.getBoolean
+import com.hendraanggrian.openpss.server.getDouble
+import com.hendraanggrian.openpss.server.getInt
+import com.hendraanggrian.openpss.server.getString
+import com.hendraanggrian.openpss.server.isNotEmpty
+import com.hendraanggrian.openpss.server.resources
 import com.hendraanggrian.openpss.server.transaction
-import com.hendraanggrian.openpss.util.isNotEmpty
 import io.ktor.application.ApplicationCall
 import io.ktor.application.call
 import io.ktor.http.HttpStatusCode
@@ -32,28 +37,28 @@ import kotlinx.nosql.equal
 import kotlinx.nosql.mongodb.DocumentSchema
 import kotlinx.nosql.update
 
-fun Routing.platePriceRouting() = namedRouting("plate-prices", PlatePrices,
+fun Routing.platePriceRouting() = namedRouting("$PlatePrices", PlatePrices,
     onCreate = { call -> PlatePrice.new(call.getString("name")) },
     onEdit = { call, query ->
         query.projection { price }
             .update(call.getDouble("price"))
     })
 
-fun Routing.offsetPriceRouting() = namedRouting("offset-prices", OffsetPrices,
+fun Routing.offsetPriceRouting() = namedRouting("$OffsetPrices", OffsetPrices,
     onCreate = { call -> OffsetPrice.new(call.getString("name")) },
     onEdit = { call, query ->
         query.projection { minQty + minPrice + excessPrice }
             .update(call.getInt("minQty"), call.getDouble("minPrice"), call.getDouble("excessPrice"))
     })
 
-fun Routing.digitalPriceRouting() = namedRouting("digital-prices", DigitalPrices,
+fun Routing.digitalPriceRouting() = namedRouting("$DigitalPrices", DigitalPrices,
     onCreate = { call -> DigitalPrice.new(call.getString("name")) },
     onEdit = { call, query ->
         query.projection { oneSidePrice + twoSidePrice }
             .update(call.getDouble("oneSidePrice"), call.getDouble("twoSidePrice"))
     })
 
-fun Routing.employeeRouting() = namedRouting("employees", Employees,
+fun Routing.employeeRouting() = namedRouting("$Employees", Employees,
     onGet = {
         val employees = Employees()
         employees.forEach { it.clearPassword() }
@@ -82,7 +87,7 @@ private fun <S, D> Routing.namedRouting(
     onCreate: (call: ApplicationCall) -> D,
     onEdit: SessionWrapper.(call: ApplicationCall, query: DocumentQuery<S, String, D>) -> Unit,
     onDeleted: SessionWrapper.(call: ApplicationCall, query: DocumentQuery<S, String, D>) -> Unit = { _, _ -> }
-) where S : DocumentSchema<D>, S : NamedSchema, D : Document<S>, D : Named {
+) where S : DocumentSchema<D>, S : NameSchemed, D : Document<S>, D : Named {
     route(path) {
         get {
             call.respond(transaction { onGet(call) })

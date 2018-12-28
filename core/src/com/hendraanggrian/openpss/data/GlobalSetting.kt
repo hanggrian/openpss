@@ -10,6 +10,7 @@ data class GlobalSetting(
 ) : Document<GlobalSettings> {
 
     companion object {
+
         val KEY_LANGUAGE by GlobalSettings.LANGUAGE
         val KEY_INVOICE_HEADERS by GlobalSettings.INVOICE_HEADERS
 

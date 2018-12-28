@@ -10,6 +10,7 @@ data class DigitalPrice(
 ) : Document<DigitalPrices>, Named {
 
     companion object {
+
         fun new(name: String): DigitalPrice = DigitalPrice(name, 0.0, 0.0)
     }
 

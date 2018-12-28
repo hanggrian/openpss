@@ -8,6 +8,12 @@ import com.hendraanggrian.openpss.schema.Invoices
 import com.hendraanggrian.openpss.schema.Logs
 import com.hendraanggrian.openpss.schema.Payments
 import com.hendraanggrian.openpss.server.R
+import com.hendraanggrian.openpss.server.getBoolean
+import com.hendraanggrian.openpss.server.getBooleanOrNull
+import com.hendraanggrian.openpss.server.getInt
+import com.hendraanggrian.openpss.server.getString
+import com.hendraanggrian.openpss.server.getStringOrNull
+import com.hendraanggrian.openpss.server.resources
 import com.hendraanggrian.openpss.server.transaction
 import io.ktor.application.call
 import io.ktor.http.HttpStatusCode
@@ -24,7 +30,7 @@ import kotlinx.nosql.update
 import kotlin.math.ceil
 
 fun Routing.invoiceRouting() {
-    route("invoices") {
+    route("$Invoices") {
         get {
             val search = call.getInt("search")
             val customer = call.getStringOrNull("customer")

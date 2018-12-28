@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.ui.invoice
 
 import com.hendraanggrian.openpss.App.Companion.STRETCH_POINT
-import com.hendraanggrian.openpss.util.PATTERN_DATETIME_EXTENDED
+import com.hendraanggrian.openpss.Formats
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.DateBox
 import com.hendraanggrian.openpss.control.IntField
@@ -145,7 +145,7 @@ class InvoiceController : ActionController(), Refreshable {
                         columns {
                             getString(R.string.id)<String> { stringCell { no.toString() } }
                             getString(R.string.date)<String> {
-                                stringCell { dateTime.toString(PATTERN_DATETIME_EXTENDED) }
+                                stringCell { dateTime.toString(Formats.DATETIME_EXTENDED) }
                             }
                             getString(R.string.employee)<String> {
                                 stringCell { runBlocking { api.getEmployee(employeeId).name } }
@@ -181,7 +181,7 @@ class InvoiceController : ActionController(), Refreshable {
                             columnResizePolicy = TableView.CONSTRAINED_RESIZE_POLICY
                             columns {
                                 getString(R.string.date)<String> {
-                                    stringCell { dateTime.toString(PATTERN_DATETIME_EXTENDED) }
+                                    stringCell { dateTime.toString(Formats.DATETIME_EXTENDED) }
                                 }
                                 getString(R.string.employee)<String> {
                                     stringCell { runBlocking { api.getEmployee(employeeId).name } }

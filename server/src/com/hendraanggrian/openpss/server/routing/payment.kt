@@ -6,6 +6,8 @@ import com.hendraanggrian.openpss.schema.Invoices
 import com.hendraanggrian.openpss.schema.Logs
 import com.hendraanggrian.openpss.schema.Payments
 import com.hendraanggrian.openpss.server.R
+import com.hendraanggrian.openpss.server.getString
+import com.hendraanggrian.openpss.server.resources
 import com.hendraanggrian.openpss.server.transaction
 import io.ktor.application.call
 import io.ktor.http.HttpStatusCode
@@ -19,7 +21,7 @@ import io.ktor.routing.route
 import kotlinx.nosql.equal
 
 fun Routing.paymentRouting() {
-    route("payments") {
+    route("$Payments") {
         get {
             call.respond(transaction {
                 Payments { dateTime.matches(call.parameters["dateTime"]!!) }.toList()

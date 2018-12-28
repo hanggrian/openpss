@@ -6,8 +6,11 @@ import com.hendraanggrian.openpss.data.Page
 import com.hendraanggrian.openpss.schema.Customers
 import com.hendraanggrian.openpss.schema.Logs
 import com.hendraanggrian.openpss.server.R
+import com.hendraanggrian.openpss.server.getInt
+import com.hendraanggrian.openpss.server.getString
+import com.hendraanggrian.openpss.server.isNotEmpty
+import com.hendraanggrian.openpss.server.resources
 import com.hendraanggrian.openpss.server.transaction
-import com.hendraanggrian.openpss.util.isNotEmpty
 import io.ktor.application.call
 import io.ktor.http.HttpStatusCode
 import io.ktor.request.receive
@@ -23,7 +26,7 @@ import java.util.regex.Pattern
 import kotlin.math.ceil
 
 fun Routing.customerRouting() {
-    route("customers") {
+    route("$Customers") {
         get {
             val search = call.getString("search")
             val page = call.getInt("page")
@@ -74,7 +77,7 @@ fun Routing.customerRouting() {
                 }
                 call.respond(HttpStatusCode.OK)
             }
-            route("contacts") {
+            route("${Customers.Contacts}") {
                 post {
                     val contact = call.receive<Customer.Contact>()
                     transaction {

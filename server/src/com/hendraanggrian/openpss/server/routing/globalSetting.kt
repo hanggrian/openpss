@@ -1,6 +1,7 @@
 package com.hendraanggrian.openpss.server.routing
 
 import com.hendraanggrian.openpss.schema.GlobalSettings
+import com.hendraanggrian.openpss.server.getString
 import com.hendraanggrian.openpss.server.transaction
 import io.ktor.application.call
 import io.ktor.http.HttpStatusCode
@@ -13,7 +14,7 @@ import kotlinx.nosql.equal
 import kotlinx.nosql.update
 
 fun Routing.globalSettingRouting() {
-    route("global-settings/{key}") {
+    route("$GlobalSettings/{key}") {
         get {
             call.respond(transaction {
                 GlobalSettings { key.equal(call.getString("key")) }.single()
@@ -22,7 +23,7 @@ fun Routing.globalSettingRouting() {
         post {
             transaction {
                 GlobalSettings { key.equal(call.getString("key")) }
-                    .projection { this.value }
+                    .projection { value }
                     .update(call.getString("value"))
             }
             call.respond(HttpStatusCode.OK)

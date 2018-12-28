@@ -2,7 +2,7 @@ package com.hendraanggrian.openpss.ui.main
 
 import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.BuildConfig
-import com.hendraanggrian.openpss.util.PATTERN_DATETIME
+import com.hendraanggrian.openpss.Formats
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.MarginedImageView
 import com.hendraanggrian.openpss.control.PaginatedPane
@@ -192,7 +192,7 @@ class MainController : Controller(), Refreshable {
                                 wrappingWidthProperty().bind(this@apply.widthProperty())
                             }
                             newLine()
-                            text("${log.dateTime.toString(PATTERN_DATETIME)} ") {
+                            text("${log.dateTime.toString(Formats.DATETIME)} ") {
                                 styleClass += R.style.bold
                             }
                             text(log.login)

@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss
 
 import com.hendraanggrian.openpss.content.Resources
-import com.hendraanggrian.openpss.content.STYLESHEET_OPENPSS
+import com.hendraanggrian.openpss.content.Stylesheets
 import com.hendraanggrian.openpss.io.SettingsFile
 import com.hendraanggrian.openpss.ui.login.LoginPane
 import com.hendraanggrian.openpss.util.controller
@@ -56,7 +56,7 @@ class App : Application(), Resources {
         stage.isResizable = false
         stage.title = getString(R.string.openpss_login)
         stage.scene = scene {
-            stylesheets += STYLESHEET_OPENPSS
+            stylesheets += Stylesheets.OPENPSS
             LoginPane(this@App).apply {
                 onSuccess = { employee ->
                     val loader = FXMLLoader(getResource(R.layout.controller_main), resourceBundle)

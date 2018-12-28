@@ -3,7 +3,7 @@ package com.hendraanggrian.openpss.ui.main.help
 import com.hendraanggrian.openpss.BuildConfig
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.FxComponent
-import com.hendraanggrian.openpss.content.STYLESHEET_OPENPSS
+import com.hendraanggrian.openpss.content.Stylesheets
 import com.hendraanggrian.openpss.ui.main.License
 import com.jfoenix.controls.JFXButton
 import javafx.geometry.Pos
@@ -61,7 +61,7 @@ class AboutDialog(component: FxComponent) : Dialog<Unit>(), FxComponent by compo
         icon = Image(R.image.menu_about)
         title = getString(R.string.about)
         dialogPane.run {
-            stylesheets += STYLESHEET_OPENPSS
+            stylesheets += Stylesheets.OPENPSS
             content = hbox {
                 paddingAll = 48
                 imageView(R.image.logo)

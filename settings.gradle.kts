@@ -1,4 +1,4 @@
-include("data")
+include("core")
 include("i18n")
 include("client", "client-javafx"/*, "client-android"*/)
 include("server")

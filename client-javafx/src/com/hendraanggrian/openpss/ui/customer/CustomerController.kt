@@ -1,6 +1,7 @@
 package com.hendraanggrian.openpss.ui.customer
 
 import com.hendraanggrian.openpss.App.Companion.STRETCH_POINT
+import com.hendraanggrian.openpss.Formats
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.CustomerListView
 import com.hendraanggrian.openpss.control.PaginatedPane
@@ -10,7 +11,6 @@ import com.hendraanggrian.openpss.db.schema.typedType
 import com.hendraanggrian.openpss.popup.dialog.ConfirmDialog
 import com.hendraanggrian.openpss.ui.ActionController
 import com.hendraanggrian.openpss.ui.Refreshable
-import com.hendraanggrian.openpss.util.PATTERN_DATE
 import com.hendraanggrian.openpss.util.stringCell
 import javafx.fxml.FXML
 import javafx.scene.Node
@@ -121,7 +121,7 @@ class CustomerController : ActionController(), Refreshable {
                     customerList.selectionModel.selectedItem?.name
                 })
                 sinceLabel.bindLabel {
-                    customerList.selectionModel.selectedItem?.since?.toString(PATTERN_DATE).orEmpty()
+                    customerList.selectionModel.selectedItem?.since?.toString(Formats.DATE).orEmpty()
                 }
                 addressLabel.bindLabel { customerList.selectionModel.selectedItem?.address ?: "-" }
                 noteLabel.bindLabel { customerList.selectionModel.selectedItem?.note ?: "-" }

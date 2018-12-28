@@ -1,9 +1,9 @@
 package com.hendraanggrian.openpss.popup.popover
 
-import com.hendraanggrian.openpss.util.PATTERN_DATETIME_EXTENDED
+import com.hendraanggrian.openpss.Formats
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.FxComponent
-import com.hendraanggrian.openpss.content.STYLESHEET_INVOICE
+import com.hendraanggrian.openpss.content.Stylesheets
 import com.hendraanggrian.openpss.control.Space
 import com.hendraanggrian.openpss.data.Customer
 import com.hendraanggrian.openpss.data.Employee
@@ -97,7 +97,7 @@ class ViewInvoicePopover(
             customer = api.getCustomer(invoice.customerId)
         }
         invoiceBox = vbox(getDouble(R.dimen.padding_medium)) {
-            if (!SystemUtils.IS_OS_MAC) stylesheets += STYLESHEET_INVOICE
+            if (!SystemUtils.IS_OS_MAC) stylesheets += Stylesheets.INVOICE
             setMinSize(WIDTH_PX, HEIGHT_PX)
             setMaxSize(WIDTH_PX, HEIGHT_PX)
             hbox(getDouble(R.dimen.padding_medium)) {
@@ -124,7 +124,7 @@ class ViewInvoicePopover(
             fullLine()
             vbox {
                 alignment = CENTER
-                label("${invoice.dateTime.toString(PATTERN_DATETIME_EXTENDED)} " + "(${employee.name})")
+                label("${invoice.dateTime.toString(Formats.DATETIME_EXTENDED)} " + "(${employee.name})")
                 label(customer.name) {
                     styleClass += R.style.bold
                 }

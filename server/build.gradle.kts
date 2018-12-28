@@ -23,7 +23,7 @@ sourceSets {
 ktlint()
 
 dependencies {
-    api(project(":data"))
+    api(project(":core"))
     api(project(":i18n"))
 
     implementation(mongodb())

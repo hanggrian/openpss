@@ -23,7 +23,7 @@ ktlint()
 dependencies {
     api(kotlin("stdlib", VERSION_KOTLIN))
     api(kotlin("nosql-mongodb", VERSION_NOSQL))
-    api(kotlinx("coroutines-core", VERSION_COROUTINES))
+    api(kotlinx("coroutines-core", VERSION_COROUTINES)) // non-platform specific coroutines
 
     api(jodaTime())
     api(google("gson", VERSION_GSON, "code.gson"))

@@ -3,7 +3,7 @@ package com.hendraanggrian.openpss.ui.wage
 import com.hendraanggrian.openpss.App.Companion.STRETCH_POINT
 import com.hendraanggrian.openpss.BuildConfig.DEBUG
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.content.STYLESHEET_OPENPSS
+import com.hendraanggrian.openpss.content.Stylesheets
 import com.hendraanggrian.openpss.control.StretchableButton
 import com.hendraanggrian.openpss.io.ReaderFile
 import com.hendraanggrian.openpss.io.WageDirectory
@@ -117,7 +117,7 @@ class WageController : ActionController() {
         val loader = FXMLLoader(getResource(R.layout.controller_wage_record), resourceBundle)
         scene = scene {
             loader.pane()
-            stylesheets += STYLESHEET_OPENPSS
+            stylesheets += Stylesheets.OPENPSS
         }
         setMinSize(1000.0, 650.0)
         loader.controller.addExtra(EXTRA_ATTENDEES, attendees)

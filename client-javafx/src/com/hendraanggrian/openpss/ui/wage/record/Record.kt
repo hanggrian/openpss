@@ -1,6 +1,6 @@
 package com.hendraanggrian.openpss.ui.wage.record
 
-import com.hendraanggrian.openpss.util.PATTERN_DATETIME
+import com.hendraanggrian.openpss.Formats
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.Resources
 import com.hendraanggrian.openpss.ui.wage.Attendee
@@ -126,7 +126,7 @@ class Record(
             bind(buildStringBinding(startProperty, dailyDisabledProperty) {
                 when {
                     isNode() -> attendee.role.orEmpty()
-                    isChild() -> start!!.toString(PATTERN_DATETIME).let { if (isDailyDisabled) "($it)" else it }
+                    isChild() -> start!!.toString(Formats.DATETIME).let { if (isDailyDisabled) "($it)" else it }
                     isTotal() -> ""
                     else -> throw UnsupportedOperationException()
                 }
@@ -138,7 +138,7 @@ class Record(
             bind(buildStringBinding(endProperty, dailyDisabledProperty) {
                 when {
                     isNode() -> "${attendee.attendances.size / 2} ${getString(R.string.day)}"
-                    isChild() -> end!!.toString(PATTERN_DATETIME).let { if (isDailyDisabled) "($it)" else it }
+                    isChild() -> end!!.toString(Formats.DATETIME).let { if (isDailyDisabled) "($it)" else it }
                     isTotal() -> getString(R.string.total)
                     else -> throw UnsupportedOperationException()
                 }

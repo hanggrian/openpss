@@ -1,6 +1,6 @@
 package com.hendraanggrian.openpss.ui.invoice
 
-import com.hendraanggrian.openpss.util.PATTERN_DATE
+import com.hendraanggrian.openpss.Formats
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.FxComponent
 import com.hendraanggrian.openpss.data.Customer
@@ -85,7 +85,7 @@ class AddInvoiceDialog(
                 styleClass += R.style.bold
             } col 1 row 0
             label(getString(R.string.date)) col 2 row 0 hpriority ALWAYS halign RIGHT
-            label(dateTime.toString(PATTERN_DATE)) {
+            label(dateTime.toString(Formats.DATE)) {
                 styleClass += R.style.bold
             } col 3 row 0
             label(getString(R.string.customer)) col 0 row 1

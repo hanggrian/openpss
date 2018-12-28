@@ -2,6 +2,8 @@ package com.hendraanggrian.openpss.server.routing
 
 import com.hendraanggrian.openpss.data.Recess
 import com.hendraanggrian.openpss.schema.Recesses
+import com.hendraanggrian.openpss.server.getLocalTime
+import com.hendraanggrian.openpss.server.getString
 import com.hendraanggrian.openpss.server.transaction
 import io.ktor.application.call
 import io.ktor.http.HttpStatusCode
@@ -13,7 +15,7 @@ import io.ktor.routing.post
 import io.ktor.routing.route
 
 fun Routing.recessRouting() {
-    route("recesses") {
+    route("$Recesses") {
         get {
             call.respond(transaction { Recesses().toList() })
         }

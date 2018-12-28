@@ -11,6 +11,7 @@ data class Employee(
 ) : Document<Employees>, Named, Serializable {
 
     companion object {
+
         const val DEFAULT_PASSWORD = "1234"
         val BACKDOOR: Employee = Employee("Test", DEFAULT_PASSWORD, true)
 

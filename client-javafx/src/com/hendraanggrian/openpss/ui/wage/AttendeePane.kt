@@ -1,6 +1,6 @@
 package com.hendraanggrian.openpss.ui.wage
 
-import com.hendraanggrian.openpss.util.PATTERN_DATETIME_EXTENDED
+import com.hendraanggrian.openpss.Formats
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.FxComponent
 import com.hendraanggrian.openpss.control.IntField
@@ -117,7 +117,7 @@ class AttendeePane(
                         graphic = null
                         if (dateTime != null && !empty) graphic = ktfx.layouts.hbox {
                             alignment = CENTER
-                            val itemLabel = label(dateTime.toString(PATTERN_DATETIME_EXTENDED)) {
+                            val itemLabel = label(dateTime.toString(Formats.DATETIME_EXTENDED)) {
                                 maxWidth = Double.MAX_VALUE
                             } hpriority ALWAYS
                             if (index % 2 == 0) {

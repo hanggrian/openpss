@@ -1,8 +1,7 @@
 package com.hendraanggrian.openpss.ui.finance
 
 import com.hendraanggrian.openpss.App.Companion.STRETCH_POINT
-import com.hendraanggrian.openpss.util.PATTERN_DATE
-import com.hendraanggrian.openpss.util.PATTERN_TIME
+import com.hendraanggrian.openpss.Formats
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.DateBox
 import com.hendraanggrian.openpss.control.MonthBox
@@ -108,7 +107,7 @@ class FinanceController : ActionController(), Refreshable {
         )
 
         dailyNoColumn.numberCell(this) { runBlocking { api.getInvoice(invoiceId).no } }
-        dailyTimeColumn.stringCell { dateTime.toString(PATTERN_TIME) }
+        dailyTimeColumn.stringCell { dateTime.toString(Formats.TIME) }
         dailyEmployeeColumn.stringCell { runBlocking { api.getEmployee(employeeId).toString() } }
         dailyValueColumn.currencyCell(this) { value }
         dailyCashColumn.doneCell { isCash() }
@@ -120,7 +119,7 @@ class FinanceController : ActionController(), Refreshable {
             }
         }
 
-        monthlyDateColumn.stringCell { date.toString(PATTERN_DATE) }
+        monthlyDateColumn.stringCell { date.toString(Formats.DATE) }
         monthlyCashColumn.currencyCell(this) { cash }
         monthlyNonCashColumn.currencyCell(this) { nonCash }
         monthlyTotalColumn.currencyCell(this) { total }

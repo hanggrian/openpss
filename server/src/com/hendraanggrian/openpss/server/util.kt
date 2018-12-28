@@ -1,14 +1,19 @@
-package com.hendraanggrian.openpss.server.routing
+@file:Suppress("NOTHING_TO_INLINE")
+
+package com.hendraanggrian.openpss.server
 
 import com.hendraanggrian.openpss.data.GlobalSetting
 import com.hendraanggrian.openpss.i18n.Language
-import com.hendraanggrian.openpss.server.transaction
 import io.ktor.application.ApplicationCall
 import org.joda.time.DateTime
 import org.joda.time.LocalDate
 import org.joda.time.LocalDateTime
 import org.joda.time.LocalTime
 import java.util.ResourceBundle
+
+inline fun <T> Iterable<T>.isEmpty(): Boolean = count() == 0
+
+inline fun <T> Iterable<T>.isNotEmpty(): Boolean = count() != 0
 
 val resources: ResourceBundle
     get() = Language.ofFullCode(transaction { findGlobalSetting(GlobalSetting.KEY_LANGUAGE).value }).toResourcesBundle()

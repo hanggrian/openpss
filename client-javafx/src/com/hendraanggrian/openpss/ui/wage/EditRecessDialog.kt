@@ -1,6 +1,6 @@
 package com.hendraanggrian.openpss.ui.wage
 
-import com.hendraanggrian.openpss.util.PATTERN_TIME
+import com.hendraanggrian.openpss.Formats
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.FxComponent
 import com.hendraanggrian.openpss.data.Recess
@@ -13,10 +13,10 @@ class EditRecessDialog(component: FxComponent) : TableDialog<Recess>(component, 
 
     init {
         getString(R.string.start)<String> {
-            stringCell { start.toString(PATTERN_TIME) }
+            stringCell { start.toString(Formats.TIME) }
         }
         getString(R.string.end)<String> {
-            stringCell { end.toString(PATTERN_TIME) }
+            stringCell { end.toString(Formats.TIME) }
         }
     }
 

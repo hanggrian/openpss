@@ -5,9 +5,11 @@ import kotlinx.nosql.boolean
 import kotlinx.nosql.mongodb.DocumentSchema
 import kotlinx.nosql.string
 
-object Employees : DocumentSchema<Employee>("employees", Employee::class),
-    NamedSchema {
+object Employees : DocumentSchema<Employee>("$Employees", Employee::class),
+    NameSchemed {
     override val name = string("name")
     val password = string("password")
     val isAdmin = boolean("is_admin")
+
+    override fun toString(): String = "employees"
 }

@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.ui.schedule
 
 import com.hendraanggrian.openpss.App.Companion.STRETCH_POINT
-import com.hendraanggrian.openpss.util.PATTERN_DATETIME_EXTENDED
+import com.hendraanggrian.openpss.Formats
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.StretchableButton
 import com.hendraanggrian.openpss.control.UncollapsibleTreeItem
@@ -109,7 +109,7 @@ class ScheduleController : ActionController(), Refreshable {
                     addAll(UncollapsibleTreeItem(
                         Schedule(
                             invoice, api.getCustomer(invoice.customerId).name, "", "",
-                            invoice.dateTime.toString(PATTERN_DATETIME_EXTENDED)
+                            invoice.dateTime.toString(Formats.DATETIME_EXTENDED)
                         )
                     ).apply {
                         Schedule.of(this@ScheduleController, invoice).forEach { children += TreeItem<Schedule>(it) }

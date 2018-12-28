@@ -3,6 +3,7 @@ package com.hendraanggrian.openpss.api
 import com.hendraanggrian.openpss.data.Employee
 import com.hendraanggrian.openpss.data.Invoice
 import com.hendraanggrian.openpss.data.Page
+import com.hendraanggrian.openpss.schema.Invoices
 import io.ktor.client.request.get
 import io.ktor.client.request.post
 import io.ktor.http.HttpMethod
@@ -19,7 +20,7 @@ interface InvoiceApi : Api {
         page: Int,
         count: Int
     ): Page<Invoice> = client.get {
-        apiUrl("invoices")
+        apiUrl("$Invoices")
         parameters(
             "search" to search,
             "customer" to customer,
@@ -31,18 +32,18 @@ interface InvoiceApi : Api {
     }
 
     suspend fun addInvoice(invoice: Invoice): Invoice = client.post {
-        apiUrl("invoices")
+        apiUrl("$Invoices")
         body = invoice
     }
 
     suspend fun deleteInvoice(login: Employee, invoice: Invoice): Boolean = client.requestStatus(HttpMethod.Delete) {
-        apiUrl("invoices")
+        apiUrl("$Invoices")
         body = invoice
         parameters("login" to login.name)
     }
 
     suspend fun getInvoice(id: Id<String, *>): Invoice = client.get {
-        apiUrl("invoices/$id")
+        apiUrl("$Invoices/$id")
     }
 
     suspend fun editInvoice(
@@ -51,7 +52,7 @@ interface InvoiceApi : Api {
         isPaid: Boolean = invoice.isPaid,
         isDone: Boolean = invoice.isDone
     ): Boolean = client.requestStatus(HttpMethod.Put) {
-        apiUrl("invoices/${invoice.id}")
+        apiUrl("$Invoices/${invoice.id}")
         parameters(
             "isPrinted" to isPrinted,
             "isPaid" to isPaid,
@@ -60,6 +61,6 @@ interface InvoiceApi : Api {
     }
 
     suspend fun nextInvoice(): Int = client.get {
-        apiUrl("invoices/next")
+        apiUrl("$Invoices/next")
     }
 }

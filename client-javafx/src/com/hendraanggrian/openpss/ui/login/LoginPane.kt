@@ -147,14 +147,12 @@ class LoginPane(private val resourced: Resources) : _StackPane(), FxComponent {
                             PasswordDialog().show {
                                 SettingsFile.save()
                                 GlobalScope.launch(Dispatchers.JavaFx) {
-                                    try {
+                                    runCatching {
                                         val employee = api.login(employeeField.text, passwordField.text)
                                         onSuccess?.invoke(employee)
-                                    } catch (e: Exception) {
-                                        if (BuildConfig.DEBUG) {
-                                            e.printStackTrace()
-                                        }
-                                        TextDialog(this@LoginPane, R.string.login_failed, e.message.toString())
+                                    }.onFailure {
+                                        if (BuildConfig.DEBUG) it.printStackTrace()
+                                        TextDialog(this@LoginPane, R.string.login_failed, it.message.toString())
                                             .show(this@LoginPane)
                                     }
                                 }

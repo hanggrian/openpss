@@ -15,6 +15,7 @@ import io.ktor.client.request.request
 import io.ktor.client.response.HttpResponse
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
+import io.ktor.http.HttpMethod
 import io.ktor.http.contentType
 import io.ktor.http.isSuccess
 import io.ktor.http.takeFrom
@@ -38,8 +39,11 @@ interface Api {
     fun HttpRequestBuilder.parameters(vararg pairs: Pair<String, Any?>) =
         pairs.forEach { (key, value) -> parameter(key, value) }
 
-    suspend fun HttpClient.requestStatus(block: HttpRequestBuilder.() -> Unit): Boolean =
-        request<HttpResponse>(block).use { it.status.isSuccess() }
+    suspend fun HttpClient.requestStatus(method: HttpMethod, block: HttpRequestBuilder.() -> Unit): Boolean =
+        request<HttpResponse> {
+            this.method = method
+            block()
+        }.use { it.status.isSuccess() }
 }
 
 /** GitHub API used to check latest version. */

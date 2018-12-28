@@ -147,7 +147,7 @@ class WageController : ActionController() {
         anchorPane.children += loadingPane
         flowPane.children.clear()
         GlobalScope.launch(Dispatchers.Default) {
-            try {
+            runCatching {
                 Reader.of(ReaderFile.WAGE_READER).read(file).forEach { attendee ->
                     attendee.init(api)
                     GlobalScope.launch(Dispatchers.JavaFx) {
@@ -182,12 +182,12 @@ class WageController : ActionController() {
                     anchorPane.children -= loadingPane
                     bindProcessButton()
                 }
-            } catch (e: Exception) {
-                if (DEBUG) e.printStackTrace()
+            }.onFailure {
+                if (DEBUG) it.printStackTrace()
                 GlobalScope.launch(Dispatchers.JavaFx) {
                     anchorPane.children -= loadingPane
                     bindProcessButton()
-                    TextDialog(this@WageController, R.string.reading_failed, e.message.toString()).show()
+                    TextDialog(this@WageController, R.string.reading_failed, it.message.toString()).show()
                 }
             }
         }

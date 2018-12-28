@@ -11,9 +11,7 @@ import org.joda.time.LocalTime
 import java.util.ResourceBundle
 
 val resources: ResourceBundle
-    get() = Language.ofFullCode(transaction {
-        findGlobalSettings(GlobalSetting.KEY_LANGUAGE).single().value
-    }).toResourcesBundle()
+    get() = Language.ofFullCode(transaction { findGlobalSetting(GlobalSetting.KEY_LANGUAGE).value }).toResourcesBundle()
 
 fun ApplicationCall.getString(name: String): String = parameters[name]!!
 

@@ -1,12 +1,13 @@
 package com.hendraanggrian.openpss.data
 
+import com.google.gson.annotations.SerializedName
 import com.hendraanggrian.openpss.schema.Customers
 import kotlinx.nosql.Id
 import org.joda.time.LocalDate
 
 data class Customer(
     override var name: String,
-    val isCompany: Boolean,
+    @SerializedName("is_company") val isCompany: Boolean,
     val since: LocalDate,
     var address: String?,
     var note: String?,
@@ -19,8 +20,7 @@ data class Customer(
             name: String,
             isCompany: Boolean,
             since: LocalDate
-        ): Customer =
-            Customer(name, isCompany, since, null, null, listOf())
+        ): Customer = Customer(name, isCompany, since, null, null, listOf())
     }
 
     override lateinit var id: Id<String, Customers>

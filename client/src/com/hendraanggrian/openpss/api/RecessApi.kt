@@ -21,8 +21,7 @@ interface RecessApi : Api {
         )
     }
 
-    suspend fun deleteRecess(id: Id<String, *>): Boolean = client.requestStatus {
+    suspend fun deleteRecess(id: Id<String, *>): Boolean = client.requestStatus(HttpMethod.Delete) {
         apiUrl("recesses/$id")
-        method = HttpMethod.Delete
     }
 }

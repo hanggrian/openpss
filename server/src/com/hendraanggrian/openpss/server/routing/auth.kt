@@ -13,7 +13,7 @@ fun Routing.authRouting() {
     get("login") {
         val name = call.getString("name")
         val password = call.getString("password")
-        val employee = transaction { Employees { it.name.equal(name) }.singleOrNull() }
+        val employee = transaction { Employees { this.name.equal(name) }.singleOrNull() }
         when {
             employee == null -> call.respond(HttpStatusCode.NotFound)
             employee.password != password -> call.respond(HttpStatusCode.Unauthorized)

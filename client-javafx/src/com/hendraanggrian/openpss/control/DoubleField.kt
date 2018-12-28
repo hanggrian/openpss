@@ -28,12 +28,10 @@ class DoubleField : JFXTextField() {
             fromString { it.toDoubleOrNull() ?: 0.0 }
         }
         validProperty().bind(buildBooleanBinding(textProperty()) {
-            try {
+            runCatching {
                 java.lang.Double.parseDouble(text)
                 true
-            } catch (e: NumberFormatException) {
-                false
-            }
+            }.getOrDefault(false)
         })
         focusedProperty().listener { _, _, focused ->
             if (focused && text.isNotEmpty()) {

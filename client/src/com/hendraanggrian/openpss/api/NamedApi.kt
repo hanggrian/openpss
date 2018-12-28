@@ -24,15 +24,13 @@ interface NamedApi : Api {
         apiUrl("plate-prices/$id")
     }
 
-    suspend fun editPlatePrice(id: Id<String, *>, price: Double): Boolean = client.requestStatus {
+    suspend fun editPlatePrice(id: Id<String, *>, price: Double): Boolean = client.requestStatus(HttpMethod.Put) {
         apiUrl("plate-prices/$id")
-        method = HttpMethod.Put
         parameters("price" to price)
     }
 
-    suspend fun deletePlatePrice(id: Id<String, *>): Boolean = client.requestStatus {
+    suspend fun deletePlatePrice(id: Id<String, *>): Boolean = client.requestStatus(HttpMethod.Delete) {
         apiUrl("plate-prices/$id")
-        method = HttpMethod.Delete
     }
 
     suspend fun getOffsetPrices(): List<OffsetPrice> = client.get {
@@ -49,9 +47,8 @@ interface NamedApi : Api {
     }
 
     suspend fun editOffsetPrice(id: Id<String, *>, minQty: Int, minPrice: Double, excessPrice: Double): Boolean =
-        client.requestStatus {
+        client.requestStatus(HttpMethod.Put) {
             apiUrl("offset-prices/$id")
-            method = HttpMethod.Put
             parameters(
                 "minQty" to minQty,
                 "minPrice" to minPrice,
@@ -59,9 +56,8 @@ interface NamedApi : Api {
             )
         }
 
-    suspend fun deleteOffsetPrice(id: Id<String, *>): Boolean = client.requestStatus {
+    suspend fun deleteOffsetPrice(id: Id<String, *>): Boolean = client.requestStatus(HttpMethod.Delete) {
         apiUrl("offset-prices/$id")
-        method = HttpMethod.Delete
     }
 
     suspend fun getDigitalPrices(): List<DigitalPrice> = client.get {
@@ -78,18 +74,16 @@ interface NamedApi : Api {
     }
 
     suspend fun editDigitalPrice(id: Id<String, *>, oneSidePrice: Double, twoSidePrice: Double): Boolean =
-        client.requestStatus {
+        client.requestStatus(HttpMethod.Put) {
             apiUrl("digital-prices/$id")
-            method = HttpMethod.Put
             parameters(
                 "oneSidePrice" to oneSidePrice,
                 "twoSidePrice" to twoSidePrice
             )
         }
 
-    suspend fun deleteDigitalPrice(id: Id<String, *>): Boolean = client.requestStatus {
+    suspend fun deleteDigitalPrice(id: Id<String, *>): Boolean = client.requestStatus(HttpMethod.Delete) {
         apiUrl("digital-prices/$id")
-        method = HttpMethod.Delete
     }
 
     suspend fun getEmployees(): List<Employee> = client.get {
@@ -106,9 +100,8 @@ interface NamedApi : Api {
     }
 
     suspend fun editEmployee(login: Employee, id: Id<String, *>, password: String, isAdmin: Boolean): Boolean =
-        client.requestStatus {
+        client.requestStatus(HttpMethod.Put) {
             apiUrl("employees/$id")
-            method = HttpMethod.Put
             parameters(
                 "password" to password,
                 "isAdmin" to isAdmin,
@@ -116,9 +109,8 @@ interface NamedApi : Api {
             )
         }
 
-    suspend fun deleteEmployee(login: Employee, id: Id<String, *>): Boolean = client.requestStatus {
+    suspend fun deleteEmployee(login: Employee, id: Id<String, *>): Boolean = client.requestStatus(HttpMethod.Delete) {
         apiUrl("employees/$id")
-        method = HttpMethod.Delete
         parameters("login" to login.name)
     }
 }

@@ -28,12 +28,12 @@ fun Routing.wageRouting() {
         route("{wageId}") {
             get {
                 call.respond(transaction {
-                    Wages { it.wageId.equal(call.getInt("wageId")) }.singleOrNull()
+                    Wages { wageId.equal(call.getInt("wageId")) }.singleOrNull()
                 } ?: HttpStatusCode.NotFound)
             }
             put {
                 transaction {
-                    Wages { it.wageId.equal(call.getInt("wageId")) }
+                    Wages { wageId.equal(call.getInt("wageId")) }
                         .projection { daily + hourlyOvertime }
                         .update(call.getInt("daily"), call.getInt("hourlyOvertime"))
                 }

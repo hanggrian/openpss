@@ -16,12 +16,12 @@ fun Routing.globalSettingRouting() {
     route("global-settings/{key}") {
         get {
             call.respond(transaction {
-                GlobalSettings { it.key.equal(call.getString("key")) }.single()
+                GlobalSettings { key.equal(call.getString("key")) }.single()
             })
         }
         post {
             transaction {
-                GlobalSettings { it.key.equal(call.getString("key")) }
+                GlobalSettings { key.equal(call.getString("key")) }
                     .projection { this.value }
                     .update(call.getString("value"))
             }

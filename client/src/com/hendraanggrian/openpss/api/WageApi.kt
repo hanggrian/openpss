@@ -3,6 +3,7 @@ package com.hendraanggrian.openpss.api
 import com.hendraanggrian.openpss.data.Wage
 import io.ktor.client.request.get
 import io.ktor.client.request.post
+import io.ktor.http.HttpMethod
 
 interface WageApi : Api {
 
@@ -19,7 +20,7 @@ interface WageApi : Api {
         apiUrl("wages/$wageId")
     } as? Wage
 
-    suspend fun editWage(wageId: Int, daily: Int, hourlyOvertime: Int): Boolean = client.requestStatus {
+    suspend fun editWage(wageId: Int, daily: Int, hourlyOvertime: Int): Boolean = client.requestStatus(HttpMethod.Put) {
         apiUrl("wages/$wageId")
         parameters(
             "daily" to daily,

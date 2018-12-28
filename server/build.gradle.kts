@@ -6,7 +6,7 @@ plugins {
     generating("buildconfig")
 }
 
-group = RELEASE_GROUP
+group = "$RELEASE_GROUP.server"
 version = RELEASE_VERSION
 
 sourceSets {

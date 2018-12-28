@@ -10,9 +10,8 @@ interface GlobalSettingApi : Api {
         apiUrl("global-settings/$key")
     }
 
-    suspend fun setGlobalSetting(key: String, value: String): Boolean = client.requestStatus {
+    suspend fun setGlobalSetting(key: String, value: String): Boolean = client.requestStatus(HttpMethod.Post) {
         apiUrl("global-settings/$key")
-        method = HttpMethod.Post
         parameters("value" to value)
     }
 }

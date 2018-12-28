@@ -1,7 +1,6 @@
 package com.hendraanggrian.openpss.server
 
 import com.google.gson.GsonBuilder
-import com.hendraanggrian.openpss.BuildConfig
 import com.hendraanggrian.openpss.server.routing.authRouting
 import com.hendraanggrian.openpss.server.routing.customerRouting
 import com.hendraanggrian.openpss.server.routing.dateTimeRouting

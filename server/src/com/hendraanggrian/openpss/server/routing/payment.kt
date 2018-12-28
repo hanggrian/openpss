@@ -1,12 +1,11 @@
 package com.hendraanggrian.openpss.server.routing
 
-import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.data.Log
 import com.hendraanggrian.openpss.data.Payment
 import com.hendraanggrian.openpss.schema.Invoices
 import com.hendraanggrian.openpss.schema.Logs
 import com.hendraanggrian.openpss.schema.Payments
-import com.hendraanggrian.openpss.server.db.matches
+import com.hendraanggrian.openpss.server.R
 import com.hendraanggrian.openpss.server.transaction
 import io.ktor.application.call
 import io.ktor.http.HttpStatusCode
@@ -23,7 +22,7 @@ fun Routing.paymentRouting() {
     route("payments") {
         get {
             call.respond(transaction {
-                Payments { it.dateTime.matches(call.parameters["dateTime"]!!) }.toList()
+                Payments { dateTime.matches(call.parameters["dateTime"]!!) }.toList()
             })
         }
         post {
@@ -46,13 +45,13 @@ fun Routing.paymentRouting() {
         route("{invoiceId}") {
             get {
                 call.respond(transaction {
-                    Payments { it.invoiceId.equal(call.getString("invoiceId")) }
+                    Payments { invoiceId.equal(call.getString("invoiceId")) }
                 })
             }
             route("due") {
                 get {
                     call.respond(transaction {
-                        Payments { it.invoiceId.equal(call.getString("invoiceId")) }
+                        Payments { invoiceId.equal(call.getString("invoiceId")) }
                             .sumByDouble { it.value }
                     })
                 }

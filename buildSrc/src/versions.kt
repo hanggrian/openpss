@@ -1,7 +1,7 @@
 const val VERSION_GRADLE = "5.1-milestone-1"
 
 const val VERSION_KOTLIN = "1.3.11"
-const val VERSION_COROUTINES = "1.0.0"
+const val VERSION_COROUTINES = "1.1.0"
 const val VERSION_NOSQL = "0.1-SNAPSHOT"
 internal const val VERSION_DOKKA = "0.9.17"
 internal const val VERSION_KTOR = "1.0.1"

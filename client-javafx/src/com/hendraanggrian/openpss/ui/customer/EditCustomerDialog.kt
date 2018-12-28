@@ -78,7 +78,7 @@ class EditCustomerDialog(
             customer.isCompany,
             customer.since,
             addressField.text.orNull(),
-            customer.note,
+            noteArea.text,
             customer.contacts
         )
 

@@ -1,12 +1,11 @@
 package com.hendraanggrian.openpss.server.routing
 
-import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.data.Customer
 import com.hendraanggrian.openpss.data.Log
 import com.hendraanggrian.openpss.data.Page
 import com.hendraanggrian.openpss.schema.Customers
 import com.hendraanggrian.openpss.schema.Logs
-import com.hendraanggrian.openpss.server.db.matches
+import com.hendraanggrian.openpss.server.R
 import com.hendraanggrian.openpss.server.transaction
 import com.hendraanggrian.openpss.util.isNotEmpty
 import io.ktor.application.call
@@ -31,11 +30,11 @@ fun Routing.customerRouting() {
             val count = call.getInt("count")
             call.respond(
                 transaction {
-                    val customers = Customers.buildQuery {
+                    val customers = Customers.buildQuery { _, or ->
                         if (search.isNotBlank()) {
-                            or(it.name.matches(search, Pattern.CASE_INSENSITIVE))
-                            or(it.address.matches(search, Pattern.CASE_INSENSITIVE))
-                            or(it.note.matches(search, Pattern.CASE_INSENSITIVE))
+                            or(name.matches(search, Pattern.CASE_INSENSITIVE))
+                            or(address.matches(search, Pattern.CASE_INSENSITIVE))
+                            or(note.matches(search, Pattern.CASE_INSENSITIVE))
                         }
                     }
                     Page(
@@ -49,14 +48,8 @@ fun Routing.customerRouting() {
             val customer = call.receive<Customer>()
             when {
                 transaction {
-                    Customers {
-                        it.name.matches(
-                            "^$customer$",
-                            Pattern.CASE_INSENSITIVE
-                        )
-                    }.isNotEmpty()
-                } ->
-                    call.respond(HttpStatusCode.NotAcceptable, "Name taken")
+                    Customers { name.matches("^$customer$", Pattern.CASE_INSENSITIVE) }.isNotEmpty()
+                } -> call.respond(HttpStatusCode.NotAcceptable, "Name taken")
                 else -> {
                     customer.id = transaction { Customers.insert(customer) }
                     call.respond(customer)
@@ -72,8 +65,8 @@ fun Routing.customerRouting() {
                 transaction {
                     val query = Customers[call.getString("id")]
                     val customerName = query.single().name
-                    query.projection { address + note }
-                        .update(customer.address, customer.note)
+                    query.projection { name + address + note }
+                        .update(customer.name, customer.address, customer.note)
                     Logs += Log.new(
                         resources.getString(R.string.customer_edit).format(customerName),
                         call.getString("login")

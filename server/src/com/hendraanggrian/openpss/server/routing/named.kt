@@ -1,6 +1,6 @@
 package com.hendraanggrian.openpss.server.routing
 
-import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.server.R
 import com.hendraanggrian.openpss.data.DigitalPrice
 import com.hendraanggrian.openpss.data.Document
 import com.hendraanggrian.openpss.data.Employee
@@ -14,8 +14,8 @@ import com.hendraanggrian.openpss.schema.Logs
 import com.hendraanggrian.openpss.schema.NamedSchema
 import com.hendraanggrian.openpss.schema.OffsetPrices
 import com.hendraanggrian.openpss.schema.PlatePrices
-import com.hendraanggrian.openpss.server.db.DocumentQuery
-import com.hendraanggrian.openpss.server.db.wrapper
+import com.hendraanggrian.openpss.server.DocumentQuery
+import com.hendraanggrian.openpss.server.SessionWrapper
 import com.hendraanggrian.openpss.server.transaction
 import com.hendraanggrian.openpss.util.isNotEmpty
 import io.ktor.application.ApplicationCall
@@ -54,7 +54,7 @@ fun Routing.digitalPriceRouting() = namedRouting("digital-prices", DigitalPrices
     })
 
 fun Routing.employeeRouting() = namedRouting("employees", Employees,
-    onGet = { call ->
+    onGet = {
         val employees = Employees()
         employees.forEach { it.clearPassword() }
         employees.toList()
@@ -78,10 +78,10 @@ fun Routing.employeeRouting() = namedRouting("employees", Employees,
 private fun <S, D> Routing.namedRouting(
     path: String,
     schema: S,
-    onGet: wrapper.(call: ApplicationCall) -> List<D> = { schema().toList() },
+    onGet: SessionWrapper.(call: ApplicationCall) -> List<D> = { schema().toList() },
     onCreate: (call: ApplicationCall) -> D,
-    onEdit: wrapper.(call: ApplicationCall, query: DocumentQuery<S, String, D>) -> Unit,
-    onDeleted: wrapper.(call: ApplicationCall, query: DocumentQuery<S, String, D>) -> Unit = { _, _ -> }
+    onEdit: SessionWrapper.(call: ApplicationCall, query: DocumentQuery<S, String, D>) -> Unit,
+    onDeleted: SessionWrapper.(call: ApplicationCall, query: DocumentQuery<S, String, D>) -> Unit = { _, _ -> }
 ) where S : DocumentSchema<D>, S : NamedSchema, D : Document<S>, D : Named {
     route(path) {
         get {
@@ -90,7 +90,7 @@ private fun <S, D> Routing.namedRouting(
         post {
             val doc = onCreate(call)
             when {
-                transaction { schema { it.name.equal(doc.name) }.isNotEmpty() } ->
+                transaction { schema { name.equal(doc.name) }.isNotEmpty() } ->
                     call.respond(HttpStatusCode.NotAcceptable, "Name taken")
                 else -> {
                     doc.id = transaction { schema.insert(doc) }

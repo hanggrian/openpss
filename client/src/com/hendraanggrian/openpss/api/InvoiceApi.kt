@@ -35,9 +35,8 @@ interface InvoiceApi : Api {
         body = invoice
     }
 
-    suspend fun deleteInvoice(login: Employee, invoice: Invoice): Boolean = client.requestStatus {
+    suspend fun deleteInvoice(login: Employee, invoice: Invoice): Boolean = client.requestStatus(HttpMethod.Delete) {
         apiUrl("invoices")
-        method = HttpMethod.Delete
         body = invoice
         parameters("login" to login.name)
     }
@@ -51,7 +50,7 @@ interface InvoiceApi : Api {
         isPrinted: Boolean = invoice.isPrinted,
         isPaid: Boolean = invoice.isPaid,
         isDone: Boolean = invoice.isDone
-    ): Boolean = client.requestStatus {
+    ): Boolean = client.requestStatus(HttpMethod.Put) {
         apiUrl("invoices/${invoice.id}")
         parameters(
             "isPrinted" to isPrinted,

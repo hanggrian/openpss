@@ -20,9 +20,8 @@ interface PaymentApi : Api {
         body = payment
     }
 
-    suspend fun deletePayment(login: Employee, payment: Payment): Boolean = client.requestStatus {
+    suspend fun deletePayment(login: Employee, payment: Payment): Boolean = client.requestStatus(HttpMethod.Delete) {
         apiUrl("payments")
-        method = HttpMethod.Delete
         body = payment
         parameters("login" to login.name)
     }

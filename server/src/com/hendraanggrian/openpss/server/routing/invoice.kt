@@ -1,6 +1,5 @@
 package com.hendraanggrian.openpss.server.routing
 
-import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.data.Invoice
 import com.hendraanggrian.openpss.data.Log
 import com.hendraanggrian.openpss.data.Page
@@ -8,7 +7,7 @@ import com.hendraanggrian.openpss.schema.Customers
 import com.hendraanggrian.openpss.schema.Invoices
 import com.hendraanggrian.openpss.schema.Logs
 import com.hendraanggrian.openpss.schema.Payments
-import com.hendraanggrian.openpss.server.db.matches
+import com.hendraanggrian.openpss.server.R
 import com.hendraanggrian.openpss.server.transaction
 import io.ktor.application.call
 import io.ktor.http.HttpStatusCode
@@ -36,21 +35,21 @@ fun Routing.invoiceRouting() {
             val count = call.getInt("count")
             call.respond(
                 transaction {
-                    val invoices = Invoices.buildQuery {
+                    val invoices = Invoices.buildQuery { and, _ ->
                         when {
-                            search != 0 -> and(it.no.equal(search))
+                            search != 0 -> and(no.equal(search))
                             else -> {
                                 if (customer != null) {
-                                    and(it.customerId.equal(Customers { it.name.equal(customer) }.single().id))
+                                    and(customerId.equal(Customers { name.equal(customer) }.single().id))
                                 }
                                 if (isPaid != null) {
-                                    and(it.isPaid.equal(isPaid))
+                                    and(this.isPaid.equal(isPaid))
                                 }
                                 if (isDone != null) {
-                                    and(it.isDone.equal(isDone))
+                                    and(this.isDone.equal(isDone))
                                 }
                                 if (date != null) {
-                                    and(it.dateTime.matches(date))
+                                    and(dateTime.matches(date))
                                 }
                             }
                         }
@@ -83,12 +82,12 @@ fun Routing.invoiceRouting() {
         route("{id}") {
             get {
                 call.respond(transaction {
-                    Invoices { it.no.equal(call.getInt("id")) }.single()
+                    Invoices[call.getString("id")].single()
                 })
             }
             put {
                 transaction {
-                    Invoices { it.no.equal(call.getInt("id")) }
+                    Invoices[call.getString("id")]
                         .projection { isPrinted + isPaid + isDone }
                         .update(call.getBoolean("isPrinted"), call.getBoolean("isPaid"), call.getBoolean("isDone"))
                 }

@@ -2,8 +2,6 @@ package com.hendraanggrian.openpss.ui.main.help
 
 import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.BuildConfig
-import com.hendraanggrian.openpss.BuildConfig.DEBUG
-import com.hendraanggrian.openpss.BuildConfig.VERSION
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.FxComponent
 import kotlinx.coroutines.Dispatchers
@@ -18,7 +16,7 @@ object GitHubHelper {
 
     fun checkUpdates(component: FxComponent) {
         GlobalScope.launch(Dispatchers.JavaFx) {
-            try {
+            runCatching {
                 val release = component.gitHubApi.getLatestRelease()
                 when {
                     release.isNewerThan(BuildConfig.VERSION) -> component.rootLayout.jfxSnackbar(
@@ -33,13 +31,13 @@ object GitHubHelper {
                     else -> component.rootLayout.jfxSnackbar(
                         component.getString(
                             R.string.openpss_is_currently_the_newest_version_available,
-                            VERSION
+                            BuildConfig.VERSION
                         ),
                         App.DURATION_SHORT
                     )
                 }
-            } catch (e: Exception) {
-                if (DEBUG) e.printStackTrace()
+            }.onFailure {
+                if (BuildConfig.DEBUG) it.printStackTrace()
                 component.rootLayout.jfxSnackbar(
                     component.getString(R.string.no_internet_connection),
                     App.DURATION_SHORT

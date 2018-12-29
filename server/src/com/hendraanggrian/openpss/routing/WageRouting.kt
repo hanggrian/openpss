@@ -1,14 +1,12 @@
-package com.hendraanggrian.openpss.server.route
+package com.hendraanggrian.openpss.routing
 
 import com.hendraanggrian.openpss.data.Wage
+import com.hendraanggrian.openpss.nosql.transaction
 import com.hendraanggrian.openpss.schema.Wages
-import com.hendraanggrian.openpss.server.getInt
-import com.hendraanggrian.openpss.server.transaction
 import io.ktor.application.call
 import io.ktor.http.HttpStatusCode
 import io.ktor.request.receive
 import io.ktor.response.respond
-import io.ktor.routing.Routing
 import io.ktor.routing.get
 import io.ktor.routing.post
 import io.ktor.routing.put
@@ -16,7 +14,7 @@ import io.ktor.routing.route
 import kotlinx.nosql.equal
 import kotlinx.nosql.update
 
-fun Routing.routeWages() {
+object WageRoute : Route({
     route(Wages.schemaName) {
         get {
             call.respond(transaction { Wages().toList() })
@@ -43,4 +41,4 @@ fun Routing.routeWages() {
             }
         }
     }
-}
+})

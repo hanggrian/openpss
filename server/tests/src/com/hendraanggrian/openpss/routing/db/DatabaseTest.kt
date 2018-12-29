@@ -1,7 +1,6 @@
-package com.hendraanggrian.openpss.server.db
+package com.hendraanggrian.openpss.route.db
 
-import com.hendraanggrian.openpss.server.connect
-import com.hendraanggrian.openpss.server.dbDateTime
+import com.hendraanggrian.openpss.nosql.Database
 import kotlinx.coroutines.runBlocking
 import org.apache.log4j.BasicConfigurator
 import org.junit.Test
@@ -12,8 +11,8 @@ class DatabaseTest {
         runBlocking {
             BasicConfigurator.configure()
             try {
-                connect()
-                println(dbDateTime())
+                Database.connect()
+                println(Database.dateTime())
             } catch (e: Exception) {
                 e.printStackTrace()
                 error(e.message.toString())

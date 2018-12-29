@@ -1,25 +1,18 @@
-package com.hendraanggrian.openpss.server.route
+package com.hendraanggrian.openpss.routing
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.data.Invoice
 import com.hendraanggrian.openpss.data.Log
 import com.hendraanggrian.openpss.data.Page
+import com.hendraanggrian.openpss.nosql.transaction
 import com.hendraanggrian.openpss.schema.Customers
 import com.hendraanggrian.openpss.schema.Invoices
 import com.hendraanggrian.openpss.schema.Logs
 import com.hendraanggrian.openpss.schema.Payments
-import com.hendraanggrian.openpss.server.getBoolean
-import com.hendraanggrian.openpss.server.getBooleanOrNull
-import com.hendraanggrian.openpss.server.getInt
-import com.hendraanggrian.openpss.server.getString
-import com.hendraanggrian.openpss.server.getStringOrNull
-import com.hendraanggrian.openpss.server.resources
-import com.hendraanggrian.openpss.server.transaction
 import io.ktor.application.call
 import io.ktor.http.HttpStatusCode
 import io.ktor.request.receive
 import io.ktor.response.respond
-import io.ktor.routing.Routing
 import io.ktor.routing.delete
 import io.ktor.routing.get
 import io.ktor.routing.post
@@ -29,7 +22,7 @@ import kotlinx.nosql.equal
 import kotlinx.nosql.update
 import kotlin.math.ceil
 
-fun Routing.routeInvoices() {
+object InvoiceRoute : Route({
     route(Invoices.schemaName) {
         get {
             val search = call.getInt("search")
@@ -77,7 +70,7 @@ fun Routing.routeInvoices() {
             transaction {
                 val customerName = Customers[invoice.customerId].single().name
                 Invoices -= invoice.id
-                Payments { Payments.invoiceId.equal(invoice.id) }.remove()
+                Payments { invoiceId.equal(invoice.id) }.remove()
                 Logs += Log.new(
                     resources.getString(R.string.invoice_delete).format(invoice.no, customerName),
                     call.getString("login")
@@ -106,4 +99,4 @@ fun Routing.routeInvoices() {
             }
         }
     }
-}
+})

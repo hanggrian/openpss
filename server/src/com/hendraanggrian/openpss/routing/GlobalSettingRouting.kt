@@ -1,19 +1,17 @@
-package com.hendraanggrian.openpss.server.route
+package com.hendraanggrian.openpss.routing
 
+import com.hendraanggrian.openpss.nosql.transaction
 import com.hendraanggrian.openpss.schema.GlobalSettings
-import com.hendraanggrian.openpss.server.getString
-import com.hendraanggrian.openpss.server.transaction
 import io.ktor.application.call
 import io.ktor.http.HttpStatusCode
 import io.ktor.response.respond
-import io.ktor.routing.Routing
 import io.ktor.routing.get
 import io.ktor.routing.post
 import io.ktor.routing.route
 import kotlinx.nosql.equal
 import kotlinx.nosql.update
 
-fun Routing.routeGlobalSettings() {
+object GlobalSettingRoute : Route({
     route("${GlobalSettings.schemaName}/{key}") {
         get {
             call.respond(transaction {
@@ -29,4 +27,4 @@ fun Routing.routeGlobalSettings() {
             call.respond(HttpStatusCode.OK)
         }
     }
-}
+})

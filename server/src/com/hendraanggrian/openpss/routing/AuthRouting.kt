@@ -1,20 +1,19 @@
-package com.hendraanggrian.openpss.server.route
+package com.hendraanggrian.openpss.routing
 
+import com.hendraanggrian.openpss.nosql.transaction
 import com.hendraanggrian.openpss.schema.Employees
-import com.hendraanggrian.openpss.server.getString
-import com.hendraanggrian.openpss.server.transaction
 import io.ktor.application.call
 import io.ktor.http.HttpStatusCode
 import io.ktor.response.respond
-import io.ktor.routing.Routing
 import io.ktor.routing.get
 import kotlinx.nosql.equal
 
-fun Routing.routeAuth() {
+object AuthRoute : Routing({
     get("login") {
         val name = call.getString("name")
         val password = call.getString("password")
-        val employee = transaction { Employees { this.name.equal(name) }.singleOrNull() }
+        val employee =
+            transaction { Employees { this.name.equal(name) }.singleOrNull() }
         when {
             employee == null -> call.respond(HttpStatusCode.NotFound)
             employee.password != password -> call.respond(HttpStatusCode.Unauthorized)
@@ -24,4 +23,4 @@ fun Routing.routeAuth() {
             }
         }
     }
-}
+})

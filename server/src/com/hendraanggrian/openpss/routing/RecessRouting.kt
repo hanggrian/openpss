@@ -1,20 +1,17 @@
-package com.hendraanggrian.openpss.server.route
+package com.hendraanggrian.openpss.routing
 
 import com.hendraanggrian.openpss.data.Recess
+import com.hendraanggrian.openpss.nosql.transaction
 import com.hendraanggrian.openpss.schema.Recesses
-import com.hendraanggrian.openpss.server.getLocalTime
-import com.hendraanggrian.openpss.server.getString
-import com.hendraanggrian.openpss.server.transaction
 import io.ktor.application.call
 import io.ktor.http.HttpStatusCode
 import io.ktor.response.respond
-import io.ktor.routing.Routing
 import io.ktor.routing.delete
 import io.ktor.routing.get
 import io.ktor.routing.post
 import io.ktor.routing.route
 
-fun Routing.routeRecesses() {
+object RecessRoute : Route({
     route(Recesses.schemaName) {
         get {
             call.respond(transaction { Recesses().toList() })
@@ -33,4 +30,4 @@ fun Routing.routeRecesses() {
             }
         }
     }
-}
+})

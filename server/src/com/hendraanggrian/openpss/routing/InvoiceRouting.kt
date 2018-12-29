@@ -22,7 +22,7 @@ import kotlinx.nosql.equal
 import kotlinx.nosql.update
 import kotlin.math.ceil
 
-object InvoiceRoute : Route({
+object InvoiceRouting : Routing({
     route(Invoices.schemaName) {
         get {
             val search = call.getInt("search")

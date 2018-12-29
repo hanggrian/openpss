@@ -11,7 +11,7 @@ import io.ktor.routing.get
 import io.ktor.routing.post
 import io.ktor.routing.route
 
-object RecessRoute : Route({
+object RecessRouting : Routing({
     route(Recesses.schemaName) {
         get {
             call.respond(transaction { Recesses().toList() })

@@ -1,7 +1,6 @@
 package com.hendraanggrian.openpss.ui.login
 
 import android.os.Bundle
-import android.text.InputType
 import androidx.preference.EditTextPreference
 import androidx.preference.Preference
 import com.hendraanggrian.openpss.R
@@ -12,13 +11,6 @@ class LoginFragment : PreferenceFragmentCompat() {
     override fun onCreatePreferencesFix(savedInstanceState: Bundle?, rootKey: String?) {
         addPreferencesFromResource(R.xml.fragment_login)
         find<EditTextPreference>("employee").bindSummary({ text })
-        find<EditTextPreference>("server_host").bindSummary({ text })
-        find<EditTextPreference>("server_port").bindSummary({ text })
-        find<EditTextPreference>("server_user").bindSummary({ text })
-        find<com.takisoft.preferencex.EditTextPreference>("server_password") {
-            bindSummary({ text }) { it?.toList()?.joinToString("") { "•" } }
-            editText.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
-        }
     }
 
     @Suppress("UNCHECKED_CAST")

@@ -1,21 +1,20 @@
 @file:Suppress("NOTHING_TO_INLINE")
 
-package com.hendraanggrian.openpss.route
+package com.hendraanggrian.openpss.routing
 
 import com.hendraanggrian.openpss.content.Language
 import com.hendraanggrian.openpss.data.GlobalSetting
 import com.hendraanggrian.openpss.nosql.transaction
 import io.ktor.application.ApplicationCall
-import io.ktor.routing.Routing
 import org.joda.time.DateTime
 import org.joda.time.LocalDate
 import org.joda.time.LocalDateTime
 import org.joda.time.LocalTime
 import java.util.ResourceBundle
 
-open class Route(val action: Routing.() -> Unit)
+open class Routing(val action: io.ktor.routing.Routing.() -> Unit)
 
-inline fun Routing.route(route: Route) = route.action(this)
+inline fun io.ktor.routing.Routing.route(routing: Routing) = routing.action(this)
 
 val resources: ResourceBundle
     get() = Language.ofFullCode(transaction { findGlobalSetting(GlobalSetting.KEY_LANGUAGE).value }).toResourcesBundle()

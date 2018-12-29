@@ -3,7 +3,7 @@ package com.hendraanggrian.openpss.nosql
 import com.hendraanggrian.openpss.BuildConfig
 import com.hendraanggrian.openpss.data.Employee
 import com.hendraanggrian.openpss.data.GlobalSetting
-import com.hendraanggrian.openpss.route.isEmpty
+import com.hendraanggrian.openpss.routing.isEmpty
 import com.hendraanggrian.openpss.schema.Customers
 import com.hendraanggrian.openpss.schema.DigitalPrices
 import com.hendraanggrian.openpss.schema.Employees

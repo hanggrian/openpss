@@ -6,10 +6,20 @@ import androidx.core.content.edit
 import androidx.multidex.MultiDex
 import androidx.preference.PreferenceManager
 import com.hendraanggrian.bundler.Bundler
+import com.hendraanggrian.openpss.api.OpenPSSApi
 import com.mongodb.ServerAddress
 
 @Suppress("unused")
 class App : Application() {
+
+    private lateinit var api: OpenPSSApi
+
+    fun getApi(): OpenPSSApi {
+        if (!::api.isInitialized) {
+            api = OpenPSSApi()
+        }
+        return api
+    }
 
     override fun onCreate() {
         super.onCreate()

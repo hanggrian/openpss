@@ -1,4 +1,4 @@
-package com.hendraanggrian.openpss.server.nosql
+package com.hendraanggrian.openpss.nosql
 
 import javafx.util.Builder
 import kotlinx.nosql.AndQuery

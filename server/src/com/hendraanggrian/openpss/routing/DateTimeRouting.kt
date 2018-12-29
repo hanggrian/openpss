@@ -5,7 +5,7 @@ import io.ktor.application.call
 import io.ktor.response.respond
 import io.ktor.routing.get
 
-object DateTimeRoute : Route({
+object DateTimeRouting : Routing({
     get("date") {
         call.respond(Database.date())
     }

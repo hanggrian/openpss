@@ -1,3 +1,5 @@
+import com.android.build.gradle.ProguardFiles.getDefaultProguardFile
+
 plugins {
     android("application")
     kotlin("android")
@@ -16,6 +18,7 @@ android {
         applicationId = RELEASE_GROUP
         versionCode = 1
         versionName = RELEASE_VERSION
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
     sourceSets {
         getByName("main") {
@@ -37,6 +40,7 @@ android {
     }
     lintOptions {
         isAbortOnError = false
+        isCheckTestSources = true
     }
     packagingOptions {
         exclude("META-INF/NOTICE.txt")
@@ -52,23 +56,28 @@ dependencies {
     implementation(kotlinx("coroutines-android", VERSION_COROUTINES))
     implementation(slf4j("android"))
 
-    implementation(androidx("multidex", version = "2.0.0"))
-    implementation(androidx("core", "core-ktx"))
+    implementation(androidx("multidex", version = VERSION_MULTIDEX))
+    implementation(androidx("core", "core-ktx", "1.1.0-alpha03"))
     implementation(androidx("appcompat"))
     implementation(androidx("preference"))
     implementation(androidx("coordinatorlayout"))
     implementation(androidx("recyclerview"))
     implementation(material())
 
-    implementation(hendraanggrian("material", "errorbar-ktx", VERSION_ANDROIDX))
+    implementation(hendraanggrian("material", "errorbar-ktx", VERSION_ERRORBAR))
     implementation(hendraanggrian("pikasso", version = VERSION_PIKASSO))
-    implementation(hendraanggrian("recyclerview", "recyclerview-paginated", VERSION_RECYCLERVIEW_PAGINATED))
+    implementation(
+        hendraanggrian(
+            "recyclerview",
+            "recyclerview-paginated",
+            VERSION_RECYCLERVIEW_PAGINATED
+        )
+    )
     implementation(hendraanggrian("bundler", "bundler-ktx", VERSION_BUNDLER))
     kapt(hendraanggrian("bundler", "bundler-compiler", VERSION_BUNDLER))
 
-    implementation(jakeWharton(null, "process-phoenix", VERSION_PROCESS_PHOENIX))
-
-    implementation("com.takisoft.preferencex:preferencex:$VERSION_ANDROIDX")
+    implementation("com.jakewharton:process-phoenix:$VERSION_PROCESS_PHOENIX")
+    implementation("com.takisoft.preferencex:preferencex:1.0.0")
 }
 
 tasks {

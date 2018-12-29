@@ -236,7 +236,7 @@ class MainController : Controller(), Refreshable {
 
     @FXML fun testViewInvoice() {
         GlobalScope.launch(Dispatchers.JavaFx) {
-            api.getCustomers("", 1, 1).items.firstOrNull()?.let {
+            api.getCustomers("", 0, 1).items.firstOrNull()?.let {
                 ViewInvoicePopover(
                     this@MainController,
                     Invoice(

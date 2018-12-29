@@ -37,13 +37,15 @@ class SearchCustomerPopover(component: FxComponent) : ResultablePopover<Customer
                 prefHeight = 262.0
                 itemsProperty().bind(buildBinding(searchField.textProperty()) {
                     runBlocking {
-                        api.getCustomers(searchField.text, 1, ITEMS_PER_PAGE)
+                        api.getCustomers(searchField.text, 0, ITEMS_PER_PAGE)
                             .items
                             .take(ITEMS_PER_PAGE)
                             .toObservableList()
                     }
                 })
-                itemsProperty().listener { _, _, value -> if (value.isNotEmpty()) selectionModel.selectFirst() }
+                itemsProperty().listener { _, _, value ->
+                    if (value.isNotEmpty()) selectionModel.selectFirst()
+                }
                 onMouseClicked {
                     if (it.isDoubleClick() && customerList.selectionModel.isSelected()) {
                         defaultButton.fire()

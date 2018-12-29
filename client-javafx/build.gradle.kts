@@ -30,8 +30,8 @@ ktlint()
 dependencies {
     api(project(":client"))
     api(project(":core-jvm"))
+    api(kotlinx("coroutines-javafx", VERSION_COROUTINES))
 
-    implementation(kotlinx("coroutines-javafx", VERSION_COROUTINES))
     implementation(slf4j("log4j12"))
 
     implementation(hendraanggrian("ktfx", version = VERSION_KTFX))
@@ -41,7 +41,7 @@ dependencies {
     implementation(apache("commons-lang3", VERSION_COMMONS_LANG))
     implementation(apache("commons-math3", VERSION_COMMONS_MATH))
     implementation(apache("poi-ooxml", VERSION_POI))
-    implementation(commonsValidator())
+    implementation("commons-validator:commons-validator:$VERSION_COMMONS_VALIDATOR")
 
     implementation(google("guava", "$VERSION_GUAVA-jre", "guava"))
 

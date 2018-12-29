@@ -3,11 +3,7 @@
     <string name="openpss_login">Masuk ke OpenPSS</string>
     <string name="login">Masuk</string>
     <string name="employee">Pegawai</string>
-    <string name="server">Server</string>
-    <string name="server_host">Host server</string>
-    <string name="server_port">Port server</string>
-    <string name="server_user">Pengguna server</string>
-    <string name="server_password">Kata sandi server</string>
+    <string name="about">Tentang</string>
     <string name="password">Kata sandi</string>
 
     <string name="customer">Pelanggan</string>

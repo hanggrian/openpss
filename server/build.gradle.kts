@@ -25,12 +25,11 @@ ktlint()
 dependencies {
     api(project(":core-jvm"))
 
-    implementation(mongodb())
-
     implementation(ktor("server-netty"))
     implementation(ktor("gson"))
 
-    implementation(logback("classic"))
+    implementation("ch.qos.logback:logback-classic:$VERSION_LOGBACK")
+    implementation("org.mongodb:mongo-java-driver:$VERSION_MONGODB")
 
     testImplementation(junit())
     testImplementation(kotlin("test", VERSION_KOTLIN))

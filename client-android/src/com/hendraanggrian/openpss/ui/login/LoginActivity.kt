@@ -7,8 +7,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceManager
 import com.hendraanggrian.bundler.extrasOf
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.popup.args
-import com.hendraanggrian.openpss.popup.show
 import com.hendraanggrian.openpss.util.replaceFragment
 import kotlinx.android.synthetic.main.activity_login.*
 
@@ -16,13 +14,10 @@ class LoginActivity : AppCompatActivity() {
 
     private lateinit var preferences: SharedPreferences
 
-    private val preferenceListener = SharedPreferences.OnSharedPreferenceChangeListener { preferences, _ ->
-        loginButton.isEnabled = !preferences.getString("employee", null).isNullOrBlank() &&
-            !preferences.getString("server_host", null).isNullOrBlank() &&
-            preferences.getString("server_port", null)?.toIntOrNull() != null &&
-            !preferences.getString("server_user", null).isNullOrBlank() &&
-            !preferences.getString("server_password", null).isNullOrBlank()
-    }
+    private val preferenceListener =
+        SharedPreferences.OnSharedPreferenceChangeListener { preferences, _ ->
+            loginButton.isEnabled = !preferences.getString("employee", null).isNullOrBlank()
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,14 +39,6 @@ class LoginActivity : AppCompatActivity() {
     }
 
     fun login(@Suppress("UNUSED_PARAMETER") view: View) = PasswordDialogFragment()
-        .args(
-            extrasOf<PasswordDialogFragment>(
-                preferences.getString("server_host", null)!!,
-                preferences.getString("server_port", null)!!,
-                preferences.getString("server_user", null)!!,
-                preferences.getString("server_password", null)!!,
-                preferences.getString("employee", null)!!
-            )
-        )
+        .args(extrasOf<PasswordDialogFragment>(preferences.getString("employee", null)!!))
         .show(supportFragmentManager)
 }

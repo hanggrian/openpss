@@ -6,22 +6,10 @@
         android:key="employee"
         android:title="@string/employee" />
 
-    <androidx.preference.PreferenceCategory android:title="@string/server">
+    <androidx.preference.PreferenceCategory android:title="@string/about">
 
-        <androidx.preference.EditTextPreference
-            android:key="server_host"
-            android:title="@string/server_host" />
-
-        <androidx.preference.EditTextPreference
-            android:key="server_port"
-            android:title="@string/server_port" />
-
-        <androidx.preference.EditTextPreference
-            android:key="server_user"
-            android:title="@string/server_user" />
-
-        <com.takisoft.preferencex.EditTextPreference
-            android:key="server_password"
-            android:title="@string/server_password" />
+        <androidx.preference.Preference
+            android:key="version"
+            android:title="Version" />
     </androidx.preference.PreferenceCategory>
 </androidx.preference.PreferenceScreen>

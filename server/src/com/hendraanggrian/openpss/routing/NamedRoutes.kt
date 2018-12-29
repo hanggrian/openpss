@@ -1,4 +1,4 @@
-package com.hendraanggrian.openpss.route
+package com.hendraanggrian.openpss.routing
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.data.DigitalPrice
@@ -30,7 +30,7 @@ import kotlinx.nosql.equal
 import kotlinx.nosql.update
 import kotlin.reflect.KClass
 
-object PlatePriceRoute : NamedRouted<PlatePrices, PlatePrice>(
+object PlatePriceRouting : NamedRouting<PlatePrices, PlatePrice>(
     PlatePrices,
     PlatePrice::class,
     onEdit = { _, query, price ->
@@ -39,7 +39,7 @@ object PlatePriceRoute : NamedRouted<PlatePrices, PlatePrice>(
     }
 )
 
-object OffsetPriceRoute : NamedRouted<OffsetPrices, OffsetPrice>(
+object OffsetPriceRouting : NamedRouting<OffsetPrices, OffsetPrice>(
     OffsetPrices,
     OffsetPrice::class,
     onEdit = { _, query, price ->
@@ -48,7 +48,7 @@ object OffsetPriceRoute : NamedRouted<OffsetPrices, OffsetPrice>(
     }
 )
 
-object DigitalPriceRoute : NamedRouted<DigitalPrices, DigitalPrice>(
+object DigitalPriceRouting : NamedRouting<DigitalPrices, DigitalPrice>(
     DigitalPrices,
     DigitalPrice::class,
     onEdit = { _, query, price ->
@@ -57,7 +57,7 @@ object DigitalPriceRoute : NamedRouted<DigitalPrices, DigitalPrice>(
     }
 )
 
-object EmployeeRoute : NamedRouted<Employees, Employee>(
+object EmployeeRouting : NamedRouting<Employees, Employee>(
     Employees,
     Employee::class,
     onGet = {
@@ -81,13 +81,13 @@ object EmployeeRoute : NamedRouted<Employees, Employee>(
     }
 )
 
-sealed class NamedRouted<S : NamedDocumentSchema<D>, D : NamedDocument<S>>(
+sealed class NamedRouting<S : NamedDocumentSchema<D>, D : NamedDocument<S>>(
     schema: S,
     klass: KClass<D>,
     onGet: SessionWrapper.(call: ApplicationCall) -> List<D> = { schema().toList() },
     onEdit: SessionWrapper.(call: ApplicationCall, query: DocumentQuery<S, String, D>, document: D) -> Unit,
     onDeleted: SessionWrapper.(call: ApplicationCall, query: DocumentQuery<S, String, D>) -> Unit = { _, _ -> }
-) : Route({
+) : Routing({
     route(schema.schemaName) {
         get {
             call.respond(transaction { onGet(call) })

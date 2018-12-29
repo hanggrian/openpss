@@ -14,7 +14,7 @@ import io.ktor.routing.route
 import kotlinx.nosql.equal
 import kotlinx.nosql.update
 
-object WageRoute : Route({
+object WageRouting : Routing({
     route(Wages.schemaName) {
         get {
             call.respond(transaction { Wages().toList() })

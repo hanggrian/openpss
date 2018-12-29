@@ -3,11 +3,10 @@ package com.hendraanggrian.openpss.popup
 import android.app.Dialog
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatDialogFragment
 import com.hendraanggrian.bundler.Extra
 import com.hendraanggrian.bundler.bindExtras
 
-class TextDialogFragment : AppCompatDialogFragment() {
+class TextDialogFragment : DialogFragment() {
 
     @Extra lateinit var text: String
 

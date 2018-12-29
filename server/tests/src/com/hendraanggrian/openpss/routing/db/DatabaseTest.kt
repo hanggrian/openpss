@@ -1,4 +1,4 @@
-package com.hendraanggrian.openpss.route.db
+package com.hendraanggrian.openpss.routing.db
 
 import com.hendraanggrian.openpss.nosql.Database
 import kotlinx.coroutines.runBlocking

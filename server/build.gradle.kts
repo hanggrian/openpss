@@ -6,7 +6,7 @@ plugins {
     generating("buildconfig")
 }
 
-group = "$RELEASE_GROUP.server"
+group = RELEASE_GROUP
 version = RELEASE_VERSION
 
 sourceSets {
@@ -23,8 +23,7 @@ sourceSets {
 ktlint()
 
 dependencies {
-    api(project(":core"))
-    api(project(":i18n"))
+    api(project(":core-jvm"))
 
     implementation(mongodb())
 

@@ -12,7 +12,7 @@ import kotlinx.nosql.Id
 interface CustomerApi : Api {
 
     suspend fun getCustomers(search: String, page: Int, count: Int): Page<Customer> = client.get {
-        apiUrl("$Customers")
+        apiUrl(Customers.schemaName)
         parameters(
             "search" to search,
             "page" to page,
@@ -21,34 +21,30 @@ interface CustomerApi : Api {
     }
 
     suspend fun addCustomer(customer: Customer): Customer = client.post {
-        apiUrl("$Customers")
-        json()
-        body = customer
+        apiUrl(Customers.schemaName)
+        jsonBody(customer)
     }
 
     suspend fun getCustomer(id: Id<String, *>): Customer = client.get {
-        apiUrl("$Customers/$id")
+        apiUrl(Customers.schemaName)
     }
 
     suspend fun editCustomer(login: Employee, id: Id<String, *>, customer: Customer): Boolean =
         client.requestStatus(HttpMethod.Put) {
-            apiUrl("$Customers/$id")
-            json()
-            body = customer
+            apiUrl("${Customers.schemaName}/$id")
+            jsonBody(customer)
             parameters("login" to login.name)
         }
 
     suspend fun addContact(id: Id<String, *>, contact: Customer.Contact): Customer.Contact = client.post {
-        apiUrl("$Customers/$id/${Customers.Contacts}")
-        json()
-        body = contact
+        apiUrl("${Customers.schemaName}/$id/${Customers.Contacts.schemaName}")
+        jsonBody(contact)
     }
 
     suspend fun deleteContact(login: Employee, id: Id<String, *>, contact: Customer.Contact): Boolean =
         client.requestStatus(HttpMethod.Delete) {
-            apiUrl("$Customers/$id/${Customers.Contacts}")
-            json()
-            body = contact
+            apiUrl("${Customers.schemaName}/$id/${Customers.Contacts.schemaName}")
+            jsonBody(contact)
             parameters("employee" to login.name)
         }
 }

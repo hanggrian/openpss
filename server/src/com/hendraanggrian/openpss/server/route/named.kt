@@ -1,30 +1,24 @@
-package com.hendraanggrian.openpss.server.routing
+package com.hendraanggrian.openpss.server.route
 
-import com.hendraanggrian.openpss.data.DigitalPrice
-import com.hendraanggrian.openpss.data.Employee
+import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.data.Log
-import com.hendraanggrian.openpss.data.OffsetPrice
-import com.hendraanggrian.openpss.data.PlatePrice
-import com.hendraanggrian.openpss.nosql.DocumentQuery
 import com.hendraanggrian.openpss.nosql.NamedDocument
-import com.hendraanggrian.openpss.nosql.NamedSchema
-import com.hendraanggrian.openpss.nosql.SessionWrapper
+import com.hendraanggrian.openpss.nosql.NamedDocumentSchema
 import com.hendraanggrian.openpss.schema.DigitalPrices
 import com.hendraanggrian.openpss.schema.Employees
 import com.hendraanggrian.openpss.schema.Logs
 import com.hendraanggrian.openpss.schema.OffsetPrices
 import com.hendraanggrian.openpss.schema.PlatePrices
-import com.hendraanggrian.openpss.server.R
-import com.hendraanggrian.openpss.server.getBoolean
-import com.hendraanggrian.openpss.server.getDouble
-import com.hendraanggrian.openpss.server.getInt
 import com.hendraanggrian.openpss.server.getString
 import com.hendraanggrian.openpss.server.isNotEmpty
+import com.hendraanggrian.openpss.server.nosql.DocumentQuery
+import com.hendraanggrian.openpss.server.nosql.SessionWrapper
 import com.hendraanggrian.openpss.server.resources
 import com.hendraanggrian.openpss.server.transaction
 import io.ktor.application.ApplicationCall
 import io.ktor.application.call
 import io.ktor.http.HttpStatusCode
+import io.ktor.request.receive
 import io.ktor.response.respond
 import io.ktor.routing.Routing
 import io.ktor.routing.delete
@@ -35,37 +29,37 @@ import io.ktor.routing.route
 import kotlinx.nosql.equal
 import kotlinx.nosql.update
 
-fun Routing.platePriceRouting() = namedRouting("$PlatePrices", PlatePrices,
-    onCreate = { call -> PlatePrice.new(call.getString("name")) },
-    onEdit = { call, query ->
-        query.projection { price }
-            .update(call.getDouble("price"))
+fun Routing.routePlatePrices() = namedRouting(
+    PlatePrices,
+    onEdit = { _, query, price ->
+        query.projection { this.price }
+            .update(price.price)
     })
 
-fun Routing.offsetPriceRouting() = namedRouting("$OffsetPrices", OffsetPrices,
-    onCreate = { call -> OffsetPrice.new(call.getString("name")) },
-    onEdit = { call, query ->
+fun Routing.routeOffsetPrices() = namedRouting(
+    OffsetPrices,
+    onEdit = { _, query, price ->
         query.projection { minQty + minPrice + excessPrice }
-            .update(call.getInt("minQty"), call.getDouble("minPrice"), call.getDouble("excessPrice"))
+            .update(price.minQty, price.minPrice, price.excessPrice)
     })
 
-fun Routing.digitalPriceRouting() = namedRouting("$DigitalPrices", DigitalPrices,
-    onCreate = { call -> DigitalPrice.new(call.getString("name")) },
-    onEdit = { call, query ->
+fun Routing.routeDigitalPrices() = namedRouting(
+    DigitalPrices,
+    onEdit = { _, query, price ->
         query.projection { oneSidePrice + twoSidePrice }
-            .update(call.getDouble("oneSidePrice"), call.getDouble("twoSidePrice"))
+            .update(price.oneSidePrice, price.twoSidePrice)
     })
 
-fun Routing.employeeRouting() = namedRouting("$Employees", Employees,
+fun Routing.routeEmployees() = namedRouting(
+    Employees,
     onGet = {
         val employees = Employees()
         employees.forEach { it.clearPassword() }
         employees.toList()
     },
-    onCreate = { call -> Employee.new(call.getString("name")) },
-    onEdit = { call, query ->
+    onEdit = { call, query, employee ->
         query.projection { password + isAdmin }
-            .update(call.getString("password"), call.getBoolean("isAdmin"))
+            .update(employee.password, employee.isAdmin)
         Logs += Log.new(
             resources.getString(R.string.employee_edit).format(query.single().name),
             call.getString("login")
@@ -78,26 +72,24 @@ fun Routing.employeeRouting() = namedRouting("$Employees", Employees,
         )
     })
 
-private fun <S : NamedSchema<D>, D : NamedDocument<S>> Routing.namedRouting(
-    path: String,
+private inline fun <S : NamedDocumentSchema<D>, reified D : NamedDocument<S>> Routing.namedRouting(
     schema: S,
-    onGet: SessionWrapper.(call: ApplicationCall) -> List<D> = { schema().toList() },
-    onCreate: (call: ApplicationCall) -> D,
-    onEdit: SessionWrapper.(call: ApplicationCall, query: DocumentQuery<S, String, D>) -> Unit,
-    onDeleted: SessionWrapper.(call: ApplicationCall, query: DocumentQuery<S, String, D>) -> Unit = { _, _ -> }
+    noinline onGet: SessionWrapper.(call: ApplicationCall) -> List<D> = { schema().toList() },
+    noinline onEdit: SessionWrapper.(call: ApplicationCall, query: DocumentQuery<S, String, D>, document: D) -> Unit,
+    noinline onDeleted: SessionWrapper.(call: ApplicationCall, query: DocumentQuery<S, String, D>) -> Unit = { _, _ -> }
 ) {
-    route(path) {
+    route(schema.schemaName) {
         get {
             call.respond(transaction { onGet(call) })
         }
         post {
-            val doc = onCreate(call)
+            val document = call.receive<D>()
             when {
-                transaction { schema { name.equal(doc.name) }.isNotEmpty() } ->
+                transaction { schema { name.equal(document.name) }.isNotEmpty() } ->
                     call.respond(HttpStatusCode.NotAcceptable, "Name taken")
                 else -> {
-                    doc.id = transaction { schema.insert(doc) }
-                    call.respond(doc)
+                    document.id = transaction { schema.insert(document) }
+                    call.respond(document)
                 }
             }
         }
@@ -106,8 +98,9 @@ private fun <S : NamedSchema<D>, D : NamedDocument<S>> Routing.namedRouting(
                 call.respond(transaction { schema[call.getString("id")].single() })
             }
             put {
+                val document = call.receive<D>()
                 transaction {
-                    onEdit(call, schema[call.getString("id")])
+                    onEdit(call, schema[call.getString("id")], document)
                 }
                 call.respond(HttpStatusCode.OK)
             }

@@ -24,9 +24,7 @@ class EditDigitalPriceDialog(
             }
             onEditCommit { cell ->
                 val digital = cell.rowValue
-                if (api.editDigitalPrice(digital.id, cell.newValue, digital.twoSidePrice)) {
-                    cell.rowValue.oneSidePrice = cell.newValue
-                }
+                api.editDigitalPrice(digital.apply { oneSidePrice = cell.newValue })
             }
         }
         getString(R.string.two_side_price)<Double> {
@@ -38,16 +36,14 @@ class EditDigitalPriceDialog(
             }
             onEditCommit { cell ->
                 val digital = cell.rowValue
-                if (api.editDigitalPrice(digital.id, digital.oneSidePrice, cell.newValue)) {
-                    cell.rowValue.twoSidePrice = cell.newValue
-                }
+                api.editDigitalPrice(digital.apply { twoSidePrice = cell.newValue })
             }
         }
     }
 
     override suspend fun CoroutineScope.refresh(): List<DigitalPrice> = api.getDigitalPrices()
 
-    override suspend fun CoroutineScope.add(name: String): DigitalPrice? = api.addDigitalPrice(name)
+    override suspend fun CoroutineScope.add(name: String): DigitalPrice? = api.addDigitalPrice(DigitalPrice.new(name))
 
     override suspend fun CoroutineScope.delete(selected: DigitalPrice): Boolean = api.deleteDigitalPrice(selected.id)
 }

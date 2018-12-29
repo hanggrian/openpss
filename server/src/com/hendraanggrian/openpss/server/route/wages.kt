@@ -1,4 +1,4 @@
-package com.hendraanggrian.openpss.server.routing
+package com.hendraanggrian.openpss.server.route
 
 import com.hendraanggrian.openpss.data.Wage
 import com.hendraanggrian.openpss.schema.Wages
@@ -16,8 +16,8 @@ import io.ktor.routing.route
 import kotlinx.nosql.equal
 import kotlinx.nosql.update
 
-fun Routing.wageRouting() {
-    route("$Wages") {
+fun Routing.routeWages() {
+    route(Wages.schemaName) {
         get {
             call.respond(transaction { Wages().toList() })
         }
@@ -29,14 +29,15 @@ fun Routing.wageRouting() {
         route("{wageId}") {
             get {
                 call.respond(transaction {
-                    Wages { wageId.equal(call.getInt("wageId")) }.singleOrNull()
-                } ?: HttpStatusCode.NotFound)
+                    Wages { wageId.equal(call.getInt("wageId")) }.singleOrNull() ?: Wage.NOT_FOUND
+                })
             }
             put {
+                val wage = call.receive<Wage>()
                 transaction {
-                    Wages { wageId.equal(call.getInt("wageId")) }
+                    Wages { wageId.equal(wage.wageId) }
                         .projection { daily + hourlyOvertime }
-                        .update(call.getInt("daily"), call.getInt("hourlyOvertime"))
+                        .update(wage.daily, wage.hourlyOvertime)
                 }
                 call.respond(HttpStatusCode.OK)
             }

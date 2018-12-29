@@ -1,20 +1,21 @@
 package com.hendraanggrian.openpss.server
 
 import com.google.gson.GsonBuilder
+import com.hendraanggrian.openpss.BuildConfig
 import com.hendraanggrian.openpss.content.GsonBuilders
-import com.hendraanggrian.openpss.server.routing.authRouting
-import com.hendraanggrian.openpss.server.routing.customerRouting
-import com.hendraanggrian.openpss.server.routing.dateTimeRouting
-import com.hendraanggrian.openpss.server.routing.digitalPriceRouting
-import com.hendraanggrian.openpss.server.routing.employeeRouting
-import com.hendraanggrian.openpss.server.routing.globalSettingRouting
-import com.hendraanggrian.openpss.server.routing.invoiceRouting
-import com.hendraanggrian.openpss.server.routing.logRouting
-import com.hendraanggrian.openpss.server.routing.offsetPriceRouting
-import com.hendraanggrian.openpss.server.routing.paymentRouting
-import com.hendraanggrian.openpss.server.routing.platePriceRouting
-import com.hendraanggrian.openpss.server.routing.recessRouting
-import com.hendraanggrian.openpss.server.routing.wageRouting
+import com.hendraanggrian.openpss.server.route.routeAuth
+import com.hendraanggrian.openpss.server.route.routeCustomers
+import com.hendraanggrian.openpss.server.route.routeDateTimes
+import com.hendraanggrian.openpss.server.route.routeDigitalPrices
+import com.hendraanggrian.openpss.server.route.routeEmployees
+import com.hendraanggrian.openpss.server.route.routeGlobalSettings
+import com.hendraanggrian.openpss.server.route.routeInvoices
+import com.hendraanggrian.openpss.server.route.routeLogs
+import com.hendraanggrian.openpss.server.route.routeOffsetPrices
+import com.hendraanggrian.openpss.server.route.routePayments
+import com.hendraanggrian.openpss.server.route.routePlatePrices
+import com.hendraanggrian.openpss.server.route.routeRecesses
+import com.hendraanggrian.openpss.server.route.routeWages
 import io.ktor.application.Application
 import io.ktor.application.install
 import io.ktor.features.CallLogging
@@ -48,18 +49,18 @@ fun Application.module() {
         }
     }
     routing {
-        authRouting()
-        customerRouting()
-        dateTimeRouting()
-        globalSettingRouting()
-        invoiceRouting()
-        logRouting()
-        platePriceRouting()
-        offsetPriceRouting()
-        digitalPriceRouting()
-        employeeRouting()
-        paymentRouting()
-        recessRouting()
-        wageRouting()
+        routeAuth()
+        routeCustomers()
+        routeDateTimes()
+        routeGlobalSettings()
+        routeInvoices()
+        routeLogs()
+        routePlatePrices()
+        routeOffsetPrices()
+        routeDigitalPrices()
+        routeEmployees()
+        routePayments()
+        routeRecesses()
+        routeWages()
     }
 }

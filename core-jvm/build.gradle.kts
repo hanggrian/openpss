@@ -21,6 +21,7 @@ sourceSets {
 ktlint()
 
 dependencies {
+    api(project(":core"))
     api(kotlin("stdlib", VERSION_KOTLIN))
 
     testImplementation(junit())

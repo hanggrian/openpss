@@ -1,4 +1,4 @@
-package com.hendraanggrian.openpss.server.routing
+package com.hendraanggrian.openpss.server.route
 
 import com.hendraanggrian.openpss.schema.GlobalSettings
 import com.hendraanggrian.openpss.server.getString
@@ -13,8 +13,8 @@ import io.ktor.routing.route
 import kotlinx.nosql.equal
 import kotlinx.nosql.update
 
-fun Routing.globalSettingRouting() {
-    route("$GlobalSettings/{key}") {
+fun Routing.routeGlobalSettings() {
+    route("${GlobalSettings.schemaName}/{key}") {
         get {
             call.respond(transaction {
                 GlobalSettings { key.equal(call.getString("key")) }.single()

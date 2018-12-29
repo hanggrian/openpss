@@ -1,4 +1,4 @@
-package com.hendraanggrian.openpss.nosql
+package com.hendraanggrian.openpss.server.nosql
 
 import javafx.util.Builder
 import kotlinx.nosql.AndQuery
@@ -8,12 +8,20 @@ import kotlinx.nosql.query.OrQuery
 
 typealias DocumentQuery<T, P, C> = kotlinx.nosql.DocumentSchemaQueryWrapper<T, P, C>
 
-class QueryBuilder : Builder<Query> {
+interface QueryBuilder {
+
+    fun and(target: Query)
+
+    fun or(target: Query)
+}
+
+@Suppress("ClassName")
+class _QueryBuilder : QueryBuilder, Builder<Query> {
     private var source: Query? = null
 
-    fun and(target: Query): Unit = setOrCreate(target) { AndQuery(it, target) }
+    override fun and(target: Query): Unit = setOrCreate(target) { AndQuery(it, target) }
 
-    fun or(target: Query): Unit = setOrCreate(target) { OrQuery(it, target) }
+    override fun or(target: Query): Unit = setOrCreate(target) { OrQuery(it, target) }
 
     override fun build(): Query = source ?: NoQuery
 

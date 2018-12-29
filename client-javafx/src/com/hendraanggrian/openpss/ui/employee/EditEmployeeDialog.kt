@@ -54,7 +54,7 @@ class EditEmployeeDialog(component: FxComponent) : TableDialog<Employee>(compone
                 bindDisable()
                 onAction {
                     val selected = table.selectionModel.selectedItem
-                    api.editEmployee(login, selected.id, selected.password, !selected.isAdmin)
+                    api.editEmployee(selected.apply { isAdmin = !isAdmin }, login.name)
                     refresh()
                 }
             }
@@ -63,7 +63,7 @@ class EditEmployeeDialog(component: FxComponent) : TableDialog<Employee>(compone
                 bindDisable()
                 onAction {
                     val selected = table.selectionModel.selectedItem
-                    api.editEmployee(login, selected.id, Employee.DEFAULT_PASSWORD, selected.isAdmin)
+                    api.editEmployee(selected.apply { password = Employee.DEFAULT_PASSWORD }, login.name)
                     rootLayout.jfxSnackbar(
                         getString(R.string.change_password_popup_will_appear_when_is_logged_back_in, login.name),
                         getLong(R.value.duration_long)
@@ -75,8 +75,8 @@ class EditEmployeeDialog(component: FxComponent) : TableDialog<Employee>(compone
 
     override suspend fun CoroutineScope.refresh(): List<Employee> = api.getEmployees()
 
-    override fun add() = AddEmployeePopover(this, R.string.add_employee, false).show(addButton) { employee ->
-        val added = api.addEmployee(employee!!.clean())
+    override fun add() = AddEmployeePopover(this, R.string.add_employee, false).show(addButton) { name ->
+        val added = api.addEmployee(Employee.new(name!!.clean()))
         table.items.add(added)
         table.selectionModel.select(added)
     }

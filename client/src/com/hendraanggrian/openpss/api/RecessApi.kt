@@ -11,11 +11,11 @@ import org.joda.time.LocalTime
 interface RecessApi : Api {
 
     suspend fun getRecesses(): List<Recess> = client.get {
-        apiUrl("$Recesses")
+        apiUrl(Recesses.schemaName)
     }
 
     suspend fun addRecess(start: LocalTime, end: LocalTime): Recess = client.post {
-        apiUrl("$Recesses")
+        apiUrl(Recesses.schemaName)
         parameters(
             "start" to start,
             "end" to end
@@ -23,6 +23,6 @@ interface RecessApi : Api {
     }
 
     suspend fun deleteRecess(id: Id<String, *>): Boolean = client.requestStatus(HttpMethod.Delete) {
-        apiUrl("$Recesses/$id")
+        apiUrl("${Recesses.schemaName}/$id")
     }
 }

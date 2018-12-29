@@ -1,4 +1,4 @@
-package com.hendraanggrian.openpss.server.routing
+package com.hendraanggrian.openpss.server.route
 
 import com.hendraanggrian.openpss.data.Page
 import com.hendraanggrian.openpss.schema.Logs
@@ -10,8 +10,8 @@ import io.ktor.routing.Routing
 import io.ktor.routing.get
 import kotlin.math.ceil
 
-fun Routing.logRouting() {
-    get("$Logs") {
+fun Routing.routeLogs() {
+    get(Logs.schemaName) {
         val page = call.getInt("page")
         val count = call.getInt("count")
         call.respond(

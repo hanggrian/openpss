@@ -8,11 +8,11 @@ import io.ktor.http.HttpMethod
 interface GlobalSettingApi : Api {
 
     suspend fun getGlobalSetting(key: String): GlobalSetting = client.get {
-        apiUrl("$GlobalSettings/$key")
+        apiUrl("${GlobalSettings.schemaName}/$key")
     }
 
     suspend fun setGlobalSetting(key: String, value: String): Boolean = client.requestStatus(HttpMethod.Post) {
-        apiUrl("$GlobalSettings/$key")
+        apiUrl("${GlobalSettings.schemaName}/$key")
         parameters("value" to value)
     }
 }

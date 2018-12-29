@@ -16,105 +16,94 @@ import kotlinx.nosql.Id
 interface NamedApi : Api {
 
     suspend fun getPlatePrices(): List<PlatePrice> = client.get {
-        apiUrl("$PlatePrices")
+        apiUrl(PlatePrices.schemaName)
     }
 
-    suspend fun addPlatePrice(name: String): PlatePrice? = client.post {
-        apiUrl("$PlatePrices")
-        parameters("name" to name)
+    suspend fun addPlatePrice(price: PlatePrice): PlatePrice? = client.post {
+        apiUrl(PlatePrices.schemaName)
+        jsonBody(price)
     }
 
     suspend fun getPlatePrice(id: Id<String, *>): PlatePrice = client.get {
-        apiUrl("$PlatePrices/$id")
+        apiUrl("${PlatePrices.schemaName}/$id")
     }
 
-    suspend fun editPlatePrice(id: Id<String, *>, price: Double): Boolean = client.requestStatus(HttpMethod.Put) {
-        apiUrl("$PlatePrices/$id")
-        parameters("price" to price)
+    suspend fun editPlatePrice(price: PlatePrice): Boolean = client.requestStatus(HttpMethod.Put) {
+        apiUrl("${PlatePrices.schemaName}/${price.id}")
+        jsonBody(price)
     }
 
     suspend fun deletePlatePrice(id: Id<String, *>): Boolean = client.requestStatus(HttpMethod.Delete) {
-        apiUrl("$PlatePrices/$id")
+        apiUrl("${PlatePrices.schemaName}/$id")
     }
 
     suspend fun getOffsetPrices(): List<OffsetPrice> = client.get {
-        apiUrl("$OffsetPrices")
+        apiUrl(OffsetPrices.schemaName)
     }
 
-    suspend fun addOffsetPrice(name: String): OffsetPrice? = client.post {
-        apiUrl("$OffsetPrices")
-        parameters("name" to name)
+    suspend fun addOffsetPrice(price: OffsetPrice): OffsetPrice? = client.post {
+        apiUrl(OffsetPrices.schemaName)
+        jsonBody(price)
     }
 
     suspend fun getOffsetPrice(id: Id<String, *>): OffsetPrice = client.get {
-        apiUrl("$OffsetPrices/$id")
+        apiUrl("${OffsetPrices.schemaName}/$id")
     }
 
-    suspend fun editOffsetPrice(id: Id<String, *>, minQty: Int, minPrice: Double, excessPrice: Double): Boolean =
-        client.requestStatus(HttpMethod.Put) {
-            apiUrl("$OffsetPrices/$id")
-            parameters(
-                "minQty" to minQty,
-                "minPrice" to minPrice,
-                "excessPrice" to excessPrice
-            )
-        }
+    suspend fun editOffsetPrice(price: OffsetPrice): Boolean = client.requestStatus(HttpMethod.Put) {
+        apiUrl("${OffsetPrices.schemaName}/${price.id}")
+        jsonBody(price)
+    }
 
     suspend fun deleteOffsetPrice(id: Id<String, *>): Boolean = client.requestStatus(HttpMethod.Delete) {
-        apiUrl("$OffsetPrices/$id")
+        apiUrl("${OffsetPrices.schemaName}/$id")
     }
 
     suspend fun getDigitalPrices(): List<DigitalPrice> = client.get {
-        apiUrl("$DigitalPrices")
+        apiUrl(DigitalPrices.schemaName)
     }
 
-    suspend fun addDigitalPrice(name: String): DigitalPrice? = client.post {
-        apiUrl("$DigitalPrices")
-        parameters("name" to name)
+    suspend fun addDigitalPrice(price: DigitalPrice): DigitalPrice? = client.post {
+        apiUrl(DigitalPrices.schemaName)
+        jsonBody(price)
     }
 
     suspend fun getDigitalPrice(id: Id<String, *>): DigitalPrice = client.get {
-        apiUrl("$DigitalPrices/$id")
+        apiUrl("${DigitalPrices.schemaName}/$id")
     }
 
-    suspend fun editDigitalPrice(id: Id<String, *>, oneSidePrice: Double, twoSidePrice: Double): Boolean =
+    suspend fun editDigitalPrice(price: DigitalPrice): Boolean =
         client.requestStatus(HttpMethod.Put) {
-            apiUrl("$DigitalPrices/$id")
-            parameters(
-                "oneSidePrice" to oneSidePrice,
-                "twoSidePrice" to twoSidePrice
-            )
+            apiUrl("${DigitalPrices.schemaName}/${price.id}")
+            jsonBody(price)
         }
 
     suspend fun deleteDigitalPrice(id: Id<String, *>): Boolean = client.requestStatus(HttpMethod.Delete) {
-        apiUrl("$DigitalPrices/$id")
+        apiUrl("${DigitalPrices.schemaName}/$id")
     }
 
     suspend fun getEmployees(): List<Employee> = client.get {
-        apiUrl("$Employees")
+        apiUrl(Employees.schemaName)
     }
 
-    suspend fun addEmployee(name: String): Employee? = client.post {
-        apiUrl("$Employees")
-        parameters("name" to name)
+    suspend fun addEmployee(employee: Employee): Employee? = client.post {
+        apiUrl(Employees.schemaName)
+        jsonBody(employee)
     }
 
     suspend fun getEmployee(id: Id<String, *>): Employee = client.get {
         apiUrl("$Employees/$id")
     }
 
-    suspend fun editEmployee(login: Employee, id: Id<String, *>, password: String, isAdmin: Boolean): Boolean =
+    suspend fun editEmployee(edit: Employee, login: String): Boolean =
         client.requestStatus(HttpMethod.Put) {
-            apiUrl("$Employees/$id")
-            parameters(
-                "password" to password,
-                "isAdmin" to isAdmin,
-                "login" to login.name
-            )
+            apiUrl("${Employees.schemaName}/${edit.id}")
+            jsonBody(edit)
+            parameters("login" to login)
         }
 
     suspend fun deleteEmployee(login: Employee, id: Id<String, *>): Boolean = client.requestStatus(HttpMethod.Delete) {
-        apiUrl("$Employees/$id")
+        apiUrl("${Employees.schemaName}/$id")
         parameters("login" to login.name)
     }
 }

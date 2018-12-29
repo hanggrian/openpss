@@ -24,16 +24,14 @@ class EditPlatePriceDialog(
             }
             onEditCommit { cell ->
                 val plate = cell.rowValue
-                if (api.editPlatePrice(plate.id, cell.newValue)) {
-                    cell.rowValue.price = cell.newValue
-                }
+                api.editPlatePrice(plate.apply { price = cell.newValue })
             }
         }
     }
 
     override suspend fun CoroutineScope.refresh(): List<PlatePrice> = api.getPlatePrices()
 
-    override suspend fun CoroutineScope.add(name: String): PlatePrice? = api.addPlatePrice(name)
+    override suspend fun CoroutineScope.add(name: String): PlatePrice? = api.addPlatePrice(PlatePrice.new(name))
 
     override suspend fun CoroutineScope.delete(selected: PlatePrice): Boolean = api.deletePlatePrice(selected.id)
 }

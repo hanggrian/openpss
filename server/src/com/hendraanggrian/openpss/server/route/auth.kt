@@ -1,4 +1,4 @@
-package com.hendraanggrian.openpss.server.routing
+package com.hendraanggrian.openpss.server.route
 
 import com.hendraanggrian.openpss.schema.Employees
 import com.hendraanggrian.openpss.server.getString
@@ -10,7 +10,7 @@ import io.ktor.routing.Routing
 import io.ktor.routing.get
 import kotlinx.nosql.equal
 
-fun Routing.authRouting() {
+fun Routing.routeAuth() {
     get("login") {
         val name = call.getString("name")
         val password = call.getString("password")

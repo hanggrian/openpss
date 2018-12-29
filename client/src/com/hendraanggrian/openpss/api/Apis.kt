@@ -26,7 +26,10 @@ interface Api {
 
     val client: HttpClient
 
-    fun HttpRequestBuilder.json() = contentType(ContentType.Application.Json)
+    fun HttpRequestBuilder.jsonBody(body: Any) {
+        contentType(ContentType.Application.Json)
+        this.body = body
+    }
 
     fun HttpRequestBuilder.apiUrl(path: String) {
         header(HttpHeaders.CacheControl, "no-cache")

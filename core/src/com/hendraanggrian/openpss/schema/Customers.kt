@@ -1,8 +1,8 @@
 package com.hendraanggrian.openpss.schema
 
 import com.hendraanggrian.openpss.data.Customer
-import com.hendraanggrian.openpss.nosql.NamedSchema
-import com.hendraanggrian.openpss.nosql.NamedSchemed
+import com.hendraanggrian.openpss.nosql.NamedDocumentSchema
+import com.hendraanggrian.openpss.nosql.Schemed
 import kotlinx.nosql.ListColumn
 import kotlinx.nosql.boolean
 import kotlinx.nosql.date
@@ -10,7 +10,7 @@ import kotlinx.nosql.integer
 import kotlinx.nosql.nullableString
 import kotlinx.nosql.string
 
-object Customers : NamedSchema<Customer>(Customers, Customer::class) {
+object Customers : NamedDocumentSchema<Customer>("customers", Customer::class) {
     override val name = string("name")
     val isCompany = boolean("is_company")
     val since = date("since")
@@ -18,15 +18,12 @@ object Customers : NamedSchema<Customer>(Customers, Customer::class) {
     val note = nullableString("note")
     val contacts = Contacts()
 
-    override fun toString(): String = "customers"
-
-    class Contacts : ListColumn<Customer.Contact, Invoices>("${Customers.Contacts}", Customer.Contact::class) {
+    class Contacts : ListColumn<Customer.Contact, Invoices>(Customers.Contacts.schemaName, Customer.Contact::class) {
         val type = string("type")
         val value = integer("value")
 
-        companion object : NamedSchemed {
-
-            override fun toString(): String = "contacts"
+        companion object : Schemed {
+            override val schemaName: String = "contacts"
         }
     }
 }

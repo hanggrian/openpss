@@ -8,7 +8,7 @@ import io.ktor.client.request.get
 interface LogApi : Api {
 
     suspend fun getLogs(page: Int, count: Int): Page<Log> = client.get {
-        apiUrl("$Logs")
+        apiUrl(Logs.schemaName)
         parameters(
             "page" to page,
             "count" to count

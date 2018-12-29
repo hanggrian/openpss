@@ -171,7 +171,7 @@ class MainController : Controller(), Refreshable {
 
             if (login.isFirstTimeLogin) {
                 ChangePasswordDialog(this).show { newPassword ->
-                    api.editEmployee(login, login.id, newPassword!!, login.isAdmin)
+                    api.editEmployee(login.apply { password = newPassword!! }, login.name)
                     rootLayout.jfxSnackbar(
                         getString(R.string.successfully_changed_password),
                         getLong(R.value.duration_long)

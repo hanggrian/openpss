@@ -1,11 +1,11 @@
-package com.hendraanggrian.openpss.server.routing
+package com.hendraanggrian.openpss.server.route
 
+import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.data.Customer
 import com.hendraanggrian.openpss.data.Log
 import com.hendraanggrian.openpss.data.Page
 import com.hendraanggrian.openpss.schema.Customers
 import com.hendraanggrian.openpss.schema.Logs
-import com.hendraanggrian.openpss.server.R
 import com.hendraanggrian.openpss.server.getInt
 import com.hendraanggrian.openpss.server.getString
 import com.hendraanggrian.openpss.server.isNotEmpty
@@ -25,19 +25,19 @@ import kotlinx.nosql.update
 import java.util.regex.Pattern
 import kotlin.math.ceil
 
-fun Routing.customerRouting() {
-    route("$Customers") {
+fun Routing.routeCustomers() {
+    route(Customers.schemaName) {
         get {
             val search = call.getString("search")
             val page = call.getInt("page")
             val count = call.getInt("count")
             call.respond(
                 transaction {
-                    val customers = Customers.buildQuery { _, or ->
+                    val customers = Customers.buildQuery {
                         if (search.isNotBlank()) {
-                            or(name.matches(search, Pattern.CASE_INSENSITIVE))
-                            or(address.matches(search, Pattern.CASE_INSENSITIVE))
-                            or(note.matches(search, Pattern.CASE_INSENSITIVE))
+                            or(Customers.name.matches(search, Pattern.CASE_INSENSITIVE))
+                            or(Customers.address.matches(search, Pattern.CASE_INSENSITIVE))
+                            or(Customers.note.matches(search, Pattern.CASE_INSENSITIVE))
                         }
                     }
                     Page(
@@ -77,7 +77,7 @@ fun Routing.customerRouting() {
                 }
                 call.respond(HttpStatusCode.OK)
             }
-            route("${Customers.Contacts}") {
+            route(Customers.Contacts.schemaName) {
                 post {
                     val contact = call.receive<Customer.Contact>()
                     transaction {

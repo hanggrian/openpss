@@ -1,4 +1,4 @@
-package com.hendraanggrian.openpss.server.routing
+package com.hendraanggrian.openpss.server.route
 
 import com.hendraanggrian.openpss.data.Recess
 import com.hendraanggrian.openpss.schema.Recesses
@@ -14,8 +14,8 @@ import io.ktor.routing.get
 import io.ktor.routing.post
 import io.ktor.routing.route
 
-fun Routing.recessRouting() {
-    route("$Recesses") {
+fun Routing.routeRecesses() {
+    route(Recesses.schemaName) {
         get {
             call.respond(transaction { Recesses().toList() })
         }

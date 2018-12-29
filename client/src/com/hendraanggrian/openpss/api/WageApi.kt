@@ -9,23 +9,20 @@ import io.ktor.http.HttpMethod
 interface WageApi : Api {
 
     suspend fun getWages(): List<Wage> = client.get {
-        apiUrl("$Wages")
+        apiUrl(Wages.schemaName)
     }
 
     suspend fun addWage(wage: Wage): Wage = client.post {
-        apiUrl("$Wages")
-        body = wage
+        apiUrl(Wages.schemaName)
+        jsonBody(wage)
     }
 
-    suspend fun getWage(wageId: Int): Wage? = client.get<Any> {
-        apiUrl("$Wages/$wageId")
-    } as? Wage
+    suspend fun getWage(wageId: Int): Wage? = client.get<Wage> {
+        apiUrl("${Wages.schemaName}/$wageId")
+    }.takeUnless { it == Wage.NOT_FOUND }
 
-    suspend fun editWage(wageId: Int, daily: Int, hourlyOvertime: Int): Boolean = client.requestStatus(HttpMethod.Put) {
-        apiUrl("$Wages/$wageId")
-        parameters(
-            "daily" to daily,
-            "hourlyOvertime" to hourlyOvertime
-        )
+    suspend fun editWage(wage: Wage): Boolean = client.requestStatus(HttpMethod.Put) {
+        apiUrl("${Wages.schemaName}/${wage.wageId}")
+        jsonBody(wage)
     }
 }

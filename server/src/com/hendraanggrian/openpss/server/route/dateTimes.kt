@@ -1,4 +1,4 @@
-package com.hendraanggrian.openpss.server.routing
+package com.hendraanggrian.openpss.server.route
 
 import com.hendraanggrian.openpss.server.dbDate
 import com.hendraanggrian.openpss.server.dbDateTime
@@ -8,7 +8,7 @@ import io.ktor.response.respond
 import io.ktor.routing.Routing
 import io.ktor.routing.get
 
-fun Routing.dateTimeRouting() {
+fun Routing.routeDateTimes() {
     get("date") {
         call.respond(dbDate())
     }

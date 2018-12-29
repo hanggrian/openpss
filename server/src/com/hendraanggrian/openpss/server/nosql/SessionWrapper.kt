@@ -1,6 +1,8 @@
-package com.hendraanggrian.openpss.nosql
+package com.hendraanggrian.openpss.server.nosql
 
 import com.hendraanggrian.openpss.data.GlobalSetting
+import com.hendraanggrian.openpss.nosql.Document
+import com.hendraanggrian.openpss.nosql.Schema
 import com.hendraanggrian.openpss.schema.GlobalSettings
 import kotlinx.nosql.AbstractColumn
 import kotlinx.nosql.AbstractSchema
@@ -51,13 +53,8 @@ class SessionWrapper(private val session: MongoDBSession) : Session by session,
 
     /** Build query for optional and/or query operation. */
     fun <S : Schema<D>, D : Document<S>> S.buildQuery(
-        builder: S.(
-            and: (target: Query) -> Unit,
-            or: (target: Query) -> Unit
-        ) -> Unit
-    ): DocumentQuery<S, String, D> = invoke {
-        QueryBuilder().apply { builder({ and(it) }) { or(it) } }.build()
-    }
+        builder: QueryBuilder.() -> Unit
+    ): DocumentQuery<S, String, D> = invoke { _QueryBuilder().apply { builder() }.build() }
 
     fun findGlobalSetting(key: String): GlobalSetting = GlobalSettings { this.key.equal(key) }.single()
 

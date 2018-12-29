@@ -1,5 +1,9 @@
-include("core")
-include("i18n")
-include("client", "client-javafx"/*, "client-android"*/)
+includeAll("core")
+includeAll("client")
 include("server")
 include("website")
+
+fun includeAll(projectPath: String) = include(*rootDir.listFiles()
+    .filter { it.name.startsWith(projectPath) && it.isDirectory && it.name != "client-android" }
+    .map { it.name }
+    .toTypedArray())

@@ -11,4 +11,8 @@ data class Wage(
 ) : Document<Wages> {
 
     override lateinit var id: Id<String, Wages>
+
+    companion object {
+        val NOT_FOUND: Wage = Wage(0, 0, 0)
+    }
 }

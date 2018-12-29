@@ -20,7 +20,7 @@ interface InvoiceApi : Api {
         page: Int,
         count: Int
     ): Page<Invoice> = client.get {
-        apiUrl("$Invoices")
+        apiUrl(Invoices.schemaName)
         parameters(
             "search" to search,
             "customer" to customer,
@@ -32,18 +32,18 @@ interface InvoiceApi : Api {
     }
 
     suspend fun addInvoice(invoice: Invoice): Invoice = client.post {
-        apiUrl("$Invoices")
-        body = invoice
+        apiUrl(Invoices.schemaName)
+        jsonBody(invoice)
     }
 
     suspend fun deleteInvoice(login: Employee, invoice: Invoice): Boolean = client.requestStatus(HttpMethod.Delete) {
-        apiUrl("$Invoices")
-        body = invoice
+        apiUrl(Invoices.schemaName)
+        jsonBody(invoice)
         parameters("login" to login.name)
     }
 
     suspend fun getInvoice(id: Id<String, *>): Invoice = client.get {
-        apiUrl("$Invoices/$id")
+        apiUrl("${Invoices.schemaName}/$id")
     }
 
     suspend fun editInvoice(
@@ -52,7 +52,7 @@ interface InvoiceApi : Api {
         isPaid: Boolean = invoice.isPaid,
         isDone: Boolean = invoice.isDone
     ): Boolean = client.requestStatus(HttpMethod.Put) {
-        apiUrl("$Invoices/${invoice.id}")
+        apiUrl("${Invoices.schemaName}/${invoice.id}")
         parameters(
             "isPrinted" to isPrinted,
             "isPaid" to isPaid,
@@ -61,6 +61,6 @@ interface InvoiceApi : Api {
     }
 
     suspend fun nextInvoice(): Int = client.get {
-        apiUrl("$Invoices/next")
+        apiUrl("${Invoices.schemaName}/next")
     }
 }

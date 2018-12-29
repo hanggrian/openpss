@@ -1,11 +1,11 @@
-package com.hendraanggrian.openpss.server.routing
+package com.hendraanggrian.openpss.server.route
 
+import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.data.Log
 import com.hendraanggrian.openpss.data.Payment
 import com.hendraanggrian.openpss.schema.Invoices
 import com.hendraanggrian.openpss.schema.Logs
 import com.hendraanggrian.openpss.schema.Payments
-import com.hendraanggrian.openpss.server.R
 import com.hendraanggrian.openpss.server.getString
 import com.hendraanggrian.openpss.server.resources
 import com.hendraanggrian.openpss.server.transaction
@@ -20,8 +20,8 @@ import io.ktor.routing.post
 import io.ktor.routing.route
 import kotlinx.nosql.equal
 
-fun Routing.paymentRouting() {
-    route("$Payments") {
+fun Routing.routePayments() {
+    route(Payments.schemaName) {
         get {
             call.respond(transaction {
                 Payments { dateTime.matches(call.parameters["dateTime"]!!) }.toList()

@@ -57,7 +57,10 @@ data class Attendee(
             wages.isEmpty() -> api.addWage(Wage(id, daily, hourlyOvertime))
             else -> wages.single().let { wage ->
                 if (wage.daily != daily || wage.hourlyOvertime != hourlyOvertime) {
-                    api.editWage(id, daily, hourlyOvertime)
+                    api.editWage(wage.also {
+                        it.daily = daily
+                        it.hourlyOvertime = hourlyOvertime
+                    })
                 }
             }
         }

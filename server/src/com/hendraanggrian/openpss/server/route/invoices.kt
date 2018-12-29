@@ -1,5 +1,6 @@
-package com.hendraanggrian.openpss.server.routing
+package com.hendraanggrian.openpss.server.route
 
+import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.data.Invoice
 import com.hendraanggrian.openpss.data.Log
 import com.hendraanggrian.openpss.data.Page
@@ -7,7 +8,6 @@ import com.hendraanggrian.openpss.schema.Customers
 import com.hendraanggrian.openpss.schema.Invoices
 import com.hendraanggrian.openpss.schema.Logs
 import com.hendraanggrian.openpss.schema.Payments
-import com.hendraanggrian.openpss.server.R
 import com.hendraanggrian.openpss.server.getBoolean
 import com.hendraanggrian.openpss.server.getBooleanOrNull
 import com.hendraanggrian.openpss.server.getInt
@@ -29,8 +29,8 @@ import kotlinx.nosql.equal
 import kotlinx.nosql.update
 import kotlin.math.ceil
 
-fun Routing.invoiceRouting() {
-    route("$Invoices") {
+fun Routing.routeInvoices() {
+    route(Invoices.schemaName) {
         get {
             val search = call.getInt("search")
             val customer = call.getStringOrNull("customer")
@@ -41,21 +41,21 @@ fun Routing.invoiceRouting() {
             val count = call.getInt("count")
             call.respond(
                 transaction {
-                    val invoices = Invoices.buildQuery { and, _ ->
+                    val invoices = Invoices.buildQuery {
                         when {
-                            search != 0 -> and(no.equal(search))
+                            search != 0 -> and(Invoices.no.equal(search))
                             else -> {
                                 if (customer != null) {
-                                    and(customerId.equal(Customers { name.equal(customer) }.single().id))
+                                    and(Invoices.customerId.equal(Customers { name.equal(customer) }.single().id))
                                 }
                                 if (isPaid != null) {
-                                    and(this.isPaid.equal(isPaid))
+                                    and(Invoices.isPaid.equal(isPaid))
                                 }
                                 if (isDone != null) {
-                                    and(this.isDone.equal(isDone))
+                                    and(Invoices.isDone.equal(isDone))
                                 }
                                 if (date != null) {
-                                    and(dateTime.matches(date))
+                                    and(Invoices.dateTime.matches(date))
                                 }
                             }
                         }

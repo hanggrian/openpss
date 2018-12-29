@@ -1,9 +1,9 @@
 package com.hendraanggrian.openpss.server
 
+import com.hendraanggrian.openpss.BuildConfig
 import com.hendraanggrian.openpss.data.Employee
 import com.hendraanggrian.openpss.data.GlobalSetting
 import com.hendraanggrian.openpss.nosql.Document
-import com.hendraanggrian.openpss.nosql.SessionWrapper
 import com.hendraanggrian.openpss.schema.Customers
 import com.hendraanggrian.openpss.schema.DigitalPrices
 import com.hendraanggrian.openpss.schema.Employees
@@ -15,6 +15,7 @@ import com.hendraanggrian.openpss.schema.Payments
 import com.hendraanggrian.openpss.schema.PlatePrices
 import com.hendraanggrian.openpss.schema.Recesses
 import com.hendraanggrian.openpss.schema.Wages
+import com.hendraanggrian.openpss.server.nosql.SessionWrapper
 import com.mongodb.MongoClientOptions
 import com.mongodb.MongoCredential
 import com.mongodb.MongoException
@@ -52,6 +53,7 @@ private val TABLES: Array<DocumentSchema<String, out Document<*>>> = arrayOf(
 fun <T> transaction(statement: SessionWrapper.() -> T): T = runCatching {
     DATABASE.withSession { SessionWrapper(this).statement() }
 }.getOrElse {
+    if (BuildConfig.DEBUG) it.printStackTrace()
     error("Connection closed. Please sign in again.")
 }
 

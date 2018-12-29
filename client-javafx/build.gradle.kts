@@ -29,7 +29,7 @@ ktlint()
 
 dependencies {
     api(project(":client"))
-    api(project(":core-jvm"))
+    api(project(":core-jre"))
     api(kotlinx("coroutines-javafx", VERSION_COROUTINES))
 
     implementation(slf4j("log4j12"))

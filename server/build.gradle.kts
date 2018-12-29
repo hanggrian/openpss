@@ -23,7 +23,7 @@ sourceSets {
 ktlint()
 
 dependencies {
-    api(project(":core-jvm"))
+    api(project(":core-jre"))
 
     implementation(ktor("server-netty"))
     implementation(ktor("gson"))

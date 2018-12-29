@@ -1,12 +1,13 @@
 package com.hendraanggrian.openpss.data
 
+import com.hendraanggrian.openpss.nosql.NamedDocument
 import com.hendraanggrian.openpss.schema.PlatePrices
 import kotlinx.nosql.Id
 
 data class PlatePrice(
     override var name: String,
     var price: Double
-) : Document<PlatePrices>, Named {
+) : NamedDocument<PlatePrices> {
 
     companion object {
 

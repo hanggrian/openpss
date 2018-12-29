@@ -2,8 +2,8 @@
 
 package com.hendraanggrian.openpss.server
 
+import com.hendraanggrian.openpss.content.Language
 import com.hendraanggrian.openpss.data.GlobalSetting
-import com.hendraanggrian.openpss.i18n.Language
 import io.ktor.application.ApplicationCall
 import org.joda.time.DateTime
 import org.joda.time.LocalDate

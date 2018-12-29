@@ -1,10 +1,10 @@
-package com.hendraanggrian.openpss.db.schema
+package com.hendraanggrian.openpss.schema
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.Resources
-import com.hendraanggrian.openpss.data.Customer
 import com.hendraanggrian.openpss.content.enumValueOfId
 import com.hendraanggrian.openpss.content.id
+import com.hendraanggrian.openpss.data.Customer
 
 fun Customer.Contact.Companion.new(type: ContactType, value: String): Customer.Contact =
     Customer.Contact(type.id, value)

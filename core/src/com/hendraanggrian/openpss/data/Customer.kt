@@ -1,6 +1,7 @@
 package com.hendraanggrian.openpss.data
 
 import com.google.gson.annotations.SerializedName
+import com.hendraanggrian.openpss.nosql.NamedDocument
 import com.hendraanggrian.openpss.schema.Customers
 import kotlinx.nosql.Id
 import org.joda.time.LocalDate
@@ -12,7 +13,7 @@ data class Customer(
     var address: String?,
     var note: String?,
     var contacts: List<Contact>
-) : Document<Customers>, Named {
+) : NamedDocument<Customers> {
 
     companion object {
 

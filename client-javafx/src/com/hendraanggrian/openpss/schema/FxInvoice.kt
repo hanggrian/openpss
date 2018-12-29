@@ -1,4 +1,4 @@
-package com.hendraanggrian.openpss.db.schema
+package com.hendraanggrian.openpss.schema
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.Resources

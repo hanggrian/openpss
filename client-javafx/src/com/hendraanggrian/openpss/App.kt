@@ -25,9 +25,6 @@ class App : Application(), Resources {
     companion object {
         const val STRETCH_POINT = 900.0
 
-        const val DURATION_SHORT = 3000L
-        const val DURATION_LONG = 6000L
-
         @JvmStatic fun main(args: Array<String>) = launch<App>(*args)
 
         fun exit() {
@@ -38,14 +35,11 @@ class App : Application(), Resources {
 
     override lateinit var resourceBundle: ResourceBundle
 
-    override lateinit var dimenResources: Properties
-
-    override lateinit var colorResources: Properties
+    override lateinit var valueProperties: Properties
 
     override fun init() {
         resourceBundle = SettingsFile.language.toResourcesBundle()
-        dimenResources = getProperties(R.dimen.properties_dimen)
-        colorResources = getProperties(R.color.properties_color)
+        valueProperties = getProperties(R.value.properties_value)
         if (BuildConfig.DEBUG) {
             BasicConfigurator.configure()
         }

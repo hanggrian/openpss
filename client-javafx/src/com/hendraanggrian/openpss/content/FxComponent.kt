@@ -1,11 +1,9 @@
 package com.hendraanggrian.openpss.content
 
-import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.api.GitHubApi
 import com.hendraanggrian.openpss.api.OpenPSSApi
 import com.hendraanggrian.openpss.data.GlobalSetting
-import com.hendraanggrian.openpss.i18n.Language
 import com.hendraanggrian.openpss.popup.dialog.PermissionDialog
 import javafx.scene.layout.StackPane
 import javafx.util.StringConverter
@@ -64,10 +62,7 @@ interface FxComponent : Resources, Component<StackPane> {
     val desktop: Desktop?
         get() {
             if (!Desktop.isDesktopSupported()) {
-                rootLayout.jfxSnackbar(
-                    "java.awt.Desktop is not supported.",
-                    App.DURATION_SHORT
-                )
+                rootLayout.jfxSnackbar("java.awt.Desktop is not supported.", getLong(R.value.duration_short))
                 return null
             }
             return Desktop.getDesktop()
@@ -81,7 +76,10 @@ interface FxComponent : Resources, Component<StackPane> {
             api.isAdmin(login) -> action()
             else -> PermissionDialog(this@FxComponent).show { admin ->
                 when (admin) {
-                    null -> rootLayout.jfxSnackbar(getString(R.string.invalid_password), App.DURATION_SHORT)
+                    null -> rootLayout.jfxSnackbar(
+                        getString(R.string.invalid_password),
+                        getLong(R.value.duration_short)
+                    )
                     else -> GlobalScope.launch(context) { action() }
                 }
             }

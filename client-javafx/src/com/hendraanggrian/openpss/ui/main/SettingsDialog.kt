@@ -5,7 +5,7 @@ import com.hendraanggrian.openpss.content.FxComponent
 import com.hendraanggrian.openpss.control.Space
 import com.hendraanggrian.openpss.data.GlobalSetting.Companion.KEY_INVOICE_HEADERS
 import com.hendraanggrian.openpss.data.GlobalSetting.Companion.KEY_LANGUAGE
-import com.hendraanggrian.openpss.i18n.Language
+import com.hendraanggrian.openpss.content.Language
 import com.hendraanggrian.openpss.io.ReaderFile
 import com.hendraanggrian.openpss.io.SettingsFile
 import com.hendraanggrian.openpss.popup.dialog.Dialog
@@ -55,7 +55,7 @@ class SettingsDialog(component: FxComponent) : Dialog(component, R.string.settin
     init {
         borderPane {
             left = ktfx.layouts.vbox {
-                spacing = getDouble(R.dimen.padding_large)
+                spacing = getDouble(R.value.padding_large)
                 group(R.string.wage) {
                     item {
                         label(getString(R.string.reader))
@@ -69,13 +69,13 @@ class SettingsDialog(component: FxComponent) : Dialog(component, R.string.settin
                     }
                 }
             }
-            Space(getDouble(R.dimen.padding_large))()
+            Space(getDouble(R.value.padding_large))()
             right = this@SettingsDialog.group(R.string.global_settings) {
                 GlobalScope.launch(Dispatchers.JavaFx) {
                     isDisable = !api.isAdmin(login)
                 }
                 gridPane {
-                    gap = getDouble(R.dimen.padding_medium)
+                    gap = getDouble(R.value.padding_medium)
                     label(getString(R.string.server_language)) row 0 col 0
                     languageBox = jfxComboBox(Language.values().toObservableList()) {
                         converter { toString { it!!.toString(true) } }
@@ -125,7 +125,7 @@ class SettingsDialog(component: FxComponent) : Dialog(component, R.string.settin
     private fun group(
         titleId: String,
         init: (@LayoutDsl _VBox).() -> Unit
-    ): VBox = ktfx.layouts.vbox(getDouble(R.dimen.padding_small)) {
+    ): VBox = ktfx.layouts.vbox(getDouble(R.value.padding_small)) {
         label(getString(titleId)) {
             styleClass += R.style.bold
         }
@@ -135,7 +135,7 @@ class SettingsDialog(component: FxComponent) : Dialog(component, R.string.settin
     private fun NodeInvokable.group(
         titleId: String,
         init: (@LayoutDsl _VBox).() -> Unit
-    ): VBox = vbox(getDouble(R.dimen.padding_small)) {
+    ): VBox = vbox(getDouble(R.value.padding_small)) {
         label(getString(titleId)) {
             styleClass += R.style.bold
         }
@@ -145,7 +145,7 @@ class SettingsDialog(component: FxComponent) : Dialog(component, R.string.settin
     private fun NodeInvokable.item(
         labelId: String? = null,
         init: (@LayoutDsl _HBox).() -> Unit
-    ): HBox = hbox(getDouble(R.dimen.padding_medium)) {
+    ): HBox = hbox(getDouble(R.value.padding_medium)) {
         alignment = Pos.CENTER_LEFT
         if (labelId != null) label(getString(labelId))
         init()

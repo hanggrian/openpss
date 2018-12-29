@@ -30,7 +30,7 @@ class PermissionDialog(component: FxComponent) :
 
     init {
         gridPane {
-            gap = getDouble(R.dimen.padding_medium)
+            gap = getDouble(R.value.padding_medium)
             label {
                 text = getString(R.string._permission_required)
             } col 0 row 0 colSpans 2

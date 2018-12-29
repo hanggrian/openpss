@@ -39,7 +39,7 @@ class EditCustomerDialog(
 
     init {
         gridPane {
-            gap = getDouble(R.dimen.padding_medium)
+            gap = getDouble(R.value.padding_medium)
             image = imageView(
                 when {
                     customer.isCompany -> R.image.display_company

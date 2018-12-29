@@ -6,7 +6,7 @@ import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.FxComponent
 import com.hendraanggrian.openpss.content.Resources
 import com.hendraanggrian.openpss.data.Employee
-import com.hendraanggrian.openpss.i18n.Language
+import com.hendraanggrian.openpss.content.Language
 import com.hendraanggrian.openpss.io.SettingsFile
 import com.hendraanggrian.openpss.popup.dialog.ResultableDialog
 import com.hendraanggrian.openpss.popup.dialog.TextDialog
@@ -70,8 +70,7 @@ class LoginPane(private val resourced: Resources) : _StackPane(), FxComponent {
     var onSuccess: ((Employee) -> Unit)? = null
 
     override val resourceBundle: ResourceBundle get() = resourced.resourceBundle
-    override val dimenResources: Properties get() = resourced.dimenResources
-    override val colorResources: Properties get() = resourced.colorResources
+    override val valueProperties: Properties get() = resourced.valueProperties
 
     override val login: Employee get() = throw UnsupportedOperationException()
     override val rootLayout: StackPane get() = this
@@ -81,8 +80,8 @@ class LoginPane(private val resourced: Resources) : _StackPane(), FxComponent {
         maxWidth = WIDTH
         gridPane {
             alignment = Pos.CENTER_RIGHT
-            gap = getDouble(R.dimen.padding_medium)
-            paddingAll = getDouble(R.dimen.padding_medium)
+            gap = getDouble(R.value.padding_medium)
+            paddingAll = getDouble(R.value.padding_medium)
             label(getString(R.string.language)) row 0 col 0 hpriority Priority.ALWAYS halign HPos.RIGHT
             jfxComboBox(Language.values().toObservableList()) {
                 selectionModel.select(SettingsFile.language)
@@ -170,7 +169,7 @@ class LoginPane(private val resourced: Resources) : _StackPane(), FxComponent {
         override val focusedNode: Node? get() = passwordField
 
         init {
-            hbox(getDouble(R.dimen.padding_medium)) {
+            hbox(getDouble(R.value.padding_medium)) {
                 stackPane {
                     alignment = Pos.CENTER
                     passwordField = jfxPasswordField {

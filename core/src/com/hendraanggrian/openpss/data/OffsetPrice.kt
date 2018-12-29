@@ -1,5 +1,6 @@
 package com.hendraanggrian.openpss.data
 
+import com.hendraanggrian.openpss.nosql.NamedDocument
 import com.hendraanggrian.openpss.schema.OffsetPrices
 import kotlinx.nosql.Id
 
@@ -8,7 +9,7 @@ data class OffsetPrice(
     var minQty: Int,
     var minPrice: Double,
     var excessPrice: Double
-) : Document<OffsetPrices>, Named {
+) : NamedDocument<OffsetPrices> {
 
     companion object {
 

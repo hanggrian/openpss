@@ -1,4 +1,4 @@
-package com.hendraanggrian.openpss
+package com.hendraanggrian.openpss.content
 
 object Formats {
     const val DATE = "MM/dd/yyyy" // to comply with JavaFX's DatePicker

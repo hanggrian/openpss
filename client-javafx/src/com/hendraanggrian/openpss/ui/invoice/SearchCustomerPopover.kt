@@ -54,7 +54,7 @@ class SearchCustomerPopover(component: FxComponent) : ResultablePopover<Customer
                         defaultButton.fire()
                     }
                 }
-            }() marginTop getDouble(R.dimen.padding_medium)
+            }() marginTop getDouble(R.value.padding_medium)
         }
         defaultButton.disableProperty().bind(customerList.selectionModel.selectedItemProperty().isNull)
     }

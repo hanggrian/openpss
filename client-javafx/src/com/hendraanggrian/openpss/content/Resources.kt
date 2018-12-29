@@ -1,6 +1,5 @@
 package com.hendraanggrian.openpss.content
 
-import com.hendraanggrian.openpss.i18n.Language
 import com.hendraanggrian.openpss.util.getResourceAsStream
 import javafx.scene.paint.Color
 import java.util.Properties
@@ -11,9 +10,7 @@ interface Resources {
 
     val resourceBundle: ResourceBundle
 
-    val dimenResources: Properties
-
-    val colorResources: Properties
+    val valueProperties: Properties
 
     val language: Language
         get() = Language.ofCode(
@@ -24,9 +21,11 @@ interface Resources {
 
     fun getString(id: String, vararg args: Any): String = getString(id).format(*args)
 
-    fun getDouble(id: String): Double = dimenResources.getProperty(id).toDouble()
+    fun getLong(id: String): Long = valueProperties.getProperty(id).toLong()
 
-    fun getColor(id: String): Color = Color.web(colorResources.getProperty(id))
+    fun getDouble(id: String): Double = valueProperties.getProperty(id).toDouble()
+
+    fun getColor(id: String): Color = Color.web(valueProperties.getProperty(id))
 
     fun getProperties(propertiesId: String): Properties = getResourceAsStream(propertiesId).use { stream ->
         Properties().apply { load(stream) }

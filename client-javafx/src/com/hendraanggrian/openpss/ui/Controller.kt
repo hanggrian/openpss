@@ -14,8 +14,7 @@ import java.util.ResourceBundle
 open class Controller : Initializable, FxComponent {
 
     override lateinit var resourceBundle: ResourceBundle
-    override val dimenResources: Properties = getProperties(R.dimen.properties_dimen)
-    override val colorResources: Properties = getProperties(R.color.properties_color)
+    override val valueProperties: Properties = getProperties(R.value.properties_value)
 
     override lateinit var rootLayout: StackPane
     override lateinit var login: Employee

@@ -2,15 +2,14 @@ package com.hendraanggrian.openpss.ui.price
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.FxComponent
-import com.hendraanggrian.openpss.data.Document
-import com.hendraanggrian.openpss.data.Named
+import com.hendraanggrian.openpss.nosql.NamedDocument
 import com.hendraanggrian.openpss.popup.dialog.TableDialog
 import com.hendraanggrian.openpss.popup.popover.InputPopover
 import com.hendraanggrian.openpss.util.stringCell
 import kotlinx.coroutines.CoroutineScope
 
-abstract class EditPriceDialog<D>(component: FxComponent, headerId: String) : TableDialog<D>(component, headerId)
-    where D : Document<*>, D : Named {
+abstract class EditPriceDialog<D : NamedDocument<*>>(component: FxComponent, headerId: String) :
+    TableDialog<D>(component, headerId) {
 
     init {
         @Suppress("LeakingThis")

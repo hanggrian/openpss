@@ -2,7 +2,7 @@ package com.hendraanggrian.openpss.popup.dialog
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.FxComponent
-import com.hendraanggrian.openpss.data.Document
+import com.hendraanggrian.openpss.nosql.Document
 import com.hendraanggrian.openpss.ui.Refreshable
 import javafx.geometry.Pos.CENTER_RIGHT
 import javafx.scene.Node
@@ -43,9 +43,9 @@ abstract class TableDialog<D : Document<*>>(
     override val focusedNode: Node? get() = table
 
     init {
-        graphic = ktfx.layouts.vbox(getDouble(R.dimen.padding_medium)) {
+        graphic = ktfx.layouts.vbox(getDouble(R.value.padding_medium)) {
             alignment = CENTER_RIGHT
-            hbox(getDouble(R.dimen.padding_medium)) {
+            hbox(getDouble(R.value.padding_medium)) {
                 alignment = CENTER_RIGHT
                 refreshButton = jfxButton(graphic = ImageView(R.image.act_refresh)) {
                     tooltip(getString(R.string.refresh))

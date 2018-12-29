@@ -1,11 +1,10 @@
 package com.hendraanggrian.openpss.schema
 
 import com.hendraanggrian.openpss.data.GlobalSetting
-import kotlinx.nosql.mongodb.DocumentSchema
+import com.hendraanggrian.openpss.nosql.Schema
 import kotlinx.nosql.string
 
-object GlobalSettings : DocumentSchema<GlobalSetting>("$GlobalSettings", GlobalSetting::class),
-    Schemed {
+object GlobalSettings : Schema<GlobalSetting>(GlobalSettings, GlobalSetting::class) {
     val key = string("key")
     val value = string("value")
 

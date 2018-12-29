@@ -1,6 +1,6 @@
 package com.hendraanggrian.openpss.io
 
-import com.hendraanggrian.openpss.i18n.Language
+import com.hendraanggrian.openpss.content.Language
 import com.hendraanggrian.openpss.ui.wage.EClockingReader
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

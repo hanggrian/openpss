@@ -94,7 +94,7 @@ class AboutDialog(component: FxComponent) : Dialog<Unit>(), FxComponent by compo
                         }
                     } marginTop 4
                     hbox {
-                        spacing = getDouble(R.dimen.padding_medium)
+                        spacing = getDouble(R.value.padding_medium)
                         jfxButton("GitHub") {
                             styleClass += R.style.raised
                             buttonType = JFXButton.ButtonType.RAISED

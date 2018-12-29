@@ -1,6 +1,5 @@
 package com.hendraanggrian.openpss.ui.main.help
 
-import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.BuildConfig
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.FxComponent
@@ -21,7 +20,7 @@ object GitHubHelper {
                 when {
                     release.isNewerThan(BuildConfig.VERSION) -> component.rootLayout.jfxSnackbar(
                         component.getString(R.string.openpss_is_available, release.name),
-                        App.DURATION_LONG,
+                        component.getLong(R.value.duration_long),
                         component.getString(R.string.download)
                     ) {
                         UpdateDialog(component, release.assets).show { url ->
@@ -33,14 +32,14 @@ object GitHubHelper {
                             R.string.openpss_is_currently_the_newest_version_available,
                             BuildConfig.VERSION
                         ),
-                        App.DURATION_SHORT
+                        component.getLong(R.value.duration_short)
                     )
                 }
             }.onFailure {
                 if (BuildConfig.DEBUG) it.printStackTrace()
                 component.rootLayout.jfxSnackbar(
                     component.getString(R.string.no_internet_connection),
-                    App.DURATION_SHORT
+                    component.getLong(R.value.duration_short)
                 )
             }
         }

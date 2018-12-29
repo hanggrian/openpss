@@ -1,5 +1,6 @@
 package com.hendraanggrian.openpss.data
 
+import com.hendraanggrian.openpss.nosql.Document
 import com.hendraanggrian.openpss.schema.Logs
 import kotlinx.nosql.Id
 import org.joda.time.DateTime

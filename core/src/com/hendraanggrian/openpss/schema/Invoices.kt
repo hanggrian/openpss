@@ -1,15 +1,16 @@
 package com.hendraanggrian.openpss.schema
 
 import com.hendraanggrian.openpss.data.Invoice
+import com.hendraanggrian.openpss.nosql.NamedSchemed
+import com.hendraanggrian.openpss.nosql.Schema
 import kotlinx.nosql.ListColumn
 import kotlinx.nosql.boolean
 import kotlinx.nosql.dateTime
 import kotlinx.nosql.id
 import kotlinx.nosql.integer
-import kotlinx.nosql.mongodb.DocumentSchema
 import kotlinx.nosql.string
 
-object Invoices : DocumentSchema<Invoice>("$Invoices", Invoice::class), Schemed {
+object Invoices : Schema<Invoice>(Invoices, Invoice::class) {
     val no = integer("no")
     val employeeId = id("employee_id", Employees)
     val customerId = id("customer_id", Customers)
@@ -32,7 +33,7 @@ object Invoices : DocumentSchema<Invoice>("$Invoices", Invoice::class), Schemed 
         val type = string("type")
         val isTwoSide = boolean("two_side")
 
-        companion object : Schemed {
+        companion object : NamedSchemed {
             override fun toString(): String = "digital_jobs"
         }
     }
@@ -44,7 +45,7 @@ object Invoices : DocumentSchema<Invoice>("$Invoices", Invoice::class), Schemed 
         val type = string("type")
         val technique = string("technique")
 
-        companion object : Schemed {
+        companion object : NamedSchemed {
             override fun toString(): String = "offset_jobs"
         }
     }
@@ -55,7 +56,7 @@ object Invoices : DocumentSchema<Invoice>("$Invoices", Invoice::class), Schemed 
         val total = string("total")
         val type = string("type")
 
-        companion object : Schemed {
+        companion object : NamedSchemed {
             override fun toString(): String = "plate_jobs"
         }
     }
@@ -65,7 +66,7 @@ object Invoices : DocumentSchema<Invoice>("$Invoices", Invoice::class), Schemed 
         val desc = string("desc")
         val total = string("total")
 
-        companion object : Schemed {
+        companion object : NamedSchemed {
             override fun toString(): String = "other_jobs"
         }
     }

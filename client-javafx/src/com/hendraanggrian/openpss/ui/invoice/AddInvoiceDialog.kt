@@ -1,11 +1,11 @@
 package com.hendraanggrian.openpss.ui.invoice
 
-import com.hendraanggrian.openpss.Formats
+import com.hendraanggrian.openpss.content.Formats
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.FxComponent
 import com.hendraanggrian.openpss.data.Customer
 import com.hendraanggrian.openpss.data.Invoice
-import com.hendraanggrian.openpss.db.schema.typedTechnique
+import com.hendraanggrian.openpss.schema.typedTechnique
 import com.hendraanggrian.openpss.popup.dialog.ResultableDialog
 import com.hendraanggrian.openpss.popup.popover.ResultablePopover
 import com.hendraanggrian.openpss.ui.invoice.job.AddDigitalJobPopover
@@ -79,7 +79,7 @@ class AddInvoiceDialog(
 
     init {
         gridPane {
-            gap = getDouble(R.dimen.padding_medium)
+            gap = getDouble(R.value.padding_medium)
             label(getString(R.string.employee)) col 0 row 0
             label(login.name) {
                 styleClass += R.style.bold
@@ -202,8 +202,8 @@ class AddInvoiceDialog(
                 })
                 textFillProperty().bind(
                     When(totalProperty greater 0)
-                        then getColor(R.color.green)
-                        otherwise getColor(R.color.red)
+                        then getColor(R.value.color_green)
+                        otherwise getColor(R.value.color_red)
                 )
             } col 1 row 4
         }

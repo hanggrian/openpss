@@ -6,8 +6,8 @@ import com.hendraanggrian.openpss.control.DoubleField
 import com.hendraanggrian.openpss.control.IntField
 import com.hendraanggrian.openpss.data.Invoice
 import com.hendraanggrian.openpss.data.OffsetPrice
-import com.hendraanggrian.openpss.db.schema.Technique
-import com.hendraanggrian.openpss.db.schema.new
+import com.hendraanggrian.openpss.schema.Technique
+import com.hendraanggrian.openpss.schema.new
 import javafx.beans.Observable
 import javafx.beans.value.ObservableBooleanValue
 import javafx.scene.control.ComboBox

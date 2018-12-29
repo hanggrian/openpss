@@ -23,7 +23,7 @@ class DateTimePopover(
 
     init {
         gridPane {
-            gap = getDouble(R.dimen.padding_medium)
+            gap = getDouble(R.value.padding_medium)
             dateBox = DateBox(prefill.toLocalDate())() row 0 col 1
             jfxButton("-${Record.WORKING_HOURS}") {
                 onAction {

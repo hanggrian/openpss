@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.ui.invoice
 
 import com.hendraanggrian.openpss.App.Companion.STRETCH_POINT
-import com.hendraanggrian.openpss.Formats
+import com.hendraanggrian.openpss.content.Formats
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.DateBox
 import com.hendraanggrian.openpss.control.IntField
@@ -11,7 +11,7 @@ import com.hendraanggrian.openpss.control.Toolbar
 import com.hendraanggrian.openpss.data.Customer
 import com.hendraanggrian.openpss.data.Invoice
 import com.hendraanggrian.openpss.data.Payment
-import com.hendraanggrian.openpss.db.schema.no
+import com.hendraanggrian.openpss.schema.no
 import com.hendraanggrian.openpss.popup.dialog.ConfirmDialog
 import com.hendraanggrian.openpss.popup.popover.ViewInvoicePopover
 import com.hendraanggrian.openpss.ui.ActionController

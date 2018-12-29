@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.ui.finance
 
 import com.hendraanggrian.openpss.App.Companion.STRETCH_POINT
-import com.hendraanggrian.openpss.Formats
+import com.hendraanggrian.openpss.content.Formats
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.DateBox
 import com.hendraanggrian.openpss.control.MonthBox

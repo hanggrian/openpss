@@ -1,10 +1,16 @@
-package com.hendraanggrian.openpss.i18n
+package com.hendraanggrian.openpss.content
 
 import sun.util.locale.LocaleUtils
 import java.util.Currency
 import java.util.Locale
 import java.util.ResourceBundle
 
+/**
+ * List of supported languages and their JVM implementation.
+ * There's a separate module for this enum since it is unused in Android.
+ *
+ * @param nativeLocale following pattern of [Regex.nativePattern]
+ */
 enum class Language(private val nativeLocale: Locale) {
     EN_US(Locale.US),
     ID_ID(Locale("id", "ID"));

@@ -36,7 +36,7 @@ class AddPaymentPopover(
 
     init {
         gridPane {
-            gap = getDouble(R.dimen.padding_medium)
+            gap = getDouble(R.value.padding_medium)
             label(getString(R.string.employee)) row 0 col 0
             label(login.name) {
                 styleClass += R.style.bold
@@ -68,8 +68,8 @@ class AddPaymentPopover(
                 textFillProperty().bind(buildBinding(textProperty()) {
                     getColor(
                         when {
-                            receivable - valueField.value <= 0.0 -> R.color.green
-                            else -> R.color.red
+                            receivable - valueField.value <= 0.0 -> R.value.color_green
+                            else -> R.value.color_red
                         }
                     )
                 })

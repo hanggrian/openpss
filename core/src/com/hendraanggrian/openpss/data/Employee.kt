@@ -1,5 +1,6 @@
 package com.hendraanggrian.openpss.data
 
+import com.hendraanggrian.openpss.nosql.NamedDocument
 import com.hendraanggrian.openpss.schema.Employees
 import kotlinx.nosql.Id
 import java.io.Serializable
@@ -8,7 +9,7 @@ data class Employee(
     override var name: String,
     var password: String,
     var isAdmin: Boolean
-) : Document<Employees>, Named, Serializable {
+) : NamedDocument<Employees>, Serializable {
 
     companion object {
 

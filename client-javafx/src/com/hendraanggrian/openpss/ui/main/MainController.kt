@@ -2,17 +2,17 @@ package com.hendraanggrian.openpss.ui.main
 
 import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.BuildConfig
-import com.hendraanggrian.openpss.Formats
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.content.Formats
 import com.hendraanggrian.openpss.control.MarginedImageView
 import com.hendraanggrian.openpss.control.PaginatedPane
 import com.hendraanggrian.openpss.control.Toolbar
 import com.hendraanggrian.openpss.control.UnselectableListView
 import com.hendraanggrian.openpss.data.Invoice
 import com.hendraanggrian.openpss.data.Log
-import com.hendraanggrian.openpss.db.schema.Technique
-import com.hendraanggrian.openpss.db.schema.new
 import com.hendraanggrian.openpss.popup.popover.ViewInvoicePopover
+import com.hendraanggrian.openpss.schema.Technique
+import com.hendraanggrian.openpss.schema.new
 import com.hendraanggrian.openpss.ui.ActionController
 import com.hendraanggrian.openpss.ui.Controller
 import com.hendraanggrian.openpss.ui.Refreshable
@@ -172,7 +172,10 @@ class MainController : Controller(), Refreshable {
             if (login.isFirstTimeLogin) {
                 ChangePasswordDialog(this).show { newPassword ->
                     api.editEmployee(login, login.id, newPassword!!, login.isAdmin)
-                    rootLayout.jfxSnackbar(getString(R.string.successfully_changed_password), App.DURATION_LONG)
+                    rootLayout.jfxSnackbar(
+                        getString(R.string.successfully_changed_password),
+                        getLong(R.value.duration_long)
+                    )
                 }
             }
         }
@@ -253,7 +256,7 @@ class MainController : Controller(), Refreshable {
                         isDone = false
                     ), true
                 ).show(menuBar)
-            } ?: rootLayout.jfxSnackbar(getString(R.string.no_customer_to_test), App.DURATION_SHORT)
+            } ?: rootLayout.jfxSnackbar(getString(R.string.no_customer_to_test), getLong(R.value.duration_short))
         }
     }
 

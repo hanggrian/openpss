@@ -1,10 +1,10 @@
 package com.hendraanggrian.openpss.schema
 
 import com.hendraanggrian.openpss.data.Wage
+import com.hendraanggrian.openpss.nosql.Schema
 import kotlinx.nosql.integer
-import kotlinx.nosql.mongodb.DocumentSchema
 
-object Wages : DocumentSchema<Wage>("$Wages", Wage::class), Schemed {
+object Wages : Schema<Wage>("$Wages", Wage::class) {
     val wageId = integer("wage_id")
     val daily = integer("daily")
     val hourlyOvertime = integer("hourly_overtime")

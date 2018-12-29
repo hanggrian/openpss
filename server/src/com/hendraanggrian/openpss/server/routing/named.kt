@@ -1,21 +1,20 @@
 package com.hendraanggrian.openpss.server.routing
 
 import com.hendraanggrian.openpss.data.DigitalPrice
-import com.hendraanggrian.openpss.data.Document
 import com.hendraanggrian.openpss.data.Employee
 import com.hendraanggrian.openpss.data.Log
-import com.hendraanggrian.openpss.data.Named
 import com.hendraanggrian.openpss.data.OffsetPrice
 import com.hendraanggrian.openpss.data.PlatePrice
+import com.hendraanggrian.openpss.nosql.DocumentQuery
+import com.hendraanggrian.openpss.nosql.NamedDocument
+import com.hendraanggrian.openpss.nosql.NamedSchema
+import com.hendraanggrian.openpss.nosql.SessionWrapper
 import com.hendraanggrian.openpss.schema.DigitalPrices
 import com.hendraanggrian.openpss.schema.Employees
 import com.hendraanggrian.openpss.schema.Logs
-import com.hendraanggrian.openpss.schema.NameSchemed
 import com.hendraanggrian.openpss.schema.OffsetPrices
 import com.hendraanggrian.openpss.schema.PlatePrices
-import com.hendraanggrian.openpss.server.DocumentQuery
 import com.hendraanggrian.openpss.server.R
-import com.hendraanggrian.openpss.server.SessionWrapper
 import com.hendraanggrian.openpss.server.getBoolean
 import com.hendraanggrian.openpss.server.getDouble
 import com.hendraanggrian.openpss.server.getInt
@@ -34,7 +33,6 @@ import io.ktor.routing.post
 import io.ktor.routing.put
 import io.ktor.routing.route
 import kotlinx.nosql.equal
-import kotlinx.nosql.mongodb.DocumentSchema
 import kotlinx.nosql.update
 
 fun Routing.platePriceRouting() = namedRouting("$PlatePrices", PlatePrices,
@@ -80,14 +78,14 @@ fun Routing.employeeRouting() = namedRouting("$Employees", Employees,
         )
     })
 
-private fun <S, D> Routing.namedRouting(
+private fun <S : NamedSchema<D>, D : NamedDocument<S>> Routing.namedRouting(
     path: String,
     schema: S,
     onGet: SessionWrapper.(call: ApplicationCall) -> List<D> = { schema().toList() },
     onCreate: (call: ApplicationCall) -> D,
     onEdit: SessionWrapper.(call: ApplicationCall, query: DocumentQuery<S, String, D>) -> Unit,
     onDeleted: SessionWrapper.(call: ApplicationCall, query: DocumentQuery<S, String, D>) -> Unit = { _, _ -> }
-) where S : DocumentSchema<D>, S : NameSchemed, D : Document<S>, D : Named {
+) {
     route(path) {
         get {
             call.respond(transaction { onGet(call) })

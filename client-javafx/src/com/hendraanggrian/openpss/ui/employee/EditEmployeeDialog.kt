@@ -1,6 +1,5 @@
 package com.hendraanggrian.openpss.ui.employee
 
-import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.FxComponent
 import com.hendraanggrian.openpss.data.Employee
@@ -67,7 +66,7 @@ class EditEmployeeDialog(component: FxComponent) : TableDialog<Employee>(compone
                     api.editEmployee(login, selected.id, Employee.DEFAULT_PASSWORD, selected.isAdmin)
                     rootLayout.jfxSnackbar(
                         getString(R.string.change_password_popup_will_appear_when_is_logged_back_in, login.name),
-                        App.DURATION_LONG
+                        getLong(R.value.duration_long)
                     )
                 }
             }

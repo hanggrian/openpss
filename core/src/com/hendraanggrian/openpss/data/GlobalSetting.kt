@@ -1,5 +1,6 @@
 package com.hendraanggrian.openpss.data
 
+import com.hendraanggrian.openpss.nosql.Document
 import com.hendraanggrian.openpss.schema.GlobalSettings
 import kotlinx.nosql.Id
 import kotlin.reflect.KProperty

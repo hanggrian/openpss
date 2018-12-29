@@ -22,7 +22,7 @@ class ChangePasswordDialog(component: FxComponent) : ResultableDialog<String>(co
 
     init {
         gridPane {
-            gap = getDouble(R.dimen.padding_medium)
+            gap = getDouble(R.value.padding_medium)
             label {
                 text = getString(R.string._change_password)
             } col 0 row 0 colSpans 2

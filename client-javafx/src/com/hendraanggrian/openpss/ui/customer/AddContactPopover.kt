@@ -3,8 +3,8 @@ package com.hendraanggrian.openpss.ui.customer
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.FxComponent
 import com.hendraanggrian.openpss.data.Customer
-import com.hendraanggrian.openpss.db.schema.ContactType
-import com.hendraanggrian.openpss.db.schema.new
+import com.hendraanggrian.openpss.schema.ContactType
+import com.hendraanggrian.openpss.schema.new
 import com.hendraanggrian.openpss.popup.popover.ResultablePopover
 import javafx.scene.Node
 import javafx.scene.control.ComboBox
@@ -38,7 +38,7 @@ class AddContactPopover(component: FxComponent) : ResultablePopover<Customer.Con
 
     init {
         gridPane {
-            gap = getDouble(R.dimen.padding_medium)
+            gap = getDouble(R.value.padding_medium)
             label(getString(R.string.type)) col 0 row 0
             typeChoice = jfxComboBox(ContactType.values().toObservableList()) {
                 converter { toString { it!!.toString(this@AddContactPopover) } }

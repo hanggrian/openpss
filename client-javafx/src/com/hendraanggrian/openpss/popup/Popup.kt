@@ -49,25 +49,25 @@ interface Popup : FxComponent, NodeInvokable {
                     borderPane {
                         centerProperty().listener { _, _, value ->
                             if (value != null) {
-                                value marginLeft getDouble(R.dimen.padding_large)
+                                value marginLeft getDouble(R.value.padding_large)
                             }
                         }
                         centerProperty().bindBidirectional(graphicProperty())
                     }
                 }
-            }() marginTop getDouble(R.dimen.padding_small) marginBottom getDouble(R.dimen.padding_small)
-            contentPane = vbox(getDouble(R.dimen.padding_medium)) {
+            }() marginTop getDouble(R.value.padding_small) marginBottom getDouble(R.value.padding_small)
+            contentPane = vbox(getDouble(R.value.padding_medium)) {
                 updatePadding(
-                    left = getDouble(R.dimen.padding_large),
-                    right = getDouble(R.dimen.padding_large)
+                    left = getDouble(R.value.padding_large),
+                    right = getDouble(R.value.padding_large)
                 )
             }
             buttonBar {
                 updatePadding(
-                    top = getDouble(R.dimen.padding_medium),
-                    left = getDouble(R.dimen.padding_large),
-                    right = getDouble(R.dimen.padding_large),
-                    bottom = getDouble(R.dimen.padding_large)
+                    top = getDouble(R.value.padding_medium),
+                    left = getDouble(R.value.padding_large),
+                    right = getDouble(R.value.padding_large),
+                    bottom = getDouble(R.value.padding_large)
                 )
                 buttonInvokable = this
                 cancelButton = jfxButton(getString(R.string.close)) {
@@ -77,7 +77,7 @@ interface Popup : FxComponent, NodeInvokable {
                         dismiss()
                     }
                 }
-            } marginTop getDouble(R.dimen.padding_medium)
+            } marginTop getDouble(R.value.padding_medium)
         })
         setOnShown {
             focusedNode?.requestFocus()

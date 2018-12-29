@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.popup.popover
 
-import com.hendraanggrian.openpss.Formats
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.content.Formats
 import com.hendraanggrian.openpss.content.FxComponent
 import com.hendraanggrian.openpss.content.Stylesheets
 import com.hendraanggrian.openpss.control.Space
@@ -10,8 +10,8 @@ import com.hendraanggrian.openpss.data.Employee
 import com.hendraanggrian.openpss.data.GlobalSetting
 import com.hendraanggrian.openpss.data.GlobalSetting.Companion.KEY_INVOICE_HEADERS
 import com.hendraanggrian.openpss.data.Invoice
-import com.hendraanggrian.openpss.db.schema.typedTechnique
-import com.hendraanggrian.openpss.i18n.Language
+import com.hendraanggrian.openpss.content.Language
+import com.hendraanggrian.openpss.schema.typedTechnique
 import com.sun.javafx.print.PrintHelper
 import com.sun.javafx.print.Units
 import javafx.geometry.HPos.LEFT
@@ -96,11 +96,11 @@ class ViewInvoicePopover(
             employee = api.getEmployee(invoice.employeeId)
             customer = api.getCustomer(invoice.customerId)
         }
-        invoiceBox = vbox(getDouble(R.dimen.padding_medium)) {
+        invoiceBox = vbox(getDouble(R.value.padding_medium)) {
             if (!SystemUtils.IS_OS_MAC) stylesheets += Stylesheets.INVOICE
             setMinSize(WIDTH_PX, HEIGHT_PX)
             setMaxSize(WIDTH_PX, HEIGHT_PX)
-            hbox(getDouble(R.dimen.padding_medium)) {
+            hbox(getDouble(R.value.padding_medium)) {
                 vbox {
                     alignment = CENTER_LEFT
                     invoiceHeaders.forEachIndexed { index, s ->
@@ -131,7 +131,7 @@ class ViewInvoicePopover(
             }
             vbox {
                 gridPane {
-                    hgap = getDouble(R.dimen.padding_medium)
+                    hgap = getDouble(R.value.padding_medium)
                     columnConstraints {
                         constraints {
                             minWidth = USE_PREF_SIZE
@@ -194,9 +194,9 @@ class ViewInvoicePopover(
             } vpriority ALWAYS
             fullLine()
             gridPane {
-                gap = getDouble(R.dimen.padding_medium)
+                gap = getDouble(R.value.padding_medium)
                 textFlow {
-                    paddingAll = getDouble(R.dimen.padding_small)
+                    paddingAll = getDouble(R.value.padding_small)
                     border = SOLID.toBorder()
                     "${getString(R.string.note)}\n" {
                         styleClass += R.style.bold
@@ -276,7 +276,7 @@ class ViewInvoicePopover(
             lineBuilder(it, row)
             row++
         }
-        Space(height = getDouble(R.dimen.padding_small))() row row col 0 colSpans 4
+        Space(height = getDouble(R.value.padding_small))() row row col 0 colSpans 4
         row++
         return row
     }

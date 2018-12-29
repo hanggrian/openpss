@@ -1,6 +1,7 @@
 package com.hendraanggrian.openpss.server
 
 import com.google.gson.GsonBuilder
+import com.hendraanggrian.openpss.content.GsonBuilders
 import com.hendraanggrian.openpss.server.routing.authRouting
 import com.hendraanggrian.openpss.server.routing.customerRouting
 import com.hendraanggrian.openpss.server.routing.dateTimeRouting
@@ -14,7 +15,6 @@ import com.hendraanggrian.openpss.server.routing.paymentRouting
 import com.hendraanggrian.openpss.server.routing.platePriceRouting
 import com.hendraanggrian.openpss.server.routing.recessRouting
 import com.hendraanggrian.openpss.server.routing.wageRouting
-import com.hendraanggrian.openpss.util.jodaTimeSerializers
 import io.ktor.application.Application
 import io.ktor.application.install
 import io.ktor.features.CallLogging
@@ -40,7 +40,7 @@ fun Application.module() {
         gson {
             register(
                 ContentType.Application.Json,
-                GsonConverter(GsonBuilder().jodaTimeSerializers().create())
+                GsonConverter(GsonBuilders.registerJodaTime(GsonBuilder()).create())
             )
             if (BuildConfig.DEBUG) {
                 setPrettyPrinting()

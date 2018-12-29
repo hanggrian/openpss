@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.ui.wage
 
-import com.hendraanggrian.openpss.Formats
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.content.Formats
 import com.hendraanggrian.openpss.content.FxComponent
 import com.hendraanggrian.openpss.control.IntField
 import com.hendraanggrian.openpss.popup.popover.DateTimePopover
@@ -68,8 +68,8 @@ class AttendeePane(
             isFillWidth = true
             gridPane {
                 styleClass += R.style.white_background
-                gap = getDouble(R.dimen.padding_small)
-                paddingAll = getDouble(R.dimen.padding_medium)
+                gap = getDouble(R.value.padding_small)
+                paddingAll = getDouble(R.value.padding_medium)
                 attendee.role?.let { role ->
                     label(getString(R.string.role)) col 0 row 0 marginRight 4
                     label(role) col 1 row 0 colSpans 2
@@ -123,7 +123,7 @@ class AttendeePane(
                             if (index % 2 == 0) {
                                 listView.items.getOrNull(index + 1).let { nextItem ->
                                     when (nextItem) {
-                                        null -> itemLabel.textFill = getColor(R.color.red)
+                                        null -> itemLabel.textFill = getColor(R.value.color_red)
                                         else -> {
                                             val interval = IntervalWrapper.of(dateTime, nextItem)
                                             var minutes = interval.minutes
@@ -139,7 +139,7 @@ class AttendeePane(
                                                 if (hours > 12) {
                                                     style = "-fx-fill: #F44336;"
                                                 }
-                                            } marginLeft getDouble(R.dimen.padding_medium)
+                                            } marginLeft getDouble(R.value.padding_medium)
                                         }
                                     }
                                 }

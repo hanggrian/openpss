@@ -1,6 +1,6 @@
 package com.hendraanggrian.openpss.ui.wage.record
 
-import com.hendraanggrian.openpss.Formats
+import com.hendraanggrian.openpss.content.Formats
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.Resources
 import com.hendraanggrian.openpss.ui.wage.Attendee

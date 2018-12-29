@@ -41,7 +41,7 @@ abstract class AddJobPopover<T : Invoice.Job>(component: FxComponent, titleId: S
 
     init {
         gridPane {
-            gap = getDouble(R.dimen.padding_medium)
+            gap = getDouble(R.value.padding_medium)
             label(getString(R.string.qty)) col 0 row currentRow
             qtyField = IntField().apply { promptText = getString(R.string.qty) }() col 1 colSpans 2 row currentRow
             currentRow++

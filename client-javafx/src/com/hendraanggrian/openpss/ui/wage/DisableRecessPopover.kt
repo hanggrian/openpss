@@ -32,7 +32,7 @@ class DisableRecessPopover(
 
     init {
         gridPane {
-            gap = getDouble(R.dimen.padding_medium)
+            gap = getDouble(R.value.padding_medium)
             label(getString(R.string.recess)) col 0 row 0
             GlobalScope.launch(Dispatchers.JavaFx) {
                 recessChoice = jfxComboBox(

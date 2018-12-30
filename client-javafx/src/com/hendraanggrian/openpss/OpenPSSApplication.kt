@@ -1,8 +1,8 @@
 package com.hendraanggrian.openpss
 
-import com.hendraanggrian.openpss.content.Resources
-import com.hendraanggrian.openpss.content.Stylesheets
 import com.hendraanggrian.openpss.io.SettingsFile
+import com.hendraanggrian.openpss.ui.Resources
+import com.hendraanggrian.openpss.ui.Stylesheets
 import com.hendraanggrian.openpss.ui.login.LoginPane
 import com.hendraanggrian.openpss.util.controller
 import com.hendraanggrian.openpss.util.getResource
@@ -20,12 +20,13 @@ import org.apache.log4j.BasicConfigurator
 import java.util.Properties
 import java.util.ResourceBundle
 
-class App : Application(), Resources {
+class OpenPSSApplication : Application(), Resources {
 
     companion object {
         const val STRETCH_POINT = 900.0
 
-        @JvmStatic fun main(args: Array<String>) = launch<App>(*args)
+        @JvmStatic
+        fun main(args: Array<String>) = launch<OpenPSSApplication>(*args)
 
         fun exit() {
             Platform.exit() // exit JavaFX
@@ -51,7 +52,7 @@ class App : Application(), Resources {
         stage.title = getString(R.string.openpss_login)
         stage.scene = scene {
             stylesheets += Stylesheets.OPENPSS
-            LoginPane(this@App).apply {
+            LoginPane(this@OpenPSSApplication).apply {
                 onSuccess = { employee ->
                     val loader = FXMLLoader(getResource(R.layout.controller_main), resourceBundle)
                     this@scene.run {

@@ -1,10 +1,14 @@
-package com.hendraanggrian.openpss.content
+package com.hendraanggrian.openpss.ui
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.api.GitHubApi
 import com.hendraanggrian.openpss.api.OpenPSSApi
+import com.hendraanggrian.openpss.content.Language
+import com.hendraanggrian.openpss.data.Employee
 import com.hendraanggrian.openpss.data.GlobalSetting
-import com.hendraanggrian.openpss.popup.dialog.PermissionDialog
+import javafx.scene.Node
+import javafx.scene.control.ComboBox
+import javafx.scene.control.PasswordField
 import javafx.scene.layout.StackPane
 import javafx.util.StringConverter
 import javafx.util.converter.CurrencyStringConverter
@@ -15,7 +19,15 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.javafx.JavaFx
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import ktfx.bindings.isBlank
+import ktfx.bindings.or
+import ktfx.collections.toObservableList
+import ktfx.controls.gap
+import ktfx.jfoenix.jfxComboBox
+import ktfx.jfoenix.jfxPasswordField
 import ktfx.jfoenix.jfxSnackbar
+import ktfx.layouts.gridPane
+import ktfx.layouts.label
 import java.awt.Desktop
 import java.lang.ref.WeakReference
 import kotlin.coroutines.CoroutineContext
@@ -55,14 +67,21 @@ interface FxComponent : Resources, Component<StackPane> {
     /** Number decimal with currency prefix string converter. */
     val currencyConverter: StringConverter<Number>
         get() = CurrencyStringConverter(runBlocking {
-            Language.ofFullCode(api.getGlobalSetting(GlobalSetting.KEY_LANGUAGE).value).toLocale()
+            Language.ofFullCode(
+                api.getGlobalSetting(
+                    GlobalSetting.KEY_LANGUAGE
+                ).value
+            ).toLocale()
         })
 
     /** Returns [Desktop] instance, may be null if it is unsupported. */
     val desktop: Desktop?
         get() {
             if (!Desktop.isDesktopSupported()) {
-                rootLayout.jfxSnackbar("java.awt.Desktop is not supported.", getLong(R.value.duration_short))
+                rootLayout.jfxSnackbar(
+                    "java.awt.Desktop is not supported.",
+                    getLong(R.value.duration_short)
+                )
                 return null
             }
             return Desktop.getDesktop()
@@ -84,5 +103,47 @@ interface FxComponent : Resources, Component<StackPane> {
                 }
             }
         }
+    }
+
+    private class PermissionDialog(component: FxComponent) :
+        ResultableDialog<Employee>(component, R.string.permission_required) {
+
+        private lateinit var adminCombo: ComboBox<Employee>
+        private lateinit var passwordField: PasswordField
+
+        override val focusedNode: Node? get() = adminCombo
+
+        init {
+            gridPane {
+                gap = getDouble(R.value.padding_medium)
+                label {
+                    text = getString(R.string._permission_required)
+                } col 0 row 0 colSpans 2
+                label(getString(R.string.admin)) col 0 row 1
+                GlobalScope.launch(Dispatchers.JavaFx) {
+                    adminCombo = jfxComboBox(api.getEmployees()
+                        .filter { it.isAdmin && it.name != Employee.BACKDOOR.name }
+                        .toObservableList()
+                    ) {
+                        promptText = getString(R.string.admin)
+                    } col 1 row 1
+                }
+                label(getString(R.string.password)) col 0 row 2
+                passwordField = jfxPasswordField {
+                    promptText = getString(R.string.password)
+                } col 1 row 2
+            }
+            defaultButton.disableProperty().bind(
+                adminCombo.valueProperty().isNull or passwordField.textProperty().isBlank()
+            )
+        }
+
+        override val nullableResult: Employee?
+            get() = runBlocking {
+                api.login(
+                    adminCombo.value.name,
+                    passwordField.text
+                )
+            }
     }
 }

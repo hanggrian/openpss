@@ -1,4 +1,4 @@
-package com.github
+package com.hendraanggrian.openpss.data
 
 import org.apache.maven.artifact.versioning.ComparableVersion
 

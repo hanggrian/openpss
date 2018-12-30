@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.ui.schedule
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.content.FxComponent
+import com.hendraanggrian.openpss.ui.FxComponent
 import com.hendraanggrian.openpss.data.Invoice
 import com.hendraanggrian.openpss.schema.typedTechnique
 import javafx.collections.ObservableList

@@ -1,11 +1,11 @@
 package com.hendraanggrian.openpss.ui.customer
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.content.FxComponent
 import com.hendraanggrian.openpss.data.Customer
 import com.hendraanggrian.openpss.schema.ContactType
 import com.hendraanggrian.openpss.schema.new
-import com.hendraanggrian.openpss.popup.popover.ResultablePopover
+import com.hendraanggrian.openpss.ui.FxComponent
+import com.hendraanggrian.openpss.ui.ResultablePopover
 import javafx.scene.Node
 import javafx.scene.control.ComboBox
 import javafx.scene.control.TextField
@@ -19,7 +19,8 @@ import ktfx.layouts.label
 import ktfx.listeners.converter
 import org.apache.commons.validator.routines.EmailValidator
 
-class AddContactPopover(component: FxComponent) : ResultablePopover<Customer.Contact>(component, R.string.add_contact) {
+class AddContactPopover(component: FxComponent) :
+    ResultablePopover<Customer.Contact>(component, R.string.add_contact) {
 
     private companion object {
 
@@ -48,15 +49,27 @@ class AddContactPopover(component: FxComponent) : ResultablePopover<Customer.Con
         }
         defaultButton.run {
             text = getString(R.string.add)
-            disableProperty().bind(buildBooleanBinding(typeChoice.valueProperty(), contactField.textProperty()) {
-                when (typeChoice.value) {
-                    null -> true
-                    ContactType.PHONE -> contactField.text.isBlank() || !contactField.text.matches(REGEX_PHONE)
-                    else -> contactField.text.isBlank() || !EmailValidator.getInstance().isValid(contactField.text)
-                }
-            })
+            disableProperty().bind(
+                buildBooleanBinding(
+                    typeChoice.valueProperty(),
+                    contactField.textProperty()
+                ) {
+                    when (typeChoice.value) {
+                        null -> true
+                        ContactType.PHONE -> contactField.text.isBlank() || !contactField.text.matches(
+                            REGEX_PHONE
+                        )
+                        else -> contactField.text.isBlank() || !EmailValidator.getInstance().isValid(
+                            contactField.text
+                        )
+                    }
+                })
         }
     }
 
-    override val nullableResult: Customer.Contact? get() = Customer.Contact.new(typeChoice.value, contactField.text)
+    override val nullableResult: Customer.Contact?
+        get() = Customer.Contact.new(
+            typeChoice.value,
+            contactField.text
+        )
 }

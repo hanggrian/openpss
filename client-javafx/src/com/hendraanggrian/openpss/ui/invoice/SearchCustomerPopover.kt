@@ -1,10 +1,10 @@
 package com.hendraanggrian.openpss.ui.invoice
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.content.FxComponent
 import com.hendraanggrian.openpss.control.CustomerListView
 import com.hendraanggrian.openpss.data.Customer
-import com.hendraanggrian.openpss.popup.popover.ResultablePopover
+import com.hendraanggrian.openpss.ui.FxComponent
+import com.hendraanggrian.openpss.ui.ResultablePopover
 import javafx.scene.control.ListView
 import javafx.scene.control.TextField
 import javafx.scene.input.KeyCode.ENTER
@@ -19,7 +19,8 @@ import ktfx.inputs.isDoubleClick
 import ktfx.jfoenix.jfxTextField
 import ktfx.layouts.vbox
 
-class SearchCustomerPopover(component: FxComponent) : ResultablePopover<Customer>(component, R.string.search_customer) {
+class SearchCustomerPopover(component: FxComponent) :
+    ResultablePopover<Customer>(component, R.string.search_customer) {
 
     private companion object {
         const val ITEMS_PER_PAGE = 10
@@ -58,7 +59,8 @@ class SearchCustomerPopover(component: FxComponent) : ResultablePopover<Customer
                 }
             }() marginTop getDouble(R.value.padding_medium)
         }
-        defaultButton.disableProperty().bind(customerList.selectionModel.selectedItemProperty().isNull)
+        defaultButton.disableProperty()
+            .bind(customerList.selectionModel.selectedItemProperty().isNull)
     }
 
     override val nullableResult: Customer? get() = customerList.selectionModel.selectedItem

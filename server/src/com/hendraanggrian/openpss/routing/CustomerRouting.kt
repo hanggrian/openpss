@@ -20,7 +20,7 @@ import kotlinx.nosql.update
 import java.util.regex.Pattern
 import kotlin.math.ceil
 
-object CustomerRouting : Routing({
+object CustomerRouting : OpenPSSRouting({
     route(Customers.schemaName) {
         get {
             val search = call.getString("search")

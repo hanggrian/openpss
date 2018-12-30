@@ -1,8 +1,8 @@
 package com.hendraanggrian.openpss.ui.employee
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.content.FxComponent
-import com.hendraanggrian.openpss.popup.popover.InputPopover
+import com.hendraanggrian.openpss.ui.FxComponent
+import com.hendraanggrian.openpss.ui.InputPopover
 import com.hendraanggrian.openpss.util.clean
 import com.hendraanggrian.openpss.util.isPersonName
 import javafx.beans.binding.BooleanBinding
@@ -22,7 +22,8 @@ class AddEmployeePopover(
                 Severity.WARNING,
                 false
             ) { _ ->
-                editor.text.split(' ').none { s -> s.firstOrNull().let { it == null || it.isLowerCase() } }
+                editor.text.split(' ')
+                    .none { s -> s.firstOrNull().let { it == null || it.isLowerCase() } }
             }
         }
     }

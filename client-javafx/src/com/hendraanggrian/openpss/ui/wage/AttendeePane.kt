@@ -2,9 +2,9 @@ package com.hendraanggrian.openpss.ui.wage
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.Formats
-import com.hendraanggrian.openpss.content.FxComponent
 import com.hendraanggrian.openpss.control.IntField
-import com.hendraanggrian.openpss.popup.popover.DateTimePopover
+import com.hendraanggrian.openpss.ui.DateTimePopover
+import com.hendraanggrian.openpss.ui.FxComponent
 import com.hendraanggrian.openpss.util.round
 import com.hendraanggrian.openpss.util.trimMinutes
 import javafx.geometry.Pos.CENTER

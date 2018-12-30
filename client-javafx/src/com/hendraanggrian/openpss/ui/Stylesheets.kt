@@ -1,4 +1,4 @@
-package com.hendraanggrian.openpss.content
+package com.hendraanggrian.openpss.ui
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.util.getStyle

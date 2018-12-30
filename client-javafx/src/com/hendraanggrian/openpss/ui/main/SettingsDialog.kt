@@ -1,15 +1,15 @@
 package com.hendraanggrian.openpss.ui.main
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.content.FxComponent
+import com.hendraanggrian.openpss.content.Language
 import com.hendraanggrian.openpss.control.Space
 import com.hendraanggrian.openpss.data.GlobalSetting.Companion.KEY_INVOICE_HEADERS
 import com.hendraanggrian.openpss.data.GlobalSetting.Companion.KEY_LANGUAGE
-import com.hendraanggrian.openpss.content.Language
 import com.hendraanggrian.openpss.io.ReaderFile
 import com.hendraanggrian.openpss.io.SettingsFile
-import com.hendraanggrian.openpss.popup.dialog.Dialog
-import com.hendraanggrian.openpss.ui.wage.Reader
+import com.hendraanggrian.openpss.ui.FxComponent
+import com.hendraanggrian.openpss.ui.OpenPSSDialog
+import com.hendraanggrian.openpss.ui.wage.WageReader
 import com.jfoenix.controls.JFXButton
 import javafx.event.ActionEvent
 import javafx.geometry.Pos
@@ -43,13 +43,13 @@ import ktfx.layouts.vbox
 import ktfx.listeners.converter
 import kotlin.coroutines.CoroutineContext
 
-class SettingsDialog(component: FxComponent) : Dialog(component, R.string.settings) {
+class SettingsDialog(component: FxComponent) : OpenPSSDialog(component, R.string.settings) {
 
     private var isLocalChanged = boolean()
     private var isGlobalChanged = boolean()
 
     private lateinit var invoiceHeadersArea: TextArea
-    private lateinit var wageReaderChoice: ComboBox<Reader>
+    private lateinit var wageReaderChoice: ComboBox<WageReader>
     private lateinit var languageBox: ComboBox<Language>
 
     init {
@@ -59,11 +59,11 @@ class SettingsDialog(component: FxComponent) : Dialog(component, R.string.settin
                 group(R.string.wage) {
                     item {
                         label(getString(R.string.reader))
-                        wageReaderChoice = jfxComboBox(Reader.listAll()) {
-                            value = Reader.of(ReaderFile.WAGE_READER)
+                        wageReaderChoice = jfxComboBox(WageReader.listAll()) {
+                            value = WageReader.of(ReaderFile.WAGE_READER)
                             valueProperty().listener { _, _, value ->
                                 isLocalChanged.set(true)
-                                ReaderFile.WAGE_READER = (value as Reader).name
+                                ReaderFile.WAGE_READER = (value as WageReader).name
                             }
                         }
                     }
@@ -80,7 +80,13 @@ class SettingsDialog(component: FxComponent) : Dialog(component, R.string.settin
                     languageBox = jfxComboBox(Language.values().toObservableList()) {
                         converter { toString { it!!.toString(true) } }
                         GlobalScope.launch(Dispatchers.JavaFx) {
-                            selectionModel.select(Language.ofFullCode(api.getGlobalSetting(KEY_LANGUAGE).value))
+                            selectionModel.select(
+                                Language.ofFullCode(
+                                    api.getGlobalSetting(
+                                        KEY_LANGUAGE
+                                    ).value
+                                )
+                            )
                         }
                         valueProperty().listener { isGlobalChanged.set(true) }
                     } row 0 col 1
@@ -114,7 +120,10 @@ class SettingsDialog(component: FxComponent) : Dialog(component, R.string.settin
                     }
                     if (isGlobalChanged.value) GlobalScope.launch(Dispatchers.JavaFx) {
                         api.setGlobalSetting(KEY_LANGUAGE, languageBox.value.fullCode)
-                        api.setGlobalSetting(KEY_INVOICE_HEADERS, invoiceHeadersArea.text.trim().replace("\n", "|"))
+                        api.setGlobalSetting(
+                            KEY_INVOICE_HEADERS,
+                            invoiceHeadersArea.text.trim().replace("\n", "|")
+                        )
                     }
                     close()
                 }

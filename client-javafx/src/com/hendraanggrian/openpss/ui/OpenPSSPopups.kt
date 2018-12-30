@@ -1,8 +1,8 @@
-package com.hendraanggrian.openpss.popup
+package com.hendraanggrian.openpss.ui
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.content.FxComponent
 import com.hendraanggrian.openpss.control.Toolbar
+import com.jfoenix.controls.JFXButton
 import javafx.beans.property.ObjectProperty
 import javafx.scene.Node
 import javafx.scene.control.Button
@@ -18,7 +18,7 @@ import ktfx.layouts.buttonBar
 import ktfx.layouts.label
 import ktfx.layouts.vbox
 
-interface Popup : FxComponent, NodeInvokable {
+interface OpenPSSPopup : FxComponent, NodeInvokable {
 
     override fun <R : Node> R.invoke(): R = also { contentPane.children += it }
 
@@ -81,6 +81,28 @@ interface Popup : FxComponent, NodeInvokable {
         })
         setOnShown {
             focusedNode?.requestFocus()
+        }
+    }
+}
+
+/** Defines a popup component that expects result to be returned. */
+interface ResultablePopup<T> : OpenPSSPopup {
+
+    var defaultButton: Button
+
+    /**
+     * @return result of the component.
+     */
+    val nullableResult: T? get() = null
+
+    override fun initialize() {
+        super.initialize()
+        buttonInvokable.run {
+            defaultButton = jfxButton(getString(R.string.ok)) {
+                isDefaultButton = true
+                styleClass += R.style.raised
+                buttonType = JFXButton.ButtonType.RAISED
+            }
         }
     }
 }

@@ -11,7 +11,7 @@ import io.ktor.routing.route
 import kotlinx.nosql.equal
 import kotlinx.nosql.update
 
-object GlobalSettingRouting : Routing({
+object GlobalSettingRouting : OpenPSSRouting({
     route("${GlobalSettings.schemaName}/{key}") {
         get {
             call.respond(transaction {

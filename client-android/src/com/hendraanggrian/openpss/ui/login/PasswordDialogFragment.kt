@@ -17,14 +17,14 @@ import com.hendraanggrian.bundler.bindExtras
 import com.hendraanggrian.bundler.extrasOf
 import com.hendraanggrian.openpss.BuildConfig
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.popup.DialogFragment
-import com.hendraanggrian.openpss.popup.TextDialogFragment
+import com.hendraanggrian.openpss.ui.OpenPSSDialogFragment
+import com.hendraanggrian.openpss.ui.TextDialogFragment
 import com.hendraanggrian.openpss.ui.main.MainActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class PasswordDialogFragment : DialogFragment() {
+class PasswordDialogFragment : OpenPSSDialogFragment() {
 
     @Extra lateinit var employeeName: String
 

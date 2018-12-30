@@ -1,9 +1,9 @@
 package com.hendraanggrian.openpss.ui.employee
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.content.FxComponent
 import com.hendraanggrian.openpss.data.Employee
-import com.hendraanggrian.openpss.popup.dialog.TableDialog
+import com.hendraanggrian.openpss.ui.FxComponent
+import com.hendraanggrian.openpss.ui.TableDialog
 import com.hendraanggrian.openpss.util.clean
 import com.hendraanggrian.openpss.util.doneCell
 import com.hendraanggrian.openpss.util.stringCell
@@ -18,7 +18,8 @@ import ktfx.layouts.contextMenu
 import ktfx.layouts.menuItem
 import ktfx.layouts.separatorMenuItem
 
-class EditEmployeeDialog(component: FxComponent) : TableDialog<Employee>(component, R.string.employee, true) {
+class EditEmployeeDialog(component: FxComponent) :
+    TableDialog<Employee>(component, R.string.employee, true) {
 
     init {
         getString(R.string.name)<String> {
@@ -63,9 +64,15 @@ class EditEmployeeDialog(component: FxComponent) : TableDialog<Employee>(compone
                 bindDisable()
                 onAction {
                     val selected = table.selectionModel.selectedItem
-                    api.editEmployee(selected.apply { password = Employee.DEFAULT_PASSWORD }, login.name)
+                    api.editEmployee(
+                        selected.apply { password = Employee.DEFAULT_PASSWORD },
+                        login.name
+                    )
                     rootLayout.jfxSnackbar(
-                        getString(R.string.change_password_popup_will_appear_when_is_logged_back_in, login.name),
+                        getString(
+                            R.string.change_password_popup_will_appear_when_is_logged_back_in,
+                            login.name
+                        ),
                         getLong(R.value.duration_long)
                     )
                 }
@@ -75,13 +82,16 @@ class EditEmployeeDialog(component: FxComponent) : TableDialog<Employee>(compone
 
     override suspend fun CoroutineScope.refresh(): List<Employee> = api.getEmployees()
 
-    override fun add() = AddEmployeePopover(this, R.string.add_employee, false).show(addButton) { name ->
-        val added = api.addEmployee(Employee.new(name!!.clean()))
-        table.items.add(added)
-        table.selectionModel.select(added)
-    }
+    override fun add() =
+        AddEmployeePopover(this, R.string.add_employee, false).show(addButton) { name ->
+            val added = api.addEmployee(Employee.new(name!!.clean()))
+            table.items.add(added)
+            table.selectionModel.select(added)
+        }
 
-    override suspend fun CoroutineScope.delete(selected: Employee): Boolean = api.deleteEmployee(login, selected.id)
+    override suspend fun CoroutineScope.delete(selected: Employee): Boolean =
+        api.deleteEmployee(login, selected.id)
 
-    private fun MenuItem.bindDisable() = disableProperty().bind(table.selectionModel.selectedItemProperty().isNull)
+    private fun MenuItem.bindDisable() =
+        disableProperty().bind(table.selectionModel.selectedItemProperty().isNull)
 }

@@ -87,7 +87,7 @@ sealed class NamedRouting<S : NamedDocumentSchema<D>, D : NamedDocument<S>>(
     onGet: SessionWrapper.(call: ApplicationCall) -> List<D> = { schema().toList() },
     onEdit: SessionWrapper.(call: ApplicationCall, query: DocumentQuery<S, String, D>, document: D) -> Unit,
     onDeleted: SessionWrapper.(call: ApplicationCall, query: DocumentQuery<S, String, D>) -> Unit = { _, _ -> }
-) : Routing({
+) : OpenPSSRouting({
     route(schema.schemaName) {
         get {
             call.respond(transaction { onGet(call) })

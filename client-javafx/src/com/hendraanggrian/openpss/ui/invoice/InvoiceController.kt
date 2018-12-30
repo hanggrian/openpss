@@ -1,8 +1,8 @@
 package com.hendraanggrian.openpss.ui.invoice
 
-import com.hendraanggrian.openpss.App.Companion.STRETCH_POINT
-import com.hendraanggrian.openpss.content.Formats
+import com.hendraanggrian.openpss.OpenPSSApplication.Companion.STRETCH_POINT
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.content.Formats
 import com.hendraanggrian.openpss.control.DateBox
 import com.hendraanggrian.openpss.control.IntField
 import com.hendraanggrian.openpss.control.PaginatedPane
@@ -12,9 +12,8 @@ import com.hendraanggrian.openpss.data.Customer
 import com.hendraanggrian.openpss.data.Invoice
 import com.hendraanggrian.openpss.data.Payment
 import com.hendraanggrian.openpss.schema.no
-import com.hendraanggrian.openpss.popup.dialog.ConfirmDialog
-import com.hendraanggrian.openpss.popup.popover.ViewInvoicePopover
 import com.hendraanggrian.openpss.ui.ActionController
+import com.hendraanggrian.openpss.ui.ConfirmDialog
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.util.currencyCell
 import com.hendraanggrian.openpss.util.doneCell
@@ -184,7 +183,11 @@ class InvoiceController : ActionController(), Refreshable {
                                     stringCell { dateTime.toString(Formats.DATETIME_EXTENDED) }
                                 }
                                 getString(R.string.employee)<String> {
-                                    stringCell { runBlocking { api.getEmployee(employeeId).name } }
+                                    stringCell {
+                                        runBlocking {
+                                            api.getEmployee(employeeId).name
+                                        }
+                                    }
                                 }
                                 getString(R.string.value)<String> {
                                     currencyCell(this@InvoiceController) { value }
@@ -200,7 +203,8 @@ class InvoiceController : ActionController(), Refreshable {
                                 when (invoiceTable.selectionModel.selectedItem) {
                                     null -> emptyObservableList()
                                     else -> runBlocking {
-                                        api.getPayments(invoiceTable.selectionModel.selectedItem.id).toObservableList()
+                                        api.getPayments(invoiceTable.selectionModel.selectedItem.id)
+                                            .toObservableList()
                                     }
                                 }
                             })
@@ -246,7 +250,10 @@ class InvoiceController : ActionController(), Refreshable {
                                     })
                                 }
                                 onAction {
-                                    api.editInvoice(invoiceTable.selectionModel.selectedItem, isDone = true)
+                                    api.editInvoice(
+                                        invoiceTable.selectionModel.selectedItem,
+                                        isDone = true
+                                    )
                                     refreshButton.fire()
                                 }
                             }
@@ -284,19 +291,25 @@ class InvoiceController : ActionController(), Refreshable {
         paymentCombo.selectionModel.selectFirst()
     }
 
-    @FXML fun selectCustomer() = SearchCustomerPopover(this).show(customerField) { customerProperty.set(it) }
+    @FXML
+    fun selectCustomer() =
+        SearchCustomerPopover(this).show(customerField) { customerProperty.set(it) }
 
-    private fun viewInvoice() = ViewInvoicePopover(this, invoiceTable.selectionModel.selectedItem).apply {
+    private fun viewInvoice() = ViewInvoicePopover(
+        this,
+        invoiceTable.selectionModel.selectedItem
+    ).apply {
         onHidden {
             reload(invoiceTable.selectionModel.selectedItem)
         }
     }.show(invoiceTable)
 
-    private fun addPayment() = AddPaymentPopover(this, invoiceTable.selectionModel.selectedItem).show(paymentTable) {
-        api.addPayment(it!!)
-        reload(invoiceTable.selectionModel.selectedItem)
-        updatePaymentStatus()
-    }
+    private fun addPayment() =
+        AddPaymentPopover(this, invoiceTable.selectionModel.selectedItem).show(paymentTable) {
+            api.addPayment(it!!)
+            reload(invoiceTable.selectionModel.selectedItem)
+            updatePaymentStatus()
+        }
 
     private fun deletePayment() = ConfirmDialog(this).show {
         withPermission {

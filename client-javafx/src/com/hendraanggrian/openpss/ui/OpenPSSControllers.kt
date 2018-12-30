@@ -1,17 +1,22 @@
 package com.hendraanggrian.openpss.ui
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.content.FxComponent
 import com.hendraanggrian.openpss.data.Employee
+import javafx.beans.property.SimpleStringProperty
+import javafx.beans.property.StringProperty
 import javafx.fxml.Initializable
+import javafx.scene.Node
 import javafx.scene.layout.StackPane
+import ktfx.getValue
+import ktfx.layouts.NodeInvokable
+import ktfx.setValue
 import java.net.URL
 import java.util.Properties
 import java.util.ResourceBundle
 
 /** Base class of all controllers. */
 @Suppress("LeakingThis")
-open class Controller : Initializable, FxComponent {
+open class OpenPSSController : Initializable, FxComponent {
 
     override lateinit var resourceBundle: ResourceBundle
     override val valueProperties: Properties = getProperties(R.value.properties_value)
@@ -27,7 +32,7 @@ open class Controller : Initializable, FxComponent {
     }
 
     /** Register extra [value] with [key]. */
-    fun addExtra(key: String, value: Any): Controller {
+    fun addExtra(key: String, value: Any): OpenPSSController {
         if (!::extras.isInitialized) {
             extras = mutableMapOf()
         }
@@ -39,5 +44,27 @@ open class Controller : Initializable, FxComponent {
     fun <T : Any> getExtra(key: String): T {
         check(::extras.isInitialized) { "No extras found in this controller." }
         @Suppress("UNCHECKED_CAST") return checkNotNull(extras[key] as T) { "No extra found with that key." }
+    }
+}
+
+open class ActionController : OpenPSSController() {
+
+    private val titleProperty: StringProperty = SimpleStringProperty(null)
+    fun titleProperty(): StringProperty = titleProperty
+    var title: String? by titleProperty
+
+    val actions = mutableListOf<Node>()
+
+    private val actionInvokable = object : NodeInvokable {
+        override fun <R : Node> R.invoke(): R = also { actions += it }
+    }
+
+    /** Override this function to add actions. */
+    open fun NodeInvokable.onCreateActions() {
+    }
+
+    override fun initialize(location: URL, resources: ResourceBundle) {
+        super.initialize(location, resources)
+        actionInvokable.onCreateActions()
     }
 }

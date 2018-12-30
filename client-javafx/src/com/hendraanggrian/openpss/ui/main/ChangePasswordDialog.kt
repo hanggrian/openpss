@@ -1,8 +1,8 @@
 package com.hendraanggrian.openpss.ui.main
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.content.FxComponent
-import com.hendraanggrian.openpss.popup.dialog.ResultableDialog
+import com.hendraanggrian.openpss.ui.FxComponent
+import com.hendraanggrian.openpss.ui.ResultableDialog
 import javafx.scene.Node
 import javafx.scene.control.PasswordField
 import ktfx.bindings.isBlank
@@ -13,7 +13,8 @@ import ktfx.jfoenix.jfxPasswordField
 import ktfx.layouts.gridPane
 import ktfx.layouts.label
 
-class ChangePasswordDialog(component: FxComponent) : ResultableDialog<String>(component, R.string.change_password) {
+class ChangePasswordDialog(component: FxComponent) :
+    ResultableDialog<String>(component, R.string.change_password) {
 
     private lateinit var changePasswordField: PasswordField
     private lateinit var confirmPasswordField: PasswordField

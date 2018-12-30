@@ -30,7 +30,7 @@ import io.ktor.server.engine.commandLineEnvironment
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
 
-object Server {
+object OpenPSSServer {
 
     @JvmStatic fun main(args: Array<String>) {
         Database.connect()

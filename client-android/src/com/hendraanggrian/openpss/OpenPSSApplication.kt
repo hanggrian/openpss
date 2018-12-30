@@ -10,7 +10,7 @@ import com.hendraanggrian.openpss.api.OpenPSSApi
 import com.mongodb.ServerAddress
 
 @Suppress("unused")
-class App : Application() {
+class OpenPSSApplication : Application() {
 
     private lateinit var api: OpenPSSApi
 

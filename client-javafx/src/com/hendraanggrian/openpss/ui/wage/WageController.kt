@@ -1,14 +1,14 @@
 package com.hendraanggrian.openpss.ui.wage
 
-import com.hendraanggrian.openpss.App.Companion.STRETCH_POINT
 import com.hendraanggrian.openpss.BuildConfig.DEBUG
+import com.hendraanggrian.openpss.OpenPSSApplication.Companion.STRETCH_POINT
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.content.Stylesheets
 import com.hendraanggrian.openpss.control.StretchableButton
 import com.hendraanggrian.openpss.io.ReaderFile
 import com.hendraanggrian.openpss.io.WageDirectory
-import com.hendraanggrian.openpss.popup.dialog.TextDialog
 import com.hendraanggrian.openpss.ui.ActionController
+import com.hendraanggrian.openpss.ui.Stylesheets
+import com.hendraanggrian.openpss.ui.TextDialog
 import com.hendraanggrian.openpss.ui.wage.record.WageRecordController.Companion.EXTRA_ATTENDEES
 import com.hendraanggrian.openpss.util.controller
 import com.hendraanggrian.openpss.util.getResource
@@ -111,9 +111,11 @@ class WageController : ActionController() {
         }
     }
 
-    @FXML fun disableRecess() = DisableRecessPopover(this, attendeePanes).show(disableRecessButton)
+    @FXML
+    fun disableRecess() = DisableRecessPopover(this, attendeePanes).show(disableRecessButton)
 
-    @FXML fun process() = stage(getString(R.string.wage_record)) {
+    @FXML
+    fun process() = stage(getString(R.string.wage_record)) {
         val loader = FXMLLoader(getResource(R.layout.controller_wage_record), resourceBundle)
         scene = scene {
             loader.pane()
@@ -123,12 +125,13 @@ class WageController : ActionController() {
         loader.controller.addExtra(EXTRA_ATTENDEES, attendees)
     }.showAndWait()
 
-    private fun saveWage() = GlobalScope.launch(Dispatchers.JavaFx) { attendees.forEach { it.saveWage(api) } }
+    private fun saveWage() =
+        GlobalScope.launch(Dispatchers.JavaFx) { attendees.forEach { it.saveWage(api) } }
 
     private fun history() = desktop?.open(WageDirectory)
 
     private fun browse() = anchorPane.scene.window.chooseFile(
-        getString(R.string.input_file) to Reader.of(ReaderFile.WAGE_READER).extension
+        getString(R.string.input_file) to WageReader.of(ReaderFile.WAGE_READER).extension
     )?.let { file ->
         GlobalScope.launch(Dispatchers.JavaFx) {
             withPermission { read(file) }
@@ -148,7 +151,7 @@ class WageController : ActionController() {
         flowPane.children.clear()
         GlobalScope.launch(Dispatchers.Default) {
             runCatching {
-                Reader.of(ReaderFile.WAGE_READER).read(file).forEach { attendee ->
+                WageReader.of(ReaderFile.WAGE_READER).read(file).forEach { attendee ->
                     attendee.init(api)
                     GlobalScope.launch(Dispatchers.JavaFx) {
                         flowPane.children += AttendeePane(this@WageController, attendee).apply {
@@ -187,7 +190,11 @@ class WageController : ActionController() {
                 GlobalScope.launch(Dispatchers.JavaFx) {
                     anchorPane.children -= loadingPane
                     bindProcessButton()
-                    TextDialog(this@WageController, R.string.reading_failed, it.message.toString()).show()
+                    TextDialog(
+                        this@WageController,
+                        R.string.reading_failed,
+                        it.message.toString()
+                    ).show()
                 }
             }
         }
@@ -198,8 +205,9 @@ class WageController : ActionController() {
     private inline val attendees: List<Attendee> get() = attendeePanes.map { it.attendee }
 
     /** As attendees are populated, process button need to be rebinded according to new requirements. */
-    private fun bindProcessButton() = processButton.disableProperty().bind(flowPane.children.isEmptyBinding or
-        buildBooleanBinding(flowPane.children, *flowPane.children
-            .map { (it as AttendeePane).attendanceList.items }
-            .toTypedArray()) { attendees.any { it.attendances.size % 2 != 0 } })
+    private fun bindProcessButton() =
+        processButton.disableProperty().bind(flowPane.children.isEmptyBinding or
+            buildBooleanBinding(flowPane.children, *flowPane.children
+                .map { (it as AttendeePane).attendanceList.items }
+                .toTypedArray()) { attendees.any { it.attendances.size % 2 != 0 } })
 }

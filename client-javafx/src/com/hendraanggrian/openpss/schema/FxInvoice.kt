@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.schema
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.content.Resources
+import com.hendraanggrian.openpss.ui.Resources
 import com.hendraanggrian.openpss.content.enumValueOfId
 import com.hendraanggrian.openpss.content.id
 import com.hendraanggrian.openpss.data.Invoice

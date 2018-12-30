@@ -23,7 +23,7 @@ sourceSets {
     }
 }
 
-application.mainClassName = "$group.App"
+application.mainClassName = "$group.OpenPSSApplication"
 
 ktlint()
 

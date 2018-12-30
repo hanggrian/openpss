@@ -1,10 +1,10 @@
 package com.hendraanggrian.openpss.ui.price
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.content.FxComponent
 import com.hendraanggrian.openpss.nosql.NamedDocument
-import com.hendraanggrian.openpss.popup.dialog.TableDialog
-import com.hendraanggrian.openpss.popup.popover.InputPopover
+import com.hendraanggrian.openpss.ui.FxComponent
+import com.hendraanggrian.openpss.ui.InputPopover
+import com.hendraanggrian.openpss.ui.TableDialog
 import com.hendraanggrian.openpss.util.stringCell
 import kotlinx.coroutines.CoroutineScope
 

@@ -1,14 +1,14 @@
 package com.hendraanggrian.openpss.ui.wage.record
 
-import com.hendraanggrian.openpss.content.Formats
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.content.Stylesheets
+import com.hendraanggrian.openpss.content.Formats
 import com.hendraanggrian.openpss.control.UncollapsibleTreeItem
 import com.hendraanggrian.openpss.io.WageDirectory
 import com.hendraanggrian.openpss.io.WageFile
-import com.hendraanggrian.openpss.popup.popover.DatePopover
-import com.hendraanggrian.openpss.popup.popover.TimePopover
-import com.hendraanggrian.openpss.ui.Controller
+import com.hendraanggrian.openpss.ui.DatePopover
+import com.hendraanggrian.openpss.ui.OpenPSSController
+import com.hendraanggrian.openpss.ui.Stylesheets
+import com.hendraanggrian.openpss.ui.TimePopover
 import com.hendraanggrian.openpss.ui.wage.Attendee
 import com.hendraanggrian.openpss.ui.wage.record.Record.Companion.getDummy
 import com.hendraanggrian.openpss.util.concatenate
@@ -52,7 +52,7 @@ import java.util.ResourceBundle
 import javax.imageio.ImageIO
 
 @Suppress("UNCHECKED_CAST")
-class WageRecordController : Controller() {
+class WageRecordController : OpenPSSController() {
 
     companion object {
         const val EXTRA_ATTENDEES = "EXTRA_ATTENDEES"
@@ -83,10 +83,12 @@ class WageRecordController : Controller() {
         menuBar.isUseSystemMenuBar = SystemUtils.IS_OS_MAC
         undoMenu.disableProperty().bind(editMenu.items.sizeBinding lessEq 2)
         arrayOf(lockStartButton, lockEndButton).forEach { button ->
-            button.disableProperty().bind(recordTable.selectionModel.selectedItemProperty().isNull or
-                buildBooleanBinding(recordTable.selectionModel.selectedItemProperty()) {
-                    recordTable.selectionModel.selectedItems?.any { !it.value.isChild() } ?: true
-                })
+            button.disableProperty()
+                .bind(recordTable.selectionModel.selectedItemProperty().isNull or
+                    buildBooleanBinding(recordTable.selectionModel.selectedItemProperty()) {
+                        recordTable.selectionModel.selectedItems?.any { !it.value.isChild() }
+                            ?: true
+                    })
         }
 
         recordTable.run {
@@ -98,7 +100,9 @@ class WageRecordController : Controller() {
                         if (any != null && !empty) graphic = label(
                             when (it) {
                                 dailyColumn, overtimeColumn -> numberConverter(any as Number)
-                                dailyIncomeColumn, overtimeIncomeColumn, totalColumn -> currencyConverter(any as Number)
+                                dailyIncomeColumn, overtimeIncomeColumn, totalColumn -> currencyConverter(
+                                    any as Number
+                                )
                                 else -> any.toString()
                             }
                         ) {
@@ -140,9 +144,11 @@ class WageRecordController : Controller() {
         }
     }
 
-    @FXML fun undo() = editMenu.items[2].fire()
+    @FXML
+    fun undo() = editMenu.items[2].fire()
 
-    @FXML fun disableDailyIncome() =
+    @FXML
+    fun disableDailyIncome() =
         DatePopover(this, R.string.disable_daily_income).show(disableDailyIncomeButton) { date ->
             val undoable = Undoable()
             records.filter { it.startProperty.value.toLocalDate() == date }
@@ -156,8 +162,13 @@ class WageRecordController : Controller() {
             undoable.append()
         }
 
-    @FXML fun lockStart() =
-        TimePopover(this, R.string.lock_start_time, LocalTime.now().trimMinutes()).show(lockStartButton) { time ->
+    @FXML
+    fun lockStart() =
+        TimePopover(
+            this,
+            R.string.lock_start_time,
+            LocalTime.now().trimMinutes()
+        ).show(lockStartButton) { time ->
             val undoable = Undoable()
             recordTable.selectionModel.selectedItems.map { it.value }
                 .forEach { record ->
@@ -165,7 +176,9 @@ class WageRecordController : Controller() {
                     if (initial.toLocalTime() < time!!) {
                         record.startProperty.set(record.cloneStart(time))
                         undoable.name = when {
-                            undoable.name == null -> "${record.attendee.name} ${initial.toString(Formats.DATETIME)} -> " +
+                            undoable.name == null -> "${record.attendee.name} ${initial.toString(
+                                Formats.DATETIME
+                            )} -> " +
                                 time.toString(Formats.TIME)
                             else -> getString(R.string.multiple_lock_start_time)
                         }
@@ -175,8 +188,13 @@ class WageRecordController : Controller() {
             undoable.append()
         }
 
-    @FXML fun lockEnd() =
-        TimePopover(this, R.string.lock_end_time, LocalTime.now().trimMinutes()).show(lockEndButton) { time ->
+    @FXML
+    fun lockEnd() =
+        TimePopover(
+            this,
+            R.string.lock_end_time,
+            LocalTime.now().trimMinutes()
+        ).show(lockEndButton) { time ->
             val undoable = Undoable()
             recordTable.selectionModel.selectedItems.map { it.value }
                 .forEach { record ->
@@ -184,7 +202,9 @@ class WageRecordController : Controller() {
                     if (initial.toLocalTime() > time!!) {
                         record.endProperty.set(record.cloneEnd(time))
                         undoable.name = when {
-                            undoable.name == null -> "${record.attendee.name} ${initial.toString(Formats.DATETIME)} -> " +
+                            undoable.name == null -> "${record.attendee.name} ${initial.toString(
+                                Formats.DATETIME
+                            )} -> " +
                                 time.toString(Formats.TIME)
                             else -> getString(R.string.multiple_lock_end_time)
                         }
@@ -194,7 +214,8 @@ class WageRecordController : Controller() {
             undoable.append()
         }
 
-    @FXML fun componentshot() {
+    @FXML
+    fun componentshot() {
         val images = mutableListOf<BufferedImage>()
         recordTable.selectionModel.clearSelection()
         togglePrintMode(true, Stylesheets.WAGE_RECORD)
@@ -210,7 +231,10 @@ class WageRecordController : Controller() {
         )
         togglePrintMode(false, Stylesheets.WAGE_RECORD)
         ImageIO.write(images.concatenate(), "png", WageFile())
-        rootLayout.jfxIndefiniteSnackbar(getString(R.string.componentshot_finished), getString(R.string.open_folder)) {
+        rootLayout.jfxIndefiniteSnackbar(
+            getString(R.string.componentshot_finished),
+            getString(R.string.open_folder)
+        ) {
             desktop?.open(WageDirectory)
         }
     }

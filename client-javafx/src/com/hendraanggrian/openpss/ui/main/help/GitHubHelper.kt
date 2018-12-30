@@ -2,7 +2,7 @@ package com.hendraanggrian.openpss.ui.main.help
 
 import com.hendraanggrian.openpss.BuildConfig
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.content.FxComponent
+import com.hendraanggrian.openpss.ui.FxComponent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.javafx.JavaFx

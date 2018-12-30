@@ -8,7 +8,7 @@ import io.ktor.response.respond
 import io.ktor.routing.get
 import kotlin.math.ceil
 
-object LogRouting : Routing({
+object LogRouting : OpenPSSRouting({
     get(Logs.schemaName) {
         val page = call.getInt("page")
         val count = call.getInt("count")

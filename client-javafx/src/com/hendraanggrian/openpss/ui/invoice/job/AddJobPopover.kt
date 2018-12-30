@@ -1,11 +1,11 @@
 package com.hendraanggrian.openpss.ui.invoice.job
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.content.FxComponent
 import com.hendraanggrian.openpss.control.DoubleField
 import com.hendraanggrian.openpss.control.IntField
 import com.hendraanggrian.openpss.data.Invoice
-import com.hendraanggrian.openpss.popup.popover.ResultablePopover
+import com.hendraanggrian.openpss.ui.FxComponent
+import com.hendraanggrian.openpss.ui.ResultablePopover
 import javafx.beans.Observable
 import javafx.beans.value.ObservableBooleanValue
 import javafx.scene.Node
@@ -43,10 +43,12 @@ abstract class AddJobPopover<T : Invoice.Job>(component: FxComponent, titleId: S
         gridPane {
             gap = getDouble(R.value.padding_medium)
             label(getString(R.string.qty)) col 0 row currentRow
-            qtyField = IntField().apply { promptText = getString(R.string.qty) }() col 1 colSpans 2 row currentRow
+            qtyField = IntField().apply { promptText = getString(R.string.qty) }() col 1 colSpans
+                2 row currentRow
             currentRow++
             label(getString(R.string.description)) col 0 row currentRow
-            titleField = jfxTextField { promptText = getString(R.string.description) } col 1 colSpans 2 row currentRow
+            titleField = jfxTextField { promptText = getString(R.string.description) } col
+                1 colSpans 2 row currentRow
             currentRow++
             onCreateContent()
             currentRow++
@@ -78,7 +80,8 @@ abstract class AddJobPopover<T : Invoice.Job>(component: FxComponent, titleId: S
 
     override val total: Double get() = totalField.value
 
-    private fun DoubleField.bindTotal() = textProperty().bind(buildStringBinding(*totalBindingDependencies) {
-        calculateTotal().toString()
-    })
+    private fun DoubleField.bindTotal() =
+        textProperty().bind(buildStringBinding(*totalBindingDependencies) {
+            calculateTotal().toString()
+        })
 }

@@ -3,14 +3,13 @@ package com.hendraanggrian.openpss.ui.login
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceManager
 import com.hendraanggrian.bundler.extrasOf
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.util.replaceFragment
+import com.hendraanggrian.openpss.ui.OpenPSSActivity
 import kotlinx.android.synthetic.main.activity_login.*
 
-class LoginActivity : AppCompatActivity() {
+class LoginActivity : OpenPSSActivity() {
 
     private lateinit var preferences: SharedPreferences
 

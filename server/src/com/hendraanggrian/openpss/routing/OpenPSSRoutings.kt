@@ -6,18 +6,21 @@ import com.hendraanggrian.openpss.content.Language
 import com.hendraanggrian.openpss.data.GlobalSetting
 import com.hendraanggrian.openpss.nosql.transaction
 import io.ktor.application.ApplicationCall
+import io.ktor.routing.Routing
 import org.joda.time.DateTime
 import org.joda.time.LocalDate
 import org.joda.time.LocalDateTime
 import org.joda.time.LocalTime
 import java.util.ResourceBundle
 
-open class Routing(val action: io.ktor.routing.Routing.() -> Unit)
+open class OpenPSSRouting(val action: Routing.() -> Unit)
 
-inline fun io.ktor.routing.Routing.route(routing: Routing) = routing.action(this)
+inline fun Routing.route(routing: OpenPSSRouting) = routing.action(this)
 
 val resources: ResourceBundle
-    get() = Language.ofFullCode(transaction { findGlobalSetting(GlobalSetting.KEY_LANGUAGE).value }).toResourcesBundle()
+    get() = Language.ofFullCode(transaction {
+        findGlobalSetting(GlobalSetting.KEY_LANGUAGE).value
+    }).toResourcesBundle()
 
 inline fun <T> Iterable<T>.isEmpty(): Boolean = count() == 0
 
@@ -33,11 +36,13 @@ inline fun ApplicationCall.getIntOrNull(name: String): Int? = getStringOrNull(na
 
 inline fun ApplicationCall.getDouble(name: String): Double = getString(name).toDouble()
 
-inline fun ApplicationCall.getDoubleOrNull(name: String): Double? = getStringOrNull(name)?.toDouble()
+inline fun ApplicationCall.getDoubleOrNull(name: String): Double? =
+    getStringOrNull(name)?.toDouble()
 
 inline fun ApplicationCall.getBoolean(name: String): Boolean = getString(name).toBoolean()
 
-inline fun ApplicationCall.getBooleanOrNull(name: String): Boolean? = getStringOrNull(name)?.toBoolean()
+inline fun ApplicationCall.getBooleanOrNull(name: String): Boolean? =
+    getStringOrNull(name)?.toBoolean()
 
 inline fun ApplicationCall.getLocalTime(name: String): LocalTime = LocalTime.parse(getString(name))
 
@@ -49,7 +54,8 @@ inline fun ApplicationCall.getLocalDate(name: String): LocalDate = LocalDate.par
 inline fun ApplicationCall.getLocalDateOrNull(name: String): LocalDate? =
     getStringOrNull(name)?.let { LocalDate.parse(it) }
 
-inline fun ApplicationCall.getLocalDateTime(name: String): LocalDateTime = LocalDateTime.parse(getString(name))
+inline fun ApplicationCall.getLocalDateTime(name: String): LocalDateTime =
+    LocalDateTime.parse(getString(name))
 
 inline fun ApplicationCall.getLocalDateTimeOrNull(name: String): LocalDateTime? =
     getStringOrNull(name)?.let { LocalDateTime.parse(it) }

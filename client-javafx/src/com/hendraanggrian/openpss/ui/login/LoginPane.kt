@@ -1,15 +1,15 @@
 package com.hendraanggrian.openpss.ui.login
 
-import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.BuildConfig
+import com.hendraanggrian.openpss.OpenPSSApplication
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.content.FxComponent
-import com.hendraanggrian.openpss.content.Resources
-import com.hendraanggrian.openpss.data.Employee
 import com.hendraanggrian.openpss.content.Language
+import com.hendraanggrian.openpss.data.Employee
 import com.hendraanggrian.openpss.io.SettingsFile
-import com.hendraanggrian.openpss.popup.dialog.ResultableDialog
-import com.hendraanggrian.openpss.popup.dialog.TextDialog
+import com.hendraanggrian.openpss.ui.FxComponent
+import com.hendraanggrian.openpss.ui.Resources
+import com.hendraanggrian.openpss.ui.ResultableDialog
+import com.hendraanggrian.openpss.ui.TextDialog
 import com.hendraanggrian.openpss.ui.main.help.AboutDialog
 import com.hendraanggrian.openpss.ui.main.help.GitHubHelper
 import com.jfoenix.controls.JFXButton
@@ -56,7 +56,8 @@ import ktfx.text.updateFont
 import java.util.Properties
 import java.util.ResourceBundle
 
-class LoginPane(private val resourced: Resources) : _StackPane(), FxComponent {
+class LoginPane(private val resourced: Resources) : _StackPane(),
+    FxComponent {
 
     private companion object {
         const val WIDTH = 400.0
@@ -90,8 +91,12 @@ class LoginPane(private val resourced: Resources) : _StackPane(), FxComponent {
                     SettingsFile.save()
                     GlobalScope.launch(Dispatchers.JavaFx) {
                         later {
-                            TextDialog(this@LoginPane, R.string.restart_required, getString(R.string._restart_required))
-                                .apply { onDialogClosed { App.exit() } }
+                            TextDialog(
+                                this@LoginPane,
+                                R.string.restart_required,
+                                getString(R.string._restart_required)
+                            )
+                                .apply { onDialogClosed { OpenPSSApplication.exit() } }
                                 .show(this@LoginPane)
                         }
                     }
@@ -151,7 +156,11 @@ class LoginPane(private val resourced: Resources) : _StackPane(), FxComponent {
                                         onSuccess?.invoke(employee)
                                     }.onFailure {
                                         if (BuildConfig.DEBUG) it.printStackTrace()
-                                        TextDialog(this@LoginPane, R.string.login_failed, it.message.toString())
+                                        TextDialog(
+                                            this@LoginPane,
+                                            R.string.login_failed,
+                                            it.message.toString()
+                                        )
                                             .show(this@LoginPane)
                                     }
                                 }

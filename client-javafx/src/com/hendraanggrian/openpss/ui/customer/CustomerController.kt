@@ -1,15 +1,15 @@
 package com.hendraanggrian.openpss.ui.customer
 
-import com.hendraanggrian.openpss.App.Companion.STRETCH_POINT
-import com.hendraanggrian.openpss.content.Formats
+import com.hendraanggrian.openpss.OpenPSSApplication.Companion.STRETCH_POINT
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.content.Formats
 import com.hendraanggrian.openpss.control.CustomerListView
 import com.hendraanggrian.openpss.control.PaginatedPane
 import com.hendraanggrian.openpss.control.StretchableButton
 import com.hendraanggrian.openpss.data.Customer
 import com.hendraanggrian.openpss.schema.typedType
-import com.hendraanggrian.openpss.popup.dialog.ConfirmDialog
 import com.hendraanggrian.openpss.ui.ActionController
+import com.hendraanggrian.openpss.ui.ConfirmDialog
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.util.stringCell
 import javafx.fxml.FXML
@@ -121,13 +121,16 @@ class CustomerController : ActionController(), Refreshable {
                     customerList.selectionModel.selectedItem?.name
                 })
                 sinceLabel.bindLabel {
-                    customerList.selectionModel.selectedItem?.since?.toString(Formats.DATE).orEmpty()
+                    customerList.selectionModel.selectedItem?.since?.toString(Formats.DATE)
+                        .orEmpty()
                 }
                 addressLabel.bindLabel { customerList.selectionModel.selectedItem?.address ?: "-" }
                 noteLabel.bindLabel { customerList.selectionModel.selectedItem?.note ?: "-" }
-                contactTable.itemsProperty().bind(buildBinding(customerList.selectionModel.selectedItemProperty()) {
-                    customerList.selectionModel.selectedItem?.contacts?.toObservableList() ?: emptyObservableList()
-                })
+                contactTable.itemsProperty()
+                    .bind(buildBinding(customerList.selectionModel.selectedItemProperty()) {
+                        customerList.selectionModel.selectedItem?.contacts?.toObservableList()
+                            ?: emptyObservableList()
+                    })
                 masterDetailPane.showDetailNodeProperty()
                     .bind(customerList.selectionModel.selectedItemProperty().isNotNull)
                 customerList
@@ -149,12 +152,17 @@ class CustomerController : ActionController(), Refreshable {
         }
     }
 
-    @FXML fun addContact() = AddContactPopover(this).show(contactTable) {
+    @FXML
+    fun addContact() = AddContactPopover(this).show(contactTable) {
         api.addContact(customerList.selectionModel.selectedItem.id, it!!)
         reload()
     }
 
-    @FXML fun deleteContact() = ConfirmDialog(this, R.string.delete_contact).show {
+    @FXML
+    fun deleteContact() = ConfirmDialog(
+        this,
+        R.string.delete_contact
+    ).show {
         withPermission {
             api.deleteContact(
                 login,

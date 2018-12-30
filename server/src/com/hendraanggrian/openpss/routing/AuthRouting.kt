@@ -8,7 +8,7 @@ import io.ktor.response.respond
 import io.ktor.routing.get
 import kotlinx.nosql.equal
 
-object AuthRouting : Routing({
+object AuthRouting : OpenPSSRouting({
     get("login") {
         val name = call.getString("name")
         val password = call.getString("password")

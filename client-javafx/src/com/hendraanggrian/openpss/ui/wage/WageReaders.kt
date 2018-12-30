@@ -15,7 +15,7 @@ import java.io.File
  * Compatible with e Clocking fingerprint reader.
  * Tested name: `2.1.015`.
  */
-object EClockingReader : Reader("e Clocking", "*.xlsx", {
+object EClockingReader : WageReader("e Clocking", "*.xlsx", {
     val multimap = LinkedHashMultimap.create<Attendee, DateTime>()
     inputStream().use { stream ->
         XSSFWorkbook(stream).use { workbook ->
@@ -41,7 +41,7 @@ object EClockingReader : Reader("e Clocking", "*.xlsx", {
     }
 })
 
-object TestReader : Reader("Test", "*.*", {
+object TestReader : WageReader("Test", "*.*", {
     listOf(
         Attendee(1, "Without role"),
         Attendee(2, "With role", "Admin")
@@ -49,7 +49,7 @@ object TestReader : Reader("Test", "*.*", {
 })
 
 /** A file readers that generates actions of [Attendee] given input file. */
-sealed class Reader(
+sealed class WageReader(
 
     /** Identifier of a reader. */
     val name: String,
@@ -71,14 +71,14 @@ sealed class Reader(
 
     companion object {
 
-        private val READERS: List<Reader>
+        private val READERS: List<WageReader>
             get() = listOf(
                 EClockingReader,
                 TestReader
             )
 
-        fun listAll(): ObservableList<Reader> = READERS.toObservableList()
+        fun listAll(): ObservableList<WageReader> = READERS.toObservableList()
 
-        fun of(name: String): Reader = READERS.single { it.name == name }
+        fun of(name: String): WageReader = READERS.single { it.name == name }
     }
 }

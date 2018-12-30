@@ -2,7 +2,7 @@
 
 package com.hendraanggrian.openpss.util
 
-import com.hendraanggrian.openpss.content.FxComponent
+import com.hendraanggrian.openpss.ui.FxComponent
 import javafx.scene.control.TreeTableColumn
 import ktfx.finalString
 import ktfx.invoke

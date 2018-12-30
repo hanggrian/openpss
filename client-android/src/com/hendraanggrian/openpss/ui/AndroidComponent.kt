@@ -1,4 +1,4 @@
-package com.hendraanggrian.openpss.content
+package com.hendraanggrian.openpss.ui
 
 import android.content.Context
 import android.view.View

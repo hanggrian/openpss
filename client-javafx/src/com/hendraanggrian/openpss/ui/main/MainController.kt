@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.ui.main
 
-import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.BuildConfig
+import com.hendraanggrian.openpss.OpenPSSApplication
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.Formats
 import com.hendraanggrian.openpss.control.MarginedImageView
@@ -10,16 +10,16 @@ import com.hendraanggrian.openpss.control.Toolbar
 import com.hendraanggrian.openpss.control.UnselectableListView
 import com.hendraanggrian.openpss.data.Invoice
 import com.hendraanggrian.openpss.data.Log
-import com.hendraanggrian.openpss.popup.popover.ViewInvoicePopover
 import com.hendraanggrian.openpss.schema.Technique
 import com.hendraanggrian.openpss.schema.new
 import com.hendraanggrian.openpss.ui.ActionController
-import com.hendraanggrian.openpss.ui.Controller
+import com.hendraanggrian.openpss.ui.OpenPSSController
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.customer.CustomerController
 import com.hendraanggrian.openpss.ui.employee.EditEmployeeDialog
 import com.hendraanggrian.openpss.ui.finance.FinanceController
 import com.hendraanggrian.openpss.ui.invoice.InvoiceController
+import com.hendraanggrian.openpss.ui.invoice.ViewInvoicePopover
 import com.hendraanggrian.openpss.ui.main.help.AboutDialog
 import com.hendraanggrian.openpss.ui.main.help.GitHubHelper
 import com.hendraanggrian.openpss.ui.price.EditDigitalPriceDialog
@@ -66,7 +66,7 @@ import org.apache.commons.lang3.SystemUtils
 import java.net.URL
 import java.util.ResourceBundle
 
-class MainController : Controller(), Refreshable {
+class MainController : OpenPSSController(), Refreshable {
 
     @FXML override lateinit var rootLayout: StackPane
     @FXML lateinit var menuBar: MenuBar
@@ -191,7 +191,8 @@ class MainController : Controller(), Refreshable {
                             text(log.message) {
                                 isWrapText = true
                                 updateFont(12)
-                                this@textFlow.prefWidthProperty().bind(this@apply.widthProperty() - 12)
+                                this@textFlow.prefWidthProperty()
+                                    .bind(this@apply.widthProperty() - 12)
                                 wrappingWidthProperty().bind(this@apply.widthProperty())
                             }
                             newLine()
@@ -211,30 +212,39 @@ class MainController : Controller(), Refreshable {
         }
     }
 
-    @FXML fun onDrawerOpening() = refresh()
+    @FXML
+    fun onDrawerOpening() = refresh()
 
-    @FXML fun onDrawerOpened() = eventPagination.selectLast()
+    @FXML
+    fun onDrawerOpened() = eventPagination.selectLast()
 
-    @FXML fun add(event: ActionEvent) = when (event.source) {
+    @FXML
+    fun add(event: ActionEvent) = when (event.source) {
         addCustomerItem -> select(customerController) { later { add() } }
         else -> select(invoiceController) { addInvoice() }
     }
 
-    @FXML fun quit() = App.exit()
+    @FXML
+    fun quit() = OpenPSSApplication.exit()
 
-    @FXML fun editPrice(event: ActionEvent) = when (event.source) {
+    @FXML
+    fun editPrice(event: ActionEvent) = when (event.source) {
         platePriceItem -> EditPlatePriceDialog(this)
         offsetPrintPriceItem -> EditOffsetPriceDialog(this)
         else -> EditDigitalPriceDialog(this)
     }.show()
 
-    @FXML fun editEmployee() = EditEmployeeDialog(this).show()
+    @FXML
+    fun editEmployee() = EditEmployeeDialog(this).show()
 
-    @FXML fun editRecess() = EditRecessDialog(this).show()
+    @FXML
+    fun editRecess() = EditRecessDialog(this).show()
 
-    @FXML fun settings() = SettingsDialog(this).show()
+    @FXML
+    fun settings() = SettingsDialog(this).show()
 
-    @FXML fun testViewInvoice() {
+    @FXML
+    fun testViewInvoice() {
         GlobalScope.launch(Dispatchers.JavaFx) {
             api.getCustomers("", 0, 1).items.firstOrNull()?.let {
                 ViewInvoicePopover(
@@ -245,9 +255,23 @@ class MainController : Controller(), Refreshable {
                         customerId = it.id,
                         dateTime = runBlocking { api.getDateTime() },
                         offsetJobs = listOf(
-                            Invoice.OffsetJob.new(5, "Title", 92000.0, "Type", Technique.TWO_SIDE_EQUAL)
+                            Invoice.OffsetJob.new(
+                                5,
+                                "Title",
+                                92000.0,
+                                "Type",
+                                Technique.TWO_SIDE_EQUAL
+                            )
                         ),
-                        digitalJobs = listOf(Invoice.DigitalJob.new(5, "Title", 92000.0, "Type", false)),
+                        digitalJobs = listOf(
+                            Invoice.DigitalJob.new(
+                                5,
+                                "Title",
+                                92000.0,
+                                "Type",
+                                false
+                            )
+                        ),
                         plateJobs = listOf(Invoice.PlateJob.new(5, "Title", 92000.0, "Type")),
                         otherJobs = listOf(Invoice.OtherJob.new(5, "Title", 92000.0)),
                         note = "This is a test",
@@ -256,13 +280,18 @@ class MainController : Controller(), Refreshable {
                         isDone = false
                     ), true
                 ).show(menuBar)
-            } ?: rootLayout.jfxSnackbar(getString(R.string.no_customer_to_test), getLong(R.value.duration_short))
+            } ?: rootLayout.jfxSnackbar(
+                getString(R.string.no_customer_to_test),
+                getLong(R.value.duration_short)
+            )
         }
     }
 
-    @FXML fun checkUpdate() = GitHubHelper.checkUpdates(this)
+    @FXML
+    fun checkUpdate() = GitHubHelper.checkUpdates(this)
 
-    @FXML fun about() = AboutDialog(this).show()
+    @FXML
+    fun about() = AboutDialog(this).show()
 
     private fun ActionController.replaceButtons() = toolbar.setRightItems(*actions.toTypedArray())
 
@@ -271,10 +300,13 @@ class MainController : Controller(), Refreshable {
         controller.run(run)
     }
 
-    private fun MarginedImageView.bind(index: Int, selectedImageId: String, unselectedImageId: String) =
-        imageProperty().bind(
-            When(drawerList.selectionModel.selectedIndexProperty() eq index)
-                then Image(selectedImageId)
-                otherwise Image(unselectedImageId)
-        )
+    private fun MarginedImageView.bind(
+        index: Int,
+        selectedImageId: String,
+        unselectedImageId: String
+    ) = imageProperty().bind(
+        When(drawerList.selectionModel.selectedIndexProperty() eq index)
+            then Image(selectedImageId)
+            otherwise Image(unselectedImageId)
+    )
 }

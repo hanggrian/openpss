@@ -1,16 +1,18 @@
-package com.hendraanggrian.openpss.popup.dialog
+package com.hendraanggrian.openpss.ui
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.content.FxComponent
 import com.hendraanggrian.openpss.nosql.Document
-import com.hendraanggrian.openpss.ui.Refreshable
-import javafx.geometry.Pos.CENTER_RIGHT
+import com.jfoenix.controls.JFXDialog
+import javafx.beans.property.ObjectProperty
+import javafx.beans.property.SimpleObjectProperty
+import javafx.geometry.Pos
 import javafx.scene.Node
 import javafx.scene.control.Button
 import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
-import javafx.scene.control.TableView.CONSTRAINED_RESIZE_POLICY
 import javafx.scene.image.ImageView
+import javafx.scene.layout.Region
+import javafx.scene.layout.VBox
 import javafx.stage.Stage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -19,21 +21,106 @@ import kotlinx.coroutines.javafx.JavaFx
 import kotlinx.coroutines.launch
 import ktfx.collections.toMutableObservableList
 import ktfx.coroutines.onAction
+import ktfx.getValue
 import ktfx.jfoenix.jfxButton
 import ktfx.later
+import ktfx.layouts.NodeInvokable
 import ktfx.layouts.TableColumnsBuilder
-import ktfx.layouts.anchorPane
 import ktfx.layouts.hbox
+import ktfx.layouts.label
 import ktfx.layouts.tableView
 import ktfx.layouts.tooltip
+import ktfx.setValue
 import ktfx.windows.setMinSize
+
+@Suppress("LeakingThis")
+open class OpenPSSDialog(
+    component: FxComponent,
+    override val titleId: String
+) : JFXDialog(), OpenPSSPopup, FxComponent by component {
+
+    private companion object {
+        const val MAX_OPENED_DIALOGS = 3
+    }
+
+    override fun setActualContent(region: Region) {
+        content = region
+    }
+
+    override fun setOnShown(onShown: () -> Unit) = setOnDialogOpened { onShown() }
+
+    override fun dismiss() = close()
+
+    override lateinit var contentPane: VBox
+    override lateinit var buttonInvokable: NodeInvokable
+    override lateinit var cancelButton: Button
+
+    private val graphicProperty = SimpleObjectProperty<Node>()
+    override fun graphicProperty(): ObjectProperty<Node> = graphicProperty
+    var graphic: Node? by graphicProperty
+
+    init {
+        initialize()
+        dialogContainer = rootLayout
+    }
+
+    override fun show() {
+        val openedDialogs = rootLayout.children.filterIsInstance<OpenPSSDialog>()
+        if (openedDialogs.size > MAX_OPENED_DIALOGS) {
+            rootLayout.children -= openedDialogs
+        }
+        super.show()
+    }
+}
+
+open class ResultableDialog<T>(
+    component: FxComponent,
+    titleId: String
+) : OpenPSSDialog(component, titleId), ResultablePopup<T> {
+
+    override lateinit var defaultButton: Button
+
+    fun show(onAction: suspend CoroutineScope.(T?) -> Unit) {
+        super.show()
+        defaultButton.onAction {
+            onAction(nullableResult)
+            close()
+        }
+    }
+}
+
+class TextDialog(
+    component: FxComponent,
+    titleId: String,
+    content: String = ""
+) : OpenPSSDialog(component, titleId) {
+
+    init {
+        ktfx.layouts.label {
+            isWrapText = true
+            text = content
+        }
+    }
+}
+
+class ConfirmDialog(
+    component: FxComponent,
+    textId: String? = null
+) : ResultableDialog<Unit>(component, R.string.are_you_sure) {
+
+    init {
+        textId?.let { label(getString(it)) }
+        cancelButton.text = getString(R.string.no)
+        defaultButton.text = getString(R.string.yes)
+    }
+}
 
 @Suppress("LeakingThis")
 abstract class TableDialog<D : Document<*>>(
     component: FxComponent,
     titleId: String,
     requestPermissionWhenDelete: Boolean = false
-) : Dialog(component, titleId), TableColumnsBuilder<D>, Refreshable {
+) : OpenPSSDialog(component, titleId), TableColumnsBuilder<D>, Refreshable {
 
     protected lateinit var refreshButton: Button
     protected lateinit var addButton: Button
@@ -44,9 +131,9 @@ abstract class TableDialog<D : Document<*>>(
 
     init {
         graphic = ktfx.layouts.vbox(getDouble(R.value.padding_medium)) {
-            alignment = CENTER_RIGHT
+            alignment = Pos.CENTER_RIGHT
             hbox(getDouble(R.value.padding_medium)) {
-                alignment = CENTER_RIGHT
+                alignment = Pos.CENTER_RIGHT
                 refreshButton = jfxButton(graphic = ImageView(R.image.act_refresh)) {
                     tooltip(getString(R.string.refresh))
                     onAction { refresh() }
@@ -77,10 +164,10 @@ abstract class TableDialog<D : Document<*>>(
                 }
             }
         }
-        anchorPane {
+        ktfx.layouts.anchorPane {
             table = tableView<D> {
                 prefHeight = 275.0
-                columnResizePolicy = CONSTRAINED_RESIZE_POLICY
+                columnResizePolicy = TableView.CONSTRAINED_RESIZE_POLICY
                 isEditable = true
             } anchorAll 1
         }

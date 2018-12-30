@@ -1,17 +1,18 @@
-package com.hendraanggrian.openpss.popup.popover
+package com.hendraanggrian.openpss.ui.invoice
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.Formats
-import com.hendraanggrian.openpss.content.FxComponent
-import com.hendraanggrian.openpss.content.Stylesheets
+import com.hendraanggrian.openpss.content.Language
 import com.hendraanggrian.openpss.control.Space
 import com.hendraanggrian.openpss.data.Customer
 import com.hendraanggrian.openpss.data.Employee
 import com.hendraanggrian.openpss.data.GlobalSetting
 import com.hendraanggrian.openpss.data.GlobalSetting.Companion.KEY_INVOICE_HEADERS
 import com.hendraanggrian.openpss.data.Invoice
-import com.hendraanggrian.openpss.content.Language
 import com.hendraanggrian.openpss.schema.typedTechnique
+import com.hendraanggrian.openpss.ui.FxComponent
+import com.hendraanggrian.openpss.ui.OpenPSSPopover
+import com.hendraanggrian.openpss.ui.Stylesheets
 import com.sun.javafx.print.PrintHelper
 import com.sun.javafx.print.Units
 import javafx.geometry.HPos.LEFT
@@ -60,7 +61,7 @@ import org.apache.commons.lang3.SystemUtils
 import java.util.ResourceBundle
 
 /**
- * Popup displaying invoice using server's language instead of local.
+ * OpenPSSPopup displaying invoice using server's language instead of local.
  * Size of invoice is equivalent to 10x14cm, possibly the smallest continuous form available.
  *
  * Must create custom paper in Windows machine called `Invoice`, which is 10x14cm without margins.
@@ -69,7 +70,7 @@ class ViewInvoicePopover(
     component: FxComponent,
     private val invoice: Invoice,
     private val isTest: Boolean = false
-) : Popover(component, R.string.invoice) {
+) : OpenPSSPopover(component, R.string.invoice) {
 
     private companion object {
 
@@ -228,7 +229,11 @@ class ViewInvoicePopover(
                     // resize node to actual print size
                     val printer = defaultPrinter
                     val layout = printer.createPageLayout(
-                        PrintHelper.createPaper("Invoice", WIDTH_MM, HEIGHT_MM, Units.MM),
+                        PrintHelper.createPaper(
+                            "Invoice",
+                            WIDTH_MM,
+                            HEIGHT_MM, Units.MM
+                        ),
                         PageOrientation.PORTRAIT,
                         0.0, 0.0, 0.0, 0.0
                     )

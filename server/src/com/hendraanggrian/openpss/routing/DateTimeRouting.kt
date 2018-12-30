@@ -5,7 +5,7 @@ import io.ktor.application.call
 import io.ktor.response.respond
 import io.ktor.routing.get
 
-object DateTimeRouting : Routing({
+object DateTimeRouting : OpenPSSRouting({
     get("date") {
         call.respond(Database.date())
     }

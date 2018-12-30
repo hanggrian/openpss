@@ -1,9 +1,9 @@
 package com.hendraanggrian.openpss.ui.wage
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.content.FxComponent
 import com.hendraanggrian.openpss.control.TimeBox
-import com.hendraanggrian.openpss.popup.popover.ResultablePopover
+import com.hendraanggrian.openpss.ui.FxComponent
+import com.hendraanggrian.openpss.ui.ResultablePopover
 import javafx.scene.Node
 import ktfx.bindings.buildBooleanBinding
 import ktfx.controls.gap
@@ -28,9 +28,10 @@ class AddRecessPopover(
             label(getString(R.string.end)) col 0 row 1
             endBox = TimeBox()() col 1 row 1
         }
-        defaultButton.disableProperty().bind(buildBooleanBinding(startBox.valueProperty(), endBox.valueProperty()) {
-            startBox.value!! >= endBox.value!!
-        })
+        defaultButton.disableProperty()
+            .bind(buildBooleanBinding(startBox.valueProperty(), endBox.valueProperty()) {
+                startBox.value!! >= endBox.value!!
+            })
     }
 
     override val nullableResult: Pair<LocalTime, LocalTime>? get() = startBox.value!! to endBox.value!!

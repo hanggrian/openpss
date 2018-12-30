@@ -1,11 +1,11 @@
 package com.hendraanggrian.openpss.ui.invoice
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.content.FxComponent
 import com.hendraanggrian.openpss.control.DoubleField
 import com.hendraanggrian.openpss.data.Invoice
 import com.hendraanggrian.openpss.data.Payment
-import com.hendraanggrian.openpss.popup.popover.ResultablePopover
+import com.hendraanggrian.openpss.ui.FxComponent
+import com.hendraanggrian.openpss.ui.ResultablePopover
 import javafx.scene.Node
 import javafx.scene.control.CheckBox
 import javafx.scene.control.TextField
@@ -46,7 +46,8 @@ class AddPaymentPopover(
                 styleClass += R.style.bold
             } row 1 col 1 colSpans 2
             label(getString(R.string.payment)) row 2 col 0
-            valueField = DoubleField().apply { promptText = getString(R.string.payment) }() row 2 col 1
+            valueField = DoubleField().apply { promptText = getString(R.string.payment) }() row
+                2 col 1
             jfxButton(graphic = ImageView(R.image.btn_match_receivable)) {
                 styleClass += R.style.flat
                 tooltip(getString(R.string.match_receivable))

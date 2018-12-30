@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.ui.wage
 
 import com.hendraanggrian.openpss.api.OpenPSSApi
-import com.hendraanggrian.openpss.content.Resources
+import com.hendraanggrian.openpss.ui.Resources
 import com.hendraanggrian.openpss.data.Recess
 import com.hendraanggrian.openpss.data.Wage
 import com.hendraanggrian.openpss.ui.wage.record.Record

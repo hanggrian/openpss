@@ -1,9 +1,9 @@
 package com.hendraanggrian.openpss.ui.main.help
 
 import com.hendraanggrian.openpss.R
-import com.github.Asset
-import com.hendraanggrian.openpss.content.FxComponent
-import com.hendraanggrian.openpss.popup.dialog.ResultableDialog
+import com.hendraanggrian.openpss.data.Asset
+import com.hendraanggrian.openpss.ui.FxComponent
+import com.hendraanggrian.openpss.ui.ResultableDialog
 import javafx.scene.Node
 import javafx.scene.control.ListView
 import ktfx.collections.toObservableList

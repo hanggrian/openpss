@@ -4,10 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.ui.OpenPSSFragment
 
-class InvoiceFragment : Fragment() {
+class InvoiceFragment : OpenPSSFragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,

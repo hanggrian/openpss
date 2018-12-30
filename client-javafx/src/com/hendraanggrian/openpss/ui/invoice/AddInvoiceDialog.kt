@@ -1,13 +1,13 @@
 package com.hendraanggrian.openpss.ui.invoice
 
-import com.hendraanggrian.openpss.content.Formats
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.content.FxComponent
+import com.hendraanggrian.openpss.content.Formats
 import com.hendraanggrian.openpss.data.Customer
 import com.hendraanggrian.openpss.data.Invoice
 import com.hendraanggrian.openpss.schema.typedTechnique
-import com.hendraanggrian.openpss.popup.dialog.ResultableDialog
-import com.hendraanggrian.openpss.popup.popover.ResultablePopover
+import com.hendraanggrian.openpss.ui.FxComponent
+import com.hendraanggrian.openpss.ui.ResultableDialog
+import com.hendraanggrian.openpss.ui.ResultablePopover
 import com.hendraanggrian.openpss.ui.invoice.job.AddDigitalJobPopover
 import com.hendraanggrian.openpss.ui.invoice.job.AddOffsetJobPopover
 import com.hendraanggrian.openpss.ui.invoice.job.AddOtherJobPopover
@@ -95,30 +95,33 @@ class AddInvoiceDialog(
                     customerProperty.value?.toString() ?: getString(R.string.search_customer)
                 })
                 onMouseClicked {
-                    SearchCustomerPopover(this@AddInvoiceDialog).show(this@jfxTextField) { customerProperty.set(it) }
+                    SearchCustomerPopover(this@AddInvoiceDialog).show(this@jfxTextField) {
+                        customerProperty.set(it)
+                    }
                 }
             } col 1 row 1
             label(getString(R.string.jobs)) col 0 row 2
             jfxTabPane {
                 styleClass += R.style.jfx_tab_pane_small
                 tab {
-                    digitalTable = invoiceTableView({ AddDigitalJobPopover(this@AddInvoiceDialog) }) {
-                        bindTitle(this, R.string.digital)
-                        columns {
-                            column<Invoice.DigitalJob, String>(R.string.qty, 72) {
-                                numberCell(this@AddInvoiceDialog) { qty }
-                            }
-                            column<Invoice.DigitalJob, String>(R.string.type, 72) {
-                                stringCell { type }
-                            }
-                            column<Invoice.DigitalJob, String>(R.string.description, 264) {
-                                stringCell { desc }
-                            }
-                            column<Invoice.DigitalJob, String>(R.string.total, 156) {
-                                currencyCell(this@AddInvoiceDialog) { total }
+                    digitalTable =
+                        invoiceTableView({ AddDigitalJobPopover(this@AddInvoiceDialog) }) {
+                            bindTitle(this, R.string.digital)
+                            columns {
+                                column<Invoice.DigitalJob, String>(R.string.qty, 72) {
+                                    numberCell(this@AddInvoiceDialog) { qty }
+                                }
+                                column<Invoice.DigitalJob, String>(R.string.type, 72) {
+                                    stringCell { type }
+                                }
+                                column<Invoice.DigitalJob, String>(R.string.description, 264) {
+                                    stringCell { desc }
+                                }
+                                column<Invoice.DigitalJob, String>(R.string.total, 156) {
+                                    currencyCell(this@AddInvoiceDialog) { total }
+                                }
                             }
                         }
-                    }
                 }
                 tab {
                     offsetTable = invoiceTableView({ AddOffsetJobPopover(this@AddInvoiceDialog) }) {

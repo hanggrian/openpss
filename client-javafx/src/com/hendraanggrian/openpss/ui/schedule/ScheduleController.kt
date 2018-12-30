@@ -1,8 +1,8 @@
 package com.hendraanggrian.openpss.ui.schedule
 
-import com.hendraanggrian.openpss.App.Companion.STRETCH_POINT
-import com.hendraanggrian.openpss.content.Formats
+import com.hendraanggrian.openpss.OpenPSSApplication.Companion.STRETCH_POINT
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.content.Formats
 import com.hendraanggrian.openpss.control.StretchableButton
 import com.hendraanggrian.openpss.control.UncollapsibleTreeItem
 import com.hendraanggrian.openpss.data.Invoice
@@ -60,7 +60,10 @@ class ScheduleController : ActionController(), Refreshable {
             ImageView(R.image.act_done)
         ).apply {
             onAction {
-                api.editInvoice(scheduleTable.selectionModel.selectedItem.value.invoice, isDone = true)
+                api.editInvoice(
+                    scheduleTable.selectionModel.selectedItem.value.invoice,
+                    isDone = true
+                )
                 refresh()
             }
         }()
@@ -112,7 +115,8 @@ class ScheduleController : ActionController(), Refreshable {
                             invoice.dateTime.toString(Formats.DATETIME_EXTENDED)
                         )
                     ).apply {
-                        Schedule.of(this@ScheduleController, invoice).forEach { children += TreeItem<Schedule>(it) }
+                        Schedule.of(this@ScheduleController, invoice)
+                            .forEach { children += TreeItem<Schedule>(it) }
                     })
                 }
             }

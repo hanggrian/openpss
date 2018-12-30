@@ -1,8 +1,8 @@
 package com.hendraanggrian.openpss.ui.price
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.content.FxComponent
 import com.hendraanggrian.openpss.data.DigitalPrice
+import com.hendraanggrian.openpss.ui.FxComponent
 import javafx.beans.value.ObservableValue
 import kotlinx.coroutines.CoroutineScope
 import ktfx.coroutines.onEditCommit

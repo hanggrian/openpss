@@ -1,6 +1,6 @@
 package com.hendraanggrian.openpss.api
 
-import com.github.Release
+import com.hendraanggrian.openpss.data.Release
 import com.hendraanggrian.openpss.content.GsonBuilders
 import com.hendraanggrian.openpss.internal.ClientBuildConfig
 import io.ktor.client.HttpClient

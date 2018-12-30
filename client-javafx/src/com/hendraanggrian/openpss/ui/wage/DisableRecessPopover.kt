@@ -1,8 +1,8 @@
 package com.hendraanggrian.openpss.ui.wage
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.content.FxComponent
-import com.hendraanggrian.openpss.popup.popover.Popover
+import com.hendraanggrian.openpss.ui.FxComponent
+import com.hendraanggrian.openpss.ui.OpenPSSPopover
 import com.jfoenix.controls.JFXButton
 import javafx.scene.Node
 import javafx.scene.control.ComboBox
@@ -23,7 +23,7 @@ import ktfx.layouts.label
 class DisableRecessPopover(
     component: FxComponent,
     private val attendeePanes: List<AttendeePane>
-) : Popover(component, R.string.disable_recess) {
+) : OpenPSSPopover(component, R.string.disable_recess) {
 
     private lateinit var recessChoice: ComboBox<*>
     private lateinit var roleChoice: ComboBox<*>

@@ -2,8 +2,8 @@ package com.hendraanggrian.openpss.ui.main.help
 
 import com.hendraanggrian.openpss.BuildConfig
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.content.FxComponent
-import com.hendraanggrian.openpss.content.Stylesheets
+import com.hendraanggrian.openpss.ui.FxComponent
+import com.hendraanggrian.openpss.ui.Stylesheets
 import com.hendraanggrian.openpss.ui.main.License
 import com.jfoenix.controls.JFXButton
 import javafx.geometry.Pos

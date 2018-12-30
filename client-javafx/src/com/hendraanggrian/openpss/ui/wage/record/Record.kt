@@ -2,7 +2,7 @@ package com.hendraanggrian.openpss.ui.wage.record
 
 import com.hendraanggrian.openpss.content.Formats
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.content.Resources
+import com.hendraanggrian.openpss.ui.Resources
 import com.hendraanggrian.openpss.ui.wage.Attendee
 import com.hendraanggrian.openpss.ui.wage.IntervalWrapper
 import com.hendraanggrian.openpss.util.START_OF_TIME

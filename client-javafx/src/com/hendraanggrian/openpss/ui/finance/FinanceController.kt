@@ -1,16 +1,16 @@
 package com.hendraanggrian.openpss.ui.finance
 
-import com.hendraanggrian.openpss.App.Companion.STRETCH_POINT
-import com.hendraanggrian.openpss.content.Formats
+import com.hendraanggrian.openpss.OpenPSSApplication.Companion.STRETCH_POINT
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.content.Formats
 import com.hendraanggrian.openpss.control.DateBox
 import com.hendraanggrian.openpss.control.MonthBox
 import com.hendraanggrian.openpss.control.StretchableButton
 import com.hendraanggrian.openpss.data.Payment
 import com.hendraanggrian.openpss.io.SettingsFile
-import com.hendraanggrian.openpss.popup.popover.ViewInvoicePopover
 import com.hendraanggrian.openpss.ui.ActionController
 import com.hendraanggrian.openpss.ui.Refreshable
+import com.hendraanggrian.openpss.ui.invoice.ViewInvoicePopover
 import com.hendraanggrian.openpss.util.currencyCell
 import com.hendraanggrian.openpss.util.doneCell
 import com.hendraanggrian.openpss.util.numberCell
@@ -112,7 +112,9 @@ class FinanceController : ActionController(), Refreshable {
         dailyValueColumn.currencyCell(this) { value }
         dailyCashColumn.doneCell { isCash() }
         dailyReferenceColumn.stringCell { reference }
-        viewInvoiceItem.disableProperty().bind(dailyTable.selectionModel.selectedItemProperty().isNull)
+        viewInvoiceItem.disableProperty().bind(
+            dailyTable.selectionModel.selectedItemProperty().isNull
+        )
         dailyTable.onMouseClicked {
             if (it.isDoubleClick() && dailyTable.selectionModel.isSelected()) {
                 viewInvoice()
@@ -123,7 +125,8 @@ class FinanceController : ActionController(), Refreshable {
         monthlyCashColumn.currencyCell(this) { cash }
         monthlyNonCashColumn.currencyCell(this) { nonCash }
         monthlyTotalColumn.currencyCell(this) { total }
-        viewPaymentsItem.disableProperty().bind(monthlyTable.selectionModel.selectedItemProperty().isNull)
+        viewPaymentsItem.disableProperty()
+            .bind(monthlyTable.selectionModel.selectedItemProperty().isNull)
         monthlyTable.onMouseClicked {
             if (it.isDoubleClick() && monthlyTable.selectionModel.isSelected()) {
                 viewPayments()
@@ -142,21 +145,23 @@ class FinanceController : ActionController(), Refreshable {
         }
     }
 
-    @FXML fun viewInvoice() = ViewInvoicePopover(this, runBlocking {
-        api.getInvoice(dailyTable.selectionModel.selectedItem.invoiceId)
-    }).show(
+    @FXML
+    fun viewInvoice() = ViewInvoicePopover(this,
+        runBlocking { api.getInvoice(dailyTable.selectionModel.selectedItem.invoiceId) }).show(
         when (tabPane.selectionModel.selectedIndex) {
             0 -> dailyTable
             else -> monthlyTable
         }
     )
 
-    @FXML fun viewPayments() {
+    @FXML
+    fun viewPayments() {
         tabPane.selectionModel.selectFirst()
         dateBox.picker.value = monthlyTable.selectionModel.selectedItem.date.toJava()
     }
 
-    private fun viewTotal() = ViewTotalPopover(this, getTotal(true), getTotal(false)).show(viewTotalButton)
+    private fun viewTotal() =
+        ViewTotalPopover(this, getTotal(true), getTotal(false)).show(viewTotalButton)
 
     private fun getTotal(isCash: Boolean): Double = when (tabPane.selectionModel.selectedIndex) {
         0 -> Payment.gather(dailyTable.items, isCash)

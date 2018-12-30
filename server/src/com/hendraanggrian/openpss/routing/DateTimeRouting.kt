@@ -1,18 +1,20 @@
 package com.hendraanggrian.openpss.routing
 
-import com.hendraanggrian.openpss.nosql.Database
+import com.hendraanggrian.openpss.nosql.dbDate
+import com.hendraanggrian.openpss.nosql.dbDateTime
+import com.hendraanggrian.openpss.nosql.dbTime
 import io.ktor.application.call
 import io.ktor.response.respond
 import io.ktor.routing.get
 
-object DateTimeRouting : OpenPSSRouting({
+object DateTimeRouting : OpenPssRouting({
     get("date") {
-        call.respond(Database.date())
+        call.respond(dbDate())
     }
     get("time") {
-        call.respond(Database.time())
+        call.respond(dbTime())
     }
     get("date-time") {
-        call.respond(Database.dateTime())
+        call.respond(dbDateTime())
     }
 })

@@ -11,6 +11,7 @@ import com.hendraanggrian.openpss.nosql.NamedDocument
 import com.hendraanggrian.openpss.nosql.NamedDocumentSchema
 import com.hendraanggrian.openpss.nosql.SessionWrapper
 import com.hendraanggrian.openpss.nosql.transaction
+import com.hendraanggrian.openpss.resources
 import com.hendraanggrian.openpss.schema.DigitalPrices
 import com.hendraanggrian.openpss.schema.Employees
 import com.hendraanggrian.openpss.schema.Logs
@@ -87,7 +88,7 @@ sealed class NamedRouting<S : NamedDocumentSchema<D>, D : NamedDocument<S>>(
     onGet: SessionWrapper.(call: ApplicationCall) -> List<D> = { schema().toList() },
     onEdit: SessionWrapper.(call: ApplicationCall, query: DocumentQuery<S, String, D>, document: D) -> Unit,
     onDeleted: SessionWrapper.(call: ApplicationCall, query: DocumentQuery<S, String, D>) -> Unit = { _, _ -> }
-) : OpenPSSRouting({
+) : OpenPssRouting({
     route(schema.schemaName) {
         get {
             call.respond(transaction { onGet(call) })

@@ -3,7 +3,7 @@ package com.hendraanggrian.openpss.ui.price
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.nosql.NamedDocument
 import com.hendraanggrian.openpss.ui.FxComponent
-import com.hendraanggrian.openpss.ui.InputPopover
+import com.hendraanggrian.openpss.ui.InputPopOver
 import com.hendraanggrian.openpss.ui.TableDialog
 import com.hendraanggrian.openpss.util.stringCell
 import kotlinx.coroutines.CoroutineScope
@@ -19,7 +19,7 @@ abstract class EditPriceDialog<D : NamedDocument<*>>(component: FxComponent, hea
         }
     }
 
-    override fun add() = InputPopover(
+    override fun add() = InputPopOver(
         this, when (this) {
             is EditPlatePriceDialog -> R.string.add_plate_price
             is EditOffsetPriceDialog -> R.string.add_offset_price

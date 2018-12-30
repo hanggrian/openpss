@@ -5,12 +5,12 @@ import android.widget.Toast
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.hendraanggrian.bundler.bindExtras
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.ui.OpenPSSActivity
+import com.hendraanggrian.openpss.ui.OpenPssActivity
 import com.hendraanggrian.openpss.ui.customer.CustomerFragment
 import com.hendraanggrian.openpss.ui.invoice.InvoiceFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : OpenPSSActivity() {
+class MainActivity : OpenPssActivity() {
 
     private val navigationListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {

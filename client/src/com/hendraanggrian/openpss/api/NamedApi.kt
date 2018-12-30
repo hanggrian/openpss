@@ -92,7 +92,7 @@ interface NamedApi : Api {
     }
 
     suspend fun getEmployee(id: Id<String, *>): Employee = client.get {
-        apiUrl("$Employees/$id")
+        apiUrl("${Employees.schemaName}/$id")
     }
 
     suspend fun editEmployee(edit: Employee, login: String): Boolean =

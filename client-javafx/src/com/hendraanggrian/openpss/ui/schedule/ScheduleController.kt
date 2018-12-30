@@ -1,8 +1,7 @@
 package com.hendraanggrian.openpss.ui.schedule
 
-import com.hendraanggrian.openpss.OpenPSSApplication.Companion.STRETCH_POINT
+import com.hendraanggrian.openpss.PATTERN_DATETIMEEXT
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.content.Formats
 import com.hendraanggrian.openpss.control.StretchableButton
 import com.hendraanggrian.openpss.control.UncollapsibleTreeItem
 import com.hendraanggrian.openpss.data.Invoice
@@ -18,10 +17,7 @@ import javafx.scene.control.TreeItem
 import javafx.scene.control.TreeTableColumn
 import javafx.scene.control.TreeTableView
 import javafx.scene.image.ImageView
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.javafx.JavaFx
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import ktfx.bindings.buildStringBinding
 import ktfx.bindings.or
 import ktfx.collections.isEmptyBinding
@@ -48,21 +44,22 @@ class ScheduleController : ActionController(), Refreshable {
 
     override fun NodeInvokable.onCreateActions() {
         refreshButton = StretchableButton(
-            STRETCH_POINT,
+            getDouble(R.value.stretch),
             getString(R.string.refresh),
             ImageView(R.image.act_refresh)
         ).apply {
             onAction { refresh() }
         }()
         doneButton = StretchableButton(
-            STRETCH_POINT,
+            getDouble(R.value.stretch),
             getString(R.string.done),
             ImageView(R.image.act_done)
         ).apply {
             onAction {
                 api.editInvoice(
-                    scheduleTable.selectionModel.selectedItem.value.invoice,
-                    isDone = true
+                    scheduleTable.selectionModel.selectedItem.value.invoice.apply {
+                        isDone = true
+                    }
                 )
                 refresh()
             }
@@ -104,21 +101,24 @@ class ScheduleController : ActionController(), Refreshable {
         scheduleTable.selectionModel.clearSelection()
         scheduleTable.root.children.run {
             clear()
-            GlobalScope.launch(Dispatchers.JavaFx) {
+            runBlocking {
                 when (historyCheck.isSelected) {
                     true -> api.getInvoices(isDone = true, page = 1, count = 20).items
                     else -> api.getInvoices(isDone = false, page = 1, count = 100).items
-                }.forEach { invoice ->
-                    addAll(UncollapsibleTreeItem(
-                        Schedule(
-                            invoice, api.getCustomer(invoice.customerId).name, "", "",
-                            invoice.dateTime.toString(Formats.DATETIME_EXTENDED)
-                        )
-                    ).apply {
-                        Schedule.of(this@ScheduleController, invoice)
-                            .forEach { children += TreeItem<Schedule>(it) }
-                    })
                 }
+            }.forEach { invoice ->
+                addAll(UncollapsibleTreeItem(
+                    Schedule(
+                        invoice,
+                        runBlocking { api.getCustomer(invoice.customerId).name },
+                        "",
+                        "",
+                        invoice.dateTime.toString(PATTERN_DATETIMEEXT)
+                    )
+                ).apply {
+                    Schedule.of(this@ScheduleController, invoice)
+                        .forEach { children += TreeItem<Schedule>(it) }
+                })
             }
         }
     }

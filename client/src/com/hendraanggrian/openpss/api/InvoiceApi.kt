@@ -25,6 +25,7 @@ interface InvoiceApi : Api {
             "search" to search,
             "customer" to customer,
             "isPaid" to isPaid,
+            "isDone" to isDone,
             "date" to date,
             "page" to page,
             "count" to count
@@ -46,18 +47,9 @@ interface InvoiceApi : Api {
         apiUrl("${Invoices.schemaName}/$id")
     }
 
-    suspend fun editInvoice(
-        invoice: Invoice,
-        isPrinted: Boolean = invoice.isPrinted,
-        isPaid: Boolean = invoice.isPaid,
-        isDone: Boolean = invoice.isDone
-    ): Boolean = client.requestStatus(HttpMethod.Put) {
+    suspend fun editInvoice(invoice: Invoice): Boolean = client.requestStatus(HttpMethod.Put) {
         apiUrl("${Invoices.schemaName}/${invoice.id}")
-        parameters(
-            "isPrinted" to isPrinted,
-            "isPaid" to isPaid,
-            "isDone" to isDone
-        )
+        jsonBody(invoice)
     }
 
     suspend fun nextInvoice(): Int = client.get {

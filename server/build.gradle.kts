@@ -46,7 +46,9 @@ tasks {
     }
 
     named<com.hendraanggrian.generating.buildconfig.BuildConfigTask>("generateBuildConfig") {
+        appName = "$RELEASE_NAME Server"
         debug = RELEASE_DEBUG
+        website = RELEASE_WEBSITE
         field("DATABASE", RELEASE_ARTIFACT)
         field("DATABASE_USER", envUser())
         field("DATABASE_PASS", envPass())

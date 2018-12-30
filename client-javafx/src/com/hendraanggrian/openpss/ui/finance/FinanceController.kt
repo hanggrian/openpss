@@ -1,8 +1,8 @@
 package com.hendraanggrian.openpss.ui.finance
 
-import com.hendraanggrian.openpss.OpenPSSApplication.Companion.STRETCH_POINT
+import com.hendraanggrian.openpss.PATTERN_DATE
+import com.hendraanggrian.openpss.PATTERN_TIME
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.content.Formats
 import com.hendraanggrian.openpss.control.DateBox
 import com.hendraanggrian.openpss.control.MonthBox
 import com.hendraanggrian.openpss.control.StretchableButton
@@ -10,7 +10,7 @@ import com.hendraanggrian.openpss.data.Payment
 import com.hendraanggrian.openpss.io.SettingsFile
 import com.hendraanggrian.openpss.ui.ActionController
 import com.hendraanggrian.openpss.ui.Refreshable
-import com.hendraanggrian.openpss.ui.invoice.ViewInvoicePopover
+import com.hendraanggrian.openpss.ui.invoice.ViewInvoicePopOver
 import com.hendraanggrian.openpss.util.currencyCell
 import com.hendraanggrian.openpss.util.doneCell
 import com.hendraanggrian.openpss.util.numberCell
@@ -26,10 +26,6 @@ import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
 import javafx.scene.image.ImageView
 import javafx.scene.layout.BorderPane
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.javafx.JavaFx
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import ktfx.bindings.eq
 import ktfx.collections.toMutableObservableList
@@ -82,14 +78,14 @@ class FinanceController : ActionController(), Refreshable {
 
     override fun NodeInvokable.onCreateActions() {
         refreshButton = StretchableButton(
-            STRETCH_POINT,
+            getDouble(R.value.stretch),
             getString(R.string.refresh),
             ImageView(R.image.act_refresh)
         ).apply {
             onAction { refresh() }
         }()
         viewTotalButton = StretchableButton(
-            STRETCH_POINT,
+            getDouble(R.value.stretch),
             getString(R.string.total),
             ImageView(R.image.act_money)
         ).apply {
@@ -107,7 +103,7 @@ class FinanceController : ActionController(), Refreshable {
         )
 
         dailyNoColumn.numberCell(this) { runBlocking { api.getInvoice(invoiceId).no } }
-        dailyTimeColumn.stringCell { dateTime.toString(Formats.TIME) }
+        dailyTimeColumn.stringCell { dateTime.toString(PATTERN_TIME) }
         dailyEmployeeColumn.stringCell { runBlocking { api.getEmployee(employeeId).toString() } }
         dailyValueColumn.currencyCell(this) { value }
         dailyCashColumn.doneCell { isCash() }
@@ -121,7 +117,7 @@ class FinanceController : ActionController(), Refreshable {
             }
         }
 
-        monthlyDateColumn.stringCell { date.toString(Formats.DATE) }
+        monthlyDateColumn.stringCell { date.toString(PATTERN_DATE) }
         monthlyCashColumn.currencyCell(this) { cash }
         monthlyNonCashColumn.currencyCell(this) { nonCash }
         monthlyTotalColumn.currencyCell(this) { total }
@@ -137,7 +133,7 @@ class FinanceController : ActionController(), Refreshable {
     }
 
     override fun refresh() = later {
-        GlobalScope.launch(Dispatchers.JavaFx) {
+        runBlocking {
             when (tabPane.selectionModel.selectedIndex) {
                 0 -> dailyTable.items = api.getPayments(dateBox.value!!).toMutableObservableList()
                 else -> monthlyTable.items = Report.listAll(api.getPayments(monthBox.value!!))
@@ -146,7 +142,7 @@ class FinanceController : ActionController(), Refreshable {
     }
 
     @FXML
-    fun viewInvoice() = ViewInvoicePopover(this,
+    fun viewInvoice() = ViewInvoicePopOver(this,
         runBlocking { api.getInvoice(dailyTable.selectionModel.selectedItem.invoiceId) }).show(
         when (tabPane.selectionModel.selectedIndex) {
             0 -> dailyTable
@@ -161,7 +157,7 @@ class FinanceController : ActionController(), Refreshable {
     }
 
     private fun viewTotal() =
-        ViewTotalPopover(this, getTotal(true), getTotal(false)).show(viewTotalButton)
+        ViewTotalPopOver(this, getTotal(true), getTotal(false)).show(viewTotalButton)
 
     private fun getTotal(isCash: Boolean): Double = when (tabPane.selectionModel.selectedIndex) {
         0 -> Payment.gather(dailyTable.items, isCash)

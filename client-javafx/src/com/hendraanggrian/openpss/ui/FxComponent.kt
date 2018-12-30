@@ -1,11 +1,11 @@
 package com.hendraanggrian.openpss.ui
 
+import com.hendraanggrian.openpss.Language
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.api.GitHubApi
 import com.hendraanggrian.openpss.api.OpenPSSApi
-import com.hendraanggrian.openpss.content.Language
 import com.hendraanggrian.openpss.data.Employee
-import com.hendraanggrian.openpss.data.GlobalSetting
+import com.hendraanggrian.openpss.data.Setting
 import javafx.scene.Node
 import javafx.scene.control.ComboBox
 import javafx.scene.control.PasswordField
@@ -68,8 +68,8 @@ interface FxComponent : Resources, Component<StackPane> {
     val currencyConverter: StringConverter<Number>
         get() = CurrencyStringConverter(runBlocking {
             Language.ofFullCode(
-                api.getGlobalSetting(
-                    GlobalSetting.KEY_LANGUAGE
+                api.getSetting(
+                    Setting.KEY_LANGUAGE
                 ).value
             ).toLocale()
         })
@@ -120,14 +120,12 @@ interface FxComponent : Resources, Component<StackPane> {
                     text = getString(R.string._permission_required)
                 } col 0 row 0 colSpans 2
                 label(getString(R.string.admin)) col 0 row 1
-                GlobalScope.launch(Dispatchers.JavaFx) {
-                    adminCombo = jfxComboBox(api.getEmployees()
-                        .filter { it.isAdmin && it.name != Employee.BACKDOOR.name }
-                        .toObservableList()
-                    ) {
-                        promptText = getString(R.string.admin)
-                    } col 1 row 1
-                }
+                adminCombo = jfxComboBox(runBlocking { api.getEmployees() }
+                    .filter { it.isAdmin && it.name != Employee.BACKDOOR.name }
+                    .toObservableList()
+                ) {
+                    promptText = getString(R.string.admin)
+                } col 1 row 1
                 label(getString(R.string.password)) col 0 row 2
                 passwordField = jfxPasswordField {
                     promptText = getString(R.string.password)

@@ -2,8 +2,8 @@ package com.hendraanggrian.openpss.schema
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.ui.Resources
-import com.hendraanggrian.openpss.content.enumValueOfId
-import com.hendraanggrian.openpss.content.id
+import com.hendraanggrian.openpss.enumValueOfId
+import com.hendraanggrian.openpss.id
 import com.hendraanggrian.openpss.data.Invoice
 
 fun Invoice.Companion.no(resources: Resources, no: Number?): String? =

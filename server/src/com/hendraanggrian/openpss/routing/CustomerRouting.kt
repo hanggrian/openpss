@@ -5,6 +5,7 @@ import com.hendraanggrian.openpss.data.Customer
 import com.hendraanggrian.openpss.data.Log
 import com.hendraanggrian.openpss.data.Page
 import com.hendraanggrian.openpss.nosql.transaction
+import com.hendraanggrian.openpss.resources
 import com.hendraanggrian.openpss.schema.Customers
 import com.hendraanggrian.openpss.schema.Logs
 import io.ktor.application.call
@@ -20,7 +21,7 @@ import kotlinx.nosql.update
 import java.util.regex.Pattern
 import kotlin.math.ceil
 
-object CustomerRouting : OpenPSSRouting({
+object CustomerRouting : OpenPssRouting({
     route(Customers.schemaName) {
         get {
             val search = call.getString("search")
@@ -90,7 +91,10 @@ object CustomerRouting : OpenPSSRouting({
                         query.projection { contacts }
                             .update(customer.contacts - contact)
                         Logs += Log.new(
-                            resources.getString(R.string.contact_deleted).format(contact.value, customer.name),
+                            resources.getString(R.string.contact_deleted).format(
+                                contact.value,
+                                customer.name
+                            ),
                             call.getString("login")
                         )
                     }

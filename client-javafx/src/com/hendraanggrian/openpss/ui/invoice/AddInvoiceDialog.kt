@@ -1,17 +1,17 @@
 package com.hendraanggrian.openpss.ui.invoice
 
+import com.hendraanggrian.openpss.PATTERN_DATE
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.content.Formats
 import com.hendraanggrian.openpss.data.Customer
 import com.hendraanggrian.openpss.data.Invoice
 import com.hendraanggrian.openpss.schema.typedTechnique
 import com.hendraanggrian.openpss.ui.FxComponent
 import com.hendraanggrian.openpss.ui.ResultableDialog
-import com.hendraanggrian.openpss.ui.ResultablePopover
-import com.hendraanggrian.openpss.ui.invoice.job.AddDigitalJobPopover
-import com.hendraanggrian.openpss.ui.invoice.job.AddOffsetJobPopover
-import com.hendraanggrian.openpss.ui.invoice.job.AddOtherJobPopover
-import com.hendraanggrian.openpss.ui.invoice.job.AddPlateJobPopover
+import com.hendraanggrian.openpss.ui.ResultablePopOver
+import com.hendraanggrian.openpss.ui.invoice.job.AddDigitalJobPopOver
+import com.hendraanggrian.openpss.ui.invoice.job.AddOffsetJobPopOver
+import com.hendraanggrian.openpss.ui.invoice.job.AddOtherJobPopOver
+import com.hendraanggrian.openpss.ui.invoice.job.AddPlateJobPopOver
 import com.hendraanggrian.openpss.util.currencyCell
 import com.hendraanggrian.openpss.util.numberCell
 import com.hendraanggrian.openpss.util.stringCell
@@ -38,6 +38,7 @@ import ktfx.bindings.or
 import ktfx.bindings.otherwise
 import ktfx.bindings.then
 import ktfx.collections.isEmptyBinding
+import ktfx.collections.mutableObservableListOf
 import ktfx.controls.gap
 import ktfx.controls.isSelected
 import ktfx.coroutines.onAction
@@ -85,7 +86,7 @@ class AddInvoiceDialog(
                 styleClass += R.style.bold
             } col 1 row 0
             label(getString(R.string.date)) col 2 row 0 hpriority ALWAYS halign RIGHT
-            label(dateTime.toString(Formats.DATE)) {
+            label(dateTime.toString(PATTERN_DATE)) {
                 styleClass += R.style.bold
             } col 3 row 0
             label(getString(R.string.customer)) col 0 row 1
@@ -95,7 +96,7 @@ class AddInvoiceDialog(
                     customerProperty.value?.toString() ?: getString(R.string.search_customer)
                 })
                 onMouseClicked {
-                    SearchCustomerPopover(this@AddInvoiceDialog).show(this@jfxTextField) {
+                    SearchCustomerPopOver(this@AddInvoiceDialog).show(this@jfxTextField) {
                         customerProperty.set(it)
                     }
                 }
@@ -105,7 +106,7 @@ class AddInvoiceDialog(
                 styleClass += R.style.jfx_tab_pane_small
                 tab {
                     digitalTable =
-                        invoiceTableView({ AddDigitalJobPopover(this@AddInvoiceDialog) }) {
+                        invoiceTableView({ AddDigitalJobPopOver(this@AddInvoiceDialog) }) {
                             bindTitle(this, R.string.digital)
                             columns {
                                 column<Invoice.DigitalJob, String>(R.string.qty, 72) {
@@ -124,7 +125,7 @@ class AddInvoiceDialog(
                         }
                 }
                 tab {
-                    offsetTable = invoiceTableView({ AddOffsetJobPopover(this@AddInvoiceDialog) }) {
+                    offsetTable = invoiceTableView({ AddOffsetJobPopOver(this@AddInvoiceDialog) }) {
                         bindTitle(this, R.string.offset)
                         columns {
                             column<Invoice.OffsetJob, String>(R.string.qty, 72) {
@@ -146,7 +147,7 @@ class AddInvoiceDialog(
                     }
                 }
                 tab {
-                    plateTable = invoiceTableView({ AddPlateJobPopover(this@AddInvoiceDialog) }) {
+                    plateTable = invoiceTableView({ AddPlateJobPopOver(this@AddInvoiceDialog) }) {
                         bindTitle(this, R.string.plate)
                         columns {
                             column<Invoice.PlateJob, String>(R.string.qty, 72) {
@@ -165,7 +166,7 @@ class AddInvoiceDialog(
                     }
                 }
                 tab {
-                    otherTable = invoiceTableView({ AddOtherJobPopover(this@AddInvoiceDialog) }) {
+                    otherTable = invoiceTableView({ AddOtherJobPopOver(this@AddInvoiceDialog) }) {
                         bindTitle(this, R.string.others)
                         columns {
                             column<Invoice.OtherJob, String>(R.string.qty, 72) {
@@ -227,14 +228,15 @@ class AddInvoiceDialog(
         )
 
     private fun <S> NodeInvokable.invoiceTableView(
-        newAddJobPopover: () -> ResultablePopover<S>,
+        newAddJobPopOver: () -> ResultablePopOver<S>,
         init: TableView<S>.() -> Unit
     ): TableView<S> = tableView {
         prefHeight = 128.0
         init()
+        items = mutableObservableListOf<S>()
         contextMenu {
             getString(R.string.add)(ImageView(R.image.menu_add)) {
-                onAction { newAddJobPopover().show(this@tableView) { this@tableView.items.add(it) } }
+                onAction { newAddJobPopOver().show(this@tableView) { this@tableView.items.add(it) } }
             }
             separatorMenuItem()
             getString(R.string.delete)(ImageView(R.image.menu_delete)) {

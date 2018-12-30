@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="previous">Kembali</string>
+    <string name="next">Lanjut</string>
+
     <string name="openpss_login">Masuk ke OpenPSS</string>
     <string name="login">Masuk</string>
     <string name="employee">Pegawai</string>

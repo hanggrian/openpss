@@ -24,6 +24,8 @@ dependencies {
     api(project(":core"))
     api(kotlin("stdlib", VERSION_KOTLIN))
 
+    implementation(apache("commons-lang3", VERSION_COMMONS_LANG))
+
     testImplementation(junit())
     testImplementation(kotlin("test", VERSION_KOTLIN))
     testImplementation(kotlin("reflect", VERSION_KOTLIN))

@@ -1,25 +1,26 @@
 package com.hendraanggrian.openpss.ui.main
 
 import com.hendraanggrian.openpss.BuildConfig
-import com.hendraanggrian.openpss.OpenPSSApplication
+import com.hendraanggrian.openpss.OpenPssApplication
+import com.hendraanggrian.openpss.PATTERN_DATETIME
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.content.Formats
 import com.hendraanggrian.openpss.control.MarginedImageView
 import com.hendraanggrian.openpss.control.PaginatedPane
 import com.hendraanggrian.openpss.control.Toolbar
 import com.hendraanggrian.openpss.control.UnselectableListView
 import com.hendraanggrian.openpss.data.Invoice
 import com.hendraanggrian.openpss.data.Log
+import com.hendraanggrian.openpss.ifMacOS
 import com.hendraanggrian.openpss.schema.Technique
 import com.hendraanggrian.openpss.schema.new
 import com.hendraanggrian.openpss.ui.ActionController
-import com.hendraanggrian.openpss.ui.OpenPSSController
+import com.hendraanggrian.openpss.ui.OpenPssController
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.customer.CustomerController
 import com.hendraanggrian.openpss.ui.employee.EditEmployeeDialog
 import com.hendraanggrian.openpss.ui.finance.FinanceController
 import com.hendraanggrian.openpss.ui.invoice.InvoiceController
-import com.hendraanggrian.openpss.ui.invoice.ViewInvoicePopover
+import com.hendraanggrian.openpss.ui.invoice.ViewInvoicePopOver
 import com.hendraanggrian.openpss.ui.main.help.AboutDialog
 import com.hendraanggrian.openpss.ui.main.help.GitHubHelper
 import com.hendraanggrian.openpss.ui.price.EditDigitalPriceDialog
@@ -42,10 +43,6 @@ import javafx.scene.image.Image
 import javafx.scene.input.MouseEvent
 import javafx.scene.layout.StackPane
 import javafx.util.Callback
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.javafx.JavaFx
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import ktfx.bindings.buildStringBinding
 import ktfx.bindings.eq
@@ -62,11 +59,10 @@ import ktfx.layouts.textFlow
 import ktfx.listeners.cellFactory
 import ktfx.text.updateFont
 import ktfx.windows.stage
-import org.apache.commons.lang3.SystemUtils
 import java.net.URL
 import java.util.ResourceBundle
 
-class MainController : OpenPSSController(), Refreshable {
+class MainController : OpenPssController(), Refreshable {
 
     @FXML override lateinit var rootLayout: StackPane
     @FXML lateinit var menuBar: MenuBar
@@ -111,7 +107,7 @@ class MainController : OpenPSSController(), Refreshable {
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
-        menuBar.isUseSystemMenuBar = SystemUtils.IS_OS_MAC
+        ifMacOS { menuBar.isUseSystemMenuBar = true }
 
         drawerList.selectionModel.selectFirst()
         drawerList.selectionModel.selectedItemProperty().listener { _, _, _ ->
@@ -196,14 +192,14 @@ class MainController : OpenPSSController(), Refreshable {
                                 wrappingWidthProperty().bind(this@apply.widthProperty())
                             }
                             newLine()
-                            text("${log.dateTime.toString(Formats.DATETIME)} ") {
+                            text("${log.dateTime.toString(PATTERN_DATETIME)} ") {
                                 styleClass += R.style.bold
                             }
                             text(log.login)
                         }
                     }
                 }
-                GlobalScope.launch(Dispatchers.JavaFx) {
+                runBlocking {
                     val (pageCount, logs) = api.getLogs(page, count)
                     eventPagination.pageCount = pageCount
                     items = logs.toObservableList()
@@ -225,7 +221,7 @@ class MainController : OpenPSSController(), Refreshable {
     }
 
     @FXML
-    fun quit() = OpenPSSApplication.exit()
+    fun quit() = OpenPssApplication.exit()
 
     @FXML
     fun editPrice(event: ActionEvent) = when (event.source) {
@@ -245,46 +241,44 @@ class MainController : OpenPSSController(), Refreshable {
 
     @FXML
     fun testViewInvoice() {
-        GlobalScope.launch(Dispatchers.JavaFx) {
-            api.getCustomers("", 0, 1).items.firstOrNull()?.let {
-                ViewInvoicePopover(
-                    this@MainController,
-                    Invoice(
-                        no = 1234,
-                        employeeId = login.id,
-                        customerId = it.id,
-                        dateTime = runBlocking { api.getDateTime() },
-                        offsetJobs = listOf(
-                            Invoice.OffsetJob.new(
-                                5,
-                                "Title",
-                                92000.0,
-                                "Type",
-                                Technique.TWO_SIDE_EQUAL
-                            )
-                        ),
-                        digitalJobs = listOf(
-                            Invoice.DigitalJob.new(
-                                5,
-                                "Title",
-                                92000.0,
-                                "Type",
-                                false
-                            )
-                        ),
-                        plateJobs = listOf(Invoice.PlateJob.new(5, "Title", 92000.0, "Type")),
-                        otherJobs = listOf(Invoice.OtherJob.new(5, "Title", 92000.0)),
-                        note = "This is a test",
-                        isPrinted = false,
-                        isPaid = false,
-                        isDone = false
-                    ), true
-                ).show(menuBar)
-            } ?: rootLayout.jfxSnackbar(
-                getString(R.string.no_customer_to_test),
-                getLong(R.value.duration_short)
-            )
-        }
+        runBlocking { api.getCustomers("", 0, 1) }.items.firstOrNull()?.let {
+            ViewInvoicePopOver(
+                this@MainController,
+                Invoice(
+                    no = 1234,
+                    employeeId = login.id,
+                    customerId = it.id,
+                    dateTime = runBlocking { api.getDateTime() },
+                    offsetJobs = listOf(
+                        Invoice.OffsetJob.new(
+                            5,
+                            "Title",
+                            92000.0,
+                            "Type",
+                            Technique.TWO_SIDE_EQUAL
+                        )
+                    ),
+                    digitalJobs = listOf(
+                        Invoice.DigitalJob.new(
+                            5,
+                            "Title",
+                            92000.0,
+                            "Type",
+                            false
+                        )
+                    ),
+                    plateJobs = listOf(Invoice.PlateJob.new(5, "Title", 92000.0, "Type")),
+                    otherJobs = listOf(Invoice.OtherJob.new(5, "Title", 92000.0)),
+                    note = "This is a test",
+                    isPrinted = false,
+                    isPaid = false,
+                    isDone = false
+                ), true
+            ).show(menuBar)
+        } ?: rootLayout.jfxSnackbar(
+            getString(R.string.no_customer_to_test),
+            getLong(R.value.duration_short)
+        )
     }
 
     @FXML

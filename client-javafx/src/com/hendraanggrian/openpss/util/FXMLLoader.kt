@@ -1,6 +1,6 @@
 package com.hendraanggrian.openpss.util
 
-import com.hendraanggrian.openpss.ui.OpenPSSController
+import com.hendraanggrian.openpss.ui.OpenPssController
 import javafx.fxml.FXMLLoader
 import javafx.scene.layout.Region
 
@@ -8,4 +8,4 @@ import javafx.scene.layout.Region
 inline val FXMLLoader.pane: Region get() = load<Region>()
 
 /** Returns default controller, must be called after loading the pane. */
-inline val FXMLLoader.controller: OpenPSSController get() = getController<OpenPSSController>()
+inline val FXMLLoader.controller: OpenPssController get() = getController<OpenPssController>()

@@ -5,6 +5,7 @@ import com.hendraanggrian.openpss.data.Invoice
 import com.hendraanggrian.openpss.data.Log
 import com.hendraanggrian.openpss.data.Page
 import com.hendraanggrian.openpss.nosql.transaction
+import com.hendraanggrian.openpss.resources
 import com.hendraanggrian.openpss.schema.Customers
 import com.hendraanggrian.openpss.schema.Invoices
 import com.hendraanggrian.openpss.schema.Logs
@@ -22,7 +23,7 @@ import kotlinx.nosql.equal
 import kotlinx.nosql.update
 import kotlin.math.ceil
 
-object InvoiceRouting : OpenPSSRouting({
+object InvoiceRouting : OpenPssRouting({
     route(Invoices.schemaName) {
         get {
             val search = call.getInt("search")
@@ -85,10 +86,11 @@ object InvoiceRouting : OpenPSSRouting({
                 })
             }
             put {
+                val invoice = call.receive<Invoice>()
                 transaction {
                     Invoices[call.getString("id")]
                         .projection { isPrinted + isPaid + isDone }
-                        .update(call.getBoolean("isPrinted"), call.getBoolean("isPaid"), call.getBoolean("isDone"))
+                        .update(invoice.isPrinted, invoice.isPaid, invoice.isDone)
                 }
                 call.respond(HttpStatusCode.OK)
             }

@@ -1,8 +1,7 @@
 package com.hendraanggrian.openpss.ui.invoice
 
-import com.hendraanggrian.openpss.OpenPSSApplication.Companion.STRETCH_POINT
+import com.hendraanggrian.openpss.PATTERN_DATETIMEEXT
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.content.Formats
 import com.hendraanggrian.openpss.control.DateBox
 import com.hendraanggrian.openpss.control.IntField
 import com.hendraanggrian.openpss.control.PaginatedPane
@@ -31,10 +30,6 @@ import javafx.scene.control.TextField
 import javafx.scene.image.ImageView
 import javafx.scene.layout.HBox
 import javafx.util.Callback
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.javafx.JavaFx
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import ktfx.bindings.and
 import ktfx.bindings.buildBinding
@@ -47,9 +42,10 @@ import ktfx.collections.toObservableList
 import ktfx.controls.isSelected
 import ktfx.controlsfx.masterDetailPane
 import ktfx.coroutines.onAction
-import ktfx.coroutines.onHidden
+import ktfx.coroutines.onHiding
 import ktfx.coroutines.onMouseClicked
 import ktfx.inputs.isDoubleClick
+import ktfx.jfoenix.jfxSnackbar
 import ktfx.later
 import ktfx.layouts.NodeInvokable
 import ktfx.layouts.columns
@@ -82,21 +78,21 @@ class InvoiceController : ActionController(), Refreshable {
 
     override fun NodeInvokable.onCreateActions() {
         refreshButton = StretchableButton(
-            STRETCH_POINT,
+            getDouble(R.value.stretch),
             getString(R.string.refresh),
             ImageView(R.image.act_refresh)
         ).apply {
             onAction { refresh() }
         }()
         addButton = StretchableButton(
-            STRETCH_POINT,
+            getDouble(R.value.stretch),
             getString(R.string.add),
             ImageView(R.image.act_add)
         ).apply {
             onAction { addInvoice() }
         }()
         clearFiltersButton = StretchableButton(
-            STRETCH_POINT,
+            getDouble(R.value.stretch),
             getString(R.string.clear_filters),
             ImageView(R.image.act_clear_filters)
         ).apply {
@@ -144,7 +140,7 @@ class InvoiceController : ActionController(), Refreshable {
                         columns {
                             getString(R.string.id)<String> { stringCell { no.toString() } }
                             getString(R.string.date)<String> {
-                                stringCell { dateTime.toString(Formats.DATETIME_EXTENDED) }
+                                stringCell { dateTime.toString(PATTERN_DATETIMEEXT) }
                             }
                             getString(R.string.employee)<String> {
                                 stringCell { runBlocking { api.getEmployee(employeeId).name } }
@@ -180,7 +176,7 @@ class InvoiceController : ActionController(), Refreshable {
                             columnResizePolicy = TableView.CONSTRAINED_RESIZE_POLICY
                             columns {
                                 getString(R.string.date)<String> {
-                                    stringCell { dateTime.toString(Formats.DATETIME_EXTENDED) }
+                                    stringCell { dateTime.toString(PATTERN_DATETIMEEXT) }
                                 }
                                 getString(R.string.employee)<String> {
                                     stringCell {
@@ -221,16 +217,26 @@ class InvoiceController : ActionController(), Refreshable {
                         }
                     }
                     dividerPosition = 0.6
-                    GlobalScope.launch(Dispatchers.JavaFx) {
-                        val (pageCount, invoices) = api.getInvoices(
-                            searchField.value, customerProperty.value?.name, true, null, when {
+                    val (pageCount, invoices) = runBlocking {
+                        api.getInvoices(
+                            searchField.value,
+                            customerProperty.value?.name,
+                            when (paymentCombo.value) {
+                                getString(R.string.paid) -> true
+                                getString(R.string.unpaid) -> false
+                                else -> null
+                            },
+                            null,
+                            when {
                                 pickDateRadio.isSelected -> null
                                 else -> dateBox.value
-                            }, page, count
+                            },
+                            page,
+                            count
                         )
-                        invoicePagination.pageCount = pageCount
-                        invoiceTable.items = invoices.toMutableObservableList()
                     }
+                    invoicePagination.pageCount = pageCount
+                    invoiceTable.items = invoices.toMutableObservableList()
                     later {
                         invoiceTable.contextMenu {
                             getString(R.string.view)(ImageView(R.image.menu_invoice)) {
@@ -251,8 +257,9 @@ class InvoiceController : ActionController(), Refreshable {
                                 }
                                 onAction {
                                     api.editInvoice(
-                                        invoiceTable.selectionModel.selectedItem,
-                                        isDone = true
+                                        invoiceTable.selectionModel.selectedItem.apply {
+                                            isDone = true
+                                        }
                                     )
                                     refreshButton.fire()
                                 }
@@ -293,34 +300,42 @@ class InvoiceController : ActionController(), Refreshable {
 
     @FXML
     fun selectCustomer() =
-        SearchCustomerPopover(this).show(customerField) { customerProperty.set(it) }
+        SearchCustomerPopOver(this).show(customerField) { customerProperty.set(it) }
 
-    private fun viewInvoice() = ViewInvoicePopover(
+    private fun viewInvoice() = ViewInvoicePopOver(
         this,
         invoiceTable.selectionModel.selectedItem
     ).apply {
-        onHidden {
+        onHiding {
             reload(invoiceTable.selectionModel.selectedItem)
         }
     }.show(invoiceTable)
 
     private fun addPayment() =
-        AddPaymentPopover(this, invoiceTable.selectionModel.selectedItem).show(paymentTable) {
+        AddPaymentPopOver(this, invoiceTable.selectionModel.selectedItem).show(paymentTable) {
             api.addPayment(it!!)
-            reload(invoiceTable.selectionModel.selectedItem)
             updatePaymentStatus()
+            reload(invoiceTable.selectionModel.selectedItem)
         }
 
     private fun deletePayment() = ConfirmDialog(this).show {
         withPermission {
-            api.deletePayment(login, paymentTable.selectionModel.selectedItem)
-            reload(invoiceTable.selectionModel.selectedItem)
-            updatePaymentStatus()
+            ConfirmDialog(this@InvoiceController).show {
+                api.deletePayment(login, paymentTable.selectionModel.selectedItem)
+                updatePaymentStatus()
+                reload(invoiceTable.selectionModel.selectedItem)
+                rootLayout.jfxSnackbar(
+                    getString(R.string.payment_deleted),
+                    getLong(R.value.duration_short)
+                )
+            }
         }
     }
 
-    private suspend fun updatePaymentStatus() = invoiceTable.selectionModel.selectedItem.let {
-        api.editInvoice(it, isPaid = it.total - api.getPaymentDue(it.id) <= 0.0)
+    private suspend fun updatePaymentStatus() {
+        api.editInvoice(invoiceTable.selectionModel.selectedItem.apply {
+            isPaid = total - api.getPaymentDue(id) <= 0.0
+        })
     }
 
     private suspend fun reload(invoice: Invoice) = invoiceTable.run {

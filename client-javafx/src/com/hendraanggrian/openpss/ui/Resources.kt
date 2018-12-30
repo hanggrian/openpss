@@ -1,6 +1,6 @@
 package com.hendraanggrian.openpss.ui
 
-import com.hendraanggrian.openpss.content.Language
+import com.hendraanggrian.openpss.Language
 import com.hendraanggrian.openpss.util.getResourceAsStream
 import javafx.scene.paint.Color
 import java.util.Properties

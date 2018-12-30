@@ -21,9 +21,9 @@ data class Invoice(
     var plateJobs: List<PlateJob>,
     var otherJobs: List<OtherJob>,
     var note: String,
-    val isPrinted: Boolean,
-    val isPaid: Boolean,
-    val isDone: Boolean
+    var isPrinted: Boolean,
+    var isPaid: Boolean,
+    var isDone: Boolean
 ) : Document<Invoices> {
 
     companion object {
@@ -39,8 +39,8 @@ data class Invoice(
             otherJobs: List<OtherJob>,
             note: String
         ): Invoice = Invoice(
-            no,
-            employeeId, customerId, dateTime, digitalJobs, offsetJobs, plateJobs, otherJobs, note, false, false, false
+            no, employeeId, customerId, dateTime, digitalJobs, offsetJobs, plateJobs, otherJobs,
+            note, false, false, false
         )
     }
 

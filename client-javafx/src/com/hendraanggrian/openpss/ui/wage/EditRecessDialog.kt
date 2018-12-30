@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.ui.wage
 
+import com.hendraanggrian.openpss.PATTERN_TIME
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.content.Formats
 import com.hendraanggrian.openpss.data.Recess
 import com.hendraanggrian.openpss.ui.FxComponent
 import com.hendraanggrian.openpss.ui.TableDialog
@@ -13,17 +13,17 @@ class EditRecessDialog(component: FxComponent) : TableDialog<Recess>(component, 
 
     init {
         getString(R.string.start)<String> {
-            stringCell { start.toString(Formats.TIME) }
+            stringCell { start.toString(PATTERN_TIME) }
         }
         getString(R.string.end)<String> {
-            stringCell { end.toString(Formats.TIME) }
+            stringCell { end.toString(PATTERN_TIME) }
         }
     }
 
     override suspend fun CoroutineScope.refresh(): List<Recess> =
         api.getRecesses().toMutableObservableList()
 
-    override fun add() = AddRecessPopover(this).show(addButton) { pair ->
+    override fun add() = AddRecessPopOver(this).show(addButton) { pair ->
         table.items.add(api.addRecess(pair!!.first, pair.second))
     }
 

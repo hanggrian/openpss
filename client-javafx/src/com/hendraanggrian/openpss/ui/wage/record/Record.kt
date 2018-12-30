@@ -1,6 +1,6 @@
 package com.hendraanggrian.openpss.ui.wage.record
 
-import com.hendraanggrian.openpss.content.Formats
+import com.hendraanggrian.openpss.PATTERN_DATETIME
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.ui.Resources
 import com.hendraanggrian.openpss.ui.wage.Attendee
@@ -78,15 +78,20 @@ class Record(
             totalProperty.set(0.0)
         }
         if (isChild()) {
-            dailyProperty.bind(buildDoubleBinding(startProperty, endProperty, dailyDisabledProperty) {
-                if (isDailyDisabled) 0.0 else {
-                    val hours = workingHours
-                    when {
-                        hours <= WORKING_HOURS -> hours.round()
-                        else -> WORKING_HOURS.toDouble()
+            dailyProperty.bind(
+                buildDoubleBinding(
+                    startProperty,
+                    endProperty,
+                    dailyDisabledProperty
+                ) {
+                    if (isDailyDisabled) 0.0 else {
+                        val hours = workingHours
+                        when {
+                            hours <= WORKING_HOURS -> hours.round()
+                            else -> WORKING_HOURS.toDouble()
+                        }
                     }
-                }
-            })
+                })
             overtimeProperty.bind(buildDoubleBinding(startProperty, endProperty) {
                 val hours = workingHours
                 val overtime = (hours - WORKING_HOURS).round()
@@ -126,7 +131,7 @@ class Record(
             bind(buildStringBinding(startProperty, dailyDisabledProperty) {
                 when {
                     isNode() -> attendee.role.orEmpty()
-                    isChild() -> start!!.toString(Formats.DATETIME).let { if (isDailyDisabled) "($it)" else it }
+                    isChild() -> start!!.toString(PATTERN_DATETIME).let { if (isDailyDisabled) "($it)" else it }
                     isTotal() -> ""
                     else -> throw UnsupportedOperationException()
                 }
@@ -138,7 +143,7 @@ class Record(
             bind(buildStringBinding(endProperty, dailyDisabledProperty) {
                 when {
                     isNode() -> "${attendee.attendances.size / 2} ${getString(R.string.day)}"
-                    isChild() -> end!!.toString(Formats.DATETIME).let { if (isDailyDisabled) "($it)" else it }
+                    isChild() -> end!!.toString(PATTERN_DATETIME).let { if (isDailyDisabled) "($it)" else it }
                     isTotal() -> getString(R.string.total)
                     else -> throw UnsupportedOperationException()
                 }
@@ -146,7 +151,13 @@ class Record(
         }
 
     fun cloneStart(time: LocalTime): DateTime =
-        DateTime(start!!.year, start!!.monthOfYear, start!!.dayOfMonth, time.hourOfDay, time.minuteOfHour)
+        DateTime(
+            start!!.year,
+            start!!.monthOfYear,
+            start!!.dayOfMonth,
+            time.hourOfDay,
+            time.minuteOfHour
+        )
 
     fun cloneEnd(time: LocalTime): DateTime =
         DateTime(end!!.year, end!!.monthOfYear, end!!.dayOfMonth, time.hourOfDay, time.minuteOfHour)

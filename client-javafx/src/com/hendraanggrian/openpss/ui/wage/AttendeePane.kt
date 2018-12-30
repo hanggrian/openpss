@@ -1,9 +1,9 @@
 package com.hendraanggrian.openpss.ui.wage
 
+import com.hendraanggrian.openpss.PATTERN_DATETIMEEXT
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.content.Formats
 import com.hendraanggrian.openpss.control.IntField
-import com.hendraanggrian.openpss.ui.DateTimePopover
+import com.hendraanggrian.openpss.ui.DateTimePopOver
 import com.hendraanggrian.openpss.ui.FxComponent
 import com.hendraanggrian.openpss.util.round
 import com.hendraanggrian.openpss.util.trimMinutes
@@ -23,6 +23,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.javafx.JavaFx
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import ktfx.bindings.buildBinding
 import ktfx.collections.sort
 import ktfx.controls.find
@@ -94,16 +95,14 @@ class AttendeePane(
                 } col 2 row 2
                 label(getString(R.string.recess)) col 0 row 3 marginRight 4
                 vbox {
-                    GlobalScope.launch(Dispatchers.JavaFx) {
-                        api.getRecesses().forEach { recess ->
-                            recessChecks += jfxCheckBox(recess.toString()) {
-                                selectedProperty().listener { _, _, selected ->
-                                    if (selected) attendee.recesses += recess else attendee.recesses -= recess
-                                    attendanceList.forceRefresh()
-                                }
-                                isSelected = true
-                            } marginTop if (children.size > 1) 4 else 0
-                        }
+                    runBlocking { api.getRecesses() }.forEach { recess ->
+                        recessChecks += jfxCheckBox(recess.toString()) {
+                            selectedProperty().listener { _, _, selected ->
+                                if (selected) attendee.recesses += recess else attendee.recesses -= recess
+                                attendanceList.forceRefresh()
+                            }
+                            isSelected = true
+                        } marginTop if (children.size > 1) 4 else 0
                     }
                 } col 1 row 3 colSpans 2
             }
@@ -117,7 +116,7 @@ class AttendeePane(
                         graphic = null
                         if (dateTime != null && !empty) graphic = ktfx.layouts.hbox {
                             alignment = CENTER
-                            val itemLabel = label(dateTime.toString(Formats.DATETIME_EXTENDED)) {
+                            val itemLabel = label(dateTime.toString(PATTERN_DATETIMEEXT)) {
                                 maxWidth = Double.MAX_VALUE
                             } hpriority ALWAYS
                             if (index % 2 == 0) {
@@ -209,7 +208,7 @@ class AttendeePane(
         }
     }
 
-    private fun addAttendance() = DateTimePopover(
+    private fun addAttendance() = DateTimePopOver(
         this,
         R.string.add_record,
         R.string.add,
@@ -221,7 +220,7 @@ class AttendeePane(
         }
     }
 
-    private fun copyAttendance() = DateTimePopover(
+    private fun copyAttendance() = DateTimePopOver(
         this,
         R.string.add_record,
         R.string.add,
@@ -233,7 +232,7 @@ class AttendeePane(
         }
     }
 
-    private fun editAttendance() = DateTimePopover(
+    private fun editAttendance() = DateTimePopOver(
         this,
         R.string.edit_record,
         R.string.edit,

@@ -23,7 +23,7 @@ sourceSets {
     }
 }
 
-application.mainClassName = "$group.OpenPSSApplication"
+application.mainClassName = "$group.OpenPssApplication"
 
 ktlint()
 
@@ -38,7 +38,6 @@ dependencies {
     implementation(hendraanggrian("ktfx", "ktfx-controlsfx", VERSION_KTFX))
     implementation(hendraanggrian("ktfx", "ktfx-jfoenix", VERSION_KTFX))
 
-    implementation(apache("commons-lang3", VERSION_COMMONS_LANG))
     implementation(apache("commons-math3", VERSION_COMMONS_MATH))
     implementation(apache("poi-ooxml", VERSION_POI))
     implementation("commons-validator:commons-validator:$VERSION_COMMONS_VALIDATOR")
@@ -50,25 +49,6 @@ dependencies {
 
     testImplementation(hendraanggrian("ktfx", "ktfx-testfx", VERSION_KTFX))
     testImplementation(testFx("junit"))
-}
-
-packr {
-    mainClass = application.mainClassName
-    executable = RELEASE_NAME
-    classpath("$buildDir/install/desktop/lib")
-    resources("$projectDir/res")
-    vmArgs("Xmx2G")
-    macOS {
-        name = "$RELEASE_NAME.app"
-        icon = "${rootProject.projectDir}/art/$RELEASE_NAME.icns"
-        bundleId = RELEASE_GROUP
-    }
-    windows64 {
-        jdk = "/Users/hendraanggrian/Desktop/jdk1.8.0_181"
-        name = RELEASE_NAME
-    }
-    verbose = true
-    openOnDone = true
 }
 
 tasks {
@@ -88,15 +68,35 @@ tasks {
         }
     }
 
-    named<com.hendraanggrian.generating.buildconfig.BuildConfigTask>("generateBuildConfig") {
-        appName = RELEASE_NAME
-        debug = RELEASE_DEBUG
-        artifactId = RELEASE_ARTIFACT
-        email = "$RELEASE_USER@gmail.com"
-        website = RELEASE_WEBSITE
+    val buildConfigTask =
+        named<com.hendraanggrian.generating.buildconfig.BuildConfigTask>("generateBuildConfig") {
+            appName = "$RELEASE_NAME Desktop"
+            debug = RELEASE_DEBUG
+            artifactId = RELEASE_ARTIFACT
+            email = "$RELEASE_USER@gmail.com"
+            website = RELEASE_WEBSITE
 
-        field("USER", RELEASE_USER)
-        field("FULL_NAME", RELEASE_FULL_NAME)
+            field("USER", RELEASE_USER)
+            field("FULL_NAME", RELEASE_FULL_NAME)
+        }.get()
+
+    packr {
+        mainClass = application.mainClassName
+        executable = RELEASE_ARTIFACT
+        classpath("$buildDir/install/desktop/lib")
+        resources("$projectDir/res")
+        vmArgs("Xmx2G")
+        macOS {
+            name = "${buildConfigTask.appName}.app"
+            icon = "${rootProject.projectDir}/art/$RELEASE_NAME.icns"
+            bundleId = RELEASE_GROUP
+        }
+        windows64 {
+            jdk = "/Users/hendraanggrian/Desktop/jdk1.8.0_181"
+            name = buildConfigTask.appName
+        }
+        verbose = true
+        openOnDone = true
     }
 
     named<Jar>("jar") {

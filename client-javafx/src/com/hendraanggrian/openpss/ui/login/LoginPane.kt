@@ -1,9 +1,9 @@
 package com.hendraanggrian.openpss.ui.login
 
 import com.hendraanggrian.openpss.BuildConfig
-import com.hendraanggrian.openpss.OpenPSSApplication
+import com.hendraanggrian.openpss.Language
+import com.hendraanggrian.openpss.OpenPssApplication
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.content.Language
 import com.hendraanggrian.openpss.data.Employee
 import com.hendraanggrian.openpss.io.SettingsFile
 import com.hendraanggrian.openpss.ui.FxComponent
@@ -23,9 +23,6 @@ import javafx.scene.layout.Priority
 import javafx.scene.layout.StackPane
 import javafx.scene.text.TextAlignment
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.javafx.JavaFx
-import kotlinx.coroutines.launch
 import ktfx.bindings.buildBinding
 import ktfx.bindings.isBlank
 import ktfx.collections.toObservableList
@@ -89,17 +86,13 @@ class LoginPane(private val resourced: Resources) : _StackPane(),
                 valueProperty().listener(Dispatchers.Default) { _, _, value ->
                     SettingsFile.language = value
                     SettingsFile.save()
-                    GlobalScope.launch(Dispatchers.JavaFx) {
-                        later {
-                            TextDialog(
-                                this@LoginPane,
-                                R.string.restart_required,
-                                getString(R.string._restart_required)
-                            )
-                                .apply { onDialogClosed { OpenPSSApplication.exit() } }
-                                .show(this@LoginPane)
-                        }
-                    }
+                    TextDialog(
+                        this@LoginPane,
+                        R.string.restart_required,
+                        getString(R.string._restart_required)
+                    ).apply {
+                        onDialogClosed { OpenPssApplication.exit() }
+                    }.show(this@LoginPane)
                 }
             } row 0 col 1
             vbox(8.0) {
@@ -150,20 +143,16 @@ class LoginPane(private val resourced: Resources) : _StackPane(),
                         onAction {
                             PasswordDialog().show {
                                 SettingsFile.save()
-                                GlobalScope.launch(Dispatchers.JavaFx) {
-                                    runCatching {
-                                        val employee = api.login(employeeField.text, passwordField.text)
-                                        onSuccess?.invoke(employee)
-                                    }.onFailure {
-                                        if (BuildConfig.DEBUG) it.printStackTrace()
-                                        TextDialog(
-                                            this@LoginPane,
-                                            R.string.login_failed,
-                                            it.message.toString()
-                                        )
-                                            .show(this@LoginPane)
-                                    }
-                                }
+                                onSuccess?.invoke(runCatching {
+                                    api.login(employeeField.text, passwordField.text)
+                                }.onFailure {
+                                    if (BuildConfig.DEBUG) it.printStackTrace()
+                                    TextDialog(
+                                        this@LoginPane,
+                                        R.string.login_failed,
+                                        it.message.toString()
+                                    ).show(this@LoginPane)
+                                }.getOrThrow())
                             }
                         }
                         employeeField.onActionProperty().bindBidirectional(onActionProperty())
@@ -173,7 +162,8 @@ class LoginPane(private val resourced: Resources) : _StackPane(),
         }
     }
 
-    inner class PasswordDialog : ResultableDialog<Unit>(this@LoginPane, R.string.password_required) {
+    inner class PasswordDialog :
+        ResultableDialog<Unit>(this@LoginPane, R.string.password_required) {
 
         override val focusedNode: Node? get() = passwordField
 

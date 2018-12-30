@@ -4,6 +4,7 @@ import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.data.Log
 import com.hendraanggrian.openpss.data.Payment
 import com.hendraanggrian.openpss.nosql.transaction
+import com.hendraanggrian.openpss.resources
 import com.hendraanggrian.openpss.schema.Invoices
 import com.hendraanggrian.openpss.schema.Logs
 import com.hendraanggrian.openpss.schema.Payments
@@ -17,7 +18,7 @@ import io.ktor.routing.post
 import io.ktor.routing.route
 import kotlinx.nosql.equal
 
-object PaymentRouting : OpenPSSRouting({
+object PaymentRouting : OpenPssRouting({
     route(Payments.schemaName) {
         get {
             call.respond(transaction {
@@ -44,16 +45,14 @@ object PaymentRouting : OpenPSSRouting({
         route("{invoiceId}") {
             get {
                 call.respond(transaction {
-                    Payments { invoiceId.equal(call.getString("invoiceId")) }
+                    Payments { invoiceId.equal(call.getString("invoiceId")) }.toList()
                 })
             }
-            route("due") {
-                get {
-                    call.respond(transaction {
-                        Payments { invoiceId.equal(call.getString("invoiceId")) }
-                            .sumByDouble { it.value }
-                    })
-                }
+            get("due") {
+                call.respond(transaction {
+                    Payments { invoiceId.equal(call.getString("invoiceId")) }
+                        .sumByDouble { it.value }
+                })
             }
         }
     }

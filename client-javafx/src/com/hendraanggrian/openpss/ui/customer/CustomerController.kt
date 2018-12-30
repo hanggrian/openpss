@@ -1,9 +1,7 @@
 package com.hendraanggrian.openpss.ui.customer
 
-import com.hendraanggrian.openpss.OpenPSSApplication.Companion.STRETCH_POINT
+import com.hendraanggrian.openpss.PATTERN_DATE
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.content.Formats
-import com.hendraanggrian.openpss.control.CustomerListView
 import com.hendraanggrian.openpss.control.PaginatedPane
 import com.hendraanggrian.openpss.control.StretchableButton
 import com.hendraanggrian.openpss.data.Customer
@@ -28,6 +26,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.javafx.JavaFx
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import ktfx.bindings.buildBinding
 import ktfx.bindings.buildStringBinding
 import ktfx.collections.emptyObservableList
@@ -68,14 +67,14 @@ class CustomerController : ActionController(), Refreshable {
 
     override fun NodeInvokable.onCreateActions() {
         refreshButton = StretchableButton(
-            STRETCH_POINT,
+            getDouble(R.value.stretch),
             getString(R.string.refresh),
             ImageView(R.image.act_refresh)
         ).apply {
             onAction { refresh() }
         }()
         addButton = StretchableButton(
-            STRETCH_POINT,
+            getDouble(R.value.stretch),
             getString(R.string.add),
             ImageView(R.image.act_add)
         ).apply {
@@ -111,17 +110,17 @@ class CustomerController : ActionController(), Refreshable {
                         deleteContactItem.disableProperty()
                             .bind(contactTable.selectionModel.selectedItemProperty().isNull)
                     }
-                    GlobalScope.launch(Dispatchers.JavaFx) {
-                        val (pageCount, customers) = api.getCustomers(searchField.text, page, count)
-                        customerPagination.pageCount = pageCount
-                        items = customers.toMutableObservableList()
+                    val (pageCount, customers) = runBlocking {
+                        api.getCustomers(searchField.text, page, count)
                     }
+                    customerPagination.pageCount = pageCount
+                    items = customers.toMutableObservableList()
                 }
                 titleProperty().bind(buildStringBinding(customerList.selectionModel.selectedItemProperty()) {
                     customerList.selectionModel.selectedItem?.name
                 })
                 sinceLabel.bindLabel {
-                    customerList.selectionModel.selectedItem?.since?.toString(Formats.DATE)
+                    customerList.selectionModel.selectedItem?.since?.toString(PATTERN_DATE)
                         .orEmpty()
                 }
                 addressLabel.bindLabel { customerList.selectionModel.selectedItem?.address ?: "-" }
@@ -139,10 +138,8 @@ class CustomerController : ActionController(), Refreshable {
     }
 
     fun add() = AddCustomerDialog(this).show { customer ->
-        GlobalScope.launch(Dispatchers.JavaFx) {
-            customerList.items.add(api.addCustomer(customer!!))
-            customerList.selectionModel.select(customerList.items.lastIndex)
-        }
+        customerList.items.add(api.addCustomer(customer!!))
+        customerList.selectionModel.select(customerList.items.lastIndex)
     }
 
     private fun edit() = EditCustomerDialog(this, customerList.selectionModel.selectedItem).show {
@@ -153,7 +150,7 @@ class CustomerController : ActionController(), Refreshable {
     }
 
     @FXML
-    fun addContact() = AddContactPopover(this).show(contactTable) {
+    fun addContact() = AddContactPopOver(this).show(contactTable) {
         api.addContact(customerList.selectionModel.selectedItem.id, it!!)
         reload()
     }

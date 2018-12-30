@@ -83,7 +83,7 @@ class EditEmployeeDialog(component: FxComponent) :
     override suspend fun CoroutineScope.refresh(): List<Employee> = api.getEmployees()
 
     override fun add() =
-        AddEmployeePopover(this, R.string.add_employee, false).show(addButton) { name ->
+        AddEmployeePopOver(this, R.string.add_employee, false).show(addButton) { name ->
             val added = api.addEmployee(Employee.new(name!!.clean()))
             table.items.add(added)
             table.selectionModel.select(added)

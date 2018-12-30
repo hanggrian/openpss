@@ -26,7 +26,7 @@ interface CustomerApi : Api {
     }
 
     suspend fun getCustomer(id: Id<String, *>): Customer = client.get {
-        apiUrl(Customers.schemaName)
+        apiUrl("${Customers.schemaName}/$id")
     }
 
     suspend fun editCustomer(login: Employee, id: Id<String, *>, customer: Customer): Boolean =
@@ -36,12 +36,17 @@ interface CustomerApi : Api {
             parameters("login" to login.name)
         }
 
-    suspend fun addContact(id: Id<String, *>, contact: Customer.Contact): Customer.Contact = client.post {
-        apiUrl("${Customers.schemaName}/$id/${Customers.Contacts.schemaName}")
-        jsonBody(contact)
-    }
+    suspend fun addContact(id: Id<String, *>, contact: Customer.Contact): Customer.Contact =
+        client.post {
+            apiUrl("${Customers.schemaName}/$id/${Customers.Contacts.schemaName}")
+            jsonBody(contact)
+        }
 
-    suspend fun deleteContact(login: Employee, id: Id<String, *>, contact: Customer.Contact): Boolean =
+    suspend fun deleteContact(
+        login: Employee,
+        id: Id<String, *>,
+        contact: Customer.Contact
+    ): Boolean =
         client.requestStatus(HttpMethod.Delete) {
             apiUrl("${Customers.schemaName}/$id/${Customers.Contacts.schemaName}")
             jsonBody(contact)

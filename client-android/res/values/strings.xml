@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="previous">Previous</string>
+    <string name="next">Next</string>
+
     <string name="openpss_login">OpenPSS Login</string>
     <string name="login">Login</string>
     <string name="employee">Employee</string>

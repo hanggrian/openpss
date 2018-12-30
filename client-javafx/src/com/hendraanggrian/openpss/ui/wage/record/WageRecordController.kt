@@ -1,14 +1,17 @@
 package com.hendraanggrian.openpss.ui.wage.record
 
+import com.hendraanggrian.openpss.PATTERN_DATE
+import com.hendraanggrian.openpss.PATTERN_DATETIME
+import com.hendraanggrian.openpss.PATTERN_TIME
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.content.Formats
 import com.hendraanggrian.openpss.control.UncollapsibleTreeItem
+import com.hendraanggrian.openpss.ifMacOS
 import com.hendraanggrian.openpss.io.WageDirectory
 import com.hendraanggrian.openpss.io.WageFile
-import com.hendraanggrian.openpss.ui.DatePopover
-import com.hendraanggrian.openpss.ui.OpenPSSController
+import com.hendraanggrian.openpss.ui.DatePopOver
+import com.hendraanggrian.openpss.ui.OpenPssController
 import com.hendraanggrian.openpss.ui.Stylesheets
-import com.hendraanggrian.openpss.ui.TimePopover
+import com.hendraanggrian.openpss.ui.TimePopOver
 import com.hendraanggrian.openpss.ui.wage.Attendee
 import com.hendraanggrian.openpss.ui.wage.record.Record.Companion.getDummy
 import com.hendraanggrian.openpss.util.concatenate
@@ -52,7 +55,7 @@ import java.util.ResourceBundle
 import javax.imageio.ImageIO
 
 @Suppress("UNCHECKED_CAST")
-class WageRecordController : OpenPSSController() {
+class WageRecordController : OpenPssController() {
 
     companion object {
         const val EXTRA_ATTENDEES = "EXTRA_ATTENDEES"
@@ -80,7 +83,7 @@ class WageRecordController : OpenPSSController() {
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
-        menuBar.isUseSystemMenuBar = SystemUtils.IS_OS_MAC
+        ifMacOS { menuBar.isUseSystemMenuBar = SystemUtils.IS_OS_MAC }
         undoMenu.disableProperty().bind(editMenu.items.sizeBinding lessEq 2)
         arrayOf(lockStartButton, lockEndButton).forEach { button ->
             button.disableProperty()
@@ -149,14 +152,14 @@ class WageRecordController : OpenPSSController() {
 
     @FXML
     fun disableDailyIncome() =
-        DatePopover(this, R.string.disable_daily_income).show(disableDailyIncomeButton) { date ->
+        DatePopOver(this, R.string.disable_daily_income).show(disableDailyIncomeButton) { date ->
             val undoable = Undoable()
             records.filter { it.startProperty.value.toLocalDate() == date }
                 .forEach { record ->
                     val initial = record.dailyDisabledProperty.value
                     record.dailyDisabledProperty.set(!initial)
                     if (undoable.name == null) undoable.name = "${getString(R.string.daily_disabled)} " +
-                        record.startProperty.value.toString(Formats.DATE)
+                        record.startProperty.value.toString(PATTERN_DATE)
                     undoable.addAction { record.dailyDisabledProperty.set(initial) }
                 }
             undoable.append()
@@ -164,7 +167,7 @@ class WageRecordController : OpenPSSController() {
 
     @FXML
     fun lockStart() =
-        TimePopover(
+        TimePopOver(
             this,
             R.string.lock_start_time,
             LocalTime.now().trimMinutes()
@@ -177,9 +180,9 @@ class WageRecordController : OpenPSSController() {
                         record.startProperty.set(record.cloneStart(time))
                         undoable.name = when {
                             undoable.name == null -> "${record.attendee.name} ${initial.toString(
-                                Formats.DATETIME
+                                PATTERN_DATETIME
                             )} -> " +
-                                time.toString(Formats.TIME)
+                                time.toString(PATTERN_TIME)
                             else -> getString(R.string.multiple_lock_start_time)
                         }
                         undoable.addAction { record.startProperty.set(initial) }
@@ -190,7 +193,7 @@ class WageRecordController : OpenPSSController() {
 
     @FXML
     fun lockEnd() =
-        TimePopover(
+        TimePopOver(
             this,
             R.string.lock_end_time,
             LocalTime.now().trimMinutes()
@@ -203,9 +206,9 @@ class WageRecordController : OpenPSSController() {
                         record.endProperty.set(record.cloneEnd(time))
                         undoable.name = when {
                             undoable.name == null -> "${record.attendee.name} ${initial.toString(
-                                Formats.DATETIME
+                                PATTERN_DATETIME
                             )} -> " +
-                                time.toString(Formats.TIME)
+                                time.toString(PATTERN_TIME)
                             else -> getString(R.string.multiple_lock_end_time)
                         }
                         undoable.addAction { record.endProperty.set(initial) }

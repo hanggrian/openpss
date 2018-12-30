@@ -1,8 +1,8 @@
 package com.hendraanggrian.openpss.api
 
 import com.hendraanggrian.openpss.data.Release
-import com.hendraanggrian.openpss.content.GsonBuilders
 import com.hendraanggrian.openpss.internal.ClientBuildConfig
+import com.hendraanggrian.openpss.registerJodaTimeSerializers
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.okhttp.OkHttp
 import io.ktor.client.features.json.GsonSerializer
@@ -42,7 +42,10 @@ interface Api {
     fun HttpRequestBuilder.parameters(vararg pairs: Pair<String, Any?>) =
         pairs.forEach { (key, value) -> parameter(key, value) }
 
-    suspend fun HttpClient.requestStatus(method: HttpMethod, block: HttpRequestBuilder.() -> Unit): Boolean =
+    suspend fun HttpClient.requestStatus(
+        method: HttpMethod,
+        block: HttpRequestBuilder.() -> Unit
+    ): Boolean =
         request<HttpResponse> {
             this.method = method
             block()
@@ -62,12 +65,12 @@ class OpenPSSApi : OkHttpApi("http://localhost:8080"),
     AuthApi,
     CustomerApi,
     DateTimeApi,
-    GlobalSettingApi,
     InvoiceApi,
     LogApi,
     NamedApi,
     PaymentApi,
     RecessApi,
+    SettingApi,
     WageApi
 
 /** Base class of REST APIs, where client is Android and Java-friendly OkHttp. */
@@ -76,7 +79,7 @@ sealed class OkHttpApi(final override val endPoint: String) : Api {
     final override val client: HttpClient = HttpClient(OkHttp) {
         install(JsonFeature) {
             serializer = GsonSerializer {
-                GsonBuilders.registerJodaTime(this)
+                registerJodaTimeSerializers()
             }
         }
     }

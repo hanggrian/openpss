@@ -6,12 +6,12 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name=".OpenPSSApplication"
+        android:name=".OpenPssApplication"
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="OpenPSS"
         android:supportsRtl="true"
-        android:theme="@style/Theme"
+        android:theme="@style/Theme.OpenPss"
         tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".ui.login.LoginActivity">
             <intent-filter>

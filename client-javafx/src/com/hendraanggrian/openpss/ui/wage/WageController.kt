@@ -1,7 +1,6 @@
 package com.hendraanggrian.openpss.ui.wage
 
-import com.hendraanggrian.openpss.BuildConfig.DEBUG
-import com.hendraanggrian.openpss.OpenPSSApplication.Companion.STRETCH_POINT
+import com.hendraanggrian.openpss.BuildConfig
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.control.StretchableButton
 import com.hendraanggrian.openpss.io.ReaderFile
@@ -26,6 +25,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.javafx.JavaFx
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import ktfx.bindings.buildBooleanBinding
 import ktfx.bindings.buildStringBinding
 import ktfx.bindings.lessEq
@@ -34,6 +34,7 @@ import ktfx.collections.isEmptyBinding
 import ktfx.collections.sizeBinding
 import ktfx.coroutines.onAction
 import ktfx.getValue
+import ktfx.jfoenix.jfxSnackbar
 import ktfx.later
 import ktfx.layouts.NodeInvokable
 import ktfx.layouts.borderPane
@@ -63,22 +64,28 @@ class WageController : ActionController() {
 
     override fun NodeInvokable.onCreateActions() {
         browseButton = StretchableButton(
-            STRETCH_POINT,
+            getDouble(R.value.stretch),
             getString(R.string.browse),
             ImageView(R.image.act_browse)
         ).apply {
             onAction { browse() }
         }()
         saveWageButton = StretchableButton(
-            STRETCH_POINT,
+            getDouble(R.value.stretch),
             getString(R.string.save_wage),
             ImageView(R.image.act_save)
         ).apply {
             disableProperty().bind(flowPane.children.isEmptyBinding)
-            onAction { saveWage() }
+            onAction {
+                saveWage()
+                rootLayout.jfxSnackbar(
+                    getString(R.string.wage_saved),
+                    getLong(R.value.duration_short)
+                )
+            }
         }()
         historyButton = StretchableButton(
-            STRETCH_POINT,
+            getDouble(R.value.stretch),
             getString(R.string.history),
             ImageView(R.image.act_history)
         ).apply {
@@ -104,15 +111,17 @@ class WageController : ActionController() {
         bindProcessButton()
         later {
             flowPane.prefWrapLengthProperty().bind(flowPane.scene.widthProperty())
-            if (DEBUG) {
+            if (BuildConfig.DEBUG) {
                 val file = File("/Users/hendraanggrian/Downloads/Absen 4-13-18.xlsx")
-                if (file.exists()) read(file)
+                if (file.exists()) {
+                    read(file)
+                }
             }
         }
     }
 
     @FXML
-    fun disableRecess() = DisableRecessPopover(this, attendeePanes).show(disableRecessButton)
+    fun disableRecess() = DisableRecessPopOver(this, attendeePanes).show(disableRecessButton)
 
     @FXML
     fun process() = stage(getString(R.string.wage_record)) {
@@ -125,16 +134,17 @@ class WageController : ActionController() {
         loader.controller.addExtra(EXTRA_ATTENDEES, attendees)
     }.showAndWait()
 
-    private fun saveWage() =
-        GlobalScope.launch(Dispatchers.JavaFx) { attendees.forEach { it.saveWage(api) } }
+    private fun saveWage() = runBlocking { attendees.forEach { it.saveWage(api) } }
 
     private fun history() = desktop?.open(WageDirectory)
 
-    private fun browse() = anchorPane.scene.window.chooseFile(
-        getString(R.string.input_file) to WageReader.of(ReaderFile.WAGE_READER).extension
-    )?.let { file ->
-        GlobalScope.launch(Dispatchers.JavaFx) {
-            withPermission { read(file) }
+    private fun browse() {
+        runBlocking {
+            withPermission {
+                anchorPane.scene.window.chooseFile(
+                    getString(R.string.input_file) to WageReader.of(ReaderFile.WAGE_READER).extension
+                )?.let { read(it) }
+            }
         }
     }
 
@@ -149,11 +159,15 @@ class WageController : ActionController() {
         }
         anchorPane.children += loadingPane
         flowPane.children.clear()
-        GlobalScope.launch(Dispatchers.Default) {
-            runCatching {
+        val onFinish = {
+            anchorPane.children -= loadingPane
+            bindProcessButton()
+        }
+        runCatching {
+            GlobalScope.launch(Dispatchers.IO) {
                 WageReader.of(ReaderFile.WAGE_READER).read(file).forEach { attendee ->
-                    attendee.init(api)
                     GlobalScope.launch(Dispatchers.JavaFx) {
+                        attendee.init(api)
                         flowPane.children += AttendeePane(this@WageController, attendee).apply {
                             deleteMenu.onAction {
                                 flowPane.children -= this@apply
@@ -182,21 +196,13 @@ class WageController : ActionController() {
                     }
                 }
                 GlobalScope.launch(Dispatchers.JavaFx) {
-                    anchorPane.children -= loadingPane
-                    bindProcessButton()
-                }
-            }.onFailure {
-                if (DEBUG) it.printStackTrace()
-                GlobalScope.launch(Dispatchers.JavaFx) {
-                    anchorPane.children -= loadingPane
-                    bindProcessButton()
-                    TextDialog(
-                        this@WageController,
-                        R.string.reading_failed,
-                        it.message.toString()
-                    ).show()
+                    onFinish()
                 }
             }
+        }.onFailure {
+            if (BuildConfig.DEBUG) it.printStackTrace()
+            TextDialog(this@WageController, R.string.reading_failed, it.message.toString()).show()
+            onFinish()
         }
     }
 

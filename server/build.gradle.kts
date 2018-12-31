@@ -4,10 +4,13 @@ plugins {
     idea
     generating("r")
     generating("buildconfig")
+    application
 }
 
 group = RELEASE_GROUP
 version = RELEASE_VERSION
+
+application.mainClassName = "$group.OpenPssServerKt"
 
 sourceSets {
     getByName("main") {
@@ -26,6 +29,7 @@ dependencies {
     api(project(":core-jre"))
 
     implementation(ktor("server-netty"))
+    implementation(ktor("websockets"))
     implementation(ktor("gson"))
 
     implementation("ch.qos.logback:logback-classic:$VERSION_LOGBACK")
@@ -49,9 +53,11 @@ tasks {
         appName = "$RELEASE_NAME Server"
         debug = RELEASE_DEBUG
         website = RELEASE_WEBSITE
-        field("DATABASE", RELEASE_ARTIFACT)
-        field("DATABASE_USER", envUser())
-        field("DATABASE_PASS", envPass())
+        field("DATABASE_NAME", RELEASE_ARTIFACT)
+        field("DATABASE_USER", env(DATABASE_USER))
+        field("DATABASE_PASS", env(DATABASE_PASS))
+        field("SERVER_HOST", env(SERVER_HOST))
+        field("SERVER_PORT", env(SERVER_PORT).toInt())
     }
 
     named<org.jetbrains.dokka.gradle.DokkaTask>("dokka") {

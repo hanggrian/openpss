@@ -1,9 +1,8 @@
-fun envUser() = find(KEY_USER)
-fun envPass() = find(KEY_PASS)
+const val DATABASE_USER = "OPENPSS_DATABASE_USER"
+const val DATABASE_PASS = "OPENPSS_DATABASE_PASS"
+const val SERVER_HOST = "OPENPSS_SERVER_HOST"
+const val SERVER_PORT = "OPENPSS_SERVER_PORT"
 
-private const val KEY_USER = "OPENPSS_USER"
-private const val KEY_PASS = "OPENPSS_PASS"
-
-private fun find(key: String) = checkNotNull(System.getenv(key)) {
-    "Entries required in system environment: $KEY_USER and $KEY_PASS."
+fun env(key: String) = checkNotNull(System.getenv(key)) {
+    "Entries required in system environment: $DATABASE_USER, $DATABASE_PASS, $SERVER_HOST, and $SERVER_PORT."
 }

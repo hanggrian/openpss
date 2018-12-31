@@ -12,6 +12,8 @@ plugins {
 group = RELEASE_GROUP
 version = RELEASE_VERSION
 
+application.mainClassName = "$group.OpenPssApplication"
+
 sourceSets {
     getByName("main") {
         java.srcDir("src")
@@ -22,8 +24,6 @@ sourceSets {
         resources.srcDir("tests/res")
     }
 }
-
-application.mainClassName = "$group.OpenPssApplication"
 
 ktlint()
 

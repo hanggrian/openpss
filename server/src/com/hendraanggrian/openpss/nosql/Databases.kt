@@ -45,7 +45,7 @@ private val TABLES: Array<DocumentSchema<String, out Document<*>>> = arrayOf(
 fun startConnection() {
     DATABASE = MongoDB(
         arrayOf(ServerAddress(ServerAddress.defaultHost(), ServerAddress.defaultPort())),
-        BuildConfig.DATABASE,
+        BuildConfig.DATABASE_NAME,
         arrayOf(
             MongoCredential.createCredential(
                 BuildConfig.DATABASE_USER,

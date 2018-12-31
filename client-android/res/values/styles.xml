@@ -8,12 +8,4 @@
 
         <item name="colorAccent">#1e88e5</item>
     </style>
-
-    <style name="Theme.OpenPss.Inverse" parent="Theme.AppCompat.NoActionBar">
-        <item name="colorAccent">#1e88e5</item>
-    </style>
-
-    <style name="Widget.OpenPss.LoginButton" parent="Widget.AppCompat.Button.Borderless">
-
-    </style>
 </resources>

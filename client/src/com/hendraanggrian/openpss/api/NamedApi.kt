@@ -95,7 +95,7 @@ interface NamedApi : Api {
         apiUrl("${Employees.schemaName}/$id")
     }
 
-    suspend fun editEmployee(edit: Employee, login: String): Boolean =
+    suspend fun editEmployee(edit: Employee, login: CharSequence): Boolean =
         client.requestStatus(HttpMethod.Put) {
             apiUrl("${Employees.schemaName}/${edit.id}")
             jsonBody(edit)

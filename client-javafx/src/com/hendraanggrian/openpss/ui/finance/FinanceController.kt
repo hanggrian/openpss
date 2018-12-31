@@ -34,9 +34,9 @@ import ktfx.coroutines.listener
 import ktfx.coroutines.onAction
 import ktfx.coroutines.onMouseClicked
 import ktfx.inputs.isDoubleClick
-import ktfx.later
 import ktfx.layouts.NodeInvokable
 import ktfx.layouts.borderPane
+import ktfx.runLater
 import java.net.URL
 import java.util.ResourceBundle
 
@@ -132,7 +132,7 @@ class FinanceController : ActionController(), Refreshable {
         tabPane.selectionModel.selectedIndexProperty().listener { refresh() }
     }
 
-    override fun refresh() = later {
+    override fun refresh() = runLater {
         runBlocking {
             when (tabPane.selectionModel.selectedIndex) {
                 0 -> dailyTable.items = api.getPayments(dateBox.value!!).toMutableObservableList()

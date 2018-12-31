@@ -9,25 +9,29 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.hendraanggrian.bundler.Extra
 import com.hendraanggrian.bundler.bindExtras
-import com.hendraanggrian.openpss.api.OpenPSSApi
+import com.hendraanggrian.openpss.api.OpenPssApi
 import com.hendraanggrian.openpss.data.Employee
 
 open class OpenPssFragment : Fragment(), AndroidComponent {
 
-    override val api: OpenPSSApi get() = (activity as OpenPssActivity).api
+    override val api: OpenPssApi get() = openPssActivity.api
 
-    override val rootLayout: View get() = (activity as OpenPssActivity).rootLayout
+    override val rootLayout: View get() = openPssActivity.rootLayout
 
-    override val login: Employee get() = (activity as OpenPssActivity).login
+    override val login: Employee get() = openPssActivity.login
+
+    inline val openPssActivity: OpenPssActivity get() = activity as OpenPssActivity
 }
 
 open class OpenPssDialogFragment : AppCompatDialogFragment(), AndroidComponent {
 
-    override val api: OpenPSSApi get() = (activity as OpenPssActivity).api
+    override val api: OpenPssApi get() = openPssActivity.api
 
-    override val rootLayout: View get() = (activity as OpenPssActivity).rootLayout
+    override val rootLayout: View get() = openPssActivity.rootLayout
 
-    override val login: Employee get() = (activity as OpenPssActivity).login
+    override val login: Employee get() = openPssActivity.login
+
+    inline val openPssActivity: OpenPssActivity get() = activity as OpenPssActivity
 
     fun show(manager: FragmentManager) = show(manager, null)
 

@@ -4,6 +4,7 @@
     <string name="next">Next</string>
 
     <string name="openpss_login">OpenPSS Login</string>
+    <string name="server_address">Server address</string>
     <string name="login">Login</string>
     <string name="employee">Employee</string>
     <string name="about">About</string>
@@ -11,4 +12,7 @@
 
     <string name="customer">Customer</string>
     <string name="invoice">Invoice</string>
+    <string name="schedule">Schedule</string>
+    <string name="finance">Finance</string>
+    <string name="wage">Wage</string>
 </resources>

@@ -1,8 +1,9 @@
 package com.hendraanggrian.openpss.ui
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.view.View
-import com.hendraanggrian.openpss.api.OpenPSSApi
+import androidx.preference.PreferenceManager
 
 /** View is the root layout for snackbar and errorbar. */
 interface AndroidComponent : Component<View> {
@@ -10,5 +11,8 @@ interface AndroidComponent : Component<View> {
     /** To be overriden with dialog, this has to be function instead of type. */
     fun getContext(): Context?
 
-    val api: OpenPSSApi
+    val defaultPreferences: SharedPreferences
+        get() = PreferenceManager.getDefaultSharedPreferences(
+            getContext()!!
+        )
 }

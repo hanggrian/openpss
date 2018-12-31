@@ -3,7 +3,7 @@ package com.hendraanggrian.openpss.ui
 import com.hendraanggrian.openpss.Language
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.api.GitHubApi
-import com.hendraanggrian.openpss.api.OpenPSSApi
+import com.hendraanggrian.openpss.api.OpenPssApi
 import com.hendraanggrian.openpss.data.Employee
 import com.hendraanggrian.openpss.data.Setting
 import javafx.scene.Node
@@ -36,15 +36,15 @@ import kotlin.coroutines.CoroutineContext
 interface FxComponent : Resources, Component<StackPane> {
 
     companion object {
-        private var apiRef = WeakReference<OpenPSSApi?>(null)
+        private var apiRef = WeakReference<OpenPssApi?>(null)
         private var gitHubApiRef = WeakReference<GitHubApi?>(null)
     }
 
-    val api: OpenPSSApi
+    override val api: OpenPssApi
         get() {
             var api = apiRef.get()
             if (api == null) {
-                api = OpenPSSApi()
+                api = OpenPssApi()
                 apiRef = WeakReference(api)
             }
             return api

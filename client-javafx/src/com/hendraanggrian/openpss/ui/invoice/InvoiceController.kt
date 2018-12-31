@@ -46,13 +46,13 @@ import ktfx.coroutines.onHiding
 import ktfx.coroutines.onMouseClicked
 import ktfx.inputs.isDoubleClick
 import ktfx.jfoenix.jfxSnackbar
-import ktfx.later
 import ktfx.layouts.NodeInvokable
 import ktfx.layouts.columns
 import ktfx.layouts.contextMenu
 import ktfx.layouts.label
 import ktfx.layouts.separatorMenuItem
 import ktfx.layouts.tableView
+import ktfx.runLater
 import org.joda.time.LocalDate
 import java.net.URL
 import java.util.ResourceBundle
@@ -124,7 +124,7 @@ class InvoiceController : ActionController(), Refreshable {
         )
     }
 
-    override fun refresh() = later {
+    override fun refresh() = runLater {
         invoicePagination.contentFactoryProperty().bind(buildBinding(
             searchField.valueProperty(),
             customerProperty,
@@ -237,16 +237,16 @@ class InvoiceController : ActionController(), Refreshable {
                     }
                     invoicePagination.pageCount = pageCount
                     invoiceTable.items = invoices.toMutableObservableList()
-                    later {
+                    runLater {
                         invoiceTable.contextMenu {
                             getString(R.string.view)(ImageView(R.image.menu_invoice)) {
-                                later {
+                                runLater {
                                     disableProperty().bind(invoiceTable.selectionModel.selectedItemProperty().isNull)
                                 }
                                 onAction { viewInvoice() }
                             }
                             getString(R.string.done)(ImageView(R.image.menu_done)) {
-                                later {
+                                runLater {
                                     disableProperty().bind(buildBinding(invoiceTable.selectionModel.selectedItemProperty()) {
                                         when {
                                             invoiceTable.selectionModel.selectedItem != null &&

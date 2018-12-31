@@ -37,7 +37,6 @@ import ktfx.jfoenix.jfxPasswordField
 import ktfx.jfoenix.jfxTextField
 import ktfx.jfoenix.jfxToggleButton
 import ktfx.jfoenix.onDialogClosed
-import ktfx.later
 import ktfx.layouts._StackPane
 import ktfx.layouts.anchorPane
 import ktfx.layouts.gridPane
@@ -49,6 +48,7 @@ import ktfx.layouts.stackPane
 import ktfx.layouts.text
 import ktfx.layouts.textFlow
 import ktfx.layouts.vbox
+import ktfx.runLater
 import ktfx.text.updateFont
 import java.util.Properties
 import java.util.ResourceBundle
@@ -111,7 +111,7 @@ class LoginPane(private val resourced: Resources) : _StackPane(),
                     textProperty().listener { _, _, value -> SettingsFile.EMPLOYEE = value }
                     updateFont(16)
                     promptText = getString(R.string.employee)
-                    later { requestFocus() }
+                    runLater { requestFocus() }
                 } marginTop 24
                 textFlow {
                     var version = BuildConfig.VERSION

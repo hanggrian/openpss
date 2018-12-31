@@ -21,7 +21,6 @@ import ktfx.dialogs.closeButton
 import ktfx.dialogs.icon
 import ktfx.jfoenix.jfxButton
 import ktfx.jfoenix.jfxListView
-import ktfx.later
 import ktfx.layouts.contextMenu
 import ktfx.layouts.hbox
 import ktfx.layouts.imageView
@@ -30,6 +29,7 @@ import ktfx.layouts.text
 import ktfx.layouts.textFlow
 import ktfx.layouts.vbox
 import ktfx.listeners.cellFactory
+import ktfx.runLater
 import ktfx.text.updateFont
 import java.net.URI
 
@@ -122,7 +122,7 @@ class AboutDialog(component: FxComponent) : Dialog<Unit>(), FxComponent by compo
         }
         closeButton()
 
-        later {
+        runLater {
             dialogPane.run {
                 val detailsButton = find<Hyperlink>(".details-button")
                 detailsButton.text = getString(R.string._open_source_license_show)

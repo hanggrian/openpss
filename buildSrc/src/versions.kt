@@ -4,7 +4,7 @@ const val VERSION_KOTLIN = "1.3.11"
 const val VERSION_COROUTINES = "1.1.0"
 const val VERSION_NOSQL = "0.1-SNAPSHOT"
 internal const val VERSION_DOKKA = "0.9.17"
-internal const val VERSION_KTOR = "1.0.1"
+internal const val VERSION_KTOR = "1.1.1"
 
 const val SDK_MIN = 14
 const val SDK_TARGET = 28
@@ -28,7 +28,7 @@ const val VERSION_GUAVA = "27.0.1"
 const val VERSION_R = "0.4"
 const val VERSION_BUILDCONFIG = "0.4"
 const val VERSION_PACKR = "0.8"
-const val VERSION_KTFX = "8.4.6"
+const val VERSION_KTFX = "8.4.7"
 const val VERSION_MAVEN = "3.6.0"
 const val VERSION_COMMONS_LANG = "3.8.1"
 const val VERSION_COMMONS_MATH = "3.6.1"

@@ -6,7 +6,7 @@ import io.ktor.client.request.get
 
 interface AuthApi : Api {
 
-    suspend fun login(name: String, password: String): Employee = client.get {
+    suspend fun login(name: CharSequence, password: CharSequence): Employee = client.get {
         apiUrl("login")
         parameters(
             "name" to name,

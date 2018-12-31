@@ -13,7 +13,7 @@ interface InvoiceApi : Api {
 
     suspend fun getInvoices(
         search: Int = 0,
-        customer: String? = null,
+        customer: CharSequence? = null,
         isPaid: Boolean? = null,
         isDone: Boolean? = null,
         date: Any? = null,
@@ -37,11 +37,12 @@ interface InvoiceApi : Api {
         jsonBody(invoice)
     }
 
-    suspend fun deleteInvoice(login: Employee, invoice: Invoice): Boolean = client.requestStatus(HttpMethod.Delete) {
-        apiUrl(Invoices.schemaName)
-        jsonBody(invoice)
-        parameters("login" to login.name)
-    }
+    suspend fun deleteInvoice(login: Employee, invoice: Invoice): Boolean =
+        client.requestStatus(HttpMethod.Delete) {
+            apiUrl(Invoices.schemaName)
+            jsonBody(invoice)
+            parameters("login" to login.name)
+        }
 
     suspend fun getInvoice(id: Id<String, *>): Invoice = client.get {
         apiUrl("${Invoices.schemaName}/$id")

@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.hendraanggrian.bundler.Extra
 import com.hendraanggrian.openpss.OpenPssApplication
-import com.hendraanggrian.openpss.api.OpenPSSApi
+import com.hendraanggrian.openpss.api.OpenPssApi
 import com.hendraanggrian.openpss.data.Employee
 
 @SuppressLint("Registered")
@@ -16,11 +16,13 @@ open class OpenPssActivity : AppCompatActivity(), AndroidComponent {
 
     override fun getContext(): Context? = this
 
-    override val api: OpenPSSApi get() = (application as OpenPssApplication).getApi()
+    override val api: OpenPssApi get() = openPssApplication.api
 
     override val rootLayout: View get() = findViewById(android.R.id.content)
 
     @Extra override lateinit var login: Employee
+
+    inline val openPssApplication: OpenPssApplication get() = application as OpenPssApplication
 
     fun AppCompatActivity.replaceFragment(@IdRes containerViewId: Int, fragment: Fragment) =
         supportFragmentManager.beginTransaction()

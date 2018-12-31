@@ -31,7 +31,7 @@ import ktfx.controls.gap
 import ktfx.coroutines.listener
 import ktfx.jfoenix.jfxButton
 import ktfx.jfoenix.jfxComboBox
-import ktfx.layouts.LayoutDsl
+import ktfx.layouts.LayoutMarker
 import ktfx.layouts.NodeInvokable
 import ktfx.layouts._HBox
 import ktfx.layouts._VBox
@@ -129,7 +129,7 @@ class SettingsDialog(component: FxComponent) : OpenPssDialog(component, R.string
 
     private fun group(
         titleId: String,
-        init: (@LayoutDsl _VBox).() -> Unit
+        init: (@LayoutMarker _VBox).() -> Unit
     ): VBox = ktfx.layouts.vbox(getDouble(R.value.padding_small)) {
         label(getString(titleId)) {
             styleClass += R.style.bold
@@ -139,7 +139,7 @@ class SettingsDialog(component: FxComponent) : OpenPssDialog(component, R.string
 
     private fun NodeInvokable.group(
         titleId: String,
-        init: (@LayoutDsl _VBox).() -> Unit
+        init: (@LayoutMarker _VBox).() -> Unit
     ): VBox = vbox(getDouble(R.value.padding_small)) {
         label(getString(titleId)) {
             styleClass += R.style.bold
@@ -149,7 +149,7 @@ class SettingsDialog(component: FxComponent) : OpenPssDialog(component, R.string
 
     private fun NodeInvokable.item(
         labelId: String? = null,
-        init: (@LayoutDsl _HBox).() -> Unit
+        init: (@LayoutMarker _HBox).() -> Unit
     ): HBox = hbox(getDouble(R.value.padding_medium)) {
         alignment = Pos.CENTER_LEFT
         if (labelId != null) label(getString(labelId))

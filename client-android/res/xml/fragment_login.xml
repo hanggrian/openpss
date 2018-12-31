@@ -2,14 +2,16 @@
 <androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <androidx.preference.EditTextPreference
+        android:key="server_address"
+        android:title="@string/server_address" />
+
+    <androidx.preference.EditTextPreference
         android:icon="@drawable/ic_action_person"
         android:key="employee"
         android:title="@string/employee" />
 
     <androidx.preference.PreferenceCategory android:title="@string/about">
 
-        <androidx.preference.Preference
-            android:key="version"
-            android:title="Version" />
+        <androidx.preference.Preference android:key="about" />
     </androidx.preference.PreferenceCategory>
 </androidx.preference.PreferenceScreen>

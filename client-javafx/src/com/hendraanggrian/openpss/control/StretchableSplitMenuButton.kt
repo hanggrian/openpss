@@ -11,7 +11,7 @@ import javafx.scene.Node
 import javafx.scene.control.MenuItem
 import javafx.scene.control.SplitMenuButton
 import javafx.scene.image.ImageView
-import ktfx.layouts.LayoutDsl
+import ktfx.layouts.LayoutMarker
 import ktfx.layouts.MenuItemInvokable
 import ktfx.layouts.menuItem
 
@@ -41,6 +41,6 @@ class StretchableSplitMenuButton @JvmOverloads constructor(
 
     inline operator fun String.invoke(
         graphic: ImageView? = null,
-        noinline init: ((@LayoutDsl MenuItem).() -> Unit)? = null
+        noinline init: ((@LayoutMarker MenuItem).() -> Unit)? = null
     ): MenuItem = menuItem(this, graphic, init)
 }

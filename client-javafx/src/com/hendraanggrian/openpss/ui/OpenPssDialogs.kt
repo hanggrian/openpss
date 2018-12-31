@@ -23,7 +23,6 @@ import ktfx.collections.toMutableObservableList
 import ktfx.coroutines.onAction
 import ktfx.getValue
 import ktfx.jfoenix.jfxButton
-import ktfx.later
 import ktfx.layouts.NodeInvokable
 import ktfx.layouts.TableColumnsBuilder
 import ktfx.layouts.anchorPane
@@ -32,6 +31,7 @@ import ktfx.layouts.label
 import ktfx.layouts.tableView
 import ktfx.layouts.tooltip
 import ktfx.layouts.vbox
+import ktfx.runLater
 import ktfx.setValue
 import ktfx.windows.setMinSize
 import kotlin.coroutines.CoroutineContext
@@ -164,7 +164,7 @@ abstract class TableDialog<D : Document<*>>(
                             else -> action()
                         }
                     }
-                    later {
+                    runLater {
                         disableProperty().bind(table.selectionModel.selectedItemProperty().isNull)
                     }
                 }
@@ -178,7 +178,7 @@ abstract class TableDialog<D : Document<*>>(
             } anchorAll 1
         }
         refresh()
-        later {
+        runLater {
             (scene.window as Stage).setMinSize(width, height)
         }
     }

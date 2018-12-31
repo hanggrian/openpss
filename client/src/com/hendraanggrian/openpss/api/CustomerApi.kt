@@ -11,7 +11,7 @@ import kotlinx.nosql.Id
 
 interface CustomerApi : Api {
 
-    suspend fun getCustomers(search: String, page: Int, count: Int): Page<Customer> = client.get {
+    suspend fun getCustomers(search: CharSequence, page: Int, count: Int): Page<Customer> = client.get {
         apiUrl(Customers.schemaName)
         parameters(
             "search" to search,

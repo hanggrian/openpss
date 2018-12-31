@@ -34,10 +34,10 @@ import ktfx.collections.toMutableObservableList
 import ktfx.collections.toObservableList
 import ktfx.coroutines.onAction
 import ktfx.jfoenix.jfxTextField
-import ktfx.later
 import ktfx.layouts.NodeInvokable
 import ktfx.layouts.contextMenu
 import ktfx.layouts.tooltip
+import ktfx.runLater
 import org.controlsfx.control.MasterDetailPane
 import java.net.URL
 import java.util.ResourceBundle
@@ -95,12 +95,12 @@ class CustomerController : ActionController(), Refreshable {
         valueColumn.stringCell { value }
     }
 
-    override fun refresh() = later {
+    override fun refresh() = runLater {
         customerPagination.contentFactoryProperty().bind(buildBinding(searchField.textProperty()) {
             Callback<Pair<Int, Int>, Node> { (page, count) ->
                 customerList = CustomerListView().apply {
                     styleClass += R.style.list_view_no_scrollbar_vertical
-                    later {
+                    runLater {
                         contextMenu {
                             getString(R.string.edit)(ImageView(R.image.menu_edit)) {
                                 disableProperty().bind(selectionModel.selectedItemProperty().isNull)

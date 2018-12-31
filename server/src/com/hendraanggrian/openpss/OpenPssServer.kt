@@ -38,7 +38,7 @@ private lateinit var log: Logger
 
 fun main(args: Array<String>) {
     startConnection()
-    log = embeddedServer(Netty, commandLineEnvironment(args)).start().application.log
+    log = embeddedServer(Netty, commandLineEnvironment(args)).start(wait = true).application.log
     log.info("Welcome to ${BuildConfig.NAME} ${BuildConfig.VERSION}")
     log.info("For more information, visit ${BuildConfig.WEBSITE}")
     logger?.info("Debug mode is activated, server activities will be logged here.")

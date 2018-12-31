@@ -4,6 +4,7 @@
     <string name="next">Lanjut</string>
 
     <string name="openpss_login">Masuk ke OpenPSS</string>
+    <string name="server_address">Alamat server</string>
     <string name="login">Masuk</string>
     <string name="employee">Pegawai</string>
     <string name="about">Tentang</string>
@@ -11,4 +12,7 @@
 
     <string name="customer">Pelanggan</string>
     <string name="invoice">Faktur</string>
+    <string name="schedule">Jadwal</string>
+    <string name="finance">Keuangan</string>
+    <string name="wage">Gaji</string>
 </resources>

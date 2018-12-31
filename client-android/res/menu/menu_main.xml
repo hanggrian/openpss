@@ -10,4 +10,19 @@
         android:id="@+id/tab_invoice"
         android:icon="@drawable/tab_invoice"
         android:title="@string/invoice" />
+
+    <item
+        android:id="@+id/tab_schedule"
+        android:icon="@drawable/tab_schedule"
+        android:title="@string/schedule" />
+
+    <item
+        android:id="@+id/tab_finance"
+        android:icon="@drawable/tab_finance"
+        android:title="@string/finance" />
+
+    <item
+        android:id="@+id/tab_wage"
+        android:icon="@drawable/tab_wage"
+        android:title="@string/wage" />
 </menu>

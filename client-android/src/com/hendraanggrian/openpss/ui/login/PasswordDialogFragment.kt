@@ -1,6 +1,5 @@
 package com.hendraanggrian.openpss.ui.login
 
-import android.app.Activity
 import android.app.Dialog
 import android.content.Context.INPUT_METHOD_SERVICE
 import android.content.Intent
@@ -22,9 +21,9 @@ import com.hendraanggrian.openpss.ui.TextDialogFragment
 import com.hendraanggrian.openpss.ui.main.MainActivity
 import kotlinx.coroutines.runBlocking
 
-class PasswordDialogFragment2 : OpenPssDialogFragment() {
+class PasswordDialogFragment : OpenPssDialogFragment() {
 
-    @Extra lateinit var employeeName: String
+    @Extra lateinit var employee: String
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         bindExtras()
@@ -54,21 +53,19 @@ class PasswordDialogFragment2 : OpenPssDialogFragment() {
             })
             .setNegativeButton(android.R.string.cancel, null)
             .setPositiveButton(R.string.login) { _, _ ->
-                runBlocking {
-                    runCatching {
-                        val employee = api.login(employeeName, editText.text.toString())
-                        startActivity(
-                            Intent(context, MainActivity::class.java)
-                                .putExtras(extrasOf<MainActivity>(employee))
-                        )
-                        (context as Activity).finish()
-                    }.onFailure {
-                        if (BuildConfig.DEBUG) it.printStackTrace()
-                        TextDialogFragment()
-                            .args(extrasOf<TextDialogFragment>(it.message.toString()))
-                            .show(manager)
-                    }
-                }
+                val login = runCatching {
+                    runBlocking { api.login(employee, editText.text) }
+                }.onFailure {
+                    if (BuildConfig.DEBUG) it.printStackTrace()
+                    TextDialogFragment()
+                        .args(extrasOf<TextDialogFragment>(it.message.toString()))
+                        .show(manager)
+                }.getOrThrow()
+                startActivity(
+                    Intent(context, MainActivity::class.java)
+                        .putExtras(extrasOf<MainActivity>(login))
+                )
+                activity!!.finish()
             }
             .create()
         dialog.setOnShowListener { editText.requestFocus() }

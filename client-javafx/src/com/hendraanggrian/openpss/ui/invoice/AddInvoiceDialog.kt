@@ -48,7 +48,6 @@ import ktfx.inputs.isDelete
 import ktfx.invoke
 import ktfx.jfoenix.jfxTabPane
 import ktfx.jfoenix.jfxTextField
-import ktfx.later
 import ktfx.layouts.NodeInvokable
 import ktfx.layouts.TableColumnsBuilder
 import ktfx.layouts.columns
@@ -59,6 +58,7 @@ import ktfx.layouts.separatorMenuItem
 import ktfx.layouts.tab
 import ktfx.layouts.tableView
 import ktfx.layouts.textArea
+import ktfx.runLater
 import org.joda.time.DateTime
 
 class AddInvoiceDialog(
@@ -240,11 +240,11 @@ class AddInvoiceDialog(
             }
             separatorMenuItem()
             getString(R.string.delete)(ImageView(R.image.menu_delete)) {
-                later { disableProperty().bind(this@tableView.selectionModel.selectedItemProperty().isNull) }
+                runLater { disableProperty().bind(this@tableView.selectionModel.selectedItemProperty().isNull) }
                 onAction { this@tableView.items.remove(this@tableView.selectionModel.selectedItem) }
             }
             getString(R.string.clear)(ImageView(R.image.menu_clear)) {
-                later { disableProperty().bind(this@tableView.items.isEmptyBinding) }
+                runLater { disableProperty().bind(this@tableView.items.isEmptyBinding) }
                 onAction { this@tableView.items.clear() }
             }
         }

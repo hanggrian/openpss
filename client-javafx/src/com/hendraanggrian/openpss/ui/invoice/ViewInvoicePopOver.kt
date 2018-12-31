@@ -39,7 +39,6 @@ import ktfx.controls.gap
 import ktfx.controls.paddingAll
 import ktfx.coroutines.onAction
 import ktfx.invoke
-import ktfx.later
 import ktfx.layouts.NodeInvokable
 import ktfx.layouts._GridPane
 import ktfx.layouts.button
@@ -53,6 +52,7 @@ import ktfx.layouts.textFlow
 import ktfx.layouts.vbox
 import ktfx.print.createJob
 import ktfx.print.defaultPrinter
+import ktfx.runLater
 import ktfx.text.updateFont
 import java.util.ResourceBundle
 
@@ -218,7 +218,7 @@ class ViewInvoicePopOver(
         buttonInvokable.run {
             button(getString(R.string.print)) {
                 isDefaultButton = true
-                later { isDisable = invoice.isPrinted }
+                runLater { isDisable = invoice.isPrinted }
                 onAction {
                     // resize node to actual print size
                     val printer = defaultPrinter

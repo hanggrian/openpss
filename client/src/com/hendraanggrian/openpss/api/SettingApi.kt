@@ -7,13 +7,13 @@ import io.ktor.http.HttpMethod
 
 interface SettingApi : Api {
 
-    suspend fun getSetting(key: String): Setting = client.get {
+    suspend fun getSetting(key: CharSequence): Setting = client.get {
         apiUrl("${Settings.schemaName}/$key")
     }
 
-    suspend fun setSetting(key: String, value: String): Boolean =
+    suspend fun setSetting(key: CharSequence, value: CharSequence): Boolean =
         client.requestStatus(HttpMethod.Post) {
             apiUrl("${Settings.schemaName}/$key")
-            jsonBody(Setting(key, value))
+            jsonBody(Setting(key.toString(), value.toString()))
         }
 }

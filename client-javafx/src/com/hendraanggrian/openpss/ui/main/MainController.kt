@@ -57,6 +57,7 @@ import ktfx.later
 import ktfx.layouts.text
 import ktfx.layouts.textFlow
 import ktfx.listeners.cellFactory
+import ktfx.runLater
 import ktfx.text.updateFont
 import ktfx.windows.stage
 import java.net.URL
@@ -121,7 +122,7 @@ class MainController : OpenPssController(), Refreshable {
             }
         }
 
-        later {
+        runLater {
             titleLabel.scene.stage.titleProperty().bind(buildStringBinding(
                 drawerList.selectionModel.selectedIndexProperty()
             ) {

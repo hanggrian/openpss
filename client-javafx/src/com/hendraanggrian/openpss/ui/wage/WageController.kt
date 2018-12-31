@@ -35,10 +35,10 @@ import ktfx.collections.sizeBinding
 import ktfx.coroutines.onAction
 import ktfx.getValue
 import ktfx.jfoenix.jfxSnackbar
-import ktfx.later
 import ktfx.layouts.NodeInvokable
 import ktfx.layouts.borderPane
 import ktfx.layouts.scene
+import ktfx.runLater
 import ktfx.setValue
 import ktfx.windows.chooseFile
 import ktfx.windows.setMinSize
@@ -109,7 +109,7 @@ class WageController : ActionController() {
         })
         disableRecessButton.disableProperty().bind(flowPane.children.isEmptyBinding)
         bindProcessButton()
-        later {
+        runLater {
             flowPane.prefWrapLengthProperty().bind(flowPane.scene.widthProperty())
             if (BuildConfig.DEBUG) {
                 val file = File("/Users/hendraanggrian/Downloads/Absen 4-13-18.xlsx")

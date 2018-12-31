@@ -53,7 +53,6 @@ import ktfx.collections.toObservableList
 import ktfx.coroutines.listener
 import ktfx.hasValue
 import ktfx.jfoenix.jfxSnackbar
-import ktfx.later
 import ktfx.layouts.text
 import ktfx.layouts.textFlow
 import ktfx.listeners.cellFactory
@@ -156,7 +155,7 @@ class MainController : OpenPssController(), Refreshable {
             }
         }
 
-        later {
+        runLater {
             employeeLabel.text = login.name
             controllers.forEach {
                 it.login = login
@@ -217,7 +216,7 @@ class MainController : OpenPssController(), Refreshable {
 
     @FXML
     fun add(event: ActionEvent) = when (event.source) {
-        addCustomerItem -> select(customerController) { later { add() } }
+        addCustomerItem -> select(customerController) { runLater { add() } }
         else -> select(invoiceController) { addInvoice() }
     }
 

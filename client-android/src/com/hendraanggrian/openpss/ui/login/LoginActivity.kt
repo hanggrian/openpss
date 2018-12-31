@@ -13,8 +13,9 @@ class LoginActivity : OpenPssActivity() {
     private lateinit var preferences: SharedPreferences
     private val preferenceListener =
         SharedPreferences.OnSharedPreferenceChangeListener { preferences, _ ->
-            loginButton.isEnabled = !preferences.getString("server_address", null).isNullOrBlank()
-                && !preferences.getString("employee", null).isNullOrBlank()
+            loginButton.isEnabled =
+                !preferences.getString("server_address", null).isNullOrBlank() &&
+                !preferences.getString("employee", null).isNullOrBlank()
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {

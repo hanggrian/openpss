@@ -24,9 +24,9 @@ import ktfx.collections.isEmptyBinding
 import ktfx.coroutines.listener
 import ktfx.coroutines.onAction
 import ktfx.jfoenix.jfxToggleButton
-import ktfx.later
 import ktfx.layouts.NodeInvokable
 import ktfx.layouts.borderPane
+import ktfx.runLater
 import java.net.URL
 import java.util.ResourceBundle
 
@@ -97,7 +97,7 @@ class ScheduleController : ActionController(), Refreshable {
         typeColumn.stringCell { type }
     }
 
-    override fun refresh() = later {
+    override fun refresh() = runLater {
         scheduleTable.selectionModel.clearSelection()
         scheduleTable.root.children.run {
             clear()

@@ -46,6 +46,7 @@ android {
         exclude("META-INF/NOTICE.txt")
         exclude("META-INF/LICENSE.txt")
         exclude("META-INF/kotlinx-io.kotlin_module")
+        exclude("META-INF/kotlinx-coroutines-io.kotlin_module")
         exclude("META-INF/atomicfu.kotlin_module")
     }
 }

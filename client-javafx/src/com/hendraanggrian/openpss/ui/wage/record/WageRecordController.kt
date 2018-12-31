@@ -42,10 +42,10 @@ import ktfx.controls.snapshot
 import ktfx.coroutines.onAction
 import ktfx.invoke
 import ktfx.jfoenix.jfxIndefiniteSnackbar
-import ktfx.later
 import ktfx.layouts.label
 import ktfx.layouts.menuItem
 import ktfx.listeners.cellFactory
+import ktfx.runLater
 import ktfx.swing.toSwingImage
 import org.apache.commons.lang3.SystemUtils
 import org.joda.time.LocalTime
@@ -127,7 +127,7 @@ class WageRecordController : OpenPssController() {
         overtimeIncomeColumn.setCellValueFactory { it.value.value.overtimeIncomeProperty as ObservableValue<Double> }
         totalColumn.setCellValueFactory { it.value.value.totalProperty as ObservableValue<Double> }
 
-        later {
+        runLater {
             getExtra<List<Attendee>>(EXTRA_ATTENDEES).forEach { attendee ->
                 val node = attendee.toNodeRecord(this)
                 val childs = attendee.toChildRecords(this)

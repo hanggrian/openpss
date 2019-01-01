@@ -1,2 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<lint />
+<lint>
+    <!-- Ignoring mongo-java-driver warnings since they aren't used in client. -->
+    <issue id="InvalidPackage" severity="ignore" />
+</lint>

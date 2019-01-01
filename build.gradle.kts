@@ -5,13 +5,11 @@ buildscript {
         google()
         jcenter()
         mavenCentral()
-        maven("https://kotlin.bintray.com/kotlinx")
         maven("https://oss.sonatype.org/content/repositories/snapshots")
         maven("https://dl.bintray.com/hendraanggrian/packr")
     }
     dependencies {
         classpath(kotlin("gradle-plugin", VERSION_KOTLIN))
-        classpath(kotlin("serialization", VERSION_KOTLIN))
         classpath(android())
         classpath(dokka())
         classpath(dokka("android"))

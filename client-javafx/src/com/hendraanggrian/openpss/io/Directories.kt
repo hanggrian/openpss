@@ -1,11 +1,11 @@
 package com.hendraanggrian.openpss.io
 
-import com.hendraanggrian.openpss.BuildConfig
+import com.hendraanggrian.openpss.BuildConfig2
 import org.apache.commons.lang3.SystemUtils
 import org.joda.time.DateTime
 import java.io.File
 
-object MainDirectory : Directory(SystemUtils.USER_HOME, ".${BuildConfig.ARTIFACT}")
+object MainDirectory : Directory(SystemUtils.USER_HOME, ".${BuildConfig2.ARTIFACT}")
 
 object WageDirectory : Directory(MainDirectory, "wage")
 

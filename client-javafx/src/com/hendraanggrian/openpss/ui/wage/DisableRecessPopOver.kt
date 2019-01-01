@@ -1,6 +1,7 @@
 package com.hendraanggrian.openpss.ui.wage
 
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.ui.FxComponent
 import com.hendraanggrian.openpss.ui.OpenPssPopOver
 import com.jfoenix.controls.JFXButton
@@ -20,7 +21,7 @@ import ktfx.layouts.label
 class DisableRecessPopOver(
     component: FxComponent,
     private val attendeePanes: List<AttendeePane>
-) : OpenPssPopOver(component, R.string.disable_recess) {
+) : OpenPssPopOver(component, R2.string.disable_recess) {
 
     private lateinit var recessChoice: ComboBox<*>
     private lateinit var roleChoice: ComboBox<*>
@@ -30,15 +31,15 @@ class DisableRecessPopOver(
     init {
         gridPane {
             gap = getDouble(R.value.padding_medium)
-            label(getString(R.string.recess)) col 0 row 0
+            label(getString(R2.string.recess)) col 0 row 0
             recessChoice = jfxComboBox(
                 mutableObservableListOf(
-                    getString(R.string.all),
+                    getString(R2.string.all),
                     Separator(),
                     *runBlocking { api.getRecesses() }.toTypedArray()
                 )
             ) { selectionModel.selectFirst() } col 1 row 0
-            label(getString(R.string.employee)) col 0 row 1
+            label(getString(R2.string.employee)) col 0 row 1
             roleChoice = jfxComboBox(mutableObservableListOf(
                 *attendees.asSequence().filter { it.role != null }.map { it.role!! }.distinct().toList().toTypedArray(),
                 Separator(),
@@ -47,7 +48,7 @@ class DisableRecessPopOver(
             ) col 1 row 1
         }
         buttonInvokable.run {
-            jfxButton(getString(R.string.apply)) {
+            jfxButton(getString(R2.string.apply)) {
                 isDefaultButton = true
                 buttonType = JFXButton.ButtonType.RAISED
                 styleClass += R.style.raised

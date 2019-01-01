@@ -2,6 +2,7 @@ package com.hendraanggrian.openpss.ui.main
 
 import com.hendraanggrian.openpss.Language
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.control.Space
 import com.hendraanggrian.openpss.data.Setting.Companion.KEY_INVOICE_HEADERS
 import com.hendraanggrian.openpss.data.Setting.Companion.KEY_LANGUAGE
@@ -44,7 +45,7 @@ import ktfx.layouts.vbox
 import ktfx.listeners.converter
 import kotlin.coroutines.CoroutineContext
 
-class SettingsDialog(component: FxComponent) : OpenPssDialog(component, R.string.settings) {
+class SettingsDialog(component: FxComponent) : OpenPssDialog(component, R2.string.settings) {
 
     private var isLocalChanged = boolean()
     private var isGlobalChanged = boolean()
@@ -57,9 +58,9 @@ class SettingsDialog(component: FxComponent) : OpenPssDialog(component, R.string
         borderPane {
             left = ktfx.layouts.vbox {
                 spacing = getDouble(R.value.padding_large)
-                group(R.string.wage) {
+                group(R2.string.wage) {
                     item {
-                        label(getString(R.string.reader))
+                        label(getString(R2.string.reader))
                         wageReaderChoice = jfxComboBox(WageReader.listAll()) {
                             value = WageReader.of(ReaderFile.WAGE_READER)
                             valueProperty().listener { _, _, value ->
@@ -71,11 +72,11 @@ class SettingsDialog(component: FxComponent) : OpenPssDialog(component, R.string
                 }
             }
             Space(getDouble(R.value.padding_large))()
-            right = this@SettingsDialog.group(R.string.global_settings) {
+            right = this@SettingsDialog.group(R2.string.global_settings) {
                 isDisable = runBlocking { !api.isAdmin(login) }
                 gridPane {
                     gap = getDouble(R.value.padding_medium)
-                    label(getString(R.string.server_language)) row 0 col 0
+                    label(getString(R2.string.server_language)) row 0 col 0
                     languageBox = jfxComboBox(Language.values().toObservableList()) {
                         converter { toString { it!!.toString(true) } }
                         selectionModel.select(
@@ -85,14 +86,14 @@ class SettingsDialog(component: FxComponent) : OpenPssDialog(component, R.string
                         )
                         valueProperty().listener { isGlobalChanged.set(true) }
                     } row 0 col 1
-                    label(getString(R.string.invoice_headers)) row 1 col 0
+                    label(getString(R2.string.invoice_headers)) row 1 col 0
                     invoiceHeadersArea = textArea(
                         runBlocking { api.getSetting(KEY_INVOICE_HEADERS) }
                             .valueList
                             .joinToString("\n")
                             .trim()
                     ) {
-                        promptText = getString(R.string.invoice_headers)
+                        promptText = getString(R2.string.invoice_headers)
                         setMaxSize(256.0, 88.0)
                         textProperty().listener { _, oldValue, value ->
                             when (INVOICE_HEADERS_DIVIDER) {
@@ -105,7 +106,7 @@ class SettingsDialog(component: FxComponent) : OpenPssDialog(component, R.string
             }
         }
         buttonInvokable.run {
-            jfxButton(getString(R.string.ok)) {
+            jfxButton(getString(R2.string.ok)) {
                 isDefaultButton = true
                 styleClass += R.style.raised
                 buttonType = JFXButton.ButtonType.RAISED

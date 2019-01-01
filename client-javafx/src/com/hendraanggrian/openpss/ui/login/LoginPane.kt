@@ -1,9 +1,10 @@
 package com.hendraanggrian.openpss.ui.login
 
-import com.hendraanggrian.openpss.BuildConfig
+import com.hendraanggrian.openpss.BuildConfig2
 import com.hendraanggrian.openpss.Language
 import com.hendraanggrian.openpss.OpenPssApplication
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.data.Employee
 import com.hendraanggrian.openpss.io.SettingsFile
 import com.hendraanggrian.openpss.ui.FxComponent
@@ -80,7 +81,7 @@ class LoginPane(private val resourced: Resources) : _StackPane(),
             alignment = Pos.CENTER_RIGHT
             gap = getDouble(R.value.padding_medium)
             paddingAll = getDouble(R.value.padding_medium)
-            label(getString(R.string.language)) row 0 col 0 hpriority Priority.ALWAYS halign HPos.RIGHT
+            label(getString(R2.string.language)) row 0 col 0 hpriority Priority.ALWAYS halign HPos.RIGHT
             jfxComboBox(Language.values().toObservableList()) {
                 selectionModel.select(SettingsFile.language)
                 valueProperty().listener(Dispatchers.Default) { _, _, value ->
@@ -88,8 +89,8 @@ class LoginPane(private val resourced: Resources) : _StackPane(),
                     SettingsFile.save()
                     TextDialog(
                         this@LoginPane,
-                        R.string.restart_required,
-                        getString(R.string._restart_required)
+                        R2.string.restart_required,
+                        getString(R2.string._restart_required)
                     ).apply {
                         onDialogClosed { OpenPssApplication.exit() }
                     }.show(this@LoginPane)
@@ -99,10 +100,10 @@ class LoginPane(private val resourced: Resources) : _StackPane(),
                 alignment = Pos.CENTER
                 updatePadding(32, 24, 32, 24)
                 imageView(R.image.logo_small)
-                label(getString(R.string.openpss_login)) {
+                label(getString(R2.string.openpss_login)) {
                     styleClass.addAll(R.style.bold, R.style.display2)
                 }
-                label(getString(R.string._login_desc1)) {
+                label(getString(R2.string._login_desc1)) {
                     textAlignment = TextAlignment.CENTER
                     isWrapText = true
                     updateFont(16)
@@ -110,31 +111,31 @@ class LoginPane(private val resourced: Resources) : _StackPane(),
                 employeeField = jfxTextField(SettingsFile.EMPLOYEE) {
                     textProperty().listener { _, _, value -> SettingsFile.EMPLOYEE = value }
                     updateFont(16)
-                    promptText = getString(R.string.employee)
+                    promptText = getString(R2.string.employee)
                     runLater { requestFocus() }
                 } marginTop 24
                 textFlow {
-                    var version = BuildConfig.VERSION
-                    if (BuildConfig.DEBUG) {
+                    var version = BuildConfig2.VERSION
+                    if (BuildConfig2.DEBUG) {
                         version += " DEBUG"
                     }
-                    text(getString(R.string._login_desc2, version)) {
+                    text(getString(R2.string._login_desc2, version)) {
                         wrappingWidth = employeeField.prefWidth
                     }
-                    hyperlink(getString(R.string.check_for_updates)) {
+                    hyperlink(getString(R2.string.check_for_updates)) {
                         onAction {
                             GitHubHelper.checkUpdates(this@LoginPane)
                         }
                     }
                 } marginTop 24
                 anchorPane {
-                    jfxButton(getString(R.string.about)) {
+                    jfxButton(getString(R2.string.about)) {
                         updatePadding(8, 16, 8, 16)
                         updateFont(16)
                         styleClass += R.style.flat
                         onAction { AboutDialog(this@LoginPane).show() }
                     } anchorLeft 0
-                    loginButton = jfxButton(getString(R.string.login)) {
+                    loginButton = jfxButton(getString(R2.string.login)) {
                         updatePadding(8, 16, 8, 16)
                         updateFont(16)
                         styleClass += R.style.raised
@@ -146,10 +147,10 @@ class LoginPane(private val resourced: Resources) : _StackPane(),
                                 onSuccess?.invoke(runCatching {
                                     api.login(employeeField.text, passwordField.text)
                                 }.onFailure {
-                                    if (BuildConfig.DEBUG) it.printStackTrace()
+                                    if (BuildConfig2.DEBUG) it.printStackTrace()
                                     TextDialog(
                                         this@LoginPane,
-                                        R.string.login_failed,
+                                        R2.string.login_failed,
                                         it.message.toString()
                                     ).show(this@LoginPane)
                                 }.getOrThrow())
@@ -163,7 +164,7 @@ class LoginPane(private val resourced: Resources) : _StackPane(),
     }
 
     inner class PasswordDialog :
-        ResultableDialog<Unit>(this@LoginPane, R.string.password_required) {
+        ResultableDialog<Unit>(this@LoginPane, R2.string.password_required) {
 
         override val focusedNode: Node? get() = passwordField
 
@@ -172,19 +173,19 @@ class LoginPane(private val resourced: Resources) : _StackPane(),
                 stackPane {
                     alignment = Pos.CENTER
                     passwordField = jfxPasswordField {
-                        promptText = getString(R.string.password)
+                        promptText = getString(R2.string.password)
                     }
                     textField = jfxTextField {
-                        promptText = getString(R.string.password)
+                        promptText = getString(R2.string.password)
                         isVisible = false
                         passwordField.textProperty().bindBidirectional(textProperty())
                     }
-                    if (BuildConfig.DEBUG) {
+                    if (BuildConfig2.DEBUG) {
                         passwordField.text = Employee.DEFAULT_PASSWORD
                     }
                 }
                 jfxToggleButton {
-                    text = getString(R.string.view)
+                    text = getString(R2.string.view)
                     passwordField.visibleProperty().bind(!selectedProperty())
                     textField.visibleProperty().bind(selectedProperty())
                     selectedProperty().listener {

@@ -39,8 +39,9 @@ class OpenPssApplication : Application(), Resources {
 
     override fun init() {
         resourceBundle = SettingsFile.language.toResourcesBundle()
+
         valueProperties = getProperties(R.value.properties_value)
-        if (BuildConfig.DEBUG) {
+        if (BuildConfig2.DEBUG) {
             BasicConfigurator.configure()
         }
     }
@@ -48,7 +49,7 @@ class OpenPssApplication : Application(), Resources {
     override fun start(stage: Stage) {
         stage.icon = Image(R.image.logo_small)
         stage.isResizable = false
-        stage.title = getString(R.string.openpss_login)
+        stage.title = getString(R2.string.openpss_login)
         stage.scene = scene {
             stylesheets += Stylesheets.OPENPSS
             LoginPane(this@OpenPssApplication).apply {

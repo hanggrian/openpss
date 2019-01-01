@@ -3,6 +3,7 @@ package com.hendraanggrian.openpss.ui.finance
 import com.hendraanggrian.openpss.PATTERN_DATE
 import com.hendraanggrian.openpss.PATTERN_TIME
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.control.DateBox
 import com.hendraanggrian.openpss.control.MonthBox
 import com.hendraanggrian.openpss.control.StretchableButton
@@ -79,14 +80,14 @@ class FinanceController : ActionController(), Refreshable {
     override fun NodeInvokable.onCreateActions() {
         refreshButton = StretchableButton(
             getDouble(R.value.stretch),
-            getString(R.string.refresh),
+            getString(R2.string.refresh),
             ImageView(R.image.act_refresh)
         ).apply {
             onAction { refresh() }
         }()
         viewTotalButton = StretchableButton(
             getDouble(R.value.stretch),
-            getString(R.string.total),
+            getString(R2.string.total),
             ImageView(R.image.act_money)
         ).apply {
             onAction { viewTotal() }

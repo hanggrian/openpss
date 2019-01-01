@@ -4,6 +4,7 @@ plugins {
     dokka()
     idea
     generating("buildconfig")
+    generating("r")
 }
 
 group = RELEASE_GROUP
@@ -38,9 +39,21 @@ tasks {
     }
 
     named<com.hendraanggrian.generating.buildconfig.BuildConfigTask>("generateBuildConfig") {
-        packageName = "$RELEASE_GROUP.internal"
-        className = "ClientBuildConfig"
+        className = "BuildConfig2"
+        appName = RELEASE_NAME
+        debug = RELEASE_DEBUG
         artifactId = RELEASE_ARTIFACT
+        email = "$RELEASE_USER@gmail.com"
+        website = RELEASE_WEBSITE
         field("USER", RELEASE_USER)
+        field("FULL_NAME", RELEASE_FULL_NAME)
+    }
+
+    named<com.hendraanggrian.generating.r.RTask>("generateR") {
+        className = "R2"
+        resourcesDirectory = projectDir.resolve("res")
+        configureProperties {
+            readResourceBundle = true
+        }
     }
 }

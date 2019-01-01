@@ -4,6 +4,7 @@ import com.hendraanggrian.openpss.PATTERN_DATE
 import com.hendraanggrian.openpss.PATTERN_DATETIME
 import com.hendraanggrian.openpss.PATTERN_TIME
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.control.UncollapsibleTreeItem
 import com.hendraanggrian.openpss.ifMacOS
 import com.hendraanggrian.openpss.io.WageDirectory
@@ -152,13 +153,13 @@ class WageRecordController : OpenPssController() {
 
     @FXML
     fun disableDailyIncome() =
-        DatePopOver(this, R.string.disable_daily_income).show(disableDailyIncomeButton) { date ->
+        DatePopOver(this, R2.string.disable_daily_income).show(disableDailyIncomeButton) { date ->
             val undoable = Undoable()
             records.filter { it.startProperty.value.toLocalDate() == date }
                 .forEach { record ->
                     val initial = record.dailyDisabledProperty.value
                     record.dailyDisabledProperty.set(!initial)
-                    if (undoable.name == null) undoable.name = "${getString(R.string.daily_disabled)} " +
+                    if (undoable.name == null) undoable.name = "${getString(R2.string.daily_disabled)} " +
                         record.startProperty.value.toString(PATTERN_DATE)
                     undoable.addAction { record.dailyDisabledProperty.set(initial) }
                 }
@@ -169,7 +170,7 @@ class WageRecordController : OpenPssController() {
     fun lockStart() =
         TimePopOver(
             this,
-            R.string.lock_start_time,
+            R2.string.lock_start_time,
             LocalTime.now().trimMinutes()
         ).show(lockStartButton) { time ->
             val undoable = Undoable()
@@ -183,7 +184,7 @@ class WageRecordController : OpenPssController() {
                                 PATTERN_DATETIME
                             )} -> " +
                                 time.toString(PATTERN_TIME)
-                            else -> getString(R.string.multiple_lock_start_time)
+                            else -> getString(R2.string.multiple_lock_start_time)
                         }
                         undoable.addAction { record.startProperty.set(initial) }
                     }
@@ -195,7 +196,7 @@ class WageRecordController : OpenPssController() {
     fun lockEnd() =
         TimePopOver(
             this,
-            R.string.lock_end_time,
+            R2.string.lock_end_time,
             LocalTime.now().trimMinutes()
         ).show(lockEndButton) { time ->
             val undoable = Undoable()
@@ -209,7 +210,7 @@ class WageRecordController : OpenPssController() {
                                 PATTERN_DATETIME
                             )} -> " +
                                 time.toString(PATTERN_TIME)
-                            else -> getString(R.string.multiple_lock_end_time)
+                            else -> getString(R2.string.multiple_lock_end_time)
                         }
                         undoable.addAction { record.endProperty.set(initial) }
                     }
@@ -235,8 +236,8 @@ class WageRecordController : OpenPssController() {
         togglePrintMode(false, Stylesheets.WAGE_RECORD)
         ImageIO.write(images.concatenate(), "png", WageFile())
         rootLayout.jfxIndefiniteSnackbar(
-            getString(R.string.componentshot_finished),
-            getString(R.string.open_folder)
+            getString(R2.string.componentshot_finished),
+            getString(R2.string.open_folder)
         ) {
             desktop?.open(WageDirectory)
         }

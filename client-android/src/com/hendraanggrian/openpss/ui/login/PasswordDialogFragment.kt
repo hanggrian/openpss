@@ -14,7 +14,7 @@ import androidx.appcompat.app.AlertDialog
 import com.hendraanggrian.bundler.Extra
 import com.hendraanggrian.bundler.bindExtras
 import com.hendraanggrian.bundler.extrasOf
-import com.hendraanggrian.openpss.BuildConfig
+import com.hendraanggrian.openpss.BuildConfig2
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.ui.OpenPssDialogFragment
 import com.hendraanggrian.openpss.ui.TextDialogFragment
@@ -56,7 +56,7 @@ class PasswordDialogFragment : OpenPssDialogFragment() {
                 val login = runCatching {
                     runBlocking { api.login(employee, editText.text) }
                 }.onFailure {
-                    if (BuildConfig.DEBUG) it.printStackTrace()
+                    if (BuildConfig2.DEBUG) it.printStackTrace()
                     TextDialogFragment()
                         .args(extrasOf<TextDialogFragment>(it.message.toString()))
                         .show(manager)

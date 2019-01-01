@@ -1,6 +1,7 @@
 package com.hendraanggrian.openpss.ui.employee
 
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.data.Employee
 import com.hendraanggrian.openpss.ui.FxComponent
 import com.hendraanggrian.openpss.ui.TableDialog
@@ -19,13 +20,13 @@ import ktfx.layouts.menuItem
 import ktfx.layouts.separatorMenuItem
 
 class EditEmployeeDialog(component: FxComponent) :
-    TableDialog<Employee>(component, R.string.employee, true) {
+    TableDialog<Employee>(component, R2.string.employee, true) {
 
     init {
-        getString(R.string.name)<String> {
+        getString(R2.string.name)<String> {
             stringCell { name }
         }
-        getString(R.string.admin)<Boolean> {
+        getString(R2.string.admin)<Boolean> {
             doneCell { isAdmin }
         }
         table.contextMenu {
@@ -34,8 +35,8 @@ class EditEmployeeDialog(component: FxComponent) :
                     when {
                         table.selectionModel.isSelected() -> getString(
                             when {
-                                table.selectionModel.selectedItem.isAdmin -> R.string.disable_admin_status
-                                else -> R.string.enable_admin_status
+                                table.selectionModel.selectedItem.isAdmin -> R2.string.disable_admin_status
+                                else -> R2.string.enable_admin_status
                             }
                         )
                         else -> null
@@ -60,7 +61,7 @@ class EditEmployeeDialog(component: FxComponent) :
                 }
             }
             separatorMenuItem()
-            (getString(R.string.reset_password)) {
+            (getString(R2.string.reset_password)) {
                 bindDisable()
                 onAction {
                     val selected = table.selectionModel.selectedItem
@@ -70,7 +71,7 @@ class EditEmployeeDialog(component: FxComponent) :
                     )
                     rootLayout.jfxSnackbar(
                         getString(
-                            R.string.change_password_popup_will_appear_when_is_logged_back_in,
+                            R2.string.change_password_popup_will_appear_when_is_logged_back_in,
                             login.name
                         ),
                         getLong(R.value.duration_long)
@@ -83,7 +84,7 @@ class EditEmployeeDialog(component: FxComponent) :
     override suspend fun CoroutineScope.refresh(): List<Employee> = api.getEmployees()
 
     override fun add() =
-        AddEmployeePopOver(this, R.string.add_employee, false).show(addButton) { name ->
+        AddEmployeePopOver(this, R2.string.add_employee, false).show(addButton) { name ->
             val added = api.addEmployee(Employee.new(name!!.clean()))
             table.items.add(added)
             table.selectionModel.select(added)

@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.ui.wage
 
 import com.hendraanggrian.openpss.PATTERN_TIME
-import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.data.Recess
 import com.hendraanggrian.openpss.ui.FxComponent
 import com.hendraanggrian.openpss.ui.TableDialog
@@ -9,13 +9,13 @@ import com.hendraanggrian.openpss.util.stringCell
 import kotlinx.coroutines.CoroutineScope
 import ktfx.collections.toMutableObservableList
 
-class EditRecessDialog(component: FxComponent) : TableDialog<Recess>(component, R.string.recess) {
+class EditRecessDialog(component: FxComponent) : TableDialog<Recess>(component, R2.string.recess) {
 
     init {
-        getString(R.string.start)<String> {
+        getString(R2.string.start)<String> {
             stringCell { start.toString(PATTERN_TIME) }
         }
-        getString(R.string.end)<String> {
+        getString(R2.string.end)<String> {
             stringCell { end.toString(PATTERN_TIME) }
         }
     }

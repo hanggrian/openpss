@@ -1,6 +1,7 @@
 package com.hendraanggrian.openpss.ui.customer
 
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.data.Customer
 import com.hendraanggrian.openpss.ui.FxComponent
 import com.hendraanggrian.openpss.ui.ResultableDialog
@@ -25,7 +26,7 @@ import ktfx.layouts.label
 class EditCustomerDialog(
     component: FxComponent,
     private val customer: Customer
-) : ResultableDialog<Customer>(component, R.string.edit_customer) {
+) : ResultableDialog<Customer>(component, R2.string.edit_customer) {
 
     private val unchangedProperty = boolean(true)
 
@@ -49,20 +50,20 @@ class EditCustomerDialog(
             description = label(
                 getString(
                     when {
-                        customer.isCompany -> R.string._company_requirement
-                        else -> R.string._person_requirement
+                        customer.isCompany -> R2.string._company_requirement
+                        else -> R2.string._person_requirement
                     }
                 )
             ) col 0 row 1 colSpans 2
-            label(getString(R.string.name)) col 0 row 2
+            label(getString(R2.string.name)) col 0 row 2
             nameField = jfxTextField(customer.name) { bindTextField() } col 1 row 2
-            label(getString(R.string.address)) col 0 row 3
+            label(getString(R2.string.address)) col 0 row 3
             addressField = jfxTextField(customer.address.orEmpty()) { bindTextField() } col 1 row 3
-            label(getString(R.string.note)) col 0 row 4
+            label(getString(R2.string.note)) col 0 row 4
             noteArea = jfxTextArea(customer.note.orEmpty()) { bindTextField() } col 1 row 4
         }
         defaultButton.run {
-            text = getString(R.string.edit)
+            text = getString(R2.string.edit)
             disableProperty().bind(
                 when {
                     customer.isCompany -> unchangedProperty

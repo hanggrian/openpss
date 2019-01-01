@@ -2,6 +2,7 @@ package com.hendraanggrian.openpss.ui.schedule
 
 import com.hendraanggrian.openpss.PATTERN_DATETIMEEXT
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.control.StretchableButton
 import com.hendraanggrian.openpss.control.UncollapsibleTreeItem
 import com.hendraanggrian.openpss.data.Invoice
@@ -45,14 +46,14 @@ class ScheduleController : ActionController(), Refreshable {
     override fun NodeInvokable.onCreateActions() {
         refreshButton = StretchableButton(
             getDouble(R.value.stretch),
-            getString(R.string.refresh),
+            getString(R2.string.refresh),
             ImageView(R.image.act_refresh)
         ).apply {
             onAction { refresh() }
         }()
         doneButton = StretchableButton(
             getDouble(R.value.stretch),
-            getString(R.string.done),
+            getString(R2.string.done),
             ImageView(R.image.act_done)
         ).apply {
             onAction {
@@ -68,7 +69,7 @@ class ScheduleController : ActionController(), Refreshable {
             minHeight = 50.0
             maxHeight = 50.0
             historyCheck = jfxToggleButton {
-                text = getString(R.string.history)
+                text = getString(R2.string.history)
                 selectedProperty().listener { refresh() }
                 doneButton.disableProperty()
                     .bind(scheduleTable.selectionModel.selectedItems.isEmptyBinding or selectedProperty())

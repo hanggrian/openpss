@@ -27,7 +27,7 @@ import ktfx.layouts.tooltip
 class AddPaymentPopOver(
     component: FxComponent,
     private val invoice: Invoice
-) : ResultablePopOver<Payment>(component, R.string.add_payment) {
+) : ResultablePopOver<Payment>(component, R2.string.add_payment) {
 
     private lateinit var valueField: DoubleField
     private lateinit var cashBox: CheckBox
@@ -37,31 +37,31 @@ class AddPaymentPopOver(
     init {
         gridPane {
             gap = getDouble(R.value.padding_medium)
-            label(getString(R.string.employee)) row 0 col 0
+            label(getString(R2.string.employee)) row 0 col 0
             label(login.name) {
                 styleClass += R.style.bold
             } row 0 col 1 colSpans 2
-            label(getString(R.string.receivable)) row 1 col 0
+            label(getString(R2.string.receivable)) row 1 col 0
             label(currencyConverter(receivable)) {
                 styleClass += R.style.bold
             } row 1 col 1 colSpans 2
-            label(getString(R.string.payment)) row 2 col 0
-            valueField = DoubleField().apply { promptText = getString(R.string.payment) }() row
+            label(getString(R2.string.payment)) row 2 col 0
+            valueField = DoubleField().apply { promptText = getString(R2.string.payment) }() row
                 2 col 1
             jfxButton(graphic = ImageView(R.image.btn_match_receivable)) {
                 styleClass += R.style.flat
-                tooltip(getString(R.string.match_receivable))
+                tooltip(getString(R2.string.match_receivable))
                 onAction {
                     valueField.value = receivable
                 }
             } row 2 col 2
-            label(getString(R.string.remaining)) row 3 col 0
+            label(getString(R2.string.remaining)) row 3 col 0
             label {
                 styleClass += R.style.bold
                 textProperty().bind(buildStringBinding(valueField.valueProperty()) {
                     (receivable - valueField.value).let { remaining ->
                         when {
-                            remaining <= 0.0 -> getString(R.string.paid)
+                            remaining <= 0.0 -> getString(R2.string.paid)
                             else -> currencyConverter(remaining)
                         }
                     }
@@ -75,9 +75,9 @@ class AddPaymentPopOver(
                     )
                 })
             } row 3 col 1 colSpans 2
-            label(getString(R.string.cash)) row 6 col 0
+            label(getString(R2.string.cash)) row 6 col 0
             cashBox = jfxCheckBox { isSelected = true } row 6 col 1 colSpans 2
-            label(getString(R.string.reference)) { bindDisable() } row 7 col 0
+            label(getString(R2.string.reference)) { bindDisable() } row 7 col 0
             referenceField = jfxTextField { bindDisable() } row 7 col 1 colSpans 2
         }
         defaultButton.disableProperty().bind(buildBooleanBinding(

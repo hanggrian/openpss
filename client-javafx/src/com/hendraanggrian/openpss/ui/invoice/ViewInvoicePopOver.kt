@@ -3,6 +3,7 @@ package com.hendraanggrian.openpss.ui.invoice
 import com.hendraanggrian.openpss.Language
 import com.hendraanggrian.openpss.PATTERN_DATETIMEEXT
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.control.Space
 import com.hendraanggrian.openpss.data.Customer
 import com.hendraanggrian.openpss.data.Employee
@@ -66,7 +67,7 @@ class ViewInvoicePopOver(
     component: FxComponent,
     private val invoice: Invoice,
     private val isTest: Boolean = false
-) : OpenPssPopOver(component, R.string.invoice) {
+) : OpenPssPopOver(component, R2.string.invoice) {
 
     private companion object {
         const val MM_WIDTH = 100.0
@@ -85,7 +86,7 @@ class ViewInvoicePopOver(
         .toResourcesBundle()
 
     init {
-        graphic = label("${getString(R.string.server_language)}: $language")
+        graphic = label("${getString(R2.string.server_language)}: $language")
         runBlocking {
             invoiceHeaders = api.getSetting(KEY_INVOICE_HEADERS).valueList
             employee = api.getEmployee(invoice.employeeId)
@@ -108,7 +109,7 @@ class ViewInvoicePopOver(
                 } hpriority ALWAYS
                 vbox {
                     alignment = CENTER_RIGHT
-                    label(getString(R.string.invoice)) {
+                    label(getString(R2.string.invoice)) {
                         updateFont(18)
                     }
                     label("# ${invoice.no}") {
@@ -143,7 +144,7 @@ class ViewInvoicePopOver(
                     }
                     var row = 0
                     if (invoice.offsetJobs.isNotEmpty()) {
-                        row += jobGridPane(row, R.string.offset, invoice.offsetJobs) { job, i ->
+                        row += jobGridPane(row, R2.string.offset, invoice.offsetJobs) { job, i ->
                             label(numberConverter(job.qty)) row i col 0
                             label("${job.type}\n${job.typedTechnique.toString(this@ViewInvoicePopOver)}") {
                                 textAlignment = TextAlignment.CENTER
@@ -155,9 +156,9 @@ class ViewInvoicePopOver(
                         }
                     }
                     if (invoice.digitalJobs.isNotEmpty()) {
-                        row += jobGridPane(row, R.string.digital, invoice.digitalJobs) { job, i ->
+                        row += jobGridPane(row, R2.string.digital, invoice.digitalJobs) { job, i ->
                             label(numberConverter(job.qty)) row i col 0
-                            label("${job.type}\n${getString(if (job.isTwoSide) R.string.two_side else R.string.one_side)}") {
+                            label("${job.type}\n${getString(if (job.isTwoSide) R2.string.two_side else R2.string.one_side)}") {
                                 textAlignment = TextAlignment.CENTER
                             } row i col 1
                             label(job.desc) {
@@ -167,7 +168,7 @@ class ViewInvoicePopOver(
                         }
                     }
                     if (invoice.plateJobs.isNotEmpty()) {
-                        row += jobGridPane(row, R.string.plate, invoice.plateJobs) { job, i ->
+                        row += jobGridPane(row, R2.string.plate, invoice.plateJobs) { job, i ->
                             label(numberConverter(job.qty)) row i col 0
                             label(job.type) row i col 1
                             label(job.desc) {
@@ -177,7 +178,7 @@ class ViewInvoicePopOver(
                         }
                     }
                     if (invoice.otherJobs.isNotEmpty()) {
-                        row += jobGridPane(row, R.string.others, invoice.otherJobs) { job, i ->
+                        row += jobGridPane(row, R2.string.others, invoice.otherJobs) { job, i ->
                             label(numberConverter(job.qty)) row i col 0
                             label(job.desc) {
                                 isWrapText = true
@@ -193,7 +194,7 @@ class ViewInvoicePopOver(
                 textFlow {
                     paddingAll = getDouble(R.value.padding_small)
                     border = SOLID.toBorder()
-                    "${getString(R.string.note)}\n" {
+                    "${getString(R2.string.note)}\n" {
                         styleClass += R.style.bold
                     }
                     invoice.note()
@@ -205,18 +206,18 @@ class ViewInvoicePopOver(
                     alignment = CENTER
                     region { prefHeight = 48.0 }
                     line(endX = 64.0)
-                    label(getString(R.string.employee))
+                    label(getString(R2.string.employee))
                 } row 1 col 1
                 vbox {
                     alignment = CENTER
                     region { prefHeight = 48.0 }
                     line(endX = 64.0)
-                    label(getString(R.string.customer))
+                    label(getString(R2.string.customer))
                 } row 1 col 2
             }
         }
         buttonInvokable.run {
-            button(getString(R.string.print)) {
+            button(getString(R2.string.print)) {
                 isDefaultButton = true
                 runLater { isDisable = invoice.isPrinted }
                 onAction {
@@ -241,7 +242,7 @@ class ViewInvoicePopOver(
                     // disable auto-hide when print dialog is showing
                     isAutoHide = false
                     val job = printer.createJob {
-                        jobName = "${getString(R.string.invoice)} #${invoice.no}"
+                        jobName = "${getString(R2.string.invoice)} #${invoice.no}"
                         setPageRanges(PageRange(1, 1))
                         pageLayout = layout
                     }

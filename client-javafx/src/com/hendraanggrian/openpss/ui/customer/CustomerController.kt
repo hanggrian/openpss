@@ -2,6 +2,7 @@ package com.hendraanggrian.openpss.ui.customer
 
 import com.hendraanggrian.openpss.PATTERN_DATE
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.control.PaginatedPane
 import com.hendraanggrian.openpss.control.StretchableButton
 import com.hendraanggrian.openpss.data.Customer
@@ -68,29 +69,29 @@ class CustomerController : ActionController(), Refreshable {
     override fun NodeInvokable.onCreateActions() {
         refreshButton = StretchableButton(
             getDouble(R.value.stretch),
-            getString(R.string.refresh),
+            getString(R2.string.refresh),
             ImageView(R.image.act_refresh)
         ).apply {
             onAction { refresh() }
         }()
         addButton = StretchableButton(
             getDouble(R.value.stretch),
-            getString(R.string.add),
+            getString(R2.string.add),
             ImageView(R.image.act_add)
         ).apply {
             onAction { add() }
         }()
         searchField = jfxTextField {
-            promptText = getString(R.string.search)
+            promptText = getString(R2.string.search)
         }
     }
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
-        sinceImage.tooltip(getString(R.string.since))
-        addressImage.tooltip(getString(R.string.address))
-        noteImage.tooltip(getString(R.string.note))
-        contactImage.tooltip(getString(R.string.contact))
+        sinceImage.tooltip(getString(R2.string.since))
+        addressImage.tooltip(getString(R2.string.address))
+        noteImage.tooltip(getString(R2.string.note))
+        contactImage.tooltip(getString(R2.string.contact))
         typeColumn.stringCell { typedType.toString(this@CustomerController) }
         valueColumn.stringCell { value }
     }
@@ -102,7 +103,7 @@ class CustomerController : ActionController(), Refreshable {
                     styleClass += R.style.list_view_no_scrollbar_vertical
                     runLater {
                         contextMenu {
-                            getString(R.string.edit)(ImageView(R.image.menu_edit)) {
+                            getString(R2.string.edit)(ImageView(R.image.menu_edit)) {
                                 disableProperty().bind(selectionModel.selectedItemProperty().isNull)
                                 onAction { edit() }
                             }
@@ -156,10 +157,7 @@ class CustomerController : ActionController(), Refreshable {
     }
 
     @FXML
-    fun deleteContact() = ConfirmDialog(
-        this,
-        R.string.delete_contact
-    ).show {
+    fun deleteContact() = ConfirmDialog(this, R2.string.delete_contact).show {
         withPermission {
             api.deleteContact(
                 login,

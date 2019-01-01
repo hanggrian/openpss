@@ -1,6 +1,6 @@
 package com.hendraanggrian.openpss.ui.invoice.job
 
-import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.control.DoubleField
 import com.hendraanggrian.openpss.data.DigitalPrice
 import com.hendraanggrian.openpss.data.Invoice
@@ -21,7 +21,7 @@ import ktfx.layouts._GridPane
 import ktfx.layouts.label
 
 class AddDigitalJobPopOver(component: FxComponent) :
-    AddJobPopOver<Invoice.DigitalJob>(component, R.string.add_digital_job), Invoice.Job {
+    AddJobPopOver<Invoice.DigitalJob>(component, R2.string.add_digital_job), Invoice.Job {
 
     private lateinit var typeChoice: ComboBox<DigitalPrice>
     private lateinit var twoSideCheck: CheckBox
@@ -29,7 +29,7 @@ class AddDigitalJobPopOver(component: FxComponent) :
     private lateinit var twoSidePriceField: DoubleField
 
     override fun _GridPane.onCreateContent() {
-        label(getString(R.string.type)) col 0 row currentRow
+        label(getString(R2.string.type)) col 0 row currentRow
         typeChoice = jfxComboBox(runBlocking { api.getDigitalPrices() }.toObservableList()) {
             valueProperty().listener { _, _, job ->
                 oneSidePriceField.value = job.oneSidePrice
@@ -37,17 +37,17 @@ class AddDigitalJobPopOver(component: FxComponent) :
             }
         } col 1 colSpans 2 row currentRow
         currentRow++
-        label(getString(R.string.two_side)) col 0 row currentRow
+        label(getString(R2.string.two_side)) col 0 row currentRow
         twoSideCheck = jfxCheckBox() col 1 colSpans 2 row currentRow
         currentRow++
-        label(getString(R.string.one_side_price)) col 0 row currentRow
+        label(getString(R2.string.one_side_price)) col 0 row currentRow
         oneSidePriceField = DoubleField().apply {
-            promptText = getString(R.string.one_side_price)
+            promptText = getString(R2.string.one_side_price)
         }() col 1 colSpans 2 row currentRow
         currentRow++
-        label(getString(R.string.two_side_price)) col 0 row currentRow
+        label(getString(R2.string.two_side_price)) col 0 row currentRow
         twoSidePriceField = DoubleField().apply {
-            promptText = getString(R.string.two_side_price)
+            promptText = getString(R2.string.two_side_price)
         }() col 1 colSpans 2 row currentRow
         currentRow++
     }

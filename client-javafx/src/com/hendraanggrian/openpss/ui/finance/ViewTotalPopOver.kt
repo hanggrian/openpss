@@ -1,6 +1,7 @@
 package com.hendraanggrian.openpss.ui.finance
 
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.ui.FxComponent
 import com.hendraanggrian.openpss.ui.OpenPssPopOver
 import javafx.geometry.HPos
@@ -13,7 +14,7 @@ class ViewTotalPopOver(
     component: FxComponent,
     private val cash: Double,
     private val nonCash: Double
-) : OpenPssPopOver(component, R.string.view_total) {
+) : OpenPssPopOver(component, R2.string.view_total) {
 
     init {
         gridPane {
@@ -23,11 +24,11 @@ class ViewTotalPopOver(
             }
             vgap = 20.0
             hgap = 40.0
-            label(getString(R.string.cash)) col 0 row 0
+            label(getString(R2.string.cash)) col 0 row 0
             label(currencyConverter(cash)) col 1 row 0
-            label(getString(R.string.non_cash)) col 0 row 1
+            label(getString(R2.string.non_cash)) col 0 row 1
             label(currencyConverter(nonCash)) col 1 row 1
-            label(getString(R.string.total)) {
+            label(getString(R2.string.total)) {
                 styleClass += R.style.bold
             } col 0 row 2
             label(currencyConverter(cash + nonCash)) {

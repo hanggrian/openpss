@@ -23,7 +23,7 @@ class OpenPssApplication : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        if (BuildConfig.DEBUG) {
+        if (BuildConfig2.DEBUG) {
             Bundler.setDebug(true)
         }
 

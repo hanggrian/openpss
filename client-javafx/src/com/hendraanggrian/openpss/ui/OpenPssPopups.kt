@@ -1,6 +1,7 @@
 package com.hendraanggrian.openpss.ui
 
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.control.Toolbar
 import com.jfoenix.controls.JFXButton
 import javafx.beans.property.ObjectProperty
@@ -70,7 +71,7 @@ interface OpenPssPopup : FxComponent, NodeInvokable {
                     bottom = getDouble(R.value.padding_large)
                 )
                 buttonInvokable = this
-                cancelButton = jfxButton(getString(R.string.close)) {
+                cancelButton = jfxButton(getString(R2.string.close)) {
                     styleClass += R.style.flat
                     isCancelButton = true
                     onAction {

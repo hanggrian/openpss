@@ -1,6 +1,6 @@
 package com.hendraanggrian.openpss.ui.price
 
-import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.data.PlatePrice
 import com.hendraanggrian.openpss.ui.FxComponent
 import javafx.beans.value.ObservableValue
@@ -12,10 +12,10 @@ import ktfx.listeners.textFieldCellFactory
 @Suppress("UNCHECKED_CAST")
 class EditPlatePriceDialog(
     component: FxComponent
-) : EditPriceDialog<PlatePrice>(component, R.string.plate_price) {
+) : EditPriceDialog<PlatePrice>(component, R2.string.plate_price) {
 
     init {
-        getString(R.string.price)<Double> {
+        getString(R2.string.price)<Double> {
             minWidth = 128.0
             style = "-fx-alignment: center-right;"
             setCellValueFactory { finalDouble(it.value.price) as ObservableValue<Double> }
@@ -31,7 +31,9 @@ class EditPlatePriceDialog(
 
     override suspend fun CoroutineScope.refresh(): List<PlatePrice> = api.getPlatePrices()
 
-    override suspend fun CoroutineScope.add(name: String): PlatePrice? = api.addPlatePrice(PlatePrice.new(name))
+    override suspend fun CoroutineScope.add(name: String): PlatePrice? =
+        api.addPlatePrice(PlatePrice.new(name))
 
-    override suspend fun CoroutineScope.delete(selected: PlatePrice): Boolean = api.deletePlatePrice(selected.id)
+    override suspend fun CoroutineScope.delete(selected: PlatePrice): Boolean =
+        api.deletePlatePrice(selected.id)
 }

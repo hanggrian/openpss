@@ -38,6 +38,11 @@ android {
             proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
         }
     }
+    applicationVariants.all {
+        generateBuildConfigProvider?.configure {
+            enabled = false
+        }
+    }
     lintOptions {
         isAbortOnError = false
         isCheckTestSources = true

@@ -1,6 +1,7 @@
 package com.hendraanggrian.openpss.ui.customer
 
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.data.Customer
 import com.hendraanggrian.openpss.ui.FxComponent
 import com.hendraanggrian.openpss.ui.ResultableDialog
@@ -25,7 +26,7 @@ import ktfx.layouts.label
 import ktfx.layouts.tab
 
 class AddCustomerDialog(component: FxComponent) :
-    ResultableDialog<Customer>(component, R.string.add_customer) {
+    ResultableDialog<Customer>(component, R2.string.add_customer) {
 
     private companion object {
         const val WIDTH = 300.0
@@ -51,14 +52,14 @@ class AddCustomerDialog(component: FxComponent) :
         }
         label {
             styleClass += R.style.bold
-            bindText(R.string.person, R.string.company)
+            bindText(R2.string.person, R2.string.company)
         }
         label {
-            bindText(R.string._person_requirement, R.string._company_requirement)
+            bindText(R2.string._person_requirement, R2.string._company_requirement)
             isWrapText = true
         }
         editor = jfxTextField {
-            promptText = getString(R.string.name)
+            promptText = getString(R2.string.name)
         }
         defaultButton.disableProperty().bind(
             When(tabPane.selectionModel.selectedIndexProperty() eq 0)

@@ -3,7 +3,6 @@ plugins {
     dokka()
     idea
     generating("r")
-    generating("buildconfig")
     shadow
     application
     packr
@@ -16,7 +15,12 @@ application.mainClassName = "$group.OpenPssApplication"
 
 sourceSets {
     getByName("main") {
-        java.srcDir("src")
+        val dirs = mutableListOf("src")
+        if (rootDir.resolve("client/build/generated").exists()) {
+            dirs += "build/generated/buildconfig/src/main"
+            dirs += "build/generated/r/src/main"
+        }
+        java.srcDirs(*dirs.toTypedArray())
         resources.srcDir("res")
     }
     getByName("test") {
@@ -60,25 +64,10 @@ tasks {
     named<com.hendraanggrian.generating.r.RTask>("generateR") {
         resourcesDirectory = projectDir.resolve("res")
         exclude("font", "license")
-        css {
+        configureCss {
             isJavaFx = true
         }
-        properties {
-            readResourceBundle = true
-        }
     }
-
-    val buildConfigTask =
-        named<com.hendraanggrian.generating.buildconfig.BuildConfigTask>("generateBuildConfig") {
-            appName = "$RELEASE_NAME Desktop"
-            debug = RELEASE_DEBUG
-            artifactId = RELEASE_ARTIFACT
-            email = "$RELEASE_USER@gmail.com"
-            website = RELEASE_WEBSITE
-
-            field("USER", RELEASE_USER)
-            field("FULL_NAME", RELEASE_FULL_NAME)
-        }.get()
 
     packr {
         mainClass = application.mainClassName
@@ -87,13 +76,13 @@ tasks {
         resources("$projectDir/res")
         vmArgs("Xmx2G")
         macOS {
-            name = "${buildConfigTask.appName}.app"
+            name = "$RELEASE_NAME Desktop.app"
             icon = "${rootProject.projectDir}/art/$RELEASE_NAME.icns"
             bundleId = RELEASE_GROUP
         }
         windows64 {
             jdk = "/Users/hendraanggrian/Desktop/jdk1.8.0_181"
-            name = buildConfigTask.appName
+            name = "$RELEASE_NAME Desktop"
         }
         verbose = true
         openOnDone = true

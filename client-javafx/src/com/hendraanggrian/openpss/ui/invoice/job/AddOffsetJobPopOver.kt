@@ -1,6 +1,6 @@
 package com.hendraanggrian.openpss.ui.invoice.job
 
-import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.control.DoubleField
 import com.hendraanggrian.openpss.control.IntField
 import com.hendraanggrian.openpss.data.Invoice
@@ -23,7 +23,7 @@ import ktfx.layouts.label
 import ktfx.listeners.converter
 
 class AddOffsetJobPopOver(component: FxComponent) :
-    AddJobPopOver<Invoice.OffsetJob>(component, R.string.add_offset_job), Invoice.Job {
+    AddJobPopOver<Invoice.OffsetJob>(component, R2.string.add_offset_job), Invoice.Job {
 
     private lateinit var typeChoice: ComboBox<OffsetPrice>
     private lateinit var techniqueChoice: ComboBox<Technique>
@@ -32,7 +32,7 @@ class AddOffsetJobPopOver(component: FxComponent) :
     private lateinit var excessPriceField: DoubleField
 
     override fun _GridPane.onCreateContent() {
-        label(getString(R.string.type)) col 0 row currentRow
+        label(getString(R2.string.type)) col 0 row currentRow
         typeChoice = jfxComboBox(runBlocking { api.getOffsetPrices() }.toObservableList()) {
             valueProperty().listener { _, _, job ->
                 minQtyField.value = job.minQty
@@ -41,24 +41,24 @@ class AddOffsetJobPopOver(component: FxComponent) :
             }
         } col 1 colSpans 2 row currentRow
         currentRow++
-        label(getString(R.string.technique)) col 0 row currentRow
+        label(getString(R2.string.technique)) col 0 row currentRow
         techniqueChoice = jfxComboBox(Technique.values().toObservableList()) {
             converter { toString { it!!.toString(this@AddOffsetJobPopOver) } }
             selectionModel.selectFirst()
         } col 1 colSpans 2 row currentRow
         currentRow++
-        label(getString(R.string.min_qty)) col 0 row currentRow
-        minQtyField = IntField().apply { promptText = getString(R.string.min_qty) }() col 1 colSpans
+        label(getString(R2.string.min_qty)) col 0 row currentRow
+        minQtyField = IntField().apply { promptText = getString(R2.string.min_qty) }() col 1 colSpans
             2 row currentRow
         currentRow++
-        label(getString(R.string.min_price)) col 0 row currentRow
-        minPriceField = DoubleField().apply { promptText = getString(R.string.min_price) }() col
+        label(getString(R2.string.min_price)) col 0 row currentRow
+        minPriceField = DoubleField().apply { promptText = getString(R2.string.min_price) }() col
             1 colSpans 2 row
             currentRow
         currentRow++
-        label(getString(R.string.excess_price)) col 0 row currentRow
+        label(getString(R2.string.excess_price)) col 0 row currentRow
         excessPriceField = DoubleField().apply {
-            promptText = getString(R.string.excess_price)
+            promptText = getString(R2.string.excess_price)
         }() col 1 colSpans 2 row currentRow
     }
 

@@ -2,6 +2,7 @@ package com.hendraanggrian.openpss.ui
 
 import com.hendraanggrian.openpss.Language
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.api.GitHubApi
 import com.hendraanggrian.openpss.api.OpenPssApi
 import com.hendraanggrian.openpss.data.Employee
@@ -96,7 +97,7 @@ interface FxComponent : Resources, Component<StackPane> {
             else -> PermissionDialog(this@FxComponent).show { admin ->
                 when (admin) {
                     null -> rootLayout.jfxSnackbar(
-                        getString(R.string.invalid_password),
+                        getString(R2.string.invalid_password),
                         getLong(R.value.duration_short)
                     )
                     else -> GlobalScope.launch(context) { action() }
@@ -106,7 +107,7 @@ interface FxComponent : Resources, Component<StackPane> {
     }
 
     private class PermissionDialog(component: FxComponent) :
-        ResultableDialog<Employee>(component, R.string.permission_required) {
+        ResultableDialog<Employee>(component, R2.string.permission_required) {
 
         private lateinit var adminCombo: ComboBox<Employee>
         private lateinit var passwordField: PasswordField
@@ -117,18 +118,18 @@ interface FxComponent : Resources, Component<StackPane> {
             gridPane {
                 gap = getDouble(R.value.padding_medium)
                 label {
-                    text = getString(R.string._permission_required)
+                    text = getString(R2.string._permission_required)
                 } col 0 row 0 colSpans 2
-                label(getString(R.string.admin)) col 0 row 1
+                label(getString(R2.string.admin)) col 0 row 1
                 adminCombo = jfxComboBox(runBlocking { api.getEmployees() }
                     .filter { it.isAdmin && it.name != Employee.BACKDOOR.name }
                     .toObservableList()
                 ) {
-                    promptText = getString(R.string.admin)
+                    promptText = getString(R2.string.admin)
                 } col 1 row 1
-                label(getString(R.string.password)) col 0 row 2
+                label(getString(R2.string.password)) col 0 row 2
                 passwordField = jfxPasswordField {
-                    promptText = getString(R.string.password)
+                    promptText = getString(R2.string.password)
                 } col 1 row 2
             }
             defaultButton.disableProperty().bind(

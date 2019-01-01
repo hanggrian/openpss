@@ -44,7 +44,7 @@ dependencies {
 tasks {
     named<com.hendraanggrian.generating.r.RTask>("generateR") {
         resourcesDirectory = projectDir.resolve("res")
-        properties {
+        configureProperties {
             readResourceBundle = true
         }
     }

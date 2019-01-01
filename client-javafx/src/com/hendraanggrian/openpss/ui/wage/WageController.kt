@@ -1,7 +1,8 @@
 package com.hendraanggrian.openpss.ui.wage
 
-import com.hendraanggrian.openpss.BuildConfig
+import com.hendraanggrian.openpss.BuildConfig2
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.control.StretchableButton
 import com.hendraanggrian.openpss.io.ReaderFile
 import com.hendraanggrian.openpss.io.WageDirectory
@@ -65,28 +66,28 @@ class WageController : ActionController() {
     override fun NodeInvokable.onCreateActions() {
         browseButton = StretchableButton(
             getDouble(R.value.stretch),
-            getString(R.string.browse),
+            getString(R2.string.browse),
             ImageView(R.image.act_browse)
         ).apply {
             onAction { browse() }
         }()
         saveWageButton = StretchableButton(
             getDouble(R.value.stretch),
-            getString(R.string.save_wage),
+            getString(R2.string.save_wage),
             ImageView(R.image.act_save)
         ).apply {
             disableProperty().bind(flowPane.children.isEmptyBinding)
             onAction {
                 saveWage()
                 rootLayout.jfxSnackbar(
-                    getString(R.string.wage_saved),
+                    getString(R2.string.wage_saved),
                     getLong(R.value.duration_short)
                 )
             }
         }()
         historyButton = StretchableButton(
             getDouble(R.value.stretch),
-            getString(R.string.history),
+            getString(R2.string.history),
             ImageView(R.image.act_history)
         ).apply {
             onAction { history() }
@@ -98,12 +99,12 @@ class WageController : ActionController() {
         titleProperty().bind(buildStringBinding(flowPane.children) {
             when {
                 flowPane.children.isEmpty() -> null
-                else -> "${flowPane.children.size} ${getString(R.string.employee)}"
+                else -> "${flowPane.children.size} ${getString(R2.string.employee)}"
             }
         })
         titleLabel.textProperty().bind(buildStringBinding(flowPane.children) {
             when {
-                flowPane.children.isEmpty() -> getString(R.string._wage_record_empty)
+                flowPane.children.isEmpty() -> getString(R2.string._wage_record_empty)
                 else -> filePath
             }
         })
@@ -111,7 +112,7 @@ class WageController : ActionController() {
         bindProcessButton()
         runLater {
             flowPane.prefWrapLengthProperty().bind(flowPane.scene.widthProperty())
-            if (BuildConfig.DEBUG) {
+            if (BuildConfig2.DEBUG) {
                 val file = File("/Users/hendraanggrian/Downloads/Absen 4-13-18.xlsx")
                 if (file.exists()) {
                     read(file)
@@ -124,7 +125,7 @@ class WageController : ActionController() {
     fun disableRecess() = DisableRecessPopOver(this, attendeePanes).show(disableRecessButton)
 
     @FXML
-    fun process() = stage(getString(R.string.wage_record)) {
+    fun process() = stage(getString(R2.string.wage_record)) {
         val loader = FXMLLoader(getResource(R.layout.controller_wage_record), resourceBundle)
         scene = scene {
             loader.pane()
@@ -142,7 +143,7 @@ class WageController : ActionController() {
         runBlocking {
             withPermission {
                 anchorPane.scene.window.chooseFile(
-                    getString(R.string.input_file) to WageReader.of(ReaderFile.WAGE_READER).extension
+                    getString(R2.string.input_file) to WageReader.of(ReaderFile.WAGE_READER).extension
                 )?.let { read(it) }
             }
         }
@@ -200,8 +201,8 @@ class WageController : ActionController() {
                 }
             }
         }.onFailure {
-            if (BuildConfig.DEBUG) it.printStackTrace()
-            TextDialog(this@WageController, R.string.reading_failed, it.message.toString()).show()
+            if (BuildConfig2.DEBUG) it.printStackTrace()
+            TextDialog(this@WageController, R2.string.reading_failed, it.message.toString()).show()
             onFinish()
         }
     }

@@ -1,7 +1,8 @@
 package com.hendraanggrian.openpss.ui.main.help
 
-import com.hendraanggrian.openpss.BuildConfig
+import com.hendraanggrian.openpss.BuildConfig2
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.ui.FxComponent
 import com.hendraanggrian.openpss.ui.Stylesheets
 import com.hendraanggrian.openpss.ui.main.License
@@ -59,7 +60,7 @@ class AboutDialog(component: FxComponent) : Dialog<Unit>(), FxComponent by compo
 
     init {
         icon = Image(R.image.menu_about)
-        title = getString(R.string.about)
+        title = getString(R2.string.about)
         dialogPane.run {
             stylesheets += Stylesheets.OPENPSS
             content = hbox {
@@ -68,28 +69,28 @@ class AboutDialog(component: FxComponent) : Dialog<Unit>(), FxComponent by compo
                 vbox {
                     alignment = Pos.CENTER_LEFT
                     textFlow {
-                        "${BuildConfig.FULL_NAME.substringBefore(' ')} " {
+                        "${BuildConfig2.FULL_NAME.substringBefore(' ')} " {
                             styleClass.addAll(R.style.bold, R.style.display2)
                         }
-                        (BuildConfig.FULL_NAME.substringAfter(' ')) {
+                        (BuildConfig2.FULL_NAME.substringAfter(' ')) {
                             styleClass.addAll(R.style.light, R.style.display2)
                         }
                     }
-                    text("${getString(R.string.version)} ${BuildConfig.VERSION}") {
+                    text("${getString(R2.string.version)} ${BuildConfig2.VERSION}") {
                         updateFont(12)
                     } marginTop 2
-                    text(getString(R.string.built_with_open_source_software_expand_to_see_licenses)) marginTop 20
+                    text(getString(R2.string.built_with_open_source_software_expand_to_see_licenses)) marginTop 20
                     textFlow {
-                        "${getString(R.string.powered_by)} " {
+                        "${getString(R2.string.powered_by)} " {
                             updateFont(12)
                         }
                         "JavaFX" { styleClass += R.style.bold }
                     } marginTop 4
                     textFlow {
-                        "${getString(R.string.author)} " {
+                        "${getString(R2.string.author)} " {
                             updateFont(12)
                         }
-                        BuildConfig.USER {
+                        BuildConfig2.USER {
                             styleClass += R.style.bold
                         }
                     } marginTop 4
@@ -98,11 +99,11 @@ class AboutDialog(component: FxComponent) : Dialog<Unit>(), FxComponent by compo
                         jfxButton("GitHub") {
                             styleClass += R.style.raised
                             buttonType = JFXButton.ButtonType.RAISED
-                            onAction { desktop?.browse(URI(BuildConfig.WEBSITE)) }
+                            onAction { desktop?.browse(URI(BuildConfig2.WEBSITE)) }
                         }
                         jfxButton("Email") {
                             styleClass += R.style.flat
-                            onAction { desktop?.mail(URI("mailto:${BuildConfig.EMAIL}")) }
+                            onAction { desktop?.mail(URI("mailto:${BuildConfig2.EMAIL}")) }
                         }
                     } marginTop 20
                 } marginLeft 48
@@ -125,12 +126,12 @@ class AboutDialog(component: FxComponent) : Dialog<Unit>(), FxComponent by compo
         runLater {
             dialogPane.run {
                 val detailsButton = find<Hyperlink>(".details-button")
-                detailsButton.text = getString(R.string._open_source_license_show)
+                detailsButton.text = getString(R2.string._open_source_license_show)
                 expandedProperty().listener { _, _, isExpanded ->
                     detailsButton.text = getString(
                         when {
-                            isExpanded -> R.string._open_source_license_hide
-                            else -> R.string._open_source_license_show
+                            isExpanded -> R2.string._open_source_license_hide
+                            else -> R2.string._open_source_license_show
                         }
                     )
                 }

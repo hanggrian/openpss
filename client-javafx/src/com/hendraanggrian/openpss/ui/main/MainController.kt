@@ -1,9 +1,10 @@
 package com.hendraanggrian.openpss.ui.main
 
-import com.hendraanggrian.openpss.BuildConfig
+import com.hendraanggrian.openpss.BuildConfig2
 import com.hendraanggrian.openpss.OpenPssApplication
 import com.hendraanggrian.openpss.PATTERN_DATETIME
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.control.MarginedImageView
 import com.hendraanggrian.openpss.control.PaginatedPane
 import com.hendraanggrian.openpss.control.Toolbar
@@ -125,7 +126,7 @@ class MainController : OpenPssController(), Refreshable {
             titleLabel.scene.stage.titleProperty().bind(buildStringBinding(
                 drawerList.selectionModel.selectedIndexProperty()
             ) {
-                "${BuildConfig.NAME} - ${drawerList.selectionModel.selectedItem?.text}"
+                "${BuildConfig2.NAME} - ${drawerList.selectionModel.selectedItem?.text}"
             })
         }
         titleLabel.textProperty().bind(buildStringBinding(
@@ -169,7 +170,7 @@ class MainController : OpenPssController(), Refreshable {
                 ChangePasswordDialog(this).show { newPassword ->
                     api.editEmployee(login.apply { password = newPassword!! }, login.name)
                     rootLayout.jfxSnackbar(
-                        getString(R.string.successfully_changed_password),
+                        getString(R2.string.successfully_changed_password),
                         getLong(R.value.duration_long)
                     )
                 }
@@ -276,7 +277,7 @@ class MainController : OpenPssController(), Refreshable {
                 ), true
             ).show(menuBar)
         } ?: rootLayout.jfxSnackbar(
-            getString(R.string.no_customer_to_test),
+            getString(R2.string.no_customer_to_test),
             getLong(R.value.duration_short)
         )
     }

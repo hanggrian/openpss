@@ -2,6 +2,7 @@ package com.hendraanggrian.openpss.ui.invoice
 
 import com.hendraanggrian.openpss.PATTERN_DATETIMEEXT
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.control.DateBox
 import com.hendraanggrian.openpss.control.IntField
 import com.hendraanggrian.openpss.control.PaginatedPane
@@ -79,41 +80,41 @@ class InvoiceController : ActionController(), Refreshable {
     override fun NodeInvokable.onCreateActions() {
         refreshButton = StretchableButton(
             getDouble(R.value.stretch),
-            getString(R.string.refresh),
+            getString(R2.string.refresh),
             ImageView(R.image.act_refresh)
         ).apply {
             onAction { refresh() }
         }()
         addButton = StretchableButton(
             getDouble(R.value.stretch),
-            getString(R.string.add),
+            getString(R2.string.add),
             ImageView(R.image.act_add)
         ).apply {
             onAction { addInvoice() }
         }()
         clearFiltersButton = StretchableButton(
             getDouble(R.value.stretch),
-            getString(R.string.clear_filters),
+            getString(R2.string.clear_filters),
             ImageView(R.image.act_clear_filters)
         ).apply {
             onAction { clearFilters() }
         }()
         searchField = IntField().apply {
             filterBox.disableProperty().bind(valueProperty() neq 0)
-            promptText = getString(R.string.search_no)
+            promptText = getString(R2.string.search_no)
         }()
     }
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
         paymentCombo.run {
-            items = listOf(R.string.paid_and_unpaid, R.string.paid, R.string.unpaid)
+            items = listOf(R2.string.paid_and_unpaid, R2.string.paid, R2.string.unpaid)
                 .map { getString(it) }
                 .toObservableList()
             selectionModel.selectFirst()
         }
         customerField.textProperty().bind(buildStringBinding(customerProperty) {
-            customerProperty.value?.toString() ?: getString(R.string.search_customer)
+            customerProperty.value?.toString() ?: getString(R2.string.search_customer)
         })
         dateBox.disableProperty().bind(!pickDateRadio.selectedProperty())
         clearFiltersButton.disableProperty().bind(
@@ -138,20 +139,20 @@ class InvoiceController : ActionController(), Refreshable {
                     invoiceTable = ktfx.layouts.tableView {
                         columnResizePolicy = CONSTRAINED_RESIZE_POLICY
                         columns {
-                            getString(R.string.id)<String> { stringCell { no.toString() } }
-                            getString(R.string.date)<String> {
+                            getString(R2.string.id)<String> { stringCell { no.toString() } }
+                            getString(R2.string.date)<String> {
                                 stringCell { dateTime.toString(PATTERN_DATETIMEEXT) }
                             }
-                            getString(R.string.employee)<String> {
+                            getString(R2.string.employee)<String> {
                                 stringCell { runBlocking { api.getEmployee(employeeId).name } }
                             }
-                            getString(R.string.customer)<String> {
+                            getString(R2.string.customer)<String> {
                                 stringCell { runBlocking { api.getCustomer(customerId).name } }
                             }
-                            getString(R.string.total)<String> { currencyCell(this@InvoiceController) { total } }
-                            getString(R.string.print)<Boolean> { doneCell { isPrinted } }
-                            getString(R.string.paid)<Boolean> { doneCell { isPaid } }
-                            getString(R.string.done)<Boolean> { doneCell { isDone } }
+                            getString(R2.string.total)<String> { currencyCell(this@InvoiceController) { total } }
+                            getString(R2.string.print)<Boolean> { doneCell { isPrinted } }
+                            getString(R2.string.paid)<Boolean> { doneCell { isPaid } }
+                            getString(R2.string.done)<Boolean> { doneCell { isDone } }
                         }
                         onMouseClicked {
                             if (it.isDoubleClick() && invoiceTable.selectionModel.isSelected()) {
@@ -167,7 +168,7 @@ class InvoiceController : ActionController(), Refreshable {
                     detailNode = ktfx.layouts.vbox {
                         Toolbar().apply {
                             leftItems {
-                                label(getString(R.string.payment)) {
+                                label(getString(R2.string.payment)) {
                                     styleClass.addAll("bold", "accent")
                                 }
                             }
@@ -175,23 +176,23 @@ class InvoiceController : ActionController(), Refreshable {
                         paymentTable = tableView {
                             columnResizePolicy = TableView.CONSTRAINED_RESIZE_POLICY
                             columns {
-                                getString(R.string.date)<String> {
+                                getString(R2.string.date)<String> {
                                     stringCell { dateTime.toString(PATTERN_DATETIMEEXT) }
                                 }
-                                getString(R.string.employee)<String> {
+                                getString(R2.string.employee)<String> {
                                     stringCell {
                                         runBlocking {
                                             api.getEmployee(employeeId).name
                                         }
                                     }
                                 }
-                                getString(R.string.value)<String> {
+                                getString(R2.string.value)<String> {
                                     currencyCell(this@InvoiceController) { value }
                                 }
-                                getString(R.string.cash)<Boolean> {
+                                getString(R2.string.cash)<Boolean> {
                                     doneCell { isCash() }
                                 }
-                                getString(R.string.reference)<String> {
+                                getString(R2.string.reference)<String> {
                                     stringCell { reference }
                                 }
                             }
@@ -205,11 +206,11 @@ class InvoiceController : ActionController(), Refreshable {
                                 }
                             })
                             contextMenu {
-                                getString(R.string.add)(ImageView(R.image.menu_add)) {
+                                getString(R2.string.add)(ImageView(R.image.menu_add)) {
                                     disableProperty().bind(invoiceTable.selectionModel.selectedItemProperty().isNull)
                                     onAction { addPayment() }
                                 }
-                                getString(R.string.delete)(ImageView(R.image.menu_delete)) {
+                                getString(R2.string.delete)(ImageView(R.image.menu_delete)) {
                                     disableProperty().bind(!this@tableView.selectionModel.selectedItemProperty().isNotNull)
                                     onAction { deletePayment() }
                                 }
@@ -222,8 +223,8 @@ class InvoiceController : ActionController(), Refreshable {
                             searchField.value,
                             customerProperty.value?.name,
                             when (paymentCombo.value) {
-                                getString(R.string.paid) -> true
-                                getString(R.string.unpaid) -> false
+                                getString(R2.string.paid) -> true
+                                getString(R2.string.unpaid) -> false
                                 else -> null
                             },
                             null,
@@ -239,13 +240,13 @@ class InvoiceController : ActionController(), Refreshable {
                     invoiceTable.items = invoices.toMutableObservableList()
                     runLater {
                         invoiceTable.contextMenu {
-                            getString(R.string.view)(ImageView(R.image.menu_invoice)) {
+                            getString(R2.string.view)(ImageView(R.image.menu_invoice)) {
                                 runLater {
                                     disableProperty().bind(invoiceTable.selectionModel.selectedItemProperty().isNull)
                                 }
                                 onAction { viewInvoice() }
                             }
-                            getString(R.string.done)(ImageView(R.image.menu_done)) {
+                            getString(R2.string.done)(ImageView(R.image.menu_done)) {
                                 runLater {
                                     disableProperty().bind(buildBinding(invoiceTable.selectionModel.selectedItemProperty()) {
                                         when {
@@ -265,7 +266,7 @@ class InvoiceController : ActionController(), Refreshable {
                                 }
                             }
                             separatorMenuItem()
-                            getString(R.string.delete)(ImageView(R.image.menu_delete)) {
+                            getString(R2.string.delete)(ImageView(R.image.menu_delete)) {
                                 disableProperty().bind(invoiceTable.selectionModel.selectedItemProperty().isNull)
                                 onAction {
                                     withPermission {
@@ -325,7 +326,7 @@ class InvoiceController : ActionController(), Refreshable {
                 updatePaymentStatus()
                 reload(invoiceTable.selectionModel.selectedItem)
                 rootLayout.jfxSnackbar(
-                    getString(R.string.payment_deleted),
+                    getString(R2.string.payment_deleted),
                     getLong(R.value.duration_short)
                 )
             }

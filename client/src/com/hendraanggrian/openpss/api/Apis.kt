@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.api
 
+import com.hendraanggrian.openpss.BuildConfig2
 import com.hendraanggrian.openpss.data.Release
-import com.hendraanggrian.openpss.internal.ClientBuildConfig
 import com.hendraanggrian.openpss.registerJodaTimeSerializers
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.okhttp.OkHttp
@@ -56,7 +56,7 @@ interface Api {
 class GitHubApi : OkHttpApi("https://api.github.com") {
 
     suspend fun getLatestRelease(): Release = client.get {
-        apiUrl("repos/${ClientBuildConfig.USER}/${ClientBuildConfig.ARTIFACT}/releases/latest")
+        apiUrl("repos/${BuildConfig2.USER}/${BuildConfig2.ARTIFACT}/releases/latest")
     }
 }
 

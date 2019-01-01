@@ -3,7 +3,7 @@ package com.hendraanggrian.openpss.ui.login
 import android.os.Bundle
 import androidx.preference.EditTextPreference
 import androidx.preference.Preference
-import com.hendraanggrian.openpss.BuildConfig
+import com.hendraanggrian.openpss.BuildConfig2
 import com.hendraanggrian.openpss.R
 import com.takisoft.preferencex.PreferenceFragmentCompat
 
@@ -14,7 +14,7 @@ class LoginFragment : PreferenceFragmentCompat() {
         find<EditTextPreference>("server_address").bindSummary({ text })
         find<EditTextPreference>("employee").bindSummary({ text })
         find<Preference>("about") {
-            title = "OpenPSS ${BuildConfig.VERSION_NAME}"
+            title = "OpenPSS ${BuildConfig2.NAME}"
             summary = "Tap to visit"
             setOnPreferenceClickListener {
                 true

@@ -1,6 +1,7 @@
 package com.hendraanggrian.openpss.ui.customer
 
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.data.Customer
 import com.hendraanggrian.openpss.schema.ContactType
 import com.hendraanggrian.openpss.schema.new
@@ -20,7 +21,7 @@ import ktfx.listeners.converter
 import org.apache.commons.validator.routines.EmailValidator
 
 class AddContactPopOver(component: FxComponent) :
-    ResultablePopOver<Customer.Contact>(component, R.string.add_contact) {
+    ResultablePopOver<Customer.Contact>(component, R2.string.add_contact) {
 
     private companion object {
 
@@ -40,15 +41,15 @@ class AddContactPopOver(component: FxComponent) :
     init {
         gridPane {
             gap = getDouble(R.value.padding_medium)
-            label(getString(R.string.type)) col 0 row 0
+            label(getString(R2.string.type)) col 0 row 0
             typeChoice = jfxComboBox(ContactType.values().toObservableList()) {
                 converter { toString { it!!.toString(this@AddContactPopOver) } }
             } col 1 row 0
-            label(getString(R.string.contact)) col 0 row 1
-            contactField = jfxTextField { promptText = getString(R.string.contact) } col 1 row 1
+            label(getString(R2.string.contact)) col 0 row 1
+            contactField = jfxTextField { promptText = getString(R2.string.contact) } col 1 row 1
         }
         defaultButton.run {
-            text = getString(R.string.add)
+            text = getString(R2.string.add)
             disableProperty().bind(
                 buildBooleanBinding(
                     typeChoice.valueProperty(),

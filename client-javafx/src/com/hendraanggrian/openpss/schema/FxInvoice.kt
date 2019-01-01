@@ -1,13 +1,13 @@
 package com.hendraanggrian.openpss.schema
 
-import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.data.Invoice
 import com.hendraanggrian.openpss.enumValueOfId
 import com.hendraanggrian.openpss.id
 import com.hendraanggrian.openpss.ui.Resources
 
 fun Invoice.Companion.no(resources: Resources, no: Number?): String? =
-    no?.let { "${resources.getString(R.string.invoice)} #$it" }
+    no?.let { "${resources.getString(R2.string.invoice)} #$it" }
 
 fun Invoice.OffsetJob.Companion.new(
     qty: Int,
@@ -21,12 +21,12 @@ inline val Invoice.OffsetJob.typedTechnique: Technique get() = enumValueOfId(tec
 
 enum class Technique : Resources.Enum {
     ONE_SIDE {
-        override val resourceId: String = R.string.one_side
+        override val resourceId: String = R2.string.one_side
     },
     TWO_SIDE_EQUAL {
-        override val resourceId: String = R.string.two_side_equal
+        override val resourceId: String = R2.string.two_side_equal
     },
     TWO_SIDE_DISTINCT {
-        override val resourceId: String = R.string.two_side_distinct
+        override val resourceId: String = R2.string.two_side_distinct
     }
 }

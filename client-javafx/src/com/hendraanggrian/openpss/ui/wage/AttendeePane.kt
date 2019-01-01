@@ -2,6 +2,7 @@ package com.hendraanggrian.openpss.ui.wage
 
 import com.hendraanggrian.openpss.PATTERN_DATETIMEEXT
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.control.IntField
 import com.hendraanggrian.openpss.ui.DateTimePopOver
 import com.hendraanggrian.openpss.ui.FxComponent
@@ -72,28 +73,28 @@ class AttendeePane(
                 gap = getDouble(R.value.padding_small)
                 paddingAll = getDouble(R.value.padding_medium)
                 attendee.role?.let { role ->
-                    label(getString(R.string.role)) col 0 row 0 marginRight 4
+                    label(getString(R2.string.role)) col 0 row 0 marginRight 4
                     label(role) col 1 row 0 colSpans 2
                 }
-                label(getString(R.string.income)) col 0 row 1 marginRight 4
+                label(getString(R2.string.income)) col 0 row 1 marginRight 4
                 IntField().apply {
                     prefWidth = 80.0
-                    promptText = getString(R.string.income)
+                    promptText = getString(R2.string.income)
                     valueProperty().bindBidirectional(attendee.dailyProperty)
                 }() col 1 row 1
-                label("@${getString(R.string.day)}") {
+                label("@${getString(R2.string.day)}") {
                     updateFont(10)
                 } col 2 row 1
-                label(getString(R.string.overtime)) col 0 row 2 marginRight 4
+                label(getString(R2.string.overtime)) col 0 row 2 marginRight 4
                 IntField().apply {
                     prefWidth = 80.0
-                    promptText = getString(R.string.overtime)
+                    promptText = getString(R2.string.overtime)
                     valueProperty().bindBidirectional(attendee.hourlyOvertimeProperty)
                 }() col 1 row 2
-                label("@${getString(R.string.hour)}") {
+                label("@${getString(R2.string.hour)}") {
                     updateFont(10)
                 } col 2 row 2
-                label(getString(R.string.recess)) col 0 row 3 marginRight 4
+                label(getString(R2.string.recess)) col 0 row 3 marginRight 4
                 vbox {
                     runBlocking { api.getRecesses() }.forEach { recess ->
                         recessChecks += jfxCheckBox(recess.toString()) {
@@ -159,30 +160,30 @@ class AttendeePane(
             }
         }
         contextMenu {
-            getString(R.string.add)(ImageView(R.image.menu_add)) {
+            getString(R2.string.add)(ImageView(R.image.menu_add)) {
                 onAction { addAttendance() }
             }
             separatorMenuItem()
-            getString(R.string.copy)(ImageView(R.image.menu_copy)) {
+            getString(R2.string.copy)(ImageView(R.image.menu_copy)) {
                 disableProperty().bind(attendanceList.selectionModel.selectedItemProperty().isNull)
                 onAction { copyAttendance() }
             }
-            getString(R.string.edit)(ImageView(R.image.menu_edit)) {
+            getString(R2.string.edit)(ImageView(R.image.menu_edit)) {
                 disableProperty().bind(!attendanceList.selectionModel.selectedItemProperty().isNull)
                 onAction { editAttendance() }
             }
-            getString(R.string.delete)(ImageView(R.image.menu_delete)) {
+            getString(R2.string.delete)(ImageView(R.image.menu_delete)) {
                 disableProperty().bind(!attendanceList.selectionModel.selectedItemProperty().isNull)
                 onAction { attendanceList.items.remove(attendanceList.selectionModel.selectedItem) }
             }
             separatorMenuItem()
-            getString(R.string.revert)(ImageView(R.image.menu_undo)) {
+            getString(R2.string.revert)(ImageView(R.image.menu_undo)) {
                 onAction { attendee.attendances.revert() }
             }
             separatorMenuItem()
-            deleteMenu = "${getString(R.string.delete)} ${attendee.name}"()
-            deleteOthersMenu = getString(R.string.delete_others)()
-            deleteToTheRightMenu = getString(R.string.delete_employees_to_the_right)()
+            deleteMenu = "${getString(R2.string.delete)} ${attendee.name}"()
+            deleteOthersMenu = getString(R2.string.delete_others)()
+            deleteToTheRightMenu = getString(R2.string.delete_employees_to_the_right)()
         }
         contentDisplay = ContentDisplay.RIGHT
         graphic = ktfx.layouts.imageView {
@@ -210,8 +211,8 @@ class AttendeePane(
 
     private fun addAttendance() = DateTimePopOver(
         this,
-        R.string.add_record,
-        R.string.add,
+        R2.string.add_record,
+        R2.string.add,
         now().trimMinutes()
     ).show(attendanceList) {
         attendanceList.run {
@@ -222,8 +223,8 @@ class AttendeePane(
 
     private fun copyAttendance() = DateTimePopOver(
         this,
-        R.string.add_record,
-        R.string.add,
+        R2.string.add_record,
+        R2.string.add,
         attendanceList.selectionModel.selectedItem.trimMinutes()
     ).show(attendanceList) {
         attendanceList.run {
@@ -234,8 +235,8 @@ class AttendeePane(
 
     private fun editAttendance() = DateTimePopOver(
         this,
-        R.string.edit_record,
-        R.string.edit,
+        R2.string.edit_record,
+        R2.string.edit,
         attendanceList.selectionModel.selectedItem
     ).show(attendanceList) {
         attendanceList.run {

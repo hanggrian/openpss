@@ -1,6 +1,7 @@
 package com.hendraanggrian.openpss.ui.invoice.job
 
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.control.DoubleField
 import com.hendraanggrian.openpss.control.IntField
 import com.hendraanggrian.openpss.data.Invoice
@@ -42,19 +43,19 @@ abstract class AddJobPopOver<T : Invoice.Job>(component: FxComponent, titleId: S
     init {
         gridPane {
             gap = getDouble(R.value.padding_medium)
-            label(getString(R.string.qty)) col 0 row currentRow
-            qtyField = IntField().apply { promptText = getString(R.string.qty) }() col 1 colSpans
+            label(getString(R2.string.qty)) col 0 row currentRow
+            qtyField = IntField().apply { promptText = getString(R2.string.qty) }() col 1 colSpans
                 2 row currentRow
             currentRow++
-            label(getString(R.string.description)) col 0 row currentRow
-            titleField = jfxTextField { promptText = getString(R.string.description) } col
+            label(getString(R2.string.description)) col 0 row currentRow
+            titleField = jfxTextField { promptText = getString(R2.string.description) } col
                 1 colSpans 2 row currentRow
             currentRow++
             onCreateContent()
             currentRow++
-            label(getString(R.string.total)) col 0 row currentRow
+            label(getString(R2.string.total)) col 0 row currentRow
             totalField = DoubleField().apply { bindTotal() }() col 1 row currentRow
-            customizeCheck = jfxCheckBox(getString(R.string.customize)) {
+            customizeCheck = jfxCheckBox(getString(R2.string.customize)) {
                 totalField.disableProperty().bind(!selectedProperty())
                 selectedProperty().listener { _, _, selected ->
                     when {
@@ -69,7 +70,7 @@ abstract class AddJobPopOver<T : Invoice.Job>(component: FxComponent, titleId: S
             } col 2 row currentRow
         }
         defaultButton.run {
-            text = getString(R.string.add)
+            text = getString(R2.string.add)
             disableProperty().bind(defaultButtonDisableBinding)
         }
     }

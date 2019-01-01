@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.ui.wage.record
 
 import com.hendraanggrian.openpss.PATTERN_DATETIME
-import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.ui.Resources
 import com.hendraanggrian.openpss.ui.wage.Attendee
 import com.hendraanggrian.openpss.ui.wage.IntervalWrapper
@@ -142,9 +142,9 @@ class Record(
         get() = SimpleStringProperty().apply {
             bind(buildStringBinding(endProperty, dailyDisabledProperty) {
                 when {
-                    isNode() -> "${attendee.attendances.size / 2} ${getString(R.string.day)}"
+                    isNode() -> "${attendee.attendances.size / 2} ${getString(R2.string.day)}"
                     isChild() -> end!!.toString(PATTERN_DATETIME).let { if (isDailyDisabled) "($it)" else it }
-                    isTotal() -> getString(R.string.total)
+                    isTotal() -> getString(R2.string.total)
                     else -> throw UnsupportedOperationException()
                 }
             })

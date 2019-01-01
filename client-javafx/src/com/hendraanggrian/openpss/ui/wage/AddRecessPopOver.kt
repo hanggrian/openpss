@@ -1,6 +1,7 @@
 package com.hendraanggrian.openpss.ui.wage
 
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.control.TimeBox
 import com.hendraanggrian.openpss.ui.FxComponent
 import com.hendraanggrian.openpss.ui.ResultablePopOver
@@ -13,7 +14,7 @@ import org.joda.time.LocalTime
 
 class AddRecessPopOver(
     component: FxComponent
-) : ResultablePopOver<Pair<LocalTime, LocalTime>>(component, R.string.add_reccess) {
+) : ResultablePopOver<Pair<LocalTime, LocalTime>>(component, R2.string.add_reccess) {
 
     private lateinit var startBox: TimeBox
     private lateinit var endBox: TimeBox
@@ -23,9 +24,9 @@ class AddRecessPopOver(
     init {
         gridPane {
             gap = getDouble(R.value.padding_medium)
-            label(getString(R.string.start)) col 0 row 0
+            label(getString(R2.string.start)) col 0 row 0
             startBox = TimeBox()() col 1 row 0
-            label(getString(R.string.end)) col 0 row 1
+            label(getString(R2.string.end)) col 0 row 1
             endBox = TimeBox()() col 1 row 1
         }
         defaultButton.disableProperty()

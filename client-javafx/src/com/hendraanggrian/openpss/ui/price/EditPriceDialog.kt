@@ -1,6 +1,6 @@
 package com.hendraanggrian.openpss.ui.price
 
-import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.nosql.NamedDocument
 import com.hendraanggrian.openpss.ui.FxComponent
 import com.hendraanggrian.openpss.ui.InputPopOver
@@ -13,7 +13,7 @@ abstract class EditPriceDialog<D : NamedDocument<*>>(component: FxComponent, hea
 
     init {
         @Suppress("LeakingThis")
-        getString(R.string.name)<String> {
+        getString(R2.string.name)<String> {
             minWidth = 96.0
             stringCell { name }
         }
@@ -21,9 +21,9 @@ abstract class EditPriceDialog<D : NamedDocument<*>>(component: FxComponent, hea
 
     override fun add() = InputPopOver(
         this, when (this) {
-            is EditPlatePriceDialog -> R.string.add_plate_price
-            is EditOffsetPriceDialog -> R.string.add_offset_price
-            else -> R.string.add_digital_price
+            is EditPlatePriceDialog -> R2.string.add_plate_price
+            is EditOffsetPriceDialog -> R2.string.add_offset_price
+            else -> R2.string.add_digital_price
         }
     ).show(addButton) { name ->
         val add = add(name!!)

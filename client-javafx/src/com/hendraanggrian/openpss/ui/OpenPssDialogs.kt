@@ -1,6 +1,7 @@
 package com.hendraanggrian.openpss.ui
 
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.nosql.Document
 import com.jfoenix.controls.JFXDialog
 import javafx.beans.property.ObjectProperty
@@ -112,12 +113,12 @@ class TextDialog(
 class ConfirmDialog(
     component: FxComponent,
     textId: String? = null
-) : ResultableDialog<Unit>(component, R.string.are_you_sure) {
+) : ResultableDialog<Unit>(component, R2.string.are_you_sure) {
 
     init {
         textId?.let { label(getString(it)) }
-        cancelButton.text = getString(R.string.no)
-        defaultButton.text = getString(R.string.yes)
+        cancelButton.text = getString(R2.string.no)
+        defaultButton.text = getString(R2.string.yes)
     }
 }
 
@@ -141,15 +142,15 @@ abstract class TableDialog<D : Document<*>>(
             hbox(getDouble(R.value.padding_medium)) {
                 alignment = Pos.CENTER_RIGHT
                 refreshButton = jfxButton(graphic = ImageView(R.image.act_refresh)) {
-                    tooltip(getString(R.string.refresh))
+                    tooltip(getString(R2.string.refresh))
                     onAction { refresh() }
                 }
                 addButton = jfxButton(graphic = ImageView(R.image.act_add)) {
-                    tooltip(getString(R.string.add))
+                    tooltip(getString(R2.string.add))
                     onAction { add() }
                 }
                 deleteButton = jfxButton(graphic = ImageView(R.image.act_delete)) {
-                    tooltip(getString(R.string.delete))
+                    tooltip(getString(R2.string.delete))
                     onAction {
                         val action = {
                             ConfirmDialog(this@TableDialog).show {

@@ -1,6 +1,6 @@
 package com.hendraanggrian.openpss.ui.invoice.job
 
-import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.control.DoubleField
 import com.hendraanggrian.openpss.data.Invoice
 import com.hendraanggrian.openpss.data.PlatePrice
@@ -19,23 +19,23 @@ import ktfx.layouts._GridPane
 import ktfx.layouts.label
 
 class AddPlateJobPopOver(component: FxComponent) :
-    AddJobPopOver<Invoice.PlateJob>(component, R.string.add_plate_job),
+    AddJobPopOver<Invoice.PlateJob>(component, R2.string.add_plate_job),
     Invoice.Job {
 
     private lateinit var typeChoice: ComboBox<PlatePrice>
     private lateinit var priceField: DoubleField
 
     override fun _GridPane.onCreateContent() {
-        label(getString(R.string.type)) col 0 row currentRow
+        label(getString(R2.string.type)) col 0 row currentRow
         typeChoice = jfxComboBox(runBlocking { api.getPlatePrices() }.toObservableList()) {
             valueProperty().listener { _, _, job ->
                 priceField.value = job.price
             }
         } col 1 colSpans 2 row currentRow
         currentRow++
-        label(getString(R.string.price)) col 0 row currentRow
-        priceField = DoubleField().apply { promptText = getString(R.string.price) }() col 1 colSpans
-            2 row currentRow
+        label(getString(R2.string.price)) col 0 row currentRow
+        priceField = DoubleField().apply { promptText = getString(R2.string.price) }() col
+            1 colSpans 2 row currentRow
     }
 
     override val totalBindingDependencies: Array<Observable>

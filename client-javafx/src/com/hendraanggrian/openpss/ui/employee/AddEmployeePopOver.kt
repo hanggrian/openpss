@@ -1,6 +1,6 @@
 package com.hendraanggrian.openpss.ui.employee
 
-import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.ui.FxComponent
 import com.hendraanggrian.openpss.ui.InputPopOver
 import com.hendraanggrian.openpss.util.clean
@@ -18,10 +18,10 @@ class AddEmployeePopOver(
     init {
         if (restrictiveInput) {
             editor.registerPredicateValidator<String>(
-                getString(R.string.name_doesnt_start_with_uppercase_letter_add_anyway),
+                getString(R2.string.name_doesnt_start_with_uppercase_letter_add_anyway),
                 Severity.WARNING,
                 false
-            ) { _ ->
+            ) {
                 editor.text.split(' ')
                     .none { s -> s.firstOrNull().let { it == null || it.isLowerCase() } }
             }

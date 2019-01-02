@@ -1,6 +1,6 @@
 package com.hendraanggrian.openpss.ui.main.help
 
-import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.data.Asset
 import com.hendraanggrian.openpss.ui.FxComponent
 import com.hendraanggrian.openpss.ui.ResultableDialog
@@ -12,7 +12,7 @@ import ktfx.jfoenix.jfxListView
 class UpdateDialog(
     component: FxComponent,
     assets: List<Asset>
-) : ResultableDialog<String>(component, R.string.download) {
+) : ResultableDialog<String>(component, R2.string.download) {
 
     private val listView: ListView<Asset>
 

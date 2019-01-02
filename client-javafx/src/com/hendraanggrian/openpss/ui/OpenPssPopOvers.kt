@@ -1,6 +1,7 @@
 package com.hendraanggrian.openpss.ui
 
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.control.DateBox
 import com.hendraanggrian.openpss.control.TimeBox
 import com.hendraanggrian.openpss.ui.wage.record.Record
@@ -84,7 +85,7 @@ open class InputPopOver(component: FxComponent, titleId: String) :
 
     init {
         defaultButton.run {
-            text = getString(R.string.add)
+            text = getString(R2.string.add)
             disableProperty().bind(defaultDisableBinding)
             editor.onActionProperty()
                 .bind(buildBinding(disableProperty()) { if (isDisable) null else onAction })

@@ -1,6 +1,7 @@
 package com.hendraanggrian.openpss.ui.invoice
 
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.control.DoubleField
 import com.hendraanggrian.openpss.data.Invoice
 import com.hendraanggrian.openpss.data.Payment

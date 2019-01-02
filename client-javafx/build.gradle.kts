@@ -15,10 +15,12 @@ application.mainClassName = "$group.OpenPssApplication"
 
 sourceSets {
     getByName("main") {
+        // manual import client generated build
         val dirs = mutableListOf("src")
-        if (rootDir.resolve("client/build/generated").exists()) {
-            dirs += "build/generated/buildconfig/src/main"
-            dirs += "build/generated/r/src/main"
+        val clientGeneratedDirs = "client/build/generated"
+        if (rootDir.resolve(clientGeneratedDirs).exists()) {
+            dirs += "../$clientGeneratedDirs/buildconfig/src/main"
+            dirs += "../$clientGeneratedDirs/r/src/main"
         }
         java.srcDirs(*dirs.toTypedArray())
         resources.srcDir("res")

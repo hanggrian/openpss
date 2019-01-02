@@ -99,7 +99,7 @@ interface ResultablePopup<T> : OpenPssPopup {
     override fun initialize() {
         super.initialize()
         buttonInvokable.run {
-            defaultButton = jfxButton(getString(R.string.ok)) {
+            defaultButton = jfxButton(getString(R2.string.ok)) {
                 isDefaultButton = true
                 styleClass += R.style.raised
                 buttonType = JFXButton.ButtonType.RAISED

@@ -1,7 +1,9 @@
 package com.hendraanggrian.openpss
 
 import com.google.gson.GsonBuilder
+import com.hendraanggrian.openpss.data.Setting
 import com.hendraanggrian.openpss.nosql.startConnection
+import com.hendraanggrian.openpss.nosql.transaction
 import com.hendraanggrian.openpss.routing.AuthRouting
 import com.hendraanggrian.openpss.routing.CustomerRouting
 import com.hendraanggrian.openpss.routing.DateTimeRouting
@@ -41,6 +43,7 @@ import io.ktor.util.error
 import io.ktor.websocket.WebSockets
 import org.omg.CosNaming.NamingContextPackage.NotFound
 import org.slf4j.Logger
+import java.util.ResourceBundle
 
 private lateinit var log: Logger
 
@@ -120,3 +123,8 @@ fun main(args: Array<String>) {
     log.info("For more information, visit ${BuildConfig.WEBSITE}")
     logger?.info("Debug mode is activated, server activities will be logged here.")
 }
+
+val resources: ResourceBundle
+    get() = Language.ofFullCode(transaction {
+        findGlobalSetting(Setting.KEY_LANGUAGE).value
+    }).toResourcesBundle()

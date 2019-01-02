@@ -18,7 +18,7 @@ import io.ktor.routing.post
 import io.ktor.routing.route
 import kotlinx.nosql.equal
 
-object PaymentRouting : OpenPssRouting({
+object PaymentsRouting : OpenPssRouting({
     route(Payments.schemaName) {
         get {
             call.respond(transaction {

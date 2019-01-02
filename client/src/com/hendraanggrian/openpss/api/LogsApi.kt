@@ -5,7 +5,7 @@ import com.hendraanggrian.openpss.data.Page
 import com.hendraanggrian.openpss.schema.Logs
 import io.ktor.client.request.get
 
-interface LogApi : Api {
+interface LogsApi : Api {
 
     suspend fun getLogs(page: Int, count: Int): Page<Log> = client.get {
         apiUrl(Logs.schemaName)

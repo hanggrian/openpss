@@ -1,22 +1,22 @@
 package com.hendraanggrian.openpss
 
 import com.google.gson.GsonBuilder
-import com.hendraanggrian.openpss.data.Setting
+import com.hendraanggrian.openpss.data.GlobalSetting
 import com.hendraanggrian.openpss.nosql.startConnection
 import com.hendraanggrian.openpss.nosql.transaction
 import com.hendraanggrian.openpss.routing.AuthRouting
-import com.hendraanggrian.openpss.routing.CustomerRouting
+import com.hendraanggrian.openpss.routing.CustomersRouting
 import com.hendraanggrian.openpss.routing.DateTimeRouting
 import com.hendraanggrian.openpss.routing.DigitalPriceRouting
 import com.hendraanggrian.openpss.routing.EmployeeRouting
-import com.hendraanggrian.openpss.routing.InvoiceRouting
-import com.hendraanggrian.openpss.routing.LogRouting
+import com.hendraanggrian.openpss.routing.GlobalSettingsRouting
+import com.hendraanggrian.openpss.routing.InvoicesRouting
+import com.hendraanggrian.openpss.routing.LogsRouting
 import com.hendraanggrian.openpss.routing.OffsetPriceRouting
-import com.hendraanggrian.openpss.routing.PaymentRouting
+import com.hendraanggrian.openpss.routing.PaymentsRouting
 import com.hendraanggrian.openpss.routing.PlatePriceRouting
-import com.hendraanggrian.openpss.routing.RecessRouting
-import com.hendraanggrian.openpss.routing.SettingRouting
-import com.hendraanggrian.openpss.routing.WageRouting
+import com.hendraanggrian.openpss.routing.RecessesRouting
+import com.hendraanggrian.openpss.routing.WagesRouting
 import com.hendraanggrian.openpss.routing.route
 import io.ktor.application.call
 import io.ktor.application.install
@@ -104,18 +104,18 @@ fun main(args: Array<String>) {
             }
             routing {
                 route(AuthRouting)
-                route(CustomerRouting)
+                route(CustomersRouting)
                 route(DateTimeRouting)
-                route(InvoiceRouting)
-                route(LogRouting)
+                route(GlobalSettingsRouting)
+                route(InvoicesRouting)
+                route(LogsRouting)
                 route(PlatePriceRouting)
                 route(OffsetPriceRouting)
                 route(DigitalPriceRouting)
                 route(EmployeeRouting)
-                route(PaymentRouting)
-                route(RecessRouting)
-                route(SettingRouting)
-                route(WageRouting)
+                route(PaymentsRouting)
+                route(RecessesRouting)
+                route(WagesRouting)
             }
         }
     }).start(wait = true).application.log
@@ -126,5 +126,5 @@ fun main(args: Array<String>) {
 
 val resources: ResourceBundle
     get() = Language.ofFullCode(transaction {
-        findGlobalSetting(Setting.KEY_LANGUAGE).value
+        findGlobalSetting(GlobalSetting.KEY_LANGUAGE).value
     }).toResourcesBundle()

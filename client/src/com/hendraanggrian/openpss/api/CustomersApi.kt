@@ -9,7 +9,7 @@ import io.ktor.client.request.post
 import io.ktor.http.HttpMethod
 import kotlinx.nosql.Id
 
-interface CustomerApi : Api {
+interface CustomersApi : Api {
 
     suspend fun getCustomers(search: CharSequence, page: Int, count: Int): Page<Customer> = client.get {
         apiUrl(Customers.schemaName)

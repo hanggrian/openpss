@@ -8,7 +8,7 @@ import io.ktor.http.HttpMethod
 import kotlinx.nosql.Id
 import org.joda.time.LocalTime
 
-interface RecessApi : Api {
+interface RecessesApi : Api {
 
     suspend fun getRecesses(): List<Recess> = client.get {
         apiUrl(Recesses.schemaName)

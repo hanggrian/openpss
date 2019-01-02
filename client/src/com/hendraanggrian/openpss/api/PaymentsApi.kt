@@ -9,7 +9,7 @@ import io.ktor.client.request.post
 import io.ktor.http.HttpMethod
 import kotlinx.nosql.Id
 
-interface PaymentApi : Api {
+interface PaymentsApi : Api {
 
     suspend fun getPayments(dateTime: Any): List<Payment> = client.get {
         apiUrl(Payments.schemaName)

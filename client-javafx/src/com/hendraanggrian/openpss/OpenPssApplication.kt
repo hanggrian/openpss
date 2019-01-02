@@ -19,7 +19,7 @@ import org.apache.log4j.BasicConfigurator
 import java.util.Properties
 import java.util.ResourceBundle
 
-class OpenPssApplication : Application(), Resources2 {
+class OpenPssApplication : Application(), StringResources, ValueResources {
 
     companion object {
 

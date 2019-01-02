@@ -23,7 +23,7 @@ import kotlinx.nosql.equal
 import kotlinx.nosql.update
 import kotlin.math.ceil
 
-object InvoiceRouting : OpenPssRouting({
+object InvoicesRouting : OpenPssRouting({
     route(Invoices.schemaName) {
         get {
             val search = call.getInt("search")

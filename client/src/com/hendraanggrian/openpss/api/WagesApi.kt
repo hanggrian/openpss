@@ -6,7 +6,7 @@ import io.ktor.client.request.get
 import io.ktor.client.request.post
 import io.ktor.http.HttpMethod
 
-interface WageApi : Api {
+interface WagesApi : Api {
 
     suspend fun getWages(): List<Wage> = client.get {
         apiUrl(Wages.schemaName)

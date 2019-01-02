@@ -63,15 +63,15 @@ class GitHubApi : OkHttpApi("https://api.github.com") {
 /** Main API. */
 class OpenPssApi(host: String = "localhost", port: Int = 8080) : OkHttpApi("http://$host:$port"),
     AuthApi,
-    CustomerApi,
+    CustomersApi,
     DateTimeApi,
-    InvoiceApi,
-    LogApi,
+    GlobalSettingsApi,
+    InvoicesApi,
+    LogsApi,
     NamedApi,
-    PaymentApi,
-    RecessApi,
-    SettingApi,
-    WageApi
+    PaymentsApi,
+    RecessesApi,
+    WagesApi
 
 /** Base class of REST APIs, where client is Android and Java-friendly OkHttp. */
 sealed class OkHttpApi(final override val endPoint: String) : Api {

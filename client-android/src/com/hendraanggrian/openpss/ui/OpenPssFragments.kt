@@ -12,6 +12,7 @@ import com.hendraanggrian.bundler.bindExtras
 import com.hendraanggrian.openpss.AndroidComponent
 import com.hendraanggrian.openpss.api.OpenPssApi
 import com.hendraanggrian.openpss.data.Employee
+import java.util.ResourceBundle
 
 open class OpenPssFragment : Fragment(), AndroidComponent {
 
@@ -21,17 +22,20 @@ open class OpenPssFragment : Fragment(), AndroidComponent {
 
     override val login: Employee get() = openPssActivity.login
 
+    override val resourceBundle: ResourceBundle get() = openPssActivity.resourceBundle
+
     inline val openPssActivity: OpenPssActivity get() = activity as OpenPssActivity
 }
 
-open class OpenPssDialogFragment : AppCompatDialogFragment(),
-    AndroidComponent {
+open class OpenPssDialogFragment : AppCompatDialogFragment(), AndroidComponent {
 
     override val api: OpenPssApi get() = openPssActivity.api
 
     override val rootLayout: View get() = openPssActivity.rootLayout
 
     override val login: Employee get() = openPssActivity.login
+
+    override val resourceBundle: ResourceBundle get() = openPssActivity.resourceBundle
 
     inline val openPssActivity: OpenPssActivity get() = activity as OpenPssActivity
 

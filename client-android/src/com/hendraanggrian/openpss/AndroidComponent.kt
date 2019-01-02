@@ -6,13 +6,13 @@ import android.view.View
 import androidx.preference.PreferenceManager
 
 /** View is the root layout for snackbar and errorbar. */
-interface AndroidComponent : Component<View> {
+interface AndroidComponent :
+    Component<View, AndroidSetting, SharedPreferences.Editor>,
+    StringResources {
 
     /** To be overriden with dialog, this has to be function instead of type. */
     fun getContext(): Context?
 
-    val defaultPreferences: SharedPreferences
-        get() = PreferenceManager.getDefaultSharedPreferences(
-            getContext()!!
-        )
+    override val setting: AndroidSetting
+        get() = AndroidSetting(PreferenceManager.getDefaultSharedPreferences(getContext()!!))
 }

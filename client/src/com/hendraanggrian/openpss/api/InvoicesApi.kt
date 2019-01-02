@@ -9,7 +9,7 @@ import io.ktor.client.request.post
 import io.ktor.http.HttpMethod
 import kotlinx.nosql.Id
 
-interface InvoiceApi : Api {
+interface InvoicesApi : Api {
 
     suspend fun getInvoices(
         search: Int = 0,

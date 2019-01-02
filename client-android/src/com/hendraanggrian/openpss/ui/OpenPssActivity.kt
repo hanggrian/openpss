@@ -11,6 +11,7 @@ import com.hendraanggrian.openpss.AndroidComponent
 import com.hendraanggrian.openpss.OpenPssApplication
 import com.hendraanggrian.openpss.api.OpenPssApi
 import com.hendraanggrian.openpss.data.Employee
+import java.util.ResourceBundle
 
 @SuppressLint("Registered")
 open class OpenPssActivity : AppCompatActivity(), AndroidComponent {
@@ -22,6 +23,8 @@ open class OpenPssActivity : AppCompatActivity(), AndroidComponent {
     override val rootLayout: View get() = findViewById(android.R.id.content)
 
     @Extra override lateinit var login: Employee
+
+    override val resourceBundle: ResourceBundle get() = openPssApplication.resourceBundle
 
     inline val openPssApplication: OpenPssApplication get() = application as OpenPssApplication
 

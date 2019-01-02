@@ -8,8 +8,8 @@ import com.hendraanggrian.openpss.control.Space
 import com.hendraanggrian.openpss.data.Customer
 import com.hendraanggrian.openpss.data.Employee
 import com.hendraanggrian.openpss.data.Invoice
-import com.hendraanggrian.openpss.data.Setting
-import com.hendraanggrian.openpss.data.Setting.Companion.KEY_INVOICE_HEADERS
+import com.hendraanggrian.openpss.data.GlobalSetting
+import com.hendraanggrian.openpss.data.GlobalSetting.Companion.KEY_INVOICE_HEADERS
 import com.hendraanggrian.openpss.schema.typedTechnique
 import com.hendraanggrian.openpss.FxComponent
 import com.hendraanggrian.openpss.ui.OpenPssPopOver
@@ -82,7 +82,7 @@ class ViewInvoicePopOver(
     private val invoiceBox: VBox
 
     override val resourceBundle: ResourceBundle = Language
-        .ofFullCode(runBlocking { api.getSetting(Setting.KEY_LANGUAGE).value })
+        .ofFullCode(runBlocking { api.getSetting(GlobalSetting.KEY_LANGUAGE).value })
         .toResourcesBundle()
 
     init {

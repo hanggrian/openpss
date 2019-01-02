@@ -11,7 +11,7 @@ import io.ktor.routing.get
 import io.ktor.routing.post
 import io.ktor.routing.route
 
-object RecessRouting : OpenPssRouting({
+object RecessesRouting : OpenPssRouting({
     route(Recesses.schemaName) {
         get {
             call.respond(transaction { Recesses().toList() })

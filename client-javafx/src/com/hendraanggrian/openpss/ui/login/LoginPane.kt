@@ -1,14 +1,15 @@
 package com.hendraanggrian.openpss.ui.login
 
 import com.hendraanggrian.openpss.BuildConfig2
+import com.hendraanggrian.openpss.FxComponent
 import com.hendraanggrian.openpss.Language
 import com.hendraanggrian.openpss.OpenPssApplication
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
+import com.hendraanggrian.openpss.StringResources
+import com.hendraanggrian.openpss.ValueResources
 import com.hendraanggrian.openpss.data.Employee
 import com.hendraanggrian.openpss.io.SettingsFile
-import com.hendraanggrian.openpss.FxComponent
-import com.hendraanggrian.openpss.Resources2
 import com.hendraanggrian.openpss.ui.ResultableDialog
 import com.hendraanggrian.openpss.ui.TextDialog
 import com.hendraanggrian.openpss.ui.main.help.AboutDialog
@@ -51,11 +52,12 @@ import ktfx.layouts.textFlow
 import ktfx.layouts.vbox
 import ktfx.runLater
 import ktfx.text.updateFont
-import java.util.Properties
-import java.util.ResourceBundle
 
-class LoginPane(private val resourced: Resources2) : _StackPane(),
-    FxComponent {
+class LoginPane<T>(resources: T) : _StackPane(),
+    FxComponent,
+    StringResources by resources,
+    ValueResources by resources
+    where T : StringResources, T : ValueResources {
 
     private companion object {
         const val WIDTH = 400.0
@@ -67,9 +69,6 @@ class LoginPane(private val resourced: Resources2) : _StackPane(),
     private lateinit var textField: TextField
 
     var onSuccess: ((Employee) -> Unit)? = null
-
-    override val resourceBundle: ResourceBundle get() = resourced.resourceBundle
-    override val valueProperties: Properties get() = resourced.valueProperties
 
     override val login: Employee get() = throw UnsupportedOperationException()
     override val rootLayout: StackPane get() = this

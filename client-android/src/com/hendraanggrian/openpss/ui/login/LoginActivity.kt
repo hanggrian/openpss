@@ -4,13 +4,14 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
 import com.hendraanggrian.bundler.extrasOf
+import com.hendraanggrian.openpss.AndroidSetting
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.ui.OpenPssActivity
 import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : OpenPssActivity() {
 
-    private lateinit var preferences: SharedPreferences
+    private lateinit var _setting: AndroidSetting
     private val preferenceListener =
         SharedPreferences.OnSharedPreferenceChangeListener { preferences, _ ->
             loginButton.isEnabled =
@@ -23,24 +24,24 @@ class LoginActivity : OpenPssActivity() {
         setContentView(R.layout.activity_login)
         setSupportActionBar(toolbar)
         replaceFragment(R.id.preferenceLayout, LoginFragment())
-        preferences = defaultPreferences
-        preferenceListener.onSharedPreferenceChanged(preferences, null) // trigger once
+        _setting = setting
+        preferenceListener.onSharedPreferenceChanged(_setting.preferences, null) // trigger once
     }
 
     override fun onResume() {
         super.onResume()
-        preferences.registerOnSharedPreferenceChangeListener(preferenceListener)
+        _setting.preferences.registerOnSharedPreferenceChangeListener(preferenceListener)
     }
 
     override fun onPause() {
         super.onPause()
-        preferences.unregisterOnSharedPreferenceChangeListener(preferenceListener)
+        _setting.preferences.unregisterOnSharedPreferenceChangeListener(preferenceListener)
     }
 
     fun login(@Suppress("UNUSED_PARAMETER") view: View) {
-        openPssApplication.initApi(preferences.getString("server_address", "localhost")!!)
+        openPssApplication.initApi(_setting.getString("server_address") ?: "localhost")
         PasswordDialogFragment()
-            .args(extrasOf<PasswordDialogFragment>(preferences.getString("employee", null)!!))
+            .args(extrasOf<PasswordDialogFragment>(_setting.getString("employee")!!))
             .show(supportFragmentManager)
     }
 }

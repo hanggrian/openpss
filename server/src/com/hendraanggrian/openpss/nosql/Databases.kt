@@ -2,7 +2,7 @@ package com.hendraanggrian.openpss.nosql
 
 import com.hendraanggrian.openpss.BuildConfig
 import com.hendraanggrian.openpss.data.Employee
-import com.hendraanggrian.openpss.data.Setting
+import com.hendraanggrian.openpss.data.GlobalSetting
 import com.hendraanggrian.openpss.routing.isEmpty
 import com.hendraanggrian.openpss.schema.Customers
 import com.hendraanggrian.openpss.schema.DigitalPrices
@@ -13,7 +13,7 @@ import com.hendraanggrian.openpss.schema.OffsetPrices
 import com.hendraanggrian.openpss.schema.Payments
 import com.hendraanggrian.openpss.schema.PlatePrices
 import com.hendraanggrian.openpss.schema.Recesses
-import com.hendraanggrian.openpss.schema.Settings
+import com.hendraanggrian.openpss.schema.GlobalSettings
 import com.hendraanggrian.openpss.schema.Wages
 import com.mongodb.MongoClientOptions
 import com.mongodb.MongoCredential
@@ -33,7 +33,7 @@ private val TABLES: Array<DocumentSchema<String, out Document<*>>> = arrayOf(
     DigitalPrices,
     Employees,
     Logs,
-    Settings,
+    GlobalSettings,
     Invoices,
     OffsetPrices,
     Payments,
@@ -60,9 +60,9 @@ fun startConnection() {
         if (Employees { name.equal(Employee.BACKDOOR.name) }.isEmpty()) {
             Employees += Employee.BACKDOOR
         }
-        listOf(Settings.LANGUAGE, Settings.INVOICE_HEADERS)
-            .filter { (first, _) -> Settings { key.equal(first) }.isEmpty() }
-            .forEach { Settings += Setting(it.first, it.second) }
+        listOf(GlobalSettings.LANGUAGE, GlobalSettings.INVOICE_HEADERS)
+            .filter { (first, _) -> GlobalSettings { key.equal(first) }.isEmpty() }
+            .forEach { GlobalSettings += GlobalSetting(it.first, it.second) }
     }
 }
 

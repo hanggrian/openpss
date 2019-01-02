@@ -3,7 +3,7 @@ package com.hendraanggrian.openpss
 import com.hendraanggrian.openpss.api.GitHubApi
 import com.hendraanggrian.openpss.api.OpenPssApi
 import com.hendraanggrian.openpss.data.Employee
-import com.hendraanggrian.openpss.data.Setting
+import com.hendraanggrian.openpss.data.GlobalSetting
 import com.hendraanggrian.openpss.ui.ResultableDialog
 import javafx.scene.Node
 import javafx.scene.control.ComboBox
@@ -32,7 +32,9 @@ import java.lang.ref.WeakReference
 import kotlin.coroutines.CoroutineContext
 
 /** StackPane is the root layout for [ktfx.jfoenix.jfxSnackbar]. */
-interface FxComponent : Component<StackPane>, Resources2 {
+interface FxComponent : Component<StackPane, FxSetting, FxSetting.Editor>,
+    StringResources,
+    ValueResources {
 
     companion object {
         private var apiRef = WeakReference<OpenPssApi?>(null)
@@ -59,6 +61,8 @@ interface FxComponent : Component<StackPane>, Resources2 {
             return api
         }
 
+    override val setting: FxSetting get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
+
     /** Number decimal string converter. */
     val numberConverter: StringConverter<Number>
         get() = NumberStringConverter()
@@ -67,7 +71,7 @@ interface FxComponent : Component<StackPane>, Resources2 {
     val currencyConverter: StringConverter<Number>
         get() = CurrencyStringConverter(runBlocking {
             Language.ofFullCode(
-                api.getSetting(Setting.KEY_LANGUAGE).value
+                api.getSetting(GlobalSetting.KEY_LANGUAGE).value
             ).toLocale()
         })
 

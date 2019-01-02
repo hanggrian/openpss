@@ -2,15 +2,17 @@ package com.hendraanggrian.openpss
 
 import android.app.Application
 import android.content.Context
+import android.content.SharedPreferences
 import androidx.core.content.edit
 import androidx.multidex.MultiDex
 import androidx.preference.PreferenceManager
 import com.hendraanggrian.bundler.Bundler
 import com.hendraanggrian.openpss.api.OpenPssApi
 import com.mongodb.ServerAddress
+import java.util.ResourceBundle
 
 @Suppress("unused")
-class OpenPssApplication : Application() {
+class OpenPssApplication : Application(), StringResources {
 
     private lateinit var _api: OpenPssApi
 
@@ -19,6 +21,8 @@ class OpenPssApplication : Application() {
     fun initApi(host: String) {
         _api = OpenPssApi(host)
     }
+
+    override val resourceBundle: ResourceBundle = throw UnsupportedOperationException()
 
     override fun onCreate() {
         super.onCreate()

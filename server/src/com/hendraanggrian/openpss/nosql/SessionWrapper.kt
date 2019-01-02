@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.nosql
 
-import com.hendraanggrian.openpss.data.Setting
-import com.hendraanggrian.openpss.schema.Settings
+import com.hendraanggrian.openpss.data.GlobalSetting
+import com.hendraanggrian.openpss.schema.GlobalSettings
 import kotlinx.nosql.AbstractColumn
 import kotlinx.nosql.AbstractSchema
 import kotlinx.nosql.DocumentSchemaOperations
@@ -54,7 +54,7 @@ class SessionWrapper(private val session: MongoDBSession) : Session by session,
         builder: QueryBuilder.() -> Unit
     ): DocumentQuery<S, String, D> = invoke { _QueryBuilder().apply { builder() }.build() }
 
-    fun findGlobalSetting(key: String): Setting = Settings { this.key.equal(key) }.single()
+    fun findGlobalSetting(key: String): GlobalSetting = GlobalSettings { this.key.equal(key) }.single()
 
     /** Matches with [regex] automatically transformed to pattern with certain [flags]. */
     fun <T : AbstractSchema, C> AbstractColumn<out C?, T, *>.matches(

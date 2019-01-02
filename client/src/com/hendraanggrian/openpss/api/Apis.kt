@@ -61,7 +61,7 @@ class GitHubApi : OkHttpApi("https://api.github.com") {
 }
 
 /** Main API. */
-class OpenPssApi(host: String = "localhost", port: Int = 8080) : OkHttpApi("http://$host:$port"),
+class OpenPssApi(host: String, port: Int) : OkHttpApi("http://$host:$port"),
     AuthApi,
     CustomersApi,
     DateTimeApi,

@@ -9,6 +9,7 @@ import javafx.scene.Node
 import javafx.scene.control.ComboBox
 import javafx.scene.control.PasswordField
 import javafx.scene.layout.StackPane
+import javafx.scene.paint.Color
 import javafx.util.StringConverter
 import javafx.util.converter.CurrencyStringConverter
 import javafx.util.converter.NumberStringConverter
@@ -45,7 +46,10 @@ interface FxComponent : Component<StackPane, FxSetting, FxSetting.Editor>,
         get() {
             var api = apiRef.get()
             if (api == null) {
-                api = OpenPssApi()
+                api = OpenPssApi(
+                    setting.getString(Setting.KEY_SERVER_HOST),
+                    setting.getInt(Setting.KEY_SERVER_PORT)
+                )
                 apiRef = WeakReference(api)
             }
             return api
@@ -60,8 +64,6 @@ interface FxComponent : Component<StackPane, FxSetting, FxSetting.Editor>,
             }
             return api
         }
-
-    override val setting: FxSetting get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
 
     /** Number decimal string converter. */
     val numberConverter: StringConverter<Number>
@@ -105,6 +107,8 @@ interface FxComponent : Component<StackPane, FxSetting, FxSetting.Editor>,
             }
         }
     }
+
+    fun getColor(id: String): Color = Color.web(valueProperties.getProperty(id))
 
     private class PermissionDialog(component: FxComponent) :
         ResultableDialog<Employee>(component, R2.string.permission_required) {

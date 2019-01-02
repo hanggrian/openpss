@@ -2,14 +2,17 @@ package com.hendraanggrian.openpss.ui.login
 
 import com.hendraanggrian.openpss.BuildConfig2
 import com.hendraanggrian.openpss.FxComponent
+import com.hendraanggrian.openpss.FxSetting
 import com.hendraanggrian.openpss.Language
 import com.hendraanggrian.openpss.OpenPssApplication
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
+import com.hendraanggrian.openpss.Setting
 import com.hendraanggrian.openpss.StringResources
 import com.hendraanggrian.openpss.ValueResources
+import com.hendraanggrian.openpss.control.IntField
 import com.hendraanggrian.openpss.data.Employee
-import com.hendraanggrian.openpss.io.SettingsFile
+import com.hendraanggrian.openpss.ui.OpenPssPopOver
 import com.hendraanggrian.openpss.ui.ResultableDialog
 import com.hendraanggrian.openpss.ui.TextDialog
 import com.hendraanggrian.openpss.ui.main.help.AboutDialog
@@ -24,7 +27,6 @@ import javafx.scene.control.TextField
 import javafx.scene.layout.Priority
 import javafx.scene.layout.StackPane
 import javafx.scene.text.TextAlignment
-import kotlinx.coroutines.Dispatchers
 import ktfx.bindings.buildBinding
 import ktfx.bindings.isBlank
 import ktfx.collections.toObservableList
@@ -53,7 +55,7 @@ import ktfx.layouts.vbox
 import ktfx.runLater
 import ktfx.text.updateFont
 
-class LoginPane<T>(resources: T) : _StackPane(),
+class LoginPane<T>(resources: T, override val setting: FxSetting) : _StackPane(),
     FxComponent,
     StringResources by resources,
     ValueResources by resources
@@ -73,6 +75,15 @@ class LoginPane<T>(resources: T) : _StackPane(),
     override val login: Employee get() = throw UnsupportedOperationException()
     override val rootLayout: StackPane get() = this
 
+    private val serverHostField = HostField().apply {
+        text = setting.getString(Setting.KEY_SERVER_HOST)
+        promptText = getString(R2.string.server_host)
+    }
+    private val serverPortField = IntField().apply {
+        value = setting.getInt(Setting.KEY_SERVER_PORT)
+        promptText = getString(R2.string.server_port)
+    }
+
     init {
         minWidth = WIDTH
         maxWidth = WIDTH
@@ -82,10 +93,11 @@ class LoginPane<T>(resources: T) : _StackPane(),
             paddingAll = getDouble(R.value.padding_medium)
             label(getString(R2.string.language)) row 0 col 0 hpriority Priority.ALWAYS halign HPos.RIGHT
             jfxComboBox(Language.values().toObservableList()) {
-                selectionModel.select(SettingsFile.language)
-                valueProperty().listener(Dispatchers.Default) { _, _, value ->
-                    SettingsFile.language = value
-                    SettingsFile.save()
+                selectionModel.select(setting.language)
+                valueProperty().listener { _, _, value ->
+                    setting.edit {
+                        putString(Setting.KEY_LANGUAGE, value.fullCode)
+                    }
                     TextDialog(
                         this@LoginPane,
                         R2.string.restart_required,
@@ -107,12 +119,18 @@ class LoginPane<T>(resources: T) : _StackPane(),
                     isWrapText = true
                     updateFont(16)
                 }
-                employeeField = jfxTextField(SettingsFile.EMPLOYEE) {
-                    textProperty().listener { _, _, value -> SettingsFile.EMPLOYEE = value }
+                employeeField = jfxTextField(setting.getString(Setting.KEY_EMPLOYEE)) {
                     updateFont(16)
                     promptText = getString(R2.string.employee)
                     runLater { requestFocus() }
                 } marginTop 24
+                textFlow {
+                    hyperlink(getString(R2.string.connection_settings)) {
+                        onAction {
+                            ConnectionSettingsPopover().show(this@hyperlink)
+                        }
+                    }
+                }
                 textFlow {
                     var version = BuildConfig2.VERSION
                     if (BuildConfig2.DEBUG) {
@@ -142,7 +160,11 @@ class LoginPane<T>(resources: T) : _StackPane(),
                         disableProperty().bind(employeeField.textProperty().isBlank())
                         onAction {
                             PasswordDialog().show {
-                                SettingsFile.save()
+                                setting.edit {
+                                    putString(Setting.KEY_EMPLOYEE, employeeField.text)
+                                    putString(Setting.KEY_SERVER_HOST, serverHostField.text)
+                                    putString(Setting.KEY_SERVER_PORT, serverPortField.text)
+                                }
                                 onSuccess?.invoke(runCatching {
                                     api.login(employeeField.text, passwordField.text)
                                 }.onFailure {
@@ -159,6 +181,21 @@ class LoginPane<T>(resources: T) : _StackPane(),
                     } anchorRight 0
                 } marginTop 24
             } row 1 col 0 colSpans 2
+        }
+    }
+
+    inner class ConnectionSettingsPopover : OpenPssPopOver(this, R2.string.connection_settings) {
+
+        override val focusedNode: Node? get() = serverHostField
+
+        init {
+            gridPane {
+                gap = getDouble(R.value.padding_medium)
+                label(getString(R2.string.server_host)) col 0 row 0
+                serverHostField() col 1 row 0
+                label(getString(R2.string.server_port)) col 0 row 1
+                serverPortField() col 1 row 1
+            }
         }
     }
 

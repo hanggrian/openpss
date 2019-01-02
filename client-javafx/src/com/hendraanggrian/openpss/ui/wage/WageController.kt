@@ -1,11 +1,11 @@
 package com.hendraanggrian.openpss.ui.wage
 
 import com.hendraanggrian.openpss.BuildConfig2
+import com.hendraanggrian.openpss.FxSetting
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
+import com.hendraanggrian.openpss.WageDirectory
 import com.hendraanggrian.openpss.control.StretchableButton
-import com.hendraanggrian.openpss.io.ReaderFile
-import com.hendraanggrian.openpss.io.WageDirectory
 import com.hendraanggrian.openpss.ui.ActionController
 import com.hendraanggrian.openpss.ui.Stylesheets
 import com.hendraanggrian.openpss.ui.TextDialog
@@ -143,7 +143,8 @@ class WageController : ActionController() {
         runBlocking {
             withPermission {
                 anchorPane.scene.window.chooseFile(
-                    getString(R2.string.input_file) to WageReader.of(ReaderFile.WAGE_READER).extension
+                    getString(R2.string.input_file) to
+                        WageReader.of(setting.getString(FxSetting.KEY_WAGEREADER)).extension
                 )?.let { read(it) }
             }
         }
@@ -166,36 +167,39 @@ class WageController : ActionController() {
         }
         runCatching {
             GlobalScope.launch(Dispatchers.IO) {
-                WageReader.of(ReaderFile.WAGE_READER).read(file).forEach { attendee ->
-                    GlobalScope.launch(Dispatchers.JavaFx) {
-                        attendee.init(api)
-                        flowPane.children += AttendeePane(this@WageController, attendee).apply {
-                            deleteMenu.onAction {
-                                flowPane.children -= this@apply
-                                bindProcessButton()
-                            }
-                            deleteOthersMenu.run {
-                                disableProperty().bind(flowPane.children.sizeBinding lessEq 1)
-                                onAction {
-                                    flowPane.children -= flowPane.children.toMutableList()
-                                        .also { it -= this@apply }
+                WageReader.of(setting.getString(FxSetting.KEY_WAGEREADER)).read(file)
+                    .forEach { attendee ->
+                        GlobalScope.launch(Dispatchers.JavaFx) {
+                            attendee.init(api)
+                            flowPane.children += AttendeePane(this@WageController, attendee).apply {
+                                deleteMenu.onAction {
+                                    flowPane.children -= this@apply
                                     bindProcessButton()
                                 }
-                            }
-                            deleteToTheRightMenu.run {
-                                disableProperty().bind(buildBooleanBinding(flowPane.children) {
-                                    flowPane.children.indexOf(this@apply) == flowPane.children.lastIndex
-                                })
-                                onAction {
-                                    flowPane.children -= flowPane.children.toList().takeLast(
-                                        flowPane.children.lastIndex - flowPane.children.indexOf(this@apply)
-                                    )
-                                    bindProcessButton()
+                                deleteOthersMenu.run {
+                                    disableProperty().bind(flowPane.children.sizeBinding lessEq 1)
+                                    onAction {
+                                        flowPane.children -= flowPane.children.toMutableList()
+                                            .also { it -= this@apply }
+                                        bindProcessButton()
+                                    }
+                                }
+                                deleteToTheRightMenu.run {
+                                    disableProperty().bind(buildBooleanBinding(flowPane.children) {
+                                        flowPane.children.indexOf(this@apply) == flowPane.children.lastIndex
+                                    })
+                                    onAction {
+                                        flowPane.children -= flowPane.children.toList().takeLast(
+                                            flowPane.children.lastIndex - flowPane.children.indexOf(
+                                                this@apply
+                                            )
+                                        )
+                                        bindProcessButton()
+                                    }
                                 }
                             }
                         }
                     }
-                }
                 GlobalScope.launch(Dispatchers.JavaFx) {
                     onFinish()
                 }

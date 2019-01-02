@@ -29,6 +29,8 @@ dependencies {
     api(ktor("client-okhttp"))
     api(ktor("client-gson"))
 
+    api(androidx("annotation", version = "1.0.1"))
+
     testImplementation(junit())
 }
 

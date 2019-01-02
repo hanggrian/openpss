@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.hendraanggrian.bundler.Extra
 import com.hendraanggrian.openpss.AndroidComponent
+import com.hendraanggrian.openpss.AndroidSetting
 import com.hendraanggrian.openpss.OpenPssApplication
 import com.hendraanggrian.openpss.api.OpenPssApi
 import com.hendraanggrian.openpss.data.Employee
@@ -25,6 +26,8 @@ open class OpenPssActivity : AppCompatActivity(), AndroidComponent {
     @Extra override lateinit var login: Employee
 
     override val resourceBundle: ResourceBundle get() = openPssApplication.resourceBundle
+
+    override val setting: AndroidSetting get() = openPssApplication.setting
 
     inline val openPssApplication: OpenPssApplication get() = application as OpenPssApplication
 

@@ -118,7 +118,7 @@ fun main(args: Array<String>) {
                 route(WagesRouting)
             }
         }
-    }).start(wait = true).application.log
+    }).start(wait = true).environment.log
     log.info("Welcome to ${BuildConfig.NAME} ${BuildConfig.VERSION}")
     log.info("For more information, visit ${BuildConfig.WEBSITE}")
     logger?.info("Debug mode is activated, server activities will be logged here.")

@@ -13,7 +13,6 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?actionBarSize"
-            app:title="@string/openpss_login"
             app:titleTextColor="?colorAccent" />
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -37,7 +36,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:layout_margin="@dimen/padding_medium"
-            android:onClick="login"
-            android:text="@string/login" />
+            android:onClick="login" />
     </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

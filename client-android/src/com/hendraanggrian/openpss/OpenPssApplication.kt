@@ -2,42 +2,31 @@ package com.hendraanggrian.openpss
 
 import android.app.Application
 import android.content.Context
-import android.content.SharedPreferences
-import androidx.core.content.edit
 import androidx.multidex.MultiDex
 import androidx.preference.PreferenceManager
 import com.hendraanggrian.bundler.Bundler
 import com.hendraanggrian.openpss.api.OpenPssApi
-import com.mongodb.ServerAddress
 import java.util.ResourceBundle
 
 @Suppress("unused")
 class OpenPssApplication : Application(), StringResources {
 
-    private lateinit var _api: OpenPssApi
+    lateinit var api: OpenPssApi
 
-    val api: OpenPssApi get() = _api
+    private lateinit var _setting: AndroidSetting
 
-    fun initApi(host: String) {
-        _api = OpenPssApi(host)
-    }
-
-    override val resourceBundle: ResourceBundle = throw UnsupportedOperationException()
+    override lateinit var resourceBundle: ResourceBundle
 
     override fun onCreate() {
         super.onCreate()
-
-        if (BuildConfig2.DEBUG) {
-            Bundler.setDebug(true)
-        }
-
-        val preferences = PreferenceManager.getDefaultSharedPreferences(this)
-        if (preferences.getString("server_port", null).isNullOrBlank()) {
-            preferences.edit {
-                putString("server_port", ServerAddress.defaultPort().toString())
-            }
+        Bundler.setDebug(BuildConfig2.DEBUG)
+        _setting = AndroidSetting(PreferenceManager.getDefaultSharedPreferences(this)).apply {
+            editDefault()
+            resourceBundle = language.toResourcesBundle()
         }
     }
+
+    val setting: AndroidSetting get() = _setting
 
     override fun attachBaseContext(base: Context?) {
         super.attachBaseContext(base)

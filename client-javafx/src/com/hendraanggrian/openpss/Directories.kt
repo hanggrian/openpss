@@ -1,6 +1,5 @@
-package com.hendraanggrian.openpss.io
+package com.hendraanggrian.openpss
 
-import com.hendraanggrian.openpss.BuildConfig2
 import org.apache.commons.lang3.SystemUtils
 import org.joda.time.DateTime
 import java.io.File

@@ -1,16 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <androidx.preference.ListPreference
+        android:icon="@drawable/ic_action_language"
+        android:key="language" />
+
     <androidx.preference.EditTextPreference
-        android:key="server_address"
-        android:title="@string/server_address" />
+        android:icon="@drawable/ic_action_wifi"
+        android:key="server_host" />
+
+    <androidx.preference.EditTextPreference
+        android:key="server_port" />
 
     <androidx.preference.EditTextPreference
         android:icon="@drawable/ic_action_person"
-        android:key="employee"
-        android:title="@string/employee" />
+        android:key="employee" />
 
-    <androidx.preference.PreferenceCategory android:title="@string/about">
+    <androidx.preference.PreferenceCategory>
 
         <androidx.preference.Preference android:key="about" />
     </androidx.preference.PreferenceCategory>

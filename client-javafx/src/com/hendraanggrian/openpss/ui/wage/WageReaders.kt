@@ -71,14 +71,15 @@ sealed class WageReader(
 
     companion object {
 
-        private val READERS: List<WageReader>
+        private inline val readers: List<WageReader>
             get() = listOf(
                 EClockingReader,
                 TestReader
             )
 
-        fun listAll(): ObservableList<WageReader> = READERS.toObservableList()
+        fun listAll(): ObservableList<WageReader> = readers.toObservableList()
 
-        fun of(name: String): WageReader = READERS.single { it.name == name }
+        fun of(name: String): WageReader =
+            readers.singleOrNull { it.name == name } ?: EClockingReader
     }
 }

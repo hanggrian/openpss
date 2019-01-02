@@ -1,6 +1,5 @@
 package com.hendraanggrian.openpss
 
-import sun.util.locale.LocaleUtils
 import java.util.Currency
 import java.util.Locale
 import java.util.ResourceBundle
@@ -17,16 +16,12 @@ enum class Language(private val nativeLocale: Locale) {
 
     /** Reverse the damage done in [Locale.convertOldISOCodes]. */
     val code: String
-        get() = LocaleUtils.toLowerString(nativeLocale.language)
-            .intern()
-            .let {
-                when (it) {
-                    "iw" -> "he"
-                    "ji" -> "yi"
-                    "in" -> "id"
-                    else -> it
-                }
-            }
+        get() = when (nativeLocale.language) {
+            "iw" -> "he"
+            "ji" -> "yi"
+            "in" -> "id"
+            else -> nativeLocale.language
+        }
 
     val fullCode: String get() = "$code-${nativeLocale.country}"
 
@@ -46,13 +41,11 @@ enum class Language(private val nativeLocale: Locale) {
 
     companion object {
 
-        fun ofCode(code: String): Language =
-            find { it.code == code }
+        fun ofCode(code: String): Language = find { it.code == code }
 
-        fun ofFullCode(fullCode: String): Language =
-            find { it.fullCode == fullCode }
+        fun ofFullCode(fullCode: String): Language = find { it.fullCode == fullCode }
 
-        private inline fun find(predicate: (Language) -> Boolean): Language = Language.values()
-            .singleOrNull(predicate) ?: EN_US
+        private inline fun find(predicate: (Language) -> Boolean): Language =
+            Language.values().singleOrNull(predicate) ?: EN_US
     }
 }

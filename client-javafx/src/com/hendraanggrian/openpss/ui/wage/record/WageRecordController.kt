@@ -6,8 +6,8 @@ import com.hendraanggrian.openpss.PATTERN_TIME
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.control.UncollapsibleTreeItem
-import com.hendraanggrian.openpss.io.WageDirectory
-import com.hendraanggrian.openpss.io.WageFile
+import com.hendraanggrian.openpss.WageDirectory
+import com.hendraanggrian.openpss.WageFile
 import com.hendraanggrian.openpss.ui.DatePopOver
 import com.hendraanggrian.openpss.ui.OpenPssController
 import com.hendraanggrian.openpss.ui.Stylesheets

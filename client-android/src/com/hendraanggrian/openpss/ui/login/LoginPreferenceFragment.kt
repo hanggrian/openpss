@@ -1,22 +1,47 @@
 package com.hendraanggrian.openpss.ui.login
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.preference.EditTextPreference
+import androidx.preference.ListPreference
 import androidx.preference.Preference
 import com.hendraanggrian.openpss.BuildConfig2
+import com.hendraanggrian.openpss.Language
 import com.hendraanggrian.openpss.R
-import com.takisoft.preferencex.PreferenceFragmentCompat
+import com.hendraanggrian.openpss.R2
+import com.hendraanggrian.openpss.Setting
+import com.hendraanggrian.openpss.ui.OpenPssPreferenceFragment
 
-class LoginFragment : PreferenceFragmentCompat() {
+class LoginPreferenceFragment : OpenPssPreferenceFragment() {
 
     override fun onCreatePreferencesFix(savedInstanceState: Bundle?, rootKey: String?) {
         addPreferencesFromResource(R.xml.fragment_login)
-        find<EditTextPreference>("server_address").bindSummary({ text })
-        find<EditTextPreference>("employee").bindSummary({ text })
+        find<ListPreference>(Setting.KEY_LANGUAGE) {
+            titleAll = getString(R2.string.language)
+            bindSummary({ Language.ofFullCode(value) })
+            val languages = Language.values()
+            entries = languages.map { it.toString() }.toTypedArray()
+            entryValues = languages.map { it.fullCode }.toTypedArray()
+        }
+        find<EditTextPreference>(Setting.KEY_SERVER_HOST) {
+            titleAll = getString(R2.string.server_host)
+            bindSummary({ text })
+        }
+        find<EditTextPreference>(Setting.KEY_SERVER_PORT) {
+            titleAll = getString(R2.string.server_port)
+            bindSummary({ text })
+        }
+        find<EditTextPreference>(Setting.KEY_EMPLOYEE) {
+            titleAll = getString(R2.string.employee)
+            bindSummary({ text })
+        }
         find<Preference>("about") {
-            title = "OpenPSS ${BuildConfig2.NAME}"
+            parent!!.title = getString(R2.string.about)
+            title = "OpenPSS ${BuildConfig2.VERSION}"
             summary = "Tap to visit"
             setOnPreferenceClickListener {
+                startActivity(Intent(Intent.ACTION_VIEW).setData(Uri.parse(BuildConfig2.WEBSITE)))
                 true
             }
         }

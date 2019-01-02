@@ -1,14 +1,13 @@
 package com.hendraanggrian.openpss.ui.main
 
+import com.hendraanggrian.openpss.FxComponent
+import com.hendraanggrian.openpss.FxSetting
 import com.hendraanggrian.openpss.Language
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.control.Space
 import com.hendraanggrian.openpss.data.GlobalSetting.Companion.KEY_INVOICE_HEADERS
 import com.hendraanggrian.openpss.data.GlobalSetting.Companion.KEY_LANGUAGE
-import com.hendraanggrian.openpss.io.ReaderFile
-import com.hendraanggrian.openpss.io.SettingsFile
-import com.hendraanggrian.openpss.FxComponent
 import com.hendraanggrian.openpss.ui.OpenPssDialog
 import com.hendraanggrian.openpss.ui.wage.WageReader
 import com.jfoenix.controls.JFXButton
@@ -62,11 +61,8 @@ class SettingsDialog(component: FxComponent) : OpenPssDialog(component, R2.strin
                     item {
                         label(getString(R2.string.reader))
                         wageReaderChoice = jfxComboBox(WageReader.listAll()) {
-                            value = WageReader.of(ReaderFile.WAGE_READER)
-                            valueProperty().listener { _, _, value ->
-                                isLocalChanged.set(true)
-                                ReaderFile.WAGE_READER = (value as WageReader).name
-                            }
+                            value = WageReader.of(setting.getString(FxSetting.KEY_WAGEREADER))
+                            valueProperty().listener { isLocalChanged.set(true) }
                         }
                     }
                 }
@@ -113,7 +109,9 @@ class SettingsDialog(component: FxComponent) : OpenPssDialog(component, R2.strin
                 disableProperty().bind(!isLocalChanged and !isGlobalChanged)
                 onActionFilter(Dispatchers.JavaFx) {
                     if (isLocalChanged.value) {
-                        SettingsFile.save()
+                        setting.edit {
+                            putString(FxSetting.KEY_WAGEREADER, wageReaderChoice.value.name)
+                        }
                     }
                     if (isGlobalChanged.value) {
                         api.setSetting(KEY_LANGUAGE, languageBox.value.fullCode)

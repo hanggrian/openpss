@@ -3,7 +3,7 @@ package com.hendraanggrian.openpss
 import android.content.Context
 import android.content.SharedPreferences
 import android.view.View
-import androidx.preference.PreferenceManager
+import android.widget.Toast
 
 /** View is the root layout for snackbar and errorbar. */
 interface AndroidComponent :
@@ -13,6 +13,9 @@ interface AndroidComponent :
     /** To be overriden with dialog, this has to be function instead of type. */
     fun getContext(): Context?
 
-    override val setting: AndroidSetting
-        get() = AndroidSetting(PreferenceManager.getDefaultSharedPreferences(getContext()!!))
+    fun toast(stringId: String) =
+        Toast.makeText(getContext(), getString(stringId), Toast.LENGTH_SHORT).show()
+
+    fun longToast(stringId: String) =
+        Toast.makeText(getContext(), getString(stringId), Toast.LENGTH_LONG).show()
 }

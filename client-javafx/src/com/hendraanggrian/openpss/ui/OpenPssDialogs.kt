@@ -104,7 +104,7 @@ class TextDialog(
 ) : OpenPssDialog(component, titleId) {
 
     init {
-        ktfx.layouts.label {
+        label {
             isWrapText = true
             text = content
         }

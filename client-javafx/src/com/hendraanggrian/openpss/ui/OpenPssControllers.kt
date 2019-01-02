@@ -1,6 +1,7 @@
 package com.hendraanggrian.openpss.ui
 
 import com.hendraanggrian.openpss.FxComponent
+import com.hendraanggrian.openpss.FxSetting
 import com.hendraanggrian.openpss.OpenPssApplication
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.data.Employee
@@ -19,6 +20,15 @@ import java.util.ResourceBundle
 /** Base class of all controllers. */
 @Suppress("LeakingThis")
 open class OpenPssController : Initializable, FxComponent {
+
+    private lateinit var _setting: FxSetting
+    override val setting: FxSetting
+        get() {
+            if (!::_setting.isInitialized) {
+                _setting = FxSetting()
+            }
+            return _setting
+        }
 
     override lateinit var resourceBundle: ResourceBundle
     override val valueProperties: Properties = OpenPssApplication::class.java

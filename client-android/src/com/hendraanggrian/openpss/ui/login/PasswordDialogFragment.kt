@@ -16,6 +16,7 @@ import com.hendraanggrian.bundler.bindExtras
 import com.hendraanggrian.bundler.extrasOf
 import com.hendraanggrian.openpss.BuildConfig2
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.ui.OpenPssDialogFragment
 import com.hendraanggrian.openpss.ui.TextDialogFragment
 import com.hendraanggrian.openpss.ui.main.MainActivity
@@ -39,7 +40,7 @@ class PasswordDialogFragment : OpenPssDialogFragment() {
         }
         val manager = activity!!.supportFragmentManager
         val dialog = AlertDialog.Builder(context!!)
-            .setTitle(R.string.password)
+            .setTitle(getString(R2.string.password))
             .setView(FrameLayout(context!!).apply {
                 addView(editText)
                 val medium = context.resources.getDimensionPixelSize(R.dimen.padding_medium)
@@ -52,7 +53,7 @@ class PasswordDialogFragment : OpenPssDialogFragment() {
                 )
             })
             .setNegativeButton(android.R.string.cancel, null)
-            .setPositiveButton(R.string.login) { _, _ ->
+            .setPositiveButton(getString(R2.string.login)) { _, _ ->
                 val login = runCatching {
                     runBlocking { api.login(employee, editText.text) }
                 }.onFailure {

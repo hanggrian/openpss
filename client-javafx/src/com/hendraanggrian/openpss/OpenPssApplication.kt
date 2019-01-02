@@ -1,6 +1,5 @@
 package com.hendraanggrian.openpss
 
-import com.hendraanggrian.openpss.io.SettingsFile
 import com.hendraanggrian.openpss.ui.Stylesheets
 import com.hendraanggrian.openpss.ui.login.LoginPane
 import com.hendraanggrian.openpss.util.controller
@@ -32,12 +31,13 @@ class OpenPssApplication : Application(), StringResources, ValueResources {
         }
     }
 
+    private lateinit var setting: FxSetting
     override lateinit var resourceBundle: ResourceBundle
-
     override lateinit var valueProperties: Properties
 
     override fun init() {
-        resourceBundle = SettingsFile.language.toResourcesBundle()
+        setting = FxSetting().apply { editDefault() }
+        resourceBundle = setting.language.toResourcesBundle()
         valueProperties = OpenPssApplication::class.java
             .getResourceAsStream(R.value.properties_value)
             .use { stream -> Properties().apply { load(stream) } }
@@ -52,7 +52,7 @@ class OpenPssApplication : Application(), StringResources, ValueResources {
         stage.title = getString(R2.string.openpss_login)
         stage.scene = scene {
             stylesheets += Stylesheets.OPENPSS
-            LoginPane(this@OpenPssApplication).apply {
+            LoginPane(this@OpenPssApplication, setting).apply {
                 onSuccess = { employee ->
                     val loader = FXMLLoader(getResource(R.layout.controller_main), resourceBundle)
                     this@scene.run {

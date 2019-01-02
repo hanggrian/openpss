@@ -75,10 +75,10 @@ open class ResultablePopOver<T>(
     }
 }
 
-open class InputPopOver(component: FxComponent, titleId: String) :
+open class InputPopOver(component: FxComponent, titleId: String, prefill: String? = null) :
     ResultablePopOver<String>(component, titleId) {
 
-    protected val editor: TextField = jfxTextField()
+    protected val editor: TextField = jfxTextField(prefill)
 
     open val defaultDisableBinding: BooleanBinding get() = editor.textProperty().isBlank()
 
@@ -86,7 +86,7 @@ open class InputPopOver(component: FxComponent, titleId: String) :
 
     init {
         defaultButton.run {
-            text = getString(R2.string.add)
+            text = getString(R2.string.ok)
             disableProperty().bind(defaultDisableBinding)
             editor.onActionProperty()
                 .bind(buildBinding(disableProperty()) { if (isDisable) null else onAction })

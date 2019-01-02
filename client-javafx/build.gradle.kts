@@ -17,10 +17,10 @@ sourceSets {
     getByName("main") {
         // manual import client generated build
         val dirs = mutableListOf("src")
-        val clientGeneratedDirs = "client/build/generated"
-        if (rootDir.resolve(clientGeneratedDirs).exists()) {
-            dirs += "../$clientGeneratedDirs/buildconfig/src/main"
-            dirs += "../$clientGeneratedDirs/r/src/main"
+        val clientGeneratedDir = "client/build/generated"
+        if (rootDir.resolve(clientGeneratedDir).exists()) {
+            dirs += "../$clientGeneratedDir/buildconfig/src/main"
+            dirs += "../$clientGeneratedDir/r/src/main"
         }
         java.srcDirs(*dirs.toTypedArray())
         resources.srcDir("res")
@@ -35,7 +35,6 @@ ktlint()
 
 dependencies {
     api(project(":client"))
-    api(project(":core-jre"))
     api(kotlinx("coroutines-javafx", VERSION_COROUTINES))
 
     implementation(slf4j("log4j12"))
@@ -44,6 +43,7 @@ dependencies {
     implementation(hendraanggrian("ktfx", "ktfx-controlsfx", VERSION_KTFX))
     implementation(hendraanggrian("ktfx", "ktfx-jfoenix", VERSION_KTFX))
 
+    implementation(apache("commons-lang3", VERSION_COMMONS_LANG))
     implementation(apache("commons-math3", VERSION_COMMONS_MATH))
     implementation(apache("poi-ooxml", VERSION_POI))
     implementation("commons-validator:commons-validator:$VERSION_COMMONS_VALIDATOR")

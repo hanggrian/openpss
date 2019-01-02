@@ -7,7 +7,7 @@ import com.hendraanggrian.openpss.data.Invoice
 import com.hendraanggrian.openpss.data.OffsetPrice
 import com.hendraanggrian.openpss.schema.Technique
 import com.hendraanggrian.openpss.schema.new
-import com.hendraanggrian.openpss.ui.FxComponent
+import com.hendraanggrian.openpss.FxComponent
 import javafx.beans.Observable
 import javafx.beans.value.ObservableBooleanValue
 import javafx.scene.control.ComboBox

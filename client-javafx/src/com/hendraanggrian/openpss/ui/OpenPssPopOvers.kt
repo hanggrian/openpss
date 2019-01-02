@@ -1,5 +1,6 @@
 package com.hendraanggrian.openpss.ui
 
+import com.hendraanggrian.openpss.FxComponent
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.control.DateBox

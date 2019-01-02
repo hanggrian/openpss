@@ -1,4 +1,4 @@
-includeAll("core")
+include("core")
 includeAll("client")
 include("server")
 include("website")

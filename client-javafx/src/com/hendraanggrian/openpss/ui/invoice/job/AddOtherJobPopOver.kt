@@ -3,7 +3,7 @@ package com.hendraanggrian.openpss.ui.invoice.job
 import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.control.DoubleField
 import com.hendraanggrian.openpss.data.Invoice
-import com.hendraanggrian.openpss.ui.FxComponent
+import com.hendraanggrian.openpss.FxComponent
 import javafx.beans.Observable
 import javafx.beans.value.ObservableBooleanValue
 import ktfx.bindings.isBlank

@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.hendraanggrian.bundler.Extra
 import com.hendraanggrian.bundler.bindExtras
+import com.hendraanggrian.openpss.AndroidComponent
 import com.hendraanggrian.openpss.api.OpenPssApi
 import com.hendraanggrian.openpss.data.Employee
 
@@ -23,7 +24,8 @@ open class OpenPssFragment : Fragment(), AndroidComponent {
     inline val openPssActivity: OpenPssActivity get() = activity as OpenPssActivity
 }
 
-open class OpenPssDialogFragment : AppCompatDialogFragment(), AndroidComponent {
+open class OpenPssDialogFragment : AppCompatDialogFragment(),
+    AndroidComponent {
 
     override val api: OpenPssApi get() = openPssActivity.api
 

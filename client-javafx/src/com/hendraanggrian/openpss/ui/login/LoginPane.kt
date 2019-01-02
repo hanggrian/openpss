@@ -7,8 +7,8 @@ import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.data.Employee
 import com.hendraanggrian.openpss.io.SettingsFile
-import com.hendraanggrian.openpss.ui.FxComponent
-import com.hendraanggrian.openpss.ui.Resources
+import com.hendraanggrian.openpss.FxComponent
+import com.hendraanggrian.openpss.Resources2
 import com.hendraanggrian.openpss.ui.ResultableDialog
 import com.hendraanggrian.openpss.ui.TextDialog
 import com.hendraanggrian.openpss.ui.main.help.AboutDialog
@@ -54,7 +54,7 @@ import ktfx.text.updateFont
 import java.util.Properties
 import java.util.ResourceBundle
 
-class LoginPane(private val resourced: Resources) : _StackPane(),
+class LoginPane(private val resourced: Resources2) : _StackPane(),
     FxComponent {
 
     private companion object {

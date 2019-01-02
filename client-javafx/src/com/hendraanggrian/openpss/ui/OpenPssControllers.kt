@@ -1,5 +1,7 @@
 package com.hendraanggrian.openpss.ui
 
+import com.hendraanggrian.openpss.FxComponent
+import com.hendraanggrian.openpss.OpenPssApplication
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.data.Employee
 import javafx.beans.property.SimpleStringProperty
@@ -19,7 +21,9 @@ import java.util.ResourceBundle
 open class OpenPssController : Initializable, FxComponent {
 
     override lateinit var resourceBundle: ResourceBundle
-    override val valueProperties: Properties = getProperties(R.value.properties_value)
+    override val valueProperties: Properties = OpenPssApplication::class.java
+        .getResourceAsStream(R.value.properties_value)
+        .use { stream -> Properties().apply { load(stream) } }
 
     override lateinit var rootLayout: StackPane
     override lateinit var login: Employee

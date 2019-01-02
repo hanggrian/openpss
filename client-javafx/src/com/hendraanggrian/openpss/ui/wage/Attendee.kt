@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.ui.wage
 
 import com.hendraanggrian.openpss.api.OpenPssApi
-import com.hendraanggrian.openpss.ui.Resources
+import com.hendraanggrian.openpss.Resources2
 import com.hendraanggrian.openpss.data.Recess
 import com.hendraanggrian.openpss.data.Wage
 import com.hendraanggrian.openpss.ui.wage.record.Record
@@ -72,10 +72,10 @@ data class Attendee(
 
     override fun toString(): String = "$id. $name"
 
-    fun toNodeRecord(resources: Resources): Record =
+    fun toNodeRecord(resources: Resources2): Record =
         Record(resources, INDEX_NODE, this, any(DateTime.now()), any(DateTime.now()))
 
-    fun toChildRecords(resources: Resources): Set<Record> {
+    fun toChildRecords(resources: Resources2): Set<Record> {
         val records = mutableSetOf<Record>()
         val iterator = attendances.iterator()
         var index = 0
@@ -84,7 +84,7 @@ data class Attendee(
         return records
     }
 
-    fun toTotalRecords(resources: Resources, children: Collection<Record>): Record =
+    fun toTotalRecords(resources: Resources2, children: Collection<Record>): Record =
         Record(resources, INDEX_TOTAL, this, any(START_OF_TIME), any(START_OF_TIME))
             .apply {
                 dailyProperty.bind(buildDoubleBinding(children.map { it.dailyProperty }) {

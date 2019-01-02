@@ -3,7 +3,7 @@ package com.hendraanggrian.openpss.ui.wage
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.control.TimeBox
-import com.hendraanggrian.openpss.ui.FxComponent
+import com.hendraanggrian.openpss.FxComponent
 import com.hendraanggrian.openpss.ui.ResultablePopOver
 import javafx.scene.Node
 import ktfx.bindings.buildBooleanBinding

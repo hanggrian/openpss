@@ -1,4 +1,4 @@
-package com.hendraanggrian.openpss.ui
+package com.hendraanggrian.openpss
 
 import android.content.Context
 import android.content.SharedPreferences

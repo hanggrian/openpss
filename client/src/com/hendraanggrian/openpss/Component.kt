@@ -1,4 +1,4 @@
-package com.hendraanggrian.openpss.ui
+package com.hendraanggrian.openpss
 
 import com.hendraanggrian.openpss.api.OpenPssApi
 import com.hendraanggrian.openpss.data.Employee

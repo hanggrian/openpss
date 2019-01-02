@@ -3,7 +3,7 @@
 package com.hendraanggrian.openpss.util
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.ui.FxComponent
+import com.hendraanggrian.openpss.FxComponent
 import javafx.scene.control.Control
 import javafx.scene.control.TableCell
 import javafx.scene.control.TableColumn

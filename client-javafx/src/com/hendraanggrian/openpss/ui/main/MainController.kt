@@ -11,7 +11,6 @@ import com.hendraanggrian.openpss.control.Toolbar
 import com.hendraanggrian.openpss.control.UnselectableListView
 import com.hendraanggrian.openpss.data.Invoice
 import com.hendraanggrian.openpss.data.Log
-import com.hendraanggrian.openpss.ifMacOS
 import com.hendraanggrian.openpss.schema.Technique
 import com.hendraanggrian.openpss.schema.new
 import com.hendraanggrian.openpss.ui.ActionController
@@ -60,6 +59,7 @@ import ktfx.listeners.cellFactory
 import ktfx.runLater
 import ktfx.text.updateFont
 import ktfx.windows.stage
+import org.apache.commons.lang3.SystemUtils
 import java.net.URL
 import java.util.ResourceBundle
 
@@ -108,7 +108,7 @@ class MainController : OpenPssController(), Refreshable {
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
-        ifMacOS { menuBar.isUseSystemMenuBar = true }
+        menuBar.isUseSystemMenuBar = SystemUtils.IS_OS_MAC_OSX
 
         drawerList.selectionModel.selectFirst()
         drawerList.selectionModel.selectedItemProperty().listener { _, _, _ ->

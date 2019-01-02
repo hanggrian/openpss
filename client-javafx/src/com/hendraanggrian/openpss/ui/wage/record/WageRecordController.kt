@@ -6,7 +6,6 @@ import com.hendraanggrian.openpss.PATTERN_TIME
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.control.UncollapsibleTreeItem
-import com.hendraanggrian.openpss.ifMacOS
 import com.hendraanggrian.openpss.io.WageDirectory
 import com.hendraanggrian.openpss.io.WageFile
 import com.hendraanggrian.openpss.ui.DatePopOver
@@ -84,7 +83,7 @@ class WageRecordController : OpenPssController() {
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
-        ifMacOS { menuBar.isUseSystemMenuBar = SystemUtils.IS_OS_MAC }
+        menuBar.isUseSystemMenuBar = SystemUtils.IS_OS_MAC
         undoMenu.disableProperty().bind(editMenu.items.sizeBinding lessEq 2)
         arrayOf(lockStartButton, lockEndButton).forEach { button ->
             button.disableProperty()

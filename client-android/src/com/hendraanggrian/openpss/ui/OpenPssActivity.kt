@@ -7,6 +7,7 @@ import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.hendraanggrian.bundler.Extra
+import com.hendraanggrian.openpss.AndroidComponent
 import com.hendraanggrian.openpss.OpenPssApplication
 import com.hendraanggrian.openpss.api.OpenPssApi
 import com.hendraanggrian.openpss.data.Employee

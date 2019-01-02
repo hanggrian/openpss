@@ -8,7 +8,7 @@ import com.hendraanggrian.openpss.data.Setting.Companion.KEY_INVOICE_HEADERS
 import com.hendraanggrian.openpss.data.Setting.Companion.KEY_LANGUAGE
 import com.hendraanggrian.openpss.io.ReaderFile
 import com.hendraanggrian.openpss.io.SettingsFile
-import com.hendraanggrian.openpss.ui.FxComponent
+import com.hendraanggrian.openpss.FxComponent
 import com.hendraanggrian.openpss.ui.OpenPssDialog
 import com.hendraanggrian.openpss.ui.wage.WageReader
 import com.jfoenix.controls.JFXButton

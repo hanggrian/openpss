@@ -2,7 +2,7 @@ package com.hendraanggrian.openpss.ui.price
 
 import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.data.PlatePrice
-import com.hendraanggrian.openpss.ui.FxComponent
+import com.hendraanggrian.openpss.FxComponent
 import javafx.beans.value.ObservableValue
 import kotlinx.coroutines.CoroutineScope
 import ktfx.coroutines.onEditCommit

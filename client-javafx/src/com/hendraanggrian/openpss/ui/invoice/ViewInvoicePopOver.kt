@@ -10,9 +10,8 @@ import com.hendraanggrian.openpss.data.Employee
 import com.hendraanggrian.openpss.data.Invoice
 import com.hendraanggrian.openpss.data.Setting
 import com.hendraanggrian.openpss.data.Setting.Companion.KEY_INVOICE_HEADERS
-import com.hendraanggrian.openpss.ifNotMacOS
 import com.hendraanggrian.openpss.schema.typedTechnique
-import com.hendraanggrian.openpss.ui.FxComponent
+import com.hendraanggrian.openpss.FxComponent
 import com.hendraanggrian.openpss.ui.OpenPssPopOver
 import com.hendraanggrian.openpss.ui.Stylesheets
 import com.sun.javafx.print.PrintHelper
@@ -55,6 +54,7 @@ import ktfx.print.createJob
 import ktfx.print.defaultPrinter
 import ktfx.runLater
 import ktfx.text.updateFont
+import org.apache.commons.lang3.SystemUtils
 import java.util.ResourceBundle
 
 /**
@@ -93,7 +93,9 @@ class ViewInvoicePopOver(
             customer = api.getCustomer(invoice.customerId)
         }
         invoiceBox = vbox(getDouble(R.value.padding_medium)) {
-            ifNotMacOS { stylesheets += Stylesheets.INVOICE }
+            if (!SystemUtils.IS_OS_MAC_OSX) {
+                stylesheets += Stylesheets.INVOICE
+            }
             setMinSize(PX_WIDTH, PX_HEIGHT)
             setMaxSize(PX_WIDTH, PX_HEIGHT)
             hbox(getDouble(R.value.padding_medium)) {

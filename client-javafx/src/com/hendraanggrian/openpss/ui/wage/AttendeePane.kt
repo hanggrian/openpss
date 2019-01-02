@@ -5,7 +5,7 @@ import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.control.IntField
 import com.hendraanggrian.openpss.ui.DateTimePopOver
-import com.hendraanggrian.openpss.ui.FxComponent
+import com.hendraanggrian.openpss.FxComponent
 import com.hendraanggrian.openpss.util.round
 import com.hendraanggrian.openpss.util.trimMinutes
 import javafx.geometry.Pos.CENTER

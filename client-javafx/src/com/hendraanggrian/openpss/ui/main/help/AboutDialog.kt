@@ -3,7 +3,7 @@ package com.hendraanggrian.openpss.ui.main.help
 import com.hendraanggrian.openpss.BuildConfig2
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
-import com.hendraanggrian.openpss.ui.FxComponent
+import com.hendraanggrian.openpss.FxComponent
 import com.hendraanggrian.openpss.ui.Stylesheets
 import com.hendraanggrian.openpss.ui.main.License
 import com.jfoenix.controls.JFXButton

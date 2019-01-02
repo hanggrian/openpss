@@ -3,7 +3,7 @@ package com.hendraanggrian.openpss.ui.wage
 import com.hendraanggrian.openpss.PATTERN_TIME
 import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.data.Recess
-import com.hendraanggrian.openpss.ui.FxComponent
+import com.hendraanggrian.openpss.FxComponent
 import com.hendraanggrian.openpss.ui.TableDialog
 import com.hendraanggrian.openpss.util.stringCell
 import kotlinx.coroutines.CoroutineScope

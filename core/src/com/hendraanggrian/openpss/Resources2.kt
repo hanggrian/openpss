@@ -1,13 +1,11 @@
-package com.hendraanggrian.openpss.ui
+package com.hendraanggrian.openpss
 
-import com.hendraanggrian.openpss.Language
-import com.hendraanggrian.openpss.util.getResourceAsStream
 import javafx.scene.paint.Color
 import java.util.Properties
 import java.util.ResourceBundle
 
 /** Easier access to [ResourceBundle] across components. */
-interface Resources {
+interface Resources2 {
 
     val resourceBundle: ResourceBundle
 
@@ -15,7 +13,7 @@ interface Resources {
 
     val language: Language
         get() = Language.ofCode(
-            resourceBundle.baseBundleName.substringAfter('_')
+            resourceBundle.locale.language
         )
 
     fun getString(id: String): String = resourceBundle.getString(id)
@@ -28,15 +26,11 @@ interface Resources {
 
     fun getColor(id: String): Color = Color.web(valueProperties.getProperty(id))
 
-    fun getProperties(propertiesId: String): Properties = getResourceAsStream(propertiesId).use { stream ->
-        Properties().apply { load(stream) }
-    }
-
     /** Mark enum value to be translatable. */
     interface Enum {
 
         val resourceId: String
 
-        fun toString(resources: Resources): String = resources.getString(resourceId)
+        fun toString(resources: Resources2): String = resources.getString(resourceId)
     }
 }

@@ -1,7 +1,6 @@
 package com.hendraanggrian.openpss
 
 import com.hendraanggrian.openpss.io.SettingsFile
-import com.hendraanggrian.openpss.ui.Resources
 import com.hendraanggrian.openpss.ui.Stylesheets
 import com.hendraanggrian.openpss.ui.login.LoginPane
 import com.hendraanggrian.openpss.util.controller
@@ -20,7 +19,7 @@ import org.apache.log4j.BasicConfigurator
 import java.util.Properties
 import java.util.ResourceBundle
 
-class OpenPssApplication : Application(), Resources {
+class OpenPssApplication : Application(), Resources2 {
 
     companion object {
 
@@ -39,8 +38,9 @@ class OpenPssApplication : Application(), Resources {
 
     override fun init() {
         resourceBundle = SettingsFile.language.toResourcesBundle()
-
-        valueProperties = getProperties(R.value.properties_value)
+        valueProperties = OpenPssApplication::class.java
+            .getResourceAsStream(R.value.properties_value)
+            .use { stream -> Properties().apply { load(stream) } }
         if (BuildConfig2.DEBUG) {
             BasicConfigurator.configure()
         }

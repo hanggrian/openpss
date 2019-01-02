@@ -6,7 +6,7 @@ import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.data.Customer
 import com.hendraanggrian.openpss.data.Invoice
 import com.hendraanggrian.openpss.schema.typedTechnique
-import com.hendraanggrian.openpss.ui.FxComponent
+import com.hendraanggrian.openpss.FxComponent
 import com.hendraanggrian.openpss.ui.ResultableDialog
 import com.hendraanggrian.openpss.ui.ResultablePopOver
 import com.hendraanggrian.openpss.ui.invoice.job.AddDigitalJobPopOver

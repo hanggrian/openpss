@@ -1,12 +1,10 @@
-package com.hendraanggrian.openpss.ui
+package com.hendraanggrian.openpss
 
-import com.hendraanggrian.openpss.Language
-import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.api.GitHubApi
 import com.hendraanggrian.openpss.api.OpenPssApi
 import com.hendraanggrian.openpss.data.Employee
 import com.hendraanggrian.openpss.data.Setting
+import com.hendraanggrian.openpss.ui.ResultableDialog
 import javafx.scene.Node
 import javafx.scene.control.ComboBox
 import javafx.scene.control.PasswordField
@@ -34,7 +32,7 @@ import java.lang.ref.WeakReference
 import kotlin.coroutines.CoroutineContext
 
 /** StackPane is the root layout for [ktfx.jfoenix.jfxSnackbar]. */
-interface FxComponent : Resources, Component<StackPane> {
+interface FxComponent : Component<StackPane>, Resources2 {
 
     companion object {
         private var apiRef = WeakReference<OpenPssApi?>(null)
@@ -69,9 +67,7 @@ interface FxComponent : Resources, Component<StackPane> {
     val currencyConverter: StringConverter<Number>
         get() = CurrencyStringConverter(runBlocking {
             Language.ofFullCode(
-                api.getSetting(
-                    Setting.KEY_LANGUAGE
-                ).value
+                api.getSetting(Setting.KEY_LANGUAGE).value
             ).toLocale()
         })
 

@@ -1,4 +1,4 @@
-package com.hendraanggrian.openpss
+package com.hendraanggrian.openpss.util
 
 import com.fatboyindustrial.gsonjodatime.Converters
 import com.google.gson.GsonBuilder

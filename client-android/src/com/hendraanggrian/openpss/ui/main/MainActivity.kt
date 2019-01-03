@@ -7,23 +7,20 @@ import com.hendraanggrian.bundler.bindExtras
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.ui.BaseActivity
 import com.hendraanggrian.openpss.ui.customer.CustomerFragment
-import com.hendraanggrian.openpss.ui.invoice.InvoiceFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : BaseActivity() {
 
     private val navigationListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
-        when (item.itemId) {
-            R.id.tab_customer -> {
-                replaceFragment(R.id.fragmentLayout, CustomerFragment())
-                true
+        replaceFragment(
+            R.id.fragmentLayout, when (item.itemId) {
+                R.id.tab_customer -> CustomerFragment()
+                R.id.tab_invoice -> CustomerFragment()
+                R.id.tab_schedule -> CustomerFragment()
+                else -> CustomerFragment()
             }
-            R.id.tab_invoice -> {
-                replaceFragment(R.id.fragmentLayout, InvoiceFragment())
-                true
-            }
-            else -> false
-        }
+        )
+        true
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

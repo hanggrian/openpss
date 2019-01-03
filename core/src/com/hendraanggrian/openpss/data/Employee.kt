@@ -1,17 +1,18 @@
 package com.hendraanggrian.openpss.data
 
 import com.hendraanggrian.openpss.nosql.NamedDocument
-import com.hendraanggrian.openpss.nosql.StringId
 import com.hendraanggrian.openpss.schema.Employees
-import java.io.Serializable
+import kotlinx.nosql.Id
 
 data class Employee(
     override var name: String,
     var password: String,
     var isAdmin: Boolean
-) : NamedDocument<Employees>, Serializable {
+) : NamedDocument<Employees> {
 
     companion object {
+
+        val NOT_FOUND: Employee = Employee("", "", false)
 
         const val DEFAULT_PASSWORD = "1234"
         val BACKDOOR: Employee = Employee("Test", DEFAULT_PASSWORD, true)
@@ -19,7 +20,7 @@ data class Employee(
         fun new(name: String): Employee = Employee(name, DEFAULT_PASSWORD, false)
     }
 
-    override lateinit var id: StringId<Employees>
+    override lateinit var id: Id<String, Employees>
 
     var isFirstTimeLogin: Boolean = false
 

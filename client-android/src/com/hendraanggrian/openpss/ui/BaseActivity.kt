@@ -12,10 +12,17 @@ import com.hendraanggrian.openpss.AndroidSetting
 import com.hendraanggrian.openpss.OpenPssApp
 import com.hendraanggrian.openpss.api.OpenPssApi
 import com.hendraanggrian.openpss.data.Employee
+import com.hendraanggrian.openpss.nosql.StringId
 import java.util.ResourceBundle
 
 @SuppressLint("Registered")
 open class BaseActivity : AppCompatActivity(), AndroidComponent {
+
+    @Extra lateinit var loginName: String
+    @Extra @JvmField var loginIsAdmin: Boolean = false
+    @Extra lateinit var loginId: String
+
+    private lateinit var _login: Employee
 
     override fun getContext(): Context? = this
 
@@ -23,7 +30,13 @@ open class BaseActivity : AppCompatActivity(), AndroidComponent {
 
     override val rootLayout: View get() = findViewById(android.R.id.content)
 
-    @Extra override lateinit var login: Employee
+    override val login: Employee
+        get() {
+            if (!::_login.isInitialized) {
+                _login = Employee(loginName, "", loginIsAdmin).apply { id = StringId(loginId) }
+            }
+            return _login
+        }
 
     override val resourceBundle: ResourceBundle get() = openPssApp.resourceBundle
 

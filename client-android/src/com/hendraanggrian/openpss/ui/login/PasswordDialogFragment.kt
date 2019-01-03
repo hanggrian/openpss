@@ -24,7 +24,7 @@ import kotlinx.coroutines.runBlocking
 
 class PasswordDialogFragment : BaseDialogFragment() {
 
-    @Extra lateinit var employee: String
+    @Extra lateinit var loginName: String
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         bindExtras()
@@ -54,19 +54,24 @@ class PasswordDialogFragment : BaseDialogFragment() {
             })
             .setNegativeButton(android.R.string.cancel, null)
             .setPositiveButton(getString(R2.string.login)) { _, _ ->
-                val login = runCatching {
-                    runBlocking { api.login(employee, editText.text) }
+                runCatching {
+                    val login = runBlocking { api.login(loginName, editText.text) }
+                    startActivity(
+                        Intent(context, MainActivity::class.java).putExtras(
+                            extrasOf<MainActivity>(
+                                login.name,
+                                login.isAdmin,
+                                login.id.value
+                            )
+                        )
+                    )
+                    activity!!.finish()
                 }.onFailure {
                     if (BuildConfig2.DEBUG) it.printStackTrace()
                     TextDialogFragment()
                         .args(extrasOf<TextDialogFragment>(it.message.toString()))
                         .show(manager)
                 }.getOrThrow()
-                startActivity(
-                    Intent(context, MainActivity::class.java)
-                        .putExtras(extrasOf<MainActivity>(login))
-                )
-                activity!!.finish()
             }
             .create()
         dialog.setOnShowListener { editText.requestFocus() }

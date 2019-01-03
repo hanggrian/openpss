@@ -18,9 +18,9 @@ import com.hendraanggrian.openpss.routing.PlatePriceRouting
 import com.hendraanggrian.openpss.routing.RecessesRouting
 import com.hendraanggrian.openpss.routing.WagesRouting
 import com.hendraanggrian.openpss.routing.route
+import com.hendraanggrian.openpss.util.registerJodaTimeSerializers
 import io.ktor.application.call
 import io.ktor.application.install
-import io.ktor.application.log
 import io.ktor.features.AutoHeadResponse
 import io.ktor.features.CallLogging
 import io.ktor.features.Compression

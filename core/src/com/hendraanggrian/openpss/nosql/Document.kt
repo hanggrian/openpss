@@ -1,5 +1,7 @@
 package com.hendraanggrian.openpss.nosql
 
+import kotlinx.nosql.Id
+
 /**
  * Base interface new all DAOs, referred to as a document new NoSQL DATABASE.
  *
@@ -8,6 +10,9 @@ package com.hendraanggrian.openpss.nosql
  */
 interface Document<S : Schema<*>> {
 
-    /** NoSQL object identifier. */
-    var id: StringId<S>
+    /**
+     * NoSQL object identifier, cannot use [StringId] since `kotlin-nosql`
+     * binds this field automatically.
+     */
+    var id: Id<String, S>
 }

@@ -3,6 +3,7 @@ package com.hendraanggrian.openpss.api
 import com.hendraanggrian.openpss.data.Customer
 import com.hendraanggrian.openpss.data.Employee
 import com.hendraanggrian.openpss.data.Page
+import com.hendraanggrian.openpss.nosql.StringId
 import com.hendraanggrian.openpss.schema.Customers
 import io.ktor.client.request.get
 import io.ktor.client.request.post
@@ -25,18 +26,18 @@ interface CustomersApi : Api {
         jsonBody(customer)
     }
 
-    suspend fun getCustomer(id: Id<String, *>): Customer = client.get {
+    suspend fun getCustomer(id: StringId<*>): Customer = client.get {
         apiUrl("${Customers.schemaName}/$id")
     }
 
-    suspend fun editCustomer(login: Employee, id: Id<String, *>, customer: Customer): Boolean =
+    suspend fun editCustomer(login: Employee, id: StringId<*>, customer: Customer): Boolean =
         client.requestStatus(HttpMethod.Put) {
             apiUrl("${Customers.schemaName}/$id")
             jsonBody(customer)
             parameters("login" to login.name)
         }
 
-    suspend fun addContact(id: Id<String, *>, contact: Customer.Contact): Customer.Contact =
+    suspend fun addContact(id: StringId<*>, contact: Customer.Contact): Customer.Contact =
         client.post {
             apiUrl("${Customers.schemaName}/$id/${Customers.Contacts.schemaName}")
             jsonBody(contact)
@@ -44,7 +45,7 @@ interface CustomersApi : Api {
 
     suspend fun deleteContact(
         login: Employee,
-        id: Id<String, *>,
+        id: StringId<*>,
         contact: Customer.Contact
     ): Boolean =
         client.requestStatus(HttpMethod.Delete) {

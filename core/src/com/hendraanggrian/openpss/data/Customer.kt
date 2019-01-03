@@ -2,8 +2,8 @@ package com.hendraanggrian.openpss.data
 
 import com.google.gson.annotations.SerializedName
 import com.hendraanggrian.openpss.nosql.NamedDocument
+import com.hendraanggrian.openpss.nosql.StringId
 import com.hendraanggrian.openpss.schema.Customers
-import kotlinx.nosql.Id
 import org.joda.time.LocalDate
 
 data class Customer(
@@ -24,7 +24,7 @@ data class Customer(
         ): Customer = Customer(name, isCompany, since, null, null, listOf())
     }
 
-    override lateinit var id: Id<String, Customers>
+    override lateinit var id: StringId<Customers>
 
     override fun toString(): String = name
 

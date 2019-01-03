@@ -1,8 +1,8 @@
 package com.hendraanggrian.openpss.data
 
 import com.hendraanggrian.openpss.nosql.Document
+import com.hendraanggrian.openpss.nosql.StringId
 import com.hendraanggrian.openpss.schema.Logs
-import kotlinx.nosql.Id
 import org.joda.time.DateTime
 
 data class Log(
@@ -19,5 +19,5 @@ data class Log(
         ): Log = Log(DateTime.now(), message, login)
     }
 
-    override lateinit var id: Id<String, Logs>
+    override lateinit var id: StringId<Logs>
 }

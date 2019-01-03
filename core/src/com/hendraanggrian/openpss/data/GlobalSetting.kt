@@ -1,8 +1,8 @@
 package com.hendraanggrian.openpss.data
 
 import com.hendraanggrian.openpss.nosql.Document
+import com.hendraanggrian.openpss.nosql.StringId
 import com.hendraanggrian.openpss.schema.GlobalSettings
-import kotlinx.nosql.Id
 import kotlin.reflect.KProperty
 
 data class GlobalSetting(
@@ -21,7 +21,7 @@ data class GlobalSetting(
         ): String = first
     }
 
-    override lateinit var id: Id<String, GlobalSettings>
+    override lateinit var id: StringId<GlobalSettings>
 
     inline val valueList: List<String> get() = value.split("|")
 }

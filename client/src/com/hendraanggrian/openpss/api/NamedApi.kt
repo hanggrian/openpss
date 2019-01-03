@@ -4,6 +4,7 @@ import com.hendraanggrian.openpss.data.DigitalPrice
 import com.hendraanggrian.openpss.data.Employee
 import com.hendraanggrian.openpss.data.OffsetPrice
 import com.hendraanggrian.openpss.data.PlatePrice
+import com.hendraanggrian.openpss.nosql.StringId
 import com.hendraanggrian.openpss.schema.DigitalPrices
 import com.hendraanggrian.openpss.schema.Employees
 import com.hendraanggrian.openpss.schema.OffsetPrices
@@ -11,7 +12,6 @@ import com.hendraanggrian.openpss.schema.PlatePrices
 import io.ktor.client.request.get
 import io.ktor.client.request.post
 import io.ktor.http.HttpMethod
-import kotlinx.nosql.Id
 
 interface NamedApi : Api {
 
@@ -24,7 +24,7 @@ interface NamedApi : Api {
         jsonBody(price)
     }
 
-    suspend fun getPlatePrice(id: Id<String, *>): PlatePrice = client.get {
+    suspend fun getPlatePrice(id: StringId<*>): PlatePrice = client.get {
         apiUrl("${PlatePrices.schemaName}/$id")
     }
 
@@ -33,7 +33,7 @@ interface NamedApi : Api {
         jsonBody(price)
     }
 
-    suspend fun deletePlatePrice(id: Id<String, *>): Boolean = client.requestStatus(HttpMethod.Delete) {
+    suspend fun deletePlatePrice(id: StringId<*>): Boolean = client.requestStatus(HttpMethod.Delete) {
         apiUrl("${PlatePrices.schemaName}/$id")
     }
 
@@ -46,7 +46,7 @@ interface NamedApi : Api {
         jsonBody(price)
     }
 
-    suspend fun getOffsetPrice(id: Id<String, *>): OffsetPrice = client.get {
+    suspend fun getOffsetPrice(id: StringId<*>): OffsetPrice = client.get {
         apiUrl("${OffsetPrices.schemaName}/$id")
     }
 
@@ -55,7 +55,7 @@ interface NamedApi : Api {
         jsonBody(price)
     }
 
-    suspend fun deleteOffsetPrice(id: Id<String, *>): Boolean = client.requestStatus(HttpMethod.Delete) {
+    suspend fun deleteOffsetPrice(id: StringId<*>): Boolean = client.requestStatus(HttpMethod.Delete) {
         apiUrl("${OffsetPrices.schemaName}/$id")
     }
 
@@ -68,7 +68,7 @@ interface NamedApi : Api {
         jsonBody(price)
     }
 
-    suspend fun getDigitalPrice(id: Id<String, *>): DigitalPrice = client.get {
+    suspend fun getDigitalPrice(id: StringId<*>): DigitalPrice = client.get {
         apiUrl("${DigitalPrices.schemaName}/$id")
     }
 
@@ -78,7 +78,7 @@ interface NamedApi : Api {
             jsonBody(price)
         }
 
-    suspend fun deleteDigitalPrice(id: Id<String, *>): Boolean = client.requestStatus(HttpMethod.Delete) {
+    suspend fun deleteDigitalPrice(id: StringId<*>): Boolean = client.requestStatus(HttpMethod.Delete) {
         apiUrl("${DigitalPrices.schemaName}/$id")
     }
 
@@ -91,7 +91,7 @@ interface NamedApi : Api {
         jsonBody(employee)
     }
 
-    suspend fun getEmployee(id: Id<String, *>): Employee = client.get {
+    suspend fun getEmployee(id: StringId<*>): Employee = client.get {
         apiUrl("${Employees.schemaName}/$id")
     }
 
@@ -102,7 +102,7 @@ interface NamedApi : Api {
             parameters("login" to login)
         }
 
-    suspend fun deleteEmployee(login: Employee, id: Id<String, *>): Boolean = client.requestStatus(HttpMethod.Delete) {
+    suspend fun deleteEmployee(login: Employee, id: StringId<*>): Boolean = client.requestStatus(HttpMethod.Delete) {
         apiUrl("${Employees.schemaName}/$id")
         parameters("login" to login.name)
     }

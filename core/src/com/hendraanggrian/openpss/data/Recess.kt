@@ -2,8 +2,8 @@ package com.hendraanggrian.openpss.data
 
 import com.hendraanggrian.openpss.PATTERN_TIME
 import com.hendraanggrian.openpss.nosql.Document
+import com.hendraanggrian.openpss.nosql.StringId
 import com.hendraanggrian.openpss.schema.Recesses
-import kotlinx.nosql.Id
 import org.joda.time.DateTime
 import org.joda.time.Interval
 import org.joda.time.LocalTime
@@ -13,7 +13,7 @@ data class Recess(
     val end: LocalTime
 ) : Document<Recesses> {
 
-    override lateinit var id: Id<String, Recesses>
+    override lateinit var id: StringId<Recesses>
 
     override fun toString(): String = start.toString(PATTERN_TIME) +
         " - " +

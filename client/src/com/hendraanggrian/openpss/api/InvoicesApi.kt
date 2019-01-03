@@ -3,11 +3,11 @@ package com.hendraanggrian.openpss.api
 import com.hendraanggrian.openpss.data.Employee
 import com.hendraanggrian.openpss.data.Invoice
 import com.hendraanggrian.openpss.data.Page
+import com.hendraanggrian.openpss.nosql.StringId
 import com.hendraanggrian.openpss.schema.Invoices
 import io.ktor.client.request.get
 import io.ktor.client.request.post
 import io.ktor.http.HttpMethod
-import kotlinx.nosql.Id
 
 interface InvoicesApi : Api {
 
@@ -44,7 +44,7 @@ interface InvoicesApi : Api {
             parameters("login" to login.name)
         }
 
-    suspend fun getInvoice(id: Id<String, *>): Invoice = client.get {
+    suspend fun getInvoice(id: StringId<*>): Invoice = client.get {
         apiUrl("${Invoices.schemaName}/$id")
     }
 

@@ -1,8 +1,8 @@
 package com.hendraanggrian.openpss.data
 
 import com.hendraanggrian.openpss.nosql.NamedDocument
+import com.hendraanggrian.openpss.nosql.StringId
 import com.hendraanggrian.openpss.schema.DigitalPrices
-import kotlinx.nosql.Id
 
 data class DigitalPrice(
     override var name: String,
@@ -15,7 +15,7 @@ data class DigitalPrice(
         fun new(name: String): DigitalPrice = DigitalPrice(name, 0.0, 0.0)
     }
 
-    override lateinit var id: Id<String, DigitalPrices>
+    override lateinit var id: StringId<DigitalPrices>
 
     override fun toString(): String = name
 }

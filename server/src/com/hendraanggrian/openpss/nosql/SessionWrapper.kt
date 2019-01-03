@@ -27,7 +27,7 @@ class SessionWrapper(private val session: MongoDBSession) : Session by session,
     ): DocumentQuery<S, String, D> = session.run { return find(query) }
 
     /** Realm-style find by id. */
-    operator fun <S : Schema<D>, D : Document<S>> S.get(id: Id<String, S>): DocumentQuery<S, String, D> = invoke {
+    operator fun <S : Schema<D>, D : Document<S>> S.get(id: StringId<S>): DocumentQuery<S, String, D> = invoke {
         this.id.equal(id)
     }
 
@@ -41,7 +41,7 @@ class SessionWrapper(private val session: MongoDBSession) : Session by session,
         insert(document)
     }
 
-    operator fun <S : Schema<D>, D : Document<S>> S.minusAssign(id: Id<String, S>) {
+    operator fun <S : Schema<D>, D : Document<S>> S.minusAssign(id: StringId<S>) {
         get(id).remove()
     }
 

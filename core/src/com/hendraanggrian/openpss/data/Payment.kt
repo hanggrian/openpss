@@ -1,15 +1,15 @@
 package com.hendraanggrian.openpss.data
 
 import com.hendraanggrian.openpss.nosql.Document
+import com.hendraanggrian.openpss.nosql.StringId
 import com.hendraanggrian.openpss.schema.Employees
 import com.hendraanggrian.openpss.schema.Invoices
 import com.hendraanggrian.openpss.schema.Payments
-import kotlinx.nosql.Id
 import org.joda.time.DateTime
 
 data class Payment(
-    var invoiceId: Id<String, Invoices>,
-    var employeeId: Id<String, Employees>,
+    var invoiceId: StringId<Invoices>,
+    var employeeId: StringId<Employees>,
     val dateTime: DateTime,
     val value: Double,
     val reference: String?
@@ -18,8 +18,8 @@ data class Payment(
     companion object {
 
         fun new(
-            invoiceId: Id<String, Invoices>,
-            employeeId: Id<String, Employees>,
+            invoiceId: StringId<Invoices>,
+            employeeId: StringId<Employees>,
             dateTime: DateTime,
             value: Double,
             reference: String? = null
@@ -30,7 +30,7 @@ data class Payment(
             .sumByDouble { it.value }
     }
 
-    override lateinit var id: Id<String, Payments>
+    override lateinit var id: StringId<Payments>
 
     fun isCash(): Boolean = reference == null
 }

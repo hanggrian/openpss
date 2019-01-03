@@ -1,10 +1,10 @@
 package com.hendraanggrian.openpss.data
 
 import com.hendraanggrian.openpss.nosql.Document
+import com.hendraanggrian.openpss.nosql.StringId
 import com.hendraanggrian.openpss.schema.Customers
 import com.hendraanggrian.openpss.schema.Employees
 import com.hendraanggrian.openpss.schema.Invoices
-import kotlinx.nosql.Id
 import org.joda.time.DateTime
 
 data class Invoice(
@@ -13,8 +13,8 @@ data class Invoice(
      * Basically means the same thing.
      */
     val no: Int,
-    val employeeId: Id<String, Employees>,
-    val customerId: Id<String, Customers>,
+    val employeeId: StringId<Employees>,
+    val customerId: StringId<Customers>,
     val dateTime: DateTime,
     var digitalJobs: List<DigitalJob>,
     var offsetJobs: List<OffsetJob>,
@@ -30,8 +30,8 @@ data class Invoice(
 
         fun new(
             no: Int,
-            employeeId: Id<String, Employees>,
-            customerId: Id<String, Customers>,
+            employeeId: StringId<Employees>,
+            customerId: StringId<Customers>,
             dateTime: DateTime,
             digitalJobs: List<DigitalJob>,
             offsetJobs: List<OffsetJob>,
@@ -44,7 +44,7 @@ data class Invoice(
         )
     }
 
-    override lateinit var id: Id<String, Invoices>
+    override lateinit var id: StringId<Invoices>
 
     val jobs: List<Job>
         get() {

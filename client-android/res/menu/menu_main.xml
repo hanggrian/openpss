@@ -18,8 +18,4 @@
     <item
         android:id="@+id/tab_finance"
         android:icon="@drawable/tab_finance" />
-
-    <item
-        android:id="@+id/tab_wage"
-        android:icon="@drawable/tab_wage" />
 </menu>

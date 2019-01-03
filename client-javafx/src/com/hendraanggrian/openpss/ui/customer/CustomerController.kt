@@ -70,14 +70,14 @@ class CustomerController : ActionController(), Refreshable {
         refreshButton = StretchableButton(
             getDouble(R.value.stretch),
             getString(R2.string.refresh),
-            ImageView(R.image.act_refresh)
+            ImageView(R.image.action_refresh)
         ).apply {
             onAction { refresh() }
         }()
         addButton = StretchableButton(
             getDouble(R.value.stretch),
             getString(R2.string.add),
-            ImageView(R.image.act_add)
+            ImageView(R.image.action_add)
         ).apply {
             onAction { add() }
         }()

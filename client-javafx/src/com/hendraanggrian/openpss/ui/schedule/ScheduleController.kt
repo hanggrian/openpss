@@ -47,14 +47,14 @@ class ScheduleController : ActionController(), Refreshable {
         refreshButton = StretchableButton(
             getDouble(R.value.stretch),
             getString(R2.string.refresh),
-            ImageView(R.image.act_refresh)
+            ImageView(R.image.action_refresh)
         ).apply {
             onAction { refresh() }
         }()
         doneButton = StretchableButton(
             getDouble(R.value.stretch),
             getString(R2.string.done),
-            ImageView(R.image.act_done)
+            ImageView(R.image.action_done)
         ).apply {
             onAction {
                 api.editInvoice(

@@ -1,10 +1,10 @@
 package com.hendraanggrian.openpss.ui.main
 
 import android.os.Bundle
-import android.widget.Toast
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.hendraanggrian.bundler.bindExtras
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.ui.BaseActivity
 import com.hendraanggrian.openpss.ui.customer.CustomerFragment
 import kotlinx.android.synthetic.main.activity_main.*
@@ -27,7 +27,12 @@ class MainActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         bindExtras()
-        Toast.makeText(this, login.name, Toast.LENGTH_SHORT).show()
-        navigationView.setOnNavigationItemSelectedListener(navigationListener)
+        navigationView.run {
+            menu.findItem(R.id.tab_customer).title = getString(R2.string.customer)
+            menu.findItem(R.id.tab_invoice).title = getString(R2.string.invoice)
+            menu.findItem(R.id.tab_schedule).title = getString(R2.string.schedule)
+            menu.findItem(R.id.tab_finance).title = getString(R2.string.finance)
+            setOnNavigationItemSelectedListener(navigationListener)
+        }
     }
 }

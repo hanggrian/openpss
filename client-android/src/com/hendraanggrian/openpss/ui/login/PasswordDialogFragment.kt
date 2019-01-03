@@ -17,6 +17,7 @@ import com.hendraanggrian.bundler.extrasOf
 import com.hendraanggrian.openpss.BuildConfig2
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
+import com.hendraanggrian.openpss.data.Employee
 import com.hendraanggrian.openpss.ui.BaseDialogFragment
 import com.hendraanggrian.openpss.ui.TextDialogFragment
 import com.hendraanggrian.openpss.ui.main.MainActivity
@@ -29,6 +30,7 @@ class PasswordDialogFragment : BaseDialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         bindExtras()
         val editText = EditText(context).apply {
+            if (BuildConfig2.DEBUG) setText(Employee.DEFAULT_PASSWORD)
             inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
             onFocusChangeListener = OnFocusChangeListener { view, _ ->
                 view.post {
@@ -56,6 +58,7 @@ class PasswordDialogFragment : BaseDialogFragment() {
             .setPositiveButton(getString(R2.string.login)) { _, _ ->
                 runCatching {
                     val login = runBlocking { api.login(loginName, editText.text) }
+                    if (login == Employee.NOT_FOUND) error(getString(R2.string.login_failed))
                     startActivity(
                         Intent(context, MainActivity::class.java).putExtras(
                             extrasOf<MainActivity>(
@@ -71,7 +74,7 @@ class PasswordDialogFragment : BaseDialogFragment() {
                     TextDialogFragment()
                         .args(extrasOf<TextDialogFragment>(it.message.toString()))
                         .show(manager)
-                }.getOrThrow()
+                }
             }
             .create()
         dialog.setOnShowListener { editText.requestFocus() }

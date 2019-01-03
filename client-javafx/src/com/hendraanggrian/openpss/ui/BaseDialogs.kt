@@ -142,15 +142,15 @@ abstract class TableDialog<D : Document<*>>(
             alignment = Pos.CENTER_RIGHT
             hbox(getDouble(R.value.padding_medium)) {
                 alignment = Pos.CENTER_RIGHT
-                refreshButton = jfxButton(graphic = ImageView(R.image.act_refresh)) {
+                refreshButton = jfxButton(graphic = ImageView(R.image.action_refresh)) {
                     tooltip(getString(R2.string.refresh))
                     onAction { refresh() }
                 }
-                addButton = jfxButton(graphic = ImageView(R.image.act_add)) {
+                addButton = jfxButton(graphic = ImageView(R.image.action_add)) {
                     tooltip(getString(R2.string.add))
                     onAction { add() }
                 }
-                deleteButton = jfxButton(graphic = ImageView(R.image.act_delete)) {
+                deleteButton = jfxButton(graphic = ImageView(R.image.action_delete)) {
                     tooltip(getString(R2.string.delete))
                     onAction {
                         val action = {

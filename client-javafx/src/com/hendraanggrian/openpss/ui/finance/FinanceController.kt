@@ -80,14 +80,14 @@ class FinanceController : ActionController(), Refreshable {
         refreshButton = StretchableButton(
             getDouble(R.value.stretch),
             getString(R2.string.refresh),
-            ImageView(R.image.act_refresh)
+            ImageView(R.image.action_refresh)
         ).apply {
             onAction { refresh() }
         }()
         viewTotalButton = StretchableButton(
             getDouble(R.value.stretch),
             getString(R2.string.total),
-            ImageView(R.image.act_money)
+            ImageView(R.image.action_money)
         ).apply {
             onAction { viewTotal() }
         }()

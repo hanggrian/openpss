@@ -67,14 +67,14 @@ class WageController : ActionController() {
         browseButton = StretchableButton(
             getDouble(R.value.stretch),
             getString(R2.string.browse),
-            ImageView(R.image.act_browse)
+            ImageView(R.image.action_browse)
         ).apply {
             onAction { browse() }
         }()
         saveWageButton = StretchableButton(
             getDouble(R.value.stretch),
             getString(R2.string.save_wage),
-            ImageView(R.image.act_save)
+            ImageView(R.image.action_save)
         ).apply {
             disableProperty().bind(flowPane.children.isEmptyBinding)
             onAction {
@@ -88,7 +88,7 @@ class WageController : ActionController() {
         historyButton = StretchableButton(
             getDouble(R.value.stretch),
             getString(R2.string.history),
-            ImageView(R.image.act_history)
+            ImageView(R.image.action_history)
         ).apply {
             onAction { history() }
         }()

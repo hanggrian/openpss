@@ -1,8 +1,8 @@
 package com.hendraanggrian.openpss.data
 
 import com.hendraanggrian.openpss.nosql.NamedDocument
+import com.hendraanggrian.openpss.nosql.StringId
 import com.hendraanggrian.openpss.schema.Employees
-import kotlinx.nosql.Id
 
 data class Employee(
     override var name: String,
@@ -20,7 +20,7 @@ data class Employee(
         fun new(name: String): Employee = Employee(name, DEFAULT_PASSWORD, false)
     }
 
-    override lateinit var id: Id<String, Employees>
+    override lateinit var id: StringId<Employees>
 
     var isFirstTimeLogin: Boolean = false
 

@@ -190,8 +190,8 @@ class AttendeePane(
             imageProperty().bind(buildBinding(hoverProperty()) {
                 Image(
                     when {
-                        isHover -> R.image.btn_clear_active
-                        else -> R.image.btn_clear_inactive
+                        isHover -> R.image.graphic_clear_active
+                        else -> R.image.graphic_clear_inactive
                     }
                 )
             })

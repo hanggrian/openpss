@@ -8,18 +8,18 @@ import com.hendraanggrian.openpss.schema.Customers
 import io.ktor.client.request.get
 import io.ktor.client.request.post
 import io.ktor.http.HttpMethod
-import kotlinx.nosql.Id
 
 interface CustomersApi : Api {
 
-    suspend fun getCustomers(search: CharSequence, page: Int, count: Int): Page<Customer> = client.get {
-        apiUrl(Customers.schemaName)
-        parameters(
-            "search" to search,
-            "page" to page,
-            "count" to count
-        )
-    }
+    suspend fun getCustomers(search: CharSequence, page: Int, count: Int): Page<Customer> =
+        client.get {
+            apiUrl(Customers.schemaName)
+            parameters(
+                "search" to search,
+                "page" to page,
+                "count" to count
+            )
+        }
 
     suspend fun addCustomer(customer: Customer): Customer = client.post {
         apiUrl(Customers.schemaName)

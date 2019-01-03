@@ -21,5 +21,6 @@
         app:elevation="8dp"
         app:itemIconTint="@drawable/state_icon"
         app:itemTextColor="@drawable/state_text"
+        app:labelVisibilityMode="labeled"
         app:menu="@menu/menu_main" />
 </LinearLayout>

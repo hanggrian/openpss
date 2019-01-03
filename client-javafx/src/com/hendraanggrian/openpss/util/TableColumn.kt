@@ -29,8 +29,8 @@ fun <T> TableColumn<T, Boolean>.doneCell(size: Int = 64, target: T.() -> Boolean
             graphic = null
             if (done != null && !empty) graphic = imageView(
                 when {
-                    done -> R.image.btn_done_yes
-                    else -> R.image.btn_done_no
+                    done -> R.image.graphic_done_yes
+                    else -> R.image.graphic_done_no
                 }
             )
         }

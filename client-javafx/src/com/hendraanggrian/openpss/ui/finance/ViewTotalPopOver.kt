@@ -3,7 +3,7 @@ package com.hendraanggrian.openpss.ui.finance
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.FxComponent
-import com.hendraanggrian.openpss.ui.OpenPssPopOver
+import com.hendraanggrian.openpss.ui.BasePopOver
 import javafx.geometry.HPos
 import ktfx.invoke
 import ktfx.layouts.columnConstraints
@@ -14,7 +14,7 @@ class ViewTotalPopOver(
     component: FxComponent,
     private val cash: Double,
     private val nonCash: Double
-) : OpenPssPopOver(component, R2.string.view_total) {
+) : BasePopOver(component, R2.string.view_total) {
 
     init {
         gridPane {

@@ -39,10 +39,10 @@ import ktfx.windows.setMinSize
 import kotlin.coroutines.CoroutineContext
 
 @Suppress("LeakingThis")
-open class OpenPssDialog(
+open class BaseDialog(
     component: FxComponent,
     override val titleId: String
-) : JFXDialog(), OpenPssPopup, FxComponent by component {
+) : JFXDialog(), BasePopup, FxComponent by component {
 
     private companion object {
         const val MAX_OPENED_DIALOGS = 3
@@ -70,7 +70,7 @@ open class OpenPssDialog(
     }
 
     override fun show() {
-        val openedDialogs = rootLayout.children.filterIsInstance<OpenPssDialog>()
+        val openedDialogs = rootLayout.children.filterIsInstance<BaseDialog>()
         if (openedDialogs.size > MAX_OPENED_DIALOGS) {
             rootLayout.children -= openedDialogs
         }
@@ -81,7 +81,7 @@ open class OpenPssDialog(
 open class ResultableDialog<T>(
     component: FxComponent,
     titleId: String
-) : OpenPssDialog(component, titleId), ResultablePopup<T> {
+) : BaseDialog(component, titleId), ResultablePopup<T> {
 
     override lateinit var defaultButton: Button
 
@@ -101,7 +101,7 @@ class TextDialog(
     component: FxComponent,
     titleId: String,
     content: String = ""
-) : OpenPssDialog(component, titleId) {
+) : BaseDialog(component, titleId) {
 
     init {
         label {
@@ -128,7 +128,7 @@ abstract class TableDialog<D : Document<*>>(
     component: FxComponent,
     titleId: String,
     requestPermissionWhenDelete: Boolean = false
-) : OpenPssDialog(component, titleId), TableColumnsBuilder<D>, Refreshable {
+) : BaseDialog(component, titleId), TableColumnsBuilder<D>, Refreshable {
 
     protected lateinit var refreshButton: Button
     protected lateinit var addButton: Button

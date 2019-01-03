@@ -17,12 +17,12 @@ import com.hendraanggrian.bundler.extrasOf
 import com.hendraanggrian.openpss.BuildConfig2
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
-import com.hendraanggrian.openpss.ui.OpenPssDialogFragment
+import com.hendraanggrian.openpss.ui.BaseDialogFragment
 import com.hendraanggrian.openpss.ui.TextDialogFragment
 import com.hendraanggrian.openpss.ui.main.MainActivity
 import kotlinx.coroutines.runBlocking
 
-class PasswordDialogFragment : OpenPssDialogFragment() {
+class PasswordDialogFragment : BaseDialogFragment() {
 
     @Extra lateinit var employee: String
 

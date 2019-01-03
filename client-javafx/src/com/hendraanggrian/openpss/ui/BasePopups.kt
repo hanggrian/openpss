@@ -20,7 +20,7 @@ import ktfx.layouts.buttonBar
 import ktfx.layouts.label
 import ktfx.layouts.vbox
 
-interface OpenPssPopup : FxComponent, NodeInvokable {
+interface BasePopup : FxComponent, NodeInvokable {
 
     override fun <R : Node> R.invoke(): R = also { contentPane.children += it }
 
@@ -88,7 +88,7 @@ interface OpenPssPopup : FxComponent, NodeInvokable {
 }
 
 /** Defines a popup component that expects result to be returned. */
-interface ResultablePopup<T> : OpenPssPopup {
+interface ResultablePopup<T> : BasePopup {
 
     var defaultButton: Button
 

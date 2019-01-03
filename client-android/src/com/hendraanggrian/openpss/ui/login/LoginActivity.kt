@@ -8,14 +8,14 @@ import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.Setting
 import com.hendraanggrian.openpss.api.OpenPssApi
-import com.hendraanggrian.openpss.ui.OpenPssActivity
+import com.hendraanggrian.openpss.ui.BaseActivity
 import com.jakewharton.processphoenix.ProcessPhoenix
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class LoginActivity : OpenPssActivity() {
+class LoginActivity : BaseActivity() {
 
     private val preferenceListener =
         SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
@@ -52,7 +52,7 @@ class LoginActivity : OpenPssActivity() {
     }
 
     fun login(@Suppress("UNUSED_PARAMETER") view: View) {
-        openPssApplication.api = OpenPssApi(
+        openPssApp.api = OpenPssApi(
             setting.getString(Setting.KEY_SERVER_HOST),
             setting.getString(Setting.KEY_SERVER_PORT).toInt()
         )

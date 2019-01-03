@@ -4,7 +4,7 @@ import com.hendraanggrian.openpss.BuildConfig2
 import com.hendraanggrian.openpss.FxComponent
 import com.hendraanggrian.openpss.FxSetting
 import com.hendraanggrian.openpss.Language
-import com.hendraanggrian.openpss.OpenPssApplication
+import com.hendraanggrian.openpss.OpenPssApp
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.Setting
@@ -12,7 +12,7 @@ import com.hendraanggrian.openpss.StringResources
 import com.hendraanggrian.openpss.ValueResources
 import com.hendraanggrian.openpss.control.IntField
 import com.hendraanggrian.openpss.data.Employee
-import com.hendraanggrian.openpss.ui.OpenPssPopOver
+import com.hendraanggrian.openpss.ui.BasePopOver
 import com.hendraanggrian.openpss.ui.ResultableDialog
 import com.hendraanggrian.openpss.ui.TextDialog
 import com.hendraanggrian.openpss.ui.main.help.AboutDialog
@@ -103,7 +103,7 @@ class LoginPane<T>(resources: T, override val setting: FxSetting) : _StackPane()
                         R2.string.restart_required,
                         getString(R2.string._restart_required)
                     ).apply {
-                        onDialogClosed { OpenPssApplication.exit() }
+                        onDialogClosed { OpenPssApp.exit() }
                     }.show(this@LoginPane)
                 }
             } row 0 col 1
@@ -184,7 +184,7 @@ class LoginPane<T>(resources: T, override val setting: FxSetting) : _StackPane()
         }
     }
 
-    inner class ConnectionSettingsPopover : OpenPssPopOver(this, R2.string.connection_settings) {
+    inner class ConnectionSettingsPopover : BasePopOver(this, R2.string.connection_settings) {
 
         override val focusedNode: Node? get() = serverHostField
 

@@ -12,7 +12,7 @@ import com.hendraanggrian.openpss.data.GlobalSetting
 import com.hendraanggrian.openpss.data.GlobalSetting.Companion.KEY_INVOICE_HEADERS
 import com.hendraanggrian.openpss.schema.typedTechnique
 import com.hendraanggrian.openpss.FxComponent
-import com.hendraanggrian.openpss.ui.OpenPssPopOver
+import com.hendraanggrian.openpss.ui.BasePopOver
 import com.hendraanggrian.openpss.ui.Stylesheets
 import com.sun.javafx.print.PrintHelper
 import com.sun.javafx.print.Units
@@ -67,7 +67,7 @@ class ViewInvoicePopOver(
     component: FxComponent,
     private val invoice: Invoice,
     private val isTest: Boolean = false
-) : OpenPssPopOver(component, R2.string.invoice) {
+) : BasePopOver(component, R2.string.invoice) {
 
     private companion object {
         const val MM_WIDTH = 100.0

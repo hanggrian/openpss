@@ -11,7 +11,7 @@ plugins {
 group = RELEASE_GROUP
 version = RELEASE_VERSION
 
-application.mainClassName = "$group.OpenPssApplication"
+application.mainClassName = "$group.OpenPssApp"
 
 sourceSets {
     getByName("main") {

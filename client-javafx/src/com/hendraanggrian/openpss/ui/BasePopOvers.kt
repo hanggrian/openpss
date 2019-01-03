@@ -32,10 +32,10 @@ import org.joda.time.LocalTime
 
 /** Base popup class used across applications. */
 @Suppress("LeakingThis")
-open class OpenPssPopOver(
+open class BasePopOver(
     component: FxComponent,
     override val titleId: String
-) : PopOver(), OpenPssPopup, FxComponent by component {
+) : PopOver(), BasePopup, FxComponent by component {
 
     override fun setActualContent(region: Region) {
         contentNode = region
@@ -62,7 +62,7 @@ open class OpenPssPopOver(
 open class ResultablePopOver<T>(
     component: FxComponent,
     titleId: String
-) : OpenPssPopOver(component, titleId), ResultablePopup<T> {
+) : BasePopOver(component, titleId), ResultablePopup<T> {
 
     override lateinit var defaultButton: Button
 

@@ -5,9 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.ui.OpenPssFragment
+import com.hendraanggrian.openpss.ui.BaseFragment
 
-class CustomerFragment : OpenPssFragment() {
+class CustomerFragment : BaseFragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,

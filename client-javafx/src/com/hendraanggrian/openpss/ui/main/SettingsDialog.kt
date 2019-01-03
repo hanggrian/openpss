@@ -8,7 +8,7 @@ import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.control.Space
 import com.hendraanggrian.openpss.data.GlobalSetting.Companion.KEY_INVOICE_HEADERS
 import com.hendraanggrian.openpss.data.GlobalSetting.Companion.KEY_LANGUAGE
-import com.hendraanggrian.openpss.ui.OpenPssDialog
+import com.hendraanggrian.openpss.ui.BaseDialog
 import com.hendraanggrian.openpss.ui.wage.WageReader
 import com.jfoenix.controls.JFXButton
 import javafx.event.ActionEvent
@@ -44,7 +44,7 @@ import ktfx.layouts.vbox
 import ktfx.listeners.converter
 import kotlin.coroutines.CoroutineContext
 
-class SettingsDialog(component: FxComponent) : OpenPssDialog(component, R2.string.settings) {
+class SettingsDialog(component: FxComponent) : BaseDialog(component, R2.string.settings) {
 
     private var isLocalChanged = boolean()
     private var isGlobalChanged = boolean()

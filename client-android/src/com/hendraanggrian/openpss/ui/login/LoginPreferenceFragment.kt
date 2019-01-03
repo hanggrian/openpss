@@ -11,9 +11,9 @@ import com.hendraanggrian.openpss.Language
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.Setting
-import com.hendraanggrian.openpss.ui.OpenPssPreferenceFragment
+import com.hendraanggrian.openpss.ui.BasePreferenceFragment
 
-class LoginPreferenceFragment : OpenPssPreferenceFragment() {
+class LoginPreferenceFragment : BasePreferenceFragment() {
 
     override fun onCreatePreferencesFix(savedInstanceState: Bundle?, rootKey: String?) {
         addPreferencesFromResource(R.xml.fragment_login)

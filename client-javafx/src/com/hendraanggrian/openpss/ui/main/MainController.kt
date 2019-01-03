@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.ui.main
 
 import com.hendraanggrian.openpss.BuildConfig2
-import com.hendraanggrian.openpss.OpenPssApplication
+import com.hendraanggrian.openpss.OpenPssApp
 import com.hendraanggrian.openpss.PATTERN_DATETIME
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
@@ -14,7 +14,7 @@ import com.hendraanggrian.openpss.data.Log
 import com.hendraanggrian.openpss.schema.Technique
 import com.hendraanggrian.openpss.schema.new
 import com.hendraanggrian.openpss.ui.ActionController
-import com.hendraanggrian.openpss.ui.OpenPssController
+import com.hendraanggrian.openpss.ui.BaseController
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.customer.CustomerController
 import com.hendraanggrian.openpss.ui.employee.EditEmployeeDialog
@@ -63,7 +63,7 @@ import org.apache.commons.lang3.SystemUtils
 import java.net.URL
 import java.util.ResourceBundle
 
-class MainController : OpenPssController(), Refreshable {
+class MainController : BaseController(), Refreshable {
 
     @FXML override lateinit var rootLayout: StackPane
     @FXML lateinit var menuBar: MenuBar
@@ -222,7 +222,7 @@ class MainController : OpenPssController(), Refreshable {
     }
 
     @FXML
-    fun quit() = OpenPssApplication.exit()
+    fun quit() = OpenPssApp.exit()
 
     @FXML
     fun editPrice(event: ActionEvent) = when (event.source) {

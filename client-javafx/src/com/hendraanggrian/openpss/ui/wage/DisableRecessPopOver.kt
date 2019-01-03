@@ -3,7 +3,7 @@ package com.hendraanggrian.openpss.ui.wage
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.FxComponent
-import com.hendraanggrian.openpss.ui.OpenPssPopOver
+import com.hendraanggrian.openpss.ui.BasePopOver
 import com.jfoenix.controls.JFXButton
 import javafx.scene.Node
 import javafx.scene.control.ComboBox
@@ -21,7 +21,7 @@ import ktfx.layouts.label
 class DisableRecessPopOver(
     component: FxComponent,
     private val attendeePanes: List<AttendeePane>
-) : OpenPssPopOver(component, R2.string.disable_recess) {
+) : BasePopOver(component, R2.string.disable_recess) {
 
     private lateinit var recessChoice: ComboBox<*>
     private lateinit var roleChoice: ComboBox<*>

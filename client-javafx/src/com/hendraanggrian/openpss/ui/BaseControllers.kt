@@ -2,7 +2,7 @@ package com.hendraanggrian.openpss.ui
 
 import com.hendraanggrian.openpss.FxComponent
 import com.hendraanggrian.openpss.FxSetting
-import com.hendraanggrian.openpss.OpenPssApplication
+import com.hendraanggrian.openpss.OpenPssApp
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.data.Employee
 import javafx.beans.property.SimpleStringProperty
@@ -19,7 +19,7 @@ import java.util.ResourceBundle
 
 /** Base class of all controllers. */
 @Suppress("LeakingThis")
-open class OpenPssController : Initializable, FxComponent {
+open class BaseController : Initializable, FxComponent {
 
     private lateinit var _setting: FxSetting
     override val setting: FxSetting
@@ -31,7 +31,7 @@ open class OpenPssController : Initializable, FxComponent {
         }
 
     override lateinit var resourceBundle: ResourceBundle
-    override val valueProperties: Properties = OpenPssApplication::class.java
+    override val valueProperties: Properties = OpenPssApp::class.java
         .getResourceAsStream(R.value.properties_value)
         .use { stream -> Properties().apply { load(stream) } }
 
@@ -46,7 +46,7 @@ open class OpenPssController : Initializable, FxComponent {
     }
 
     /** Register extra [value] with [key]. */
-    fun addExtra(key: String, value: Any): OpenPssController {
+    fun addExtra(key: String, value: Any): BaseController {
         if (!::extras.isInitialized) {
             extras = mutableMapOf()
         }
@@ -61,7 +61,7 @@ open class OpenPssController : Initializable, FxComponent {
     }
 }
 
-open class ActionController : OpenPssController() {
+open class ActionController : BaseController() {
 
     private val titleProperty: StringProperty = SimpleStringProperty(null)
     fun titleProperty(): StringProperty = titleProperty

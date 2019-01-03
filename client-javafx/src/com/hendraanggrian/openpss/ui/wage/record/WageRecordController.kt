@@ -9,7 +9,7 @@ import com.hendraanggrian.openpss.control.UncollapsibleTreeItem
 import com.hendraanggrian.openpss.WageDirectory
 import com.hendraanggrian.openpss.WageFile
 import com.hendraanggrian.openpss.ui.DatePopOver
-import com.hendraanggrian.openpss.ui.OpenPssController
+import com.hendraanggrian.openpss.ui.BaseController
 import com.hendraanggrian.openpss.ui.Stylesheets
 import com.hendraanggrian.openpss.ui.TimePopOver
 import com.hendraanggrian.openpss.ui.wage.Attendee
@@ -55,7 +55,7 @@ import java.util.ResourceBundle
 import javax.imageio.ImageIO
 
 @Suppress("UNCHECKED_CAST")
-class WageRecordController : OpenPssController() {
+class WageRecordController : BaseController() {
 
     companion object {
         const val EXTRA_ATTENDEES = "EXTRA_ATTENDEES"

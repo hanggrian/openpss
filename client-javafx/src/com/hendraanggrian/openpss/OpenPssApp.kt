@@ -18,12 +18,12 @@ import org.apache.log4j.BasicConfigurator
 import java.util.Properties
 import java.util.ResourceBundle
 
-class OpenPssApplication : Application(), StringResources, ValueResources {
+class OpenPssApp : Application(), StringResources, ValueResources {
 
     companion object {
 
         @JvmStatic
-        fun main(args: Array<String>) = launch<OpenPssApplication>(*args)
+        fun main(args: Array<String>) = launch<OpenPssApp>(*args)
 
         fun exit() {
             Platform.exit() // exit JavaFX
@@ -38,7 +38,7 @@ class OpenPssApplication : Application(), StringResources, ValueResources {
     override fun init() {
         setting = FxSetting().apply { editDefault() }
         resourceBundle = setting.language.toResourcesBundle()
-        valueProperties = OpenPssApplication::class.java
+        valueProperties = OpenPssApp::class.java
             .getResourceAsStream(R.value.properties_value)
             .use { stream -> Properties().apply { load(stream) } }
         if (BuildConfig2.DEBUG) {
@@ -52,7 +52,7 @@ class OpenPssApplication : Application(), StringResources, ValueResources {
         stage.title = getString(R2.string.openpss_login)
         stage.scene = scene {
             stylesheets += Stylesheets.OPENPSS
-            LoginPane(this@OpenPssApplication, setting).apply {
+            LoginPane(this@OpenPssApp, setting).apply {
                 onSuccess = { employee ->
                     val loader = FXMLLoader(getResource(R.layout.controller_main), resourceBundle)
                     this@scene.run {

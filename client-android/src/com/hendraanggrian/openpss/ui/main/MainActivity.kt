@@ -34,5 +34,6 @@ class MainActivity : BaseActivity() {
             menu.findItem(R.id.tab_finance).title = getString(R2.string.finance)
             setOnNavigationItemSelectedListener(navigationListener)
         }
+        replaceFragment(R.id.fragmentLayout, CustomerFragment())
     }
 }

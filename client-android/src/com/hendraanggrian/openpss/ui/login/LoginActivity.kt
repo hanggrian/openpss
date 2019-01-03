@@ -36,9 +36,8 @@ class LoginActivity : BaseActivity() {
         setSupportActionBar(toolbar)
         supportActionBar!!.title = getString(R2.string.openpss_login)
         loginButton.text = getString(R2.string.login)
-
-        replaceFragment(R.id.preferenceLayout, LoginPreferenceFragment())
         preferenceListener.onSharedPreferenceChanged(setting.preferences, null) // trigger once
+        replaceFragment(R.id.preferenceLayout, LoginPreferenceFragment())
     }
 
     override fun onResume() {

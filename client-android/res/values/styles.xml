@@ -3,9 +3,9 @@
 
     <style name="Theme.OpenPss" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
-        <item name="android:statusBarColor" tools:targetApi="l">?colorPrimary</item>
-        <!--item name="android:windowDrawsSystemBarBackgrounds" tools:targetApi="l">true</item-->
+        <item name="android:statusBarColor" tools:ignore="NewApi">#e8eaed</item>
 
-        <item name="colorAccent">#1e88e5</item>
+        <item name="colorAccent">@color/blue</item>
+        <item name="colorControlHighlight">@color/blue_light</item>
     </style>
 </resources>

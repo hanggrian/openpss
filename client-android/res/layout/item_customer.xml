@@ -4,37 +4,27 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center"
+    android:minHeight="?listPreferredItemHeight"
     android:orientation="horizontal"
-    android:paddingBottom="@dimen/padding_medium"
     android:paddingLeft="@dimen/padding_large"
-    android:paddingRight="@dimen/padding_large"
     android:paddingTop="@dimen/padding_medium"
-    tools:ignore="HardcodedText,UselessParent">
+    android:paddingRight="@dimen/padding_large"
+    android:paddingBottom="@dimen/padding_medium"
+    tools:ignore="HardcodedText,UseCompoundDrawables,UselessParent">
 
-    <FrameLayout
-        android:layout_width="40dp"
-        android:layout_height="40dp">
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="?colorAccent"
-            android:contentDescription="Name abbreviation" />
-
-        <TextView
-            android:id="@+id/abbreviationView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="HA"
-            android:textAppearance="@style/TextAppearance.AppCompat.Title.Inverse" />
-    </FrameLayout>
+    <ImageView
+        android:id="@+id/typeImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_person"
+        tools:ignore="ContentDescription" />
 
     <TextView
+        android:id="@+id/nameText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/padding_large"
         android:layout_marginRight="@dimen/padding_large"
         android:text="Hendra Anggrian"
-        android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
+        android:textAppearance="?textAppearanceListItem" />
 </LinearLayout>

@@ -5,14 +5,13 @@
         android:icon="@drawable/ic_language"
         android:key="language" />
 
-    <androidx.preference.EditTextPreference
+    <com.takisoft.preferencex.EditTextPreference
         android:icon="@drawable/ic_connection_settings"
         android:key="server_host" />
 
-    <androidx.preference.EditTextPreference
-        android:key="server_port" />
+    <com.takisoft.preferencex.EditTextPreference android:key="server_port" />
 
-    <androidx.preference.EditTextPreference
+    <com.takisoft.preferencex.EditTextPreference
         android:icon="@drawable/ic_person"
         android:key="employee" />
 

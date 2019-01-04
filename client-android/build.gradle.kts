@@ -77,11 +77,7 @@ dependencies {
     implementation(hendraanggrian("material", "errorbar-ktx", VERSION_ERRORBAR))
     implementation(hendraanggrian("pikasso", version = VERSION_PIKASSO))
     implementation(
-        hendraanggrian(
-            "recyclerview",
-            "recyclerview-paginated",
-            VERSION_RECYCLERVIEW_PAGINATED
-        )
+        hendraanggrian("recyclerview", "recyclerview-paginated", VERSION_RECYCLERVIEW_PAGINATED)
     )
     implementation(hendraanggrian("bundler", "bundler-ktx", VERSION_BUNDLER))
     kapt(hendraanggrian("bundler", "bundler-compiler", VERSION_BUNDLER))

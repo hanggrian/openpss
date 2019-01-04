@@ -22,11 +22,8 @@ class CustomerFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
 
     private lateinit var customerAdapter: CustomerAdapter
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? = inflater.inflate(R.layout.fragment_customer, container, false)
+    override fun onCreateView(inflater: LayoutInflater, parent: ViewGroup?, state: Bundle?): View =
+        inflater.inflate(R.layout.fragment_customer, parent, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         customerSearch.input.run {

@@ -1,6 +1,6 @@
 @file:Suppress("NOTHING_TO_INLINE")
 
-package com.hendraanggrian.openpss.widget
+package com.hendraanggrian.openpss.util
 
 import android.text.Editable
 import android.text.TextWatcher

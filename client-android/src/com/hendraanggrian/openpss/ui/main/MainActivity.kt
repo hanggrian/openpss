@@ -6,6 +6,7 @@ import com.hendraanggrian.bundler.bindExtras
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.ui.BaseActivity
+import com.hendraanggrian.openpss.ui.UnsupportedFragment
 import com.hendraanggrian.openpss.ui.customer.CustomerFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -15,9 +16,9 @@ class MainActivity : BaseActivity() {
         replaceFragment(
             R.id.fragmentLayout, when (item.itemId) {
                 R.id.tab_customer -> CustomerFragment()
-                R.id.tab_invoice -> CustomerFragment()
-                R.id.tab_schedule -> CustomerFragment()
-                else -> CustomerFragment()
+                R.id.tab_invoice -> UnsupportedFragment()
+                R.id.tab_schedule -> UnsupportedFragment()
+                else -> UnsupportedFragment()
             }
         )
         true

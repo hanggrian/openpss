@@ -1,13 +1,14 @@
 package com.hendraanggrian.openpss.ui.wage
 
+import com.hendraanggrian.openpss.FxComponent
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
-import com.hendraanggrian.openpss.FxComponent
 import com.hendraanggrian.openpss.ui.BasePopOver
 import com.jfoenix.controls.JFXButton
 import javafx.scene.Node
 import javafx.scene.control.ComboBox
 import javafx.scene.control.Separator
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import ktfx.bindings.or
 import ktfx.collections.mutableObservableListOf
@@ -36,7 +37,7 @@ class DisableRecessPopOver(
                 mutableObservableListOf(
                     getString(R2.string.all),
                     Separator(),
-                    *runBlocking { api.getRecesses() }.toTypedArray()
+                    *runBlocking(Dispatchers.IO) { api.getRecesses() }.toTypedArray()
                 )
             ) { selectionModel.selectFirst() } col 1 row 0
             label(getString(R2.string.employee)) col 0 row 1

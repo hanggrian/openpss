@@ -18,6 +18,7 @@ import javafx.scene.control.TreeItem
 import javafx.scene.control.TreeTableColumn
 import javafx.scene.control.TreeTableView
 import javafx.scene.image.ImageView
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import ktfx.bindings.buildStringBinding
 import ktfx.bindings.or
@@ -111,7 +112,7 @@ class ScheduleController : ActionController(), Refreshable {
                 addAll(UncollapsibleTreeItem(
                     Schedule(
                         invoice,
-                        runBlocking { api.getCustomer(invoice.customerId).name },
+                        runBlocking(Dispatchers.IO) { api.getCustomer(invoice.customerId).name },
                         "",
                         "",
                         invoice.dateTime.toString(PATTERN_DATETIMEEXT)

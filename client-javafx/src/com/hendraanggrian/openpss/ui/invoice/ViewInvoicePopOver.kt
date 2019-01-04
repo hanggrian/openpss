@@ -1,5 +1,6 @@
 package com.hendraanggrian.openpss.ui.invoice
 
+import com.hendraanggrian.openpss.FxComponent
 import com.hendraanggrian.openpss.Language
 import com.hendraanggrian.openpss.PATTERN_DATETIMEEXT
 import com.hendraanggrian.openpss.R
@@ -7,11 +8,10 @@ import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.control.Space
 import com.hendraanggrian.openpss.data.Customer
 import com.hendraanggrian.openpss.data.Employee
-import com.hendraanggrian.openpss.data.Invoice
 import com.hendraanggrian.openpss.data.GlobalSetting
 import com.hendraanggrian.openpss.data.GlobalSetting.Companion.KEY_INVOICE_HEADERS
+import com.hendraanggrian.openpss.data.Invoice
 import com.hendraanggrian.openpss.schema.typedTechnique
-import com.hendraanggrian.openpss.FxComponent
 import com.hendraanggrian.openpss.ui.BasePopOver
 import com.hendraanggrian.openpss.ui.Stylesheets
 import com.sun.javafx.print.PrintHelper
@@ -34,6 +34,7 @@ import javafx.scene.layout.VBox
 import javafx.scene.paint.Color.BLACK
 import javafx.scene.text.TextAlignment
 import javafx.scene.transform.Scale
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import ktfx.controls.gap
 import ktfx.controls.paddingAll
@@ -82,7 +83,9 @@ class ViewInvoicePopOver(
     private val invoiceBox: VBox
 
     override val resourceBundle: ResourceBundle = Language
-        .ofFullCode(runBlocking { api.getSetting(GlobalSetting.KEY_LANGUAGE).value })
+        .ofFullCode(runBlocking(Dispatchers.IO) {
+            api.getSetting(GlobalSetting.KEY_LANGUAGE).value
+        })
         .toResourcesBundle()
 
     init {
@@ -251,8 +254,8 @@ class ViewInvoicePopOver(
                     if (job.showPrintDialog(this@ViewInvoicePopOver) && job.printPage(invoiceBox)) {
                         job.endJob()
                         isDisable = true
-                        if (!isTest) runBlocking {
-                            api.editInvoice(invoice.apply { isPrinted = true })
+                        if (!isTest) {
+                            invoice.isPrinted = true
                         }
                     }
                     // restore state

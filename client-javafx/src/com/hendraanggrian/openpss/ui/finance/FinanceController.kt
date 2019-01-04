@@ -26,7 +26,9 @@ import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
 import javafx.scene.image.ImageView
 import javafx.scene.layout.BorderPane
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import ktfx.bindings.eq
 import ktfx.collections.toMutableObservableList
 import ktfx.controls.isSelected
@@ -102,9 +104,17 @@ class FinanceController : ActionController(), Refreshable {
                 .otherwise(monthBox)
         )
 
-        dailyNoColumn.numberCell(this) { runBlocking { api.getInvoice(invoiceId).no } }
+        dailyNoColumn.numberCell(this) {
+            runBlocking(Dispatchers.IO) {
+                api.getInvoice(invoiceId).no
+            }
+        }
         dailyTimeColumn.stringCell { dateTime.toString(PATTERN_TIME) }
-        dailyEmployeeColumn.stringCell { runBlocking { api.getEmployee(employeeId).toString() } }
+        dailyEmployeeColumn.stringCell {
+            runBlocking(Dispatchers.IO) {
+                api.getEmployee(employeeId).toString()
+            }
+        }
         dailyValueColumn.currencyCell(this) { value }
         dailyCashColumn.doneCell { isCash() }
         dailyReferenceColumn.stringCell { reference }
@@ -135,15 +145,20 @@ class FinanceController : ActionController(), Refreshable {
     override fun refresh() = runLater {
         runBlocking {
             when (tabPane.selectionModel.selectedIndex) {
-                0 -> dailyTable.items = api.getPayments(dateBox.value!!).toMutableObservableList()
-                else -> monthlyTable.items = Report.listAll(api.getPayments(monthBox.value!!))
+                0 -> dailyTable.items = withContext(Dispatchers.IO) {
+                    api.getPayments(dateBox.value!!).toMutableObservableList()
+                }
+                else -> monthlyTable.items = withContext(Dispatchers.IO) {
+                    Report.listAll(api.getPayments(monthBox.value!!))
+                }
             }
         }
     }
 
     @FXML
-    fun viewInvoice() = ViewInvoicePopOver(this,
-        runBlocking { api.getInvoice(dailyTable.selectionModel.selectedItem.invoiceId) }).show(
+    fun viewInvoice() = ViewInvoicePopOver(this, runBlocking(Dispatchers.IO) {
+        api.getInvoice(dailyTable.selectionModel.selectedItem.invoiceId)
+    }).show(
         when (tabPane.selectionModel.selectedIndex) {
             0 -> dailyTable
             else -> monthlyTable

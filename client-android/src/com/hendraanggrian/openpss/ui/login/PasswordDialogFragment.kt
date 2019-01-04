@@ -21,7 +21,9 @@ import com.hendraanggrian.openpss.data.Employee
 import com.hendraanggrian.openpss.ui.BaseDialogFragment
 import com.hendraanggrian.openpss.ui.TextDialogFragment
 import com.hendraanggrian.openpss.ui.main.MainActivity
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 
 class PasswordDialogFragment : BaseDialogFragment() {
 
@@ -56,24 +58,28 @@ class PasswordDialogFragment : BaseDialogFragment() {
             })
             .setNegativeButton(android.R.string.cancel, null)
             .setPositiveButton(getString(R2.string.login)) { _, _ ->
-                runCatching {
-                    val login = runBlocking { api.login(loginName, editText.text) }
-                    if (login == Employee.NOT_FOUND) error(getString(R2.string.login_failed))
-                    startActivity(
-                        Intent(context, MainActivity::class.java).putExtras(
-                            extrasOf<MainActivity>(
-                                login.name,
-                                login.isAdmin,
-                                login.id.value
+                runBlocking {
+                    runCatching {
+                        val login = withContext(Dispatchers.IO) {
+                            api.login(loginName, editText.text)
+                        }
+                        if (login == Employee.NOT_FOUND) error(getString(R2.string.login_failed))
+                        startActivity(
+                            Intent(context, MainActivity::class.java).putExtras(
+                                extrasOf<MainActivity>(
+                                    login.name,
+                                    login.isAdmin,
+                                    login.id.value
+                                )
                             )
                         )
-                    )
-                    activity!!.finish()
-                }.onFailure {
-                    if (BuildConfig2.DEBUG) it.printStackTrace()
-                    TextDialogFragment()
-                        .args(extrasOf<TextDialogFragment>(it.message.toString()))
-                        .show(manager)
+                        activity!!.finish()
+                    }.onFailure {
+                        if (BuildConfig2.DEBUG) it.printStackTrace()
+                        TextDialogFragment()
+                            .args(extrasOf<TextDialogFragment>(it.message.toString()))
+                            .show(manager)
+                    }
                 }
             }
             .create()

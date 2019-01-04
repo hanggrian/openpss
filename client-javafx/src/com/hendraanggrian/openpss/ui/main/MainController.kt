@@ -43,7 +43,9 @@ import javafx.scene.image.Image
 import javafx.scene.input.MouseEvent
 import javafx.scene.layout.StackPane
 import javafx.util.Callback
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import ktfx.bindings.buildStringBinding
 import ktfx.bindings.eq
 import ktfx.bindings.minus
@@ -201,7 +203,9 @@ class MainController : BaseController(), Refreshable {
                     }
                 }
                 runBlocking {
-                    val (pageCount, logs) = api.getLogs(page, count)
+                    val (pageCount, logs) = withContext(Dispatchers.IO) {
+                        api.getLogs(page, count)
+                    }
                     eventPagination.pageCount = pageCount
                     items = logs.toObservableList()
                 }
@@ -242,14 +246,14 @@ class MainController : BaseController(), Refreshable {
 
     @FXML
     fun testViewInvoice() {
-        runBlocking { api.getCustomers("", 0, 1) }.items.firstOrNull()?.let {
+        runBlocking(Dispatchers.IO) { api.getCustomers("", 0, 1) }.items.firstOrNull()?.let {
             ViewInvoicePopOver(
                 this@MainController,
                 Invoice(
                     no = 1234,
                     employeeId = login.id,
                     customerId = it.id,
-                    dateTime = runBlocking { api.getDateTime() },
+                    dateTime = runBlocking(Dispatchers.IO) { api.getDateTime() },
                     offsetJobs = listOf(
                         Invoice.OffsetJob.new(
                             5,

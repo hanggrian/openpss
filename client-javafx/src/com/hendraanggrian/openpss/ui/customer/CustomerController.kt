@@ -28,6 +28,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.javafx.JavaFx
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import ktfx.bindings.buildBinding
 import ktfx.bindings.buildStringBinding
 import ktfx.collections.emptyObservableList
@@ -111,11 +112,13 @@ class CustomerController : ActionController(), Refreshable {
                         deleteContactItem.disableProperty()
                             .bind(contactTable.selectionModel.selectedItemProperty().isNull)
                     }
-                    val (pageCount, customers) = runBlocking {
-                        api.getCustomers(searchField.text, page, count)
+                    runBlocking {
+                        val (pageCount, customers) = withContext(Dispatchers.IO) {
+                            api.getCustomers(searchField.text, page, count)
+                        }
+                        customerPagination.pageCount = pageCount
+                        items = customers.toMutableObservableList()
                     }
-                    customerPagination.pageCount = pageCount
-                    items = customers.toMutableObservableList()
                 }
                 titleProperty().bind(buildStringBinding(customerList.selectionModel.selectedItemProperty()) {
                     customerList.selectionModel.selectedItem?.name

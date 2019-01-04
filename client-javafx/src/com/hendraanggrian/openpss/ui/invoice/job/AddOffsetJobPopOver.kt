@@ -1,5 +1,6 @@
 package com.hendraanggrian.openpss.ui.invoice.job
 
+import com.hendraanggrian.openpss.FxComponent
 import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.control.DoubleField
 import com.hendraanggrian.openpss.control.IntField
@@ -7,10 +8,10 @@ import com.hendraanggrian.openpss.data.Invoice
 import com.hendraanggrian.openpss.data.OffsetPrice
 import com.hendraanggrian.openpss.schema.Technique
 import com.hendraanggrian.openpss.schema.new
-import com.hendraanggrian.openpss.FxComponent
 import javafx.beans.Observable
 import javafx.beans.value.ObservableBooleanValue
 import javafx.scene.control.ComboBox
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import ktfx.bindings.isBlank
 import ktfx.bindings.lessEq
@@ -33,7 +34,7 @@ class AddOffsetJobPopOver(component: FxComponent) :
 
     override fun _GridPane.onCreateContent() {
         label(getString(R2.string.type)) col 0 row currentRow
-        typeChoice = jfxComboBox(runBlocking { api.getOffsetPrices() }.toObservableList()) {
+        typeChoice = jfxComboBox(runBlocking(Dispatchers.IO) { api.getOffsetPrices() }.toObservableList()) {
             valueProperty().listener { _, _, job ->
                 minQtyField.value = job.minQty
                 minPriceField.value = job.minPrice
@@ -48,13 +49,12 @@ class AddOffsetJobPopOver(component: FxComponent) :
         } col 1 colSpans 2 row currentRow
         currentRow++
         label(getString(R2.string.min_qty)) col 0 row currentRow
-        minQtyField = IntField().apply { promptText = getString(R2.string.min_qty) }() col 1 colSpans
-            2 row currentRow
+        minQtyField = IntField().apply { promptText = getString(R2.string.min_qty) }() col
+            1 colSpans 2 row currentRow
         currentRow++
         label(getString(R2.string.min_price)) col 0 row currentRow
         minPriceField = DoubleField().apply { promptText = getString(R2.string.min_price) }() col
-            1 colSpans 2 row
-            currentRow
+            1 colSpans 2 row currentRow
         currentRow++
         label(getString(R2.string.excess_price)) col 0 row currentRow
         excessPriceField = DoubleField().apply {

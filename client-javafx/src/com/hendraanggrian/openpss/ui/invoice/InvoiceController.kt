@@ -31,7 +31,9 @@ import javafx.scene.control.TextField
 import javafx.scene.image.ImageView
 import javafx.scene.layout.HBox
 import javafx.util.Callback
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import ktfx.bindings.and
 import ktfx.bindings.buildBinding
 import ktfx.bindings.buildStringBinding
@@ -144,10 +146,18 @@ class InvoiceController : ActionController(), Refreshable {
                                 stringCell { dateTime.toString(PATTERN_DATETIMEEXT) }
                             }
                             getString(R2.string.employee)<String> {
-                                stringCell { runBlocking { api.getEmployee(employeeId).name } }
+                                stringCell {
+                                    runBlocking(Dispatchers.IO) {
+                                        api.getEmployee(employeeId).name
+                                    }
+                                }
                             }
                             getString(R2.string.customer)<String> {
-                                stringCell { runBlocking { api.getCustomer(customerId).name } }
+                                stringCell {
+                                    runBlocking(Dispatchers.IO) {
+                                        api.getCustomer(customerId).name
+                                    }
+                                }
                             }
                             getString(R2.string.total)<String> { currencyCell(this@InvoiceController) { total } }
                             getString(R2.string.print)<Boolean> { doneCell { isPrinted } }
@@ -181,7 +191,7 @@ class InvoiceController : ActionController(), Refreshable {
                                 }
                                 getString(R2.string.employee)<String> {
                                     stringCell {
-                                        runBlocking {
+                                        runBlocking(Dispatchers.IO) {
                                             api.getEmployee(employeeId).name
                                         }
                                     }
@@ -199,7 +209,7 @@ class InvoiceController : ActionController(), Refreshable {
                             itemsProperty().bind(buildBinding(invoiceTable.selectionModel.selectedItemProperty()) {
                                 when (invoiceTable.selectionModel.selectedItem) {
                                     null -> emptyObservableList()
-                                    else -> runBlocking {
+                                    else -> runBlocking(Dispatchers.IO) {
                                         api.getPayments(invoiceTable.selectionModel.selectedItem.id)
                                             .toObservableList()
                                     }
@@ -218,26 +228,28 @@ class InvoiceController : ActionController(), Refreshable {
                         }
                     }
                     dividerPosition = 0.6
-                    val (pageCount, invoices) = runBlocking {
-                        api.getInvoices(
-                            searchField.value,
-                            customerProperty.value?.name,
-                            when (paymentCombo.value) {
-                                getString(R2.string.paid) -> true
-                                getString(R2.string.unpaid) -> false
-                                else -> null
-                            },
-                            null,
-                            when {
-                                pickDateRadio.isSelected -> null
-                                else -> dateBox.value
-                            },
-                            page,
-                            count
-                        )
+                    runBlocking {
+                        val (pageCount, invoices) = withContext(Dispatchers.IO) {
+                            api.getInvoices(
+                                searchField.value,
+                                customerProperty.value?.name,
+                                when (paymentCombo.value) {
+                                    getString(R2.string.paid) -> true
+                                    getString(R2.string.unpaid) -> false
+                                    else -> null
+                                },
+                                null,
+                                when {
+                                    pickDateRadio.isSelected -> null
+                                    else -> dateBox.value
+                                },
+                                page,
+                                count
+                            )
+                        }
+                        invoicePagination.pageCount = pageCount
+                        invoiceTable.items = invoices.toMutableObservableList()
                     }
-                    invoicePagination.pageCount = pageCount
-                    invoiceTable.items = invoices.toMutableObservableList()
                     runLater {
                         invoiceTable.contextMenu {
                             getString(R2.string.view)(ImageView(R.image.menu_invoice)) {

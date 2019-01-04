@@ -1,16 +1,17 @@
 package com.hendraanggrian.openpss.ui.invoice
 
+import com.hendraanggrian.openpss.FxComponent
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.control.DoubleField
 import com.hendraanggrian.openpss.data.Invoice
 import com.hendraanggrian.openpss.data.Payment
-import com.hendraanggrian.openpss.FxComponent
 import com.hendraanggrian.openpss.ui.ResultablePopOver
 import javafx.scene.Node
 import javafx.scene.control.CheckBox
 import javafx.scene.control.TextField
 import javafx.scene.image.ImageView
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import ktfx.bindings.buildBinding
 import ktfx.bindings.buildBooleanBinding
@@ -33,7 +34,8 @@ class AddPaymentPopOver(
     private lateinit var valueField: DoubleField
     private lateinit var cashBox: CheckBox
     private lateinit var referenceField: TextField
-    private val receivable = invoice.total - runBlocking { api.getPaymentDue(invoice.id) }
+    private val receivable =
+        invoice.total - runBlocking(Dispatchers.IO) { api.getPaymentDue(invoice.id) }
 
     init {
         gridPane {
@@ -96,7 +98,10 @@ class AddPaymentPopOver(
 
     override val nullableResult: Payment?
         get() = Payment.new(
-            invoice.id, login.id, runBlocking { api.getDateTime() }, valueField.value,
+            invoice.id,
+            login.id,
+            runBlocking(Dispatchers.IO) { api.getDateTime() },
+            valueField.value,
             when {
                 cashBox.isSelected -> null
                 else -> referenceField.text

@@ -15,7 +15,6 @@ import javafx.util.converter.CurrencyStringConverter
 import javafx.util.converter.NumberStringConverter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.javafx.JavaFx
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -71,7 +70,7 @@ interface FxComponent : Component<StackPane, FxSetting, FxSetting.Editor>,
 
     /** Number decimal with currency prefix string converter. */
     val currencyConverter: StringConverter<Number>
-        get() = CurrencyStringConverter(runBlocking {
+        get() = CurrencyStringConverter(runBlocking(Dispatchers.IO) {
             Language.ofFullCode(
                 api.getSetting(GlobalSetting.KEY_LANGUAGE).value
             ).toLocale()
@@ -102,7 +101,7 @@ interface FxComponent : Component<StackPane, FxSetting, FxSetting.Editor>,
                         getString(R2.string.invalid_password),
                         getLong(R.value.duration_short)
                     )
-                    else -> GlobalScope.launch(context) { action() }
+                    else -> launch(context) { action() }
                 }
             }
         }
@@ -125,7 +124,7 @@ interface FxComponent : Component<StackPane, FxSetting, FxSetting.Editor>,
                     text = getString(R2.string._permission_required)
                 } col 0 row 0 colSpans 2
                 label(getString(R2.string.admin)) col 0 row 1
-                adminCombo = jfxComboBox(runBlocking { api.getEmployees() }
+                adminCombo = jfxComboBox(runBlocking(Dispatchers.IO) { api.getEmployees() }
                     .filter { it.isAdmin && it.name != Employee.BACKDOOR.name }
                     .toObservableList()
                 ) {
@@ -142,7 +141,7 @@ interface FxComponent : Component<StackPane, FxSetting, FxSetting.Editor>,
         }
 
         override val nullableResult: Employee?
-            get() = runBlocking {
+            get() = runBlocking(Dispatchers.IO) {
                 api.login(
                     adminCombo.value.name,
                     passwordField.text

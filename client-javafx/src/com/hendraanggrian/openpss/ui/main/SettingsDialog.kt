@@ -69,7 +69,7 @@ class SettingsDialog(component: FxComponent) : BaseDialog(component, R2.string.s
             }
             Space(getDouble(R.value.padding_large))()
             right = this@SettingsDialog.group(R2.string.global_settings) {
-                isDisable = runBlocking { !api.isAdmin(login) }
+                isDisable = runBlocking(Dispatchers.IO) { !api.isAdmin(login) }
                 gridPane {
                     gap = getDouble(R.value.padding_medium)
                     label(getString(R2.string.server_language)) row 0 col 0
@@ -77,14 +77,14 @@ class SettingsDialog(component: FxComponent) : BaseDialog(component, R2.string.s
                         converter { toString { it!!.toString(true) } }
                         selectionModel.select(
                             Language.ofFullCode(
-                                runBlocking { api.getSetting(KEY_LANGUAGE).value }
+                                runBlocking(Dispatchers.IO) { api.getSetting(KEY_LANGUAGE).value }
                             )
                         )
                         valueProperty().listener { isGlobalChanged.set(true) }
                     } row 0 col 1
                     label(getString(R2.string.invoice_headers)) row 1 col 0
                     invoiceHeadersArea = textArea(
-                        runBlocking { api.getSetting(KEY_INVOICE_HEADERS) }
+                        runBlocking(Dispatchers.IO) { api.getSetting(KEY_INVOICE_HEADERS) }
                             .valueList
                             .joinToString("\n")
                             .trim()

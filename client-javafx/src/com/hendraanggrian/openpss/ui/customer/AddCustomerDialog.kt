@@ -1,9 +1,9 @@
 package com.hendraanggrian.openpss.ui.customer
 
+import com.hendraanggrian.openpss.FxComponent
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.data.Customer
-import com.hendraanggrian.openpss.FxComponent
 import com.hendraanggrian.openpss.ui.ResultableDialog
 import com.hendraanggrian.openpss.util.clean
 import com.hendraanggrian.openpss.util.isPersonName
@@ -13,6 +13,7 @@ import javafx.scene.control.Label
 import javafx.scene.control.Tab
 import javafx.scene.control.TabPane
 import javafx.scene.control.TextField
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import ktfx.bindings.eq
 import ktfx.bindings.isBlank
@@ -89,5 +90,5 @@ class AddCustomerDialog(component: FxComponent) :
         get() = Customer.new(
             editor.text.clean(),
             tabPane.selectionModel.selectedIndex == 1,
-            runBlocking { api.getDate() })
+            runBlocking(Dispatchers.IO) { api.getDate() })
 }

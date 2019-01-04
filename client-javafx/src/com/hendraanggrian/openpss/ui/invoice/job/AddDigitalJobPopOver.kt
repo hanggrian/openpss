@@ -1,14 +1,15 @@
 package com.hendraanggrian.openpss.ui.invoice.job
 
+import com.hendraanggrian.openpss.FxComponent
 import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.control.DoubleField
 import com.hendraanggrian.openpss.data.DigitalPrice
 import com.hendraanggrian.openpss.data.Invoice
-import com.hendraanggrian.openpss.FxComponent
 import javafx.beans.Observable
 import javafx.beans.value.ObservableBooleanValue
 import javafx.scene.control.CheckBox
 import javafx.scene.control.ComboBox
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import ktfx.bindings.isBlank
 import ktfx.bindings.lessEq
@@ -30,7 +31,7 @@ class AddDigitalJobPopOver(component: FxComponent) :
 
     override fun _GridPane.onCreateContent() {
         label(getString(R2.string.type)) col 0 row currentRow
-        typeChoice = jfxComboBox(runBlocking { api.getDigitalPrices() }.toObservableList()) {
+        typeChoice = jfxComboBox(runBlocking(Dispatchers.IO) { api.getDigitalPrices() }.toObservableList()) {
             valueProperty().listener { _, _, job ->
                 oneSidePriceField.value = job.oneSidePrice
                 twoSidePriceField.value = job.twoSidePrice

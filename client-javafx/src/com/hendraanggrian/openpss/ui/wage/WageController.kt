@@ -135,7 +135,7 @@ class WageController : ActionController() {
         loader.controller.addExtra(EXTRA_ATTENDEES, attendees)
     }.showAndWait()
 
-    private fun saveWage() = runBlocking { attendees.forEach { it.saveWage(api) } }
+    private fun saveWage() = runBlocking(Dispatchers.IO) { attendees.forEach { it.saveWage(api) } }
 
     private fun history() = desktop?.open(WageDirectory)
 

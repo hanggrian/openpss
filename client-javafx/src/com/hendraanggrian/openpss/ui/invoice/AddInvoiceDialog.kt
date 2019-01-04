@@ -1,12 +1,12 @@
 package com.hendraanggrian.openpss.ui.invoice
 
+import com.hendraanggrian.openpss.FxComponent
 import com.hendraanggrian.openpss.PATTERN_DATE
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.data.Customer
 import com.hendraanggrian.openpss.data.Invoice
 import com.hendraanggrian.openpss.schema.typedTechnique
-import com.hendraanggrian.openpss.FxComponent
 import com.hendraanggrian.openpss.ui.ResultableDialog
 import com.hendraanggrian.openpss.ui.ResultablePopOver
 import com.hendraanggrian.openpss.ui.invoice.job.AddDigitalJobPopOver
@@ -30,6 +30,7 @@ import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
 import javafx.scene.image.ImageView
 import javafx.scene.layout.Priority.ALWAYS
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import ktfx.bindings.buildDoubleBinding
 import ktfx.bindings.buildStringBinding
@@ -73,7 +74,7 @@ class AddInvoiceDialog(
     private lateinit var otherTable: TableView<Invoice.OtherJob>
     private lateinit var noteArea: TextArea
 
-    private val dateTime: DateTime = runBlocking { component.api.getDateTime() }
+    private val dateTime: DateTime = runBlocking(Dispatchers.IO) { component.api.getDateTime() }
     private val customerProperty: ObjectProperty<Customer> = SimpleObjectProperty(null)
     private val totalProperty: DoubleProperty = SimpleDoubleProperty()
 
@@ -217,7 +218,7 @@ class AddInvoiceDialog(
 
     override val nullableResult: Invoice?
         get() = Invoice.new(
-            runBlocking { api.nextInvoice() },
+            runBlocking(Dispatchers.IO) { api.nextInvoice() },
             login.id,
             customerProperty.value.id,
             dateTime,

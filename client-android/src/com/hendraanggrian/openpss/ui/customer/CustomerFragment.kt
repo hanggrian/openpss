@@ -12,7 +12,9 @@ import com.hendraanggrian.openpss.ui.BaseFragment
 import com.hendraanggrian.openpss.ui.util.autoHide
 import com.hendraanggrian.recyclerview.widget.PaginatedRecyclerView
 import kotlinx.android.synthetic.main.fragment_customer.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 
 class CustomerFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
 
@@ -42,25 +44,26 @@ class CustomerFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
             pagination = object : PaginatedRecyclerView.Pagination() {
                 override fun getPageStart(): Int = 0
                 override fun onPaginate(page: Int) {
-                    runCatching {
-                        val (pageCount, customers) = runBlocking {
-                            api.getCustomers(customerSearch.input.text, page, COUNT)
-                        }
-                        when {
-                            pageCount < page -> notifyPaginationCompleted()
-                            else -> {
-                                notifyPageLoaded()
-                                customerAdapter.addAll(customers)
+                    runBlocking {
+                        runCatching {
+                            val (pageCount, customers) = withContext(Dispatchers.IO) {
+                                api.getCustomers(customerSearch.input.text, page, COUNT)
                             }
+                            when {
+                                pageCount < page -> notifyPaginationCompleted()
+                                else -> {
+                                    notifyPageLoaded()
+                                    customerAdapter.addAll(customers)
+                                }
+                            }
+                        }.onFailure {
+                            notifyPageError()
                         }
-                    }.onFailure {
-                        notifyPageError()
                     }
                 }
             }
             autoHide(customerButton)
         }
-        onRefresh()
     }
 
     override fun onRefresh() {

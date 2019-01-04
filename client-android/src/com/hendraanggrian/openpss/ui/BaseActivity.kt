@@ -6,6 +6,7 @@ import android.view.View
 import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import com.hendraanggrian.bundler.Extra
 import com.hendraanggrian.openpss.AndroidComponent
 import com.hendraanggrian.openpss.AndroidSetting
@@ -44,8 +45,9 @@ open class BaseActivity : AppCompatActivity(), AndroidComponent {
 
     inline val openPssApp: OpenPssApp get() = application as OpenPssApp
 
-    fun AppCompatActivity.replaceFragment(@IdRes containerViewId: Int, fragment: Fragment) =
+    fun replaceFragment(@IdRes containerViewId: Int, fragment: Fragment) =
         supportFragmentManager.beginTransaction()
             .replace(containerViewId, fragment)
+            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
             .commitNow()
 }

@@ -1,6 +1,6 @@
 include("core")
-includeAll("client")
 include("server")
+includeAll("client")
 include("website")
 
 fun includeAll(projectPath: String) = rootDir.listFiles()

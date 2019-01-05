@@ -4,13 +4,13 @@ import org.gradle.plugin.use.PluginDependenciesSpec
 fun DependencyHandler.ktor(module: String) = "io.ktor:ktor-$module:$VERSION_KTOR"
 
 fun DependencyHandler.kotlinx(module: String, version: String? = null) =
-    "org.jetbrains.kotlinx:kotlinx-$module${version?.let { ":$it" }.orEmpty()}"
+    "org.jetbrains.kotlinx:kotlinx-$module${version.wrap { ":$it" }}"
 
 fun DependencyHandler.dokka(module: String? = null) =
-    "org.jetbrains.dokka:dokka-${module?.let { "$it-" }.orEmpty()}gradle-plugin:$VERSION_DOKKA"
+    "org.jetbrains.dokka:dokka-${module.wrap { "$it-" }}gradle-plugin:$VERSION_DOKKA"
 
 fun PluginDependenciesSpec.dokka(module: String? = null) =
-    id("org.jetbrains.dokka${module?.let { "-$it" }.orEmpty()}")
+    id("org.jetbrains.dokka${module.wrap { "-$it" }}")
 
 fun DependencyHandler.android() = "com.android.tools.build:gradle:$VERSION_ANDROID_PLUGIN"
 fun PluginDependenciesSpec.android(submodule: String) = id("com.android.$submodule")
@@ -21,7 +21,8 @@ fun DependencyHandler.androidx(
     version: String = VERSION_ANDROIDX
 ): String = "androidx.$repository:$module:$version"
 
-fun DependencyHandler.material() = "com.google.android.material:material:$VERSION_ANDROIDX"
+fun DependencyHandler.material(version: String = VERSION_ANDROIDX) =
+    "com.google.android.material:material:$version"
 
 fun DependencyHandler.hendraanggrian(
     repository: String,
@@ -32,16 +33,14 @@ fun DependencyHandler.hendraanggrian(
 fun DependencyHandler.apache(module: String, version: String) =
     "org.apache.${module.split("-")[0]}:$module:$version"
 
-fun DependencyHandler.google(module: String, version: String, repo: String? = null) =
-    optionalRepo("com.google", module, version, repo ?: module)
+fun DependencyHandler.google(repo: String? = null, module: String, version: String) =
+    "com.google${repo.wrap { ".$it" }}:$module:$version"
 
 fun PluginDependenciesSpec.generating(id: String) = id("com.hendraanggrian.generating.$id")
 
 inline val PluginDependenciesSpec.packr get() = id("com.hendraanggrian.packr")
 
 fun DependencyHandler.slf4j(module: String) = "org.slf4j:slf4j-$module:$VERSION_SLF4J"
-
-fun DependencyHandler.guava() = "com.google.guava:guava:$VERSION_GUAVA-jre"
 
 fun DependencyHandler.shadow() = "com.github.jengelman.gradle.plugins:shadow:$VERSION_SHADOW"
 inline val PluginDependenciesSpec.shadow get() = id("com.github.johnrengelman.shadow")
@@ -53,9 +52,4 @@ inline val PluginDependenciesSpec.`git-publish` get() = id("org.ajoberstar.git-p
 
 fun DependencyHandler.junit() = "junit:junit:$VERSION_JUNIT"
 
-private fun optionalRepo(
-    group: String,
-    module: String,
-    version: String,
-    repo: String?
-) = "$group${repo?.let { ".$it" }.orEmpty()}:$module:$version"
+private fun String?.wrap(wrapper: (String) -> String) = this?.let(wrapper).orEmpty()

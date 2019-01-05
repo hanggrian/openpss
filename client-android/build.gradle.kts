@@ -67,12 +67,12 @@ dependencies {
     implementation(slf4j("android"))
 
     implementation(androidx("multidex", version = VERSION_MULTIDEX))
-    implementation(androidx("core", "core-ktx", "1.1.0-alpha03"))
-    implementation(androidx("appcompat"))
-    implementation(androidx("preference"))
-    implementation(androidx("coordinatorlayout"))
-    implementation(androidx("recyclerview"))
-    implementation(material())
+    implementation(androidx("core", "core-ktx", "$VERSION_ANDROIDX-alpha03"))
+    implementation(androidx("appcompat", version = "$VERSION_ANDROIDX-alpha01"))
+    implementation(androidx("preference", "preference-ktx", "$VERSION_ANDROIDX-alpha02"))
+    implementation(androidx("coordinatorlayout", version = "$VERSION_ANDROIDX-alpha01"))
+    implementation(androidx("recyclerview", version = "$VERSION_ANDROIDX-alpha01"))
+    implementation(material("$VERSION_ANDROIDX-alpha02"))
 
     implementation(hendraanggrian("material", "errorbar-ktx", VERSION_ERRORBAR))
     implementation(hendraanggrian("pikasso", version = VERSION_PIKASSO))

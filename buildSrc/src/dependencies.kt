@@ -21,7 +21,9 @@ fun DependencyHandler.androidx(
     version: String = VERSION_ANDROIDX
 ): String = "androidx.$repository:$module:$version"
 
-fun DependencyHandler.material() = "com.google.android.material:material:$VERSION_ANDROIDX"
+fun DependencyHandler.material(
+    version: String = VERSION_ANDROIDX
+) = "com.google.android.material:material:$version"
 
 fun DependencyHandler.hendraanggrian(
     repository: String,

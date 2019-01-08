@@ -1,4 +1,4 @@
-const val VERSION_GRADLE = "5.1-rc-3"
+const val VERSION_GRADLE = "5.1"
 
 const val VERSION_KOTLIN = "1.3.11"
 const val VERSION_COROUTINES = "1.1.0"
@@ -12,16 +12,14 @@ const val BUILD_TOOLS = "28.0.3"
 
 internal const val VERSION_ANDROID_PLUGIN = "3.4.0-alpha10"
 const val VERSION_MULTIDEX = "2.0.0"
-const val VERSION_ANDROIDX = "1.1.0-alpha01"
-const val VERSION_ESPRESSO = "3.1.1-beta01"
-const val VERSION_RUNNER = "1.1.1-beta01"
-const val VERSION_RULES = "1.1.1-beta01"
+const val VERSION_ANDROIDX = "1.1.0"
+const val VERSION_ESPRESSO = "3.1.1"
+const val VERSION_RUNNER = "1.1.1"
+const val VERSION_RULES = "1.1.1"
 
-const val VERSION_ERRORBAR = "1.0.0"
 const val VERSION_PIKASSO = "0.2"
 const val VERSION_RECYCLERVIEW_PAGINATED = "0.2"
 const val VERSION_BUNDLER = "0.3-rc1"
-const val VERSION_PROCESS_PHOENIX = "2.0.0"
 
 const val VERSION_GSON = "2.8.5"
 const val VERSION_GUAVA = "27.0.1"

@@ -67,22 +67,24 @@ dependencies {
     implementation(slf4j("android"))
 
     implementation(androidx("multidex", version = VERSION_MULTIDEX))
-    implementation(androidx("core", "core-ktx", "1.1.0-alpha03"))
-    implementation(androidx("appcompat"))
-    implementation(androidx("preference"))
-    implementation(androidx("coordinatorlayout"))
-    implementation(androidx("recyclerview"))
-    implementation(material())
+    implementation(androidx("core", "core-ktx", "$VERSION_ANDROIDX-alpha03"))
+    implementation(androidx("appcompat", version = "$VERSION_ANDROIDX-alpha01"))
+    implementation(androidx("preference", version = "$VERSION_ANDROIDX-alpha01"))
+    implementation(androidx("coordinatorlayout", version = "$VERSION_ANDROIDX-alpha01"))
+    implementation(androidx("recyclerview", version = "$VERSION_ANDROIDX-alpha01"))
+    implementation(material("$VERSION_ANDROIDX-alpha02"))
 
-    implementation(hendraanggrian("material", "errorbar-ktx", VERSION_ERRORBAR))
+    implementation(hendraanggrian("material", "errorbar-ktx", "$VERSION_ANDROIDX-alpha02"))
     implementation(hendraanggrian("pikasso", version = VERSION_PIKASSO))
     implementation(
-        hendraanggrian("recyclerview", "recyclerview-paginated", VERSION_RECYCLERVIEW_PAGINATED)
+        hendraanggrian(
+            "recyclerview", "recyclerview-paginated", VERSION_RECYCLERVIEW_PAGINATED
+        )
     )
     implementation(hendraanggrian("bundler", "bundler-ktx", VERSION_BUNDLER))
     kapt(hendraanggrian("bundler", "bundler-compiler", VERSION_BUNDLER))
 
-    implementation("com.jakewharton:process-phoenix:$VERSION_PROCESS_PHOENIX")
+    implementation("com.jakewharton:process-phoenix:2.0.0")
     implementation("com.takisoft.preferencex:preferencex:1.0.0")
 }
 

@@ -27,7 +27,7 @@ dependencies {
 
     api("joda-time:joda-time:$VERSION_JODA_TIME")
     api("com.fatboyindustrial.gson-jodatime-serialisers:gson-jodatime-serialisers:$VERSION_JODA_TIME_GSON_SERIALIZERS")
-    api(google("gson", VERSION_GSON, "code.gson"))
+    api(google("code.gson", "gson", VERSION_GSON))
     api(apache("maven-artifact", VERSION_MAVEN))
 
     testImplementation(junit())

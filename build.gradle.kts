@@ -1,10 +1,7 @@
-@file:Suppress("UnstableApiUsage")
-
 buildscript {
     repositories {
         google()
         jcenter()
-        mavenCentral()
         maven("https://oss.sonatype.org/content/repositories/snapshots")
         maven("https://dl.bintray.com/hendraanggrian/packr")
     }
@@ -25,7 +22,6 @@ allprojects {
     repositories {
         google()
         jcenter()
-        mavenCentral()
         maven("https://kotlin.bintray.com/kotlinx")
         maven("http://repository.jetbrains.com/kotlin-nosql")
     }

@@ -36,7 +36,7 @@ object PaymentsRouting : OpenPssRouting({
                 val invoiceNo = Invoices[payment.invoiceId].single().no
                 Payments -= payment.id
                 Logs += Log.new(
-                    OpenPssServer.resources.getString(R.string.payment_delete).format(
+                    OpenPssServer.getString(R.string.payment_delete).format(
                         payment.value,
                         invoiceNo
                     ),

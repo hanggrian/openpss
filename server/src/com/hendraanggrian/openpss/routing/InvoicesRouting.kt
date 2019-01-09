@@ -73,7 +73,7 @@ object InvoicesRouting : OpenPssRouting({
                 Invoices -= invoice.id
                 Payments { invoiceId.equal(invoice.id) }.remove()
                 Logs += Log.new(
-                    OpenPssServer.resources.getString(R.string.invoice_delete).format(
+                    OpenPssServer.getString(R.string.invoice_delete).format(
                         invoice.no,
                         customerName
                     ),

@@ -70,13 +70,13 @@ object EmployeeRouting : NamedRouting<Employees, Employee>(
         query.projection { password + isAdmin }
             .update(employee.password, employee.isAdmin)
         Logs += Log.new(
-            OpenPssServer.resources.getString(R.string.employee_edit).format(query.single().name),
+            OpenPssServer.getString(R.string.employee_edit).format(query.single().name),
             call.getString("login")
         )
     },
     onDeleted = { call, query ->
         Logs += Log.new(
-            OpenPssServer.resources.getString(R.string.employee_delete).format(query.single().name),
+            OpenPssServer.getString(R.string.employee_delete).format(query.single().name),
             call.getString("login")
         )
     }

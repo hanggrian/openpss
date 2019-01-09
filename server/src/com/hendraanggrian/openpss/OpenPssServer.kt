@@ -41,45 +41,67 @@ import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
 import io.ktor.util.error
 import io.ktor.websocket.WebSockets
-import javafx.application.Application
-import javafx.application.Platform
-import javafx.stage.Stage
 import org.omg.CosNaming.NamingContextPackage.NotFound
 import org.slf4j.Logger
+import java.awt.MenuItem
+import java.awt.MenuShortcut
+import java.awt.PopupMenu
 import java.awt.SystemTray
+import java.awt.Toolkit
 import java.awt.TrayIcon
 import java.util.ResourceBundle
-import javax.imageio.ImageIO
 
-class OpenPssServer : Application() {
+object OpenPssServer : StringResources {
 
-    companion object {
+    private lateinit var log: Logger
 
-        private lateinit var log: Logger
+    val logger: Logger? get() = log.takeIf { BuildConfig.DEBUG }
 
-        val logger: Logger? get() = log.takeIf { BuildConfig.DEBUG }
+    override val resourceBundle: ResourceBundle
+        get() = Language.ofFullCode(transaction {
+            findGlobalSetting(GlobalSetting.KEY_LANGUAGE).value
+        }).toResourcesBundle()
 
-        val resources: ResourceBundle
-            get() = Language.ofFullCode(transaction {
-                findGlobalSetting(GlobalSetting.KEY_LANGUAGE).value
-            }).toResourcesBundle()
-
-        @JvmStatic
-        fun main(args: Array<String>) = launch(OpenPssServer::class.java)
-    }
-
-    override fun start(stage: Stage?) {
-        Platform.setImplicitExit(false)
-
-        val tray = SystemTray.getSystemTray()
-        val icon = TrayIcon(ImageIO.read(OpenPssServer::class.java.getResource("/icon.png")))
-        tray.add(icon)
-
+    @JvmStatic
+    fun main(args: Array<String>) {
         startConnection()
+        systemTray {
+            trayIcon("/icon.png") {
+                toolTip = buildString {
+                    append("${BuildConfig.NAME} ${BuildConfig.VERSION}")
+                    if (BuildConfig.DEBUG) {
+                        append(" - DEBUG")
+                    }
+                }
+                isImageAutoSize = true
+                popupMenu {
+                    if (BuildConfig.DEBUG) {
+                        menuItem(
+                            getString(R.string.active_on).format(
+                                "localhost",
+                                BuildConfig.SERVER_PORT
+                            )
+                        )
+                    }
+                    menuItem(
+                        getString(R.string.active_on).format(
+                            BuildConfig.SERVER_HOST,
+                            BuildConfig.SERVER_PORT
+                        )
+                    )
+                    menuItem("-")
+                    menuItem(getString(R.string.quit), 81) {
+                        addActionListener { System.exit(0) }
+                    }
+                }
+            }
+        }
         log = embeddedServer(Netty, applicationEngineEnvironment {
-            connector {
-                host = "localhost"
-                port = BuildConfig.SERVER_PORT
+            if (BuildConfig.DEBUG) {
+                connector {
+                    host = "localhost"
+                    port = BuildConfig.SERVER_PORT
+                }
             }
             connector {
                 host = BuildConfig.SERVER_HOST
@@ -147,5 +169,32 @@ class OpenPssServer : Application() {
         log.info("Welcome to ${BuildConfig.NAME} ${BuildConfig.VERSION}")
         log.info("For more information, visit ${BuildConfig.WEBSITE}")
         logger?.info("Debug mode is activated, server activities will be logged here.")
+    }
+
+    private inline fun systemTray(block: SystemTray.() -> Unit) = SystemTray.getSystemTray().block()
+
+    private inline fun SystemTray.trayIcon(image: String, block: TrayIcon.() -> Unit) = add(
+        TrayIcon(
+            Toolkit
+                .getDefaultToolkit()
+                .getImage(OpenPssServer::class.java.getResource(image))
+        ).apply { block() }
+    )
+
+    private inline fun TrayIcon.popupMenu(block: PopupMenu.() -> Unit) {
+        popupMenu = PopupMenu().apply { block() }
+    }
+
+    private fun PopupMenu.menuItem(
+        text: String,
+        shortcut: Int? = null,
+        block: (MenuItem.() -> Unit)? = null
+    ) {
+        add(MenuItem(text)).also {
+            if (shortcut != null) {
+                it.shortcut = MenuShortcut(shortcut)
+            }
+            block?.invoke(it)
+        }
     }
 }

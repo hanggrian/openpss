@@ -1,5 +1,6 @@
 package com.hendraanggrian.openpss.routing
 
+import com.hendraanggrian.openpss.OpenPssServer
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.data.DigitalPrice
 import com.hendraanggrian.openpss.data.Employee
@@ -11,7 +12,6 @@ import com.hendraanggrian.openpss.nosql.NamedDocument
 import com.hendraanggrian.openpss.nosql.NamedDocumentSchema
 import com.hendraanggrian.openpss.nosql.SessionWrapper
 import com.hendraanggrian.openpss.nosql.transaction
-import com.hendraanggrian.openpss.resources
 import com.hendraanggrian.openpss.schema.DigitalPrices
 import com.hendraanggrian.openpss.schema.Employees
 import com.hendraanggrian.openpss.schema.Logs
@@ -70,13 +70,13 @@ object EmployeeRouting : NamedRouting<Employees, Employee>(
         query.projection { password + isAdmin }
             .update(employee.password, employee.isAdmin)
         Logs += Log.new(
-            resources.getString(R.string.employee_edit).format(query.single().name),
+            OpenPssServer.resources.getString(R.string.employee_edit).format(query.single().name),
             call.getString("login")
         )
     },
     onDeleted = { call, query ->
         Logs += Log.new(
-            resources.getString(R.string.employee_delete).format(query.single().name),
+            OpenPssServer.resources.getString(R.string.employee_delete).format(query.single().name),
             call.getString("login")
         )
     }

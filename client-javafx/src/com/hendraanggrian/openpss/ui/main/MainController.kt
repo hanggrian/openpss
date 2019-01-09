@@ -221,7 +221,7 @@ class MainController : BaseController(), Refreshable {
 
     @FXML
     fun add(event: ActionEvent) = when (event.source) {
-        addCustomerItem -> select(customerController) { runLater { add() } }
+        addCustomerItem -> select(customerController) { runLater(::add) }
         else -> select(invoiceController) { addInvoice() }
     }
 

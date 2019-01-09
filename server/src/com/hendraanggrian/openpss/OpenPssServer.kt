@@ -41,90 +41,111 @@ import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
 import io.ktor.util.error
 import io.ktor.websocket.WebSockets
+import javafx.application.Application
+import javafx.application.Platform
+import javafx.stage.Stage
 import org.omg.CosNaming.NamingContextPackage.NotFound
 import org.slf4j.Logger
+import java.awt.SystemTray
+import java.awt.TrayIcon
 import java.util.ResourceBundle
+import javax.imageio.ImageIO
 
-private lateinit var log: Logger
+class OpenPssServer : Application() {
 
-val logger: Logger? get() = log.takeIf { BuildConfig.DEBUG }
+    companion object {
 
-fun main(args: Array<String>) {
-    startConnection()
-    log = embeddedServer(Netty, applicationEngineEnvironment {
-        connector {
-            host = "localhost"
-            port = BuildConfig.SERVER_PORT
-        }
-        connector {
-            host = BuildConfig.SERVER_HOST
-            port = BuildConfig.SERVER_PORT
-        }
-        module {
-            if (BuildConfig.DEBUG) {
-                install(CallLogging)
+        private lateinit var log: Logger
+
+        val logger: Logger? get() = log.takeIf { BuildConfig.DEBUG }
+
+        val resources: ResourceBundle
+            get() = Language.ofFullCode(transaction {
+                findGlobalSetting(GlobalSetting.KEY_LANGUAGE).value
+            }).toResourcesBundle()
+
+        @JvmStatic
+        fun main(args: Array<String>) = launch(OpenPssServer::class.java)
+    }
+
+    override fun start(stage: Stage?) {
+        Platform.setImplicitExit(false)
+
+        val tray = SystemTray.getSystemTray()
+        val icon = TrayIcon(ImageIO.read(OpenPssServer::class.java.getResource("/icon.png")))
+        tray.add(icon)
+
+        startConnection()
+        log = embeddedServer(Netty, applicationEngineEnvironment {
+            connector {
+                host = "localhost"
+                port = BuildConfig.SERVER_PORT
             }
-            install(ConditionalHeaders)
-            install(Compression)
-            install(PartialContent)
-            install(AutoHeadResponse)
-            install(WebSockets)
-            install(XForwardedHeaderSupport)
-            install(StatusPages) {
-                exception<ServiceUnavailable> {
-                    call.respond(HttpStatusCode.ServiceUnavailable)
-                }
-                exception<BadRequest> {
-                    call.respond(HttpStatusCode.BadRequest)
-                }
-                exception<Unauthorized> {
-                    call.respond(HttpStatusCode.Unauthorized)
-                }
-                exception<NotFound> {
-                    call.respond(HttpStatusCode.NotFound)
-                }
-                exception<SecretInvalidError> {
-                    call.respond(HttpStatusCode.Forbidden)
-                }
-                exception<Throwable> {
-                    environment.log.error(it)
-                    call.respond(HttpStatusCode.InternalServerError)
-                }
+            connector {
+                host = BuildConfig.SERVER_HOST
+                port = BuildConfig.SERVER_PORT
             }
-            install(ContentNegotiation) {
-                gson {
-                    register(
-                        ContentType.Application.Json,
-                        GsonConverter(GsonBuilder().registerJodaTimeSerializers().create())
-                    )
-                    if (BuildConfig.DEBUG) {
-                        setPrettyPrinting()
+            module {
+                if (BuildConfig.DEBUG) {
+                    install(CallLogging)
+                }
+                install(ConditionalHeaders)
+                install(Compression)
+                install(PartialContent)
+                install(AutoHeadResponse)
+                install(WebSockets)
+                install(XForwardedHeaderSupport)
+                install(StatusPages) {
+                    exception<ServiceUnavailable> {
+                        call.respond(HttpStatusCode.ServiceUnavailable)
+                    }
+                    exception<BadRequest> {
+                        call.respond(HttpStatusCode.BadRequest)
+                    }
+                    exception<Unauthorized> {
+                        call.respond(HttpStatusCode.Unauthorized)
+                    }
+                    exception<NotFound> {
+                        call.respond(HttpStatusCode.NotFound)
+                    }
+                    exception<SecretInvalidError> {
+                        call.respond(HttpStatusCode.Forbidden)
+                    }
+                    exception<Throwable> {
+                        environment.log.error(it)
+                        call.respond(HttpStatusCode.InternalServerError)
                     }
                 }
+                install(ContentNegotiation) {
+                    gson {
+                        register(
+                            ContentType.Application.Json,
+                            GsonConverter(GsonBuilder().registerJodaTimeSerializers().create())
+                        )
+                        if (BuildConfig.DEBUG) {
+                            setPrettyPrinting()
+                        }
+                    }
+                }
+                routing {
+                    route(AuthRouting)
+                    route(CustomersRouting)
+                    route(DateTimeRouting)
+                    route(GlobalSettingsRouting)
+                    route(InvoicesRouting)
+                    route(LogsRouting)
+                    route(PlatePriceRouting)
+                    route(OffsetPriceRouting)
+                    route(DigitalPriceRouting)
+                    route(EmployeeRouting)
+                    route(PaymentsRouting)
+                    route(RecessesRouting)
+                    route(WagesRouting)
+                }
             }
-            routing {
-                route(AuthRouting)
-                route(CustomersRouting)
-                route(DateTimeRouting)
-                route(GlobalSettingsRouting)
-                route(InvoicesRouting)
-                route(LogsRouting)
-                route(PlatePriceRouting)
-                route(OffsetPriceRouting)
-                route(DigitalPriceRouting)
-                route(EmployeeRouting)
-                route(PaymentsRouting)
-                route(RecessesRouting)
-                route(WagesRouting)
-            }
-        }
-    }).start(wait = true).environment.log
-    log.info("Welcome to ${BuildConfig.NAME} ${BuildConfig.VERSION}")
-    log.info("For more information, visit ${BuildConfig.WEBSITE}")
-    logger?.info("Debug mode is activated, server activities will be logged here.")
+        }).start(wait = true).environment.log
+        log.info("Welcome to ${BuildConfig.NAME} ${BuildConfig.VERSION}")
+        log.info("For more information, visit ${BuildConfig.WEBSITE}")
+        logger?.info("Debug mode is activated, server activities will be logged here.")
+    }
 }
-
-val resources: ResourceBundle
-    get() = Language.ofFullCode(transaction {
-        findGlobalSetting(GlobalSetting.KEY_LANGUAGE).value
-    }).toResourcesBundle()

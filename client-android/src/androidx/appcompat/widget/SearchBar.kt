@@ -8,6 +8,7 @@ import android.util.TypedValue
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import com.hendraanggrian.openpss.R
 
@@ -17,7 +18,6 @@ class SearchBar @JvmOverloads constructor(
     defStyleAttr: Int = R.attr.searchViewStyle
 ) : SearchView(context, attrs, defStyleAttr) {
 
-    private val mSearchEditFrame = findViewById<View>(androidx.appcompat.R.id.search_edit_frame)
     private val mSearchPlate = findViewById<View>(androidx.appcompat.R.id.search_plate)
     private val mSubmitArea = findViewById<View>(androidx.appcompat.R.id.submit_area)
 
@@ -25,7 +25,8 @@ class SearchBar @JvmOverloads constructor(
 
     init {
         // Set up icons and backgrounds.
-        val transparent = ColorDrawable(resources.getColor(android.R.color.transparent))
+        val transparent =
+            ColorDrawable(ContextCompat.getColor(context, android.R.color.transparent))
         ViewCompat.setBackground(mSearchPlate, transparent)
         ViewCompat.setBackground(mSubmitArea, transparent)
 
@@ -34,12 +35,6 @@ class SearchBar @JvmOverloads constructor(
         // Buttons are wider in Google Search app.
         mCloseButton.scaleType = ImageView.ScaleType.CENTER
         mCloseButton.layoutParams.width = getDimenAttr(context, android.R.attr.actionBarSize)
-    }
-
-    private fun getColorAttr(context: Context, attrId: Int): Int {
-        val typedValue = TypedValue()
-        context.theme.resolveAttribute(attrId, typedValue, true)
-        return typedValue.data
     }
 
     private fun getDimenAttr(context: Context, attrId: Int): Int {

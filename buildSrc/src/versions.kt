@@ -11,7 +11,7 @@ const val SDK_TARGET = 28
 const val BUILD_TOOLS = "28.0.3"
 
 internal const val VERSION_ANDROID_PLUGIN = "3.4.0-alpha10"
-const val VERSION_MULTIDEX = "2.0.0"
+const val VERSION_MULTIDEX = "2.0.1"
 const val VERSION_ANDROIDX = "1.1.0"
 const val VERSION_ESPRESSO = "3.1.1"
 const val VERSION_RUNNER = "1.1.1"
@@ -30,7 +30,7 @@ const val VERSION_KTFX = "8.4.7"
 const val VERSION_MAVEN = "3.6.0"
 const val VERSION_COMMONS_LANG = "3.8.1"
 const val VERSION_COMMONS_MATH = "3.6.1"
-const val VERSION_POI = "4.0.0"
+const val VERSION_POI = "4.0.1"
 
 const val VERSION_LOGBACK = "1.2.3"
 const val VERSION_MONGODB = "3.9.1"

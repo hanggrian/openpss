@@ -4,13 +4,14 @@ plugins {
     idea
     generating("r")
     generating("buildconfig")
+    shadow
     application
 }
 
 group = RELEASE_GROUP
 version = RELEASE_VERSION
 
-application.mainClassName = "$group.OpenPssServerKt"
+application.mainClassName = "$group.OpenPssServer"
 
 sourceSets {
     getByName("main") {
@@ -58,6 +59,20 @@ tasks {
         field("DATABASE_PASS", env(DATABASE_PASS))
         field("SERVER_HOST", env(SERVER_HOST))
         field("SERVER_PORT", env(SERVER_PORT).toInt())
+    }
+
+
+    named<Jar>("jar") {
+        manifest {
+            attributes(mapOf("Main-Class" to application.mainClassName))
+        }
+    }
+
+    named<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar>("shadowJar") {
+        destinationDir = buildDir.resolve("releases")
+        baseName = "$RELEASE_ARTIFACT-server"
+        version = RELEASE_VERSION
+        classifier = null
     }
 
     named<org.jetbrains.dokka.gradle.DokkaTask>("dokka") {

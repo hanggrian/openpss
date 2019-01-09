@@ -83,8 +83,8 @@ tasks {
             bundleId = RELEASE_GROUP
         }
         windows64 {
-            jdk = "/Users/hendraanggrian/Desktop/jdk1.8.0_181"
             name = "$RELEASE_NAME Desktop"
+            jdk = "/Users/hendraanggrian/Desktop/jdk1.8.0_181"
         }
         verbose = true
         openOnDone = true

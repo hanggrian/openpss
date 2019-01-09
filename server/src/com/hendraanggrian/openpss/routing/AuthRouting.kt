@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.routing
 
+import com.hendraanggrian.openpss.OpenPssServer
 import com.hendraanggrian.openpss.data.Employee
-import com.hendraanggrian.openpss.logger
 import com.hendraanggrian.openpss.nosql.transaction
 import com.hendraanggrian.openpss.schema.Employees
 import io.ktor.application.call
@@ -19,7 +19,7 @@ object AuthRouting : OpenPssRouting({
             else -> {
                 employee.clearPassword()
                 call.respond(employee)
-                logger?.info("'$employee' logged in")
+                OpenPssServer.logger?.info("'$employee' logged in")
             }
         }
     }

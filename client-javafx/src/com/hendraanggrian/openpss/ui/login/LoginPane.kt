@@ -122,7 +122,7 @@ class LoginPane<T>(resources: T, override val setting: FxSetting) : _StackPane()
                 employeeField = jfxTextField(setting.getString(Setting.KEY_EMPLOYEE)) {
                     updateFont(16)
                     promptText = getString(R2.string.employee)
-                    runLater { requestFocus() }
+                    runLater(::requestFocus)
                 } marginTop 24
                 textFlow {
                     hyperlink(getString(R2.string.connection_settings)) {

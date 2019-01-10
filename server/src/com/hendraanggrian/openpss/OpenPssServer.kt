@@ -2,7 +2,7 @@ package com.hendraanggrian.openpss
 
 import com.google.gson.GsonBuilder
 import com.hendraanggrian.openpss.data.GlobalSetting
-import com.hendraanggrian.openpss.nosql.startConnection
+import com.hendraanggrian.openpss.nosql.Database
 import com.hendraanggrian.openpss.nosql.transaction
 import com.hendraanggrian.openpss.routing.AuthRouting
 import com.hendraanggrian.openpss.routing.CustomersRouting
@@ -18,6 +18,11 @@ import com.hendraanggrian.openpss.routing.PlatePriceRouting
 import com.hendraanggrian.openpss.routing.RecessesRouting
 import com.hendraanggrian.openpss.routing.WagesRouting
 import com.hendraanggrian.openpss.routing.route
+import com.hendraanggrian.openpss.ui.TextDialog
+import com.hendraanggrian.openpss.ui.menuItem
+import com.hendraanggrian.openpss.ui.popupMenu
+import com.hendraanggrian.openpss.ui.systemTray
+import com.hendraanggrian.openpss.ui.trayIcon
 import com.hendraanggrian.openpss.util.registerJodaTimeSerializers
 import io.ktor.application.call
 import io.ktor.application.install
@@ -41,17 +46,16 @@ import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
 import io.ktor.util.error
 import io.ktor.websocket.WebSockets
-import org.omg.CosNaming.NamingContextPackage.NotFound
 import org.slf4j.Logger
-import java.awt.MenuItem
-import java.awt.MenuShortcut
-import java.awt.PopupMenu
+import java.awt.Desktop
+import java.awt.Frame
 import java.awt.SystemTray
-import java.awt.Toolkit
-import java.awt.TrayIcon
+import java.net.URI
 import java.util.ResourceBundle
 
 object OpenPssServer : StringResources {
+
+    private val frame = Frame()
 
     private lateinit var log: Logger
 
@@ -64,34 +68,46 @@ object OpenPssServer : StringResources {
 
     @JvmStatic
     fun main(args: Array<String>) {
-        startConnection()
-        systemTray {
-            trayIcon("/icon.png") {
-                toolTip = buildString {
-                    append("${BuildConfig.NAME} ${BuildConfig.VERSION}")
-                    if (BuildConfig.DEBUG) {
-                        append(" - DEBUG")
+        Database.start()
+        when {
+            !SystemTray.isSupported() ->
+                TextDialog(this, frame, R.string.system_tray_is_unsupported).show2()
+            else -> systemTray {
+                trayIcon("/icon.png") {
+                    toolTip = buildString {
+                        append("${BuildConfig.NAME} ${BuildConfig.VERSION}")
+                        if (BuildConfig.DEBUG) {
+                            append(" - DEBUG")
+                        }
                     }
-                }
-                isImageAutoSize = true
-                popupMenu {
-                    if (BuildConfig.DEBUG) {
-                        menuItem(
-                            getString(R.string.active_on).format(
-                                "localhost",
-                                BuildConfig.SERVER_PORT
+                    isImageAutoSize = true
+                    popupMenu {
+                        if (BuildConfig.DEBUG) {
+                            menuItem(
+                                getString(R.string.active_on)
+                                    .format("localhost", BuildConfig.SERVER_PORT)
                             )
+                        }
+                        menuItem(
+                            getString(R.string.active_on)
+                                .format(BuildConfig.SERVER_HOST, BuildConfig.SERVER_PORT)
                         )
-                    }
-                    menuItem(
-                        getString(R.string.active_on).format(
-                            BuildConfig.SERVER_HOST,
-                            BuildConfig.SERVER_PORT
-                        )
-                    )
-                    menuItem("-")
-                    menuItem(getString(R.string.quit), 81) {
-                        addActionListener { System.exit(0) }
+                        menuItem("-")
+                        menuItem(getString(R.string.about).format(toolTip)) {
+                            addActionListener {
+                                when {
+                                    !Desktop.isDesktopSupported() -> TextDialog(
+                                        this@OpenPssServer,
+                                        frame,
+                                        R.string.desktop_is_unsupported
+                                    ).show2()
+                                    else -> Desktop.getDesktop().browse(URI(BuildConfig.WEBSITE))
+                                }
+                            }
+                        }
+                        menuItem(getString(R.string.quit), 81) {
+                            addActionListener { System.exit(0) }
+                        }
                     }
                 }
             }
@@ -169,32 +185,5 @@ object OpenPssServer : StringResources {
         log.info("Welcome to ${BuildConfig.NAME} ${BuildConfig.VERSION}")
         log.info("For more information, visit ${BuildConfig.WEBSITE}")
         logger?.info("Debug mode is activated, server activities will be logged here.")
-    }
-
-    private inline fun systemTray(block: SystemTray.() -> Unit) = SystemTray.getSystemTray().block()
-
-    private inline fun SystemTray.trayIcon(image: String, block: TrayIcon.() -> Unit) = add(
-        TrayIcon(
-            Toolkit
-                .getDefaultToolkit()
-                .getImage(OpenPssServer::class.java.getResource(image))
-        ).apply { block() }
-    )
-
-    private inline fun TrayIcon.popupMenu(block: PopupMenu.() -> Unit) {
-        popupMenu = PopupMenu().apply { block() }
-    }
-
-    private fun PopupMenu.menuItem(
-        text: String,
-        shortcut: Int? = null,
-        block: (MenuItem.() -> Unit)? = null
-    ) {
-        add(MenuItem(text)).also {
-            if (shortcut != null) {
-                it.shortcut = MenuShortcut(shortcut)
-            }
-            block?.invoke(it)
-        }
     }
 }

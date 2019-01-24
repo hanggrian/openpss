@@ -1,8 +1,8 @@
-OpenPSS
-=======
 [![release](https://img.shields.io/github/release/hendraanggrian/openpss.svg)](https://github.com/hendraanggrian/openpss/releases/latest)
 [![license](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0)
 
+OpenPSS
+=======
 ![OpenPSS][logo]
 
 Point of Sale software specifically designed for offset and digital printing business.

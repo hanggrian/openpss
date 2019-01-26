@@ -9,7 +9,7 @@ import com.hendraanggrian.openpss.api.OpenPssApi
 import java.util.ResourceBundle
 
 @Suppress("unused")
-class OpenPssApp : Application(), StringResources {
+class OpenPssApplication : Application(), StringResources {
 
     lateinit var api: OpenPssApi
 

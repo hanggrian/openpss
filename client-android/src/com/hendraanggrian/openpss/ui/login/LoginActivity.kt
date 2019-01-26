@@ -51,7 +51,7 @@ class LoginActivity : BaseActivity() {
     }
 
     fun login(@Suppress("UNUSED_PARAMETER") view: View) {
-        openPssApp.api = OpenPssApi(
+        openPssApplication.api = OpenPssApi(
             setting.getString(Setting.KEY_SERVER_HOST),
             setting.getString(Setting.KEY_SERVER_PORT).toInt()
         )

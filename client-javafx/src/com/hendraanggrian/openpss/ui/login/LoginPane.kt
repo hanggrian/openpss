@@ -1,10 +1,10 @@
 package com.hendraanggrian.openpss.ui.login
 
+import com.hendraanggrian.defaults.WritableDefaults
 import com.hendraanggrian.openpss.BuildConfig2
 import com.hendraanggrian.openpss.FxComponent
-import com.hendraanggrian.openpss.FxSetting
 import com.hendraanggrian.openpss.Language
-import com.hendraanggrian.openpss.OpenPssApp
+import com.hendraanggrian.openpss.OpenPssApplication
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.Setting
@@ -12,6 +12,7 @@ import com.hendraanggrian.openpss.StringResources
 import com.hendraanggrian.openpss.ValueResources
 import com.hendraanggrian.openpss.control.IntField
 import com.hendraanggrian.openpss.data.Employee
+import com.hendraanggrian.openpss.language
 import com.hendraanggrian.openpss.ui.BasePopOver
 import com.hendraanggrian.openpss.ui.ResultableDialog
 import com.hendraanggrian.openpss.ui.TextDialog
@@ -55,7 +56,7 @@ import ktfx.layouts.vbox
 import ktfx.runLater
 import ktfx.text.updateFont
 
-class LoginPane<T>(resources: T, override val setting: FxSetting) : _StackPane(),
+class LoginPane<T>(resources: T, override val defaults: WritableDefaults) : _StackPane(),
     FxComponent,
     StringResources by resources,
     ValueResources by resources
@@ -76,11 +77,11 @@ class LoginPane<T>(resources: T, override val setting: FxSetting) : _StackPane()
     override val rootLayout: StackPane get() = this
 
     private val serverHostField = HostField().apply {
-        text = setting.getString(Setting.KEY_SERVER_HOST)
+        text = defaults[Setting.KEY_SERVER_HOST]
         promptText = getString(R2.string.server_host)
     }
     private val serverPortField = IntField().apply {
-        value = setting.getInt(Setting.KEY_SERVER_PORT)
+        value = defaults.getInt(Setting.KEY_SERVER_PORT)
         promptText = getString(R2.string.server_port)
     }
 
@@ -93,17 +94,17 @@ class LoginPane<T>(resources: T, override val setting: FxSetting) : _StackPane()
             paddingAll = getDouble(R.value.padding_medium)
             label(getString(R2.string.language)) row 0 col 0 hpriority Priority.ALWAYS halign HPos.RIGHT
             jfxComboBox(Language.values().toObservableList()) {
-                selectionModel.select(setting.language)
+                selectionModel.select(defaults.language)
                 valueProperty().listener { _, _, value ->
-                    setting.edit {
-                        putString(Setting.KEY_LANGUAGE, value.fullCode)
+                    defaults {
+                        this[Setting.KEY_LANGUAGE] = value.fullCode
                     }
                     TextDialog(
                         this@LoginPane,
                         R2.string.restart_required,
                         getString(R2.string._restart_required)
                     ).apply {
-                        onDialogClosed { OpenPssApp.exit() }
+                        onDialogClosed { OpenPssApplication.exit() }
                     }.show(this@LoginPane)
                 }
             } row 0 col 1
@@ -119,7 +120,7 @@ class LoginPane<T>(resources: T, override val setting: FxSetting) : _StackPane()
                     isWrapText = true
                     updateFont(16)
                 }
-                employeeField = jfxTextField(setting.getString(Setting.KEY_EMPLOYEE)) {
+                employeeField = jfxTextField(defaults[Setting.KEY_EMPLOYEE]) {
                     updateFont(16)
                     promptText = getString(R2.string.employee)
                     runLater(::requestFocus)
@@ -160,10 +161,10 @@ class LoginPane<T>(resources: T, override val setting: FxSetting) : _StackPane()
                         disableProperty().bind(employeeField.textProperty().isBlank())
                         onAction {
                             PasswordDialog().show {
-                                setting.edit {
-                                    putString(Setting.KEY_EMPLOYEE, employeeField.text)
-                                    putString(Setting.KEY_SERVER_HOST, serverHostField.text)
-                                    putString(Setting.KEY_SERVER_PORT, serverPortField.text)
+                                defaults {
+                                    this[Setting.KEY_EMPLOYEE] = employeeField.text
+                                    this[Setting.KEY_SERVER_HOST] = serverHostField.text
+                                    this[Setting.KEY_SERVER_PORT] = serverPortField.text
                                 }
                                 onSuccess?.invoke(runCatching {
                                     api.login(employeeField.text, passwordField.text)

@@ -25,9 +25,9 @@ class LoginActivity : BaseActivity() {
                     ProcessPhoenix.triggerRebirth(this@LoginActivity)
                 }
             }
-            loginButton.isEnabled = !setting.getString(Setting.KEY_SERVER_HOST).isBlank() &&
-                !setting.getString(Setting.KEY_SERVER_PORT).isBlank() &&
-                !setting.getString(Setting.KEY_EMPLOYEE).isBlank()
+            loginButton.isEnabled = !defaults[Setting.KEY_SERVER_HOST]!!.isBlank() &&
+                !defaults[Setting.KEY_SERVER_PORT]!!.isBlank() &&
+                !defaults[Setting.KEY_EMPLOYEE]!!.isBlank()
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,27 +36,30 @@ class LoginActivity : BaseActivity() {
         setSupportActionBar(toolbar)
         supportActionBar!!.title = getString(R2.string.openpss_login)
         loginButton.text = getString(R2.string.login)
-        preferenceListener.onSharedPreferenceChanged(setting.preferences, null) // trigger once
+        preferenceListener.onSharedPreferenceChanged(
+            defaults.sharedPreferences,
+            null
+        ) // trigger once
         replaceFragment(R.id.preferenceLayout, LoginPreferenceFragment())
     }
 
     override fun onResume() {
         super.onResume()
-        setting.preferences.registerOnSharedPreferenceChangeListener(preferenceListener)
+        defaults.sharedPreferences.registerOnSharedPreferenceChangeListener(preferenceListener)
     }
 
     override fun onPause() {
         super.onPause()
-        setting.preferences.unregisterOnSharedPreferenceChangeListener(preferenceListener)
+        defaults.sharedPreferences.unregisterOnSharedPreferenceChangeListener(preferenceListener)
     }
 
     fun login(@Suppress("UNUSED_PARAMETER") view: View) {
         openPssApplication.api = OpenPssApi(
-            setting.getString(Setting.KEY_SERVER_HOST),
-            setting.getString(Setting.KEY_SERVER_PORT).toInt()
+            defaults[Setting.KEY_SERVER_HOST]!!,
+            defaults.getInt(Setting.KEY_SERVER_PORT)
         )
         PasswordDialogFragment()
-            .args(extrasOf<PasswordDialogFragment>(setting.getString(Setting.KEY_EMPLOYEE)))
+            .args(extrasOf<PasswordDialogFragment>(defaults[Setting.KEY_EMPLOYEE]!!))
             .show(supportFragmentManager)
     }
 }

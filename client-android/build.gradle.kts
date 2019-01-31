@@ -65,6 +65,7 @@ dependencies {
 
     implementation(kotlinx("coroutines-android", VERSION_COROUTINES))
     implementation(slf4j("android"))
+    implementation(hendraanggrian("defaults", "defaults-android", VERSION_DEFAULTS))
 
     implementation(androidx("multidex", version = VERSION_MULTIDEX))
     implementation(androidx("core", "core-ktx", "$VERSION_ANDROIDX-alpha03"))

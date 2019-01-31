@@ -61,7 +61,7 @@ class SettingsDialog(component: FxComponent) : BaseDialog(component, R2.string.s
                     item {
                         label(getString(R2.string.reader))
                         wageReaderChoice = jfxComboBox(WageReader.listAll()) {
-                            value = WageReader.of(setting.getString(FxSetting.KEY_WAGEREADER))
+                            value = WageReader.of(defaults[FxSetting.KEY_WAGEREADER]!!)
                             valueProperty().listener { isLocalChanged.set(true) }
                         }
                     }
@@ -109,8 +109,8 @@ class SettingsDialog(component: FxComponent) : BaseDialog(component, R2.string.s
                 disableProperty().bind(!isLocalChanged and !isGlobalChanged)
                 onActionFilter(Dispatchers.JavaFx) {
                     if (isLocalChanged.value) {
-                        setting.edit {
-                            putString(FxSetting.KEY_WAGEREADER, wageReaderChoice.value.name)
+                        defaults {
+                            set(FxSetting.KEY_WAGEREADER, wageReaderChoice.value.name)
                         }
                     }
                     if (isGlobalChanged.value) {

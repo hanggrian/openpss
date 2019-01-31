@@ -1,9 +1,10 @@
 package com.hendraanggrian.openpss
 
+import com.hendraanggrian.defaults.ReadableDefaults
 import com.hendraanggrian.openpss.api.OpenPssApi
 import com.hendraanggrian.openpss.data.Employee
 
-interface Component<L, S : Setting<E>, E> {
+interface Component<L, D : ReadableDefaults> {
 
     val rootLayout: L
 
@@ -11,5 +12,5 @@ interface Component<L, S : Setting<E>, E> {
 
     val api: OpenPssApi
 
-    val setting: S
+    val defaults: D
 }

@@ -6,6 +6,8 @@ import java.io.File
 
 object MainDirectory : Directory(SystemUtils.USER_HOME, ".${BuildConfig2.ARTIFACT}")
 
+object SettingsFile : File(MainDirectory, ".settings")
+
 object WageDirectory : Directory(MainDirectory, "wage")
 
 class WageFile : File(WageDirectory, "${DateTime.now().toString("yyyy-MM-dd HH.mm")}.png")

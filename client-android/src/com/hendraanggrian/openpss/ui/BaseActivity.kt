@@ -8,8 +8,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.hendraanggrian.bundler.Extra
+import com.hendraanggrian.defaults.Defaults
+import com.hendraanggrian.defaults.SharedPreferencesDefaults
 import com.hendraanggrian.openpss.AndroidComponent
-import com.hendraanggrian.openpss.AndroidSetting
 import com.hendraanggrian.openpss.OpenPssApplication
 import com.hendraanggrian.openpss.api.OpenPssApi
 import com.hendraanggrian.openpss.data.Employee
@@ -41,7 +42,7 @@ open class BaseActivity : AppCompatActivity(), AndroidComponent {
 
     override val resourceBundle: ResourceBundle get() = openPssApplication.resourceBundle
 
-    override val setting: AndroidSetting get() = openPssApplication.setting
+    override val defaults: Defaults<*> get() = openPssApplication.defaults
 
     inline val openPssApplication: OpenPssApplication get() = application as OpenPssApplication
 

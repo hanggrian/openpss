@@ -1,5 +1,6 @@
 package com.hendraanggrian.openpss
 
+import com.hendraanggrian.defaults.WritableDefaults
 import com.hendraanggrian.openpss.api.GitHubApi
 import com.hendraanggrian.openpss.api.OpenPssApi
 import com.hendraanggrian.openpss.data.Employee
@@ -32,7 +33,7 @@ import java.lang.ref.WeakReference
 import kotlin.coroutines.CoroutineContext
 
 /** StackPane is the root layout for [ktfx.jfoenix.jfxSnackbar]. */
-interface FxComponent : Component<StackPane, FxSetting, FxSetting.Editor>,
+interface FxComponent : Component<StackPane, WritableDefaults>,
     StringResources,
     ValueResources {
 
@@ -46,8 +47,8 @@ interface FxComponent : Component<StackPane, FxSetting, FxSetting.Editor>,
             var api = apiRef.get()
             if (api == null) {
                 api = OpenPssApi(
-                    setting.getString(Setting.KEY_SERVER_HOST),
-                    setting.getInt(Setting.KEY_SERVER_PORT)
+                    defaults[Setting.KEY_SERVER_HOST]!!,
+                    defaults.getInt(Setting.KEY_SERVER_PORT)
                 )
                 apiRef = WeakReference(api)
             }

@@ -10,8 +10,9 @@ import androidx.fragment.app.FragmentManager
 import androidx.preference.DialogPreference
 import com.hendraanggrian.bundler.Extra
 import com.hendraanggrian.bundler.bindExtras
+import com.hendraanggrian.defaults.Defaults
+import com.hendraanggrian.defaults.SharedPreferencesDefaults
 import com.hendraanggrian.openpss.AndroidComponent
-import com.hendraanggrian.openpss.AndroidSetting
 import com.hendraanggrian.openpss.api.OpenPssApi
 import com.hendraanggrian.openpss.data.Employee
 import com.takisoft.preferencex.PreferenceFragmentCompat
@@ -19,7 +20,7 @@ import java.util.ResourceBundle
 
 open class BaseFragment : Fragment(), AndroidComponent {
 
-    override val setting: AndroidSetting get() = baseActivity.setting
+    override val defaults: Defaults<*> get() = baseActivity.defaults
 
     override val api: OpenPssApi get() = baseActivity.api
 
@@ -34,7 +35,7 @@ open class BaseFragment : Fragment(), AndroidComponent {
 
 abstract class BasePreferenceFragment : PreferenceFragmentCompat(), AndroidComponent {
 
-    override val setting: AndroidSetting get() = baseActivity.setting
+    override val defaults: Defaults<*> get() = baseActivity.defaults
 
     override val api: OpenPssApi get() = baseActivity.api
 
@@ -56,7 +57,7 @@ abstract class BasePreferenceFragment : PreferenceFragmentCompat(), AndroidCompo
 
 open class BaseDialogFragment : AppCompatDialogFragment(), AndroidComponent {
 
-    override val setting: AndroidSetting get() = baseActivity.setting
+    override val defaults: Defaults<*> get() = baseActivity.defaults
 
     override val api: OpenPssApi get() = baseActivity.api
 

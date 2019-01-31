@@ -144,7 +144,7 @@ class WageController : ActionController() {
             withPermission {
                 anchorPane.scene.window.chooseFile(
                     getString(R2.string.input_file) to
-                        WageReader.of(setting.getString(FxSetting.KEY_WAGEREADER)).extension
+                        WageReader.of(defaults[FxSetting.KEY_WAGEREADER]!!).extension
                 )?.let { read(it) }
             }
         }
@@ -167,7 +167,7 @@ class WageController : ActionController() {
         }
         runCatching {
             GlobalScope.launch(Dispatchers.IO) {
-                WageReader.of(setting.getString(FxSetting.KEY_WAGEREADER)).read(file)
+                WageReader.of(defaults[FxSetting.KEY_WAGEREADER]!!).read(file)
                     .forEach { attendee ->
                         GlobalScope.launch(Dispatchers.JavaFx) {
                             attendee.init(api)

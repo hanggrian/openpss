@@ -11,7 +11,7 @@ plugins {
 group = RELEASE_GROUP
 version = RELEASE_VERSION
 
-application.mainClassName = "$group.OpenPssApp"
+application.mainClassName = "$group.OpenPssApplication"
 
 sourceSets {
     getByName("main") {
@@ -42,6 +42,7 @@ dependencies {
     implementation(hendraanggrian("ktfx", version = VERSION_KTFX))
     implementation(hendraanggrian("ktfx", "ktfx-controlsfx", VERSION_KTFX))
     implementation(hendraanggrian("ktfx", "ktfx-jfoenix", VERSION_KTFX))
+    implementation(hendraanggrian("defaults", "defaults-jvm", VERSION_DEFAULTS))
 
     implementation(apache("commons-lang3", VERSION_COMMONS_LANG))
     implementation(apache("commons-math3", VERSION_COMMONS_MATH))

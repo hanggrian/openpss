@@ -26,6 +26,7 @@ ktlint()
 dependencies {
     api(project(":core"))
 
+    api(hendraanggrian("defaults", version = VERSION_DEFAULTS))
     api(ktor("client-okhttp"))
     api(ktor("client-gson"))
 

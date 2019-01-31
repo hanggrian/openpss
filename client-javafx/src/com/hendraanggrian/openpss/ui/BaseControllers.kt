@@ -1,9 +1,12 @@
 package com.hendraanggrian.openpss.ui
 
+import com.hendraanggrian.defaults.Defaults
+import com.hendraanggrian.defaults.WritableDefaults
+import com.hendraanggrian.defaults.get
 import com.hendraanggrian.openpss.FxComponent
-import com.hendraanggrian.openpss.FxSetting
-import com.hendraanggrian.openpss.OpenPssApp
+import com.hendraanggrian.openpss.OpenPssApplication
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.SettingsFile
 import com.hendraanggrian.openpss.data.Employee
 import javafx.beans.property.SimpleStringProperty
 import javafx.beans.property.StringProperty
@@ -21,17 +24,17 @@ import java.util.ResourceBundle
 @Suppress("LeakingThis")
 open class BaseController : Initializable, FxComponent {
 
-    private lateinit var _setting: FxSetting
-    override val setting: FxSetting
+    private lateinit var _setting: WritableDefaults
+    override val defaults: WritableDefaults
         get() {
             if (!::_setting.isInitialized) {
-                _setting = FxSetting()
+                _setting = Defaults[SettingsFile]
             }
             return _setting
         }
 
     override lateinit var resourceBundle: ResourceBundle
-    override val valueProperties: Properties = OpenPssApp::class.java
+    override val valueProperties: Properties = OpenPssApplication::class.java
         .getResourceAsStream(R.value.properties_value)
         .use { stream -> Properties().apply { load(stream) } }
 

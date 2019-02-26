@@ -63,7 +63,7 @@
 }
 .jfx-hamburger StackPane {
     -fx-pref-height: 3;
-    -fx-background-color: -accent;
+    -fx-background-color: -dark;
 }
 
 .jfx-radio-button {

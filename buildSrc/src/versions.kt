@@ -43,4 +43,4 @@ internal const val VERSION_TESTFX = "4.0.15-alpha"
 internal const val VERSION_GIT_PUBLISH = "0.3.3"
 internal const val VERSION_KTLINT = "0.30.0"
 
-fun String.stable(): String = substringBefore("-")
+fun String.stable(): String = substringBefore('-')

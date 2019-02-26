@@ -108,7 +108,7 @@
                     <Toolbar fx:id="toolbar">
                         <leftItems>
                             <JFXHamburger fx:id="hamburger" prefWidth="25"/>
-                            <Label fx:id="titleLabel" styleClass="bold,display,accent">
+                            <Label fx:id="titleLabel" styleClass="bold,display">
                                 <padding>
                                     <Insets left="10"/>
                                 </padding>

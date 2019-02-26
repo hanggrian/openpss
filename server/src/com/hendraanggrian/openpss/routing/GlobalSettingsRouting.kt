@@ -29,7 +29,7 @@ object GlobalSettingsRouting : OpenPssRouting({
                     .update(value)
             }
             call.respond(HttpStatusCode.OK)
-            OpenPSSServer.logger?.info("GlobalSetting '$key' has been changed to '$value'")
+            OpenPSSServer.log("GlobalSetting '$key' has been changed to '$value'")
         }
     }
 })

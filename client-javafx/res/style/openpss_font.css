@@ -30,6 +30,10 @@
     -fx-text-fill: -accent;
 }
 
+.dark {
+    -fx-text-fill: -dark;
+}
+
 .bold {
     -fx-font-family: "Roboto Bold";
 }

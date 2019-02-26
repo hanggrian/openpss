@@ -56,10 +56,13 @@ import java.util.ResourceBundle
 object OpenPSSServer : StringResources {
 
     private val frame = Frame()
+    private var logger: Logger? = null
 
-    private lateinit var log: Logger
-
-    val logger: Logger? get() = log.takeIf { BuildConfig.DEBUG }
+    fun log(message: String) {
+        if (BuildConfig.DEBUG) {
+            logger?.info(message)
+        }
+    }
 
     override val resourceBundle: ResourceBundle
         get() = Language.ofFullCode(transaction {
@@ -82,17 +85,6 @@ object OpenPSSServer : StringResources {
                     }
                     isImageAutoSize = true
                     popupMenu {
-                        if (BuildConfig.DEBUG) {
-                            menuItem(
-                                getString(R.string.active_on)
-                                    .format("localhost", BuildConfig.SERVER_PORT)
-                            )
-                        }
-                        menuItem(
-                            getString(R.string.active_on)
-                                .format(BuildConfig.SERVER_HOST, BuildConfig.SERVER_PORT)
-                        )
-                        menuItem("-")
                         menuItem(getString(R.string.about).format(toolTip)) {
                             addActionListener {
                                 when {
@@ -105,23 +97,17 @@ object OpenPSSServer : StringResources {
                                 }
                             }
                         }
-                        menuItem(getString(R.string.quit), 81) {
+                        menuItem(getString(R.string.quit)) {
                             addActionListener { System.exit(0) }
                         }
                     }
                 }
             }
         }
-        log = embeddedServer(Netty, applicationEngineEnvironment {
-            if (BuildConfig.DEBUG) {
-                connector {
-                    host = "localhost"
-                    port = BuildConfig.SERVER_PORT
-                }
-            }
+        logger = embeddedServer(Netty, applicationEngineEnvironment {
             connector {
-                host = BuildConfig.SERVER_HOST
-                port = BuildConfig.SERVER_PORT
+                host = "0.0.0.0"
+                port = 8080
             }
             module {
                 if (BuildConfig.DEBUG) {
@@ -182,8 +168,8 @@ object OpenPSSServer : StringResources {
                 }
             }
         }).start(wait = true).environment.log
-        log.info("Welcome to ${BuildConfig.NAME} ${BuildConfig.VERSION}")
-        log.info("For more information, visit ${BuildConfig.WEBSITE}")
-        logger?.info("Debug mode is activated, server activities will be logged here.")
+        log("Welcome to ${BuildConfig.NAME} ${BuildConfig.VERSION}")
+        log("For more information, visit ${BuildConfig.WEBSITE}")
+        log("Debug mode is activated, server activities will be logged here.")
     }
 }

@@ -19,7 +19,7 @@ object AuthRouting : OpenPssRouting({
             else -> {
                 employee.clearPassword()
                 call.respond(employee)
-                OpenPSSServer.logger?.info("'$employee' logged in")
+                OpenPSSServer.log("'$employee' logged in")
             }
         }
     }

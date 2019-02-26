@@ -54,10 +54,8 @@ tasks {
         debug = RELEASE_DEBUG
         website = RELEASE_WEBSITE
         field("DATABASE_NAME", RELEASE_ARTIFACT)
-        field("DATABASE_USER", env(DATABASE_USER))
-        field("DATABASE_PASS", env(DATABASE_PASS))
-        field("SERVER_HOST", env(SERVER_HOST))
-        field("SERVER_PORT", env(SERVER_PORT).toInt())
+        field("DATABASE_USER", DATABASE_USER)
+        field("DATABASE_PASS", DATABASE_PASS)
     }
 
 

@@ -48,9 +48,9 @@ object Database {
             BuildConfig.DATABASE_NAME,
             arrayOf(
                 MongoCredential.createCredential(
-                    BuildConfig.DATABASE_USER,
+                    System.getenv(BuildConfig.DATABASE_USER),
                     "admin",
-                    BuildConfig.DATABASE_PASS.toCharArray()
+                    System.getenv(BuildConfig.DATABASE_PASS).toCharArray()
                 )
             ),
             MongoClientOptions.Builder().serverSelectionTimeout(3000).build(),

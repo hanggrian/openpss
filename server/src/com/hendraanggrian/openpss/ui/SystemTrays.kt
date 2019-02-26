@@ -1,6 +1,6 @@
 package com.hendraanggrian.openpss.ui
 
-import com.hendraanggrian.openpss.OpenPssServer
+import com.hendraanggrian.openpss.OpenPSSServer
 import java.awt.MenuItem
 import java.awt.MenuShortcut
 import java.awt.PopupMenu
@@ -14,7 +14,7 @@ inline fun SystemTray.trayIcon(image: String, block: TrayIcon.() -> Unit) = add(
     TrayIcon(
         Toolkit
             .getDefaultToolkit()
-            .getImage(OpenPssServer::class.java.getResource(image))
+            .getImage(OpenPSSServer::class.java.getResource(image))
     ).apply { block() }
 )
 

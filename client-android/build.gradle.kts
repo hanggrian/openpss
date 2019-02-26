@@ -8,7 +8,6 @@ plugins {
 
 android {
     compileSdkVersion(SDK_TARGET)
-    buildToolsVersion(BUILD_TOOLS)
     defaultConfig {
         minSdkVersion(SDK_MIN)
         targetSdkVersion(SDK_TARGET)
@@ -76,7 +75,7 @@ dependencies {
     implementation(material("$VERSION_ANDROIDX-alpha02"))
 
     implementation(hendraanggrian("material", "errorbar-ktx", "$VERSION_ANDROIDX-alpha02"))
-    implementation(hendraanggrian("pikasso", version = VERSION_PIKASSO))
+    implementation(hendraanggrian("pikasso", "pikasso", VERSION_PIKASSO))
     implementation(
         hendraanggrian(
             "recyclerview", "recyclerview-paginated", VERSION_RECYCLERVIEW_PAGINATED

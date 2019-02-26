@@ -7,7 +7,7 @@ import com.hendraanggrian.bundler.extrasOf
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.Setting
-import com.hendraanggrian.openpss.api.OpenPssApi
+import com.hendraanggrian.openpss.api.OpenPSSApi
 import com.hendraanggrian.openpss.ui.BaseActivity
 import com.jakewharton.processphoenix.ProcessPhoenix
 import kotlinx.android.synthetic.main.activity_login.*
@@ -37,7 +37,7 @@ class LoginActivity : BaseActivity() {
         supportActionBar!!.title = getString(R2.string.openpss_login)
         loginButton.text = getString(R2.string.login)
         preferenceListener.onSharedPreferenceChanged(
-            defaults.sharedPreferences,
+            defaults.toSharedPreferences(),
             null
         ) // trigger once
         replaceFragment(R.id.preferenceLayout, LoginPreferenceFragment())
@@ -45,16 +45,17 @@ class LoginActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
-        defaults.sharedPreferences.registerOnSharedPreferenceChangeListener(preferenceListener)
+        defaults.toSharedPreferences().registerOnSharedPreferenceChangeListener(preferenceListener)
     }
 
     override fun onPause() {
         super.onPause()
-        defaults.sharedPreferences.unregisterOnSharedPreferenceChangeListener(preferenceListener)
+        defaults.toSharedPreferences()
+            .unregisterOnSharedPreferenceChangeListener(preferenceListener)
     }
 
     fun login(@Suppress("UNUSED_PARAMETER") view: View) {
-        openPssApplication.api = OpenPssApi(
+        openPssApplication.api = OpenPSSApi(
             defaults[Setting.KEY_SERVER_HOST]!!,
             defaults.getInt(Setting.KEY_SERVER_PORT)
         )

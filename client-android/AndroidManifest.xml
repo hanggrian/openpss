@@ -6,12 +6,12 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name=".OpenPssApplication"
+        android:name=".OpenPSSApplication"
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="OpenPSS"
         android:supportsRtl="true"
-        android:theme="@style/Theme.OpenPss"
+        android:theme="@style/Theme.OpenPSS"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning"
         tools:targetApi="m">

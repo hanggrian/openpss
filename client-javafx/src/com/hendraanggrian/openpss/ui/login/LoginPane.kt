@@ -4,7 +4,7 @@ import com.hendraanggrian.defaults.WritableDefaults
 import com.hendraanggrian.openpss.BuildConfig2
 import com.hendraanggrian.openpss.FxComponent
 import com.hendraanggrian.openpss.Language
-import com.hendraanggrian.openpss.OpenPssApplication
+import com.hendraanggrian.openpss.OpenPSSApplication
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.Setting
@@ -81,7 +81,7 @@ class LoginPane<T>(resources: T, override val defaults: WritableDefaults) : _Sta
         promptText = getString(R2.string.server_host)
     }
     private val serverPortField = IntField().apply {
-        value = defaults.getInt(Setting.KEY_SERVER_PORT)
+        value = defaults.getInt(Setting.KEY_SERVER_PORT)!!
         promptText = getString(R2.string.server_port)
     }
 
@@ -104,7 +104,7 @@ class LoginPane<T>(resources: T, override val defaults: WritableDefaults) : _Sta
                         R2.string.restart_required,
                         getString(R2.string._restart_required)
                     ).apply {
-                        onDialogClosed { OpenPssApplication.exit() }
+                        onDialogClosed { OpenPSSApplication.exit() }
                     }.show(this@LoginPane)
                 }
             } row 0 col 1

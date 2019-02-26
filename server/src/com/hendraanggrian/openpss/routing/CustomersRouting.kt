@@ -1,6 +1,6 @@
 package com.hendraanggrian.openpss.routing
 
-import com.hendraanggrian.openpss.OpenPssServer
+import com.hendraanggrian.openpss.OpenPSSServer
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.data.Customer
 import com.hendraanggrian.openpss.data.Log
@@ -67,7 +67,7 @@ object CustomersRouting : OpenPssRouting({
                     query.projection { name + address + note }
                         .update(customer.name, customer.address, customer.note)
                     Logs += Log.new(
-                        OpenPssServer.getString(R.string.customer_edit).format(customerName),
+                        OpenPSSServer.getString(R.string.customer_edit).format(customerName),
                         call.getString("login")
                     )
                 }
@@ -91,7 +91,7 @@ object CustomersRouting : OpenPssRouting({
                         query.projection { contacts }
                             .update(customer.contacts - contact)
                         Logs += Log.new(
-                            OpenPssServer.getString(R.string.contact_deleted).format(
+                            OpenPSSServer.getString(R.string.contact_deleted).format(
                                 contact.value,
                                 customer.name
                             ),

@@ -1,10 +1,9 @@
 package com.hendraanggrian.openpss.ui
 
-import com.hendraanggrian.defaults.Defaults
 import com.hendraanggrian.defaults.WritableDefaults
-import com.hendraanggrian.defaults.get
+import com.hendraanggrian.defaults.toDefaults
 import com.hendraanggrian.openpss.FxComponent
-import com.hendraanggrian.openpss.OpenPssApplication
+import com.hendraanggrian.openpss.OpenPSSApplication
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.SettingsFile
 import com.hendraanggrian.openpss.data.Employee
@@ -28,13 +27,13 @@ open class BaseController : Initializable, FxComponent {
     override val defaults: WritableDefaults
         get() {
             if (!::_setting.isInitialized) {
-                _setting = Defaults[SettingsFile]
+                _setting = SettingsFile.toDefaults()
             }
             return _setting
         }
 
     override lateinit var resourceBundle: ResourceBundle
-    override val valueProperties: Properties = OpenPssApplication::class.java
+    override val valueProperties: Properties = OpenPSSApplication::class.java
         .getResourceAsStream(R.value.properties_value)
         .use { stream -> Properties().apply { load(stream) } }
 

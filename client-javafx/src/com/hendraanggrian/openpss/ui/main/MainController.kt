@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.ui.main
 
 import com.hendraanggrian.openpss.BuildConfig2
-import com.hendraanggrian.openpss.OpenPssApplication
+import com.hendraanggrian.openpss.OpenPSSApplication
 import com.hendraanggrian.openpss.PATTERN_DATETIME
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
@@ -226,7 +226,7 @@ class MainController : BaseController(), Refreshable {
     }
 
     @FXML
-    fun quit() = OpenPssApplication.exit()
+    fun quit() = OpenPSSApplication.exit()
 
     @FXML
     fun editPrice(event: ActionEvent) = when (event.source) {

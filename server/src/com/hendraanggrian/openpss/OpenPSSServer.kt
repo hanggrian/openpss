@@ -53,7 +53,7 @@ import java.awt.SystemTray
 import java.net.URI
 import java.util.ResourceBundle
 
-object OpenPssServer : StringResources {
+object OpenPSSServer : StringResources {
 
     private val frame = Frame()
 
@@ -97,7 +97,7 @@ object OpenPssServer : StringResources {
                             addActionListener {
                                 when {
                                     !Desktop.isDesktopSupported() -> TextDialog(
-                                        this@OpenPssServer,
+                                        this@OpenPSSServer,
                                         frame,
                                         R.string.desktop_is_unsupported
                                     ).show2()

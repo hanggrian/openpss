@@ -1,6 +1,6 @@
 package com.hendraanggrian.openpss.ui.wage
 
-import com.hendraanggrian.openpss.api.OpenPssApi
+import com.hendraanggrian.openpss.api.OpenPSSApi
 import com.hendraanggrian.openpss.StringResources
 import com.hendraanggrian.openpss.data.Recess
 import com.hendraanggrian.openpss.data.Wage
@@ -41,7 +41,7 @@ data class Attendee(
     var daily: Int by dailyProperty
     var hourlyOvertime: Int by hourlyOvertimeProperty
 
-    suspend fun init(api: OpenPssApi) {
+    suspend fun init(api: OpenPSSApi) {
         api.getWage(id)?.let { wage ->
             daily = wage.daily
             hourlyOvertime = wage.hourlyOvertime
@@ -52,7 +52,7 @@ data class Attendee(
             .map { index -> attendances[index] })
     }
 
-    suspend fun saveWage(api: OpenPssApi) = api.getWages().let { wages ->
+    suspend fun saveWage(api: OpenPSSApi) = api.getWages().let { wages ->
         when {
             wages.isEmpty() -> api.addWage(Wage(id, daily, hourlyOvertime))
             else -> wages.single().let { wage ->

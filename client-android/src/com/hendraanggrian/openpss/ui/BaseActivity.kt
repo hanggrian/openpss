@@ -8,11 +8,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.hendraanggrian.bundler.Extra
-import com.hendraanggrian.defaults.Defaults
 import com.hendraanggrian.defaults.SharedPreferencesDefaults
 import com.hendraanggrian.openpss.AndroidComponent
-import com.hendraanggrian.openpss.OpenPssApplication
-import com.hendraanggrian.openpss.api.OpenPssApi
+import com.hendraanggrian.openpss.OpenPSSApplication
+import com.hendraanggrian.openpss.api.OpenPSSApi
 import com.hendraanggrian.openpss.data.Employee
 import com.hendraanggrian.openpss.nosql.StringId
 import java.util.ResourceBundle
@@ -28,7 +27,7 @@ open class BaseActivity : AppCompatActivity(), AndroidComponent {
 
     override fun getContext(): Context? = this
 
-    override val api: OpenPssApi get() = openPssApplication.api
+    override val api: OpenPSSApi get() = openPssApplication.api
 
     override val rootLayout: View get() = findViewById(android.R.id.content)
 
@@ -42,9 +41,9 @@ open class BaseActivity : AppCompatActivity(), AndroidComponent {
 
     override val resourceBundle: ResourceBundle get() = openPssApplication.resourceBundle
 
-    override val defaults: Defaults<*> get() = openPssApplication.defaults
+    override val defaults: SharedPreferencesDefaults get() = openPssApplication.defaults
 
-    inline val openPssApplication: OpenPssApplication get() = application as OpenPssApplication
+    inline val openPssApplication: OpenPSSApplication get() = application as OpenPSSApplication
 
     fun replaceFragment(@IdRes containerViewId: Int, fragment: Fragment) =
         supportFragmentManager.beginTransaction()

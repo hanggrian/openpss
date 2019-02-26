@@ -6,19 +6,18 @@ OpenPSS
 ![OpenPSS][logo]
 
 Point of Sale software specifically designed for offset and digital printing business.
-Powered by JavaFX and Kotlin frameworks.
-Heavily under development.
+Powered by Kotlin frameworks, heavily under development.
 
 Features
 --------
- * Multi-platform, client available in Android, Windows, and macOS.
+ * Multi-platform, client available in Windows and macOS.
  * Multi-language, currently supports English and Bahasa.
  
 How to use
 ----------
+
 #### Download
 Head to releases to download this app in 3 variants:
- * `apk`: Android app installer.
  * `dmg`: macOS images, mount and obtain the `app` file.
  * `exe`: Windows executables wrapped in 7-zip SFX installer.
  * `jar`: Single Java executable file that requires JRE 1.8.
@@ -73,10 +72,12 @@ Where `executeFunctions` is a custom role:
 
 Developer note
 --------------
+
 #### Tech stacks
-Built with Kotlin in mind, this app is fully written in Kotlin and using some Kotlin-based frameworks:
- * Kotlin for JVM
- * Preview version of Kotlin NoSQL Framework
+Built with Kotlin in mind, this app is fully written in Kotlin frameworks:
+ * Kotlin for JVM and Android
+ * Ktor web framework
+ * Kotlin NoSQL preview
  * Kotlin Coroutines
  * Gradle Kotlin DSL
 

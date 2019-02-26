@@ -2,7 +2,7 @@ package com.hendraanggrian.openpss
 
 import com.hendraanggrian.defaults.WritableDefaults
 import com.hendraanggrian.openpss.api.GitHubApi
-import com.hendraanggrian.openpss.api.OpenPssApi
+import com.hendraanggrian.openpss.api.OpenPSSApi
 import com.hendraanggrian.openpss.data.Employee
 import com.hendraanggrian.openpss.data.GlobalSetting
 import com.hendraanggrian.openpss.ui.ResultableDialog
@@ -38,17 +38,17 @@ interface FxComponent : Component<StackPane, WritableDefaults>,
     ValueResources {
 
     companion object {
-        private var apiRef = WeakReference<OpenPssApi?>(null)
+        private var apiRef = WeakReference<OpenPSSApi?>(null)
         private var gitHubApiRef = WeakReference<GitHubApi?>(null)
     }
 
-    override val api: OpenPssApi
+    override val api: OpenPSSApi
         get() {
             var api = apiRef.get()
             if (api == null) {
-                api = OpenPssApi(
+                api = OpenPSSApi(
                     defaults[Setting.KEY_SERVER_HOST]!!,
-                    defaults.getInt(Setting.KEY_SERVER_PORT)
+                    defaults.getInt(Setting.KEY_SERVER_PORT)!!
                 )
                 apiRef = WeakReference(api)
             }

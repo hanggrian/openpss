@@ -24,9 +24,12 @@ fun DependencyHandler.androidx(
 fun DependencyHandler.material(version: String = VERSION_ANDROIDX) =
     "com.google.android.material:material:$version"
 
+fun DependencyHandler.hendraanggrian(module: String, version: String): String =
+    "com.hendraanggrian:$module:$version"
+
 fun DependencyHandler.hendraanggrian(
     repository: String,
-    module: String = repository,
+    module: String,
     version: String
 ): String = "com.hendraanggrian.$repository:$module:$version"
 
@@ -35,8 +38,6 @@ fun DependencyHandler.apache(module: String, version: String) =
 
 fun DependencyHandler.google(repo: String? = null, module: String, version: String) =
     "com.google${repo.wrap { ".$it" }}:$module:$version"
-
-fun PluginDependenciesSpec.generating(id: String) = id("com.hendraanggrian.generating.$id")
 
 inline val PluginDependenciesSpec.packr get() = id("com.hendraanggrian.packr")
 
@@ -49,7 +50,5 @@ fun DependencyHandler.testFx(module: String) = "org.testfx:testfx-$module:$VERSI
 
 fun DependencyHandler.gitPublish() = "org.ajoberstar:gradle-git-publish:$VERSION_GIT_PUBLISH"
 inline val PluginDependenciesSpec.`git-publish` get() = id("org.ajoberstar.git-publish")
-
-fun DependencyHandler.junit() = "junit:junit:$VERSION_JUNIT"
 
 private fun String?.wrap(wrapper: (String) -> String) = this?.let(wrapper).orEmpty()

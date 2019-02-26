@@ -1,6 +1,6 @@
 package com.hendraanggrian.openpss.routing
 
-import com.hendraanggrian.openpss.OpenPssServer
+import com.hendraanggrian.openpss.OpenPSSServer
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.data.DigitalPrice
 import com.hendraanggrian.openpss.data.Employee
@@ -70,13 +70,13 @@ object EmployeeRouting : NamedRouting<Employees, Employee>(
         query.projection { password + isAdmin }
             .update(employee.password, employee.isAdmin)
         Logs += Log.new(
-            OpenPssServer.getString(R.string.employee_edit).format(query.single().name),
+            OpenPSSServer.getString(R.string.employee_edit).format(query.single().name),
             call.getString("login")
         )
     },
     onDeleted = { call, query ->
         Logs += Log.new(
-            OpenPssServer.getString(R.string.employee_delete).format(query.single().name),
+            OpenPSSServer.getString(R.string.employee_delete).format(query.single().name),
             call.getString("login")
         )
     }

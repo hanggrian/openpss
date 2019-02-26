@@ -3,8 +3,8 @@ plugins {
     kotlin("jvm")
     dokka()
     idea
-    generating("buildconfig")
-    generating("r")
+    id("com.hendraanggrian.r")
+    id("com.hendraanggrian.buildconfig")
 }
 
 group = RELEASE_GROUP
@@ -26,13 +26,13 @@ ktlint()
 dependencies {
     api(project(":core"))
 
-    api(hendraanggrian("defaults", version = VERSION_DEFAULTS))
+    api(hendraanggrian("defaults", "defaults", VERSION_DEFAULTS))
     api(ktor("client-okhttp"))
     api(ktor("client-gson"))
 
     api(androidx("annotation", version = "1.0.1"))
 
-    testImplementation(junit())
+    testImplementation(kotlin("test-junit", VERSION_KOTLIN))
 }
 
 tasks {
@@ -41,7 +41,7 @@ tasks {
         doFirst { file(outputDirectory).deleteRecursively() }
     }
 
-    named<com.hendraanggrian.generating.buildconfig.BuildConfigTask>("generateBuildConfig") {
+    named<com.hendraanggrian.buildconfig.BuildConfigTask>("generateBuildConfig") {
         className = "BuildConfig2"
         appName = RELEASE_NAME
         debug = RELEASE_DEBUG
@@ -52,10 +52,10 @@ tasks {
         field("FULL_NAME", RELEASE_FULL_NAME)
     }
 
-    named<com.hendraanggrian.generating.r.RTask>("generateR") {
+    named<com.hendraanggrian.r.RTask>("generateR") {
         className = "R2"
-        resourcesDirectory = projectDir.resolve("res")
-        configureProperties {
+        resourcesDirectory = "res"
+        useProperties {
             readResourceBundle = true
         }
     }

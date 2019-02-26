@@ -1,6 +1,6 @@
 package com.hendraanggrian.openpss.routing
 
-import com.hendraanggrian.openpss.OpenPssServer
+import com.hendraanggrian.openpss.OpenPSSServer
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.data.Log
 import com.hendraanggrian.openpss.data.Payment
@@ -36,7 +36,7 @@ object PaymentsRouting : OpenPssRouting({
                 val invoiceNo = Invoices[payment.invoiceId].single().no
                 Payments -= payment.id
                 Logs += Log.new(
-                    OpenPssServer.getString(R.string.payment_delete).format(
+                    OpenPSSServer.getString(R.string.payment_delete).format(
                         payment.value,
                         invoiceNo
                     ),

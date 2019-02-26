@@ -30,8 +30,7 @@ dependencies {
     api(google("code.gson", "gson", VERSION_GSON))
     api(apache("maven-artifact", VERSION_MAVEN))
 
-    testImplementation(junit())
-    testImplementation(kotlin("test", VERSION_KOTLIN))
+    testImplementation(kotlin("test-junit", VERSION_KOTLIN))
     testImplementation(kotlin("reflect", VERSION_KOTLIN))
 }
 

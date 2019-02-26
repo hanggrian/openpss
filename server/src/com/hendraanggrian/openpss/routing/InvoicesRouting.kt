@@ -1,6 +1,6 @@
 package com.hendraanggrian.openpss.routing
 
-import com.hendraanggrian.openpss.OpenPssServer
+import com.hendraanggrian.openpss.OpenPSSServer
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.data.Invoice
 import com.hendraanggrian.openpss.data.Log
@@ -73,7 +73,7 @@ object InvoicesRouting : OpenPssRouting({
                 Invoices -= invoice.id
                 Payments { invoiceId.equal(invoice.id) }.remove()
                 Logs += Log.new(
-                    OpenPssServer.getString(R.string.invoice_delete).format(
+                    OpenPSSServer.getString(R.string.invoice_delete).format(
                         invoice.no,
                         customerName
                     ),

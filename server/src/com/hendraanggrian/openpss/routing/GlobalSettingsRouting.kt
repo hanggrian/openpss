@@ -1,6 +1,6 @@
 package com.hendraanggrian.openpss.routing
 
-import com.hendraanggrian.openpss.OpenPssServer
+import com.hendraanggrian.openpss.OpenPSSServer
 import com.hendraanggrian.openpss.data.GlobalSetting
 import com.hendraanggrian.openpss.nosql.transaction
 import com.hendraanggrian.openpss.schema.GlobalSettings
@@ -29,7 +29,7 @@ object GlobalSettingsRouting : OpenPssRouting({
                     .update(value)
             }
             call.respond(HttpStatusCode.OK)
-            OpenPssServer.logger?.info("GlobalSetting '$key' has been changed to '$value'")
+            OpenPSSServer.logger?.info("GlobalSetting '$key' has been changed to '$value'")
         }
     }
 })

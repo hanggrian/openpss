@@ -2,8 +2,8 @@ plugins {
     kotlin("jvm")
     dokka()
     idea
-    generating("r")
-    generating("buildconfig")
+    id("com.hendraanggrian.r")
+    id("com.hendraanggrian.buildconfig")
     shadow
     application
 }
@@ -11,7 +11,7 @@ plugins {
 group = RELEASE_GROUP
 version = RELEASE_VERSION
 
-application.mainClassName = "$group.OpenPssServer"
+application.mainClassName = "$group.OpenPSSServer"
 
 sourceSets {
     getByName("main") {
@@ -36,21 +36,20 @@ dependencies {
     implementation("ch.qos.logback:logback-classic:$VERSION_LOGBACK")
     implementation("org.mongodb:mongo-java-driver:$VERSION_MONGODB")
 
-    testImplementation(junit())
-    testImplementation(kotlin("test", VERSION_KOTLIN))
+    testImplementation(kotlin("test-junit", VERSION_KOTLIN))
     testImplementation(kotlin("reflect", VERSION_KOTLIN))
     testImplementation(slf4j("log4j12"))
 }
 
 tasks {
-    named<com.hendraanggrian.generating.r.RTask>("generateR") {
-        resourcesDirectory = projectDir.resolve("res")
-        configureProperties {
+    named<com.hendraanggrian.r.RTask>("generateR") {
+        resourcesDirectory = "res"
+        useProperties {
             readResourceBundle = true
         }
     }
 
-    named<com.hendraanggrian.generating.buildconfig.BuildConfigTask>("generateBuildConfig") {
+    named<com.hendraanggrian.buildconfig.BuildConfigTask>("generateBuildConfig") {
         appName = "$RELEASE_NAME Server"
         debug = RELEASE_DEBUG
         website = RELEASE_WEBSITE

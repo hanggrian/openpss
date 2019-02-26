@@ -2,7 +2,7 @@ plugins {
     kotlin("jvm")
     dokka()
     idea
-    generating("r")
+    id("com.hendraanggrian.r")
     shadow
     application
     packr
@@ -11,7 +11,7 @@ plugins {
 group = RELEASE_GROUP
 version = RELEASE_VERSION
 
-application.mainClassName = "$group.OpenPssApplication"
+application.mainClassName = "$group.OpenPSSApplication"
 
 sourceSets {
     getByName("main") {
@@ -39,10 +39,9 @@ dependencies {
 
     implementation(slf4j("log4j12"))
 
-    implementation(hendraanggrian("ktfx", version = VERSION_KTFX))
+    implementation(hendraanggrian("ktfx", "ktfx", VERSION_KTFX))
     implementation(hendraanggrian("ktfx", "ktfx-controlsfx", VERSION_KTFX))
     implementation(hendraanggrian("ktfx", "ktfx-jfoenix", VERSION_KTFX))
-    implementation(hendraanggrian("defaults", "defaults-jvm", VERSION_DEFAULTS))
 
     implementation(apache("commons-lang3", VERSION_COMMONS_LANG))
     implementation(apache("commons-math3", VERSION_COMMONS_MATH))
@@ -51,7 +50,7 @@ dependencies {
 
     implementation(google("guava", "guava", "$VERSION_GUAVA-jre"))
 
-    testImplementation(kotlin("test", VERSION_KOTLIN))
+    testImplementation(kotlin("test-junit", VERSION_KOTLIN))
     testImplementation(kotlin("reflect", VERSION_KOTLIN))
 
     testImplementation(hendraanggrian("ktfx", "ktfx-testfx", VERSION_KTFX))
@@ -64,27 +63,28 @@ tasks {
         doFirst { file(outputDirectory).deleteRecursively() }
     }
 
-    named<com.hendraanggrian.generating.r.RTask>("generateR") {
-        resourcesDirectory = projectDir.resolve("res")
-        exclude("font", "license")
-        configureCss {
+    named<com.hendraanggrian.r.RTask>("generateR") {
+        resourcesDirectory = "res"
+        // exclude("font", "license")
+        useCss {
             isJavaFx = true
         }
+        useProperties()
     }
 
     packr {
         mainClass = application.mainClassName
         executable = RELEASE_ARTIFACT
-        classpath("$buildDir/install/desktop/lib")
-        resources("$projectDir/res")
+        classpath = files("build/install/desktop/lib")
+        resources = files("res")
         vmArgs("Xmx2G")
         macOS {
-            name = "$RELEASE_NAME Desktop.app"
-            icon = "${rootProject.projectDir}/art/$RELEASE_NAME.icns"
+            name = "$RELEASE_NAME.app"
+            icon = rootProject.projectDir.resolve("art/$RELEASE_NAME.icns")
             bundleId = RELEASE_GROUP
         }
         windows64 {
-            name = "$RELEASE_NAME Desktop"
+            name = RELEASE_NAME
             jdk = "/Users/hendraanggrian/Desktop/jdk1.8.0_181"
         }
         verbose = true

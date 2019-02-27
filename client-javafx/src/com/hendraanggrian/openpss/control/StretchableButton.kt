@@ -2,7 +2,6 @@
 
 package com.hendraanggrian.openpss.control
 
-import com.hendraanggrian.openpss.R
 import com.jfoenix.controls.JFXButton
 import javafx.beans.DefaultProperty
 import javafx.beans.property.DoubleProperty
@@ -30,6 +29,5 @@ class StretchableButton @JvmOverloads constructor(
 
     init {
         initialize()
-        styleClass += R.style.flat
     }
 }

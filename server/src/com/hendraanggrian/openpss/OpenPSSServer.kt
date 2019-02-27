@@ -70,7 +70,7 @@ object OpenPSSServer : StringResources {
         }).toResourcesBundle()
 
     @JvmStatic
-    fun main(args: Array<String>) {
+    fun main(@Suppress("UnusedMainParameter") args: Array<String>) {
         Database.start()
         when {
             !SystemTray.isSupported() ->

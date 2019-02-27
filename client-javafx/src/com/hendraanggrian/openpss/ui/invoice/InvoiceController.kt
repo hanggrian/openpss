@@ -68,6 +68,7 @@ class InvoiceController : ActionController(), Refreshable {
     @FXML lateinit var dateBox: DateBox
     @FXML lateinit var customerField: TextField
     @FXML lateinit var paymentCombo: ComboBox<String>
+    @FXML lateinit var typeCombo: ComboBox<String>
     @FXML lateinit var invoicePagination: PaginatedPane
 
     private lateinit var refreshButton: Button
@@ -115,6 +116,12 @@ class InvoiceController : ActionController(), Refreshable {
                 .toObservableList()
             selectionModel.selectFirst()
         }
+        typeCombo.run {
+            items = listOf(R2.string.offset, R2.string.plate, R2.string.digital)
+                .map { getString(it) }
+                .toObservableList()
+            selectionModel.selectFirst()
+        }
         customerField.textProperty().bind(buildStringBinding(customerProperty) {
             customerProperty.value?.toString() ?: getString(R2.string.search_customer)
         })
@@ -123,7 +130,8 @@ class InvoiceController : ActionController(), Refreshable {
             pickDateRadio.selectedProperty() and
                 (dateBox.valueProperty() eq LocalDate.now()) and
                 customerProperty.isNull and
-                (paymentCombo.selectionModel.selectedIndexProperty() eq 0)
+                (paymentCombo.selectionModel.selectedIndexProperty() eq 0) and
+                (typeCombo.selectionModel.selectedIndexProperty() eq 0)
         )
     }
 
@@ -132,6 +140,7 @@ class InvoiceController : ActionController(), Refreshable {
             searchField.valueProperty(),
             customerProperty,
             paymentCombo.valueProperty(),
+            typeCombo.valueProperty(),
             allDateRadio.selectedProperty(),
             pickDateRadio.selectedProperty(),
             dateBox.valueProperty()

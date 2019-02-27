@@ -20,7 +20,6 @@
         </fx:define>
         <HBox alignment="CENTER">
             <JFXRadioButton fx:id="allDateRadio" mnemonicParsing="false" toggleGroup="$pickDateGroup" text="%all_date">
-
                 <padding>
                     <Insets right="5"/>
                 </padding>
@@ -31,6 +30,7 @@
         </HBox>
         <JFXTextField fx:id="customerField" editable="false" onMouseClicked="#selectCustomer"/>
         <JFXComboBox fx:id="paymentCombo"/>
+        <JFXComboBox fx:id="typeCombo"/>
     </HBox>
     <PaginatedPane fx:id="invoicePagination" VBox.vgrow="ALWAYS"/>
 </VBox>

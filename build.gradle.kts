@@ -23,7 +23,6 @@ allprojects {
         jcenter()
         maven("https://kotlin.bintray.com/kotlinx")
         maven("http://repository.jetbrains.com/kotlin-nosql")
-        maven("https://dl.bintray.com/hendraanggrian/defaults/")
     }
     tasks {
         withType<Delete> {

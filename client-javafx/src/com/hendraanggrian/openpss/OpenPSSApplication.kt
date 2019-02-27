@@ -70,7 +70,7 @@ class OpenPSSApplication : Application(), StringResources, ValueResources {
                     controller.login = employee
 
                     stage.isResizable = true
-                    stage.setMinSize(800.0, 480.0)
+                    stage.setMinSize(900.0, 500.0)
                 }
             }()
         }

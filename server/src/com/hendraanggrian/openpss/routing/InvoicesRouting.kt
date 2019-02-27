@@ -28,6 +28,7 @@ object InvoicesRouting : OpenPssRouting({
         get {
             val search = call.getInt("search")
             val customer = call.getStringOrNull("customer")
+            val type = call.getStringOrNull("type")
             val isPaid = call.getBooleanOrNull("isPaid")
             val isDone = call.getBooleanOrNull("isDone")
             val date = call.getStringOrNull("date")
@@ -41,6 +42,8 @@ object InvoicesRouting : OpenPssRouting({
                             else -> {
                                 if (customer != null) {
                                     and(Invoices.customerId.equal(Customers { name.equal(customer) }.single().id))
+                                }
+                                if (type != null) {
                                 }
                                 if (isPaid != null) {
                                     and(Invoices.isPaid.equal(isPaid))

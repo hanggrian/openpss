@@ -4,7 +4,7 @@ import com.hendraanggrian.openpss.PATTERN_DATE
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.control.PaginatedPane
-import com.hendraanggrian.openpss.control.StretchableButton
+import com.hendraanggrian.openpss.control.action
 import com.hendraanggrian.openpss.data.Customer
 import com.hendraanggrian.openpss.schema.typedType
 import com.hendraanggrian.openpss.ui.ActionController
@@ -68,20 +68,12 @@ class CustomerController : ActionController(), Refreshable {
     private lateinit var customerList: ListView<Customer>
 
     override fun NodeInvokable.onCreateActions() {
-        refreshButton = StretchableButton(
-            getDouble(R.value.stretch),
-            getString(R2.string.refresh),
-            ImageView(R.image.action_refresh)
-        ).apply {
+        refreshButton = action(getString(R2.string.refresh), R.image.action_refresh) {
             onAction { refresh() }
-        }()
-        addButton = StretchableButton(
-            getDouble(R.value.stretch),
-            getString(R2.string.add),
-            ImageView(R.image.action_add)
-        ).apply {
+        }
+        addButton = action(getString(R2.string.add), R.image.action_add) {
             onAction { add() }
-        }()
+        }
         searchField = jfxTextField {
             promptText = getString(R2.string.search)
         }

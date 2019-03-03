@@ -3,8 +3,8 @@ package com.hendraanggrian.openpss.ui.schedule
 import com.hendraanggrian.openpss.PATTERN_DATETIMEEXT
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
-import com.hendraanggrian.openpss.control.StretchableButton
 import com.hendraanggrian.openpss.control.UncollapsibleTreeItem
+import com.hendraanggrian.openpss.control.action
 import com.hendraanggrian.openpss.data.Invoice
 import com.hendraanggrian.openpss.schema.no
 import com.hendraanggrian.openpss.ui.ActionController
@@ -17,7 +17,6 @@ import javafx.scene.control.ToggleButton
 import javafx.scene.control.TreeItem
 import javafx.scene.control.TreeTableColumn
 import javafx.scene.control.TreeTableView
-import javafx.scene.image.ImageView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import ktfx.bindings.buildStringBinding
@@ -45,18 +44,10 @@ class ScheduleController : ActionController(), Refreshable {
     private lateinit var historyCheck: ToggleButton
 
     override fun NodeInvokable.onCreateActions() {
-        refreshButton = StretchableButton(
-            getDouble(R.value.stretch),
-            getString(R2.string.refresh),
-            ImageView(R.image.action_refresh)
-        ).apply {
+        refreshButton = action(getString(R2.string.refresh), R.image.action_refresh) {
             onAction { refresh() }
-        }()
-        doneButton = StretchableButton(
-            getDouble(R.value.stretch),
-            getString(R2.string.done),
-            ImageView(R.image.action_done)
-        ).apply {
+        }
+        doneButton = action(getString(R2.string.done), R.image.action_done) {
             onAction {
                 api.editInvoice(
                     scheduleTable.selectionModel.selectedItem.value.invoice.apply {
@@ -65,7 +56,7 @@ class ScheduleController : ActionController(), Refreshable {
                 )
                 refresh()
             }
-        }()
+        }
         borderPane {
             minHeight = 50.0
             maxHeight = 50.0
@@ -112,7 +103,9 @@ class ScheduleController : ActionController(), Refreshable {
                 addAll(UncollapsibleTreeItem(
                     Schedule(
                         invoice,
-                        runBlocking(Dispatchers.IO) { api.getCustomer(invoice.customerId).name },
+                        runBlocking(Dispatchers.IO) {
+                            api.getCustomer(invoice.customerId).name
+                        },
                         "",
                         "",
                         invoice.dateTime.toString(PATTERN_DATETIMEEXT)

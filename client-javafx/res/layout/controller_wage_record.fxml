@@ -11,7 +11,7 @@
     <VBox fx:id="vbox">
         <MenuBar fx:id="menuBar" styleClass="white-background">
             <Menu mnemonicParsing="false" text="File">
-                <MenuItem mnemonicParsing="false" text="%save_componentshot" onAction="#componentshot">
+                <MenuItem mnemonicParsing="false" text="%save_screenshot" onAction="#screenshot">
                     <graphic>
                         <ImageView>
                             <Image url="@/image/menu_save.png"/>
@@ -32,27 +32,22 @@
         </MenuBar>
         <Toolbar fx:id="toolbar">
             <leftItems>
-                <StretchableButton mnemonicParsing="false" fx:id="disableDailyIncomeButton"
-                                   onAction="#disableDailyIncome"
-                                   stretchPoint="1100" stretchableText="%disable_daily_income">
+                <Action mnemonicParsing="false" fx:id="disableDailyIncomeButton" onAction="#disableDailyIncome" tooltipText="%disable_daily_income">
                     <ImageView>
-                        <Image url="@/image/act_disable_daily.png"/>
+                        <Image url="@/image/action_disable_daily.png"/>
                     </ImageView>
-                </StretchableButton>
+                </Action>
                 <Space prefWidth="20"/>
-                <StretchableButton mnemonicParsing="false" fx:id="lockStartButton" onAction="#lockStart"
-                                   stretchPoint="1100"
-                                   stretchableText="%lock_start_time">
+                <Action mnemonicParsing="false" fx:id="lockStartButton" onAction="#lockStart" tooltipText="%lock_start_time">
                     <ImageView>
-                        <Image url="@/image/act_lock_start.png"/>
+                        <Image url="@/image/action_lock_start.png"/>
                     </ImageView>
-                </StretchableButton>
-                <StretchableButton mnemonicParsing="false" fx:id="lockEndButton" onAction="#lockEnd" stretchPoint="1100"
-                                   stretchableText="%lock_end_time">
+                </Action>
+                <Action mnemonicParsing="false" fx:id="lockEndButton" onAction="#lockEnd" tooltipText="%lock_end_time">
                     <ImageView>
-                        <Image url="@/image/act_lock_end.png"/>
+                        <Image url="@/image/action_lock_end.png"/>
                     </ImageView>
-                </StretchableButton>
+                </Action>
             </leftItems>
             <rightItems>
                 <Label fx:id="totalLabel" styleClass="display"/>

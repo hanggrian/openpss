@@ -13,7 +13,7 @@ import javafx.application.Platform
 import javafx.fxml.FXMLLoader
 import javafx.scene.image.Image
 import javafx.stage.Stage
-import ktfx.launch
+import ktfx.launchApplication
 import ktfx.layouts.scene
 import ktfx.windows.icon
 import ktfx.windows.setMinSize
@@ -26,7 +26,7 @@ class OpenPSSApplication : Application(), StringResources, ValueResources {
     companion object {
 
         @JvmStatic
-        fun main(args: Array<String>) = launch<OpenPSSApplication>(*args)
+        fun main(args: Array<String>) = launchApplication<OpenPSSApplication>(*args)
 
         fun exit() {
             Platform.exit() // exit JavaFX

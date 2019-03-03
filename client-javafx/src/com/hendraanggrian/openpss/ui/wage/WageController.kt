@@ -5,7 +5,7 @@ import com.hendraanggrian.openpss.FxSetting
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.WageDirectory
-import com.hendraanggrian.openpss.control.StretchableButton
+import com.hendraanggrian.openpss.control.action
 import com.hendraanggrian.openpss.ui.ActionController
 import com.hendraanggrian.openpss.ui.Stylesheets
 import com.hendraanggrian.openpss.ui.TextDialog
@@ -19,7 +19,6 @@ import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
 import javafx.scene.control.Button
 import javafx.scene.control.Label
-import javafx.scene.image.ImageView
 import javafx.scene.layout.AnchorPane
 import javafx.scene.layout.FlowPane
 import kotlinx.coroutines.Dispatchers
@@ -61,21 +60,13 @@ class WageController : ActionController() {
     private lateinit var historyButton: Button
 
     private val filePathProperty: StringProperty = SimpleStringProperty()
-    private var filePath: String by filePathProperty
+    private var filePath: String? by filePathProperty
 
     override fun NodeInvokable.onCreateActions() {
-        browseButton = StretchableButton(
-            getDouble(R.value.stretch),
-            getString(R2.string.browse),
-            ImageView(R.image.action_browse)
-        ).apply {
+        browseButton = action(getString(R2.string.browse), R.image.action_browse) {
             onAction { browse() }
-        }()
-        saveWageButton = StretchableButton(
-            getDouble(R.value.stretch),
-            getString(R2.string.save_wage),
-            ImageView(R.image.action_save)
-        ).apply {
+        }
+        saveWageButton = action(getString(R2.string.save_wage), R.image.action_save) {
             disableProperty().bind(flowPane.children.isEmptyBinding)
             onAction {
                 saveWage()
@@ -84,14 +75,10 @@ class WageController : ActionController() {
                     getLong(R.value.duration_short)
                 )
             }
-        }()
-        historyButton = StretchableButton(
-            getDouble(R.value.stretch),
-            getString(R2.string.history),
-            ImageView(R.image.action_history)
-        ).apply {
+        }
+        historyButton = action(getString(R2.string.history), R.image.action_history) {
             onAction { history() }
-        }()
+        }
     }
 
     override fun initialize(location: URL, resources: ResourceBundle) {

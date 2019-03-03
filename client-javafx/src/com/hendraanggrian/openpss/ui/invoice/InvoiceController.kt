@@ -6,8 +6,8 @@ import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.control.DateBox
 import com.hendraanggrian.openpss.control.IntField
 import com.hendraanggrian.openpss.control.PaginatedPane
-import com.hendraanggrian.openpss.control.StretchableButton
 import com.hendraanggrian.openpss.control.Toolbar
+import com.hendraanggrian.openpss.control.action
 import com.hendraanggrian.openpss.data.Customer
 import com.hendraanggrian.openpss.data.Invoice
 import com.hendraanggrian.openpss.data.Payment
@@ -81,27 +81,18 @@ class InvoiceController : ActionController(), Refreshable {
     private lateinit var paymentTable: TableView<Payment>
 
     override fun NodeInvokable.onCreateActions() {
-        refreshButton = StretchableButton(
-            getDouble(R.value.stretch),
-            getString(R2.string.refresh),
-            ImageView(R.image.action_refresh)
-        ).apply {
+        refreshButton = action(getString(R2.string.refresh), R.image.action_refresh) {
             onAction { refresh() }
-        }()
-        addButton = StretchableButton(
-            getDouble(R.value.stretch),
-            getString(R2.string.add),
-            ImageView(R.image.action_add)
-        ).apply {
+        }
+        addButton = action(getString(R2.string.add), R.image.action_add) {
             onAction { addInvoice() }
-        }()
-        clearFiltersButton = StretchableButton(
-            getDouble(R.value.stretch),
+        }
+        clearFiltersButton = action(
             getString(R2.string.clear_filters),
-            ImageView(R.image.action_clear_filters)
-        ).apply {
+            R.image.action_clear_filters
+        ) {
             onAction { clearFilters() }
-        }()
+        }
         searchField = IntField().apply {
             filterBox.disableProperty().bind(valueProperty() neq 0)
             promptText = getString(R2.string.search_no)
@@ -188,7 +179,7 @@ class InvoiceController : ActionController(), Refreshable {
                         Toolbar().apply {
                             leftItems {
                                 label(getString(R2.string.payment)) {
-                                    styleClass.addAll("bold", "accent")
+                                    styleClass.addAll(R.style.bold, R.style.accent)
                                 }
                             }
                         }()

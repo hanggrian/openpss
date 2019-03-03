@@ -5,11 +5,11 @@ import com.hendraanggrian.openpss.PATTERN_DATETIME
 import com.hendraanggrian.openpss.PATTERN_TIME
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
-import com.hendraanggrian.openpss.control.UncollapsibleTreeItem
 import com.hendraanggrian.openpss.WageDirectory
 import com.hendraanggrian.openpss.WageFile
-import com.hendraanggrian.openpss.ui.DatePopOver
+import com.hendraanggrian.openpss.control.UncollapsibleTreeItem
 import com.hendraanggrian.openpss.ui.BaseController
+import com.hendraanggrian.openpss.ui.DatePopOver
 import com.hendraanggrian.openpss.ui.Stylesheets
 import com.hendraanggrian.openpss.ui.TimePopOver
 import com.hendraanggrian.openpss.ui.wage.Attendee
@@ -158,8 +158,9 @@ class WageRecordController : BaseController() {
                 .forEach { record ->
                     val initial = record.dailyDisabledProperty.value
                     record.dailyDisabledProperty.set(!initial)
-                    if (undoable.name == null) undoable.name = "${getString(R2.string.daily_disabled)} " +
-                        record.startProperty.value.toString(PATTERN_DATE)
+                    if (undoable.name == null) undoable.name =
+                        "${getString(R2.string.daily_disabled)} " +
+                            record.startProperty.value.toString(PATTERN_DATE)
                     undoable.addAction { record.dailyDisabledProperty.set(initial) }
                 }
             undoable.append()
@@ -218,7 +219,7 @@ class WageRecordController : BaseController() {
         }
 
     @FXML
-    fun componentshot() {
+    fun screenshot() {
         val images = mutableListOf<BufferedImage>()
         recordTable.selectionModel.clearSelection()
         togglePrintMode(true, Stylesheets.WAGE_RECORD)
@@ -235,7 +236,7 @@ class WageRecordController : BaseController() {
         togglePrintMode(false, Stylesheets.WAGE_RECORD)
         ImageIO.write(images.concatenate(), "png", WageFile())
         rootLayout.jfxIndefiniteSnackbar(
-            getString(R2.string.componentshot_finished),
+            getString(R2.string.screenshot_finished),
             getString(R2.string.open_folder)
         ) {
             desktop?.open(WageDirectory)

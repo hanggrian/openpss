@@ -6,7 +6,7 @@ import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.control.DateBox
 import com.hendraanggrian.openpss.control.MonthBox
-import com.hendraanggrian.openpss.control.StretchableButton
+import com.hendraanggrian.openpss.control.action
 import com.hendraanggrian.openpss.data.Payment
 import com.hendraanggrian.openpss.language
 import com.hendraanggrian.openpss.ui.ActionController
@@ -25,7 +25,6 @@ import javafx.scene.control.MenuItem
 import javafx.scene.control.TabPane
 import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
-import javafx.scene.image.ImageView
 import javafx.scene.layout.BorderPane
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
@@ -80,20 +79,12 @@ class FinanceController : ActionController(), Refreshable {
     }
 
     override fun NodeInvokable.onCreateActions() {
-        refreshButton = StretchableButton(
-            getDouble(R.value.stretch),
-            getString(R2.string.refresh),
-            ImageView(R.image.action_refresh)
-        ).apply {
+        refreshButton = action(getString(R2.string.refresh), R.image.action_refresh) {
             onAction { refresh() }
-        }()
-        viewTotalButton = StretchableButton(
-            getDouble(R.value.stretch),
-            getString(R2.string.total),
-            ImageView(R.image.action_money)
-        ).apply {
+        }
+        viewTotalButton = action(getString(R2.string.total), R.image.action_money) {
             onAction { viewTotal() }
-        }()
+        }
         switchablePane = borderPane()
     }
 

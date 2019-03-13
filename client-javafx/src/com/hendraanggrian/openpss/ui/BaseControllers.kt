@@ -13,7 +13,7 @@ import javafx.fxml.Initializable
 import javafx.scene.Node
 import javafx.scene.layout.StackPane
 import ktfx.getValue
-import ktfx.layouts.NodeInvokable
+import ktfx.layouts.NodeManager
 import ktfx.setValue
 import java.net.URL
 import java.util.Properties
@@ -71,16 +71,16 @@ open class ActionController : BaseController() {
 
     val actions = mutableListOf<Node>()
 
-    private val actionInvokable = object : NodeInvokable {
-        override fun <R : Node> R.invoke(): R = also { actions += it }
+    private val actionManager = object : NodeManager {
+        override fun <R : Node> R.add(): R = also { actions += it }
     }
 
     /** Override this function to add actions. */
-    open fun NodeInvokable.onCreateActions() {
+    open fun NodeManager.onCreateActions() {
     }
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
-        actionInvokable.onCreateActions()
+        actionManager.onCreateActions()
     }
 }

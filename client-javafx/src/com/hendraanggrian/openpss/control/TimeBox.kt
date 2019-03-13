@@ -1,4 +1,4 @@
-@file:Suppress("NOTHING_TO_INLINE", "UNUSED")
+@file:Suppress("NOTHING_TO_INLINE")
 
 package com.hendraanggrian.openpss.control
 
@@ -17,6 +17,8 @@ import ktfx.coroutines.onAction
 import ktfx.getValue
 import ktfx.jfoenix.jfxButton
 import ktfx.jfoenix.jfxTimePicker
+import ktfx.layouts.LayoutMarker
+import ktfx.layouts.NodeManager
 import ktfx.layouts._HBox
 import ktfx.listeners.buildStringConverter
 import org.joda.time.LocalTime
@@ -88,3 +90,13 @@ open class TimeBox @JvmOverloads constructor(prefill: LocalTime = MIDNIGHT) : _H
         valueProperty.bind(buildBinding(picker.valueProperty()) { picker.value.toJoda() })
     }
 }
+
+fun timeBox(
+    prefill: LocalTime = MIDNIGHT,
+    init: ((@LayoutMarker TimeBox).() -> Unit)? = null
+): TimeBox = TimeBox(prefill).also { init?.invoke(it) }
+
+inline fun NodeManager.timeBox(
+    prefill: LocalTime = MIDNIGHT,
+    noinline init: ((@LayoutMarker TimeBox).() -> Unit)? = null
+): TimeBox = com.hendraanggrian.openpss.control.timeBox(prefill, init).add()

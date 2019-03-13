@@ -17,16 +17,17 @@ import ktfx.coroutines.onAction
 import ktfx.getValue
 import ktfx.jfoenix.jfxButton
 import ktfx.jfoenix.jfxDatePicker
+import ktfx.layouts.LayoutMarker
+import ktfx.layouts.NodeManager
 import ktfx.layouts._HBox
 import org.joda.time.LocalDate
-import org.joda.time.LocalDate.now
 
 /**
  * A [DatePicker] that always has a valid value.
  *
  * [DateBox] width is deliberately measured to match [com.hendraanggrian.scene.layout.TimeBox]'s width.
  */
-open class DateBox @JvmOverloads constructor(prefill: LocalDate = now()) : _HBox(0.0) {
+open class DateBox @JvmOverloads constructor(prefill: LocalDate = LocalDate.now()) : _HBox(0.0) {
 
     lateinit var picker: DatePicker
     var previousButton: Button
@@ -55,3 +56,13 @@ open class DateBox @JvmOverloads constructor(prefill: LocalDate = now()) : _HBox
         valueProperty.bind(buildBinding(picker.valueProperty()) { picker.value.toJoda() })
     }
 }
+
+fun dateBox(
+    prefill: LocalDate = LocalDate.now(),
+    init: ((@LayoutMarker DateBox).() -> Unit)? = null
+): DateBox = DateBox(prefill).also { init?.invoke(it) }
+
+inline fun NodeManager.dateBox(
+    prefill: LocalDate = LocalDate.now(),
+    noinline init: ((@LayoutMarker DateBox).() -> Unit)? = null
+): DateBox = com.hendraanggrian.openpss.control.dateBox(prefill, init).add()

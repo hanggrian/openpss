@@ -10,7 +10,6 @@ import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.Setting
 import com.hendraanggrian.openpss.StringResources
 import com.hendraanggrian.openpss.ValueResources
-import com.hendraanggrian.openpss.control.IntField
 import com.hendraanggrian.openpss.data.Employee
 import com.hendraanggrian.openpss.language
 import com.hendraanggrian.openpss.ui.BasePopOver
@@ -80,7 +79,7 @@ class LoginPane<T>(resources: T, override val defaults: WritableDefaults) : _Sta
         text = defaults[Setting.KEY_SERVER_HOST]
         promptText = getString(R2.string.server_host)
     }
-    private val serverPortField = IntField().apply {
+    private val serverPortField = com.hendraanggrian.openpss.control.intField {
         value = defaults.getInt(Setting.KEY_SERVER_PORT)!!
         promptText = getString(R2.string.server_port)
     }
@@ -193,9 +192,9 @@ class LoginPane<T>(resources: T, override val defaults: WritableDefaults) : _Sta
             gridPane {
                 gap = getDouble(R.value.padding_medium)
                 label(getString(R2.string.server_host)) col 0 row 0
-                serverHostField() col 1 row 0
+                serverHostField.add() col 1 row 0
                 label(getString(R2.string.server_port)) col 0 row 1
-                serverPortField() col 1 row 1
+                serverPortField.add() col 1 row 1
             }
         }
     }

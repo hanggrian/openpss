@@ -1,11 +1,11 @@
 package com.hendraanggrian.openpss.ui.wage
 
+import com.hendraanggrian.openpss.FxComponent
 import com.hendraanggrian.openpss.PATTERN_DATETIMEEXT
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
-import com.hendraanggrian.openpss.control.IntField
+import com.hendraanggrian.openpss.control.intField
 import com.hendraanggrian.openpss.ui.DateTimePopOver
-import com.hendraanggrian.openpss.FxComponent
 import com.hendraanggrian.openpss.util.round
 import com.hendraanggrian.openpss.util.trimMinutes
 import javafx.geometry.Pos.CENTER
@@ -77,20 +77,20 @@ class AttendeePane(
                     label(role) col 1 row 0 colSpans 2
                 }
                 label(getString(R2.string.income)) col 0 row 1 marginRight 4
-                IntField().apply {
+                intField {
                     prefWidth = 80.0
                     promptText = getString(R2.string.income)
                     valueProperty().bindBidirectional(attendee.dailyProperty)
-                }() col 1 row 1
+                } col 1 row 1
                 label("@${getString(R2.string.day)}") {
                     updateFont(10)
                 } col 2 row 1
                 label(getString(R2.string.overtime)) col 0 row 2 marginRight 4
-                IntField().apply {
+                intField {
                     prefWidth = 80.0
                     promptText = getString(R2.string.overtime)
                     valueProperty().bindBidirectional(attendee.hourlyOvertimeProperty)
-                }() col 1 row 2
+                } col 1 row 2
                 label("@${getString(R2.string.hour)}") {
                     updateFont(10)
                 } col 2 row 2

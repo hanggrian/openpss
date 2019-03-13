@@ -50,7 +50,7 @@ import ktfx.inputs.isDelete
 import ktfx.invoke
 import ktfx.jfoenix.jfxTabPane
 import ktfx.jfoenix.jfxTextField
-import ktfx.layouts.NodeInvokable
+import ktfx.layouts.NodeManager
 import ktfx.layouts.TableColumnsBuilder
 import ktfx.layouts.columns
 import ktfx.layouts.contextMenu
@@ -229,7 +229,7 @@ class AddInvoiceDialog(
             noteArea.text
         )
 
-    private fun <S> NodeInvokable.invoiceTableView(
+    private fun <S> NodeManager.invoiceTableView(
         newAddJobPopOver: () -> ResultablePopOver<S>,
         init: TableView<S>.() -> Unit
     ): TableView<S> = tableView {

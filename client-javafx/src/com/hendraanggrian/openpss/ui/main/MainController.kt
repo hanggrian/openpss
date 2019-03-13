@@ -8,7 +8,7 @@ import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.control.MarginedImageView
 import com.hendraanggrian.openpss.control.PaginatedPane
 import com.hendraanggrian.openpss.control.Toolbar
-import com.hendraanggrian.openpss.control.UnselectableListView
+import com.hendraanggrian.openpss.control.unselectableListView
 import com.hendraanggrian.openpss.data.Invoice
 import com.hendraanggrian.openpss.data.Log
 import com.hendraanggrian.openpss.schema.Technique
@@ -182,7 +182,7 @@ class MainController : BaseController(), Refreshable {
 
     override fun refresh() {
         eventPagination.contentFactory = Callback { (page, count) ->
-            UnselectableListView<Log>().apply {
+            unselectableListView<Log> {
                 styleClass.addAll(R.style.borderless, R.style.list_view_no_scrollbar)
                 cellFactory {
                     onUpdate { log, empty ->
@@ -191,8 +191,9 @@ class MainController : BaseController(), Refreshable {
                                 isWrapText = true
                                 updateFont(12)
                                 this@textFlow.prefWidthProperty()
-                                    .bind(this@apply.widthProperty() - 12)
-                                wrappingWidthProperty().bind(this@apply.widthProperty())
+                                    .bind(this@unselectableListView.widthProperty() - 12)
+                                wrappingWidthProperty()
+                                    .bind(this@unselectableListView.widthProperty())
                             }
                             newLine()
                             text("${log.dateTime.toString(PATTERN_DATETIME)} ") {

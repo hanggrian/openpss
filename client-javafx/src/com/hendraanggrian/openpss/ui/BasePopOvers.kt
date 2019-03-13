@@ -5,6 +5,8 @@ import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.control.DateBox
 import com.hendraanggrian.openpss.control.TimeBox
+import com.hendraanggrian.openpss.control.dateBox
+import com.hendraanggrian.openpss.control.timeBox
 import com.hendraanggrian.openpss.ui.wage.record.Record
 import javafx.beans.binding.BooleanBinding
 import javafx.beans.property.ObjectProperty
@@ -22,7 +24,7 @@ import ktfx.coroutines.onAction
 import ktfx.getValue
 import ktfx.jfoenix.jfxButton
 import ktfx.jfoenix.jfxTextField
-import ktfx.layouts.NodeInvokable
+import ktfx.layouts.NodeManager
 import ktfx.layouts.gridPane
 import ktfx.setValue
 import org.controlsfx.control.PopOver
@@ -46,7 +48,7 @@ open class BasePopOver(
     override fun dismiss() = hide()
 
     override lateinit var contentPane: VBox
-    override lateinit var buttonInvokable: NodeInvokable
+    override lateinit var buttonManager: NodeManager
     override lateinit var cancelButton: Button
 
     private val graphicProperty = SimpleObjectProperty<Node>()
@@ -102,7 +104,7 @@ class DatePopOver(
     prefill: LocalDate = LocalDate.now()
 ) : ResultablePopOver<LocalDate>(component, titleId) {
 
-    private val dateBox: DateBox = DateBox(prefill)()
+    private val dateBox: DateBox = dateBox(prefill)
 
     override val nullableResult: LocalDate? get() = dateBox.valueProperty().value
 }
@@ -113,7 +115,7 @@ class TimePopOver(
     prefill: LocalTime = LocalTime.now()
 ) : ResultablePopOver<LocalTime>(component, titleId) {
 
-    private val timeBox: TimeBox = TimeBox(prefill)()
+    private val timeBox: TimeBox = timeBox(prefill)
 
     override val nullableResult: LocalTime? get() = timeBox.valueProperty().value
 }
@@ -131,7 +133,7 @@ class DateTimePopOver(
     init {
         gridPane {
             gap = getDouble(R.value.padding_medium)
-            dateBox = DateBox(prefill.toLocalDate())() row 0 col 1
+            dateBox = dateBox(prefill.toLocalDate()) row 0 col 1
             jfxButton("-${Record.WORKING_HOURS}") {
                 onAction {
                     repeat(Record.WORKING_HOURS) {
@@ -139,14 +141,14 @@ class DateTimePopOver(
                     }
                 }
             } row 1 col 0
-            timeBox = TimeBox(prefill.toLocalTime()).apply {
+            timeBox = timeBox(prefill.toLocalTime()) {
                 onOverlap = { plus ->
                     dateBox.picker.value = when {
                         plus -> dateBox.picker.value.plusDays(1)
                         else -> dateBox.picker.value.minusDays(1)
                     }
                 }
-            }() row 1 col 1
+            } row 1 col 1
             jfxButton("+${Record.WORKING_HOURS}") {
                 onAction {
                     repeat(Record.WORKING_HOURS) {

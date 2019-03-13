@@ -10,6 +10,8 @@ import javafx.beans.property.SimpleDoubleProperty
 import ktfx.bindings.buildBooleanBinding
 import ktfx.coroutines.listener
 import ktfx.getValue
+import ktfx.layouts.LayoutMarker
+import ktfx.layouts.NodeManager
 import ktfx.listeners.bindBidirectional
 import ktfx.setValue
 
@@ -40,3 +42,11 @@ class DoubleField : JFXTextField() {
         }
     }
 }
+
+fun doubleField(
+    init: ((@LayoutMarker DoubleField).() -> Unit)? = null
+): DoubleField = DoubleField().also { init?.invoke(it) }
+
+inline fun NodeManager.doubleField(
+    noinline init: ((@LayoutMarker DoubleField).() -> Unit)? = null
+): DoubleField = com.hendraanggrian.openpss.control.doubleField(init).add()

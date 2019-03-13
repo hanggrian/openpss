@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.ui.wage
 
-import com.hendraanggrian.openpss.api.OpenPSSApi
 import com.hendraanggrian.openpss.StringResources
+import com.hendraanggrian.openpss.api.OpenPSSApi
 import com.hendraanggrian.openpss.data.Recess
 import com.hendraanggrian.openpss.data.Wage
 import com.hendraanggrian.openpss.ui.wage.record.Record
@@ -12,11 +12,11 @@ import com.hendraanggrian.openpss.util.round
 import javafx.beans.property.IntegerProperty
 import javafx.beans.property.SimpleIntegerProperty
 import javafx.collections.ObservableList
-import ktfx.any
 import ktfx.bindings.buildDoubleBinding
 import ktfx.collections.mutableObservableListOf
 import ktfx.getValue
 import ktfx.setValue
+import ktfx.toProperty
 import org.joda.time.DateTime
 import org.joda.time.Minutes.minutes
 import org.joda.time.Period
@@ -48,7 +48,12 @@ data class Attendee(
         }
         // merge duplicates
         attendances.removeAllRevertible((0 until attendances.lastIndex)
-            .filter { index -> Period(attendances[index], attendances[index + 1]).toStandardMinutes() < minutes(5) }
+            .filter { index ->
+                Period(
+                    attendances[index],
+                    attendances[index + 1]
+                ).toStandardMinutes() < minutes(5)
+            }
             .map { index -> attendances[index] })
     }
 
@@ -72,20 +77,30 @@ data class Attendee(
 
     override fun toString(): String = "$id. $name"
 
-    fun toNodeRecord(resources: StringResources): Record =
-        Record(resources, INDEX_NODE, this, any(DateTime.now()), any(DateTime.now()))
+    fun toNodeRecord(resources: StringResources): Record = Record(
+        resources,
+        INDEX_NODE,
+        this,
+        DateTime.now().toProperty(),
+        DateTime.now().toProperty()
+    )
 
     fun toChildRecords(resources: StringResources): Set<Record> {
         val records = mutableSetOf<Record>()
         val iterator = attendances.iterator()
         var index = 0
-        while (iterator.hasNext()) records +=
-            Record(resources, index++, this, any(iterator.next()), any(iterator.next()))
+        while (iterator.hasNext()) records += Record(
+            resources,
+            index++,
+            this,
+            iterator.next().toProperty(),
+            iterator.next().toProperty()
+        )
         return records
     }
 
     fun toTotalRecords(resources: StringResources, children: Collection<Record>): Record =
-        Record(resources, INDEX_TOTAL, this, any(START_OF_TIME), any(START_OF_TIME))
+        Record(resources, INDEX_TOTAL, this, START_OF_TIME.toProperty(), START_OF_TIME.toProperty())
             .apply {
                 dailyProperty.bind(buildDoubleBinding(children.map { it.dailyProperty }) {
                     children.sumByDouble { it.daily }.round()

@@ -16,7 +16,7 @@ const val VERSION_ESPRESSO = "3.1.1"
 const val VERSION_RUNNER = "1.1.1"
 const val VERSION_RULES = "1.1.1"
 
-const val VERSION_KTFX = "8.4.9"
+const val VERSION_KTFX = "8.5.0"
 const val VERSION_DEFAULTS = "0.3"
 const val VERSION_PIKASSO = "0.2"
 const val VERSION_RECYCLERVIEW_PAGINATED = "0.2"
@@ -41,6 +41,6 @@ internal const val VERSION_SLF4J = "1.7.25"
 internal const val VERSION_SHADOW = "4.0.1"
 internal const val VERSION_TESTFX = "4.0.15-alpha"
 internal const val VERSION_GIT_PUBLISH = "0.3.3"
-internal const val VERSION_KTLINT = "0.30.0"
+internal const val VERSION_KTLINT = "0.31.0"
 
 fun String.stable(): String = substringBefore('-')

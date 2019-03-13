@@ -1,8 +1,12 @@
+@file:Suppress("NOTHING_TO_INLINE")
+
 package com.hendraanggrian.openpss.control
 
 import com.jfoenix.controls.JFXListView
 import ktfx.controls.isNotSelected
 import ktfx.coroutines.listener
+import ktfx.layouts.LayoutMarker
+import ktfx.layouts.NodeManager
 
 class SelectionListView<T> : JFXListView<T>() {
 
@@ -20,3 +24,11 @@ class SelectionListView<T> : JFXListView<T>() {
         }
     }
 }
+
+fun <T> selectionListView(
+    init: ((@LayoutMarker SelectionListView<T>).() -> Unit)? = null
+): SelectionListView<T> = SelectionListView<T>().also { init?.invoke(it) }
+
+inline fun <T> NodeManager.selectionListView(
+    noinline init: ((@LayoutMarker SelectionListView<T>).() -> Unit)? = null
+): SelectionListView<T> = com.hendraanggrian.openpss.control.selectionListView(init).add()

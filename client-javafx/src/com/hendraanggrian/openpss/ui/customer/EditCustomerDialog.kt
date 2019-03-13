@@ -1,9 +1,9 @@
 package com.hendraanggrian.openpss.ui.customer
 
+import com.hendraanggrian.openpss.FxComponent
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.data.Customer
-import com.hendraanggrian.openpss.FxComponent
 import com.hendraanggrian.openpss.ui.ResultableDialog
 import com.hendraanggrian.openpss.util.isPersonName
 import com.hendraanggrian.openpss.util.orNull
@@ -14,7 +14,7 @@ import javafx.scene.control.TextField
 import javafx.scene.control.TextInputControl
 import javafx.scene.image.ImageView
 import ktfx.bindings.or
-import ktfx.boolean
+import ktfx.booleanPropertyOf
 import ktfx.controls.gap
 import ktfx.coroutines.listener
 import ktfx.jfoenix.jfxTextArea
@@ -28,7 +28,7 @@ class EditCustomerDialog(
     private val customer: Customer
 ) : ResultableDialog<Customer>(component, R2.string.edit_customer) {
 
-    private val unchangedProperty = boolean(true)
+    private val unchangedProperty = booleanPropertyOf(true)
 
     private lateinit var image: ImageView
     private lateinit var description: Label

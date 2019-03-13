@@ -12,15 +12,15 @@ import javafx.scene.image.ImageView
 import ktfx.bindings.buildBinding
 import ktfx.getValue
 import ktfx.layouts.LayoutMarker
-import ktfx.layouts.NodeInvokable
+import ktfx.layouts.NodeManager
 import ktfx.setValue
-import ktfx.string
+import ktfx.toProperty
 
 @DefaultProperty("graphic")
 class Action @JvmOverloads constructor(text: String? = null, graphic: Node? = null) :
     JFXButton(null, graphic) {
 
-    private val tooltipTextProperty = string(text)
+    private val tooltipTextProperty = text.toProperty()
 
     fun tooltipTextProperty(): StringProperty = tooltipTextProperty
 
@@ -47,14 +47,14 @@ inline fun action(
     noinline init: ((@LayoutMarker Action).() -> Unit)?
 ): Action = action(text, graphic?.let { ImageView(it) }, init)
 
-inline fun NodeInvokable.action(
+inline fun NodeManager.action(
     text: String? = null,
     graphic: Node? = null,
     noinline init: ((@LayoutMarker Action).() -> Unit)?
-): Action = com.hendraanggrian.openpss.control.action(text, graphic, init)()
+): Action = com.hendraanggrian.openpss.control.action(text, graphic, init).add()
 
-inline fun NodeInvokable.action(
+inline fun NodeManager.action(
     text: String? = null,
     graphic: String? = null,
     noinline init: ((@LayoutMarker Action).() -> Unit)?
-): Action = com.hendraanggrian.openpss.control.action(text, graphic, init)()
+): Action = com.hendraanggrian.openpss.control.action(text, graphic, init).add()

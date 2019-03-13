@@ -5,7 +5,7 @@ import com.hendraanggrian.openpss.FxSetting
 import com.hendraanggrian.openpss.Language
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
-import com.hendraanggrian.openpss.control.Space
+import com.hendraanggrian.openpss.control.space
 import com.hendraanggrian.openpss.data.GlobalSetting.Companion.KEY_INVOICE_HEADERS
 import com.hendraanggrian.openpss.data.GlobalSetting.Companion.KEY_LANGUAGE
 import com.hendraanggrian.openpss.ui.BaseDialog
@@ -25,14 +25,14 @@ import kotlinx.coroutines.javafx.JavaFx
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import ktfx.bindings.and
-import ktfx.boolean
+import ktfx.booleanPropertyOf
 import ktfx.collections.toObservableList
 import ktfx.controls.gap
 import ktfx.coroutines.listener
 import ktfx.jfoenix.jfxButton
 import ktfx.jfoenix.jfxComboBox
 import ktfx.layouts.LayoutMarker
-import ktfx.layouts.NodeInvokable
+import ktfx.layouts.NodeManager
 import ktfx.layouts._HBox
 import ktfx.layouts._VBox
 import ktfx.layouts.borderPane
@@ -46,8 +46,8 @@ import kotlin.coroutines.CoroutineContext
 
 class SettingsDialog(component: FxComponent) : BaseDialog(component, R2.string.settings) {
 
-    private var isLocalChanged = boolean()
-    private var isGlobalChanged = boolean()
+    private var isLocalChanged = booleanPropertyOf()
+    private var isGlobalChanged = booleanPropertyOf()
 
     private lateinit var invoiceHeadersArea: TextArea
     private lateinit var wageReaderChoice: ComboBox<WageReader>
@@ -67,7 +67,7 @@ class SettingsDialog(component: FxComponent) : BaseDialog(component, R2.string.s
                     }
                 }
             }
-            Space(getDouble(R.value.padding_large))()
+            space(getDouble(R.value.padding_large))
             right = this@SettingsDialog.group(R2.string.global_settings) {
                 isDisable = runBlocking(Dispatchers.IO) { !api.isAdmin(login) }
                 gridPane {
@@ -101,7 +101,7 @@ class SettingsDialog(component: FxComponent) : BaseDialog(component, R2.string.s
                 }
             }
         }
-        buttonInvokable.run {
+        buttonManager.run {
             jfxButton(getString(R2.string.ok)) {
                 isDefaultButton = true
                 styleClass += R.style.raised
@@ -136,7 +136,7 @@ class SettingsDialog(component: FxComponent) : BaseDialog(component, R2.string.s
         init()
     }
 
-    private fun NodeInvokable.group(
+    private fun NodeManager.group(
         titleId: String,
         init: (@LayoutMarker _VBox).() -> Unit
     ): VBox = vbox(getDouble(R.value.padding_small)) {
@@ -146,7 +146,7 @@ class SettingsDialog(component: FxComponent) : BaseDialog(component, R2.string.s
         init()
     }
 
-    private fun NodeInvokable.item(
+    private fun NodeManager.item(
         labelId: String? = null,
         init: (@LayoutMarker _HBox).() -> Unit
     ): HBox = hbox(getDouble(R.value.padding_medium)) {

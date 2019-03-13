@@ -1,9 +1,10 @@
 package com.hendraanggrian.openpss.ui.wage
 
+import com.hendraanggrian.openpss.FxComponent
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.control.TimeBox
-import com.hendraanggrian.openpss.FxComponent
+import com.hendraanggrian.openpss.control.timeBox
 import com.hendraanggrian.openpss.ui.ResultablePopOver
 import javafx.scene.Node
 import ktfx.bindings.buildBooleanBinding
@@ -25,9 +26,9 @@ class AddRecessPopOver(
         gridPane {
             gap = getDouble(R.value.padding_medium)
             label(getString(R2.string.start)) col 0 row 0
-            startBox = TimeBox()() col 1 row 0
+            startBox = timeBox() col 1 row 0
             label(getString(R2.string.end)) col 0 row 1
-            endBox = TimeBox()() col 1 row 1
+            endBox = timeBox() col 1 row 1
         }
         defaultButton.disableProperty()
             .bind(buildBooleanBinding(startBox.valueProperty(), endBox.valueProperty()) {

@@ -59,7 +59,7 @@ class SearchCustomerPopOver(component: FxComponent) :
                         defaultButton.fire()
                     }
                 }
-            }() marginTop getDouble(R.value.padding_medium)
+            }.add() marginTop getDouble(R.value.padding_medium)
         }
         defaultButton.disableProperty()
             .bind(customerList.selectionModel.selectedItemProperty().isNull)

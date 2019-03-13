@@ -1,3 +1,5 @@
+@file:Suppress("NOTHING_TO_INLINE")
+
 package com.hendraanggrian.openpss.control
 
 import javafx.beans.property.DoubleProperty
@@ -9,6 +11,8 @@ import javafx.scene.control.Pagination
 import javafx.util.Callback
 import ktfx.bindings.buildBinding
 import ktfx.getValue
+import ktfx.layouts.LayoutMarker
+import ktfx.layouts.NodeManager
 import ktfx.setValue
 
 class PaginatedPane : Pagination() {
@@ -18,7 +22,9 @@ class PaginatedPane : Pagination() {
     var magic: Double by magicProperty
 
     private val contentFactoryProperty = SimpleObjectProperty<Callback<Pair<Int, Int>, Node>>()
-    fun contentFactoryProperty(): ObjectProperty<Callback<Pair<Int, Int>, Node>> = contentFactoryProperty
+    fun contentFactoryProperty(): ObjectProperty<Callback<Pair<Int, Int>, Node>> =
+        contentFactoryProperty
+
     var contentFactory: Callback<Pair<Int, Int>, Node>? by contentFactoryProperty
 
     val lastPageIndex: Int get() = pageCount - 1
@@ -37,3 +43,11 @@ class PaginatedPane : Pagination() {
         }
     }
 }
+
+fun paginatedPane(
+    init: ((@LayoutMarker PaginatedPane).() -> Unit)? = null
+): PaginatedPane = PaginatedPane().also { init?.invoke(it) }
+
+inline fun NodeManager.paginatedPane(
+    noinline init: ((@LayoutMarker PaginatedPane).() -> Unit)? = null
+): PaginatedPane = com.hendraanggrian.openpss.control.paginatedPane(init).add()

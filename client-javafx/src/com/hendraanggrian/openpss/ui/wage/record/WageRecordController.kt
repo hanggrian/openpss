@@ -7,7 +7,7 @@ import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.WageDirectory
 import com.hendraanggrian.openpss.WageFile
-import com.hendraanggrian.openpss.control.UncollapsibleTreeItem
+import com.hendraanggrian.openpss.control.uncollapsibleTreeItem
 import com.hendraanggrian.openpss.ui.BaseController
 import com.hendraanggrian.openpss.ui.DatePopOver
 import com.hendraanggrian.openpss.ui.Stylesheets
@@ -132,7 +132,7 @@ class WageRecordController : BaseController() {
                 val node = attendee.toNodeRecord(this)
                 val childs = attendee.toChildRecords(this)
                 val total = attendee.toTotalRecords(this, childs)
-                recordTable.root.children += UncollapsibleTreeItem(node).apply {
+                recordTable.root.children += uncollapsibleTreeItem(node) {
                     children += childs.map { TreeItem(it) }.toTypedArray()
                     children += TreeItem(total)
                 }

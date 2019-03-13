@@ -13,7 +13,6 @@ import javafx.application.Platform
 import javafx.fxml.FXMLLoader
 import javafx.scene.image.Image
 import javafx.stage.Stage
-import ktfx.launchApplication
 import ktfx.layouts.scene
 import ktfx.windows.icon
 import ktfx.windows.setMinSize
@@ -26,7 +25,7 @@ class OpenPSSApplication : Application(), StringResources, ValueResources {
     companion object {
 
         @JvmStatic
-        fun main(args: Array<String>) = launchApplication<OpenPSSApplication>(*args)
+        fun main(args: Array<String>) = ktfx.launch<OpenPSSApplication>(*args)
 
         fun exit() {
             Platform.exit() // exit JavaFX
@@ -64,7 +63,7 @@ class OpenPSSApplication : Application(), StringResources, ValueResources {
                 onSuccess = { employee ->
                     val loader = FXMLLoader(getResource(R.layout.controller_main), resourceBundle)
                     this@scene.run {
-                        loader.pane()
+                        loader.pane.add()
                     }
                     val controller = loader.controller
                     controller.login = employee
@@ -72,7 +71,7 @@ class OpenPSSApplication : Application(), StringResources, ValueResources {
                     stage.isResizable = true
                     stage.setMinSize(900.0, 500.0)
                 }
-            }()
+            }.add()
         }
         stage.show()
     }

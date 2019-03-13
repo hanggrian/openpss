@@ -3,8 +3,8 @@ package com.hendraanggrian.openpss.ui.schedule
 import com.hendraanggrian.openpss.PATTERN_DATETIMEEXT
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
-import com.hendraanggrian.openpss.control.UncollapsibleTreeItem
 import com.hendraanggrian.openpss.control.action
+import com.hendraanggrian.openpss.control.uncollapsibleTreeItem
 import com.hendraanggrian.openpss.data.Invoice
 import com.hendraanggrian.openpss.schema.no
 import com.hendraanggrian.openpss.ui.ActionController
@@ -25,7 +25,7 @@ import ktfx.collections.isEmptyBinding
 import ktfx.coroutines.listener
 import ktfx.coroutines.onAction
 import ktfx.jfoenix.jfxToggleButton
-import ktfx.layouts.NodeInvokable
+import ktfx.layouts.NodeManager
 import ktfx.layouts.borderPane
 import ktfx.runLater
 import java.net.URL
@@ -43,7 +43,7 @@ class ScheduleController : ActionController(), Refreshable {
     private lateinit var doneButton: Button
     private lateinit var historyCheck: ToggleButton
 
-    override fun NodeInvokable.onCreateActions() {
+    override fun NodeManager.onCreateActions() {
         refreshButton = action(getString(R2.string.refresh), R.image.action_refresh) {
             onAction { refresh() }
         }
@@ -100,7 +100,7 @@ class ScheduleController : ActionController(), Refreshable {
                     else -> api.getInvoices(isDone = false, page = 1, count = 100).items
                 }
             }.forEach { invoice ->
-                addAll(UncollapsibleTreeItem(
+                addAll(uncollapsibleTreeItem(
                     Schedule(
                         invoice,
                         runBlocking(Dispatchers.IO) {
@@ -110,7 +110,7 @@ class ScheduleController : ActionController(), Refreshable {
                         "",
                         invoice.dateTime.toString(PATTERN_DATETIMEEXT)
                     )
-                ).apply {
+                ) {
                     Schedule.of(this@ScheduleController, invoice)
                         .forEach { children += TreeItem<Schedule>(it) }
                 })

@@ -35,7 +35,7 @@ import ktfx.collections.sizeBinding
 import ktfx.coroutines.onAction
 import ktfx.getValue
 import ktfx.jfoenix.jfxSnackbar
-import ktfx.layouts.NodeInvokable
+import ktfx.layouts.NodeManager
 import ktfx.layouts.borderPane
 import ktfx.layouts.scene
 import ktfx.runLater
@@ -62,7 +62,7 @@ class WageController : ActionController() {
     private val filePathProperty: StringProperty = SimpleStringProperty()
     private var filePath: String? by filePathProperty
 
-    override fun NodeInvokable.onCreateActions() {
+    override fun NodeManager.onCreateActions() {
         browseButton = action(getString(R2.string.browse), R.image.action_browse) {
             onAction { browse() }
         }
@@ -115,7 +115,7 @@ class WageController : ActionController() {
     fun process() = stage(getString(R2.string.wage_record)) {
         val loader = FXMLLoader(getResource(R.layout.controller_wage_record), resourceBundle)
         scene = scene {
-            loader.pane()
+            loader.pane.add()
             stylesheets += Stylesheets.OPENPSS
         }
         setMinSize(1000.0, 650.0)

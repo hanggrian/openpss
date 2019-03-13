@@ -3,6 +3,7 @@ package com.hendraanggrian.openpss.ui.invoice.job
 import com.hendraanggrian.openpss.FxComponent
 import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.control.DoubleField
+import com.hendraanggrian.openpss.control.doubleField
 import com.hendraanggrian.openpss.data.DigitalPrice
 import com.hendraanggrian.openpss.data.Invoice
 import javafx.beans.Observable
@@ -31,25 +32,26 @@ class AddDigitalJobPopOver(component: FxComponent) :
 
     override fun _GridPane.onCreateContent() {
         label(getString(R2.string.type)) col 0 row currentRow
-        typeChoice = jfxComboBox(runBlocking(Dispatchers.IO) { api.getDigitalPrices() }.toObservableList()) {
-            valueProperty().listener { _, _, job ->
-                oneSidePriceField.value = job.oneSidePrice
-                twoSidePriceField.value = job.twoSidePrice
-            }
-        } col 1 colSpans 2 row currentRow
+        typeChoice =
+            jfxComboBox(runBlocking(Dispatchers.IO) { api.getDigitalPrices() }.toObservableList()) {
+                valueProperty().listener { _, _, job ->
+                    oneSidePriceField.value = job.oneSidePrice
+                    twoSidePriceField.value = job.twoSidePrice
+                }
+            } col 1 colSpans 2 row currentRow
         currentRow++
         label(getString(R2.string.two_side)) col 0 row currentRow
         twoSideCheck = jfxCheckBox() col 1 colSpans 2 row currentRow
         currentRow++
         label(getString(R2.string.one_side_price)) col 0 row currentRow
-        oneSidePriceField = DoubleField().apply {
+        oneSidePriceField = doubleField {
             promptText = getString(R2.string.one_side_price)
-        }() col 1 colSpans 2 row currentRow
+        } col 1 colSpans 2 row currentRow
         currentRow++
         label(getString(R2.string.two_side_price)) col 0 row currentRow
-        twoSidePriceField = DoubleField().apply {
+        twoSidePriceField = doubleField {
             promptText = getString(R2.string.two_side_price)
-        }() col 1 colSpans 2 row currentRow
+        } col 1 colSpans 2 row currentRow
         currentRow++
     }
 

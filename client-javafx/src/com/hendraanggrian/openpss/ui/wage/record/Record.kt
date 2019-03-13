@@ -14,12 +14,12 @@ import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleDoubleProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.beans.property.StringProperty
-import ktfx.any
 import ktfx.bindings.buildDoubleBinding
 import ktfx.bindings.buildStringBinding
 import ktfx.bindings.plus
 import ktfx.getValue
 import ktfx.setValue
+import ktfx.toProperty
 import org.joda.time.DateTime
 import org.joda.time.LocalTime
 import kotlin.math.absoluteValue
@@ -64,7 +64,7 @@ class Record(
         /** Dummy for invisible [javafx.scene.control.TreeTableView] rootLayout. */
         fun getDummy(resources: StringResources) = Record(
             resources, Int.MIN_VALUE, Attendee.DUMMY,
-            any(START_OF_TIME), any(START_OF_TIME)
+            START_OF_TIME.toProperty(), START_OF_TIME.toProperty()
         )
     }
 

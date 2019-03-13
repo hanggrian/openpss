@@ -6,8 +6,9 @@ import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.control.DateBox
 import com.hendraanggrian.openpss.control.IntField
 import com.hendraanggrian.openpss.control.PaginatedPane
-import com.hendraanggrian.openpss.control.Toolbar
 import com.hendraanggrian.openpss.control.action
+import com.hendraanggrian.openpss.control.intField
+import com.hendraanggrian.openpss.control.toolbar
 import com.hendraanggrian.openpss.data.Customer
 import com.hendraanggrian.openpss.data.Invoice
 import com.hendraanggrian.openpss.data.Payment
@@ -49,7 +50,7 @@ import ktfx.coroutines.onHiding
 import ktfx.coroutines.onMouseClicked
 import ktfx.inputs.isDoubleClick
 import ktfx.jfoenix.jfxSnackbar
-import ktfx.layouts.NodeInvokable
+import ktfx.layouts.NodeManager
 import ktfx.layouts.columns
 import ktfx.layouts.contextMenu
 import ktfx.layouts.label
@@ -80,7 +81,7 @@ class InvoiceController : ActionController(), Refreshable {
     private lateinit var invoiceTable: TableView<Invoice>
     private lateinit var paymentTable: TableView<Payment>
 
-    override fun NodeInvokable.onCreateActions() {
+    override fun NodeManager.onCreateActions() {
         refreshButton = action(getString(R2.string.refresh), R.image.action_refresh) {
             onAction { refresh() }
         }
@@ -93,10 +94,10 @@ class InvoiceController : ActionController(), Refreshable {
         ) {
             onAction { clearFilters() }
         }
-        searchField = IntField().apply {
+        searchField = intField {
             filterBox.disableProperty().bind(valueProperty() neq 0)
             promptText = getString(R2.string.search_no)
-        }()
+        }
     }
 
     override fun initialize(location: URL, resources: ResourceBundle) {
@@ -176,13 +177,13 @@ class InvoiceController : ActionController(), Refreshable {
                     showDetailNodeProperty().bind(invoiceTable.selectionModel.selectedItemProperty().isNotNull)
                     masterNode = invoiceTable
                     detailNode = ktfx.layouts.vbox {
-                        Toolbar().apply {
+                        toolbar {
                             leftItems {
                                 label(getString(R2.string.payment)) {
                                     styleClass.addAll(R.style.bold, R.style.accent)
                                 }
                             }
-                        }()
+                        }
                         paymentTable = tableView {
                             columnResizePolicy = TableView.CONSTRAINED_RESIZE_POLICY
                             columns {

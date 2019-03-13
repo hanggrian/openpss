@@ -3,7 +3,7 @@ package com.hendraanggrian.openpss.ui
 import com.hendraanggrian.openpss.FxComponent
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
-import com.hendraanggrian.openpss.control.Toolbar
+import com.hendraanggrian.openpss.control.toolbar
 import com.jfoenix.controls.JFXButton
 import javafx.beans.property.ObjectProperty
 import javafx.scene.Node
@@ -14,15 +14,15 @@ import ktfx.controls.updatePadding
 import ktfx.coroutines.listener
 import ktfx.coroutines.onAction
 import ktfx.jfoenix.jfxButton
-import ktfx.layouts.NodeInvokable
+import ktfx.layouts.NodeManager
 import ktfx.layouts.borderPane
 import ktfx.layouts.buttonBar
 import ktfx.layouts.label
 import ktfx.layouts.vbox
 
-interface BasePopup : FxComponent, NodeInvokable {
+interface BasePopup : FxComponent, NodeManager {
 
-    override fun <R : Node> R.invoke(): R = also { contentPane.children += it }
+    override fun <R : Node> R.add(): R = also { contentPane.children += it }
 
     fun setActualContent(region: Region)
     fun setOnShown(onShown: () -> Unit)
@@ -33,7 +33,7 @@ interface BasePopup : FxComponent, NodeInvokable {
     val titleId: String
 
     var contentPane: VBox
-    var buttonInvokable: NodeInvokable
+    var buttonManager: NodeManager
     var cancelButton: Button
 
     fun graphicProperty(): ObjectProperty<Node>
@@ -41,7 +41,7 @@ interface BasePopup : FxComponent, NodeInvokable {
     fun initialize() {
         setActualContent(ktfx.layouts.vbox {
             // material dialog have extra top padding: https://material.io/develop/web/components/dialogs/
-            Toolbar().apply {
+            toolbar {
                 leftItems {
                     label(getString(titleId)) {
                         styleClass.addAll(R.style.bold, R.style.display)
@@ -57,7 +57,8 @@ interface BasePopup : FxComponent, NodeInvokable {
                         centerProperty().bindBidirectional(graphicProperty())
                     }
                 }
-            }() marginTop getDouble(R.value.padding_small) marginBottom getDouble(R.value.padding_small)
+            } marginTop getDouble(R.value.padding_small) marginBottom
+                getDouble(R.value.padding_small)
             contentPane = vbox(getDouble(R.value.padding_medium)) {
                 updatePadding(
                     left = getDouble(R.value.padding_large),
@@ -71,7 +72,7 @@ interface BasePopup : FxComponent, NodeInvokable {
                     right = getDouble(R.value.padding_large),
                     bottom = getDouble(R.value.padding_large)
                 )
-                buttonInvokable = this
+                buttonManager = this
                 cancelButton = jfxButton(getString(R2.string.close)) {
                     styleClass += R.style.flat
                     isCancelButton = true
@@ -99,7 +100,7 @@ interface ResultablePopup<T> : BasePopup {
 
     override fun initialize() {
         super.initialize()
-        buttonInvokable.run {
+        buttonManager.run {
             defaultButton = jfxButton(getString(R2.string.ok)) {
                 isDefaultButton = true
                 styleClass += R.style.raised

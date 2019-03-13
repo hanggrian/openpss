@@ -5,7 +5,7 @@ import com.hendraanggrian.openpss.Language
 import com.hendraanggrian.openpss.PATTERN_DATETIMEEXT
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
-import com.hendraanggrian.openpss.control.Space
+import com.hendraanggrian.openpss.control.space
 import com.hendraanggrian.openpss.data.Customer
 import com.hendraanggrian.openpss.data.Employee
 import com.hendraanggrian.openpss.data.GlobalSetting
@@ -40,7 +40,7 @@ import ktfx.controls.gap
 import ktfx.controls.paddingAll
 import ktfx.coroutines.onAction
 import ktfx.invoke
-import ktfx.layouts.NodeInvokable
+import ktfx.layouts.NodeManager
 import ktfx.layouts._GridPane
 import ktfx.layouts.button
 import ktfx.layouts.columnConstraints
@@ -221,7 +221,7 @@ class ViewInvoicePopOver(
                 } row 1 col 2
             }
         }
-        buttonInvokable.run {
+        buttonManager.run {
             button(getString(R2.string.print)) {
                 isDefaultButton = true
                 runLater { isDisable = invoice.isPrinted }
@@ -281,12 +281,12 @@ class ViewInvoicePopOver(
             lineBuilder(it, row)
             row++
         }
-        Space(height = getDouble(R.value.padding_small))() row row col 0 colSpans 4
+        space(height = getDouble(R.value.padding_small)) row row col 0 colSpans 4
         row++
         return row
     }
 
     private fun BorderStrokeStyle.toBorder() = Border(BorderStroke(BLACK, this, EMPTY, DEFAULT))
 
-    private fun NodeInvokable.fullLine() = line(endX = PX_WIDTH)
+    private fun NodeManager.fullLine() = line(endX = PX_WIDTH)
 }

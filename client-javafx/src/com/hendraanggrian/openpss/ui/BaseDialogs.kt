@@ -25,7 +25,7 @@ import ktfx.collections.toMutableObservableList
 import ktfx.coroutines.onAction
 import ktfx.getValue
 import ktfx.jfoenix.jfxButton
-import ktfx.layouts.NodeInvokable
+import ktfx.layouts.NodeManager
 import ktfx.layouts.TableColumnsBuilder
 import ktfx.layouts.anchorPane
 import ktfx.layouts.hbox
@@ -57,7 +57,7 @@ open class BaseDialog(
     override fun dismiss() = close()
 
     override lateinit var contentPane: VBox
-    override lateinit var buttonInvokable: NodeInvokable
+    override lateinit var buttonManager: NodeManager
     override lateinit var cancelButton: Button
 
     private val graphicProperty = SimpleObjectProperty<Node>()
@@ -148,7 +148,7 @@ abstract class TableDialog<D : Document<*>>(
                 }
                 addButton = jfxButton(graphic = ImageView(R.image.action_add)) {
                     tooltip(getString(R2.string.add))
-                    onAction { add() }
+                    onAction { this@TableDialog.add() }
                 }
                 deleteButton = jfxButton(graphic = ImageView(R.image.action_delete)) {
                     tooltip(getString(R2.string.delete))

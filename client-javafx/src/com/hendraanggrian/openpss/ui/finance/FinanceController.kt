@@ -7,6 +7,8 @@ import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.control.DateBox
 import com.hendraanggrian.openpss.control.MonthBox
 import com.hendraanggrian.openpss.control.action
+import com.hendraanggrian.openpss.control.dateBox
+import com.hendraanggrian.openpss.control.monthBox
 import com.hendraanggrian.openpss.data.Payment
 import com.hendraanggrian.openpss.language
 import com.hendraanggrian.openpss.ui.ActionController
@@ -36,7 +38,7 @@ import ktfx.coroutines.listener
 import ktfx.coroutines.onAction
 import ktfx.coroutines.onMouseClicked
 import ktfx.inputs.isDoubleClick
-import ktfx.layouts.NodeInvokable
+import ktfx.layouts.NodeManager
 import ktfx.layouts.borderPane
 import ktfx.runLater
 import java.net.URL
@@ -70,15 +72,15 @@ class FinanceController : ActionController(), Refreshable {
     private lateinit var refreshButton: Button
     private lateinit var viewTotalButton: Button
 
-    private val dateBox: DateBox = DateBox().apply {
+    private val dateBox: DateBox = dateBox {
         valueProperty().listener { refresh() }
     }
-    private val monthBox: MonthBox = MonthBox().apply {
+    private val monthBox: MonthBox = monthBox {
         setLocale(defaults.language.toLocale())
         valueProperty().listener { refresh() }
     }
 
-    override fun NodeInvokable.onCreateActions() {
+    override fun NodeManager.onCreateActions() {
         refreshButton = action(getString(R2.string.refresh), R.image.action_refresh) {
             onAction { refresh() }
         }

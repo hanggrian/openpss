@@ -9,7 +9,7 @@ internal const val VERSION_KTOR = "1.1.3"
 const val SDK_MIN = 14
 const val SDK_TARGET = 28
 
-internal const val VERSION_ANDROID_PLUGIN = "3.5.0-alpha06"
+internal const val VERSION_ANDROID_PLUGIN = "3.5.0-alpha07"
 const val VERSION_MULTIDEX = "2.0.1"
 const val VERSION_ANDROIDX = "1.1.0"
 const val VERSION_ESPRESSO = "3.1.1"

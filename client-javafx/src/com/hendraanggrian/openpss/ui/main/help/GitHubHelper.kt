@@ -10,7 +10,6 @@ import kotlinx.coroutines.withContext
 import ktfx.jfoenix.jfxSnackbar
 import java.net.URI
 
-/** As seen in `https://developer.github.com/v3/`. */
 object GitHubHelper {
 
     fun checkUpdates(component: FxComponent) {

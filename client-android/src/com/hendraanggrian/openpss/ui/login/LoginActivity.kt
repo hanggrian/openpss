@@ -8,14 +8,14 @@ import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.Setting
 import com.hendraanggrian.openpss.api.OpenPSSApi
-import com.hendraanggrian.openpss.ui.BaseActivity
+import com.hendraanggrian.openpss.ui.Activity
 import com.jakewharton.processphoenix.ProcessPhoenix
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class LoginActivity : BaseActivity() {
+class LoginActivity : Activity() {
 
     private val preferenceListener =
         SharedPreferences.OnSharedPreferenceChangeListener { _, key ->

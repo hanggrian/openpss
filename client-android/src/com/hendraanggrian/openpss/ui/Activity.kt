@@ -17,7 +17,7 @@ import com.hendraanggrian.openpss.nosql.StringId
 import java.util.ResourceBundle
 
 @SuppressLint("Registered")
-open class BaseActivity : AppCompatActivity(), AndroidComponent {
+open class Activity : AppCompatActivity(), AndroidComponent {
 
     @Extra lateinit var loginName: String
     @Extra @JvmField var loginIsAdmin: Boolean = false

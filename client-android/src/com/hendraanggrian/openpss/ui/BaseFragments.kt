@@ -19,32 +19,32 @@ import java.util.ResourceBundle
 
 open class BaseFragment : Fragment(), AndroidComponent {
 
-    override val defaults: SharedPreferencesDefaults get() = baseActivity.defaults
+    override val defaults: SharedPreferencesDefaults get() = activity.defaults
 
-    override val api: OpenPSSApi get() = baseActivity.api
+    override val api: OpenPSSApi get() = activity.api
 
-    override val rootLayout: View get() = baseActivity.rootLayout
+    override val rootLayout: View get() = activity.rootLayout
 
-    override val login: Employee get() = baseActivity.login
+    override val login: Employee get() = activity.login
 
-    override val resourceBundle: ResourceBundle get() = baseActivity.resourceBundle
+    override val resourceBundle: ResourceBundle get() = activity.resourceBundle
 
-    inline val baseActivity: BaseActivity get() = activity as BaseActivity
+    inline val activity: Activity get() = activity as Activity
 }
 
 abstract class BasePreferenceFragment : PreferenceFragmentCompat(), AndroidComponent {
 
-    override val defaults: SharedPreferencesDefaults get() = baseActivity.defaults
+    override val defaults: SharedPreferencesDefaults get() = activity.defaults
 
-    override val api: OpenPSSApi get() = baseActivity.api
+    override val api: OpenPSSApi get() = activity.api
 
-    override val rootLayout: View get() = baseActivity.rootLayout
+    override val rootLayout: View get() = activity.rootLayout
 
-    override val login: Employee get() = baseActivity.login
+    override val login: Employee get() = activity.login
 
-    override val resourceBundle: ResourceBundle get() = baseActivity.resourceBundle
+    override val resourceBundle: ResourceBundle get() = activity.resourceBundle
 
-    inline val baseActivity: BaseActivity get() = activity as BaseActivity
+    inline val activity: Activity get() = activity as Activity
 
     inline var DialogPreference.titleAll: CharSequence?
         get() = title
@@ -56,17 +56,17 @@ abstract class BasePreferenceFragment : PreferenceFragmentCompat(), AndroidCompo
 
 open class BaseDialogFragment : AppCompatDialogFragment(), AndroidComponent {
 
-    override val defaults: SharedPreferencesDefaults get() = baseActivity.defaults
+    override val defaults: SharedPreferencesDefaults get() = activity.defaults
 
-    override val api: OpenPSSApi get() = baseActivity.api
+    override val api: OpenPSSApi get() = activity.api
 
-    override val rootLayout: View get() = baseActivity.rootLayout
+    override val rootLayout: View get() = activity.rootLayout
 
-    override val login: Employee get() = baseActivity.login
+    override val login: Employee get() = activity.login
 
-    override val resourceBundle: ResourceBundle get() = baseActivity.resourceBundle
+    override val resourceBundle: ResourceBundle get() = activity.resourceBundle
 
-    inline val baseActivity: BaseActivity get() = activity as BaseActivity
+    inline val activity: Activity get() = activity as Activity
 
     fun show(manager: FragmentManager) = show(manager, null)
 

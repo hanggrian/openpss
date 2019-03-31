@@ -5,12 +5,12 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.hendraanggrian.bundler.bindExtras
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
-import com.hendraanggrian.openpss.ui.BaseActivity
+import com.hendraanggrian.openpss.ui.Activity
 import com.hendraanggrian.openpss.ui.UnsupportedFragment
 import com.hendraanggrian.openpss.ui.customer.CustomerFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : BaseActivity() {
+class MainActivity : Activity() {
 
     private val navigationListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         replaceFragment(

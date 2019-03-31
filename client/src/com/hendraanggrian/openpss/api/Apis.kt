@@ -52,7 +52,7 @@ interface Api {
         }.use { it.status.isSuccess() }
 }
 
-/** GitHub API used to check latest version. */
+/** GitHub API as seen in `https://developer.github.com/v3/`, used to check latest version. */
 class GitHubApi : OkHttpApi("https://api.github.com") {
 
     suspend fun getLatestRelease(): Release = client.get {

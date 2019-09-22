@@ -33,8 +33,8 @@ dependencies {
     implementation(ktor("websockets"))
     implementation(ktor("gson"))
 
-    implementation("ch.qos.logback:logback-classic:$VERSION_LOGBACK")
-    implementation("org.mongodb:mongo-java-driver:$VERSION_MONGODB")
+    implementation(logback("classic"))
+    implementation(mongo("java-driver"))
 
     testImplementation(kotlin("test-junit", VERSION_KOTLIN))
     testImplementation(kotlin("reflect", VERSION_KOTLIN))

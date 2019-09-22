@@ -51,4 +51,11 @@ fun DependencyHandler.testFx(module: String) = "org.testfx:testfx-$module:$VERSI
 fun DependencyHandler.gitPublish() = "org.ajoberstar:gradle-git-publish:$VERSION_GIT_PUBLISH"
 inline val PluginDependenciesSpec.`git-publish` get() = id("org.ajoberstar.git-publish")
 
+fun DependencyHandler.jodaTime() = "joda-time:joda-time:$VERSION_JODA_TIME"
+fun DependencyHandler.jodaTimeSerializers() = "com.fatboyindustrial.gson-jodatime-serialisers:gson-jodatime-serialisers:$VERSION_JODA_TIME_GSON_SERIALIZERS"
+
+fun DependencyHandler.mongo(module: String) = "org.mongodb:mongo-$module:$VERSION_MONGODB"
+
+fun DependencyHandler.logback(module: String) = "ch.qos.logback:logback-$module:$VERSION_LOGBACK"
+
 private fun String?.wrap(wrapper: (String) -> String) = this?.let(wrapper).orEmpty()

@@ -25,8 +25,8 @@ dependencies {
     api(kotlin("nosql-mongodb", VERSION_NOSQL))
     api(kotlinx("coroutines-core", VERSION_COROUTINES))
 
-    api("joda-time:joda-time:$VERSION_JODA_TIME")
-    api("com.fatboyindustrial.gson-jodatime-serialisers:gson-jodatime-serialisers:$VERSION_JODA_TIME_GSON_SERIALIZERS")
+    api(jodaTime())
+    api(jodaTimeSerializers())
     api(google("code.gson", "gson", VERSION_GSON))
     api(apache("maven-artifact", VERSION_MAVEN))
 

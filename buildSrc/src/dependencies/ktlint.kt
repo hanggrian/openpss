@@ -6,6 +6,8 @@ import org.gradle.kotlin.dsl.invoke
 import org.gradle.kotlin.dsl.register
 import org.gradle.language.base.plugins.LifecycleBasePlugin
 
+private const val VERSION_KTLINT: String = "0.34.2"
+
 fun Project.ktlint(
     extraDependency: (Configuration.(
         add: (dependencyNotation: Any) -> Unit
@@ -15,7 +17,7 @@ fun Project.ktlint(
 
     dependencies {
         configuration {
-            invoke("com.github.shyiko:ktlint:$VERSION_KTLINT")
+            invoke("com.pinterest:ktlint:$VERSION_KTLINT")
             extraDependency?.invoke(this) { dependencyNotation ->
                 invoke(dependencyNotation)
             }
@@ -29,7 +31,7 @@ fun Project.ktlint(
             outputs.dir("src")
             description = "Check Kotlin code style."
             classpath(configuration.get())
-            main = "com.github.shyiko.ktlint.Main"
+            main = "com.pinterest.ktlint.Main"
             args("src/**/*.kt")
         }
         "check" {
@@ -41,7 +43,7 @@ fun Project.ktlint(
             outputs.dir("src")
             description = "Fix Kotlin code style deviations."
             classpath(configuration.get())
-            main = "com.github.shyiko.ktlint.Main"
+            main = "com.pinterest.ktlint.Main"
             args("-F", "src/**/*.kt")
         }
     }

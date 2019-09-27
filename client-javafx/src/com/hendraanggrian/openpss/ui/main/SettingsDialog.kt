@@ -5,7 +5,7 @@ import com.hendraanggrian.openpss.FxSetting
 import com.hendraanggrian.openpss.Language
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
-import com.hendraanggrian.openpss.control.space
+import com.hendraanggrian.openpss.control.Space
 import com.hendraanggrian.openpss.data.GlobalSetting.Companion.KEY_INVOICE_HEADERS
 import com.hendraanggrian.openpss.data.GlobalSetting.Companion.KEY_LANGUAGE
 import com.hendraanggrian.openpss.ui.BaseDialog
@@ -18,23 +18,24 @@ import javafx.scene.control.ComboBox
 import javafx.scene.control.TextArea
 import javafx.scene.layout.HBox
 import javafx.scene.layout.VBox
+import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.javafx.JavaFx
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import ktfx.asProperty
 import ktfx.bindings.and
-import ktfx.booleanPropertyOf
 import ktfx.collections.toObservableList
 import ktfx.controls.gap
 import ktfx.coroutines.listener
 import ktfx.jfoenix.jfxButton
 import ktfx.jfoenix.jfxComboBox
-import ktfx.layouts.LayoutMarker
+import ktfx.layouts.KtfxHBox
+import ktfx.layouts.KtfxVBox
+import ktfx.layouts.LayoutDslMarker
 import ktfx.layouts.NodeManager
-import ktfx.layouts._HBox
-import ktfx.layouts._VBox
 import ktfx.layouts.borderPane
 import ktfx.layouts.gridPane
 import ktfx.layouts.hbox
@@ -42,12 +43,11 @@ import ktfx.layouts.label
 import ktfx.layouts.textArea
 import ktfx.layouts.vbox
 import ktfx.listeners.converter
-import kotlin.coroutines.CoroutineContext
 
 class SettingsDialog(component: FxComponent) : BaseDialog(component, R2.string.settings) {
 
-    private var isLocalChanged = booleanPropertyOf()
-    private var isGlobalChanged = booleanPropertyOf()
+    private var isLocalChanged = false.asProperty()
+    private var isGlobalChanged = false.asProperty()
 
     private lateinit var invoiceHeadersArea: TextArea
     private lateinit var wageReaderChoice: ComboBox<WageReader>
@@ -67,7 +67,7 @@ class SettingsDialog(component: FxComponent) : BaseDialog(component, R2.string.s
                     }
                 }
             }
-            space(getDouble(R.value.padding_large))
+            addNode(Space(getDouble(R.value.padding_large)))
             right = this@SettingsDialog.group(R2.string.global_settings) {
                 isDisable = runBlocking(Dispatchers.IO) { !api.isAdmin(login) }
                 gridPane {
@@ -128,7 +128,7 @@ class SettingsDialog(component: FxComponent) : BaseDialog(component, R2.string.s
 
     private fun group(
         titleId: String,
-        init: (@LayoutMarker _VBox).() -> Unit
+        init: (@LayoutDslMarker KtfxVBox).() -> Unit
     ): VBox = ktfx.layouts.vbox(getDouble(R.value.padding_small)) {
         label(getString(titleId)) {
             styleClass += R.style.bold
@@ -138,7 +138,7 @@ class SettingsDialog(component: FxComponent) : BaseDialog(component, R2.string.s
 
     private fun NodeManager.group(
         titleId: String,
-        init: (@LayoutMarker _VBox).() -> Unit
+        init: (@LayoutDslMarker KtfxVBox).() -> Unit
     ): VBox = vbox(getDouble(R.value.padding_small)) {
         label(getString(titleId)) {
             styleClass += R.style.bold
@@ -148,7 +148,7 @@ class SettingsDialog(component: FxComponent) : BaseDialog(component, R2.string.s
 
     private fun NodeManager.item(
         labelId: String? = null,
-        init: (@LayoutMarker _HBox).() -> Unit
+        init: (@LayoutDslMarker KtfxHBox).() -> Unit
     ): HBox = hbox(getDouble(R.value.padding_medium)) {
         alignment = Pos.CENTER_LEFT
         if (labelId != null) label(getString(labelId))

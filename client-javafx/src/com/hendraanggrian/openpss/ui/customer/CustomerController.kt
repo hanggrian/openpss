@@ -3,14 +3,16 @@ package com.hendraanggrian.openpss.ui.customer
 import com.hendraanggrian.openpss.PATTERN_DATE
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
+import com.hendraanggrian.openpss.control.Action
 import com.hendraanggrian.openpss.control.PaginatedPane
-import com.hendraanggrian.openpss.control.action
 import com.hendraanggrian.openpss.data.Customer
 import com.hendraanggrian.openpss.schema.typedType
 import com.hendraanggrian.openpss.ui.ActionController
 import com.hendraanggrian.openpss.ui.ConfirmDialog
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.util.stringCell
+import java.net.URL
+import java.util.ResourceBundle
 import javafx.fxml.FXML
 import javafx.scene.Node
 import javafx.scene.control.Button
@@ -41,8 +43,6 @@ import ktfx.layouts.contextMenu
 import ktfx.layouts.tooltip
 import ktfx.runLater
 import org.controlsfx.control.MasterDetailPane
-import java.net.URL
-import java.util.ResourceBundle
 
 class CustomerController : ActionController(), Refreshable {
 
@@ -68,12 +68,12 @@ class CustomerController : ActionController(), Refreshable {
     private lateinit var customerList: ListView<Customer>
 
     override fun NodeManager.onCreateActions() {
-        refreshButton = action(getString(R2.string.refresh), R.image.action_refresh) {
+        refreshButton = addNode(Action(getString(R2.string.refresh), R.image.action_refresh).apply {
             onAction { refresh() }
-        }
-        addButton = action(getString(R2.string.add), R.image.action_add) {
+        })
+        addButton = addNode(Action(getString(R2.string.add), R.image.action_add).apply {
             onAction { this@CustomerController.add() }
-        }
+        })
         searchField = jfxTextField {
             promptText = getString(R2.string.search)
         }

@@ -1,14 +1,15 @@
 package com.hendraanggrian.openpss.ui.employee
 
+import com.hendraanggrian.openpss.FxComponent
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.data.Employee
-import com.hendraanggrian.openpss.FxComponent
 import com.hendraanggrian.openpss.ui.TableDialog
 import com.hendraanggrian.openpss.util.clean
 import com.hendraanggrian.openpss.util.doneCell
 import com.hendraanggrian.openpss.util.stringCell
 import javafx.scene.control.MenuItem
+import javafx.scene.image.ImageView
 import kotlinx.coroutines.CoroutineScope
 import ktfx.bindings.buildBinding
 import ktfx.bindings.buildStringBinding
@@ -44,7 +45,7 @@ class EditEmployeeDialog(component: FxComponent) :
                 })
                 graphicProperty().bind(buildBinding(table.selectionModel.selectedIndexProperty()) {
                     when {
-                        table.selectionModel.isSelected() -> ktfx.layouts.imageView(
+                        table.selectionModel.isSelected() -> ImageView(
                             when {
                                 table.selectionModel.selectedItem.isAdmin -> R.image.menu_admin_off
                                 else -> R.image.menu_admin_on

@@ -1,8 +1,8 @@
 package com.hendraanggrian.openpss.ui.price
 
+import com.hendraanggrian.openpss.FxComponent
 import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.nosql.NamedDocument
-import com.hendraanggrian.openpss.FxComponent
 import com.hendraanggrian.openpss.ui.InputPopOver
 import com.hendraanggrian.openpss.ui.TableDialog
 import com.hendraanggrian.openpss.util.stringCell

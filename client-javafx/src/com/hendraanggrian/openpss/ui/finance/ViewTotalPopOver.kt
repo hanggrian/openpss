@@ -1,8 +1,8 @@
 package com.hendraanggrian.openpss.ui.finance
 
+import com.hendraanggrian.openpss.FxComponent
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
-import com.hendraanggrian.openpss.FxComponent
 import com.hendraanggrian.openpss.ui.BasePopOver
 import javafx.geometry.HPos
 import ktfx.invoke

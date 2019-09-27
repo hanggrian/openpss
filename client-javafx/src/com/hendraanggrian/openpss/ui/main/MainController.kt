@@ -8,7 +8,7 @@ import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.control.MarginedImageView
 import com.hendraanggrian.openpss.control.PaginatedPane
 import com.hendraanggrian.openpss.control.Toolbar
-import com.hendraanggrian.openpss.control.unselectableListView
+import com.hendraanggrian.openpss.control.UnselectableListView
 import com.hendraanggrian.openpss.data.Invoice
 import com.hendraanggrian.openpss.data.Log
 import com.hendraanggrian.openpss.schema.Technique
@@ -31,6 +31,8 @@ import com.hendraanggrian.openpss.ui.wage.EditRecessDialog
 import com.hendraanggrian.openpss.ui.wage.WageController
 import com.jfoenix.controls.JFXDrawer
 import com.jfoenix.controls.JFXHamburger
+import java.net.URL
+import java.util.ResourceBundle
 import javafx.beans.binding.When
 import javafx.event.ActionEvent
 import javafx.fxml.FXML
@@ -62,8 +64,6 @@ import ktfx.runLater
 import ktfx.text.updateFont
 import ktfx.windows.stage
 import org.apache.commons.lang3.SystemUtils
-import java.net.URL
-import java.util.ResourceBundle
 
 class MainController : BaseController(), Refreshable {
 
@@ -182,18 +182,18 @@ class MainController : BaseController(), Refreshable {
 
     override fun refresh() {
         eventPagination.contentFactory = Callback { (page, count) ->
-            unselectableListView<Log> {
+            UnselectableListView<Log>().apply {
                 styleClass.addAll(R.style.borderless, R.style.list_view_no_scrollbar)
                 cellFactory {
                     onUpdate { log, empty ->
                         if (log != null && !empty) graphic = textFlow {
                             text(log.message) {
                                 isWrapText = true
-                                updateFont(12)
+                                updateFont(12.0)
                                 this@textFlow.prefWidthProperty()
-                                    .bind(this@unselectableListView.widthProperty() - 12)
+                                    .bind(this@apply.widthProperty() - 12)
                                 wrappingWidthProperty()
-                                    .bind(this@unselectableListView.widthProperty())
+                                    .bind(this@apply.widthProperty())
                             }
                             newLine()
                             text("${log.dateTime.toString(PATTERN_DATETIME)} ") {

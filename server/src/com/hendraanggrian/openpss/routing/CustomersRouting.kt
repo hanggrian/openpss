@@ -17,9 +17,9 @@ import io.ktor.routing.get
 import io.ktor.routing.post
 import io.ktor.routing.put
 import io.ktor.routing.route
-import kotlinx.nosql.update
 import java.util.regex.Pattern
 import kotlin.math.ceil
+import kotlinx.nosql.update
 
 object CustomersRouting : OpenPssRouting({
     route(Customers.schemaName) {

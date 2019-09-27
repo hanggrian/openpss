@@ -3,7 +3,7 @@ package com.hendraanggrian.openpss.ui
 import com.hendraanggrian.openpss.FxComponent
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
-import com.hendraanggrian.openpss.control.toolbar
+import com.hendraanggrian.openpss.control.Toolbar
 import com.jfoenix.controls.JFXButton
 import javafx.beans.property.ObjectProperty
 import javafx.scene.Node
@@ -22,7 +22,7 @@ import ktfx.layouts.vbox
 
 interface BasePopup : FxComponent, NodeManager {
 
-    override fun <R : Node> R.add(): R = also { contentPane.children += it }
+    override fun <T : Node> addNode(node: T): T = node.also { contentPane.children += it }
 
     fun setActualContent(region: Region)
     fun setOnShown(onShown: () -> Unit)
@@ -41,7 +41,7 @@ interface BasePopup : FxComponent, NodeManager {
     fun initialize() {
         setActualContent(ktfx.layouts.vbox {
             // material dialog have extra top padding: https://material.io/develop/web/components/dialogs/
-            toolbar {
+            addNode(Toolbar().apply {
                 leftItems {
                     label(getString(titleId)) {
                         styleClass.addAll(R.style.bold, R.style.display)
@@ -57,7 +57,7 @@ interface BasePopup : FxComponent, NodeManager {
                         centerProperty().bindBidirectional(graphicProperty())
                     }
                 }
-            } marginTop getDouble(R.value.padding_small) marginBottom
+            }) marginTop getDouble(R.value.padding_small) marginBottom
                 getDouble(R.value.padding_small)
             contentPane = vbox(getDouble(R.value.padding_medium)) {
                 updatePadding(

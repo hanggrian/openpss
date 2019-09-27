@@ -4,7 +4,6 @@ import com.hendraanggrian.openpss.FxComponent
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.control.DoubleField
-import com.hendraanggrian.openpss.control.doubleField
 import com.hendraanggrian.openpss.data.Invoice
 import com.hendraanggrian.openpss.data.Payment
 import com.hendraanggrian.openpss.ui.ResultablePopOver
@@ -50,9 +49,9 @@ class AddPaymentPopOver(
                 styleClass += R.style.bold
             } row 1 col 1 colSpans 2
             label(getString(R2.string.payment)) row 2 col 0
-            valueField = doubleField {
+            valueField = addNode(DoubleField().apply {
                 promptText = getString(R2.string.payment)
-            }.add() row 2 col 1
+            }) row 2 col 1
             jfxButton(graphic = ImageView(R.image.btn_match_receivable)) {
                 styleClass += R.style.flat
                 tooltip(getString(R2.string.match_receivable))

@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.nosql
 
-import kotlinx.nosql.AbstractColumn
 import kotlin.reflect.KClass
+import kotlinx.nosql.AbstractColumn
 
 /** Mark schema that has `name` value. */
 abstract class NamedDocumentSchema<D : Document<*>>(

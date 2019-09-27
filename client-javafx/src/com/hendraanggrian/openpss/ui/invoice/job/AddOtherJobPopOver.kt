@@ -3,14 +3,13 @@ package com.hendraanggrian.openpss.ui.invoice.job
 import com.hendraanggrian.openpss.FxComponent
 import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.control.DoubleField
-import com.hendraanggrian.openpss.control.doubleField
 import com.hendraanggrian.openpss.data.Invoice
 import javafx.beans.Observable
 import javafx.beans.value.ObservableBooleanValue
 import ktfx.bindings.isBlank
 import ktfx.bindings.lessEq
 import ktfx.bindings.or
-import ktfx.layouts._GridPane
+import ktfx.layouts.KtfxGridPane
 import ktfx.layouts.label
 
 class AddOtherJobPopOver(component: FxComponent) : AddJobPopOver<Invoice.OtherJob>(
@@ -20,11 +19,11 @@ class AddOtherJobPopOver(component: FxComponent) : AddJobPopOver<Invoice.OtherJo
 
     private lateinit var priceField: DoubleField
 
-    override fun _GridPane.onCreateContent() {
+    override fun KtfxGridPane.onCreateContent() {
         label(getString(R2.string.price)) col 0 row currentRow
-        priceField = doubleField {
+        priceField = addNode(DoubleField().apply {
             promptText = getString(R2.string.price)
-        } col 1 colSpans 2 row currentRow
+        }) col 1 colSpans 2 row currentRow
     }
 
     override val totalBindingDependencies: Array<Observable>

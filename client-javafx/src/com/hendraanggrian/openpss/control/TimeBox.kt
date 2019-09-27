@@ -1,5 +1,3 @@
-@file:Suppress("NOTHING_TO_INLINE")
-
 package com.hendraanggrian.openpss.control
 
 import com.hendraanggrian.openpss.R
@@ -9,7 +7,6 @@ import com.jfoenix.controls.JFXTimePicker
 import javafx.beans.property.ObjectProperty
 import javafx.beans.property.SimpleObjectProperty
 import javafx.geometry.Pos
-import javafx.geometry.Pos.CENTER
 import javafx.scene.control.Button
 import javafx.scene.image.ImageView
 import ktfx.bindings.buildBinding
@@ -17,19 +14,17 @@ import ktfx.coroutines.onAction
 import ktfx.getValue
 import ktfx.jfoenix.jfxButton
 import ktfx.jfoenix.jfxTimePicker
-import ktfx.layouts.LayoutMarker
-import ktfx.layouts.NodeManager
-import ktfx.layouts._HBox
+import ktfx.layouts.KtfxHBox
 import ktfx.listeners.buildStringConverter
 import org.joda.time.LocalTime
-import org.joda.time.LocalTime.MIDNIGHT
 
 /**
  * Two fields (hour and minute) that represents [LocalTime].
  *
  * [TimeBox] width is deliberately measured to match [com.hendraanggrian.ui.scene.control.ForcedDatePicker]'s width.
  */
-open class TimeBox @JvmOverloads constructor(prefill: LocalTime = MIDNIGHT) : _HBox(0.0) {
+open class TimeBox @JvmOverloads constructor(prefill: LocalTime = LocalTime.MIDNIGHT) :
+    KtfxHBox(0.0) {
 
     lateinit var picker: JFXTimePicker
     var previousButton: Button
@@ -55,7 +50,7 @@ open class TimeBox @JvmOverloads constructor(prefill: LocalTime = MIDNIGHT) : _H
             }
         }
         picker = jfxTimePicker {
-            editor.alignment = CENTER
+            editor.alignment = Pos.CENTER
             setIs24HourView(true)
             value = prefill.toJava()
             isEditable = false
@@ -90,13 +85,3 @@ open class TimeBox @JvmOverloads constructor(prefill: LocalTime = MIDNIGHT) : _H
         valueProperty.bind(buildBinding(picker.valueProperty()) { picker.value.toJoda() })
     }
 }
-
-fun timeBox(
-    prefill: LocalTime = MIDNIGHT,
-    init: ((@LayoutMarker TimeBox).() -> Unit)? = null
-): TimeBox = TimeBox(prefill).also { init?.invoke(it) }
-
-inline fun NodeManager.timeBox(
-    prefill: LocalTime = MIDNIGHT,
-    noinline init: ((@LayoutMarker TimeBox).() -> Unit)? = null
-): TimeBox = com.hendraanggrian.openpss.control.timeBox(prefill, init).add()

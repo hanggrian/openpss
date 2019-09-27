@@ -3,11 +3,10 @@ package com.hendraanggrian.openpss.routing.db
 import com.hendraanggrian.openpss.nosql.Database
 import kotlinx.coroutines.runBlocking
 import org.apache.log4j.BasicConfigurator
-import org.junit.Test
 
 class DatabaseTest {
 
-    @Test
+    // @Test
     fun login() {
         runBlocking {
             BasicConfigurator.configure()

@@ -3,7 +3,6 @@ plugins {
     kotlin("android")
     kotlin("android.extensions")
     kotlin("kapt")
-    dokka("android")
 }
 
 android {
@@ -52,6 +51,7 @@ android {
         exclude("META-INF/NOTICE.txt")
         exclude("META-INF/LICENSE.txt")
         exclude("META-INF/kotlinx-io.kotlin_module")
+        exclude("META-INF/kotlinx-coroutines-core.kotlin_module")
         exclude("META-INF/kotlinx-coroutines-io.kotlin_module")
         exclude("META-INF/atomicfu.kotlin_module")
     }
@@ -64,7 +64,7 @@ dependencies {
 
     implementation(kotlinx("coroutines-android", VERSION_COROUTINES))
     implementation(slf4j("android"))
-    implementation(hendraanggrian("defaults", "defaults-android", VERSION_DEFAULTS))
+    implementation(hendraanggrian("defaults", "defaults-android", "0.3"))
 
     implementation(androidx("multidex", version = VERSION_MULTIDEX))
     implementation(androidx("core", "core-ktx", "$VERSION_ANDROIDX-alpha03"))
@@ -84,13 +84,6 @@ dependencies {
     implementation(hendraanggrian("bundler", "bundler-ktx", VERSION_BUNDLER))
     kapt(hendraanggrian("bundler", "bundler-compiler", VERSION_BUNDLER))
 
-    implementation("com.jakewharton:process-phoenix:2.0.0")
-    implementation("com.takisoft.preferencex:preferencex:1.0.0")
-}
-
-tasks {
-    named<org.jetbrains.dokka.gradle.DokkaTask>("dokka") {
-        outputDirectory = "$buildDir/docs"
-        doFirst { file(outputDirectory).deleteRecursively() }
-    }
+    implementation(jakewharton("process-phoenix", VERSION_PROCESSPHOENIX))
+    implementation(preferencex())
 }

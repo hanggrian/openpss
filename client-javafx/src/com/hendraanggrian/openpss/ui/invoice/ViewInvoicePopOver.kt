@@ -5,7 +5,7 @@ import com.hendraanggrian.openpss.Language
 import com.hendraanggrian.openpss.PATTERN_DATETIMEEXT
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
-import com.hendraanggrian.openpss.control.space
+import com.hendraanggrian.openpss.control.Space
 import com.hendraanggrian.openpss.data.Customer
 import com.hendraanggrian.openpss.data.Employee
 import com.hendraanggrian.openpss.data.GlobalSetting
@@ -16,22 +16,19 @@ import com.hendraanggrian.openpss.ui.BasePopOver
 import com.hendraanggrian.openpss.ui.Stylesheets
 import com.sun.javafx.print.PrintHelper
 import com.sun.javafx.print.Units
-import javafx.geometry.HPos.LEFT
-import javafx.geometry.HPos.RIGHT
-import javafx.geometry.Pos.CENTER
-import javafx.geometry.Pos.CENTER_LEFT
-import javafx.geometry.Pos.CENTER_RIGHT
+import java.util.ResourceBundle
+import javafx.geometry.HPos
+import javafx.geometry.Pos
 import javafx.print.PageOrientation
 import javafx.print.PageRange
 import javafx.scene.layout.Border
 import javafx.scene.layout.BorderStroke
 import javafx.scene.layout.BorderStrokeStyle
-import javafx.scene.layout.BorderStrokeStyle.SOLID
-import javafx.scene.layout.BorderWidths.DEFAULT
-import javafx.scene.layout.CornerRadii.EMPTY
-import javafx.scene.layout.Priority.ALWAYS
+import javafx.scene.layout.BorderWidths
+import javafx.scene.layout.CornerRadii
+import javafx.scene.layout.Priority
 import javafx.scene.layout.VBox
-import javafx.scene.paint.Color.BLACK
+import javafx.scene.paint.Color
 import javafx.scene.text.TextAlignment
 import javafx.scene.transform.Scale
 import kotlinx.coroutines.Dispatchers
@@ -40,8 +37,8 @@ import ktfx.controls.gap
 import ktfx.controls.paddingAll
 import ktfx.coroutines.onAction
 import ktfx.invoke
+import ktfx.layouts.KtfxGridPane
 import ktfx.layouts.NodeManager
-import ktfx.layouts._GridPane
 import ktfx.layouts.button
 import ktfx.layouts.columnConstraints
 import ktfx.layouts.gridPane
@@ -49,6 +46,7 @@ import ktfx.layouts.hbox
 import ktfx.layouts.label
 import ktfx.layouts.line
 import ktfx.layouts.region
+import ktfx.layouts.text
 import ktfx.layouts.textFlow
 import ktfx.layouts.vbox
 import ktfx.print.createJob
@@ -56,7 +54,6 @@ import ktfx.print.defaultPrinter
 import ktfx.runLater
 import ktfx.text.updateFont
 import org.apache.commons.lang3.SystemUtils
-import java.util.ResourceBundle
 
 /**
  * Popup displaying invoice using server's language instead of local.
@@ -103,7 +100,7 @@ class ViewInvoicePopOver(
             setMaxSize(PX_WIDTH, PX_HEIGHT)
             hbox(getDouble(R.value.padding_medium)) {
                 vbox {
-                    alignment = CENTER_LEFT
+                    alignment = Pos.CENTER_LEFT
                     invoiceHeaders.forEachIndexed { index, s ->
                         label(s) {
                             if (index == 0) {
@@ -111,20 +108,20 @@ class ViewInvoicePopOver(
                             }
                         }
                     }
-                } hpriority ALWAYS
+                } hpriority Priority.ALWAYS
                 vbox {
-                    alignment = CENTER_RIGHT
+                    alignment = Pos.CENTER_RIGHT
                     label(getString(R2.string.invoice)) {
-                        updateFont(18)
+                        updateFont(18.0)
                     }
                     label("# ${invoice.no}") {
-                        updateFont(32)
+                        updateFont(32.0)
                     }
                 }
             }
             fullLine()
             vbox {
-                alignment = CENTER
+                alignment = Pos.CENTER
                 label("${invoice.dateTime.toString(PATTERN_DATETIMEEXT)} " + "(${employee.name})")
                 label(customer.name) {
                     styleClass += R.style.bold
@@ -136,15 +133,15 @@ class ViewInvoicePopOver(
                     columnConstraints {
                         constraints {
                             minWidth = USE_PREF_SIZE
-                            halignment = RIGHT
+                            halignment = HPos.RIGHT
                         }
                         constraints {
                             minWidth = USE_PREF_SIZE
                         }
-                        constraints { hgrow = ALWAYS }
+                        constraints { hgrow = Priority.ALWAYS }
                         constraints {
                             minWidth = USE_PREF_SIZE
-                            halignment = RIGHT
+                            halignment = HPos.RIGHT
                         }
                     }
                     var row = 0
@@ -192,29 +189,29 @@ class ViewInvoicePopOver(
                         }
                     }
                 }
-            } vpriority ALWAYS
+            } vpriority Priority.ALWAYS
             fullLine()
             gridPane {
                 gap = getDouble(R.value.padding_medium)
                 textFlow {
                     paddingAll = getDouble(R.value.padding_small)
-                    border = SOLID.toBorder()
+                    border = BorderStrokeStyle.SOLID.toBorder()
                     "${getString(R2.string.note)}\n" {
                         styleClass += R.style.bold
                     }
-                    invoice.note()
-                } row 0 col 0 rowSpans 2 hpriority ALWAYS
+                    text(invoice.note)
+                } row 0 col 0 rowSpans 2 hpriority Priority.ALWAYS
                 label(currencyConverter(invoice.total)) {
                     styleClass += R.style.bold
-                } row 0 col 1 colSpans 2 halign RIGHT
+                } row 0 col 1 colSpans 2 halign HPos.RIGHT
                 vbox {
-                    alignment = CENTER
+                    alignment = Pos.CENTER
                     region { prefHeight = 48.0 }
                     line(endX = 64.0)
                     label(getString(R2.string.employee))
                 } row 1 col 1
                 vbox {
-                    alignment = CENTER
+                    alignment = Pos.CENTER
                     region { prefHeight = 48.0 }
                     line(endX = 64.0)
                     label(getString(R2.string.customer))
@@ -266,27 +263,28 @@ class ViewInvoicePopOver(
         }
     }
 
-    private fun <T : Invoice.Job> _GridPane.jobGridPane(
+    private fun <T : Invoice.Job> KtfxGridPane.jobGridPane(
         currentRow: Int,
         titleId: String,
         jobs: List<T>,
-        lineBuilder: _GridPane.(order: T, row: Int) -> Unit
+        lineBuilder: KtfxGridPane.(order: T, row: Int) -> Unit
     ): Int {
         var row = currentRow
         label(getString(titleId)) {
             styleClass += R.style.bold
-        } row row col 0 colSpans 4 halign LEFT
+        } row row col 0 colSpans 4 halign HPos.LEFT
         row++
         jobs.forEach {
             lineBuilder(it, row)
             row++
         }
-        space(height = getDouble(R.value.padding_small)) row row col 0 colSpans 4
+        addNode(Space(height = getDouble(R.value.padding_small))) row row col 0 colSpans 4
         row++
         return row
     }
 
-    private fun BorderStrokeStyle.toBorder() = Border(BorderStroke(BLACK, this, EMPTY, DEFAULT))
+    private fun BorderStrokeStyle.toBorder() =
+        Border(BorderStroke(Color.BLACK, this, CornerRadii.EMPTY, BorderWidths.DEFAULT))
 
     private fun NodeManager.fullLine() = line(endX = PX_WIDTH)
 }

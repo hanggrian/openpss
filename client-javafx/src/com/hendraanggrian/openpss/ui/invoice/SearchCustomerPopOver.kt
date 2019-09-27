@@ -36,7 +36,7 @@ class SearchCustomerPopOver(component: FxComponent) :
             searchField = jfxTextField {
                 promptText = getString(R2.string.name)
             }
-            customerList = CustomerListView().apply {
+            customerList = addNode(CustomerListView().apply {
                 prefHeight = 262.0
                 itemsProperty().bind(buildBinding(searchField.textProperty()) {
                     runBlocking(Dispatchers.IO) {
@@ -59,7 +59,7 @@ class SearchCustomerPopOver(component: FxComponent) :
                         defaultButton.fire()
                     }
                 }
-            }.add() marginTop getDouble(R.value.padding_medium)
+            }) marginTop getDouble(R.value.padding_medium)
         }
         defaultButton.disableProperty()
             .bind(customerList.selectionModel.selectedItemProperty().isNull)

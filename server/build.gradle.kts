@@ -1,9 +1,8 @@
 plugins {
     kotlin("jvm")
-    dokka()
     idea
-    id("com.hendraanggrian.r")
-    id("com.hendraanggrian.buildconfig")
+    hendraanggrian("r")
+    hendraanggrian("buildconfig")
     shadow
     application
 }
@@ -70,10 +69,5 @@ tasks {
         baseName = "$RELEASE_ARTIFACT-server"
         version = RELEASE_VERSION
         classifier = null
-    }
-
-    named<org.jetbrains.dokka.gradle.DokkaTask>("dokka") {
-        outputDirectory = "$buildDir/docs"
-        doFirst { file(outputDirectory).deleteRecursively() }
     }
 }

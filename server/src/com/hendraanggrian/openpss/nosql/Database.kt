@@ -18,13 +18,13 @@ import com.hendraanggrian.openpss.schema.Wages
 import com.mongodb.MongoClientOptions
 import com.mongodb.MongoCredential
 import com.mongodb.ServerAddress
+import java.util.Date
 import kotlinx.nosql.DocumentSchema
 import kotlinx.nosql.equal
 import kotlinx.nosql.mongodb.MongoDB
 import org.joda.time.DateTime
 import org.joda.time.LocalDate
 import org.joda.time.LocalTime
-import java.util.Date
 
 object Database {
     lateinit var DATABASE: MongoDB

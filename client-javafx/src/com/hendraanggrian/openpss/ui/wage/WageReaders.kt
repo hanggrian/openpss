@@ -1,6 +1,7 @@
 package com.hendraanggrian.openpss.ui.wage
 
 import com.google.common.collect.LinkedHashMultimap
+import java.io.File
 import javafx.collections.ObservableList
 import javafx.stage.FileChooser
 import ktfx.collections.toObservableList
@@ -9,7 +10,6 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import org.joda.time.DateTime
 import org.joda.time.LocalDate
 import org.joda.time.LocalTime
-import java.io.File
 
 /**
  * Compatible with e Clocking fingerprint reader.

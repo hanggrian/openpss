@@ -1,8 +1,8 @@
 package com.hendraanggrian.openpss.ui.main
 
+import com.hendraanggrian.openpss.FxComponent
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
-import com.hendraanggrian.openpss.FxComponent
 import com.hendraanggrian.openpss.ui.ResultableDialog
 import javafx.scene.Node
 import javafx.scene.control.PasswordField

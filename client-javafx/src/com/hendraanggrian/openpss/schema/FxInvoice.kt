@@ -1,10 +1,10 @@
 package com.hendraanggrian.openpss.schema
 
 import com.hendraanggrian.openpss.R2
+import com.hendraanggrian.openpss.StringResources
 import com.hendraanggrian.openpss.data.Invoice
 import com.hendraanggrian.openpss.enumValueOfId
 import com.hendraanggrian.openpss.id
-import com.hendraanggrian.openpss.StringResources
 
 fun Invoice.Companion.no(resources: StringResources, no: Number?): String? =
     no?.let { "${resources.getString(R2.string.invoice)} #$it" }

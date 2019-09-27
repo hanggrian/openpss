@@ -27,9 +27,9 @@ import io.ktor.routing.get
 import io.ktor.routing.post
 import io.ktor.routing.put
 import io.ktor.routing.route
+import kotlin.reflect.KClass
 import kotlinx.nosql.equal
 import kotlinx.nosql.update
-import kotlin.reflect.KClass
 
 object PlatePriceRouting : NamedRouting<PlatePrices, PlatePrice>(
     PlatePrices,

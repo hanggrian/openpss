@@ -42,7 +42,7 @@ class PasswordDialogFragment : BaseDialogFragment() {
                 }
             }
         }
-        val manager = activity!!.supportFragmentManager
+        val manager = openpssActivity.supportFragmentManager
         val dialog = AlertDialog.Builder(context!!)
             .setTitle(getString(R2.string.password))
             .setView(FrameLayout(context!!).apply {
@@ -73,7 +73,7 @@ class PasswordDialogFragment : BaseDialogFragment() {
                                 )
                             )
                         )
-                        activity!!.finish()
+                        openpssActivity.finish()
                     }.onFailure {
                         if (BuildConfig2.DEBUG) it.printStackTrace()
                         TextDialogFragment()

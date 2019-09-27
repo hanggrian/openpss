@@ -4,11 +4,11 @@ import com.hendraanggrian.openpss.FxComponent
 import com.hendraanggrian.openpss.PATTERN_DATETIMEEXT
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
-import com.hendraanggrian.openpss.control.intField
+import com.hendraanggrian.openpss.control.IntField
 import com.hendraanggrian.openpss.ui.DateTimePopOver
 import com.hendraanggrian.openpss.util.round
 import com.hendraanggrian.openpss.util.trimMinutes
-import javafx.geometry.Pos.CENTER
+import javafx.geometry.Pos
 import javafx.scene.Node
 import javafx.scene.control.CheckBox
 import javafx.scene.control.ContentDisplay
@@ -16,9 +16,10 @@ import javafx.scene.control.ListView
 import javafx.scene.control.MenuItem
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
-import javafx.scene.input.MouseEvent.MOUSE_CLICKED
-import javafx.scene.layout.Priority.ALWAYS
+import javafx.scene.input.MouseEvent
+import javafx.scene.layout.Priority
 import javafx.scene.layout.StackPane
+import kotlin.math.absoluteValue
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
@@ -39,11 +40,12 @@ import ktfx.coroutines.onMouseClicked
 import ktfx.inputs.isDelete
 import ktfx.inputs.isDoubleClick
 import ktfx.jfoenix.jfxCheckBox
-import ktfx.layouts._TitledPane
+import ktfx.layouts.KtfxTitledPane
 import ktfx.layouts.contextMenu
 import ktfx.layouts.gridPane
 import ktfx.layouts.label
 import ktfx.layouts.listView
+import ktfx.layouts.menuItem
 import ktfx.layouts.separatorMenuItem
 import ktfx.layouts.text
 import ktfx.layouts.vbox
@@ -51,12 +53,11 @@ import ktfx.listeners.cellFactory
 import ktfx.text.updateFont
 import org.joda.time.DateTime
 import org.joda.time.DateTime.now
-import kotlin.math.absoluteValue
 
 class AttendeePane(
     component: FxComponent,
     val attendee: Attendee
-) : _TitledPane(attendee.toString()), FxComponent by component {
+) : KtfxTitledPane(attendee.toString()), FxComponent by component {
 
     val recessChecks: MutableList<CheckBox> = mutableListOf()
     lateinit var deleteMenu: MenuItem
@@ -73,28 +74,28 @@ class AttendeePane(
                 gap = getDouble(R.value.padding_small)
                 paddingAll = getDouble(R.value.padding_medium)
                 attendee.role?.let { role ->
-                    label(getString(R2.string.role)) col 0 row 0 marginRight 4
+                    label(getString(R2.string.role)) col 0 row 0 marginRight 4.0
                     label(role) col 1 row 0 colSpans 2
                 }
-                label(getString(R2.string.income)) col 0 row 1 marginRight 4
-                intField {
+                label(getString(R2.string.income)) col 0 row 1 marginRight 4.0
+                addNode(IntField().apply {
                     prefWidth = 80.0
                     promptText = getString(R2.string.income)
                     valueProperty().bindBidirectional(attendee.dailyProperty)
-                } col 1 row 1
+                }) col 1 row 1
                 label("@${getString(R2.string.day)}") {
-                    updateFont(10)
+                    updateFont(10.0)
                 } col 2 row 1
-                label(getString(R2.string.overtime)) col 0 row 2 marginRight 4
-                intField {
+                label(getString(R2.string.overtime)) col 0 row 2 marginRight 4.0
+                addNode(IntField().apply {
                     prefWidth = 80.0
                     promptText = getString(R2.string.overtime)
                     valueProperty().bindBidirectional(attendee.hourlyOvertimeProperty)
-                } col 1 row 2
+                }) col 1 row 2
                 label("@${getString(R2.string.hour)}") {
-                    updateFont(10)
+                    updateFont(10.0)
                 } col 2 row 2
-                label(getString(R2.string.recess)) col 0 row 3 marginRight 4
+                label(getString(R2.string.recess)) col 0 row 3 marginRight 4.0
                 vbox {
                     runBlocking { api.getRecesses() }.forEach { recess ->
                         recessChecks += jfxCheckBox(recess.toString()) {
@@ -103,7 +104,7 @@ class AttendeePane(
                                 attendanceList.forceRefresh()
                             }
                             isSelected = true
-                        } marginTop if (children.size > 1) 4 else 0
+                        } marginTop if (children.size > 1) 4.0 else 0.0
                     }
                 } col 1 row 3 colSpans 2
             }
@@ -116,10 +117,10 @@ class AttendeePane(
                         text = null
                         graphic = null
                         if (dateTime != null && !empty) graphic = ktfx.layouts.hbox {
-                            alignment = CENTER
+                            alignment = Pos.CENTER
                             val itemLabel = label(dateTime.toString(PATTERN_DATETIMEEXT)) {
                                 maxWidth = Double.MAX_VALUE
-                            } hpriority ALWAYS
+                            } hpriority Priority.ALWAYS
                             if (index % 2 == 0) {
                                 listView.items.getOrNull(index + 1).let { nextItem ->
                                     when (nextItem) {
@@ -135,7 +136,7 @@ class AttendeePane(
                                                 }
                                             val hours = (minutes / 60.0).round()
                                             text(hours.toString()) {
-                                                updateFont(10)
+                                                updateFont(10.0)
                                                 if (hours > 12) {
                                                     style = "-fx-fill: #F44336;"
                                                 }
@@ -181,9 +182,9 @@ class AttendeePane(
                 onAction { attendee.attendances.revert() }
             }
             separatorMenuItem()
-            deleteMenu = "${getString(R2.string.delete)} ${attendee.name}"()
-            deleteOthersMenu = getString(R2.string.delete_others)()
-            deleteToTheRightMenu = getString(R2.string.delete_employees_to_the_right)()
+            deleteMenu = menuItem("${getString(R2.string.delete)} ${attendee.name}")
+            deleteOthersMenu = menuItem(getString(R2.string.delete_others))
+            deleteToTheRightMenu = menuItem(getString(R2.string.delete_employees_to_the_right))
         }
         contentDisplay = ContentDisplay.RIGHT
         graphic = ktfx.layouts.imageView {
@@ -195,7 +196,7 @@ class AttendeePane(
                     }
                 )
             })
-            eventFilter(type = MOUSE_CLICKED) { deleteMenu.fire() }
+            eventFilter(type = MouseEvent.MOUSE_CLICKED) { deleteMenu.fire() }
         }
         GlobalScope.launch(Dispatchers.JavaFx) {
             delay(250)

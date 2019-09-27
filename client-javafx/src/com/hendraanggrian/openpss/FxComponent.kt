@@ -6,6 +6,8 @@ import com.hendraanggrian.openpss.api.OpenPSSApi
 import com.hendraanggrian.openpss.data.Employee
 import com.hendraanggrian.openpss.data.GlobalSetting
 import com.hendraanggrian.openpss.ui.ResultableDialog
+import java.awt.Desktop
+import java.lang.ref.WeakReference
 import javafx.scene.Node
 import javafx.scene.control.ComboBox
 import javafx.scene.control.PasswordField
@@ -14,6 +16,7 @@ import javafx.scene.paint.Color
 import javafx.util.StringConverter
 import javafx.util.converter.CurrencyStringConverter
 import javafx.util.converter.NumberStringConverter
+import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.javafx.JavaFx
@@ -28,14 +31,9 @@ import ktfx.jfoenix.jfxPasswordField
 import ktfx.jfoenix.jfxSnackbar
 import ktfx.layouts.gridPane
 import ktfx.layouts.label
-import java.awt.Desktop
-import java.lang.ref.WeakReference
-import kotlin.coroutines.CoroutineContext
 
 /** StackPane is the root layout for [ktfx.jfoenix.jfxSnackbar]. */
-interface FxComponent : Component<StackPane, WritableDefaults>,
-    StringResources,
-    ValueResources {
+interface FxComponent : Component<StackPane, WritableDefaults>, StringResources, ValueResources {
 
     companion object {
         private var apiRef = WeakReference<OpenPSSApi?>(null)

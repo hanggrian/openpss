@@ -5,8 +5,6 @@ import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.control.DoubleField
 import com.hendraanggrian.openpss.control.IntField
-import com.hendraanggrian.openpss.control.doubleField
-import com.hendraanggrian.openpss.control.intField
 import com.hendraanggrian.openpss.data.Invoice
 import com.hendraanggrian.openpss.ui.ResultablePopOver
 import javafx.beans.Observable
@@ -19,14 +17,14 @@ import ktfx.controls.gap
 import ktfx.coroutines.listener
 import ktfx.jfoenix.jfxCheckBox
 import ktfx.jfoenix.jfxTextField
-import ktfx.layouts._GridPane
+import ktfx.layouts.KtfxGridPane
 import ktfx.layouts.gridPane
 import ktfx.layouts.label
 
 abstract class AddJobPopOver<T : Invoice.Job>(component: FxComponent, titleId: String) :
     ResultablePopOver<T>(component, titleId), Invoice.Job {
 
-    abstract fun _GridPane.onCreateContent()
+    abstract fun KtfxGridPane.onCreateContent()
 
     abstract val totalBindingDependencies: Array<Observable>
 
@@ -46,9 +44,9 @@ abstract class AddJobPopOver<T : Invoice.Job>(component: FxComponent, titleId: S
         gridPane {
             gap = getDouble(R.value.padding_medium)
             label(getString(R2.string.qty)) col 0 row currentRow
-            qtyField = intField {
+            qtyField = addNode(IntField().apply {
                 promptText = getString(R2.string.qty)
-            } col 1 colSpans 2 row currentRow
+            }) col 1 colSpans 2 row currentRow
             currentRow++
             label(getString(R2.string.description)) col 0 row currentRow
             titleField = jfxTextField {
@@ -58,7 +56,7 @@ abstract class AddJobPopOver<T : Invoice.Job>(component: FxComponent, titleId: S
             onCreateContent()
             currentRow++
             label(getString(R2.string.total)) col 0 row currentRow
-            totalField = doubleField { bindTotal() } col 1 row currentRow
+            totalField = addNode(DoubleField().apply { bindTotal() }) col 1 row currentRow
             customizeCheck = jfxCheckBox(getString(R2.string.customize)) {
                 totalField.disableProperty().bind(!selectedProperty())
                 selectedProperty().listener { _, _, selected ->

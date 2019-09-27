@@ -8,6 +8,8 @@ import com.hendraanggrian.openpss.ui.wage.EClockingReader
 import com.hendraanggrian.openpss.util.controller
 import com.hendraanggrian.openpss.util.getResource
 import com.hendraanggrian.openpss.util.pane
+import java.util.Properties
+import java.util.ResourceBundle
 import javafx.application.Application
 import javafx.application.Platform
 import javafx.fxml.FXMLLoader
@@ -17,8 +19,6 @@ import ktfx.layouts.scene
 import ktfx.windows.icon
 import ktfx.windows.setMinSize
 import org.apache.log4j.BasicConfigurator
-import java.util.Properties
-import java.util.ResourceBundle
 
 class OpenPSSApplication : Application(), StringResources, ValueResources {
 
@@ -59,11 +59,11 @@ class OpenPSSApplication : Application(), StringResources, ValueResources {
         stage.title = getString(R2.string.openpss_login)
         stage.scene = scene {
             stylesheets += Stylesheets.OPENPSS
-            LoginPane(this@OpenPSSApplication, defaults).apply {
+            addNode(LoginPane(this@OpenPSSApplication, defaults).apply {
                 onSuccess = { employee ->
                     val loader = FXMLLoader(getResource(R.layout.controller_main), resourceBundle)
                     this@scene.run {
-                        loader.pane.add()
+                        addNode(loader.pane)
                     }
                     val controller = loader.controller
                     controller.login = employee
@@ -71,7 +71,7 @@ class OpenPSSApplication : Application(), StringResources, ValueResources {
                     stage.isResizable = true
                     stage.setMinSize(900.0, 500.0)
                 }
-            }.add()
+            })
         }
         stage.show()
     }

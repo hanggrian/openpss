@@ -13,6 +13,7 @@ import javafx.scene.control.Label
 import javafx.scene.control.Tab
 import javafx.scene.control.TabPane
 import javafx.scene.control.TextField
+import javafx.scene.image.ImageView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import ktfx.bindings.eq
@@ -75,8 +76,8 @@ class AddCustomerDialog(component: FxComponent) :
     private fun Tab.bindGraphic(selectedImageId: String, unselectedImageId: String) {
         graphicProperty().bind(
             When(selectedProperty())
-                then ktfx.layouts.imageView(selectedImageId)
-                otherwise ktfx.layouts.imageView(unselectedImageId)
+                then ImageView(selectedImageId)
+                otherwise ImageView(unselectedImageId)
         )
     }
 

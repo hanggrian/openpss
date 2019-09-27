@@ -1,9 +1,9 @@
 package com.hendraanggrian.openpss.ui.wage
 
+import java.io.Serializable
 import org.joda.time.Interval
 import org.joda.time.ReadableInstant
 import org.joda.time.ReadableInterval
-import java.io.Serializable
 
 /**
  * An [Interval] wrapper where start time may be bigger than end time, making the time difference value negative.

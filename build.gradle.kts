@@ -7,8 +7,6 @@ buildscript {
     dependencies {
         classpath(kotlin("gradle-plugin", VERSION_KOTLIN))
         classpath(android())
-        classpath(dokka())
-        classpath(dokka("android"))
         classpath(hendraanggrian("r-gradle-plugin", VERSION_PLUGIN_R))
         classpath(hendraanggrian("buildconfig-gradle-plugin", VERSION_PLUGIN_BUILDCONFIG))
         classpath(hendraanggrian("packr-gradle-plugin", VERSION_PLUGIN_PACKR))
@@ -37,8 +35,5 @@ allprojects {
 tasks {
     register<Delete>("clean") {
         delete(buildDir)
-    }
-    named<Wrapper>("wrapper") {
-        gradleVersion = VERSION_GRADLE
     }
 }

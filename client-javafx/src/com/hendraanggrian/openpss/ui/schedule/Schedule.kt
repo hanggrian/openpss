@@ -1,9 +1,9 @@
 package com.hendraanggrian.openpss.ui.schedule
 
+import com.hendraanggrian.openpss.FxComponent
 import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.data.Invoice
 import com.hendraanggrian.openpss.schema.typedTechnique
-import com.hendraanggrian.openpss.FxComponent
 import javafx.collections.ObservableList
 import ktfx.collections.mutableObservableListOf
 import ktfx.invoke

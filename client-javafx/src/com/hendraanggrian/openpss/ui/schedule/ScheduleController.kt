@@ -3,13 +3,15 @@ package com.hendraanggrian.openpss.ui.schedule
 import com.hendraanggrian.openpss.PATTERN_DATETIMEEXT
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
-import com.hendraanggrian.openpss.control.action
-import com.hendraanggrian.openpss.control.uncollapsibleTreeItem
+import com.hendraanggrian.openpss.control.Action
+import com.hendraanggrian.openpss.control.UncollapsibleTreeItem
 import com.hendraanggrian.openpss.data.Invoice
 import com.hendraanggrian.openpss.schema.no
 import com.hendraanggrian.openpss.ui.ActionController
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.util.stringCell
+import java.net.URL
+import java.util.ResourceBundle
 import javafx.fxml.FXML
 import javafx.scene.control.Button
 import javafx.scene.control.SelectionMode.MULTIPLE
@@ -28,8 +30,6 @@ import ktfx.jfoenix.jfxToggleButton
 import ktfx.layouts.NodeManager
 import ktfx.layouts.borderPane
 import ktfx.runLater
-import java.net.URL
-import java.util.ResourceBundle
 
 class ScheduleController : ActionController(), Refreshable {
 
@@ -44,10 +44,10 @@ class ScheduleController : ActionController(), Refreshable {
     private lateinit var historyCheck: ToggleButton
 
     override fun NodeManager.onCreateActions() {
-        refreshButton = action(getString(R2.string.refresh), R.image.action_refresh) {
+        refreshButton = addNode(Action(getString(R2.string.refresh), R.image.action_refresh).apply {
             onAction { refresh() }
-        }
-        doneButton = action(getString(R2.string.done), R.image.action_done) {
+        })
+        doneButton = addNode(Action(getString(R2.string.done), R.image.action_done).apply {
             onAction {
                 api.editInvoice(
                     scheduleTable.selectionModel.selectedItem.value.invoice.apply {
@@ -56,7 +56,7 @@ class ScheduleController : ActionController(), Refreshable {
                 )
                 refresh()
             }
-        }
+        })
         borderPane {
             minHeight = 50.0
             maxHeight = 50.0
@@ -100,20 +100,21 @@ class ScheduleController : ActionController(), Refreshable {
                     else -> api.getInvoices(isDone = false, page = 1, count = 100).items
                 }
             }.forEach { invoice ->
-                addAll(uncollapsibleTreeItem(
-                    Schedule(
-                        invoice,
-                        runBlocking(Dispatchers.IO) {
-                            api.getCustomer(invoice.customerId).name
-                        },
-                        "",
-                        "",
-                        invoice.dateTime.toString(PATTERN_DATETIMEEXT)
-                    )
-                ) {
-                    Schedule.of(this@ScheduleController, invoice)
-                        .forEach { children += TreeItem<Schedule>(it) }
-                })
+                addAll(
+                    UncollapsibleTreeItem(
+                        Schedule(
+                            invoice,
+                            runBlocking(Dispatchers.IO) {
+                                api.getCustomer(invoice.customerId).name
+                            },
+                            "",
+                            "",
+                            invoice.dateTime.toString(PATTERN_DATETIMEEXT)
+                        )
+                    ).apply {
+                        Schedule.of(this@ScheduleController, invoice)
+                            .forEach { children += TreeItem<Schedule>(it) }
+                    })
             }
         }
     }

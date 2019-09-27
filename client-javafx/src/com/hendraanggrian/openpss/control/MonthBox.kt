@@ -1,12 +1,11 @@
-@file:Suppress("NOTHING_TO_INLINE")
-
 package com.hendraanggrian.openpss.control
 
 import com.hendraanggrian.openpss.R
+import java.text.DateFormatSymbols.getInstance
+import java.util.Locale
 import javafx.beans.property.ObjectProperty
 import javafx.beans.property.SimpleObjectProperty
 import javafx.geometry.Pos
-import javafx.geometry.Pos.CENTER
 import javafx.scene.control.Button
 import javafx.scene.control.ComboBox
 import javafx.scene.image.ImageView
@@ -16,15 +15,12 @@ import ktfx.coroutines.onAction
 import ktfx.getValue
 import ktfx.jfoenix.jfxButton
 import ktfx.jfoenix.jfxComboBox
-import ktfx.layouts.LayoutMarker
-import ktfx.layouts.NodeManager
-import ktfx.layouts._HBox
+import ktfx.layouts.KtfxHBox
 import ktfx.listeners.converter
 import org.joda.time.YearMonth
-import java.text.DateFormatSymbols.getInstance
-import java.util.Locale
 
-open class MonthBox @JvmOverloads constructor(prefill: YearMonth = YearMonth.now()) : _HBox(0.0) {
+open class MonthBox @JvmOverloads constructor(prefill: YearMonth = YearMonth.now()) :
+    KtfxHBox(0.0) {
 
     lateinit var monthBox: ComboBox<Int>
     lateinit var yearField: IntField
@@ -57,11 +53,11 @@ open class MonthBox @JvmOverloads constructor(prefill: YearMonth = YearMonth.now
                 fromString { months.indexOf(it) }
             }
         }
-        yearField = intField {
-            alignment = CENTER
+        yearField = addNode(IntField().apply {
+            alignment = Pos.CENTER
             maxWidth = 56.0
             value = prefill.year
-        }
+        })
         nextButton = jfxButton(graphic = ImageView(R.image.btn_next)) {
             onAction {
                 monthBox.value = when (monthBox.value) {
@@ -91,13 +87,3 @@ open class MonthBox @JvmOverloads constructor(prefill: YearMonth = YearMonth.now
         }
     }
 }
-
-fun monthBox(
-    prefill: YearMonth = YearMonth.now(),
-    init: ((@LayoutMarker MonthBox).() -> Unit)? = null
-): MonthBox = MonthBox(prefill).also { init?.invoke(it) }
-
-inline fun NodeManager.monthBox(
-    prefill: YearMonth = YearMonth.now(),
-    noinline init: ((@LayoutMarker MonthBox).() -> Unit)? = null
-): MonthBox = com.hendraanggrian.openpss.control.monthBox(prefill, init).add()

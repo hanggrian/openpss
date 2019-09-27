@@ -7,7 +7,7 @@ import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.WageDirectory
 import com.hendraanggrian.openpss.WageFile
-import com.hendraanggrian.openpss.control.uncollapsibleTreeItem
+import com.hendraanggrian.openpss.control.UncollapsibleTreeItem
 import com.hendraanggrian.openpss.ui.BaseController
 import com.hendraanggrian.openpss.ui.DatePopOver
 import com.hendraanggrian.openpss.ui.Stylesheets
@@ -20,6 +20,9 @@ import com.hendraanggrian.openpss.util.trimMinutes
 import com.jfoenix.controls.JFXToolbar
 import com.sun.javafx.scene.control.skin.TreeTableViewSkin
 import com.sun.javafx.scene.control.skin.VirtualFlow
+import java.awt.image.BufferedImage
+import java.net.URL
+import java.util.ResourceBundle
 import javafx.beans.value.ObservableValue
 import javafx.fxml.FXML
 import javafx.scene.control.Button
@@ -33,6 +36,7 @@ import javafx.scene.control.TreeTableColumn
 import javafx.scene.control.TreeTableView
 import javafx.scene.layout.StackPane
 import javafx.scene.layout.VBox
+import javax.imageio.ImageIO
 import ktfx.bindings.buildBooleanBinding
 import ktfx.bindings.buildStringBinding
 import ktfx.bindings.lessEq
@@ -49,10 +53,6 @@ import ktfx.runLater
 import ktfx.swing.toSwingImage
 import org.apache.commons.lang3.SystemUtils
 import org.joda.time.LocalTime
-import java.awt.image.BufferedImage
-import java.net.URL
-import java.util.ResourceBundle
-import javax.imageio.ImageIO
 
 @Suppress("UNCHECKED_CAST")
 class WageRecordController : BaseController() {
@@ -132,7 +132,7 @@ class WageRecordController : BaseController() {
                 val node = attendee.toNodeRecord(this)
                 val childs = attendee.toChildRecords(this)
                 val total = attendee.toTotalRecords(this, childs)
-                recordTable.root.children += uncollapsibleTreeItem(node) {
+                recordTable.root.children += UncollapsibleTreeItem(node).apply {
                     children += childs.map { TreeItem(it) }.toTypedArray()
                     children += TreeItem(total)
                 }

@@ -1,10 +1,9 @@
 plugins {
     `java-library`
     kotlin("jvm")
-    dokka()
     idea
-    id("com.hendraanggrian.r")
-    id("com.hendraanggrian.buildconfig")
+    hendraanggrian("r")
+    hendraanggrian("buildconfig")
 }
 
 group = RELEASE_GROUP
@@ -26,7 +25,7 @@ ktlint()
 dependencies {
     api(project(":core"))
 
-    api(hendraanggrian("defaults", "defaults", VERSION_DEFAULTS))
+    api(hendraanggrian("defaults", "defaults", "0.3"))
     api(ktor("client-okhttp"))
     api(ktor("client-gson"))
 
@@ -36,11 +35,6 @@ dependencies {
 }
 
 tasks {
-    named<org.jetbrains.dokka.gradle.DokkaTask>("dokka") {
-        outputDirectory = "$buildDir/docs"
-        doFirst { file(outputDirectory).deleteRecursively() }
-    }
-
     named<com.hendraanggrian.buildconfig.BuildConfigTask>("generateBuildConfig") {
         className = "BuildConfig2"
         appName = RELEASE_NAME

@@ -4,8 +4,6 @@ import com.hendraanggrian.openpss.FxComponent
 import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.control.DoubleField
 import com.hendraanggrian.openpss.control.IntField
-import com.hendraanggrian.openpss.control.doubleField
-import com.hendraanggrian.openpss.control.intField
 import com.hendraanggrian.openpss.data.Invoice
 import com.hendraanggrian.openpss.data.OffsetPrice
 import com.hendraanggrian.openpss.schema.Technique
@@ -21,7 +19,7 @@ import ktfx.bindings.or
 import ktfx.collections.toObservableList
 import ktfx.coroutines.listener
 import ktfx.jfoenix.jfxComboBox
-import ktfx.layouts._GridPane
+import ktfx.layouts.KtfxGridPane
 import ktfx.layouts.label
 import ktfx.listeners.converter
 
@@ -34,7 +32,7 @@ class AddOffsetJobPopOver(component: FxComponent) :
     private lateinit var minPriceField: DoubleField
     private lateinit var excessPriceField: DoubleField
 
-    override fun _GridPane.onCreateContent() {
+    override fun KtfxGridPane.onCreateContent() {
         label(getString(R2.string.type)) col 0 row currentRow
         typeChoice =
             jfxComboBox(runBlocking(Dispatchers.IO) { api.getOffsetPrices() }.toObservableList()) {
@@ -52,19 +50,19 @@ class AddOffsetJobPopOver(component: FxComponent) :
         } col 1 colSpans 2 row currentRow
         currentRow++
         label(getString(R2.string.min_qty)) col 0 row currentRow
-        minQtyField = intField {
+        minQtyField = addNode(IntField().apply {
             promptText = getString(R2.string.min_qty)
-        } col 1 colSpans 2 row currentRow
+        }) col 1 colSpans 2 row currentRow
         currentRow++
         label(getString(R2.string.min_price)) col 0 row currentRow
-        minPriceField = doubleField {
+        minPriceField = addNode(DoubleField().apply {
             promptText = getString(R2.string.min_price)
-        } col 1 colSpans 2 row currentRow
+        }) col 1 colSpans 2 row currentRow
         currentRow++
         label(getString(R2.string.excess_price)) col 0 row currentRow
-        excessPriceField = doubleField {
+        excessPriceField = addNode(DoubleField().apply {
             promptText = getString(R2.string.excess_price)
-        } col 1 colSpans 2 row currentRow
+        }) col 1 colSpans 2 row currentRow
     }
 
     override val totalBindingDependencies: Array<Observable>

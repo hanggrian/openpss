@@ -12,11 +12,11 @@ import com.hendraanggrian.openpss.util.round
 import javafx.beans.property.IntegerProperty
 import javafx.beans.property.SimpleIntegerProperty
 import javafx.collections.ObservableList
+import ktfx.asProperty
 import ktfx.bindings.buildDoubleBinding
 import ktfx.collections.mutableObservableListOf
 import ktfx.getValue
 import ktfx.setValue
-import ktfx.toProperty
 import org.joda.time.DateTime
 import org.joda.time.Minutes.minutes
 import org.joda.time.Period
@@ -81,8 +81,8 @@ data class Attendee(
         resources,
         INDEX_NODE,
         this,
-        DateTime.now().toProperty(),
-        DateTime.now().toProperty()
+        DateTime.now().asProperty(),
+        DateTime.now().asProperty()
     )
 
     fun toChildRecords(resources: StringResources): Set<Record> {
@@ -93,14 +93,14 @@ data class Attendee(
             resources,
             index++,
             this,
-            iterator.next().toProperty(),
-            iterator.next().toProperty()
+            iterator.next().asProperty(),
+            iterator.next().asProperty()
         )
         return records
     }
 
     fun toTotalRecords(resources: StringResources, children: Collection<Record>): Record =
-        Record(resources, INDEX_TOTAL, this, START_OF_TIME.toProperty(), START_OF_TIME.toProperty())
+        Record(resources, INDEX_TOTAL, this, START_OF_TIME.asProperty(), START_OF_TIME.asProperty())
             .apply {
                 dailyProperty.bind(buildDoubleBinding(children.map { it.dailyProperty }) {
                     children.sumByDouble { it.daily }.round()

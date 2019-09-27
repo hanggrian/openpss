@@ -10,6 +10,7 @@ import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.Setting
 import com.hendraanggrian.openpss.StringResources
 import com.hendraanggrian.openpss.ValueResources
+import com.hendraanggrian.openpss.control.IntField
 import com.hendraanggrian.openpss.data.Employee
 import com.hendraanggrian.openpss.language
 import com.hendraanggrian.openpss.ui.BasePopOver
@@ -41,7 +42,7 @@ import ktfx.jfoenix.jfxPasswordField
 import ktfx.jfoenix.jfxTextField
 import ktfx.jfoenix.jfxToggleButton
 import ktfx.jfoenix.onDialogClosed
-import ktfx.layouts._StackPane
+import ktfx.layouts.KtfxStackPane
 import ktfx.layouts.anchorPane
 import ktfx.layouts.gridPane
 import ktfx.layouts.hbox
@@ -55,7 +56,7 @@ import ktfx.layouts.vbox
 import ktfx.runLater
 import ktfx.text.updateFont
 
-class LoginPane<T>(resources: T, override val defaults: WritableDefaults) : _StackPane(),
+class LoginPane<T>(resources: T, override val defaults: WritableDefaults) : KtfxStackPane(),
     FxComponent,
     StringResources by resources,
     ValueResources by resources
@@ -79,7 +80,7 @@ class LoginPane<T>(resources: T, override val defaults: WritableDefaults) : _Sta
         text = defaults[Setting.KEY_SERVER_HOST]
         promptText = getString(R2.string.server_host)
     }
-    private val serverPortField = com.hendraanggrian.openpss.control.intField {
+    private val serverPortField = IntField().apply {
         value = defaults.getInt(Setting.KEY_SERVER_PORT)!!
         promptText = getString(R2.string.server_port)
     }
@@ -109,7 +110,7 @@ class LoginPane<T>(resources: T, override val defaults: WritableDefaults) : _Sta
             } row 0 col 1
             vbox(8.0) {
                 alignment = Pos.CENTER
-                updatePadding(32, 24, 32, 24)
+                updatePadding(32.0, 24.0, 32.0, 24.0)
                 imageView(R.image.logo_small)
                 label(getString(R2.string.openpss_login)) {
                     styleClass.addAll(R.style.bold, R.style.display2)
@@ -117,13 +118,13 @@ class LoginPane<T>(resources: T, override val defaults: WritableDefaults) : _Sta
                 label(getString(R2.string._login_desc1)) {
                     textAlignment = TextAlignment.CENTER
                     isWrapText = true
-                    updateFont(16)
+                    updateFont(16.0)
                 }
                 employeeField = jfxTextField(defaults[Setting.KEY_EMPLOYEE]) {
-                    updateFont(16)
+                    updateFont(16.0)
                     promptText = getString(R2.string.employee)
                     runLater(::requestFocus)
-                } marginTop 24
+                } marginTop 24.0
                 textFlow {
                     hyperlink(getString(R2.string.connection_settings)) {
                         onAction {
@@ -144,17 +145,17 @@ class LoginPane<T>(resources: T, override val defaults: WritableDefaults) : _Sta
                             GitHubHelper.checkUpdates(this@LoginPane)
                         }
                     }
-                } marginTop 24
+                } marginTop 24.0
                 anchorPane {
                     jfxButton(getString(R2.string.about)) {
-                        updatePadding(8, 16, 8, 16)
-                        updateFont(16)
+                        updatePadding(8.0, 16.0, 8.0, 16.0)
+                        updateFont(16.0)
                         styleClass += R.style.flat
                         onAction { AboutDialog(this@LoginPane).show() }
-                    } anchorLeft 0
+                    } anchorLeft 0.0
                     loginButton = jfxButton(getString(R2.string.login)) {
-                        updatePadding(8, 16, 8, 16)
-                        updateFont(16)
+                        updatePadding(8.0, 16.0, 8.0, 16.0)
+                        updateFont(16.0)
                         styleClass += R.style.raised
                         buttonType = JFXButton.ButtonType.RAISED
                         disableProperty().bind(employeeField.textProperty().isBlank())
@@ -178,8 +179,8 @@ class LoginPane<T>(resources: T, override val defaults: WritableDefaults) : _Sta
                             }
                         }
                         employeeField.onActionProperty().bindBidirectional(onActionProperty())
-                    } anchorRight 0
-                } marginTop 24
+                    } anchorRight 0.0
+                } marginTop 24.0
             } row 1 col 0 colSpans 2
         }
     }
@@ -192,9 +193,9 @@ class LoginPane<T>(resources: T, override val defaults: WritableDefaults) : _Sta
             gridPane {
                 gap = getDouble(R.value.padding_medium)
                 label(getString(R2.string.server_host)) col 0 row 0
-                serverHostField.add() col 1 row 0
+                addNode(serverHostField) col 1 row 0
                 label(getString(R2.string.server_port)) col 0 row 1
-                serverPortField.add() col 1 row 1
+                addNode(serverPortField) col 1 row 1
             }
         }
     }

@@ -4,11 +4,11 @@ import com.hendraanggrian.openpss.BuildConfig2
 import com.hendraanggrian.openpss.FxComponent
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
+import java.net.URI
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import ktfx.jfoenix.jfxSnackbar
-import java.net.URI
 
 object GitHubHelper {
 

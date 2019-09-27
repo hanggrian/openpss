@@ -1,11 +1,10 @@
 plugins {
     kotlin("jvm")
-    dokka()
     idea
-    id("com.hendraanggrian.r")
+    hendraanggrian("r")
+    hendraanggrian("packr")
     shadow
     application
-    packr
 }
 
 group = RELEASE_GROUP
@@ -58,11 +57,6 @@ dependencies {
 }
 
 tasks {
-    named<org.jetbrains.dokka.gradle.DokkaTask>("dokka") {
-        outputDirectory = "$buildDir/docs"
-        doFirst { file(outputDirectory).deleteRecursively() }
-    }
-
     named<com.hendraanggrian.r.RTask>("generateR") {
         resourcesDirectory = "res"
         // exclude("font", "license")

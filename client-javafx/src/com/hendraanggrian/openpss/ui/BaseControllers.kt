@@ -7,6 +7,9 @@ import com.hendraanggrian.openpss.OpenPSSApplication
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.SettingsFile
 import com.hendraanggrian.openpss.data.Employee
+import java.net.URL
+import java.util.Properties
+import java.util.ResourceBundle
 import javafx.beans.property.SimpleStringProperty
 import javafx.beans.property.StringProperty
 import javafx.fxml.Initializable
@@ -15,9 +18,6 @@ import javafx.scene.layout.StackPane
 import ktfx.getValue
 import ktfx.layouts.NodeManager
 import ktfx.setValue
-import java.net.URL
-import java.util.Properties
-import java.util.ResourceBundle
 
 /** Base class of all controllers. */
 @Suppress("LeakingThis")
@@ -72,7 +72,7 @@ open class ActionController : BaseController() {
     val actions = mutableListOf<Node>()
 
     private val actionManager = object : NodeManager {
-        override fun <R : Node> R.add(): R = also { actions += it }
+        override fun <T : Node> addNode(node: T): T = node.also { actions += it }
     }
 
     /** Override this function to add actions. */

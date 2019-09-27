@@ -7,11 +7,11 @@ import com.hendraanggrian.openpss.R
 import javafx.scene.control.Control
 import javafx.scene.control.TableCell
 import javafx.scene.control.TableColumn
+import javafx.scene.image.ImageView
 import javafx.scene.text.Text
+import ktfx.asFinalProperty
 import ktfx.invoke
-import ktfx.layouts.imageView
 import ktfx.listeners.cellFactory
-import ktfx.toFinalProperty
 
 fun <T> TableColumn<T, Boolean>.doneCell(size: Int = 64, target: T.() -> Boolean) {
     size.toDouble().let {
@@ -21,12 +21,12 @@ fun <T> TableColumn<T, Boolean>.doneCell(size: Int = 64, target: T.() -> Boolean
     }
     isResizable = false
     style = "-fx-alignment: center;"
-    setCellValueFactory { it.value.target().toFinalProperty() }
+    setCellValueFactory { it.value.target().asFinalProperty() }
     cellFactory {
         onUpdate { done, empty ->
             text = null
             graphic = null
-            if (done != null && !empty) graphic = imageView(
+            if (done != null && !empty) graphic = ImageView(
                 when {
                     done -> R.image.graphic_done_yes
                     else -> R.image.graphic_done_no
@@ -37,16 +37,16 @@ fun <T> TableColumn<T, Boolean>.doneCell(size: Int = 64, target: T.() -> Boolean
 }
 
 fun <T> TableColumn<T, String>.stringCell(target: T.() -> String?) =
-    setCellValueFactory { it.value.target().orEmpty().toFinalProperty() }
+    setCellValueFactory { it.value.target().orEmpty().asFinalProperty() }
 
 fun <T> TableColumn<T, String>.numberCell(component: FxComponent, target: T.() -> Int) {
     style = "-fx-alignment: center-right;"
-    setCellValueFactory { component.numberConverter(it.value.target()).toFinalProperty() }
+    setCellValueFactory { component.numberConverter(it.value.target()).asFinalProperty() }
 }
 
 fun <T> TableColumn<T, String>.currencyCell(component: FxComponent, target: T.() -> Double) {
     style = "-fx-alignment: center-right;"
-    setCellValueFactory { component.currencyConverter(it.value.target()).toFinalProperty() }
+    setCellValueFactory { component.currencyConverter(it.value.target()).asFinalProperty() }
 }
 
 fun <S> TableColumn<S, String>.wrapText() = setCellFactory {

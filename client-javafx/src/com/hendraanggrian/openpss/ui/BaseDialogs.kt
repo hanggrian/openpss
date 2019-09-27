@@ -16,6 +16,7 @@ import javafx.scene.image.ImageView
 import javafx.scene.layout.Region
 import javafx.scene.layout.VBox
 import javafx.stage.Stage
+import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -36,7 +37,6 @@ import ktfx.layouts.vbox
 import ktfx.runLater
 import ktfx.setValue
 import ktfx.windows.setMinSize
-import kotlin.coroutines.CoroutineContext
 
 @Suppress("LeakingThis")
 open class BaseDialog(
@@ -177,7 +177,7 @@ abstract class TableDialog<D : Document<*>>(
                 prefHeight = 275.0
                 columnResizePolicy = TableView.CONSTRAINED_RESIZE_POLICY
                 isEditable = true
-            } anchorAll 1
+            } anchorAll 1.0
         }
         refresh()
         runLater {
@@ -185,13 +185,8 @@ abstract class TableDialog<D : Document<*>>(
         }
     }
 
-    override fun <T> column(
-        text: String?,
-        init: (TableColumn<D, T>.() -> Unit)?
-    ): TableColumn<D, T> = TableColumn<D, T>(text).also {
-        init?.invoke(it)
-        table.columns += it
-    }
+    override fun <T> column(text: String?): TableColumn<D, T> =
+        TableColumn<D, T>(text).also { table.columns += it }
 
     override fun refresh() {
         GlobalScope.launch(Dispatchers.JavaFx) {

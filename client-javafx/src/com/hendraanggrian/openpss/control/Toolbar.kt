@@ -3,21 +3,11 @@
 package com.hendraanggrian.openpss.control
 
 import com.jfoenix.effects.JFXDepthManager
-import ktfx.jfoenix._JFXToolbar
-import ktfx.layouts.LayoutMarker
-import ktfx.layouts.NodeManager
+import ktfx.jfoenix.KtfxJFXToolbar
 
-class Toolbar : _JFXToolbar() {
+class Toolbar : KtfxJFXToolbar() {
 
     init {
         JFXDepthManager.setDepth(this, 0)
     }
 }
-
-fun toolbar(
-    init: ((@LayoutMarker Toolbar).() -> Unit)? = null
-): Toolbar = Toolbar().also { init?.invoke(it) }
-
-inline fun NodeManager.toolbar(
-    noinline init: ((@LayoutMarker Toolbar).() -> Unit)? = null
-): Toolbar = com.hendraanggrian.openpss.control.toolbar(init).add()

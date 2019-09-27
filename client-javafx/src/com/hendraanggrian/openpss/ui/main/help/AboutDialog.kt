@@ -1,12 +1,13 @@
 package com.hendraanggrian.openpss.ui.main.help
 
 import com.hendraanggrian.openpss.BuildConfig2
+import com.hendraanggrian.openpss.FxComponent
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
-import com.hendraanggrian.openpss.FxComponent
 import com.hendraanggrian.openpss.ui.Stylesheets
 import com.hendraanggrian.openpss.ui.main.License
 import com.jfoenix.controls.JFXButton
+import java.net.URI
 import javafx.geometry.Pos
 import javafx.scene.control.Dialog
 import javafx.scene.control.Hyperlink
@@ -32,7 +33,6 @@ import ktfx.layouts.vbox
 import ktfx.listeners.cellFactory
 import ktfx.runLater
 import ktfx.text.updateFont
-import java.net.URI
 
 /**
  * The only dialog not using [com.hendraanggrian.openpss.popup.dialog.Dialog].
@@ -64,7 +64,7 @@ class AboutDialog(component: FxComponent) : Dialog<Unit>(), FxComponent by compo
         dialogPane.run {
             stylesheets += Stylesheets.OPENPSS
             content = hbox {
-                paddingAll = 48
+                paddingAll = 48.0
                 imageView(R.image.logo)
                 vbox {
                     alignment = Pos.CENTER_LEFT
@@ -77,23 +77,23 @@ class AboutDialog(component: FxComponent) : Dialog<Unit>(), FxComponent by compo
                         }
                     }
                     text("${getString(R2.string.version)} ${BuildConfig2.VERSION}") {
-                        updateFont(12)
-                    } marginTop 2
-                    text(getString(R2.string.built_with_open_source_software_expand_to_see_licenses)) marginTop 20
+                        updateFont(12.0)
+                    } marginTop 2.0
+                    text(getString(R2.string.built_with_open_source_software_expand_to_see_licenses)) marginTop 20.0
                     textFlow {
                         "${getString(R2.string.powered_by)} " {
-                            updateFont(12)
+                            updateFont(12.0)
                         }
                         "JavaFX" { styleClass += R.style.bold }
-                    } marginTop 4
+                    } marginTop 4.0
                     textFlow {
                         "${getString(R2.string.author)} " {
-                            updateFont(12)
+                            updateFont(12.0)
                         }
                         BuildConfig2.USER {
                             styleClass += R.style.bold
                         }
-                    } marginTop 4
+                    } marginTop 4.0
                     hbox {
                         spacing = getDouble(R.value.padding_medium)
                         jfxButton("GitHub") {
@@ -105,8 +105,8 @@ class AboutDialog(component: FxComponent) : Dialog<Unit>(), FxComponent by compo
                             styleClass += R.style.flat
                             onAction { desktop?.mail(URI("mailto:${BuildConfig2.EMAIL}")) }
                         }
-                    } marginTop 20
-                } marginLeft 48
+                    } marginTop 20.0
+                } marginLeft 48.0
             }
             expandableContent = masterDetailPane {
                 prefHeight = 200.0

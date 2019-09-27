@@ -46,12 +46,12 @@ import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
 import io.ktor.util.error
 import io.ktor.websocket.WebSockets
-import org.slf4j.Logger
 import java.awt.Desktop
 import java.awt.Frame
 import java.awt.SystemTray
 import java.net.URI
 import java.util.ResourceBundle
+import org.slf4j.Logger
 
 object OpenPSSServer : StringResources {
 

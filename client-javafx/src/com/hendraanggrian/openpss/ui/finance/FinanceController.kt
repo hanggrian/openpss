@@ -4,11 +4,9 @@ import com.hendraanggrian.openpss.PATTERN_DATE
 import com.hendraanggrian.openpss.PATTERN_TIME
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
+import com.hendraanggrian.openpss.control.Action
 import com.hendraanggrian.openpss.control.DateBox
 import com.hendraanggrian.openpss.control.MonthBox
-import com.hendraanggrian.openpss.control.action
-import com.hendraanggrian.openpss.control.dateBox
-import com.hendraanggrian.openpss.control.monthBox
 import com.hendraanggrian.openpss.data.Payment
 import com.hendraanggrian.openpss.language
 import com.hendraanggrian.openpss.ui.ActionController
@@ -19,6 +17,8 @@ import com.hendraanggrian.openpss.util.doneCell
 import com.hendraanggrian.openpss.util.numberCell
 import com.hendraanggrian.openpss.util.stringCell
 import com.hendraanggrian.openpss.util.toJava
+import java.net.URL
+import java.util.ResourceBundle
 import javafx.beans.binding.When
 import javafx.fxml.FXML
 import javafx.scene.Node
@@ -41,8 +41,6 @@ import ktfx.inputs.isDoubleClick
 import ktfx.layouts.NodeManager
 import ktfx.layouts.borderPane
 import ktfx.runLater
-import java.net.URL
-import java.util.ResourceBundle
 
 class FinanceController : ActionController(), Refreshable {
 
@@ -72,21 +70,21 @@ class FinanceController : ActionController(), Refreshable {
     private lateinit var refreshButton: Button
     private lateinit var viewTotalButton: Button
 
-    private val dateBox: DateBox = dateBox {
+    private val dateBox: DateBox = DateBox().apply {
         valueProperty().listener { refresh() }
     }
-    private val monthBox: MonthBox = monthBox {
+    private val monthBox: MonthBox = MonthBox().apply {
         setLocale(defaults.language.toLocale())
         valueProperty().listener { refresh() }
     }
 
     override fun NodeManager.onCreateActions() {
-        refreshButton = action(getString(R2.string.refresh), R.image.action_refresh) {
+        refreshButton = addNode(Action(getString(R2.string.refresh), R.image.action_refresh).apply {
             onAction { refresh() }
-        }
-        viewTotalButton = action(getString(R2.string.total), R.image.action_money) {
+        })
+        viewTotalButton = addNode(Action(getString(R2.string.total), R.image.action_money).apply {
             onAction { viewTotal() }
-        }
+        })
         switchablePane = borderPane()
     }
 

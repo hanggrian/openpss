@@ -1,7 +1,6 @@
 plugins {
     `java-library`
     kotlin("jvm")
-    dokka()
 }
 
 group = RELEASE_GROUP
@@ -32,11 +31,4 @@ dependencies {
 
     testImplementation(kotlin("test-junit", VERSION_KOTLIN))
     testImplementation(kotlin("reflect", VERSION_KOTLIN))
-}
-
-tasks {
-    named<org.jetbrains.dokka.gradle.DokkaTask>("dokka") {
-        outputDirectory = "$buildDir/docs"
-        doFirst { file(outputDirectory).deleteRecursively() }
-    }
 }

@@ -13,8 +13,8 @@ import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
 import javafx.scene.control.TextInputControl
 import javafx.scene.image.ImageView
+import ktfx.asProperty
 import ktfx.bindings.or
-import ktfx.booleanPropertyOf
 import ktfx.controls.gap
 import ktfx.coroutines.listener
 import ktfx.jfoenix.jfxTextArea
@@ -28,7 +28,7 @@ class EditCustomerDialog(
     private val customer: Customer
 ) : ResultableDialog<Customer>(component, R2.string.edit_customer) {
 
-    private val unchangedProperty = booleanPropertyOf(true)
+    private val unchangedProperty = true.asProperty()
 
     private lateinit var image: ImageView
     private lateinit var description: Label

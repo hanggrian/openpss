@@ -1,5 +1,3 @@
-@file:Suppress("NOTHING_TO_INLINE")
-
 package com.hendraanggrian.openpss.control
 
 import javafx.beans.property.DoubleProperty
@@ -11,8 +9,6 @@ import javafx.scene.control.Pagination
 import javafx.util.Callback
 import ktfx.bindings.buildBinding
 import ktfx.getValue
-import ktfx.layouts.LayoutMarker
-import ktfx.layouts.NodeManager
 import ktfx.setValue
 
 class PaginatedPane : Pagination() {
@@ -43,11 +39,3 @@ class PaginatedPane : Pagination() {
         }
     }
 }
-
-fun paginatedPane(
-    init: ((@LayoutMarker PaginatedPane).() -> Unit)? = null
-): PaginatedPane = PaginatedPane().also { init?.invoke(it) }
-
-inline fun NodeManager.paginatedPane(
-    noinline init: ((@LayoutMarker PaginatedPane).() -> Unit)? = null
-): PaginatedPane = com.hendraanggrian.openpss.control.paginatedPane(init).add()

@@ -3,12 +3,11 @@ package com.hendraanggrian.openpss.ui.invoice
 import com.hendraanggrian.openpss.PATTERN_DATETIMEEXT
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
+import com.hendraanggrian.openpss.control.Action
 import com.hendraanggrian.openpss.control.DateBox
 import com.hendraanggrian.openpss.control.IntField
 import com.hendraanggrian.openpss.control.PaginatedPane
-import com.hendraanggrian.openpss.control.action
-import com.hendraanggrian.openpss.control.intField
-import com.hendraanggrian.openpss.control.toolbar
+import com.hendraanggrian.openpss.control.Toolbar
 import com.hendraanggrian.openpss.data.Customer
 import com.hendraanggrian.openpss.data.Invoice
 import com.hendraanggrian.openpss.data.Payment
@@ -19,6 +18,8 @@ import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.util.currencyCell
 import com.hendraanggrian.openpss.util.doneCell
 import com.hendraanggrian.openpss.util.stringCell
+import java.net.URL
+import java.util.ResourceBundle
 import javafx.beans.property.SimpleObjectProperty
 import javafx.fxml.FXML
 import javafx.geometry.Side.BOTTOM
@@ -58,8 +59,6 @@ import ktfx.layouts.separatorMenuItem
 import ktfx.layouts.tableView
 import ktfx.runLater
 import org.joda.time.LocalDate
-import java.net.URL
-import java.util.ResourceBundle
 
 class InvoiceController : ActionController(), Refreshable {
 
@@ -82,22 +81,20 @@ class InvoiceController : ActionController(), Refreshable {
     private lateinit var paymentTable: TableView<Payment>
 
     override fun NodeManager.onCreateActions() {
-        refreshButton = action(getString(R2.string.refresh), R.image.action_refresh) {
+        refreshButton = addNode(Action(getString(R2.string.refresh), R.image.action_refresh).apply {
             onAction { refresh() }
-        }
-        addButton = action(getString(R2.string.add), R.image.action_add) {
+        })
+        addButton = addNode(Action(getString(R2.string.add), R.image.action_add).apply {
             onAction { addInvoice() }
-        }
-        clearFiltersButton = action(
-            getString(R2.string.clear_filters),
-            R.image.action_clear_filters
-        ) {
-            onAction { clearFilters() }
-        }
-        searchField = intField {
+        })
+        clearFiltersButton =
+            addNode(Action(getString(R2.string.clear_filters), R.image.action_clear_filters).apply {
+                onAction { clearFilters() }
+            })
+        searchField = addNode(IntField().apply {
             filterBox.disableProperty().bind(valueProperty() neq 0)
             promptText = getString(R2.string.search_no)
-        }
+        })
     }
 
     override fun initialize(location: URL, resources: ResourceBundle) {
@@ -177,13 +174,13 @@ class InvoiceController : ActionController(), Refreshable {
                     showDetailNodeProperty().bind(invoiceTable.selectionModel.selectedItemProperty().isNotNull)
                     masterNode = invoiceTable
                     detailNode = ktfx.layouts.vbox {
-                        toolbar {
+                        addNode(Toolbar().apply {
                             leftItems {
                                 label(getString(R2.string.payment)) {
                                     styleClass.addAll(R.style.bold, R.style.accent)
                                 }
                             }
-                        }
+                        })
                         paymentTable = tableView {
                             columnResizePolicy = TableView.CONSTRAINED_RESIZE_POLICY
                             columns {

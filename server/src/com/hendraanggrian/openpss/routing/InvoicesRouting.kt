@@ -19,9 +19,9 @@ import io.ktor.routing.get
 import io.ktor.routing.post
 import io.ktor.routing.put
 import io.ktor.routing.route
+import kotlin.math.ceil
 import kotlinx.nosql.equal
 import kotlinx.nosql.update
-import kotlin.math.ceil
 
 object InvoicesRouting : OpenPssRouting({
     route(Invoices.schemaName) {

@@ -5,7 +5,7 @@ import com.hendraanggrian.openpss.FxSetting
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.WageDirectory
-import com.hendraanggrian.openpss.control.action
+import com.hendraanggrian.openpss.control.Action
 import com.hendraanggrian.openpss.ui.ActionController
 import com.hendraanggrian.openpss.ui.Stylesheets
 import com.hendraanggrian.openpss.ui.TextDialog
@@ -13,6 +13,9 @@ import com.hendraanggrian.openpss.ui.wage.record.WageRecordController.Companion.
 import com.hendraanggrian.openpss.util.controller
 import com.hendraanggrian.openpss.util.getResource
 import com.hendraanggrian.openpss.util.pane
+import java.io.File
+import java.net.URL
+import java.util.ResourceBundle
 import javafx.beans.property.SimpleStringProperty
 import javafx.beans.property.StringProperty
 import javafx.fxml.FXML
@@ -43,9 +46,6 @@ import ktfx.setValue
 import ktfx.windows.chooseFile
 import ktfx.windows.setMinSize
 import ktfx.windows.stage
-import java.io.File
-import java.net.URL
-import java.util.ResourceBundle
 
 class WageController : ActionController() {
 
@@ -63,10 +63,10 @@ class WageController : ActionController() {
     private var filePath: String? by filePathProperty
 
     override fun NodeManager.onCreateActions() {
-        browseButton = action(getString(R2.string.browse), R.image.action_browse) {
+        browseButton = addNode(Action(getString(R2.string.browse), R.image.action_browse).apply {
             onAction { browse() }
-        }
-        saveWageButton = action(getString(R2.string.save_wage), R.image.action_save) {
+        })
+        saveWageButton = addNode(Action(getString(R2.string.save_wage), R.image.action_save).apply {
             disableProperty().bind(flowPane.children.isEmptyBinding)
             onAction {
                 saveWage()
@@ -75,10 +75,10 @@ class WageController : ActionController() {
                     getLong(R.value.duration_short)
                 )
             }
-        }
-        historyButton = action(getString(R2.string.history), R.image.action_history) {
+        })
+        historyButton = addNode(Action(getString(R2.string.history), R.image.action_history).apply {
             onAction { history() }
-        }
+        })
     }
 
     override fun initialize(location: URL, resources: ResourceBundle) {
@@ -115,7 +115,7 @@ class WageController : ActionController() {
     fun process() = stage(getString(R2.string.wage_record)) {
         val loader = FXMLLoader(getResource(R.layout.controller_wage_record), resourceBundle)
         scene = scene {
-            loader.pane.add()
+            addNode(loader.pane)
             stylesheets += Stylesheets.OPENPSS
         }
         setMinSize(1000.0, 650.0)

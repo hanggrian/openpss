@@ -7,8 +7,8 @@ import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.control.Action
 import com.hendraanggrian.openpss.control.DateBox
 import com.hendraanggrian.openpss.control.MonthBox
-import com.hendraanggrian.openpss.data.Payment
 import com.hendraanggrian.openpss.language
+import com.hendraanggrian.openpss.schema.Payment
 import com.hendraanggrian.openpss.ui.ActionController
 import com.hendraanggrian.openpss.ui.Refreshable
 import com.hendraanggrian.openpss.ui.invoice.ViewInvoicePopOver

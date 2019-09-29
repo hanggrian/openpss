@@ -60,7 +60,7 @@ android {
 ktlint()
 
 dependencies {
-    api(project(":client"))
+    implementation(project(":client"))
 
     implementation(kotlinx("coroutines-android", VERSION_COROUTINES))
     implementation(slf4j("android"))

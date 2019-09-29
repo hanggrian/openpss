@@ -1,6 +1,6 @@
 package com.hendraanggrian.openpss.api
 
-import com.hendraanggrian.openpss.data.Wage
+import com.hendraanggrian.openpss.schema.Wage
 import com.hendraanggrian.openpss.schema.Wages
 import io.ktor.client.request.get
 import io.ktor.client.request.post

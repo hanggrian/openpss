@@ -1,6 +1,6 @@
 package com.hendraanggrian.openpss.api
 
-import com.hendraanggrian.openpss.data.Employee
+import com.hendraanggrian.openpss.schema.Employee
 import com.hendraanggrian.openpss.schema.Employees
 import io.ktor.client.request.get
 

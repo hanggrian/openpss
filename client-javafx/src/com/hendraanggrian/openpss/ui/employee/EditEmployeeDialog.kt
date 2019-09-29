@@ -3,7 +3,7 @@ package com.hendraanggrian.openpss.ui.employee
 import com.hendraanggrian.openpss.FxComponent
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
-import com.hendraanggrian.openpss.data.Employee
+import com.hendraanggrian.openpss.schema.Employee
 import com.hendraanggrian.openpss.ui.TableDialog
 import com.hendraanggrian.openpss.util.clean
 import com.hendraanggrian.openpss.util.doneCell

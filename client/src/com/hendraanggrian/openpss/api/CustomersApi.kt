@@ -1,10 +1,10 @@
 package com.hendraanggrian.openpss.api
 
-import com.hendraanggrian.openpss.data.Customer
-import com.hendraanggrian.openpss.data.Employee
 import com.hendraanggrian.openpss.data.Page
 import com.hendraanggrian.openpss.nosql.StringId
+import com.hendraanggrian.openpss.schema.Customer
 import com.hendraanggrian.openpss.schema.Customers
+import com.hendraanggrian.openpss.schema.Employee
 import io.ktor.client.request.get
 import io.ktor.client.request.post
 import io.ktor.http.HttpMethod

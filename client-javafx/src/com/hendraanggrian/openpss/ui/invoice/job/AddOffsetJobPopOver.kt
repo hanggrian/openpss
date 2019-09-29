@@ -4,8 +4,8 @@ import com.hendraanggrian.openpss.FxComponent
 import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.control.DoubleField
 import com.hendraanggrian.openpss.control.IntField
-import com.hendraanggrian.openpss.data.Invoice
-import com.hendraanggrian.openpss.data.OffsetPrice
+import com.hendraanggrian.openpss.schema.Invoice
+import com.hendraanggrian.openpss.schema.OffsetPrice
 import com.hendraanggrian.openpss.schema.Technique
 import com.hendraanggrian.openpss.schema.new
 import javafx.beans.Observable

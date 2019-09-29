@@ -1,8 +1,8 @@
 package com.hendraanggrian.openpss.routing
 
 import com.hendraanggrian.openpss.OpenPSSServer
-import com.hendraanggrian.openpss.data.GlobalSetting
 import com.hendraanggrian.openpss.nosql.transaction
+import com.hendraanggrian.openpss.schema.GlobalSetting
 import com.hendraanggrian.openpss.schema.GlobalSettings
 import io.ktor.application.call
 import io.ktor.http.HttpStatusCode

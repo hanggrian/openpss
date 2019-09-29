@@ -11,8 +11,8 @@ import com.hendraanggrian.openpss.Setting
 import com.hendraanggrian.openpss.StringResources
 import com.hendraanggrian.openpss.ValueResources
 import com.hendraanggrian.openpss.control.IntField
-import com.hendraanggrian.openpss.data.Employee
 import com.hendraanggrian.openpss.language
+import com.hendraanggrian.openpss.schema.Employee
 import com.hendraanggrian.openpss.ui.BasePopOver
 import com.hendraanggrian.openpss.ui.ResultableDialog
 import com.hendraanggrian.openpss.ui.TextDialog

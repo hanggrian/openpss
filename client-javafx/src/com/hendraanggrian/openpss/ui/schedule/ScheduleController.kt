@@ -5,7 +5,7 @@ import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.control.Action
 import com.hendraanggrian.openpss.control.UncollapsibleTreeItem
-import com.hendraanggrian.openpss.data.Invoice
+import com.hendraanggrian.openpss.schema.Invoice
 import com.hendraanggrian.openpss.schema.no
 import com.hendraanggrian.openpss.ui.ActionController
 import com.hendraanggrian.openpss.ui.Refreshable

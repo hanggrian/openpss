@@ -6,11 +6,11 @@ import com.hendraanggrian.openpss.PATTERN_DATETIMEEXT
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.control.Space
-import com.hendraanggrian.openpss.data.Customer
-import com.hendraanggrian.openpss.data.Employee
-import com.hendraanggrian.openpss.data.GlobalSetting
-import com.hendraanggrian.openpss.data.GlobalSetting.Companion.KEY_INVOICE_HEADERS
-import com.hendraanggrian.openpss.data.Invoice
+import com.hendraanggrian.openpss.schema.Customer
+import com.hendraanggrian.openpss.schema.Employee
+import com.hendraanggrian.openpss.schema.GlobalSetting
+import com.hendraanggrian.openpss.schema.GlobalSetting.Companion.KEY_INVOICE_HEADERS
+import com.hendraanggrian.openpss.schema.Invoice
 import com.hendraanggrian.openpss.schema.typedTechnique
 import com.hendraanggrian.openpss.ui.BasePopOver
 import com.hendraanggrian.openpss.ui.Stylesheets

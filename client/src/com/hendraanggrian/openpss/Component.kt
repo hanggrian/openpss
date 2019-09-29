@@ -2,7 +2,7 @@ package com.hendraanggrian.openpss
 
 import com.hendraanggrian.defaults.ReadableDefaults
 import com.hendraanggrian.openpss.api.OpenPSSApi
-import com.hendraanggrian.openpss.data.Employee
+import com.hendraanggrian.openpss.schema.Employee
 
 interface Component<L, D : ReadableDefaults> {
 

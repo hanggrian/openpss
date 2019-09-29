@@ -5,7 +5,7 @@ import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.control.DoubleField
 import com.hendraanggrian.openpss.control.IntField
-import com.hendraanggrian.openpss.data.Invoice
+import com.hendraanggrian.openpss.schema.Invoice
 import com.hendraanggrian.openpss.ui.ResultablePopOver
 import javafx.beans.Observable
 import javafx.beans.value.ObservableBooleanValue

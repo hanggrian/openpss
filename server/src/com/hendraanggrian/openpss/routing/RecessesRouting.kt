@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.routing
 
-import com.hendraanggrian.openpss.data.Recess
 import com.hendraanggrian.openpss.nosql.transaction
+import com.hendraanggrian.openpss.schema.Recess
 import com.hendraanggrian.openpss.schema.Recesses
 import io.ktor.application.call
 import io.ktor.http.HttpStatusCode
@@ -17,7 +17,10 @@ object RecessesRouting : OpenPssRouting({
             call.respond(transaction { Recesses().toList() })
         }
         post {
-            val recess = Recess(call.getLocalTime("start"), call.getLocalTime("end"))
+            val recess = Recess(
+                call.getLocalTime("start"),
+                call.getLocalTime("end")
+            )
             recess.id = transaction { Recesses.insert(recess) }
             call.respond(recess)
         }

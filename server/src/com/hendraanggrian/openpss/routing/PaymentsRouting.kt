@@ -2,11 +2,11 @@ package com.hendraanggrian.openpss.routing
 
 import com.hendraanggrian.openpss.OpenPSSServer
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.data.Log
-import com.hendraanggrian.openpss.data.Payment
 import com.hendraanggrian.openpss.nosql.transaction
 import com.hendraanggrian.openpss.schema.Invoices
+import com.hendraanggrian.openpss.schema.Log
 import com.hendraanggrian.openpss.schema.Logs
+import com.hendraanggrian.openpss.schema.Payment
 import com.hendraanggrian.openpss.schema.Payments
 import io.ktor.application.call
 import io.ktor.http.HttpStatusCode

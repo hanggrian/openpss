@@ -1,7 +1,6 @@
 package com.hendraanggrian.openpss
 
 import com.google.gson.GsonBuilder
-import com.hendraanggrian.openpss.data.GlobalSetting
 import com.hendraanggrian.openpss.nosql.Database
 import com.hendraanggrian.openpss.nosql.transaction
 import com.hendraanggrian.openpss.routing.AuthRouting
@@ -18,6 +17,7 @@ import com.hendraanggrian.openpss.routing.PlatePriceRouting
 import com.hendraanggrian.openpss.routing.RecessesRouting
 import com.hendraanggrian.openpss.routing.WagesRouting
 import com.hendraanggrian.openpss.routing.route
+import com.hendraanggrian.openpss.schema.GlobalSetting
 import com.hendraanggrian.openpss.ui.TextDialog
 import com.hendraanggrian.openpss.ui.menuItem
 import com.hendraanggrian.openpss.ui.popupMenu

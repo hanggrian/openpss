@@ -1,12 +1,12 @@
 package com.hendraanggrian.openpss.nosql
 
 import com.hendraanggrian.openpss.BuildConfig
-import com.hendraanggrian.openpss.data.Employee
-import com.hendraanggrian.openpss.data.GlobalSetting
 import com.hendraanggrian.openpss.routing.isEmpty
 import com.hendraanggrian.openpss.schema.Customers
 import com.hendraanggrian.openpss.schema.DigitalPrices
+import com.hendraanggrian.openpss.schema.Employee
 import com.hendraanggrian.openpss.schema.Employees
+import com.hendraanggrian.openpss.schema.GlobalSetting
 import com.hendraanggrian.openpss.schema.GlobalSettings
 import com.hendraanggrian.openpss.schema.Invoices
 import com.hendraanggrian.openpss.schema.Logs
@@ -62,7 +62,11 @@ object Database {
             }
             listOf(GlobalSettings.LANGUAGE, GlobalSettings.INVOICE_HEADERS)
                 .filter { (first, _) -> GlobalSettings { key.equal(first) }.isEmpty() }
-                .forEach { GlobalSettings += GlobalSetting(it.first, it.second) }
+                .forEach { GlobalSettings += GlobalSetting(
+                    it.first,
+                    it.second
+                )
+                }
         }
     }
 

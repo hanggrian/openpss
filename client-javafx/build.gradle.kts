@@ -33,8 +33,8 @@ sourceSets {
 ktlint()
 
 dependencies {
-    api(project(":client"))
-    api(kotlinx("coroutines-javafx", VERSION_COROUTINES))
+    implementation(project(":client"))
+    implementation(kotlinx("coroutines-javafx", VERSION_COROUTINES))
 
     implementation(slf4j("log4j12"))
 

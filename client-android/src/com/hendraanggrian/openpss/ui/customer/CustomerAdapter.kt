@@ -7,7 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.data.Customer
+import com.hendraanggrian.openpss.schema.Customer
 import com.hendraanggrian.openpss.ui.BaseAdapter
 
 class CustomerAdapter : BaseAdapter<Customer, CustomerAdapter.ViewHolder>() {

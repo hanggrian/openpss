@@ -12,8 +12,8 @@ import com.hendraanggrian.defaults.SharedPreferencesDefaults
 import com.hendraanggrian.openpss.AndroidComponent
 import com.hendraanggrian.openpss.OpenPSSApplication
 import com.hendraanggrian.openpss.api.OpenPSSApi
-import com.hendraanggrian.openpss.data.Employee
 import com.hendraanggrian.openpss.nosql.StringId
+import com.hendraanggrian.openpss.schema.Employee
 import java.util.ResourceBundle
 
 @SuppressLint("Registered")
@@ -34,7 +34,8 @@ open class Activity : AppCompatActivity(), AndroidComponent {
     override val login: Employee
         get() {
             if (!::_login.isInitialized) {
-                _login = Employee(loginName, "", loginIsAdmin).apply { id = StringId(loginId) }
+                _login = Employee(loginName, "", loginIsAdmin)
+                    .apply { id = StringId(loginId) }
             }
             return _login
         }

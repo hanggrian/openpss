@@ -1,9 +1,9 @@
 package com.hendraanggrian.openpss.api
 
-import com.hendraanggrian.openpss.data.Employee
-import com.hendraanggrian.openpss.data.Invoice
-import com.hendraanggrian.openpss.data.Payment
 import com.hendraanggrian.openpss.nosql.StringId
+import com.hendraanggrian.openpss.schema.Employee
+import com.hendraanggrian.openpss.schema.Invoice
+import com.hendraanggrian.openpss.schema.Payment
 import com.hendraanggrian.openpss.schema.Payments
 import io.ktor.client.request.get
 import io.ktor.client.request.post

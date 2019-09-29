@@ -2,8 +2,8 @@ package com.hendraanggrian.openpss.ui.wage
 
 import com.hendraanggrian.openpss.StringResources
 import com.hendraanggrian.openpss.api.OpenPSSApi
-import com.hendraanggrian.openpss.data.Recess
-import com.hendraanggrian.openpss.data.Wage
+import com.hendraanggrian.openpss.schema.Recess
+import com.hendraanggrian.openpss.schema.Wage
 import com.hendraanggrian.openpss.ui.wage.record.Record
 import com.hendraanggrian.openpss.ui.wage.record.Record.Companion.INDEX_NODE
 import com.hendraanggrian.openpss.ui.wage.record.Record.Companion.INDEX_TOTAL
@@ -59,7 +59,13 @@ data class Attendee(
 
     suspend fun saveWage(api: OpenPSSApi) = api.getWages().let { wages ->
         when {
-            wages.isEmpty() -> api.addWage(Wage(id, daily, hourlyOvertime))
+            wages.isEmpty() -> api.addWage(
+                Wage(
+                    id,
+                    daily,
+                    hourlyOvertime
+                )
+            )
             else -> wages.single().let { wage ->
                 if (wage.daily != daily || wage.hourlyOvertime != hourlyOvertime) {
                     api.editWage(wage.also {

@@ -2,20 +2,20 @@ package com.hendraanggrian.openpss.routing
 
 import com.hendraanggrian.openpss.OpenPSSServer
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.data.DigitalPrice
-import com.hendraanggrian.openpss.data.Employee
-import com.hendraanggrian.openpss.data.Log
-import com.hendraanggrian.openpss.data.OffsetPrice
-import com.hendraanggrian.openpss.data.PlatePrice
 import com.hendraanggrian.openpss.nosql.DocumentQuery
 import com.hendraanggrian.openpss.nosql.NamedDocument
 import com.hendraanggrian.openpss.nosql.NamedDocumentSchema
 import com.hendraanggrian.openpss.nosql.SessionWrapper
 import com.hendraanggrian.openpss.nosql.transaction
+import com.hendraanggrian.openpss.schema.DigitalPrice
 import com.hendraanggrian.openpss.schema.DigitalPrices
+import com.hendraanggrian.openpss.schema.Employee
 import com.hendraanggrian.openpss.schema.Employees
+import com.hendraanggrian.openpss.schema.Log
 import com.hendraanggrian.openpss.schema.Logs
+import com.hendraanggrian.openpss.schema.OffsetPrice
 import com.hendraanggrian.openpss.schema.OffsetPrices
+import com.hendraanggrian.openpss.schema.PlatePrice
 import com.hendraanggrian.openpss.schema.PlatePrices
 import io.ktor.application.ApplicationCall
 import io.ktor.application.call

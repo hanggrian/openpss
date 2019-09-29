@@ -1,6 +1,6 @@
 package com.hendraanggrian.openpss.nosql
 
-import com.hendraanggrian.openpss.data.GlobalSetting
+import com.hendraanggrian.openpss.schema.GlobalSetting
 import com.hendraanggrian.openpss.schema.GlobalSettings
 import kotlinx.nosql.AbstractColumn
 import kotlinx.nosql.AbstractSchema

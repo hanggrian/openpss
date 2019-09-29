@@ -1,13 +1,13 @@
 package com.hendraanggrian.openpss.api
 
-import com.hendraanggrian.openpss.data.DigitalPrice
-import com.hendraanggrian.openpss.data.Employee
-import com.hendraanggrian.openpss.data.OffsetPrice
-import com.hendraanggrian.openpss.data.PlatePrice
 import com.hendraanggrian.openpss.nosql.StringId
+import com.hendraanggrian.openpss.schema.DigitalPrice
 import com.hendraanggrian.openpss.schema.DigitalPrices
+import com.hendraanggrian.openpss.schema.Employee
 import com.hendraanggrian.openpss.schema.Employees
+import com.hendraanggrian.openpss.schema.OffsetPrice
 import com.hendraanggrian.openpss.schema.OffsetPrices
+import com.hendraanggrian.openpss.schema.PlatePrice
 import com.hendraanggrian.openpss.schema.PlatePrices
 import io.ktor.client.request.get
 import io.ktor.client.request.post

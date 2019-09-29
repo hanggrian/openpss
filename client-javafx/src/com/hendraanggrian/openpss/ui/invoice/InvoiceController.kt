@@ -8,9 +8,9 @@ import com.hendraanggrian.openpss.control.DateBox
 import com.hendraanggrian.openpss.control.IntField
 import com.hendraanggrian.openpss.control.PaginatedPane
 import com.hendraanggrian.openpss.control.Toolbar
-import com.hendraanggrian.openpss.data.Customer
-import com.hendraanggrian.openpss.data.Invoice
-import com.hendraanggrian.openpss.data.Payment
+import com.hendraanggrian.openpss.schema.Customer
+import com.hendraanggrian.openpss.schema.Invoice
+import com.hendraanggrian.openpss.schema.Payment
 import com.hendraanggrian.openpss.schema.no
 import com.hendraanggrian.openpss.ui.ActionController
 import com.hendraanggrian.openpss.ui.ConfirmDialog

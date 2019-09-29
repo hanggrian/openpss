@@ -9,8 +9,8 @@ import com.hendraanggrian.openpss.control.MarginedImageView
 import com.hendraanggrian.openpss.control.PaginatedPane
 import com.hendraanggrian.openpss.control.Toolbar
 import com.hendraanggrian.openpss.control.UnselectableListView
-import com.hendraanggrian.openpss.data.Invoice
-import com.hendraanggrian.openpss.data.Log
+import com.hendraanggrian.openpss.schema.Invoice
+import com.hendraanggrian.openpss.schema.Log
 import com.hendraanggrian.openpss.schema.Technique
 import com.hendraanggrian.openpss.schema.new
 import com.hendraanggrian.openpss.ui.ActionController
@@ -273,8 +273,21 @@ class MainController : BaseController(), Refreshable {
                             false
                         )
                     ),
-                    plateJobs = listOf(Invoice.PlateJob.new(5, "Title", 92000.0, "Type")),
-                    otherJobs = listOf(Invoice.OtherJob.new(5, "Title", 92000.0)),
+                    plateJobs = listOf(
+                        Invoice.PlateJob.new(
+                            5,
+                            "Title",
+                            92000.0,
+                            "Type"
+                        )
+                    ),
+                    otherJobs = listOf(
+                        Invoice.OtherJob.new(
+                            5,
+                            "Title",
+                            92000.0
+                        )
+                    ),
                     note = "This is a test",
                     isPrinted = false,
                     isPaid = false,

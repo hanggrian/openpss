@@ -6,7 +6,7 @@ import com.hendraanggrian.openpss.FxComponent
 import com.hendraanggrian.openpss.OpenPSSApplication
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.SettingsFile
-import com.hendraanggrian.openpss.data.Employee
+import com.hendraanggrian.openpss.schema.Employee
 import java.net.URL
 import java.util.Properties
 import java.util.ResourceBundle

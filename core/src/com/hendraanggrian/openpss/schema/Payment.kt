@@ -1,11 +1,21 @@
-package com.hendraanggrian.openpss.data
+package com.hendraanggrian.openpss.schema
 
 import com.hendraanggrian.openpss.nosql.Document
+import com.hendraanggrian.openpss.nosql.Schema
 import com.hendraanggrian.openpss.nosql.StringId
-import com.hendraanggrian.openpss.schema.Employees
-import com.hendraanggrian.openpss.schema.Invoices
-import com.hendraanggrian.openpss.schema.Payments
+import kotlinx.nosql.dateTime
+import kotlinx.nosql.double
+import kotlinx.nosql.id
+import kotlinx.nosql.nullableString
 import org.joda.time.DateTime
+
+object Payments : Schema<Payment>("payments", Payment::class) {
+    val invoiceId = id("invoice_id", Invoices)
+    val employeeId = id("employee_id", Employees)
+    val dateTime = dateTime("date_time")
+    val value = double("value")
+    val reference = nullableString("reference")
+}
 
 data class Payment(
     var invoiceId: StringId<Invoices>,
@@ -23,7 +33,13 @@ data class Payment(
             dateTime: DateTime,
             value: Double,
             reference: String? = null
-        ): Payment = Payment(invoiceId, employeeId, dateTime, value, reference)
+        ): Payment = Payment(
+            invoiceId,
+            employeeId,
+            dateTime,
+            value,
+            reference
+        )
 
         fun gather(payments: List<Payment>, isCash: Boolean) = payments
             .filter { it.isCash() == isCash }

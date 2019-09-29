@@ -17,7 +17,7 @@ import com.hendraanggrian.bundler.extrasOf
 import com.hendraanggrian.openpss.BuildConfig2
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
-import com.hendraanggrian.openpss.data.Employee
+import com.hendraanggrian.openpss.schema.Employee
 import com.hendraanggrian.openpss.ui.BaseDialogFragment
 import com.hendraanggrian.openpss.ui.TextDialogFragment
 import com.hendraanggrian.openpss.ui.main.MainActivity

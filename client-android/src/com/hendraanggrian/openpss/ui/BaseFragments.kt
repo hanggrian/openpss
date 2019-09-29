@@ -13,7 +13,7 @@ import com.hendraanggrian.bundler.bindExtras
 import com.hendraanggrian.defaults.SharedPreferencesDefaults
 import com.hendraanggrian.openpss.AndroidComponent
 import com.hendraanggrian.openpss.api.OpenPSSApi
-import com.hendraanggrian.openpss.data.Employee
+import com.hendraanggrian.openpss.schema.Employee
 import com.takisoft.preferencex.PreferenceFragmentCompat
 import java.util.ResourceBundle
 

@@ -3,7 +3,7 @@ package com.hendraanggrian.openpss.ui.invoice
 import com.hendraanggrian.openpss.FxComponent
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
-import com.hendraanggrian.openpss.data.Customer
+import com.hendraanggrian.openpss.schema.Customer
 import com.hendraanggrian.openpss.ui.ResultablePopOver
 import com.hendraanggrian.openpss.ui.customer.CustomerListView
 import javafx.scene.control.ListView

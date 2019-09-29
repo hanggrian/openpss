@@ -6,8 +6,8 @@ import com.hendraanggrian.openpss.Language
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.control.Space
-import com.hendraanggrian.openpss.data.GlobalSetting.Companion.KEY_INVOICE_HEADERS
-import com.hendraanggrian.openpss.data.GlobalSetting.Companion.KEY_LANGUAGE
+import com.hendraanggrian.openpss.schema.GlobalSetting.Companion.KEY_INVOICE_HEADERS
+import com.hendraanggrian.openpss.schema.GlobalSetting.Companion.KEY_LANGUAGE
 import com.hendraanggrian.openpss.ui.BaseDialog
 import com.hendraanggrian.openpss.ui.wage.WageReader
 import com.jfoenix.controls.JFXButton

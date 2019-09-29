@@ -3,8 +3,8 @@ package com.hendraanggrian.openpss
 import com.hendraanggrian.defaults.WritableDefaults
 import com.hendraanggrian.openpss.api.GitHubApi
 import com.hendraanggrian.openpss.api.OpenPSSApi
-import com.hendraanggrian.openpss.data.Employee
-import com.hendraanggrian.openpss.data.GlobalSetting
+import com.hendraanggrian.openpss.schema.Employee
+import com.hendraanggrian.openpss.schema.GlobalSetting
 import com.hendraanggrian.openpss.ui.ResultableDialog
 import java.awt.Desktop
 import java.lang.ref.WeakReference

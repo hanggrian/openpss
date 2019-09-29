@@ -2,7 +2,7 @@ package com.hendraanggrian.openpss.ui.price
 
 import com.hendraanggrian.openpss.FxComponent
 import com.hendraanggrian.openpss.R2
-import com.hendraanggrian.openpss.data.DigitalPrice
+import com.hendraanggrian.openpss.schema.DigitalPrice
 import javafx.beans.value.ObservableValue
 import kotlinx.coroutines.CoroutineScope
 import ktfx.asFinalProperty

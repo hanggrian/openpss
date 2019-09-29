@@ -26,7 +26,7 @@ sourceSets {
 ktlint()
 
 dependencies {
-    api(project(":core"))
+    implementation(project(":core"))
 
     implementation(ktor("server-netty"))
     implementation(ktor("websockets"))

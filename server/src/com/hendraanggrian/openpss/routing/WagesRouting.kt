@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.routing
 
-import com.hendraanggrian.openpss.data.Wage
 import com.hendraanggrian.openpss.nosql.transaction
+import com.hendraanggrian.openpss.schema.Wage
 import com.hendraanggrian.openpss.schema.Wages
 import io.ktor.application.call
 import io.ktor.http.HttpStatusCode

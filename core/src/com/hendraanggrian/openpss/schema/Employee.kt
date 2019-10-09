@@ -1,6 +1,5 @@
 package com.hendraanggrian.openpss.schema
 
-import com.google.gson.annotations.SerializedName
 import com.hendraanggrian.openpss.nosql.NamedDocument
 import com.hendraanggrian.openpss.nosql.NamedDocumentSchema
 import com.hendraanggrian.openpss.nosql.StringId
@@ -16,7 +15,7 @@ object Employees : NamedDocumentSchema<Employee>("employees", Employee::class) {
 data class Employee(
     override var name: String,
     var password: String,
-    @SerializedName("is_admin") var isAdmin: Boolean
+    var isAdmin: Boolean
 ) : NamedDocument<Employees> {
 
     companion object {

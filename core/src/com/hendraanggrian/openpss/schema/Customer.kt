@@ -1,6 +1,5 @@
 package com.hendraanggrian.openpss.schema
 
-import com.google.gson.annotations.SerializedName
 import com.hendraanggrian.openpss.nosql.NamedDocument
 import com.hendraanggrian.openpss.nosql.NamedDocumentSchema
 import com.hendraanggrian.openpss.nosql.Schemed
@@ -33,7 +32,7 @@ object Customers : NamedDocumentSchema<Customer>("customers", Customer::class) {
 
 data class Customer(
     override var name: String,
-    @SerializedName("is_company") val isCompany: Boolean,
+    val isCompany: Boolean,
     val since: LocalDate,
     var address: String?,
     var note: String?,

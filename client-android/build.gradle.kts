@@ -67,14 +67,14 @@ dependencies {
     implementation(hendraanggrian("defaults", "defaults-android", "0.3"))
 
     implementation(androidx("multidex", version = VERSION_MULTIDEX))
-    implementation(androidx("core", "core-ktx", "$VERSION_ANDROIDX-alpha03"))
-    implementation(androidx("appcompat", version = "$VERSION_ANDROIDX-alpha01"))
-    implementation(androidx("preference", version = "$VERSION_ANDROIDX-alpha01"))
-    implementation(androidx("coordinatorlayout", version = "$VERSION_ANDROIDX-alpha01"))
-    implementation(androidx("recyclerview", version = "$VERSION_ANDROIDX-alpha01"))
-    implementation(material("$VERSION_ANDROIDX-alpha02"))
+    implementation(androidx("core", "core-ktx"))
+    implementation(androidx("appcompat"))
+    implementation(androidx("preference"))
+    implementation(androidx("coordinatorlayout", version = "$VERSION_ANDROIDX-beta01"))
+    implementation(androidx("recyclerview", version = "$VERSION_ANDROIDX-beta05"))
+    implementation(material("$VERSION_ANDROIDX-beta01"))
 
-    implementation(hendraanggrian("material", "errorbar-ktx", "$VERSION_ANDROIDX-alpha02"))
+    implementation(hendraanggrian("material", "errorbar-ktx", "$VERSION_ANDROIDX-beta01"))
     implementation(hendraanggrian("pikasso", "pikasso", VERSION_PIKASSO))
     implementation(
         hendraanggrian(

@@ -1,7 +1,9 @@
 package com.hendraanggrian.openpss.routing
 
-import com.hendraanggrian.openpss.OpenPSSServer
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.Routing
+import com.hendraanggrian.openpss.Server
+import com.hendraanggrian.openpss.getString
 import com.hendraanggrian.openpss.nosql.transaction
 import com.hendraanggrian.openpss.schema.Invoices
 import com.hendraanggrian.openpss.schema.Log
@@ -18,7 +20,7 @@ import io.ktor.routing.post
 import io.ktor.routing.route
 import kotlinx.nosql.equal
 
-object PaymentsRouting : OpenPssRouting({
+object PaymentsRouting : Routing({
     route(Payments.schemaName) {
         get {
             call.respond(transaction {
@@ -36,7 +38,7 @@ object PaymentsRouting : OpenPssRouting({
                 val invoiceNo = Invoices[payment.invoiceId].single().no
                 Payments -= payment.id
                 Logs += Log.new(
-                    OpenPSSServer.getString(R.string.payment_delete).format(
+                    Server.getString(R.string.payment_delete).format(
                         payment.value,
                         invoiceNo
                     ),

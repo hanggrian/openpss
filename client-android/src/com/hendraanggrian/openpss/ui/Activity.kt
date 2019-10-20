@@ -10,7 +10,7 @@ import androidx.fragment.app.FragmentTransaction
 import com.hendraanggrian.bundler.Extra
 import com.hendraanggrian.defaults.SharedPreferencesDefaults
 import com.hendraanggrian.openpss.AndroidComponent
-import com.hendraanggrian.openpss.OpenPSSApplication
+import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.api.OpenPSSApi
 import com.hendraanggrian.openpss.nosql.StringId
 import com.hendraanggrian.openpss.schema.Employee
@@ -44,7 +44,7 @@ open class Activity : AppCompatActivity(), AndroidComponent {
 
     override val defaults: SharedPreferencesDefaults get() = openPssApplication.defaults
 
-    inline val openPssApplication: OpenPSSApplication get() = application as OpenPSSApplication
+    inline val openPssApplication: App get() = application as App
 
     fun replaceFragment(@IdRes containerViewId: Int, fragment: Fragment) =
         supportFragmentManager.beginTransaction()

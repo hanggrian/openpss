@@ -1,6 +1,6 @@
 @file:Suppress("NOTHING_TO_INLINE")
 
-package com.hendraanggrian.openpss.routing
+package com.hendraanggrian.openpss
 
 import io.ktor.application.ApplicationCall
 import io.ktor.routing.Routing
@@ -9,9 +9,9 @@ import org.joda.time.LocalDate
 import org.joda.time.LocalDateTime
 import org.joda.time.LocalTime
 
-open class OpenPssRouting(val action: Routing.() -> Unit)
+open class Routing(val action: Routing.() -> Unit)
 
-inline fun Routing.route(routing: OpenPssRouting) = routing.action(this)
+inline fun Routing.route(routing: com.hendraanggrian.openpss.Routing) = routing.action(this)
 
 inline fun <T> Iterable<T>.isEmpty(): Boolean = count() == 0
 

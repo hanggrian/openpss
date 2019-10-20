@@ -70,6 +70,7 @@ dependencies {
     implementation(androidx("core", "core-ktx"))
     implementation(androidx("appcompat"))
     implementation(androidx("preference"))
+    implementation(androidx("swiperefreshlayout", version = "$VERSION_ANDROIDX-alpha03"))
     implementation(androidx("coordinatorlayout", version = "$VERSION_ANDROIDX-beta01"))
     implementation(androidx("recyclerview", version = "$VERSION_ANDROIDX-beta05"))
     implementation(material("$VERSION_ANDROIDX-beta01"))
@@ -85,5 +86,5 @@ dependencies {
     kapt(hendraanggrian("bundler", "bundler-compiler", VERSION_BUNDLER))
 
     implementation(jakewharton("process-phoenix", VERSION_PROCESSPHOENIX))
-    implementation(preferencex())
+    implementation(preferencex("$VERSION_ANDROIDX-alpha05"))
 }

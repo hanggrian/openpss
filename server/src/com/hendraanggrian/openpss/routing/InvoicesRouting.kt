@@ -1,8 +1,13 @@
 package com.hendraanggrian.openpss.routing
 
-import com.hendraanggrian.openpss.OpenPSSServer
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.Routing
+import com.hendraanggrian.openpss.Server
 import com.hendraanggrian.openpss.data.Page
+import com.hendraanggrian.openpss.getBooleanOrNull
+import com.hendraanggrian.openpss.getInt
+import com.hendraanggrian.openpss.getString
+import com.hendraanggrian.openpss.getStringOrNull
 import com.hendraanggrian.openpss.nosql.transaction
 import com.hendraanggrian.openpss.schema.Customers
 import com.hendraanggrian.openpss.schema.Invoice
@@ -23,7 +28,7 @@ import kotlin.math.ceil
 import kotlinx.nosql.equal
 import kotlinx.nosql.update
 
-object InvoicesRouting : OpenPssRouting({
+object InvoicesRouting : Routing({
     route(Invoices.schemaName) {
         get {
             val search = call.getInt("search")
@@ -76,7 +81,7 @@ object InvoicesRouting : OpenPssRouting({
                 Invoices -= invoice.id
                 Payments { invoiceId.equal(invoice.id) }.remove()
                 Logs += Log.new(
-                    OpenPSSServer.getString(R.string.invoice_delete).format(
+                    Server.getString(R.string.invoice_delete).format(
                         invoice.no,
                         customerName
                     ),

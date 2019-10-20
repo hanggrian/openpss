@@ -1,8 +1,12 @@
 package com.hendraanggrian.openpss.routing
 
-import com.hendraanggrian.openpss.OpenPSSServer
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.Routing
+import com.hendraanggrian.openpss.Server
 import com.hendraanggrian.openpss.data.Page
+import com.hendraanggrian.openpss.getInt
+import com.hendraanggrian.openpss.getString
+import com.hendraanggrian.openpss.isNotEmpty
 import com.hendraanggrian.openpss.nosql.transaction
 import com.hendraanggrian.openpss.schema.Customer
 import com.hendraanggrian.openpss.schema.Customers
@@ -21,7 +25,7 @@ import java.util.regex.Pattern
 import kotlin.math.ceil
 import kotlinx.nosql.update
 
-object CustomersRouting : OpenPssRouting({
+object CustomersRouting : Routing({
     route(Customers.schemaName) {
         get {
             val search = call.getString("search")
@@ -67,7 +71,7 @@ object CustomersRouting : OpenPssRouting({
                     query.projection { name + address + note }
                         .update(customer.name, customer.address, customer.note)
                     Logs += Log.new(
-                        OpenPSSServer.getString(R.string.customer_edit).format(customerName),
+                        Server.getString(R.string.customer_edit).format(customerName),
                         call.getString("login")
                     )
                 }
@@ -91,7 +95,7 @@ object CustomersRouting : OpenPssRouting({
                         query.projection { contacts }
                             .update(customer.contacts - contact)
                         Logs += Log.new(
-                            OpenPSSServer.getString(R.string.contact_deleted).format(
+                            Server.getString(R.string.contact_deleted).format(
                                 contact.value,
                                 customer.name
                             ),

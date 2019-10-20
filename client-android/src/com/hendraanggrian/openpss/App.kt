@@ -11,7 +11,7 @@ import com.hendraanggrian.openpss.api.OpenPSSApi
 import java.util.ResourceBundle
 
 @Suppress("unused")
-class OpenPSSApplication : Application(), StringResources {
+class App : Application(), StringResources {
 
     lateinit var api: OpenPSSApi
 

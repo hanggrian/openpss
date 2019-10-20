@@ -1,5 +1,8 @@
 package com.hendraanggrian.openpss.routing
 
+import com.hendraanggrian.openpss.Routing
+import com.hendraanggrian.openpss.getLocalTime
+import com.hendraanggrian.openpss.getString
 import com.hendraanggrian.openpss.nosql.transaction
 import com.hendraanggrian.openpss.schema.Recess
 import com.hendraanggrian.openpss.schema.Recesses
@@ -11,7 +14,7 @@ import io.ktor.routing.get
 import io.ktor.routing.post
 import io.ktor.routing.route
 
-object RecessesRouting : OpenPssRouting({
+object RecessesRouting : Routing({
     route(Recesses.schemaName) {
         get {
             call.respond(transaction { Recesses().toList() })

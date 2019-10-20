@@ -1,6 +1,6 @@
 package com.hendraanggrian.openpss.ui
 
-import com.hendraanggrian.openpss.OpenPSSServer
+import com.hendraanggrian.openpss.Server
 import java.awt.MenuItem
 import java.awt.MenuShortcut
 import java.awt.PopupMenu
@@ -11,11 +11,7 @@ import java.awt.TrayIcon
 inline fun systemTray(block: SystemTray.() -> Unit) = SystemTray.getSystemTray().block()
 
 inline fun SystemTray.trayIcon(image: String, block: TrayIcon.() -> Unit) = add(
-    TrayIcon(
-        Toolkit
-            .getDefaultToolkit()
-            .getImage(OpenPSSServer::class.java.getResource(image))
-    ).apply { block() }
+    TrayIcon(Toolkit.getDefaultToolkit().getImage(Server::class.java.getResource(image))).apply { block() }
 )
 
 inline fun TrayIcon.popupMenu(block: PopupMenu.() -> Unit) {
@@ -25,12 +21,12 @@ inline fun TrayIcon.popupMenu(block: PopupMenu.() -> Unit) {
 fun PopupMenu.menuItem(
     text: String,
     shortcut: Int? = null,
-    block: (MenuItem.() -> Unit)? = null
+    block: MenuItem.() -> Unit
 ) {
     add(MenuItem(text)).also {
         if (shortcut != null) {
             it.shortcut = MenuShortcut(shortcut)
         }
-        block?.invoke(it)
+        block(it)
     }
 }

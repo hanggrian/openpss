@@ -1,7 +1,10 @@
 package com.hendraanggrian.openpss.routing
 
-import com.hendraanggrian.openpss.OpenPSSServer
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.Routing
+import com.hendraanggrian.openpss.Server
+import com.hendraanggrian.openpss.getString
+import com.hendraanggrian.openpss.isNotEmpty
 import com.hendraanggrian.openpss.nosql.DocumentQuery
 import com.hendraanggrian.openpss.nosql.NamedDocument
 import com.hendraanggrian.openpss.nosql.NamedDocumentSchema
@@ -70,13 +73,13 @@ object EmployeeRouting : NamedRouting<Employees, Employee>(
         query.projection { password + isAdmin }
             .update(employee.password, employee.isAdmin)
         Logs += Log.new(
-            OpenPSSServer.getString(R.string.employee_edit).format(query.single().name),
+            Server.getString(R.string.employee_edit).format(query.single().name),
             call.getString("login")
         )
     },
     onDeleted = { call, query ->
         Logs += Log.new(
-            OpenPSSServer.getString(R.string.employee_delete).format(query.single().name),
+            Server.getString(R.string.employee_delete).format(query.single().name),
             call.getString("login")
         )
     }
@@ -88,7 +91,7 @@ sealed class NamedRouting<S : NamedDocumentSchema<D>, D : NamedDocument<S>>(
     onGet: SessionWrapper.(call: ApplicationCall) -> List<D> = { schema().toList() },
     onEdit: SessionWrapper.(call: ApplicationCall, query: DocumentQuery<S, String, D>, document: D) -> Unit,
     onDeleted: SessionWrapper.(call: ApplicationCall, query: DocumentQuery<S, String, D>) -> Unit = { _, _ -> }
-) : OpenPssRouting({
+) : Routing({
     route(schema.schemaName) {
         get {
             call.respond(transaction { onGet(call) })

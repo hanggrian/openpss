@@ -5,7 +5,7 @@ import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.schema.PlatePrice
 import javafx.beans.value.ObservableValue
 import kotlinx.coroutines.CoroutineScope
-import ktfx.asFinalProperty
+import ktfx.asProperty
 import ktfx.coroutines.onEditCommit
 import ktfx.listeners.textFieldCellFactory
 
@@ -19,7 +19,7 @@ class EditPlatePriceDialog(
             minWidth = 128.0
             style = "-fx-alignment: center-right;"
             setCellValueFactory {
-                it.value.price.asFinalProperty() as ObservableValue<Double>
+                it.value.price.asProperty(true) as ObservableValue<Double>
             }
             textFieldCellFactory {
                 fromString { it.toDoubleOrNull() ?: 0.0 }

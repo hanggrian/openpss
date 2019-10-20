@@ -10,7 +10,7 @@ plugins {
 group = RELEASE_GROUP
 version = RELEASE_VERSION
 
-application.mainClassName = "$group.OpenPSSApplication"
+application.mainClassName = "$RELEASE_GROUP.App"
 
 sourceSets {
     getByName("main") {
@@ -66,25 +66,6 @@ tasks {
         useProperties()
     }
 
-    packr {
-        mainClass = application.mainClassName
-        executable = RELEASE_ARTIFACT
-        classpath = files("build/install/desktop/lib")
-        resources = files("res")
-        vmArgs("Xmx2G")
-        macOS {
-            name = "$RELEASE_NAME.app"
-            icon = rootProject.projectDir.resolve("art/$RELEASE_NAME.icns")
-            bundleId = RELEASE_GROUP
-        }
-        windows64 {
-            name = RELEASE_NAME
-            jdk = "/Users/hendraanggrian/Desktop/jdk1.8.0_181"
-        }
-        verbose = true
-        openOnDone = true
-    }
-
     named<Jar>("jar") {
         manifest {
             attributes(mapOf("Main-Class" to application.mainClassName))
@@ -101,4 +82,27 @@ tasks {
     withType<com.hendraanggrian.packr.PackTask> {
         dependsOn("installDist")
     }
+}
+
+packr {
+    mainClass = application.mainClassName
+    executable = RELEASE_ARTIFACT
+    classpath = files("build/install/client-javafx/lib")
+    resources = files("res")
+    vmArgs("Xmx2G")
+    macOS {
+        name = "$RELEASE_NAME/$RELEASE_NAME.app"
+        icon = rootProject.projectDir.resolve("art/$RELEASE_NAME.icns")
+        bundleId = RELEASE_GROUP
+    }
+    windows32 {
+        name = "32-bit/$RELEASE_NAME"
+        jdk = "/Volumes/Media/Windows JDK/jdk1.8.0_231-x86"
+    }
+    windows64 {
+        name = "64-bit/$RELEASE_NAME"
+        jdk = "/Volumes/Media/Windows JDK/jdk1.8.0_231-x64"
+    }
+    verbose = true
+    openOnDone = true
 }

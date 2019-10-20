@@ -1,6 +1,8 @@
 package com.hendraanggrian.openpss.routing
 
-import com.hendraanggrian.openpss.OpenPSSServer
+import com.hendraanggrian.openpss.Routing
+import com.hendraanggrian.openpss.Server
+import com.hendraanggrian.openpss.getString
 import com.hendraanggrian.openpss.nosql.transaction
 import com.hendraanggrian.openpss.schema.Employee
 import com.hendraanggrian.openpss.schema.Employees
@@ -9,7 +11,7 @@ import io.ktor.response.respond
 import io.ktor.routing.get
 import kotlinx.nosql.equal
 
-object AuthRouting : OpenPssRouting({
+object AuthRouting : Routing({
     get("login") {
         val name = call.getString("name")
         val password = call.getString("password")
@@ -19,7 +21,7 @@ object AuthRouting : OpenPssRouting({
             else -> {
                 employee.clearPassword()
                 call.respond(employee)
-                OpenPSSServer.log("'$employee' logged in")
+                Server.log("'$employee' logged in")
             }
         }
     }

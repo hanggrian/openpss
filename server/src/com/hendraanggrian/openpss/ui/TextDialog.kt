@@ -8,11 +8,7 @@ import java.awt.FlowLayout
 import java.awt.Frame
 import java.awt.Label
 
-class TextDialog(
-    resources: StringResources,
-    frame: Frame,
-    textId: String
-) : Dialog(frame), StringResources by resources {
+class TextDialog(resources: StringResources, textId: String) : Dialog(Frame()), StringResources by resources {
 
     init {
         title = buildString {
@@ -31,7 +27,7 @@ class TextDialog(
         })
     }
 
-    fun show2() {
+    fun display() {
         isVisible = true
     }
 }

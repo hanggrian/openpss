@@ -1,6 +1,8 @@
 package com.hendraanggrian.openpss.routing
 
-import com.hendraanggrian.openpss.OpenPSSServer
+import com.hendraanggrian.openpss.Routing
+import com.hendraanggrian.openpss.Server
+import com.hendraanggrian.openpss.getString
 import com.hendraanggrian.openpss.nosql.transaction
 import com.hendraanggrian.openpss.schema.GlobalSetting
 import com.hendraanggrian.openpss.schema.GlobalSettings
@@ -14,7 +16,7 @@ import io.ktor.routing.route
 import kotlinx.nosql.equal
 import kotlinx.nosql.update
 
-object GlobalSettingsRouting : OpenPssRouting({
+object GlobalSettingsRouting : Routing({
     route("${GlobalSettings.schemaName}/{key}") {
         get {
             call.respond(transaction {
@@ -29,7 +31,7 @@ object GlobalSettingsRouting : OpenPssRouting({
                     .update(value)
             }
             call.respond(HttpStatusCode.OK)
-            OpenPSSServer.log("GlobalSetting '$key' has been changed to '$value'")
+            Server.log("GlobalSetting '$key' has been changed to '$value'")
         }
     }
 })

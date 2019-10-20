@@ -20,12 +20,12 @@ import ktfx.windows.icon
 import ktfx.windows.setMinSize
 import org.apache.log4j.BasicConfigurator
 
-class OpenPSSApplication : Application(), StringResources, ValueResources {
+class App : Application(), StringResources, ValueResources {
 
     companion object {
 
         @JvmStatic
-        fun main(args: Array<String>) = ktfx.launch<OpenPSSApplication>(*args)
+        fun main(args: Array<String>) = ktfx.launch<App>(*args)
 
         fun exit() {
             Platform.exit() // exit JavaFX
@@ -45,7 +45,7 @@ class OpenPSSApplication : Application(), StringResources, ValueResources {
             }
         }
         resourceBundle = defaults.language.toResourcesBundle()
-        valueProperties = OpenPSSApplication::class.java
+        valueProperties = App::class.java
             .getResourceAsStream(R.value.properties_value)
             .use { stream -> Properties().apply { load(stream) } }
         if (BuildConfig2.DEBUG) {
@@ -59,7 +59,7 @@ class OpenPSSApplication : Application(), StringResources, ValueResources {
         stage.title = getString(R2.string.openpss_login)
         stage.scene = scene {
             stylesheets += Stylesheets.OPENPSS
-            addNode(LoginPane(this@OpenPSSApplication, defaults).apply {
+            addNode(LoginPane(this@App, defaults).apply {
                 onSuccess = { employee ->
                     val loader = FXMLLoader(getResource(R.layout.controller_main), resourceBundle)
                     this@scene.run {

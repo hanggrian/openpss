@@ -5,7 +5,7 @@ import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.schema.DigitalPrice
 import javafx.beans.value.ObservableValue
 import kotlinx.coroutines.CoroutineScope
-import ktfx.asFinalProperty
+import ktfx.asProperty
 import ktfx.coroutines.onEditCommit
 import ktfx.listeners.textFieldCellFactory
 
@@ -19,7 +19,7 @@ class EditDigitalPriceDialog(
             minWidth = 128.0
             style = "-fx-alignment: center-right;"
             setCellValueFactory {
-                it.value.oneSidePrice.asFinalProperty() as ObservableValue<Double>
+                it.value.oneSidePrice.asProperty(true) as ObservableValue<Double>
             }
             textFieldCellFactory {
                 fromString { it.toDoubleOrNull() ?: 0.0 }
@@ -33,7 +33,7 @@ class EditDigitalPriceDialog(
             minWidth = 128.0
             style = "-fx-alignment: center-right;"
             setCellValueFactory {
-                it.value.twoSidePrice.asFinalProperty() as ObservableValue<Double>
+                it.value.twoSidePrice.asProperty(true) as ObservableValue<Double>
             }
             textFieldCellFactory {
                 fromString { it.toDoubleOrNull() ?: 0.0 }

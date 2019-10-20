@@ -52,7 +52,7 @@ class SessionWrapper(private val session: MongoDBSession) : Session by session,
     /** Build query for optional and/or query operation. */
     fun <S : Schema<D>, D : Document<S>> S.buildQuery(
         builder: QueryBuilder.() -> Unit
-    ): DocumentQuery<S, String, D> = invoke { _QueryBuilder().apply { builder() }.build() }
+    ): DocumentQuery<S, String, D> = invoke { QueryBuilderImpl().apply { builder() }.build() }
 
     fun findGlobalSetting(key: String): GlobalSetting = GlobalSettings { this.key.equal(key) }.single()
 

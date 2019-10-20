@@ -11,7 +11,7 @@ class DatabaseTest {
         runBlocking {
             BasicConfigurator.configure()
             try {
-                Database.start()
+                Database.run()
                 println(Database.dateTime())
             } catch (e: Exception) {
                 e.printStackTrace()

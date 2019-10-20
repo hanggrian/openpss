@@ -2,7 +2,7 @@ package com.hendraanggrian.openpss.api
 
 import com.hendraanggrian.openpss.BuildConfig2
 import com.hendraanggrian.openpss.data.Release
-import com.hendraanggrian.openpss.util.registerJodaTimeSerializers
+import com.hendraanggrian.openpss.registerJodaTimeSerializers
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.okhttp.OkHttp
 import io.ktor.client.features.json.GsonSerializer

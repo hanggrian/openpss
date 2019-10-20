@@ -51,12 +51,8 @@ class LoginPreferenceFragment : BasePreferenceFragment() {
         }
     }
 
-    @Suppress("UNCHECKED_CAST")
-    private fun <T : Preference> find(key: CharSequence): T =
-        findPreference(key) as T
-
     private inline fun <T : Preference> find(key: CharSequence, block: T.() -> Unit): T =
-        find<T>(key).apply(block)
+        findPreference<T>(key)!!.apply(block)
 
     /**
      * @param initial starting value can be obtained from its value, text, etc.

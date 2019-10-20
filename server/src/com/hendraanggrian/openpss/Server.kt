@@ -16,14 +16,12 @@ import com.hendraanggrian.openpss.routing.PaymentsRouting
 import com.hendraanggrian.openpss.routing.PlatePriceRouting
 import com.hendraanggrian.openpss.routing.RecessesRouting
 import com.hendraanggrian.openpss.routing.WagesRouting
-import com.hendraanggrian.openpss.routing.route
 import com.hendraanggrian.openpss.schema.GlobalSetting
 import com.hendraanggrian.openpss.ui.TextDialog
 import com.hendraanggrian.openpss.ui.menuItem
 import com.hendraanggrian.openpss.ui.popupMenu
 import com.hendraanggrian.openpss.ui.systemTray
 import com.hendraanggrian.openpss.ui.trayIcon
-import com.hendraanggrian.openpss.util.registerJodaTimeSerializers
 import io.ktor.application.call
 import io.ktor.application.install
 import io.ktor.features.AutoHeadResponse
@@ -47,15 +45,14 @@ import io.ktor.server.netty.Netty
 import io.ktor.util.error
 import io.ktor.websocket.WebSockets
 import java.awt.Desktop
-import java.awt.Frame
 import java.awt.SystemTray
 import java.net.URI
 import java.util.ResourceBundle
+import kotlin.system.exitProcess
 import org.slf4j.Logger
 
-object OpenPSSServer : StringResources {
+object Server : StringResources {
 
-    private val frame = Frame()
     private var logger: Logger? = null
 
     fun log(message: String) {
@@ -71,17 +68,15 @@ object OpenPSSServer : StringResources {
 
     @JvmStatic
     fun main(@Suppress("UnusedMainParameter") args: Array<String>) {
-        Database.start()
+        Database.run()
         when {
             !SystemTray.isSupported() ->
-                TextDialog(this, frame, R.string.system_tray_is_unsupported).show2()
+                TextDialog(this, R.string.system_tray_is_unsupported).display()
             else -> systemTray {
-                trayIcon("/icon.png") {
+                trayIcon(R.icon) {
                     toolTip = buildString {
                         append("${BuildConfig.NAME} ${BuildConfig.VERSION}")
-                        if (BuildConfig.DEBUG) {
-                            append(" - DEBUG")
-                        }
+                        if (BuildConfig.DEBUG) append(" (Debug)")
                     }
                     isImageAutoSize = true
                     popupMenu {
@@ -89,16 +84,16 @@ object OpenPSSServer : StringResources {
                             addActionListener {
                                 when {
                                     !Desktop.isDesktopSupported() -> TextDialog(
-                                        this@OpenPSSServer,
-                                        frame,
+                                        this@Server,
                                         R.string.desktop_is_unsupported
-                                    ).show2()
+                                    ).display()
                                     else -> Desktop.getDesktop().browse(URI(BuildConfig.WEBSITE))
                                 }
                             }
                         }
+                        addSeparator()
                         menuItem(getString(R.string.quit)) {
-                            addActionListener { System.exit(0) }
+                            addActionListener { exitProcess(0) }
                         }
                     }
                 }

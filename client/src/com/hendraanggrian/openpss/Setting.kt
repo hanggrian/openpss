@@ -7,7 +7,7 @@ import com.hendraanggrian.defaults.WritableDefaults
 fun Defaults<*>.setDefault() {
     invoke {
         if (Setting.KEY_LANGUAGE !in this) {
-            it[Setting.KEY_LANGUAGE] = Language.EN_US.fullCode
+            it[Setting.KEY_LANGUAGE] = Language.ENGLISH.fullCode
         }
         if (Setting.KEY_SERVER_HOST !in this) {
             it[Setting.KEY_SERVER_HOST] = "localhost"
@@ -23,7 +23,7 @@ fun Defaults<*>.setDefault() {
 
 fun WritableDefaults.setDefault() {
     if (Setting.KEY_LANGUAGE !in this) {
-        this[Setting.KEY_LANGUAGE] = Language.EN_US.fullCode
+        this[Setting.KEY_LANGUAGE] = Language.ENGLISH.fullCode
     }
     if (Setting.KEY_SERVER_HOST !in this) {
         this[Setting.KEY_SERVER_HOST] = "localhost"

@@ -1,10 +1,10 @@
 package com.hendraanggrian.openpss.ui.login
 
 import com.hendraanggrian.defaults.WritableDefaults
+import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.BuildConfig2
 import com.hendraanggrian.openpss.FxComponent
 import com.hendraanggrian.openpss.Language
-import com.hendraanggrian.openpss.OpenPSSApplication
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.Setting
@@ -104,7 +104,7 @@ class LoginPane<T>(resources: T, override val defaults: WritableDefaults) : Ktfx
                         R2.string.restart_required,
                         getString(R2.string._restart_required)
                     ).apply {
-                        onDialogClosed { OpenPSSApplication.exit() }
+                        onDialogClosed { App.exit() }
                     }.show(this@LoginPane)
                 }
             } row 0 col 1

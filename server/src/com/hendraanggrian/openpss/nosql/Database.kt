@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.nosql
 
 import com.hendraanggrian.openpss.BuildConfig
-import com.hendraanggrian.openpss.routing.isEmpty
+import com.hendraanggrian.openpss.isEmpty
 import com.hendraanggrian.openpss.schema.Customers
 import com.hendraanggrian.openpss.schema.DigitalPrices
 import com.hendraanggrian.openpss.schema.Employee
@@ -26,7 +26,7 @@ import org.joda.time.DateTime
 import org.joda.time.LocalDate
 import org.joda.time.LocalTime
 
-object Database {
+object Database : Runnable {
     lateinit var DATABASE: MongoDB
     private val TABLES: Array<DocumentSchema<String, out Document<*>>> = arrayOf(
         Customers,
@@ -42,7 +42,7 @@ object Database {
         Wages
     )
 
-    fun start() {
+    override fun run() {
         DATABASE = MongoDB(
             arrayOf(ServerAddress(ServerAddress.defaultHost(), ServerAddress.defaultPort())),
             BuildConfig.DATABASE_NAME,
@@ -62,10 +62,11 @@ object Database {
             }
             listOf(GlobalSettings.LANGUAGE, GlobalSettings.INVOICE_HEADERS)
                 .filter { (first, _) -> GlobalSettings { key.equal(first) }.isEmpty() }
-                .forEach { GlobalSettings += GlobalSetting(
-                    it.first,
-                    it.second
-                )
+                .forEach {
+                    GlobalSettings += GlobalSetting(
+                        it.first,
+                        it.second
+                    )
                 }
         }
     }

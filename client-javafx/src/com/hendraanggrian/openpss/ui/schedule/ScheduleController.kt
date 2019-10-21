@@ -3,6 +3,7 @@ package com.hendraanggrian.openpss.ui.schedule
 import com.hendraanggrian.openpss.PATTERN_DATETIMEEXT
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
+import com.hendraanggrian.openpss.api.OpenPSSApi
 import com.hendraanggrian.openpss.control.Action
 import com.hendraanggrian.openpss.control.UncollapsibleTreeItem
 import com.hendraanggrian.openpss.schema.Invoice
@@ -49,7 +50,7 @@ class ScheduleController : ActionController(), Refreshable {
         })
         doneButton = addNode(Action(getString(R2.string.done), R.image.action_done).apply {
             onAction {
-                api.editInvoice(
+                OpenPSSApi.editInvoice(
                     scheduleTable.selectionModel.selectedItem.value.invoice.apply {
                         isDone = true
                     }
@@ -96,8 +97,8 @@ class ScheduleController : ActionController(), Refreshable {
             clear()
             runBlocking {
                 when (historyCheck.isSelected) {
-                    true -> api.getInvoices(isDone = true, page = 1, count = 20).items
-                    else -> api.getInvoices(isDone = false, page = 1, count = 100).items
+                    true -> OpenPSSApi.getInvoices(isDone = true, page = 1, count = 20).items
+                    else -> OpenPSSApi.getInvoices(isDone = false, page = 1, count = 100).items
                 }
             }.forEach { invoice ->
                 addAll(
@@ -105,7 +106,7 @@ class ScheduleController : ActionController(), Refreshable {
                         Schedule(
                             invoice,
                             runBlocking(Dispatchers.IO) {
-                                api.getCustomer(invoice.customerId).name
+                                OpenPSSApi.getCustomer(invoice.customerId).name
                             },
                             "",
                             "",

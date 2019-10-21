@@ -4,6 +4,7 @@ import com.hendraanggrian.openpss.FxComponent
 import com.hendraanggrian.openpss.PATTERN_DATETIMEEXT
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
+import com.hendraanggrian.openpss.api.OpenPSSApi
 import com.hendraanggrian.openpss.control.IntField
 import com.hendraanggrian.openpss.ui.DateTimePopOver
 import com.hendraanggrian.openpss.util.round
@@ -97,7 +98,7 @@ class AttendeePane(
                 } col 2 row 2
                 label(getString(R2.string.recess)) col 0 row 3 marginRight 4.0
                 vbox {
-                    runBlocking { api.getRecesses() }.forEach { recess ->
+                    runBlocking { OpenPSSApi.getRecesses() }.forEach { recess ->
                         recessChecks += jfxCheckBox(recess.toString()) {
                             selectedProperty().listener { _, _, selected ->
                                 if (selected) attendee.recesses += recess else attendee.recesses -= recess

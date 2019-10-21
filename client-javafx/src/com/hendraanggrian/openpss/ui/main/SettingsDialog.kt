@@ -5,6 +5,7 @@ import com.hendraanggrian.openpss.FxSetting
 import com.hendraanggrian.openpss.Language
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
+import com.hendraanggrian.openpss.api.OpenPSSApi
 import com.hendraanggrian.openpss.control.Space
 import com.hendraanggrian.openpss.schema.GlobalSetting.Companion.KEY_INVOICE_HEADERS
 import com.hendraanggrian.openpss.schema.GlobalSetting.Companion.KEY_LANGUAGE
@@ -69,7 +70,7 @@ class SettingsDialog(component: FxComponent) : BaseDialog(component, R2.string.s
             }
             addNode(Space(getDouble(R.value.padding_large)))
             right = this@SettingsDialog.group(R2.string.global_settings) {
-                isDisable = runBlocking(Dispatchers.IO) { !api.isAdmin(login) }
+                isDisable = runBlocking(Dispatchers.IO) { !OpenPSSApi.isAdmin(login) }
                 gridPane {
                     gap = getDouble(R.value.padding_medium)
                     label(getString(R2.string.server_language)) row 0 col 0
@@ -77,14 +78,14 @@ class SettingsDialog(component: FxComponent) : BaseDialog(component, R2.string.s
                         converter { toString { it!!.toString(true) } }
                         selectionModel.select(
                             Language.ofFullCode(
-                                runBlocking(Dispatchers.IO) { api.getSetting(KEY_LANGUAGE).value }
+                                runBlocking(Dispatchers.IO) { OpenPSSApi.getSetting(KEY_LANGUAGE).value }
                             )
                         )
                         valueProperty().listener { isGlobalChanged.set(true) }
                     } row 0 col 1
                     label(getString(R2.string.invoice_headers)) row 1 col 0
                     invoiceHeadersArea = textArea(
-                        runBlocking(Dispatchers.IO) { api.getSetting(KEY_INVOICE_HEADERS) }
+                        runBlocking(Dispatchers.IO) { OpenPSSApi.getSetting(KEY_INVOICE_HEADERS) }
                             .valueList
                             .joinToString("\n")
                             .trim()
@@ -114,8 +115,8 @@ class SettingsDialog(component: FxComponent) : BaseDialog(component, R2.string.s
                         }
                     }
                     if (isGlobalChanged.value) {
-                        api.setSetting(KEY_LANGUAGE, languageBox.value.fullCode)
-                        api.setSetting(
+                        OpenPSSApi.setSetting(KEY_LANGUAGE, languageBox.value.fullCode)
+                        OpenPSSApi.setSetting(
                             KEY_INVOICE_HEADERS,
                             invoiceHeadersArea.text.trim().replace("\n", "|")
                         )

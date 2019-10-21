@@ -3,6 +3,7 @@ package com.hendraanggrian.openpss.ui.invoice
 import com.hendraanggrian.openpss.FxComponent
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
+import com.hendraanggrian.openpss.api.OpenPSSApi
 import com.hendraanggrian.openpss.schema.Customer
 import com.hendraanggrian.openpss.ui.ResultablePopOver
 import com.hendraanggrian.openpss.ui.customer.CustomerListView
@@ -40,7 +41,7 @@ class SearchCustomerPopOver(component: FxComponent) :
                 prefHeight = 262.0
                 itemsProperty().bind(buildBinding(searchField.textProperty()) {
                     runBlocking(Dispatchers.IO) {
-                        api.getCustomers(searchField.text, 0, ITEMS_PER_PAGE)
+                        OpenPSSApi.getCustomers(searchField.text, 0, ITEMS_PER_PAGE)
                             .items
                             .take(ITEMS_PER_PAGE)
                             .toObservableList()

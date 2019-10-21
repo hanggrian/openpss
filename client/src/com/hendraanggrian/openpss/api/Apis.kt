@@ -22,7 +22,7 @@ import io.ktor.http.takeFrom
 
 interface Api {
 
-    val endPoint: String
+    var endPoint: String?
 
     val client: HttpClient
 
@@ -34,7 +34,7 @@ interface Api {
     fun HttpRequestBuilder.apiUrl(path: String) {
         header(HttpHeaders.CacheControl, "no-cache")
         url {
-            takeFrom(endPoint)
+            takeFrom(checkNotNull(endPoint) { "Endpoint not yet initialized." })
             encodedPath = path
         }
     }
@@ -52,8 +52,18 @@ interface Api {
         }.use { it.status.isSuccess() }
 }
 
+/** Base class of REST APIs, where client is Android and Java-friendly OkHttp. */
+sealed class OkHttpApi(final override var endPoint: String? = null) : Api {
+
+    final override val client: HttpClient = HttpClient(OkHttp) {
+        install(JsonFeature) {
+            serializer = GsonSerializer { registerJodaTimeSerializers() }
+        }
+    }
+}
+
 /** GitHub API as seen in `https://developer.github.com/v3/`, used to check latest version. */
-class GitHubApi : OkHttpApi("https://api.github.com") {
+object GitHubApi : OkHttpApi("https://api.github.com") {
 
     suspend fun getLatestRelease(): Release = client.get {
         apiUrl("repos/${BuildConfig2.USER}/${BuildConfig2.ARTIFACT}/releases/latest")
@@ -61,7 +71,7 @@ class GitHubApi : OkHttpApi("https://api.github.com") {
 }
 
 /** Main API. */
-class OpenPSSApi(host: String, port: Int) : OkHttpApi("http://$host:$port"),
+object OpenPSSApi : OkHttpApi(),
     AuthApi,
     CustomersApi,
     DateTimeApi,
@@ -71,16 +81,9 @@ class OpenPSSApi(host: String, port: Int) : OkHttpApi("http://$host:$port"),
     NamedApi,
     PaymentsApi,
     RecessesApi,
-    WagesApi
+    WagesApi {
 
-/** Base class of REST APIs, where client is Android and Java-friendly OkHttp. */
-sealed class OkHttpApi(final override val endPoint: String) : Api {
-
-    final override val client: HttpClient = HttpClient(OkHttp) {
-        install(JsonFeature) {
-            serializer = GsonSerializer {
-                registerJodaTimeSerializers()
-            }
-        }
+    fun init(host: String?, port: Int?) {
+        endPoint = "http://${host ?: "localhost"}:${port ?: "8080"}"
     }
 }

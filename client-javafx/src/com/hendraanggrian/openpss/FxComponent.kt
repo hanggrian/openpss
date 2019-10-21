@@ -1,13 +1,11 @@
 package com.hendraanggrian.openpss
 
 import com.hendraanggrian.defaults.WritableDefaults
-import com.hendraanggrian.openpss.api.GitHubApi
 import com.hendraanggrian.openpss.api.OpenPSSApi
 import com.hendraanggrian.openpss.schema.Employee
 import com.hendraanggrian.openpss.schema.GlobalSetting
 import com.hendraanggrian.openpss.ui.ResultableDialog
 import java.awt.Desktop
-import java.lang.ref.WeakReference
 import javafx.scene.Node
 import javafx.scene.control.ComboBox
 import javafx.scene.control.PasswordField
@@ -35,34 +33,6 @@ import ktfx.layouts.label
 /** StackPane is the root layout for [ktfx.jfoenix.jfxSnackbar]. */
 interface FxComponent : Component<StackPane, WritableDefaults>, StringResources, ValueResources {
 
-    companion object {
-        private var apiRef = WeakReference<OpenPSSApi?>(null)
-        private var gitHubApiRef = WeakReference<GitHubApi?>(null)
-    }
-
-    override val api: OpenPSSApi
-        get() {
-            var api = apiRef.get()
-            if (api == null) {
-                api = OpenPSSApi(
-                    defaults[Setting.KEY_SERVER_HOST]!!,
-                    defaults.getInt(Setting.KEY_SERVER_PORT)!!
-                )
-                apiRef = WeakReference(api)
-            }
-            return api
-        }
-
-    val gitHubApi: GitHubApi
-        get() {
-            var api = gitHubApiRef.get()
-            if (api == null) {
-                api = GitHubApi()
-                gitHubApiRef = WeakReference(api)
-            }
-            return api
-        }
-
     /** Number decimal string converter. */
     val numberConverter: StringConverter<Number>
         get() = NumberStringConverter()
@@ -71,7 +41,7 @@ interface FxComponent : Component<StackPane, WritableDefaults>, StringResources,
     val currencyConverter: StringConverter<Number>
         get() = CurrencyStringConverter(runBlocking(Dispatchers.IO) {
             Language.ofFullCode(
-                api.getSetting(GlobalSetting.KEY_LANGUAGE).value
+                OpenPSSApi.getSetting(GlobalSetting.KEY_LANGUAGE).value
             ).toLocale()
         })
 
@@ -93,7 +63,7 @@ interface FxComponent : Component<StackPane, WritableDefaults>, StringResources,
         action: suspend CoroutineScope.() -> Unit
     ) {
         when {
-            api.isAdmin(login) -> action()
+            OpenPSSApi.isAdmin(login) -> action()
             else -> PermissionDialog(this@FxComponent).show { admin ->
                 when (admin) {
                     null -> rootLayout.jfxSnackbar(
@@ -123,8 +93,8 @@ interface FxComponent : Component<StackPane, WritableDefaults>, StringResources,
                     text = getString(R2.string._permission_required)
                 } col 0 row 0 colSpans 2
                 label(getString(R2.string.admin)) col 0 row 1
-                adminCombo = jfxComboBox(runBlocking(Dispatchers.IO) { api.getEmployees() }
-                    .filter { it.isAdmin && it.name != Employee.BACKDOOR.name }
+                adminCombo = jfxComboBox(runBlocking(Dispatchers.IO) { OpenPSSApi.getEmployees() }
+                    .filter { it.isAdmin }
                     .toObservableList()
                 ) {
                     promptText = getString(R2.string.admin)
@@ -140,11 +110,6 @@ interface FxComponent : Component<StackPane, WritableDefaults>, StringResources,
         }
 
         override val nullableResult: Employee?
-            get() = runBlocking(Dispatchers.IO) {
-                api.login(
-                    adminCombo.value.name,
-                    passwordField.text
-                )
-            }
+            get() = runBlocking(Dispatchers.IO) { OpenPSSApi.login(adminCombo.value.name, passwordField.text) }
     }
 }

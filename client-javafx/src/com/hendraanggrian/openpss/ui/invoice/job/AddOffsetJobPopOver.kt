@@ -2,6 +2,7 @@ package com.hendraanggrian.openpss.ui.invoice.job
 
 import com.hendraanggrian.openpss.FxComponent
 import com.hendraanggrian.openpss.R2
+import com.hendraanggrian.openpss.api.OpenPSSApi
 import com.hendraanggrian.openpss.control.DoubleField
 import com.hendraanggrian.openpss.control.IntField
 import com.hendraanggrian.openpss.schema.Invoice
@@ -35,7 +36,7 @@ class AddOffsetJobPopOver(component: FxComponent) :
     override fun KtfxGridPane.onCreateContent() {
         label(getString(R2.string.type)) col 0 row currentRow
         typeChoice =
-            jfxComboBox(runBlocking(Dispatchers.IO) { api.getOffsetPrices() }.toObservableList()) {
+            jfxComboBox(runBlocking(Dispatchers.IO) { OpenPSSApi.getOffsetPrices() }.toObservableList()) {
                 valueProperty().listener { _, _, job ->
                     minQtyField.value = job.minQty
                     minPriceField.value = job.minPrice

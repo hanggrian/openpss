@@ -41,8 +41,8 @@ data class Attendee(
     var daily: Int by dailyProperty
     var hourlyOvertime: Int by hourlyOvertimeProperty
 
-    suspend fun init(api: OpenPSSApi) {
-        api.getWage(id)?.let { wage ->
+    suspend fun init() {
+        OpenPSSApi.getWage(id)?.let { wage ->
             daily = wage.daily
             hourlyOvertime = wage.hourlyOvertime
         }
@@ -57,9 +57,9 @@ data class Attendee(
             .map { index -> attendances[index] })
     }
 
-    suspend fun saveWage(api: OpenPSSApi) = api.getWages().let { wages ->
+    suspend fun saveWage() = OpenPSSApi.getWages().let { wages ->
         when {
-            wages.isEmpty() -> api.addWage(
+            wages.isEmpty() -> OpenPSSApi.addWage(
                 Wage(
                     id,
                     daily,
@@ -68,7 +68,7 @@ data class Attendee(
             )
             else -> wages.single().let { wage ->
                 if (wage.daily != daily || wage.hourlyOvertime != hourlyOvertime) {
-                    api.editWage(wage.also {
+                    OpenPSSApi.editWage(wage.also {
                         it.daily = daily
                         it.hourlyOvertime = hourlyOvertime
                     })

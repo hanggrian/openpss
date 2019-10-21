@@ -3,6 +3,7 @@ package com.hendraanggrian.openpss.ui.employee
 import com.hendraanggrian.openpss.FxComponent
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
+import com.hendraanggrian.openpss.api.OpenPSSApi
 import com.hendraanggrian.openpss.schema.Employee
 import com.hendraanggrian.openpss.ui.TableDialog
 import com.hendraanggrian.openpss.util.clean
@@ -57,7 +58,7 @@ class EditEmployeeDialog(component: FxComponent) :
                 bindDisable()
                 onAction {
                     val selected = table.selectionModel.selectedItem
-                    api.editEmployee(selected.apply { isAdmin = !isAdmin }, login.name)
+                    OpenPSSApi.editEmployee(selected.apply { isAdmin = !isAdmin }, login.name)
                     refresh()
                 }
             }
@@ -66,7 +67,7 @@ class EditEmployeeDialog(component: FxComponent) :
                 bindDisable()
                 onAction {
                     val selected = table.selectionModel.selectedItem
-                    api.editEmployee(
+                    OpenPSSApi.editEmployee(
                         selected.apply { password = Employee.DEFAULT_PASSWORD },
                         login.name
                     )
@@ -82,17 +83,17 @@ class EditEmployeeDialog(component: FxComponent) :
         }
     }
 
-    override suspend fun CoroutineScope.refresh(): List<Employee> = api.getEmployees()
+    override suspend fun CoroutineScope.refresh(): List<Employee> = OpenPSSApi.getEmployees()
 
     override fun add() =
         AddEmployeePopOver(this, R2.string.add_employee, false).show(addButton) { name ->
-            val added = api.addEmployee(Employee.new(name!!.clean()))
+            val added = OpenPSSApi.addEmployee(Employee.new(name!!.clean()))
             table.items.add(added)
             table.selectionModel.select(added)
         }
 
     override suspend fun CoroutineScope.delete(selected: Employee): Boolean =
-        api.deleteEmployee(login, selected.id)
+        OpenPSSApi.deleteEmployee(login, selected.id)
 
     private fun MenuItem.bindDisable() =
         disableProperty().bind(table.selectionModel.selectedItemProperty().isNull)

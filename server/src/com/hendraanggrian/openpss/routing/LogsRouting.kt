@@ -1,8 +1,6 @@
 package com.hendraanggrian.openpss.routing
 
-import com.hendraanggrian.openpss.Routing
 import com.hendraanggrian.openpss.data.Page
-import com.hendraanggrian.openpss.getInt
 import com.hendraanggrian.openpss.nosql.transaction
 import com.hendraanggrian.openpss.schema.Logs
 import io.ktor.application.call

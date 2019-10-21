@@ -15,6 +15,7 @@ import javafx.application.Platform
 import javafx.fxml.FXMLLoader
 import javafx.scene.image.Image
 import javafx.stage.Stage
+import kotlin.system.exitProcess
 import ktfx.layouts.scene
 import ktfx.windows.icon
 import ktfx.windows.setMinSize
@@ -29,7 +30,7 @@ class App : Application(), StringResources, ValueResources {
 
         fun exit() {
             Platform.exit() // exit JavaFX
-            System.exit(0) // exit Java
+            exitProcess(0) // exit Java
         }
     }
 

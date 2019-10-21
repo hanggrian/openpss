@@ -10,6 +10,7 @@ import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.Setting
 import com.hendraanggrian.openpss.StringResources
 import com.hendraanggrian.openpss.ValueResources
+import com.hendraanggrian.openpss.api.OpenPSSApi
 import com.hendraanggrian.openpss.control.IntField
 import com.hendraanggrian.openpss.language
 import com.hendraanggrian.openpss.schema.Employee
@@ -166,8 +167,12 @@ class LoginPane<T>(resources: T, override val defaults: WritableDefaults) : Ktfx
                                     this[Setting.KEY_SERVER_HOST] = serverHostField.text
                                     this[Setting.KEY_SERVER_PORT] = serverPortField.text
                                 }
+                                OpenPSSApi.init(
+                                    defaults[Setting.KEY_SERVER_HOST],
+                                    defaults.getInt(Setting.KEY_SERVER_PORT)
+                                )
                                 onSuccess?.invoke(runCatching {
-                                    api.login(employeeField.text, passwordField.text)
+                                    OpenPSSApi.login(employeeField.text, passwordField.text)
                                 }.onFailure {
                                     if (BuildConfig2.DEBUG) it.printStackTrace()
                                     TextDialog(

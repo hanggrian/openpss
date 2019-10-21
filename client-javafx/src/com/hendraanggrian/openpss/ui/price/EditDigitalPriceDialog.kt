@@ -2,6 +2,7 @@ package com.hendraanggrian.openpss.ui.price
 
 import com.hendraanggrian.openpss.FxComponent
 import com.hendraanggrian.openpss.R2
+import com.hendraanggrian.openpss.api.OpenPSSApi
 import com.hendraanggrian.openpss.schema.DigitalPrice
 import javafx.beans.value.ObservableValue
 import kotlinx.coroutines.CoroutineScope
@@ -26,7 +27,7 @@ class EditDigitalPriceDialog(
             }
             onEditCommit { cell ->
                 val digital = cell.rowValue
-                api.editDigitalPrice(digital.apply { oneSidePrice = cell.newValue })
+                OpenPSSApi.editDigitalPrice(digital.apply { oneSidePrice = cell.newValue })
             }
         }
         getString(R2.string.two_side_price)<Double> {
@@ -40,16 +41,16 @@ class EditDigitalPriceDialog(
             }
             onEditCommit { cell ->
                 val digital = cell.rowValue
-                api.editDigitalPrice(digital.apply { twoSidePrice = cell.newValue })
+                OpenPSSApi.editDigitalPrice(digital.apply { twoSidePrice = cell.newValue })
             }
         }
     }
 
-    override suspend fun CoroutineScope.refresh(): List<DigitalPrice> = api.getDigitalPrices()
+    override suspend fun CoroutineScope.refresh(): List<DigitalPrice> = OpenPSSApi.getDigitalPrices()
 
     override suspend fun CoroutineScope.add(name: String): DigitalPrice? =
-        api.addDigitalPrice(DigitalPrice.new(name))
+        OpenPSSApi.addDigitalPrice(DigitalPrice.new(name))
 
     override suspend fun CoroutineScope.delete(selected: DigitalPrice): Boolean =
-        api.deleteDigitalPrice(selected.id)
+        OpenPSSApi.deleteDigitalPrice(selected.id)
 }

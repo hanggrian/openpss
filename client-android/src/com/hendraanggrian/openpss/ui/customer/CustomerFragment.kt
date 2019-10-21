@@ -8,6 +8,7 @@ import androidx.core.widget.addTextChangedListener
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
+import com.hendraanggrian.openpss.api.OpenPSSApi
 import com.hendraanggrian.openpss.ui.BaseFragment
 import com.hendraanggrian.openpss.ui.util.autoHide
 import com.hendraanggrian.recyclerview.widget.PaginatedRecyclerView
@@ -47,7 +48,7 @@ class CustomerFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                     runBlocking {
                         runCatching {
                             val (pageCount, customers) = withContext(Dispatchers.IO) {
-                                api.getCustomers(customerSearch.input.text, page, COUNT)
+                                OpenPSSApi.getCustomers(customerSearch.input.text, page, COUNT)
                             }
                             when {
                                 pageCount < page -> notifyPaginationCompleted()

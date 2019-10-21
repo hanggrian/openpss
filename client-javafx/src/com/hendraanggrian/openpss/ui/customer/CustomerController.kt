@@ -3,6 +3,7 @@ package com.hendraanggrian.openpss.ui.customer
 import com.hendraanggrian.openpss.PATTERN_DATE
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
+import com.hendraanggrian.openpss.api.OpenPSSApi
 import com.hendraanggrian.openpss.control.Action
 import com.hendraanggrian.openpss.control.PaginatedPane
 import com.hendraanggrian.openpss.schema.Customer
@@ -106,7 +107,7 @@ class CustomerController : ActionController(), Refreshable {
                     }
                     runBlocking {
                         val (pageCount, customers) = withContext(Dispatchers.IO) {
-                            api.getCustomers(searchField.text, page, count)
+                            OpenPSSApi.getCustomers(searchField.text, page, count)
                         }
                         customerPagination.pageCount = pageCount
                         items = customers.toMutableObservableList()
@@ -134,27 +135,27 @@ class CustomerController : ActionController(), Refreshable {
     }
 
     fun add() = AddCustomerDialog(this).show { customer ->
-        customerList.items.add(api.addCustomer(customer!!))
+        customerList.items.add(OpenPSSApi.addCustomer(customer!!))
         customerList.selectionModel.select(customerList.items.lastIndex)
     }
 
     private fun edit() = EditCustomerDialog(this, customerList.selectionModel.selectedItem).show {
         withPermission {
-            api.editCustomer(login, customerList.selectionModel.selectedItem.id, it!!)
+            OpenPSSApi.editCustomer(login, customerList.selectionModel.selectedItem.id, it!!)
             reload()
         }
     }
 
     @FXML
     fun addContact() = AddContactPopOver(this).show(contactTable) {
-        api.addContact(customerList.selectionModel.selectedItem.id, it!!)
+        OpenPSSApi.addContact(customerList.selectionModel.selectedItem.id, it!!)
         reload()
     }
 
     @FXML
     fun deleteContact() = ConfirmDialog(this, R2.string.delete_contact).show {
         withPermission {
-            api.deleteContact(
+            OpenPSSApi.deleteContact(
                 login,
                 customerList.selectionModel.selectedItem.id,
                 contactTable.selectionModel.selectedItem

@@ -1,6 +1,5 @@
 package com.hendraanggrian.openpss.routing
 
-import com.hendraanggrian.openpss.Routing
 import com.hendraanggrian.openpss.nosql.Database
 import io.ktor.application.call
 import io.ktor.response.respond

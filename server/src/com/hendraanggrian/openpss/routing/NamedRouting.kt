@@ -1,10 +1,7 @@
 package com.hendraanggrian.openpss.routing
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.Routing
 import com.hendraanggrian.openpss.Server
-import com.hendraanggrian.openpss.getString
-import com.hendraanggrian.openpss.isNotEmpty
 import com.hendraanggrian.openpss.nosql.DocumentQuery
 import com.hendraanggrian.openpss.nosql.NamedDocument
 import com.hendraanggrian.openpss.nosql.NamedDocumentSchema

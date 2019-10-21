@@ -1,8 +1,6 @@
 package com.hendraanggrian.openpss.routing
 
-import com.hendraanggrian.openpss.Routing
 import com.hendraanggrian.openpss.Server
-import com.hendraanggrian.openpss.getString
 import com.hendraanggrian.openpss.nosql.transaction
 import com.hendraanggrian.openpss.schema.Employee
 import com.hendraanggrian.openpss.schema.Employees
@@ -17,11 +15,18 @@ object AuthRouting : Routing({
         val password = call.getString("password")
         val employee = transaction { Employees { this.name.equal(name) }.singleOrNull() }
         when {
-            employee == null || employee.password != password -> call.respond(Employee.NOT_FOUND)
+            employee == null -> {
+                call.respond(Employee.NOT_FOUND)
+                Server.log?.error("Employee not found: $name")
+            }
+            employee.password != password -> {
+                call.respond(Employee.NOT_FOUND)
+                Server.log?.error("Wrong password: $name")
+            }
             else -> {
                 employee.clearPassword()
                 call.respond(employee)
-                Server.log("'$employee' logged in")
+                Server.log?.info("Logged in: $name")
             }
         }
     }

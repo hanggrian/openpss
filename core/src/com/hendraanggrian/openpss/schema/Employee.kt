@@ -24,8 +24,6 @@ data class Employee(
             Employee("", "", false)
 
         const val DEFAULT_PASSWORD = "1234"
-        val BACKDOOR: Employee =
-            Employee("Test", DEFAULT_PASSWORD, true)
 
         fun new(name: String): Employee =
             Employee(name, DEFAULT_PASSWORD, false)

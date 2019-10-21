@@ -1,7 +1,5 @@
 package com.hendraanggrian.openpss.routing
 
-import com.hendraanggrian.openpss.Routing
-import com.hendraanggrian.openpss.getInt
 import com.hendraanggrian.openpss.nosql.transaction
 import com.hendraanggrian.openpss.schema.Wage
 import com.hendraanggrian.openpss.schema.Wages

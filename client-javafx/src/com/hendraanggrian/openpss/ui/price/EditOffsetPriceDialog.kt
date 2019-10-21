@@ -2,6 +2,7 @@ package com.hendraanggrian.openpss.ui.price
 
 import com.hendraanggrian.openpss.FxComponent
 import com.hendraanggrian.openpss.R2
+import com.hendraanggrian.openpss.api.OpenPSSApi
 import com.hendraanggrian.openpss.schema.OffsetPrice
 import javafx.beans.value.ObservableValue
 import kotlinx.coroutines.CoroutineScope
@@ -26,7 +27,7 @@ class EditOffsetPriceDialog(
             }
             onEditCommit { cell ->
                 val offset = cell.rowValue
-                api.editOffsetPrice(offset.apply { minQty = cell.newValue })
+                OpenPSSApi.editOffsetPrice(offset.apply { minQty = cell.newValue })
             }
         }
 
@@ -41,7 +42,7 @@ class EditOffsetPriceDialog(
             }
             onEditCommit { cell ->
                 val offset = cell.rowValue
-                api.editOffsetPrice(offset.apply { minPrice = cell.newValue })
+                OpenPSSApi.editOffsetPrice(offset.apply { minPrice = cell.newValue })
             }
         }
 
@@ -56,16 +57,16 @@ class EditOffsetPriceDialog(
             }
             onEditCommit { cell ->
                 val offset = cell.rowValue
-                api.editOffsetPrice(offset.apply { excessPrice = cell.newValue })
+                OpenPSSApi.editOffsetPrice(offset.apply { excessPrice = cell.newValue })
             }
         }
     }
 
-    override suspend fun CoroutineScope.refresh(): List<OffsetPrice> = api.getOffsetPrices()
+    override suspend fun CoroutineScope.refresh(): List<OffsetPrice> = OpenPSSApi.getOffsetPrices()
 
     override suspend fun CoroutineScope.add(name: String): OffsetPrice? =
-        api.addOffsetPrice(OffsetPrice.new(name))
+        OpenPSSApi.addOffsetPrice(OffsetPrice.new(name))
 
     override suspend fun CoroutineScope.delete(selected: OffsetPrice): Boolean =
-        api.deleteOffsetPrice(selected.id)
+        OpenPSSApi.deleteOffsetPrice(selected.id)
 }

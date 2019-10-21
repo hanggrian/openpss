@@ -122,7 +122,7 @@ class WageController : ActionController() {
         loader.controller.addExtra(EXTRA_ATTENDEES, attendees)
     }.showAndWait()
 
-    private fun saveWage() = runBlocking(Dispatchers.IO) { attendees.forEach { it.saveWage(api) } }
+    private fun saveWage() = runBlocking(Dispatchers.IO) { attendees.forEach { it.saveWage() } }
 
     private fun history() = desktop?.open(WageDirectory)
 
@@ -157,7 +157,7 @@ class WageController : ActionController() {
                 WageReader.of(defaults[FxSetting.KEY_WAGEREADER]!!).read(file)
                     .forEach { attendee ->
                         GlobalScope.launch(Dispatchers.JavaFx) {
-                            attendee.init(api)
+                            attendee.init()
                             flowPane.children += AttendeePane(this@WageController, attendee).apply {
                                 deleteMenu.onAction {
                                     flowPane.children -= this@apply

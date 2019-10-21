@@ -5,6 +5,7 @@ import com.hendraanggrian.openpss.Language
 import com.hendraanggrian.openpss.PATTERN_DATETIMEEXT
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
+import com.hendraanggrian.openpss.api.OpenPSSApi
 import com.hendraanggrian.openpss.control.Space
 import com.hendraanggrian.openpss.schema.Customer
 import com.hendraanggrian.openpss.schema.Employee
@@ -81,16 +82,16 @@ class ViewInvoicePopOver(
 
     override val resourceBundle: ResourceBundle = Language
         .ofFullCode(runBlocking(Dispatchers.IO) {
-            api.getSetting(GlobalSetting.KEY_LANGUAGE).value
+            OpenPSSApi.getSetting(GlobalSetting.KEY_LANGUAGE).value
         })
         .toResourcesBundle()
 
     init {
         graphic = label("${getString(R2.string.server_language)}: $language")
         runBlocking {
-            invoiceHeaders = api.getSetting(KEY_INVOICE_HEADERS).valueList
-            employee = api.getEmployee(invoice.employeeId)
-            customer = api.getCustomer(invoice.customerId)
+            invoiceHeaders = OpenPSSApi.getSetting(KEY_INVOICE_HEADERS).valueList
+            employee = OpenPSSApi.getEmployee(invoice.employeeId)
+            customer = OpenPSSApi.getCustomer(invoice.customerId)
         }
         invoiceBox = vbox(getDouble(R.value.padding_medium)) {
             if (!SystemUtils.IS_OS_MAC_OSX) {

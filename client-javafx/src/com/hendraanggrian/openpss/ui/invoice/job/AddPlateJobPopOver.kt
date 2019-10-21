@@ -2,6 +2,7 @@ package com.hendraanggrian.openpss.ui.invoice.job
 
 import com.hendraanggrian.openpss.FxComponent
 import com.hendraanggrian.openpss.R2
+import com.hendraanggrian.openpss.api.OpenPSSApi
 import com.hendraanggrian.openpss.control.DoubleField
 import com.hendraanggrian.openpss.schema.Invoice
 import com.hendraanggrian.openpss.schema.PlatePrice
@@ -29,7 +30,7 @@ class AddPlateJobPopOver(component: FxComponent) :
     override fun KtfxGridPane.onCreateContent() {
         label(getString(R2.string.type)) col 0 row currentRow
         typeChoice =
-            jfxComboBox(runBlocking(Dispatchers.IO) { api.getPlatePrices() }.toObservableList()) {
+            jfxComboBox(runBlocking(Dispatchers.IO) { OpenPSSApi.getPlatePrices() }.toObservableList()) {
                 valueProperty().listener { _, _, job ->
                     priceField.value = job.price
                 }

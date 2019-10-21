@@ -4,6 +4,7 @@ import com.hendraanggrian.openpss.PATTERN_DATE
 import com.hendraanggrian.openpss.PATTERN_TIME
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
+import com.hendraanggrian.openpss.api.OpenPSSApi
 import com.hendraanggrian.openpss.control.Action
 import com.hendraanggrian.openpss.control.DateBox
 import com.hendraanggrian.openpss.control.MonthBox
@@ -98,13 +99,13 @@ class FinanceController : ActionController(), Refreshable {
 
         dailyNoColumn.numberCell(this) {
             runBlocking(Dispatchers.IO) {
-                api.getInvoice(invoiceId).no
+                OpenPSSApi.getInvoice(invoiceId).no
             }
         }
         dailyTimeColumn.stringCell { dateTime.toString(PATTERN_TIME) }
         dailyEmployeeColumn.stringCell {
             runBlocking(Dispatchers.IO) {
-                api.getEmployee(employeeId).toString()
+                OpenPSSApi.getEmployee(employeeId).toString()
             }
         }
         dailyValueColumn.currencyCell(this) { value }
@@ -138,10 +139,10 @@ class FinanceController : ActionController(), Refreshable {
         runBlocking {
             when (tabPane.selectionModel.selectedIndex) {
                 0 -> dailyTable.items = withContext(Dispatchers.IO) {
-                    api.getPayments(dateBox.value!!).toMutableObservableList()
+                    OpenPSSApi.getPayments(dateBox.value!!).toMutableObservableList()
                 }
                 else -> monthlyTable.items = withContext(Dispatchers.IO) {
-                    Report.listAll(api.getPayments(monthBox.value!!))
+                    Report.listAll(OpenPSSApi.getPayments(monthBox.value!!))
                 }
             }
         }
@@ -149,7 +150,7 @@ class FinanceController : ActionController(), Refreshable {
 
     @FXML
     fun viewInvoice() = ViewInvoicePopOver(this, runBlocking(Dispatchers.IO) {
-        api.getInvoice(dailyTable.selectionModel.selectedItem.invoiceId)
+        OpenPSSApi.getInvoice(dailyTable.selectionModel.selectedItem.invoiceId)
     }).show(
         when (tabPane.selectionModel.selectedIndex) {
             0 -> dailyTable

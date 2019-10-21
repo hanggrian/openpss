@@ -1,10 +1,9 @@
 package com.hendraanggrian.openpss.nosql
 
 import com.hendraanggrian.openpss.BuildConfig
-import com.hendraanggrian.openpss.isEmpty
+import com.hendraanggrian.openpss.routing.isEmpty
 import com.hendraanggrian.openpss.schema.Customers
 import com.hendraanggrian.openpss.schema.DigitalPrices
-import com.hendraanggrian.openpss.schema.Employee
 import com.hendraanggrian.openpss.schema.Employees
 import com.hendraanggrian.openpss.schema.GlobalSetting
 import com.hendraanggrian.openpss.schema.GlobalSettings
@@ -57,9 +56,6 @@ object Database : Runnable {
             TABLES
         )
         transaction {
-            if (Employees { name.equal(Employee.BACKDOOR.name) }.isEmpty()) {
-                Employees += Employee.BACKDOOR
-            }
             listOf(GlobalSettings.LANGUAGE, GlobalSettings.INVOICE_HEADERS)
                 .filter { (first, _) -> GlobalSettings { key.equal(first) }.isEmpty() }
                 .forEach {

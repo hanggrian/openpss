@@ -1,9 +1,7 @@
 package com.hendraanggrian.openpss.routing
 
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.Routing
 import com.hendraanggrian.openpss.Server
-import com.hendraanggrian.openpss.getString
 import com.hendraanggrian.openpss.nosql.transaction
 import com.hendraanggrian.openpss.schema.Invoices
 import com.hendraanggrian.openpss.schema.Log

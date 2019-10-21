@@ -16,6 +16,7 @@ import com.hendraanggrian.openpss.routing.PaymentsRouting
 import com.hendraanggrian.openpss.routing.PlatePriceRouting
 import com.hendraanggrian.openpss.routing.RecessesRouting
 import com.hendraanggrian.openpss.routing.WagesRouting
+import com.hendraanggrian.openpss.routing.route
 import com.hendraanggrian.openpss.schema.GlobalSetting
 import com.hendraanggrian.openpss.ui.TextDialog
 import com.hendraanggrian.openpss.ui.menuItem
@@ -53,13 +54,8 @@ import org.slf4j.Logger
 
 object Server : StringResources {
 
-    private var logger: Logger? = null
-
-    fun log(message: String) {
-        if (BuildConfig.DEBUG) {
-            logger?.info(message)
-        }
-    }
+    private lateinit var logger: Logger
+    val log: Logger? get() = if (BuildConfig.DEBUG) logger else null
 
     override val resourceBundle: ResourceBundle
         get() = Language.ofFullCode(transaction {
@@ -99,15 +95,14 @@ object Server : StringResources {
                 }
             }
         }
-        logger = embeddedServer(Netty, applicationEngineEnvironment {
+        embeddedServer(Netty, applicationEngineEnvironment {
+            logger = log
             connector {
                 host = "0.0.0.0"
                 port = 8080
             }
             module {
-                if (BuildConfig.DEBUG) {
-                    install(CallLogging)
-                }
+                if (BuildConfig.DEBUG) install(CallLogging)
                 install(ConditionalHeaders)
                 install(Compression)
                 install(PartialContent)
@@ -141,9 +136,7 @@ object Server : StringResources {
                             ContentType.Application.Json,
                             GsonConverter(GsonBuilder().registerJodaTimeSerializers().create())
                         )
-                        if (BuildConfig.DEBUG) {
-                            setPrettyPrinting()
-                        }
+                        if (BuildConfig.DEBUG) setPrettyPrinting()
                     }
                 }
                 routing {
@@ -162,9 +155,9 @@ object Server : StringResources {
                     route(WagesRouting)
                 }
             }
-        }).start(wait = true).environment.log
-        log("Welcome to ${BuildConfig.NAME} ${BuildConfig.VERSION}")
-        log("For more information, visit ${BuildConfig.WEBSITE}")
-        log("Debug mode is activated, server activities will be logged here.")
+            Server.log?.info("Welcome to ${BuildConfig.NAME} ${BuildConfig.VERSION}")
+            Server.log?.info("For more information, visit ${BuildConfig.WEBSITE}")
+            Server.log?.info("Debug mode is activated, server activities will be logged here.")
+        }).start(wait = true)
     }
 }

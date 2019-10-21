@@ -11,7 +11,6 @@ import com.hendraanggrian.bundler.Extra
 import com.hendraanggrian.defaults.SharedPreferencesDefaults
 import com.hendraanggrian.openpss.AndroidComponent
 import com.hendraanggrian.openpss.App
-import com.hendraanggrian.openpss.api.OpenPSSApi
 import com.hendraanggrian.openpss.nosql.StringId
 import com.hendraanggrian.openpss.schema.Employee
 import java.util.ResourceBundle
@@ -26,8 +25,6 @@ open class Activity : AppCompatActivity(), AndroidComponent {
     private lateinit var _login: Employee
 
     override fun getContext(): Context? = this
-
-    override val api: OpenPSSApi get() = openPssApplication.api
 
     override val rootLayout: View get() = findViewById(android.R.id.content)
 

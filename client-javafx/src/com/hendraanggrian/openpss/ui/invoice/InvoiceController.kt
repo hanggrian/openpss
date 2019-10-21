@@ -3,6 +3,7 @@ package com.hendraanggrian.openpss.ui.invoice
 import com.hendraanggrian.openpss.PATTERN_DATETIMEEXT
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
+import com.hendraanggrian.openpss.api.OpenPSSApi
 import com.hendraanggrian.openpss.control.Action
 import com.hendraanggrian.openpss.control.DateBox
 import com.hendraanggrian.openpss.control.IntField
@@ -146,14 +147,14 @@ class InvoiceController : ActionController(), Refreshable {
                             getString(R2.string.employee)<String> {
                                 stringCell {
                                     runBlocking(Dispatchers.IO) {
-                                        api.getEmployee(employeeId).name
+                                        OpenPSSApi.getEmployee(employeeId).name
                                     }
                                 }
                             }
                             getString(R2.string.customer)<String> {
                                 stringCell {
                                     runBlocking(Dispatchers.IO) {
-                                        api.getCustomer(customerId).name
+                                        OpenPSSApi.getCustomer(customerId).name
                                     }
                                 }
                             }
@@ -190,7 +191,7 @@ class InvoiceController : ActionController(), Refreshable {
                                 getString(R2.string.employee)<String> {
                                     stringCell {
                                         runBlocking(Dispatchers.IO) {
-                                            api.getEmployee(employeeId).name
+                                            OpenPSSApi.getEmployee(employeeId).name
                                         }
                                     }
                                 }
@@ -208,7 +209,7 @@ class InvoiceController : ActionController(), Refreshable {
                                 when (invoiceTable.selectionModel.selectedItem) {
                                     null -> emptyObservableList()
                                     else -> runBlocking(Dispatchers.IO) {
-                                        api.getPayments(invoiceTable.selectionModel.selectedItem.id)
+                                        OpenPSSApi.getPayments(invoiceTable.selectionModel.selectedItem.id)
                                             .toObservableList()
                                     }
                                 }
@@ -228,7 +229,7 @@ class InvoiceController : ActionController(), Refreshable {
                     dividerPosition = 0.6
                     runBlocking {
                         val (pageCount, invoices) = withContext(Dispatchers.IO) {
-                            api.getInvoices(
+                            OpenPSSApi.getInvoices(
                                 searchField.value,
                                 customerProperty.value?.name,
                                 when (paymentCombo.value) {
@@ -267,7 +268,7 @@ class InvoiceController : ActionController(), Refreshable {
                                     })
                                 }
                                 onAction {
-                                    api.editInvoice(
+                                    OpenPSSApi.editInvoice(
                                         invoiceTable.selectionModel.selectedItem.apply {
                                             isDone = true
                                         }
@@ -280,7 +281,7 @@ class InvoiceController : ActionController(), Refreshable {
                                 disableProperty().bind(invoiceTable.selectionModel.selectedItemProperty().isNull)
                                 onAction {
                                     withPermission {
-                                        if (api.deleteInvoice(
+                                        if (OpenPSSApi.deleteInvoice(
                                                 login,
                                                 invoiceTable.selectionModel.selectedItem
                                             )
@@ -298,7 +299,7 @@ class InvoiceController : ActionController(), Refreshable {
     }
 
     fun addInvoice() = AddInvoiceDialog(this).show {
-        invoiceTable.items.add(api.addInvoice(it!!))
+        invoiceTable.items.add(OpenPSSApi.addInvoice(it!!))
         invoiceTable.selectionModel.selectFirst()
     }
 
@@ -324,7 +325,7 @@ class InvoiceController : ActionController(), Refreshable {
 
     private fun addPayment() =
         AddPaymentPopOver(this, invoiceTable.selectionModel.selectedItem).show(paymentTable) {
-            api.addPayment(it!!)
+            OpenPSSApi.addPayment(it!!)
             updatePaymentStatus()
             reload(invoiceTable.selectionModel.selectedItem)
         }
@@ -332,7 +333,7 @@ class InvoiceController : ActionController(), Refreshable {
     private fun deletePayment() = ConfirmDialog(this).show {
         withPermission {
             ConfirmDialog(this@InvoiceController).show {
-                api.deletePayment(login, paymentTable.selectionModel.selectedItem)
+                OpenPSSApi.deletePayment(login, paymentTable.selectionModel.selectedItem)
                 updatePaymentStatus()
                 reload(invoiceTable.selectionModel.selectedItem)
                 rootLayout.jfxSnackbar(
@@ -344,14 +345,14 @@ class InvoiceController : ActionController(), Refreshable {
     }
 
     private suspend fun updatePaymentStatus() {
-        api.editInvoice(invoiceTable.selectionModel.selectedItem.apply {
-            isPaid = total - api.getPaymentDue(id) <= 0.0
+        OpenPSSApi.editInvoice(invoiceTable.selectionModel.selectedItem.apply {
+            isPaid = total - OpenPSSApi.getPaymentDue(id) <= 0.0
         })
     }
 
     private suspend fun reload(invoice: Invoice) = invoiceTable.run {
         items.indexOf(invoice).let { index ->
-            items[index] = api.getInvoice(invoice.id)
+            items[index] = OpenPSSApi.getInvoice(invoice.id)
             selectionModel.select(index)
         }
     }

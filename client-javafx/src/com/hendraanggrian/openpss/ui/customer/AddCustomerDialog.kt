@@ -3,6 +3,7 @@ package com.hendraanggrian.openpss.ui.customer
 import com.hendraanggrian.openpss.FxComponent
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
+import com.hendraanggrian.openpss.api.OpenPSSApi
 import com.hendraanggrian.openpss.schema.Customer
 import com.hendraanggrian.openpss.ui.ResultableDialog
 import com.hendraanggrian.openpss.util.clean
@@ -91,5 +92,5 @@ class AddCustomerDialog(component: FxComponent) :
         get() = Customer.new(
             editor.text.clean(),
             tabPane.selectionModel.selectedIndex == 1,
-            runBlocking(Dispatchers.IO) { api.getDate() })
+            runBlocking(Dispatchers.IO) { OpenPSSApi.getDate() })
 }

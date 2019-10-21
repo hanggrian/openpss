@@ -55,10 +55,7 @@ class LoginActivity : Activity() {
     }
 
     fun login(@Suppress("UNUSED_PARAMETER") view: View) {
-        openPssApplication.api = OpenPSSApi(
-            defaults[Setting.KEY_SERVER_HOST]!!,
-            defaults.getInt(Setting.KEY_SERVER_PORT)
-        )
+        OpenPSSApi.init(defaults[Setting.KEY_SERVER_HOST]!!, defaults.getInt(Setting.KEY_SERVER_PORT))
         PasswordDialogFragment()
             .args(extrasOf<PasswordDialogFragment>(defaults[Setting.KEY_EMPLOYEE]!!))
             .show(supportFragmentManager)

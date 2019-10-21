@@ -3,6 +3,7 @@ package com.hendraanggrian.openpss.ui.wage
 import com.hendraanggrian.openpss.FxComponent
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
+import com.hendraanggrian.openpss.api.OpenPSSApi
 import com.hendraanggrian.openpss.ui.BasePopOver
 import com.jfoenix.controls.JFXButton
 import javafx.scene.Node
@@ -37,7 +38,7 @@ class DisableRecessPopOver(
                 mutableObservableListOf(
                     getString(R2.string.all),
                     Separator(),
-                    *runBlocking(Dispatchers.IO) { api.getRecesses() }.toTypedArray()
+                    *runBlocking(Dispatchers.IO) { OpenPSSApi.getRecesses() }.toTypedArray()
                 )
             ) { selectionModel.selectFirst() } col 1 row 0
             label(getString(R2.string.employee)) col 0 row 1

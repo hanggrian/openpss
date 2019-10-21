@@ -17,6 +17,7 @@ import com.hendraanggrian.bundler.extrasOf
 import com.hendraanggrian.openpss.BuildConfig2
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
+import com.hendraanggrian.openpss.api.OpenPSSApi
 import com.hendraanggrian.openpss.schema.Employee
 import com.hendraanggrian.openpss.ui.BaseDialogFragment
 import com.hendraanggrian.openpss.ui.TextDialogFragment
@@ -61,7 +62,7 @@ class PasswordDialogFragment : BaseDialogFragment() {
                 runBlocking {
                     runCatching {
                         val login = withContext(Dispatchers.IO) {
-                            api.login(loginName, editText.text)
+                            OpenPSSApi.login(loginName, editText.text)
                         }
                         if (login == Employee.NOT_FOUND) error(getString(R2.string.login_failed))
                         startActivity(

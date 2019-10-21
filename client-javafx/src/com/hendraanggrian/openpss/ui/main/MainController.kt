@@ -5,6 +5,7 @@ import com.hendraanggrian.openpss.BuildConfig2
 import com.hendraanggrian.openpss.PATTERN_DATETIME
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
+import com.hendraanggrian.openpss.api.OpenPSSApi
 import com.hendraanggrian.openpss.control.MarginedImageView
 import com.hendraanggrian.openpss.control.PaginatedPane
 import com.hendraanggrian.openpss.control.Toolbar
@@ -170,7 +171,7 @@ class MainController : BaseController(), Refreshable {
 
             if (login.isFirstTimeLogin) {
                 ChangePasswordDialog(this).show { newPassword ->
-                    api.editEmployee(login.apply { password = newPassword!! }, login.name)
+                    OpenPSSApi.editEmployee(login.apply { password = newPassword!! }, login.name)
                     rootLayout.jfxSnackbar(
                         getString(R2.string.successfully_changed_password),
                         getLong(R.value.duration_long)
@@ -205,7 +206,7 @@ class MainController : BaseController(), Refreshable {
                 }
                 runBlocking {
                     val (pageCount, logs) = withContext(Dispatchers.IO) {
-                        api.getLogs(page, count)
+                        OpenPSSApi.getLogs(page, count)
                     }
                     eventPagination.pageCount = pageCount
                     items = logs.toObservableList()
@@ -247,14 +248,14 @@ class MainController : BaseController(), Refreshable {
 
     @FXML
     fun testViewInvoice() {
-        runBlocking(Dispatchers.IO) { api.getCustomers("", 0, 1) }.items.firstOrNull()?.let {
+        runBlocking(Dispatchers.IO) { OpenPSSApi.getCustomers("", 0, 1) }.items.firstOrNull()?.let {
             ViewInvoicePopOver(
                 this@MainController,
                 Invoice(
                     no = 1234,
                     employeeId = login.id,
                     customerId = it.id,
-                    dateTime = runBlocking(Dispatchers.IO) { api.getDateTime() },
+                    dateTime = runBlocking(Dispatchers.IO) { OpenPSSApi.getDateTime() },
                     offsetJobs = listOf(
                         Invoice.OffsetJob.new(
                             5,

@@ -4,6 +4,7 @@ import com.hendraanggrian.openpss.FxComponent
 import com.hendraanggrian.openpss.PATTERN_DATE
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
+import com.hendraanggrian.openpss.api.OpenPSSApi
 import com.hendraanggrian.openpss.schema.Customer
 import com.hendraanggrian.openpss.schema.Invoice
 import com.hendraanggrian.openpss.schema.typedTechnique
@@ -74,7 +75,7 @@ class AddInvoiceDialog(
     private lateinit var otherTable: TableView<Invoice.OtherJob>
     private lateinit var noteArea: TextArea
 
-    private val dateTime: DateTime = runBlocking(Dispatchers.IO) { component.api.getDateTime() }
+    private val dateTime: DateTime = runBlocking(Dispatchers.IO) { OpenPSSApi.getDateTime() }
     private val customerProperty: ObjectProperty<Customer> = SimpleObjectProperty(null)
     private val totalProperty: DoubleProperty = SimpleDoubleProperty()
 
@@ -218,7 +219,7 @@ class AddInvoiceDialog(
 
     override val nullableResult: Invoice?
         get() = Invoice.new(
-            runBlocking(Dispatchers.IO) { api.nextInvoice() },
+            runBlocking(Dispatchers.IO) { OpenPSSApi.nextInvoice() },
             login.id,
             customerProperty.value.id,
             dateTime,

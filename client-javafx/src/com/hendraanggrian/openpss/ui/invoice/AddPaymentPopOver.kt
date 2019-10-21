@@ -3,6 +3,7 @@ package com.hendraanggrian.openpss.ui.invoice
 import com.hendraanggrian.openpss.FxComponent
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
+import com.hendraanggrian.openpss.api.OpenPSSApi
 import com.hendraanggrian.openpss.control.DoubleField
 import com.hendraanggrian.openpss.schema.Invoice
 import com.hendraanggrian.openpss.schema.Payment
@@ -35,7 +36,7 @@ class AddPaymentPopOver(
     private lateinit var cashBox: CheckBox
     private lateinit var referenceField: TextField
     private val receivable =
-        invoice.total - runBlocking(Dispatchers.IO) { api.getPaymentDue(invoice.id) }
+        invoice.total - runBlocking(Dispatchers.IO) { OpenPSSApi.getPaymentDue(invoice.id) }
 
     init {
         gridPane {
@@ -101,7 +102,7 @@ class AddPaymentPopOver(
         get() = Payment.new(
             invoice.id,
             login.id,
-            runBlocking(Dispatchers.IO) { api.getDateTime() },
+            runBlocking(Dispatchers.IO) { OpenPSSApi.getDateTime() },
             valueField.value,
             when {
                 cashBox.isSelected -> null

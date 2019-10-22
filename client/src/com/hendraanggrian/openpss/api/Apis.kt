@@ -2,7 +2,7 @@ package com.hendraanggrian.openpss.api
 
 import com.hendraanggrian.openpss.BuildConfig2
 import com.hendraanggrian.openpss.data.Release
-import com.hendraanggrian.openpss.registerJodaTimeSerializers
+import com.hendraanggrian.openpss.registerJodaTime
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.okhttp.OkHttp
 import io.ktor.client.features.json.GsonSerializer
@@ -42,10 +42,7 @@ interface Api {
     fun HttpRequestBuilder.parameters(vararg pairs: Pair<String, Any?>) =
         pairs.forEach { (key, value) -> parameter(key, value) }
 
-    suspend fun HttpClient.requestStatus(
-        method: HttpMethod,
-        block: HttpRequestBuilder.() -> Unit
-    ): Boolean =
+    suspend fun HttpClient.requestStatus(method: HttpMethod, block: HttpRequestBuilder.() -> Unit): Boolean =
         request<HttpResponse> {
             this.method = method
             block()
@@ -57,7 +54,7 @@ sealed class OkHttpApi(final override var endPoint: String? = null) : Api {
 
     final override val client: HttpClient = HttpClient(OkHttp) {
         install(JsonFeature) {
-            serializer = GsonSerializer { registerJodaTimeSerializers() }
+            serializer = GsonSerializer { registerJodaTime() }
         }
     }
 }

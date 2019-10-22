@@ -134,7 +134,7 @@ object Server : StringResources {
                     gson {
                         register(
                             ContentType.Application.Json,
-                            GsonConverter(GsonBuilder().registerJodaTimeSerializers().create())
+                            GsonConverter(GsonBuilder().registerJodaTime().create())
                         )
                         if (BuildConfig.DEBUG) setPrettyPrinting()
                     }

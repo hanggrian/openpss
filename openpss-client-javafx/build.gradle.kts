@@ -16,7 +16,7 @@ sourceSets {
     getByName("main") {
         // manual import client generated build
         val dirs = mutableListOf("src")
-        val clientGeneratedDir = "client/build/generated"
+        val clientGeneratedDir = "$RELEASE_ARTIFACT-client/build/generated"
         if (rootDir.resolve(clientGeneratedDir).exists()) {
             dirs += "../$clientGeneratedDir/buildconfig/src/main"
             dirs += "../$clientGeneratedDir/r/src/main"
@@ -33,7 +33,7 @@ sourceSets {
 ktlint()
 
 dependencies {
-    implementation(project(":client"))
+    implementation(project(":$RELEASE_ARTIFACT-client"))
     implementation(kotlinx("coroutines-javafx", VERSION_COROUTINES))
 
     implementation(slf4j("log4j12"))
@@ -73,10 +73,10 @@ tasks {
     }
 
     named<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar>("shadowJar") {
-        destinationDir = buildDir.resolve("releases")
-        baseName = RELEASE_ARTIFACT
-        version = RELEASE_VERSION
-        classifier = null
+        destinationDirectory.set(buildDir.resolve("releases"))
+        archiveBaseName.set(RELEASE_ARTIFACT)
+        archiveVersion.set(RELEASE_VERSION)
+        archiveClassifier.set(null as String?)
     }
 
     withType<com.hendraanggrian.packr.PackTask> {
@@ -86,8 +86,8 @@ tasks {
 
 packr {
     mainClass = application.mainClassName
-    executable = RELEASE_ARTIFACT
-    classpath = files("build/install/client-javafx/lib")
+    executable = RELEASE_NAME
+    classpath = files("build/install/$RELEASE_ARTIFACT-client-javafx/lib")
     resources = files("res")
     vmArgs("Xmx2G")
     macOS {

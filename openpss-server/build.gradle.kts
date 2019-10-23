@@ -27,7 +27,7 @@ sourceSets {
 ktlint()
 
 dependencies {
-    implementation(project(":core"))
+    implementation(project(":$RELEASE_ARTIFACT"))
 
     implementation(ktor("server-netty"))
     implementation(ktor("websockets"))
@@ -49,6 +49,12 @@ tasks {
         }
     }
 
+    named<Jar>("jar") {
+        manifest {
+            attributes(mapOf("Main-Class" to application.mainClassName))
+        }
+    }
+
     named<com.hendraanggrian.buildconfig.BuildConfigTask>("generateBuildConfig") {
         appName = "$RELEASE_NAME Server"
         debug = RELEASE_DEBUG
@@ -62,17 +68,11 @@ tasks {
         outputDirectory = "res"
     }
 
-    named<Jar>("jar") {
-        manifest {
-            attributes(mapOf("Main-Class" to application.mainClassName))
-        }
-    }
-
     named<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar>("shadowJar") {
-        destinationDir = buildDir.resolve("releases")
-        baseName = "$RELEASE_ARTIFACT-server"
-        version = RELEASE_VERSION
-        classifier = null
+        destinationDirectory.set(buildDir.resolve("releases"))
+        archiveBaseName.set(RELEASE_ARTIFACT)
+        archiveVersion.set(RELEASE_VERSION)
+        archiveClassifier.set(null as String?)
     }
 }
 

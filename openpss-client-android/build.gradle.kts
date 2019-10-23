@@ -60,7 +60,7 @@ android {
 ktlint()
 
 dependencies {
-    implementation(project(":client"))
+    implementation(project(":$RELEASE_ARTIFACT-client"))
 
     implementation(kotlinx("coroutines-android", VERSION_COROUTINES))
     implementation(slf4j("android"))

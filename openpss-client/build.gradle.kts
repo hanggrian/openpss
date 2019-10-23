@@ -23,7 +23,7 @@ sourceSets {
 ktlint()
 
 dependencies {
-    api(project(":core"))
+    api(project(":$RELEASE_ARTIFACT"))
 
     api(hendraanggrian("defaults", "defaults", "0.3"))
     api(ktor("client-okhttp"))

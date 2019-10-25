@@ -1,14 +1,15 @@
-package com.hendraanggrian.openpss.routing
+package com.hendraanggrian.openpss.route
 
 import com.hendraanggrian.openpss.data.Page
 import com.hendraanggrian.openpss.nosql.transaction
 import com.hendraanggrian.openpss.schema.Logs
 import io.ktor.application.call
 import io.ktor.response.respond
+import io.ktor.routing.Routing
 import io.ktor.routing.get
 import kotlin.math.ceil
 
-object LogsRouting : Routing({
+fun Routing.log() {
     get(Logs.schemaName) {
         val page = call.getInt("page")
         val count = call.getInt("count")
@@ -22,4 +23,4 @@ object LogsRouting : Routing({
             }
         )
     }
-})
+}

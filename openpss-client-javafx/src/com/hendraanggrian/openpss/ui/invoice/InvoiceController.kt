@@ -29,7 +29,6 @@ import javafx.scene.control.Button
 import javafx.scene.control.ComboBox
 import javafx.scene.control.RadioButton
 import javafx.scene.control.TableView
-import javafx.scene.control.TableView.CONSTRAINED_RESIZE_POLICY
 import javafx.scene.control.TextField
 import javafx.scene.image.ImageView
 import javafx.scene.layout.HBox
@@ -137,8 +136,8 @@ class InvoiceController : ActionController(), Refreshable {
         ) {
             Callback<Pair<Int, Int>, Node> { (page, count) ->
                 masterDetailPane(BOTTOM) {
-                    invoiceTable = ktfx.layouts.tableView {
-                        columnResizePolicy = CONSTRAINED_RESIZE_POLICY
+                    masterNode = ktfx.layouts.tableView<Invoice> {
+                        columnResizePolicy = TableView.CONSTRAINED_RESIZE_POLICY
                         columns {
                             getString(R2.string.id)<String> { stringCell { no.toString() } }
                             getString(R2.string.date)<String> {
@@ -171,9 +170,8 @@ class InvoiceController : ActionController(), Refreshable {
                         titleProperty().bind(buildStringBinding(selectionModel.selectedItemProperty()) {
                             Invoice.no(this@InvoiceController, selectionModel.selectedItem?.no)
                         })
-                    }
+                    }.also { invoiceTable = it }
                     showDetailNodeProperty().bind(invoiceTable.selectionModel.selectedItemProperty().isNotNull)
-                    masterNode = invoiceTable
                     detailNode = ktfx.layouts.vbox {
                         addNode(Toolbar().apply {
                             leftItems {

@@ -1,4 +1,4 @@
-package com.hendraanggrian.openpss.routing
+package com.hendraanggrian.openpss.route
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.Server
@@ -14,6 +14,7 @@ import io.ktor.application.call
 import io.ktor.http.HttpStatusCode
 import io.ktor.request.receive
 import io.ktor.response.respond
+import io.ktor.routing.Routing
 import io.ktor.routing.delete
 import io.ktor.routing.get
 import io.ktor.routing.post
@@ -23,7 +24,7 @@ import kotlin.math.ceil
 import kotlinx.nosql.equal
 import kotlinx.nosql.update
 
-object InvoicesRouting : Routing({
+fun Routing.invoice() {
     route(Invoices.schemaName) {
         get {
             val search = call.getInt("search")
@@ -107,4 +108,4 @@ object InvoicesRouting : Routing({
             }
         }
     }
-})
+}

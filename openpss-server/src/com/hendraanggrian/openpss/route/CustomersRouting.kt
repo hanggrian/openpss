@@ -1,4 +1,4 @@
-package com.hendraanggrian.openpss.routing
+package com.hendraanggrian.openpss.route
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.Server
@@ -12,16 +12,16 @@ import io.ktor.application.call
 import io.ktor.http.HttpStatusCode
 import io.ktor.request.receive
 import io.ktor.response.respond
+import io.ktor.routing.Routing
 import io.ktor.routing.delete
 import io.ktor.routing.get
 import io.ktor.routing.post
 import io.ktor.routing.put
 import io.ktor.routing.route
 import java.util.regex.Pattern
-import kotlin.math.ceil
 import kotlinx.nosql.update
 
-object CustomersRouting : Routing({
+fun Routing.customer() {
     route(Customers.schemaName) {
         get {
             val search = call.getString("search")
@@ -37,7 +37,7 @@ object CustomersRouting : Routing({
                         }
                     }
                     Page(
-                        ceil(customers.count() / count.toDouble()).toInt(),
+                        kotlin.math.ceil(customers.count() / count.toDouble()).toInt(),
                         customers.skip(count * page).take(count).toList()
                     )
                 }
@@ -46,9 +46,8 @@ object CustomersRouting : Routing({
         post {
             val customer = call.receive<Customer>()
             when {
-                transaction {
-                    Customers { name.matches("^$customer$", Pattern.CASE_INSENSITIVE) }.isNotEmpty()
-                } -> call.respond(HttpStatusCode.NotAcceptable, "Name taken")
+                transaction { Customers { name.matches("^$customer$", Pattern.CASE_INSENSITIVE) }.isNotEmpty() } ->
+                    call.respond(HttpStatusCode.NotAcceptable, "Name taken")
                 else -> {
                     customer.id = transaction { Customers.insert(customer) }
                     call.respond(customer)
@@ -91,10 +90,7 @@ object CustomersRouting : Routing({
                         query.projection { contacts }
                             .update(customer.contacts - contact)
                         Logs += Log.new(
-                            Server.getString(R.string.contact_deleted).format(
-                                contact.value,
-                                customer.name
-                            ),
+                            Server.getString(R.string.contact_deleted).format(contact.value, customer.name),
                             call.getString("login")
                         )
                     }
@@ -103,4 +99,4 @@ object CustomersRouting : Routing({
             }
         }
     }
-})
+}

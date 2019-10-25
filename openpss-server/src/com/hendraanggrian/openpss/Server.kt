@@ -3,20 +3,19 @@ package com.hendraanggrian.openpss
 import com.google.gson.GsonBuilder
 import com.hendraanggrian.openpss.nosql.Database
 import com.hendraanggrian.openpss.nosql.transaction
-import com.hendraanggrian.openpss.routing.AuthRouting
-import com.hendraanggrian.openpss.routing.CustomersRouting
-import com.hendraanggrian.openpss.routing.DateTimeRouting
-import com.hendraanggrian.openpss.routing.DigitalPriceRouting
-import com.hendraanggrian.openpss.routing.EmployeeRouting
-import com.hendraanggrian.openpss.routing.GlobalSettingsRouting
-import com.hendraanggrian.openpss.routing.InvoicesRouting
-import com.hendraanggrian.openpss.routing.LogsRouting
-import com.hendraanggrian.openpss.routing.OffsetPriceRouting
-import com.hendraanggrian.openpss.routing.PaymentsRouting
-import com.hendraanggrian.openpss.routing.PlatePriceRouting
-import com.hendraanggrian.openpss.routing.RecessesRouting
-import com.hendraanggrian.openpss.routing.WagesRouting
-import com.hendraanggrian.openpss.routing.route
+import com.hendraanggrian.openpss.route.auth
+import com.hendraanggrian.openpss.route.customer
+import com.hendraanggrian.openpss.route.dateTime
+import com.hendraanggrian.openpss.route.digitalPrice
+import com.hendraanggrian.openpss.route.employee
+import com.hendraanggrian.openpss.route.globalSetting
+import com.hendraanggrian.openpss.route.invoice
+import com.hendraanggrian.openpss.route.log
+import com.hendraanggrian.openpss.route.offsetPrice
+import com.hendraanggrian.openpss.route.payment
+import com.hendraanggrian.openpss.route.platePrice
+import com.hendraanggrian.openpss.route.recess
+import com.hendraanggrian.openpss.route.wage
 import com.hendraanggrian.openpss.schema.GlobalSetting
 import com.hendraanggrian.openpss.ui.TextDialog
 import com.hendraanggrian.openpss.ui.menuItem
@@ -140,19 +139,19 @@ object Server : StringResources {
                     }
                 }
                 routing {
-                    route(AuthRouting)
-                    route(CustomersRouting)
-                    route(DateTimeRouting)
-                    route(GlobalSettingsRouting)
-                    route(InvoicesRouting)
-                    route(LogsRouting)
-                    route(PlatePriceRouting)
-                    route(OffsetPriceRouting)
-                    route(DigitalPriceRouting)
-                    route(EmployeeRouting)
-                    route(PaymentsRouting)
-                    route(RecessesRouting)
-                    route(WagesRouting)
+                    auth()
+                    customer()
+                    dateTime()
+                    globalSetting()
+                    invoice()
+                    log()
+                    platePrice()
+                    offsetPrice()
+                    digitalPrice()
+                    employee()
+                    payment()
+                    recess()
+                    wage()
                 }
             }
             Server.log?.info("Welcome to ${BuildConfig.NAME} ${BuildConfig.VERSION}")

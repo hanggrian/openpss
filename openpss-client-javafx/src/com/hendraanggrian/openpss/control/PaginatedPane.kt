@@ -34,7 +34,7 @@ class PaginatedPane : Pagination() {
     }
 
     fun selectLast() {
-        if (currentPageIndex != lastPageIndex && pageCount != Pagination.INDETERMINATE) {
+        if (currentPageIndex != lastPageIndex && pageCount != INDETERMINATE) {
             currentPageIndex = lastPageIndex
         }
     }

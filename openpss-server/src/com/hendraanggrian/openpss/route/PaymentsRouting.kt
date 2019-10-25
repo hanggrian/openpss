@@ -1,4 +1,4 @@
-package com.hendraanggrian.openpss.routing
+package com.hendraanggrian.openpss.route
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.Server
@@ -12,13 +12,14 @@ import io.ktor.application.call
 import io.ktor.http.HttpStatusCode
 import io.ktor.request.receive
 import io.ktor.response.respond
+import io.ktor.routing.Routing
 import io.ktor.routing.delete
 import io.ktor.routing.get
 import io.ktor.routing.post
 import io.ktor.routing.route
 import kotlinx.nosql.equal
 
-object PaymentsRouting : Routing({
+fun Routing.payment() {
     route(Payments.schemaName) {
         get {
             call.respond(transaction {
@@ -59,4 +60,4 @@ object PaymentsRouting : Routing({
             }
         }
     }
-})
+}

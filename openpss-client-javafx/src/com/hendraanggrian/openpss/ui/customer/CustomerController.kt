@@ -90,7 +90,7 @@ class CustomerController : ActionController(), Refreshable {
         valueColumn.stringCell { value }
     }
 
-    override fun refresh() = runLater {
+    override fun refresh() = ktfx.runLater {
         customerPagination.contentFactoryProperty().bind(buildBinding(searchField.textProperty()) {
             Callback<Pair<Int, Int>, Node> { (page, count) ->
                 customerList = CustomerListView().apply {

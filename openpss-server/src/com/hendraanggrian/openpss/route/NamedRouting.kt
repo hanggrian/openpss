@@ -1,4 +1,4 @@
-package com.hendraanggrian.openpss.routing
+package com.hendraanggrian.openpss.route
 
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.Server
@@ -22,6 +22,7 @@ import io.ktor.application.call
 import io.ktor.http.HttpStatusCode
 import io.ktor.request.receive
 import io.ktor.response.respond
+import io.ktor.routing.Routing
 import io.ktor.routing.delete
 import io.ktor.routing.get
 import io.ktor.routing.post
@@ -31,35 +32,30 @@ import kotlin.reflect.KClass
 import kotlinx.nosql.equal
 import kotlinx.nosql.update
 
-object PlatePriceRouting : NamedRouting<PlatePrices, PlatePrice>(
-    PlatePrices,
+fun Routing.platePrice() = named(PlatePrices,
     PlatePrice::class,
     onEdit = { _, query, price ->
         query.projection { this.price }
             .update(price.price)
-    }
-)
+    })
 
-object OffsetPriceRouting : NamedRouting<OffsetPrices, OffsetPrice>(
+fun Routing.offsetPrice() = named(
     OffsetPrices,
     OffsetPrice::class,
     onEdit = { _, query, price ->
         query.projection { minQty + minPrice + excessPrice }
             .update(price.minQty, price.minPrice, price.excessPrice)
-    }
-)
+    })
 
-object DigitalPriceRouting : NamedRouting<DigitalPrices, DigitalPrice>(
+fun Routing.digitalPrice() = named(
     DigitalPrices,
     DigitalPrice::class,
     onEdit = { _, query, price ->
         query.projection { oneSidePrice + twoSidePrice }
             .update(price.oneSidePrice, price.twoSidePrice)
-    }
-)
+    })
 
-object EmployeeRouting : NamedRouting<Employees, Employee>(
-    Employees,
+fun Routing.employee() = named(Employees,
     Employee::class,
     onGet = {
         val employees = Employees()
@@ -79,16 +75,15 @@ object EmployeeRouting : NamedRouting<Employees, Employee>(
             Server.getString(R.string.employee_delete).format(query.single().name),
             call.getString("login")
         )
-    }
-)
+    })
 
-sealed class NamedRouting<S : NamedDocumentSchema<D>, D : NamedDocument<S>>(
+private fun <S : NamedDocumentSchema<D>, D : NamedDocument<S>> Routing.named(
     schema: S,
     klass: KClass<D>,
     onGet: SessionWrapper.(call: ApplicationCall) -> List<D> = { schema().toList() },
     onEdit: SessionWrapper.(call: ApplicationCall, query: DocumentQuery<S, String, D>, document: D) -> Unit,
     onDeleted: SessionWrapper.(call: ApplicationCall, query: DocumentQuery<S, String, D>) -> Unit = { _, _ -> }
-) : Routing({
+) {
     route(schema.schemaName) {
         get {
             call.respond(transaction { onGet(call) })
@@ -125,4 +120,4 @@ sealed class NamedRouting<S : NamedDocumentSchema<D>, D : NamedDocument<S>>(
             }
         }
     }
-})
+}

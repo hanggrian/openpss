@@ -28,6 +28,7 @@ dependencies {
     api(hendraanggrian("defaults", "defaults", "0.3"))
     api(ktor("client-okhttp"))
     api(ktor("client-gson"))
+    api(arrow("core"))
 
     api(androidx("annotation", version = "1.0.1"))
 

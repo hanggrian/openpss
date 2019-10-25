@@ -25,5 +25,5 @@ class UpdateDialog(
         }
     }
 
-    override val nullableResult: String? get() = listView.selectionModel.selectedItem?.downloadUrl
+    override val nullableResult: String? get() = listView.selectionModel.selectedItem?.browserDownloadUrl
 }

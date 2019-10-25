@@ -1,4 +1,4 @@
-package com.hendraanggrian.openpss.routing
+package com.hendraanggrian.openpss.route
 
 import com.hendraanggrian.openpss.Server
 import com.hendraanggrian.openpss.nosql.transaction
@@ -8,13 +8,14 @@ import io.ktor.application.call
 import io.ktor.http.HttpStatusCode
 import io.ktor.request.receive
 import io.ktor.response.respond
+import io.ktor.routing.Routing
 import io.ktor.routing.get
 import io.ktor.routing.post
 import io.ktor.routing.route
 import kotlinx.nosql.equal
 import kotlinx.nosql.update
 
-object GlobalSettingsRouting : Routing({
+fun Routing.globalSetting() {
     route("${GlobalSettings.schemaName}/{key}") {
         get {
             call.respond(transaction {
@@ -32,4 +33,4 @@ object GlobalSettingsRouting : Routing({
             Server.log?.info("GlobalSetting '$key' has been changed to '$value'")
         }
     }
-})
+}

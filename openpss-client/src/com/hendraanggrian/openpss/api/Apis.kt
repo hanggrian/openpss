@@ -1,9 +1,11 @@
 package com.hendraanggrian.openpss.api
 
+import arrow.core.Either
 import com.hendraanggrian.openpss.BuildConfig2
 import com.hendraanggrian.openpss.data.Release
 import com.hendraanggrian.openpss.registerJodaTime
 import io.ktor.client.HttpClient
+import io.ktor.client.call.receive
 import io.ktor.client.engine.okhttp.OkHttp
 import io.ktor.client.features.json.GsonSerializer
 import io.ktor.client.features.json.JsonFeature
@@ -19,6 +21,11 @@ import io.ktor.http.HttpMethod
 import io.ktor.http.contentType
 import io.ktor.http.isSuccess
 import io.ktor.http.takeFrom
+
+suspend inline fun <reified T> HttpResponse.asEither(): Either<String, T> = when {
+    status.isSuccess() -> Either.right(receive())
+    else -> Either.left(status.description)
+}
 
 interface Api {
 

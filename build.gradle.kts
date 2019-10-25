@@ -22,13 +22,17 @@ allprojects {
         jcenter()
         maven("https://kotlin.bintray.com/kotlinx")
         maven("http://repository.jetbrains.com/kotlin-nosql")
+        maven("https://dl.bintray.com/arrow-kt/arrow-kt/")
     }
     tasks {
         withType<Delete> {
             delete(projectDir.resolve("out"))
         }
         withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-            kotlinOptions.jvmTarget = "1.8"
+            kotlinOptions {
+                jvmTarget = "1.8"
+                freeCompilerArgs = listOf("-Xallow-result-return-type")
+            }
         }
     }
 }

@@ -1,9 +1,7 @@
 package com.hendraanggrian.openpss.data
 
-import com.google.gson.annotations.SerializedName
-
 data class Asset(
-    @SerializedName("browser_download_url") val downloadUrl: String,
+    val browserDownloadUrl: String,
     val name: String,
     val state: String
 ) {

@@ -1,11 +1,12 @@
-package com.hendraanggrian.openpss.routing
+package com.hendraanggrian.openpss.route
 
 import com.hendraanggrian.openpss.nosql.Database
 import io.ktor.application.call
 import io.ktor.response.respond
+import io.ktor.routing.Routing
 import io.ktor.routing.get
 
-object DateTimeRouting : Routing({
+fun Routing.dateTime() {
     get("date") {
         call.respond(Database.date())
     }
@@ -15,4 +16,4 @@ object DateTimeRouting : Routing({
     get("date-time") {
         call.respond(Database.dateTime())
     }
-})
+}

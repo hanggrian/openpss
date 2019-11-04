@@ -16,7 +16,7 @@ import ktfx.bindings.buildBinding
 import ktfx.bindings.buildStringBinding
 import ktfx.controls.isSelected
 import ktfx.coroutines.onAction
-import ktfx.jfoenix.jfxSnackbar
+import ktfx.jfoenix.controls.jfxSnackbar
 import ktfx.layouts.contextMenu
 import ktfx.layouts.menuItem
 import ktfx.layouts.separatorMenuItem

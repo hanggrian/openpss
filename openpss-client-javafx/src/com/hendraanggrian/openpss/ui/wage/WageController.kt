@@ -37,8 +37,9 @@ import ktfx.collections.isEmptyBinding
 import ktfx.collections.sizeBinding
 import ktfx.coroutines.onAction
 import ktfx.getValue
-import ktfx.jfoenix.jfxSnackbar
+import ktfx.jfoenix.controls.jfxSnackbar
 import ktfx.layouts.NodeManager
+import ktfx.layouts.addNode
 import ktfx.layouts.borderPane
 import ktfx.layouts.scene
 import ktfx.runLater
@@ -63,10 +64,10 @@ class WageController : ActionController() {
     private var filePath: String? by filePathProperty
 
     override fun NodeManager.onCreateActions() {
-        browseButton = addNode(Action(getString(R2.string.browse), R.image.action_browse).apply {
+        browseButton = addNode(Action(getString(R2.string.browse), R.image.action_browse)) {
             onAction { browse() }
-        })
-        saveWageButton = addNode(Action(getString(R2.string.save_wage), R.image.action_save).apply {
+        }
+        saveWageButton = addNode(Action(getString(R2.string.save_wage), R.image.action_save)) {
             disableProperty().bind(flowPane.children.isEmptyBinding)
             onAction {
                 saveWage()
@@ -75,10 +76,10 @@ class WageController : ActionController() {
                     getLong(R.value.duration_short)
                 )
             }
-        })
-        historyButton = addNode(Action(getString(R2.string.history), R.image.action_history).apply {
+        }
+        historyButton = addNode(Action(getString(R2.string.history), R.image.action_history)) {
             onAction { history() }
-        })
+        }
     }
 
     override fun initialize(location: URL, resources: ResourceBundle) {
@@ -142,7 +143,7 @@ class WageController : ActionController() {
         val loadingPane = borderPane {
             prefWidthProperty().bind(anchorPane.widthProperty())
             prefHeightProperty().bind(anchorPane.heightProperty())
-            center = ktfx.jfoenix.jfxSpinner {
+            center = ktfx.jfoenix.layouts.jfxSpinner {
                 setMaxSize(96.0, 96.0)
             }
         }

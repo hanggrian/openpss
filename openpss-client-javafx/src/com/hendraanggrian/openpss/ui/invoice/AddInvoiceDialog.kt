@@ -4,6 +4,8 @@ import com.hendraanggrian.openpss.FxComponent
 import com.hendraanggrian.openpss.PATTERN_DATE
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
+import com.hendraanggrian.openpss.R2.string.qty
+import com.hendraanggrian.openpss.R2.string.total
 import com.hendraanggrian.openpss.api.OpenPSSApi
 import com.hendraanggrian.openpss.schema.Customer
 import com.hendraanggrian.openpss.schema.Invoice
@@ -42,6 +44,8 @@ import ktfx.bindings.otherwise
 import ktfx.bindings.then
 import ktfx.collections.isEmptyBinding
 import ktfx.collections.mutableObservableListOf
+import ktfx.controls.TableColumnsBuilder
+import ktfx.controls.columns
 import ktfx.controls.gap
 import ktfx.controls.isSelected
 import ktfx.coroutines.onAction
@@ -49,11 +53,9 @@ import ktfx.coroutines.onKeyPressed
 import ktfx.coroutines.onMouseClicked
 import ktfx.inputs.isDelete
 import ktfx.invoke
-import ktfx.jfoenix.jfxTabPane
-import ktfx.jfoenix.jfxTextField
+import ktfx.jfoenix.layouts.jfxTabPane
+import ktfx.jfoenix.layouts.jfxTextField
 import ktfx.layouts.NodeManager
-import ktfx.layouts.TableColumnsBuilder
-import ktfx.layouts.columns
 import ktfx.layouts.contextMenu
 import ktfx.layouts.gridPane
 import ktfx.layouts.label
@@ -68,12 +70,12 @@ class AddInvoiceDialog(
     component: FxComponent
 ) : ResultableDialog<Invoice>(component, R2.string.add_invoice) {
 
-    private lateinit var customerField: TextField
-    private lateinit var offsetTable: TableView<Invoice.OffsetJob>
-    private lateinit var digitalTable: TableView<Invoice.DigitalJob>
-    private lateinit var plateTable: TableView<Invoice.PlateJob>
-    private lateinit var otherTable: TableView<Invoice.OtherJob>
-    private lateinit var noteArea: TextArea
+    private val customerField: TextField
+    private val offsetTable: TableView<Invoice.OffsetJob>
+    private val digitalTable: TableView<Invoice.DigitalJob>
+    private val plateTable: TableView<Invoice.PlateJob>
+    private val otherTable: TableView<Invoice.OtherJob>
+    private val noteArea: TextArea
 
     private val dateTime: DateTime = runBlocking(Dispatchers.IO) { OpenPSSApi.getDateTime() }
     private val customerProperty: ObjectProperty<Customer> = SimpleObjectProperty(null)

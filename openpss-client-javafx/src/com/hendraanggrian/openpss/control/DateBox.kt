@@ -12,8 +12,8 @@ import javafx.scene.image.ImageView
 import ktfx.bindings.buildBinding
 import ktfx.coroutines.onAction
 import ktfx.getValue
-import ktfx.jfoenix.jfxButton
-import ktfx.jfoenix.jfxDatePicker
+import ktfx.jfoenix.layouts.jfxButton
+import ktfx.jfoenix.layouts.jfxDatePicker
 import ktfx.layouts.KtfxHBox
 import org.joda.time.LocalDate
 

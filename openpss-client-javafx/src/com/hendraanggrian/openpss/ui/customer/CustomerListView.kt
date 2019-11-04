@@ -9,8 +9,8 @@ import javafx.scene.image.ImageView
 import ktfx.bindings.eq
 import ktfx.bindings.otherwise
 import ktfx.bindings.then
+import ktfx.cells.cellFactory
 import ktfx.layouts.label
-import ktfx.listeners.cellFactory
 
 class CustomerListView : ListView<Customer>() {
 

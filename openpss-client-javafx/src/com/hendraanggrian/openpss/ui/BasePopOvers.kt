@@ -20,9 +20,10 @@ import ktfx.bindings.isBlank
 import ktfx.controls.gap
 import ktfx.coroutines.onAction
 import ktfx.getValue
-import ktfx.jfoenix.jfxButton
-import ktfx.jfoenix.jfxTextField
+import ktfx.jfoenix.layouts.jfxButton
+import ktfx.jfoenix.layouts.jfxTextField
 import ktfx.layouts.NodeManager
+import ktfx.layouts.addNode
 import ktfx.layouts.gridPane
 import ktfx.setValue
 import org.controlsfx.control.PopOver
@@ -125,7 +126,7 @@ class DateTimePopOver(
     prefill: DateTime
 ) : ResultablePopOver<DateTime>(component, titleId) {
 
-    private lateinit var dateBox: DateBox
+    private val dateBox: DateBox
     private lateinit var timeBox: TimeBox
 
     init {
@@ -139,14 +140,14 @@ class DateTimePopOver(
                     }
                 }
             } row 1 col 0
-            timeBox = addNode(TimeBox(prefill.toLocalTime()).apply {
+            timeBox = addNode(TimeBox(prefill.toLocalTime())) {
                 onOverlap = { plus ->
                     dateBox.picker.value = when {
                         plus -> dateBox.picker.value.plusDays(1)
                         else -> dateBox.picker.value.minusDays(1)
                     }
                 }
-            }) row 1 col 1
+            } row 1 col 1
             jfxButton("+${Record.WORKING_HOURS}") {
                 onAction {
                     repeat(Record.WORKING_HOURS) {

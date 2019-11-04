@@ -10,12 +10,12 @@ import javafx.geometry.Pos
 import javafx.scene.control.Button
 import javafx.scene.image.ImageView
 import ktfx.bindings.buildBinding
+import ktfx.buildStringConverter
 import ktfx.coroutines.onAction
 import ktfx.getValue
-import ktfx.jfoenix.jfxButton
-import ktfx.jfoenix.jfxTimePicker
+import ktfx.jfoenix.layouts.jfxButton
+import ktfx.jfoenix.layouts.jfxTimePicker
 import ktfx.layouts.KtfxHBox
-import ktfx.listeners.buildStringConverter
 import org.joda.time.LocalTime
 
 /**

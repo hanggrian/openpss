@@ -24,9 +24,9 @@ import ktfx.bindings.isBlank
 import ktfx.bindings.or
 import ktfx.collections.toObservableList
 import ktfx.controls.gap
-import ktfx.jfoenix.jfxComboBox
-import ktfx.jfoenix.jfxPasswordField
-import ktfx.jfoenix.jfxSnackbar
+import ktfx.jfoenix.controls.jfxSnackbar
+import ktfx.jfoenix.layouts.jfxComboBox
+import ktfx.jfoenix.layouts.jfxPasswordField
 import ktfx.layouts.gridPane
 import ktfx.layouts.label
 
@@ -81,8 +81,8 @@ interface FxComponent : Component<StackPane, WritableDefaults>, StringResources,
     private class PermissionDialog(component: FxComponent) :
         ResultableDialog<Employee>(component, R2.string.permission_required) {
 
-        private lateinit var adminCombo: ComboBox<Employee>
-        private lateinit var passwordField: PasswordField
+        private val adminCombo: ComboBox<Employee>
+        private val passwordField: PasswordField
 
         override val focusedNode: Node? get() = adminCombo
 

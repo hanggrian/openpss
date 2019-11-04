@@ -23,8 +23,8 @@ import ktfx.bindings.or
 import ktfx.bindings.otherwise
 import ktfx.bindings.then
 import ktfx.coroutines.listener
-import ktfx.jfoenix.jfxTabPane
-import ktfx.jfoenix.jfxTextField
+import ktfx.jfoenix.layouts.jfxTabPane
+import ktfx.jfoenix.layouts.jfxTextField
 import ktfx.layouts.label
 import ktfx.layouts.tab
 

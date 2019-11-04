@@ -38,8 +38,9 @@ import ktfx.collections.emptyObservableList
 import ktfx.collections.toMutableObservableList
 import ktfx.collections.toObservableList
 import ktfx.coroutines.onAction
-import ktfx.jfoenix.jfxTextField
+import ktfx.jfoenix.layouts.jfxTextField
 import ktfx.layouts.NodeManager
+import ktfx.layouts.addNode
 import ktfx.layouts.contextMenu
 import ktfx.layouts.tooltip
 import ktfx.runLater
@@ -69,12 +70,12 @@ class CustomerController : ActionController(), Refreshable {
     private lateinit var customerList: ListView<Customer>
 
     override fun NodeManager.onCreateActions() {
-        refreshButton = addNode(Action(getString(R2.string.refresh), R.image.action_refresh).apply {
+        refreshButton = addNode(Action(getString(R2.string.refresh), R.image.action_refresh)) {
             onAction { refresh() }
-        })
-        addButton = addNode(Action(getString(R2.string.add), R.image.action_add).apply {
+        }
+        addButton = addNode(Action(getString(R2.string.add), R.image.action_add)) {
             onAction { this@CustomerController.add() }
-        })
+        }
         searchField = jfxTextField {
             promptText = getString(R2.string.search)
         }

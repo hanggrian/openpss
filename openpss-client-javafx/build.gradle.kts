@@ -42,7 +42,6 @@ dependencies {
     implementation(hendraanggrian("ktfx", "ktfx-controlsfx", VERSION_KTFX))
     implementation(hendraanggrian("ktfx", "ktfx-jfoenix", VERSION_KTFX))
 
-    implementation(apache("commons-lang3", VERSION_COMMONS_LANG))
     implementation(apache("commons-math3", VERSION_COMMONS_MATH))
     implementation(apache("poi-ooxml", VERSION_POI))
     implementation("commons-validator:commons-validator:$VERSION_COMMONS_VALIDATOR")
@@ -52,7 +51,7 @@ dependencies {
     testImplementation(kotlin("test-junit", VERSION_KOTLIN))
     testImplementation(kotlin("reflect", VERSION_KOTLIN))
 
-    testImplementation(hendraanggrian("ktfx", "ktfx-testfx", VERSION_KTFX))
+    testImplementation(hendraanggrian("ktfx", "ktfx-test", VERSION_KTFX))
     testImplementation(testFx("junit"))
 }
 

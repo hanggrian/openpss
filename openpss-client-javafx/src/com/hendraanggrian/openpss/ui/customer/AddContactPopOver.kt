@@ -11,13 +11,13 @@ import javafx.scene.Node
 import javafx.scene.control.ComboBox
 import javafx.scene.control.TextField
 import ktfx.bindings.buildBooleanBinding
+import ktfx.buildStringConverter
 import ktfx.collections.toObservableList
 import ktfx.controls.gap
-import ktfx.jfoenix.jfxComboBox
-import ktfx.jfoenix.jfxTextField
+import ktfx.jfoenix.layouts.jfxComboBox
+import ktfx.jfoenix.layouts.jfxTextField
 import ktfx.layouts.gridPane
 import ktfx.layouts.label
-import ktfx.listeners.converter
 import org.apache.commons.validator.routines.EmailValidator
 
 class AddContactPopOver(component: FxComponent) :
@@ -33,8 +33,8 @@ class AddContactPopOver(component: FxComponent) :
         )
     }
 
-    private lateinit var typeChoice: ComboBox<ContactType>
-    private lateinit var contactField: TextField
+    private val typeChoice: ComboBox<ContactType>
+    private val contactField: TextField
 
     override val focusedNode: Node? get() = typeChoice
 
@@ -43,7 +43,9 @@ class AddContactPopOver(component: FxComponent) :
             gap = getDouble(R.value.padding_medium)
             label(getString(R2.string.type)) col 0 row 0
             typeChoice = jfxComboBox(ContactType.values().toObservableList()) {
-                converter { toString { it!!.toString(this@AddContactPopOver) } }
+                converter = buildStringConverter {
+                    toString { it!!.toString(this@AddContactPopOver) }
+                }
             } col 1 row 0
             label(getString(R2.string.contact)) col 0 row 1
             contactField = jfxTextField { promptText = getString(R2.string.contact) } col 1 row 1

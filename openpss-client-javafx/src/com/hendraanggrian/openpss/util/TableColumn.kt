@@ -10,8 +10,8 @@ import javafx.scene.control.TableColumn
 import javafx.scene.image.ImageView
 import javafx.scene.text.Text
 import ktfx.asProperty
+import ktfx.cells.cellFactory
 import ktfx.invoke
-import ktfx.listeners.cellFactory
 
 fun <T> TableColumn<T, Boolean>.doneCell(size: Int = 64, target: T.() -> Boolean) {
     size.toDouble().let {

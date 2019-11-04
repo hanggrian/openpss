@@ -2,12 +2,12 @@
 
 package com.hendraanggrian.openpss.control
 
-import com.jfoenix.effects.JFXDepthManager
-import ktfx.jfoenix.KtfxJFXToolbar
+import ktfx.jfoenix.depth
+import ktfx.jfoenix.layouts.KtfxJFXToolbar
 
 class Toolbar : KtfxJFXToolbar() {
 
     init {
-        JFXDepthManager.setDepth(this, 0)
+        depth = 0
     }
 }

@@ -16,8 +16,9 @@ import ktfx.bindings.lessEq
 import ktfx.bindings.or
 import ktfx.collections.toObservableList
 import ktfx.coroutines.listener
-import ktfx.jfoenix.jfxComboBox
+import ktfx.jfoenix.layouts.jfxComboBox
 import ktfx.layouts.KtfxGridPane
+import ktfx.layouts.addNode
 import ktfx.layouts.label
 
 class AddPlateJobPopOver(component: FxComponent) :
@@ -37,9 +38,9 @@ class AddPlateJobPopOver(component: FxComponent) :
             } col 1 colSpans 2 row currentRow
         currentRow++
         label(getString(R2.string.price)) col 0 row currentRow
-        priceField = addNode(DoubleField().apply {
+        priceField = addNode(DoubleField()) {
             promptText = getString(R2.string.price)
-        }) col 1 colSpans 2 row currentRow
+        } col 1 colSpans 2 row currentRow
     }
 
     override val totalBindingDependencies: Array<Observable>

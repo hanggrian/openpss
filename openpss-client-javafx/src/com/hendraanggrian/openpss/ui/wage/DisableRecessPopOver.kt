@@ -15,8 +15,8 @@ import ktfx.bindings.or
 import ktfx.collections.mutableObservableListOf
 import ktfx.controls.gap
 import ktfx.coroutines.onAction
-import ktfx.jfoenix.jfxButton
-import ktfx.jfoenix.jfxComboBox
+import ktfx.jfoenix.layouts.jfxButton
+import ktfx.jfoenix.layouts.jfxComboBox
 import ktfx.layouts.gridPane
 import ktfx.layouts.label
 
@@ -25,8 +25,8 @@ class DisableRecessPopOver(
     private val attendeePanes: List<AttendeePane>
 ) : BasePopOver(component, R2.string.disable_recess) {
 
-    private lateinit var recessChoice: ComboBox<*>
-    private lateinit var roleChoice: ComboBox<*>
+    private val recessChoice: ComboBox<*>
+    private val roleChoice: ComboBox<*>
 
     override val focusedNode: Node? get() = recessChoice
 

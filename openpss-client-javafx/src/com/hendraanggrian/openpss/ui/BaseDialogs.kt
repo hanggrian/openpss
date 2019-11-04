@@ -23,11 +23,11 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.javafx.JavaFx
 import kotlinx.coroutines.launch
 import ktfx.collections.toMutableObservableList
+import ktfx.controls.TableColumnsBuilder
 import ktfx.coroutines.onAction
 import ktfx.getValue
-import ktfx.jfoenix.jfxButton
+import ktfx.jfoenix.layouts.jfxButton
 import ktfx.layouts.NodeManager
-import ktfx.layouts.TableColumnsBuilder
 import ktfx.layouts.anchorPane
 import ktfx.layouts.hbox
 import ktfx.layouts.label
@@ -130,9 +130,9 @@ abstract class TableDialog<D : Document<*>>(
     requestPermissionWhenDelete: Boolean = false
 ) : BaseDialog(component, titleId), TableColumnsBuilder<D>, Refreshable {
 
-    protected lateinit var refreshButton: Button
-    protected lateinit var addButton: Button
-    protected lateinit var deleteButton: Button
+    protected val refreshButton: Button
+    protected val addButton: Button
+    protected val deleteButton: Button
     protected lateinit var table: TableView<D>
 
     override val focusedNode: Node? get() = table

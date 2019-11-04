@@ -41,14 +41,14 @@ import ktfx.bindings.buildBooleanBinding
 import ktfx.bindings.buildStringBinding
 import ktfx.bindings.lessEq
 import ktfx.bindings.or
+import ktfx.cells.cellFactory
 import ktfx.collections.sizeBinding
 import ktfx.controls.snapshot
 import ktfx.coroutines.onAction
 import ktfx.invoke
-import ktfx.jfoenix.jfxIndefiniteSnackbar
+import ktfx.jfoenix.controls.jfxIndefiniteSnackbar
 import ktfx.layouts.label
 import ktfx.layouts.menuItem
-import ktfx.listeners.cellFactory
 import ktfx.runLater
 import ktfx.swing.toSwingImage
 import org.apache.commons.lang3.SystemUtils

@@ -7,8 +7,9 @@ import com.hendraanggrian.openpss.schema.PlatePrice
 import javafx.beans.value.ObservableValue
 import kotlinx.coroutines.CoroutineScope
 import ktfx.asProperty
+import ktfx.buildStringConverter
+import ktfx.cells.textFieldCellFactory
 import ktfx.coroutines.onEditCommit
-import ktfx.listeners.textFieldCellFactory
 
 @Suppress("UNCHECKED_CAST")
 class EditPlatePriceDialog(
@@ -22,9 +23,9 @@ class EditPlatePriceDialog(
             setCellValueFactory {
                 it.value.price.asProperty(true) as ObservableValue<Double>
             }
-            textFieldCellFactory {
+            textFieldCellFactory(buildStringConverter {
                 fromString { it.toDoubleOrNull() ?: 0.0 }
-            }
+            })
             onEditCommit { cell ->
                 val plate = cell.rowValue
                 OpenPSSApi.editPlatePrice(plate.apply { price = cell.newValue })

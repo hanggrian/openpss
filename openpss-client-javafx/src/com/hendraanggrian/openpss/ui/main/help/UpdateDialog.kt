@@ -7,7 +7,7 @@ import com.hendraanggrian.openpss.ui.ResultableDialog
 import javafx.scene.Node
 import javafx.scene.control.ListView
 import ktfx.collections.toObservableList
-import ktfx.jfoenix.jfxListView
+import ktfx.jfoenix.layouts.jfxListView
 
 class UpdateDialog(
     component: FxComponent,

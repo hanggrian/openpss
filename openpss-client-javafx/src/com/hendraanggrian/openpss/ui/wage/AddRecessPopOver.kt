@@ -16,8 +16,8 @@ class AddRecessPopOver(
     component: FxComponent
 ) : ResultablePopOver<Pair<LocalTime, LocalTime>>(component, R2.string.add_reccess) {
 
-    private lateinit var startBox: TimeBox
-    private lateinit var endBox: TimeBox
+    private val startBox: TimeBox
+    private val endBox: TimeBox
 
     override val focusedNode: Node? get() = startBox
 

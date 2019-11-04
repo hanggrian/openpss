@@ -28,20 +28,21 @@ import kotlinx.coroutines.javafx.JavaFx
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import ktfx.bindings.buildBinding
+import ktfx.cells.cellFactory
 import ktfx.collections.sort
 import ktfx.controls.find
 import ktfx.controls.gap
 import ktfx.controls.isSelected
 import ktfx.controls.paddingAll
 import ktfx.coroutines.eventFilter
-import ktfx.coroutines.listener
 import ktfx.coroutines.onAction
 import ktfx.coroutines.onKeyPressed
 import ktfx.coroutines.onMouseClicked
 import ktfx.inputs.isDelete
 import ktfx.inputs.isDoubleClick
-import ktfx.jfoenix.jfxCheckBox
+import ktfx.jfoenix.layouts.jfxCheckBox
 import ktfx.layouts.KtfxTitledPane
+import ktfx.layouts.addNode
 import ktfx.layouts.contextMenu
 import ktfx.layouts.gridPane
 import ktfx.layouts.label
@@ -50,7 +51,7 @@ import ktfx.layouts.menuItem
 import ktfx.layouts.separatorMenuItem
 import ktfx.layouts.text
 import ktfx.layouts.vbox
-import ktfx.listeners.cellFactory
+import ktfx.listeners.listener
 import ktfx.text.updateFont
 import org.joda.time.DateTime
 import org.joda.time.DateTime.now
@@ -61,9 +62,9 @@ class AttendeePane(
 ) : KtfxTitledPane(attendee.toString()), FxComponent by component {
 
     val recessChecks: MutableList<CheckBox> = mutableListOf()
-    lateinit var deleteMenu: MenuItem
-    lateinit var deleteOthersMenu: MenuItem
-    lateinit var deleteToTheRightMenu: MenuItem
+    val deleteMenu: MenuItem
+    val deleteOthersMenu: MenuItem
+    val deleteToTheRightMenu: MenuItem
     lateinit var attendanceList: ListView<DateTime>
 
     init {
@@ -79,20 +80,20 @@ class AttendeePane(
                     label(role) col 1 row 0 colSpans 2
                 }
                 label(getString(R2.string.income)) col 0 row 1 marginRight 4.0
-                addNode(IntField().apply {
+                addNode(IntField()) {
                     prefWidth = 80.0
                     promptText = getString(R2.string.income)
                     valueProperty().bindBidirectional(attendee.dailyProperty)
-                }) col 1 row 1
+                } col 1 row 1
                 label("@${getString(R2.string.day)}") {
                     updateFont(10.0)
                 } col 2 row 1
                 label(getString(R2.string.overtime)) col 0 row 2 marginRight 4.0
-                addNode(IntField().apply {
+                addNode(IntField()) {
                     prefWidth = 80.0
                     promptText = getString(R2.string.overtime)
                     valueProperty().bindBidirectional(attendee.hourlyOvertimeProperty)
-                }) col 1 row 2
+                } col 1 row 2
                 label("@${getString(R2.string.hour)}") {
                     updateFont(10.0)
                 } col 2 row 2

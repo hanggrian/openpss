@@ -13,16 +13,18 @@ import javafx.scene.control.Dialog
 import javafx.scene.control.Hyperlink
 import javafx.scene.control.ListView
 import javafx.scene.image.Image
+import ktfx.cells.cellFactory
 import ktfx.collections.toObservableList
 import ktfx.controls.find
 import ktfx.controls.paddingAll
-import ktfx.controlsfx.masterDetailPane
+import ktfx.controlsfx.layouts.masterDetailPane
 import ktfx.coroutines.listener
 import ktfx.coroutines.onAction
 import ktfx.dialogs.closeButton
 import ktfx.dialogs.icon
-import ktfx.jfoenix.jfxButton
-import ktfx.jfoenix.jfxListView
+import ktfx.jfoenix.layouts.jfxButton
+import ktfx.jfoenix.layouts.jfxListView
+import ktfx.jfoenix.layouts.jfxTextArea
 import ktfx.layouts.contextMenu
 import ktfx.layouts.hbox
 import ktfx.layouts.imageView
@@ -30,7 +32,6 @@ import ktfx.layouts.label
 import ktfx.layouts.text
 import ktfx.layouts.textFlow
 import ktfx.layouts.vbox
-import ktfx.listeners.cellFactory
 import ktfx.runLater
 import ktfx.text.updateFont
 
@@ -44,7 +45,7 @@ class AboutDialog(component: FxComponent) : Dialog<Unit>(), FxComponent by compo
         items = License.values().toObservableList()
         cellFactory {
             onUpdate { license, empty ->
-                if (license != null && !empty) graphic = ktfx.layouts.vbox {
+                if (license != null && !empty) graphic = vbox {
                     label(license.repo)
                     label(license.owner) { styleClass += R.style.bold }
                 }
@@ -112,8 +113,8 @@ class AboutDialog(component: FxComponent) : Dialog<Unit>(), FxComponent by compo
                 prefHeight = 200.0
                 dividerPosition = 0.3
                 showDetailNodeProperty().bind(licenseList.selectionModel.selectedItemProperty().isNotNull)
-                masterNode = licenseList
-                detailNode = ktfx.jfoenix.jfxTextArea {
+                addNode(licenseList)
+                jfxTextArea {
                     isEditable = false
                     licenseList.selectionModel.selectedItemProperty().listener { _, _, license ->
                         text = license?.getContent()

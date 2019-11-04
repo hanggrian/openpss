@@ -20,9 +20,10 @@ import ktfx.bindings.buildStringBinding
 import ktfx.controls.gap
 import ktfx.coroutines.onAction
 import ktfx.invoke
-import ktfx.jfoenix.jfxButton
-import ktfx.jfoenix.jfxCheckBox
-import ktfx.jfoenix.jfxTextField
+import ktfx.jfoenix.layouts.jfxButton
+import ktfx.jfoenix.layouts.jfxCheckBox
+import ktfx.jfoenix.layouts.jfxTextField
+import ktfx.layouts.addNode
 import ktfx.layouts.gridPane
 import ktfx.layouts.label
 import ktfx.layouts.tooltip
@@ -32,11 +33,10 @@ class AddPaymentPopOver(
     private val invoice: Invoice
 ) : ResultablePopOver<Payment>(component, R2.string.add_payment) {
 
-    private lateinit var valueField: DoubleField
-    private lateinit var cashBox: CheckBox
-    private lateinit var referenceField: TextField
-    private val receivable =
-        invoice.total - runBlocking(Dispatchers.IO) { OpenPSSApi.getPaymentDue(invoice.id) }
+    private val valueField: DoubleField
+    private val cashBox: CheckBox
+    private val referenceField: TextField
+    private val receivable = invoice.total - runBlocking(Dispatchers.IO) { OpenPSSApi.getPaymentDue(invoice.id) }
 
     init {
         gridPane {
@@ -50,9 +50,9 @@ class AddPaymentPopOver(
                 styleClass += R.style.bold
             } row 1 col 1 colSpans 2
             label(getString(R2.string.payment)) row 2 col 0
-            valueField = addNode(DoubleField().apply {
+            valueField = addNode(DoubleField()) {
                 promptText = getString(R2.string.payment)
-            }) row 2 col 1
+            } row 2 col 1
             jfxButton(graphic = ImageView(R.image.btn_match_receivable)) {
                 styleClass += R.style.flat
                 tooltip(getString(R2.string.match_receivable))

@@ -17,8 +17,8 @@ import ktfx.asProperty
 import ktfx.bindings.or
 import ktfx.controls.gap
 import ktfx.coroutines.listener
-import ktfx.jfoenix.jfxTextArea
-import ktfx.jfoenix.jfxTextField
+import ktfx.jfoenix.layouts.jfxTextArea
+import ktfx.jfoenix.layouts.jfxTextField
 import ktfx.layouts.gridPane
 import ktfx.layouts.imageView
 import ktfx.layouts.label
@@ -30,11 +30,11 @@ class EditCustomerDialog(
 
     private val unchangedProperty = true.asProperty()
 
-    private lateinit var image: ImageView
-    private lateinit var description: Label
-    private lateinit var nameField: TextField
-    private lateinit var addressField: TextField
-    private lateinit var noteArea: TextArea
+    private val image: ImageView
+    private val description: Label
+    private val nameField: TextField
+    private val addressField: TextField
+    private val noteArea: TextArea
 
     override val focusedNode: Node? get() = nameField
 

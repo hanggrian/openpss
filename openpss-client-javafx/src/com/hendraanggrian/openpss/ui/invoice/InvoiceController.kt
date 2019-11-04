@@ -44,15 +44,16 @@ import ktfx.bindings.neq
 import ktfx.collections.emptyObservableList
 import ktfx.collections.toMutableObservableList
 import ktfx.collections.toObservableList
+import ktfx.controls.columns
 import ktfx.controls.isSelected
-import ktfx.controlsfx.masterDetailPane
+import ktfx.controlsfx.layouts.masterDetailPane
 import ktfx.coroutines.onAction
 import ktfx.coroutines.onHiding
 import ktfx.coroutines.onMouseClicked
 import ktfx.inputs.isDoubleClick
-import ktfx.jfoenix.jfxSnackbar
+import ktfx.jfoenix.controls.jfxSnackbar
 import ktfx.layouts.NodeManager
-import ktfx.layouts.columns
+import ktfx.layouts.addNode
 import ktfx.layouts.contextMenu
 import ktfx.layouts.label
 import ktfx.layouts.separatorMenuItem
@@ -81,20 +82,19 @@ class InvoiceController : ActionController(), Refreshable {
     private lateinit var paymentTable: TableView<Payment>
 
     override fun NodeManager.onCreateActions() {
-        refreshButton = addNode(Action(getString(R2.string.refresh), R.image.action_refresh).apply {
+        refreshButton = addNode(Action(getString(R2.string.refresh), R.image.action_refresh)) {
             onAction { refresh() }
-        })
-        addButton = addNode(Action(getString(R2.string.add), R.image.action_add).apply {
+        }
+        addButton = addNode(Action(getString(R2.string.add), R.image.action_add)) {
             onAction { addInvoice() }
-        })
-        clearFiltersButton =
-            addNode(Action(getString(R2.string.clear_filters), R.image.action_clear_filters).apply {
-                onAction { clearFilters() }
-            })
-        searchField = addNode(IntField().apply {
+        }
+        clearFiltersButton = addNode(Action(getString(R2.string.clear_filters), R.image.action_clear_filters)) {
+            onAction { clearFilters() }
+        }
+        searchField = addNode(IntField()) {
             filterBox.disableProperty().bind(valueProperty() neq 0)
             promptText = getString(R2.string.search_no)
-        })
+        }
     }
 
     override fun initialize(location: URL, resources: ResourceBundle) {
@@ -173,13 +173,13 @@ class InvoiceController : ActionController(), Refreshable {
                     }.also { invoiceTable = it }
                     showDetailNodeProperty().bind(invoiceTable.selectionModel.selectedItemProperty().isNotNull)
                     detailNode = ktfx.layouts.vbox {
-                        addNode(Toolbar().apply {
+                        addNode(Toolbar()) {
                             leftItems {
                                 label(getString(R2.string.payment)) {
                                     styleClass.addAll(R.style.bold, R.style.accent)
                                 }
                             }
-                        })
+                        }
                         paymentTable = tableView {
                             columnResizePolicy = TableView.CONSTRAINED_RESIZE_POLICY
                             columns {
@@ -267,9 +267,7 @@ class InvoiceController : ActionController(), Refreshable {
                                 }
                                 onAction {
                                     OpenPSSApi.editInvoice(
-                                        invoiceTable.selectionModel.selectedItem.apply {
-                                            isDone = true
-                                        }
+                                        invoiceTable.selectionModel.selectedItem.apply { isDone = true }
                                     )
                                     refreshButton.fire()
                                 }

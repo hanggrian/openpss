@@ -3,9 +3,9 @@ package com.hendraanggrian.openpss.control
 import com.jfoenix.controls.JFXTextField
 import javafx.beans.property.IntegerProperty
 import javafx.beans.property.SimpleIntegerProperty
+import ktfx.buildStringConverter
 import ktfx.coroutines.listener
 import ktfx.getValue
-import ktfx.listeners.bindBidirectional
 import ktfx.setValue
 
 class IntField : JFXTextField() {
@@ -15,9 +15,9 @@ class IntField : JFXTextField() {
     var value: Int by valueProperty
 
     init {
-        textProperty().bindBidirectional(valueProperty()) {
+        textProperty().bindBidirectional(valueProperty(), buildStringConverter {
             fromString { it.toIntOrNull() ?: 0 }
-        }
+        })
         textProperty().addListener { _, oldValue, value ->
             text = when {
                 value.isEmpty() -> "0"

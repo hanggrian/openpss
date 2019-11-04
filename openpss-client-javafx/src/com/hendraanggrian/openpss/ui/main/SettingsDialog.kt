@@ -28,11 +28,12 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import ktfx.asProperty
 import ktfx.bindings.and
+import ktfx.buildStringConverter
 import ktfx.collections.toObservableList
 import ktfx.controls.gap
 import ktfx.coroutines.listener
-import ktfx.jfoenix.jfxButton
-import ktfx.jfoenix.jfxComboBox
+import ktfx.jfoenix.layouts.jfxButton
+import ktfx.jfoenix.layouts.jfxComboBox
 import ktfx.layouts.KtfxHBox
 import ktfx.layouts.KtfxVBox
 import ktfx.layouts.LayoutDslMarker
@@ -43,7 +44,6 @@ import ktfx.layouts.hbox
 import ktfx.layouts.label
 import ktfx.layouts.textArea
 import ktfx.layouts.vbox
-import ktfx.listeners.converter
 
 class SettingsDialog(component: FxComponent) : BaseDialog(component, R2.string.settings) {
 
@@ -75,7 +75,7 @@ class SettingsDialog(component: FxComponent) : BaseDialog(component, R2.string.s
                     gap = getDouble(R.value.padding_medium)
                     label(getString(R2.string.server_language)) row 0 col 0
                     languageBox = jfxComboBox(Language.values().toObservableList()) {
-                        converter { toString { it!!.toString(true) } }
+                        converter = buildStringConverter { toString { it!!.toString(true) } }
                         selectionModel.select(
                             Language.ofFullCode(
                                 runBlocking(Dispatchers.IO) { OpenPSSApi.getSetting(KEY_LANGUAGE).value }

@@ -54,13 +54,13 @@ import ktfx.bindings.eq
 import ktfx.bindings.minus
 import ktfx.bindings.otherwise
 import ktfx.bindings.then
+import ktfx.cells.cellFactory
 import ktfx.collections.toObservableList
 import ktfx.coroutines.listener
 import ktfx.hasValue
-import ktfx.jfoenix.jfxSnackbar
+import ktfx.jfoenix.controls.jfxSnackbar
 import ktfx.layouts.text
 import ktfx.layouts.textFlow
-import ktfx.listeners.cellFactory
 import ktfx.runLater
 import ktfx.text.updateFont
 import ktfx.windows.stage

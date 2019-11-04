@@ -37,12 +37,12 @@ import ktfx.controls.paddingAll
 import ktfx.controls.updatePadding
 import ktfx.coroutines.listener
 import ktfx.coroutines.onAction
-import ktfx.jfoenix.jfxButton
-import ktfx.jfoenix.jfxComboBox
-import ktfx.jfoenix.jfxPasswordField
-import ktfx.jfoenix.jfxTextField
-import ktfx.jfoenix.jfxToggleButton
-import ktfx.jfoenix.onDialogClosed
+import ktfx.jfoenix.layouts.jfxButton
+import ktfx.jfoenix.layouts.jfxComboBox
+import ktfx.jfoenix.layouts.jfxPasswordField
+import ktfx.jfoenix.layouts.jfxTextField
+import ktfx.jfoenix.layouts.jfxToggleButton
+import ktfx.jfoenix.listeners.onDialogClosed
 import ktfx.layouts.KtfxStackPane
 import ktfx.layouts.anchorPane
 import ktfx.layouts.gridPane
@@ -67,8 +67,8 @@ class LoginPane<T>(resources: T, override val defaults: WritableDefaults) : Ktfx
         const val WIDTH = 400.0
     }
 
-    private lateinit var employeeField: TextField
-    private lateinit var loginButton: Button
+    private val employeeField: TextField
+    private val loginButton: Button
     private lateinit var passwordField: PasswordField
     private lateinit var textField: TextField
 

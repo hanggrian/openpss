@@ -1,5 +1,4 @@
 const val VERSION_MAVEN = "3.6.0"
-const val VERSION_COMMONS_LANG = "3.9"
 const val VERSION_COMMONS_MATH = "3.6.1"
 const val VERSION_POI = "4.1.0"
 const val VERSION_COMMONS_VALIDATOR = "1.6"

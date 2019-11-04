@@ -17,12 +17,13 @@ import kotlinx.coroutines.runBlocking
 import ktfx.bindings.isBlank
 import ktfx.bindings.lessEq
 import ktfx.bindings.or
+import ktfx.buildStringConverter
 import ktfx.collections.toObservableList
 import ktfx.coroutines.listener
-import ktfx.jfoenix.jfxComboBox
+import ktfx.jfoenix.layouts.jfxComboBox
 import ktfx.layouts.KtfxGridPane
+import ktfx.layouts.addNode
 import ktfx.layouts.label
-import ktfx.listeners.converter
 
 class AddOffsetJobPopOver(component: FxComponent) :
     AddJobPopOver<Invoice.OffsetJob>(component, R2.string.add_offset_job), Invoice.Job {
@@ -46,24 +47,24 @@ class AddOffsetJobPopOver(component: FxComponent) :
         currentRow++
         label(getString(R2.string.technique)) col 0 row currentRow
         techniqueChoice = jfxComboBox(Technique.values().toObservableList()) {
-            converter { toString { it!!.toString(this@AddOffsetJobPopOver) } }
+            converter = buildStringConverter { toString { it!!.toString(this@AddOffsetJobPopOver) } }
             selectionModel.selectFirst()
         } col 1 colSpans 2 row currentRow
         currentRow++
         label(getString(R2.string.min_qty)) col 0 row currentRow
-        minQtyField = addNode(IntField().apply {
+        minQtyField = addNode(IntField()) {
             promptText = getString(R2.string.min_qty)
-        }) col 1 colSpans 2 row currentRow
+        } col 1 colSpans 2 row currentRow
         currentRow++
         label(getString(R2.string.min_price)) col 0 row currentRow
-        minPriceField = addNode(DoubleField().apply {
+        minPriceField = addNode(DoubleField()) {
             promptText = getString(R2.string.min_price)
-        }) col 1 colSpans 2 row currentRow
+        } col 1 colSpans 2 row currentRow
         currentRow++
         label(getString(R2.string.excess_price)) col 0 row currentRow
-        excessPriceField = addNode(DoubleField().apply {
+        excessPriceField = addNode(DoubleField()) {
             promptText = getString(R2.string.excess_price)
-        }) col 1 colSpans 2 row currentRow
+        } col 1 colSpans 2 row currentRow
     }
 
     override val totalBindingDependencies: Array<Observable>

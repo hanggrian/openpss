@@ -17,9 +17,10 @@ import ktfx.bindings.lessEq
 import ktfx.bindings.or
 import ktfx.collections.toObservableList
 import ktfx.coroutines.listener
-import ktfx.jfoenix.jfxCheckBox
-import ktfx.jfoenix.jfxComboBox
+import ktfx.jfoenix.layouts.jfxCheckBox
+import ktfx.jfoenix.layouts.jfxComboBox
 import ktfx.layouts.KtfxGridPane
+import ktfx.layouts.addNode
 import ktfx.layouts.label
 
 class AddDigitalJobPopOver(component: FxComponent) :
@@ -44,14 +45,14 @@ class AddDigitalJobPopOver(component: FxComponent) :
         twoSideCheck = jfxCheckBox() col 1 colSpans 2 row currentRow
         currentRow++
         label(getString(R2.string.one_side_price)) col 0 row currentRow
-        oneSidePriceField = addNode(DoubleField().apply {
+        oneSidePriceField = addNode(DoubleField()) {
             promptText = getString(R2.string.one_side_price)
-        }) col 1 colSpans 2 row currentRow
+        } col 1 colSpans 2 row currentRow
         currentRow++
         label(getString(R2.string.two_side_price)) col 0 row currentRow
-        twoSidePriceField = addNode(DoubleField().apply {
+        twoSidePriceField = addNode(DoubleField()) {
             promptText = getString(R2.string.two_side_price)
-        }) col 1 colSpans 2 row currentRow
+        } col 1 colSpans 2 row currentRow
         currentRow++
     }
 

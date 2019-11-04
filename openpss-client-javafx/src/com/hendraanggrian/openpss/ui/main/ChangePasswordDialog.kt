@@ -10,15 +10,15 @@ import ktfx.bindings.isBlank
 import ktfx.bindings.neq
 import ktfx.bindings.or
 import ktfx.controls.gap
-import ktfx.jfoenix.jfxPasswordField
+import ktfx.jfoenix.layouts.jfxPasswordField
 import ktfx.layouts.gridPane
 import ktfx.layouts.label
 
 class ChangePasswordDialog(component: FxComponent) :
     ResultableDialog<String>(component, R2.string.change_password) {
 
-    private lateinit var changePasswordField: PasswordField
-    private lateinit var confirmPasswordField: PasswordField
+    private val changePasswordField: PasswordField
+    private val confirmPasswordField: PasswordField
 
     override val focusedNode: Node? get() = changePasswordField
 

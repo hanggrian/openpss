@@ -10,13 +10,14 @@ import javafx.scene.control.Button
 import javafx.scene.control.ComboBox
 import javafx.scene.image.ImageView
 import ktfx.bindings.buildBinding
+import ktfx.buildStringConverter
 import ktfx.collections.toObservableList
 import ktfx.coroutines.onAction
 import ktfx.getValue
-import ktfx.jfoenix.jfxButton
-import ktfx.jfoenix.jfxComboBox
+import ktfx.jfoenix.layouts.jfxButton
+import ktfx.jfoenix.layouts.jfxComboBox
 import ktfx.layouts.KtfxHBox
-import ktfx.listeners.converter
+import ktfx.layouts.addNode
 import org.joda.time.YearMonth
 
 open class MonthBox @JvmOverloads constructor(prefill: YearMonth = YearMonth.now()) :
@@ -48,16 +49,16 @@ open class MonthBox @JvmOverloads constructor(prefill: YearMonth = YearMonth.now
         }
         monthBox = jfxComboBox((0 until 12).toObservableList()) {
             value = prefill.monthOfYear - 1
-            converter {
+            converter = buildStringConverter {
                 toString { months[it!!] }
                 fromString { months.indexOf(it) }
             }
         }
-        yearField = addNode(IntField().apply {
+        yearField = addNode(IntField()) {
             alignment = Pos.CENTER
             maxWidth = 56.0
             value = prefill.year
-        })
+        }
         nextButton = jfxButton(graphic = ImageView(R.image.btn_next)) {
             onAction {
                 monthBox.value = when (monthBox.value) {
@@ -81,7 +82,7 @@ open class MonthBox @JvmOverloads constructor(prefill: YearMonth = YearMonth.now
 
     fun setLocale(locale: Locale) {
         months = getInstance(locale).shortMonths
-        monthBox.converter {
+        monthBox.converter = buildStringConverter {
             fromString { months.indexOf(it) }
             toString { months[it!!] }
         }

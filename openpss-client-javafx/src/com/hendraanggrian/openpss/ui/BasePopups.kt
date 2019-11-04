@@ -13,8 +13,9 @@ import javafx.scene.layout.VBox
 import ktfx.controls.updatePadding
 import ktfx.coroutines.listener
 import ktfx.coroutines.onAction
-import ktfx.jfoenix.jfxButton
+import ktfx.jfoenix.layouts.jfxButton
 import ktfx.layouts.NodeManager
+import ktfx.layouts.addNode
 import ktfx.layouts.borderPane
 import ktfx.layouts.buttonBar
 import ktfx.layouts.label
@@ -41,7 +42,7 @@ interface BasePopup : FxComponent, NodeManager {
     fun initialize() {
         setActualContent(ktfx.layouts.vbox {
             // material dialog have extra top padding: https://material.io/develop/web/components/dialogs/
-            addNode(Toolbar().apply {
+            addNode(Toolbar()) {
                 leftItems {
                     label(getString(titleId)) {
                         styleClass.addAll(R.style.bold, R.style.display)
@@ -57,7 +58,7 @@ interface BasePopup : FxComponent, NodeManager {
                         centerProperty().bindBidirectional(graphicProperty())
                     }
                 }
-            }) marginTop getDouble(R.value.padding_small) marginBottom
+            } marginTop getDouble(R.value.padding_small) marginBottom
                 getDouble(R.value.padding_small)
             contentPane = vbox(getDouble(R.value.padding_medium)) {
                 updatePadding(

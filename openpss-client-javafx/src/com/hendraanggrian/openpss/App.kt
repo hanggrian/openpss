@@ -16,6 +16,7 @@ import javafx.fxml.FXMLLoader
 import javafx.scene.image.Image
 import javafx.stage.Stage
 import kotlin.system.exitProcess
+import ktfx.layouts.addNode
 import ktfx.layouts.scene
 import ktfx.windows.icon
 import ktfx.windows.setMinSize
@@ -60,7 +61,7 @@ class App : Application(), StringResources, ValueResources {
         stage.title = getString(R2.string.openpss_login)
         stage.scene = scene {
             stylesheets += Stylesheets.OPENPSS
-            addNode(LoginPane(this@App, defaults).apply {
+            addNode(LoginPane(this@App, defaults)) {
                 onSuccess = { employee ->
                     val loader = FXMLLoader(getResource(R.layout.controller_main), resourceBundle)
                     this@scene.run {
@@ -72,7 +73,7 @@ class App : Application(), StringResources, ValueResources {
                     stage.isResizable = true
                     stage.setMinSize(900.0, 500.0)
                 }
-            })
+            }
         }
         stage.show()
     }

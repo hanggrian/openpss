@@ -6,9 +6,9 @@ import javafx.beans.property.DoubleProperty
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleDoubleProperty
 import ktfx.bindings.buildBooleanBinding
+import ktfx.buildStringConverter
 import ktfx.coroutines.listener
 import ktfx.getValue
-import ktfx.listeners.bindBidirectional
 import ktfx.setValue
 
 class DoubleField : JFXTextField() {
@@ -22,9 +22,9 @@ class DoubleField : JFXTextField() {
     val isValid: Boolean by validProperty
 
     init {
-        textProperty().bindBidirectional(valueProperty()) {
+        textProperty().bindBidirectional(valueProperty(), buildStringConverter {
             fromString { it.toDoubleOrNull() ?: 0.0 }
-        }
+        })
         validProperty().bind(buildBooleanBinding(textProperty()) {
             runCatching {
                 java.lang.Double.parseDouble(text)

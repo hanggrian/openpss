@@ -116,7 +116,7 @@ License
     See the License for the specific language governing permissions and
     limitations under the License.
 
-[logo]: /client-javafx/res/image/logo.png
+[logo]: /openpss-client-javafx/res/image/logo.png
 [MongoDB]: https://www.mongodb.com/
 [ktlint]: https://github.com/shyiko/ktlint
 [packr]: https://github.com/hendraanggrian/packr

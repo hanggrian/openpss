@@ -32,6 +32,7 @@ import ktfx.cells.cellFactory
 import ktfx.collections.sort
 import ktfx.controls.find
 import ktfx.controls.gap
+import ktfx.controls.isNotSelectedProperty
 import ktfx.controls.isSelected
 import ktfx.controls.paddingAll
 import ktfx.coroutines.eventFilter
@@ -168,15 +169,15 @@ class AttendeePane(
             }
             separatorMenuItem()
             getString(R2.string.copy)(ImageView(R.image.menu_copy)) {
-                disableProperty().bind(attendanceList.selectionModel.selectedItemProperty().isNull)
+                disableProperty().bind(attendanceList.selectionModel.isNotSelectedProperty())
                 onAction { copyAttendance() }
             }
             getString(R2.string.edit)(ImageView(R.image.menu_edit)) {
-                disableProperty().bind(!attendanceList.selectionModel.selectedItemProperty().isNull)
+                disableProperty().bind(!attendanceList.selectionModel.isNotSelectedProperty())
                 onAction { editAttendance() }
             }
             getString(R2.string.delete)(ImageView(R.image.menu_delete)) {
-                disableProperty().bind(!attendanceList.selectionModel.selectedItemProperty().isNull)
+                disableProperty().bind(!attendanceList.selectionModel.isNotSelectedProperty())
                 onAction { attendanceList.items.remove(attendanceList.selectionModel.selectedItem) }
             }
             separatorMenuItem()

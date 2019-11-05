@@ -23,7 +23,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.javafx.JavaFx
 import kotlinx.coroutines.launch
 import ktfx.collections.toMutableObservableList
-import ktfx.controls.TableColumnsBuilder
+import ktfx.controls.isNotSelectedProperty
 import ktfx.coroutines.onAction
 import ktfx.getValue
 import ktfx.jfoenix.layouts.jfxButton
@@ -128,7 +128,7 @@ abstract class TableDialog<D : Document<*>>(
     component: FxComponent,
     titleId: String,
     requestPermissionWhenDelete: Boolean = false
-) : BaseDialog(component, titleId), TableColumnsBuilder<D>, Refreshable {
+) : BaseDialog(component, titleId), Refreshable {
 
     protected val refreshButton: Button
     protected val addButton: Button
@@ -167,7 +167,7 @@ abstract class TableDialog<D : Document<*>>(
                         }
                     }
                     runLater {
-                        disableProperty().bind(table.selectionModel.selectedItemProperty().isNull)
+                        disableProperty().bind(table.selectionModel.isNotSelectedProperty())
                     }
                 }
             }
@@ -185,8 +185,14 @@ abstract class TableDialog<D : Document<*>>(
         }
     }
 
-    override fun <T> column(text: String?): TableColumn<D, T> =
+    fun <T> column(text: String? = null): TableColumn<D, T> =
         TableColumn<D, T>(text).also { table.columns += it }
+
+    inline fun <T> column(text: String? = null, init: TableColumn<D, T>.() -> Unit): TableColumn<D, T> =
+        column<T>(text).apply(init)
+
+    inline operator fun <T> String.invoke(init: TableColumn<D, T>.() -> Unit): TableColumn<D, T> =
+        column(this, init)
 
     override fun refresh() {
         GlobalScope.launch(Dispatchers.JavaFx) {

@@ -1,4 +1,4 @@
-const val VERSION_KTFX = "8.6.1"
+const val VERSION_KTFX = "8.6.2"
 const val VERSION_PREFS = "0.1"
 
 const val VERSION_PIKASSO = "0.2"

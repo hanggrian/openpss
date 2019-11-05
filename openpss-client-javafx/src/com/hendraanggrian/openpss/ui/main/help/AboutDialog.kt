@@ -16,11 +16,12 @@ import javafx.scene.image.Image
 import ktfx.cells.cellFactory
 import ktfx.collections.toObservableList
 import ktfx.controls.find
+import ktfx.controls.isSelectedProperty
 import ktfx.controls.paddingAll
 import ktfx.controlsfx.layouts.masterDetailPane
 import ktfx.coroutines.listener
 import ktfx.coroutines.onAction
-import ktfx.dialogs.closeButton
+import ktfx.dialogs.buttons
 import ktfx.dialogs.icon
 import ktfx.jfoenix.layouts.jfxButton
 import ktfx.jfoenix.layouts.jfxListView
@@ -53,7 +54,7 @@ class AboutDialog(component: FxComponent) : Dialog<Unit>(), FxComponent by compo
         }
         contextMenu {
             "Homepage" {
-                disableProperty().bind(!this@jfxListView.selectionModel.selectedItemProperty().isNotNull)
+                disableProperty().bind(!this@jfxListView.selectionModel.isSelectedProperty())
                 onAction { desktop?.browse(URI(this@jfxListView.selectionModel.selectedItem.homepage)) }
             }
         }
@@ -112,7 +113,7 @@ class AboutDialog(component: FxComponent) : Dialog<Unit>(), FxComponent by compo
             expandableContent = masterDetailPane {
                 prefHeight = 200.0
                 dividerPosition = 0.3
-                showDetailNodeProperty().bind(licenseList.selectionModel.selectedItemProperty().isNotNull)
+                showDetailNodeProperty().bind(licenseList.selectionModel.isSelectedProperty())
                 addNode(licenseList)
                 jfxTextArea {
                     isEditable = false
@@ -122,8 +123,9 @@ class AboutDialog(component: FxComponent) : Dialog<Unit>(), FxComponent by compo
                 }
             }
         }
-        closeButton()
-
+        buttons {
+            close()
+        }
         runLater {
             dialogPane.run {
                 val detailsButton = find<Hyperlink>(".details-button")

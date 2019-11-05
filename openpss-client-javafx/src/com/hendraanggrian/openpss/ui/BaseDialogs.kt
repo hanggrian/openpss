@@ -23,6 +23,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.javafx.JavaFx
 import kotlinx.coroutines.launch
 import ktfx.collections.toMutableObservableList
+import ktfx.controls.constrained
 import ktfx.controls.isNotSelectedProperty
 import ktfx.coroutines.onAction
 import ktfx.getValue
@@ -175,7 +176,7 @@ abstract class TableDialog<D : Document<*>>(
         anchorPane {
             table = tableView<D> {
                 prefHeight = 275.0
-                columnResizePolicy = TableView.CONSTRAINED_RESIZE_POLICY
+                constrained()
                 isEditable = true
             } anchorAll 1.0
         }

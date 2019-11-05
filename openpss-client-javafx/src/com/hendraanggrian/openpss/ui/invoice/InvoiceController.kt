@@ -45,6 +45,7 @@ import ktfx.collections.emptyObservableList
 import ktfx.collections.toMutableObservableList
 import ktfx.collections.toObservableList
 import ktfx.controls.columns
+import ktfx.controls.constrained
 import ktfx.controls.isNotSelectedProperty
 import ktfx.controls.isSelected
 import ktfx.controls.isSelectedProperty
@@ -139,7 +140,7 @@ class InvoiceController : ActionController(), Refreshable {
             Callback<Pair<Int, Int>, Node> { (page, count) ->
                 masterDetailPane(BOTTOM) {
                     masterNode = ktfx.layouts.tableView<Invoice> {
-                        columnResizePolicy = TableView.CONSTRAINED_RESIZE_POLICY
+                        constrained()
                         columns {
                             getString(R2.string.id)<String> { stringCell { no.toString() } }
                             getString(R2.string.date)<String> {
@@ -183,7 +184,7 @@ class InvoiceController : ActionController(), Refreshable {
                             }
                         }
                         paymentTable = tableView {
-                            columnResizePolicy = TableView.CONSTRAINED_RESIZE_POLICY
+                            constrained()
                             columns {
                                 getString(R2.string.date)<String> {
                                     stringCell { dateTime.toString(PATTERN_DATETIMEEXT) }

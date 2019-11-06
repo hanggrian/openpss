@@ -14,8 +14,8 @@ import javafx.scene.image.ImageView
 import kotlinx.coroutines.CoroutineScope
 import ktfx.bindings.buildBinding
 import ktfx.bindings.buildStringBinding
-import ktfx.controls.isNotSelectedProperty
 import ktfx.controls.isSelected
+import ktfx.controls.notSelectedBinding
 import ktfx.coroutines.onAction
 import ktfx.jfoenix.controls.jfxSnackbar
 import ktfx.layouts.contextMenu
@@ -97,5 +97,5 @@ class EditEmployeeDialog(component: FxComponent) :
         OpenPSSApi.deleteEmployee(login, selected.id)
 
     private fun MenuItem.bindDisable() =
-        disableProperty().bind(table.selectionModel.isNotSelectedProperty())
+        disableProperty().bind(table.selectionModel.notSelectedBinding)
 }

@@ -14,8 +14,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import ktfx.bindings.buildBinding
 import ktfx.collections.toObservableList
-import ktfx.controls.isNotSelectedProperty
 import ktfx.controls.isSelected
+import ktfx.controls.notSelectedBinding
 import ktfx.coroutines.listener
 import ktfx.coroutines.onKeyPressed
 import ktfx.coroutines.onMouseClicked
@@ -64,8 +64,7 @@ class SearchCustomerPopOver(component: FxComponent) :
                 }
             } marginTop getDouble(R.value.padding_medium)
         }
-        defaultButton.disableProperty()
-            .bind(customerList.selectionModel.isNotSelectedProperty())
+        defaultButton.disableProperty().bind(customerList.selectionModel.notSelectedBinding)
     }
 
     override val nullableResult: Customer? get() = customerList.selectionModel.selectedItem

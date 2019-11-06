@@ -16,8 +16,8 @@ import javafx.scene.image.Image
 import ktfx.cells.cellFactory
 import ktfx.collections.toObservableList
 import ktfx.controls.find
-import ktfx.controls.isSelectedProperty
 import ktfx.controls.paddingAll
+import ktfx.controls.selectedBinding
 import ktfx.controlsfx.layouts.masterDetailPane
 import ktfx.coroutines.listener
 import ktfx.coroutines.onAction
@@ -54,7 +54,7 @@ class AboutDialog(component: FxComponent) : Dialog<Unit>(), FxComponent by compo
         }
         contextMenu {
             "Homepage" {
-                disableProperty().bind(!this@jfxListView.selectionModel.isSelectedProperty())
+                disableProperty().bind(!this@jfxListView.selectionModel.selectedBinding)
                 onAction { desktop?.browse(URI(this@jfxListView.selectionModel.selectedItem.homepage)) }
             }
         }
@@ -113,7 +113,7 @@ class AboutDialog(component: FxComponent) : Dialog<Unit>(), FxComponent by compo
             expandableContent = masterDetailPane {
                 prefHeight = 200.0
                 dividerPosition = 0.3
-                showDetailNodeProperty().bind(licenseList.selectionModel.isSelectedProperty())
+                showDetailNodeProperty().bind(licenseList.selectionModel.selectedBinding)
                 addNode(licenseList)
                 jfxTextArea {
                     isEditable = false

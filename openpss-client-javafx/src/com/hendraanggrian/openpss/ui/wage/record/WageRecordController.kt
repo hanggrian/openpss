@@ -43,7 +43,7 @@ import ktfx.bindings.lessEq
 import ktfx.bindings.or
 import ktfx.cells.cellFactory
 import ktfx.collections.sizeBinding
-import ktfx.controls.isNotSelectedProperty
+import ktfx.controls.notSelectedBinding
 import ktfx.controls.snapshot
 import ktfx.coroutines.onAction
 import ktfx.invoke
@@ -88,7 +88,7 @@ class WageRecordController : BaseController() {
         undoMenu.disableProperty().bind(editMenu.items.sizeBinding lessEq 2)
         arrayOf(lockStartButton, lockEndButton).forEach { button ->
             button.disableProperty()
-                .bind(recordTable.selectionModel.isNotSelectedProperty() or
+                .bind(recordTable.selectionModel.notSelectedBinding or
                     buildBooleanBinding(recordTable.selectionModel.selectedItemProperty()) {
                         recordTable.selectionModel.selectedItems?.any { !it.value.isChild() }
                             ?: true

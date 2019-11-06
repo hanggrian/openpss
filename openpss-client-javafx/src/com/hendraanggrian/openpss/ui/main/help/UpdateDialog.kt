@@ -7,7 +7,7 @@ import com.hendraanggrian.openpss.ui.ResultableDialog
 import javafx.scene.Node
 import javafx.scene.control.ListView
 import ktfx.collections.toObservableList
-import ktfx.controls.isNotSelectedProperty
+import ktfx.controls.notSelectedBinding
 import ktfx.jfoenix.layouts.jfxListView
 
 class UpdateDialog(
@@ -22,7 +22,7 @@ class UpdateDialog(
     init {
         listView = jfxListView<Asset> {
             items = assets.toObservableList()
-            defaultButton.disableProperty().bind(selectionModel.isNotSelectedProperty())
+            defaultButton.disableProperty().bind(selectionModel.notSelectedBinding)
         }
     }
 

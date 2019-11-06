@@ -24,7 +24,7 @@ import kotlinx.coroutines.javafx.JavaFx
 import kotlinx.coroutines.launch
 import ktfx.collections.toMutableObservableList
 import ktfx.controls.constrained
-import ktfx.controls.isNotSelectedProperty
+import ktfx.controls.notSelectedBinding
 import ktfx.coroutines.onAction
 import ktfx.getValue
 import ktfx.jfoenix.layouts.jfxButton
@@ -168,7 +168,7 @@ abstract class TableDialog<D : Document<*>>(
                         }
                     }
                     runLater {
-                        disableProperty().bind(table.selectionModel.isNotSelectedProperty())
+                        disableProperty().bind(table.selectionModel.notSelectedBinding)
                     }
                 }
             }

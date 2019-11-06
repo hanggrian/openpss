@@ -47,8 +47,8 @@ import ktfx.collections.mutableObservableListOf
 import ktfx.controls.TableColumnsBuilder
 import ktfx.controls.columns
 import ktfx.controls.gap
-import ktfx.controls.isNotSelectedProperty
 import ktfx.controls.isSelected
+import ktfx.controls.notSelectedBinding
 import ktfx.coroutines.onAction
 import ktfx.coroutines.onKeyPressed
 import ktfx.coroutines.onMouseClicked
@@ -246,7 +246,7 @@ class AddInvoiceDialog(
             }
             separatorMenuItem()
             getString(R2.string.delete)(ImageView(R.image.menu_delete)) {
-                runLater { disableProperty().bind(this@tableView.selectionModel.isNotSelectedProperty()) }
+                runLater { disableProperty().bind(this@tableView.selectionModel.notSelectedBinding) }
                 onAction { this@tableView.items.remove(this@tableView.selectionModel.selectedItem) }
             }
             getString(R2.string.clear)(ImageView(R.image.menu_clear)) {

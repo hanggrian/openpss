@@ -37,7 +37,7 @@ import ktfx.bindings.buildStringBinding
 import ktfx.collections.emptyObservableList
 import ktfx.collections.toMutableObservableList
 import ktfx.collections.toObservableList
-import ktfx.controls.isNotSelectedProperty
+import ktfx.controls.notSelectedBinding
 import ktfx.coroutines.onAction
 import ktfx.jfoenix.layouts.jfxTextField
 import ktfx.layouts.NodeManager
@@ -100,12 +100,11 @@ class CustomerController : ActionController(), Refreshable {
                     runLater {
                         contextMenu {
                             getString(R2.string.edit)(ImageView(R.image.menu_edit)) {
-                                disableProperty().bind(selectionModel.isNotSelectedProperty())
+                                disableProperty().bind(selectionModel.notSelectedBinding)
                                 onAction { edit() }
                             }
                         }
-                        deleteContactItem.disableProperty()
-                            .bind(contactTable.selectionModel.isNotSelectedProperty())
+                        deleteContactItem.disableProperty().bind(contactTable.selectionModel.notSelectedBinding)
                     }
                     runBlocking {
                         val (pageCount, customers) = withContext(Dispatchers.IO) {
@@ -129,8 +128,7 @@ class CustomerController : ActionController(), Refreshable {
                         customerList.selectionModel.selectedItem?.contacts?.toObservableList()
                             ?: emptyObservableList()
                     })
-                masterDetailPane.showDetailNodeProperty()
-                    .bind(customerList.selectionModel.isNotSelectedProperty())
+                masterDetailPane.showDetailNodeProperty().bind(customerList.selectionModel.notSelectedBinding)
                 customerList
             }
         })

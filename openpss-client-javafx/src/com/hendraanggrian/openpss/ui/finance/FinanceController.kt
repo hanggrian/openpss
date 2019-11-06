@@ -34,8 +34,8 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import ktfx.bindings.eq
 import ktfx.collections.toMutableObservableList
-import ktfx.controls.isNotSelectedProperty
 import ktfx.controls.isSelected
+import ktfx.controls.notSelectedBinding
 import ktfx.coroutines.listener
 import ktfx.coroutines.onAction
 import ktfx.coroutines.onMouseClicked
@@ -113,9 +113,7 @@ class FinanceController : ActionController(), Refreshable {
         dailyValueColumn.currencyCell(this) { value }
         dailyCashColumn.doneCell { isCash() }
         dailyReferenceColumn.stringCell { reference }
-        viewInvoiceItem.disableProperty().bind(
-            dailyTable.selectionModel.isNotSelectedProperty()
-        )
+        viewInvoiceItem.disableProperty().bind(dailyTable.selectionModel.notSelectedBinding)
         dailyTable.onMouseClicked {
             if (it.isDoubleClick() && dailyTable.selectionModel.isSelected()) {
                 viewInvoice()
@@ -126,8 +124,7 @@ class FinanceController : ActionController(), Refreshable {
         monthlyCashColumn.currencyCell(this) { cash }
         monthlyNonCashColumn.currencyCell(this) { nonCash }
         monthlyTotalColumn.currencyCell(this) { total }
-        viewPaymentsItem.disableProperty()
-            .bind(monthlyTable.selectionModel.isNotSelectedProperty())
+        viewPaymentsItem.disableProperty().bind(monthlyTable.selectionModel.notSelectedBinding)
         monthlyTable.onMouseClicked {
             if (it.isDoubleClick() && monthlyTable.selectionModel.isSelected()) {
                 viewPayments()

@@ -46,9 +46,9 @@ import ktfx.collections.toMutableObservableList
 import ktfx.collections.toObservableList
 import ktfx.controls.columns
 import ktfx.controls.constrained
-import ktfx.controls.isNotSelectedProperty
 import ktfx.controls.isSelected
-import ktfx.controls.isSelectedProperty
+import ktfx.controls.notSelectedBinding
+import ktfx.controls.selectedBinding
 import ktfx.controlsfx.layouts.masterDetailPane
 import ktfx.coroutines.onAction
 import ktfx.coroutines.onHiding
@@ -174,7 +174,7 @@ class InvoiceController : ActionController(), Refreshable {
                             Invoice.no(this@InvoiceController, selectionModel.selectedItem?.no)
                         })
                     }.also { invoiceTable = it }
-                    showDetailNodeProperty().bind(invoiceTable.selectionModel.isNotSelectedProperty())
+                    showDetailNodeProperty().bind(invoiceTable.selectionModel.notSelectedBinding)
                     detailNode = ktfx.layouts.vbox {
                         addNode(Toolbar()) {
                             leftItems {
@@ -217,11 +217,11 @@ class InvoiceController : ActionController(), Refreshable {
                             })
                             contextMenu {
                                 getString(R2.string.add)(ImageView(R.image.menu_add)) {
-                                    disableProperty().bind(invoiceTable.selectionModel.isNotSelectedProperty())
+                                    disableProperty().bind(invoiceTable.selectionModel.notSelectedBinding)
                                     onAction { addPayment() }
                                 }
                                 getString(R2.string.delete)(ImageView(R.image.menu_delete)) {
-                                    disableProperty().bind(!this@tableView.selectionModel.isSelectedProperty())
+                                    disableProperty().bind(!this@tableView.selectionModel.selectedBinding)
                                     onAction { deletePayment() }
                                 }
                             }
@@ -254,7 +254,7 @@ class InvoiceController : ActionController(), Refreshable {
                         invoiceTable.contextMenu {
                             getString(R2.string.view)(ImageView(R.image.menu_invoice)) {
                                 runLater {
-                                    disableProperty().bind(invoiceTable.selectionModel.isNotSelectedProperty())
+                                    disableProperty().bind(invoiceTable.selectionModel.notSelectedBinding)
                                 }
                                 onAction { viewInvoice() }
                             }
@@ -277,7 +277,7 @@ class InvoiceController : ActionController(), Refreshable {
                             }
                             separatorMenuItem()
                             getString(R2.string.delete)(ImageView(R.image.menu_delete)) {
-                                disableProperty().bind(invoiceTable.selectionModel.isNotSelectedProperty())
+                                disableProperty().bind(invoiceTable.selectionModel.notSelectedBinding)
                                 onAction {
                                     withPermission {
                                         if (OpenPSSApi.deleteInvoice(

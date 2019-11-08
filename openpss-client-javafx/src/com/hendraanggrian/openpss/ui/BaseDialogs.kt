@@ -174,11 +174,12 @@ abstract class TableDialog<D : Document<*>>(
             }
         }
         anchorPane {
-            table = tableView<D> {
+            table = tableView {
+                anchorAll = 1.0
                 prefHeight = 275.0
                 constrained()
                 isEditable = true
-            } anchorAll 1.0
+            }
         }
         refresh()
         runLater {

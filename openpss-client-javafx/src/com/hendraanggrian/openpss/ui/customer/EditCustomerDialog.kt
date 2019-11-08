@@ -15,10 +15,10 @@ import javafx.scene.control.TextInputControl
 import javafx.scene.image.ImageView
 import ktfx.asProperty
 import ktfx.bindings.or
-import ktfx.controls.gap
 import ktfx.coroutines.listener
 import ktfx.jfoenix.layouts.jfxTextArea
 import ktfx.jfoenix.layouts.jfxTextField
+import ktfx.layouts.gap
 import ktfx.layouts.gridPane
 import ktfx.layouts.imageView
 import ktfx.layouts.label
@@ -46,7 +46,10 @@ class EditCustomerDialog(
                     customer.isCompany -> R.image.display_company
                     else -> R.image.display_person
                 }
-            ) col 0 row 0 colSpans 2
+            ) {
+                gridAt(0, 0)
+                colSpans = 2
+            }
             description = label(
                 getString(
                     when {
@@ -54,13 +57,31 @@ class EditCustomerDialog(
                         else -> R2.string._person_requirement
                     }
                 )
-            ) col 0 row 1 colSpans 2
-            label(getString(R2.string.name)) col 0 row 2
-            nameField = jfxTextField(customer.name) { bindTextField() } col 1 row 2
-            label(getString(R2.string.address)) col 0 row 3
-            addressField = jfxTextField(customer.address.orEmpty()) { bindTextField() } col 1 row 3
-            label(getString(R2.string.note)) col 0 row 4
-            noteArea = jfxTextArea(customer.note.orEmpty()) { bindTextField() } col 1 row 4
+            ) {
+                gridAt(0, 1)
+                colSpans = 2
+            }
+            label(getString(R2.string.name)) {
+                gridAt(2, 0)
+            }
+            nameField = jfxTextField(customer.name) {
+                gridAt(2, 1)
+                bindTextField()
+            }
+            label(getString(R2.string.address)) {
+                gridAt(3, 0)
+            }
+            addressField = jfxTextField(customer.address.orEmpty()) {
+                gridAt(3, 1)
+                bindTextField()
+            }
+            label(getString(R2.string.note)) {
+                gridAt(4, 0)
+            }
+            noteArea = jfxTextArea(customer.note.orEmpty()) {
+                gridAt(4, 1)
+                bindTextField()
+            }
         }
         defaultButton.run {
             text = getString(R2.string.edit)

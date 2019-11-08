@@ -56,15 +56,15 @@ import ktfx.bindings.otherwise
 import ktfx.bindings.then
 import ktfx.cells.cellFactory
 import ktfx.collections.toObservableList
+import ktfx.controlsfx.isOSX
 import ktfx.coroutines.listener
 import ktfx.hasValue
 import ktfx.jfoenix.controls.jfxSnackbar
 import ktfx.layouts.text
 import ktfx.layouts.textFlow
 import ktfx.runLater
-import ktfx.text.updateFont
+import ktfx.text.pt
 import ktfx.windows.stage
-import org.apache.commons.lang3.SystemUtils
 
 class MainController : BaseController(), Refreshable {
 
@@ -111,7 +111,7 @@ class MainController : BaseController(), Refreshable {
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
-        menuBar.isUseSystemMenuBar = SystemUtils.IS_OS_MAC_OSX
+        menuBar.isUseSystemMenuBar = isOSX()
 
         drawerList.selectionModel.selectFirst()
         drawerList.selectionModel.selectedItemProperty().listener { _, _, _ ->
@@ -190,17 +190,17 @@ class MainController : BaseController(), Refreshable {
                         if (log != null && !empty) graphic = textFlow {
                             text(log.message) {
                                 isWrapText = true
-                                updateFont(12.0)
+                                font = 12.pt
                                 this@textFlow.prefWidthProperty()
                                     .bind(this@apply.widthProperty() - 12)
                                 wrappingWidthProperty()
                                     .bind(this@apply.widthProperty())
                             }
-                            newLine()
+                            appendln()
                             text("${log.dateTime.toString(PATTERN_DATETIME)} ") {
                                 styleClass += R.style.bold
                             }
-                            text(log.login)
+                            append(log.login)
                         }
                     }
                 }

@@ -4,8 +4,6 @@ import com.hendraanggrian.openpss.FxComponent
 import com.hendraanggrian.openpss.PATTERN_DATE
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
-import com.hendraanggrian.openpss.R2.string.qty
-import com.hendraanggrian.openpss.R2.string.total
 import com.hendraanggrian.openpss.api.OpenPSSApi
 import com.hendraanggrian.openpss.schema.Customer
 import com.hendraanggrian.openpss.schema.Invoice
@@ -24,7 +22,6 @@ import javafx.beans.property.DoubleProperty
 import javafx.beans.property.ObjectProperty
 import javafx.beans.property.SimpleDoubleProperty
 import javafx.beans.property.SimpleObjectProperty
-import javafx.geometry.HPos.RIGHT
 import javafx.scene.Node
 import javafx.scene.control.Tab
 import javafx.scene.control.TableColumn
@@ -32,7 +29,6 @@ import javafx.scene.control.TableView
 import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
 import javafx.scene.image.ImageView
-import javafx.scene.layout.Priority.ALWAYS
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import ktfx.bindings.buildDoubleBinding
@@ -46,7 +42,6 @@ import ktfx.collections.isEmptyBinding
 import ktfx.collections.mutableObservableListOf
 import ktfx.controls.TableColumnsBuilder
 import ktfx.controls.columns
-import ktfx.controls.gap
 import ktfx.controls.isSelected
 import ktfx.controls.notSelectedBinding
 import ktfx.coroutines.onAction
@@ -58,6 +53,7 @@ import ktfx.jfoenix.layouts.jfxTabPane
 import ktfx.jfoenix.layouts.jfxTextField
 import ktfx.layouts.NodeManager
 import ktfx.layouts.contextMenu
+import ktfx.layouts.gap
 import ktfx.layouts.gridPane
 import ktfx.layouts.label
 import ktfx.layouts.separatorMenuItem
@@ -87,16 +83,27 @@ class AddInvoiceDialog(
     init {
         gridPane {
             gap = getDouble(R.value.padding_medium)
-            label(getString(R2.string.employee)) col 0 row 0
+            label(getString(R2.string.employee)) {
+                gridAt(0, 0)
+            }
             label(login.name) {
+                gridAt(0, 1)
                 styleClass += R.style.bold
-            } col 1 row 0
-            label(getString(R2.string.date)) col 2 row 0 hpriority ALWAYS halign RIGHT
+            }
+            label(getString(R2.string.date)) {
+                gridAt(0, 2)
+                hgrow()
+                halignRight()
+            }
             label(dateTime.toString(PATTERN_DATE)) {
+                gridAt(0, 3)
                 styleClass += R.style.bold
-            } col 3 row 0
-            label(getString(R2.string.customer)) col 0 row 1
+            }
+            label(getString(R2.string.customer)) {
+                gridAt(1, 0)
+            }
             customerField = jfxTextField {
+                gridAt(1, 1)
                 isEditable = false
                 textProperty().bind(buildStringBinding(customerProperty) {
                     customerProperty.value?.toString() ?: getString(R2.string.search_customer)
@@ -106,9 +113,13 @@ class AddInvoiceDialog(
                         customerProperty.set(it)
                     }
                 }
-            } col 1 row 1
-            label(getString(R2.string.jobs)) col 0 row 2
+            }
+            label(getString(R2.string.jobs)) {
+                gridAt(2, 0)
+            }
             jfxTabPane {
+                gridAt(2, 1)
+                colSpans = 3
                 styleClass += R.style.jfx_tab_pane_small
                 tab {
                     digitalTable =
@@ -187,7 +198,7 @@ class AddInvoiceDialog(
                         }
                     }
                 }
-            } col 1 row 2 colSpans 3
+            }
             totalProperty.bind(buildDoubleBinding(
                 offsetTable.items,
                 digitalTable.items,
@@ -199,13 +210,20 @@ class AddInvoiceDialog(
                     plateTable.items.sumByDouble { it.total } +
                     otherTable.items.sumByDouble { it.total }
             })
-            label(getString(R2.string.note)) col 0 row 3
+            label(getString(R2.string.note)) {
+                gridAt(3, 0)
+            }
             noteArea = textArea {
+                gridAt(3, 1)
+                colSpans = 3
                 promptText = getString(R2.string.note)
                 prefHeight = 64.0
-            } col 1 row 3 colSpans 3
-            label(getString(R2.string.total)) col 0 row 4
+            }
+            label(getString(R2.string.total)) {
+                gridAt(4, 0)
+            }
             label {
+                gridAt(4, 1)
                 styleClass += R.style.bold
                 textProperty().bind(buildStringBinding(totalProperty) {
                     currencyConverter(totalProperty.value)
@@ -215,7 +233,7 @@ class AddInvoiceDialog(
                         then getColor(R.value.color_green)
                         otherwise getColor(R.value.color_red)
                 )
-            } col 1 row 4
+            }
         }
         defaultButton.disableProperty().bind(customerProperty.isNull or totalProperty.lessEq(0))
     }

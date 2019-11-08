@@ -7,7 +7,8 @@ import com.hendraanggrian.openpss.control.TimeBox
 import com.hendraanggrian.openpss.ui.ResultablePopOver
 import javafx.scene.Node
 import ktfx.bindings.buildBooleanBinding
-import ktfx.controls.gap
+import ktfx.layouts.addNode
+import ktfx.layouts.gap
 import ktfx.layouts.gridPane
 import ktfx.layouts.label
 import org.joda.time.LocalTime
@@ -24,10 +25,18 @@ class AddRecessPopOver(
     init {
         gridPane {
             gap = getDouble(R.value.padding_medium)
-            label(getString(R2.string.start)) col 0 row 0
-            startBox = addNode(TimeBox()) col 1 row 0
-            label(getString(R2.string.end)) col 0 row 1
-            endBox = addNode(TimeBox()) col 1 row 1
+            label(getString(R2.string.start)) {
+                gridAt(0, 0)
+            }
+            startBox = addNode(TimeBox()) {
+                gridAt(0, 1)
+            }
+            label(getString(R2.string.end)) {
+                gridAt(1, 0)
+            }
+            endBox = addNode(TimeBox()) {
+                gridAt(1, 1)
+            }
         }
         defaultButton.disableProperty()
             .bind(buildBooleanBinding(startBox.valueProperty(), endBox.valueProperty()) {

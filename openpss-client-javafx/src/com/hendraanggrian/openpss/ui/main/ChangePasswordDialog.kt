@@ -9,8 +9,8 @@ import javafx.scene.control.PasswordField
 import ktfx.bindings.isBlank
 import ktfx.bindings.neq
 import ktfx.bindings.or
-import ktfx.controls.gap
 import ktfx.jfoenix.layouts.jfxPasswordField
+import ktfx.layouts.gap
 import ktfx.layouts.gridPane
 import ktfx.layouts.label
 
@@ -26,16 +26,24 @@ class ChangePasswordDialog(component: FxComponent) :
         gridPane {
             gap = getDouble(R.value.padding_medium)
             label {
+                gridAt(0, 0)
+                colSpans = 2
                 text = getString(R2.string._change_password)
-            } col 0 row 0 colSpans 2
-            label(getString(R2.string.password)) col 0 row 1
+            }
+            label(getString(R2.string.password)) {
+                gridAt(1, 0)
+            }
             changePasswordField = jfxPasswordField {
+                gridAt(1, 1)
                 promptText = getString(R2.string.password)
-            } col 1 row 1
-            label(getString(R2.string.confirm_password)) col 0 row 2
+            }
+            label(getString(R2.string.confirm_password)) {
+                gridAt(2, 0)
+            }
             confirmPasswordField = jfxPasswordField {
+                gridAt(2, 1)
                 promptText = getString(R2.string.confirm_password)
-            } col 1 row 2
+            }
         }
         defaultButton.disableProperty().bind(
             changePasswordField.textProperty().isBlank()

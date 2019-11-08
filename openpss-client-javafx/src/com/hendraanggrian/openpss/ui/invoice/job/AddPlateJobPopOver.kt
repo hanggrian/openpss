@@ -29,18 +29,25 @@ class AddPlateJobPopOver(component: FxComponent) :
     private lateinit var priceField: DoubleField
 
     override fun KtfxGridPane.onCreateContent() {
-        label(getString(R2.string.type)) col 0 row currentRow
-        typeChoice =
-            jfxComboBox(runBlocking(Dispatchers.IO) { OpenPSSApi.getPlatePrices() }.toObservableList()) {
-                valueProperty().listener { _, _, job ->
-                    priceField.value = job.price
-                }
-            } col 1 colSpans 2 row currentRow
+        label(getString(R2.string.type)) {
+            gridAt(currentRow, 0)
+        }
+        typeChoice = jfxComboBox(runBlocking(Dispatchers.IO) { OpenPSSApi.getPlatePrices() }.toObservableList()) {
+            gridAt(currentRow, 1)
+            colSpans = 2
+            valueProperty().listener { _, _, job ->
+                priceField.value = job.price
+            }
+        }
         currentRow++
-        label(getString(R2.string.price)) col 0 row currentRow
+        label(getString(R2.string.price)) {
+            gridAt(currentRow, 0)
+        }
         priceField = addNode(DoubleField()) {
+            gridAt(currentRow, 1)
+            colSpans = 2
             promptText = getString(R2.string.price)
-        } col 1 colSpans 2 row currentRow
+        }
     }
 
     override val totalBindingDependencies: Array<Observable>

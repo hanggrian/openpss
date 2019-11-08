@@ -23,10 +23,10 @@ import kotlinx.coroutines.runBlocking
 import ktfx.bindings.isBlank
 import ktfx.bindings.or
 import ktfx.collections.toObservableList
-import ktfx.controls.gap
 import ktfx.jfoenix.controls.jfxSnackbar
 import ktfx.jfoenix.layouts.jfxComboBox
 import ktfx.jfoenix.layouts.jfxPasswordField
+import ktfx.layouts.gap
 import ktfx.layouts.gridPane
 import ktfx.layouts.label
 
@@ -90,19 +90,27 @@ interface FxComponent : Component<StackPane, WritableDefaults>, StringResources,
             gridPane {
                 gap = getDouble(R.value.padding_medium)
                 label {
+                    gridAt(0, 0)
+                    colSpans = 2
                     text = getString(R2.string._permission_required)
-                } col 0 row 0 colSpans 2
-                label(getString(R2.string.admin)) col 0 row 1
+                }
+                label(getString(R2.string.admin)) {
+                    gridAt(1, 0)
+                }
                 adminCombo = jfxComboBox(runBlocking(Dispatchers.IO) { OpenPSSApi.getEmployees() }
                     .filter { it.isAdmin }
                     .toObservableList()
                 ) {
+                    gridAt(1, 1)
                     promptText = getString(R2.string.admin)
-                } col 1 row 1
-                label(getString(R2.string.password)) col 0 row 2
+                }
+                label(getString(R2.string.password)) {
+                    gridAt(2, 0)
+                }
                 passwordField = jfxPasswordField {
+                    gridAt(2, 1)
                     promptText = getString(R2.string.password)
-                } col 1 row 2
+                }
             }
             defaultButton.disableProperty().bind(
                 adminCombo.valueProperty().isNull or passwordField.textProperty().isBlank()

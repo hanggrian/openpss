@@ -18,7 +18,6 @@ import javafx.scene.control.MenuItem
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import javafx.scene.input.MouseEvent
-import javafx.scene.layout.Priority
 import javafx.scene.layout.StackPane
 import kotlin.math.absoluteValue
 import kotlinx.coroutines.Dispatchers
@@ -31,10 +30,8 @@ import ktfx.bindings.buildBinding
 import ktfx.cells.cellFactory
 import ktfx.collections.sort
 import ktfx.controls.find
-import ktfx.controls.gap
 import ktfx.controls.isSelected
 import ktfx.controls.notSelectedBinding
-import ktfx.controls.paddingAll
 import ktfx.coroutines.eventFilter
 import ktfx.coroutines.onAction
 import ktfx.coroutines.onKeyPressed
@@ -45,15 +42,17 @@ import ktfx.jfoenix.layouts.jfxCheckBox
 import ktfx.layouts.KtfxTitledPane
 import ktfx.layouts.addNode
 import ktfx.layouts.contextMenu
+import ktfx.layouts.gap
 import ktfx.layouts.gridPane
 import ktfx.layouts.label
 import ktfx.layouts.listView
 import ktfx.layouts.menuItem
+import ktfx.layouts.paddingAll
 import ktfx.layouts.separatorMenuItem
 import ktfx.layouts.text
 import ktfx.layouts.vbox
 import ktfx.listeners.listener
-import ktfx.text.updateFont
+import ktfx.text.pt
 import org.joda.time.DateTime
 import org.joda.time.DateTime.now
 
@@ -77,39 +76,61 @@ class AttendeePane(
                 gap = getDouble(R.value.padding_small)
                 paddingAll = getDouble(R.value.padding_medium)
                 attendee.role?.let { role ->
-                    label(getString(R2.string.role)) col 0 row 0 marginRight 4.0
-                    label(role) col 1 row 0 colSpans 2
+                    label(getString(R2.string.role)) {
+                        gridAt(0, 0)
+                        marginRight = 4.0
+                    }
+                    label(role) {
+                        gridAt(0, 1)
+                        colSpans = 2
+                    }
                 }
-                label(getString(R2.string.income)) col 0 row 1 marginRight 4.0
+                label(getString(R2.string.income)) {
+                    gridAt(1, 0)
+                    marginRight = 4.0
+                }
                 addNode(IntField()) {
+                    gridAt(1, 1)
                     prefWidth = 80.0
                     promptText = getString(R2.string.income)
                     valueProperty().bindBidirectional(attendee.dailyProperty)
-                } col 1 row 1
+                }
                 label("@${getString(R2.string.day)}") {
-                    updateFont(10.0)
-                } col 2 row 1
-                label(getString(R2.string.overtime)) col 0 row 2 marginRight 4.0
+                    gridAt(1, 2)
+                    font = 10.pt
+                }
+                label(getString(R2.string.overtime)) {
+                    gridAt(2, 0)
+                    marginRight = 4.0
+                }
                 addNode(IntField()) {
+                    gridAt(2, 1)
                     prefWidth = 80.0
                     promptText = getString(R2.string.overtime)
                     valueProperty().bindBidirectional(attendee.hourlyOvertimeProperty)
-                } col 1 row 2
+                }
                 label("@${getString(R2.string.hour)}") {
-                    updateFont(10.0)
-                } col 2 row 2
-                label(getString(R2.string.recess)) col 0 row 3 marginRight 4.0
+                    gridAt(2, 2)
+                    font = 10.pt
+                }
+                label(getString(R2.string.recess)) {
+                    gridAt(3, 0)
+                    marginRight = 4.0
+                }
                 vbox {
+                    gridAt(3, 1)
+                    colSpans = 2
                     runBlocking { OpenPSSApi.getRecesses() }.forEach { recess ->
                         recessChecks += jfxCheckBox(recess.toString()) {
+                            marginTop = if (this@vbox.children.size > 1) 4.0 else 0.0
                             selectedProperty().listener { _, _, selected ->
                                 if (selected) attendee.recesses += recess else attendee.recesses -= recess
                                 attendanceList.forceRefresh()
                             }
                             isSelected = true
-                        } marginTop if (children.size > 1) 4.0 else 0.0
+                        }
                     }
-                } col 1 row 3 colSpans 2
+                }
             }
             attendanceList = listView(attendee.attendances) {
                 styleClass += R.style.list_view_no_scrollbar_horizontal
@@ -122,8 +143,9 @@ class AttendeePane(
                         if (dateTime != null && !empty) graphic = ktfx.layouts.hbox {
                             alignment = Pos.CENTER
                             val itemLabel = label(dateTime.toString(PATTERN_DATETIMEEXT)) {
+                                hgrow()
                                 maxWidth = Double.MAX_VALUE
-                            } hpriority Priority.ALWAYS
+                            }
                             if (index % 2 == 0) {
                                 listView.items.getOrNull(index + 1).let { nextItem ->
                                     when (nextItem) {
@@ -139,11 +161,12 @@ class AttendeePane(
                                                 }
                                             val hours = (minutes / 60.0).round()
                                             text(hours.toString()) {
-                                                updateFont(10.0)
+                                                marginLeft = getDouble(R.value.padding_medium)
+                                                font = 10.pt
                                                 if (hours > 12) {
                                                     style = "-fx-fill: #F44336;"
                                                 }
-                                            } marginLeft getDouble(R.value.padding_medium)
+                                            }
                                         }
                                     }
                                 }

@@ -13,9 +13,9 @@ import javafx.scene.control.TextField
 import ktfx.bindings.buildBooleanBinding
 import ktfx.buildStringConverter
 import ktfx.collections.toObservableList
-import ktfx.controls.gap
 import ktfx.jfoenix.layouts.jfxComboBox
 import ktfx.jfoenix.layouts.jfxTextField
+import ktfx.layouts.gap
 import ktfx.layouts.gridPane
 import ktfx.layouts.label
 import org.apache.commons.validator.routines.EmailValidator
@@ -41,14 +41,22 @@ class AddContactPopOver(component: FxComponent) :
     init {
         gridPane {
             gap = getDouble(R.value.padding_medium)
-            label(getString(R2.string.type)) col 0 row 0
+            label(getString(R2.string.type)) {
+                gridAt(0, 0)
+            }
             typeChoice = jfxComboBox(ContactType.values().toObservableList()) {
+                gridAt(0, 1)
                 converter = buildStringConverter {
                     toString { it!!.toString(this@AddContactPopOver) }
                 }
-            } col 1 row 0
-            label(getString(R2.string.contact)) col 0 row 1
-            contactField = jfxTextField { promptText = getString(R2.string.contact) } col 1 row 1
+            }
+            label(getString(R2.string.contact)) {
+                gridAt(1, 0)
+            }
+            contactField = jfxTextField {
+                gridAt(1, 1)
+                promptText = getString(R2.string.contact)
+            }
         }
         defaultButton.run {
             text = getString(R2.string.add)

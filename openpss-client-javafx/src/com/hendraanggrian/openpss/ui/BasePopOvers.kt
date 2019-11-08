@@ -17,13 +17,13 @@ import javafx.scene.layout.VBox
 import kotlinx.coroutines.CoroutineScope
 import ktfx.bindings.buildBinding
 import ktfx.bindings.isBlank
-import ktfx.controls.gap
 import ktfx.coroutines.onAction
 import ktfx.getValue
 import ktfx.jfoenix.layouts.jfxButton
 import ktfx.jfoenix.layouts.jfxTextField
 import ktfx.layouts.NodeManager
 import ktfx.layouts.addNode
+import ktfx.layouts.gap
 import ktfx.layouts.gridPane
 import ktfx.setValue
 import org.controlsfx.control.PopOver
@@ -132,29 +132,34 @@ class DateTimePopOver(
     init {
         gridPane {
             gap = getDouble(R.value.padding_medium)
-            dateBox = addNode(DateBox(prefill.toLocalDate())) row 0 col 1
+            dateBox = addNode(DateBox(prefill.toLocalDate())) {
+                gridAt(0, 1)
+            }
             jfxButton("-${Record.WORKING_HOURS}") {
+                gridAt(1, 0)
                 onAction {
                     repeat(Record.WORKING_HOURS) {
                         timeBox.previousButton.fire()
                     }
                 }
-            } row 1 col 0
+            }
             timeBox = addNode(TimeBox(prefill.toLocalTime())) {
+                gridAt(1, 1)
                 onOverlap = { plus ->
                     dateBox.picker.value = when {
                         plus -> dateBox.picker.value.plusDays(1)
                         else -> dateBox.picker.value.minusDays(1)
                     }
                 }
-            } row 1 col 1
+            }
             jfxButton("+${Record.WORKING_HOURS}") {
+                gridAt(1, 2)
                 onAction {
                     repeat(Record.WORKING_HOURS) {
                         timeBox.nextButton.fire()
                     }
                 }
-            } row 1 col 2
+            }
         }
         defaultButton.text = getString(defaultButtonTextId)
     }

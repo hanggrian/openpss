@@ -32,27 +32,43 @@ class AddDigitalJobPopOver(component: FxComponent) :
     private lateinit var twoSidePriceField: DoubleField
 
     override fun KtfxGridPane.onCreateContent() {
-        label(getString(R2.string.type)) col 0 row currentRow
-        typeChoice =
-            jfxComboBox(runBlocking(Dispatchers.IO) { OpenPSSApi.getDigitalPrices() }.toObservableList()) {
-                valueProperty().listener { _, _, job ->
-                    oneSidePriceField.value = job.oneSidePrice
-                    twoSidePriceField.value = job.twoSidePrice
-                }
-            } col 1 colSpans 2 row currentRow
+        label(getString(R2.string.type)) {
+            gridAt(currentRow, 0)
+        }
+        typeChoice = jfxComboBox(runBlocking(Dispatchers.IO) { OpenPSSApi.getDigitalPrices() }.toObservableList()) {
+            gridAt(currentRow, 1)
+            colSpans = 2
+            valueProperty().listener { _, _, job ->
+                oneSidePriceField.value = job.oneSidePrice
+                twoSidePriceField.value = job.twoSidePrice
+            }
+        }
         currentRow++
-        label(getString(R2.string.two_side)) col 0 row currentRow
-        twoSideCheck = jfxCheckBox() col 1 colSpans 2 row currentRow
+        label(getString(R2.string.two_side)) {
+            gridAt(currentRow, 0)
+        }
+        twoSideCheck = jfxCheckBox {
+            gridAt(currentRow, 1)
+            colSpans = 2
+        }
         currentRow++
-        label(getString(R2.string.one_side_price)) col 0 row currentRow
+        label(getString(R2.string.one_side_price)) {
+            gridAt(currentRow, 0)
+        }
         oneSidePriceField = addNode(DoubleField()) {
+            gridAt(currentRow, 1)
+            colSpans = 2
             promptText = getString(R2.string.one_side_price)
-        } col 1 colSpans 2 row currentRow
+        }
         currentRow++
-        label(getString(R2.string.two_side_price)) col 0 row currentRow
+        label(getString(R2.string.two_side_price)) {
+            gridAt(currentRow, 0)
+        }
         twoSidePriceField = addNode(DoubleField()) {
+            gridAt(currentRow, 1)
+            colSpans = 2
             promptText = getString(R2.string.two_side_price)
-        } col 1 colSpans 2 row currentRow
+        }
         currentRow++
     }
 

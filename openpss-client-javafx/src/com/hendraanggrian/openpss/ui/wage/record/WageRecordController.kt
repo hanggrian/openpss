@@ -45,6 +45,7 @@ import ktfx.cells.cellFactory
 import ktfx.collections.sizeBinding
 import ktfx.controls.notSelectedBinding
 import ktfx.controls.snapshot
+import ktfx.controlsfx.isOSX
 import ktfx.coroutines.onAction
 import ktfx.invoke
 import ktfx.jfoenix.controls.jfxIndefiniteSnackbar
@@ -52,7 +53,6 @@ import ktfx.layouts.label
 import ktfx.layouts.menuItem
 import ktfx.runLater
 import ktfx.swing.toSwingImage
-import org.apache.commons.lang3.SystemUtils
 import org.joda.time.LocalTime
 
 @Suppress("UNCHECKED_CAST")
@@ -84,7 +84,7 @@ class WageRecordController : BaseController() {
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
-        menuBar.isUseSystemMenuBar = SystemUtils.IS_OS_MAC
+        menuBar.isUseSystemMenuBar = isOSX()
         undoMenu.disableProperty().bind(editMenu.items.sizeBinding lessEq 2)
         arrayOf(lockStartButton, lockEndButton).forEach { button ->
             button.disableProperty()

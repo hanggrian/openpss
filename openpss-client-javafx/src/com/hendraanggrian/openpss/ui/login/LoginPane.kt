@@ -20,21 +20,16 @@ import com.hendraanggrian.openpss.ui.TextDialog
 import com.hendraanggrian.openpss.ui.main.help.AboutDialog
 import com.hendraanggrian.openpss.ui.main.help.GitHubHelper
 import com.jfoenix.controls.JFXButton
-import javafx.geometry.HPos
 import javafx.geometry.Pos
 import javafx.scene.Node
 import javafx.scene.control.Button
 import javafx.scene.control.PasswordField
 import javafx.scene.control.TextField
-import javafx.scene.layout.Priority
 import javafx.scene.layout.StackPane
 import javafx.scene.text.TextAlignment
 import ktfx.bindings.buildBinding
 import ktfx.bindings.isBlank
 import ktfx.collections.toObservableList
-import ktfx.controls.gap
-import ktfx.controls.paddingAll
-import ktfx.controls.updatePadding
 import ktfx.coroutines.listener
 import ktfx.coroutines.onAction
 import ktfx.jfoenix.layouts.jfxButton
@@ -44,18 +39,22 @@ import ktfx.jfoenix.layouts.jfxTextField
 import ktfx.jfoenix.layouts.jfxToggleButton
 import ktfx.jfoenix.listeners.onDialogClosed
 import ktfx.layouts.KtfxStackPane
+import ktfx.layouts.addNode
 import ktfx.layouts.anchorPane
+import ktfx.layouts.gap
 import ktfx.layouts.gridPane
 import ktfx.layouts.hbox
 import ktfx.layouts.hyperlink
 import ktfx.layouts.imageView
 import ktfx.layouts.label
+import ktfx.layouts.paddingAll
 import ktfx.layouts.stackPane
 import ktfx.layouts.text
 import ktfx.layouts.textFlow
+import ktfx.layouts.updatePadding
 import ktfx.layouts.vbox
 import ktfx.runLater
-import ktfx.text.updateFont
+import ktfx.text.pt
 
 class LoginPane<T>(resources: T, override val defaults: WritableDefaults) : KtfxStackPane(),
     FxComponent,
@@ -93,8 +92,13 @@ class LoginPane<T>(resources: T, override val defaults: WritableDefaults) : Ktfx
             alignment = Pos.CENTER_RIGHT
             gap = getDouble(R.value.padding_medium)
             paddingAll = getDouble(R.value.padding_medium)
-            label(getString(R2.string.language)) row 0 col 0 hpriority Priority.ALWAYS halign HPos.RIGHT
+            label(getString(R2.string.language)) {
+                gridAt(0, 0)
+                hgrow()
+                halignRight()
+            }
             jfxComboBox(Language.values().toObservableList()) {
+                gridAt(0, 1)
                 selectionModel.select(defaults.language)
                 valueProperty().listener { _, _, value ->
                     defaults {
@@ -108,8 +112,10 @@ class LoginPane<T>(resources: T, override val defaults: WritableDefaults) : Ktfx
                         onDialogClosed { App.exit() }
                     }.show(this@LoginPane)
                 }
-            } row 0 col 1
+            }
             vbox(8.0) {
+                gridAt(1, 0)
+                colSpans = 2
                 alignment = Pos.CENTER
                 updatePadding(32.0, 24.0, 32.0, 24.0)
                 imageView(R.image.logo_small)
@@ -117,15 +123,16 @@ class LoginPane<T>(resources: T, override val defaults: WritableDefaults) : Ktfx
                     styleClass.addAll(R.style.bold, R.style.display2)
                 }
                 label(getString(R2.string._login_desc1)) {
+                    font = 16.pt
                     textAlignment = TextAlignment.CENTER
                     isWrapText = true
-                    updateFont(16.0)
                 }
                 employeeField = jfxTextField(defaults[Setting.KEY_EMPLOYEE]) {
-                    updateFont(16.0)
+                    font = 16.pt
+                    marginTop = 24.0
                     promptText = getString(R2.string.employee)
                     runLater(::requestFocus)
-                } marginTop 24.0
+                }
                 textFlow {
                     hyperlink(getString(R2.string.connection_settings)) {
                         onAction {
@@ -134,6 +141,7 @@ class LoginPane<T>(resources: T, override val defaults: WritableDefaults) : Ktfx
                     }
                 }
                 textFlow {
+                    marginTop = 24.0
                     var version = BuildConfig2.VERSION
                     if (BuildConfig2.DEBUG) {
                         version += " DEBUG"
@@ -146,17 +154,20 @@ class LoginPane<T>(resources: T, override val defaults: WritableDefaults) : Ktfx
                             GitHubHelper.checkUpdates(this@LoginPane)
                         }
                     }
-                } marginTop 24.0
+                }
                 anchorPane {
+                    marginTop = 24.0
                     jfxButton(getString(R2.string.about)) {
+                        anchorLeft = 0.0
                         updatePadding(8.0, 16.0, 8.0, 16.0)
-                        updateFont(16.0)
+                        font = 16.pt
                         styleClass += R.style.flat
                         onAction { AboutDialog(this@LoginPane).show() }
-                    } anchorLeft 0.0
+                    }
                     loginButton = jfxButton(getString(R2.string.login)) {
+                        anchorRight = 0.0
                         updatePadding(8.0, 16.0, 8.0, 16.0)
-                        updateFont(16.0)
+                        font = 16.pt
                         styleClass += R.style.raised
                         buttonType = JFXButton.ButtonType.RAISED
                         disableProperty().bind(employeeField.textProperty().isBlank())
@@ -184,9 +195,9 @@ class LoginPane<T>(resources: T, override val defaults: WritableDefaults) : Ktfx
                             }
                         }
                         employeeField.onActionProperty().bindBidirectional(onActionProperty())
-                    } anchorRight 0.0
-                } marginTop 24.0
-            } row 1 col 0 colSpans 2
+                    }
+                }
+            }
         }
     }
 
@@ -197,10 +208,18 @@ class LoginPane<T>(resources: T, override val defaults: WritableDefaults) : Ktfx
         init {
             gridPane {
                 gap = getDouble(R.value.padding_medium)
-                label(getString(R2.string.server_host)) col 0 row 0
-                addNode(serverHostField) col 1 row 0
-                label(getString(R2.string.server_port)) col 0 row 1
-                addNode(serverPortField) col 1 row 1
+                label(getString(R2.string.server_host)) {
+                    gridAt(0, 0)
+                }
+                addNode(serverHostField) {
+                    gridAt(0, 1)
+                }
+                label(getString(R2.string.server_port)) {
+                    gridAt(1, 0)
+                }
+                addNode(serverPortField) {
+                    gridAt(1, 1)
+                }
             }
         }
     }

@@ -40,6 +40,7 @@ class SearchCustomerPopOver(component: FxComponent) :
                 promptText = getString(R2.string.name)
             }
             customerList = addNode(CustomerListView()) {
+                marginTop = getDouble(R.value.padding_medium)
                 prefHeight = 262.0
                 itemsProperty().bind(buildBinding(searchField.textProperty()) {
                     runBlocking(Dispatchers.IO) {
@@ -62,7 +63,7 @@ class SearchCustomerPopOver(component: FxComponent) :
                         defaultButton.fire()
                     }
                 }
-            } marginTop getDouble(R.value.padding_medium)
+            }
         }
         defaultButton.disableProperty().bind(customerList.selectionModel.notSelectedBinding)
     }

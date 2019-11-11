@@ -31,12 +31,12 @@ import javafx.scene.control.TextField
 import javafx.scene.image.ImageView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
-import ktfx.bindings.buildDoubleBinding
-import ktfx.bindings.buildStringBinding
+import ktfx.bindings.doubleBindingOf
 import ktfx.bindings.greater
 import ktfx.bindings.lessEq
 import ktfx.bindings.or
 import ktfx.bindings.otherwise
+import ktfx.bindings.stringBindingOf
 import ktfx.bindings.then
 import ktfx.collections.isEmptyBinding
 import ktfx.collections.mutableObservableListOf
@@ -105,7 +105,7 @@ class AddInvoiceDialog(
             customerField = jfxTextField {
                 gridAt(1, 1)
                 isEditable = false
-                textProperty().bind(buildStringBinding(customerProperty) {
+                textProperty().bind(stringBindingOf(customerProperty) {
                     customerProperty.value?.toString() ?: getString(R2.string.search_customer)
                 })
                 onMouseClicked {
@@ -199,7 +199,7 @@ class AddInvoiceDialog(
                     }
                 }
             }
-            totalProperty.bind(buildDoubleBinding(
+            totalProperty.bind(doubleBindingOf(
                 offsetTable.items,
                 digitalTable.items,
                 plateTable.items,
@@ -225,7 +225,7 @@ class AddInvoiceDialog(
             label {
                 gridAt(4, 1)
                 styleClass += R.style.bold
-                textProperty().bind(buildStringBinding(totalProperty) {
+                textProperty().bind(stringBindingOf(totalProperty) {
                     currencyConverter(totalProperty.value)
                 })
                 textFillProperty().bind(
@@ -293,7 +293,7 @@ class AddInvoiceDialog(
     }
 
     private fun Tab.bindTitle(tableView: TableView<*>, s: String) =
-        textProperty().bind(buildStringBinding(tableView.items) {
+        textProperty().bind(stringBindingOf(tableView.items) {
             getString(s).let {
                 when {
                     tableView.items.isEmpty() -> it

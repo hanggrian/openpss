@@ -27,7 +27,7 @@ import javafx.scene.control.PasswordField
 import javafx.scene.control.TextField
 import javafx.scene.layout.StackPane
 import javafx.scene.text.TextAlignment
-import ktfx.bindings.buildBinding
+import ktfx.bindings.bindingOf
 import ktfx.bindings.isBlank
 import ktfx.collections.toObservableList
 import ktfx.coroutines.listener
@@ -259,10 +259,10 @@ class LoginPane<T>(resources: T, override val defaults: WritableDefaults) : Ktfx
             }
             defaultButton.run {
                 disableProperty().bind(textField.textProperty().isBlank())
-                passwordField.onActionProperty().bind(buildBinding(disableProperty()) {
+                passwordField.onActionProperty().bind(bindingOf(disableProperty()) {
                     if (isDisable) null else onAction
                 })
-                textField.onActionProperty().bind(buildBinding(disableProperty()) {
+                textField.onActionProperty().bind(bindingOf(disableProperty()) {
                     if (isDisable) null else onAction
                 })
             }

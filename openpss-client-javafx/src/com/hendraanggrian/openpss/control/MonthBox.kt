@@ -9,7 +9,7 @@ import javafx.geometry.Pos
 import javafx.scene.control.Button
 import javafx.scene.control.ComboBox
 import javafx.scene.image.ImageView
-import ktfx.bindings.buildBinding
+import ktfx.bindings.bindingOf
 import ktfx.buildStringConverter
 import ktfx.collections.toObservableList
 import ktfx.coroutines.onAction
@@ -71,13 +71,12 @@ open class MonthBox @JvmOverloads constructor(prefill: YearMonth = YearMonth.now
             }
         }
 
-        valueProperty.bind(
-            buildBinding(
-                monthBox.selectionModel.selectedIndexProperty(),
-                yearField.valueProperty()
-            ) {
-                YearMonth(yearField.value, monthBox.value + 1)
-            })
+        valueProperty.bind(bindingOf(
+            monthBox.selectionModel.selectedIndexProperty(),
+            yearField.valueProperty()
+        ) {
+            YearMonth(yearField.value, monthBox.value + 1)
+        })
     }
 
     fun setLocale(locale: Locale) {

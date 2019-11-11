@@ -9,7 +9,7 @@ import javafx.geometry.Pos
 import javafx.scene.control.Button
 import javafx.scene.control.DatePicker
 import javafx.scene.image.ImageView
-import ktfx.bindings.buildBinding
+import ktfx.bindings.bindingOf
 import ktfx.coroutines.onAction
 import ktfx.getValue
 import ktfx.jfoenix.layouts.jfxButton
@@ -48,6 +48,6 @@ open class DateBox @JvmOverloads constructor(prefill: LocalDate = LocalDate.now(
             styleClass += R.style.flat
             onAction { picker.value = picker.value.plusDays(1) }
         }
-        valueProperty.bind(buildBinding(picker.valueProperty()) { picker.value.toJoda() })
+        valueProperty.bind(bindingOf(picker.valueProperty()) { picker.value.toJoda() })
     }
 }

@@ -5,16 +5,16 @@ import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.schema.Customer
 import com.hendraanggrian.openpss.ui.ResultableDialog
-import com.hendraanggrian.openpss.util.isPersonName
 import com.hendraanggrian.openpss.util.orNull
+import com.hendraanggrian.openpss.util.personNameBinding
 import javafx.scene.Node
 import javafx.scene.control.Label
 import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
 import javafx.scene.control.TextInputControl
 import javafx.scene.image.ImageView
-import ktfx.asProperty
 import ktfx.bindings.or
+import ktfx.booleanProperty
 import ktfx.coroutines.listener
 import ktfx.jfoenix.layouts.jfxTextArea
 import ktfx.jfoenix.layouts.jfxTextField
@@ -28,7 +28,7 @@ class EditCustomerDialog(
     private val customer: Customer
 ) : ResultableDialog<Customer>(component, R2.string.edit_customer) {
 
-    private val unchangedProperty = true.asProperty()
+    private val unchangedProperty = booleanProperty(true)
 
     private val image: ImageView
     private val description: Label
@@ -88,7 +88,7 @@ class EditCustomerDialog(
             disableProperty().bind(
                 when {
                     customer.isCompany -> unchangedProperty
-                    else -> unchangedProperty or !nameField.textProperty().isPersonName()
+                    else -> unchangedProperty or !nameField.textProperty().personNameBinding
                 }
             )
         }

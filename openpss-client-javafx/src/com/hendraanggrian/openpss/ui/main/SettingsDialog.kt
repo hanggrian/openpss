@@ -26,8 +26,8 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.javafx.JavaFx
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import ktfx.asProperty
 import ktfx.bindings.and
+import ktfx.booleanProperty
 import ktfx.buildStringConverter
 import ktfx.collections.toObservableList
 import ktfx.coroutines.listener
@@ -46,8 +46,8 @@ import ktfx.layouts.vbox
 
 class SettingsDialog(component: FxComponent) : BaseDialog(component, R2.string.settings) {
 
-    private var isLocalChanged = false.asProperty()
-    private var isGlobalChanged = false.asProperty()
+    private var isLocalChanged = booleanProperty()
+    private var isGlobalChanged = booleanProperty()
 
     private lateinit var invoiceHeadersArea: TextArea
     private lateinit var wageReaderChoice: ComboBox<WageReader>

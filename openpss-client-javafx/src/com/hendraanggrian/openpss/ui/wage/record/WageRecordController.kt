@@ -37,10 +37,10 @@ import javafx.scene.control.TreeTableView
 import javafx.scene.layout.StackPane
 import javafx.scene.layout.VBox
 import javax.imageio.ImageIO
-import ktfx.bindings.buildBooleanBinding
-import ktfx.bindings.buildStringBinding
+import ktfx.bindings.booleanBindingOf
 import ktfx.bindings.lessEq
 import ktfx.bindings.or
+import ktfx.bindings.stringBindingOf
 import ktfx.cells.cellFactory
 import ktfx.collections.sizeBinding
 import ktfx.controls.notSelectedBinding
@@ -89,7 +89,7 @@ class WageRecordController : BaseController() {
         arrayOf(lockStartButton, lockEndButton).forEach { button ->
             button.disableProperty()
                 .bind(recordTable.selectionModel.notSelectedBinding or
-                    buildBooleanBinding(recordTable.selectionModel.selectedItemProperty()) {
+                    booleanBindingOf(recordTable.selectionModel.selectedItemProperty()) {
                         recordTable.selectionModel.selectedItems?.any { !it.value.isChild() }
                             ?: true
                     })
@@ -139,7 +139,7 @@ class WageRecordController : BaseController() {
                 }
             }
             totalLabel.textProperty()
-                .bind(buildStringBinding(records.filter { it.isChild() }.map { it.totalProperty }) {
+                .bind(stringBindingOf(records.filter { it.isChild() }.map { it.totalProperty }) {
                     currencyConverter(records
                         .asSequence()
                         .filter { it.isTotal() }

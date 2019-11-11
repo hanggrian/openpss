@@ -12,7 +12,7 @@ import javafx.scene.control.TextField
 import javafx.scene.input.KeyCode.ENTER
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
-import ktfx.bindings.buildBinding
+import ktfx.bindings.bindingOf
 import ktfx.collections.toObservableList
 import ktfx.controls.isSelected
 import ktfx.controls.notSelectedBinding
@@ -42,7 +42,7 @@ class SearchCustomerPopOver(component: FxComponent) :
             customerList = addNode(CustomerListView()) {
                 marginTop = getDouble(R.value.padding_medium)
                 prefHeight = 262.0
-                itemsProperty().bind(buildBinding(searchField.textProperty()) {
+                itemsProperty().bind(bindingOf(searchField.textProperty()) {
                     runBlocking(Dispatchers.IO) {
                         OpenPSSApi.getCustomers(searchField.text, 0, ITEMS_PER_PAGE)
                             .items

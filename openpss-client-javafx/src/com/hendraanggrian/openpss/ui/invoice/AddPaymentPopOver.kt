@@ -14,9 +14,9 @@ import javafx.scene.control.TextField
 import javafx.scene.image.ImageView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
-import ktfx.bindings.buildBinding
-import ktfx.bindings.buildBooleanBinding
-import ktfx.bindings.buildStringBinding
+import ktfx.bindings.bindingOf
+import ktfx.bindings.booleanBindingOf
+import ktfx.bindings.stringBindingOf
 import ktfx.coroutines.onAction
 import ktfx.invoke
 import ktfx.jfoenix.layouts.jfxButton
@@ -79,7 +79,7 @@ class AddPaymentPopOver(
                 gridAt(3, 1)
                 colSpans = 2
                 styleClass += R.style.bold
-                textProperty().bind(buildStringBinding(valueField.valueProperty()) {
+                textProperty().bind(stringBindingOf(valueField.valueProperty()) {
                     (receivable - valueField.value).let { remaining ->
                         when {
                             remaining <= 0.0 -> getString(R2.string.paid)
@@ -87,7 +87,7 @@ class AddPaymentPopOver(
                         }
                     }
                 })
-                textFillProperty().bind(buildBinding(textProperty()) {
+                textFillProperty().bind(bindingOf(textProperty()) {
                     getColor(
                         when {
                             receivable - valueField.value <= 0.0 -> R.value.color_green
@@ -114,7 +114,7 @@ class AddPaymentPopOver(
                 bindDisable()
             }
         }
-        defaultButton.disableProperty().bind(buildBooleanBinding(
+        defaultButton.disableProperty().bind(booleanBindingOf(
             valueField.valueProperty(), cashBox.selectedProperty(),
             referenceField.textProperty()
         ) {

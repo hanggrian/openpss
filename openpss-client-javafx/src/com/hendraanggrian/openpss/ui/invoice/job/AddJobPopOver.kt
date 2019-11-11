@@ -12,7 +12,7 @@ import javafx.beans.value.ObservableBooleanValue
 import javafx.scene.Node
 import javafx.scene.control.CheckBox
 import javafx.scene.control.TextField
-import ktfx.bindings.buildStringBinding
+import ktfx.bindings.stringBindingOf
 import ktfx.coroutines.listener
 import ktfx.jfoenix.layouts.jfxCheckBox
 import ktfx.jfoenix.layouts.jfxTextField
@@ -99,7 +99,7 @@ abstract class AddJobPopOver<T : Invoice.Job>(component: FxComponent, titleId: S
     override val total: Double get() = totalField.value
 
     private fun DoubleField.bindTotal() =
-        textProperty().bind(buildStringBinding(*totalBindingDependencies) {
+        textProperty().bind(stringBindingOf(*totalBindingDependencies) {
             calculateTotal().toString()
         })
 }

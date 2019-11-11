@@ -10,7 +10,7 @@ import com.hendraanggrian.openpss.ui.ResultablePopOver
 import javafx.scene.Node
 import javafx.scene.control.ComboBox
 import javafx.scene.control.TextField
-import ktfx.bindings.buildBooleanBinding
+import ktfx.bindings.booleanBindingOf
 import ktfx.buildStringConverter
 import ktfx.collections.toObservableList
 import ktfx.jfoenix.layouts.jfxComboBox
@@ -61,7 +61,7 @@ class AddContactPopOver(component: FxComponent) :
         defaultButton.run {
             text = getString(R2.string.add)
             disableProperty().bind(
-                buildBooleanBinding(
+                booleanBindingOf(
                     typeChoice.valueProperty(),
                     contactField.textProperty()
                 ) {

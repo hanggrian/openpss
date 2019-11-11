@@ -15,10 +15,10 @@ import javafx.beans.property.SimpleDoubleProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.beans.property.StringProperty
 import kotlin.math.absoluteValue
-import ktfx.asProperty
-import ktfx.bindings.buildDoubleBinding
-import ktfx.bindings.buildStringBinding
+import ktfx.bindings.doubleBindingOf
 import ktfx.bindings.plus
+import ktfx.bindings.stringBindingOf
+import ktfx.finalProperty
 import ktfx.getValue
 import ktfx.setValue
 import org.joda.time.DateTime
@@ -64,7 +64,7 @@ class Record(
         /** Dummy for invisible [javafx.scene.control.TreeTableView] rootLayout. */
         fun getDummy(resources: StringResources) = Record(
             resources, Int.MIN_VALUE, Attendee.DUMMY,
-            START_OF_TIME.asProperty(), START_OF_TIME.asProperty()
+            finalProperty(START_OF_TIME), finalProperty(START_OF_TIME)
         )
     }
 
@@ -78,21 +78,16 @@ class Record(
             totalProperty.set(0.0)
         }
         if (isChild()) {
-            dailyProperty.bind(
-                buildDoubleBinding(
-                    startProperty,
-                    endProperty,
-                    dailyDisabledProperty
-                ) {
-                    if (isDailyDisabled) 0.0 else {
-                        val hours = workingHours
-                        when {
-                            hours <= WORKING_HOURS -> hours.round()
-                            else -> WORKING_HOURS.toDouble()
-                        }
+            dailyProperty.bind(doubleBindingOf(startProperty, endProperty, dailyDisabledProperty) {
+                if (isDailyDisabled) 0.0 else {
+                    val hours = workingHours
+                    when {
+                        hours <= WORKING_HOURS -> hours.round()
+                        else -> WORKING_HOURS.toDouble()
                     }
-                })
-            overtimeProperty.bind(buildDoubleBinding(startProperty, endProperty) {
+                }
+            })
+            overtimeProperty.bind(doubleBindingOf(startProperty, endProperty) {
                 val hours = workingHours
                 val overtime = (hours - WORKING_HOURS).round()
                 when {
@@ -102,10 +97,10 @@ class Record(
             })
         }
         if (isChild() || isTotal()) {
-            dailyIncomeProperty.bind(buildDoubleBinding(dailyProperty) {
+            dailyIncomeProperty.bind(doubleBindingOf(dailyProperty) {
                 (daily * attendee.daily / WORKING_HOURS).round()
             })
-            overtimeIncomeProperty.bind(buildDoubleBinding(overtimeProperty) {
+            overtimeIncomeProperty.bind(doubleBindingOf(overtimeProperty) {
                 (overtime * attendee.hourlyOvertime).round()
             })
             totalProperty.bind(dailyIncomeProperty + overtimeIncomeProperty)
@@ -128,7 +123,7 @@ class Record(
 
     val displayedStart: StringProperty
         get() = SimpleStringProperty().apply {
-            bind(buildStringBinding(startProperty, dailyDisabledProperty) {
+            bind(stringBindingOf(startProperty, dailyDisabledProperty) {
                 when {
                     isNode() -> attendee.role.orEmpty()
                     isChild() -> start!!.toString(PATTERN_DATETIME).let { if (isDailyDisabled) "($it)" else it }
@@ -140,7 +135,7 @@ class Record(
 
     val displayedEnd: StringProperty
         get() = SimpleStringProperty().apply {
-            bind(buildStringBinding(endProperty, dailyDisabledProperty) {
+            bind(stringBindingOf(endProperty, dailyDisabledProperty) {
                 when {
                     isNode() -> "${attendee.attendances.size / 2} ${getString(R2.string.day)}"
                     isChild() -> end!!.toString(PATTERN_DATETIME).let { if (isDailyDisabled) "($it)" else it }
@@ -169,7 +164,8 @@ class Record(
             attendee.recesses
                 .map { it.getInterval(start!!) }
                 .forEach {
-                    minutes -= interval.overlap(it)?.toDuration()?.toStandardMinutes()?.minutes?.absoluteValue ?: 0
+                    minutes -= interval.overlap(it)?.toDuration()?.toStandardMinutes()?.minutes?.absoluteValue
+                        ?: 0
                 }
             return minutes / 60.0
         }

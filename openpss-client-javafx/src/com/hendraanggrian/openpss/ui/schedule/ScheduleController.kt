@@ -22,8 +22,8 @@ import javafx.scene.control.TreeTableColumn
 import javafx.scene.control.TreeTableView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
-import ktfx.bindings.buildStringBinding
 import ktfx.bindings.or
+import ktfx.bindings.stringBindingOf
 import ktfx.collections.isEmptyBinding
 import ktfx.coroutines.listener
 import ktfx.coroutines.onAction
@@ -82,7 +82,7 @@ class ScheduleController : ActionController(), Refreshable {
                     else -> selectionModel.selectAll(value)
                 }
             }
-            titleProperty().bind(buildStringBinding(selectionModel.selectedItemProperty()) {
+            titleProperty().bind(stringBindingOf(selectionModel.selectedItemProperty()) {
                 Invoice.no(this@ScheduleController, selectionModel.selectedItem?.value?.invoice?.no)
             })
         }

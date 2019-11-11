@@ -7,10 +7,10 @@ import javafx.beans.property.StringProperty
 import javafx.scene.Node
 import javafx.scene.control.Tooltip
 import javafx.scene.image.ImageView
-import ktfx.asProperty
-import ktfx.bindings.buildBinding
+import ktfx.bindings.bindingOf
 import ktfx.getValue
 import ktfx.setValue
+import ktfx.stringProperty
 
 @DefaultProperty("graphic")
 class Action @JvmOverloads constructor(text: String? = null, graphic: Node? = null) :
@@ -19,16 +19,14 @@ class Action @JvmOverloads constructor(text: String? = null, graphic: Node? = nu
     constructor(text: String? = null, graphicUrl: String? = null) :
         this(text, graphicUrl?.let { ImageView(it) })
 
-    private val tooltipTextProperty = text.asProperty()
-
+    private val tooltipTextProperty = stringProperty(text)
     fun tooltipTextProperty(): StringProperty = tooltipTextProperty
-
     var tooltipText: String? by tooltipTextProperty
 
     init {
         buttonType = ButtonType.FLAT
         styleClass += R.style.flat
-        tooltipProperty().bind(buildBinding(tooltipTextProperty) {
+        tooltipProperty().bind(bindingOf(tooltipTextProperty) {
             tooltipText?.let { Tooltip(it) }
         })
     }

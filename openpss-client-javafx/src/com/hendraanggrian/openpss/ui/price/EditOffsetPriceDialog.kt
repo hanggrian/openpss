@@ -6,10 +6,11 @@ import com.hendraanggrian.openpss.api.OpenPSSApi
 import com.hendraanggrian.openpss.schema.OffsetPrice
 import javafx.beans.value.ObservableValue
 import kotlinx.coroutines.CoroutineScope
-import ktfx.asProperty
 import ktfx.buildStringConverter
 import ktfx.cells.textFieldCellFactory
 import ktfx.coroutines.onEditCommit
+import ktfx.finalDoubleProperty
+import ktfx.finalIntProperty
 
 @Suppress("UNCHECKED_CAST")
 class EditOffsetPriceDialog(
@@ -21,7 +22,7 @@ class EditOffsetPriceDialog(
             minWidth = 128.0
             style = "-fx-alignment: center-right;"
             setCellValueFactory {
-                it.value.minQty.asProperty(true) as ObservableValue<Int>
+                finalIntProperty(it.value.minQty) as ObservableValue<Int>
             }
             textFieldCellFactory(buildStringConverter {
                 fromString { it.toIntOrNull() ?: 0 }
@@ -36,7 +37,7 @@ class EditOffsetPriceDialog(
             minWidth = 128.0
             style = "-fx-alignment: center-right;"
             setCellValueFactory {
-                it.value.minPrice.asProperty(true) as ObservableValue<Double>
+                finalDoubleProperty(it.value.minPrice) as ObservableValue<Double>
             }
             textFieldCellFactory(buildStringConverter {
                 fromString { it.toDoubleOrNull() ?: 0.0 }
@@ -51,7 +52,7 @@ class EditOffsetPriceDialog(
             minWidth = 128.0
             style = "-fx-alignment: center-right;"
             setCellValueFactory {
-                it.value.excessPrice.asProperty(true) as ObservableValue<Double>
+                finalDoubleProperty(it.value.excessPrice) as ObservableValue<Double>
             }
             textFieldCellFactory(buildStringConverter {
                 fromString { it.toDoubleOrNull() ?: 0.0 }

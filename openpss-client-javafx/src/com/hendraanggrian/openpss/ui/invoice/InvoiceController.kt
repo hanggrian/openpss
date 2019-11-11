@@ -37,10 +37,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import ktfx.bindings.and
-import ktfx.bindings.buildBinding
-import ktfx.bindings.buildStringBinding
+import ktfx.bindings.bindingOf
 import ktfx.bindings.eq
 import ktfx.bindings.neq
+import ktfx.bindings.stringBindingOf
 import ktfx.collections.emptyObservableList
 import ktfx.collections.toMutableObservableList
 import ktfx.collections.toObservableList
@@ -114,7 +114,7 @@ class InvoiceController : ActionController(), Refreshable {
                 .toObservableList()
             selectionModel.selectFirst()
         }
-        customerField.textProperty().bind(buildStringBinding(customerProperty) {
+        customerField.textProperty().bind(stringBindingOf(customerProperty) {
             customerProperty.value?.toString() ?: getString(R2.string.search_customer)
         })
         dateBox.disableProperty().bind(!pickDateRadio.selectedProperty())
@@ -128,7 +128,7 @@ class InvoiceController : ActionController(), Refreshable {
     }
 
     override fun refresh() = runLater {
-        invoicePagination.contentFactoryProperty().bind(buildBinding(
+        invoicePagination.contentFactoryProperty().bind(bindingOf(
             searchField.valueProperty(),
             customerProperty,
             paymentCombo.valueProperty(),
@@ -170,7 +170,7 @@ class InvoiceController : ActionController(), Refreshable {
                                 viewInvoice()
                             }
                         }
-                        titleProperty().bind(buildStringBinding(selectionModel.selectedItemProperty()) {
+                        titleProperty().bind(stringBindingOf(selectionModel.selectedItemProperty()) {
                             Invoice.no(this@InvoiceController, selectionModel.selectedItem?.no)
                         })
                     }.also { invoiceTable = it }
@@ -206,7 +206,7 @@ class InvoiceController : ActionController(), Refreshable {
                                     stringCell { reference }
                                 }
                             }
-                            itemsProperty().bind(buildBinding(invoiceTable.selectionModel.selectedItemProperty()) {
+                            itemsProperty().bind(bindingOf(invoiceTable.selectionModel.selectedItemProperty()) {
                                 when (invoiceTable.selectionModel.selectedItem) {
                                     null -> emptyObservableList()
                                     else -> runBlocking(Dispatchers.IO) {
@@ -260,7 +260,7 @@ class InvoiceController : ActionController(), Refreshable {
                             }
                             getString(R2.string.done)(ImageView(R.image.menu_done)) {
                                 runLater {
-                                    disableProperty().bind(buildBinding(invoiceTable.selectionModel.selectedItemProperty()) {
+                                    disableProperty().bind(bindingOf(invoiceTable.selectionModel.selectedItemProperty()) {
                                         when {
                                             invoiceTable.selectionModel.selectedItem != null &&
                                                 !invoiceTable.selectionModel.selectedItem.isDone -> false

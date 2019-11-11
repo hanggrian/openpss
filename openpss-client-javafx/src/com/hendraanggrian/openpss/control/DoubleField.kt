@@ -5,7 +5,7 @@ import javafx.beans.property.BooleanProperty
 import javafx.beans.property.DoubleProperty
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleDoubleProperty
-import ktfx.bindings.buildBooleanBinding
+import ktfx.bindings.booleanBindingOf
 import ktfx.buildStringConverter
 import ktfx.coroutines.listener
 import ktfx.getValue
@@ -25,7 +25,7 @@ class DoubleField : JFXTextField() {
         textProperty().bindBidirectional(valueProperty(), buildStringConverter {
             fromString { it.toDoubleOrNull() ?: 0.0 }
         })
-        validProperty().bind(buildBooleanBinding(textProperty()) {
+        validProperty().bind(booleanBindingOf(textProperty()) {
             runCatching {
                 java.lang.Double.parseDouble(text)
                 true

@@ -6,7 +6,7 @@ import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.control.TimeBox
 import com.hendraanggrian.openpss.ui.ResultablePopOver
 import javafx.scene.Node
-import ktfx.bindings.buildBooleanBinding
+import ktfx.bindings.booleanBindingOf
 import ktfx.layouts.addNode
 import ktfx.layouts.gap
 import ktfx.layouts.gridPane
@@ -39,7 +39,7 @@ class AddRecessPopOver(
             }
         }
         defaultButton.disableProperty()
-            .bind(buildBooleanBinding(startBox.valueProperty(), endBox.valueProperty()) {
+            .bind(booleanBindingOf(startBox.valueProperty(), endBox.valueProperty()) {
                 startBox.value!! >= endBox.value!!
             })
     }

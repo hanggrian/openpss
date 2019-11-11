@@ -49,10 +49,10 @@ import javafx.util.Callback
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
-import ktfx.bindings.buildStringBinding
 import ktfx.bindings.eq
 import ktfx.bindings.minus
 import ktfx.bindings.otherwise
+import ktfx.bindings.stringBindingOf
 import ktfx.bindings.then
 import ktfx.cells.cellFactory
 import ktfx.collections.toObservableList
@@ -126,13 +126,13 @@ class MainController : BaseController(), Refreshable {
         }
 
         runLater {
-            titleLabel.scene.stage.titleProperty().bind(buildStringBinding(
+            titleLabel.scene.stage.titleProperty().bind(stringBindingOf(
                 drawerList.selectionModel.selectedIndexProperty()
             ) {
                 "${BuildConfig2.NAME} - ${drawerList.selectionModel.selectedItem?.text}"
             })
         }
-        titleLabel.textProperty().bind(buildStringBinding(
+        titleLabel.textProperty().bind(stringBindingOf(
             tabPane.selectionModel.selectedIndexProperty(),
             *controllers.map { it.titleProperty() }.toTypedArray()
         ) {

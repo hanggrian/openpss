@@ -26,7 +26,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.javafx.JavaFx
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import ktfx.bindings.buildBinding
+import ktfx.bindings.bindingOf
 import ktfx.cells.cellFactory
 import ktfx.collections.sort
 import ktfx.controls.find
@@ -214,7 +214,7 @@ class AttendeePane(
         }
         contentDisplay = ContentDisplay.RIGHT
         graphic = ktfx.layouts.imageView {
-            imageProperty().bind(buildBinding(hoverProperty()) {
+            imageProperty().bind(bindingOf(hoverProperty()) {
                 Image(
                     when {
                         isHover -> R.image.graphic_clear_active

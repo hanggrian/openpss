@@ -7,7 +7,7 @@ import javafx.beans.property.SimpleObjectProperty
 import javafx.scene.Node
 import javafx.scene.control.Pagination
 import javafx.util.Callback
-import ktfx.bindings.buildBinding
+import ktfx.bindings.bindingOf
 import ktfx.getValue
 import ktfx.setValue
 
@@ -26,7 +26,7 @@ class PaginatedPane : Pagination() {
     val lastPageIndex: Int get() = pageCount - 1
 
     init {
-        pageFactoryProperty().bind(buildBinding(magicProperty, contentFactoryProperty) {
+        pageFactoryProperty().bind(bindingOf(magicProperty, contentFactoryProperty) {
             Callback<Int, Node> { page ->
                 contentFactory?.call(page to (height / magic).toInt())
             }

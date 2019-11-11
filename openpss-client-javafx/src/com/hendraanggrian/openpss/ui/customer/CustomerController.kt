@@ -32,8 +32,8 @@ import kotlinx.coroutines.javafx.JavaFx
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
-import ktfx.bindings.buildBinding
-import ktfx.bindings.buildStringBinding
+import ktfx.bindings.bindingOf
+import ktfx.bindings.stringBindingOf
 import ktfx.collections.emptyObservableList
 import ktfx.collections.toMutableObservableList
 import ktfx.collections.toObservableList
@@ -93,7 +93,7 @@ class CustomerController : ActionController(), Refreshable {
     }
 
     override fun refresh() = ktfx.runLater {
-        customerPagination.contentFactoryProperty().bind(buildBinding(searchField.textProperty()) {
+        customerPagination.contentFactoryProperty().bind(bindingOf(searchField.textProperty()) {
             Callback<Pair<Int, Int>, Node> { (page, count) ->
                 customerList = CustomerListView().apply {
                     styleClass += R.style.list_view_no_scrollbar_vertical
@@ -114,7 +114,7 @@ class CustomerController : ActionController(), Refreshable {
                         items = customers.toMutableObservableList()
                     }
                 }
-                titleProperty().bind(buildStringBinding(customerList.selectionModel.selectedItemProperty()) {
+                titleProperty().bind(stringBindingOf(customerList.selectionModel.selectedItemProperty()) {
                     customerList.selectionModel.selectedItem?.name
                 })
                 sinceLabel.bindLabel {
@@ -124,7 +124,7 @@ class CustomerController : ActionController(), Refreshable {
                 addressLabel.bindLabel { customerList.selectionModel.selectedItem?.address ?: "-" }
                 noteLabel.bindLabel { customerList.selectionModel.selectedItem?.note ?: "-" }
                 contactTable.itemsProperty()
-                    .bind(buildBinding(customerList.selectionModel.selectedItemProperty()) {
+                    .bind(bindingOf(customerList.selectionModel.selectedItemProperty()) {
                         customerList.selectionModel.selectedItem?.contacts?.toObservableList()
                             ?: emptyObservableList()
                     })
@@ -165,7 +165,7 @@ class CustomerController : ActionController(), Refreshable {
     }
 
     private fun Label.bindLabel(target: () -> String) = textProperty()
-        .bind(buildStringBinding(customerList.selectionModel.selectedItemProperty()) { target() })
+        .bind(stringBindingOf(customerList.selectionModel.selectedItemProperty()) { target() })
 
     private fun reload() {
         val index = customerList.selectionModel.selectedIndex

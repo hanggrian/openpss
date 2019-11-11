@@ -12,10 +12,11 @@ import com.hendraanggrian.openpss.util.round
 import javafx.beans.property.IntegerProperty
 import javafx.beans.property.SimpleIntegerProperty
 import javafx.collections.ObservableList
-import ktfx.asProperty
-import ktfx.bindings.buildDoubleBinding
+import ktfx.bindings.doubleBindingOf
 import ktfx.collections.mutableObservableListOf
+import ktfx.finalProperty
 import ktfx.getValue
+import ktfx.property
 import ktfx.setValue
 import org.joda.time.DateTime
 import org.joda.time.Minutes.minutes
@@ -87,8 +88,8 @@ data class Attendee(
         resources,
         INDEX_NODE,
         this,
-        DateTime.now().asProperty(),
-        DateTime.now().asProperty()
+        property(DateTime.now()),
+        property(DateTime.now())
     )
 
     fun toChildRecords(resources: StringResources): Set<Record> {
@@ -99,31 +100,36 @@ data class Attendee(
             resources,
             index++,
             this,
-            iterator.next().asProperty(),
-            iterator.next().asProperty()
+            property(iterator.next()),
+            property(iterator.next())
         )
         return records
     }
 
     fun toTotalRecords(resources: StringResources, children: Collection<Record>): Record =
-        Record(resources, INDEX_TOTAL, this, START_OF_TIME.asProperty(), START_OF_TIME.asProperty())
-            .apply {
-                dailyProperty.bind(buildDoubleBinding(children.map { it.dailyProperty }) {
-                    children.sumByDouble { it.daily }.round()
-                })
-                dailyIncomeProperty.bind(buildDoubleBinding(children.map { it.dailyIncomeProperty }) {
-                    children.sumByDouble { it.dailyIncome }.round()
-                })
-                overtimeProperty.bind(buildDoubleBinding(children.map { it.overtimeProperty }) {
-                    children.sumByDouble { it.overtime }.round()
-                })
-                overtimeIncomeProperty.bind(buildDoubleBinding(children.map { it.overtimeIncomeProperty }) {
-                    children.sumByDouble { it.overtimeIncome }.round()
-                })
-                totalProperty.bind(buildDoubleBinding(children.map { it.totalProperty }) {
-                    children.sumByDouble { it.total }.round()
-                })
-            }
+        Record(
+            resources,
+            INDEX_TOTAL,
+            this,
+            finalProperty(START_OF_TIME),
+            finalProperty(START_OF_TIME)
+        ).apply {
+            dailyProperty.bind(doubleBindingOf(children.map { it.dailyProperty }) {
+                children.sumByDouble { it.daily }.round()
+            })
+            dailyIncomeProperty.bind(doubleBindingOf(children.map { it.dailyIncomeProperty }) {
+                children.sumByDouble { it.dailyIncome }.round()
+            })
+            overtimeProperty.bind(doubleBindingOf(children.map { it.overtimeProperty }) {
+                children.sumByDouble { it.overtime }.round()
+            })
+            overtimeIncomeProperty.bind(doubleBindingOf(children.map { it.overtimeIncomeProperty }) {
+                children.sumByDouble { it.overtimeIncome }.round()
+            })
+            totalProperty.bind(doubleBindingOf(children.map { it.totalProperty }) {
+                children.sumByDouble { it.total }.round()
+            })
+        }
 
     companion object {
 

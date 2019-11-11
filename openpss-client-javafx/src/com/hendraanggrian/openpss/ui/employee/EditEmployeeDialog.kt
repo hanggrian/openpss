@@ -12,8 +12,8 @@ import com.hendraanggrian.openpss.util.stringCell
 import javafx.scene.control.MenuItem
 import javafx.scene.image.ImageView
 import kotlinx.coroutines.CoroutineScope
-import ktfx.bindings.buildBinding
-import ktfx.bindings.buildStringBinding
+import ktfx.bindings.bindingOf
+import ktfx.bindings.stringBindingOf
 import ktfx.controls.isSelected
 import ktfx.controls.notSelectedBinding
 import ktfx.coroutines.onAction
@@ -34,7 +34,7 @@ class EditEmployeeDialog(component: FxComponent) :
         }
         table.contextMenu {
             menuItem {
-                textProperty().bind(buildStringBinding(table.selectionModel.selectedIndexProperty()) {
+                textProperty().bind(stringBindingOf(table.selectionModel.selectedIndexProperty()) {
                     when {
                         table.selectionModel.isSelected() -> getString(
                             when {
@@ -45,7 +45,7 @@ class EditEmployeeDialog(component: FxComponent) :
                         else -> null
                     }
                 })
-                graphicProperty().bind(buildBinding(table.selectionModel.selectedIndexProperty()) {
+                graphicProperty().bind(bindingOf(table.selectionModel.selectedIndexProperty()) {
                     when {
                         table.selectionModel.isSelected() -> ImageView(
                             when {

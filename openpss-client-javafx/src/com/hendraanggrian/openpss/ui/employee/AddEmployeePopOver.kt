@@ -4,7 +4,7 @@ import com.hendraanggrian.openpss.FxComponent
 import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.ui.InputPopOver
 import com.hendraanggrian.openpss.util.clean
-import com.hendraanggrian.openpss.util.isPersonName
+import com.hendraanggrian.openpss.util.personNameBinding
 import javafx.beans.binding.BooleanBinding
 import ktfx.controlsfx.registerPredicateValidator
 import org.controlsfx.validation.Severity
@@ -30,7 +30,7 @@ class AddEmployeePopOver(
 
     override val defaultDisableBinding: BooleanBinding
         get() = when {
-            restrictiveInput -> !editor.textProperty().isPersonName()
+            restrictiveInput -> !editor.textProperty().personNameBinding
             else -> super.defaultDisableBinding
         }
 

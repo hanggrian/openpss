@@ -29,10 +29,10 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.javafx.JavaFx
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import ktfx.bindings.buildBooleanBinding
-import ktfx.bindings.buildStringBinding
+import ktfx.bindings.booleanBindingOf
 import ktfx.bindings.lessEq
 import ktfx.bindings.or
+import ktfx.bindings.stringBindingOf
 import ktfx.collections.isEmptyBinding
 import ktfx.collections.sizeBinding
 import ktfx.coroutines.onAction
@@ -84,13 +84,13 @@ class WageController : ActionController() {
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
-        titleProperty().bind(buildStringBinding(flowPane.children) {
+        titleProperty().bind(stringBindingOf(flowPane.children) {
             when {
                 flowPane.children.isEmpty() -> null
                 else -> "${flowPane.children.size} ${getString(R2.string.employee)}"
             }
         })
-        titleLabel.textProperty().bind(buildStringBinding(flowPane.children) {
+        titleLabel.textProperty().bind(stringBindingOf(flowPane.children) {
             when {
                 flowPane.children.isEmpty() -> getString(R2.string._wage_record_empty)
                 else -> filePath
@@ -173,7 +173,7 @@ class WageController : ActionController() {
                                     }
                                 }
                                 deleteToTheRightMenu.run {
-                                    disableProperty().bind(buildBooleanBinding(flowPane.children) {
+                                    disableProperty().bind(booleanBindingOf(flowPane.children) {
                                         flowPane.children.indexOf(this@apply) == flowPane.children.lastIndex
                                     })
                                     onAction {
@@ -206,7 +206,7 @@ class WageController : ActionController() {
     /** As attendees are populated, process button need to be rebinded according to new requirements. */
     private fun bindProcessButton() =
         processButton.disableProperty().bind(flowPane.children.isEmptyBinding or
-            buildBooleanBinding(flowPane.children, *flowPane.children
+            booleanBindingOf(flowPane.children, *flowPane.children
                 .map { (it as AttendeePane).attendanceList.items }
                 .toTypedArray()) { attendees.any { it.attendances.size % 2 != 0 } })
 }

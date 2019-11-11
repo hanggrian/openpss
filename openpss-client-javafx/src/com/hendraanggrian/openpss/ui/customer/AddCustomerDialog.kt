@@ -7,7 +7,7 @@ import com.hendraanggrian.openpss.api.OpenPSSApi
 import com.hendraanggrian.openpss.schema.Customer
 import com.hendraanggrian.openpss.ui.ResultableDialog
 import com.hendraanggrian.openpss.util.clean
-import com.hendraanggrian.openpss.util.isPersonName
+import com.hendraanggrian.openpss.util.personNameBinding
 import javafx.beans.binding.When
 import javafx.scene.Node
 import javafx.scene.control.Label
@@ -66,7 +66,7 @@ class AddCustomerDialog(component: FxComponent) :
         }
         defaultButton.disableProperty().bind(
             When(tabPane.selectionModel.selectedIndexProperty() eq 0)
-                then (editor.textProperty().isBlank() or !editor.textProperty().isPersonName())
+                then (editor.textProperty().isBlank() or !editor.textProperty().personNameBinding)
                 otherwise editor.textProperty().isBlank()
         )
         tabPane.selectionModel.selectedIndexProperty().listener {

@@ -15,7 +15,7 @@ import javafx.scene.control.TextField
 import javafx.scene.layout.Region
 import javafx.scene.layout.VBox
 import kotlinx.coroutines.CoroutineScope
-import ktfx.bindings.buildBinding
+import ktfx.bindings.bindingOf
 import ktfx.bindings.isBlank
 import ktfx.coroutines.onAction
 import ktfx.getValue
@@ -90,7 +90,7 @@ open class InputPopOver(component: FxComponent, titleId: String, prefill: String
             text = getString(R2.string.ok)
             disableProperty().bind(defaultDisableBinding)
             editor.onActionProperty()
-                .bind(buildBinding(disableProperty()) { if (isDisable) null else onAction })
+                .bind(bindingOf(disableProperty()) { if (isDisable) null else onAction })
         }
     }
 

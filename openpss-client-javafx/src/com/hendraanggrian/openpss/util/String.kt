@@ -4,7 +4,7 @@ package com.hendraanggrian.openpss.util
 
 import javafx.beans.binding.BooleanBinding
 import javafx.beans.property.StringProperty
-import ktfx.bindings.buildBooleanBinding
+import ktfx.bindings.booleanBindingOf
 
 /** Reversed name of [String.orEmpty]. */
 fun String.orNull(): String? = if (isBlank()) null else this
@@ -25,4 +25,5 @@ fun String.isPersonName(): Boolean {
     }
 }
 
-fun StringProperty.isPersonName(): BooleanBinding = buildBooleanBinding(this) { value.isPersonName() }
+val StringProperty.personNameBinding: BooleanBinding
+    get() = booleanBindingOf(this) { value.isPersonName() }

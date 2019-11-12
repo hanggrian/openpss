@@ -12,7 +12,6 @@ import ktfx.getValue
 import ktfx.setValue
 
 class PaginatedPane : Pagination() {
-
     private val magicProperty = SimpleDoubleProperty()
     fun magicProperty(): DoubleProperty = magicProperty
     var magic: Double by magicProperty

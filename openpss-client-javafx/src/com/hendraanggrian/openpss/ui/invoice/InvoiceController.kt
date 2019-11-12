@@ -24,7 +24,6 @@ import java.util.ResourceBundle
 import javafx.beans.property.SimpleObjectProperty
 import javafx.fxml.FXML
 import javafx.geometry.Side.BOTTOM
-import javafx.scene.Node
 import javafx.scene.control.Button
 import javafx.scene.control.ComboBox
 import javafx.scene.control.RadioButton
@@ -32,12 +31,12 @@ import javafx.scene.control.TableView
 import javafx.scene.control.TextField
 import javafx.scene.image.ImageView
 import javafx.scene.layout.HBox
-import javafx.util.Callback
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import ktfx.bindings.and
 import ktfx.bindings.bindingOf
+import ktfx.bindings.callbackBindingOf
 import ktfx.bindings.eq
 import ktfx.bindings.neq
 import ktfx.bindings.stringBindingOf
@@ -91,9 +90,10 @@ class InvoiceController : ActionController(), Refreshable {
         addButton = addNode(Action(getString(R2.string.add), R.image.action_add)) {
             onAction { addInvoice() }
         }
-        clearFiltersButton = addNode(Action(getString(R2.string.clear_filters), R.image.action_clear_filters)) {
-            onAction { clearFilters() }
-        }
+        clearFiltersButton =
+            addNode(Action(getString(R2.string.clear_filters), R.image.action_clear_filters)) {
+                onAction { clearFilters() }
+            }
         searchField = addNode(IntField()) {
             filterBox.disableProperty().bind(valueProperty() neq 0)
             promptText = getString(R2.string.search_no)
@@ -128,7 +128,7 @@ class InvoiceController : ActionController(), Refreshable {
     }
 
     override fun refresh() = runLater {
-        invoicePagination.contentFactoryProperty().bind(bindingOf(
+        invoicePagination.contentFactoryProperty().bind(callbackBindingOf(
             searchField.valueProperty(),
             customerProperty,
             paymentCombo.valueProperty(),
@@ -136,13 +136,55 @@ class InvoiceController : ActionController(), Refreshable {
             allDateRadio.selectedProperty(),
             pickDateRadio.selectedProperty(),
             dateBox.valueProperty()
-        ) {
-            Callback<Pair<Int, Int>, Node> { (page, count) ->
-                masterDetailPane(BOTTOM) {
-                    masterNode = ktfx.layouts.tableView<Invoice> {
+        ) { (page, count) ->
+            masterDetailPane(BOTTOM) {
+                masterNode = ktfx.layouts.tableView<Invoice> {
+                    constrained()
+                    columns {
+                        getString(R2.string.id)<String> { stringCell { no.toString() } }
+                        getString(R2.string.date)<String> {
+                            stringCell { dateTime.toString(PATTERN_DATETIMEEXT) }
+                        }
+                        getString(R2.string.employee)<String> {
+                            stringCell {
+                                runBlocking(Dispatchers.IO) {
+                                    OpenPSSApi.getEmployee(employeeId).name
+                                }
+                            }
+                        }
+                        getString(R2.string.customer)<String> {
+                            stringCell {
+                                runBlocking(Dispatchers.IO) {
+                                    OpenPSSApi.getCustomer(customerId).name
+                                }
+                            }
+                        }
+                        getString(R2.string.total)<String> { currencyCell(this@InvoiceController) { total } }
+                        getString(R2.string.print)<Boolean> { doneCell { isPrinted } }
+                        getString(R2.string.paid)<Boolean> { doneCell { isPaid } }
+                        getString(R2.string.done)<Boolean> { doneCell { isDone } }
+                    }
+                    onMouseClicked {
+                        if (it.isDoubleClick() && invoiceTable.selectionModel.isSelected()) {
+                            viewInvoice()
+                        }
+                    }
+                    titleProperty().bind(stringBindingOf(selectionModel.selectedItemProperty()) {
+                        Invoice.no(this@InvoiceController, selectionModel.selectedItem?.no)
+                    })
+                }.also { invoiceTable = it }
+                showDetailNodeProperty().bind(invoiceTable.selectionModel.notSelectedBinding)
+                detailNode = ktfx.layouts.vbox {
+                    addNode(Toolbar()) {
+                        leftItems {
+                            label(getString(R2.string.payment)) {
+                                styleClass.addAll(R.style.bold, R.style.accent)
+                            }
+                        }
+                    }
+                    paymentTable = tableView {
                         constrained()
                         columns {
-                            getString(R2.string.id)<String> { stringCell { no.toString() } }
                             getString(R2.string.date)<String> {
                                 stringCell { dateTime.toString(PATTERN_DATETIMEEXT) }
                             }
@@ -153,140 +195,98 @@ class InvoiceController : ActionController(), Refreshable {
                                     }
                                 }
                             }
-                            getString(R2.string.customer)<String> {
-                                stringCell {
-                                    runBlocking(Dispatchers.IO) {
-                                        OpenPSSApi.getCustomer(customerId).name
-                                    }
+                            getString(R2.string.value)<String> {
+                                currencyCell(this@InvoiceController) { value }
+                            }
+                            getString(R2.string.cash)<Boolean> {
+                                doneCell { isCash() }
+                            }
+                            getString(R2.string.reference)<String> {
+                                stringCell { reference }
+                            }
+                        }
+                        itemsProperty().bind(bindingOf(invoiceTable.selectionModel.selectedItemProperty()) {
+                            when (invoiceTable.selectionModel.selectedItem) {
+                                null -> emptyObservableList()
+                                else -> runBlocking(Dispatchers.IO) {
+                                    OpenPSSApi.getPayments(invoiceTable.selectionModel.selectedItem.id)
+                                        .toObservableList()
                                 }
                             }
-                            getString(R2.string.total)<String> { currencyCell(this@InvoiceController) { total } }
-                            getString(R2.string.print)<Boolean> { doneCell { isPrinted } }
-                            getString(R2.string.paid)<Boolean> { doneCell { isPaid } }
-                            getString(R2.string.done)<Boolean> { doneCell { isDone } }
-                        }
-                        onMouseClicked {
-                            if (it.isDoubleClick() && invoiceTable.selectionModel.isSelected()) {
-                                viewInvoice()
-                            }
-                        }
-                        titleProperty().bind(stringBindingOf(selectionModel.selectedItemProperty()) {
-                            Invoice.no(this@InvoiceController, selectionModel.selectedItem?.no)
                         })
-                    }.also { invoiceTable = it }
-                    showDetailNodeProperty().bind(invoiceTable.selectionModel.notSelectedBinding)
-                    detailNode = ktfx.layouts.vbox {
-                        addNode(Toolbar()) {
-                            leftItems {
-                                label(getString(R2.string.payment)) {
-                                    styleClass.addAll(R.style.bold, R.style.accent)
-                                }
-                            }
-                        }
-                        paymentTable = tableView {
-                            constrained()
-                            columns {
-                                getString(R2.string.date)<String> {
-                                    stringCell { dateTime.toString(PATTERN_DATETIMEEXT) }
-                                }
-                                getString(R2.string.employee)<String> {
-                                    stringCell {
-                                        runBlocking(Dispatchers.IO) {
-                                            OpenPSSApi.getEmployee(employeeId).name
-                                        }
-                                    }
-                                }
-                                getString(R2.string.value)<String> {
-                                    currencyCell(this@InvoiceController) { value }
-                                }
-                                getString(R2.string.cash)<Boolean> {
-                                    doneCell { isCash() }
-                                }
-                                getString(R2.string.reference)<String> {
-                                    stringCell { reference }
-                                }
-                            }
-                            itemsProperty().bind(bindingOf(invoiceTable.selectionModel.selectedItemProperty()) {
-                                when (invoiceTable.selectionModel.selectedItem) {
-                                    null -> emptyObservableList()
-                                    else -> runBlocking(Dispatchers.IO) {
-                                        OpenPSSApi.getPayments(invoiceTable.selectionModel.selectedItem.id)
-                                            .toObservableList()
-                                    }
-                                }
-                            })
-                            contextMenu {
-                                getString(R2.string.add)(ImageView(R.image.menu_add)) {
-                                    disableProperty().bind(invoiceTable.selectionModel.notSelectedBinding)
-                                    onAction { addPayment() }
-                                }
-                                getString(R2.string.delete)(ImageView(R.image.menu_delete)) {
-                                    disableProperty().bind(!this@tableView.selectionModel.selectedBinding)
-                                    onAction { deletePayment() }
-                                }
-                            }
-                        }
-                    }
-                    dividerPosition = 0.6
-                    runBlocking {
-                        val (pageCount, invoices) = withContext(Dispatchers.IO) {
-                            OpenPSSApi.getInvoices(
-                                searchField.value,
-                                customerProperty.value?.name,
-                                when (paymentCombo.value) {
-                                    getString(R2.string.paid) -> true
-                                    getString(R2.string.unpaid) -> false
-                                    else -> null
-                                },
-                                null,
-                                when {
-                                    pickDateRadio.isSelected -> null
-                                    else -> dateBox.value
-                                },
-                                page,
-                                count
-                            )
-                        }
-                        invoicePagination.pageCount = pageCount
-                        invoiceTable.items = invoices.toMutableObservableList()
-                    }
-                    runLater {
-                        invoiceTable.contextMenu {
-                            getString(R2.string.view)(ImageView(R.image.menu_invoice)) {
-                                runLater {
-                                    disableProperty().bind(invoiceTable.selectionModel.notSelectedBinding)
-                                }
-                                onAction { viewInvoice() }
-                            }
-                            getString(R2.string.done)(ImageView(R.image.menu_done)) {
-                                runLater {
-                                    disableProperty().bind(bindingOf(invoiceTable.selectionModel.selectedItemProperty()) {
-                                        when {
-                                            invoiceTable.selectionModel.selectedItem != null &&
-                                                !invoiceTable.selectionModel.selectedItem.isDone -> false
-                                            else -> true
-                                        }
-                                    })
-                                }
-                                onAction {
-                                    OpenPSSApi.editInvoice(
-                                        invoiceTable.selectionModel.selectedItem.apply { isDone = true }
-                                    )
-                                    refreshButton.fire()
-                                }
-                            }
-                            separatorMenuItem()
-                            getString(R2.string.delete)(ImageView(R.image.menu_delete)) {
+                        contextMenu {
+                            getString(R2.string.add)(ImageView(R.image.menu_add)) {
                                 disableProperty().bind(invoiceTable.selectionModel.notSelectedBinding)
-                                onAction {
-                                    withPermission {
-                                        if (OpenPSSApi.deleteInvoice(
-                                                login,
-                                                invoiceTable.selectionModel.selectedItem
-                                            )
-                                        ) {
-                                            invoiceTable.items.remove(invoiceTable.selectionModel.selectedItem)
-                                        }
+                                onAction { addPayment() }
+                            }
+                            getString(R2.string.delete)(ImageView(R.image.menu_delete)) {
+                                disableProperty().bind(!this@tableView.selectionModel.selectedBinding)
+                                onAction { deletePayment() }
+                            }
+                        }
+                    }
+                }
+                dividerPosition = 0.6
+                runBlocking {
+                    val (pageCount, invoices) = withContext(Dispatchers.IO) {
+                        OpenPSSApi.getInvoices(
+                            searchField.value,
+                            customerProperty.value?.name,
+                            when (paymentCombo.value) {
+                                getString(R2.string.paid) -> true
+                                getString(R2.string.unpaid) -> false
+                                else -> null
+                            },
+                            null,
+                            when {
+                                pickDateRadio.isSelected -> null
+                                else -> dateBox.value
+                            },
+                            page,
+                            count
+                        )
+                    }
+                    invoicePagination.pageCount = pageCount
+                    invoiceTable.items = invoices.toMutableObservableList()
+                }
+                runLater {
+                    invoiceTable.contextMenu {
+                        getString(R2.string.view)(ImageView(R.image.menu_invoice)) {
+                            runLater {
+                                disableProperty().bind(invoiceTable.selectionModel.notSelectedBinding)
+                            }
+                            onAction { viewInvoice() }
+                        }
+                        getString(R2.string.done)(ImageView(R.image.menu_done)) {
+                            runLater {
+                                disableProperty().bind(bindingOf(invoiceTable.selectionModel.selectedItemProperty()) {
+                                    when {
+                                        invoiceTable.selectionModel.selectedItem != null &&
+                                            !invoiceTable.selectionModel.selectedItem.isDone -> false
+                                        else -> true
+                                    }
+                                })
+                            }
+                            onAction {
+                                OpenPSSApi.editInvoice(
+                                    invoiceTable.selectionModel.selectedItem.apply {
+                                        isDone = true
+                                    }
+                                )
+                                refreshButton.fire()
+                            }
+                        }
+                        separatorMenuItem()
+                        getString(R2.string.delete)(ImageView(R.image.menu_delete)) {
+                            disableProperty().bind(invoiceTable.selectionModel.notSelectedBinding)
+                            onAction {
+                                withPermission {
+                                    if (OpenPSSApi.deleteInvoice(
+                                            login,
+                                            invoiceTable.selectionModel.selectedItem
+                                        )
+                                    ) {
+                                        invoiceTable.items.remove(invoiceTable.selectionModel.selectedItem)
                                     }
                                 }
                             }

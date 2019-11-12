@@ -15,7 +15,6 @@ import com.hendraanggrian.openpss.util.stringCell
 import java.net.URL
 import java.util.ResourceBundle
 import javafx.fxml.FXML
-import javafx.scene.Node
 import javafx.scene.control.Button
 import javafx.scene.control.Label
 import javafx.scene.control.ListView
@@ -24,7 +23,6 @@ import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
 import javafx.scene.control.TextField
 import javafx.scene.image.ImageView
-import javafx.util.Callback
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
@@ -33,6 +31,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import ktfx.bindings.bindingOf
+import ktfx.bindings.callbackBindingOf
 import ktfx.bindings.stringBindingOf
 import ktfx.collections.emptyObservableList
 import ktfx.collections.toMutableObservableList
@@ -93,8 +92,8 @@ class CustomerController : ActionController(), Refreshable {
     }
 
     override fun refresh() = ktfx.runLater {
-        customerPagination.contentFactoryProperty().bind(bindingOf(searchField.textProperty()) {
-            Callback<Pair<Int, Int>, Node> { (page, count) ->
+        customerPagination.contentFactoryProperty()
+            .bind(callbackBindingOf(searchField.textProperty()) { (page, count) ->
                 customerList = CustomerListView().apply {
                     styleClass += R.style.list_view_no_scrollbar_vertical
                     runLater {
@@ -104,7 +103,8 @@ class CustomerController : ActionController(), Refreshable {
                                 onAction { edit() }
                             }
                         }
-                        deleteContactItem.disableProperty().bind(contactTable.selectionModel.notSelectedBinding)
+                        deleteContactItem.disableProperty()
+                            .bind(contactTable.selectionModel.notSelectedBinding)
                     }
                     runBlocking {
                         val (pageCount, customers) = withContext(Dispatchers.IO) {
@@ -128,10 +128,10 @@ class CustomerController : ActionController(), Refreshable {
                         customerList.selectionModel.selectedItem?.contacts?.toObservableList()
                             ?: emptyObservableList()
                     })
-                masterDetailPane.showDetailNodeProperty().bind(customerList.selectionModel.notSelectedBinding)
+                masterDetailPane.showDetailNodeProperty()
+                    .bind(customerList.selectionModel.notSelectedBinding)
                 customerList
-            }
-        })
+            })
     }
 
     fun add() = AddCustomerDialog(this).show { customer ->

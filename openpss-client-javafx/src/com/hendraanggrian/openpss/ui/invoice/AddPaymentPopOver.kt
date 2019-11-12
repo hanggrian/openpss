@@ -45,16 +45,14 @@ class AddPaymentPopOver(
                 gridAt(0, 0)
             }
             label(login.name) {
-                gridAt(0, 1)
-                colSpans = 2
+                gridAt(0, 1, colSpans = 2)
                 styleClass += R.style.bold
             }
             label(getString(R2.string.receivable)) {
                 gridAt(1, 0)
             }
             label(currencyConverter(receivable)) {
-                gridAt(1, 1)
-                colSpans = 2
+                gridAt(1, 1, colSpans = 2)
                 styleClass += R.style.bold
             }
             label(getString(R2.string.payment)) {
@@ -76,8 +74,7 @@ class AddPaymentPopOver(
                 gridAt(3, 0)
             }
             label {
-                gridAt(3, 1)
-                colSpans = 2
+                gridAt(3, 1, colSpans = 2)
                 styleClass += R.style.bold
                 textProperty().bind(stringBindingOf(valueField.valueProperty()) {
                     (receivable - valueField.value).let { remaining ->
@@ -100,8 +97,7 @@ class AddPaymentPopOver(
                 gridAt(6, 0)
             }
             cashBox = jfxCheckBox {
-                gridAt(6, 1)
-                colSpans = 2
+                gridAt(6, 1, colSpans = 2)
                 isSelected = true
             }
             label(getString(R2.string.reference)) {
@@ -109,8 +105,7 @@ class AddPaymentPopOver(
                 bindDisable()
             }
             referenceField = jfxTextField {
-                gridAt(7, 1)
-                colSpans = 2
+                gridAt(7, 1, colSpans = 2)
                 bindDisable()
             }
         }

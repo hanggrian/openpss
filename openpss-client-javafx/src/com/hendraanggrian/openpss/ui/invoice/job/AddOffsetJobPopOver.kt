@@ -39,8 +39,7 @@ class AddOffsetJobPopOver(component: FxComponent) :
             gridAt(currentRow, 0)
         }
         typeChoice = jfxComboBox(runBlocking(Dispatchers.IO) { OpenPSSApi.getOffsetPrices() }.toObservableList()) {
-            gridAt(currentRow, 1)
-            colSpans = 2
+            gridAt(currentRow, 1, colSpans = 2)
             valueProperty().listener { _, _, job ->
                 minQtyField.value = job.minQty
                 minPriceField.value = job.minPrice
@@ -52,8 +51,7 @@ class AddOffsetJobPopOver(component: FxComponent) :
             gridAt(currentRow, 0)
         }
         techniqueChoice = jfxComboBox(Technique.values().toObservableList()) {
-            gridAt(currentRow, 1)
-            colSpans = 2
+            gridAt(currentRow, 1, colSpans = 2)
             converter = buildStringConverter { toString { it!!.toString(this@AddOffsetJobPopOver) } }
             selectionModel.selectFirst()
         }
@@ -62,8 +60,7 @@ class AddOffsetJobPopOver(component: FxComponent) :
             gridAt(currentRow, 0)
         }
         minQtyField = addNode(IntField()) {
-            gridAt(currentRow, 1)
-            colSpans = 2
+            gridAt(currentRow, 1, colSpans = 2)
             promptText = getString(R2.string.min_qty)
         }
         currentRow++
@@ -71,8 +68,7 @@ class AddOffsetJobPopOver(component: FxComponent) :
             gridAt(currentRow, 0)
         }
         minPriceField = addNode(DoubleField()) {
-            gridAt(currentRow, 1)
-            colSpans = 2
+            gridAt(currentRow, 1, colSpans = 2)
             promptText = getString(R2.string.min_price)
         }
         currentRow++
@@ -80,8 +76,7 @@ class AddOffsetJobPopOver(component: FxComponent) :
             gridAt(currentRow, 0)
         }
         excessPriceField = addNode(DoubleField()) {
-            gridAt(currentRow, 1)
-            colSpans = 2
+            gridAt(currentRow, 1, colSpans = 2)
             promptText = getString(R2.string.excess_price)
         }
     }

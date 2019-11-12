@@ -36,8 +36,7 @@ class AddDigitalJobPopOver(component: FxComponent) :
             gridAt(currentRow, 0)
         }
         typeChoice = jfxComboBox(runBlocking(Dispatchers.IO) { OpenPSSApi.getDigitalPrices() }.toObservableList()) {
-            gridAt(currentRow, 1)
-            colSpans = 2
+            gridAt(currentRow, 1, colSpans = 2)
             valueProperty().listener { _, _, job ->
                 oneSidePriceField.value = job.oneSidePrice
                 twoSidePriceField.value = job.twoSidePrice
@@ -48,16 +47,14 @@ class AddDigitalJobPopOver(component: FxComponent) :
             gridAt(currentRow, 0)
         }
         twoSideCheck = jfxCheckBox {
-            gridAt(currentRow, 1)
-            colSpans = 2
+            gridAt(currentRow, 1, colSpans = 2)
         }
         currentRow++
         label(getString(R2.string.one_side_price)) {
             gridAt(currentRow, 0)
         }
         oneSidePriceField = addNode(DoubleField()) {
-            gridAt(currentRow, 1)
-            colSpans = 2
+            gridAt(currentRow, 1, colSpans = 2)
             promptText = getString(R2.string.one_side_price)
         }
         currentRow++
@@ -65,8 +62,7 @@ class AddDigitalJobPopOver(component: FxComponent) :
             gridAt(currentRow, 0)
         }
         twoSidePriceField = addNode(DoubleField()) {
-            gridAt(currentRow, 1)
-            colSpans = 2
+            gridAt(currentRow, 1, colSpans = 2)
             promptText = getString(R2.string.two_side_price)
         }
         currentRow++

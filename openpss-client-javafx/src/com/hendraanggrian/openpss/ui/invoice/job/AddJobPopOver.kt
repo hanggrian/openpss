@@ -48,8 +48,7 @@ abstract class AddJobPopOver<T : Invoice.Job>(component: FxComponent, titleId: S
                 gridAt(currentRow, 0)
             }
             qtyField = addNode(IntField()) {
-                gridAt(currentRow, 1)
-                colSpans = 2
+                gridAt(currentRow, 1, colSpans = 2)
                 promptText = getString(R2.string.qty)
             }
             currentRow++
@@ -57,8 +56,7 @@ abstract class AddJobPopOver<T : Invoice.Job>(component: FxComponent, titleId: S
                 gridAt(currentRow, 0)
             }
             titleField = jfxTextField {
-                gridAt(currentRow, 1)
-                colSpans = 2
+                gridAt(currentRow, 1, colSpans = 2)
                 promptText = getString(R2.string.description)
             }
             currentRow++

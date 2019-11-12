@@ -81,8 +81,7 @@ class AttendeePane(
                         marginRight = 4.0
                     }
                     label(role) {
-                        gridAt(0, 1)
-                        colSpans = 2
+                        gridAt(0, 1, colSpans = 2)
                     }
                 }
                 label(getString(R2.string.income)) {
@@ -118,8 +117,7 @@ class AttendeePane(
                     marginRight = 4.0
                 }
                 vbox {
-                    gridAt(3, 1)
-                    colSpans = 2
+                    gridAt(3, 1, colSpans = 2)
                     runBlocking { OpenPSSApi.getRecesses() }.forEach { recess ->
                         recessChecks += jfxCheckBox(recess.toString()) {
                             marginTop = if (this@vbox.children.size > 1) 4.0 else 0.0

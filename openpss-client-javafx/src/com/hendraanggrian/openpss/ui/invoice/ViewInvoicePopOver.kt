@@ -222,8 +222,7 @@ class ViewInvoicePopOver(
             gridPane {
                 gap = getDouble(R.value.padding_medium)
                 textFlow {
-                    gridAt(0, 0)
-                    rowSpans = 2
+                    gridAt(0, 0, rowSpans = 2)
                     hgrow()
                     paddingAll = getDouble(R.value.padding_small)
                     border = BorderStrokeStyle.SOLID.toBorder()
@@ -233,8 +232,7 @@ class ViewInvoicePopOver(
                     text(invoice.note)
                 }
                 label(currencyConverter(invoice.total)) {
-                    gridAt(0, 1)
-                    colSpans = 2
+                    gridAt(0, 1, colSpans = 2)
                     halignRight()
                     styleClass += R.style.bold
                 }
@@ -307,8 +305,7 @@ class ViewInvoicePopOver(
     ): Int {
         var row = currentRow
         label(getString(titleId)) {
-            gridAt(row, 0)
-            colSpans = 4
+            gridAt(row, 0, colSpans = 4)
             halignLeft()
             styleClass += R.style.bold
         }
@@ -318,8 +315,7 @@ class ViewInvoicePopOver(
             row++
         }
         addNode(Space(height = getDouble(R.value.padding_small))) {
-            gridAt(row, 0)
-            colSpans = 4
+            gridAt(row, 0, colSpans = 4)
         }
         row++
         return row

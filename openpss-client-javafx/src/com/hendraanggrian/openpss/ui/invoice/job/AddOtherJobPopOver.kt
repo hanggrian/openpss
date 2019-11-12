@@ -25,8 +25,7 @@ class AddOtherJobPopOver(component: FxComponent) : AddJobPopOver<Invoice.OtherJo
             gridAt(currentRow, 0)
         }
         priceField = addNode(DoubleField()) {
-            gridAt(currentRow, 1)
-            colSpans = 2
+            gridAt(currentRow, 1, colSpans = 2)
             promptText = getString(R2.string.price)
         }
     }

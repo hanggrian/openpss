@@ -26,8 +26,7 @@ class ChangePasswordDialog(component: FxComponent) :
         gridPane {
             gap = getDouble(R.value.padding_medium)
             label {
-                gridAt(0, 0)
-                colSpans = 2
+                gridAt(0, 0, colSpans = 2)
                 text = getString(R2.string._change_password)
             }
             label(getString(R2.string.password)) {

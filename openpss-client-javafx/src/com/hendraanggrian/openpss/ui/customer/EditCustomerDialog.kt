@@ -47,8 +47,7 @@ class EditCustomerDialog(
                     else -> R.image.display_person
                 }
             ) {
-                gridAt(0, 0)
-                colSpans = 2
+                gridAt(0, 0, colSpans = 2)
             }
             description = label(
                 getString(
@@ -58,8 +57,7 @@ class EditCustomerDialog(
                     }
                 )
             ) {
-                gridAt(0, 1)
-                colSpans = 2
+                gridAt(0, 1, colSpans = 2)
             }
             label(getString(R2.string.name)) {
                 gridAt(2, 0)

@@ -118,8 +118,7 @@ class AddInvoiceDialog(
                 gridAt(2, 0)
             }
             jfxTabPane {
-                gridAt(2, 1)
-                colSpans = 3
+                gridAt(2, 1, colSpans = 3)
                 styleClass += R.style.jfx_tab_pane_small
                 tab {
                     digitalTable =
@@ -214,8 +213,7 @@ class AddInvoiceDialog(
                 gridAt(3, 0)
             }
             noteArea = textArea {
-                gridAt(3, 1)
-                colSpans = 3
+                gridAt(3, 1, colSpans = 3)
                 promptText = getString(R2.string.note)
                 prefHeight = 64.0
             }

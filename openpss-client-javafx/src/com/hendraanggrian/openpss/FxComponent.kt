@@ -90,8 +90,7 @@ interface FxComponent : Component<StackPane, WritableDefaults>, StringResources,
             gridPane {
                 gap = getDouble(R.value.padding_medium)
                 label {
-                    gridAt(0, 0)
-                    colSpans = 2
+                    gridAt(0, 0, colSpans = 2)
                     text = getString(R2.string._permission_required)
                 }
                 label(getString(R2.string.admin)) {

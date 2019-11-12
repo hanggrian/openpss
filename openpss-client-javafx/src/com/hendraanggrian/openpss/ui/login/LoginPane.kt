@@ -114,8 +114,7 @@ class LoginPane<T>(resources: T, override val defaults: WritableDefaults) : Ktfx
                 }
             }
             vbox(8.0) {
-                gridAt(1, 0)
-                colSpans = 2
+                gridAt(1, 0, colSpans = 2)
                 alignment = Pos.CENTER
                 updatePadding(32.0, 24.0, 32.0, 24.0)
                 imageView(R.image.logo_small)

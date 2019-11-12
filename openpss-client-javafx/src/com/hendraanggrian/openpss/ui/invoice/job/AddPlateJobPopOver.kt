@@ -33,8 +33,7 @@ class AddPlateJobPopOver(component: FxComponent) :
             gridAt(currentRow, 0)
         }
         typeChoice = jfxComboBox(runBlocking(Dispatchers.IO) { OpenPSSApi.getPlatePrices() }.toObservableList()) {
-            gridAt(currentRow, 1)
-            colSpans = 2
+            gridAt(currentRow, 1, colSpans = 2)
             valueProperty().listener { _, _, job ->
                 priceField.value = job.price
             }
@@ -44,8 +43,7 @@ class AddPlateJobPopOver(component: FxComponent) :
             gridAt(currentRow, 0)
         }
         priceField = addNode(DoubleField()) {
-            gridAt(currentRow, 1)
-            colSpans = 2
+            gridAt(currentRow, 1, colSpans = 2)
             promptText = getString(R2.string.price)
         }
     }

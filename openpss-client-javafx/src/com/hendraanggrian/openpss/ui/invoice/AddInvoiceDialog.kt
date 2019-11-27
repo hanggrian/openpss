@@ -22,6 +22,7 @@ import javafx.beans.property.DoubleProperty
 import javafx.beans.property.ObjectProperty
 import javafx.beans.property.SimpleDoubleProperty
 import javafx.beans.property.SimpleObjectProperty
+import javafx.geometry.HPos
 import javafx.scene.Node
 import javafx.scene.control.Tab
 import javafx.scene.control.TableColumn
@@ -31,36 +32,37 @@ import javafx.scene.control.TextField
 import javafx.scene.image.ImageView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
-import ktfx.bindings.doubleBindingOf
-import ktfx.bindings.greater
-import ktfx.bindings.lessEq
-import ktfx.bindings.or
-import ktfx.bindings.otherwise
-import ktfx.bindings.stringBindingOf
-import ktfx.bindings.then
-import ktfx.collections.isEmptyBinding
+import ktfx.collections.emptyBinding
 import ktfx.collections.mutableObservableListOf
 import ktfx.controls.TableColumnsBuilder
 import ktfx.controls.columns
+import ktfx.controls.gap
 import ktfx.controls.isSelected
 import ktfx.controls.notSelectedBinding
 import ktfx.coroutines.onAction
 import ktfx.coroutines.onKeyPressed
 import ktfx.coroutines.onMouseClicked
+import ktfx.doubleBindingOf
+import ktfx.greater
 import ktfx.inputs.isDelete
-import ktfx.invoke
 import ktfx.jfoenix.layouts.jfxTabPane
 import ktfx.jfoenix.layouts.jfxTextField
 import ktfx.layouts.NodeManager
 import ktfx.layouts.contextMenu
-import ktfx.layouts.gap
 import ktfx.layouts.gridPane
 import ktfx.layouts.label
 import ktfx.layouts.separatorMenuItem
 import ktfx.layouts.tab
 import ktfx.layouts.tableView
 import ktfx.layouts.textArea
+import ktfx.lessEq
+import ktfx.or
+import ktfx.otherwise
 import ktfx.runLater
+import ktfx.stringBindingOf
+import ktfx.then
+import ktfx.toString
+import ktfx.util.invoke
 import org.joda.time.DateTime
 
 class AddInvoiceDialog(
@@ -83,42 +85,24 @@ class AddInvoiceDialog(
     init {
         gridPane {
             gap = getDouble(R.value.padding_medium)
-            label(getString(R2.string.employee)) {
-                gridAt(0, 0)
-            }
-            label(login.name) {
-                gridAt(0, 1)
-                styleClass += R.style.bold
-            }
-            label(getString(R2.string.date)) {
-                gridAt(0, 2)
-                hgrow()
-                halignRight()
-            }
-            label(dateTime.toString(PATTERN_DATE)) {
-                gridAt(0, 3)
-                styleClass += R.style.bold
-            }
-            label(getString(R2.string.customer)) {
-                gridAt(1, 0)
-            }
+            label(getString(R2.string.employee)) col 0 row 0
+            label(login.name) { styleClass += R.style.bold } col 1 row 0
+            label(getString(R2.string.date)) col 2 row 0 hgrow true halign HPos.RIGHT
+            label(dateTime.toString(PATTERN_DATE)) { styleClass += R.style.bold } col 3 row 0
+            label(getString(R2.string.customer)) col 0 row 1
             customerField = jfxTextField {
-                gridAt(1, 1)
                 isEditable = false
-                textProperty().bind(stringBindingOf(customerProperty) {
-                    customerProperty.value?.toString() ?: getString(R2.string.search_customer)
+                textProperty().bind(customerProperty.toString {
+                    it?.toString() ?: getString(R2.string.search_customer)
                 })
                 onMouseClicked {
                     SearchCustomerPopOver(this@AddInvoiceDialog).show(this@jfxTextField) {
                         customerProperty.set(it)
                     }
                 }
-            }
-            label(getString(R2.string.jobs)) {
-                gridAt(2, 0)
-            }
+            } col 1 row 1
+            label(getString(R2.string.jobs)) col 0 row 2
             jfxTabPane {
-                gridAt(2, 1, colSpans = 3)
                 styleClass += R.style.jfx_tab_pane_small
                 tab {
                     digitalTable =
@@ -197,7 +181,7 @@ class AddInvoiceDialog(
                         }
                     }
                 }
-            }
+            } col (1 to 3) row 2
             totalProperty.bind(doubleBindingOf(
                 offsetTable.items,
                 digitalTable.items,
@@ -209,29 +193,21 @@ class AddInvoiceDialog(
                     plateTable.items.sumByDouble { it.total } +
                     otherTable.items.sumByDouble { it.total }
             })
-            label(getString(R2.string.note)) {
-                gridAt(3, 0)
-            }
+            label(getString(R2.string.note)) col 0 row 3
             noteArea = textArea {
-                gridAt(3, 1, colSpans = 3)
                 promptText = getString(R2.string.note)
                 prefHeight = 64.0
-            }
-            label(getString(R2.string.total)) {
-                gridAt(4, 0)
-            }
+            } col (1 to 3) row 3
+            label(getString(R2.string.total)) col 0 row 4
             label {
-                gridAt(4, 1)
                 styleClass += R.style.bold
-                textProperty().bind(stringBindingOf(totalProperty) {
-                    currencyConverter(totalProperty.value)
-                })
+                textProperty().bind(totalProperty.toString { currencyConverter(it) })
                 textFillProperty().bind(
                     When(totalProperty greater 0)
                         then getColor(R.value.color_green)
                         otherwise getColor(R.value.color_red)
                 )
-            }
+            } col 1 row 4
         }
         defaultButton.disableProperty().bind(customerProperty.isNull or totalProperty.lessEq(0))
     }
@@ -266,7 +242,7 @@ class AddInvoiceDialog(
                 onAction { this@tableView.items.remove(this@tableView.selectionModel.selectedItem) }
             }
             getString(R2.string.clear)(ImageView(R.image.menu_clear)) {
-                runLater { disableProperty().bind(this@tableView.items.isEmptyBinding) }
+                runLater { disableProperty().bind(this@tableView.items.emptyBinding) }
                 onAction { this@tableView.items.clear() }
             }
         }

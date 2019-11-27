@@ -1,5 +1,3 @@
-@file:Suppress("NOTHING_TO_INLINE")
-
 package com.hendraanggrian.openpss.util
 
 import com.hendraanggrian.openpss.FxComponent
@@ -12,7 +10,7 @@ import javafx.scene.text.Text
 import ktfx.cells.cellFactory
 import ktfx.finalBooleanProperty
 import ktfx.finalStringProperty
-import ktfx.invoke
+import ktfx.util.invoke
 
 fun <T> TableColumn<T, Boolean>.doneCell(size: Int = 64, target: T.() -> Boolean) {
     size.toDouble().let {

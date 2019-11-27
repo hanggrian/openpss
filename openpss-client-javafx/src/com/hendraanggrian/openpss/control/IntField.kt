@@ -3,10 +3,10 @@ package com.hendraanggrian.openpss.control
 import com.jfoenix.controls.JFXTextField
 import javafx.beans.property.IntegerProperty
 import javafx.beans.property.SimpleIntegerProperty
-import ktfx.buildStringConverter
 import ktfx.coroutines.listener
 import ktfx.getValue
 import ktfx.setValue
+import ktfx.util.buildStringConverter
 
 class IntField : JFXTextField() {
 

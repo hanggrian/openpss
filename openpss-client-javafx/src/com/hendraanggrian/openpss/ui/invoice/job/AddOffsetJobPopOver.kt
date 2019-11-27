@@ -14,16 +14,16 @@ import javafx.beans.value.ObservableBooleanValue
 import javafx.scene.control.ComboBox
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
-import ktfx.bindings.isBlank
-import ktfx.bindings.lessEq
-import ktfx.bindings.or
-import ktfx.buildStringConverter
 import ktfx.collections.toObservableList
 import ktfx.coroutines.listener
 import ktfx.jfoenix.layouts.jfxComboBox
 import ktfx.layouts.KtfxGridPane
 import ktfx.layouts.addNode
 import ktfx.layouts.label
+import ktfx.lessEq
+import ktfx.or
+import ktfx.toBoolean
+import ktfx.util.buildStringConverter
 
 class AddOffsetJobPopOver(component: FxComponent) :
     AddJobPopOver<Invoice.OffsetJob>(component, R2.string.add_offset_job), Invoice.Job {
@@ -35,50 +35,33 @@ class AddOffsetJobPopOver(component: FxComponent) :
     private lateinit var excessPriceField: DoubleField
 
     override fun KtfxGridPane.onCreateContent() {
-        label(getString(R2.string.type)) {
-            gridAt(currentRow, 0)
-        }
+        label(getString(R2.string.type)) col 0 row currentRow
         typeChoice = jfxComboBox(runBlocking(Dispatchers.IO) { OpenPSSApi.getOffsetPrices() }.toObservableList()) {
-            gridAt(currentRow, 1, colSpans = 2)
             valueProperty().listener { _, _, job ->
                 minQtyField.value = job.minQty
                 minPriceField.value = job.minPrice
                 excessPriceField.value = job.excessPrice
             }
-        }
+        } col (1 to 2) row currentRow
         currentRow++
-        label(getString(R2.string.technique)) {
-            gridAt(currentRow, 0)
-        }
+        label(getString(R2.string.technique)) col 0 row currentRow
         techniqueChoice = jfxComboBox(Technique.values().toObservableList()) {
-            gridAt(currentRow, 1, colSpans = 2)
             converter = buildStringConverter { toString { it!!.toString(this@AddOffsetJobPopOver) } }
             selectionModel.selectFirst()
-        }
+        } col (1 to 2) row currentRow
         currentRow++
-        label(getString(R2.string.min_qty)) {
-            gridAt(currentRow, 0)
-        }
-        minQtyField = addNode(IntField()) {
-            gridAt(currentRow, 1, colSpans = 2)
-            promptText = getString(R2.string.min_qty)
-        }
+        label(getString(R2.string.min_qty)) col 0 row currentRow
+        minQtyField = addNode(IntField()) { promptText = getString(R2.string.min_qty) } col (1 to 2) row currentRow
         currentRow++
-        label(getString(R2.string.min_price)) {
-            gridAt(currentRow, 0)
-        }
+        label(getString(R2.string.min_price)) col 0 row currentRow
         minPriceField = addNode(DoubleField()) {
-            gridAt(currentRow, 1, colSpans = 2)
             promptText = getString(R2.string.min_price)
-        }
+        } col (1 to 2) row currentRow
         currentRow++
-        label(getString(R2.string.excess_price)) {
-            gridAt(currentRow, 0)
-        }
+        label(getString(R2.string.excess_price)) col 0 row currentRow
         excessPriceField = addNode(DoubleField()) {
-            gridAt(currentRow, 1, colSpans = 2)
             promptText = getString(R2.string.excess_price)
-        }
+        } col (1 to 2) row currentRow
     }
 
     override val totalBindingDependencies: Array<Observable>
@@ -92,7 +75,7 @@ class AddOffsetJobPopOver(component: FxComponent) :
 
     override val defaultButtonDisableBinding: ObservableBooleanValue
         get() = typeChoice.valueProperty().isNull or
-            titleField.textProperty().isBlank() or
+            titleField.textProperty().toBoolean { it!!.isBlank() } or
             qtyField.valueProperty().lessEq(0) or
             techniqueChoice.valueProperty().isNull or
             totalField.valueProperty().lessEq(0)

@@ -16,6 +16,7 @@ import javafx.scene.image.Image
 import ktfx.cells.cellFactory
 import ktfx.collections.toObservableList
 import ktfx.controls.find
+import ktfx.controls.paddingAll
 import ktfx.controls.selectedBinding
 import ktfx.controlsfx.layouts.masterDetailPane
 import ktfx.coroutines.listener
@@ -29,7 +30,6 @@ import ktfx.layouts.contextMenu
 import ktfx.layouts.hbox
 import ktfx.layouts.imageView
 import ktfx.layouts.label
-import ktfx.layouts.paddingAll
 import ktfx.layouts.text
 import ktfx.layouts.textFlow
 import ktfx.layouts.vbox
@@ -69,7 +69,6 @@ class AboutDialog(component: FxComponent) : Dialog<Unit>(), FxComponent by compo
                 paddingAll = 48.0
                 imageView(R.image.logo)
                 vbox {
-                    marginLeft = 48.0
                     alignment = Pos.CENTER_LEFT
                     textFlow {
                         "${BuildConfig2.FULL_NAME.substringBefore(' ')} " {
@@ -79,31 +78,17 @@ class AboutDialog(component: FxComponent) : Dialog<Unit>(), FxComponent by compo
                             styleClass.addAll(R.style.light, R.style.display2)
                         }
                     }
-                    text("${getString(R2.string.version)} ${BuildConfig2.VERSION}") {
-                        font = 12.pt
-                        marginTop = 2.0
-                    }
-                    text(getString(R2.string.built_with_open_source_software_expand_to_see_licenses)) {
-                        marginTop = 20.0
-                    }
+                    text("${getString(R2.string.version)} ${BuildConfig2.VERSION}") { font = 12.pt } marginTop 2.0
+                    text(getString(R2.string.built_with_open_source_software_expand_to_see_licenses)) marginTop 20.0
                     textFlow {
-                        marginTop = 4.0
-                        "${getString(R2.string.powered_by)} " {
-                            font = 12.pt
-                        }
+                        "${getString(R2.string.powered_by)} " { font = 12.pt }
                         "JavaFX" { styleClass += R.style.bold }
-                    }
+                    } marginTop 4.0
                     textFlow {
-                        marginTop = 4.0
-                        "${getString(R2.string.author)} " {
-                            font = 12.pt
-                        }
-                        BuildConfig2.USER {
-                            styleClass += R.style.bold
-                        }
-                    }
+                        "${getString(R2.string.author)} " { font = 12.pt }
+                        BuildConfig2.USER { styleClass += R.style.bold }
+                    } marginTop 4.0
                     hbox {
-                        marginTop = 20.0
                         spacing = getDouble(R.value.padding_medium)
                         jfxButton("GitHub") {
                             styleClass += R.style.raised
@@ -114,8 +99,8 @@ class AboutDialog(component: FxComponent) : Dialog<Unit>(), FxComponent by compo
                             styleClass += R.style.flat
                             onAction { desktop?.mail(URI("mailto:${BuildConfig2.EMAIL}")) }
                         }
-                    }
-                }
+                    } marginTop 20.0
+                } marginLeft 48.0
             }
             expandableContent = masterDetailPane {
                 prefHeight = 200.0

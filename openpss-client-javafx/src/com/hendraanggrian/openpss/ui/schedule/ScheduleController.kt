@@ -22,16 +22,16 @@ import javafx.scene.control.TreeTableColumn
 import javafx.scene.control.TreeTableView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
-import ktfx.bindings.or
-import ktfx.bindings.stringBindingOf
-import ktfx.collections.isEmptyBinding
+import ktfx.collections.emptyBinding
 import ktfx.coroutines.listener
 import ktfx.coroutines.onAction
 import ktfx.jfoenix.layouts.jfxToggleButton
 import ktfx.layouts.NodeManager
 import ktfx.layouts.addNode
 import ktfx.layouts.borderPane
+import ktfx.or
 import ktfx.runLater
+import ktfx.toString
 
 class ScheduleController : ActionController(), Refreshable {
 
@@ -66,7 +66,7 @@ class ScheduleController : ActionController(), Refreshable {
                 text = getString(R2.string.history)
                 selectedProperty().listener { refresh() }
                 doneButton.disableProperty()
-                    .bind(scheduleTable.selectionModel.selectedItems.isEmptyBinding or selectedProperty())
+                    .bind(scheduleTable.selectionModel.selectedItems.emptyBinding or selectedProperty())
             }
         }
     }
@@ -82,8 +82,8 @@ class ScheduleController : ActionController(), Refreshable {
                     else -> selectionModel.selectAll(value)
                 }
             }
-            titleProperty().bind(stringBindingOf(selectionModel.selectedItemProperty()) {
-                Invoice.no(this@ScheduleController, selectionModel.selectedItem?.value?.invoice?.no)
+            titleProperty().bind(selectionModel.selectedItemProperty().toString {
+                Invoice.no(this@ScheduleController, it?.value?.invoice?.no)
             })
         }
         jobType.stringCell { jobType }

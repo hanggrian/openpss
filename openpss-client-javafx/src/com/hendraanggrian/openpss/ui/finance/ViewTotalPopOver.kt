@@ -5,10 +5,10 @@ import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.ui.BasePopOver
 import javafx.geometry.HPos
-import ktfx.invoke
 import ktfx.layouts.columnConstraints
 import ktfx.layouts.gridPane
 import ktfx.layouts.label
+import ktfx.util.invoke
 
 class ViewTotalPopOver(
     component: FxComponent,
@@ -24,26 +24,12 @@ class ViewTotalPopOver(
             }
             vgap = 20.0
             hgap = 40.0
-            label(getString(R2.string.cash)) {
-                gridAt(0, 0)
-            }
-            label(currencyConverter(cash)) {
-                gridAt(0, 1)
-            }
-            label(getString(R2.string.non_cash)) {
-                gridAt(1, 0)
-            }
-            label(currencyConverter(nonCash)) {
-                gridAt(1, 1)
-            }
-            label(getString(R2.string.total)) {
-                gridAt(2, 0)
-                styleClass += R.style.bold
-            }
-            label(currencyConverter(cash + nonCash)) {
-                gridAt(2, 1)
-                styleClass += R.style.bold
-            }
+            label(getString(R2.string.cash)) col 0 row 0
+            label(currencyConverter(cash)) col 1 row 0
+            label(getString(R2.string.non_cash)) col 0 row 1
+            label(currencyConverter(nonCash)) col 1 row 1
+            label(getString(R2.string.total)) { styleClass += R.style.bold } col 0 row 2
+            label(currencyConverter(cash + nonCash)) { styleClass += R.style.bold } col 1 row 2
         }
     }
 }

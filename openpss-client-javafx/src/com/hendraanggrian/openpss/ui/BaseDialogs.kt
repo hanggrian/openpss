@@ -25,6 +25,7 @@ import kotlinx.coroutines.launch
 import ktfx.collections.toMutableObservableList
 import ktfx.controls.constrained
 import ktfx.controls.notSelectedBinding
+import ktfx.controls.setMinSize
 import ktfx.coroutines.onAction
 import ktfx.getValue
 import ktfx.jfoenix.layouts.jfxButton
@@ -37,7 +38,6 @@ import ktfx.layouts.tooltip
 import ktfx.layouts.vbox
 import ktfx.runLater
 import ktfx.setValue
-import ktfx.windows.setMinSize
 
 @Suppress("LeakingThis")
 open class BaseDialog(
@@ -174,12 +174,11 @@ abstract class TableDialog<D : Document<*>>(
             }
         }
         anchorPane {
-            table = tableView {
-                anchorAll = 1.0
+            table = tableView<D> {
                 prefHeight = 275.0
                 constrained()
                 isEditable = true
-            }
+            } anchorAll 1.0
         }
         refresh()
         runLater {

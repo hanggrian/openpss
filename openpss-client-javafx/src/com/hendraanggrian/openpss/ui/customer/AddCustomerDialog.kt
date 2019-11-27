@@ -17,16 +17,16 @@ import javafx.scene.control.TextField
 import javafx.scene.image.ImageView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
-import ktfx.bindings.eq
-import ktfx.bindings.isBlank
-import ktfx.bindings.or
-import ktfx.bindings.otherwise
-import ktfx.bindings.then
 import ktfx.coroutines.listener
+import ktfx.eq
 import ktfx.jfoenix.layouts.jfxTabPane
 import ktfx.jfoenix.layouts.jfxTextField
 import ktfx.layouts.label
 import ktfx.layouts.tab
+import ktfx.or
+import ktfx.otherwise
+import ktfx.then
+import ktfx.toBoolean
 
 class AddCustomerDialog(component: FxComponent) :
     ResultableDialog<Customer>(component, R2.string.add_customer) {
@@ -66,8 +66,8 @@ class AddCustomerDialog(component: FxComponent) :
         }
         defaultButton.disableProperty().bind(
             When(tabPane.selectionModel.selectedIndexProperty() eq 0)
-                then (editor.textProperty().isBlank() or !editor.textProperty().personNameBinding)
-                otherwise editor.textProperty().isBlank()
+                then (editor.textProperty().toBoolean { it!!.isBlank() } or !editor.textProperty().personNameBinding)
+                otherwise editor.textProperty().toBoolean { it!!.isBlank() }
         )
         tabPane.selectionModel.selectedIndexProperty().listener {
             editor.requestFocus()

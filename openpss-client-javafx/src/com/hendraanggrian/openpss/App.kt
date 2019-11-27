@@ -16,18 +16,17 @@ import javafx.fxml.FXMLLoader
 import javafx.scene.image.Image
 import javafx.stage.Stage
 import kotlin.system.exitProcess
+import ktfx.controls.icon
+import ktfx.controls.setMinSize
 import ktfx.layouts.addNode
 import ktfx.layouts.scene
-import ktfx.windows.icon
-import ktfx.windows.setMinSize
 import org.apache.log4j.BasicConfigurator
 
 class App : Application(), StringResources, ValueResources {
 
     companion object {
 
-        @JvmStatic
-        fun main(args: Array<String>) = ktfx.launch<App>(*args)
+        @JvmStatic fun main(args: Array<String>) = ktfx.launch<App>(*args)
 
         fun exit() {
             Platform.exit() // exit JavaFX

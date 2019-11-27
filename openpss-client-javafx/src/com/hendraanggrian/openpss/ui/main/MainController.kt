@@ -49,22 +49,25 @@ import javafx.util.Callback
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
-import ktfx.bindings.eq
-import ktfx.bindings.minus
-import ktfx.bindings.otherwise
-import ktfx.bindings.stringBindingOf
-import ktfx.bindings.then
 import ktfx.cells.cellFactory
 import ktfx.collections.toObservableList
-import ktfx.controlsfx.isOSX
+import ktfx.controls.stage
+import ktfx.controlsfx.isOsMac
 import ktfx.coroutines.listener
+import ktfx.eq
 import ktfx.hasValue
 import ktfx.jfoenix.controls.jfxSnackbar
 import ktfx.layouts.text
 import ktfx.layouts.textFlow
+import ktfx.minus
+import ktfx.otherwise
 import ktfx.runLater
+import ktfx.stringBindingOf
+import ktfx.text.append
+import ktfx.text.appendln
 import ktfx.text.pt
-import ktfx.windows.stage
+import ktfx.then
+import ktfx.toString
 
 class MainController : BaseController(), Refreshable {
 
@@ -111,7 +114,7 @@ class MainController : BaseController(), Refreshable {
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
-        menuBar.isUseSystemMenuBar = isOSX()
+        menuBar.isUseSystemMenuBar = isOsMac()
 
         drawerList.selectionModel.selectFirst()
         drawerList.selectionModel.selectedItemProperty().listener { _, _, _ ->
@@ -126,10 +129,8 @@ class MainController : BaseController(), Refreshable {
         }
 
         runLater {
-            titleLabel.scene.stage.titleProperty().bind(stringBindingOf(
-                drawerList.selectionModel.selectedIndexProperty()
-            ) {
-                "${BuildConfig2.NAME} - ${drawerList.selectionModel.selectedItem?.text}"
+            titleLabel.scene.stage.titleProperty().bind(drawerList.selectionModel.selectedItemProperty().toString {
+                "${BuildConfig2.NAME} - ${it?.text}"
             })
         }
         titleLabel.textProperty().bind(stringBindingOf(
@@ -191,10 +192,8 @@ class MainController : BaseController(), Refreshable {
                             text(log.message) {
                                 isWrapText = true
                                 font = 12.pt
-                                this@textFlow.prefWidthProperty()
-                                    .bind(this@apply.widthProperty() - 12)
-                                wrappingWidthProperty()
-                                    .bind(this@apply.widthProperty())
+                                this@textFlow.prefWidthProperty().bind(this@apply.widthProperty() - 12)
+                                wrappingWidthProperty().bind(this@apply.widthProperty())
                             }
                             appendln()
                             text("${log.dateTime.toString(PATTERN_DATETIME)} ") {
@@ -215,39 +214,30 @@ class MainController : BaseController(), Refreshable {
         }
     }
 
-    @FXML
-    fun onDrawerOpening() = refresh()
+    @FXML fun onDrawerOpening() = refresh()
 
-    @FXML
-    fun onDrawerOpened() = eventPagination.selectLast()
+    @FXML fun onDrawerOpened() = eventPagination.selectLast()
 
-    @FXML
-    fun add(event: ActionEvent) = when (event.source) {
+    @FXML fun add(event: ActionEvent) = when (event.source) {
         addCustomerItem -> select(customerController) { runLater(::add) }
         else -> select(invoiceController) { addInvoice() }
     }
 
-    @FXML
-    fun quit() = App.exit()
+    @FXML fun quit() = App.exit()
 
-    @FXML
-    fun editPrice(event: ActionEvent) = when (event.source) {
+    @FXML fun editPrice(event: ActionEvent) = when (event.source) {
         platePriceItem -> EditPlatePriceDialog(this)
         offsetPrintPriceItem -> EditOffsetPriceDialog(this)
         else -> EditDigitalPriceDialog(this)
     }.show()
 
-    @FXML
-    fun editEmployee() = EditEmployeeDialog(this).show()
+    @FXML fun editEmployee() = EditEmployeeDialog(this).show()
 
-    @FXML
-    fun editRecess() = EditRecessDialog(this).show()
+    @FXML fun editRecess() = EditRecessDialog(this).show()
 
-    @FXML
-    fun settings() = SettingsDialog(this).show()
+    @FXML fun settings() = SettingsDialog(this).show()
 
-    @FXML
-    fun testViewInvoice() {
+    @FXML fun testViewInvoice() {
         runBlocking(Dispatchers.IO) { OpenPSSApi.getCustomers("", 0, 1) }.items.firstOrNull()?.let {
             ViewInvoicePopOver(
                 this@MainController,
@@ -301,11 +291,9 @@ class MainController : BaseController(), Refreshable {
         )
     }
 
-    @FXML
-    fun checkUpdate() = GitHubHelper.checkUpdates(this)
+    @FXML fun checkUpdate() = GitHubHelper.checkUpdates(this)
 
-    @FXML
-    fun about() = AboutDialog(this).show()
+    @FXML fun about() = AboutDialog(this).show()
 
     private fun ActionController.replaceButtons() = toolbar.setRightItems(*actions.toTypedArray())
 

@@ -26,10 +26,10 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.javafx.JavaFx
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import ktfx.bindings.and
+import ktfx.and
 import ktfx.booleanProperty
-import ktfx.buildStringConverter
 import ktfx.collections.toObservableList
+import ktfx.controls.gap
 import ktfx.coroutines.listener
 import ktfx.jfoenix.layouts.jfxButton
 import ktfx.jfoenix.layouts.jfxComboBox
@@ -37,12 +37,12 @@ import ktfx.layouts.KtfxHBox
 import ktfx.layouts.KtfxVBox
 import ktfx.layouts.NodeManager
 import ktfx.layouts.borderPane
-import ktfx.layouts.gap
 import ktfx.layouts.gridPane
 import ktfx.layouts.hbox
 import ktfx.layouts.label
 import ktfx.layouts.textArea
 import ktfx.layouts.vbox
+import ktfx.util.buildStringConverter
 
 class SettingsDialog(component: FxComponent) : BaseDialog(component, R2.string.settings) {
 
@@ -72,11 +72,8 @@ class SettingsDialog(component: FxComponent) : BaseDialog(component, R2.string.s
                 isDisable = runBlocking(Dispatchers.IO) { !OpenPSSApi.isAdmin(login) }
                 gridPane {
                     gap = getDouble(R.value.padding_medium)
-                    label(getString(R2.string.server_language)) {
-                        gridAt(0, 0)
-                    }
+                    label(getString(R2.string.server_language)) row 0 col 0
                     languageBox = jfxComboBox(Language.values().toObservableList()) {
-                        gridAt(0, 1)
                         converter = buildStringConverter { toString { it!!.toString(true) } }
                         selectionModel.select(
                             Language.ofFullCode(
@@ -84,17 +81,14 @@ class SettingsDialog(component: FxComponent) : BaseDialog(component, R2.string.s
                             )
                         )
                         valueProperty().listener { isGlobalChanged.set(true) }
-                    }
-                    label(getString(R2.string.invoice_headers)) {
-                        gridAt(1, 0)
-                    }
+                    } row 0 col 1
+                    label(getString(R2.string.invoice_headers)) row 1 col 0
                     invoiceHeadersArea = textArea(
                         runBlocking(Dispatchers.IO) { OpenPSSApi.getSetting(KEY_INVOICE_HEADERS) }
                             .valueList
                             .joinToString("\n")
                             .trim()
                     ) {
-                        gridAt(1, 1)
                         promptText = getString(R2.string.invoice_headers)
                         setMaxSize(256.0, 88.0)
                         textProperty().listener { _, oldValue, value ->
@@ -103,7 +97,7 @@ class SettingsDialog(component: FxComponent) : BaseDialog(component, R2.string.s
                                 else -> isGlobalChanged.set(true)
                             }
                         }
-                    }
+                    } row 1 col 1
                 }
             }
         }

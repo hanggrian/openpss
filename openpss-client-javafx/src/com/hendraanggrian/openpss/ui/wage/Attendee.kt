@@ -12,9 +12,8 @@ import com.hendraanggrian.openpss.util.round
 import javafx.beans.property.IntegerProperty
 import javafx.beans.property.SimpleIntegerProperty
 import javafx.collections.ObservableList
-import ktfx.bindings.doubleBindingOf
 import ktfx.collections.mutableObservableListOf
-import ktfx.finalProperty
+import ktfx.doubleBindingOf
 import ktfx.getValue
 import ktfx.property
 import ktfx.setValue
@@ -111,22 +110,22 @@ data class Attendee(
             resources,
             INDEX_TOTAL,
             this,
-            finalProperty(START_OF_TIME),
-            finalProperty(START_OF_TIME)
+            property(START_OF_TIME),
+            property(START_OF_TIME)
         ).apply {
-            dailyProperty.bind(doubleBindingOf(children.map { it.dailyProperty }) {
+            dailyProperty.bind(doubleBindingOf(*children.map { it.dailyProperty }.toTypedArray()) {
                 children.sumByDouble { it.daily }.round()
             })
-            dailyIncomeProperty.bind(doubleBindingOf(children.map { it.dailyIncomeProperty }) {
+            dailyIncomeProperty.bind(doubleBindingOf(*children.map { it.dailyIncomeProperty }.toTypedArray()) {
                 children.sumByDouble { it.dailyIncome }.round()
             })
-            overtimeProperty.bind(doubleBindingOf(children.map { it.overtimeProperty }) {
+            overtimeProperty.bind(doubleBindingOf(*children.map { it.overtimeProperty }.toTypedArray()) {
                 children.sumByDouble { it.overtime }.round()
             })
-            overtimeIncomeProperty.bind(doubleBindingOf(children.map { it.overtimeIncomeProperty }) {
+            overtimeIncomeProperty.bind(doubleBindingOf(*children.map { it.overtimeIncomeProperty }.toTypedArray()) {
                 children.sumByDouble { it.overtimeIncome }.round()
             })
-            totalProperty.bind(doubleBindingOf(children.map { it.totalProperty }) {
+            totalProperty.bind(doubleBindingOf(*children.map { it.totalProperty }.toTypedArray()) {
                 children.sumByDouble { it.total }.round()
             })
         }

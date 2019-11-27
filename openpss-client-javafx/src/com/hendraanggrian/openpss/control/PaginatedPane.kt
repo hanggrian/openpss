@@ -7,7 +7,7 @@ import javafx.beans.property.SimpleObjectProperty
 import javafx.scene.Node
 import javafx.scene.control.Pagination
 import javafx.util.Callback
-import ktfx.bindings.bindingOf
+import ktfx.bindingOf
 import ktfx.getValue
 import ktfx.setValue
 

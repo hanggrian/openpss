@@ -6,10 +6,10 @@ import com.hendraanggrian.openpss.api.OpenPSSApi
 import com.hendraanggrian.openpss.schema.PlatePrice
 import javafx.beans.value.ObservableValue
 import kotlinx.coroutines.CoroutineScope
-import ktfx.buildStringConverter
 import ktfx.cells.textFieldCellFactory
 import ktfx.coroutines.onEditCommit
 import ktfx.finalDoubleProperty
+import ktfx.util.buildStringConverter
 
 @Suppress("UNCHECKED_CAST")
 class EditPlatePriceDialog(

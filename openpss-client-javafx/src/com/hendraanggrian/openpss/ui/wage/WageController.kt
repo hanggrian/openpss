@@ -29,24 +29,24 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.javafx.JavaFx
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import ktfx.bindings.booleanBindingOf
-import ktfx.bindings.lessEq
-import ktfx.bindings.or
-import ktfx.bindings.stringBindingOf
-import ktfx.collections.isEmptyBinding
+import ktfx.booleanBindingOf
+import ktfx.collections.emptyBinding
 import ktfx.collections.sizeBinding
+import ktfx.controls.setMinSize
+import ktfx.controls.stage
 import ktfx.coroutines.onAction
+import ktfx.dialogs.chooseFile
 import ktfx.getValue
 import ktfx.jfoenix.controls.jfxSnackbar
 import ktfx.layouts.NodeManager
 import ktfx.layouts.addNode
 import ktfx.layouts.borderPane
 import ktfx.layouts.scene
+import ktfx.lessEq
+import ktfx.or
 import ktfx.runLater
 import ktfx.setValue
-import ktfx.windows.chooseFile
-import ktfx.windows.setMinSize
-import ktfx.windows.stage
+import ktfx.stringBindingOf
 
 class WageController : ActionController() {
 
@@ -68,7 +68,7 @@ class WageController : ActionController() {
             onAction { browse() }
         }
         saveWageButton = addNode(Action(getString(R2.string.save_wage), R.image.action_save)) {
-            disableProperty().bind(flowPane.children.isEmptyBinding)
+            disableProperty().bind(flowPane.children.emptyBinding)
             onAction {
                 saveWage()
                 rootLayout.jfxSnackbar(
@@ -96,7 +96,7 @@ class WageController : ActionController() {
                 else -> filePath
             }
         })
-        disableRecessButton.disableProperty().bind(flowPane.children.isEmptyBinding)
+        disableRecessButton.disableProperty().bind(flowPane.children.emptyBinding)
         bindProcessButton()
         runLater {
             flowPane.prefWrapLengthProperty().bind(flowPane.scene.widthProperty())
@@ -109,11 +109,9 @@ class WageController : ActionController() {
         }
     }
 
-    @FXML
-    fun disableRecess() = DisableRecessPopOver(this, attendeePanes).show(disableRecessButton)
+    @FXML fun disableRecess() = DisableRecessPopOver(this, attendeePanes).show(disableRecessButton)
 
-    @FXML
-    fun process() = stage(getString(R2.string.wage_record)) {
+    @FXML fun process() = stage(getString(R2.string.wage_record)) {
         val loader = FXMLLoader(getResource(R.layout.controller_wage_record), resourceBundle)
         scene = scene {
             addNode(loader.pane)
@@ -131,8 +129,7 @@ class WageController : ActionController() {
         runBlocking {
             withPermission {
                 anchorPane.scene.window.chooseFile(
-                    getString(R2.string.input_file) to
-                        WageReader.of(defaults[FxSetting.KEY_WAGEREADER]!!).extension
+                    getString(R2.string.input_file) to WageReader.of(defaults[FxSetting.KEY_WAGEREADER]!!).extension
                 )?.let { read(it) }
             }
         }
@@ -204,9 +201,8 @@ class WageController : ActionController() {
     private inline val attendees: List<Attendee> get() = attendeePanes.map { it.attendee }
 
     /** As attendees are populated, process button need to be rebinded according to new requirements. */
-    private fun bindProcessButton() =
-        processButton.disableProperty().bind(flowPane.children.isEmptyBinding or
-            booleanBindingOf(flowPane.children, *flowPane.children
-                .map { (it as AttendeePane).attendanceList.items }
-                .toTypedArray()) { attendees.any { it.attendances.size % 2 != 0 } })
+    private fun bindProcessButton() = processButton.disableProperty().bind(flowPane.children.emptyBinding or
+        booleanBindingOf(flowPane.children, *flowPane.children
+            .map { (it as AttendeePane).attendanceList.items }
+            .toTypedArray()) { attendees.any { it.attendances.size % 2 != 0 } })
 }

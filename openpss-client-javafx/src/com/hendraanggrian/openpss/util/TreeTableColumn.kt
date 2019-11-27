@@ -1,11 +1,9 @@
-@file:Suppress("NOTHING_TO_INLINE")
-
 package com.hendraanggrian.openpss.util
 
 import com.hendraanggrian.openpss.FxComponent
 import javafx.scene.control.TreeTableColumn
 import ktfx.finalStringProperty
-import ktfx.invoke
+import ktfx.util.invoke
 
 fun <T> TreeTableColumn<T, String>.stringCell(target: T.() -> Any) = setCellValueFactory { col ->
     finalStringProperty(col.value.value.target().let { it as? String ?: it.toString() })

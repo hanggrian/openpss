@@ -12,7 +12,6 @@ import javafx.scene.control.TextField
 import javafx.scene.input.KeyCode.ENTER
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
-import ktfx.bindings.bindingOf
 import ktfx.collections.toObservableList
 import ktfx.controls.isSelected
 import ktfx.controls.notSelectedBinding
@@ -23,6 +22,7 @@ import ktfx.inputs.isDoubleClick
 import ktfx.jfoenix.layouts.jfxTextField
 import ktfx.layouts.addNode
 import ktfx.layouts.vbox
+import ktfx.toAny
 
 class SearchCustomerPopOver(component: FxComponent) :
     ResultablePopOver<Customer>(component, R2.string.search_customer) {
@@ -40,11 +40,10 @@ class SearchCustomerPopOver(component: FxComponent) :
                 promptText = getString(R2.string.name)
             }
             customerList = addNode(CustomerListView()) {
-                marginTop = getDouble(R.value.padding_medium)
                 prefHeight = 262.0
-                itemsProperty().bind(bindingOf(searchField.textProperty()) {
+                itemsProperty().bind(searchField.textProperty().toAny {
                     runBlocking(Dispatchers.IO) {
-                        OpenPSSApi.getCustomers(searchField.text, 0, ITEMS_PER_PAGE)
+                        OpenPSSApi.getCustomers(it!!, 0, ITEMS_PER_PAGE)
                             .items
                             .take(ITEMS_PER_PAGE)
                             .toObservableList()
@@ -63,7 +62,7 @@ class SearchCustomerPopOver(component: FxComponent) :
                         defaultButton.fire()
                     }
                 }
-            }
+            } marginTop getDouble(R.value.padding_medium)
         }
         defaultButton.disableProperty().bind(customerList.selectionModel.notSelectedBinding)
     }

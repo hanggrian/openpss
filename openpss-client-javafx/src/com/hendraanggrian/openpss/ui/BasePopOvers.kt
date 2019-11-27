@@ -15,17 +15,17 @@ import javafx.scene.control.TextField
 import javafx.scene.layout.Region
 import javafx.scene.layout.VBox
 import kotlinx.coroutines.CoroutineScope
-import ktfx.bindings.bindingOf
-import ktfx.bindings.isBlank
+import ktfx.controls.gap
 import ktfx.coroutines.onAction
 import ktfx.getValue
 import ktfx.jfoenix.layouts.jfxButton
 import ktfx.jfoenix.layouts.jfxTextField
 import ktfx.layouts.NodeManager
 import ktfx.layouts.addNode
-import ktfx.layouts.gap
 import ktfx.layouts.gridPane
 import ktfx.setValue
+import ktfx.toAny
+import ktfx.toBoolean
 import org.controlsfx.control.PopOver
 import org.joda.time.DateTime
 import org.joda.time.LocalDate
@@ -81,7 +81,7 @@ open class InputPopOver(component: FxComponent, titleId: String, prefill: String
 
     protected val editor: TextField = jfxTextField(prefill)
 
-    open val defaultDisableBinding: BooleanBinding get() = editor.textProperty().isBlank()
+    open val defaultDisableBinding: BooleanBinding get() = editor.textProperty().toBoolean { it!!.isBlank() }
 
     override val focusedNode: Node? get() = editor
 
@@ -90,7 +90,7 @@ open class InputPopOver(component: FxComponent, titleId: String, prefill: String
             text = getString(R2.string.ok)
             disableProperty().bind(defaultDisableBinding)
             editor.onActionProperty()
-                .bind(bindingOf(disableProperty()) { if (isDisable) null else onAction })
+                .bind(disableProperty().toAny { if (it) null else onAction })
         }
     }
 
@@ -132,34 +132,29 @@ class DateTimePopOver(
     init {
         gridPane {
             gap = getDouble(R.value.padding_medium)
-            dateBox = addNode(DateBox(prefill.toLocalDate())) {
-                gridAt(0, 1)
-            }
+            dateBox = addNode(DateBox(prefill.toLocalDate())) row 0 col 1
             jfxButton("-${Record.WORKING_HOURS}") {
-                gridAt(1, 0)
                 onAction {
                     repeat(Record.WORKING_HOURS) {
                         timeBox.previousButton.fire()
                     }
                 }
-            }
+            } row 1 col 0
             timeBox = addNode(TimeBox(prefill.toLocalTime())) {
-                gridAt(1, 1)
                 onOverlap = { plus ->
                     dateBox.picker.value = when {
                         plus -> dateBox.picker.value.plusDays(1)
                         else -> dateBox.picker.value.minusDays(1)
                     }
                 }
-            }
+            } row 1 col 1
             jfxButton("+${Record.WORKING_HOURS}") {
-                gridAt(1, 2)
                 onAction {
                     repeat(Record.WORKING_HOURS) {
                         timeBox.nextButton.fire()
                     }
                 }
-            }
+            } row 1 col 2
         }
         defaultButton.text = getString(defaultButtonTextId)
     }

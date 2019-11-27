@@ -3,8 +3,8 @@ package com.hendraanggrian.openpss.ui.login
 import com.jfoenix.controls.JFXTextField
 import javafx.beans.property.BooleanProperty
 import javafx.beans.property.SimpleBooleanProperty
-import ktfx.bindings.booleanBindingOf
 import ktfx.coroutines.listener
+import ktfx.toBoolean
 import org.apache.commons.validator.routines.InetAddressValidator
 
 /** Field that display IP address. */
@@ -14,8 +14,8 @@ class HostField : JFXTextField() {
     fun validProperty(): BooleanProperty = validProperty
 
     init {
-        validProperty.bind(booleanBindingOf(textProperty()) {
-            when (text) {
+        validProperty.bind(textProperty().toBoolean {
+            when (it) {
                 "localhost" -> true
                 else -> InetAddressValidator.getInstance().isValidInet4Address(text)
             }

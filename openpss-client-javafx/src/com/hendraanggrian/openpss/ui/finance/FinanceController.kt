@@ -32,13 +32,13 @@ import javafx.scene.layout.BorderPane
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
-import ktfx.bindings.eq
 import ktfx.collections.toMutableObservableList
 import ktfx.controls.isSelected
 import ktfx.controls.notSelectedBinding
 import ktfx.coroutines.listener
 import ktfx.coroutines.onAction
 import ktfx.coroutines.onMouseClicked
+import ktfx.eq
 import ktfx.inputs.isDoubleClick
 import ktfx.layouts.NodeManager
 import ktfx.layouts.addNode
@@ -147,8 +147,7 @@ class FinanceController : ActionController(), Refreshable {
         }
     }
 
-    @FXML
-    fun viewInvoice() = ViewInvoicePopOver(this, runBlocking(Dispatchers.IO) {
+    @FXML fun viewInvoice() = ViewInvoicePopOver(this, runBlocking(Dispatchers.IO) {
         OpenPSSApi.getInvoice(dailyTable.selectionModel.selectedItem.invoiceId)
     }).show(
         when (tabPane.selectionModel.selectedIndex) {
@@ -157,8 +156,7 @@ class FinanceController : ActionController(), Refreshable {
         }
     )
 
-    @FXML
-    fun viewPayments() {
+    @FXML fun viewPayments() {
         tabPane.selectionModel.selectFirst()
         dateBox.picker.value = monthlyTable.selectionModel.selectedItem.date.toJava()
     }

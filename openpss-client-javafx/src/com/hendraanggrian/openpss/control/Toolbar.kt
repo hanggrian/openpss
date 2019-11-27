@@ -2,7 +2,7 @@
 
 package com.hendraanggrian.openpss.control
 
-import ktfx.jfoenix.depth
+import ktfx.jfoenix.controls.depth
 import ktfx.jfoenix.layouts.KtfxJFXToolbar
 
 class Toolbar : KtfxJFXToolbar() {

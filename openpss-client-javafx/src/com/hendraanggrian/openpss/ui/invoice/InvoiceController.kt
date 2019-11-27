@@ -34,12 +34,8 @@ import javafx.scene.layout.HBox
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
-import ktfx.bindings.and
-import ktfx.bindings.bindingOf
-import ktfx.bindings.callbackBindingOf
-import ktfx.bindings.eq
-import ktfx.bindings.neq
-import ktfx.bindings.stringBindingOf
+import ktfx.and
+import ktfx.callbackBindingOf
 import ktfx.collections.emptyObservableList
 import ktfx.collections.toMutableObservableList
 import ktfx.collections.toObservableList
@@ -52,6 +48,7 @@ import ktfx.controlsfx.layouts.masterDetailPane
 import ktfx.coroutines.onAction
 import ktfx.coroutines.onHiding
 import ktfx.coroutines.onMouseClicked
+import ktfx.eq
 import ktfx.inputs.isDoubleClick
 import ktfx.jfoenix.controls.jfxSnackbar
 import ktfx.layouts.NodeManager
@@ -60,7 +57,10 @@ import ktfx.layouts.contextMenu
 import ktfx.layouts.label
 import ktfx.layouts.separatorMenuItem
 import ktfx.layouts.tableView
+import ktfx.neq
 import ktfx.runLater
+import ktfx.toAny
+import ktfx.toString
 import org.joda.time.LocalDate
 
 class InvoiceController : ActionController(), Refreshable {
@@ -114,8 +114,8 @@ class InvoiceController : ActionController(), Refreshable {
                 .toObservableList()
             selectionModel.selectFirst()
         }
-        customerField.textProperty().bind(stringBindingOf(customerProperty) {
-            customerProperty.value?.toString() ?: getString(R2.string.search_customer)
+        customerField.textProperty().bind(customerProperty.toString {
+            it?.toString() ?: getString(R2.string.search_customer)
         })
         dateBox.disableProperty().bind(!pickDateRadio.selectedProperty())
         clearFiltersButton.disableProperty().bind(
@@ -169,8 +169,8 @@ class InvoiceController : ActionController(), Refreshable {
                             viewInvoice()
                         }
                     }
-                    titleProperty().bind(stringBindingOf(selectionModel.selectedItemProperty()) {
-                        Invoice.no(this@InvoiceController, selectionModel.selectedItem?.no)
+                    titleProperty().bind(selectionModel.selectedItemProperty().toString {
+                        Invoice.no(this@InvoiceController, it?.no)
                     })
                 }.also { invoiceTable = it }
                 showDetailNodeProperty().bind(invoiceTable.selectionModel.notSelectedBinding)
@@ -205,8 +205,8 @@ class InvoiceController : ActionController(), Refreshable {
                                 stringCell { reference }
                             }
                         }
-                        itemsProperty().bind(bindingOf(invoiceTable.selectionModel.selectedItemProperty()) {
-                            when (invoiceTable.selectionModel.selectedItem) {
+                        itemsProperty().bind(invoiceTable.selectionModel.selectedItemProperty().toAny {
+                            when (it) {
                                 null -> emptyObservableList()
                                 else -> runBlocking(Dispatchers.IO) {
                                     OpenPSSApi.getPayments(invoiceTable.selectionModel.selectedItem.id)
@@ -259,10 +259,9 @@ class InvoiceController : ActionController(), Refreshable {
                         }
                         getString(R2.string.done)(ImageView(R.image.menu_done)) {
                             runLater {
-                                disableProperty().bind(bindingOf(invoiceTable.selectionModel.selectedItemProperty()) {
+                                disableProperty().bind(invoiceTable.selectionModel.selectedItemProperty().toAny {
                                     when {
-                                        invoiceTable.selectionModel.selectedItem != null &&
-                                            !invoiceTable.selectionModel.selectedItem.isDone -> false
+                                        it != null && !it.isDone -> false
                                         else -> true
                                     }
                                 })
@@ -309,9 +308,7 @@ class InvoiceController : ActionController(), Refreshable {
         paymentCombo.selectionModel.selectFirst()
     }
 
-    @FXML
-    fun selectCustomer() =
-        SearchCustomerPopOver(this).show(customerField) { customerProperty.set(it) }
+    @FXML fun selectCustomer() = SearchCustomerPopOver(this).show(customerField) { customerProperty.set(it) }
 
     private fun viewInvoice() = ViewInvoicePopOver(
         this,

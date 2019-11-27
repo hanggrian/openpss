@@ -7,14 +7,13 @@ import javafx.beans.property.StringProperty
 import javafx.scene.Node
 import javafx.scene.control.Tooltip
 import javafx.scene.image.ImageView
-import ktfx.bindings.bindingOf
 import ktfx.getValue
 import ktfx.setValue
 import ktfx.stringProperty
+import ktfx.toAny
 
 @DefaultProperty("graphic")
-class Action @JvmOverloads constructor(text: String? = null, graphic: Node? = null) :
-    JFXButton(null, graphic) {
+class Action @JvmOverloads constructor(text: String? = null, graphic: Node? = null) : JFXButton(null, graphic) {
 
     constructor(text: String? = null, graphicUrl: String? = null) :
         this(text, graphicUrl?.let { ImageView(it) })
@@ -26,8 +25,6 @@ class Action @JvmOverloads constructor(text: String? = null, graphic: Node? = nu
     init {
         buttonType = ButtonType.FLAT
         styleClass += R.style.flat
-        tooltipProperty().bind(bindingOf(tooltipTextProperty) {
-            tooltipText?.let { Tooltip(it) }
-        })
+        tooltipProperty().bind(tooltipTextProperty.toAny { it?.let { Tooltip(it) } })
     }
 }

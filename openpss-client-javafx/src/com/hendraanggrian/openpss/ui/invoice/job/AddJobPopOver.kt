@@ -12,15 +12,15 @@ import javafx.beans.value.ObservableBooleanValue
 import javafx.scene.Node
 import javafx.scene.control.CheckBox
 import javafx.scene.control.TextField
-import ktfx.bindings.stringBindingOf
+import ktfx.controls.gap
 import ktfx.coroutines.listener
 import ktfx.jfoenix.layouts.jfxCheckBox
 import ktfx.jfoenix.layouts.jfxTextField
 import ktfx.layouts.KtfxGridPane
 import ktfx.layouts.addNode
-import ktfx.layouts.gap
 import ktfx.layouts.gridPane
 import ktfx.layouts.label
+import ktfx.stringBindingOf
 
 abstract class AddJobPopOver<T : Invoice.Job>(component: FxComponent, titleId: String) :
     ResultablePopOver<T>(component, titleId), Invoice.Job {
@@ -44,33 +44,17 @@ abstract class AddJobPopOver<T : Invoice.Job>(component: FxComponent, titleId: S
     init {
         gridPane {
             gap = getDouble(R.value.padding_medium)
-            label(getString(R2.string.qty)) {
-                gridAt(currentRow, 0)
-            }
-            qtyField = addNode(IntField()) {
-                gridAt(currentRow, 1, colSpans = 2)
-                promptText = getString(R2.string.qty)
-            }
+            label(getString(R2.string.qty)) col 0 row currentRow
+            qtyField = addNode(IntField()) { promptText = getString(R2.string.qty) } col (1 to 2) row currentRow
             currentRow++
-            label(getString(R2.string.description)) {
-                gridAt(currentRow, 0)
-            }
-            titleField = jfxTextField {
-                gridAt(currentRow, 1, colSpans = 2)
-                promptText = getString(R2.string.description)
-            }
+            label(getString(R2.string.description)) col 0 row currentRow
+            titleField = jfxTextField { promptText = getString(R2.string.description) } col (1 to 2) row currentRow
             currentRow++
             onCreateContent()
             currentRow++
-            label(getString(R2.string.total)) {
-                gridAt(currentRow, 0)
-            }
-            totalField = addNode(DoubleField()) {
-                gridAt(currentRow, 1)
-                bindTotal()
-            }
+            label(getString(R2.string.total)) col 0 row currentRow
+            totalField = addNode(DoubleField()) { bindTotal() } col 1 row currentRow
             customizeCheck = jfxCheckBox(getString(R2.string.customize)) {
-                gridAt(currentRow, 2)
                 totalField.disableProperty().bind(!selectedProperty())
                 selectedProperty().listener { _, _, selected ->
                     when {
@@ -82,7 +66,7 @@ abstract class AddJobPopOver<T : Invoice.Job>(component: FxComponent, titleId: S
                         else -> totalField.bindTotal()
                     }
                 }
-            }
+            } col 2 row currentRow
         }
         defaultButton.run {
             text = getString(R2.string.add)
@@ -97,7 +81,5 @@ abstract class AddJobPopOver<T : Invoice.Job>(component: FxComponent, titleId: S
     override val total: Double get() = totalField.value
 
     private fun DoubleField.bindTotal() =
-        textProperty().bind(stringBindingOf(*totalBindingDependencies) {
-            calculateTotal().toString()
-        })
+        textProperty().bind(stringBindingOf(*totalBindingDependencies) { calculateTotal().toString() })
 }

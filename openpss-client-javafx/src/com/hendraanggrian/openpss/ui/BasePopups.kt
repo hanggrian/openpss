@@ -6,10 +6,13 @@ import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.control.Toolbar
 import com.jfoenix.controls.JFXButton
 import javafx.beans.property.ObjectProperty
+import javafx.geometry.Insets
 import javafx.scene.Node
 import javafx.scene.control.Button
+import javafx.scene.layout.BorderPane
 import javafx.scene.layout.Region
 import javafx.scene.layout.VBox
+import ktfx.controls.updatePadding
 import ktfx.coroutines.listener
 import ktfx.coroutines.onAction
 import ktfx.jfoenix.layouts.jfxButton
@@ -18,7 +21,6 @@ import ktfx.layouts.addNode
 import ktfx.layouts.borderPane
 import ktfx.layouts.buttonBar
 import ktfx.layouts.label
-import ktfx.layouts.updatePadding
 import ktfx.layouts.vbox
 
 interface BasePopup : FxComponent, NodeManager {
@@ -43,8 +45,6 @@ interface BasePopup : FxComponent, NodeManager {
         setActualContent(ktfx.layouts.vbox {
             // material dialog have extra top padding: https://material.io/develop/web/components/dialogs/
             addNode(Toolbar()) {
-                marginTop = getDouble(R.value.padding_small)
-                marginBottom = getDouble(R.value.padding_small)
                 leftItems {
                     label(getString(titleId)) {
                         styleClass.addAll(R.style.bold, R.style.display)
@@ -52,15 +52,15 @@ interface BasePopup : FxComponent, NodeManager {
                 }
                 rightItems {
                     borderPane {
-                        centerProperty().listener { _, _, value ->
-                            if (value != null) {
-                                value.marginLeft = getDouble(R.value.padding_large)
+                        centerProperty().listener { _, _, center ->
+                            if (center != null) {
+                                BorderPane.setMargin(center, Insets(0.0, 0.0, 0.0, getDouble(R.value.padding_large)))
                             }
                         }
                         centerProperty().bindBidirectional(graphicProperty())
                     }
                 }
-            }
+            } marginTop getDouble(R.value.padding_small) marginBottom getDouble(R.value.padding_small)
             contentPane = vbox(getDouble(R.value.padding_medium)) {
                 updatePadding(
                     left = getDouble(R.value.padding_large),
@@ -68,7 +68,6 @@ interface BasePopup : FxComponent, NodeManager {
                 )
             }
             buttonBar {
-                marginTop = getDouble(R.value.padding_medium)
                 updatePadding(
                     top = getDouble(R.value.padding_medium),
                     left = getDouble(R.value.padding_large),
@@ -83,7 +82,7 @@ interface BasePopup : FxComponent, NodeManager {
                         dismiss()
                     }
                 }
-            }
+            } marginTop getDouble(R.value.padding_medium)
         })
         setOnShown {
             focusedNode?.requestFocus()

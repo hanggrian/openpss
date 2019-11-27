@@ -9,8 +9,7 @@ import javafx.geometry.Pos
 import javafx.scene.control.Button
 import javafx.scene.control.ComboBox
 import javafx.scene.image.ImageView
-import ktfx.bindings.bindingOf
-import ktfx.buildStringConverter
+import ktfx.bindingOf
 import ktfx.collections.toObservableList
 import ktfx.coroutines.onAction
 import ktfx.getValue
@@ -18,6 +17,7 @@ import ktfx.jfoenix.layouts.jfxButton
 import ktfx.jfoenix.layouts.jfxComboBox
 import ktfx.layouts.KtfxHBox
 import ktfx.layouts.addNode
+import ktfx.util.buildStringConverter
 import org.joda.time.YearMonth
 
 open class MonthBox @JvmOverloads constructor(prefill: YearMonth = YearMonth.now()) :

@@ -11,15 +11,15 @@ import javafx.beans.value.ObservableBooleanValue
 import javafx.scene.control.ComboBox
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
-import ktfx.bindings.isBlank
-import ktfx.bindings.lessEq
-import ktfx.bindings.or
 import ktfx.collections.toObservableList
 import ktfx.coroutines.listener
 import ktfx.jfoenix.layouts.jfxComboBox
 import ktfx.layouts.KtfxGridPane
 import ktfx.layouts.addNode
 import ktfx.layouts.label
+import ktfx.lessEq
+import ktfx.or
+import ktfx.toBoolean
 
 class AddPlateJobPopOver(component: FxComponent) :
     AddJobPopOver<Invoice.PlateJob>(component, R2.string.add_plate_job),
@@ -29,23 +29,15 @@ class AddPlateJobPopOver(component: FxComponent) :
     private lateinit var priceField: DoubleField
 
     override fun KtfxGridPane.onCreateContent() {
-        label(getString(R2.string.type)) {
-            gridAt(currentRow, 0)
-        }
+        label(getString(R2.string.type)) col 0 row currentRow
         typeChoice = jfxComboBox(runBlocking(Dispatchers.IO) { OpenPSSApi.getPlatePrices() }.toObservableList()) {
-            gridAt(currentRow, 1, colSpans = 2)
             valueProperty().listener { _, _, job ->
                 priceField.value = job.price
             }
-        }
+        } col (1 to 2) row currentRow
         currentRow++
-        label(getString(R2.string.price)) {
-            gridAt(currentRow, 0)
-        }
-        priceField = addNode(DoubleField()) {
-            gridAt(currentRow, 1, colSpans = 2)
-            promptText = getString(R2.string.price)
-        }
+        label(getString(R2.string.price)) col 0 row currentRow
+        priceField = addNode(DoubleField()) { promptText = getString(R2.string.price) } col (1 to 2) row currentRow
     }
 
     override val totalBindingDependencies: Array<Observable>
@@ -53,7 +45,7 @@ class AddPlateJobPopOver(component: FxComponent) :
 
     override val defaultButtonDisableBinding: ObservableBooleanValue
         get() = typeChoice.valueProperty().isNull or
-            titleField.textProperty().isBlank() or
+            titleField.textProperty().toBoolean { it!!.isBlank() } or
             qtyField.valueProperty().lessEq(0) or
             totalField.valueProperty().lessEq(0)
 

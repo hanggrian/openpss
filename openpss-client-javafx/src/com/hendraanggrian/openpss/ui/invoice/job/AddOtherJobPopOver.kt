@@ -6,12 +6,12 @@ import com.hendraanggrian.openpss.control.DoubleField
 import com.hendraanggrian.openpss.schema.Invoice
 import javafx.beans.Observable
 import javafx.beans.value.ObservableBooleanValue
-import ktfx.bindings.isBlank
-import ktfx.bindings.lessEq
-import ktfx.bindings.or
 import ktfx.layouts.KtfxGridPane
 import ktfx.layouts.addNode
 import ktfx.layouts.label
+import ktfx.lessEq
+import ktfx.or
+import ktfx.toBoolean
 
 class AddOtherJobPopOver(component: FxComponent) : AddJobPopOver<Invoice.OtherJob>(
     component,
@@ -21,20 +21,15 @@ class AddOtherJobPopOver(component: FxComponent) : AddJobPopOver<Invoice.OtherJo
     private lateinit var priceField: DoubleField
 
     override fun KtfxGridPane.onCreateContent() {
-        label(getString(R2.string.price)) {
-            gridAt(currentRow, 0)
-        }
-        priceField = addNode(DoubleField()) {
-            gridAt(currentRow, 1, colSpans = 2)
-            promptText = getString(R2.string.price)
-        }
+        label(getString(R2.string.price)) col 0 row currentRow
+        priceField = addNode(DoubleField()) { promptText = getString(R2.string.price) } col (1 to 2) row currentRow
     }
 
     override val totalBindingDependencies: Array<Observable>
         get() = arrayOf(qtyField.valueProperty(), priceField.valueProperty())
 
     override val defaultButtonDisableBinding: ObservableBooleanValue
-        get() = titleField.textProperty().isBlank() or
+        get() = titleField.textProperty().toBoolean { it!!.isBlank() } or
             qtyField.valueProperty().lessEq(0) or
             totalField.valueProperty().lessEq(0)
 

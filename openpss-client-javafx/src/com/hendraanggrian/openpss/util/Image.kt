@@ -1,5 +1,3 @@
-@file:Suppress("NOTHING_TO_INLINE")
-
 package com.hendraanggrian.openpss.util
 
 import java.awt.image.BufferedImage

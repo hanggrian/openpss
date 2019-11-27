@@ -21,13 +21,11 @@ class EditRecessDialog(component: FxComponent) : TableDialog<Recess>(component, 
         }
     }
 
-    override suspend fun CoroutineScope.refresh(): List<Recess> =
-        OpenPSSApi.getRecesses().toMutableObservableList()
+    override suspend fun CoroutineScope.refresh(): List<Recess> = OpenPSSApi.getRecesses().toMutableObservableList()
 
     override fun add() = AddRecessPopOver(this).show(addButton) { pair ->
         table.items.add(OpenPSSApi.addRecess(pair!!.first, pair.second))
     }
 
-    override suspend fun CoroutineScope.delete(selected: Recess): Boolean =
-        OpenPSSApi.deleteRecess(selected.id)
+    override suspend fun CoroutineScope.delete(selected: Recess): Boolean = OpenPSSApi.deleteRecess(selected.id)
 }

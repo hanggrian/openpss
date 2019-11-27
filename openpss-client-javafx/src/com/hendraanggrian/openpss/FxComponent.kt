@@ -20,15 +20,15 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.javafx.JavaFx
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import ktfx.bindings.isBlank
-import ktfx.bindings.or
 import ktfx.collections.toObservableList
+import ktfx.controls.gap
 import ktfx.jfoenix.controls.jfxSnackbar
 import ktfx.jfoenix.layouts.jfxComboBox
 import ktfx.jfoenix.layouts.jfxPasswordField
-import ktfx.layouts.gap
 import ktfx.layouts.gridPane
 import ktfx.layouts.label
+import ktfx.or
+import ktfx.toBoolean
 
 /** StackPane is the root layout for [ktfx.jfoenix.jfxSnackbar]. */
 interface FxComponent : Component<StackPane, WritableDefaults>, StringResources, ValueResources {
@@ -40,9 +40,7 @@ interface FxComponent : Component<StackPane, WritableDefaults>, StringResources,
     /** Number decimal with currency prefix string converter. */
     val currencyConverter: StringConverter<Number>
         get() = CurrencyStringConverter(runBlocking(Dispatchers.IO) {
-            Language.ofFullCode(
-                OpenPSSApi.getSetting(GlobalSetting.KEY_LANGUAGE).value
-            ).toLocale()
+            Language.ofFullCode(OpenPSSApi.getSetting(GlobalSetting.KEY_LANGUAGE).value).toLocale()
         })
 
     /** Returns [Desktop] instance, may be null if it is unsupported. */
@@ -90,29 +88,18 @@ interface FxComponent : Component<StackPane, WritableDefaults>, StringResources,
             gridPane {
                 gap = getDouble(R.value.padding_medium)
                 label {
-                    gridAt(0, 0, colSpans = 2)
                     text = getString(R2.string._permission_required)
-                }
-                label(getString(R2.string.admin)) {
-                    gridAt(1, 0)
-                }
+                } col (0 to 2) row 0
+                label(getString(R2.string.admin)) col 0 row 1
                 adminCombo = jfxComboBox(runBlocking(Dispatchers.IO) { OpenPSSApi.getEmployees() }
                     .filter { it.isAdmin }
                     .toObservableList()
-                ) {
-                    gridAt(1, 1)
-                    promptText = getString(R2.string.admin)
-                }
-                label(getString(R2.string.password)) {
-                    gridAt(2, 0)
-                }
-                passwordField = jfxPasswordField {
-                    gridAt(2, 1)
-                    promptText = getString(R2.string.password)
-                }
+                ) { promptText = getString(R2.string.admin) } col 1 row 1
+                label(getString(R2.string.password)) col 0 row 2
+                passwordField = jfxPasswordField { promptText = getString(R2.string.password) } col 1 row 2
             }
             defaultButton.disableProperty().bind(
-                adminCombo.valueProperty().isNull or passwordField.textProperty().isBlank()
+                adminCombo.valueProperty().isNull or passwordField.textProperty().toBoolean { it!!.isBlank() }
             )
         }
 

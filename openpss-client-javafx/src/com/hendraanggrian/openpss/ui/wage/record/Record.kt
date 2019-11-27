@@ -15,12 +15,13 @@ import javafx.beans.property.SimpleDoubleProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.beans.property.StringProperty
 import kotlin.math.absoluteValue
-import ktfx.bindings.doubleBindingOf
-import ktfx.bindings.plus
-import ktfx.bindings.stringBindingOf
-import ktfx.finalProperty
+import ktfx.doubleBindingOf
 import ktfx.getValue
+import ktfx.plus
+import ktfx.property
 import ktfx.setValue
+import ktfx.stringBindingOf
+import ktfx.toDouble
 import org.joda.time.DateTime
 import org.joda.time.LocalTime
 
@@ -64,7 +65,7 @@ class Record(
         /** Dummy for invisible [javafx.scene.control.TreeTableView] rootLayout. */
         fun getDummy(resources: StringResources) = Record(
             resources, Int.MIN_VALUE, Attendee.DUMMY,
-            finalProperty(START_OF_TIME), finalProperty(START_OF_TIME)
+            property(START_OF_TIME), property(START_OF_TIME)
         )
     }
 
@@ -97,12 +98,8 @@ class Record(
             })
         }
         if (isChild() || isTotal()) {
-            dailyIncomeProperty.bind(doubleBindingOf(dailyProperty) {
-                (daily * attendee.daily / WORKING_HOURS).round()
-            })
-            overtimeIncomeProperty.bind(doubleBindingOf(overtimeProperty) {
-                (overtime * attendee.hourlyOvertime).round()
-            })
+            dailyIncomeProperty.bind(dailyProperty.toDouble { (it * attendee.daily / WORKING_HOURS).round() })
+            overtimeIncomeProperty.bind(overtimeProperty.toDouble { (it * attendee.hourlyOvertime).round() })
             totalProperty.bind(dailyIncomeProperty + overtimeIncomeProperty)
         }
     }

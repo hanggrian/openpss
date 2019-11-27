@@ -37,22 +37,22 @@ import javafx.scene.control.TreeTableView
 import javafx.scene.layout.StackPane
 import javafx.scene.layout.VBox
 import javax.imageio.ImageIO
-import ktfx.bindings.booleanBindingOf
-import ktfx.bindings.lessEq
-import ktfx.bindings.or
-import ktfx.bindings.stringBindingOf
 import ktfx.cells.cellFactory
 import ktfx.collections.sizeBinding
 import ktfx.controls.notSelectedBinding
 import ktfx.controls.snapshot
-import ktfx.controlsfx.isOSX
+import ktfx.controlsfx.isOsMac
 import ktfx.coroutines.onAction
-import ktfx.invoke
 import ktfx.jfoenix.controls.jfxIndefiniteSnackbar
 import ktfx.layouts.label
 import ktfx.layouts.menuItem
+import ktfx.lessEq
+import ktfx.or
 import ktfx.runLater
-import ktfx.swing.toSwingImage
+import ktfx.stringBindingOf
+import ktfx.toBoolean
+import ktfx.util.invoke
+import ktfx.util.toSwingImage
 import org.joda.time.LocalTime
 
 @Suppress("UNCHECKED_CAST")
@@ -84,14 +84,13 @@ class WageRecordController : BaseController() {
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
-        menuBar.isUseSystemMenuBar = isOSX()
+        menuBar.isUseSystemMenuBar = isOsMac()
         undoMenu.disableProperty().bind(editMenu.items.sizeBinding lessEq 2)
         arrayOf(lockStartButton, lockEndButton).forEach { button ->
             button.disableProperty()
                 .bind(recordTable.selectionModel.notSelectedBinding or
-                    booleanBindingOf(recordTable.selectionModel.selectedItemProperty()) {
-                        recordTable.selectionModel.selectedItems?.any { !it.value.isChild() }
-                            ?: true
+                    recordTable.selectionModel.selectedItemProperty().toBoolean {
+                        recordTable.selectionModel.selectedItems?.any { !it.value.isChild() } ?: true
                     })
         }
 
@@ -104,9 +103,8 @@ class WageRecordController : BaseController() {
                         if (any != null && !empty) graphic = label(
                             when (it) {
                                 dailyColumn, overtimeColumn -> numberConverter(any as Number)
-                                dailyIncomeColumn, overtimeIncomeColumn, totalColumn -> currencyConverter(
-                                    any as Number
-                                )
+                                dailyIncomeColumn, overtimeIncomeColumn, totalColumn ->
+                                    currencyConverter(any as Number)
                                 else -> any.toString()
                             }
                         ) {
@@ -139,7 +137,7 @@ class WageRecordController : BaseController() {
                 }
             }
             totalLabel.textProperty()
-                .bind(stringBindingOf(records.filter { it.isChild() }.map { it.totalProperty }) {
+                .bind(stringBindingOf(*records.filter { it.isChild() }.map { it.totalProperty }.toTypedArray()) {
                     currencyConverter(records
                         .asSequence()
                         .filter { it.isTotal() }
@@ -148,11 +146,9 @@ class WageRecordController : BaseController() {
         }
     }
 
-    @FXML
-    fun undo() = editMenu.items[2].fire()
+    @FXML fun undo() = editMenu.items[2].fire()
 
-    @FXML
-    fun disableDailyIncome() =
+    @FXML fun disableDailyIncome() =
         DatePopOver(this, R2.string.disable_daily_income).show(disableDailyIncomeButton) { date ->
             val undoable = Undoable()
             records.filter { it.startProperty.value.toLocalDate() == date }
@@ -167,8 +163,7 @@ class WageRecordController : BaseController() {
             undoable.append()
         }
 
-    @FXML
-    fun lockStart() =
+    @FXML fun lockStart() =
         TimePopOver(
             this,
             R2.string.lock_start_time,
@@ -193,8 +188,7 @@ class WageRecordController : BaseController() {
             undoable.append()
         }
 
-    @FXML
-    fun lockEnd() =
+    @FXML fun lockEnd() =
         TimePopOver(
             this,
             R2.string.lock_end_time,
@@ -219,8 +213,7 @@ class WageRecordController : BaseController() {
             undoable.append()
         }
 
-    @FXML
-    fun screenshot() {
+    @FXML fun screenshot() {
         val images = mutableListOf<BufferedImage>()
         recordTable.selectionModel.clearSelection()
         togglePrintMode(true, Stylesheets.WAGE_RECORD)

@@ -1,10 +1,8 @@
-@file:Suppress("NOTHING_TO_INLINE")
-
 package com.hendraanggrian.openpss.util
 
 import javafx.beans.binding.BooleanBinding
 import javafx.beans.property.StringProperty
-import ktfx.bindings.booleanBindingOf
+import ktfx.toBoolean
 
 /** Reversed name of [String.orEmpty]. */
 fun String.orNull(): String? = if (isBlank()) null else this
@@ -25,5 +23,4 @@ fun String.isPersonName(): Boolean {
     }
 }
 
-val StringProperty.personNameBinding: BooleanBinding
-    get() = booleanBindingOf(this) { value.isPersonName() }
+val StringProperty.personNameBinding: BooleanBinding get() = toBoolean { it!!.isPersonName() }

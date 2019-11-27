@@ -12,8 +12,6 @@ import com.hendraanggrian.openpss.util.stringCell
 import javafx.scene.control.MenuItem
 import javafx.scene.image.ImageView
 import kotlinx.coroutines.CoroutineScope
-import ktfx.bindings.bindingOf
-import ktfx.bindings.stringBindingOf
 import ktfx.controls.isSelected
 import ktfx.controls.notSelectedBinding
 import ktfx.coroutines.onAction
@@ -21,6 +19,8 @@ import ktfx.jfoenix.controls.jfxSnackbar
 import ktfx.layouts.contextMenu
 import ktfx.layouts.menuItem
 import ktfx.layouts.separatorMenuItem
+import ktfx.toAny
+import ktfx.toString
 
 class EditEmployeeDialog(component: FxComponent) :
     TableDialog<Employee>(component, R2.string.employee, true) {
@@ -34,22 +34,22 @@ class EditEmployeeDialog(component: FxComponent) :
         }
         table.contextMenu {
             menuItem {
-                textProperty().bind(stringBindingOf(table.selectionModel.selectedIndexProperty()) {
+                textProperty().bind(table.selectionModel.selectedItemProperty().toString {
                     when {
                         table.selectionModel.isSelected() -> getString(
                             when {
-                                table.selectionModel.selectedItem.isAdmin -> R2.string.disable_admin_status
+                                it!!.isAdmin -> R2.string.disable_admin_status
                                 else -> R2.string.enable_admin_status
                             }
                         )
                         else -> null
                     }
                 })
-                graphicProperty().bind(bindingOf(table.selectionModel.selectedIndexProperty()) {
+                graphicProperty().bind(table.selectionModel.selectedItemProperty().toAny {
                     when {
                         table.selectionModel.isSelected() -> ImageView(
                             when {
-                                table.selectionModel.selectedItem.isAdmin -> R.image.menu_admin_off
+                                it!!.isAdmin -> R.image.menu_admin_off
                                 else -> R.image.menu_admin_on
                             }
                         )

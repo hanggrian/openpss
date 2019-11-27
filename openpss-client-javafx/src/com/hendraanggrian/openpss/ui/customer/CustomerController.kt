@@ -30,9 +30,7 @@ import kotlinx.coroutines.javafx.JavaFx
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
-import ktfx.bindings.bindingOf
-import ktfx.bindings.callbackBindingOf
-import ktfx.bindings.stringBindingOf
+import ktfx.callbackBindingOf
 import ktfx.collections.emptyObservableList
 import ktfx.collections.toMutableObservableList
 import ktfx.collections.toObservableList
@@ -44,6 +42,8 @@ import ktfx.layouts.addNode
 import ktfx.layouts.contextMenu
 import ktfx.layouts.tooltip
 import ktfx.runLater
+import ktfx.toAny
+import ktfx.toString
 import org.controlsfx.control.MasterDetailPane
 
 class CustomerController : ActionController(), Refreshable {
@@ -114,22 +114,16 @@ class CustomerController : ActionController(), Refreshable {
                         items = customers.toMutableObservableList()
                     }
                 }
-                titleProperty().bind(stringBindingOf(customerList.selectionModel.selectedItemProperty()) {
-                    customerList.selectionModel.selectedItem?.name
-                })
+                titleProperty().bind(customerList.selectionModel.selectedItemProperty().toString { it?.name })
                 sinceLabel.bindLabel {
-                    customerList.selectionModel.selectedItem?.since?.toString(PATTERN_DATE)
-                        .orEmpty()
+                    customerList.selectionModel.selectedItem?.since?.toString(PATTERN_DATE).orEmpty()
                 }
                 addressLabel.bindLabel { customerList.selectionModel.selectedItem?.address ?: "-" }
                 noteLabel.bindLabel { customerList.selectionModel.selectedItem?.note ?: "-" }
-                contactTable.itemsProperty()
-                    .bind(bindingOf(customerList.selectionModel.selectedItemProperty()) {
-                        customerList.selectionModel.selectedItem?.contacts?.toObservableList()
-                            ?: emptyObservableList()
-                    })
-                masterDetailPane.showDetailNodeProperty()
-                    .bind(customerList.selectionModel.notSelectedBinding)
+                contactTable.itemsProperty().bind(customerList.selectionModel.selectedItemProperty().toAny {
+                    it?.contacts?.toObservableList() ?: emptyObservableList()
+                })
+                masterDetailPane.showDetailNodeProperty().bind(customerList.selectionModel.notSelectedBinding)
                 customerList
             })
     }
@@ -146,14 +140,12 @@ class CustomerController : ActionController(), Refreshable {
         }
     }
 
-    @FXML
-    fun addContact() = AddContactPopOver(this).show(contactTable) {
+    @FXML fun addContact() = AddContactPopOver(this).show(contactTable) {
         OpenPSSApi.addContact(customerList.selectionModel.selectedItem.id, it!!)
         reload()
     }
 
-    @FXML
-    fun deleteContact() = ConfirmDialog(this, R2.string.delete_contact).show {
+    @FXML fun deleteContact() = ConfirmDialog(this, R2.string.delete_contact).show {
         withPermission {
             OpenPSSApi.deleteContact(
                 login,
@@ -165,7 +157,7 @@ class CustomerController : ActionController(), Refreshable {
     }
 
     private fun Label.bindLabel(target: () -> String) = textProperty()
-        .bind(stringBindingOf(customerList.selectionModel.selectedItemProperty()) { target() })
+        .bind(customerList.selectionModel.selectedItemProperty().toString { target() })
 
     private fun reload() {
         val index = customerList.selectionModel.selectedIndex

@@ -19,6 +19,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import ktfx.coroutines.listener
 import ktfx.eq
+import ktfx.given
 import ktfx.jfoenix.layouts.jfxTabPane
 import ktfx.jfoenix.layouts.jfxTextField
 import ktfx.layouts.label
@@ -26,7 +27,7 @@ import ktfx.layouts.tab
 import ktfx.or
 import ktfx.otherwise
 import ktfx.then
-import ktfx.toBoolean
+import ktfx.toBooleanBinding
 
 class AddCustomerDialog(component: FxComponent) :
     ResultableDialog<Customer>(component, R2.string.add_customer) {
@@ -65,9 +66,10 @@ class AddCustomerDialog(component: FxComponent) :
             promptText = getString(R2.string.name)
         }
         defaultButton.disableProperty().bind(
-            When(tabPane.selectionModel.selectedIndexProperty() eq 0)
-                then (editor.textProperty().toBoolean { it!!.isBlank() } or !editor.textProperty().personNameBinding)
-                otherwise editor.textProperty().toBoolean { it!!.isBlank() }
+            given(tabPane.selectionModel.selectedIndexProperty() eq 0)
+                then (editor.textProperty()
+                .toBooleanBinding { it!!.isBlank() } or !editor.textProperty().personNameBinding)
+                otherwise editor.textProperty().toBooleanBinding { it!!.isBlank() }
         )
         tabPane.selectionModel.selectedIndexProperty().listener {
             editor.requestFocus()

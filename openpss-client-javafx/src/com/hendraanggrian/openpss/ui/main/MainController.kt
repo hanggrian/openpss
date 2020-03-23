@@ -52,10 +52,9 @@ import kotlinx.coroutines.withContext
 import ktfx.cells.cellFactory
 import ktfx.collections.toObservableList
 import ktfx.controls.stage
-import ktfx.controlsfx.isOsMac
+import ktfx.controlsfx.isPlatformOSX
 import ktfx.coroutines.listener
 import ktfx.eq
-import ktfx.hasValue
 import ktfx.jfoenix.controls.jfxSnackbar
 import ktfx.layouts.text
 import ktfx.layouts.textFlow
@@ -67,7 +66,7 @@ import ktfx.text.append
 import ktfx.text.appendln
 import ktfx.text.pt
 import ktfx.then
-import ktfx.toString
+import ktfx.toStringBinding
 
 class MainController : BaseController(), Refreshable {
 
@@ -114,7 +113,7 @@ class MainController : BaseController(), Refreshable {
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
-        menuBar.isUseSystemMenuBar = isOsMac()
+        menuBar.isUseSystemMenuBar = isPlatformOSX()
 
         drawerList.selectionModel.selectFirst()
         drawerList.selectionModel.selectedItemProperty().listener { _, _, _ ->
@@ -129,9 +128,10 @@ class MainController : BaseController(), Refreshable {
         }
 
         runLater {
-            titleLabel.scene.stage.titleProperty().bind(drawerList.selectionModel.selectedItemProperty().toString {
-                "${BuildConfig2.NAME} - ${it?.text}"
-            })
+            titleLabel.scene.stage.titleProperty()
+                .bind(drawerList.selectionModel.selectedItemProperty().toStringBinding {
+                    "${BuildConfig2.NAME} - ${it?.text}"
+                })
         }
         titleLabel.textProperty().bind(stringBindingOf(
             tabPane.selectionModel.selectedIndexProperty(),
@@ -139,7 +139,7 @@ class MainController : BaseController(), Refreshable {
         ) {
             val controller = selectedController
             when {
-                controller.titleProperty().hasValue() -> controller.title
+                controller.titleProperty().value != null -> controller.title
                 else -> drawerList.selectionModel.selectedItem?.text
             }
         })

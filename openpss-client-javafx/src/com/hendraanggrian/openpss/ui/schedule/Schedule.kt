@@ -6,7 +6,7 @@ import com.hendraanggrian.openpss.schema.Invoice
 import com.hendraanggrian.openpss.schema.typedTechnique
 import javafx.collections.ObservableList
 import ktfx.collections.mutableObservableListOf
-import ktfx.util.invoke
+import ktfx.text.invoke
 
 data class Schedule(
     val invoice: Invoice,

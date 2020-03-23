@@ -12,7 +12,7 @@ import ktfx.layouts.gridPane
 import ktfx.layouts.label
 import ktfx.neq
 import ktfx.or
-import ktfx.toBoolean
+import ktfx.toBooleanBinding
 
 class ChangePasswordDialog(component: FxComponent) : ResultableDialog<String>(component, R2.string.change_password) {
 
@@ -31,8 +31,8 @@ class ChangePasswordDialog(component: FxComponent) : ResultableDialog<String>(co
             confirmPasswordField = jfxPasswordField { promptText = getString(R2.string.confirm_password) } col 1 row 2
         }
         defaultButton.disableProperty().bind(
-            changePasswordField.textProperty().toBoolean { it!!.isBlank() }
-                or confirmPasswordField.textProperty().toBoolean { it!!.isBlank() }
+            changePasswordField.textProperty().toBooleanBinding { it!!.isBlank() }
+                or confirmPasswordField.textProperty().toBooleanBinding { it!!.isBlank() }
                 or changePasswordField.textProperty().neq(confirmPasswordField.textProperty())
         )
     }

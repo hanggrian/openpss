@@ -1,13 +1,14 @@
 package com.hendraanggrian.openpss
 
-import com.hendraanggrian.defaults.WritableDefaults
-import com.hendraanggrian.defaults.toDefaults
 import com.hendraanggrian.openpss.ui.Stylesheets
 import com.hendraanggrian.openpss.ui.login.LoginPane
 import com.hendraanggrian.openpss.ui.wage.EClockingReader
 import com.hendraanggrian.openpss.util.controller
 import com.hendraanggrian.openpss.util.getResource
 import com.hendraanggrian.openpss.util.pane
+import com.hendraanggrian.prefs.Prefs
+import com.hendraanggrian.prefs.jvm.PropertiesPrefs
+import com.hendraanggrian.prefs.jvm.get
 import java.util.Properties
 import java.util.ResourceBundle
 import javafx.application.Application
@@ -18,15 +19,15 @@ import javafx.stage.Stage
 import kotlin.system.exitProcess
 import ktfx.controls.icon
 import ktfx.controls.setMinSize
-import ktfx.layouts.addNode
+import ktfx.launchApplication
+import ktfx.layouts.addChild
 import ktfx.layouts.scene
 import org.apache.log4j.BasicConfigurator
 
 class App : Application(), StringResources, ValueResources {
 
     companion object {
-
-        @JvmStatic fun main(args: Array<String>) = ktfx.launch<App>(*args)
+        @JvmStatic fun main(args: Array<String>) = launchApplication<App>(*args)
 
         fun exit() {
             Platform.exit() // exit JavaFX
@@ -34,20 +35,20 @@ class App : Application(), StringResources, ValueResources {
         }
     }
 
-    private lateinit var defaults: WritableDefaults
+    private lateinit var prefs: PropertiesPrefs
     override lateinit var resourceBundle: ResourceBundle
     override lateinit var valueProperties: Properties
 
     override fun init() {
-        defaults = SettingsFile.toDefaults().also {
+        prefs = Prefs[SettingsFile].also {
             it.setDefault()
             if (FxSetting.KEY_WAGEREADER !in it) {
                 it[FxSetting.KEY_WAGEREADER] = EClockingReader.name
             }
         }
-        resourceBundle = defaults.language.toResourcesBundle()
+        resourceBundle = prefs.language.toResourcesBundle()
         valueProperties = App::class.java
-            .getResourceAsStream(R.value.properties_value)
+            .getResourceAsStream(R.value._value)
             .use { stream -> Properties().apply { load(stream) } }
         if (BuildConfig2.DEBUG) {
             BasicConfigurator.configure()
@@ -60,12 +61,10 @@ class App : Application(), StringResources, ValueResources {
         stage.title = getString(R2.string.openpss_login)
         stage.scene = scene {
             stylesheets += Stylesheets.OPENPSS
-            addNode(LoginPane(this@App, defaults)) {
+            addChild(LoginPane(this@App, prefs)) {
                 onSuccess = { employee ->
                     val loader = FXMLLoader(getResource(R.layout.controller_main), resourceBundle)
-                    this@scene.run {
-                        addNode(loader.pane)
-                    }
+                    this@scene.run { addChild(loader.pane) }
                     val controller = loader.controller
                     controller.login = employee
 

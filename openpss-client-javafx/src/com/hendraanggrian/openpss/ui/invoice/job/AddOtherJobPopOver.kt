@@ -7,11 +7,11 @@ import com.hendraanggrian.openpss.schema.Invoice
 import javafx.beans.Observable
 import javafx.beans.value.ObservableBooleanValue
 import ktfx.layouts.KtfxGridPane
-import ktfx.layouts.addNode
+import ktfx.layouts.addChild
 import ktfx.layouts.label
 import ktfx.lessEq
 import ktfx.or
-import ktfx.toBoolean
+import ktfx.toBooleanBinding
 
 class AddOtherJobPopOver(component: FxComponent) : AddJobPopOver<Invoice.OtherJob>(
     component,
@@ -22,14 +22,14 @@ class AddOtherJobPopOver(component: FxComponent) : AddJobPopOver<Invoice.OtherJo
 
     override fun KtfxGridPane.onCreateContent() {
         label(getString(R2.string.price)) col 0 row currentRow
-        priceField = addNode(DoubleField()) { promptText = getString(R2.string.price) } col (1 to 2) row currentRow
+        priceField = addChild(DoubleField()) { promptText = getString(R2.string.price) } col (1 to 2) row currentRow
     }
 
     override val totalBindingDependencies: Array<Observable>
         get() = arrayOf(qtyField.valueProperty(), priceField.valueProperty())
 
     override val defaultButtonDisableBinding: ObservableBooleanValue
-        get() = titleField.textProperty().toBoolean { it!!.isBlank() } or
+        get() = titleField.textProperty().toBooleanBinding { it!!.isBlank() } or
             qtyField.valueProperty().lessEq(0) or
             totalField.valueProperty().lessEq(0)
 

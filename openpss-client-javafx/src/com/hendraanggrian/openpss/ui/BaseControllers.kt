@@ -1,12 +1,13 @@
 package com.hendraanggrian.openpss.ui
 
-import com.hendraanggrian.defaults.WritableDefaults
-import com.hendraanggrian.defaults.toDefaults
 import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.FxComponent
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.SettingsFile
 import com.hendraanggrian.openpss.schema.Employee
+import com.hendraanggrian.prefs.Prefs
+import com.hendraanggrian.prefs.jvm.PropertiesPrefs
+import com.hendraanggrian.prefs.jvm.get
 import java.net.URL
 import java.util.Properties
 import java.util.ResourceBundle
@@ -23,18 +24,16 @@ import ktfx.setValue
 @Suppress("LeakingThis")
 open class BaseController : Initializable, FxComponent {
 
-    private lateinit var _setting: WritableDefaults
-    override val defaults: WritableDefaults
+    private lateinit var _prefs: PropertiesPrefs
+    override val prefs: PropertiesPrefs
         get() {
-            if (!::_setting.isInitialized) {
-                _setting = SettingsFile.toDefaults()
-            }
-            return _setting
+            if (!::_prefs.isInitialized) _prefs = Prefs[SettingsFile]
+            return _prefs
         }
 
     override lateinit var resourceBundle: ResourceBundle
     override val valueProperties: Properties = App::class.java
-        .getResourceAsStream(R.value.properties_value)
+        .getResourceAsStream(R.value._value)
         .use { stream -> Properties().apply { load(stream) } }
 
     override lateinit var rootLayout: StackPane
@@ -72,7 +71,7 @@ open class ActionController : BaseController() {
     val actions = mutableListOf<Node>()
 
     private val actionManager = object : NodeManager {
-        override fun <T : Node> addNode(node: T): T = node.also { actions += it }
+        override fun <T : Node> addChild(child: T): T = child.also { actions += it }
     }
 
     /** Override this function to add actions. */

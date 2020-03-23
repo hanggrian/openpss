@@ -6,16 +6,16 @@ import com.hendraanggrian.openpss.util.getStyle
 object Stylesheets {
 
     val OPENPSS = listOf(
-        R.style.css_openpss,
-        R.style.css_openpss_background,
-        R.style.css_openpss_button,
-        R.style.css_openpss_drawer,
-        R.style.css_openpss_font,
-        R.style.css_openpss_listview,
-        R.style.css_openpss_tab
+        R.style._openpss,
+        R.style._openpss_background,
+        R.style._openpss_button,
+        R.style._openpss_drawer,
+        R.style._openpss_font,
+        R.style._openpss_listview,
+        R.style._openpss_tab
     ).map { getStyle(it) }
 
-    val INVOICE = getStyle(R.style.css_invoice)
+    val INVOICE = getStyle(R.style._invoice)
 
-    val WAGE_RECORD = getStyle(R.style.css_wage_record)
+    val WAGE_RECORD = getStyle(R.style._wage_record)
 }

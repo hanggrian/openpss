@@ -18,12 +18,12 @@ import ktfx.collections.toObservableList
 import ktfx.coroutines.listener
 import ktfx.jfoenix.layouts.jfxComboBox
 import ktfx.layouts.KtfxGridPane
-import ktfx.layouts.addNode
+import ktfx.layouts.addChild
 import ktfx.layouts.label
 import ktfx.lessEq
 import ktfx.or
-import ktfx.toBoolean
-import ktfx.util.buildStringConverter
+import ktfx.text.buildStringConverter
+import ktfx.toBooleanBinding
 
 class AddOffsetJobPopOver(component: FxComponent) :
     AddJobPopOver<Invoice.OffsetJob>(component, R2.string.add_offset_job), Invoice.Job {
@@ -51,15 +51,15 @@ class AddOffsetJobPopOver(component: FxComponent) :
         } col (1 to 2) row currentRow
         currentRow++
         label(getString(R2.string.min_qty)) col 0 row currentRow
-        minQtyField = addNode(IntField()) { promptText = getString(R2.string.min_qty) } col (1 to 2) row currentRow
+        minQtyField = addChild(IntField()) { promptText = getString(R2.string.min_qty) } col (1 to 2) row currentRow
         currentRow++
         label(getString(R2.string.min_price)) col 0 row currentRow
-        minPriceField = addNode(DoubleField()) {
+        minPriceField = addChild(DoubleField()) {
             promptText = getString(R2.string.min_price)
         } col (1 to 2) row currentRow
         currentRow++
         label(getString(R2.string.excess_price)) col 0 row currentRow
-        excessPriceField = addNode(DoubleField()) {
+        excessPriceField = addChild(DoubleField()) {
             promptText = getString(R2.string.excess_price)
         } col (1 to 2) row currentRow
     }
@@ -75,7 +75,7 @@ class AddOffsetJobPopOver(component: FxComponent) :
 
     override val defaultButtonDisableBinding: ObservableBooleanValue
         get() = typeChoice.valueProperty().isNull or
-            titleField.textProperty().toBoolean { it!!.isBlank() } or
+            titleField.textProperty().toBooleanBinding { it!!.isBlank() } or
             qtyField.valueProperty().lessEq(0) or
             techniqueChoice.valueProperty().isNull or
             totalField.valueProperty().lessEq(0)

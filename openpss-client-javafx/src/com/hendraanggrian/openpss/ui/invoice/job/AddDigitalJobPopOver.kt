@@ -17,11 +17,11 @@ import ktfx.coroutines.listener
 import ktfx.jfoenix.layouts.jfxCheckBox
 import ktfx.jfoenix.layouts.jfxComboBox
 import ktfx.layouts.KtfxGridPane
-import ktfx.layouts.addNode
+import ktfx.layouts.addChild
 import ktfx.layouts.label
 import ktfx.lessEq
 import ktfx.or
-import ktfx.toBoolean
+import ktfx.toBooleanBinding
 
 class AddDigitalJobPopOver(component: FxComponent) :
     AddJobPopOver<Invoice.DigitalJob>(component, R2.string.add_digital_job), Invoice.Job {
@@ -44,12 +44,12 @@ class AddDigitalJobPopOver(component: FxComponent) :
         twoSideCheck = jfxCheckBox() col (1 to 2) row currentRow
         currentRow++
         label(getString(R2.string.one_side_price)) col 0 row currentRow
-        oneSidePriceField = addNode(DoubleField()) {
+        oneSidePriceField = addChild(DoubleField()) {
             promptText = getString(R2.string.one_side_price)
         } col (1 to 2) row currentRow
         currentRow++
         label(getString(R2.string.two_side_price)) col 0 row currentRow
-        twoSidePriceField = addNode(DoubleField()) {
+        twoSidePriceField = addChild(DoubleField()) {
             promptText = getString(R2.string.two_side_price)
         } col (1 to 2) row currentRow
         currentRow++
@@ -65,7 +65,7 @@ class AddDigitalJobPopOver(component: FxComponent) :
 
     override val defaultButtonDisableBinding: ObservableBooleanValue
         get() = typeChoice.valueProperty().isNull or
-            titleField.textProperty().toBoolean { it!!.isBlank() } or
+            titleField.textProperty().toBooleanBinding { it!!.isBlank() } or
             qtyField.valueProperty().lessEq(0) or
             oneSidePriceField.valueProperty().lessEq(0) or
             twoSidePriceField.valueProperty().lessEq(0) or

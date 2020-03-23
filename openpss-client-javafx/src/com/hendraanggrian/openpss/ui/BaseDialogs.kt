@@ -178,7 +178,7 @@ abstract class TableDialog<D : Document<*>>(
                 prefHeight = 275.0
                 constrained()
                 isEditable = true
-            } anchorAll 1.0
+            } anchors 1.0
         }
         refresh()
         runLater {

@@ -12,12 +12,17 @@ import javafx.scene.control.Button
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.Region
 import javafx.scene.layout.VBox
-import ktfx.controls.updatePadding
+import ktfx.controls.bottomPadding
+import ktfx.controls.leftPadding
+import ktfx.controls.rightPadding
+import ktfx.controls.topPadding
 import ktfx.coroutines.listener
 import ktfx.coroutines.onAction
 import ktfx.jfoenix.layouts.jfxButton
+import ktfx.jfoenix.layouts.leftItems
+import ktfx.jfoenix.layouts.rightItems
 import ktfx.layouts.NodeManager
-import ktfx.layouts.addNode
+import ktfx.layouts.addChild
 import ktfx.layouts.borderPane
 import ktfx.layouts.buttonBar
 import ktfx.layouts.label
@@ -25,7 +30,7 @@ import ktfx.layouts.vbox
 
 interface BasePopup : FxComponent, NodeManager {
 
-    override fun <T : Node> addNode(node: T): T = node.also { contentPane.children += it }
+    override fun <T : Node> addChild(child: T): T = child.also { contentPane.children += it }
 
     fun setActualContent(region: Region)
     fun setOnShown(onShown: () -> Unit)
@@ -44,7 +49,7 @@ interface BasePopup : FxComponent, NodeManager {
     fun initialize() {
         setActualContent(ktfx.layouts.vbox {
             // material dialog have extra top padding: https://material.io/develop/web/components/dialogs/
-            addNode(Toolbar()) {
+            addChild(Toolbar()) {
                 leftItems {
                     label(getString(titleId)) {
                         styleClass.addAll(R.style.bold, R.style.display)
@@ -60,20 +65,16 @@ interface BasePopup : FxComponent, NodeManager {
                         centerProperty().bindBidirectional(graphicProperty())
                     }
                 }
-            } marginTop getDouble(R.value.padding_small) marginBottom getDouble(R.value.padding_small)
+            } topMargin getDouble(R.value.padding_small) bottomMargin getDouble(R.value.padding_small)
             contentPane = vbox(getDouble(R.value.padding_medium)) {
-                updatePadding(
-                    left = getDouble(R.value.padding_large),
-                    right = getDouble(R.value.padding_large)
-                )
+                leftPadding = getDouble(R.value.padding_large)
+                rightPadding = getDouble(R.value.padding_large)
             }
             buttonBar {
-                updatePadding(
-                    top = getDouble(R.value.padding_medium),
-                    left = getDouble(R.value.padding_large),
-                    right = getDouble(R.value.padding_large),
-                    bottom = getDouble(R.value.padding_large)
-                )
+                topPadding = getDouble(R.value.padding_medium)
+                leftPadding = getDouble(R.value.padding_large)
+                rightPadding = getDouble(R.value.padding_large)
+                bottomPadding = getDouble(R.value.padding_large)
                 buttonManager = this
                 cancelButton = jfxButton(getString(R2.string.close)) {
                     styleClass += R.style.flat
@@ -82,7 +83,7 @@ interface BasePopup : FxComponent, NodeManager {
                         dismiss()
                     }
                 }
-            } marginTop getDouble(R.value.padding_medium)
+            } topMargin getDouble(R.value.padding_medium)
         })
         setOnShown {
             focusedNode?.requestFocus()

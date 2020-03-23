@@ -1,5 +1,5 @@
 [![release](https://img.shields.io/github/release/hendraanggrian/openpss.svg)](https://github.com/hendraanggrian/openpss/releases/latest)
-[![license](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0)
+[![ktlint](https://img.shields.io/badge/code%20style-%E2%9D%A4-FF4081.svg)](https://ktlint.github.io/)
 
 OpenPSS
 =======

@@ -10,12 +10,12 @@ import com.hendraanggrian.openpss.ui.wage.record.Record.Companion.INDEX_TOTAL
 import com.hendraanggrian.openpss.util.START_OF_TIME
 import com.hendraanggrian.openpss.util.round
 import javafx.beans.property.IntegerProperty
+import javafx.beans.property.ReadOnlyObjectWrapper
 import javafx.beans.property.SimpleIntegerProperty
 import javafx.collections.ObservableList
 import ktfx.collections.mutableObservableListOf
 import ktfx.doubleBindingOf
 import ktfx.getValue
-import ktfx.property
 import ktfx.setValue
 import org.joda.time.DateTime
 import org.joda.time.Minutes.minutes
@@ -87,8 +87,8 @@ data class Attendee(
         resources,
         INDEX_NODE,
         this,
-        property(DateTime.now()),
-        property(DateTime.now())
+        ReadOnlyObjectWrapper(DateTime.now()),
+        ReadOnlyObjectWrapper(DateTime.now())
     )
 
     fun toChildRecords(resources: StringResources): Set<Record> {
@@ -99,19 +99,16 @@ data class Attendee(
             resources,
             index++,
             this,
-            property(iterator.next()),
-            property(iterator.next())
+            ReadOnlyObjectWrapper(iterator.next()),
+            ReadOnlyObjectWrapper(iterator.next())
         )
         return records
     }
 
     fun toTotalRecords(resources: StringResources, children: Collection<Record>): Record =
         Record(
-            resources,
-            INDEX_TOTAL,
-            this,
-            property(START_OF_TIME),
-            property(START_OF_TIME)
+            resources, INDEX_TOTAL, this,
+            ReadOnlyObjectWrapper(START_OF_TIME), ReadOnlyObjectWrapper(START_OF_TIME)
         ).apply {
             dailyProperty.bind(doubleBindingOf(*children.map { it.dailyProperty }.toTypedArray()) {
                 children.sumByDouble { it.daily }.round()

@@ -8,8 +8,8 @@ import javafx.beans.property.SimpleDoubleProperty
 import ktfx.coroutines.listener
 import ktfx.getValue
 import ktfx.setValue
-import ktfx.toBoolean
-import ktfx.util.buildStringConverter
+import ktfx.text.buildStringConverter
+import ktfx.toBooleanBinding
 
 class DoubleField : JFXTextField() {
 
@@ -25,7 +25,7 @@ class DoubleField : JFXTextField() {
         textProperty().bindBidirectional(valueProperty(), buildStringConverter {
             fromString { it.toDoubleOrNull() ?: 0.0 }
         })
-        validProperty().bind(textProperty().toBoolean {
+        validProperty().bind(textProperty().toBooleanBinding {
             runCatching {
                 java.lang.Double.parseDouble(it)
                 true

@@ -9,7 +9,7 @@ buildscript {
         classpath(android())
         classpath(hendraanggrian("r-gradle-plugin", VERSION_PLUGIN_R))
         classpath(hendraanggrian("buildconfig-gradle-plugin", VERSION_PLUGIN_BUILDCONFIG))
-        classpath(hendraanggrian("locale-gradle-plugin", VERSION_PLUGIN_BUILDCONFIG))
+        classpath(hendraanggrian("locale-gradle-plugin", VERSION_PLUGIN_LOCALE))
         classpath(hendraanggrian("packr-gradle-plugin", VERSION_PLUGIN_PACKR))
         classpath(shadow())
         classpath(gitPublish())

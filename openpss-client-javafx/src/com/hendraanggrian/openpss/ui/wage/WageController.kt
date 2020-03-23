@@ -39,7 +39,7 @@ import ktfx.dialogs.chooseFile
 import ktfx.getValue
 import ktfx.jfoenix.controls.jfxSnackbar
 import ktfx.layouts.NodeManager
-import ktfx.layouts.addNode
+import ktfx.layouts.addChild
 import ktfx.layouts.borderPane
 import ktfx.layouts.scene
 import ktfx.lessEq
@@ -64,10 +64,10 @@ class WageController : ActionController() {
     private var filePath: String? by filePathProperty
 
     override fun NodeManager.onCreateActions() {
-        browseButton = addNode(Action(getString(R2.string.browse), R.image.action_browse)) {
+        browseButton = addChild(Action(getString(R2.string.browse), R.image.action_browse)) {
             onAction { browse() }
         }
-        saveWageButton = addNode(Action(getString(R2.string.save_wage), R.image.action_save)) {
+        saveWageButton = addChild(Action(getString(R2.string.save_wage), R.image.action_save)) {
             disableProperty().bind(flowPane.children.emptyBinding)
             onAction {
                 saveWage()
@@ -77,7 +77,7 @@ class WageController : ActionController() {
                 )
             }
         }
-        historyButton = addNode(Action(getString(R2.string.history), R.image.action_history)) {
+        historyButton = addChild(Action(getString(R2.string.history), R.image.action_history)) {
             onAction { history() }
         }
     }
@@ -114,7 +114,7 @@ class WageController : ActionController() {
     @FXML fun process() = stage(getString(R2.string.wage_record)) {
         val loader = FXMLLoader(getResource(R.layout.controller_wage_record), resourceBundle)
         scene = scene {
-            addNode(loader.pane)
+            addChild(loader.pane)
             stylesheets += Stylesheets.OPENPSS
         }
         setMinSize(1000.0, 650.0)
@@ -129,7 +129,7 @@ class WageController : ActionController() {
         runBlocking {
             withPermission {
                 anchorPane.scene.window.chooseFile(
-                    getString(R2.string.input_file) to WageReader.of(defaults[FxSetting.KEY_WAGEREADER]!!).extension
+                    getString(R2.string.input_file) to WageReader.of(prefs[FxSetting.KEY_WAGEREADER]!!).extension
                 )?.let { read(it) }
             }
         }
@@ -152,7 +152,7 @@ class WageController : ActionController() {
         }
         runCatching {
             GlobalScope.launch(Dispatchers.IO) {
-                WageReader.of(defaults[FxSetting.KEY_WAGEREADER]!!).read(file)
+                WageReader.of(prefs[FxSetting.KEY_WAGEREADER]!!).read(file)
                     .forEach { attendee ->
                         GlobalScope.launch(Dispatchers.JavaFx) {
                             attendee.init()

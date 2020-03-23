@@ -15,11 +15,11 @@ import ktfx.collections.toObservableList
 import ktfx.coroutines.listener
 import ktfx.jfoenix.layouts.jfxComboBox
 import ktfx.layouts.KtfxGridPane
-import ktfx.layouts.addNode
+import ktfx.layouts.addChild
 import ktfx.layouts.label
 import ktfx.lessEq
 import ktfx.or
-import ktfx.toBoolean
+import ktfx.toBooleanBinding
 
 class AddPlateJobPopOver(component: FxComponent) :
     AddJobPopOver<Invoice.PlateJob>(component, R2.string.add_plate_job),
@@ -37,7 +37,7 @@ class AddPlateJobPopOver(component: FxComponent) :
         } col (1 to 2) row currentRow
         currentRow++
         label(getString(R2.string.price)) col 0 row currentRow
-        priceField = addNode(DoubleField()) { promptText = getString(R2.string.price) } col (1 to 2) row currentRow
+        priceField = addChild(DoubleField()) { promptText = getString(R2.string.price) } col (1 to 2) row currentRow
     }
 
     override val totalBindingDependencies: Array<Observable>
@@ -45,7 +45,7 @@ class AddPlateJobPopOver(component: FxComponent) :
 
     override val defaultButtonDisableBinding: ObservableBooleanValue
         get() = typeChoice.valueProperty().isNull or
-            titleField.textProperty().toBoolean { it!!.isBlank() } or
+            titleField.textProperty().toBooleanBinding { it!!.isBlank() } or
             qtyField.valueProperty().lessEq(0) or
             totalField.valueProperty().lessEq(0)
 

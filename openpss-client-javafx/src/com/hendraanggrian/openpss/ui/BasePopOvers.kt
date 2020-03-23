@@ -21,11 +21,11 @@ import ktfx.getValue
 import ktfx.jfoenix.layouts.jfxButton
 import ktfx.jfoenix.layouts.jfxTextField
 import ktfx.layouts.NodeManager
-import ktfx.layouts.addNode
+import ktfx.layouts.addChild
 import ktfx.layouts.gridPane
 import ktfx.setValue
-import ktfx.toAny
-import ktfx.toBoolean
+import ktfx.toBinding
+import ktfx.toBooleanBinding
 import org.controlsfx.control.PopOver
 import org.joda.time.DateTime
 import org.joda.time.LocalDate
@@ -81,7 +81,7 @@ open class InputPopOver(component: FxComponent, titleId: String, prefill: String
 
     protected val editor: TextField = jfxTextField(prefill)
 
-    open val defaultDisableBinding: BooleanBinding get() = editor.textProperty().toBoolean { it!!.isBlank() }
+    open val defaultDisableBinding: BooleanBinding get() = editor.textProperty().toBooleanBinding { it!!.isBlank() }
 
     override val focusedNode: Node? get() = editor
 
@@ -90,7 +90,7 @@ open class InputPopOver(component: FxComponent, titleId: String, prefill: String
             text = getString(R2.string.ok)
             disableProperty().bind(defaultDisableBinding)
             editor.onActionProperty()
-                .bind(disableProperty().toAny { if (it) null else onAction })
+                .bind(disableProperty().toBinding { if (it) null else onAction })
         }
     }
 
@@ -132,7 +132,7 @@ class DateTimePopOver(
     init {
         gridPane {
             gap = getDouble(R.value.padding_medium)
-            dateBox = addNode(DateBox(prefill.toLocalDate())) row 0 col 1
+            dateBox = addChild(DateBox(prefill.toLocalDate())) row 0 col 1
             jfxButton("-${Record.WORKING_HOURS}") {
                 onAction {
                     repeat(Record.WORKING_HOURS) {
@@ -140,7 +140,7 @@ class DateTimePopOver(
                     }
                 }
             } row 1 col 0
-            timeBox = addNode(TimeBox(prefill.toLocalTime())) {
+            timeBox = addChild(TimeBox(prefill.toLocalTime())) {
                 onOverlap = { plus ->
                     dateBox.picker.value = when {
                         plus -> dateBox.picker.value.plusDays(1)

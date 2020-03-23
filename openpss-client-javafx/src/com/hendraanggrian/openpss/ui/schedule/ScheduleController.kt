@@ -27,11 +27,11 @@ import ktfx.coroutines.listener
 import ktfx.coroutines.onAction
 import ktfx.jfoenix.layouts.jfxToggleButton
 import ktfx.layouts.NodeManager
-import ktfx.layouts.addNode
+import ktfx.layouts.addChild
 import ktfx.layouts.borderPane
 import ktfx.or
 import ktfx.runLater
-import ktfx.toString
+import ktfx.toStringBinding
 
 class ScheduleController : ActionController(), Refreshable {
 
@@ -46,10 +46,10 @@ class ScheduleController : ActionController(), Refreshable {
     private lateinit var historyCheck: ToggleButton
 
     override fun NodeManager.onCreateActions() {
-        refreshButton = addNode(Action(getString(R2.string.refresh), R.image.action_refresh)) {
+        refreshButton = addChild(Action(getString(R2.string.refresh), R.image.action_refresh)) {
             onAction { refresh() }
         }
-        doneButton = addNode(Action(getString(R2.string.done), R.image.action_done)) {
+        doneButton = addChild(Action(getString(R2.string.done), R.image.action_done)) {
             onAction {
                 OpenPSSApi.editInvoice(
                     scheduleTable.selectionModel.selectedItem.value.invoice.apply {
@@ -82,7 +82,7 @@ class ScheduleController : ActionController(), Refreshable {
                     else -> selectionModel.selectAll(value)
                 }
             }
-            titleProperty().bind(selectionModel.selectedItemProperty().toString {
+            titleProperty().bind(selectionModel.selectedItemProperty().toStringBinding {
                 Invoice.no(this@ScheduleController, it?.value?.invoice?.no)
             })
         }

@@ -3,32 +3,29 @@ package com.hendraanggrian.openpss
 import android.app.Application
 import android.content.Context
 import androidx.multidex.MultiDex
-import androidx.preference.PreferenceManager
 import com.hendraanggrian.bundler.Bundler
-import com.hendraanggrian.defaults.SharedPreferencesDefaults
-import com.hendraanggrian.defaults.toDefaults
 import com.hendraanggrian.openpss.api.OpenPSSApi
+import com.hendraanggrian.prefs.Prefs
+import com.hendraanggrian.prefs.android.AndroidPrefs
+import com.hendraanggrian.prefs.android.get
 import java.util.ResourceBundle
 
-@Suppress("unused")
 class App : Application(), StringResources {
 
     lateinit var api: OpenPSSApi
 
-    private lateinit var _defaults: SharedPreferencesDefaults
+    private lateinit var _prefs: AndroidPrefs
 
     override lateinit var resourceBundle: ResourceBundle
 
     override fun onCreate() {
         super.onCreate()
         Bundler.setDebug(BuildConfig2.DEBUG)
-        _defaults = PreferenceManager.getDefaultSharedPreferences(this).toDefaults().also {
-            it.setDefault()
-        }
-        resourceBundle = _defaults.language.toResourcesBundle()
+        _prefs = Prefs[this].also { it.setDefault() }
+        resourceBundle = _prefs.language.toResourcesBundle()
     }
 
-    val defaults: SharedPreferencesDefaults get() = _defaults
+    val defaults: AndroidPrefs get() = _prefs
 
     override fun attachBaseContext(base: Context?) {
         super.attachBaseContext(base)

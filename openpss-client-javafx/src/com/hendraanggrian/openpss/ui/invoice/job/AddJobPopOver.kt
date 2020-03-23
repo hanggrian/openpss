@@ -17,7 +17,7 @@ import ktfx.coroutines.listener
 import ktfx.jfoenix.layouts.jfxCheckBox
 import ktfx.jfoenix.layouts.jfxTextField
 import ktfx.layouts.KtfxGridPane
-import ktfx.layouts.addNode
+import ktfx.layouts.addChild
 import ktfx.layouts.gridPane
 import ktfx.layouts.label
 import ktfx.stringBindingOf
@@ -45,7 +45,7 @@ abstract class AddJobPopOver<T : Invoice.Job>(component: FxComponent, titleId: S
         gridPane {
             gap = getDouble(R.value.padding_medium)
             label(getString(R2.string.qty)) col 0 row currentRow
-            qtyField = addNode(IntField()) { promptText = getString(R2.string.qty) } col (1 to 2) row currentRow
+            qtyField = addChild(IntField()) { promptText = getString(R2.string.qty) } col (1 to 2) row currentRow
             currentRow++
             label(getString(R2.string.description)) col 0 row currentRow
             titleField = jfxTextField { promptText = getString(R2.string.description) } col (1 to 2) row currentRow
@@ -53,7 +53,7 @@ abstract class AddJobPopOver<T : Invoice.Job>(component: FxComponent, titleId: S
             onCreateContent()
             currentRow++
             label(getString(R2.string.total)) col 0 row currentRow
-            totalField = addNode(DoubleField()) { bindTotal() } col 1 row currentRow
+            totalField = addChild(DoubleField()) { bindTotal() } col 1 row currentRow
             customizeCheck = jfxCheckBox(getString(R2.string.customize)) {
                 totalField.disableProperty().bind(!selectedProperty())
                 selectedProperty().listener { _, _, selected ->

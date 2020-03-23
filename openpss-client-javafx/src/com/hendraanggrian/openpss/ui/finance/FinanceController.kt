@@ -41,7 +41,7 @@ import ktfx.coroutines.onMouseClicked
 import ktfx.eq
 import ktfx.inputs.isDoubleClick
 import ktfx.layouts.NodeManager
-import ktfx.layouts.addNode
+import ktfx.layouts.addChild
 import ktfx.layouts.borderPane
 import ktfx.runLater
 
@@ -77,15 +77,15 @@ class FinanceController : ActionController(), Refreshable {
         valueProperty().listener { refresh() }
     }
     private val monthBox: MonthBox = MonthBox().apply {
-        setLocale(defaults.language.toLocale())
+        setLocale(prefs.language.toLocale())
         valueProperty().listener { refresh() }
     }
 
     override fun NodeManager.onCreateActions() {
-        refreshButton = addNode(Action(getString(R2.string.refresh), R.image.action_refresh)) {
+        refreshButton = addChild(Action(getString(R2.string.refresh), R.image.action_refresh)) {
             onAction { refresh() }
         }
-        viewTotalButton = addNode(Action(getString(R2.string.total), R.image.action_money)) {
+        viewTotalButton = addChild(Action(getString(R2.string.total), R.image.action_money)) {
             onAction { viewTotal() }
         }
         switchablePane = borderPane()

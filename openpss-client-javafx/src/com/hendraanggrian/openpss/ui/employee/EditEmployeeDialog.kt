@@ -19,8 +19,8 @@ import ktfx.jfoenix.controls.jfxSnackbar
 import ktfx.layouts.contextMenu
 import ktfx.layouts.menuItem
 import ktfx.layouts.separatorMenuItem
-import ktfx.toAny
-import ktfx.toString
+import ktfx.toBinding
+import ktfx.toStringBinding
 
 class EditEmployeeDialog(component: FxComponent) :
     TableDialog<Employee>(component, R2.string.employee, true) {
@@ -34,7 +34,7 @@ class EditEmployeeDialog(component: FxComponent) :
         }
         table.contextMenu {
             menuItem {
-                textProperty().bind(table.selectionModel.selectedItemProperty().toString {
+                textProperty().bind(table.selectionModel.selectedItemProperty().toStringBinding {
                     when {
                         table.selectionModel.isSelected() -> getString(
                             when {
@@ -45,7 +45,7 @@ class EditEmployeeDialog(component: FxComponent) :
                         else -> null
                     }
                 })
-                graphicProperty().bind(table.selectionModel.selectedItemProperty().toAny {
+                graphicProperty().bind(table.selectionModel.selectedItemProperty().toBinding {
                     when {
                         table.selectionModel.isSelected() -> ImageView(
                             when {

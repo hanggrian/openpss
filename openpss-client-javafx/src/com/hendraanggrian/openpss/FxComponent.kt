@@ -1,10 +1,10 @@
 package com.hendraanggrian.openpss
 
-import com.hendraanggrian.defaults.WritableDefaults
 import com.hendraanggrian.openpss.api.OpenPSSApi
 import com.hendraanggrian.openpss.schema.Employee
 import com.hendraanggrian.openpss.schema.GlobalSetting
 import com.hendraanggrian.openpss.ui.ResultableDialog
+import com.hendraanggrian.prefs.jvm.PropertiesPrefs
 import java.awt.Desktop
 import javafx.scene.Node
 import javafx.scene.control.ComboBox
@@ -28,10 +28,10 @@ import ktfx.jfoenix.layouts.jfxPasswordField
 import ktfx.layouts.gridPane
 import ktfx.layouts.label
 import ktfx.or
-import ktfx.toBoolean
+import ktfx.toBooleanBinding
 
 /** StackPane is the root layout for [ktfx.jfoenix.jfxSnackbar]. */
-interface FxComponent : Component<StackPane, WritableDefaults>, StringResources, ValueResources {
+interface FxComponent : Component<StackPane, PropertiesPrefs>, StringResources, ValueResources {
 
     /** Number decimal string converter. */
     val numberConverter: StringConverter<Number>
@@ -99,7 +99,7 @@ interface FxComponent : Component<StackPane, WritableDefaults>, StringResources,
                 passwordField = jfxPasswordField { promptText = getString(R2.string.password) } col 1 row 2
             }
             defaultButton.disableProperty().bind(
-                adminCombo.valueProperty().isNull or passwordField.textProperty().toBoolean { it!!.isBlank() }
+                adminCombo.valueProperty().isNull or passwordField.textProperty().toBooleanBinding { it!!.isBlank() }
             )
         }
 

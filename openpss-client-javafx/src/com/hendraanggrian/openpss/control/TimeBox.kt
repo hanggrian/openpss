@@ -14,8 +14,8 @@ import ktfx.getValue
 import ktfx.jfoenix.layouts.jfxButton
 import ktfx.jfoenix.layouts.jfxTimePicker
 import ktfx.layouts.KtfxHBox
-import ktfx.toAny
-import ktfx.util.buildStringConverter
+import ktfx.text.buildStringConverter
+import ktfx.toBinding
 import org.joda.time.LocalTime
 
 /**
@@ -82,6 +82,6 @@ open class TimeBox @JvmOverloads constructor(prefill: LocalTime = LocalTime.MIDN
             }
         }
 
-        valueProperty.bind(picker.valueProperty().toAny { it!!.toJoda() })
+        valueProperty.bind(picker.valueProperty().toBinding { it!!.toJoda() })
     }
 }

@@ -25,7 +25,7 @@ ktlint()
 dependencies {
     api(project(":$RELEASE_ARTIFACT"))
 
-    api(hendraanggrian("defaults", "defaults", "0.3"))
+    api(hendraanggrian("prefs", "prefs", VERSION_PREFS))
     api(ktor("client-okhttp"))
     api(ktor("client-gson"))
     api(arrow("core"))
@@ -43,15 +43,15 @@ tasks {
         artifactId = RELEASE_ARTIFACT
         email = "$RELEASE_USER@gmail.com"
         website = RELEASE_WEBSITE
-        field("USER", RELEASE_USER)
-        field("FULL_NAME", RELEASE_FULL_NAME)
+        addField("USER", RELEASE_USER)
+        addField("FULL_NAME", RELEASE_FULL_NAME)
     }
 
     named<com.hendraanggrian.r.RTask>("generateR") {
         className = "R2"
         resourcesDirectory = "res"
-        useProperties {
-            readResourceBundle = true
+        properties {
+            isWriteResourceBundle = true
         }
     }
 }

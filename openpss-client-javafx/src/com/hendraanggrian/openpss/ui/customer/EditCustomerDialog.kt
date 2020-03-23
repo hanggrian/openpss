@@ -7,13 +7,13 @@ import com.hendraanggrian.openpss.schema.Customer
 import com.hendraanggrian.openpss.ui.ResultableDialog
 import com.hendraanggrian.openpss.util.orNull
 import com.hendraanggrian.openpss.util.personNameBinding
+import javafx.beans.property.SimpleBooleanProperty
 import javafx.scene.Node
 import javafx.scene.control.Label
 import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
 import javafx.scene.control.TextInputControl
 import javafx.scene.image.ImageView
-import ktfx.booleanProperty
 import ktfx.controls.gap
 import ktfx.coroutines.listener
 import ktfx.jfoenix.layouts.jfxTextArea
@@ -28,7 +28,7 @@ class EditCustomerDialog(
     private val customer: Customer
 ) : ResultableDialog<Customer>(component, R2.string.edit_customer) {
 
-    private val unchangedProperty = booleanProperty(true)
+    private val unchangedProperty = SimpleBooleanProperty(true)
 
     private val image: ImageView
     private val description: Label

@@ -14,7 +14,7 @@ import ktfx.getValue
 import ktfx.jfoenix.layouts.jfxButton
 import ktfx.jfoenix.layouts.jfxDatePicker
 import ktfx.layouts.KtfxHBox
-import ktfx.toAny
+import ktfx.toBinding
 import org.joda.time.LocalDate
 
 /**
@@ -48,6 +48,6 @@ open class DateBox @JvmOverloads constructor(prefill: LocalDate = LocalDate.now(
             styleClass += R.style.flat
             onAction { picker.value = picker.value.plusDays(1) }
         }
-        valueProperty.bind(picker.valueProperty().toAny { it!!.toJoda() })
+        valueProperty.bind(picker.valueProperty().toBinding { it!!.toJoda() })
     }
 }

@@ -41,6 +41,7 @@ dependencies {
     implementation(hendraanggrian("ktfx", "ktfx", VERSION_KTFX))
     implementation(hendraanggrian("ktfx", "ktfx-controlsfx", VERSION_KTFX))
     implementation(hendraanggrian("ktfx", "ktfx-jfoenix", VERSION_KTFX))
+    implementation(hendraanggrian("prefs", "prefs-jvm", VERSION_PREFS))
 
     implementation(apache("commons-math3", VERSION_COMMONS_MATH))
     implementation(apache("poi-ooxml", VERSION_POI))
@@ -57,17 +58,11 @@ tasks {
     named<com.hendraanggrian.r.RTask>("generateR") {
         resourcesDirectory = "res"
         // exclude("font", "license")
-        useCss {
-            isJavaFx = true
-        }
-        useProperties()
+        configureCss()
+        configureProperties()
     }
 
-    named<Jar>("jar") {
-        manifest {
-            attributes(mapOf("Main-Class" to application.mainClassName))
-        }
-    }
+    named<Jar>("jar") { manifest { attributes(mapOf("Main-Class" to application.mainClassName)) } }
 
     named<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar>("shadowJar") {
         destinationDirectory.set(buildDir.resolve("releases"))
@@ -100,6 +95,6 @@ packr {
         name = "64-bit/$RELEASE_NAME"
         jdk = "/Volumes/Media/Windows JDK/jdk1.8.0_231-x64"
     }
-    verbose = true
-    openOnDone = true
+    isVerbose = true
+    isAutoOpen = true
 }

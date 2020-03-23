@@ -6,7 +6,7 @@ import javafx.beans.property.SimpleIntegerProperty
 import ktfx.coroutines.listener
 import ktfx.getValue
 import ktfx.setValue
-import ktfx.util.buildStringConverter
+import ktfx.text.buildStringConverter
 
 class IntField : JFXTextField() {
 

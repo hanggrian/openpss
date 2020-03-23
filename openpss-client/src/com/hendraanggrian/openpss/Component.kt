@@ -1,13 +1,13 @@
 package com.hendraanggrian.openpss
 
-import com.hendraanggrian.defaults.ReadableDefaults
 import com.hendraanggrian.openpss.schema.Employee
+import com.hendraanggrian.prefs.ReadablePrefs
 
-interface Component<L, D : ReadableDefaults> {
+interface Component<L, P : ReadablePrefs> {
 
     val rootLayout: L
 
     val login: Employee
 
-    val defaults: D
+    val prefs: P
 }

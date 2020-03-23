@@ -10,15 +10,15 @@ import androidx.fragment.app.FragmentManager
 import androidx.preference.DialogPreference
 import com.hendraanggrian.bundler.Extra
 import com.hendraanggrian.bundler.bindExtras
-import com.hendraanggrian.defaults.SharedPreferencesDefaults
 import com.hendraanggrian.openpss.AndroidComponent
 import com.hendraanggrian.openpss.schema.Employee
+import com.hendraanggrian.prefs.android.AndroidPrefs
 import com.takisoft.preferencex.PreferenceFragmentCompat
 import java.util.ResourceBundle
 
 open class BaseFragment : Fragment(), AndroidComponent {
 
-    override val defaults: SharedPreferencesDefaults get() = openpssActivity.defaults
+    override val prefs: AndroidPrefs get() = openpssActivity.prefs
 
     override val rootLayout: View get() = openpssActivity.rootLayout
 
@@ -31,7 +31,7 @@ open class BaseFragment : Fragment(), AndroidComponent {
 
 abstract class BasePreferenceFragment : PreferenceFragmentCompat(), AndroidComponent {
 
-    override val defaults: SharedPreferencesDefaults get() = openpssActivity.defaults
+    override val prefs: AndroidPrefs get() = openpssActivity.prefs
 
     override val rootLayout: View get() = openpssActivity.rootLayout
 
@@ -51,7 +51,7 @@ abstract class BasePreferenceFragment : PreferenceFragmentCompat(), AndroidCompo
 
 open class BaseDialogFragment : AppCompatDialogFragment(), AndroidComponent {
 
-    override val defaults: SharedPreferencesDefaults get() = openpssActivity.defaults
+    override val prefs: AndroidPrefs get() = openpssActivity.prefs
 
     override val rootLayout: View get() = openpssActivity.rootLayout
 
@@ -67,7 +67,6 @@ open class BaseDialogFragment : AppCompatDialogFragment(), AndroidComponent {
 }
 
 class TextDialogFragment : BaseDialogFragment() {
-
     @Extra lateinit var text: String
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {

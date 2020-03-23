@@ -2,7 +2,7 @@ package com.hendraanggrian.openpss.util
 
 import javafx.beans.binding.BooleanBinding
 import javafx.beans.property.StringProperty
-import ktfx.toBoolean
+import ktfx.toBooleanBinding
 
 /** Reversed name of [String.orEmpty]. */
 fun String.orNull(): String? = if (isBlank()) null else this
@@ -12,7 +12,7 @@ fun String.clean(): String = replace("\\s+".toRegex(), " ").trim()
 
 /** User's name must be at least 2 words. */
 fun String.isPersonName(): Boolean {
-    val parts = clean().split(" ")
+    val parts = clean().split(' ')
     return parts.size > 1 && parts.all { part ->
         val firstUppercase = part.first().isUpperCase()
         when {
@@ -23,4 +23,4 @@ fun String.isPersonName(): Boolean {
     }
 }
 
-val StringProperty.personNameBinding: BooleanBinding get() = toBoolean { it!!.isPersonName() }
+val StringProperty.personNameBinding: BooleanBinding get() = toBooleanBinding { it!!.isPersonName() }

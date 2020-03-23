@@ -22,6 +22,7 @@ import javafx.geometry.HPos
 import javafx.geometry.Pos
 import javafx.print.PageOrientation
 import javafx.print.PageRange
+import javafx.print.Printer
 import javafx.scene.layout.Border
 import javafx.scene.layout.BorderStroke
 import javafx.scene.layout.BorderStrokeStyle
@@ -34,14 +35,14 @@ import javafx.scene.text.TextAlignment
 import javafx.scene.transform.Scale
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
+import ktfx.controls.columnConstraints
 import ktfx.controls.gap
-import ktfx.controls.paddingAll
-import ktfx.controlsfx.isOsMac
+import ktfx.controls.paddings
+import ktfx.controlsfx.isPlatformOSX
 import ktfx.coroutines.onAction
 import ktfx.layouts.KtfxGridPane
 import ktfx.layouts.NodeManager
 import ktfx.layouts.button
-import ktfx.layouts.columnConstraints
 import ktfx.layouts.gridPane
 import ktfx.layouts.hbox
 import ktfx.layouts.label
@@ -51,10 +52,9 @@ import ktfx.layouts.text
 import ktfx.layouts.textFlow
 import ktfx.layouts.vbox
 import ktfx.print.createJob
-import ktfx.print.defaultPrinter
 import ktfx.runLater
+import ktfx.text.invoke
 import ktfx.text.pt
-import ktfx.util.invoke
 
 /**
  * Popup displaying invoice using server's language instead of local.
@@ -94,7 +94,7 @@ class ViewInvoicePopOver(
             customer = OpenPSSApi.getCustomer(invoice.customerId)
         }
         invoiceBox = vbox(getDouble(R.value.padding_medium)) {
-            if (!isOsMac()) {
+            if (!isPlatformOSX()) {
                 stylesheets += Stylesheets.INVOICE
             }
             setMinSize(PX_WIDTH, PX_HEIGHT)
@@ -187,7 +187,7 @@ class ViewInvoicePopOver(
             gridPane {
                 gap = getDouble(R.value.padding_medium)
                 textFlow {
-                    paddingAll = getDouble(R.value.padding_small)
+                    paddings = getDouble(R.value.padding_small)
                     border = BorderStrokeStyle.SOLID.toBorder()
                     "${getString(R2.string.note)}\n" {
                         styleClass += R.style.bold
@@ -217,7 +217,7 @@ class ViewInvoicePopOver(
                 runLater { isDisable = invoice.isPrinted }
                 onAction {
                     // resize node to actual print size
-                    val printer = defaultPrinter
+                    val printer = Printer.getDefaultPrinter()
                     val layout = printer.createPageLayout(
                         PrintHelper.createPaper(
                             "Invoice",
@@ -269,7 +269,7 @@ class ViewInvoicePopOver(
             lineBuilder(it, row)
             row++
         }
-        addNode(Space(height = getDouble(R.value.padding_small))) row row col (0 to 4)
+        addChild(Space(height = getDouble(R.value.padding_small))) row row col (0 to 4)
         row++
         return row
     }

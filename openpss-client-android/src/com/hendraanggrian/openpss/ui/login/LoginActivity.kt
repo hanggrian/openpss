@@ -17,18 +17,17 @@ import kotlinx.coroutines.launch
 
 class LoginActivity : Activity() {
 
-    private val preferenceListener =
-        SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
-            if (key == Setting.KEY_LANGUAGE) {
-                GlobalScope.launch {
-                    delay(500)
-                    ProcessPhoenix.triggerRebirth(this@LoginActivity)
-                }
+    private val preferenceListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
+        if (key == Setting.KEY_LANGUAGE) {
+            GlobalScope.launch {
+                delay(500)
+                ProcessPhoenix.triggerRebirth(this@LoginActivity)
             }
-            loginButton.isEnabled = !defaults[Setting.KEY_SERVER_HOST]!!.isBlank() &&
-                !defaults[Setting.KEY_SERVER_PORT]!!.isBlank() &&
-                !defaults[Setting.KEY_EMPLOYEE]!!.isBlank()
         }
+        loginButton.isEnabled = !prefs[Setting.KEY_SERVER_HOST]!!.isBlank() &&
+            !prefs[Setting.KEY_SERVER_PORT]!!.isBlank() &&
+            !prefs[Setting.KEY_EMPLOYEE]!!.isBlank()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,28 +35,24 @@ class LoginActivity : Activity() {
         setSupportActionBar(toolbar)
         supportActionBar!!.title = getString(R2.string.openpss_login)
         loginButton.text = getString(R2.string.login)
-        preferenceListener.onSharedPreferenceChanged(
-            defaults.toSharedPreferences(),
-            null
-        ) // trigger once
+        preferenceListener.onSharedPreferenceChanged(null, null) // trigger once
         replaceFragment(R.id.preferenceLayout, LoginPreferenceFragment())
     }
 
     override fun onResume() {
         super.onResume()
-        defaults.toSharedPreferences().registerOnSharedPreferenceChangeListener(preferenceListener)
+        prefs.setChangeListener(preferenceListener)
     }
 
     override fun onPause() {
         super.onPause()
-        defaults.toSharedPreferences()
-            .unregisterOnSharedPreferenceChangeListener(preferenceListener)
+        prefs.removeChangeListener(preferenceListener)
     }
 
     fun login(@Suppress("UNUSED_PARAMETER") view: View) {
-        OpenPSSApi.init(defaults[Setting.KEY_SERVER_HOST]!!, defaults.getInt(Setting.KEY_SERVER_PORT))
+        OpenPSSApi.init(prefs[Setting.KEY_SERVER_HOST]!!, prefs.getInt(Setting.KEY_SERVER_PORT))
         PasswordDialogFragment()
-            .args(extrasOf<PasswordDialogFragment>(defaults[Setting.KEY_EMPLOYEE]!!))
+            .args(extrasOf<PasswordDialogFragment>(prefs[Setting.KEY_EMPLOYEE]!!))
             .show(supportFragmentManager)
     }
 }

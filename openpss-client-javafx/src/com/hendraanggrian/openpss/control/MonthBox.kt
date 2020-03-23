@@ -16,8 +16,8 @@ import ktfx.getValue
 import ktfx.jfoenix.layouts.jfxButton
 import ktfx.jfoenix.layouts.jfxComboBox
 import ktfx.layouts.KtfxHBox
-import ktfx.layouts.addNode
-import ktfx.util.buildStringConverter
+import ktfx.layouts.addChild
+import ktfx.text.buildStringConverter
 import org.joda.time.YearMonth
 
 open class MonthBox @JvmOverloads constructor(prefill: YearMonth = YearMonth.now()) :
@@ -54,7 +54,7 @@ open class MonthBox @JvmOverloads constructor(prefill: YearMonth = YearMonth.now
                 fromString { months.indexOf(it) }
             }
         }
-        yearField = addNode(IntField()) {
+        yearField = addChild(IntField()) {
             alignment = Pos.CENTER
             maxWidth = 56.0
             value = prefill.year

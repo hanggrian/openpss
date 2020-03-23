@@ -20,9 +20,9 @@ import ktfx.coroutines.onKeyPressed
 import ktfx.coroutines.onMouseClicked
 import ktfx.inputs.isDoubleClick
 import ktfx.jfoenix.layouts.jfxTextField
-import ktfx.layouts.addNode
+import ktfx.layouts.addChild
 import ktfx.layouts.vbox
-import ktfx.toAny
+import ktfx.toBinding
 
 class SearchCustomerPopOver(component: FxComponent) :
     ResultablePopOver<Customer>(component, R2.string.search_customer) {
@@ -39,9 +39,9 @@ class SearchCustomerPopOver(component: FxComponent) :
             searchField = jfxTextField {
                 promptText = getString(R2.string.name)
             }
-            customerList = addNode(CustomerListView()) {
+            customerList = addChild(CustomerListView()) {
                 prefHeight = 262.0
-                itemsProperty().bind(searchField.textProperty().toAny {
+                itemsProperty().bind(searchField.textProperty().toBinding {
                     runBlocking(Dispatchers.IO) {
                         OpenPSSApi.getCustomers(it!!, 0, ITEMS_PER_PAGE)
                             .items
@@ -62,7 +62,7 @@ class SearchCustomerPopOver(component: FxComponent) :
                         defaultButton.fire()
                     }
                 }
-            } marginTop getDouble(R.value.padding_medium)
+            } topMargin getDouble(R.value.padding_medium)
         }
         defaultButton.disableProperty().bind(customerList.selectionModel.notSelectedBinding)
     }

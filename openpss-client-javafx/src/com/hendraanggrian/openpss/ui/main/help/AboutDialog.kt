@@ -16,7 +16,7 @@ import javafx.scene.image.Image
 import ktfx.cells.cellFactory
 import ktfx.collections.toObservableList
 import ktfx.controls.find
-import ktfx.controls.paddingAll
+import ktfx.controls.paddings
 import ktfx.controls.selectedBinding
 import ktfx.controlsfx.layouts.masterDetailPane
 import ktfx.coroutines.listener
@@ -66,7 +66,7 @@ class AboutDialog(component: FxComponent) : Dialog<Unit>(), FxComponent by compo
         dialogPane.run {
             stylesheets += Stylesheets.OPENPSS
             content = hbox {
-                paddingAll = 48.0
+                paddings = 48.0
                 imageView(R.image.logo)
                 vbox {
                     alignment = Pos.CENTER_LEFT
@@ -78,16 +78,16 @@ class AboutDialog(component: FxComponent) : Dialog<Unit>(), FxComponent by compo
                             styleClass.addAll(R.style.light, R.style.display2)
                         }
                     }
-                    text("${getString(R2.string.version)} ${BuildConfig2.VERSION}") { font = 12.pt } marginTop 2.0
-                    text(getString(R2.string.built_with_open_source_software_expand_to_see_licenses)) marginTop 20.0
+                    text("${getString(R2.string.version)} ${BuildConfig2.VERSION}") { font = 12.pt } topMargin 2.0
+                    text(getString(R2.string.built_with_open_source_software_expand_to_see_licenses)) topMargin 20.0
                     textFlow {
                         "${getString(R2.string.powered_by)} " { font = 12.pt }
                         "JavaFX" { styleClass += R.style.bold }
-                    } marginTop 4.0
+                    } topMargin 4.0
                     textFlow {
                         "${getString(R2.string.author)} " { font = 12.pt }
                         BuildConfig2.USER { styleClass += R.style.bold }
-                    } marginTop 4.0
+                    } topMargin 4.0
                     hbox {
                         spacing = getDouble(R.value.padding_medium)
                         jfxButton("GitHub") {
@@ -99,14 +99,14 @@ class AboutDialog(component: FxComponent) : Dialog<Unit>(), FxComponent by compo
                             styleClass += R.style.flat
                             onAction { desktop?.mail(URI("mailto:${BuildConfig2.EMAIL}")) }
                         }
-                    } marginTop 20.0
-                } marginLeft 48.0
+                    } topMargin 20.0
+                } leftMargin 48.0
             }
             expandableContent = masterDetailPane {
                 prefHeight = 200.0
                 dividerPosition = 0.3
                 showDetailNodeProperty().bind(licenseList.selectionModel.selectedBinding)
-                addNode(licenseList)
+                addChild(licenseList)
                 jfxTextArea {
                     isEditable = false
                     licenseList.selectionModel.selectedItemProperty().listener { _, _, license ->

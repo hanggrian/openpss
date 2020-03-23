@@ -39,11 +39,11 @@ import ktfx.callbackBindingOf
 import ktfx.collections.emptyObservableList
 import ktfx.collections.toMutableObservableList
 import ktfx.collections.toObservableList
-import ktfx.controls.columns
 import ktfx.controls.constrained
 import ktfx.controls.isSelected
 import ktfx.controls.notSelectedBinding
 import ktfx.controls.selectedBinding
+import ktfx.controls.tableColumns
 import ktfx.controlsfx.layouts.masterDetailPane
 import ktfx.coroutines.onAction
 import ktfx.coroutines.onHiding
@@ -51,16 +51,17 @@ import ktfx.coroutines.onMouseClicked
 import ktfx.eq
 import ktfx.inputs.isDoubleClick
 import ktfx.jfoenix.controls.jfxSnackbar
+import ktfx.jfoenix.layouts.leftItems
 import ktfx.layouts.NodeManager
-import ktfx.layouts.addNode
+import ktfx.layouts.addChild
 import ktfx.layouts.contextMenu
 import ktfx.layouts.label
 import ktfx.layouts.separatorMenuItem
 import ktfx.layouts.tableView
 import ktfx.neq
 import ktfx.runLater
-import ktfx.toAny
-import ktfx.toString
+import ktfx.toBinding
+import ktfx.toStringBinding
 import org.joda.time.LocalDate
 
 class InvoiceController : ActionController(), Refreshable {
@@ -84,17 +85,17 @@ class InvoiceController : ActionController(), Refreshable {
     private lateinit var paymentTable: TableView<Payment>
 
     override fun NodeManager.onCreateActions() {
-        refreshButton = addNode(Action(getString(R2.string.refresh), R.image.action_refresh)) {
+        refreshButton = addChild(Action(getString(R2.string.refresh), R.image.action_refresh)) {
             onAction { refresh() }
         }
-        addButton = addNode(Action(getString(R2.string.add), R.image.action_add)) {
+        addButton = addChild(Action(getString(R2.string.add), R.image.action_add)) {
             onAction { addInvoice() }
         }
         clearFiltersButton =
-            addNode(Action(getString(R2.string.clear_filters), R.image.action_clear_filters)) {
+            addChild(Action(getString(R2.string.clear_filters), R.image.action_clear_filters)) {
                 onAction { clearFilters() }
             }
-        searchField = addNode(IntField()) {
+        searchField = addChild(IntField()) {
             filterBox.disableProperty().bind(valueProperty() neq 0)
             promptText = getString(R2.string.search_no)
         }
@@ -114,7 +115,7 @@ class InvoiceController : ActionController(), Refreshable {
                 .toObservableList()
             selectionModel.selectFirst()
         }
-        customerField.textProperty().bind(customerProperty.toString {
+        customerField.textProperty().bind(customerProperty.toStringBinding {
             it?.toString() ?: getString(R2.string.search_customer)
         })
         dateBox.disableProperty().bind(!pickDateRadio.selectedProperty())
@@ -140,7 +141,7 @@ class InvoiceController : ActionController(), Refreshable {
             masterDetailPane(BOTTOM) {
                 masterNode = ktfx.layouts.tableView<Invoice> {
                     constrained()
-                    columns {
+                    tableColumns {
                         getString(R2.string.id)<String> { stringCell { no.toString() } }
                         getString(R2.string.date)<String> {
                             stringCell { dateTime.toString(PATTERN_DATETIMEEXT) }
@@ -169,13 +170,13 @@ class InvoiceController : ActionController(), Refreshable {
                             viewInvoice()
                         }
                     }
-                    titleProperty().bind(selectionModel.selectedItemProperty().toString {
+                    titleProperty().bind(selectionModel.selectedItemProperty().toStringBinding {
                         Invoice.no(this@InvoiceController, it?.no)
                     })
                 }.also { invoiceTable = it }
                 showDetailNodeProperty().bind(invoiceTable.selectionModel.notSelectedBinding)
                 detailNode = ktfx.layouts.vbox {
-                    addNode(Toolbar()) {
+                    addChild(Toolbar()) {
                         leftItems {
                             label(getString(R2.string.payment)) {
                                 styleClass.addAll(R.style.bold, R.style.accent)
@@ -184,7 +185,7 @@ class InvoiceController : ActionController(), Refreshable {
                     }
                     paymentTable = tableView {
                         constrained()
-                        columns {
+                        tableColumns {
                             getString(R2.string.date)<String> {
                                 stringCell { dateTime.toString(PATTERN_DATETIMEEXT) }
                             }
@@ -205,7 +206,7 @@ class InvoiceController : ActionController(), Refreshable {
                                 stringCell { reference }
                             }
                         }
-                        itemsProperty().bind(invoiceTable.selectionModel.selectedItemProperty().toAny {
+                        itemsProperty().bind(invoiceTable.selectionModel.selectedItemProperty().toBinding {
                             when (it) {
                                 null -> emptyObservableList()
                                 else -> runBlocking(Dispatchers.IO) {
@@ -259,7 +260,7 @@ class InvoiceController : ActionController(), Refreshable {
                         }
                         getString(R2.string.done)(ImageView(R.image.menu_done)) {
                             runLater {
-                                disableProperty().bind(invoiceTable.selectionModel.selectedItemProperty().toAny {
+                                disableProperty().bind(invoiceTable.selectionModel.selectedItemProperty().toBinding {
                                     when {
                                         it != null && !it.isDone -> false
                                         else -> true

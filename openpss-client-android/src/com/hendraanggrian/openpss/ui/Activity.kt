@@ -8,11 +8,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.hendraanggrian.bundler.Extra
-import com.hendraanggrian.defaults.SharedPreferencesDefaults
 import com.hendraanggrian.openpss.AndroidComponent
 import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.nosql.StringId
 import com.hendraanggrian.openpss.schema.Employee
+import com.hendraanggrian.prefs.android.AndroidPrefs
 import java.util.ResourceBundle
 
 @SuppressLint("Registered")
@@ -39,7 +39,7 @@ open class Activity : AppCompatActivity(), AndroidComponent {
 
     override val resourceBundle: ResourceBundle get() = openPssApplication.resourceBundle
 
-    override val defaults: SharedPreferencesDefaults get() = openPssApplication.defaults
+    override val prefs: AndroidPrefs get() = openPssApplication.defaults
 
     inline val openPssApplication: App get() = application as App
 

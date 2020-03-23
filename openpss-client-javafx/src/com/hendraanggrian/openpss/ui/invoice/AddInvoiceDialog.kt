@@ -34,11 +34,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import ktfx.collections.emptyBinding
 import ktfx.collections.mutableObservableListOf
-import ktfx.controls.TableColumnsBuilder
-import ktfx.controls.columns
+import ktfx.controls.TableColumnContainerScope
 import ktfx.controls.gap
 import ktfx.controls.isSelected
 import ktfx.controls.notSelectedBinding
+import ktfx.controls.tableColumns
 import ktfx.coroutines.onAction
 import ktfx.coroutines.onKeyPressed
 import ktfx.coroutines.onMouseClicked
@@ -60,9 +60,9 @@ import ktfx.or
 import ktfx.otherwise
 import ktfx.runLater
 import ktfx.stringBindingOf
+import ktfx.text.invoke
 import ktfx.then
-import ktfx.toString
-import ktfx.util.invoke
+import ktfx.toStringBinding
 import org.joda.time.DateTime
 
 class AddInvoiceDialog(
@@ -92,7 +92,7 @@ class AddInvoiceDialog(
             label(getString(R2.string.customer)) col 0 row 1
             customerField = jfxTextField {
                 isEditable = false
-                textProperty().bind(customerProperty.toString {
+                textProperty().bind(customerProperty.toStringBinding {
                     it?.toString() ?: getString(R2.string.search_customer)
                 })
                 onMouseClicked {
@@ -108,7 +108,7 @@ class AddInvoiceDialog(
                     digitalTable =
                         invoiceTableView({ AddDigitalJobPopOver(this@AddInvoiceDialog) }) {
                             bindTitle(this, R2.string.digital)
-                            columns {
+                            tableColumns {
                                 column<Invoice.DigitalJob, String>(R2.string.qty, 72) {
                                     numberCell(this@AddInvoiceDialog) { qty }
                                 }
@@ -127,7 +127,7 @@ class AddInvoiceDialog(
                 tab {
                     offsetTable = invoiceTableView({ AddOffsetJobPopOver(this@AddInvoiceDialog) }) {
                         bindTitle(this, R2.string.offset)
-                        columns {
+                        tableColumns {
                             column<Invoice.OffsetJob, String>(R2.string.qty, 72) {
                                 numberCell(this@AddInvoiceDialog) { qty }
                             }
@@ -149,7 +149,7 @@ class AddInvoiceDialog(
                 tab {
                     plateTable = invoiceTableView({ AddPlateJobPopOver(this@AddInvoiceDialog) }) {
                         bindTitle(this, R2.string.plate)
-                        columns {
+                        tableColumns {
                             column<Invoice.PlateJob, String>(R2.string.qty, 72) {
                                 numberCell(this@AddInvoiceDialog) { qty }
                             }
@@ -168,7 +168,7 @@ class AddInvoiceDialog(
                 tab {
                     otherTable = invoiceTableView({ AddOtherJobPopOver(this@AddInvoiceDialog) }) {
                         bindTitle(this, R2.string.others)
-                        columns {
+                        tableColumns {
                             column<Invoice.OtherJob, String>(R2.string.qty, 72) {
                                 numberCell(this@AddInvoiceDialog) { qty }
                             }
@@ -201,7 +201,7 @@ class AddInvoiceDialog(
             label(getString(R2.string.total)) col 0 row 4
             label {
                 styleClass += R.style.bold
-                textProperty().bind(totalProperty.toString { currencyConverter(it) })
+                textProperty().bind(totalProperty.toStringBinding { currencyConverter(it) })
                 textFillProperty().bind(
                     When(totalProperty greater 0)
                         then getColor(R.value.color_green)
@@ -247,13 +247,13 @@ class AddInvoiceDialog(
             }
         }
         onKeyPressed {
-            if (it.code.isDelete() && selectionModel.isSelected()) {
+            if (it.isDelete() && selectionModel.isSelected()) {
                 items.remove(selectionModel.selectedItem)
             }
         }
     }
 
-    private fun <S, T> TableColumnsBuilder<S>.column(
+    private fun <S, T> TableColumnContainerScope<S>.column(
         textId: String,
         width: Int,
         init: TableColumn<S, T>.() -> Unit

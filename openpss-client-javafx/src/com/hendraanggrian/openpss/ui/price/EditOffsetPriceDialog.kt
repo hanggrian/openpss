@@ -4,13 +4,13 @@ import com.hendraanggrian.openpss.FxComponent
 import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.api.OpenPSSApi
 import com.hendraanggrian.openpss.schema.OffsetPrice
+import javafx.beans.property.ReadOnlyDoubleWrapper
+import javafx.beans.property.ReadOnlyIntegerWrapper
 import javafx.beans.value.ObservableValue
 import kotlinx.coroutines.CoroutineScope
 import ktfx.cells.textFieldCellFactory
 import ktfx.coroutines.onEditCommit
-import ktfx.finalDoubleProperty
-import ktfx.finalIntProperty
-import ktfx.util.buildStringConverter
+import ktfx.text.buildStringConverter
 
 @Suppress("UNCHECKED_CAST")
 class EditOffsetPriceDialog(
@@ -21,9 +21,7 @@ class EditOffsetPriceDialog(
         getString(R2.string.min_qty)<Int> {
             minWidth = 128.0
             style = "-fx-alignment: center-right;"
-            setCellValueFactory {
-                finalIntProperty(it.value.minQty) as ObservableValue<Int>
-            }
+            setCellValueFactory { ReadOnlyIntegerWrapper(it.value.minQty) as ObservableValue<Int> }
             textFieldCellFactory(buildStringConverter {
                 fromString { it.toIntOrNull() ?: 0 }
             })
@@ -36,9 +34,7 @@ class EditOffsetPriceDialog(
         getString(R2.string.min_price)<Double> {
             minWidth = 128.0
             style = "-fx-alignment: center-right;"
-            setCellValueFactory {
-                finalDoubleProperty(it.value.minPrice) as ObservableValue<Double>
-            }
+            setCellValueFactory { ReadOnlyDoubleWrapper(it.value.minPrice) as ObservableValue<Double> }
             textFieldCellFactory(buildStringConverter {
                 fromString { it.toDoubleOrNull() ?: 0.0 }
             })
@@ -51,9 +47,7 @@ class EditOffsetPriceDialog(
         getString(R2.string.excess_price)<Double> {
             minWidth = 128.0
             style = "-fx-alignment: center-right;"
-            setCellValueFactory {
-                finalDoubleProperty(it.value.excessPrice) as ObservableValue<Double>
-            }
+            setCellValueFactory { ReadOnlyDoubleWrapper(it.value.excessPrice) as ObservableValue<Double> }
             textFieldCellFactory(buildStringConverter {
                 fromString { it.toDoubleOrNull() ?: 0.0 }
             })

@@ -39,9 +39,10 @@ import javafx.scene.layout.VBox
 import javax.imageio.ImageIO
 import ktfx.cells.cellFactory
 import ktfx.collections.sizeBinding
+import ktfx.controls.capture
 import ktfx.controls.notSelectedBinding
-import ktfx.controls.snapshot
-import ktfx.controlsfx.isOsMac
+import ktfx.controls.toSwingImage
+import ktfx.controlsfx.isPlatformOSX
 import ktfx.coroutines.onAction
 import ktfx.jfoenix.controls.jfxIndefiniteSnackbar
 import ktfx.layouts.label
@@ -50,9 +51,8 @@ import ktfx.lessEq
 import ktfx.or
 import ktfx.runLater
 import ktfx.stringBindingOf
-import ktfx.toBoolean
-import ktfx.util.invoke
-import ktfx.util.toSwingImage
+import ktfx.text.invoke
+import ktfx.toBooleanBinding
 import org.joda.time.LocalTime
 
 @Suppress("UNCHECKED_CAST")
@@ -84,12 +84,12 @@ class WageRecordController : BaseController() {
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
-        menuBar.isUseSystemMenuBar = isOsMac()
+        menuBar.isUseSystemMenuBar = isPlatformOSX()
         undoMenu.disableProperty().bind(editMenu.items.sizeBinding lessEq 2)
         arrayOf(lockStartButton, lockEndButton).forEach { button ->
             button.disableProperty()
                 .bind(recordTable.selectionModel.notSelectedBinding or
-                    recordTable.selectionModel.selectedItemProperty().toBoolean {
+                    recordTable.selectionModel.selectedItemProperty().toBooleanBinding {
                         recordTable.selectionModel.selectedItems?.any { !it.value.isChild() } ?: true
                     })
         }
@@ -221,7 +221,7 @@ class WageRecordController : BaseController() {
         val flow = (recordTable.skin as TreeTableViewSkin<*>).children[1] as VirtualFlow<*>
         var i = 0
         do {
-            images += recordTable.snapshot().toSwingImage()
+            images += recordTable.capture().toSwingImage()
             recordTable.scrollTo(flow.lastVisibleCell.index)
             i++
         } while (flow.lastVisibleCell.index + 1 <

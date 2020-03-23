@@ -1,6 +1,5 @@
 package com.hendraanggrian.openpss.ui.login
 
-import com.hendraanggrian.defaults.WritableDefaults
 import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.BuildConfig2
 import com.hendraanggrian.openpss.FxComponent
@@ -19,6 +18,7 @@ import com.hendraanggrian.openpss.ui.ResultableDialog
 import com.hendraanggrian.openpss.ui.TextDialog
 import com.hendraanggrian.openpss.ui.main.help.AboutDialog
 import com.hendraanggrian.openpss.ui.main.help.GitHubHelper
+import com.hendraanggrian.prefs.jvm.PropertiesPrefs
 import com.jfoenix.controls.JFXButton
 import javafx.geometry.HPos
 import javafx.geometry.Pos
@@ -30,8 +30,9 @@ import javafx.scene.layout.StackPane
 import javafx.scene.text.TextAlignment
 import ktfx.collections.toObservableList
 import ktfx.controls.gap
-import ktfx.controls.paddingAll
-import ktfx.controls.updatePadding
+import ktfx.controls.horizontalPadding
+import ktfx.controls.paddings
+import ktfx.controls.verticalPadding
 import ktfx.coroutines.listener
 import ktfx.coroutines.onAction
 import ktfx.jfoenix.layouts.jfxButton
@@ -53,10 +54,10 @@ import ktfx.layouts.textFlow
 import ktfx.layouts.vbox
 import ktfx.runLater
 import ktfx.text.pt
-import ktfx.toAny
-import ktfx.toBoolean
+import ktfx.toBinding
+import ktfx.toBooleanBinding
 
-class LoginPane<T>(resources: T, override val defaults: WritableDefaults) : KtfxStackPane(),
+class LoginPane<T>(resources: T, override val prefs: PropertiesPrefs) : KtfxStackPane(),
     FxComponent,
     StringResources by resources,
     ValueResources by resources
@@ -77,11 +78,11 @@ class LoginPane<T>(resources: T, override val defaults: WritableDefaults) : Ktfx
     override val rootLayout: StackPane get() = this
 
     private val serverHostField = HostField().apply {
-        text = defaults[Setting.KEY_SERVER_HOST]
+        text = prefs[Setting.KEY_SERVER_HOST]
         promptText = getString(R2.string.server_host)
     }
     private val serverPortField = IntField().apply {
-        value = defaults.getInt(Setting.KEY_SERVER_PORT)!!
+        value = prefs.getInt(Setting.KEY_SERVER_PORT)!!
         promptText = getString(R2.string.server_port)
     }
 
@@ -91,14 +92,13 @@ class LoginPane<T>(resources: T, override val defaults: WritableDefaults) : Ktfx
         gridPane {
             alignment = Pos.CENTER_RIGHT
             gap = getDouble(R.value.padding_medium)
-            paddingAll = getDouble(R.value.padding_medium)
+            paddings = getDouble(R.value.padding_medium)
             label(getString(R2.string.language)) row 0 col 0 hgrow true halign HPos.RIGHT
             jfxComboBox(Language.values().toObservableList()) {
-                selectionModel.select(defaults.language)
+                selectionModel.select(prefs.language)
                 valueProperty().listener { _, _, value ->
-                    defaults {
-                        this[Setting.KEY_LANGUAGE] = value.fullCode
-                    }
+                    prefs[Setting.KEY_LANGUAGE] = value.fullCode
+                    prefs.save()
                     TextDialog(
                         this@LoginPane,
                         R2.string.restart_required,
@@ -110,7 +110,8 @@ class LoginPane<T>(resources: T, override val defaults: WritableDefaults) : Ktfx
             } row 0 col 1
             vbox(8.0) {
                 alignment = Pos.CENTER
-                updatePadding(32.0, 24.0, 32.0, 24.0)
+                verticalPadding = 32.0
+                horizontalPadding = 24.0
                 imageView(R.image.logo_small)
                 label(getString(R2.string.openpss_login)) {
                     styleClass.addAll(R.style.bold, R.style.display2)
@@ -120,11 +121,11 @@ class LoginPane<T>(resources: T, override val defaults: WritableDefaults) : Ktfx
                     textAlignment = TextAlignment.CENTER
                     isWrapText = true
                 }
-                employeeField = jfxTextField(defaults[Setting.KEY_EMPLOYEE]) {
+                employeeField = jfxTextField(prefs[Setting.KEY_EMPLOYEE]) {
                     font = 16.pt
                     promptText = getString(R2.string.employee)
                     runLater(::requestFocus)
-                } marginTop 24.0
+                } topMargin 24.0
                 textFlow {
                     hyperlink(getString(R2.string.connection_settings)) {
                         onAction {
@@ -145,30 +146,31 @@ class LoginPane<T>(resources: T, override val defaults: WritableDefaults) : Ktfx
                             GitHubHelper.checkUpdates(this@LoginPane)
                         }
                     }
-                } marginTop 24.0
+                } topMargin 24.0
                 anchorPane {
                     jfxButton(getString(R2.string.about)) {
-                        updatePadding(8.0, 16.0, 8.0, 16.0)
+                        verticalPadding = 8.0
+                        horizontalPadding = 16.0
                         font = 16.pt
                         styleClass += R.style.flat
                         onAction { AboutDialog(this@LoginPane).show() }
-                    } anchorLeft 0.0
+                    } leftAnchor 0.0
                     loginButton = jfxButton(getString(R2.string.login)) {
-                        updatePadding(8.0, 16.0, 8.0, 16.0)
+                        verticalPadding = 8.0
+                        horizontalPadding = 16.0
                         font = 16.pt
                         styleClass += R.style.raised
                         buttonType = JFXButton.ButtonType.RAISED
-                        disableProperty().bind(employeeField.textProperty().toBoolean { it!!.isBlank() })
+                        disableProperty().bind(employeeField.textProperty().toBooleanBinding { it!!.isBlank() })
                         onAction {
                             PasswordDialog().show {
-                                defaults {
-                                    this[Setting.KEY_EMPLOYEE] = employeeField.text
-                                    this[Setting.KEY_SERVER_HOST] = serverHostField.text
-                                    this[Setting.KEY_SERVER_PORT] = serverPortField.text
-                                }
+                                prefs[Setting.KEY_EMPLOYEE] = employeeField.text
+                                prefs[Setting.KEY_SERVER_HOST] = serverHostField.text
+                                prefs[Setting.KEY_SERVER_PORT] = serverPortField.text
+                                prefs.save()
                                 OpenPSSApi.init(
-                                    defaults[Setting.KEY_SERVER_HOST],
-                                    defaults.getInt(Setting.KEY_SERVER_PORT)
+                                    prefs[Setting.KEY_SERVER_HOST],
+                                    prefs.getInt(Setting.KEY_SERVER_PORT)
                                 )
                                 onSuccess?.invoke(runCatching {
                                     OpenPSSApi.login(employeeField.text, passwordField.text)
@@ -183,8 +185,8 @@ class LoginPane<T>(resources: T, override val defaults: WritableDefaults) : Ktfx
                             }
                         }
                         employeeField.onActionProperty().bindBidirectional(onActionProperty())
-                    } anchorRight 0.0
-                } marginTop 24.0
+                    } rightAnchor 0.0
+                } topMargin 24.0
             } row 1 col (0 to 2)
         }
     }
@@ -196,9 +198,9 @@ class LoginPane<T>(resources: T, override val defaults: WritableDefaults) : Ktfx
             gridPane {
                 gap = getDouble(R.value.padding_medium)
                 label(getString(R2.string.server_host)) col 0 row 0
-                addNode(serverHostField) col 1 row 0
+                addChild(serverHostField) col 1 row 0
                 label(getString(R2.string.server_port)) col 0 row 1
-                addNode(serverPortField) col 1 row 1
+                addChild(serverPortField) col 1 row 1
             }
         }
     }
@@ -235,9 +237,9 @@ class LoginPane<T>(resources: T, override val defaults: WritableDefaults) : Ktfx
                 }
             }
             defaultButton.run {
-                disableProperty().bind(textField.textProperty().toBoolean { it!!.isBlank() })
-                passwordField.onActionProperty().bind(disableProperty().toAny { if (it) null else onAction })
-                textField.onActionProperty().bind(disableProperty().toAny { if (it) null else onAction })
+                disableProperty().bind(textField.textProperty().toBooleanBinding { it!!.isBlank() })
+                passwordField.onActionProperty().bind(disableProperty().toBinding { if (it) null else onAction })
+                textField.onActionProperty().bind(disableProperty().toBinding { if (it) null else onAction })
             }
         }
     }

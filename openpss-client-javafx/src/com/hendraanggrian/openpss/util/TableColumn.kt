@@ -2,15 +2,15 @@ package com.hendraanggrian.openpss.util
 
 import com.hendraanggrian.openpss.FxComponent
 import com.hendraanggrian.openpss.R
+import javafx.beans.property.ReadOnlyBooleanWrapper
+import javafx.beans.property.ReadOnlyStringWrapper
 import javafx.scene.control.Control
 import javafx.scene.control.TableCell
 import javafx.scene.control.TableColumn
 import javafx.scene.image.ImageView
 import javafx.scene.text.Text
 import ktfx.cells.cellFactory
-import ktfx.finalBooleanProperty
-import ktfx.finalStringProperty
-import ktfx.util.invoke
+import ktfx.text.invoke
 
 fun <T> TableColumn<T, Boolean>.doneCell(size: Int = 64, target: T.() -> Boolean) {
     size.toDouble().let {
@@ -20,7 +20,7 @@ fun <T> TableColumn<T, Boolean>.doneCell(size: Int = 64, target: T.() -> Boolean
     }
     isResizable = false
     style = "-fx-alignment: center;"
-    setCellValueFactory { finalBooleanProperty(it.value.target()) }
+    setCellValueFactory { ReadOnlyBooleanWrapper(it.value.target()) }
     cellFactory {
         onUpdate { done, empty ->
             text = null
@@ -36,16 +36,16 @@ fun <T> TableColumn<T, Boolean>.doneCell(size: Int = 64, target: T.() -> Boolean
 }
 
 fun <T> TableColumn<T, String>.stringCell(target: T.() -> String?) =
-    setCellValueFactory { finalStringProperty(it.value.target().orEmpty()) }
+    setCellValueFactory { ReadOnlyStringWrapper(it.value.target().orEmpty()) }
 
 fun <T> TableColumn<T, String>.numberCell(component: FxComponent, target: T.() -> Int) {
     style = "-fx-alignment: center-right;"
-    setCellValueFactory { finalStringProperty(component.numberConverter(it.value.target())) }
+    setCellValueFactory { ReadOnlyStringWrapper(component.numberConverter(it.value.target())) }
 }
 
 fun <T> TableColumn<T, String>.currencyCell(component: FxComponent, target: T.() -> Double) {
     style = "-fx-alignment: center-right;"
-    setCellValueFactory { finalStringProperty(component.currencyConverter(it.value.target())) }
+    setCellValueFactory { ReadOnlyStringWrapper(component.currencyConverter(it.value.target())) }
 }
 
 fun <S> TableColumn<S, String>.wrapText() = setCellFactory {

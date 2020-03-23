@@ -64,7 +64,6 @@ dependencies {
 
     implementation(kotlinx("coroutines-android", VERSION_COROUTINES))
     implementation(slf4j("android"))
-    implementation(hendraanggrian("defaults", "defaults-android", "0.3"))
 
     implementation(androidx("multidex", version = VERSION_MULTIDEX))
     implementation(androidx("core", "core-ktx"))
@@ -77,11 +76,9 @@ dependencies {
 
     implementation(hendraanggrian("material", "errorbar-ktx", "$VERSION_ANDROIDX-beta01"))
     implementation(hendraanggrian("pikasso", "pikasso", VERSION_PIKASSO))
-    implementation(
-        hendraanggrian(
-            "recyclerview", "recyclerview-paginated", VERSION_RECYCLERVIEW_PAGINATED
-        )
-    )
+    implementation(hendraanggrian("recyclerview", "recyclerview-paginated", VERSION_RECYCLERVIEW_PAGINATED))
+    implementation(hendraanggrian("prefs", "prefs-android", VERSION_PREFS))
+    kapt(hendraanggrian("prefs", "prefs-compiler", VERSION_PREFS))
     implementation(hendraanggrian("bundler", "bundler-ktx", VERSION_BUNDLER))
     kapt(hendraanggrian("bundler", "bundler-compiler", VERSION_BUNDLER))
 

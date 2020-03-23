@@ -32,7 +32,7 @@ import ktfx.controls.find
 import ktfx.controls.gap
 import ktfx.controls.isSelected
 import ktfx.controls.notSelectedBinding
-import ktfx.controls.paddingAll
+import ktfx.controls.paddings
 import ktfx.coroutines.eventFilter
 import ktfx.coroutines.onAction
 import ktfx.coroutines.onKeyPressed
@@ -41,7 +41,7 @@ import ktfx.inputs.isDelete
 import ktfx.inputs.isDoubleClick
 import ktfx.jfoenix.layouts.jfxCheckBox
 import ktfx.layouts.KtfxTitledPane
-import ktfx.layouts.addNode
+import ktfx.layouts.addChild
 import ktfx.layouts.contextMenu
 import ktfx.layouts.gridPane
 import ktfx.layouts.label
@@ -52,7 +52,7 @@ import ktfx.layouts.text
 import ktfx.layouts.vbox
 import ktfx.listeners.listener
 import ktfx.text.pt
-import ktfx.toAny
+import ktfx.toBinding
 import org.joda.time.DateTime
 import org.joda.time.DateTime.now
 
@@ -74,26 +74,26 @@ class AttendeePane(
             gridPane {
                 styleClass += R.style.white_background
                 gap = getDouble(R.value.padding_small)
-                paddingAll = getDouble(R.value.padding_medium)
+                paddings = getDouble(R.value.padding_medium)
                 attendee.role?.let { role ->
-                    label(getString(R2.string.role)) col 0 row 0 marginRight 4.0
+                    label(getString(R2.string.role)) col 0 row 0 rightMargin 4.0
                     label(role) col (1 to 2) row 0
                 }
-                label(getString(R2.string.income)) col 0 row 1 marginRight 4.0
-                addNode(IntField()) {
+                label(getString(R2.string.income)) col 0 row 1 rightMargin 4.0
+                addChild(IntField()) {
                     prefWidth = 80.0
                     promptText = getString(R2.string.income)
                     valueProperty().bindBidirectional(attendee.dailyProperty)
                 } col 1 row 1
                 label("@${getString(R2.string.day)}") { font = 10.pt } col 2 row 1
-                label(getString(R2.string.overtime)) col 0 row 2 marginRight 4.0
-                addNode(IntField()) {
+                label(getString(R2.string.overtime)) col 0 row 2 rightMargin 4.0
+                addChild(IntField()) {
                     prefWidth = 80.0
                     promptText = getString(R2.string.overtime)
                     valueProperty().bindBidirectional(attendee.hourlyOvertimeProperty)
                 } col 1 row 2
                 label("@${getString(R2.string.hour)}") { font = 10.pt } col 2 row 2
-                label(getString(R2.string.recess)) col 0 row 3 marginRight 4.0
+                label(getString(R2.string.recess)) col 0 row 3 rightMargin 4.0
                 vbox {
                     runBlocking { OpenPSSApi.getRecesses() }.forEach { recess ->
                         recessChecks += jfxCheckBox(recess.toString()) {
@@ -102,7 +102,7 @@ class AttendeePane(
                                 attendanceList.forceRefresh()
                             }
                             isSelected = true
-                        } marginTop if (children.size > 1) 4.0 else 0.0
+                        } topMargin if (children.size > 1) 4.0 else 0.0
                     }
                 } col (1 to 2) row 3
             }
@@ -138,7 +138,7 @@ class AttendeePane(
                                                 if (hours > 12) {
                                                     style = "-fx-fill: #F44336;"
                                                 }
-                                            } marginLeft getDouble(R.value.padding_medium)
+                                            } leftMargin getDouble(R.value.padding_medium)
                                         }
                                     }
                                 }
@@ -147,7 +147,7 @@ class AttendeePane(
                     }
                 }
                 onKeyPressed {
-                    if (it.code.isDelete() && attendanceList.selectionModel.isSelected()) {
+                    if (it.isDelete() && attendanceList.selectionModel.isSelected()) {
                         items.remove(attendanceList.selectionModel.selectedItem)
                     }
                 }
@@ -186,13 +186,8 @@ class AttendeePane(
         }
         contentDisplay = ContentDisplay.RIGHT
         graphic = ktfx.layouts.imageView {
-            imageProperty().bind(hoverProperty().toAny {
-                Image(
-                    when {
-                        it -> R.image.graphic_clear_active
-                        else -> R.image.graphic_clear_inactive
-                    }
-                )
+            imageProperty().bind(hoverProperty().toBinding {
+                Image(if (it) R.image.graphic_clear_active else R.image.graphic_clear_inactive)
             })
             eventFilter(type = MouseEvent.MOUSE_CLICKED) { deleteMenu.fire() }
         }

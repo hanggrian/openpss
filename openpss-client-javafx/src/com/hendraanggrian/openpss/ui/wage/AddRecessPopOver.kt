@@ -25,9 +25,9 @@ class AddRecessPopOver(
         gridPane {
             gap = getDouble(R.value.padding_medium)
             label(getString(R2.string.start)) col 0 row 0
-            startBox = addNode(TimeBox()) col 1 row 0
+            startBox = addChild(TimeBox()) col 1 row 0
             label(getString(R2.string.end)) col 0 row 1
-            endBox = addNode(TimeBox()) col 1 row 1
+            endBox = addChild(TimeBox()) col 1 row 1
         }
         defaultButton.disableProperty().bind(booleanBindingOf(startBox.valueProperty(), endBox.valueProperty()) {
             startBox.value!! >= endBox.value!!

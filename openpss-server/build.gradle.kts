@@ -44,24 +44,20 @@ dependencies {
 tasks {
     named<com.hendraanggrian.r.RTask>("generateR") {
         resourcesDirectory = "res"
-        useProperties {
-            readResourceBundle = true
+        properties {
+            isWriteResourceBundle = true
         }
     }
 
-    named<Jar>("jar") {
-        manifest {
-            attributes(mapOf("Main-Class" to application.mainClassName))
-        }
-    }
+    named<Jar>("jar") { manifest { attributes(mapOf("Main-Class" to application.mainClassName)) } }
 
     named<com.hendraanggrian.buildconfig.BuildConfigTask>("generateBuildConfig") {
         appName = "$RELEASE_NAME Server"
         debug = RELEASE_DEBUG
         website = RELEASE_WEBSITE
-        field("DATABASE_NAME", RELEASE_ARTIFACT)
-        field("DATABASE_USER", DATABASE_USER)
-        field("DATABASE_PASS", DATABASE_PASS)
+        addField("DATABASE_NAME", RELEASE_ARTIFACT)
+        addField("DATABASE_USER", DATABASE_USER)
+        addField("DATABASE_PASS", DATABASE_PASS)
     }
 
     named<com.hendraanggrian.locale.LocalizeJavaTask>("localizeJava") {

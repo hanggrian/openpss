@@ -17,7 +17,7 @@ import ktfx.jfoenix.layouts.jfxComboBox
 import ktfx.jfoenix.layouts.jfxTextField
 import ktfx.layouts.gridPane
 import ktfx.layouts.label
-import ktfx.util.buildStringConverter
+import ktfx.text.buildStringConverter
 import org.apache.commons.validator.routines.EmailValidator
 
 class AddContactPopOver(component: FxComponent) :

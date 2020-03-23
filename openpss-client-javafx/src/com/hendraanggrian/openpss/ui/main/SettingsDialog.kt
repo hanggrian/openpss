@@ -12,6 +12,7 @@ import com.hendraanggrian.openpss.schema.GlobalSetting.Companion.KEY_LANGUAGE
 import com.hendraanggrian.openpss.ui.BaseDialog
 import com.hendraanggrian.openpss.ui.wage.WageReader
 import com.jfoenix.controls.JFXButton
+import javafx.beans.property.SimpleBooleanProperty
 import javafx.event.ActionEvent
 import javafx.geometry.Pos
 import javafx.scene.Node
@@ -27,7 +28,6 @@ import kotlinx.coroutines.javafx.JavaFx
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import ktfx.and
-import ktfx.booleanProperty
 import ktfx.collections.toObservableList
 import ktfx.controls.gap
 import ktfx.coroutines.listener
@@ -42,12 +42,12 @@ import ktfx.layouts.hbox
 import ktfx.layouts.label
 import ktfx.layouts.textArea
 import ktfx.layouts.vbox
-import ktfx.util.buildStringConverter
+import ktfx.text.buildStringConverter
 
 class SettingsDialog(component: FxComponent) : BaseDialog(component, R2.string.settings) {
 
-    private var isLocalChanged = booleanProperty()
-    private var isGlobalChanged = booleanProperty()
+    private var isLocalChanged = SimpleBooleanProperty()
+    private var isGlobalChanged = SimpleBooleanProperty()
 
     private lateinit var invoiceHeadersArea: TextArea
     private lateinit var wageReaderChoice: ComboBox<WageReader>
@@ -61,13 +61,13 @@ class SettingsDialog(component: FxComponent) : BaseDialog(component, R2.string.s
                     item {
                         label(getString(R2.string.reader))
                         wageReaderChoice = jfxComboBox(WageReader.listAll()) {
-                            value = WageReader.of(defaults[FxSetting.KEY_WAGEREADER]!!)
+                            value = WageReader.of(prefs[FxSetting.KEY_WAGEREADER]!!)
                             valueProperty().listener { isLocalChanged.set(true) }
                         }
                     }
                 }
             }
-            addNode(Space(getDouble(R.value.padding_large)))
+            addChild(Space(getDouble(R.value.padding_large)))
             right = this@SettingsDialog.group(R2.string.global_settings) {
                 isDisable = runBlocking(Dispatchers.IO) { !OpenPSSApi.isAdmin(login) }
                 gridPane {
@@ -109,9 +109,8 @@ class SettingsDialog(component: FxComponent) : BaseDialog(component, R2.string.s
                 disableProperty().bind(!isLocalChanged and !isGlobalChanged)
                 onActionFilter(Dispatchers.JavaFx) {
                     if (isLocalChanged.value) {
-                        defaults {
-                            set(FxSetting.KEY_WAGEREADER, wageReaderChoice.value.name)
-                        }
+                        prefs[FxSetting.KEY_WAGEREADER] = wageReaderChoice.value.name
+                        prefs.save()
                     }
                     if (isGlobalChanged.value) {
                         OpenPSSApi.setSetting(KEY_LANGUAGE, languageBox.value.fullCode)

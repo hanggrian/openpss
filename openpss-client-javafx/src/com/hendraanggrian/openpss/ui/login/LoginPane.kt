@@ -168,10 +168,7 @@ class LoginPane<T>(resources: T, override val prefs: PropertiesPrefs) : KtfxStac
                                 prefs[Setting.KEY_SERVER_HOST] = serverHostField.text
                                 prefs[Setting.KEY_SERVER_PORT] = serverPortField.text
                                 prefs.save()
-                                OpenPSSApi.init(
-                                    prefs[Setting.KEY_SERVER_HOST],
-                                    prefs.getInt(Setting.KEY_SERVER_PORT)
-                                )
+                                OpenPSSApi.init(prefs[Setting.KEY_SERVER_HOST], prefs.getInt(Setting.KEY_SERVER_PORT))
                                 onSuccess?.invoke(runCatching {
                                     OpenPSSApi.login(employeeField.text, passwordField.text)
                                 }.onFailure {

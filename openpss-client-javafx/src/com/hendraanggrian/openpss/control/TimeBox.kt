@@ -23,8 +23,7 @@ import org.joda.time.LocalTime
  *
  * [TimeBox] width is deliberately measured to match [com.hendraanggrian.ui.scene.control.ForcedDatePicker]'s width.
  */
-open class TimeBox @JvmOverloads constructor(prefill: LocalTime = LocalTime.MIDNIGHT) :
-    KtfxHBox(0.0) {
+open class TimeBox @JvmOverloads constructor(prefill: LocalTime = LocalTime.MIDNIGHT) : KtfxHBox(0.0) {
 
     lateinit var picker: JFXTimePicker
     var previousButton: Button

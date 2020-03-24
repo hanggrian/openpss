@@ -34,7 +34,6 @@ import com.jfoenix.controls.JFXDrawer
 import com.jfoenix.controls.JFXHamburger
 import java.net.URL
 import java.util.ResourceBundle
-import javafx.beans.binding.When
 import javafx.event.ActionEvent
 import javafx.fxml.FXML
 import javafx.scene.control.Label
@@ -55,6 +54,7 @@ import ktfx.controls.stage
 import ktfx.controlsfx.isPlatformOSX
 import ktfx.coroutines.listener
 import ktfx.eq
+import ktfx.given
 import ktfx.jfoenix.controls.jfxSnackbar
 import ktfx.layouts.text
 import ktfx.layouts.textFlow
@@ -246,39 +246,10 @@ class MainController : BaseController(), Refreshable {
                     employeeId = login.id,
                     customerId = it.id,
                     dateTime = runBlocking(Dispatchers.IO) { OpenPSSApi.getDateTime() },
-                    offsetJobs = listOf(
-                        Invoice.OffsetJob.new(
-                            5,
-                            "Title",
-                            92000.0,
-                            "Type",
-                            Technique.TWO_SIDE_EQUAL
-                        )
-                    ),
-                    digitalJobs = listOf(
-                        Invoice.DigitalJob.new(
-                            5,
-                            "Title",
-                            92000.0,
-                            "Type",
-                            false
-                        )
-                    ),
-                    plateJobs = listOf(
-                        Invoice.PlateJob.new(
-                            5,
-                            "Title",
-                            92000.0,
-                            "Type"
-                        )
-                    ),
-                    otherJobs = listOf(
-                        Invoice.OtherJob.new(
-                            5,
-                            "Title",
-                            92000.0
-                        )
-                    ),
+                    offsetJobs = listOf(Invoice.OffsetJob.new(5, "Title", 92000.0, "Type", Technique.TWO_SIDE_EQUAL)),
+                    digitalJobs = listOf(Invoice.DigitalJob.new(5, "Title", 92000.0, "Type", false)),
+                    plateJobs = listOf(Invoice.PlateJob.new(5, "Title", 92000.0, "Type")),
+                    otherJobs = listOf(Invoice.OtherJob.new(5, "Title", 92000.0)),
                     note = "This is a test",
                     isPrinted = false,
                     isPaid = false,
@@ -307,7 +278,7 @@ class MainController : BaseController(), Refreshable {
         selectedImageId: String,
         unselectedImageId: String
     ) = imageProperty().bind(
-        When(drawerList.selectionModel.selectedIndexProperty() eq index)
+        given(drawerList.selectionModel.selectedIndexProperty() eq index)
             then Image(selectedImageId)
             otherwise Image(unselectedImageId)
     )

@@ -204,9 +204,7 @@ class AttendeePane(
     }
 
     private fun addAttendance() = DateTimePopOver(
-        this,
-        R2.string.add_record,
-        R2.string.add,
+        this, R2.string.add_record, R2.string.add,
         now().trimMinutes()
     ).show(attendanceList) {
         attendanceList.run {
@@ -216,9 +214,7 @@ class AttendeePane(
     }
 
     private fun copyAttendance() = DateTimePopOver(
-        this,
-        R2.string.add_record,
-        R2.string.add,
+        this, R2.string.add_record, R2.string.add,
         attendanceList.selectionModel.selectedItem.trimMinutes()
     ).show(attendanceList) {
         attendanceList.run {
@@ -228,9 +224,7 @@ class AttendeePane(
     }
 
     private fun editAttendance() = DateTimePopOver(
-        this,
-        R2.string.edit_record,
-        R2.string.edit,
+        this, R2.string.edit_record, R2.string.edit,
         attendanceList.selectionModel.selectedItem
     ).show(attendanceList) {
         attendanceList.run {
@@ -240,7 +234,6 @@ class AttendeePane(
     }
 
     private companion object {
-
         fun <T> ListView<T>.forceRefresh() {
             val temp = items
             items = null

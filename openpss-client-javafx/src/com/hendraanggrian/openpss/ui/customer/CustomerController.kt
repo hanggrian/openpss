@@ -103,8 +103,7 @@ class CustomerController : ActionController(), Refreshable {
                                 onAction { edit() }
                             }
                         }
-                        deleteContactItem.disableProperty()
-                            .bind(contactTable.selectionModel.notSelectedBinding)
+                        deleteContactItem.disableProperty().bind(contactTable.selectionModel.notSelectedBinding)
                     }
                     runBlocking {
                         val (pageCount, customers) = withContext(Dispatchers.IO) {

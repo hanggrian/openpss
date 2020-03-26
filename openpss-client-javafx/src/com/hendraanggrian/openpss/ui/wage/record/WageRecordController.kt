@@ -164,11 +164,7 @@ class WageRecordController : BaseController() {
         }
 
     @FXML fun lockStart() =
-        TimePopOver(
-            this,
-            R2.string.lock_start_time,
-            LocalTime.now().trimMinutes()
-        ).show(lockStartButton) { time ->
+        TimePopOver(this, R2.string.lock_start_time, LocalTime.now().trimMinutes()).show(lockStartButton) { time ->
             val undoable = Undoable()
             recordTable.selectionModel.selectedItems.map { it.value }
                 .forEach { record ->
@@ -189,11 +185,7 @@ class WageRecordController : BaseController() {
         }
 
     @FXML fun lockEnd() =
-        TimePopOver(
-            this,
-            R2.string.lock_end_time,
-            LocalTime.now().trimMinutes()
-        ).show(lockEndButton) { time ->
+        TimePopOver(this, R2.string.lock_end_time, LocalTime.now().trimMinutes()).show(lockEndButton) { time ->
             val undoable = Undoable()
             recordTable.selectionModel.selectedItems.map { it.value }
                 .forEach { record ->

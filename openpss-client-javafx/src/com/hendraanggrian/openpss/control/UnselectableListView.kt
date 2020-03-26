@@ -7,11 +7,7 @@ class UnselectableListView<T> : ListView<T>() {
 
     init {
         selectionModel.run {
-            selectedItemProperty().listener { _, _, value ->
-                if (value != null) {
-                    clearSelection()
-                }
-            }
+            selectedItemProperty().listener { _, _, value -> if (value != null) clearSelection() }
         }
     }
 }

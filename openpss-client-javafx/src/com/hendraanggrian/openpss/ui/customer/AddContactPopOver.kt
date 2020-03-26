@@ -52,21 +52,17 @@ class AddContactPopOver(component: FxComponent) :
         }
         defaultButton.run {
             text = getString(R2.string.add)
-            disableProperty().bind(
-                booleanBindingOf(
-                    typeChoice.valueProperty(),
-                    contactField.textProperty()
-                ) {
-                    when (typeChoice.value) {
-                        null -> true
-                        ContactType.PHONE -> contactField.text.isBlank() || !contactField.text.matches(
-                            REGEX_PHONE
-                        )
-                        else -> contactField.text.isBlank() || !EmailValidator.getInstance().isValid(
-                            contactField.text
-                        )
-                    }
-                })
+            disableProperty().bind(booleanBindingOf(typeChoice.valueProperty(), contactField.textProperty()) {
+                when (typeChoice.value) {
+                    null -> true
+                    ContactType.PHONE -> contactField.text.isBlank() || !contactField.text.matches(
+                        REGEX_PHONE
+                    )
+                    else -> contactField.text.isBlank() || !EmailValidator.getInstance().isValid(
+                        contactField.text
+                    )
+                }
+            })
         }
     }
 

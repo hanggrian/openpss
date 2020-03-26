@@ -31,9 +31,7 @@ class CustomerFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         customerSearch.input.run {
             hint = getString(R2.string.search_customer)
-            addTextChangedListener(onTextChanged = { _, _, _, _ ->
-                onRefresh()
-            })
+            addTextChangedListener(onTextChanged = { _, _, _, _ -> onRefresh() })
         }
         customerRefresh.run {
             setColorSchemeResources(R.color.blue)

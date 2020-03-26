@@ -8,7 +8,6 @@ import com.hendraanggrian.openpss.schema.Customer
 import com.hendraanggrian.openpss.ui.ResultableDialog
 import com.hendraanggrian.openpss.util.clean
 import com.hendraanggrian.openpss.util.personNameBinding
-import javafx.beans.binding.When
 import javafx.scene.Node
 import javafx.scene.control.Label
 import javafx.scene.control.Tab
@@ -47,12 +46,8 @@ class AddCustomerDialog(component: FxComponent) :
             maxWidth = WIDTH
         }
         tabPane = jfxTabPane {
-            tab {
-                bindGraphic(R.image.display_person_selected, R.image.display_person)
-            }
-            tab {
-                bindGraphic(R.image.display_company_selected, R.image.display_company)
-            }
+            tab { bindGraphic(R.image.display_person_selected, R.image.display_person) }
+            tab { bindGraphic(R.image.display_company_selected, R.image.display_company) }
         }
         label {
             styleClass += R.style.bold
@@ -67,8 +62,8 @@ class AddCustomerDialog(component: FxComponent) :
         }
         defaultButton.disableProperty().bind(
             given(tabPane.selectionModel.selectedIndexProperty() eq 0)
-                then (editor.textProperty()
-                .toBooleanBinding { it!!.isBlank() } or !editor.textProperty().personNameBinding)
+                then (editor.textProperty().toBooleanBinding { it!!.isBlank() } or
+                !editor.textProperty().personNameBinding)
                 otherwise editor.textProperty().toBooleanBinding { it!!.isBlank() }
         )
         tabPane.selectionModel.selectedIndexProperty().listener {
@@ -78,14 +73,14 @@ class AddCustomerDialog(component: FxComponent) :
 
     private fun Tab.bindGraphic(selectedImageId: String, unselectedImageId: String) {
         graphicProperty().bind(
-            When(selectedProperty())
+            given(selectedProperty())
                 then ImageView(selectedImageId)
                 otherwise ImageView(unselectedImageId)
         )
     }
 
     private fun Label.bindText(personTextId: String, companyTextId: String) = textProperty().bind(
-        When(tabPane.selectionModel.selectedIndexProperty() eq 0)
+        given(tabPane.selectionModel.selectedIndexProperty() eq 0)
             then getString(personTextId)
             otherwise getString(companyTextId)
     )

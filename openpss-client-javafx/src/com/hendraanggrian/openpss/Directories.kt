@@ -13,9 +13,7 @@ object WageDirectory : Directory(MainDirectory, "wage")
 class WageFile : File(WageDirectory, "${DateTime.now().toString("yyyy-MM-dd HH.mm")}.png")
 
 sealed class Directory : File {
-
     constructor(parent: String, child: String) : super(parent, child)
-
     constructor(parent: Directory, child: String) : super(parent, child)
 
     init {

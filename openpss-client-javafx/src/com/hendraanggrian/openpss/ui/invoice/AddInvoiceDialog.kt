@@ -17,7 +17,6 @@ import com.hendraanggrian.openpss.ui.invoice.job.AddPlateJobPopOver
 import com.hendraanggrian.openpss.util.currencyCell
 import com.hendraanggrian.openpss.util.numberCell
 import com.hendraanggrian.openpss.util.stringCell
-import javafx.beans.binding.When
 import javafx.beans.property.DoubleProperty
 import javafx.beans.property.ObjectProperty
 import javafx.beans.property.SimpleDoubleProperty
@@ -43,6 +42,7 @@ import ktfx.coroutines.onAction
 import ktfx.coroutines.onKeyPressed
 import ktfx.coroutines.onMouseClicked
 import ktfx.doubleBindingOf
+import ktfx.given
 import ktfx.greater
 import ktfx.inputs.isDelete
 import ktfx.jfoenix.layouts.jfxTabPane
@@ -203,7 +203,7 @@ class AddInvoiceDialog(
                 styleClass += R.style.bold
                 textProperty().bind(totalProperty.toStringBinding { currencyConverter(it) })
                 textFillProperty().bind(
-                    When(totalProperty greater 0)
+                    given(totalProperty greater 0)
                         then getColor(R.value.color_green)
                         otherwise getColor(R.value.color_red)
                 )

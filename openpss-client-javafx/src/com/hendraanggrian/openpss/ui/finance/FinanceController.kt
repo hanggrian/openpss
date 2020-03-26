@@ -20,7 +20,6 @@ import com.hendraanggrian.openpss.util.stringCell
 import com.hendraanggrian.openpss.util.toJava
 import java.net.URL
 import java.util.ResourceBundle
-import javafx.beans.binding.When
 import javafx.fxml.FXML
 import javafx.scene.Node
 import javafx.scene.control.Button
@@ -39,10 +38,12 @@ import ktfx.coroutines.listener
 import ktfx.coroutines.onAction
 import ktfx.coroutines.onMouseClicked
 import ktfx.eq
+import ktfx.given
 import ktfx.inputs.isDoubleClick
 import ktfx.layouts.NodeManager
 import ktfx.layouts.addChild
 import ktfx.layouts.borderPane
+import ktfx.otherwise
 import ktfx.runLater
 
 class FinanceController : ActionController(), Refreshable {
@@ -94,9 +95,7 @@ class FinanceController : ActionController(), Refreshable {
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
         switchablePane.centerProperty().bind(
-            When(tabPane.selectionModel.selectedIndexProperty() eq 0)
-                .then<Node>(dateBox)
-                .otherwise(monthBox)
+            given(tabPane.selectionModel.selectedIndexProperty() eq 0).then<Node>(dateBox) otherwise monthBox
         )
 
         dailyNoColumn.numberCell(this) {

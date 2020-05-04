@@ -1,7 +1,7 @@
 package com.hendraanggrian.openpss.ui.main
 
-import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.BuildConfig2
+import com.hendraanggrian.openpss.OpenPssApp
 import com.hendraanggrian.openpss.PATTERN_DATETIME
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
@@ -223,7 +223,7 @@ class MainController : BaseController(), Refreshable {
         else -> select(invoiceController) { addInvoice() }
     }
 
-    @FXML fun quit() = App.exit()
+    @FXML fun quit() = OpenPssApp.exit()
 
     @FXML fun editPrice(event: ActionEvent) = when (event.source) {
         platePriceItem -> EditPlatePriceDialog(this)

@@ -1,10 +1,10 @@
 package com.hendraanggrian.openpss
 
-import com.hendraanggrian.prefs.EditablePrefs
-import com.hendraanggrian.prefs.ReadablePrefs
-import com.hendraanggrian.prefs.WritablePrefs
+import com.hendraanggrian.prefy.EditablePreferences
+import com.hendraanggrian.prefy.ReadablePreferences
+import com.hendraanggrian.prefy.WritablePreferences
 
-fun EditablePrefs<*>.setDefault() {
+fun EditablePreferences<*>.setDefault() {
     edit {
         if (Setting.KEY_LANGUAGE !in this@setDefault) this[Setting.KEY_LANGUAGE] = Language.ENGLISH.fullCode
         if (Setting.KEY_SERVER_HOST !in this@setDefault) this[Setting.KEY_SERVER_HOST] = "localhost"
@@ -13,14 +13,14 @@ fun EditablePrefs<*>.setDefault() {
     }
 }
 
-fun WritablePrefs.setDefault() {
+fun WritablePreferences.setDefault() {
     if (Setting.KEY_LANGUAGE !in this) this[Setting.KEY_LANGUAGE] = Language.ENGLISH.fullCode
     if (Setting.KEY_SERVER_HOST !in this) this[Setting.KEY_SERVER_HOST] = "localhost"
     if (Setting.KEY_SERVER_PORT !in this) this[Setting.KEY_SERVER_PORT] = "8080"
     if (Setting.KEY_EMPLOYEE !in this) this[Setting.KEY_EMPLOYEE] = ""
 }
 
-val ReadablePrefs.language: Language get() = Language.ofFullCode(get(Setting.KEY_LANGUAGE)!!)
+val ReadablePreferences.language: Language get() = Language.ofFullCode(get(Setting.KEY_LANGUAGE)!!)
 
 object Setting {
     const val KEY_LANGUAGE = "language"

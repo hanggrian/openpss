@@ -19,8 +19,8 @@ class ViewTotalPopOver(
     init {
         gridPane {
             columnConstraints {
-                constraints()
-                constraints { halignment = HPos.RIGHT }
+                append()
+                append { halignment = HPos.RIGHT }
             }
             vgap = 20.0
             hgap = 40.0

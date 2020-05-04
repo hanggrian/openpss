@@ -20,7 +20,6 @@ import ktfx.coroutines.onAction
 import ktfx.jfoenix.layouts.jfxButton
 import ktfx.jfoenix.layouts.jfxCheckBox
 import ktfx.jfoenix.layouts.jfxTextField
-import ktfx.layouts.addChild
 import ktfx.layouts.gridPane
 import ktfx.layouts.label
 import ktfx.layouts.tooltip
@@ -46,7 +45,7 @@ class AddPaymentPopOver(
             label(getString(R2.string.receivable)) row 1 col 0
             label(currencyConverter(receivable)) { styleClass += R.style.bold } row 1 col (1 to 2)
             label(getString(R2.string.payment)) row 2 col 0
-            valueField = addChild(DoubleField()) { promptText = getString(R2.string.payment) } row 2 col 1
+            valueField = addChild(DoubleField().apply { promptText = getString(R2.string.payment) }) row 2 col 1
             jfxButton(graphic = ImageView(R.image.btn_match_receivable)) {
                 styleClass += R.style.flat
                 tooltip(getString(R2.string.match_receivable))

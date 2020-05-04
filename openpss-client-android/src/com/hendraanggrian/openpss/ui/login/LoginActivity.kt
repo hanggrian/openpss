@@ -41,12 +41,12 @@ class LoginActivity : Activity() {
 
     override fun onResume() {
         super.onResume()
-        prefs.setChangeListener(preferenceListener)
+        prefs.registerOnSharedPreferenceChangeListener(preferenceListener)
     }
 
     override fun onPause() {
         super.onPause()
-        prefs.removeChangeListener(preferenceListener)
+        prefs.unregisterOnSharedPreferenceChangeListener(preferenceListener)
     }
 
     fun login(@Suppress("UNUSED_PARAMETER") view: View) {

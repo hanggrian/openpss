@@ -39,7 +39,6 @@ import ktfx.dialogs.chooseFile
 import ktfx.getValue
 import ktfx.jfoenix.controls.jfxSnackbar
 import ktfx.layouts.NodeManager
-import ktfx.layouts.addChild
 import ktfx.layouts.borderPane
 import ktfx.layouts.scene
 import ktfx.lessEq
@@ -64,10 +63,10 @@ class WageController : ActionController() {
     private var filePath: String? by filePathProperty
 
     override fun NodeManager.onCreateActions() {
-        browseButton = addChild(Action(getString(R2.string.browse), R.image.action_browse)) {
+        browseButton = addChild(Action(getString(R2.string.browse), R.image.action_browse).apply {
             onAction { browse() }
-        }
-        saveWageButton = addChild(Action(getString(R2.string.save_wage), R.image.action_save)) {
+        })
+        saveWageButton = addChild(Action(getString(R2.string.save_wage), R.image.action_save).apply {
             disableProperty().bind(flowPane.children.emptyBinding)
             onAction {
                 saveWage()
@@ -76,10 +75,10 @@ class WageController : ActionController() {
                     getLong(R.value.duration_short)
                 )
             }
-        }
-        historyButton = addChild(Action(getString(R2.string.history), R.image.action_history)) {
+        })
+        historyButton = addChild(Action(getString(R2.string.history), R.image.action_history).apply {
             onAction { history() }
-        }
+        })
     }
 
     override fun initialize(location: URL, resources: ResourceBundle) {

@@ -18,7 +18,6 @@ import ktfx.collections.toObservableList
 import ktfx.coroutines.listener
 import ktfx.jfoenix.layouts.jfxComboBox
 import ktfx.layouts.KtfxGridPane
-import ktfx.layouts.addChild
 import ktfx.layouts.label
 import ktfx.lessEq
 import ktfx.or
@@ -51,17 +50,19 @@ class AddOffsetJobPopOver(component: FxComponent) :
         } col (1 to 2) row currentRow
         currentRow++
         label(getString(R2.string.min_qty)) col 0 row currentRow
-        minQtyField = addChild(IntField()) { promptText = getString(R2.string.min_qty) } col (1 to 2) row currentRow
+        minQtyField = addChild(IntField().apply {
+            promptText = getString(R2.string.min_qty)
+        }) col (1 to 2) row currentRow
         currentRow++
         label(getString(R2.string.min_price)) col 0 row currentRow
-        minPriceField = addChild(DoubleField()) {
+        minPriceField = addChild(DoubleField().apply {
             promptText = getString(R2.string.min_price)
-        } col (1 to 2) row currentRow
+        }) col (1 to 2) row currentRow
         currentRow++
         label(getString(R2.string.excess_price)) col 0 row currentRow
-        excessPriceField = addChild(DoubleField()) {
+        excessPriceField = addChild(DoubleField().apply {
             promptText = getString(R2.string.excess_price)
-        } col (1 to 2) row currentRow
+        }) col (1 to 2) row currentRow
     }
 
     override val totalBindingDependencies: Array<Observable>

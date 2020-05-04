@@ -6,9 +6,9 @@ import com.hendraanggrian.openpss.ui.wage.EClockingReader
 import com.hendraanggrian.openpss.util.controller
 import com.hendraanggrian.openpss.util.getResource
 import com.hendraanggrian.openpss.util.pane
-import com.hendraanggrian.prefs.Prefs
-import com.hendraanggrian.prefs.jvm.PropertiesPrefs
-import com.hendraanggrian.prefs.jvm.get
+import com.hendraanggrian.prefy.Prefy
+import com.hendraanggrian.prefy.jvm.PropertiesPreferences
+import com.hendraanggrian.prefy.jvm.get
 import java.util.Properties
 import java.util.ResourceBundle
 import javafx.application.Application
@@ -20,14 +20,13 @@ import kotlin.system.exitProcess
 import ktfx.controls.icon
 import ktfx.controls.setMinSize
 import ktfx.launchApplication
-import ktfx.layouts.addChild
 import ktfx.layouts.scene
 import org.apache.log4j.BasicConfigurator
 
-class App : Application(), StringResources, ValueResources {
+class OpenPssApp : Application(), StringResources, ValueResources {
 
     companion object {
-        @JvmStatic fun main(args: Array<String>) = launchApplication<App>(*args)
+        @JvmStatic fun main(args: Array<String>) = launchApplication<OpenPssApp>(*args)
 
         fun exit() {
             Platform.exit() // exit JavaFX
@@ -35,19 +34,19 @@ class App : Application(), StringResources, ValueResources {
         }
     }
 
-    private lateinit var prefs: PropertiesPrefs
+    private lateinit var prefs: PropertiesPreferences
     override lateinit var resourceBundle: ResourceBundle
     override lateinit var valueProperties: Properties
 
     override fun init() {
-        prefs = Prefs[SettingsFile].also {
+        prefs = Prefy[SettingsFile].also {
             it.setDefault()
             if (FxSetting.KEY_WAGEREADER !in it) {
                 it[FxSetting.KEY_WAGEREADER] = EClockingReader.name
             }
         }
         resourceBundle = prefs.language.toResourcesBundle()
-        valueProperties = App::class.java
+        valueProperties = OpenPssApp::class.java
             .getResourceAsStream(R.value._value)
             .use { stream -> Properties().apply { load(stream) } }
         if (BuildConfig2.DEBUG) {
@@ -61,7 +60,7 @@ class App : Application(), StringResources, ValueResources {
         stage.title = getString(R2.string.openpss_login)
         stage.scene = scene {
             stylesheets += Stylesheets.OPENPSS
-            addChild(LoginPane(this@App, prefs)) {
+            addChild(LoginPane(this@OpenPssApp, prefs).apply {
                 onSuccess = { employee ->
                     val loader = FXMLLoader(getResource(R.layout.controller_main), resourceBundle)
                     this@scene.run { addChild(loader.pane) }
@@ -71,7 +70,7 @@ class App : Application(), StringResources, ValueResources {
                     stage.isResizable = true
                     stage.setMinSize(900.0, 500.0)
                 }
-            }
+            })
         }
         stage.show()
     }

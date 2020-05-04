@@ -132,15 +132,15 @@ class ViewInvoicePopOver(
                 gridPane {
                     hgap = getDouble(R.value.padding_medium)
                     columnConstraints {
-                        constraints {
+                        append {
                             minWidth = USE_PREF_SIZE
                             halignment = HPos.RIGHT
                         }
-                        constraints {
+                        append {
                             minWidth = USE_PREF_SIZE
                         }
-                        constraints { hgrow = Priority.ALWAYS }
-                        constraints {
+                        append { hgrow = Priority.ALWAYS }
+                        append {
                             minWidth = USE_PREF_SIZE
                             halignment = HPos.RIGHT
                         }

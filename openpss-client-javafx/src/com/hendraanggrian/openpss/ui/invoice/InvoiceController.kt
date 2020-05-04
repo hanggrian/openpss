@@ -39,11 +39,11 @@ import ktfx.callbackBindingOf
 import ktfx.collections.emptyObservableList
 import ktfx.collections.toMutableObservableList
 import ktfx.collections.toObservableList
+import ktfx.controls.columns
 import ktfx.controls.constrained
 import ktfx.controls.isSelected
 import ktfx.controls.notSelectedBinding
 import ktfx.controls.selectedBinding
-import ktfx.controls.tableColumns
 import ktfx.controlsfx.layouts.masterDetailPane
 import ktfx.coroutines.onAction
 import ktfx.coroutines.onHiding
@@ -53,7 +53,6 @@ import ktfx.inputs.isDoubleClick
 import ktfx.jfoenix.controls.jfxSnackbar
 import ktfx.jfoenix.layouts.leftItems
 import ktfx.layouts.NodeManager
-import ktfx.layouts.addChild
 import ktfx.layouts.contextMenu
 import ktfx.layouts.label
 import ktfx.layouts.separatorMenuItem
@@ -85,20 +84,19 @@ class InvoiceController : ActionController(), Refreshable {
     private lateinit var paymentTable: TableView<Payment>
 
     override fun NodeManager.onCreateActions() {
-        refreshButton = addChild(Action(getString(R2.string.refresh), R.image.action_refresh)) {
+        refreshButton = addChild(Action(getString(R2.string.refresh), R.image.action_refresh).apply {
             onAction { refresh() }
-        }
-        addButton = addChild(Action(getString(R2.string.add), R.image.action_add)) {
+        })
+        addButton = addChild(Action(getString(R2.string.add), R.image.action_add).apply {
             onAction { addInvoice() }
-        }
-        clearFiltersButton =
-            addChild(Action(getString(R2.string.clear_filters), R.image.action_clear_filters)) {
-                onAction { clearFilters() }
-            }
-        searchField = addChild(IntField()) {
+        })
+        clearFiltersButton = addChild(Action(getString(R2.string.clear_filters), R.image.action_clear_filters).apply {
+            onAction { clearFilters() }
+        })
+        searchField = addChild(IntField().apply {
             filterBox.disableProperty().bind(valueProperty() neq 0)
             promptText = getString(R2.string.search_no)
-        }
+        })
     }
 
     override fun initialize(location: URL, resources: ResourceBundle) {
@@ -141,7 +139,7 @@ class InvoiceController : ActionController(), Refreshable {
             masterDetailPane(BOTTOM) {
                 masterNode = ktfx.layouts.tableView<Invoice> {
                     constrained()
-                    tableColumns {
+                    columns {
                         getString(R2.string.id)<String> { stringCell { no.toString() } }
                         getString(R2.string.date)<String> {
                             stringCell { dateTime.toString(PATTERN_DATETIMEEXT) }
@@ -176,16 +174,16 @@ class InvoiceController : ActionController(), Refreshable {
                 }.also { invoiceTable = it }
                 showDetailNodeProperty().bind(invoiceTable.selectionModel.notSelectedBinding)
                 detailNode = ktfx.layouts.vbox {
-                    addChild(Toolbar()) {
+                    addChild(Toolbar().apply {
                         leftItems {
                             label(getString(R2.string.payment)) {
                                 styleClass.addAll(R.style.bold, R.style.accent)
                             }
                         }
-                    }
+                    })
                     paymentTable = tableView {
                         constrained()
-                        tableColumns {
+                        columns {
                             getString(R2.string.date)<String> {
                                 stringCell { dateTime.toString(PATTERN_DATETIMEEXT) }
                             }
@@ -260,12 +258,13 @@ class InvoiceController : ActionController(), Refreshable {
                         }
                         getString(R2.string.done)(ImageView(R.image.menu_done)) {
                             runLater {
-                                disableProperty().bind(invoiceTable.selectionModel.selectedItemProperty().toBinding {
-                                    when {
-                                        it != null && !it.isDone -> false
-                                        else -> true
-                                    }
-                                })
+                                disableProperty().bind(
+                                    invoiceTable.selectionModel.selectedItemProperty().toBinding {
+                                        when {
+                                            it != null && !it.isDone -> false
+                                            else -> true
+                                        }
+                                    })
                             }
                             onAction {
                                 OpenPSSApi.editInvoice(

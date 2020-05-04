@@ -34,10 +34,10 @@ import kotlinx.coroutines.runBlocking
 import ktfx.collections.emptyBinding
 import ktfx.collections.mutableObservableListOf
 import ktfx.controls.TableColumnContainerScope
+import ktfx.controls.columns
 import ktfx.controls.gap
 import ktfx.controls.isSelected
 import ktfx.controls.notSelectedBinding
-import ktfx.controls.tableColumns
 import ktfx.coroutines.onAction
 import ktfx.coroutines.onKeyPressed
 import ktfx.coroutines.onMouseClicked
@@ -108,17 +108,17 @@ class AddInvoiceDialog(
                     digitalTable =
                         invoiceTableView({ AddDigitalJobPopOver(this@AddInvoiceDialog) }) {
                             bindTitle(this, R2.string.digital)
-                            tableColumns {
-                                column<Invoice.DigitalJob, String>(R2.string.qty, 72) {
+                            columns {
+                                append<Invoice.DigitalJob, String>(R2.string.qty, 72) {
                                     numberCell(this@AddInvoiceDialog) { qty }
                                 }
-                                column<Invoice.DigitalJob, String>(R2.string.type, 72) {
+                                append<Invoice.DigitalJob, String>(R2.string.type, 72) {
                                     stringCell { type }
                                 }
-                                column<Invoice.DigitalJob, String>(R2.string.description, 264) {
+                                append<Invoice.DigitalJob, String>(R2.string.description, 264) {
                                     stringCell { desc }
                                 }
-                                column<Invoice.DigitalJob, String>(R2.string.total, 156) {
+                                append<Invoice.DigitalJob, String>(R2.string.total, 156) {
                                     currencyCell(this@AddInvoiceDialog) { total }
                                 }
                             }
@@ -127,20 +127,20 @@ class AddInvoiceDialog(
                 tab {
                     offsetTable = invoiceTableView({ AddOffsetJobPopOver(this@AddInvoiceDialog) }) {
                         bindTitle(this, R2.string.offset)
-                        tableColumns {
-                            column<Invoice.OffsetJob, String>(R2.string.qty, 72) {
+                        columns {
+                            append<Invoice.OffsetJob, String>(R2.string.qty, 72) {
                                 numberCell(this@AddInvoiceDialog) { qty }
                             }
-                            column<Invoice.OffsetJob, String>(R2.string.type, 72) {
+                            append<Invoice.OffsetJob, String>(R2.string.type, 72) {
                                 stringCell { type }
                             }
-                            column<Invoice.OffsetJob, String>(R2.string.technique, 72) {
+                            append<Invoice.OffsetJob, String>(R2.string.technique, 72) {
                                 stringCell { typedTechnique.toString(this@AddInvoiceDialog) }
                             }
-                            column<Invoice.OffsetJob, String>(R2.string.description, 192) {
+                            append<Invoice.OffsetJob, String>(R2.string.description, 192) {
                                 stringCell { desc }
                             }
-                            column<Invoice.OffsetJob, String>(R2.string.total, 156) {
+                            append<Invoice.OffsetJob, String>(R2.string.total, 156) {
                                 currencyCell(this@AddInvoiceDialog) { total }
                             }
                         }
@@ -149,17 +149,17 @@ class AddInvoiceDialog(
                 tab {
                     plateTable = invoiceTableView({ AddPlateJobPopOver(this@AddInvoiceDialog) }) {
                         bindTitle(this, R2.string.plate)
-                        tableColumns {
-                            column<Invoice.PlateJob, String>(R2.string.qty, 72) {
+                        columns {
+                            append<Invoice.PlateJob, String>(R2.string.qty, 72) {
                                 numberCell(this@AddInvoiceDialog) { qty }
                             }
-                            column<Invoice.PlateJob, String>(R2.string.type, 72) {
+                            append<Invoice.PlateJob, String>(R2.string.type, 72) {
                                 stringCell { type }
                             }
-                            column<Invoice.PlateJob, String>(R2.string.description, 264) {
+                            append<Invoice.PlateJob, String>(R2.string.description, 264) {
                                 stringCell { desc }
                             }
-                            column<Invoice.PlateJob, String>(R2.string.total, 156) {
+                            append<Invoice.PlateJob, String>(R2.string.total, 156) {
                                 currencyCell(this@AddInvoiceDialog) { total }
                             }
                         }
@@ -168,14 +168,14 @@ class AddInvoiceDialog(
                 tab {
                     otherTable = invoiceTableView({ AddOtherJobPopOver(this@AddInvoiceDialog) }) {
                         bindTitle(this, R2.string.others)
-                        tableColumns {
-                            column<Invoice.OtherJob, String>(R2.string.qty, 72) {
+                        columns {
+                            append<Invoice.OtherJob, String>(R2.string.qty, 72) {
                                 numberCell(this@AddInvoiceDialog) { qty }
                             }
-                            column<Invoice.OtherJob, String>(R2.string.description, 336) {
+                            append<Invoice.OtherJob, String>(R2.string.description, 336) {
                                 stringCell { desc }
                             }
-                            column<Invoice.OtherJob, String>(R2.string.total, 156) {
+                            append<Invoice.OtherJob, String>(R2.string.total, 156) {
                                 currencyCell(this@AddInvoiceDialog) { total }
                             }
                         }
@@ -253,11 +253,11 @@ class AddInvoiceDialog(
         }
     }
 
-    private fun <S, T> TableColumnContainerScope<S>.column(
+    private fun <S, T> TableColumnContainerScope<S>.append(
         textId: String,
         width: Int,
         init: TableColumn<S, T>.() -> Unit
-    ): TableColumn<S, T> = column(getString(textId)) {
+    ): TableColumn<S, T> = append(getString(textId)) {
         width.toDouble().let {
             minWidth = it
             prefWidth = it

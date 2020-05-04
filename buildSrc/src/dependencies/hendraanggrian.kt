@@ -1,5 +1,5 @@
-const val VERSION_KTFX = "8.7.4"
-const val VERSION_PREFS = "0.3"
+const val VERSION_KTFX = "8.7.5"
+const val VERSION_PREFY = "0.2"
 
 const val VERSION_PIKASSO = "0.2"
 const val VERSION_RECYCLERVIEW_PAGINATED = "0.2"

@@ -1,9 +1,9 @@
 package com.hendraanggrian.openpss.ui.login
 
-import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.BuildConfig2
 import com.hendraanggrian.openpss.FxComponent
 import com.hendraanggrian.openpss.Language
+import com.hendraanggrian.openpss.OpenPssApp
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.R2
 import com.hendraanggrian.openpss.Setting
@@ -18,7 +18,7 @@ import com.hendraanggrian.openpss.ui.ResultableDialog
 import com.hendraanggrian.openpss.ui.TextDialog
 import com.hendraanggrian.openpss.ui.main.help.AboutDialog
 import com.hendraanggrian.openpss.ui.main.help.GitHubHelper
-import com.hendraanggrian.prefs.jvm.PropertiesPrefs
+import com.hendraanggrian.prefy.jvm.PropertiesPreferences
 import com.jfoenix.controls.JFXButton
 import javafx.geometry.HPos
 import javafx.geometry.Pos
@@ -57,7 +57,7 @@ import ktfx.text.pt
 import ktfx.toBinding
 import ktfx.toBooleanBinding
 
-class LoginPane<T>(resources: T, override val prefs: PropertiesPrefs) : KtfxStackPane(),
+class LoginPane<T>(resources: T, override val prefs: PropertiesPreferences) : KtfxStackPane(),
     FxComponent,
     StringResources by resources,
     ValueResources by resources
@@ -104,7 +104,7 @@ class LoginPane<T>(resources: T, override val prefs: PropertiesPrefs) : KtfxStac
                         R2.string.restart_required,
                         getString(R2.string._restart_required)
                     ).apply {
-                        onDialogClosed { App.exit() }
+                        onDialogClosed { OpenPssApp.exit() }
                     }.show(this@LoginPane)
                 }
             } row 0 col 1

@@ -25,7 +25,7 @@ ktlint()
 dependencies {
     api(project(":$RELEASE_ARTIFACT"))
 
-    api(hendraanggrian("prefs", "prefs", VERSION_PREFS))
+    api(hendraanggrian("prefy", "prefy", VERSION_PREFY))
     api(ktor("client-okhttp"))
     api(ktor("client-gson"))
     api(arrow("core"))

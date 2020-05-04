@@ -41,7 +41,6 @@ import ktfx.eq
 import ktfx.given
 import ktfx.inputs.isDoubleClick
 import ktfx.layouts.NodeManager
-import ktfx.layouts.addChild
 import ktfx.layouts.borderPane
 import ktfx.otherwise
 import ktfx.runLater
@@ -83,12 +82,12 @@ class FinanceController : ActionController(), Refreshable {
     }
 
     override fun NodeManager.onCreateActions() {
-        refreshButton = addChild(Action(getString(R2.string.refresh), R.image.action_refresh)) {
+        refreshButton = addChild(Action(getString(R2.string.refresh), R.image.action_refresh).apply {
             onAction { refresh() }
-        }
-        viewTotalButton = addChild(Action(getString(R2.string.total), R.image.action_money)) {
+        })
+        viewTotalButton = addChild(Action(getString(R2.string.total), R.image.action_money).apply {
             onAction { viewTotal() }
-        }
+        })
         switchablePane = borderPane()
     }
 

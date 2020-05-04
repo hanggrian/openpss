@@ -12,13 +12,13 @@ import com.hendraanggrian.bundler.Extra
 import com.hendraanggrian.bundler.bindExtras
 import com.hendraanggrian.openpss.AndroidComponent
 import com.hendraanggrian.openpss.schema.Employee
-import com.hendraanggrian.prefs.android.AndroidPrefs
+import com.hendraanggrian.prefy.android.AndroidPreferences
 import com.takisoft.preferencex.PreferenceFragmentCompat
 import java.util.ResourceBundle
 
 open class BaseFragment : Fragment(), AndroidComponent {
 
-    override val prefs: AndroidPrefs get() = openpssActivity.prefs
+    override val prefs: AndroidPreferences get() = openpssActivity.prefs
 
     override val rootLayout: View get() = openpssActivity.rootLayout
 
@@ -31,7 +31,7 @@ open class BaseFragment : Fragment(), AndroidComponent {
 
 abstract class BasePreferenceFragment : PreferenceFragmentCompat(), AndroidComponent {
 
-    override val prefs: AndroidPrefs get() = openpssActivity.prefs
+    override val prefs: AndroidPreferences get() = openpssActivity.prefs
 
     override val rootLayout: View get() = openpssActivity.rootLayout
 
@@ -51,7 +51,7 @@ abstract class BasePreferenceFragment : PreferenceFragmentCompat(), AndroidCompo
 
 open class BaseDialogFragment : AppCompatDialogFragment(), AndroidComponent {
 
-    override val prefs: AndroidPrefs get() = openpssActivity.prefs
+    override val prefs: AndroidPreferences get() = openpssActivity.prefs
 
     override val rootLayout: View get() = openpssActivity.rootLayout
 

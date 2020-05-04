@@ -1,13 +1,13 @@
 package com.hendraanggrian.openpss.ui
 
-import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.FxComponent
+import com.hendraanggrian.openpss.OpenPssApp
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.SettingsFile
 import com.hendraanggrian.openpss.schema.Employee
-import com.hendraanggrian.prefs.Prefs
-import com.hendraanggrian.prefs.jvm.PropertiesPrefs
-import com.hendraanggrian.prefs.jvm.get
+import com.hendraanggrian.prefy.Prefy
+import com.hendraanggrian.prefy.jvm.PropertiesPreferences
+import com.hendraanggrian.prefy.jvm.get
 import java.net.URL
 import java.util.Properties
 import java.util.ResourceBundle
@@ -24,15 +24,15 @@ import ktfx.setValue
 @Suppress("LeakingThis")
 open class BaseController : Initializable, FxComponent {
 
-    private lateinit var _prefs: PropertiesPrefs
-    override val prefs: PropertiesPrefs
+    private lateinit var _prefs: PropertiesPreferences
+    override val prefs: PropertiesPreferences
         get() {
-            if (!::_prefs.isInitialized) _prefs = Prefs[SettingsFile]
+            if (!::_prefs.isInitialized) _prefs = Prefy[SettingsFile]
             return _prefs
         }
 
     override lateinit var resourceBundle: ResourceBundle
-    override val valueProperties: Properties = App::class.java
+    override val valueProperties: Properties = OpenPssApp::class.java
         .getResourceAsStream(R.value._value)
         .use { stream -> Properties().apply { load(stream) } }
 

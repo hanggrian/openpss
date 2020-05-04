@@ -38,7 +38,6 @@ import ktfx.controls.notSelectedBinding
 import ktfx.coroutines.onAction
 import ktfx.jfoenix.layouts.jfxTextField
 import ktfx.layouts.NodeManager
-import ktfx.layouts.addChild
 import ktfx.layouts.contextMenu
 import ktfx.layouts.tooltip
 import ktfx.runLater
@@ -70,12 +69,12 @@ class CustomerController : ActionController(), Refreshable {
     private lateinit var customerList: ListView<Customer>
 
     override fun NodeManager.onCreateActions() {
-        refreshButton = addChild(Action(getString(R2.string.refresh), R.image.action_refresh)) {
+        refreshButton = addChild(Action(getString(R2.string.refresh), R.image.action_refresh).apply {
             onAction { refresh() }
-        }
-        addButton = addChild(Action(getString(R2.string.add), R.image.action_add)) {
+        })
+        addButton = addChild(Action(getString(R2.string.add), R.image.action_add).apply {
             onAction { this@CustomerController.add() }
-        }
+        })
         searchField = jfxTextField {
             promptText = getString(R2.string.search)
         }

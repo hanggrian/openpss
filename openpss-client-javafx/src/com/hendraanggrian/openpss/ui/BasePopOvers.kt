@@ -21,7 +21,6 @@ import ktfx.getValue
 import ktfx.jfoenix.layouts.jfxButton
 import ktfx.jfoenix.layouts.jfxTextField
 import ktfx.layouts.NodeManager
-import ktfx.layouts.addChild
 import ktfx.layouts.gridPane
 import ktfx.setValue
 import ktfx.toBinding
@@ -140,14 +139,14 @@ class DateTimePopOver(
                     }
                 }
             } row 1 col 0
-            timeBox = addChild(TimeBox(prefill.toLocalTime())) {
+            timeBox = addChild(TimeBox(prefill.toLocalTime()).apply {
                 onOverlap = { plus ->
                     dateBox.picker.value = when {
                         plus -> dateBox.picker.value.plusDays(1)
                         else -> dateBox.picker.value.minusDays(1)
                     }
                 }
-            } row 1 col 1
+            }) row 1 col 1
             jfxButton("+${Record.WORKING_HOURS}") {
                 onAction {
                     repeat(Record.WORKING_HOURS) {

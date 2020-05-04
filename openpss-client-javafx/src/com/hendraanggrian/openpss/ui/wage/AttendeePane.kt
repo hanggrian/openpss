@@ -41,7 +41,6 @@ import ktfx.inputs.isDelete
 import ktfx.inputs.isDoubleClick
 import ktfx.jfoenix.layouts.jfxCheckBox
 import ktfx.layouts.KtfxTitledPane
-import ktfx.layouts.addChild
 import ktfx.layouts.contextMenu
 import ktfx.layouts.gridPane
 import ktfx.layouts.label
@@ -80,18 +79,18 @@ class AttendeePane(
                     label(role) col (1 to 2) row 0
                 }
                 label(getString(R2.string.income)) col 0 row 1 rightMargin 4.0
-                addChild(IntField()) {
+                addChild(IntField().apply {
                     prefWidth = 80.0
                     promptText = getString(R2.string.income)
                     valueProperty().bindBidirectional(attendee.dailyProperty)
-                } col 1 row 1
+                }) col 1 row 1
                 label("@${getString(R2.string.day)}") { font = 10.pt } col 2 row 1
                 label(getString(R2.string.overtime)) col 0 row 2 rightMargin 4.0
-                addChild(IntField()) {
+                addChild(IntField().apply {
                     prefWidth = 80.0
                     promptText = getString(R2.string.overtime)
                     valueProperty().bindBidirectional(attendee.hourlyOvertimeProperty)
-                } col 1 row 2
+                }) col 1 row 2
                 label("@${getString(R2.string.hour)}") { font = 10.pt } col 2 row 2
                 label(getString(R2.string.recess)) col 0 row 3 rightMargin 4.0
                 vbox {

@@ -44,8 +44,7 @@ android {
         }
     }
     lintOptions {
-        isAbortOnError = false
-        isCheckTestSources = true
+        isAbortOnError = false // temporarily
     }
     packagingOptions {
         exclude("META-INF/NOTICE.txt")
@@ -77,8 +76,8 @@ dependencies {
     implementation(hendraanggrian("material", "errorbar-ktx", "$VERSION_ANDROIDX-beta01"))
     implementation(hendraanggrian("pikasso", "pikasso", VERSION_PIKASSO))
     implementation(hendraanggrian("recyclerview", "recyclerview-paginated", VERSION_RECYCLERVIEW_PAGINATED))
-    implementation(hendraanggrian("prefs", "prefs-android", VERSION_PREFS))
-    kapt(hendraanggrian("prefs", "prefs-compiler", VERSION_PREFS))
+    implementation(hendraanggrian("prefy", "prefy-android", VERSION_PREFY))
+    kapt(hendraanggrian("prefy", "prefy-compiler", VERSION_PREFY))
     implementation(hendraanggrian("bundler", "bundler-ktx", VERSION_BUNDLER))
     kapt(hendraanggrian("bundler", "bundler-compiler", VERSION_BUNDLER))
 

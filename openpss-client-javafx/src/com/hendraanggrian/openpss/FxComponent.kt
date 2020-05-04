@@ -4,7 +4,7 @@ import com.hendraanggrian.openpss.api.OpenPSSApi
 import com.hendraanggrian.openpss.schema.Employee
 import com.hendraanggrian.openpss.schema.GlobalSetting
 import com.hendraanggrian.openpss.ui.ResultableDialog
-import com.hendraanggrian.prefs.jvm.PropertiesPrefs
+import com.hendraanggrian.prefy.jvm.PropertiesPreferences
 import java.awt.Desktop
 import javafx.scene.Node
 import javafx.scene.control.ComboBox
@@ -31,7 +31,7 @@ import ktfx.or
 import ktfx.toBooleanBinding
 
 /** StackPane is the root layout for [ktfx.jfoenix.jfxSnackbar]. */
-interface FxComponent : Component<StackPane, PropertiesPrefs>, StringResources, ValueResources {
+interface FxComponent : Component<StackPane, PropertiesPreferences>, StringResources, ValueResources {
 
     /** Number decimal string converter. */
     val numberConverter: StringConverter<Number>

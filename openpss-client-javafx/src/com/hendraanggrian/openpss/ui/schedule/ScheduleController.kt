@@ -27,7 +27,6 @@ import ktfx.coroutines.listener
 import ktfx.coroutines.onAction
 import ktfx.jfoenix.layouts.jfxToggleButton
 import ktfx.layouts.NodeManager
-import ktfx.layouts.addChild
 import ktfx.layouts.borderPane
 import ktfx.or
 import ktfx.runLater
@@ -46,10 +45,10 @@ class ScheduleController : ActionController(), Refreshable {
     private lateinit var historyCheck: ToggleButton
 
     override fun NodeManager.onCreateActions() {
-        refreshButton = addChild(Action(getString(R2.string.refresh), R.image.action_refresh)) {
+        refreshButton = addChild(Action(getString(R2.string.refresh), R.image.action_refresh).apply {
             onAction { refresh() }
-        }
-        doneButton = addChild(Action(getString(R2.string.done), R.image.action_done)) {
+        })
+        doneButton = addChild(Action(getString(R2.string.done), R.image.action_done).apply {
             onAction {
                 OpenPSSApi.editInvoice(
                     scheduleTable.selectionModel.selectedItem.value.invoice.apply {
@@ -58,7 +57,7 @@ class ScheduleController : ActionController(), Refreshable {
                 )
                 refresh()
             }
-        }
+        })
         borderPane {
             minHeight = 50.0
             maxHeight = 50.0

@@ -48,13 +48,15 @@ class AddContactPopover(context: Context) : ResultablePopover<Customer.Contact>(
         }
         defaultButton.run {
             text = getString(R.string.add)
-            disableProperty().bind(buildBooleanBinding(typeChoice.valueProperty(), contactField.textProperty()) {
-                when (typeChoice.value) {
-                    null -> true
-                    PHONE -> contactField.text.isBlank() || !contactField.text.matches(REGEX_PHONE)
-                    else -> contactField.text.isBlank() || !EmailValidator.getInstance().isValid(contactField.text)
+            disableProperty().bind(
+                buildBooleanBinding(typeChoice.valueProperty(), contactField.textProperty()) {
+                    when (typeChoice.value) {
+                        null -> true
+                        PHONE -> contactField.text.isBlank() || !contactField.text.matches(REGEX_PHONE)
+                        else -> contactField.text.isBlank() || !EmailValidator.getInstance().isValid(contactField.text)
+                    }
                 }
-            })
+            )
         }
     }
 

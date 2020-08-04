@@ -78,31 +78,39 @@ class Record(
             totalProperty.set(0.0)
         }
         if (isChild()) {
-            dailyProperty.bind(buildDoubleBinding(startProperty, endProperty, dailyDisabledProperty) {
-                if (isDailyDisabled) 0.0 else {
-                    val hours = workingHours
-                    when {
-                        hours <= WORKING_HOURS -> hours.round()
-                        else -> WORKING_HOURS.toDouble()
+            dailyProperty.bind(
+                buildDoubleBinding(startProperty, endProperty, dailyDisabledProperty) {
+                    if (isDailyDisabled) 0.0 else {
+                        val hours = workingHours
+                        when {
+                            hours <= WORKING_HOURS -> hours.round()
+                            else -> WORKING_HOURS.toDouble()
+                        }
                     }
                 }
-            })
-            overtimeProperty.bind(buildDoubleBinding(startProperty, endProperty) {
-                val hours = workingHours
-                val overtime = (hours - WORKING_HOURS).round()
-                when {
-                    hours <= WORKING_HOURS -> 0.0
-                    else -> overtime
+            )
+            overtimeProperty.bind(
+                buildDoubleBinding(startProperty, endProperty) {
+                    val hours = workingHours
+                    val overtime = (hours - WORKING_HOURS).round()
+                    when {
+                        hours <= WORKING_HOURS -> 0.0
+                        else -> overtime
+                    }
                 }
-            })
+            )
         }
         if (isChild() || isTotal()) {
-            dailyIncomeProperty.bind(buildDoubleBinding(dailyProperty) {
-                (daily * attendee.daily / WORKING_HOURS).round()
-            })
-            overtimeIncomeProperty.bind(buildDoubleBinding(overtimeProperty) {
-                (overtime * attendee.hourlyOvertime).round()
-            })
+            dailyIncomeProperty.bind(
+                buildDoubleBinding(dailyProperty) {
+                    (daily * attendee.daily / WORKING_HOURS).round()
+                }
+            )
+            overtimeIncomeProperty.bind(
+                buildDoubleBinding(overtimeProperty) {
+                    (overtime * attendee.hourlyOvertime).round()
+                }
+            )
             totalProperty.bind(dailyIncomeProperty + overtimeIncomeProperty)
         }
     }
@@ -123,26 +131,30 @@ class Record(
 
     val displayedStart: StringProperty
         get() = SimpleStringProperty().apply {
-            bind(buildStringBinding(startProperty, dailyDisabledProperty) {
-                when {
-                    isNode() -> attendee.role.orEmpty()
-                    isChild() -> start!!.toString(PATTERN_DATETIME).let { if (isDailyDisabled) "($it)" else it }
-                    isTotal() -> ""
-                    else -> throw UnsupportedOperationException()
+            bind(
+                buildStringBinding(startProperty, dailyDisabledProperty) {
+                    when {
+                        isNode() -> attendee.role.orEmpty()
+                        isChild() -> start!!.toString(PATTERN_DATETIME).let { if (isDailyDisabled) "($it)" else it }
+                        isTotal() -> ""
+                        else -> throw UnsupportedOperationException()
+                    }
                 }
-            })
+            )
         }
 
     val displayedEnd: StringProperty
         get() = SimpleStringProperty().apply {
-            bind(buildStringBinding(endProperty, dailyDisabledProperty) {
-                when {
-                    isNode() -> "${attendee.attendances.size / 2} ${getString(R.string.day)}"
-                    isChild() -> end!!.toString(PATTERN_DATETIME).let { if (isDailyDisabled) "($it)" else it }
-                    isTotal() -> getString(R.string.total)
-                    else -> throw UnsupportedOperationException()
+            bind(
+                buildStringBinding(endProperty, dailyDisabledProperty) {
+                    when {
+                        isNode() -> "${attendee.attendances.size / 2} ${getString(R.string.day)}"
+                        isChild() -> end!!.toString(PATTERN_DATETIME).let { if (isDailyDisabled) "($it)" else it }
+                        isTotal() -> getString(R.string.total)
+                        else -> throw UnsupportedOperationException()
+                    }
                 }
-            })
+            )
         }
 
     fun cloneStart(time: LocalTime): DateTime =

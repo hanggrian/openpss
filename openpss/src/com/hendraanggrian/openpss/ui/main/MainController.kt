@@ -127,22 +127,26 @@ class MainController : Controller(), Refreshable {
         }
 
         later {
-            titleLabel.scene.stage.titleProperty().bind(buildStringBinding(
-                drawerList.selectionModel.selectedIndexProperty()
-            ) {
-                "${BuildConfig.NAME} - ${drawerList.selectionModel.selectedItem?.text}"
-            })
+            titleLabel.scene.stage.titleProperty().bind(
+                buildStringBinding(
+                    drawerList.selectionModel.selectedIndexProperty()
+                ) {
+                    "${BuildConfig.NAME} - ${drawerList.selectionModel.selectedItem?.text}"
+                }
+            )
         }
-        titleLabel.textProperty().bind(buildStringBinding(
-            tabPane.selectionModel.selectedIndexProperty(),
-            *controllers.map { it.titleProperty() }.toTypedArray()
-        ) {
-            val controller = selectedController
-            when {
-                controller.titleProperty().hasValue() -> controller.title
-                else -> drawerList.selectionModel.selectedItem?.text
+        titleLabel.textProperty().bind(
+            buildStringBinding(
+                tabPane.selectionModel.selectedIndexProperty(),
+                *controllers.map { it.titleProperty() }.toTypedArray()
+            ) {
+                val controller = selectedController
+                when {
+                    controller.titleProperty().hasValue() -> controller.title
+                    else -> drawerList.selectionModel.selectedItem?.text
+                }
             }
-        })
+        )
 
         customerGraphic.bind(0, R.image.tab_customer_selected, R.image.tab_customer)
         invoiceGraphic.bind(1, R.image.tab_invoice_selected, R.image.tab_invoice)
@@ -263,7 +267,8 @@ class MainController : Controller(), Refreshable {
                     printed = false,
                     isPaid = false,
                     isDone = false
-                ), true
+                ),
+                true
             ).show(menuBar)
         } ?: stack.jfxSnackbar(getString(R.string.no_customer_to_test), App.DURATION_SHORT)
     }

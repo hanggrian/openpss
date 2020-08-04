@@ -78,7 +78,9 @@ abstract class AddJobPopover<T : Invoice.Job>(context: Context, titleId: String)
 
     override val total: Double get() = totalField.value
 
-    private fun DoubleField.bindTotal() = textProperty().bind(buildStringBinding(*totalBindingDependencies) {
-        calculateTotal().toString()
-    })
+    private fun DoubleField.bindTotal() = textProperty().bind(
+        buildStringBinding(*totalBindingDependencies) {
+            calculateTotal().toString()
+        }
+    )
 }

@@ -19,12 +19,15 @@ fun DependencyHandler.google(module: String, version: String, repo: String? = nu
     optionalRepo("com.google", module, version, repo ?: module)
 
 fun DependencyHandler.hendraanggrian(
+    module: String,
+    version: String
+): String = "com.hendraanggrian:$module:$version"
+
+fun DependencyHandler.hendraanggrian(
     repository: String,
     module: String = repository,
     version: String
 ): String = "com.hendraanggrian.$repository:$module:$version"
-
-fun PluginDependenciesSpec.generating(id: String) = id("com.hendraanggrian.generating.$id")
 
 inline val PluginDependenciesSpec.packr get() = id("com.hendraanggrian.packr")
 

@@ -3,7 +3,6 @@ package com.hendraanggrian.openpss.ui.price
 import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.Context
-import com.hendraanggrian.openpss.util.stringCell
 import com.hendraanggrian.openpss.db.Document
 import com.hendraanggrian.openpss.db.Named
 import com.hendraanggrian.openpss.db.NamedSchema
@@ -11,6 +10,7 @@ import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.popup.dialog.TableDialog
 import com.hendraanggrian.openpss.popup.popover.InputPopover
 import com.hendraanggrian.openpss.util.isNotEmpty
+import com.hendraanggrian.openpss.util.stringCell
 import kotlinx.nosql.equal
 import kotlinx.nosql.mongodb.DocumentSchema
 import ktfx.jfoenix.jfxSnackbar
@@ -33,7 +33,8 @@ abstract class EditPriceDialog<D, S>(
     }
 
     override fun add() = InputPopover(
-        this, when (this) {
+        this,
+        when (this) {
             is EditPlatePriceDialog -> R.string.add_plate_price
             is EditOffsetPrintPriceDialog -> R.string.add_offset_price
             else -> R.string.add_digital_price

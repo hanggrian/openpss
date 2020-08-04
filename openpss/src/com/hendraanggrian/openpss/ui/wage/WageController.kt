@@ -91,18 +91,22 @@ class WageController : ActionController() {
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
-        titleProperty().bind(buildStringBinding(flowPane.children) {
-            when {
-                flowPane.children.isEmpty() -> null
-                else -> "${flowPane.children.size} ${getString(R.string.employee)}"
+        titleProperty().bind(
+            buildStringBinding(flowPane.children) {
+                when {
+                    flowPane.children.isEmpty() -> null
+                    else -> "${flowPane.children.size} ${getString(R.string.employee)}"
+                }
             }
-        })
-        titleLabel.textProperty().bind(buildStringBinding(flowPane.children) {
-            when {
-                flowPane.children.isEmpty() -> getString(R.string._wage_record_empty)
-                else -> filePath
+        )
+        titleLabel.textProperty().bind(
+            buildStringBinding(flowPane.children) {
+                when {
+                    flowPane.children.isEmpty() -> getString(R.string._wage_record_empty)
+                    else -> filePath
+                }
             }
-        })
+        )
         disableRecessButton.disableProperty().bind(flowPane.children.isEmptyBinding)
         bindProcessButton()
         later {
@@ -163,9 +167,11 @@ class WageController : ActionController() {
                                 }
                             }
                             deleteToTheRightMenu.run {
-                                disableProperty().bind(buildBooleanBinding(flowPane.children) {
-                                    flowPane.children.indexOf(this@apply) == flowPane.children.lastIndex
-                                })
+                                disableProperty().bind(
+                                    buildBooleanBinding(flowPane.children) {
+                                        flowPane.children.indexOf(this@apply) == flowPane.children.lastIndex
+                                    }
+                                )
                                 onAction {
                                     flowPane.children -= flowPane.children.toList().takeLast(
                                         flowPane.children.lastIndex - flowPane.children.indexOf(this@apply)
@@ -196,8 +202,13 @@ class WageController : ActionController() {
     private inline val attendees: List<Attendee> get() = attendeePanes.map { it.attendee }
 
     /** As attendees are populated, process button need to be rebinded according to new requirements. */
-    private fun bindProcessButton() = processButton.disableProperty().bind(flowPane.children.isEmptyBinding or
-        buildBooleanBinding(flowPane.children, *flowPane.children
-            .map { (it as AttendeePane).attendanceList.items }
-            .toTypedArray()) { attendees.any { it.attendances.size % 2 != 0 } })
+    private fun bindProcessButton() = processButton.disableProperty().bind(
+        flowPane.children.isEmptyBinding or
+            buildBooleanBinding(
+                flowPane.children,
+                *flowPane.children
+                    .map { (it as AttendeePane).attendanceList.items }
+                    .toTypedArray()
+            ) { attendees.any { it.attendances.size % 2 != 0 } }
+    )
 }

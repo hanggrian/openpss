@@ -19,7 +19,8 @@ import ktfx.jfoenix.jfxComboBox
 import ktfx.layouts._GridPane
 import ktfx.layouts.label
 
-class AddPlateJobPopover(context: Context) : AddJobPopover<Invoice.PlateJob>(context, R.string.add_plate_job),
+class AddPlateJobPopover(context: Context) :
+    AddJobPopover<Invoice.PlateJob>(context, R.string.add_plate_job),
     Invoice.Job {
 
     private lateinit var typeChoice: ComboBox<PlatePrice>

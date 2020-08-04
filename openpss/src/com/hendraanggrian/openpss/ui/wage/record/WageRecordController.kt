@@ -85,10 +85,12 @@ class WageRecordController : Controller() {
         menuBar.isUseSystemMenuBar = SystemUtils.IS_OS_MAC
         undoMenu.disableProperty().bind(editMenu.items.sizeBinding lessEq 2)
         arrayOf(lockStartButton, lockEndButton).forEach { button ->
-            button.disableProperty().bind(recordTable.selectionModel.selectedItemProperty().isNull or
-                buildBooleanBinding(recordTable.selectionModel.selectedItemProperty()) {
-                    recordTable.selectionModel.selectedItems?.any { !it.value.isChild() } ?: true
-                })
+            button.disableProperty().bind(
+                recordTable.selectionModel.selectedItemProperty().isNull or
+                    buildBooleanBinding(recordTable.selectionModel.selectedItemProperty()) {
+                        recordTable.selectionModel.selectedItems?.any { !it.value.isChild() } ?: true
+                    }
+            )
         }
 
         recordTable.run {
@@ -133,12 +135,16 @@ class WageRecordController : Controller() {
                 }
             }
             totalLabel.textProperty()
-                .bind(buildStringBinding(records.filter { it.isChild() }.map { it.totalProperty }) {
-                    currencyConverter(records
-                        .asSequence()
-                        .filter { it.isTotal() }
-                        .sumByDouble { it.totalProperty.value })
-                })
+                .bind(
+                    buildStringBinding(records.filter { it.isChild() }.map { it.totalProperty }) {
+                        currencyConverter(
+                            records
+                                .asSequence()
+                                .filter { it.isTotal() }
+                                .sumByDouble { it.totalProperty.value }
+                        )
+                    }
+                )
         }
     }
 
@@ -167,8 +173,9 @@ class WageRecordController : Controller() {
                     if (initial.toLocalTime() < time!!) {
                         record.startProperty.set(record.cloneStart(time))
                         undoable.name = when {
-                            undoable.name == null -> "${record.attendee.name} ${initial.toString(PATTERN_DATETIME)} -> " +
-                                time.toString(PATTERN_TIME)
+                            undoable.name == null ->
+                                "${record.attendee.name} ${initial.toString(PATTERN_DATETIME)} -> " +
+                                    time.toString(PATTERN_TIME)
                             else -> getString(R.string.multiple_lock_start_time)
                         }
                         undoable.addAction { record.startProperty.set(initial) }
@@ -186,8 +193,9 @@ class WageRecordController : Controller() {
                     if (initial.toLocalTime() > time!!) {
                         record.endProperty.set(record.cloneEnd(time))
                         undoable.name = when {
-                            undoable.name == null -> "${record.attendee.name} ${initial.toString(PATTERN_DATETIME)} -> " +
-                                time.toString(PATTERN_TIME)
+                            undoable.name == null ->
+                                "${record.attendee.name} ${initial.toString(PATTERN_DATETIME)} -> " +
+                                    time.toString(PATTERN_TIME)
                             else -> getString(R.string.multiple_lock_end_time)
                         }
                         undoable.addAction { record.endProperty.set(initial) }
@@ -221,13 +229,16 @@ class WageRecordController : Controller() {
 
     private fun Undoable.append() {
         if (isValid) {
-            editMenu.items.add(2, menuItem(name) {
-                onAction {
-                    undo()
-                    editMenu.items.getOrNull(editMenu.items.indexOf(this@menuItem) - 1)?.fire()
-                    editMenu.items -= this@menuItem
+            editMenu.items.add(
+                2,
+                menuItem(name) {
+                    onAction {
+                        undo()
+                        editMenu.items.getOrNull(editMenu.items.indexOf(this@menuItem) - 1)?.fire()
+                        editMenu.items -= this@menuItem
+                    }
                 }
-            })
+            )
         }
     }
 

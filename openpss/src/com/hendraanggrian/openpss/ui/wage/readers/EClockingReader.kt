@@ -42,10 +42,13 @@ object EClockingReader : Reader() {
                         val name = row.getCell(CELL_NAME).stringCellValue
                         val no = row.getCell(CELL_NO).numericCellValue.toInt()
                         val date = LocalDate.fromDateFields(row.getCell(CELL_DATE).dateCellValue)
-                        multimap.putAll(Attendee(no, name, dept), (CELL_RECORD_START until CELL_RECORD_END)
-                            .map { row.getCell(it) }
-                            .filter { it.cellType == NUMERIC }
-                            .map { date.toDateTime(LocalTime.fromDateFields(it.dateCellValue)) })
+                        multimap.putAll(
+                            Attendee(no, name, dept),
+                            (CELL_RECORD_START until CELL_RECORD_END)
+                                .map { row.getCell(it) }
+                                .filter { it.cellType == NUMERIC }
+                                .map { date.toDateTime(LocalTime.fromDateFields(it.dateCellValue)) }
+                        )
                     }
             }
         }

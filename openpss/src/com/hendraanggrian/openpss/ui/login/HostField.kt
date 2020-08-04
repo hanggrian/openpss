@@ -14,12 +14,14 @@ class HostField : JFXTextField() {
     fun validProperty(): BooleanProperty = validProperty
 
     init {
-        validProperty.bind(buildBooleanBinding(textProperty()) {
-            when (text) {
-                "localhost" -> true
-                else -> InetAddressValidator.getInstance().isValidInet4Address(text)
+        validProperty.bind(
+            buildBooleanBinding(textProperty()) {
+                when (text) {
+                    "localhost" -> true
+                    else -> InetAddressValidator.getInstance().isValidInet4Address(text)
+                }
             }
-        })
+        )
         focusedProperty().listener { _, _, value -> if (value && text.isNotEmpty()) selectAll() }
     }
 }

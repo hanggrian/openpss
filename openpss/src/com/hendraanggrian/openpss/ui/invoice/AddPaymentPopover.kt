@@ -57,39 +57,45 @@ class AddPaymentPopover(
             label(getString(R.string.remaining)) row 3 col 0
             label {
                 styleClass += R.style.bold
-                textProperty().bind(buildStringBinding(valueField.valueProperty()) {
-                    (receivable - valueField.value).let { remaining ->
-                        when {
-                            remaining <= 0.0 -> getString(R.string.paid)
-                            else -> currencyConverter(remaining)
+                textProperty().bind(
+                    buildStringBinding(valueField.valueProperty()) {
+                        (receivable - valueField.value).let { remaining ->
+                            when {
+                                remaining <= 0.0 -> getString(R.string.paid)
+                                else -> currencyConverter(remaining)
+                            }
                         }
                     }
-                })
-                textFillProperty().bind(buildBinding(textProperty()) {
-                    getColor(
-                        when {
-                            receivable - valueField.value <= 0.0 -> R.color.green
-                            else -> R.color.red
-                        }
-                    )
-                })
+                )
+                textFillProperty().bind(
+                    buildBinding(textProperty()) {
+                        getColor(
+                            when {
+                                receivable - valueField.value <= 0.0 -> R.color.green
+                                else -> R.color.red
+                            }
+                        )
+                    }
+                )
             } row 3 col 1 colSpans 2
             label(getString(R.string.cash)) row 6 col 0
             cashBox = jfxCheckBox { isSelected = true } row 6 col 1 colSpans 2
             label(getString(R.string.reference)) { bindDisable() } row 7 col 0
             referenceField = jfxTextField { bindDisable() } row 7 col 1 colSpans 2
         }
-        defaultButton.disableProperty().bind(buildBooleanBinding(
-            valueField.valueProperty(), cashBox.selectedProperty(),
-            referenceField.textProperty()
-        ) {
-            (!valueField.isValid || valueField.value <= 0 || valueField.value > receivable).let {
-                when {
-                    cashBox.isSelected -> it
-                    else -> it || referenceField.text.isBlank()
+        defaultButton.disableProperty().bind(
+            buildBooleanBinding(
+                valueField.valueProperty(), cashBox.selectedProperty(),
+                referenceField.textProperty()
+            ) {
+                (!valueField.isValid || valueField.value <= 0 || valueField.value > receivable).let {
+                    when {
+                        cashBox.isSelected -> it
+                        else -> it || referenceField.text.isBlank()
+                    }
                 }
             }
-        })
+        )
     }
 
     override val nullableResult: Payment?

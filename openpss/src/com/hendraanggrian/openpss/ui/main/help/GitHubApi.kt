@@ -7,8 +7,8 @@ import com.hendraanggrian.openpss.BuildConfig.ARTIFACT
 import com.hendraanggrian.openpss.BuildConfig.AUTHOR
 import com.hendraanggrian.openpss.BuildConfig.DEBUG
 import com.hendraanggrian.openpss.BuildConfig.VERSION
-import com.hendraanggrian.openpss.content.Context
 import com.hendraanggrian.openpss.R
+import com.hendraanggrian.openpss.content.Context
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.javafx.JavaFx
@@ -55,14 +55,16 @@ interface GitHubApi {
         private const val TIMEOUT = 5L
 
         private fun create(): GitHubApi = Retrofit.Builder()
-            .client(OkHttpClient.Builder().addInterceptor {
-                it.proceed(
-                    it.request()
-                        .newBuilder()
-                        .addHeader("Accept", "application/json")
-                        .build()
-                )
-            }.build())
+            .client(
+                OkHttpClient.Builder().addInterceptor {
+                    it.proceed(
+                        it.request()
+                            .newBuilder()
+                            .addHeader("Accept", "application/json")
+                            .build()
+                    )
+                }.build()
+            )
             .baseUrl(END_POINT)
             .addCallAdapterFactory(GuavaCallAdapterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())
@@ -75,15 +77,16 @@ interface GitHubApi {
                     val release = create().getLatestRelease().get(TIMEOUT, SECONDS)
                     GlobalScope.launch(Dispatchers.JavaFx) {
                         when {
-                            release.isNewer() -> context.stack.jfxSnackbar(
-                                context.getString(R.string.openpss_is_available, release.version),
-                                App.DURATION_LONG,
-                                context.getString(R.string.download)
-                            ) {
-                                UpdateDialog(context, release.assets).show { url ->
-                                    context.desktop?.browse(URI(url))
+                            release.isNewer() ->
+                                context.stack.jfxSnackbar(
+                                    context.getString(R.string.openpss_is_available, release.version),
+                                    App.DURATION_LONG,
+                                    context.getString(R.string.download)
+                                ) {
+                                    UpdateDialog(context, release.assets).show { url ->
+                                        context.desktop?.browse(URI(url))
+                                    }
                                 }
-                            }
                             else -> context.stack.jfxSnackbar(
                                 context.getString(
                                     R.string.openpss_is_currently_the_newest_version_available,

@@ -107,52 +107,58 @@ class CustomerController : ActionController(), Refreshable {
     }
 
     override fun refresh() = later {
-        customerPagination.contentFactoryProperty().bind(buildBinding(searchField.textProperty()) {
-            Callback<Pair<Int, Int>, Node> { (page, count) ->
-                customerList = CustomerListView().apply {
-                    styleClass += R.style.list_view_no_scrollbar_vertical
-                    later {
-                        transaction {
-                            val customers = Customers.buildQuery {
-                                if (searchField.text.isNotBlank()) {
-                                    or(it.name.matches(searchField.text, CASE_INSENSITIVE))
-                                    or(it.address.matches(searchField.text, CASE_INSENSITIVE))
-                                    or(it.note.matches(searchField.text, CASE_INSENSITIVE))
+        customerPagination.contentFactoryProperty().bind(
+            buildBinding(searchField.textProperty()) {
+                Callback<Pair<Int, Int>, Node> { (page, count) ->
+                    customerList = CustomerListView().apply {
+                        styleClass += R.style.list_view_no_scrollbar_vertical
+                        later {
+                            transaction {
+                                val customers = Customers.buildQuery {
+                                    if (searchField.text.isNotBlank()) {
+                                        or(it.name.matches(searchField.text, CASE_INSENSITIVE))
+                                        or(it.address.matches(searchField.text, CASE_INSENSITIVE))
+                                        or(it.note.matches(searchField.text, CASE_INSENSITIVE))
+                                    }
                                 }
-                            }
-                            customerPagination.pageCount = ceil(customers.count() / count.toDouble()).toInt()
-                            items = customers
-                                .skip(count * page)
-                                .take(count)
-                                .toMutableObservableList()
-                            contextMenu {
-                                getString(R.string.edit)(ImageView(R.image.menu_edit)) {
-                                    disableProperty().bind(selectionModel.selectedItemProperty().isNull)
-                                    onAction { edit() }
+                                customerPagination.pageCount = ceil(customers.count() / count.toDouble()).toInt()
+                                items = customers
+                                    .skip(count * page)
+                                    .take(count)
+                                    .toMutableObservableList()
+                                contextMenu {
+                                    getString(R.string.edit)(ImageView(R.image.menu_edit)) {
+                                        disableProperty().bind(selectionModel.selectedItemProperty().isNull)
+                                        onAction { edit() }
+                                    }
                                 }
+                                deleteContactItem.disableProperty()
+                                    .bind(contactTable.selectionModel.selectedItemProperty().isNull)
                             }
-                            deleteContactItem.disableProperty()
-                                .bind(contactTable.selectionModel.selectedItemProperty().isNull)
                         }
                     }
+                    titleProperty().bind(
+                        buildStringBinding(customerList.selectionModel.selectedItemProperty()) {
+                            customerList.selectionModel.selectedItem?.name
+                        }
+                    )
+                    noLabel.bindLabel { customerList.selectionModel.selectedItem?.no?.toString().orEmpty() }
+                    sinceLabel.bindLabel {
+                        customerList.selectionModel.selectedItem?.since?.toString(PATTERN_DATE).orEmpty()
+                    }
+                    addressLabel.bindLabel { customerList.selectionModel.selectedItem?.address ?: "-" }
+                    noteLabel.bindLabel { customerList.selectionModel.selectedItem?.note ?: "-" }
+                    contactTable.itemsProperty().bind(
+                        buildBinding(customerList.selectionModel.selectedItemProperty()) {
+                            customerList.selectionModel.selectedItem?.contacts?.toObservableList() ?: emptyObservableList()
+                        }
+                    )
+                    masterDetailPane.showDetailNodeProperty()
+                        .bind(customerList.selectionModel.selectedItemProperty().isNotNull)
+                    customerList
                 }
-                titleProperty().bind(buildStringBinding(customerList.selectionModel.selectedItemProperty()) {
-                    customerList.selectionModel.selectedItem?.name
-                })
-                noLabel.bindLabel { customerList.selectionModel.selectedItem?.no?.toString().orEmpty() }
-                sinceLabel.bindLabel {
-                    customerList.selectionModel.selectedItem?.since?.toString(PATTERN_DATE).orEmpty()
-                }
-                addressLabel.bindLabel { customerList.selectionModel.selectedItem?.address ?: "-" }
-                noteLabel.bindLabel { customerList.selectionModel.selectedItem?.note ?: "-" }
-                contactTable.itemsProperty().bind(buildBinding(customerList.selectionModel.selectedItemProperty()) {
-                    customerList.selectionModel.selectedItem?.contacts?.toObservableList() ?: emptyObservableList()
-                })
-                masterDetailPane.showDetailNodeProperty()
-                    .bind(customerList.selectionModel.selectedItemProperty().isNotNull)
-                customerList
             }
-        })
+        )
     }
 
     fun add() = AddCustomerDialog(this).show { customer ->
@@ -171,13 +177,15 @@ class CustomerController : ActionController(), Refreshable {
     }
 
     private fun edit() = EditCustomerDialog(this, customerList.selectionModel.selectedItem).show {
-        (EditCustomerAction(
-            this@CustomerController,
-            customerList.selectionModel.selectedItem,
-            it!!.name,
-            it.address,
-            it.note
-        )) { reload() }
+        (
+            EditCustomerAction(
+                this@CustomerController,
+                customerList.selectionModel.selectedItem,
+                it!!.name,
+                it.address,
+                it.note
+            )
+            ) { reload() }
     }
 
     @FXML fun addContact() = AddContactPopover(this).show(contactTable) {
@@ -185,11 +193,13 @@ class CustomerController : ActionController(), Refreshable {
     }
 
     @FXML fun deleteContact() = ConfirmDialog(this, R.string.delete_contact).show {
-        (DeleteContactAction(
-            this@CustomerController,
-            customerList.selectionModel.selectedItem,
-            contactTable.selectionModel.selectedItem
-        )) { reload() }
+        (
+            DeleteContactAction(
+                this@CustomerController,
+                customerList.selectionModel.selectedItem,
+                contactTable.selectionModel.selectedItem
+            )
+            ) { reload() }
     }
 
     private fun Label.bindLabel(target: () -> String) = textProperty()

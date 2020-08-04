@@ -90,9 +90,11 @@ class AddInvoiceDialog(
             label(getString(R.string.customer)) col 0 row 1
             customerField = jfxTextField {
                 isEditable = false
-                textProperty().bind(buildStringBinding(customerProperty) {
-                    customerProperty.value?.toString() ?: getString(R.string.search_customer)
-                })
+                textProperty().bind(
+                    buildStringBinding(customerProperty) {
+                        customerProperty.value?.toString() ?: getString(R.string.search_customer)
+                    }
+                )
                 onMouseClicked {
                     SearchCustomerPopover(this@AddInvoiceDialog).show(this@jfxTextField) { customerProperty.set(it) }
                 }
@@ -177,17 +179,19 @@ class AddInvoiceDialog(
                     }
                 }
             } col 1 row 2 colSpans 3
-            totalProperty.bind(buildDoubleBinding(
-                offsetTable.items,
-                digitalTable.items,
-                plateTable.items,
-                otherTable.items
-            ) {
-                offsetTable.items.sumByDouble { it.total } +
-                    digitalTable.items.sumByDouble { it.total } +
-                    plateTable.items.sumByDouble { it.total } +
-                    otherTable.items.sumByDouble { it.total }
-            })
+            totalProperty.bind(
+                buildDoubleBinding(
+                    offsetTable.items,
+                    digitalTable.items,
+                    plateTable.items,
+                    otherTable.items
+                ) {
+                    offsetTable.items.sumByDouble { it.total } +
+                        digitalTable.items.sumByDouble { it.total } +
+                        plateTable.items.sumByDouble { it.total } +
+                        otherTable.items.sumByDouble { it.total }
+                }
+            )
             label(getString(R.string.note)) col 0 row 3
             noteArea = textArea {
                 promptText = getString(R.string.note)
@@ -196,9 +200,11 @@ class AddInvoiceDialog(
             label(getString(R.string.total)) col 0 row 4
             label {
                 styleClass += R.style.bold
-                textProperty().bind(buildStringBinding(totalProperty) {
-                    currencyConverter(totalProperty.value)
-                })
+                textProperty().bind(
+                    buildStringBinding(totalProperty) {
+                        currencyConverter(totalProperty.value)
+                    }
+                )
                 textFillProperty().bind(
                     When(totalProperty greater 0)
                         then getColor(R.color.green)
@@ -262,12 +268,14 @@ class AddInvoiceDialog(
     }
 
     private fun Tab.bindTitle(tableView: TableView<*>, s: String) =
-        textProperty().bind(buildStringBinding(tableView.items) {
-            getString(s).let {
-                when {
-                    tableView.items.isEmpty() -> it
-                    else -> "$it (${tableView.items.size})"
+        textProperty().bind(
+            buildStringBinding(tableView.items) {
+                getString(s).let {
+                    when {
+                        tableView.items.isEmpty() -> it
+                        else -> "$it (${tableView.items.size})"
+                    }
                 }
             }
-        })
+        )
 }

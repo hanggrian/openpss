@@ -185,14 +185,16 @@ class AttendeePane(
         }
         contentDisplay = ContentDisplay.RIGHT
         graphic = ktfx.layouts.imageView {
-            imageProperty().bind(buildBinding(hoverProperty()) {
-                Image(
-                    when {
-                        isHover -> R.image.btn_clear_active
-                        else -> R.image.btn_clear_inactive
-                    }
-                )
-            })
+            imageProperty().bind(
+                buildBinding(hoverProperty()) {
+                    Image(
+                        when {
+                            isHover -> R.image.btn_clear_active
+                            else -> R.image.btn_clear_inactive
+                        }
+                    )
+                }
+            )
             eventFilter(type = MOUSE_CLICKED) { deleteMenu.fire() }
         }
         GlobalScope.launch(Dispatchers.JavaFx) {

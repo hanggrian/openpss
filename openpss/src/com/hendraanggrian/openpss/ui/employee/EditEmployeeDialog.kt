@@ -35,28 +35,32 @@ class EditEmployeeDialog(
         }
         table.contextMenu {
             menuItem {
-                textProperty().bind(buildStringBinding(table.selectionModel.selectedIndexProperty()) {
-                    when {
-                        table.selectionModel.isSelected() -> getString(
-                            when {
-                                table.selectionModel.selectedItem.isAdmin -> R.string.disable_admin_status
-                                else -> R.string.enable_admin_status
-                            }
-                        )
-                        else -> null
+                textProperty().bind(
+                    buildStringBinding(table.selectionModel.selectedIndexProperty()) {
+                        when {
+                            table.selectionModel.isSelected() -> getString(
+                                when {
+                                    table.selectionModel.selectedItem.isAdmin -> R.string.disable_admin_status
+                                    else -> R.string.enable_admin_status
+                                }
+                            )
+                            else -> null
+                        }
                     }
-                })
-                graphicProperty().bind(buildBinding(table.selectionModel.selectedIndexProperty()) {
-                    when {
-                        table.selectionModel.isSelected() -> ktfx.layouts.imageView(
-                            when {
-                                table.selectionModel.selectedItem.isAdmin -> R.image.menu_admin_off
-                                else -> R.image.menu_admin_on
-                            }
-                        )
-                        else -> null
+                )
+                graphicProperty().bind(
+                    buildBinding(table.selectionModel.selectedIndexProperty()) {
+                        when {
+                            table.selectionModel.isSelected() -> ktfx.layouts.imageView(
+                                when {
+                                    table.selectionModel.selectedItem.isAdmin -> R.image.menu_admin_off
+                                    else -> R.image.menu_admin_on
+                                }
+                            )
+                            else -> null
+                        }
                     }
-                })
+                )
                 bindDisable()
                 onAction {
                     (ToggleAdminEmployeeAction(this@EditEmployeeDialog, table.selectionModel.selectedItem)) {

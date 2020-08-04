@@ -73,9 +73,11 @@ open class MonthBox @JvmOverloads constructor(prefill: YearMonth = now()) : _HBo
             }
         }
 
-        valueProperty.bind(buildBinding(monthBox.selectionModel.selectedIndexProperty(), yearField.valueProperty()) {
-            YearMonth(yearField.value, monthBox.value + 1)
-        })
+        valueProperty.bind(
+            buildBinding(monthBox.selectionModel.selectedIndexProperty(), yearField.valueProperty()) {
+                YearMonth(yearField.value, monthBox.value + 1)
+            }
+        )
     }
 
     fun setLocale(locale: Locale) {

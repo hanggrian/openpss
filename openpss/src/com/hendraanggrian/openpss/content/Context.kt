@@ -27,10 +27,12 @@ interface Context : Resources {
 
     /** Number decimal with currency prefix string converter. */
     val currencyConverter: StringConverter<Number>
-        get() = CurrencyStringConverter(transaction {
-            Language.ofFullCode(findGlobalSettings(GlobalSetting.KEY_LANGUAGE).single().value)
-                .toLocale()
-        })
+        get() = CurrencyStringConverter(
+            transaction {
+                Language.ofFullCode(findGlobalSettings(GlobalSetting.KEY_LANGUAGE).single().value)
+                    .toLocale()
+            }
+        )
 
     /** Returns [Desktop] instance, may be null if it is unsupported. */
     val desktop: Desktop?

@@ -43,17 +43,21 @@ interface StretchableLabeled {
     }
 
     private operator fun ReadOnlyDoubleProperty.invoke() {
-        textProperty().bind(buildStringBinding(this, stretchPointProperty(), stretchableTextProperty()) {
-            when (get() >= stretchPoint) {
-                true -> stretchableText
-                else -> null
+        textProperty().bind(
+            buildStringBinding(this, stretchPointProperty(), stretchableTextProperty()) {
+                when (get() >= stretchPoint) {
+                    true -> stretchableText
+                    else -> null
+                }
             }
-        })
-        tooltipProperty().bind(buildBinding(this, stretchPointProperty(), stretchableTextProperty()) {
-            when (get() >= stretchPoint) {
-                true -> null
-                else -> Tooltip(stretchableText)
+        )
+        tooltipProperty().bind(
+            buildBinding(this, stretchPointProperty(), stretchableTextProperty()) {
+                when (get() >= stretchPoint) {
+                    true -> null
+                    else -> Tooltip(stretchableText)
+                }
             }
-        })
+        )
     }
 }

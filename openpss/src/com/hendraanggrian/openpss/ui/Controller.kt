@@ -14,8 +14,8 @@ import java.util.ResourceBundle
 open class Controller : Initializable, Context {
 
     override lateinit var resourceBundle: ResourceBundle
-    override val dimenResources: Properties = getProperties(R.dimen.properties_dimen)
-    override val colorResources: Properties = getProperties(R.color.properties_color)
+    override val dimenResources: Properties = getProperties(R.dimen._dimen)
+    override val colorResources: Properties = getProperties(R.color._color)
 
     override lateinit var stack: StackPane
     override lateinit var login: Employee

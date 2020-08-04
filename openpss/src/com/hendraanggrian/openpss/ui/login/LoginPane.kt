@@ -267,12 +267,16 @@ class LoginPane(private val resourced: Resources) : _StackPane(), Context {
             }
             defaultButton.run {
                 disableProperty().bind(textField.textProperty().isBlank())
-                passwordField.onActionProperty().bind(buildBinding(disableProperty()) {
-                    if (isDisable) null else onAction
-                })
-                textField.onActionProperty().bind(buildBinding(disableProperty()) {
-                    if (isDisable) null else onAction
-                })
+                passwordField.onActionProperty().bind(
+                    buildBinding(disableProperty()) {
+                        if (isDisable) null else onAction
+                    }
+                )
+                textField.onActionProperty().bind(
+                    buildBinding(disableProperty()) {
+                        if (isDisable) null else onAction
+                    }
+                )
             }
         }
     }

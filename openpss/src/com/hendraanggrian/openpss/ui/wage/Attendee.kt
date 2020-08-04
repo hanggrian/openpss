@@ -70,9 +70,11 @@ data class Attendee(
         }
     }
 
-    fun mergeDuplicates() = attendances.removeAllRevertible((0 until attendances.lastIndex)
-        .filter { index -> Period(attendances[index], attendances[index + 1]).toStandardMinutes() < minutes(5) }
-        .map { index -> attendances[index] })
+    fun mergeDuplicates() = attendances.removeAllRevertible(
+        (0 until attendances.lastIndex)
+            .filter { index -> Period(attendances[index], attendances[index + 1]).toStandardMinutes() < minutes(5) }
+            .map { index -> attendances[index] }
+    )
 
     override fun hashCode(): Int = id.hashCode()
 
@@ -95,21 +97,31 @@ data class Attendee(
     fun toTotalRecords(resources: Resources, children: Collection<Record>): Record =
         Record(resources, INDEX_TOTAL, this, START_OF_TIME.asProperty(), START_OF_TIME.asProperty())
             .apply {
-                dailyProperty.bind(buildDoubleBinding(children.map { it.dailyProperty }) {
-                    children.sumByDouble { it.daily }.round()
-                })
-                dailyIncomeProperty.bind(buildDoubleBinding(children.map { it.dailyIncomeProperty }) {
-                    children.sumByDouble { it.dailyIncome }.round()
-                })
-                overtimeProperty.bind(buildDoubleBinding(children.map { it.overtimeProperty }) {
-                    children.sumByDouble { it.overtime }.round()
-                })
-                overtimeIncomeProperty.bind(buildDoubleBinding(children.map { it.overtimeIncomeProperty }) {
-                    children.sumByDouble { it.overtimeIncome }.round()
-                })
-                totalProperty.bind(buildDoubleBinding(children.map { it.totalProperty }) {
-                    children.sumByDouble { it.total }.round()
-                })
+                dailyProperty.bind(
+                    buildDoubleBinding(children.map { it.dailyProperty }) {
+                        children.sumByDouble { it.daily }.round()
+                    }
+                )
+                dailyIncomeProperty.bind(
+                    buildDoubleBinding(children.map { it.dailyIncomeProperty }) {
+                        children.sumByDouble { it.dailyIncome }.round()
+                    }
+                )
+                overtimeProperty.bind(
+                    buildDoubleBinding(children.map { it.overtimeProperty }) {
+                        children.sumByDouble { it.overtime }.round()
+                    }
+                )
+                overtimeIncomeProperty.bind(
+                    buildDoubleBinding(children.map { it.overtimeIncomeProperty }) {
+                        children.sumByDouble { it.overtimeIncome }.round()
+                    }
+                )
+                totalProperty.bind(
+                    buildDoubleBinding(children.map { it.totalProperty }) {
+                        children.sumByDouble { it.total }.round()
+                    }
+                )
             }
 
     companion object {

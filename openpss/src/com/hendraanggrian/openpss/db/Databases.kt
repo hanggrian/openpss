@@ -30,8 +30,8 @@ import org.joda.time.LocalDate
 import org.joda.time.LocalTime
 import java.util.Date
 
-private lateinit var database: MongoDB
-private val tables =
+private lateinit var DATABASE: MongoDB
+private val TABLES =
     arrayOf(
         Customers,
         DigitalPrices,
@@ -45,6 +45,7 @@ private val tables =
         Recesses,
         Wages
     )
+private const val TIMEOUT = 10000
 
 /**
  * A failed transaction will most likely throw an exception instance listAll [MongoException].
@@ -53,7 +54,7 @@ private val tables =
  * @see [kotlinx.nosql.mongodb.MongoDB.withSession]
  */
 fun <T> transaction(statement: SessionWrapper.() -> T): T = try {
-    database.withSession { SessionWrapper(this).statement() }
+    DATABASE.withSession { SessionWrapper(this).statement() }
 } catch (e: MongoException) {
     if (DEBUG) e.printStackTrace()
     errorAlert(e.message.toString()) {
@@ -75,10 +76,10 @@ suspend fun login(
     employeePassword: String
 ): Employee {
     lateinit var employee: Employee
-    database = connect(host, port, user, password)
+    DATABASE = connect(host, port, user, password)
     transaction {
         // check first time installation
-        tables.mapNotNull { it as? Setupable }.forEach { it.setup(this) }
+        TABLES.mapNotNull { it as? Setupable }.forEach { it.setup(this) }
         // check login credentials
         employee = checkNotNull(Employees { it.name.equal(employeeName) }.singleOrNull()) { "Employee not found" }
         check(employee.password == employeePassword) { "Invalid password" }
@@ -98,8 +99,8 @@ private suspend fun connect(
         arrayOf(ServerAddress(host, port)),
         ARTIFACT,
         arrayOf(createCredential(user, "admin", password.toCharArray())),
-        Builder().serverSelectionTimeout(3000).build(),
-        tables
+        Builder().serverSelectionTimeout(TIMEOUT).build(),
+        TABLES
     )
 }
 
@@ -112,4 +113,4 @@ val dbDate: LocalDate get() = LocalDate.fromDateFields(evalDate)
 /** Local time new server. */
 val dbTime: LocalTime get() = LocalTime.fromDateFields(evalDate)
 
-private val evalDate: Date get() = database.db.doEval("new Date()").getDate("retval")
+private val evalDate: Date get() = DATABASE.db.doEval("new Date()").getDate("retval")

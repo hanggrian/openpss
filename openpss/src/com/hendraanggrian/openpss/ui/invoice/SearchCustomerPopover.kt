@@ -37,14 +37,16 @@ class SearchCustomerPopover(context: Context) : ResultablePopover<Customer>(cont
             }
             customerList = CustomerListView().apply {
                 prefHeight = 262.0
-                itemsProperty().bind(buildBinding(searchField.textProperty()) {
-                    transaction {
-                        when {
-                            searchField.text.isEmpty() -> Customers()
-                            else -> Customers { it.name.matches(searchField.text.toRegex(IGNORE_CASE).toPattern()) }
-                        }.take(ITEMS_PER_PAGE).toMutableObservableList()
+                itemsProperty().bind(
+                    buildBinding(searchField.textProperty()) {
+                        transaction {
+                            when {
+                                searchField.text.isEmpty() -> Customers()
+                                else -> Customers { it.name.matches(searchField.text.toRegex(IGNORE_CASE).toPattern()) }
+                            }.take(ITEMS_PER_PAGE).toMutableObservableList()
+                        }
                     }
-                })
+                )
                 itemsProperty().listener { _, _, value -> if (value.isNotEmpty()) selectionModel.selectFirst() }
                 onMouseClicked {
                     if (it.isDoubleClick() && customerList.selectionModel.isSelected()) {

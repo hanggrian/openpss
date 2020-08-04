@@ -28,7 +28,8 @@ class IntervalWrapper private constructor(
     companion object {
         fun of(start: ReadableInstant, end: ReadableInstant): IntervalWrapper = (start > end).let { isReverse ->
             return IntervalWrapper(
-                isReverse, when (isReverse) {
+                isReverse,
+                when (isReverse) {
                     true -> Interval(end, start)
                     else -> Interval(start, end)
                 }

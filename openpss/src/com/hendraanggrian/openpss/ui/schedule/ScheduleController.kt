@@ -88,9 +88,11 @@ class ScheduleController : ActionController(), Refreshable {
                     else -> selectionModel.selectAll(value)
                 }
             }
-            titleProperty().bind(buildStringBinding(selectionModel.selectedItemProperty()) {
-                Invoice.no(this@ScheduleController, selectionModel.selectedItem?.value?.invoice?.no)
-            })
+            titleProperty().bind(
+                buildStringBinding(selectionModel.selectedItemProperty()) {
+                    Invoice.no(this@ScheduleController, selectionModel.selectedItem?.value?.invoice?.no)
+                }
+            )
         }
         jobType.stringCell { jobType }
         descColumn.stringCell { title }
@@ -107,14 +109,16 @@ class ScheduleController : ActionController(), Refreshable {
                     true -> Invoices { it.isDone.equal(true) }.take(20)
                     else -> Invoices { it.isDone.equal(false) }
                 }.forEach { invoice ->
-                    addAll(UncollapsibleTreeItem(
-                        Schedule(
-                            invoice, Customers[invoice.customerId].single().name, "", "",
-                            invoice.dateTime.toString(PATTERN_DATETIME_EXTENDED)
-                        )
-                    ).apply {
-                        Schedule.of(this@ScheduleController, invoice).forEach { children += TreeItem<Schedule>(it) }
-                    })
+                    addAll(
+                        UncollapsibleTreeItem(
+                            Schedule(
+                                invoice, Customers[invoice.customerId].single().name, "", "",
+                                invoice.dateTime.toString(PATTERN_DATETIME_EXTENDED)
+                            )
+                        ).apply {
+                            Schedule.of(this@ScheduleController, invoice).forEach { children += TreeItem<Schedule>(it) }
+                        }
+                    )
                 }
             }
         }

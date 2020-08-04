@@ -2,7 +2,7 @@ package com.hendraanggrian.openpss.control
 
 import com.hendraanggrian.openpss.util.toJava
 import org.joda.time.LocalTime
-import org.junit.Test
+import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class TimeBoxTest : NodeTest<TimeBox>() {

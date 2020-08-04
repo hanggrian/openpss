@@ -20,7 +20,7 @@ interface Numbered {
 
         /** Determine next integer based on the last one. */
         fun <S : DocumentSchema<D>, D> next(schema: S): Int where
-            D : Document<S>,
+        D : Document<S>,
             D : Numbered = transaction { schema().lastOrNull()?.no ?: 0 } + 1
     }
 }

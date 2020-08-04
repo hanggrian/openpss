@@ -1,6 +1,6 @@
 package com.hendraanggrian.openpss.util
 
-import org.junit.Test
+import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class MathsTest {

@@ -1,6 +1,6 @@
 package com.hendraanggrian.openpss.control
 
-import org.junit.Test
+import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class IntFieldTest : NodeTest<IntField>() {

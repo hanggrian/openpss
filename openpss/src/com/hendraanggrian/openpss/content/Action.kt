@@ -77,12 +77,14 @@ abstract class Action<T>(
                     text = getString(R.string._permission_required)
                 } col 0 row 0 colSpans 2
                 label(getString(R.string.admin)) col 0 row 1
-                adminCombo = jfxComboBox(transaction {
-                    Employees.buildQuery {
-                        and(it.isAdmin.equal(true))
-                        and(it.name.notEqual(Employee.BACKDOOR.name))
-                    }.toObservableList()
-                }) {
+                adminCombo = jfxComboBox(
+                    transaction {
+                        Employees.buildQuery {
+                            and(it.isAdmin.equal(true))
+                            and(it.name.notEqual(Employee.BACKDOOR.name))
+                        }.toObservableList()
+                    }
+                ) {
                     promptText = getString(R.string.admin)
                 } col 1 row 1
                 label(getString(R.string.password)) col 0 row 2

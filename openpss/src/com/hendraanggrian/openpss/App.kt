@@ -20,6 +20,7 @@ import ktfx.stage.setMinSize
 import org.apache.log4j.BasicConfigurator
 import java.util.Properties
 import java.util.ResourceBundle
+import kotlin.system.exitProcess
 
 class App : Application(), Resources {
 
@@ -34,20 +35,18 @@ class App : Application(), Resources {
 
         fun exit() {
             Platform.exit() // exit JavaFX
-            System.exit(0) // exit Java
+            exitProcess(0) // exit Java
         }
     }
 
     override lateinit var resourceBundle: ResourceBundle
-
     override lateinit var dimenResources: Properties
-
     override lateinit var colorResources: Properties
 
     override fun init() {
         resourceBundle = PreferencesFile.language.toResourcesBundle()
-        dimenResources = getProperties(R.dimen.properties_dimen)
-        colorResources = getProperties(R.color.properties_color)
+        dimenResources = getProperties(R.dimen._dimen)
+        colorResources = getProperties(R.color._color)
         if (DEBUG) {
             BasicConfigurator.configure()
         }

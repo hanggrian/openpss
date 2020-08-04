@@ -15,7 +15,7 @@ fun Project.ktlint(
 
     dependencies {
         configuration {
-            invoke("com.github.shyiko:ktlint:$VERSION_KTLINT")
+            invoke("com.pinterest:ktlint:$VERSION_KTLINT")
             extraDependency?.invoke(this) { dependencyNotation ->
                 invoke(dependencyNotation)
             }
@@ -29,7 +29,7 @@ fun Project.ktlint(
             outputs.dir("src")
             description = "Check Kotlin code style."
             classpath(configuration.get())
-            main = "com.github.shyiko.ktlint.Main"
+            main = "com.pinterest.ktlint.Main"
             args("src/**/*.kt")
         }
         "check" {
@@ -41,7 +41,7 @@ fun Project.ktlint(
             outputs.dir("src")
             description = "Fix Kotlin code style deviations."
             classpath(configuration.get())
-            main = "com.github.shyiko.ktlint.Main"
+            main = "com.pinterest.ktlint.Main"
             args("-F", "src/**/*.kt")
         }
     }

@@ -7,9 +7,9 @@ buildscript {
     dependencies {
         classpath(kotlin("gradle-plugin", VERSION_KOTLIN))
         classpath(dokka())
-        classpath(hendraanggrian("generating", "r-gradle-plugin", VERSION_R))
-        classpath(hendraanggrian("generating", "buildconfig-gradle-plugin", VERSION_BUILDCONFIG))
-        classpath(hendraanggrian("packr", "packr-gradle-plugin", VERSION_PACKR))
+        classpath(hendraanggrian("r-gradle-plugin", VERSION_R))
+        classpath(hendraanggrian("buildconfig-gradle-plugin", VERSION_BUILDCONFIG))
+        classpath(hendraanggrian("packr-gradle-plugin", VERSION_PACKR))
         classpath(shadow())
         classpath(gitPublish())
         classpath("com.helger:ph-css:6.1.1")
@@ -31,11 +31,6 @@ allprojects {
     }
 }
 
-tasks {
-    register("clean", Delete::class) {
-        delete(buildDir)
-    }
-    register("wrapper", Wrapper::class) {
-        gradleVersion = VERSION_GRADLE
-    }
+tasks.register("clean", Delete::class) {
+    delete(buildDir)
 }

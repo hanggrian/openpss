@@ -143,9 +143,12 @@ class FinanceController : ActionController(), Refreshable {
         }
     }
 
-    @FXML fun viewInvoice() = ViewInvoicePopover(this, transaction {
-        Invoices[dailyTable.selectionModel.selectedItem.invoiceId].single()
-    }).show(
+    @FXML fun viewInvoice() = ViewInvoicePopover(
+        this,
+        transaction {
+            Invoices[dailyTable.selectionModel.selectedItem.invoiceId].single()
+        }
+    ).show(
         when (tabPane.selectionModel.selectedIndex) {
             0 -> dailyTable
             else -> monthlyTable

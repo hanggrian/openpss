@@ -5,12 +5,14 @@ import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.io.properties.LoginFile
 import kotlinx.coroutines.runBlocking
 import org.apache.log4j.BasicConfigurator
-import org.junit.Before
-import org.junit.Test
+import kotlin.test.BeforeTest
+import kotlin.test.Ignore
+import kotlin.test.Test
 
+@Ignore
 class DatabaseTest {
 
-    @Before
+    @BeforeTest
     @Throws(Exception::class)
     fun before() = assumeNotInTravis()
 

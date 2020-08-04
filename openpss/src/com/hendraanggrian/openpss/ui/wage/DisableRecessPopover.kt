@@ -34,16 +34,19 @@ class DisableRecessPopover(
             gap = getDouble(R.dimen.padding_medium)
             label(getString(R.string.recess)) col 0 row 0
             recessChoice = jfxComboBox(
-                mutableObservableListOf(getString(R.string.all),
+                mutableObservableListOf(
+                    getString(R.string.all),
                     Separator(),
-                    *transaction { Recesses().toObservableList().toTypedArray() })
+                    *transaction { Recesses().toObservableList().toTypedArray() }
+                )
             ) { selectionModel.selectFirst() } col 1 row 0
             label(getString(R.string.employee)) col 0 row 1
-            roleChoice = jfxComboBox(mutableObservableListOf(
-                *attendees.asSequence().filter { it.role != null }.map { it.role!! }.distinct().toList().toTypedArray(),
-                Separator(),
-                *attendees.toTypedArray()
-            )
+            roleChoice = jfxComboBox(
+                mutableObservableListOf(
+                    *attendees.asSequence().filter { it.role != null }.map { it.role!! }.distinct().toList().toTypedArray(),
+                    Separator(),
+                    *attendees.toTypedArray()
+                )
             ) col 1 row 1
         }
         buttonInvokable.run {
@@ -63,10 +66,12 @@ class DisableRecessPopover(
                         }.map { pane -> pane.recessChecks }
                         .toList()
                         .forEach { pane ->
-                            (when {
-                                recessChoice.value is String -> pane
-                                else -> pane.filter { _pane -> _pane.text == recessChoice.value.toString() }
-                            }).forEach { _pane ->
+                            (
+                                when {
+                                    recessChoice.value is String -> pane
+                                    else -> pane.filter { _pane -> _pane.text == recessChoice.value.toString() }
+                                }
+                                ).forEach { _pane ->
                                 _pane.isSelected = false
                             }
                         }

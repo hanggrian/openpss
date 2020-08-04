@@ -24,11 +24,13 @@ class PaginatedPane : Pagination() {
     val lastPageIndex: Int get() = pageCount - 1
 
     init {
-        pageFactoryProperty().bind(buildBinding(magicProperty, contentFactoryProperty) {
-            Callback<Int, Node> { page ->
-                contentFactory?.call(page to (height / magic).toInt())
+        pageFactoryProperty().bind(
+            buildBinding(magicProperty, contentFactoryProperty) {
+                Callback<Int, Node> { page ->
+                    contentFactory?.call(page to (height / magic).toInt())
+                }
             }
-        })
+        )
     }
 
     fun selectLast() {

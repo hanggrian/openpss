@@ -1,14 +1,12 @@
-import org.jetbrains.kotlin.codegen.StackValue.field
-
 plugins {
     kotlin("jvm")
     dokka
     idea
-    generating("r")
-    generating("buildconfig")
+    id("com.hendraanggrian.r")
+    id("com.hendraanggrian.buildconfig")
+    id("com.hendraanggrian.packr")
     shadow
     application
-    packr
     `git-publish`
 }
 
@@ -41,7 +39,7 @@ dependencies {
     implementation(google("gson", VERSION_GSON, "code.gson"))
     implementation(google("guava", VERSION_GUAVA, "guava"))
 
-    implementation(hendraanggrian("ktfx", version = VERSION_KTFX))
+    implementation(hendraanggrian("ktfx", "ktfx", VERSION_KTFX))
     implementation(hendraanggrian("ktfx", "ktfx-controlsfx", VERSION_KTFX))
     implementation(hendraanggrian("ktfx", "ktfx-jfoenix", VERSION_KTFX))
 
@@ -55,7 +53,7 @@ dependencies {
 
     implementation(log4j12())
 
-    testImplementation(kotlin("test", VERSION_KOTLIN))
+    testImplementation(kotlin("test-junit", VERSION_KOTLIN))
     testImplementation(kotlin("reflect", VERSION_KOTLIN))
 
     testImplementation(hendraanggrian("ktfx", "ktfx-testfx", VERSION_KTFX))
@@ -63,27 +61,31 @@ dependencies {
 }
 
 packr {
-    buildDir.resolve("install/$RELEASE_ARTIFACT/lib")?.listFiles()?.forEach { classpath(it.path) }
     executable = RELEASE_NAME
     mainClass = application.mainClassName
+    classpath = files("build/install/$RELEASE_ARTIFACT/lib")
+    resources = files("res")
     vmArgs("Xmx2G")
-    resources(projectDir.resolve("res"))
     macOS {
-        name = "$RELEASE_NAME.app"
-        icon = projectDir.resolve("art/$RELEASE_NAME.icns")
+        name = "$RELEASE_NAME/$RELEASE_NAME.app"
+        icon = rootProject.projectDir.resolve("art/$RELEASE_NAME.icns")
         bundleId = RELEASE_GROUP
     }
-    windows64 {
-        jdk = "/Users/hendraanggrian/Desktop/jdk1.8.0_181"
-        name = RELEASE_NAME
+    windows32 {
+        name = "32-bit/$RELEASE_NAME"
+        jdk = "/Volumes/Media/Windows JDK/jdk1.8.0_261-x86"
     }
-    verbose = true
-    openOnDone = true
+    windows64 {
+        name = "64-bit/$RELEASE_NAME"
+        jdk = "/Volumes/Media/Windows JDK/jdk1.8.0_261-x64"
+    }
+    isVerbose = true
+    isAutoOpen = true
 }
 
 gitPublish {
-    repoUri = RELEASE_WEBSITE
-    branch = "gh-pages"
+    repoUri.set(RELEASE_WEBSITE)
+    branch.set("gh-pages")
     contents.from("pages", "$buildDir/docs")
 }
 
@@ -94,26 +96,24 @@ tasks {
     }
     get("gitPublishCopy").dependsOn("dokka")
 
-    "generateR"(com.hendraanggrian.generating.r.RTask::class) {
+    "generateR"(com.hendraanggrian.r.RTask::class) {
         resourcesDir = projectDir.resolve("res")
         exclude("font", "license")
-        css {
-            isJavaFx = true
-        }
-        properties {
-            readResourceBundle = true
+        configureCss()
+        configureProperties {
+            isWriteResourceBundle = true
         }
     }
 
-    "generateBuildConfig"(com.hendraanggrian.generating.buildconfig.BuildConfigTask::class) {
+    "generateBuildConfig"(com.hendraanggrian.buildconfig.BuildConfigTask::class) {
         appName = RELEASE_NAME
         debug = RELEASE_DEBUG
         artifactId = RELEASE_ARTIFACT
         email = "$RELEASE_USER@gmail.com"
         website = RELEASE_WEBSITE
 
-        field("AUTHOR", RELEASE_USER)
-        field("FULL_NAME", RELEASE_FULL_NAME)
+        addField("AUTHOR", RELEASE_USER)
+        addField("FULL_NAME", RELEASE_FULL_NAME)
     }
 
     "shadowJar"(com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar::class) {

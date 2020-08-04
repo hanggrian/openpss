@@ -18,8 +18,9 @@ fun String.isPersonName(): Boolean {
     return parts.size > 1 && parts.all { part ->
         val firstUppercase = part.first().isUpperCase()
         when {
-            part.length > 1 -> firstUppercase &&
-                part.removeRange(0, 1).all { it.isLowerCase() }
+            part.length > 1 ->
+                firstUppercase &&
+                    part.removeRange(0, 1).all { it.isLowerCase() }
             else -> firstUppercase
         }
     }

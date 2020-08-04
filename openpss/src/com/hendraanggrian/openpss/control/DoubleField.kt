@@ -27,14 +27,16 @@ class DoubleField : JFXTextField() {
         textProperty().bindBidirectional(valueProperty()) {
             fromString { it.toDoubleOrNull() ?: 0.0 }
         }
-        validProperty().bind(buildBooleanBinding(textProperty()) {
-            try {
-                java.lang.Double.parseDouble(text)
-                true
-            } catch (e: NumberFormatException) {
-                false
+        validProperty().bind(
+            buildBooleanBinding(textProperty()) {
+                try {
+                    java.lang.Double.parseDouble(text)
+                    true
+                } catch (e: NumberFormatException) {
+                    false
+                }
             }
-        })
+        )
         focusedProperty().listener { _, _, focused ->
             if (focused && text.isNotEmpty()) {
                 selectAll()

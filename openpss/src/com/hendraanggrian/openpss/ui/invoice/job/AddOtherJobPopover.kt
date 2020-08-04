@@ -12,7 +12,8 @@ import ktfx.beans.value.or
 import ktfx.layouts._GridPane
 import ktfx.layouts.label
 
-class AddOtherJobPopover(context: Context) : AddJobPopover<Invoice.OtherJob>(context, R.string.add_other_job),
+class AddOtherJobPopover(context: Context) :
+    AddJobPopover<Invoice.OtherJob>(context, R.string.add_other_job),
     Invoice.Job {
 
     private lateinit var priceField: DoubleField

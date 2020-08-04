@@ -121,9 +121,11 @@ class InvoiceController : ActionController(), Refreshable {
                 .toObservableList()
             selectionModel.selectFirst()
         }
-        customerField.textProperty().bind(buildStringBinding(customerProperty) {
-            customerProperty.value?.toString() ?: getString(R.string.search_customer)
-        })
+        customerField.textProperty().bind(
+            buildStringBinding(customerProperty) {
+                customerProperty.value?.toString() ?: getString(R.string.search_customer)
+            }
+        )
         dateBox.disableProperty().bind(!pickDateRadio.selectedProperty())
         clearFiltersButton.disableProperty().bind(
             pickDateRadio.selectedProperty() and
@@ -134,149 +136,159 @@ class InvoiceController : ActionController(), Refreshable {
     }
 
     override fun refresh() = later {
-        invoicePagination.contentFactoryProperty().bind(buildBinding(
-            searchField.valueProperty(),
-            customerProperty,
-            paymentCombo.valueProperty(),
-            allDateRadio.selectedProperty(),
-            pickDateRadio.selectedProperty(),
-            dateBox.valueProperty()
-        ) {
-            Callback<Pair<Int, Int>, Node> { (page, count) ->
-                masterDetailPane(BOTTOM) {
-                    invoiceTable = ktfx.layouts.tableView {
-                        columnResizePolicy = CONSTRAINED_RESIZE_POLICY
-                        columns {
-                            getString(R.string.id)<String> { stringCell { no.toString() } }
-                            getString(R.string.date)<String> {
-                                stringCell { dateTime.toString(PATTERN_DATETIME_EXTENDED) }
-                            }
-                            getString(R.string.employee)<String> {
-                                stringCell { transaction { Employees[employeeId].single().toString() } }
-                            }
-                            getString(R.string.customer)<String> {
-                                stringCell { transaction { Customers[customerId].single().toString() } }
-                            }
-                            getString(R.string.total)<String> { currencyCell(this@InvoiceController) { total } }
-                            getString(R.string.print)<Boolean> { doneCell { printed } }
-                            getString(R.string.paid)<Boolean> { doneCell { isPaid } }
-                            getString(R.string.done)<Boolean> { doneCell { isDone } }
-                        }
-                        onMouseClicked {
-                            if (it.isDoubleClick() && invoiceTable.selectionModel.isSelected()) {
-                                viewInvoice()
-                            }
-                        }
-                        titleProperty().bind(buildStringBinding(selectionModel.selectedItemProperty()) {
-                            Invoice.no(this@InvoiceController, selectionModel.selectedItem?.no)
-                        })
-                    }
-                    showDetailNodeProperty().bind(invoiceTable.selectionModel.selectedItemProperty().isNotNull)
-                    masterNode = invoiceTable
-                    detailNode = ktfx.layouts.vbox {
-                        Toolbar().apply {
-                            leftItems {
-                                label(getString(R.string.payment)) {
-                                    styleClass.addAll("bold", "accent")
-                                }
-                            }
-                        }()
-                        paymentTable = tableView {
-                            columnResizePolicy = TableView.CONSTRAINED_RESIZE_POLICY
+        invoicePagination.contentFactoryProperty().bind(
+            buildBinding(
+                searchField.valueProperty(),
+                customerProperty,
+                paymentCombo.valueProperty(),
+                allDateRadio.selectedProperty(),
+                pickDateRadio.selectedProperty(),
+                dateBox.valueProperty()
+            ) {
+                Callback<Pair<Int, Int>, Node> { (page, count) ->
+                    masterDetailPane(BOTTOM) {
+                        invoiceTable = ktfx.layouts.tableView {
+                            columnResizePolicy = CONSTRAINED_RESIZE_POLICY
                             columns {
+                                getString(R.string.id)<String> { stringCell { no.toString() } }
                                 getString(R.string.date)<String> {
                                     stringCell { dateTime.toString(PATTERN_DATETIME_EXTENDED) }
                                 }
                                 getString(R.string.employee)<String> {
                                     stringCell { transaction { Employees[employeeId].single().toString() } }
                                 }
-                                getString(R.string.value)<String> {
-                                    currencyCell(this@InvoiceController) { value }
+                                getString(R.string.customer)<String> {
+                                    stringCell { transaction { Customers[customerId].single().toString() } }
                                 }
-                                getString(R.string.cash)<Boolean> {
-                                    doneCell { isCash() }
-                                }
-                                getString(R.string.reference)<String> {
-                                    stringCell { reference }
+                                getString(R.string.total)<String> { currencyCell(this@InvoiceController) { total } }
+                                getString(R.string.print)<Boolean> { doneCell { printed } }
+                                getString(R.string.paid)<Boolean> { doneCell { isPaid } }
+                                getString(R.string.done)<Boolean> { doneCell { isDone } }
+                            }
+                            onMouseClicked {
+                                if (it.isDoubleClick() && invoiceTable.selectionModel.isSelected()) {
+                                    viewInvoice()
                                 }
                             }
-                            itemsProperty().bind(buildBinding(invoiceTable.selectionModel.selectedItemProperty()) {
-                                when (invoiceTable.selectionModel.selectedItem) {
-                                    null -> emptyObservableList()
-                                    else -> transaction {
-                                        Payments {
-                                            invoiceId.equal(invoiceTable.selectionModel.selectedItem.id)
-                                        }.toObservableList()
+                            titleProperty().bind(
+                                buildStringBinding(selectionModel.selectedItemProperty()) {
+                                    Invoice.no(this@InvoiceController, selectionModel.selectedItem?.no)
+                                }
+                            )
+                        }
+                        showDetailNodeProperty().bind(invoiceTable.selectionModel.selectedItemProperty().isNotNull)
+                        masterNode = invoiceTable
+                        detailNode = ktfx.layouts.vbox {
+                            Toolbar().apply {
+                                leftItems {
+                                    label(getString(R.string.payment)) {
+                                        styleClass.addAll("bold", "accent")
                                     }
                                 }
-                            })
-                            contextMenu {
-                                getString(R.string.add)(ImageView(R.image.menu_add)) {
-                                    disableProperty().bind(invoiceTable.selectionModel.selectedItemProperty().isNull)
-                                    onAction { addPayment() }
+                            }()
+                            paymentTable = tableView {
+                                columnResizePolicy = TableView.CONSTRAINED_RESIZE_POLICY
+                                columns {
+                                    getString(R.string.date)<String> {
+                                        stringCell { dateTime.toString(PATTERN_DATETIME_EXTENDED) }
+                                    }
+                                    getString(R.string.employee)<String> {
+                                        stringCell { transaction { Employees[employeeId].single().toString() } }
+                                    }
+                                    getString(R.string.value)<String> {
+                                        currencyCell(this@InvoiceController) { value }
+                                    }
+                                    getString(R.string.cash)<Boolean> {
+                                        doneCell { isCash() }
+                                    }
+                                    getString(R.string.reference)<String> {
+                                        stringCell { reference }
+                                    }
                                 }
-                                getString(R.string.delete)(ImageView(R.image.menu_delete)) {
-                                    disableProperty().bind(!this@tableView.selectionModel.selectedItemProperty().isNotNull)
-                                    onAction { deletePayment() }
+                                itemsProperty().bind(
+                                    buildBinding(invoiceTable.selectionModel.selectedItemProperty()) {
+                                        when (invoiceTable.selectionModel.selectedItem) {
+                                            null -> emptyObservableList()
+                                            else -> transaction {
+                                                Payments {
+                                                    invoiceId.equal(invoiceTable.selectionModel.selectedItem.id)
+                                                }.toObservableList()
+                                            }
+                                        }
+                                    }
+                                )
+                                contextMenu {
+                                    getString(R.string.add)(ImageView(R.image.menu_add)) {
+                                        disableProperty().bind(invoiceTable.selectionModel.selectedItemProperty().isNull)
+                                        onAction { addPayment() }
+                                    }
+                                    getString(R.string.delete)(ImageView(R.image.menu_delete)) {
+                                        disableProperty().bind(!this@tableView.selectionModel.selectedItemProperty().isNotNull)
+                                        onAction { deletePayment() }
+                                    }
                                 }
                             }
                         }
-                    }
-                    dividerPosition = 0.6
-                    later {
-                        transaction {
-                            val invoices = Invoices.buildQuery {
-                                when {
-                                    searchField.value != 0 -> and(it.no.equal(searchField.value))
-                                    else -> {
-                                        if (customerProperty.value != null)
-                                            and(it.customerId.equal(customerProperty.value.id))
-                                        when (paymentCombo.selectionModel.selectedIndex) {
-                                            1 -> and(it.isPaid.equal(true))
-                                            2 -> and(it.isPaid.equal(false))
-                                        }
-                                        if (pickDateRadio.isSelected) and(it.dateTime.matches(dateBox.value!!))
-                                    }
-                                }
-                            }
-                            invoicePagination.pageCount = ceil(invoices.count() / count.toDouble()).toInt()
-                            invoiceTable.items = invoices
-                                .skip(count * page)
-                                .take(count)
-                                .toMutableObservableList()
-                            invoiceTable.contextMenu {
-                                getString(R.string.view)(ImageView(R.image.menu_invoice)) {
-                                    later {
-                                        disableProperty().bind(invoiceTable.selectionModel.selectedItemProperty().isNull)
-                                    }
-                                    onAction { viewInvoice() }
-                                }
-                                getString(R.string.done)(ImageView(R.image.menu_done)) {
-                                    later {
-                                        disableProperty().bind(buildBinding(invoiceTable.selectionModel.selectedItemProperty()) {
-                                            when {
-                                                invoiceTable.selectionModel.selectedItem != null &&
-                                                    !invoiceTable.selectionModel.selectedItem.isDone -> false
-                                                else -> true
+                        dividerPosition = 0.6
+                        later {
+                            transaction {
+                                val invoices = Invoices.buildQuery {
+                                    when {
+                                        searchField.value != 0 -> and(it.no.equal(searchField.value))
+                                        else -> {
+                                            if (customerProperty.value != null)
+                                                and(it.customerId.equal(customerProperty.value.id))
+                                            when (paymentCombo.selectionModel.selectedIndex) {
+                                                1 -> and(it.isPaid.equal(true))
+                                                2 -> and(it.isPaid.equal(false))
                                             }
-                                        })
-                                    }
-                                    onAction {
-                                        transaction {
-                                            invoiceTable.selectionModel.selectedItem.done(this@InvoiceController)
+                                            if (pickDateRadio.isSelected) and(it.dateTime.matches(dateBox.value!!))
                                         }
-                                        refreshButton.fire()
                                     }
                                 }
-                                separatorMenuItem()
-                                getString(R.string.delete)(ImageView(R.image.menu_delete)) {
-                                    disableProperty().bind(invoiceTable.selectionModel.selectedItemProperty().isNull)
-                                    onAction {
-                                        (DeleteInvoiceAction(
-                                            this@InvoiceController,
-                                            invoiceTable.selectionModel.selectedItem
-                                        )) {
-                                            invoiceTable.items.remove(invoiceTable.selectionModel.selectedItem)
+                                invoicePagination.pageCount = ceil(invoices.count() / count.toDouble()).toInt()
+                                invoiceTable.items = invoices
+                                    .skip(count * page)
+                                    .take(count)
+                                    .toMutableObservableList()
+                                invoiceTable.contextMenu {
+                                    getString(R.string.view)(ImageView(R.image.menu_invoice)) {
+                                        later {
+                                            disableProperty().bind(invoiceTable.selectionModel.selectedItemProperty().isNull)
+                                        }
+                                        onAction { viewInvoice() }
+                                    }
+                                    getString(R.string.done)(ImageView(R.image.menu_done)) {
+                                        later {
+                                            disableProperty().bind(
+                                                buildBinding(invoiceTable.selectionModel.selectedItemProperty()) {
+                                                    when {
+                                                        invoiceTable.selectionModel.selectedItem != null &&
+                                                            !invoiceTable.selectionModel.selectedItem.isDone -> false
+                                                        else -> true
+                                                    }
+                                                }
+                                            )
+                                        }
+                                        onAction {
+                                            transaction {
+                                                invoiceTable.selectionModel.selectedItem.done(this@InvoiceController)
+                                            }
+                                            refreshButton.fire()
+                                        }
+                                    }
+                                    separatorMenuItem()
+                                    getString(R.string.delete)(ImageView(R.image.menu_delete)) {
+                                        disableProperty().bind(invoiceTable.selectionModel.selectedItemProperty().isNull)
+                                        onAction {
+                                            (
+                                                DeleteInvoiceAction(
+                                                    this@InvoiceController,
+                                                    invoiceTable.selectionModel.selectedItem
+                                                )
+                                                ) {
+                                                invoiceTable.items.remove(invoiceTable.selectionModel.selectedItem)
+                                            }
                                         }
                                     }
                                 }
@@ -285,7 +297,7 @@ class InvoiceController : ActionController(), Refreshable {
                     }
                 }
             }
-        })
+        )
     }
 
     fun addInvoice() = AddInvoiceDialog(this).show {
@@ -320,11 +332,13 @@ class InvoiceController : ActionController(), Refreshable {
     }
 
     private fun deletePayment() = ConfirmDialog(this).show {
-        (DeletePaymentAction(
-            this@InvoiceController,
-            paymentTable.selectionModel.selectedItem,
-            invoiceTable.selectionModel.selectedItem.no
-        )) {
+        (
+            DeletePaymentAction(
+                this@InvoiceController,
+                paymentTable.selectionModel.selectedItem,
+                invoiceTable.selectionModel.selectedItem.no
+            )
+            ) {
             updatePaymentStatus()
             reload(invoiceTable.selectionModel.selectedItem)
         }

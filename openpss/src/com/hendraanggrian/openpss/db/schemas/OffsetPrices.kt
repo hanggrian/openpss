@@ -9,10 +9,12 @@ import kotlinx.nosql.integer
 import kotlinx.nosql.mongodb.DocumentSchema
 import kotlinx.nosql.string
 
-object OffsetPrices : DocumentSchema<OffsetPrice>(
-    "offset_prices",
-    OffsetPrice::class
-), NamedSchema {
+object OffsetPrices :
+    DocumentSchema<OffsetPrice>(
+        "offset_prices",
+        OffsetPrice::class
+    ),
+    NamedSchema {
     override val name = string("name")
     val minQty = integer("min_qty")
     val minPrice = double("min_price")

@@ -37,48 +37,50 @@ interface Popup : Context, NodeInvokable {
     fun graphicProperty(): ObjectProperty<Node>
 
     fun initialize() {
-        setActualContent(ktfx.layouts.vbox {
-            // material dialog have extra top padding: https://material.io/develop/web/components/dialogs/
-            Toolbar().apply {
-                leftItems {
-                    label(getString(titleId)) {
-                        styleClass.addAll(R.style.bold, R.style.display)
-                    }
-                }
-                rightItems {
-                    borderPane {
-                        centerProperty().listener { _, _, value ->
-                            if (value != null) {
-                                value marginLeft getDouble(R.dimen.padding_large)
-                            }
+        setActualContent(
+            ktfx.layouts.vbox {
+                // material dialog have extra top padding: https://material.io/develop/web/components/dialogs/
+                Toolbar().apply {
+                    leftItems {
+                        label(getString(titleId)) {
+                            styleClass.addAll(R.style.bold, R.style.display)
                         }
-                        centerProperty().bindBidirectional(graphicProperty())
                     }
+                    rightItems {
+                        borderPane {
+                            centerProperty().listener { _, _, value ->
+                                if (value != null) {
+                                    value marginLeft getDouble(R.dimen.padding_large)
+                                }
+                            }
+                            centerProperty().bindBidirectional(graphicProperty())
+                        }
+                    }
+                }() marginTop getDouble(R.dimen.padding_small) marginBottom getDouble(R.dimen.padding_small)
+                contentPane = vbox(getDouble(R.dimen.padding_medium)) {
+                    updatePadding(
+                        left = getDouble(R.dimen.padding_large),
+                        right = getDouble(R.dimen.padding_large)
+                    )
                 }
-            }() marginTop getDouble(R.dimen.padding_small) marginBottom getDouble(R.dimen.padding_small)
-            contentPane = vbox(getDouble(R.dimen.padding_medium)) {
-                updatePadding(
-                    left = getDouble(R.dimen.padding_large),
-                    right = getDouble(R.dimen.padding_large)
-                )
+                buttonBar {
+                    updatePadding(
+                        top = getDouble(R.dimen.padding_medium),
+                        left = getDouble(R.dimen.padding_large),
+                        right = getDouble(R.dimen.padding_large),
+                        bottom = getDouble(R.dimen.padding_large)
+                    )
+                    buttonInvokable = this
+                    cancelButton = jfxButton(getString(R.string.close)) {
+                        styleClass += R.style.flat
+                        isCancelButton = true
+                        onAction {
+                            dismiss()
+                        }
+                    }
+                } marginTop getDouble(R.dimen.padding_medium)
             }
-            buttonBar {
-                updatePadding(
-                    top = getDouble(R.dimen.padding_medium),
-                    left = getDouble(R.dimen.padding_large),
-                    right = getDouble(R.dimen.padding_large),
-                    bottom = getDouble(R.dimen.padding_large)
-                )
-                buttonInvokable = this
-                cancelButton = jfxButton(getString(R.string.close)) {
-                    styleClass += R.style.flat
-                    isCancelButton = true
-                    onAction {
-                        dismiss()
-                    }
-                }
-            } marginTop getDouble(R.dimen.padding_medium)
-        })
+        )
         setOnShown {
             focusedNode?.requestFocus()
         }

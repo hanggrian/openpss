@@ -25,7 +25,8 @@ import ktfx.jfoenix.jfxSnackbar
 
 /** Extended version of [MongoDBSession]. */
 @Suppress("NOTHING_TO_INLINE")
-class SessionWrapper(val session: MongoDBSession) : Session by session,
+class SessionWrapper(val session: MongoDBSession) :
+    Session by session,
     DocumentSchemaOperations by session,
     TableSchemaOperations by session,
     IndexOperations by session {

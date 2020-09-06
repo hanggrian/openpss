@@ -7,11 +7,11 @@ import javafx.beans.property.BooleanProperty
 import javafx.beans.property.DoubleProperty
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleDoubleProperty
-import ktfx.beans.binding.buildBooleanBinding
-import ktfx.beans.value.getValue
-import ktfx.beans.value.setValue
+import ktfx.bindings.booleanBindingOf
 import ktfx.coroutines.listener
-import ktfx.listeners.bindBidirectional
+import ktfx.getValue
+import ktfx.setValue
+import ktfx.text.buildStringConverter
 
 class DoubleField : JFXTextField() {
 
@@ -24,11 +24,14 @@ class DoubleField : JFXTextField() {
     val isValid: Boolean by validProperty
 
     init {
-        textProperty().bindBidirectional(valueProperty()) {
-            fromString { it.toDoubleOrNull() ?: 0.0 }
-        }
+        textProperty().bindBidirectional(
+            valueProperty(),
+            buildStringConverter {
+                fromString { it.toDoubleOrNull() ?: 0.0 }
+            }
+        )
         validProperty().bind(
-            buildBooleanBinding(textProperty()) {
+            booleanBindingOf(textProperty()) {
                 try {
                     java.lang.Double.parseDouble(text)
                     true

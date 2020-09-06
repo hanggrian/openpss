@@ -10,7 +10,7 @@ class DatePopover(
     prefill: LocalDate = LocalDate.now()
 ) : ResultablePopover<LocalDate>(context, titleId) {
 
-    private val dateBox: DateBox = DateBox(prefill)()
+    private val dateBox: DateBox = addChild(DateBox(prefill))
 
     override val nullableResult: LocalDate? get() = dateBox.valueProperty().value
 }

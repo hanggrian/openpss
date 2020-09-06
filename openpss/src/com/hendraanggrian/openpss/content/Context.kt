@@ -9,7 +9,7 @@ import javafx.scene.layout.StackPane
 import javafx.util.StringConverter
 import javafx.util.converter.CurrencyStringConverter
 import javafx.util.converter.NumberStringConverter
-import ktfx.jfoenix.jfxSnackbar
+import ktfx.jfoenix.controls.jfxSnackbar
 import java.awt.Desktop
 
 /** Usually being passed around as first constructor of many components. */

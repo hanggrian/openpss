@@ -15,7 +15,8 @@ import kotlinx.nosql.equal
 class AddInvoiceAction(context: Context, val invoice: Invoice) : Action<Invoice>(context) {
 
     override val log: String = getString(
-        R.string._log_invoice_add, invoice.no,
+        R.string._log_invoice_add,
+        invoice.no,
         transaction {
             Customers[invoice.customerId].single().name
         }
@@ -27,7 +28,8 @@ class AddInvoiceAction(context: Context, val invoice: Invoice) : Action<Invoice>
 class DeleteInvoiceAction(context: Context, val invoice: Invoice) : Action<Unit>(context, true) {
 
     override val log: String = getString(
-        R.string._log_invoice_delete, invoice.no,
+        R.string._log_invoice_delete,
+        invoice.no,
         transaction {
             Customers[invoice.customerId].single().name
         }

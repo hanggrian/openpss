@@ -7,11 +7,12 @@ import com.hendraanggrian.openpss.content.Context
 import javafx.scene.control.Control
 import javafx.scene.control.TableCell
 import javafx.scene.control.TableColumn
+import javafx.scene.image.ImageView
 import javafx.scene.text.Text
-import ktfx.beans.property.asReadOnlyProperty
-import ktfx.layouts.imageView
-import ktfx.listeners.cellFactory
-import ktfx.util.invoke
+import ktfx.booleanPropertyOf
+import ktfx.cells.cellFactory
+import ktfx.stringPropertyOf
+import ktfx.text.invoke
 
 fun <T> TableColumn<T, Boolean>.doneCell(size: Int = 64, target: T.() -> Boolean) {
     size.toDouble().let {
@@ -21,12 +22,12 @@ fun <T> TableColumn<T, Boolean>.doneCell(size: Int = 64, target: T.() -> Boolean
     }
     isResizable = false
     style = "-fx-alignment: center;"
-    setCellValueFactory { it.value.target().asReadOnlyProperty() }
+    setCellValueFactory { booleanPropertyOf(it.value.target()) }
     cellFactory {
         onUpdate { done, empty ->
             text = null
             graphic = null
-            if (done != null && !empty) graphic = imageView(
+            if (done != null && !empty) graphic = ImageView(
                 when {
                     done -> R.image.btn_done_yes
                     else -> R.image.btn_done_no
@@ -37,16 +38,16 @@ fun <T> TableColumn<T, Boolean>.doneCell(size: Int = 64, target: T.() -> Boolean
 }
 
 fun <T> TableColumn<T, String>.stringCell(target: T.() -> String?) =
-    setCellValueFactory { it.value.target().orEmpty().asReadOnlyProperty() }
+    setCellValueFactory { stringPropertyOf(it.value.target().orEmpty()) }
 
 fun <T> TableColumn<T, String>.numberCell(context: Context, target: T.() -> Int) {
     style = "-fx-alignment: center-right;"
-    setCellValueFactory { context.numberConverter(it.value.target()).asReadOnlyProperty() }
+    setCellValueFactory { stringPropertyOf(context.numberConverter(it.value.target())) }
 }
 
 fun <T> TableColumn<T, String>.currencyCell(context: Context, target: T.() -> Double) {
     style = "-fx-alignment: center-right;"
-    setCellValueFactory { context.currencyConverter(it.value.target()).asReadOnlyProperty() }
+    setCellValueFactory { stringPropertyOf(context.currencyConverter(it.value.target())) }
 }
 
 fun <S> TableColumn<S, String>.wrapText() = setCellFactory {

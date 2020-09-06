@@ -1,12 +1,10 @@
 package com.hendraanggrian.openpss.ui.finance
 
-import com.hendraanggrian.openpss.App.Companion.STRETCH_POINT
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.PATTERN_DATE
 import com.hendraanggrian.openpss.content.PATTERN_TIME
 import com.hendraanggrian.openpss.control.DateBox
 import com.hendraanggrian.openpss.control.MonthBox
-import com.hendraanggrian.openpss.control.StretchableButton
 import com.hendraanggrian.openpss.db.schemas.Employees
 import com.hendraanggrian.openpss.db.schemas.Invoices
 import com.hendraanggrian.openpss.db.schemas.Payment
@@ -32,16 +30,18 @@ import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
 import javafx.scene.image.ImageView
 import javafx.scene.layout.BorderPane
-import ktfx.application.later
-import ktfx.beans.value.eq
+import ktfx.bindings.eq
 import ktfx.collections.toMutableObservableList
+import ktfx.controls.isSelected
 import ktfx.coroutines.listener
 import ktfx.coroutines.onAction
 import ktfx.coroutines.onMouseClicked
-import ktfx.layouts.NodeInvokable
+import ktfx.inputs.isDoubleClick
+import ktfx.jfoenix.layouts.styledJFXButton
+import ktfx.layouts.NodeManager
 import ktfx.layouts.borderPane
-import ktfx.scene.control.isSelected
-import ktfx.scene.input.isDoubleClick
+import ktfx.layouts.tooltip
+import ktfx.runLater
 import java.net.URL
 import java.util.ResourceBundle
 
@@ -81,21 +81,15 @@ class FinanceController : ActionController(), Refreshable {
         valueProperty().listener { refresh() }
     }
 
-    override fun NodeInvokable.onCreateActions() {
-        refreshButton = StretchableButton(
-            STRETCH_POINT,
-            getString(R.string.refresh),
-            ImageView(R.image.act_refresh)
-        ).apply {
+    override fun NodeManager.onCreateActions() {
+        refreshButton = styledJFXButton(null, ImageView(R.image.act_refresh), R.style.flat) {
+            tooltip(getString(R.string.refresh))
             onAction { refresh() }
-        }()
-        viewTotalButton = StretchableButton(
-            STRETCH_POINT,
-            getString(R.string.total),
-            ImageView(R.image.act_money)
-        ).apply {
+        }
+        viewTotalButton = styledJFXButton(null, ImageView(R.image.act_money), R.style.flat) {
+            tooltip(getString(R.string.total))
             onAction { viewTotal() }
-        }()
+        }
         switchablePane = borderPane()
     }
 
@@ -134,7 +128,7 @@ class FinanceController : ActionController(), Refreshable {
         tabPane.selectionModel.selectedIndexProperty().listener { refresh() }
     }
 
-    override fun refresh() = later {
+    override fun refresh() = runLater {
         transaction {
             when (tabPane.selectionModel.selectedIndex) {
                 0 -> dailyTable.items = Payments { it.dateTime.matches(dateBox.value!!) }.toMutableObservableList()

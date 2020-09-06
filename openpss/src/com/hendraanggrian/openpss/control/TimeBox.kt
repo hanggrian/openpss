@@ -8,17 +8,16 @@ import com.hendraanggrian.openpss.util.toJoda
 import com.jfoenix.controls.JFXTimePicker
 import javafx.beans.property.ObjectProperty
 import javafx.beans.property.SimpleObjectProperty
-import javafx.geometry.Pos
-import javafx.geometry.Pos.CENTER
 import javafx.scene.control.Button
 import javafx.scene.image.ImageView
-import ktfx.beans.binding.buildBinding
-import ktfx.beans.value.getValue
+import ktfx.bindings.bindingOf
+import ktfx.controls.CENTER
 import ktfx.coroutines.onAction
-import ktfx.jfoenix.jfxButton
-import ktfx.jfoenix.jfxTimePicker
-import ktfx.layouts._HBox
-import ktfx.listeners.buildStringConverter
+import ktfx.getValue
+import ktfx.jfoenix.layouts.jfxTimePicker
+import ktfx.jfoenix.layouts.styledJFXButton
+import ktfx.layouts.KtfxHBox
+import ktfx.text.buildStringConverter
 import org.joda.time.LocalTime
 import org.joda.time.LocalTime.MIDNIGHT
 
@@ -27,7 +26,7 @@ import org.joda.time.LocalTime.MIDNIGHT
  *
  * [TimeBox] width is deliberately measured to match [com.hendraanggrian.ui.scene.control.ForcedDatePicker]'s width.
  */
-open class TimeBox @JvmOverloads constructor(prefill: LocalTime = MIDNIGHT) : _HBox(0.0) {
+open class TimeBox @JvmOverloads constructor(prefill: LocalTime = MIDNIGHT) : KtfxHBox(0.0) {
 
     lateinit var picker: JFXTimePicker
     var previousButton: Button
@@ -39,9 +38,8 @@ open class TimeBox @JvmOverloads constructor(prefill: LocalTime = MIDNIGHT) : _H
     val value: LocalTime? by valueProperty
 
     init {
-        alignment = Pos.CENTER
-        previousButton = jfxButton(graphic = ImageView(R.image.btn_previous)) {
-            styleClass += R.style.flat
+        alignment = CENTER
+        previousButton = styledJFXButton(null, ImageView(R.image.btn_previous), R.style.flat) {
             onAction {
                 picker.value = when (picker.value.hour) {
                     0 -> {
@@ -72,8 +70,7 @@ open class TimeBox @JvmOverloads constructor(prefill: LocalTime = MIDNIGHT) : _H
                 }
             }
         }
-        nextButton = jfxButton(graphic = ImageView(R.image.btn_next)) {
-            styleClass += R.style.flat
+        nextButton = styledJFXButton(null, ImageView(R.image.btn_next), R.style.flat) {
             onAction {
                 picker.value = when (picker.value.hour) {
                     23 -> {
@@ -85,6 +82,6 @@ open class TimeBox @JvmOverloads constructor(prefill: LocalTime = MIDNIGHT) : _H
             }
         }
 
-        valueProperty.bind(buildBinding(picker.valueProperty()) { picker.value.toJoda() })
+        valueProperty.bind(bindingOf(picker.valueProperty()) { picker.value.toJoda() })
     }
 }

@@ -12,40 +12,40 @@ import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
 import javafx.scene.control.TextInputControl
 import javafx.scene.image.ImageView
-import ktfx.beans.property.asProperty
-import ktfx.beans.value.or
+import ktfx.bindings.or
+import ktfx.booleanPropertyOf
 import ktfx.coroutines.listener
-import ktfx.jfoenix.jfxTextArea
-import ktfx.jfoenix.jfxTextField
+import ktfx.jfoenix.layouts.jfxTextArea
+import ktfx.jfoenix.layouts.jfxTextField
 import ktfx.layouts.gridPane
 import ktfx.layouts.imageView
 import ktfx.layouts.label
-import ktfx.scene.layout.gap
 
 class EditCustomerDialog(
     context: Context,
     private val customer: Customer
 ) : ResultableDialog<Customer>(context, R.string.edit_customer) {
 
-    private val unchangedProperty = true.asProperty()
+    private val unchangedProperty = booleanPropertyOf(true)
 
-    private lateinit var image: ImageView
-    private lateinit var description: Label
-    private lateinit var nameField: TextField
-    private lateinit var addressField: TextField
-    private lateinit var noteArea: TextArea
+    private var image: ImageView
+    private var description: Label
+    private var nameField: TextField
+    private var addressField: TextField
+    private var noteArea: TextArea
 
     override val focusedNode: Node? get() = nameField
 
     init {
         gridPane {
-            gap = getDouble(R.dimen.padding_medium)
+            hgap = getDouble(R.dimen.padding_medium)
+            vgap = getDouble(R.dimen.padding_medium)
             image = imageView(
                 when {
                     customer.isCompany -> R.image.display_company
                     else -> R.image.display_person
                 }
-            ) col 0 row 0 colSpans 2
+            ).grid(0, 0 to 2)
             description = label(
                 getString(
                     when {
@@ -53,13 +53,13 @@ class EditCustomerDialog(
                         else -> R.string._person_requirement
                     }
                 )
-            ) col 0 row 1 colSpans 2
-            label(getString(R.string.name)) col 0 row 2
-            nameField = jfxTextField(customer.name) { bindTextField() } col 1 row 2
-            label(getString(R.string.address)) col 0 row 3
-            addressField = jfxTextField(customer.address.orEmpty()) { bindTextField() } col 1 row 3
-            label(getString(R.string.note)) col 0 row 4
-            noteArea = jfxTextArea(customer.note.orEmpty()) { bindTextField() } col 1 row 4
+            ).grid(1, 0 to 2)
+            label(getString(R.string.name)).grid(2, 0)
+            nameField = jfxTextField(customer.name) { bindTextField() }.grid(2, 1)
+            label(getString(R.string.address)).grid(3, 0)
+            addressField = jfxTextField(customer.address.orEmpty()) { bindTextField() }.grid(3, 1)
+            label(getString(R.string.note)).grid(4, 0)
+            noteArea = jfxTextArea(customer.note.orEmpty()) { bindTextField() }.grid(4, 1)
         }
         defaultButton.run {
             text = getString(R.string.edit)

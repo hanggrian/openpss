@@ -5,10 +5,10 @@ package com.hendraanggrian.openpss.control
 import com.jfoenix.controls.JFXTextField
 import javafx.beans.property.IntegerProperty
 import javafx.beans.property.SimpleIntegerProperty
-import ktfx.beans.value.getValue
-import ktfx.beans.value.setValue
 import ktfx.coroutines.listener
-import ktfx.listeners.bindBidirectional
+import ktfx.getValue
+import ktfx.setValue
+import ktfx.text.buildStringConverter
 
 class IntField : JFXTextField() {
 
@@ -17,9 +17,12 @@ class IntField : JFXTextField() {
     var value: Int by valueProperty
 
     init {
-        textProperty().bindBidirectional(valueProperty()) {
-            fromString { it.toIntOrNull() ?: 0 }
-        }
+        textProperty().bindBidirectional(
+            valueProperty(),
+            buildStringConverter {
+                fromString { it.toIntOrNull() ?: 0 }
+            }
+        )
         textProperty().addListener { _, oldValue, value ->
             text = when {
                 value.isEmpty() -> "0"

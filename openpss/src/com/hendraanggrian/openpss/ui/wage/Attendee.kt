@@ -16,11 +16,11 @@ import javafx.beans.property.SimpleIntegerProperty
 import javafx.collections.ObservableList
 import kotlinx.nosql.equal
 import kotlinx.nosql.update
-import ktfx.beans.binding.buildDoubleBinding
-import ktfx.beans.property.asProperty
-import ktfx.beans.value.getValue
-import ktfx.beans.value.setValue
+import ktfx.bindings.doubleBindingOf
 import ktfx.collections.mutableObservableListOf
+import ktfx.getValue
+import ktfx.propertyOf
+import ktfx.setValue
 import org.joda.time.DateTime
 import org.joda.time.Minutes.minutes
 import org.joda.time.Period
@@ -55,7 +55,8 @@ data class Attendee(
     }
 
     fun saveWage() {
-        transaction @Suppress("IMPLICIT_CAST_TO_ANY") {
+        @Suppress("IMPLICIT_CAST_TO_ANY")
+        transaction {
             Wages { it.wageId.equal(id) }.let { wages ->
                 if (wages.isEmpty()) Wages += Wage(id, daily, hourlyOvertime)
                 else wages.single().let { wage ->
@@ -83,42 +84,42 @@ data class Attendee(
     override fun toString(): String = "$id. $name"
 
     fun toNodeRecord(resources: Resources): Record =
-        Record(resources, INDEX_NODE, this, DateTime.now().asProperty(), DateTime.now().asProperty())
+        Record(resources, INDEX_NODE, this, propertyOf(DateTime.now()), propertyOf(DateTime.now()))
 
     fun toChildRecords(resources: Resources): Set<Record> {
         val records = mutableSetOf<Record>()
         val iterator = attendances.iterator()
         var index = 0
         while (iterator.hasNext()) records +=
-            Record(resources, index++, this, iterator.next().asProperty(), iterator.next().asProperty())
+            Record(resources, index++, this, propertyOf(iterator.next()), propertyOf(iterator.next()))
         return records
     }
 
     fun toTotalRecords(resources: Resources, children: Collection<Record>): Record =
-        Record(resources, INDEX_TOTAL, this, START_OF_TIME.asProperty(), START_OF_TIME.asProperty())
+        Record(resources, INDEX_TOTAL, this, propertyOf(START_OF_TIME), propertyOf(START_OF_TIME))
             .apply {
                 dailyProperty.bind(
-                    buildDoubleBinding(children.map { it.dailyProperty }) {
+                    doubleBindingOf(children.map { it.dailyProperty }) {
                         children.sumByDouble { it.daily }.round()
                     }
                 )
                 dailyIncomeProperty.bind(
-                    buildDoubleBinding(children.map { it.dailyIncomeProperty }) {
+                    doubleBindingOf(children.map { it.dailyIncomeProperty }) {
                         children.sumByDouble { it.dailyIncome }.round()
                     }
                 )
                 overtimeProperty.bind(
-                    buildDoubleBinding(children.map { it.overtimeProperty }) {
+                    doubleBindingOf(children.map { it.overtimeProperty }) {
                         children.sumByDouble { it.overtime }.round()
                     }
                 )
                 overtimeIncomeProperty.bind(
-                    buildDoubleBinding(children.map { it.overtimeIncomeProperty }) {
+                    doubleBindingOf(children.map { it.overtimeIncomeProperty }) {
                         children.sumByDouble { it.overtimeIncome }.round()
                     }
                 )
                 totalProperty.bind(
-                    buildDoubleBinding(children.map { it.totalProperty }) {
+                    doubleBindingOf(children.map { it.totalProperty }) {
                         children.sumByDouble { it.total }.round()
                     }
                 )

@@ -55,8 +55,6 @@ dependencies {
 
     testImplementation(kotlin("test-junit", VERSION_KOTLIN))
     testImplementation(kotlin("reflect", VERSION_KOTLIN))
-
-    testImplementation(hendraanggrian("ktfx", "ktfx-testfx", VERSION_KTFX))
     testImplementation(testFx("junit"))
 }
 

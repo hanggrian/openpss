@@ -8,9 +8,9 @@ import javafx.scene.Node
 import javafx.scene.control.Button
 import javafx.scene.layout.Region
 import javafx.scene.layout.VBox
-import ktfx.beans.value.getValue
-import ktfx.beans.value.setValue
-import ktfx.layouts.NodeInvokable
+import ktfx.getValue
+import ktfx.layouts.NodeManager
+import ktfx.setValue
 import org.controlsfx.control.PopOver
 
 /** Base popup class used across applications. */
@@ -29,7 +29,7 @@ open class Popover(
     override fun dismiss() = hide()
 
     override lateinit var contentPane: VBox
-    override lateinit var buttonInvokable: NodeInvokable
+    override lateinit var buttonManager: NodeManager
     override lateinit var cancelButton: Button
 
     private val graphicProperty = SimpleObjectProperty<Node>()

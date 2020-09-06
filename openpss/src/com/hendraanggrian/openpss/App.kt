@@ -13,10 +13,9 @@ import javafx.application.Platform
 import javafx.fxml.FXMLLoader
 import javafx.scene.image.Image
 import javafx.stage.Stage
-import ktfx.application.launchApp
+import ktfx.launchApplication
 import ktfx.layouts.scene
-import ktfx.stage.icon
-import ktfx.stage.setMinSize
+import ktfx.windows.icon
 import org.apache.log4j.BasicConfigurator
 import java.util.Properties
 import java.util.ResourceBundle
@@ -25,13 +24,10 @@ import kotlin.system.exitProcess
 class App : Application(), Resources {
 
     companion object {
-
-        const val STRETCH_POINT = 900.0
-
         const val DURATION_SHORT = 3000L
         const val DURATION_LONG = 6000L
 
-        @JvmStatic fun main(args: Array<String>) = launchApp<App>(*args)
+        @JvmStatic fun main(args: Array<String>) = launchApplication<App>(*args)
 
         fun exit() {
             Platform.exit() // exit JavaFX
@@ -58,19 +54,22 @@ class App : Application(), Resources {
         stage.title = getString(R.string.openpss_login)
         stage.scene = scene {
             stylesheets += STYLESHEET_OPENPSS
-            LoginPane(this@App).apply {
-                onSuccess = { employee ->
-                    val loader = FXMLLoader(getResource(R.layout.controller_main), resourceBundle)
-                    this@scene.run {
-                        loader.pane()
-                    }
-                    val controller = loader.controller
-                    controller.login = employee
+            addChild(
+                LoginPane(this@App).apply {
+                    onSuccess = { employee ->
+                        val loader = FXMLLoader(getResource(R.layout.controller_main), resourceBundle)
+                        this@scene.run {
+                            addChild(loader.pane)
+                        }
+                        val controller = loader.controller
+                        controller.login = employee
 
-                    stage.isResizable = true
-                    stage.setMinSize(800.0, 480.0)
+                        stage.isResizable = true
+                        stage.height = 800.0
+                        stage.width = 480.0
+                    }
                 }
-            }()
+            )
         }
         stage.show()
     }

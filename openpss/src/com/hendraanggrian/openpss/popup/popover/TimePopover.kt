@@ -10,7 +10,7 @@ class TimePopover(
     prefill: LocalTime = LocalTime.now()
 ) : ResultablePopover<LocalTime>(context, titleId) {
 
-    private val timeBox: TimeBox = TimeBox(prefill)()
+    private val timeBox: TimeBox = addChild(TimeBox(prefill))
 
     override val nullableResult: LocalTime? get() = timeBox.valueProperty().value
 }

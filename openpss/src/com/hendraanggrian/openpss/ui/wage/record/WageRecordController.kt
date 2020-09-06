@@ -32,20 +32,20 @@ import javafx.scene.control.TreeTableColumn
 import javafx.scene.control.TreeTableView
 import javafx.scene.layout.StackPane
 import javafx.scene.layout.VBox
-import ktfx.application.later
-import ktfx.beans.binding.buildBooleanBinding
-import ktfx.beans.binding.buildStringBinding
-import ktfx.beans.value.lessEq
-import ktfx.beans.value.or
-import ktfx.collections.sizeBinding
+import ktfx.bindings.booleanBindingOf
+import ktfx.bindings.lessEq
+import ktfx.bindings.or
+import ktfx.bindings.size
+import ktfx.bindings.stringBindingOf
+import ktfx.cells.cellFactory
+import ktfx.controls.capture
+import ktfx.controls.toSwingImage
 import ktfx.coroutines.onAction
-import ktfx.embed.swing.toSwingImage
-import ktfx.jfoenix.jfxIndefiniteSnackbar
+import ktfx.jfoenix.controls.jfxIndefiniteSnackbar
 import ktfx.layouts.label
 import ktfx.layouts.menuItem
-import ktfx.listeners.cellFactory
-import ktfx.scene.snapshot
-import ktfx.util.invoke
+import ktfx.runLater
+import ktfx.text.invoke
 import org.apache.commons.lang3.SystemUtils
 import org.joda.time.LocalTime
 import java.awt.image.BufferedImage
@@ -83,11 +83,11 @@ class WageRecordController : Controller() {
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
         menuBar.isUseSystemMenuBar = SystemUtils.IS_OS_MAC
-        undoMenu.disableProperty().bind(editMenu.items.sizeBinding lessEq 2)
+        undoMenu.disableProperty().bind(editMenu.items.size() lessEq 2)
         arrayOf(lockStartButton, lockEndButton).forEach { button ->
             button.disableProperty().bind(
                 recordTable.selectionModel.selectedItemProperty().isNull or
-                    buildBooleanBinding(recordTable.selectionModel.selectedItemProperty()) {
+                    booleanBindingOf(recordTable.selectionModel.selectedItemProperty()) {
                         recordTable.selectionModel.selectedItems?.any { !it.value.isChild() } ?: true
                     }
             )
@@ -124,7 +124,7 @@ class WageRecordController : Controller() {
         overtimeIncomeColumn.setCellValueFactory { it.value.value.overtimeIncomeProperty as ObservableValue<Double> }
         totalColumn.setCellValueFactory { it.value.value.totalProperty as ObservableValue<Double> }
 
-        later {
+        runLater {
             getExtra<List<Attendee>>(EXTRA_ATTENDEES).forEach { attendee ->
                 val node = attendee.toNodeRecord(this)
                 val childs = attendee.toChildRecords(this)
@@ -136,7 +136,7 @@ class WageRecordController : Controller() {
             }
             totalLabel.textProperty()
                 .bind(
-                    buildStringBinding(records.filter { it.isChild() }.map { it.totalProperty }) {
+                    stringBindingOf(records.filter { it.isChild() }.map { it.totalProperty }) {
                         currencyConverter(
                             records
                                 .asSequence()
@@ -212,7 +212,7 @@ class WageRecordController : Controller() {
         val flow = (recordTable.skin as TreeTableViewSkin<*>).children[1] as VirtualFlow<*>
         var i = 0
         do {
-            images += recordTable.snapshot().toSwingImage()
+            images += recordTable.capture().toSwingImage()
             recordTable.scrollTo(flow.lastVisibleCell.index)
             i++
         } while (flow.lastVisibleCell.index + 1 <

@@ -5,7 +5,6 @@ import com.hendraanggrian.openpss.content.Context
 import com.hendraanggrian.openpss.db.Document
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.ui.Refreshable
-import javafx.geometry.Pos.CENTER_RIGHT
 import javafx.scene.Node
 import javafx.scene.control.Button
 import javafx.scene.control.TableColumn
@@ -14,36 +13,38 @@ import javafx.scene.control.TableView.CONSTRAINED_RESIZE_POLICY
 import javafx.scene.image.ImageView
 import javafx.stage.Stage
 import kotlinx.nosql.mongodb.DocumentSchema
-import ktfx.application.later
 import ktfx.collections.toMutableObservableList
+import ktfx.controls.RIGHT
+import ktfx.controls.TableColumnScope
 import ktfx.coroutines.onAction
-import ktfx.jfoenix.jfxButton
-import ktfx.layouts.TableColumnsBuilder
+import ktfx.jfoenix.layouts.jfxButton
 import ktfx.layouts.anchorPane
 import ktfx.layouts.hbox
 import ktfx.layouts.tableView
 import ktfx.layouts.tooltip
-import ktfx.stage.setMinSize
+import ktfx.runLater
 
 @Suppress("LeakingThis")
 abstract class TableDialog<D : Document<S>, S : DocumentSchema<D>>(
     context: Context,
     titleId: String,
     protected val schema: S
-) : Dialog(context, titleId), TableColumnsBuilder<D>, Refreshable {
+) : Dialog(context, titleId), TableColumnScope<D>, Refreshable {
 
-    protected lateinit var refreshButton: Button
-    protected lateinit var addButton: Button
-    protected lateinit var deleteButton: Button
+    protected var refreshButton: Button
+    protected var addButton: Button
+    protected var deleteButton: Button
     protected lateinit var table: TableView<D>
 
     override val focusedNode: Node? get() = table
 
+    override val columns: MutableCollection<TableColumn<D, *>> get() = table.columns
+
     init {
         graphic = ktfx.layouts.vbox(getDouble(R.dimen.padding_medium)) {
-            alignment = CENTER_RIGHT
+            alignment = RIGHT
             hbox(getDouble(R.dimen.padding_medium)) {
-                alignment = CENTER_RIGHT
+                alignment = RIGHT
                 refreshButton = jfxButton(graphic = ImageView(R.image.act_refresh)) {
                     tooltip(getString(R.string.refresh))
                     onAction { refresh() }
@@ -55,9 +56,7 @@ abstract class TableDialog<D : Document<S>, S : DocumentSchema<D>>(
                 deleteButton = jfxButton(graphic = ImageView(R.image.act_delete)) {
                     tooltip(getString(R.string.delete))
                     onAction { delete() }
-                    later {
-                        disableProperty().bind(table.selectionModel.selectedItemProperty().isNull)
-                    }
+                    runLater { disableProperty().bind(table.selectionModel.selectedItemProperty().isNull) }
                 }
             }
         }
@@ -66,20 +65,15 @@ abstract class TableDialog<D : Document<S>, S : DocumentSchema<D>>(
                 prefHeight = 275.0
                 columnResizePolicy = CONSTRAINED_RESIZE_POLICY
                 isEditable = true
-            } anchorAll 1.0
+            }.anchor(1.0)
         }
         refresh()
-        later {
-            (scene.window as Stage).setMinSize(width, height)
+        runLater {
+            (scene.window as Stage).let {
+                it.width = width
+                it.height = height
+            }
         }
-    }
-
-    override fun <T> column(
-        text: String?,
-        init: (TableColumn<D, T>.() -> Unit)?
-    ): TableColumn<D, T> = TableColumn<D, T>(text).also {
-        init?.invoke(it)
-        table.columns += it
     }
 
     override fun refresh() {

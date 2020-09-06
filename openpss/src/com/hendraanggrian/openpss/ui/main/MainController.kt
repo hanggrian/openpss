@@ -47,21 +47,23 @@ import javafx.scene.layout.StackPane
 import javafx.util.Callback
 import kotlinx.nosql.equal
 import kotlinx.nosql.update
-import ktfx.application.later
-import ktfx.beans.binding.buildStringBinding
-import ktfx.beans.binding.minus
-import ktfx.beans.binding.otherwise
-import ktfx.beans.binding.then
-import ktfx.beans.property.hasValue
-import ktfx.beans.value.eq
+import ktfx.bindings.eq
+import ktfx.bindings.minus
+import ktfx.bindings.otherwise
+import ktfx.bindings.stringBindingOf
+import ktfx.bindings.then
+import ktfx.cells.cellFactory
 import ktfx.collections.toObservableList
 import ktfx.coroutines.listener
-import ktfx.jfoenix.jfxSnackbar
+import ktfx.jfoenix.controls.jfxSnackbar
+import ktfx.layouts.styledText
 import ktfx.layouts.text
 import ktfx.layouts.textFlow
-import ktfx.listeners.cellFactory
-import ktfx.scene.stage
-import ktfx.scene.text.fontSize
+import ktfx.runLater
+import ktfx.text.append
+import ktfx.text.appendLine
+import ktfx.text.pt
+import ktfx.windows.stage
 import org.apache.commons.lang3.SystemUtils
 import java.net.URL
 import java.util.ResourceBundle
@@ -126,23 +128,21 @@ class MainController : Controller(), Refreshable {
             }
         }
 
-        later {
+        runLater {
             titleLabel.scene.stage.titleProperty().bind(
-                buildStringBinding(
-                    drawerList.selectionModel.selectedIndexProperty()
-                ) {
+                stringBindingOf(drawerList.selectionModel.selectedIndexProperty()) {
                     "${BuildConfig.NAME} - ${drawerList.selectionModel.selectedItem?.text}"
                 }
             )
         }
         titleLabel.textProperty().bind(
-            buildStringBinding(
+            stringBindingOf(
                 tabPane.selectionModel.selectedIndexProperty(),
                 *controllers.map { it.titleProperty() }.toTypedArray()
             ) {
                 val controller = selectedController
                 when {
-                    controller.titleProperty().hasValue() -> controller.title
+                    controller.titleProperty().isNotNull.value -> controller.title
                     else -> drawerList.selectionModel.selectedItem?.text
                 }
             }
@@ -164,7 +164,7 @@ class MainController : Controller(), Refreshable {
             }
         }
 
-        later {
+        runLater {
             employeeLabel.text = login.name
             controllers.forEach {
                 it.login = login
@@ -196,22 +196,20 @@ class MainController : Controller(), Refreshable {
                         if (log != null && !empty) graphic = textFlow {
                             text(log.message) {
                                 isWrapText = true
-                                fontSize = 12.0
+                                font = 12.pt
                                 this@textFlow.prefWidthProperty().bind(this@apply.widthProperty() - 12)
                                 wrappingWidthProperty().bind(this@apply.widthProperty())
                             }
-                            newLine()
-                            text("${log.dateTime.toString(PATTERN_DATETIME)} ") {
-                                styleClass += R.style.bold
-                            }
-                            text(transaction { Employees[log.employeeId].single().name })
+                            appendLine()
+                            styledText("${log.dateTime.toString(PATTERN_DATETIME)} ", R.style.bold)
+                            append(transaction { Employees[log.employeeId].single().name })
                             if (log.adminId != null) {
-                                text(", ${transaction { Employees[log.adminId].single().name }}")
+                                append(", ${transaction { Employees[log.adminId].single().name }}")
                             }
                         }
                     }
                 }
-                later {
+                runLater {
                     transaction {
                         val logs = Logs()
                         eventPagination.pageCount = ceil(logs.count() / count.toDouble()).toInt()
@@ -230,7 +228,7 @@ class MainController : Controller(), Refreshable {
     @FXML fun onDrawerOpened() = eventPagination.selectLast()
 
     @FXML fun add(event: ActionEvent) = when (event.source) {
-        addCustomerItem -> select(customerController) { later { add() } }
+        addCustomerItem -> select(customerController) { runLater { add() } }
         else -> select(invoiceController) { addInvoice() }
     }
 

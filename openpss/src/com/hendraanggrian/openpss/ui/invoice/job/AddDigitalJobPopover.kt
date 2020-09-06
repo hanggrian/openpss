@@ -11,14 +11,14 @@ import javafx.beans.Observable
 import javafx.beans.value.ObservableBooleanValue
 import javafx.scene.control.CheckBox
 import javafx.scene.control.ComboBox
-import ktfx.beans.value.isBlank
-import ktfx.beans.value.lessEq
-import ktfx.beans.value.or
+import ktfx.bindings.asBoolean
+import ktfx.bindings.lessEq
+import ktfx.bindings.or
 import ktfx.collections.toObservableList
 import ktfx.coroutines.listener
-import ktfx.jfoenix.jfxCheckBox
-import ktfx.jfoenix.jfxComboBox
-import ktfx.layouts._GridPane
+import ktfx.jfoenix.layouts.jfxCheckBox
+import ktfx.jfoenix.layouts.jfxComboBox
+import ktfx.layouts.KtfxGridPane
 import ktfx.layouts.label
 
 class AddDigitalJobPopover(context: Context) :
@@ -29,27 +29,31 @@ class AddDigitalJobPopover(context: Context) :
     private lateinit var oneSidePriceField: DoubleField
     private lateinit var twoSidePriceField: DoubleField
 
-    override fun _GridPane.onCreateContent() {
-        label(getString(R.string.type)) col 0 row currentRow
+    override fun KtfxGridPane.onCreateContent() {
+        label(getString(R.string.type)).grid(currentRow, 0)
         typeChoice = jfxComboBox(transaction { DigitalPrices().toObservableList() }) {
             valueProperty().listener { _, _, job ->
                 oneSidePriceField.value = job.oneSidePrice
                 twoSidePriceField.value = job.twoSidePrice
             }
-        } col 1 colSpans 2 row currentRow
+        }.grid(currentRow, 1 to 2)
         currentRow++
-        label(getString(R.string.two_side)) col 0 row currentRow
-        twoSideCheck = jfxCheckBox() col 1 colSpans 2 row currentRow
+        label(getString(R.string.two_side)).grid(currentRow, 0)
+        twoSideCheck = jfxCheckBox().grid(currentRow, 1 to 2)
         currentRow++
-        label(getString(R.string.one_side_price)) col 0 row currentRow
-        oneSidePriceField = DoubleField().apply {
-            promptText = getString(R.string.one_side_price)
-        }() col 1 colSpans 2 row currentRow
+        label(getString(R.string.one_side_price)).grid(currentRow, 0)
+        oneSidePriceField = addChild(
+            DoubleField().apply {
+                promptText = getString(R.string.one_side_price)
+            }
+        ).grid(currentRow, 1 to 2)
         currentRow++
-        label(getString(R.string.two_side_price)) col 0 row currentRow
-        twoSidePriceField = DoubleField().apply {
-            promptText = getString(R.string.two_side_price)
-        }() col 1 colSpans 2 row currentRow
+        label(getString(R.string.two_side_price)).grid(currentRow, 0)
+        twoSidePriceField = addChild(
+            DoubleField().apply {
+                promptText = getString(R.string.two_side_price)
+            }.grid(currentRow, 1 to 2)
+        )
         currentRow++
     }
 
@@ -63,7 +67,7 @@ class AddDigitalJobPopover(context: Context) :
 
     override val defaultButtonDisableBinding: ObservableBooleanValue
         get() = typeChoice.valueProperty().isNull or
-            titleField.textProperty().isBlank() or
+            titleField.textProperty().asBoolean { it.isNullOrBlank() } or
             qtyField.valueProperty().lessEq(0) or
             oneSidePriceField.valueProperty().lessEq(0) or
             twoSidePriceField.valueProperty().lessEq(0) or

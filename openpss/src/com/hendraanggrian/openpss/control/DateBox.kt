@@ -7,17 +7,16 @@ import com.hendraanggrian.openpss.util.toJava
 import com.hendraanggrian.openpss.util.toJoda
 import javafx.beans.property.ObjectProperty
 import javafx.beans.property.SimpleObjectProperty
-import javafx.geometry.Pos
-import javafx.geometry.Pos.CENTER
 import javafx.scene.control.Button
 import javafx.scene.control.DatePicker
 import javafx.scene.image.ImageView
-import ktfx.beans.binding.buildBinding
-import ktfx.beans.value.getValue
+import ktfx.bindings.bindingOf
+import ktfx.controls.CENTER
 import ktfx.coroutines.onAction
-import ktfx.jfoenix.jfxButton
-import ktfx.jfoenix.jfxDatePicker
-import ktfx.layouts._HBox
+import ktfx.getValue
+import ktfx.jfoenix.layouts.jfxDatePicker
+import ktfx.jfoenix.layouts.styledJFXButton
+import ktfx.layouts.KtfxHBox
 import org.joda.time.LocalDate
 import org.joda.time.LocalDate.now
 
@@ -26,7 +25,7 @@ import org.joda.time.LocalDate.now
  *
  * [DateBox] width is deliberately measured to match [com.hendraanggrian.scene.layout.TimeBox]'s width.
  */
-open class DateBox @JvmOverloads constructor(prefill: LocalDate = now()) : _HBox(0.0) {
+open class DateBox @JvmOverloads constructor(prefill: LocalDate = now()) : KtfxHBox(0.0) {
 
     lateinit var picker: DatePicker
     var previousButton: Button
@@ -37,9 +36,8 @@ open class DateBox @JvmOverloads constructor(prefill: LocalDate = now()) : _HBox
     val value: LocalDate? by valueProperty
 
     init {
-        alignment = Pos.CENTER
-        previousButton = jfxButton(graphic = ImageView(R.image.btn_previous)) {
-            styleClass += R.style.flat
+        alignment = CENTER
+        previousButton = styledJFXButton(null, ImageView(R.image.btn_previous), R.style.flat) {
             onAction { picker.value = picker.value.minusDays(1) }
         }
         picker = jfxDatePicker {
@@ -48,10 +46,9 @@ open class DateBox @JvmOverloads constructor(prefill: LocalDate = now()) : _HBox
             isEditable = false
             maxWidth = 116.0
         }
-        nextButton = jfxButton(graphic = ImageView(R.image.btn_next)) {
-            styleClass += R.style.flat
+        nextButton = styledJFXButton(null, ImageView(R.image.btn_next), R.style.flat) {
             onAction { picker.value = picker.value.plusDays(1) }
         }
-        valueProperty.bind(buildBinding(picker.valueProperty()) { picker.value.toJoda() })
+        valueProperty.bind(bindingOf(picker.valueProperty()) { picker.value.toJoda() })
     }
 }

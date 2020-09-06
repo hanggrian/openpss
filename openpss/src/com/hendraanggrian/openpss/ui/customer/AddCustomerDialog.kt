@@ -12,19 +12,20 @@ import javafx.scene.control.Label
 import javafx.scene.control.Tab
 import javafx.scene.control.TabPane
 import javafx.scene.control.TextField
-import ktfx.beans.binding.otherwise
-import ktfx.beans.binding.then
-import ktfx.beans.value.eq
-import ktfx.beans.value.isBlank
-import ktfx.beans.value.or
+import javafx.scene.image.ImageView
+import ktfx.bindings.asBoolean
+import ktfx.bindings.eq
+import ktfx.bindings.or
+import ktfx.bindings.otherwise
+import ktfx.bindings.then
 import ktfx.coroutines.listener
-import ktfx.jfoenix.jfxTabPane
-import ktfx.jfoenix.jfxTextField
+import ktfx.jfoenix.layouts.jfxTabPane
+import ktfx.jfoenix.layouts.jfxTextField
 import ktfx.layouts.label
+import ktfx.layouts.styledLabel
 import ktfx.layouts.tab
 
 class AddCustomerDialog(context: Context) : ResultableDialog<Customer>(context, R.string.add_customer) {
-
     private companion object {
         const val WIDTH = 300.0
     }
@@ -47,8 +48,7 @@ class AddCustomerDialog(context: Context) : ResultableDialog<Customer>(context, 
                 bindGraphic(R.image.display_company_selected, R.image.display_company)
             }
         }
-        label {
-            styleClass += R.style.bold
+        styledLabel(styleClass = arrayOf(R.style.bold)) {
             bindText(R.string.person, R.string.company)
         }
         label {
@@ -60,8 +60,8 @@ class AddCustomerDialog(context: Context) : ResultableDialog<Customer>(context, 
         }
         defaultButton.disableProperty().bind(
             When(tabPane.selectionModel.selectedIndexProperty() eq 0)
-                then (editor.textProperty().isBlank() or !editor.textProperty().isPersonName())
-                otherwise editor.textProperty().isBlank()
+                then (editor.textProperty().asBoolean { it.isNullOrBlank() } or !editor.textProperty().isPersonName())
+                otherwise editor.textProperty().asBoolean { it.isNullOrBlank() }
         )
         tabPane.selectionModel.selectedIndexProperty().listener {
             editor.requestFocus()
@@ -71,8 +71,8 @@ class AddCustomerDialog(context: Context) : ResultableDialog<Customer>(context, 
     private fun Tab.bindGraphic(selectedImageId: String, unselectedImageId: String) {
         graphicProperty().bind(
             When(selectedProperty())
-                then ktfx.layouts.imageView(selectedImageId)
-                otherwise ktfx.layouts.imageView(unselectedImageId)
+                then ImageView(selectedImageId)
+                otherwise ImageView(unselectedImageId)
         )
     }
 

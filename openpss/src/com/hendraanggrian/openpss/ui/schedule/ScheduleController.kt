@@ -1,9 +1,7 @@
 package com.hendraanggrian.openpss.ui.schedule
 
-import com.hendraanggrian.openpss.App.Companion.STRETCH_POINT
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.PATTERN_DATETIME_EXTENDED
-import com.hendraanggrian.openpss.control.StretchableButton
 import com.hendraanggrian.openpss.control.UncollapsibleTreeItem
 import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.schemas.Invoice
@@ -21,15 +19,17 @@ import javafx.scene.control.TreeTableColumn
 import javafx.scene.control.TreeTableView
 import javafx.scene.image.ImageView
 import kotlinx.nosql.equal
-import ktfx.application.later
-import ktfx.beans.binding.buildStringBinding
-import ktfx.beans.value.or
-import ktfx.collections.isEmptyBinding
+import ktfx.bindings.asString
+import ktfx.bindings.isEmpty
+import ktfx.bindings.or
 import ktfx.coroutines.listener
 import ktfx.coroutines.onAction
-import ktfx.jfoenix.jfxToggleButton
-import ktfx.layouts.NodeInvokable
+import ktfx.jfoenix.layouts.jfxToggleButton
+import ktfx.jfoenix.layouts.styledJFXButton
+import ktfx.layouts.NodeManager
 import ktfx.layouts.borderPane
+import ktfx.layouts.tooltip
+import ktfx.runLater
 import java.net.URL
 import java.util.ResourceBundle
 
@@ -45,26 +45,20 @@ class ScheduleController : ActionController(), Refreshable {
     private lateinit var doneButton: Button
     private lateinit var historyCheck: ToggleButton
 
-    override fun NodeInvokable.onCreateActions() {
-        refreshButton = StretchableButton(
-            STRETCH_POINT,
-            getString(R.string.refresh),
-            ImageView(R.image.act_refresh)
-        ).apply {
+    override fun NodeManager.onCreateActions() {
+        refreshButton = styledJFXButton(null, ImageView(R.image.act_refresh), R.style.flat) {
+            tooltip(getString(R.string.refresh))
             onAction { refresh() }
-        }()
-        doneButton = StretchableButton(
-            STRETCH_POINT,
-            getString(R.string.done),
-            ImageView(R.image.act_done)
-        ).apply {
+        }
+        doneButton = styledJFXButton(null, ImageView(R.image.act_done), R.style.flat) {
+            tooltip(getString(R.string.done))
             onAction {
                 transaction {
                     scheduleTable.selectionModel.selectedItem.value.invoice.done(this@ScheduleController)
                 }
                 refresh()
             }
-        }()
+        }
         borderPane {
             minHeight = 50.0
             maxHeight = 50.0
@@ -72,7 +66,7 @@ class ScheduleController : ActionController(), Refreshable {
                 text = getString(R.string.history)
                 selectedProperty().listener { refresh() }
                 doneButton.disableProperty()
-                    .bind(scheduleTable.selectionModel.selectedItems.isEmptyBinding or selectedProperty())
+                    .bind(scheduleTable.selectionModel.selectedItems.isEmpty or selectedProperty())
             }
         }
     }
@@ -89,8 +83,8 @@ class ScheduleController : ActionController(), Refreshable {
                 }
             }
             titleProperty().bind(
-                buildStringBinding(selectionModel.selectedItemProperty()) {
-                    Invoice.no(this@ScheduleController, selectionModel.selectedItem?.value?.invoice?.no)
+                selectionModel.selectedItemProperty().asString {
+                    Invoice.no(this@ScheduleController, it?.value?.invoice?.no)
                 }
             )
         }
@@ -100,7 +94,7 @@ class ScheduleController : ActionController(), Refreshable {
         typeColumn.stringCell { type }
     }
 
-    override fun refresh() = later {
+    override fun refresh() = runLater {
         scheduleTable.selectionModel.clearSelection()
         scheduleTable.root.children.run {
             clear()
@@ -112,7 +106,10 @@ class ScheduleController : ActionController(), Refreshable {
                     addAll(
                         UncollapsibleTreeItem(
                             Schedule(
-                                invoice, Customers[invoice.customerId].single().name, "", "",
+                                invoice,
+                                Customers[invoice.customerId].single().name,
+                                "",
+                                "",
                                 invoice.dateTime.toString(PATTERN_DATETIME_EXTENDED)
                             )
                         ).apply {

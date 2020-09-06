@@ -5,25 +5,24 @@ package com.hendraanggrian.openpss.control
 import com.hendraanggrian.openpss.R
 import javafx.beans.property.ObjectProperty
 import javafx.beans.property.SimpleObjectProperty
-import javafx.geometry.Pos
-import javafx.geometry.Pos.CENTER
 import javafx.scene.control.Button
 import javafx.scene.control.ComboBox
 import javafx.scene.image.ImageView
-import ktfx.beans.binding.buildBinding
-import ktfx.beans.value.getValue
+import ktfx.bindings.bindingOf
 import ktfx.collections.toObservableList
+import ktfx.controls.CENTER
 import ktfx.coroutines.onAction
-import ktfx.jfoenix.jfxButton
-import ktfx.jfoenix.jfxComboBox
-import ktfx.layouts._HBox
-import ktfx.listeners.converter
+import ktfx.getValue
+import ktfx.jfoenix.layouts.jfxButton
+import ktfx.jfoenix.layouts.jfxComboBox
+import ktfx.layouts.KtfxHBox
+import ktfx.text.buildStringConverter
 import org.joda.time.YearMonth
 import org.joda.time.YearMonth.now
 import java.text.DateFormatSymbols.getInstance
 import java.util.Locale
 
-open class MonthBox @JvmOverloads constructor(prefill: YearMonth = now()) : _HBox(0.0) {
+open class MonthBox @JvmOverloads constructor(prefill: YearMonth = now()) : KtfxHBox(0.0) {
 
     lateinit var monthBox: ComboBox<Int>
     lateinit var yearField: IntField
@@ -37,7 +36,7 @@ open class MonthBox @JvmOverloads constructor(prefill: YearMonth = now()) : _HBo
     private var months: Array<String> = getInstance().shortMonths
 
     init {
-        alignment = Pos.CENTER
+        alignment = CENTER
         previousButton = jfxButton(graphic = ImageView(R.image.btn_previous)) {
             onAction {
                 monthBox.value = when (monthBox.value) {
@@ -51,16 +50,18 @@ open class MonthBox @JvmOverloads constructor(prefill: YearMonth = now()) : _HBo
         }
         monthBox = jfxComboBox((0 until 12).toObservableList()) {
             value = prefill.monthOfYear - 1
-            converter {
+            converter = buildStringConverter {
                 toString { months[it!!] }
                 fromString { months.indexOf(it) }
             }
         }
-        yearField = IntField().apply {
-            alignment = CENTER
-            maxWidth = 56.0
-            value = prefill.year
-        }()
+        yearField = addChild(
+            IntField().apply {
+                alignment = CENTER
+                maxWidth = 56.0
+                value = prefill.year
+            }
+        )
         nextButton = jfxButton(graphic = ImageView(R.image.btn_next)) {
             onAction {
                 monthBox.value = when (monthBox.value) {
@@ -74,7 +75,7 @@ open class MonthBox @JvmOverloads constructor(prefill: YearMonth = now()) : _HBo
         }
 
         valueProperty.bind(
-            buildBinding(monthBox.selectionModel.selectedIndexProperty(), yearField.valueProperty()) {
+            bindingOf(monthBox.selectionModel.selectedIndexProperty(), yearField.valueProperty()) {
                 YearMonth(yearField.value, monthBox.value + 1)
             }
         )
@@ -82,7 +83,7 @@ open class MonthBox @JvmOverloads constructor(prefill: YearMonth = now()) : _HBo
 
     fun setLocale(locale: Locale) {
         months = getInstance(locale).shortMonths
-        monthBox.converter {
+        monthBox.converter = buildStringConverter {
             fromString { months.indexOf(it) }
             toString { months[it!!] }
         }

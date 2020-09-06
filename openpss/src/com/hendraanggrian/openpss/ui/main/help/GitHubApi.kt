@@ -13,7 +13,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.javafx.JavaFx
 import kotlinx.coroutines.launch
-import ktfx.jfoenix.jfxSnackbar
+import ktfx.jfoenix.controls.jfxSnackbar
 import okhttp3.OkHttpClient
 import org.apache.maven.artifact.versioning.ComparableVersion
 import retrofit2.Retrofit
@@ -72,7 +72,7 @@ interface GitHubApi {
             .create(GitHubApi::class.java)
 
         fun checkUpdates(context: Context) {
-            GlobalScope.launch(Dispatchers.Default) {
+            GlobalScope.launch(Dispatchers.IO) {
                 try {
                     val release = create().getLatestRelease().get(TIMEOUT, SECONDS)
                     GlobalScope.launch(Dispatchers.JavaFx) {

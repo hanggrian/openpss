@@ -24,7 +24,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.nosql.equal
 import kotlinx.nosql.mongodb.MongoDB
-import ktfx.scene.control.errorAlert
+import ktfx.dialogs.errorAlert
 import org.joda.time.DateTime
 import org.joda.time.LocalDate
 import org.joda.time.LocalTime
@@ -60,9 +60,7 @@ fun <T> transaction(statement: SessionWrapper.() -> T): T = try {
     errorAlert(e.message.toString()) {
         dialogPane.stylesheets += STYLESHEET_OPENPSS
         headerText = "Connection closed. Please sign in again."
-    }.showAndWait().ifPresent {
-        App.exit()
-    }
+    }.ifPresent { App.exit() }
     error("Connection closed. Please sign in again.")
 }
 

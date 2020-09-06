@@ -17,32 +17,31 @@ import com.hendraanggrian.openpss.popup.popover.Popover
 import com.hendraanggrian.openpss.ui.main.help.AboutDialog
 import com.hendraanggrian.openpss.ui.main.help.GitHubApi
 import com.jfoenix.controls.JFXButton
-import javafx.geometry.HPos
 import javafx.geometry.Pos
 import javafx.scene.Node
 import javafx.scene.control.Button
 import javafx.scene.control.PasswordField
 import javafx.scene.control.TextField
-import javafx.scene.layout.Priority
 import javafx.scene.layout.StackPane
 import javafx.scene.text.TextAlignment
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.javafx.JavaFx
 import kotlinx.coroutines.launch
-import ktfx.application.later
-import ktfx.beans.binding.buildBinding
-import ktfx.beans.value.isBlank
-import ktfx.beans.value.or
+import ktfx.bindings.asBoolean
+import ktfx.bindings.bindingOf
+import ktfx.bindings.or
 import ktfx.collections.toObservableList
+import ktfx.controls.H_RIGHT
+import ktfx.controls.insetsOf
 import ktfx.coroutines.listener
 import ktfx.coroutines.onAction
-import ktfx.jfoenix.jfxButton
-import ktfx.jfoenix.jfxComboBox
-import ktfx.jfoenix.jfxPasswordField
-import ktfx.jfoenix.jfxTextField
-import ktfx.jfoenix.jfxToggleButton
-import ktfx.layouts._StackPane
+import ktfx.jfoenix.layouts.jfxComboBox
+import ktfx.jfoenix.layouts.jfxPasswordField
+import ktfx.jfoenix.layouts.jfxTextField
+import ktfx.jfoenix.layouts.jfxToggleButton
+import ktfx.jfoenix.layouts.styledJFXButton
+import ktfx.layouts.KtfxStackPane
 import ktfx.layouts.anchorPane
 import ktfx.layouts.gridPane
 import ktfx.layouts.hbox
@@ -50,24 +49,23 @@ import ktfx.layouts.hyperlink
 import ktfx.layouts.imageView
 import ktfx.layouts.label
 import ktfx.layouts.stackPane
+import ktfx.layouts.styledLabel
 import ktfx.layouts.text
 import ktfx.layouts.textFlow
 import ktfx.layouts.vbox
-import ktfx.scene.layout.gap
-import ktfx.scene.layout.paddingAll
-import ktfx.scene.layout.updatePadding
-import ktfx.scene.text.fontSize
+import ktfx.runLater
+import ktfx.text.pt
 import java.util.Properties
 import java.util.ResourceBundle
 
-class LoginPane(private val resourced: Resources) : _StackPane(), Context {
+class LoginPane(private val resourced: Resources) : KtfxStackPane(), Context {
 
     private companion object {
         const val WIDTH = 400.0
     }
 
-    private lateinit var employeeField: TextField
-    private lateinit var loginButton: Button
+    private var employeeField: TextField
+    private var loginButton: Button
     private lateinit var passwordField: PasswordField
     private lateinit var textField: TextField
 
@@ -92,11 +90,11 @@ class LoginPane(private val resourced: Resources) : _StackPane(), Context {
         prefWidth = 64.0
         valueProperty().listener { _, _, newValue -> LoginFile.DB_PORT = newValue.toInt() }
     }
-    private val serverUserField = ktfx.jfoenix.jfxTextField(LoginFile.DB_USER) {
+    private val serverUserField = ktfx.jfoenix.layouts.jfxTextField(LoginFile.DB_USER) {
         promptText = getString(R.string.server_user)
         textProperty().listener { _, _, newValue -> LoginFile.DB_USER = newValue }
     }
-    private val serverPasswordField = ktfx.jfoenix.jfxPasswordField {
+    private val serverPasswordField = ktfx.jfoenix.layouts.jfxPasswordField {
         text = LoginFile.DB_PASSWORD
         promptText = getString(R.string.server_password)
         textProperty().listener { _, _, newValue -> LoginFile.DB_PASSWORD = newValue }
@@ -107,41 +105,40 @@ class LoginPane(private val resourced: Resources) : _StackPane(), Context {
         maxWidth = WIDTH
         gridPane {
             alignment = Pos.CENTER_RIGHT
-            gap = getDouble(R.dimen.padding_medium)
-            paddingAll = getDouble(R.dimen.padding_medium)
-            label(getString(R.string.language)) row 0 col 0 hpriority Priority.ALWAYS halign HPos.RIGHT
+            hgap = getDouble(R.dimen.padding_medium)
+            vgap = getDouble(R.dimen.padding_medium)
+            padding = insetsOf(getDouble(R.dimen.padding_medium))
+            label(getString(R.string.language)).grid(row = 0, col = 0).hgrow().halign(H_RIGHT)
             jfxComboBox(Language.values().toObservableList()) {
                 selectionModel.select(PreferencesFile.language)
                 valueProperty().listener(Dispatchers.Default) { _, _, value ->
                     PreferencesFile.language = value
                     PreferencesFile.save()
                     GlobalScope.launch(Dispatchers.JavaFx) {
-                        later {
+                        runLater {
                             TextDialog(this@LoginPane, R.string.restart_required, getString(R.string._restart_required))
                                 .apply { setOnDialogClosed { App.exit() } }
                                 .show(this@LoginPane)
                         }
                     }
                 }
-            } row 0 col 1
+            }.grid(row = 0, col = 1)
             vbox(8.0) {
                 alignment = Pos.CENTER
-                updatePadding(32.0, 24.0, 32.0, 24.0)
+                padding = insetsOf(32, 24)
                 imageView(R.image.logo_small)
-                label(getString(R.string.openpss_login)) {
-                    styleClass.addAll(R.style.bold, R.style.display2)
-                }
+                styledLabel(getString(R.string.openpss_login), null, R.style.bold, R.style.display2)
                 label(getString(R.string._login_desc1)) {
                     textAlignment = TextAlignment.CENTER
                     isWrapText = true
-                    fontSize = 16.0
+                    font = 16.pt
                 }
                 employeeField = jfxTextField(LoginFile.EMPLOYEE) {
                     textProperty().listener { _, _, value -> LoginFile.EMPLOYEE = value }
-                    fontSize = 16.0
+                    font = 16.pt
                     promptText = getString(R.string.employee)
-                    later { requestFocus() }
-                } marginTop 24.0
+                    runLater { requestFocus() }
+                }.margin(insetsOf(top = 24))
                 textFlow {
                     hyperlink(getString(R.string.connection_settings)) {
                         onAction {
@@ -162,25 +159,23 @@ class LoginPane(private val resourced: Resources) : _StackPane(), Context {
                             GitHubApi.checkUpdates(this@LoginPane)
                         }
                     }
-                } marginTop 24.0
+                }.margin(insetsOf(top = 24))
                 anchorPane {
-                    jfxButton(getString(R.string.about)) {
-                        updatePadding(8.0, 16.0, 8.0, 16.0)
-                        fontSize = 16.0
-                        styleClass += R.style.flat
+                    styledJFXButton(getString(R.string.about), null, R.style.flat) {
+                        padding = insetsOf(8, 16)
+                        font = 16.pt
                         onAction { AboutDialog(this@LoginPane).show() }
-                    } anchorLeft 0.0
-                    loginButton = jfxButton(getString(R.string.login)) {
-                        updatePadding(8.0, 16.0, 8.0, 16.0)
-                        fontSize = 16.0
-                        styleClass += R.style.raised
+                    }.anchor(left = 0)
+                    loginButton = styledJFXButton(getString(R.string.login), null, R.style.raised) {
+                        padding = insetsOf(8, 16)
+                        font = 16.pt
                         buttonType = JFXButton.ButtonType.RAISED
                         disableProperty().bind(
-                            employeeField.textProperty().isBlank()
+                            employeeField.textProperty().asBoolean { it.isNullOrBlank() }
                                 or !serverHostField.validProperty()
-                                or serverPortField.textProperty().isBlank()
-                                or serverUserField.textProperty().isBlank()
-                                or serverPasswordField.textProperty().isBlank()
+                                or serverPortField.textProperty().asBoolean { it.isNullOrBlank() }
+                                or serverUserField.textProperty().asBoolean { it.isNullOrBlank() }
+                                or serverPasswordField.textProperty().asBoolean { it.isNullOrBlank() }
                         )
                         onAction {
                             PasswordDialog().show {
@@ -209,9 +204,9 @@ class LoginPane(private val resourced: Resources) : _StackPane(), Context {
                             }
                         }
                         employeeField.onActionProperty().bindBidirectional(onActionProperty())
-                    } anchorRight 0.0
-                } marginTop 24.0
-            } row 1 col 0 colSpans 2
+                    }.anchor(right = 0)
+                }.margin(insetsOf(top = 24))
+            }.grid(row = 1, col = 0 to 2)
         }
     }
 
@@ -221,14 +216,15 @@ class LoginPane(private val resourced: Resources) : _StackPane(), Context {
 
         init {
             gridPane {
-                gap = getDouble(R.dimen.padding_medium)
-                label(getString(R.string.server_host_port)) col 0 row 0
-                serverHostField() col 1 row 0
-                serverPortField() col 2 row 0
-                label(getString(R.string.server_user)) col 0 row 1
-                serverUserField() col 1 row 1 colSpans 2
-                label(getString(R.string.server_password)) col 0 row 2
-                serverPasswordField() col 1 row 2 colSpans 2
+                hgap = getDouble(R.dimen.padding_medium)
+                vgap = getDouble(R.dimen.padding_medium)
+                label(getString(R.string.server_host_port)).grid(0, 0)
+                addChild(serverHostField).grid(0, 1)
+                addChild(serverPortField).grid(0, 2)
+                label(getString(R.string.server_user)).grid(1, 0)
+                addChild(serverUserField).grid(1, 1 to 2)
+                label(getString(R.string.server_password)).grid(2, 0)
+                addChild(serverPasswordField).grid(2, 1 to 2)
             }
         }
     }
@@ -266,14 +262,14 @@ class LoginPane(private val resourced: Resources) : _StackPane(), Context {
                 }
             }
             defaultButton.run {
-                disableProperty().bind(textField.textProperty().isBlank())
+                disableProperty().bind(textField.textProperty().asBoolean { it.isNullOrBlank() })
                 passwordField.onActionProperty().bind(
-                    buildBinding(disableProperty()) {
+                    bindingOf(disableProperty()) {
                         if (isDisable) null else onAction
                     }
                 )
                 textField.onActionProperty().bind(
-                    buildBinding(disableProperty()) {
+                    bindingOf(disableProperty()) {
                         if (isDisable) null else onAction
                     }
                 )

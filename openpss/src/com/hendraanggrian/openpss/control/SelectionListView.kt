@@ -1,8 +1,8 @@
 package com.hendraanggrian.openpss.control
 
 import com.jfoenix.controls.JFXListView
+import ktfx.controls.isNotSelected
 import ktfx.coroutines.listener
-import ktfx.scene.control.isNotSelected
 
 class SelectionListView<T> : JFXListView<T>() {
 

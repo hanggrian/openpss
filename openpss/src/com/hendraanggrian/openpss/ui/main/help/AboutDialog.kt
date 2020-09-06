@@ -6,31 +6,34 @@ import com.hendraanggrian.openpss.content.Context
 import com.hendraanggrian.openpss.content.STYLESHEET_OPENPSS
 import com.hendraanggrian.openpss.ui.main.License
 import com.jfoenix.controls.JFXButton
-import javafx.geometry.Pos
 import javafx.scene.control.Dialog
 import javafx.scene.control.Hyperlink
 import javafx.scene.control.ListView
 import javafx.scene.image.Image
 import javafx.scene.text.Font
-import ktfx.application.later
+import kotlinx.coroutines.Dispatchers
+import ktfx.cells.cellFactory
 import ktfx.collections.toObservableList
-import ktfx.controlsfx.masterDetailPane
+import ktfx.controls.LEFT
+import ktfx.controls.find
+import ktfx.controls.insetsOf
+import ktfx.controlsfx.layouts.masterDetailPane
 import ktfx.coroutines.listener
 import ktfx.coroutines.onAction
-import ktfx.jfoenix.jfxButton
-import ktfx.jfoenix.jfxListView
+import ktfx.dialogs.buttons
+import ktfx.dialogs.icon
+import ktfx.jfoenix.layouts.jfxListView
+import ktfx.jfoenix.layouts.styledJFXButton
 import ktfx.layouts.contextMenu
 import ktfx.layouts.hbox
 import ktfx.layouts.imageView
 import ktfx.layouts.label
+import ktfx.layouts.styledLabel
+import ktfx.layouts.styledText
 import ktfx.layouts.text
 import ktfx.layouts.textFlow
 import ktfx.layouts.vbox
-import ktfx.listeners.cellFactory
-import ktfx.scene.control.closeButton
-import ktfx.scene.control.icon
-import ktfx.scene.find
-import ktfx.scene.layout.paddingAll
+import ktfx.runLater
 import java.net.URI
 
 /**
@@ -43,9 +46,9 @@ class AboutDialog(context: Context) : Dialog<Unit>(), Context by context {
         items = License.values().toObservableList()
         cellFactory {
             onUpdate { license, empty ->
-                if (license != null && !empty) graphic = ktfx.layouts.vbox {
+                if (license != null && !empty) graphic = vbox {
                     label(license.repo)
-                    label(license.owner) { styleClass += R.style.bold }
+                    styledLabel(license.owner, null, R.style.bold)
                 }
             }
         }
@@ -63,50 +66,44 @@ class AboutDialog(context: Context) : Dialog<Unit>(), Context by context {
         dialogPane.run {
             stylesheets += STYLESHEET_OPENPSS
             content = hbox {
-                paddingAll = 48.0
+                padding = insetsOf(48)
                 imageView(R.image.logo)
                 vbox {
-                    alignment = Pos.CENTER_LEFT
+                    alignment = LEFT
                     textFlow {
-                        "${BuildConfig.FULL_NAME.substringBefore(' ')} " {
-                            styleClass.addAll(R.style.bold, R.style.display2)
-                        }
-                        (BuildConfig.FULL_NAME.substringAfter(' ')) {
-                            styleClass.addAll(R.style.light, R.style.display2)
-                        }
+                        styledText("${BuildConfig.FULL_NAME.substringBefore(' ')} ", R.style.bold, R.style.display2)
+                        styledText(BuildConfig.FULL_NAME.substringAfter(' '), R.style.light, R.style.display2)
                     }
                     text("${getString(R.string.version)} ${BuildConfig.VERSION}") {
                         font = Font.font(12.0)
-                    } marginTop 2.0
-                    text(getString(R.string.built_with_open_source_software_expand_to_see_licenses)) marginTop 20.0
+                    }.margin(insetsOf(top = 2))
+                    text(getString(R.string.built_with_open_source_software_expand_to_see_licenses)).margin(insetsOf(top = 20))
                     textFlow {
                         "${getString(R.string.powered_by)} " { font = Font.font(12.0) }
-                        "JavaFX" { styleClass += R.style.bold }
-                    } marginTop 4.0
+                        styledText("JavaFX", R.style.bold)
+                    }.margin(insetsOf(top = 4))
                     textFlow {
                         "${getString(R.string.author)} " { font = Font.font(12.0) }
-                        BuildConfig.AUTHOR { styleClass += R.style.bold }
-                    } marginTop 4.0
+                        styledText(BuildConfig.AUTHOR, R.style.bold)
+                    }.margin(insetsOf(top = 4))
                     hbox {
                         spacing = getDouble(R.dimen.padding_medium)
-                        jfxButton("GitHub") {
-                            styleClass += R.style.raised
+                        styledJFXButton("GitHub", null, R.style.raised) {
                             buttonType = JFXButton.ButtonType.RAISED
-                            onAction { desktop?.browse(URI(BuildConfig.WEBSITE)) }
+                            onAction(Dispatchers.IO) { desktop?.browse(URI(BuildConfig.WEBSITE)) }
                         }
-                        jfxButton("Email") {
-                            styleClass += R.style.flat
-                            onAction { desktop?.mail(URI("mailto:${BuildConfig.EMAIL}")) }
+                        styledJFXButton("Email", null, R.style.flat) {
+                            onAction(Dispatchers.IO) { desktop?.mail(URI("mailto:${BuildConfig.EMAIL}")) }
                         }
-                    } marginTop 20.0
-                } marginLeft 48.0
+                    }.margin(insetsOf(top = 20))
+                }.margin(insetsOf(top = 48))
             }
             expandableContent = masterDetailPane {
                 prefHeight = 200.0
                 dividerPosition = 0.3
                 showDetailNodeProperty().bind(licenseList.selectionModel.selectedItemProperty().isNotNull)
                 masterNode = licenseList
-                detailNode = ktfx.jfoenix.jfxTextArea {
+                detailNode = ktfx.jfoenix.layouts.jfxTextArea {
                     isEditable = false
                     licenseList.selectionModel.selectedItemProperty().listener { _, _, license ->
                         text = license?.getContent()
@@ -114,9 +111,9 @@ class AboutDialog(context: Context) : Dialog<Unit>(), Context by context {
                 }
             }
         }
-        closeButton()
+        buttons.close()
 
-        later {
+        runLater {
             dialogPane.run {
                 val detailsButton = find<Hyperlink>(".details-button")
                 detailsButton.text = getString(R.string._open_source_license_show)

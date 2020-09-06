@@ -11,55 +11,48 @@ import javafx.scene.Node
 import javafx.scene.control.CheckBox
 import javafx.scene.control.TextField
 import javafx.scene.image.ImageView
-import ktfx.beans.binding.buildBinding
-import ktfx.beans.binding.buildBooleanBinding
-import ktfx.beans.binding.buildStringBinding
+import ktfx.bindings.asString
+import ktfx.bindings.bindingOf
+import ktfx.bindings.booleanBindingOf
 import ktfx.coroutines.onAction
-import ktfx.jfoenix.jfxButton
-import ktfx.jfoenix.jfxCheckBox
-import ktfx.jfoenix.jfxTextField
+import ktfx.jfoenix.layouts.jfxCheckBox
+import ktfx.jfoenix.layouts.jfxTextField
+import ktfx.jfoenix.layouts.styledJFXButton
 import ktfx.layouts.gridPane
 import ktfx.layouts.label
+import ktfx.layouts.styledLabel
 import ktfx.layouts.tooltip
-import ktfx.scene.layout.gap
-import ktfx.util.invoke
+import ktfx.text.invoke
 
 class AddPaymentPopover(
     context: Context,
     private val invoice: Invoice
 ) : ResultablePopover<Payment>(context, R.string.add_payment) {
 
-    private lateinit var valueField: DoubleField
-    private lateinit var cashBox: CheckBox
-    private lateinit var referenceField: TextField
+    private var valueField: DoubleField
+    private var cashBox: CheckBox
+    private var referenceField: TextField
     private val receivable = transaction { invoice.calculateDue() }
 
     init {
         gridPane {
-            gap = getDouble(R.dimen.padding_medium)
-            label(getString(R.string.employee)) row 0 col 0
-            label(login.name) {
-                styleClass += R.style.bold
-            } row 0 col 1 colSpans 2
-            label(getString(R.string.receivable)) row 1 col 0
-            label(currencyConverter(receivable)) {
-                styleClass += R.style.bold
-            } row 1 col 1 colSpans 2
-            label(getString(R.string.payment)) row 2 col 0
-            valueField = DoubleField().apply { promptText = getString(R.string.payment) }() row 2 col 1
-            jfxButton(graphic = ImageView(R.image.btn_match_receivable)) {
-                styleClass += R.style.flat
+            hgap = getDouble(R.dimen.padding_medium)
+            vgap = getDouble(R.dimen.padding_medium)
+            label(getString(R.string.employee)).grid(0, 0)
+            styledLabel(login.name, null, R.style.bold).grid(0, 1 to 2)
+            label(getString(R.string.receivable)).grid(1, 0)
+            styledLabel(currencyConverter(receivable), null, R.style.bold).grid(1, 1 to 2)
+            label(getString(R.string.payment)).grid(2, 0)
+            valueField = addChild(DoubleField().apply { promptText = getString(R.string.payment) }).grid(2, 1)
+            styledJFXButton(null, ImageView(R.image.btn_match_receivable), R.style.flat) {
                 tooltip(getString(R.string.match_receivable))
-                onAction {
-                    valueField.value = receivable
-                }
-            } row 2 col 2
-            label(getString(R.string.remaining)) row 3 col 0
-            label {
-                styleClass += R.style.bold
+                onAction { valueField.value = receivable }
+            }.grid(2, 2)
+            label(getString(R.string.remaining)).grid(3, 0)
+            styledLabel(styleClass = arrayOf(R.style.bold)) {
                 textProperty().bind(
-                    buildStringBinding(valueField.valueProperty()) {
-                        (receivable - valueField.value).let { remaining ->
+                    valueField.valueProperty().asString {
+                        (receivable - it).let { remaining ->
                             when {
                                 remaining <= 0.0 -> getString(R.string.paid)
                                 else -> currencyConverter(remaining)
@@ -68,7 +61,7 @@ class AddPaymentPopover(
                     }
                 )
                 textFillProperty().bind(
-                    buildBinding(textProperty()) {
+                    bindingOf(textProperty()) {
                         getColor(
                             when {
                                 receivable - valueField.value <= 0.0 -> R.color.green
@@ -77,15 +70,16 @@ class AddPaymentPopover(
                         )
                     }
                 )
-            } row 3 col 1 colSpans 2
-            label(getString(R.string.cash)) row 6 col 0
-            cashBox = jfxCheckBox { isSelected = true } row 6 col 1 colSpans 2
-            label(getString(R.string.reference)) { bindDisable() } row 7 col 0
-            referenceField = jfxTextField { bindDisable() } row 7 col 1 colSpans 2
+            }.grid(3, 1 to 2)
+            label(getString(R.string.cash)).grid(6, 0)
+            cashBox = jfxCheckBox { isSelected = true }.grid(6, 1 to 2)
+            label(getString(R.string.reference)) { bindDisable() }.grid(7, 0)
+            referenceField = jfxTextField { bindDisable() }.grid(7, 1 to 2)
         }
         defaultButton.disableProperty().bind(
-            buildBooleanBinding(
-                valueField.valueProperty(), cashBox.selectedProperty(),
+            booleanBindingOf(
+                valueField.valueProperty(),
+                cashBox.selectedProperty(),
                 referenceField.textProperty()
             ) {
                 (!valueField.isValid || valueField.value <= 0 || valueField.value > receivable).let {
@@ -100,7 +94,9 @@ class AddPaymentPopover(
 
     override val nullableResult: Payment?
         get() = Payment.new(
-            invoice.id, login.id, valueField.value,
+            invoice.id,
+            login.id,
+            valueField.value,
             when {
                 cashBox.isSelected -> null
                 else -> referenceField.text

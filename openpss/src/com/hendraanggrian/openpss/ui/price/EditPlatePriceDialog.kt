@@ -8,9 +8,10 @@ import com.hendraanggrian.openpss.db.transaction
 import javafx.beans.value.ObservableValue
 import kotlinx.nosql.equal
 import kotlinx.nosql.update
-import ktfx.beans.property.asReadOnlyProperty
+import ktfx.cells.textFieldCellFactory
 import ktfx.coroutines.onEditCommit
-import ktfx.listeners.textFieldCellFactory
+import ktfx.doublePropertyOf
+import ktfx.text.buildStringConverter
 
 @Suppress("UNCHECKED_CAST")
 class EditPlatePriceDialog(
@@ -21,10 +22,8 @@ class EditPlatePriceDialog(
         getString(R.string.price)<Double> {
             minWidth = 128.0
             style = "-fx-alignment: center-right;"
-            setCellValueFactory { it.value.price.asReadOnlyProperty() as ObservableValue<Double> }
-            textFieldCellFactory {
-                fromString { it.toDoubleOrNull() ?: 0.0 }
-            }
+            setCellValueFactory { doublePropertyOf(it.value.price) as ObservableValue<Double> }
+            textFieldCellFactory(buildStringConverter { fromString { it.toDoubleOrNull() ?: 0.0 } })
             onEditCommit { cell ->
                 transaction {
                     PlatePrices { it.name.equal(cell.rowValue.name) }

@@ -14,12 +14,13 @@ import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleDoubleProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.beans.property.StringProperty
-import ktfx.beans.binding.buildDoubleBinding
-import ktfx.beans.binding.buildStringBinding
-import ktfx.beans.binding.plus
-import ktfx.beans.property.asProperty
-import ktfx.beans.value.getValue
-import ktfx.beans.value.setValue
+import ktfx.bindings.asDouble
+import ktfx.bindings.doubleBindingOf
+import ktfx.bindings.plus
+import ktfx.bindings.stringBindingOf
+import ktfx.getValue
+import ktfx.propertyOf
+import ktfx.setValue
 import org.joda.time.DateTime
 import org.joda.time.LocalTime
 import kotlin.math.absoluteValue
@@ -63,8 +64,11 @@ class Record(
 
         /** Dummy for invisible [javafx.scene.control.TreeTableView] root. */
         fun getDummy(resources: Resources) = Record(
-            resources, Int.MIN_VALUE, Attendee.DUMMY,
-            START_OF_TIME.asProperty(), START_OF_TIME.asProperty()
+            resources,
+            Int.MIN_VALUE,
+            Attendee.DUMMY,
+            propertyOf(START_OF_TIME),
+            propertyOf(START_OF_TIME)
         )
     }
 
@@ -79,7 +83,7 @@ class Record(
         }
         if (isChild()) {
             dailyProperty.bind(
-                buildDoubleBinding(startProperty, endProperty, dailyDisabledProperty) {
+                doubleBindingOf(startProperty, endProperty, dailyDisabledProperty) {
                     if (isDailyDisabled) 0.0 else {
                         val hours = workingHours
                         when {
@@ -90,7 +94,7 @@ class Record(
                 }
             )
             overtimeProperty.bind(
-                buildDoubleBinding(startProperty, endProperty) {
+                doubleBindingOf(startProperty, endProperty) {
                     val hours = workingHours
                     val overtime = (hours - WORKING_HOURS).round()
                     when {
@@ -102,13 +106,13 @@ class Record(
         }
         if (isChild() || isTotal()) {
             dailyIncomeProperty.bind(
-                buildDoubleBinding(dailyProperty) {
-                    (daily * attendee.daily / WORKING_HOURS).round()
+                dailyProperty.asDouble {
+                    (it * attendee.daily / WORKING_HOURS).round()
                 }
             )
             overtimeIncomeProperty.bind(
-                buildDoubleBinding(overtimeProperty) {
-                    (overtime * attendee.hourlyOvertime).round()
+                overtimeProperty.asDouble {
+                    (it * attendee.hourlyOvertime).round()
                 }
             )
             totalProperty.bind(dailyIncomeProperty + overtimeIncomeProperty)
@@ -132,7 +136,7 @@ class Record(
     val displayedStart: StringProperty
         get() = SimpleStringProperty().apply {
             bind(
-                buildStringBinding(startProperty, dailyDisabledProperty) {
+                stringBindingOf(startProperty, dailyDisabledProperty) {
                     when {
                         isNode() -> attendee.role.orEmpty()
                         isChild() -> start!!.toString(PATTERN_DATETIME).let { if (isDailyDisabled) "($it)" else it }
@@ -146,7 +150,7 @@ class Record(
     val displayedEnd: StringProperty
         get() = SimpleStringProperty().apply {
             bind(
-                buildStringBinding(endProperty, dailyDisabledProperty) {
+                stringBindingOf(endProperty, dailyDisabledProperty) {
                     when {
                         isNode() -> "${attendee.attendances.size / 2} ${getString(R.string.day)}"
                         isChild() -> end!!.toString(PATTERN_DATETIME).let { if (isDailyDisabled) "($it)" else it }

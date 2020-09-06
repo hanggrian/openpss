@@ -5,11 +5,12 @@ import com.hendraanggrian.openpss.db.schemas.Customer
 import javafx.beans.binding.When
 import javafx.scene.control.Label
 import javafx.scene.control.ListView
-import ktfx.beans.binding.otherwise
-import ktfx.beans.binding.then
-import ktfx.beans.value.eq
+import javafx.scene.image.ImageView
+import ktfx.bindings.eq
+import ktfx.bindings.otherwise
+import ktfx.bindings.then
+import ktfx.cells.cellFactory
 import ktfx.layouts.label
-import ktfx.listeners.cellFactory
 
 class CustomerListView : ListView<Customer>() {
 
@@ -39,7 +40,7 @@ class CustomerListView : ListView<Customer>() {
     private fun Label.bindGraphic(index: Int, selectedImageId: String, unselectedImageId: String) =
         graphicProperty().bind(
             When(selectionModel.selectedIndexProperty() eq index)
-                then ktfx.layouts.imageView(selectedImageId)
-                otherwise ktfx.layouts.imageView(unselectedImageId)
+                then ImageView(selectedImageId)
+                otherwise ImageView(unselectedImageId)
         )
 }

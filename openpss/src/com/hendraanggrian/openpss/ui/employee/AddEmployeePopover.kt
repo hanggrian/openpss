@@ -6,7 +6,7 @@ import com.hendraanggrian.openpss.popup.popover.InputPopover
 import com.hendraanggrian.openpss.util.clean
 import com.hendraanggrian.openpss.util.isPersonName
 import javafx.beans.binding.BooleanBinding
-import ktfx.controlsfx.registerPredicateValidator
+import ktfx.controlsfx.controls.registerPredicateValidator
 import org.controlsfx.validation.Severity
 
 class AddEmployeePopover(

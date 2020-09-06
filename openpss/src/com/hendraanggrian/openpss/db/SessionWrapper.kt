@@ -21,7 +21,7 @@ import kotlinx.nosql.mongodb.DocumentSchema
 import kotlinx.nosql.mongodb.MongoDBSession
 import kotlinx.nosql.query.NoQuery
 import kotlinx.nosql.update
-import ktfx.jfoenix.jfxSnackbar
+import ktfx.jfoenix.controls.jfxSnackbar
 
 /** Extended version of [MongoDBSession]. */
 @Suppress("NOTHING_TO_INLINE")

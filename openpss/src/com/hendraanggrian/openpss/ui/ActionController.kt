@@ -3,9 +3,9 @@ package com.hendraanggrian.openpss.ui
 import javafx.beans.property.SimpleStringProperty
 import javafx.beans.property.StringProperty
 import javafx.scene.Node
-import ktfx.beans.value.getValue
-import ktfx.beans.value.setValue
-import ktfx.layouts.NodeInvokable
+import ktfx.getValue
+import ktfx.layouts.NodeManager
+import ktfx.setValue
 import java.net.URL
 import java.util.ResourceBundle
 
@@ -17,12 +17,12 @@ open class ActionController : Controller() {
 
     val actions = mutableListOf<Node>()
 
-    private val actionInvokable = object : NodeInvokable {
-        override fun <R : Node> R.invoke(): R = also { actions += it }
+    private val actionInvokable = object : NodeManager {
+        override fun <C : Node> addChild(child: C): C = child.also { actions += it }
     }
 
     /** Override this function to add actions. */
-    open fun NodeInvokable.onCreateActions() {
+    open fun NodeManager.onCreateActions() {
     }
 
     override fun initialize(location: URL, resources: ResourceBundle) {

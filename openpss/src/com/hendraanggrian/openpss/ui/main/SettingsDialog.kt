@@ -13,7 +13,6 @@ import com.hendraanggrian.openpss.popup.dialog.Dialog
 import com.hendraanggrian.openpss.ui.wage.readers.Reader
 import com.jfoenix.controls.JFXButton
 import javafx.event.ActionEvent
-import javafx.geometry.Pos
 import javafx.scene.Node
 import javafx.scene.control.ComboBox
 import javafx.scene.control.TextArea
@@ -25,30 +24,30 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.javafx.JavaFx
 import kotlinx.coroutines.launch
 import kotlinx.nosql.update
-import ktfx.beans.property.asProperty
-import ktfx.beans.value.and
+import ktfx.bindings.and
+import ktfx.booleanPropertyOf
 import ktfx.collections.toObservableList
+import ktfx.controls.LEFT
 import ktfx.coroutines.listener
-import ktfx.jfoenix.jfxButton
-import ktfx.jfoenix.jfxComboBox
-import ktfx.layouts.LayoutDsl
-import ktfx.layouts.NodeInvokable
-import ktfx.layouts._HBox
-import ktfx.layouts._VBox
+import ktfx.jfoenix.layouts.jfxComboBox
+import ktfx.jfoenix.layouts.styledJFXButton
+import ktfx.layouts.KtfxHBox
+import ktfx.layouts.KtfxLayoutDslMarker
+import ktfx.layouts.KtfxVBox
+import ktfx.layouts.NodeManager
 import ktfx.layouts.borderPane
 import ktfx.layouts.gridPane
 import ktfx.layouts.hbox
 import ktfx.layouts.label
+import ktfx.layouts.styledLabel
 import ktfx.layouts.textArea
 import ktfx.layouts.vbox
-import ktfx.listeners.converter
-import ktfx.scene.layout.gap
+import ktfx.text.buildStringConverter
 import kotlin.coroutines.CoroutineContext
 
 class SettingsDialog(context: Context) : Dialog(context, R.string.settings) {
-
-    private var isLocalChanged = false.asProperty()
-    private var isGlobalChanged = false.asProperty()
+    private var isLocalChanged = booleanPropertyOf()
+    private var isGlobalChanged = booleanPropertyOf()
 
     private lateinit var invoiceHeadersArea: TextArea
     private lateinit var wageReaderChoice: ComboBox<Reader>
@@ -71,19 +70,20 @@ class SettingsDialog(context: Context) : Dialog(context, R.string.settings) {
                     }
                 }
             }
-            Space(getDouble(R.dimen.padding_large))()
+            addChild(Space(getDouble(R.dimen.padding_large)))
             right = this@SettingsDialog.group(R.string.global_settings) {
                 isDisable = !isAdmin()
                 gridPane {
-                    gap = getDouble(R.dimen.padding_medium)
+                    hgap = getDouble(R.dimen.padding_medium)
+                    vgap = getDouble(R.dimen.padding_medium)
                     transaction {
-                        label(getString(R.string.server_language)) row 0 col 0
+                        label(getString(R.string.server_language)).grid(0, 0)
                         languageBox = jfxComboBox(Language.values().toObservableList()) {
-                            converter { toString { it!!.toString(true) } }
+                            converter = buildStringConverter { toString { it!!.toString(true) } }
                             selectionModel.select(Language.ofFullCode(findGlobalSettings(KEY_LANGUAGE).single().value))
                             valueProperty().listener { isGlobalChanged.set(true) }
-                        } row 0 col 1
-                        label(getString(R.string.invoice_headers)) row 1 col 0
+                        }.grid(0, 1)
+                        label(getString(R.string.invoice_headers)).grid(1, 0)
                         invoiceHeadersArea = textArea(
                             findGlobalSettings(KEY_INVOICE_HEADERS).single().valueList
                                 .joinToString("\n").trim()
@@ -96,15 +96,14 @@ class SettingsDialog(context: Context) : Dialog(context, R.string.settings) {
                                     else -> isGlobalChanged.set(true)
                                 }
                             }
-                        } row 1 col 1
+                        }.grid(1, 1)
                     }
                 }
             }
         }
-        buttonInvokable.run {
-            jfxButton(getString(R.string.ok)) {
+        buttonManager.run {
+            styledJFXButton(getString(R.string.ok), styleClass = arrayOf(R.style.raised)) {
                 isDefaultButton = true
-                styleClass += R.style.raised
                 buttonType = JFXButton.ButtonType.RAISED
                 disableProperty().bind(!isLocalChanged and !isGlobalChanged)
                 onActionFilter {
@@ -125,31 +124,27 @@ class SettingsDialog(context: Context) : Dialog(context, R.string.settings) {
 
     private fun group(
         titleId: String,
-        init: (@LayoutDsl _VBox).() -> Unit
+        configuration: (@KtfxLayoutDslMarker KtfxVBox).() -> Unit
     ): VBox = ktfx.layouts.vbox(getDouble(R.dimen.padding_small)) {
-        label(getString(titleId)) {
-            styleClass += R.style.bold
-        }
-        init()
+        styledLabel(getString(titleId), null, R.style.bold)
+        configuration()
     }
 
-    private fun NodeInvokable.group(
+    private fun NodeManager.group(
         titleId: String,
-        init: (@LayoutDsl _VBox).() -> Unit
+        configuration: (@KtfxLayoutDslMarker KtfxVBox).() -> Unit
     ): VBox = vbox(getDouble(R.dimen.padding_small)) {
-        label(getString(titleId)) {
-            styleClass += R.style.bold
-        }
-        init()
+        styledLabel(getString(titleId), null, R.style.bold)
+        configuration()
     }
 
-    private fun NodeInvokable.item(
+    private fun NodeManager.item(
         labelId: String? = null,
-        init: (@LayoutDsl _HBox).() -> Unit
+        configuration: (@KtfxLayoutDslMarker KtfxHBox).() -> Unit
     ): HBox = hbox(getDouble(R.dimen.padding_medium)) {
-        alignment = Pos.CENTER_LEFT
+        alignment = LEFT
         if (labelId != null) label(getString(labelId))
-        init()
+        configuration()
     }
 
     private companion object {

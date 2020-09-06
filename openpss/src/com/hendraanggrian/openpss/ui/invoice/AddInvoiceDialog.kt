@@ -20,7 +20,6 @@ import javafx.beans.property.DoubleProperty
 import javafx.beans.property.ObjectProperty
 import javafx.beans.property.SimpleDoubleProperty
 import javafx.beans.property.SimpleObjectProperty
-import javafx.geometry.HPos.RIGHT
 import javafx.scene.Node
 import javafx.scene.control.Tab
 import javafx.scene.control.TableColumn
@@ -28,47 +27,48 @@ import javafx.scene.control.TableView
 import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
 import javafx.scene.image.ImageView
-import javafx.scene.layout.Priority.ALWAYS
-import ktfx.application.later
-import ktfx.beans.binding.buildDoubleBinding
-import ktfx.beans.binding.buildStringBinding
-import ktfx.beans.binding.otherwise
-import ktfx.beans.binding.then
-import ktfx.beans.value.greater
-import ktfx.beans.value.lessEq
-import ktfx.beans.value.or
-import ktfx.collections.isEmptyBinding
+import ktfx.bindings.asString
+import ktfx.bindings.doubleBindingOf
+import ktfx.bindings.greater
+import ktfx.bindings.isEmpty
+import ktfx.bindings.lessEq
+import ktfx.bindings.or
+import ktfx.bindings.otherwise
+import ktfx.bindings.stringBindingOf
+import ktfx.bindings.then
+import ktfx.controls.H_RIGHT
+import ktfx.controls.TableColumnScope
+import ktfx.controls.columns
+import ktfx.controls.isSelected
 import ktfx.coroutines.onAction
 import ktfx.coroutines.onKeyPressed
 import ktfx.coroutines.onMouseClicked
-import ktfx.jfoenix.jfxTabPane
-import ktfx.jfoenix.jfxTextField
-import ktfx.layouts.NodeInvokable
-import ktfx.layouts.TableColumnsBuilder
-import ktfx.layouts.columns
+import ktfx.inputs.isDelete
+import ktfx.jfoenix.layouts.jfxTextField
+import ktfx.jfoenix.layouts.styledJFXTabPane
+import ktfx.layouts.NodeManager
 import ktfx.layouts.contextMenu
 import ktfx.layouts.gridPane
 import ktfx.layouts.label
 import ktfx.layouts.separatorMenuItem
+import ktfx.layouts.styledLabel
 import ktfx.layouts.tab
 import ktfx.layouts.tableView
 import ktfx.layouts.textArea
-import ktfx.scene.control.isSelected
-import ktfx.scene.input.isDelete
-import ktfx.scene.layout.gap
-import ktfx.util.invoke
+import ktfx.runLater
+import ktfx.text.invoke
 import org.joda.time.DateTime
 
 class AddInvoiceDialog(
     context: Context
 ) : ResultableDialog<Invoice>(context, R.string.add_invoice) {
 
-    private lateinit var customerField: TextField
+    private var customerField: TextField
     private lateinit var offsetTable: TableView<Invoice.OffsetJob>
     private lateinit var digitalTable: TableView<Invoice.DigitalJob>
     private lateinit var plateTable: TableView<Invoice.PlateJob>
     private lateinit var otherTable: TableView<Invoice.OtherJob>
-    private lateinit var noteArea: TextArea
+    private var noteArea: TextArea
 
     private val dateTime: DateTime = dbDateTime
     private val customerProperty: ObjectProperty<Customer> = SimpleObjectProperty(null)
@@ -78,44 +78,38 @@ class AddInvoiceDialog(
 
     init {
         gridPane {
-            gap = getDouble(R.dimen.padding_medium)
-            label(getString(R.string.employee)) col 0 row 0
-            label(login.name) {
-                styleClass += R.style.bold
-            } col 1 row 0
-            label(getString(R.string.date)) col 2 row 0 hpriority ALWAYS halign RIGHT
-            label(dateTime.toString(PATTERN_DATE)) {
-                styleClass += R.style.bold
-            } col 3 row 0
-            label(getString(R.string.customer)) col 0 row 1
+            hgap = getDouble(R.dimen.padding_medium)
+            vgap = getDouble(R.dimen.padding_medium)
+            label(getString(R.string.employee)).grid(0, 0)
+            styledLabel(login.name, null, R.style.bold).grid(0, 1)
+            label(getString(R.string.date)).grid(0, 2).hgrow().halign(H_RIGHT)
+            styledLabel(dateTime.toString(PATTERN_DATE), null, R.style.bold).grid(0, 3)
+            label(getString(R.string.customer)).grid(1, 0)
             customerField = jfxTextField {
                 isEditable = false
                 textProperty().bind(
-                    buildStringBinding(customerProperty) {
-                        customerProperty.value?.toString() ?: getString(R.string.search_customer)
-                    }
+                    customerProperty.asString { it?.toString() ?: getString(R.string.search_customer) }
                 )
                 onMouseClicked {
                     SearchCustomerPopover(this@AddInvoiceDialog).show(this@jfxTextField) { customerProperty.set(it) }
                 }
-            } col 1 row 1
-            label(getString(R.string.jobs)) col 0 row 2
-            jfxTabPane {
-                styleClass += R.style.jfx_tab_pane_small
+            }.grid(1, 1)
+            label(getString(R.string.jobs)).grid(2, 0)
+            styledJFXTabPane(styleClass = arrayOf(R.style.jfx_tab_pane_small)) {
                 tab {
                     digitalTable = invoiceTableView({ AddDigitalJobPopover(this@AddInvoiceDialog) }) {
                         bindTitle(this, R.string.digital)
                         columns {
-                            column<Invoice.DigitalJob, String>(R.string.qty, 72) {
+                            append<Invoice.DigitalJob, String>(R.string.qty, 72) {
                                 numberCell(this@AddInvoiceDialog) { qty }
                             }
-                            column<Invoice.DigitalJob, String>(R.string.type, 72) {
+                            append<Invoice.DigitalJob, String>(R.string.type, 72) {
                                 stringCell { type }
                             }
-                            column<Invoice.DigitalJob, String>(R.string.description, 264) {
+                            append<Invoice.DigitalJob, String>(R.string.description, 264) {
                                 stringCell { desc }
                             }
-                            column<Invoice.DigitalJob, String>(R.string.total, 156) {
+                            append<Invoice.DigitalJob, String>(R.string.total, 156) {
                                 currencyCell(this@AddInvoiceDialog) { total }
                             }
                         }
@@ -125,19 +119,19 @@ class AddInvoiceDialog(
                     offsetTable = invoiceTableView({ AddOffsetJobPopover(this@AddInvoiceDialog) }) {
                         bindTitle(this, R.string.offset)
                         columns {
-                            column<Invoice.OffsetJob, String>(R.string.qty, 72) {
+                            append<Invoice.OffsetJob, String>(R.string.qty, 72) {
                                 numberCell(this@AddInvoiceDialog) { qty }
                             }
-                            column<Invoice.OffsetJob, String>(R.string.type, 72) {
+                            append<Invoice.OffsetJob, String>(R.string.type, 72) {
                                 stringCell { type }
                             }
-                            column<Invoice.OffsetJob, String>(R.string.technique, 72) {
+                            append<Invoice.OffsetJob, String>(R.string.technique, 72) {
                                 stringCell { typedTechnique.toString(this@AddInvoiceDialog) }
                             }
-                            column<Invoice.OffsetJob, String>(R.string.description, 192) {
+                            append<Invoice.OffsetJob, String>(R.string.description, 192) {
                                 stringCell { desc }
                             }
-                            column<Invoice.OffsetJob, String>(R.string.total, 156) {
+                            append<Invoice.OffsetJob, String>(R.string.total, 156) {
                                 currencyCell(this@AddInvoiceDialog) { total }
                             }
                         }
@@ -147,16 +141,16 @@ class AddInvoiceDialog(
                     plateTable = invoiceTableView({ AddPlateJobPopover(this@AddInvoiceDialog) }) {
                         bindTitle(this, R.string.plate)
                         columns {
-                            column<Invoice.PlateJob, String>(R.string.qty, 72) {
+                            append<Invoice.PlateJob, String>(R.string.qty, 72) {
                                 numberCell(this@AddInvoiceDialog) { qty }
                             }
-                            column<Invoice.PlateJob, String>(R.string.type, 72) {
+                            append<Invoice.PlateJob, String>(R.string.type, 72) {
                                 stringCell { type }
                             }
-                            column<Invoice.PlateJob, String>(R.string.description, 264) {
+                            append<Invoice.PlateJob, String>(R.string.description, 264) {
                                 stringCell { desc }
                             }
-                            column<Invoice.PlateJob, String>(R.string.total, 156) {
+                            append<Invoice.PlateJob, String>(R.string.total, 156) {
                                 currencyCell(this@AddInvoiceDialog) { total }
                             }
                         }
@@ -166,21 +160,21 @@ class AddInvoiceDialog(
                     otherTable = invoiceTableView({ AddOtherJobPopover(this@AddInvoiceDialog) }) {
                         bindTitle(this, R.string.others)
                         columns {
-                            column<Invoice.OtherJob, String>(R.string.qty, 72) {
+                            append<Invoice.OtherJob, String>(R.string.qty, 72) {
                                 numberCell(this@AddInvoiceDialog) { qty }
                             }
-                            column<Invoice.OtherJob, String>(R.string.description, 336) {
+                            append<Invoice.OtherJob, String>(R.string.description, 336) {
                                 stringCell { desc }
                             }
-                            column<Invoice.OtherJob, String>(R.string.total, 156) {
+                            append<Invoice.OtherJob, String>(R.string.total, 156) {
                                 currencyCell(this@AddInvoiceDialog) { total }
                             }
                         }
                     }
                 }
-            } col 1 row 2 colSpans 3
+            }.grid(2, 1 to 3)
             totalProperty.bind(
-                buildDoubleBinding(
+                doubleBindingOf(
                     offsetTable.items,
                     digitalTable.items,
                     plateTable.items,
@@ -192,25 +186,20 @@ class AddInvoiceDialog(
                         otherTable.items.sumByDouble { it.total }
                 }
             )
-            label(getString(R.string.note)) col 0 row 3
+            label(getString(R.string.note)).grid(3, 0)
             noteArea = textArea {
                 promptText = getString(R.string.note)
                 prefHeight = 64.0
-            } col 1 row 3 colSpans 3
-            label(getString(R.string.total)) col 0 row 4
-            label {
-                styleClass += R.style.bold
-                textProperty().bind(
-                    buildStringBinding(totalProperty) {
-                        currencyConverter(totalProperty.value)
-                    }
-                )
+            }.grid(3, 1 to 3)
+            label(getString(R.string.total)).grid(4, 0)
+            styledLabel(styleClass = arrayOf(R.style.bold)) {
+                textProperty().bind(totalProperty.asString { currencyConverter(it) })
                 textFillProperty().bind(
                     When(totalProperty greater 0)
                         then getColor(R.color.green)
                         otherwise getColor(R.color.red)
                 )
-            } col 1 row 4
+            }.grid(4, 1)
         }
         defaultButton.disableProperty().bind(customerProperty.isNull or totalProperty.lessEq(0))
     }
@@ -227,7 +216,7 @@ class AddInvoiceDialog(
             noteArea.text
         )
 
-    private fun <S> NodeInvokable.invoiceTableView(
+    private fun <S> NodeManager.invoiceTableView(
         newAddJobPopover: () -> ResultablePopover<S>,
         init: TableView<S>.() -> Unit
     ): TableView<S> = tableView {
@@ -239,26 +228,26 @@ class AddInvoiceDialog(
             }
             separatorMenuItem()
             getString(R.string.delete)(ImageView(R.image.menu_delete)) {
-                later { disableProperty().bind(this@tableView.selectionModel.selectedItemProperty().isNull) }
+                runLater { disableProperty().bind(this@tableView.selectionModel.selectedItemProperty().isNull) }
                 onAction { this@tableView.items.remove(this@tableView.selectionModel.selectedItem) }
             }
             getString(R.string.clear)(ImageView(R.image.menu_clear)) {
-                later { disableProperty().bind(this@tableView.items.isEmptyBinding) }
+                runLater { disableProperty().bind(this@tableView.items.isEmpty) }
                 onAction { this@tableView.items.clear() }
             }
         }
         onKeyPressed {
-            if (it.code.isDelete() && selectionModel.isSelected()) {
+            if (it.isDelete() && selectionModel.isSelected()) {
                 items.remove(selectionModel.selectedItem)
             }
         }
     }
 
-    private fun <S, T> TableColumnsBuilder<S>.column(
+    private fun <S, T> TableColumnScope<S>.append(
         textId: String,
         width: Int,
         init: TableColumn<S, T>.() -> Unit
-    ): TableColumn<S, T> = column(getString(textId)) {
+    ): TableColumn<S, T> = append(getString(textId)) {
         width.toDouble().let {
             minWidth = it
             prefWidth = it
@@ -269,7 +258,7 @@ class AddInvoiceDialog(
 
     private fun Tab.bindTitle(tableView: TableView<*>, s: String) =
         textProperty().bind(
-            buildStringBinding(tableView.items) {
+            stringBindingOf(tableView.items) {
                 getString(s).let {
                     when {
                         tableView.items.isEmpty() -> it

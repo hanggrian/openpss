@@ -1,12 +1,10 @@
 package com.hendraanggrian.openpss.ui.invoice
 
-import com.hendraanggrian.openpss.App.Companion.STRETCH_POINT
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.PATTERN_DATETIME_EXTENDED
 import com.hendraanggrian.openpss.control.DateBox
 import com.hendraanggrian.openpss.control.IntField
 import com.hendraanggrian.openpss.control.PaginatedPane
-import com.hendraanggrian.openpss.control.StretchableButton
 import com.hendraanggrian.openpss.control.Toolbar
 import com.hendraanggrian.openpss.db.SessionWrapper
 import com.hendraanggrian.openpss.db.schemas.Customer
@@ -28,7 +26,6 @@ import com.hendraanggrian.openpss.util.matches
 import com.hendraanggrian.openpss.util.stringCell
 import javafx.beans.property.SimpleObjectProperty
 import javafx.fxml.FXML
-import javafx.geometry.Side.BOTTOM
 import javafx.scene.Node
 import javafx.scene.control.Button
 import javafx.scene.control.ComboBox
@@ -41,26 +38,33 @@ import javafx.scene.layout.HBox
 import javafx.util.Callback
 import kotlinx.nosql.equal
 import kotlinx.nosql.update
-import ktfx.application.later
-import ktfx.beans.binding.buildBinding
-import ktfx.beans.binding.buildStringBinding
-import ktfx.beans.value.and
-import ktfx.beans.value.eq
-import ktfx.beans.value.neq
+import ktfx.bindings.and
+import ktfx.bindings.asAny
+import ktfx.bindings.asBoolean
+import ktfx.bindings.asString
+import ktfx.bindings.bindingOf
+import ktfx.bindings.eq
+import ktfx.bindings.neq
 import ktfx.collections.emptyObservableList
 import ktfx.collections.toMutableObservableList
 import ktfx.collections.toObservableList
-import ktfx.controlsfx.masterDetailPane
+import ktfx.controls.SIDE_BOTTOM
+import ktfx.controls.columns
+import ktfx.controls.isSelected
+import ktfx.controlsfx.layouts.masterDetailPane
 import ktfx.coroutines.onAction
 import ktfx.coroutines.onMouseClicked
-import ktfx.layouts.NodeInvokable
-import ktfx.layouts.columns
+import ktfx.inputs.isDoubleClick
+import ktfx.jfoenix.layouts.leftItems
+import ktfx.jfoenix.layouts.styledJFXButton
+import ktfx.layouts.NodeManager
 import ktfx.layouts.contextMenu
-import ktfx.layouts.label
 import ktfx.layouts.separatorMenuItem
+import ktfx.layouts.styledLabel
 import ktfx.layouts.tableView
-import ktfx.scene.control.isSelected
-import ktfx.scene.input.isDoubleClick
+import ktfx.layouts.tooltip
+import ktfx.layouts.vbox
+import ktfx.runLater
 import org.joda.time.LocalDate
 import java.net.URL
 import java.util.ResourceBundle
@@ -85,32 +89,25 @@ class InvoiceController : ActionController(), Refreshable {
     private lateinit var invoiceTable: TableView<Invoice>
     private lateinit var paymentTable: TableView<Payment>
 
-    override fun NodeInvokable.onCreateActions() {
-        refreshButton = StretchableButton(
-            STRETCH_POINT,
-            getString(R.string.refresh),
-            ImageView(R.image.act_refresh)
-        ).apply {
+    override fun NodeManager.onCreateActions() {
+        refreshButton = styledJFXButton(null, ImageView(R.image.act_refresh), R.style.flat) {
+            tooltip(getString(R.string.refresh))
             onAction { refresh() }
-        }()
-        addButton = StretchableButton(
-            STRETCH_POINT,
-            getString(R.string.add),
-            ImageView(R.image.act_add)
-        ).apply {
+        }
+        addButton = styledJFXButton(null, ImageView(R.image.act_add), R.style.flat) {
+            tooltip(getString(R.string.add))
             onAction { addInvoice() }
-        }()
-        clearFiltersButton = StretchableButton(
-            STRETCH_POINT,
-            getString(R.string.clear_filters),
-            ImageView(R.image.act_clear_filters)
-        ).apply {
+        }
+        clearFiltersButton = styledJFXButton(null, ImageView(R.image.act_clear_filters), R.style.flat) {
+            tooltip(getString(R.string.clear_filters))
             onAction { clearFilters() }
-        }()
-        searchField = IntField().apply {
-            filterBox.disableProperty().bind(valueProperty() neq 0)
-            promptText = getString(R.string.search_no)
-        }()
+        }
+        searchField = addChild(
+            IntField().apply {
+                filterBox.disableProperty().bind(valueProperty() neq 0)
+                promptText = getString(R.string.search_no)
+            }
+        )
     }
 
     override fun initialize(location: URL, resources: ResourceBundle) {
@@ -122,9 +119,7 @@ class InvoiceController : ActionController(), Refreshable {
             selectionModel.selectFirst()
         }
         customerField.textProperty().bind(
-            buildStringBinding(customerProperty) {
-                customerProperty.value?.toString() ?: getString(R.string.search_customer)
-            }
+            customerProperty.asString { it?.toString() ?: getString(R.string.search_customer) }
         )
         dateBox.disableProperty().bind(!pickDateRadio.selectedProperty())
         clearFiltersButton.disableProperty().bind(
@@ -135,9 +130,9 @@ class InvoiceController : ActionController(), Refreshable {
         )
     }
 
-    override fun refresh() = later {
+    override fun refresh() = runLater {
         invoicePagination.contentFactoryProperty().bind(
-            buildBinding(
+            bindingOf(
                 searchField.valueProperty(),
                 customerProperty,
                 paymentCombo.valueProperty(),
@@ -146,8 +141,8 @@ class InvoiceController : ActionController(), Refreshable {
                 dateBox.valueProperty()
             ) {
                 Callback<Pair<Int, Int>, Node> { (page, count) ->
-                    masterDetailPane(BOTTOM) {
-                        invoiceTable = ktfx.layouts.tableView {
+                    masterDetailPane(SIDE_BOTTOM) {
+                        invoiceTable = tableView {
                             columnResizePolicy = CONSTRAINED_RESIZE_POLICY
                             columns {
                                 getString(R.string.id)<String> { stringCell { no.toString() } }
@@ -171,23 +166,22 @@ class InvoiceController : ActionController(), Refreshable {
                                 }
                             }
                             titleProperty().bind(
-                                buildStringBinding(selectionModel.selectedItemProperty()) {
-                                    Invoice.no(this@InvoiceController, selectionModel.selectedItem?.no)
-                                }
+                                selectionModel.selectedItemProperty()
+                                    .asString { Invoice.no(this@InvoiceController, it?.no) }
                             )
                         }
                         showDetailNodeProperty().bind(invoiceTable.selectionModel.selectedItemProperty().isNotNull)
                         masterNode = invoiceTable
-                        detailNode = ktfx.layouts.vbox {
-                            Toolbar().apply {
-                                leftItems {
-                                    label(getString(R.string.payment)) {
-                                        styleClass.addAll("bold", "accent")
+                        detailNode = vbox {
+                            addChild(
+                                Toolbar().apply {
+                                    leftItems {
+                                        styledLabel(getString(R.string.payment), null, R.style.bold, R.style.accent)
                                     }
                                 }
-                            }()
+                            )
                             paymentTable = tableView {
-                                columnResizePolicy = TableView.CONSTRAINED_RESIZE_POLICY
+                                columnResizePolicy = CONSTRAINED_RESIZE_POLICY
                                 columns {
                                     getString(R.string.date)<String> {
                                         stringCell { dateTime.toString(PATTERN_DATETIME_EXTENDED) }
@@ -206,8 +200,8 @@ class InvoiceController : ActionController(), Refreshable {
                                     }
                                 }
                                 itemsProperty().bind(
-                                    buildBinding(invoiceTable.selectionModel.selectedItemProperty()) {
-                                        when (invoiceTable.selectionModel.selectedItem) {
+                                    invoiceTable.selectionModel.selectedItemProperty().asAny {
+                                        when (it) {
                                             null -> emptyObservableList()
                                             else -> transaction {
                                                 Payments {
@@ -230,7 +224,7 @@ class InvoiceController : ActionController(), Refreshable {
                             }
                         }
                         dividerPosition = 0.6
-                        later {
+                        runLater {
                             transaction {
                                 val invoices = Invoices.buildQuery {
                                     when {
@@ -253,18 +247,17 @@ class InvoiceController : ActionController(), Refreshable {
                                     .toMutableObservableList()
                                 invoiceTable.contextMenu {
                                     getString(R.string.view)(ImageView(R.image.menu_invoice)) {
-                                        later {
+                                        runLater {
                                             disableProperty().bind(invoiceTable.selectionModel.selectedItemProperty().isNull)
                                         }
                                         onAction { viewInvoice() }
                                     }
                                     getString(R.string.done)(ImageView(R.image.menu_done)) {
-                                        later {
+                                        runLater {
                                             disableProperty().bind(
-                                                buildBinding(invoiceTable.selectionModel.selectedItemProperty()) {
+                                                invoiceTable.selectionModel.selectedItemProperty().asBoolean {
                                                     when {
-                                                        invoiceTable.selectionModel.selectedItem != null &&
-                                                            !invoiceTable.selectionModel.selectedItem.isDone -> false
+                                                        it != null && !it.isDone -> false
                                                         else -> true
                                                     }
                                                 }

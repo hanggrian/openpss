@@ -11,16 +11,17 @@ import com.hendraanggrian.openpss.util.clean
 import com.hendraanggrian.openpss.util.doneCell
 import com.hendraanggrian.openpss.util.stringCell
 import javafx.scene.control.MenuItem
+import javafx.scene.image.ImageView
 import kotlinx.nosql.notEqual
-import ktfx.beans.binding.buildBinding
-import ktfx.beans.binding.buildStringBinding
+import ktfx.bindings.bindingOf
+import ktfx.bindings.stringBindingOf
 import ktfx.collections.toMutableObservableList
+import ktfx.controls.isSelected
 import ktfx.coroutines.onAction
-import ktfx.jfoenix.jfxSnackbar
+import ktfx.jfoenix.controls.jfxSnackbar
 import ktfx.layouts.contextMenu
 import ktfx.layouts.menuItem
 import ktfx.layouts.separatorMenuItem
-import ktfx.scene.control.isSelected
 
 class EditEmployeeDialog(
     context: Context
@@ -36,7 +37,7 @@ class EditEmployeeDialog(
         table.contextMenu {
             menuItem {
                 textProperty().bind(
-                    buildStringBinding(table.selectionModel.selectedIndexProperty()) {
+                    stringBindingOf(table.selectionModel.selectedIndexProperty()) {
                         when {
                             table.selectionModel.isSelected() -> getString(
                                 when {
@@ -49,9 +50,9 @@ class EditEmployeeDialog(
                     }
                 )
                 graphicProperty().bind(
-                    buildBinding(table.selectionModel.selectedIndexProperty()) {
+                    bindingOf(table.selectionModel.selectedIndexProperty()) {
                         when {
-                            table.selectionModel.isSelected() -> ktfx.layouts.imageView(
+                            table.selectionModel.isSelected() -> ImageView(
                                 when {
                                     table.selectionModel.selectedItem.isAdmin -> R.image.menu_admin_off
                                     else -> R.image.menu_admin_on

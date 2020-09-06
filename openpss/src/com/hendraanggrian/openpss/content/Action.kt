@@ -15,15 +15,14 @@ import javafx.scene.control.PasswordField
 import kotlinx.nosql.Id
 import kotlinx.nosql.equal
 import kotlinx.nosql.notEqual
-import ktfx.beans.value.isBlank
-import ktfx.beans.value.or
+import ktfx.bindings.asBoolean
+import ktfx.bindings.or
 import ktfx.collections.toObservableList
-import ktfx.jfoenix.jfxComboBox
-import ktfx.jfoenix.jfxPasswordField
-import ktfx.jfoenix.jfxSnackbar
+import ktfx.jfoenix.controls.jfxSnackbar
+import ktfx.jfoenix.layouts.jfxComboBox
+import ktfx.jfoenix.layouts.jfxPasswordField
 import ktfx.layouts.gridPane
 import ktfx.layouts.label
-import ktfx.scene.layout.gap
 import java.util.ResourceBundle
 
 abstract class Action<T>(
@@ -62,21 +61,20 @@ abstract class Action<T>(
         Logs += Log.new(log, context.login.id, adminId)
     }
 
-    private class PermissionDialog(context: Context) :
-        ResultableDialog<Employee>(context, R.string.permission_required) {
-
-        private lateinit var adminCombo: ComboBox<Employee>
-        private lateinit var passwordField: PasswordField
+    private class PermissionDialog(context: Context) : ResultableDialog<Employee>(context, R.string.permission_required) {
+        private var adminCombo: ComboBox<Employee>
+        private var passwordField: PasswordField
 
         override val focusedNode: Node? get() = adminCombo
 
         init {
             gridPane {
-                gap = getDouble(R.dimen.padding_medium)
+                hgap = getDouble(R.dimen.padding_medium)
+                vgap = getDouble(R.dimen.padding_medium)
                 label {
                     text = getString(R.string._permission_required)
-                } col 0 row 0 colSpans 2
-                label(getString(R.string.admin)) col 0 row 1
+                }.grid(0, 0 to 2)
+                label(getString(R.string.admin)).grid(1, 0)
                 adminCombo = jfxComboBox(
                     transaction {
                         Employees.buildQuery {
@@ -86,23 +84,23 @@ abstract class Action<T>(
                     }
                 ) {
                     promptText = getString(R.string.admin)
-                } col 1 row 1
-                label(getString(R.string.password)) col 0 row 2
+                }.grid(1, 1)
+                label(getString(R.string.password)).grid(2, 0)
                 passwordField = jfxPasswordField {
                     promptText = getString(R.string.password)
-                } col 1 row 2
+                }.grid(2, 1)
             }
             defaultButton.disableProperty().bind(
                 adminCombo.valueProperty().isNull or
-                    passwordField.textProperty().isBlank()
+                    passwordField.textProperty().asBoolean { it.isNullOrBlank() }
             )
         }
 
         override val nullableResult: Employee?
             get() {
                 val employee = transaction { Employees[adminCombo.value].single() }
-                return when {
-                    employee.password == passwordField.text -> employee
+                return when (employee.password) {
+                    passwordField.text -> employee
                     else -> null
                 }
             }

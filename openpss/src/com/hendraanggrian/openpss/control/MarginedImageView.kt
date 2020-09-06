@@ -3,10 +3,10 @@ package com.hendraanggrian.openpss.control
 import javafx.beans.property.ObjectProperty
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
-import ktfx.layouts._BorderPane
+import ktfx.layouts.KtfxBorderPane
 import ktfx.layouts.imageView
 
-class MarginedImageView : _BorderPane() {
+class MarginedImageView : KtfxBorderPane() {
 
     private val image: ImageView = imageView()
 

@@ -1,12 +1,10 @@
 package com.hendraanggrian.openpss.ui.customer
 
 import com.hendraanggrian.openpss.App
-import com.hendraanggrian.openpss.App.Companion.STRETCH_POINT
 import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.content.PATTERN_DATE
 import com.hendraanggrian.openpss.control.CustomerListView
 import com.hendraanggrian.openpss.control.PaginatedPane
-import com.hendraanggrian.openpss.control.StretchableButton
 import com.hendraanggrian.openpss.db.schemas.Customer
 import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.transaction
@@ -32,18 +30,20 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.javafx.JavaFx
 import kotlinx.coroutines.launch
-import ktfx.application.later
-import ktfx.beans.binding.buildBinding
-import ktfx.beans.binding.buildStringBinding
+import ktfx.bindings.asAny
+import ktfx.bindings.asString
+import ktfx.bindings.bindingOf
 import ktfx.collections.emptyObservableList
 import ktfx.collections.toMutableObservableList
 import ktfx.collections.toObservableList
 import ktfx.coroutines.onAction
-import ktfx.jfoenix.jfxSnackbar
-import ktfx.jfoenix.jfxTextField
-import ktfx.layouts.NodeInvokable
+import ktfx.jfoenix.controls.jfxSnackbar
+import ktfx.jfoenix.layouts.jfxTextField
+import ktfx.jfoenix.layouts.styledJFXButton
+import ktfx.layouts.NodeManager
 import ktfx.layouts.contextMenu
 import ktfx.layouts.tooltip
+import ktfx.runLater
 import org.controlsfx.control.MasterDetailPane
 import java.net.URL
 import java.util.ResourceBundle
@@ -75,21 +75,15 @@ class CustomerController : ActionController(), Refreshable {
 
     private lateinit var customerList: ListView<Customer>
 
-    override fun NodeInvokable.onCreateActions() {
-        refreshButton = StretchableButton(
-            STRETCH_POINT,
-            getString(R.string.refresh),
-            ImageView(R.image.act_refresh)
-        ).apply {
+    override fun NodeManager.onCreateActions() {
+        refreshButton = styledJFXButton(null, ImageView(R.image.act_refresh), R.style.flat) {
+            tooltip(getString(R.string.refresh))
             onAction { refresh() }
-        }()
-        addButton = StretchableButton(
-            STRETCH_POINT,
-            getString(R.string.add),
-            ImageView(R.image.act_add)
-        ).apply {
-            onAction { add() }
-        }()
+        }
+        addButton = styledJFXButton(null, ImageView(R.image.act_add), R.style.flat) {
+            tooltip(getString(R.string.add))
+            onAction { refresh() }
+        }
         searchField = jfxTextField {
             promptText = getString(R.string.search)
         }
@@ -106,13 +100,13 @@ class CustomerController : ActionController(), Refreshable {
         valueColumn.stringCell { value }
     }
 
-    override fun refresh() = later {
+    override fun refresh() = runLater {
         customerPagination.contentFactoryProperty().bind(
-            buildBinding(searchField.textProperty()) {
+            bindingOf(searchField.textProperty()) {
                 Callback<Pair<Int, Int>, Node> { (page, count) ->
                     customerList = CustomerListView().apply {
                         styleClass += R.style.list_view_no_scrollbar_vertical
-                        later {
+                        runLater {
                             transaction {
                                 val customers = Customers.buildQuery {
                                     if (searchField.text.isNotBlank()) {
@@ -138,20 +132,24 @@ class CustomerController : ActionController(), Refreshable {
                         }
                     }
                     titleProperty().bind(
-                        buildStringBinding(customerList.selectionModel.selectedItemProperty()) {
-                            customerList.selectionModel.selectedItem?.name
-                        }
+                        customerList.selectionModel.selectedItemProperty().asString { it?.name.orEmpty() }
                     )
-                    noLabel.bindLabel { customerList.selectionModel.selectedItem?.no?.toString().orEmpty() }
-                    sinceLabel.bindLabel {
-                        customerList.selectionModel.selectedItem?.since?.toString(PATTERN_DATE).orEmpty()
-                    }
-                    addressLabel.bindLabel { customerList.selectionModel.selectedItem?.address ?: "-" }
-                    noteLabel.bindLabel { customerList.selectionModel.selectedItem?.note ?: "-" }
+                    noLabel.textProperty().bind(
+                        customerList.selectionModel.selectedItemProperty().asString { it?.no?.toString().orEmpty() }
+                    )
+                    sinceLabel.textProperty().bind(
+                        customerList.selectionModel.selectedItemProperty()
+                            .asString { it?.since?.toString(PATTERN_DATE).orEmpty() }
+                    )
+                    addressLabel.textProperty().bind(
+                        customerList.selectionModel.selectedItemProperty().asString { it?.address ?: "-" }
+                    )
+                    noteLabel.textProperty().bind(
+                        customerList.selectionModel.selectedItemProperty().asString { it?.note ?: "-" }
+                    )
                     contactTable.itemsProperty().bind(
-                        buildBinding(customerList.selectionModel.selectedItemProperty()) {
-                            customerList.selectionModel.selectedItem?.contacts?.toObservableList() ?: emptyObservableList()
-                        }
+                        customerList.selectionModel.selectedItemProperty()
+                            .asAny { it?.contacts?.toObservableList() ?: emptyObservableList() }
                     )
                     masterDetailPane.showDetailNodeProperty()
                         .bind(customerList.selectionModel.selectedItemProperty().isNotNull)
@@ -201,9 +199,6 @@ class CustomerController : ActionController(), Refreshable {
             )
             ) { reload() }
     }
-
-    private fun Label.bindLabel(target: () -> String) = textProperty()
-        .bind(buildStringBinding(customerList.selectionModel.selectedItemProperty()) { target() })
 
     private fun reload() {
         val index = customerList.selectionModel.selectedIndex

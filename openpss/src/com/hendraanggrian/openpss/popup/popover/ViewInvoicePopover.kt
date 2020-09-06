@@ -15,11 +15,6 @@ import com.hendraanggrian.openpss.db.schemas.Invoices
 import com.hendraanggrian.openpss.db.transaction
 import com.sun.javafx.print.PrintHelper
 import com.sun.javafx.print.Units.MM
-import javafx.geometry.HPos.LEFT
-import javafx.geometry.HPos.RIGHT
-import javafx.geometry.Pos.CENTER
-import javafx.geometry.Pos.CENTER_LEFT
-import javafx.geometry.Pos.CENTER_RIGHT
 import javafx.print.PageOrientation.PORTRAIT
 import javafx.print.Paper
 import javafx.print.Printer
@@ -37,23 +32,30 @@ import javafx.scene.paint.Color.BLACK
 import javafx.scene.text.TextAlignment
 import javafx.scene.transform.Scale
 import kotlinx.nosql.update
-import ktfx.application.later
+import ktfx.controls.CENTER
+import ktfx.controls.H_LEFT
+import ktfx.controls.H_RIGHT
+import ktfx.controls.LEFT
+import ktfx.controls.RIGHT
+import ktfx.controls.columnConstraints
+import ktfx.controls.insetsOf
 import ktfx.coroutines.onAction
-import ktfx.layouts.NodeInvokable
-import ktfx.layouts._GridPane
+import ktfx.layouts.KtfxGridPane
+import ktfx.layouts.NodeManager
 import ktfx.layouts.button
-import ktfx.layouts.columnConstraints
 import ktfx.layouts.gridPane
 import ktfx.layouts.hbox
 import ktfx.layouts.label
 import ktfx.layouts.line
 import ktfx.layouts.region
+import ktfx.layouts.styledLabel
+import ktfx.layouts.styledText
 import ktfx.layouts.textFlow
 import ktfx.layouts.vbox
-import ktfx.scene.layout.gap
-import ktfx.scene.layout.paddingAll
-import ktfx.scene.text.fontSize
-import ktfx.util.invoke
+import ktfx.runLater
+import ktfx.text.append
+import ktfx.text.invoke
+import ktfx.text.pt
 import java.util.ResourceBundle
 
 /**
@@ -89,12 +91,12 @@ class ViewInvoicePopover(
         }
         invoiceBox = vbox(getDouble(R.dimen.padding_medium)) {
             border = DASHED.toBorder()
-            paddingAll = getDouble(R.dimen.padding_medium)
+            padding = insetsOf(getDouble(R.dimen.padding_medium))
             setMinSize(WIDTH, HEIGHT)
             setMaxSize(WIDTH, HEIGHT)
             hbox(getDouble(R.dimen.padding_medium)) {
                 vbox {
-                    alignment = CENTER_LEFT
+                    alignment = LEFT
                     invoiceHeaders.forEachIndexed { index, s ->
                         label(s) {
                             if (index == 0) {
@@ -102,11 +104,11 @@ class ViewInvoicePopover(
                             }
                         }
                     }
-                } hpriority ALWAYS
+                }.hgrow()
                 vbox {
-                    alignment = CENTER_RIGHT
-                    label(getString(R.string.invoice)) { fontSize = 18.0 }
-                    label("# ${invoice.no}") { fontSize = 32.0 }
+                    alignment = RIGHT
+                    label(getString(R.string.invoice)) { font = 18.pt }
+                    label("# ${invoice.no}") { font = 32.pt }
                 }
             }
             fullLine()
@@ -116,105 +118,101 @@ class ViewInvoicePopover(
                     "${invoice.dateTime.toString(PATTERN_DATETIME_EXTENDED)} " +
                         "(${transaction { Employees[invoice.employeeId].single().name }})"
                 )
-                label("${customer.no}. ${customer.name}") {
-                    styleClass += R.style.bold
-                }
+                styledLabel("${customer.no}. ${customer.name}", null, R.style.bold)
             }
             vbox {
                 gridPane {
                     hgap = getDouble(R.dimen.padding_medium)
                     columnConstraints {
-                        constraints {
+                        append {
                             minWidth = USE_PREF_SIZE
-                            halignment = RIGHT
+                            halignment = H_RIGHT
                         }
-                        constraints {
+                        append {
                             minWidth = USE_PREF_SIZE
                         }
-                        constraints { hgrow = ALWAYS }
-                        constraints {
+                        append { hgrow = ALWAYS }
+                        append {
                             minWidth = USE_PREF_SIZE
-                            halignment = RIGHT
+                            halignment = H_RIGHT
                         }
                     }
                     var row = 0
                     if (invoice.offsetJobs.isNotEmpty()) {
                         row += jobGridPane(row, R.string.offset, invoice.offsetJobs) { job, i ->
-                            label(numberConverter(job.qty)) row i col 0
+                            label(numberConverter(job.qty)).grid(row = i, col = 0)
                             label("${job.type}\n${job.typedTechnique.toString(this@ViewInvoicePopover)}") {
                                 textAlignment = TextAlignment.CENTER
-                            } row i col 1
+                            }.grid(row = i, col = 1)
                             label(job.desc) {
                                 isWrapText = true
-                            } row i col 2
-                            label(numberConverter(job.total)) row i col 3
+                            }.grid(row = i, col = 2)
+                            label(numberConverter(job.total)).grid(row = i, col = 3)
                         }
                     }
                     if (invoice.digitalJobs.isNotEmpty()) {
                         row += jobGridPane(row, R.string.digital, invoice.digitalJobs) { job, i ->
-                            label(numberConverter(job.qty)) row i col 0
+                            label(numberConverter(job.qty)).grid(row = i, col = 0)
                             label("${job.type}\n${getString(if (job.isTwoSide) R.string.two_side else R.string.one_side)}") {
                                 textAlignment = TextAlignment.CENTER
-                            } row i col 1
+                            }.grid(row = i, col = 1)
                             label(job.desc) {
                                 isWrapText = true
-                            } row i col 2
-                            label(numberConverter(job.total)) row i col 3
+                            }.grid(row = i, col = 2)
+                            label(numberConverter(job.total)).grid(row = i, col = 3)
                         }
                     }
                     if (invoice.plateJobs.isNotEmpty()) {
                         row += jobGridPane(row, R.string.plate, invoice.plateJobs) { job, i ->
-                            label(numberConverter(job.qty)) row i col 0
-                            label(job.type) row i col 1
+                            label(numberConverter(job.qty)).grid(row = i, col = 0)
+                            label(job.type).grid(row = i, col = 1)
                             label(job.desc) {
                                 isWrapText = true
-                            } row i col 2
-                            label(numberConverter(job.total)) row i col 3
+                            }.grid(row = i, col = 2)
+                            label(numberConverter(job.total)).grid(row = i, col = 3)
                         }
                     }
                     if (invoice.otherJobs.isNotEmpty()) {
                         row += jobGridPane(row, R.string.others, invoice.otherJobs) { job, i ->
-                            label(numberConverter(job.qty)) row i col 0
+                            label(numberConverter(job.qty)).grid(row = i, col = 0)
                             label(job.desc) {
                                 isWrapText = true
-                            } row i col 2
-                            label(numberConverter(job.total)) row i col 3
+                            }.grid(row = i, col = 2)
+                            label(numberConverter(job.total)).grid(row = i, col = 3)
                         }
                     }
                 }
-            } vpriority ALWAYS
+            }.vgrow()
             fullLine()
             gridPane {
-                gap = getDouble(R.dimen.padding_medium)
+                hgap = getDouble(R.dimen.padding_medium)
+                vgap = getDouble(R.dimen.padding_medium)
                 textFlow {
-                    paddingAll = getDouble(R.dimen.padding_small)
+                    padding = insetsOf(getDouble(R.dimen.padding_small))
                     border = SOLID.toBorder()
-                    "${getString(R.string.note)}\n" {
-                        styleClass += R.style.bold
-                    }
-                    invoice.note()
-                } row 0 col 0 rowSpans 2 hpriority ALWAYS
-                label(currencyConverter(invoice.total)) {
-                    styleClass += R.style.bold
-                } row 0 col 1 colSpans 2 halign RIGHT
+                    styledText("${getString(R.string.note)}\n", R.style.bold)
+                    append(invoice.note)
+                }.grid(row = 0 to 2, col = 0).hgrow()
+                styledLabel(currencyConverter(invoice.total), null, R.style.bold)
+                    .grid(row = 0, col = 1 to 2).halign(H_RIGHT)
                 vbox {
                     alignment = CENTER
                     region { prefHeight = 48.0 }
                     line(endX = 64.0)
                     label(getString(R.string.employee))
-                } row 1 col 1
+                }.grid(row = 1, col = 1)
                 vbox {
                     alignment = CENTER
                     region { prefHeight = 48.0 }
                     line(endX = 64.0)
                     label(getString(R.string.customer))
-                } row 1 col 2
+                }.grid(row = 1, col = 2)
             }
         }
-        buttonInvokable.run {
+        buttonManager.run {
             button(getString(R.string.print)) {
                 isDefaultButton = true
-                later { isDisable = invoice.printed }
+                runLater { isDisable = invoice.printed }
                 onAction {
                     // resize node to actual print size
                     val printer = Printer.getDefaultPrinter()
@@ -229,7 +227,9 @@ class ViewInvoicePopover(
                     // disable auto-hide when print dialog is showing
                     // isAutoHide = false
                     val job = PrinterJob.createPrinterJob(printer)!!
-                    if (job.showPrintDialog(this@ViewInvoicePopover.scene.window) && job.printPage(layout, invoiceBox)) {
+                    if (job.showPrintDialog(this@ViewInvoicePopover.scene.window) &&
+                        job.printPage(layout, invoiceBox)
+                    ) {
                         job.endJob()
                         if (!isTest) transaction {
                             Invoices[invoice].projection { printed }.update(true)
@@ -241,27 +241,25 @@ class ViewInvoicePopover(
         }
     }
 
-    private fun <T : Invoice.Job> _GridPane.jobGridPane(
+    private fun <T : Invoice.Job> KtfxGridPane.jobGridPane(
         currentRow: Int,
         titleId: String,
         jobs: List<T>,
-        lineBuilder: _GridPane.(order: T, row: Int) -> Unit
+        lineBuilder: KtfxGridPane.(order: T, row: Int) -> Unit
     ): Int {
         var row = currentRow
-        label(getString(titleId)) {
-            styleClass += R.style.bold
-        } row row col 0 colSpans 4 halign LEFT
+        styledLabel(getString(titleId), null, R.style.bold).grid(row = row, col = 0 to 4).halign(H_LEFT)
         row++
         jobs.forEach {
             lineBuilder(it, row)
             row++
         }
-        Space(height = getDouble(R.dimen.padding_small))() row row col 0 colSpans 4
+        addChild(Space(height = getDouble(R.dimen.padding_small))).grid(row = row, col = 0 to 4)
         row++
         return row
     }
 
     private fun BorderStrokeStyle.toBorder() = Border(BorderStroke(BLACK, this, EMPTY, DEFAULT))
 
-    private fun NodeInvokable.fullLine() = line(endX = WIDTH - getDouble(R.dimen.padding_medium) * 2)
+    private fun NodeManager.fullLine() = line(endX = WIDTH - getDouble(R.dimen.padding_medium) * 2)
 }

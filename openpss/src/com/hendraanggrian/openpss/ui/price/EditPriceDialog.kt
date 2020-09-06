@@ -13,7 +13,7 @@ import com.hendraanggrian.openpss.util.isNotEmpty
 import com.hendraanggrian.openpss.util.stringCell
 import kotlinx.nosql.equal
 import kotlinx.nosql.mongodb.DocumentSchema
-import ktfx.jfoenix.jfxSnackbar
+import ktfx.jfoenix.controls.jfxSnackbar
 
 abstract class EditPriceDialog<D, S>(
     context: Context,

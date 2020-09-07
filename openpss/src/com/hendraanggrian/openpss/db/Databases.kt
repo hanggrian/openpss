@@ -10,7 +10,6 @@ import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.db.schemas.Employees
 import com.hendraanggrian.openpss.db.schemas.GlobalSettings
 import com.hendraanggrian.openpss.db.schemas.Invoices
-import com.hendraanggrian.openpss.db.schemas.Logs
 import com.hendraanggrian.openpss.db.schemas.OffsetPrices
 import com.hendraanggrian.openpss.db.schemas.Payments
 import com.hendraanggrian.openpss.db.schemas.PlatePrices
@@ -36,7 +35,6 @@ private val TABLES =
         Customers,
         DigitalPrices,
         Employees,
-        Logs,
         GlobalSettings,
         Invoices,
         OffsetPrices,

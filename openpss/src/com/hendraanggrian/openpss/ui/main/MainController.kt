@@ -3,17 +3,12 @@ package com.hendraanggrian.openpss.ui.main
 import com.hendraanggrian.openpss.App
 import com.hendraanggrian.openpss.BuildConfig
 import com.hendraanggrian.openpss.R
-import com.hendraanggrian.openpss.content.PATTERN_DATETIME
 import com.hendraanggrian.openpss.control.MarginedImageView
-import com.hendraanggrian.openpss.control.PaginatedPane
 import com.hendraanggrian.openpss.control.Toolbar
-import com.hendraanggrian.openpss.control.UnselectableListView
 import com.hendraanggrian.openpss.db.dbDateTime
 import com.hendraanggrian.openpss.db.schemas.Customers
 import com.hendraanggrian.openpss.db.schemas.Employees
 import com.hendraanggrian.openpss.db.schemas.Invoice
-import com.hendraanggrian.openpss.db.schemas.Log
-import com.hendraanggrian.openpss.db.schemas.Logs
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.popup.popover.ViewInvoicePopover
 import com.hendraanggrian.openpss.ui.ActionController
@@ -44,32 +39,21 @@ import javafx.scene.control.TabPane
 import javafx.scene.image.Image
 import javafx.scene.input.MouseEvent
 import javafx.scene.layout.StackPane
-import javafx.util.Callback
 import kotlinx.nosql.equal
 import kotlinx.nosql.update
 import ktfx.bindings.eq
-import ktfx.bindings.minus
 import ktfx.bindings.otherwise
 import ktfx.bindings.stringBindingOf
 import ktfx.bindings.then
-import ktfx.cells.cellFactory
-import ktfx.collections.toObservableList
 import ktfx.coroutines.listener
 import ktfx.jfoenix.controls.jfxSnackbar
-import ktfx.layouts.styledText
-import ktfx.layouts.text
-import ktfx.layouts.textFlow
 import ktfx.runLater
-import ktfx.text.append
-import ktfx.text.appendLine
-import ktfx.text.pt
 import ktfx.windows.stage
 import org.apache.commons.lang3.SystemUtils
 import java.net.URL
 import java.util.ResourceBundle
-import kotlin.math.ceil
 
-class MainController : Controller(), Refreshable {
+class MainController : Controller() {
 
     @FXML override lateinit var stack: StackPane
     @FXML lateinit var menuBar: MenuBar
@@ -84,7 +68,6 @@ class MainController : Controller(), Refreshable {
     @FXML lateinit var settingsItem: MenuItem
     @FXML lateinit var drawer: JFXDrawer
     @FXML lateinit var drawerList: ListView<Label>
-    @FXML lateinit var eventPagination: PaginatedPane
     @FXML lateinit var toolbar: Toolbar
     @FXML lateinit var hamburger: JFXHamburger
     @FXML lateinit var employeeLabel: Label
@@ -154,8 +137,6 @@ class MainController : Controller(), Refreshable {
         financeGraphic.bind(3, R.image.tab_finance_selected, R.image.tab_finance)
         wageGraphic.bind(4, R.image.tab_wage_selected, R.image.tab_wage)
 
-        refresh()
-
         customerController.replaceButtons()
         tabPane.selectionModel.selectedIndexProperty().listener { _, _, value ->
             controllers[value.toInt()].let {
@@ -186,46 +167,6 @@ class MainController : Controller(), Refreshable {
             }
         }
     }
-
-    override fun refresh() {
-        eventPagination.contentFactory = Callback { (page, count) ->
-            UnselectableListView<Log>().apply {
-                styleClass.addAll(R.style.borderless, R.style.list_view_no_scrollbar)
-                cellFactory {
-                    onUpdate { log, empty ->
-                        if (log != null && !empty) graphic = textFlow {
-                            text(log.message) {
-                                isWrapText = true
-                                font = 12.pt
-                                this@textFlow.prefWidthProperty().bind(this@apply.widthProperty() - 12)
-                                wrappingWidthProperty().bind(this@apply.widthProperty())
-                            }
-                            appendLine()
-                            styledText("${log.dateTime.toString(PATTERN_DATETIME)} ", R.style.bold)
-                            append(transaction { Employees[log.employeeId].single().name })
-                            if (log.adminId != null) {
-                                append(", ${transaction { Employees[log.adminId].single().name }}")
-                            }
-                        }
-                    }
-                }
-                runLater {
-                    transaction {
-                        val logs = Logs()
-                        eventPagination.pageCount = ceil(logs.count() / count.toDouble()).toInt()
-                        items = logs
-                            .skip(count * page)
-                            .take(count)
-                            .toObservableList()
-                    }
-                }
-            }
-        }
-    }
-
-    @FXML fun onDrawerOpening() = refresh()
-
-    @FXML fun onDrawerOpened() = eventPagination.selectLast()
 
     @FXML fun add(event: ActionEvent) = when (event.source) {
         addCustomerItem -> select(customerController) { runLater { add() } }

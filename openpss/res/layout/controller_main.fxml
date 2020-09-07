@@ -59,8 +59,7 @@
                 </MenuItem>
             </Menu>
         </MenuBar>
-        <JFXDrawer fx:id="drawer" defaultDrawerSize="300" VBox.vgrow="ALWAYS"
-                   onDrawerOpening="#onDrawerOpening" onDrawerOpened="#onDrawerOpened">
+        <JFXDrawer fx:id="drawer" defaultDrawerSize="300" VBox.vgrow="ALWAYS">
             <sidePane>
                 <VBox>
                     <Toolbar>
@@ -95,12 +94,6 @@
                             </graphic>
                         </Label>
                     </SelectionListView>
-                    <Toolbar>
-                        <leftItems>
-                            <Label text="%logs" styleClass="bold,accent"/>
-                        </leftItems>
-                    </Toolbar>
-                    <PaginatedPane fx:id="eventPagination" VBox.vgrow="ALWAYS" magic="40"/>
                 </VBox>
             </sidePane>
             <content>

@@ -9,7 +9,6 @@ import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.popup.popover.DateTimePopover
 import com.hendraanggrian.openpss.util.round
 import com.hendraanggrian.openpss.util.trimMinutes
-import javafx.geometry.Pos.CENTER
 import javafx.scene.Node
 import javafx.scene.control.CheckBox
 import javafx.scene.control.ContentDisplay
@@ -27,6 +26,7 @@ import kotlinx.coroutines.launch
 import ktfx.bindings.asAny
 import ktfx.cells.cellFactory
 import ktfx.collections.sort
+import ktfx.controls.CENTER
 import ktfx.controls.find
 import ktfx.controls.insetsOf
 import ktfx.controls.isSelected

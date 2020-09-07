@@ -5,14 +5,11 @@ import com.hendraanggrian.openpss.R
 import com.hendraanggrian.openpss.db.SessionWrapper
 import com.hendraanggrian.openpss.db.schemas.Employee
 import com.hendraanggrian.openpss.db.schemas.Employees
-import com.hendraanggrian.openpss.db.schemas.Log
-import com.hendraanggrian.openpss.db.schemas.Logs
 import com.hendraanggrian.openpss.db.transaction
 import com.hendraanggrian.openpss.popup.dialog.ResultableDialog
 import javafx.scene.Node
 import javafx.scene.control.ComboBox
 import javafx.scene.control.PasswordField
-import kotlinx.nosql.Id
 import kotlinx.nosql.equal
 import kotlinx.nosql.notEqual
 import ktfx.bindings.asBoolean
@@ -33,8 +30,6 @@ abstract class Action<T>(
     @Suppress("LeakingThis")
     override val resourceBundle: ResourceBundle = Language.ofServer().toResourcesBundle()
 
-    abstract val log: String
-
     abstract fun SessionWrapper.handle(): T
 
     operator fun invoke(block: SessionWrapper.(T) -> Unit) {
@@ -44,21 +39,13 @@ abstract class Action<T>(
                     PermissionDialog(context).show { admin ->
                         when (admin) {
                             null -> stack.jfxSnackbar(getString(R.string.invalid_password), App.DURATION_SHORT)
-                            else -> transaction { execute(block, admin.id) }
+                            else -> transaction { block(handle()) }
                         }
                     }
                 }
-                else -> execute(block)
+                else -> block(handle())
             }
         }
-    }
-
-    private inline fun SessionWrapper.execute(
-        block: (SessionWrapper.(T) -> Unit),
-        adminId: Id<String, Employees>? = null
-    ) {
-        block(handle())
-        Logs += Log.new(log, context.login.id, adminId)
     }
 
     private class PermissionDialog(context: Context) : ResultableDialog<Employee>(context, R.string.permission_required) {

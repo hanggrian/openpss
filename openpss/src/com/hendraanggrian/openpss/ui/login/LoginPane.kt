@@ -17,7 +17,6 @@ import com.hendraanggrian.openpss.popup.popover.Popover
 import com.hendraanggrian.openpss.ui.main.help.AboutDialog
 import com.hendraanggrian.openpss.ui.main.help.GitHubApi
 import com.jfoenix.controls.JFXButton
-import javafx.geometry.Pos
 import javafx.scene.Node
 import javafx.scene.control.Button
 import javafx.scene.control.PasswordField
@@ -32,7 +31,9 @@ import ktfx.bindings.asBoolean
 import ktfx.bindings.bindingOf
 import ktfx.bindings.or
 import ktfx.collections.toObservableList
+import ktfx.controls.CENTER
 import ktfx.controls.H_RIGHT
+import ktfx.controls.RIGHT
 import ktfx.controls.insetsOf
 import ktfx.coroutines.listener
 import ktfx.coroutines.onAction
@@ -104,7 +105,7 @@ class LoginPane(private val resourced: Resources) : KtfxStackPane(), Context {
         minWidth = WIDTH
         maxWidth = WIDTH
         gridPane {
-            alignment = Pos.CENTER_RIGHT
+            alignment = RIGHT
             hgap = getDouble(R.dimen.padding_medium)
             vgap = getDouble(R.dimen.padding_medium)
             padding = insetsOf(getDouble(R.dimen.padding_medium))
@@ -124,7 +125,7 @@ class LoginPane(private val resourced: Resources) : KtfxStackPane(), Context {
                 }
             }.grid(row = 0, col = 1)
             vbox(8.0) {
-                alignment = Pos.CENTER
+                alignment = CENTER
                 padding = insetsOf(32, 24)
                 imageView(R.image.logo_small)
                 styledLabel(getString(R.string.openpss_login), null, R.style.bold, R.style.display2)
@@ -236,7 +237,7 @@ class LoginPane(private val resourced: Resources) : KtfxStackPane(), Context {
         init {
             hbox(getDouble(R.dimen.padding_medium)) {
                 stackPane {
-                    alignment = Pos.CENTER
+                    alignment = CENTER
                     passwordField = jfxPasswordField {
                         promptText = getString(R.string.password)
                     }

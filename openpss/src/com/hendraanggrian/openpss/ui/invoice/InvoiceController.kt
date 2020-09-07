@@ -318,20 +318,14 @@ class InvoiceController : ActionController(), Refreshable {
     }.show(invoiceTable)
 
     private fun addPayment() = AddPaymentPopover(this, invoiceTable.selectionModel.selectedItem).show(paymentTable) {
-        (AddPaymentAction(this@InvoiceController, it!!, invoiceTable.selectionModel.selectedItem.no)) {
+        (AddPaymentAction(this@InvoiceController, it!!)) {
             updatePaymentStatus()
             reload(invoiceTable.selectionModel.selectedItem)
         }
     }
 
     private fun deletePayment() = ConfirmDialog(this).show {
-        (
-            DeletePaymentAction(
-                this@InvoiceController,
-                paymentTable.selectionModel.selectedItem,
-                invoiceTable.selectionModel.selectedItem.no
-            )
-            ) {
+        (DeletePaymentAction(this@InvoiceController, paymentTable.selectionModel.selectedItem)) {
             updatePaymentStatus()
             reload(invoiceTable.selectionModel.selectedItem)
         }

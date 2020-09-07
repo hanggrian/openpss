@@ -1,3 +1,7 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+import com.hendraanggrian.buildconfig.BuildConfigTask
+import com.hendraanggrian.r.RTask
+
 plugins {
     kotlin("jvm")
     idea
@@ -80,7 +84,7 @@ packr {
 }
 
 tasks {
-    "generateR"(com.hendraanggrian.r.RTask::class) {
+    "generateR"(RTask::class) {
         resourcesDir = projectDir.resolve("res")
         exclude("font", "license")
         configureCss()
@@ -88,7 +92,7 @@ tasks {
             isWriteResourceBundle = true
         }
     }
-    "generateBuildConfig"(com.hendraanggrian.buildconfig.BuildConfigTask::class) {
+    "generateBuildConfig"(BuildConfigTask::class) {
         appName = RELEASE_NAME
         debug = RELEASE_DEBUG
         artifactId = RELEASE_ARTIFACT
@@ -99,12 +103,11 @@ tasks {
         addField("FULL_NAME", RELEASE_FULL_NAME)
     }
 
-    "shadowJar"(com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar::class) {
-        destinationDir = buildDir.resolve("release")
-        manifest.attributes(mapOf("Main-Class" to application.mainClassName))
-        baseName = RELEASE_ARTIFACT
-        version = RELEASE_VERSION
-        classifier = null
+    "shadowJar"(ShadowJar::class) {
+        destinationDirectory.set(buildDir.resolve("release"))
+        archiveBaseName.set(RELEASE_ARTIFACT)
+        archiveVersion.set(RELEASE_VERSION)
+        archiveClassifier.set(null as String?)
     }
 
     withType<com.hendraanggrian.packr.PackTask> {

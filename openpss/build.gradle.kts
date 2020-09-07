@@ -1,13 +1,11 @@
 plugins {
     kotlin("jvm")
-    dokka
     idea
     id("com.hendraanggrian.r")
     id("com.hendraanggrian.buildconfig")
     id("com.hendraanggrian.packr")
     shadow
     application
-    `git-publish`
 }
 
 group = RELEASE_GROUP
@@ -81,19 +79,7 @@ packr {
     isAutoOpen = true
 }
 
-gitPublish {
-    repoUri.set(RELEASE_WEBSITE)
-    branch.set("gh-pages")
-    contents.from("pages", "$buildDir/docs")
-}
-
 tasks {
-    "dokka"(org.jetbrains.dokka.gradle.DokkaTask::class) {
-        outputDirectory = "$buildDir/docs"
-        doFirst { file(outputDirectory).deleteRecursively() }
-    }
-    get("gitPublishCopy").dependsOn("dokka")
-
     "generateR"(com.hendraanggrian.r.RTask::class) {
         resourcesDir = projectDir.resolve("res")
         exclude("font", "license")
@@ -102,7 +88,6 @@ tasks {
             isWriteResourceBundle = true
         }
     }
-
     "generateBuildConfig"(com.hendraanggrian.buildconfig.BuildConfigTask::class) {
         appName = RELEASE_NAME
         debug = RELEASE_DEBUG

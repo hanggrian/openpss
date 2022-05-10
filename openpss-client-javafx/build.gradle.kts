@@ -14,7 +14,7 @@ version = RELEASE_VERSION
 application.mainClassName = "$RELEASE_GROUP.App"
 
 sourceSets {
-    getByName("main") {
+    named("main") {
         // manual import client generated build
         val dirs = mutableListOf("src")
         val clientGeneratedDir = "$RELEASE_ARTIFACT-client/build/generated"
@@ -25,7 +25,7 @@ sourceSets {
         java.srcDirs(*dirs.toTypedArray())
         resources.srcDir("res")
     }
-    getByName("test") {
+    named("test") {
         java.srcDir("tests/src")
         resources.srcDir("tests/res")
     }

@@ -6,14 +6,13 @@ plugins {
 }
 
 android {
-    compileSdkVersion(SDK_TARGET)
+    compileSdk = SDK_TARGET
     defaultConfig {
-        minSdkVersion(SDK_MIN)
-        targetSdkVersion(SDK_TARGET)
+        minSdk = SDK_MIN
+        targetSdk = SDK_TARGET
         multiDexEnabled = true
         applicationId = RELEASE_GROUP
         versionCode = 1
-        versionName = RELEASE_VERSION
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
     compileOptions {
@@ -21,19 +20,19 @@ android {
         targetCompatibility = JavaVersion.VERSION_1_8
     }
     sourceSets {
-        getByName("main") {
+        named("main") {
             manifest.srcFile("AndroidManifest.xml")
-            java.srcDirs("src")
+            java.srcDir("src")
             res.srcDir("res")
             resources.srcDir("src")
         }
     }
     buildTypes {
-        getByName("debug") {
+        named("debug") {
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
         }
-        getByName("release") {
+        named("release") {
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
         }
@@ -43,7 +42,7 @@ android {
             enabled = false
         }
     }
-    lintOptions {
+    lint {
         isAbortOnError = false // temporarily
     }
     packagingOptions {

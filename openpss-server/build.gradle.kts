@@ -14,11 +14,11 @@ version = RELEASE_VERSION
 application.mainClassName = "$RELEASE_GROUP.Server"
 
 sourceSets {
-    getByName("main") {
+    named("main") {
         java.srcDir("src")
         resources.srcDir("res")
     }
-    getByName("test") {
+    named("test") {
         java.srcDir("tests/src")
         resources.srcDir("tests/res")
     }

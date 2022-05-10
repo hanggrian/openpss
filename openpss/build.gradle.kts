@@ -7,11 +7,11 @@ group = RELEASE_GROUP
 version = RELEASE_VERSION
 
 sourceSets {
-    getByName("main") {
+    named("main") {
         java.srcDir("src")
         resources.srcDir("res")
     }
-    getByName("test") {
+    named("test") {
         java.srcDir("tests/src")
         resources.srcDir("tests/res")
     }

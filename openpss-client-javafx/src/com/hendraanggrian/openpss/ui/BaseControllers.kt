@@ -57,7 +57,7 @@ open class BaseController : Initializable, FxComponent {
 
     /** Get extra registered with [key], should be executed in platform thread. */
     fun <T : Any> getExtra(key: String): T {
-        check(::extras.isInitialized) { "No extras found in this controller." }
+        check(::extras.isInitialized) { "No extras found in this controller" }
         @Suppress("UNCHECKED_CAST") return checkNotNull(extras[key] as T) { "No extra found with that key." }
     }
 }

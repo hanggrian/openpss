@@ -23,14 +23,14 @@ sourceSets {
 ktlint()
 
 dependencies {
-    api(project(":$RELEASE_ARTIFACT"))
+    implementation(project(":$RELEASE_ARTIFACT"))
 
-    api(hendraanggrian("prefy", "prefy", VERSION_PREFY))
-    api(ktor("client-okhttp"))
-    api(ktor("client-gson"))
-    api(arrow("core"))
+    implementation(hendraanggrian("prefy", "prefy", VERSION_PREFY))
+    implementation(ktor("client-okhttp"))
+    implementation(ktor("client-gson"))
+    implementation(arrow("core"))
 
-    api(androidx("annotation", version = "1.0.1"))
+    implementation(androidx("annotation", version = "1.0.1"))
 
     testImplementation(kotlin("test-junit", VERSION_KOTLIN))
 }

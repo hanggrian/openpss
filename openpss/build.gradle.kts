@@ -20,14 +20,14 @@ sourceSets {
 ktlint()
 
 dependencies {
-    api(kotlin("stdlib", VERSION_KOTLIN))
-    api(kotlin("nosql-mongodb", VERSION_NOSQL))
-    api(kotlinx("coroutines-core", VERSION_COROUTINES))
+    implementation(kotlin("stdlib", VERSION_KOTLIN))
+    implementation(kotlin("nosql-mongodb", VERSION_NOSQL))
+    implementation(kotlinx("coroutines-core", VERSION_COROUTINES))
 
-    api(jodaTime())
-    api(jodaTimeSerializers())
-    api(google("code.gson", "gson", VERSION_GSON))
-    api(apache("maven-artifact", VERSION_MAVEN))
+    implementation(jodaTime())
+    implementation(jodaTimeSerializers())
+    implementation(google("code.gson", "gson", VERSION_GSON))
+    implementation(apache("maven-artifact", VERSION_MAVEN))
 
     testImplementation(kotlin("test-junit", VERSION_KOTLIN))
     testImplementation(kotlin("reflect", VERSION_KOTLIN))

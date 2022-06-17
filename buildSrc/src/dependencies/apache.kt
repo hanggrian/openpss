@@ -4,6 +4,6 @@ const val VERSION_POI = "4.1.2"
 const val VERSION_COMMONS_VALIDATOR = "1.6"
 
 fun Dependencies.apache(module: String, version: String): String {
-    require('-' in module) { "Module must contain `-` (e.g.: commons-lang, commons-math)." }
+    require('-' in module) { "Module must contain `-` (e.g.: commons-lang, commons-math)" }
     return "org.apache.${module.split('-').first()}:$module:$version"
 }

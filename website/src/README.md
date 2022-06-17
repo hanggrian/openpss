@@ -48,7 +48,7 @@ Cause is already optimised for updating pages, company details and footer elemen
 
 ## SEO Tag
 
-This site uses the [jekyll-seo-tag](https://github.com/jekyll/jekyll-seo-tag) plugin. You should at least set a title in front matter on each page. Have a look at the [project page](https://github.com/jekyll/jekyll-seo-tag) for more options.
+This site uses the [jekyll-seo-tag](https://github.com/jekyll/jekyll-seo-tag/) plugin. You should at least set a title in front matter on each page. Have a look at the [project page](https://github.com/jekyll/jekyll-seo-tag/) for more options.
 
 ## Google Analytics
 

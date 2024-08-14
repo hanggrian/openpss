@@ -1,0 +1,27 @@
+.tree-table-view .column-header-background {
+    visibility: hidden;
+    -fx-padding: -1em;
+}
+
+.tree-table-view *.scroll-bar:vertical *.increment-button,
+.tree-table-view *.scroll-bar:vertical *.decrement-button,
+.tree-table-view *.scroll-bar:vertical *.increment-arrow,
+.tree-table-view *.scroll-bar:vertical *.decrement-arrow {
+    -fx-background-color: null;
+    -fx-background-radius: 0;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+    -fx-shape: null;
+}
+
+.tree-table-view *.scroll-bar:horizontal,
+.tree-table-view *.scroll-bar:horizontal *.track,
+.tree-table-view *.scroll-bar:horizontal *.track-background,
+.tree-table-view *.scroll-bar:horizontal *.thumb,
+.tree-table-view *.scroll-bar:horizontal *.increment-button,
+.tree-table-view *.scroll-bar:horizontal *.decrement-button,
+.tree-table-view *.scroll-bar:horizontal *.increment-arrow,
+.tree-table-view *.scroll-bar:horizontal *.decrement-arrow {
+	-fx-base: transparent;
+	-fx-background-color: white;
+}

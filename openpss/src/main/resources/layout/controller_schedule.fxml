@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<VBox
+  xmlns="http://javafx.com/javafx"
+  xmlns:fx="http://javafx.com/fxml"
+  fx:controller="com.hanggrian.openpss.ui.schedule.ScheduleController">
+  <!-- Necessary for displaying border of table -->
+  <Pane prefHeight="1"/>
+  <TreeTableView fx:id="scheduleTable" showRoot="false" VBox.vgrow="ALWAYS">
+    <columns>
+      <TreeTableColumn sortable="false" fx:id="jobType" text="%jobs"/>
+      <TreeTableColumn sortable="false" fx:id="descColumn" text="%description"/>
+      <TreeTableColumn sortable="false" fx:id="qtyColumn" text="%qty"/>
+      <TreeTableColumn sortable="false" fx:id="typeColumn" text="%type"/>
+    </columns>
+    <columnResizePolicy>
+      <TreeTableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+    </columnResizePolicy>
+  </TreeTableView>
+</VBox>

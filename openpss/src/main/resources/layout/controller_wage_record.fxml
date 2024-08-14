@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.hanggrian.openpss.control.Space?>
+<?import com.hanggrian.openpss.control.Toolbar?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<StackPane
+  xmlns="http://javafx.com/javafx"
+  xmlns:fx="http://javafx.com/fxml/1"
+  fx:controller="com.hanggrian.openpss.ui.wage.record.WageRecordController"
+  fx:id="stack"
+  styleClass="white-background">
+  <VBox fx:id="vbox">
+    <MenuBar fx:id="menuBar" styleClass="white-background">
+      <Menu mnemonicParsing="false" text="File">
+        <MenuItem mnemonicParsing="false" text="%save_screenshot" onAction="#screenshot">
+          <graphic>
+            <ImageView>
+              <Image url="@/image/menu_save.png"/>
+            </ImageView>
+          </graphic>
+        </MenuItem>
+      </Menu>
+      <Menu mnemonicParsing="false" fx:id="editMenu" text="Edit">
+        <MenuItem fx:id="undoMenu" mnemonicParsing="false" text="%undo" onAction="#undo">
+          <graphic>
+            <ImageView>
+              <Image url="@/image/menu_undo.png"/>
+            </ImageView>
+          </graphic>
+        </MenuItem>
+        <SeparatorMenuItem/>
+      </Menu>
+    </MenuBar>
+    <Toolbar fx:id="toolbar">
+      <leftItems>
+        <JFXButton
+          mnemonicParsing="false"
+          fx:id="disableDailyIncomeButton"
+          onAction="#disableDailyIncome"
+          style="flat">
+          <tooltip>
+            <Tooltip text="%disable_daily_income"/>
+          </tooltip>
+          <graphic>
+            <ImageView>
+              <Image url="@/image/act_disable_daily.png"/>
+            </ImageView>
+          </graphic>
+        </JFXButton>
+        <Space prefWidth="20"/>
+        <JFXButton
+          mnemonicParsing="false"
+          fx:id="lockStartButton"
+          onAction="#lockStart"
+          style="flat">
+          <tooltip>
+            <Tooltip text="%lock_start_time"/>
+          </tooltip>
+          <graphic>
+            <ImageView>
+              <Image url="@/image/act_lock_start.png"/>
+            </ImageView>
+          </graphic>
+        </JFXButton>
+        <JFXButton
+          mnemonicParsing="false"
+          fx:id="lockEndButton"
+          onAction="#lockEnd"
+          style="flat">
+          <tooltip>
+            <Tooltip text="%lock_end_time"/>
+          </tooltip>
+          <graphic>
+            <ImageView>
+              <Image url="@/image/act_lock_end.png"/>
+            </ImageView>
+          </graphic>
+        </JFXButton>
+      </leftItems>
+      <rightItems>
+        <Label fx:id="totalLabel" styleClass="display"/>
+      </rightItems>
+    </Toolbar>
+    <TreeTableView fx:id="recordTable" showRoot="false" VBox.vgrow="ALWAYS">
+      <columns>
+        <TreeTableColumn fx:id="nameColumn" sortable="false" text="%name"/>
+        <TreeTableColumn
+          fx:id="startColumn"
+          sortable="false"
+          resizable="false"
+          text="%start"
+          maxWidth="156"
+          minWidth="156"
+          prefWidth="156"
+          style="-fx-alignment: CENTER;"/>
+        <TreeTableColumn
+          fx:id="endColumn"
+          sortable="false"
+          resizable="false"
+          text="%end"
+          maxWidth="156"
+          minWidth="156"
+          prefWidth="156"
+          style="-fx-alignment: CENTER;"/>
+        <TreeTableColumn
+          fx:id="dailyColumn"
+          sortable="false"
+          resizable="false"
+          text="%daily"
+          maxWidth="64"
+          minWidth="64"
+          prefWidth="64"
+          style="-fx-alignment: CENTER;"/>
+        <TreeTableColumn
+          fx:id="dailyIncomeColumn"
+          sortable="false"
+          text="%daily_income"
+          style="-fx-alignment: CENTER-RIGHT;"/>
+        <TreeTableColumn
+          fx:id="overtimeColumn"
+          sortable="false"
+          resizable="false"
+          text="%overtime"
+          maxWidth="64"
+          minWidth="64"
+          prefWidth="64"
+          style="-fx-alignment: CENTER;"/>
+        <TreeTableColumn
+          fx:id="overtimeIncomeColumn"
+          sortable="false"
+          text="%overtime_income"
+          style="-fx-alignment: CENTER-RIGHT;"/>
+        <TreeTableColumn
+          fx:id="totalColumn"
+          sortable="false"
+          text="%total"
+          style="-fx-alignment: CENTER-RIGHT;"/>
+      </columns>
+      <columnResizePolicy>
+        <TreeTableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+      </columnResizePolicy>
+    </TreeTableView>
+  </VBox>
+</StackPane>

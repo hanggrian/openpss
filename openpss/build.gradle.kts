@@ -1,116 +1,165 @@
-import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
-import com.hendraanggrian.buildconfig.BuildConfigTask
-import com.hendraanggrian.r.RTask
+import java.nio.charset.StandardCharsets
+import java.util.Properties
+
+val developerId: String by project
+val developerName: String by project
+val releaseGroup: String by project
+val releaseVersion: String by project
+val releaseArtifact: String by project
+val releaseUrl: String by project
 
 plugins {
-    kotlin("jvm")
-    idea
-    id("com.hendraanggrian.r")
-    id("com.hendraanggrian.buildconfig")
-    id("com.hendraanggrian.packr")
-    shadow
+    alias(libs.plugins.javafx)
+    kotlin("jvm") version libs.versions.kotlin
     application
+    alias(libs.plugins.buildconfig)
+    alias(libs.plugins.localization)
+    alias(libs.plugins.packaging)
+    alias(libs.plugins.ktlint)
+}
+buildscript {
+    dependencies.classpath(libs.ph.css)
 }
 
-group = RELEASE_GROUP
-version = RELEASE_VERSION
-
-sourceSets {
-    getByName("main") {
-        java.srcDir("src")
-        resources.srcDir("res")
-    }
-    getByName("test") {
-        java.srcDir("tests/src")
-        resources.srcDir("tests/res")
-    }
+javafx {
+    version = "${libs.versions.jdk.get()}.0.9"
+    modules("javafx.controls", "javafx.fxml", "javafx.graphics", "javafx.swing")
 }
 
-application.mainClassName = "$group.App"
+kotlin.jvmToolchain(libs.versions.jdk.get().toInt())
 
-ktlint()
+ktlint.version = libs.versions.ktlint.get()
+
+application {
+    applicationName = "OpenPSS"
+    mainClass.set("$releaseGroup.$releaseArtifact.OpenPssApp")
+}
+
+packaging {
+    icon.set(projectDir.resolve("logo_mac.icns"))
+    verbose.set(true)
+}
 
 dependencies {
-    implementation(kotlin("stdlib", VERSION_KOTLIN))
-    implementation(kotlin("nosql-mongodb", VERSION_NOSQL))
-    implementation(kotlinx("coroutines-javafx", VERSION_COROUTINES))
+    ktlintRuleset(libs.rulebook.ktlint)
 
-    implementation(square("adapter-guava", VERSION_RETROFIT, "retrofit2"))
-    implementation(square("converter-gson", VERSION_RETROFIT, "retrofit2"))
+    implementation(libs.kotlinx.nosql.mongodb)
+    implementation(libs.kotlinx.coroutines)
+    implementation(libs.gson)
+    implementation(libs.guava)
 
-    implementation(google("gson", VERSION_GSON, "code.gson"))
-    implementation(google("guava", VERSION_GUAVA, "guava"))
+    implementation(libs.joda.time)
+    implementation(libs.maven.artifact)
+    implementation(libs.commons.lang3)
+    implementation(libs.commons.math3)
+    implementation(libs.commons.validator)
+    implementation(libs.poi.ooxml)
 
-    implementation(hendraanggrian("ktfx", "ktfx", VERSION_KTFX))
-    implementation(hendraanggrian("ktfx", "ktfx-controlsfx", VERSION_KTFX))
-    implementation(hendraanggrian("ktfx", "ktfx-jfoenix", VERSION_KTFX))
+    implementation(libs.bundles.ktfx)
+    implementation(libs.bundles.retrofit)
+    implementation(libs.bundles.log4j)
 
-    implementation(jodaTime())
-
-    implementation(apache("maven-artifact", VERSION_MAVEN))
-    implementation(apache("commons-lang3", VERSION_COMMONS_LANG))
-    implementation(apache("commons-math3", VERSION_COMMONS_MATH))
-    implementation(apache("poi-ooxml", VERSION_POI))
-    implementation(commonsValidator())
-
-    implementation(log4j12())
-
-    testImplementation(kotlin("test-junit", VERSION_KOTLIN))
-    testImplementation(kotlin("reflect", VERSION_KOTLIN))
-    testImplementation(testFx("junit"))
+    testImplementation(kotlin("test-junit", libs.versions.kotlin.get()))
+    testImplementation(kotlin("reflect", libs.versions.kotlin.get()))
+    testImplementation(libs.bundles.testfx)
+    testImplementation(libs.truth)
 }
 
-packr {
-    executable = RELEASE_NAME
-    mainClass = application.mainClassName
-    classpath = files("build/install/$RELEASE_ARTIFACT/lib")
-    resources = files("res")
-    vmArgs("Xmx2G")
-    macOS {
-        name = "$RELEASE_NAME/$RELEASE_NAME.app"
-        icon = rootProject.projectDir.resolve("art/$RELEASE_NAME.icns")
-        bundleId = RELEASE_GROUP
+buildConfig {
+    useJavaOutput()
+    buildConfigField("NAME", application.applicationName)
+    buildConfigField("VERSION", releaseVersion)
+    buildConfigField("ARTIFACT", releaseArtifact)
+    buildConfigField("EMAIL", "$developerId@proton.me")
+    buildConfigField("WEBSITE", releaseUrl)
+
+    buildConfigField<Boolean>("DEBUG", true)
+
+    buildConfigField("AUTHOR", developerId)
+    buildConfigField("FULL_NAME", developerName)
+}
+
+val r = buildConfig.forClass("R")
+val generateR by tasks.registering {
+    val resources = sourceSets["main"].resources.asFileTree
+    inputs.files(resources)
+    doFirst {
+        resources.visit {
+            path
+                .lowercase()
+                .replace("\\W".toRegex(), "_")
+                .replace("_${file.extension}", "")
+                .let { key ->
+                    if (key !in r.buildConfigFields.map { it.name }) {
+                        r.buildConfigField(key, "/$path")
+                    }
+                }
+            when (file.extension) {
+                "properties" ->
+                    file
+                        .inputStream()
+                        .use { stream ->
+                            val properties = Properties().apply { load(stream) }
+                            properties.keys
+                                .forEach { value ->
+                                    var parentName = file.parentFile!!.nameWithoutExtension
+                                    if (parentName == "resources") {
+                                        parentName = "string"
+                                    }
+                                    val key = "${parentName}_$value"
+                                    if (key !in r.buildConfigFields.map { it.name }) {
+                                        r.buildConfigField(key, value.toString())
+                                    }
+                                }
+                        }
+                "css" ->
+                    com.helger.css.reader.CSSReader
+                        .readFromFile(
+                            file,
+                            StandardCharsets.UTF_8,
+                            com.helger.css.ECSSVersion.CSS30,
+                        )!!
+                        .allStyleRules
+                        .flatMap { it.allSelectors }
+                        .mapNotNull {
+                            val member =
+                                it
+                                    .getMemberAtIndex(0)
+                                    ?.asCSSString
+                                    ?: return@mapNotNull null
+                            when {
+                                member.startsWith('.') -> member.substringAfter('.')
+                                member.startsWith('#') -> member.substringAfter('#')
+                                member == "*" -> null
+                                else -> member
+                            }
+                        }.forEach { member ->
+                            val key = "style_${member.replace('-', '_')}"
+                            if (key !in r.buildConfigFields.map { it.name }) {
+                                r.buildConfigField(key, member)
+                            }
+                        }
+            }
+        }
     }
-    windows32 {
-        name = "32-bit/$RELEASE_NAME"
-        jdk = "/Volumes/Media/Windows JDK/jdk1.8.0_261-x86"
-    }
-    windows64 {
-        name = "64-bit/$RELEASE_NAME"
-        jdk = "/Volumes/Media/Windows JDK/jdk1.8.0_261-x64"
-    }
-    isVerbose = true
-    isAutoOpen = true
 }
 
 tasks {
-    "generateR"(RTask::class) {
-        resourcesDir = projectDir.resolve("res")
-        exclude("font", "license")
-        configureCss()
-        configureProperties {
-            isWriteResourceBundle = true
-        }
+    withType<JavaExec> {
+        jvmArgs(
+            "--add-opens=java.base/java.lang.reflect=ALL-UNNAMED",
+            "--add-exports=javafx.base/com.sun.javafx.binding=ALL-UNNAMED",
+            "--add-exports=javafx.base/com.sun.javafx.event=ALL-UNNAMED",
+            "--add-exports=javafx.controls/com.sun.javafx.scene.control.behavior=ALL-UNNAMED",
+            "--add-exports=javafx.controls/com.sun.javafx.scene.control=ALL-UNNAMED",
+            "--add-exports=javafx.graphics/com.sun.javafx.stage=ALL-UNNAMED",
+            "--add-exports=javafx.graphics/com.sun.javafx.scene=ALL-UNNAMED",
+        )
     }
-    "generateBuildConfig"(BuildConfigTask::class) {
-        appName = RELEASE_NAME
-        debug = RELEASE_DEBUG
-        artifactId = RELEASE_ARTIFACT
-        email = "$RELEASE_USER@gmail.com"
-        website = RELEASE_WEBSITE
-
-        addField("AUTHOR", RELEASE_USER)
-        addField("FULL_NAME", RELEASE_FULL_NAME)
+    test {
+        jvmArgs("--add-opens=java.base/java.lang.reflect=ALL-UNNAMED")
     }
-
-    "shadowJar"(ShadowJar::class) {
-        destinationDirectory.set(buildDir.resolve("release"))
-        archiveBaseName.set(RELEASE_ARTIFACT)
-        archiveVersion.set(RELEASE_VERSION)
-        archiveClassifier.set(null as String?)
-    }
-
-    withType<com.hendraanggrian.packr.PackTask> {
-        dependsOn("installDist")
+    generateBuildConfig {
+        dependsOn(generateR)
     }
 }

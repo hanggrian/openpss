@@ -1,12 +1,20 @@
-*.iml
-.gradle
-/local.properties
-/.idea
+# macOS
 .DS_Store
-/build
-/captures
-.externalNativeBuild
+._*
 
-/out
+# Gradle
+.gradle/
+build/
+local.properties
 
-/release
+# IntelliJ
+*.iml
+.idea/
+out/
+
+# Android
+captures/
+.externalNativeBuild/
+
+# VSCode
+bin/

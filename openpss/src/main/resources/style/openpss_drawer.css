@@ -1,0 +1,5 @@
+.drawer-item {
+    -fx-font-family: "Roboto";
+    -fx-font-size: 11pt;
+    -fx-graphic-text-gap: 30
+}

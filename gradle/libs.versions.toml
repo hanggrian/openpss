@@ -1,0 +1,55 @@
+[versions]
+jdk = "17"
+kotlin = "1.9.20"
+ktlint = "1.3.1"
+ktfx = "0.2"
+retrofit = "2.11.0"
+
+[plugins]
+javafx = "org.openjfx.javafxplugin:0.1.0"
+ktlint = "org.jlleitschuh.gradle.ktlint:12.1.1"
+git-publish = "org.ajoberstar.git-publish:4.2.2"
+buildconfig = "com.github.gmazzo.buildconfig:5.4.0"
+localization = "com.hendraanggrian.localization:0.2"
+packaging = "com.hendraanggrian.packaging:0.2"
+
+[libraries]
+# script
+ph-css = "com.helger:ph-css:7.0.0"
+# lint
+rulebook-ktlint = "com.hanggrian.rulebook:rulebook-ktlint:0.1"
+# main
+kotlinx-nosql-mongodb = "org.jetbrains.kotlin:kotlin-nosql-mongodb:0.1-SNAPSHOT"
+kotlinx-coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-javafx:1.8.1"
+ktfx = { module = "com.hanggrian.ktfx:ktfx", version.ref = "ktfx" }
+ktfx-jfoenix = { module = "com.hanggrian.ktfx:ktfx-jfoenix", version.ref = "ktfx" }
+ktfx-controlsfx = { module = "com.hanggrian.ktfx:ktfx-controlsfx", version.ref = "ktfx" }
+controlsfx = "org.controlsfx:controlsfx:11.2.1"
+jfoenix = "com.jfoenix:jfoenix:9.0.10"
+maven-artifact = "org.apache.maven:maven-artifact:3.9.2"
+commons-math3 = "org.apache.commons:commons-math3:3.6.1"
+commons-lang3 = "org.apache.commons:commons-lang3:3.13.0"
+commons-validator = "commons-validator:commons-validator:1.9.0"
+poi-ooxml = "org.apache.poi:poi-ooxml:5.3.0"
+retrofit-adapter-guava = { module = "com.squareup.retrofit2:adapter-guava", version.ref = "retrofit" }
+retrofit-converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
+gson = "com.google.code.gson:gson:2.11.0"
+guava = "com.google.guava:guava:33.2.1-jre"
+joda-time = "joda-time:joda-time:2.12.7"
+slf4j-log4j = "org.slf4j:slf4j-log4j12:2.0.14"
+log4j-core = "org.apache.logging.log4j:log4j-core:2.23.1"
+
+# test
+truth = "com.google.truth:truth:1.4.4"
+testfx-junit = "org.testfx:testfx-junit:4.0.18"
+testfx-monocle = "org.testfx:openjfx-monocle:17.0.10"
+
+[bundles]
+ktfx = [
+  "ktfx",
+  "ktfx-jfoenix", "jfoenix",
+  "ktfx-controlsfx", "controlsfx"
+]
+retrofit = ["retrofit-adapter-guava", "retrofit-converter-gson"]
+testfx = ["testfx-junit", "testfx-monocle"]
+log4j = ["slf4j-log4j", "log4j-core"]

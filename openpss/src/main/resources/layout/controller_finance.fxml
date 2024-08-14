@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXTabPane?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<JFXTabPane
+  xmlns="http://javafx.com/javafx"
+  xmlns:fx="http://javafx.com/fxml"
+  fx:controller="com.hanggrian.openpss.ui.finance.FinanceController"
+  fx:id="tabPane">
+  <Tab closable="false" text="%daily">
+    <TableView fx:id="dailyTable">
+      <columns>
+        <TableColumn fx:id="dailyNoColumn" text="%id"/>
+        <TableColumn fx:id="dailyTimeColumn" text="%time"/>
+        <TableColumn fx:id="dailyEmployeeColumn" text="%employee"/>
+        <TableColumn fx:id="dailyValueColumn" text="%value"/>
+        <TableColumn fx:id="dailyCashColumn" text="%cash"/>
+        <TableColumn fx:id="dailyReferenceColumn" text="%reference"/>
+      </columns>
+      <columnResizePolicy>
+        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+      </columnResizePolicy>
+      <contextMenu>
+        <ContextMenu>
+          <items>
+            <MenuItem
+              fx:id="viewInvoiceItem"
+              mnemonicParsing="false"
+              onAction="#viewInvoice"
+              text="%view">
+              <graphic>
+                <ImageView>
+                  <Image url="@/image/menu_invoice.png"/>
+                </ImageView>
+              </graphic>
+            </MenuItem>
+          </items>
+        </ContextMenu>
+      </contextMenu>
+    </TableView>
+  </Tab>
+  <Tab closable="false" text="%monthly">
+    <TableView fx:id="monthlyTable">
+      <columns>
+        <TableColumn fx:id="monthlyDateColumn" text="%date"/>
+        <TableColumn fx:id="monthlyCashColumn" text="%cash"/>
+        <TableColumn fx:id="monthlyNonCashColumn" text="%non_cash"/>
+        <TableColumn fx:id="monthlyTotalColumn" text="%total"/>
+      </columns>
+      <columnResizePolicy>
+        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+      </columnResizePolicy>
+      <contextMenu>
+        <ContextMenu>
+          <items>
+            <MenuItem
+              fx:id="viewPaymentsItem"
+              mnemonicParsing="false"
+              onAction="#viewPayments"
+              text="%view"/>
+          </items>
+        </ContextMenu>
+      </contextMenu>
+    </TableView>
+  </Tab>
+</JFXTabPane>

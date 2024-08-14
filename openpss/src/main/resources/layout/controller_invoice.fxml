@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.hanggrian.openpss.control.DateBox?>
+<?import com.hanggrian.openpss.control.PaginatedPane?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXRadioButton?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<VBox
+  xmlns="http://javafx.com/javafx"
+  xmlns:fx="http://javafx.com/fxml"
+  fx:controller="com.hanggrian.openpss.ui.invoice.InvoiceController">
+  <HBox fx:id="filterBox" alignment="CENTER_LEFT" spacing="10">
+    <padding>
+      <Insets topRightBottomLeft="10"/>
+    </padding>
+    <fx:define>
+      <ToggleGroup fx:id="pickDateGroup"/>
+    </fx:define>
+    <HBox alignment="CENTER">
+      <JFXRadioButton
+        fx:id="allDateRadio"
+        mnemonicParsing="false"
+        toggleGroup="$pickDateGroup"
+        text="%all_date">
+        <padding>
+          <Insets right="5"/>
+        </padding>
+      </JFXRadioButton>
+      <JFXRadioButton
+        fx:id="pickDateRadio"
+        mnemonicParsing="false"
+        toggleGroup="$pickDateGroup"
+        text="%pick_date"
+        selected="true"
+        contentDisplay="RIGHT"/>
+      <DateBox fx:id="dateBox"/>
+    </HBox>
+    <JFXTextField fx:id="customerField" editable="false" onMouseClicked="#selectCustomer"/>
+    <JFXComboBox fx:id="paymentCombo"/>
+  </HBox>
+  <PaginatedPane fx:id="invoicePagination" VBox.vgrow="ALWAYS"/>
+</VBox>

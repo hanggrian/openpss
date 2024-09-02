@@ -91,7 +91,7 @@ data class Invoice(
             return jobs
         }
 
-    inline val total: Double get() = jobs.sumByDouble { it.total }
+    inline val total: Double get() = jobs.sumOf { it.total }
 
     companion object {
         fun new(
@@ -103,21 +103,20 @@ data class Invoice(
             plateJobs: List<PlateJob>,
             otherJobs: List<OtherJob>,
             note: String,
-        ): Invoice =
-            Invoice(
-                Numbered.next(Invoices),
-                employeeId,
-                customerId,
-                dateTime,
-                digitalJobs,
-                offsetJobs,
-                plateJobs,
-                otherJobs,
-                note,
-                false,
-                false,
-                false,
-            )
+        ) = Invoice(
+            Numbered.next(Invoices),
+            employeeId,
+            customerId,
+            dateTime,
+            digitalJobs,
+            offsetJobs,
+            plateJobs,
+            otherJobs,
+            note,
+            false,
+            false,
+            false,
+        )
 
         fun no(resources: Resources, no: Number?): String? =
             no?.let { "${resources.getString(R.string_invoice)} #$it" }
@@ -131,13 +130,8 @@ data class Invoice(
         val isTwoSide: Boolean,
     ) : TypedJob {
         companion object {
-            fun new(
-                qty: Int,
-                title: String,
-                total: Double,
-                type: String,
-                isTwoSide: Boolean,
-            ): DigitalJob = DigitalJob(qty, title, total, type, isTwoSide)
+            fun new(qty: Int, title: String, total: Double, type: String, isTwoSide: Boolean) =
+                DigitalJob(qty, title, total, type, isTwoSide)
         }
     }
 
@@ -151,13 +145,8 @@ data class Invoice(
         val typedTechnique: Technique get() = enumValueOfId(technique)
 
         companion object {
-            fun new(
-                qty: Int,
-                title: String,
-                total: Double,
-                type: String,
-                technique: Technique,
-            ): OffsetJob = OffsetJob(qty, title, total, type, technique.id)
+            fun new(qty: Int, title: String, total: Double, type: String, technique: Technique) =
+                OffsetJob(qty, title, total, type, technique.id)
         }
 
         enum class Technique : Resources.Enum {
@@ -180,7 +169,7 @@ data class Invoice(
         override val type: String,
     ) : TypedJob {
         companion object {
-            fun new(qty: Int, title: String, total: Double, type: String): PlateJob =
+            fun new(qty: Int, title: String, total: Double, type: String) =
                 PlateJob(qty, title, total, type)
         }
     }
@@ -191,7 +180,7 @@ data class Invoice(
         override val total: Double,
     ) : Job {
         companion object {
-            fun new(qty: Int, title: String, total: Double): OtherJob = OtherJob(qty, title, total)
+            fun new(qty: Int, title: String, total: Double) = OtherJob(qty, title, total)
         }
     }
 

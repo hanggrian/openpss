@@ -30,6 +30,6 @@ data class DigitalPrice(
     override fun toString(): String = name
 
     companion object {
-        fun new(name: String): DigitalPrice = DigitalPrice(name, 0.0, 0.0)
+        fun new(name: String) = DigitalPrice(name, 0.0, 0.0)
     }
 }

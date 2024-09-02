@@ -5,12 +5,10 @@ import com.hanggrian.openpss.OpenPssApp
 import com.hanggrian.openpss.R
 import com.hanggrian.openpss.control.MarginedImageView
 import com.hanggrian.openpss.control.Toolbar
-import com.hanggrian.openpss.db.dbDateTime
 import com.hanggrian.openpss.db.schemas.Customers
 import com.hanggrian.openpss.db.schemas.Employees
 import com.hanggrian.openpss.db.schemas.Invoice
 import com.hanggrian.openpss.db.transaction
-import com.hanggrian.openpss.popup.popover.ViewInvoicePopover
 import com.hanggrian.openpss.ui.ActionController
 import com.hanggrian.openpss.ui.Controller
 import com.hanggrian.openpss.ui.Refreshable
@@ -18,6 +16,7 @@ import com.hanggrian.openpss.ui.customer.CustomerController
 import com.hanggrian.openpss.ui.employee.EditEmployeeDialog
 import com.hanggrian.openpss.ui.finance.FinanceController
 import com.hanggrian.openpss.ui.invoice.InvoiceController
+import com.hanggrian.openpss.ui.invoice.ViewInvoicePopover
 import com.hanggrian.openpss.ui.main.help.AboutDialog
 import com.hanggrian.openpss.ui.main.help.GitHubApi
 import com.hanggrian.openpss.ui.price.EditDigitalPrintPriceDialog
@@ -33,8 +32,10 @@ import javafx.event.ActionEvent
 import javafx.fxml.FXML
 import javafx.scene.control.Label
 import javafx.scene.control.ListView
+import javafx.scene.control.Menu
 import javafx.scene.control.MenuBar
 import javafx.scene.control.MenuItem
+import javafx.scene.control.RadioMenuItem
 import javafx.scene.control.TabPane
 import javafx.scene.image.Image
 import javafx.scene.input.MouseEvent
@@ -47,9 +48,11 @@ import ktfx.bindings.stringBindingOf
 import ktfx.bindings.then
 import ktfx.coroutines.listener
 import ktfx.jfoenix.controls.jfxSnackbar
+import ktfx.jfoenix.controls.show
 import ktfx.runLater
 import ktfx.windows.stage
 import org.apache.commons.lang3.SystemUtils
+import org.joda.time.DateTime
 import java.net.URL
 import java.util.ResourceBundle
 
@@ -61,13 +64,13 @@ class MainController : Controller() {
     lateinit var menuBar: MenuBar
 
     @FXML
+    lateinit var navigateMenu: Menu
+
+    @FXML
     lateinit var addCustomerItem: MenuItem
 
     @FXML
     lateinit var addInvoiceItem: MenuItem
-
-    @FXML
-    lateinit var quitItem: MenuItem
 
     @FXML
     lateinit var platePriceItem: MenuItem
@@ -77,15 +80,6 @@ class MainController : Controller() {
 
     @FXML
     lateinit var digitalPrintPriceItem: MenuItem
-
-    @FXML
-    lateinit var employeeItem: MenuItem
-
-    @FXML
-    lateinit var recessItem: MenuItem
-
-    @FXML
-    lateinit var settingsItem: MenuItem
 
     @FXML
     lateinit var drawer: JFXDrawer
@@ -155,11 +149,20 @@ class MainController : Controller() {
         super.initialize(location, resources)
         menuBar.isUseSystemMenuBar = SystemUtils.IS_OS_MAC
 
-        drawerList.selectionModel.selectFirst()
-        drawerList.selectionModel.selectedItemProperty().listener { _, _, _ ->
-            tabPane.selectionModel.select(drawerList.selectionModel.selectedIndex)
-            drawer.close()
+        navigateMenu.items.forEachIndexed { i, item ->
+            item.setOnAction { drawerList.selectionModel.select(i) }
         }
+
+        drawerList.selectionModel.selectedItemProperty().listener { _, _, _ ->
+            val index = drawerList.selectionModel.selectedIndex
+            tabPane.selectionModel.select(drawerList.selectionModel.selectedIndex)
+            if (drawer.isOpened) {
+                drawer.close()
+            }
+
+            (navigateMenu.items[index] as RadioMenuItem).isSelected = true
+        }
+        drawerList.selectionModel.selectFirst()
         hamburger.addEventHandler(MouseEvent.MOUSE_PRESSED) {
             drawer.open()
             if (!drawerList.isFocused) {
@@ -219,8 +222,8 @@ class MainController : Controller() {
                     Employees { it.name.equal(login.name) }
                         .projection { password }
                         .update(newPassword!!)
-                    stack.jfxSnackbar(
-                        getString(R.string_successfully_changed_password),
+                    stack.jfxSnackbar.show(
+                        getString(R.string__password_changed),
                         OpenPssApp.DURATION_LONG,
                     )
                 }
@@ -264,7 +267,7 @@ class MainController : Controller() {
                     no = 1234,
                     employeeId = login.id,
                     customerId = it.id,
-                    dateTime = dbDateTime,
+                    dateTime = DateTime.now(),
                     offsetJobs =
                         listOf(
                             Invoice.OffsetJob.new(
@@ -294,7 +297,8 @@ class MainController : Controller() {
                 ),
                 true,
             ).show(menuBar)
-        } ?: stack.jfxSnackbar(getString(R.string_no_customer_to_test), OpenPssApp.DURATION_SHORT)
+        } ?: stack.jfxSnackbar
+            .show(getString(R.string__no_customer), OpenPssApp.DURATION_SHORT)
     }
 
     @FXML

@@ -16,7 +16,7 @@ class DateTimePopover(
     defaultButtonTextId: String,
     prefill: DateTime,
 ) : ResultablePopover<DateTime>(context, titleId) {
-    private var dateBox: DateBox
+    private val dateBox: DateBox
     private lateinit var timeBox: TimeBox
 
     init {

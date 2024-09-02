@@ -23,10 +23,10 @@ import java.util.Locale
 open class MonthBox
     @JvmOverloads
     constructor(prefill: YearMonth = now()) : KtfxHBox(0.0) {
-        lateinit var monthBox: ComboBox<Int>
-        lateinit var yearField: IntField
-        var previousButton: Button
-        var nextButton: Button
+        val monthBox: ComboBox<Int>
+        val yearField: IntField
+        val previousButton: Button
+        val nextButton: Button
 
         val valueProperty: ObjectProperty<YearMonth> = SimpleObjectProperty()
         val value: YearMonth? by valueProperty
@@ -35,19 +35,7 @@ open class MonthBox
 
         init {
             alignment = CENTER
-            previousButton =
-                jfxButton(graphic = ImageView(R.image_btn_previous)) {
-                    onAction {
-                        monthBox.value =
-                            when (monthBox.value) {
-                                0 -> {
-                                    yearField.value -= 1
-                                    11
-                                }
-                                else -> monthBox.value - 1
-                            }
-                    }
-                }
+            previousButton = jfxButton(graphic = ImageView(R.image_btn_previous))
             monthBox =
                 jfxComboBox((0 until 12).toObservableList()) {
                     value = prefill.monthOfYear - 1
@@ -78,6 +66,17 @@ open class MonthBox
                             }
                     }
                 }
+
+            previousButton.onAction {
+                monthBox.value =
+                    when (monthBox.value) {
+                        0 -> {
+                            yearField.value -= 1
+                            11
+                        }
+                        else -> monthBox.value - 1
+                    }
+            }
 
             valueProperty.bind(
                 bindingOf(

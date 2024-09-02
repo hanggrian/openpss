@@ -16,7 +16,7 @@ import ktfx.time.s
 import ktfx.windows.icon
 import ktfx.windows.minSize
 import ktfx.windows.size2
-import org.apache.log4j.BasicConfigurator
+import org.slf4j.LoggerFactory
 import java.util.Properties
 import java.util.ResourceBundle
 import kotlin.system.exitProcess
@@ -29,12 +29,12 @@ class OpenPssApp :
     override lateinit var colorResources: Properties
 
     override fun init() {
+        if (BuildConfig.DEBUG) {
+            LOGGER.info("DEBUG mode is on")
+        }
         resourceBundle = PreferencesFile.language.toResourcesBundle()
         dimenResources = getProperties(R.dimen_dimen)
         colorResources = getProperties(R.color_color)
-        if (BuildConfig.DEBUG) {
-            BasicConfigurator.configure()
-        }
     }
 
     override fun start(stage: Stage) {
@@ -66,10 +66,13 @@ class OpenPssApp :
     }
 
     companion object {
-        val DURATION_SHORT = 3000.s
-        val DURATION_LONG = 6000.s
+        val DURATION_SHORT = 3.s
+        val DURATION_LONG = 6.s
 
-        @JvmStatic fun main(args: Array<String>) = launchApplication<OpenPssApp>(*args)
+        private val LOGGER = LoggerFactory.getLogger(OpenPssApp::class.java)!!
+
+        @JvmStatic
+        fun main(args: Array<String>) = launchApplication<OpenPssApp>(*args)
 
         fun exit() {
             Platform.exit() // exit JavaFX

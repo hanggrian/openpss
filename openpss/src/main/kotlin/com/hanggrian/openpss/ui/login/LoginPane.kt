@@ -48,6 +48,7 @@ import ktfx.jfoenix.layouts.jfxTextField
 import ktfx.jfoenix.layouts.jfxToggleButton
 import ktfx.jfoenix.layouts.styledJfxButton
 import ktfx.layouts.KtfxStackPane
+import ktfx.layouts.anchorPane
 import ktfx.layouts.gridPane
 import ktfx.layouts.hbox
 import ktfx.layouts.hyperlink
@@ -66,8 +67,8 @@ import java.util.ResourceBundle
 class LoginPane(private val resourced: Resources) :
     KtfxStackPane(),
     Context {
-    private var employeeField: TextField
-    private var loginButton: Button
+    private val employeeField: TextField
+    private val loginButton: Button
     private lateinit var passwordField: PasswordField
     private lateinit var textField: TextField
 
@@ -162,13 +163,13 @@ class LoginPane(private val resourced: Resources) :
                         onAction { GitHubApi.checkUpdates(this@LoginPane) }
                     }
                 }.margin(insetsOf(top = 24))
-                vbox {
+                anchorPane {
                     styledJfxButton(getString(R.string_about), null, R.style_flat) {
                         maxWidth = Double.MAX_VALUE
                         padding = insetsOf(8, 16)
                         font = 16.pt
                         onAction { AboutDialog(this@LoginPane).show() }
-                    }
+                    }.anchor(left = 0)
                     loginButton =
                         styledJfxButton(getString(R.string_login), null, R.style_raised) {
                             maxWidth = Double.MAX_VALUE
@@ -221,7 +222,7 @@ class LoginPane(private val resourced: Resources) :
                                 }
                             }
                             employeeField.onActionProperty().bindBidirectional(onActionProperty())
-                        }
+                        }.anchor(right = 0)
                 }.margin(insetsOf(top = 24))
             }.grid(row = 1, col = 0 to 2)
         }

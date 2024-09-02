@@ -12,8 +12,8 @@ import org.joda.time.LocalTime
 
 class AddRecessPopover(context: Context) :
     ResultablePopover<Pair<LocalTime, LocalTime>>(context, R.string_add_reccess) {
-    private var startBox: TimeBox
-    private var endBox: TimeBox
+    private val startBox: TimeBox
+    private val endBox: TimeBox
 
     init {
         gridPane {

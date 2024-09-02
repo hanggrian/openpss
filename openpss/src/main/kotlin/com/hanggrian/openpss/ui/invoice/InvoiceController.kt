@@ -4,7 +4,6 @@ import com.hanggrian.openpss.PATTERN_DATETIME_EXTENDED
 import com.hanggrian.openpss.R
 import com.hanggrian.openpss.control.DateBox
 import com.hanggrian.openpss.control.IntField
-import com.hanggrian.openpss.control.PaginatedPane
 import com.hanggrian.openpss.control.Toolbar
 import com.hanggrian.openpss.db.ExtendedSession
 import com.hanggrian.openpss.db.schemas.Customer
@@ -17,7 +16,6 @@ import com.hanggrian.openpss.db.schemas.Payments
 import com.hanggrian.openpss.db.schemas.Payments.invoiceId
 import com.hanggrian.openpss.db.transaction
 import com.hanggrian.openpss.popup.dialog.ConfirmDialog
-import com.hanggrian.openpss.popup.popover.ViewInvoicePopover
 import com.hanggrian.openpss.ui.ActionController
 import com.hanggrian.openpss.ui.Refreshable
 import com.hanggrian.openpss.util.currencyCell
@@ -26,9 +24,9 @@ import com.hanggrian.openpss.util.matches
 import com.hanggrian.openpss.util.stringCell
 import javafx.beans.property.SimpleObjectProperty
 import javafx.fxml.FXML
-import javafx.scene.Node
 import javafx.scene.control.Button
 import javafx.scene.control.ComboBox
+import javafx.scene.control.Pagination
 import javafx.scene.control.RadioButton
 import javafx.scene.control.TableView
 import javafx.scene.control.TableView.CONSTRAINED_RESIZE_POLICY
@@ -42,14 +40,18 @@ import ktfx.bindings.and
 import ktfx.bindings.bindingBy
 import ktfx.bindings.bindingOf
 import ktfx.bindings.eq
+import ktfx.bindings.given
 import ktfx.bindings.neq
+import ktfx.bindings.otherwise
 import ktfx.bindings.stringBindingBy
+import ktfx.bindings.then
 import ktfx.collections.emptyObservableList
 import ktfx.collections.toMutableObservableList
 import ktfx.collections.toObservableList
 import ktfx.controls.SIDE_BOTTOM
 import ktfx.controls.columns
 import ktfx.controls.isSelected
+import ktfx.controls.selectedBinding
 import ktfx.controlsfx.layouts.masterDetailPane
 import ktfx.coroutines.onAction
 import ktfx.coroutines.onMouseClicked
@@ -67,7 +69,6 @@ import ktfx.runLater
 import org.joda.time.LocalDate
 import java.net.URL
 import java.util.ResourceBundle
-import kotlin.math.ceil
 
 class InvoiceController :
     ActionController(),
@@ -91,7 +92,7 @@ class InvoiceController :
     lateinit var paymentCombo: ComboBox<String>
 
     @FXML
-    lateinit var invoicePagination: PaginatedPane
+    lateinit var invoicePagination: Pagination
 
     private lateinit var refreshButton: Button
     private lateinit var addButton: Button
@@ -152,7 +153,12 @@ class InvoiceController :
 
     override fun refresh() =
         runLater {
-            invoicePagination.contentFactoryProperty.bind(
+            invoicePagination.maxPageIndicatorCountProperty().bind(
+                given(allDateRadio.selectedProperty()) then
+                    invoicePagination.pageCount otherwise
+                    10,
+            )
+            invoicePagination.pageFactoryProperty().bind(
                 bindingOf(
                     searchField.valueProperty,
                     customerProperty,
@@ -161,7 +167,7 @@ class InvoiceController :
                     pickDateRadio.selectedProperty(),
                     dateBox.valueProperty,
                 ) {
-                    Callback<Pair<Int, Int>, Node> { (page, count) ->
+                    Callback { page ->
                         masterDetailPane(SIDE_BOTTOM) {
                             invoiceTable =
                                 tableView {
@@ -178,7 +184,10 @@ class InvoiceController :
                                         getString(R.string_employee).invoke {
                                             stringCell {
                                                 transaction {
-                                                    Employees[employeeId].single().toString()
+                                                    Employees[employeeId]
+                                                        .singleOrNull()
+                                                        ?.toString()
+                                                        .orEmpty()
                                                 }
                                             }
                                         }
@@ -221,7 +230,7 @@ class InvoiceController :
                                     )
                                 }
                             showDetailNodeProperty()
-                                .bind(invoiceTable.selectionModel.selectedItemProperty().isNotNull)
+                                .bind(invoiceTable.selectionModel.selectedBinding)
                             masterNode = invoiceTable
                             detailNode =
                                 vbox {
@@ -250,8 +259,9 @@ class InvoiceController :
                                                     stringCell {
                                                         transaction {
                                                             Employees[employeeId]
-                                                                .single()
-                                                                .toString()
+                                                                .singleOrNull()
+                                                                ?.toString()
+                                                                .orEmpty()
                                                         }
                                                     }
                                                 }
@@ -341,12 +351,10 @@ class InvoiceController :
                                                 }
                                             }
                                         }
-                                    invoicePagination.pageCount =
-                                        ceil(invoices.count() / count.toDouble()).toInt()
                                     invoiceTable.items =
                                         invoices
-                                            .skip(count * page)
-                                            .take(count)
+                                            .skip(invoicePagination.pageCount * page)
+                                            .take(invoicePagination.pageCount)
                                             .toMutableObservableList()
                                     invoiceTable.contextMenu {
                                         getString(R.string_view)(ImageView(R.image_menu_invoice)) {
@@ -445,14 +453,16 @@ class InvoiceController :
             }
         }
 
-    private fun deletePayment() =
-        ConfirmDialog(this).show {
+    private fun deletePayment() {
+        val payment = paymentTable.selectionModel.selectedItem
+        ConfirmDialog(this, getString(R.string__delete_payment, payment.value)).show {
             DeletePaymentAction(this@InvoiceController, paymentTable.selectionModel.selectedItem)
                 .invoke {
                     updatePaymentStatus()
                     reload(invoiceTable.selectionModel.selectedItem)
                 }
         }
+    }
 
     private fun ExtendedSession.updatePaymentStatus() =
         Invoices[invoiceTable.selectionModel.selectedItem]

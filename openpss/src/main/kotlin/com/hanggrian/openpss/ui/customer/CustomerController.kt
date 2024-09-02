@@ -4,7 +4,6 @@ import com.hanggrian.openpss.OpenPssApp
 import com.hanggrian.openpss.PATTERN_DATE
 import com.hanggrian.openpss.R
 import com.hanggrian.openpss.control.CustomerListView
-import com.hanggrian.openpss.control.PaginatedPane
 import com.hanggrian.openpss.db.schemas.Customer
 import com.hanggrian.openpss.db.schemas.Customers
 import com.hanggrian.openpss.db.transaction
@@ -15,11 +14,11 @@ import com.hanggrian.openpss.util.isNotEmpty
 import com.hanggrian.openpss.util.matches
 import com.hanggrian.openpss.util.stringCell
 import javafx.fxml.FXML
-import javafx.scene.Node
 import javafx.scene.control.Button
 import javafx.scene.control.Label
 import javafx.scene.control.ListView
 import javafx.scene.control.MenuItem
+import javafx.scene.control.Pagination
 import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
 import javafx.scene.control.TextField
@@ -32,12 +31,17 @@ import kotlinx.coroutines.javafx.JavaFx
 import kotlinx.coroutines.launch
 import ktfx.bindings.bindingBy
 import ktfx.bindings.bindingOf
+import ktfx.bindings.given
+import ktfx.bindings.otherwise
 import ktfx.bindings.stringBindingBy
+import ktfx.bindings.then
 import ktfx.collections.emptyObservableList
 import ktfx.collections.toMutableObservableList
 import ktfx.collections.toObservableList
+import ktfx.controls.selectedBinding
 import ktfx.coroutines.onAction
 import ktfx.jfoenix.controls.jfxSnackbar
+import ktfx.jfoenix.controls.show
 import ktfx.jfoenix.layouts.jfxTextField
 import ktfx.jfoenix.layouts.styledJfxButton
 import ktfx.layouts.NodeContainer
@@ -48,7 +52,6 @@ import org.controlsfx.control.MasterDetailPane
 import java.net.URL
 import java.util.ResourceBundle
 import java.util.regex.Pattern.CASE_INSENSITIVE
-import kotlin.math.ceil
 
 class CustomerController :
     ActionController(),
@@ -57,7 +60,7 @@ class CustomerController :
     lateinit var masterDetailPane: MasterDetailPane
 
     @FXML
-    lateinit var customerPagination: PaginatedPane
+    lateinit var customerPagination: Pagination
 
     @FXML
     lateinit var noImage: ImageView
@@ -116,7 +119,7 @@ class CustomerController :
         addButton =
             styledJfxButton(null, ImageView(R.image_act_add), R.style_flat) {
                 tooltip(getString(R.string_add))
-                onAction { refresh() }
+                onAction { add() }
             }
         searchField = jfxTextField { promptText = getString(R.string_search) }
     }
@@ -134,9 +137,14 @@ class CustomerController :
 
     override fun refresh() =
         runLater {
-            customerPagination.contentFactoryProperty.bind(
+            customerPagination.maxPageIndicatorCountProperty().bind(
+                given(searchField.textProperty().isEmpty) then
+                    customerPagination.pageCount otherwise
+                    5,
+            )
+            customerPagination.pageFactoryProperty().bind(
                 bindingOf(searchField.textProperty()) {
-                    Callback<Pair<Int, Int>, Node> { (page, count) ->
+                    Callback { page ->
                         customerList =
                             CustomerListView().apply {
                                 styleClass += R.style_list_view_no_scrollbar_vertical
@@ -161,12 +169,10 @@ class CustomerController :
                                                             )
                                                     }
                                             }
-                                        customerPagination.pageCount =
-                                            ceil(customers.count() / count.toDouble()).toInt()
                                         items =
                                             customers
-                                                .skip(count * page)
-                                                .take(count)
+                                                .skip(customerPagination.pageCount * page)
+                                                .take(customerPagination.pageCount)
                                                 .toMutableObservableList()
                                         contextMenu {
                                             getString(R.string_edit)(ImageView(R.image_menu_edit)) {
@@ -223,7 +229,7 @@ class CustomerController :
                         )
                         masterDetailPane
                             .showDetailNodeProperty()
-                            .bind(customerList.selectionModel.selectedItemProperty().isNotNull)
+                            .bind(customerList.selectionModel.selectedBinding)
                         customerList
                     }
                 },
@@ -236,7 +242,7 @@ class CustomerController :
                 when {
                     Customers { Customers.name.matches("^$customer$", CASE_INSENSITIVE) }
                         .isNotEmpty() ->
-                        stack.jfxSnackbar(
+                        stack.jfxSnackbar.show(
                             getString(R.string_name_taken),
                             OpenPssApp.DURATION_SHORT,
                         )
@@ -272,14 +278,16 @@ class CustomerController :
         }
 
     @FXML
-    fun deleteContact() =
-        ConfirmDialog(this, R.string_delete_contact).show {
+    fun deleteContact() {
+        val contact = contactTable.selectionModel.selectedItem
+        ConfirmDialog(this, getString(R.string__delete_contact, contact.value)).show {
             DeleteContactAction(
                 this@CustomerController,
                 customerList.selectionModel.selectedItem,
-                contactTable.selectionModel.selectedItem,
+                contact,
             ).invoke { reload() }
         }
+    }
 
     private fun reload() {
         val index = customerList.selectionModel.selectedIndex

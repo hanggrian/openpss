@@ -22,6 +22,7 @@ import kotlinx.nosql.mongodb.MongoDBSession
 import kotlinx.nosql.query.NoQuery
 import kotlinx.nosql.update
 import ktfx.jfoenix.controls.jfxSnackbar
+import ktfx.jfoenix.controls.show
 
 /** Extended version of [MongoDBSession]. */
 class ExtendedSession(val session: MongoDBSession) :
@@ -71,7 +72,7 @@ class ExtendedSession(val session: MongoDBSession) :
     fun Invoice.done(context: Context): Boolean {
         val query = Invoices[this]
         if (query.single().isDone) {
-            context.stack.jfxSnackbar(
+            context.stack.jfxSnackbar.show(
                 context.getString(R.string_already_done),
                 OpenPssApp.DURATION_LONG,
             )
@@ -82,5 +83,5 @@ class ExtendedSession(val session: MongoDBSession) :
     }
 
     fun Invoice.calculateDue(): Double =
-        total - Payments { it.invoiceId.equal(id) }.sumByDouble { it.value }
+        total - Payments { it.invoiceId.equal(id) }.sumOf { it.value }
 }

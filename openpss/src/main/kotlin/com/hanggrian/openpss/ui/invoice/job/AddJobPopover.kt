@@ -27,10 +27,10 @@ abstract class AddJobPopover<T : Invoice.Job>(context: Context, titleId: String)
     abstract val defaultButtonDisableBinding: ObservableBooleanValue
 
     protected var currentRow: Int = 0
-    protected var qtyField: IntField
-    protected var titleField: TextField
-    protected var totalField: DoubleField
-    protected var customizeCheck: CheckBox
+    protected val qtyField: IntField
+    protected val titleField: TextField
+    protected val totalField: DoubleField
+    protected val customizeCheck: CheckBox
 
     init {
         gridPane {

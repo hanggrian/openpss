@@ -20,8 +20,8 @@ import ktfx.layouts.label
 
 class DisableRecessPopover(context: Context, private val attendeePanes: List<AttendeePane>) :
     Popover(context, R.string_disable_recess) {
-    private var recessChoice: ComboBox<*>
-    private var roleChoice: ComboBox<*>
+    private val recessChoice: ComboBox<*>
+    private val roleChoice: ComboBox<*>
 
     init {
         gridPane {

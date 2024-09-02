@@ -31,13 +31,17 @@
         onAction="#process"/>
     </rightItems>
   </Toolbar>
-  <AnchorPane fx:id="anchorPane" VBox.vgrow="ALWAYS">
+  <AnchorPane
+    fx:id="anchorPane"
+    VBox.vgrow="ALWAYS">
     <ScrollPane
       AnchorPane.leftAnchor="0"
       AnchorPane.bottomAnchor="0"
       AnchorPane.rightAnchor="0"
       AnchorPane.topAnchor="0">
-      <FlowPane fx:id="flowPane" styleClass="white-background"/>
+      <FlowPane
+        fx:id="flowPane"
+        styleClass="white-background"/>
     </ScrollPane>
   </AnchorPane>
 </VBox>

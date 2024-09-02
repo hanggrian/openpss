@@ -6,7 +6,6 @@ import com.hanggrian.openpss.db.Document
 import com.hanggrian.openpss.db.Named
 import com.hanggrian.openpss.db.NamedSchema
 import com.hanggrian.openpss.db.Numbered
-import com.hanggrian.openpss.db.dbDate
 import com.hanggrian.openpss.util.enumValueOfId
 import com.hanggrian.openpss.util.id
 import kotlinx.nosql.Id
@@ -50,8 +49,16 @@ data class Customer(
     override fun toString(): String = name
 
     companion object {
-        fun new(name: String, isCompany: Boolean): Customer =
-            Customer(Numbered.next(Customers), name, isCompany, dbDate, null, null, listOf())
+        fun new(name: String, isCompany: Boolean) =
+            Customer(
+                Numbered.next(Customers),
+                name,
+                isCompany,
+                LocalDate.now(),
+                null,
+                null,
+                listOf(),
+            )
     }
 
     data class Contact(val type: String, val value: String) {
@@ -60,7 +67,7 @@ data class Customer(
         override fun toString(): String = value
 
         companion object {
-            fun new(type: Type, value: String): Contact = Contact(type.id, value)
+            fun new(type: Type, value: String) = Contact(type.id, value)
         }
 
         enum class Type : Resources.Enum {

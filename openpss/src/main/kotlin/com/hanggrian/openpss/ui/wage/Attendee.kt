@@ -114,27 +114,27 @@ data class Attendee(
             .apply {
                 dailyProperty.bind(
                     doubleBindingOf(children.map { it.dailyProperty }) {
-                        children.sumByDouble { it.daily }.round()
+                        children.sumOf { it.daily }.round()
                     },
                 )
                 dailyIncomeProperty.bind(
                     doubleBindingOf(children.map { it.dailyIncomeProperty }) {
-                        children.sumByDouble { it.dailyIncome }.round()
+                        children.sumOf { it.dailyIncome }.round()
                     },
                 )
                 overtimeProperty.bind(
                     doubleBindingOf(children.map { it.overtimeProperty }) {
-                        children.sumByDouble { it.overtime }.round()
+                        children.sumOf { it.overtime }.round()
                     },
                 )
                 overtimeIncomeProperty.bind(
                     doubleBindingOf(children.map { it.overtimeIncomeProperty }) {
-                        children.sumByDouble { it.overtimeIncome }.round()
+                        children.sumOf { it.overtimeIncome }.round()
                     },
                 )
                 totalProperty.bind(
                     doubleBindingOf(children.map { it.totalProperty }) {
-                        children.sumByDouble { it.total }.round()
+                        children.sumOf { it.total }.round()
                     },
                 )
             }

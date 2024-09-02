@@ -14,6 +14,7 @@ import ktfx.bindings.bindingBy
 import ktfx.collections.toMutableObservableList
 import ktfx.controls.insetsOf
 import ktfx.controls.isSelected
+import ktfx.controls.notSelectedBinding
 import ktfx.coroutines.listener
 import ktfx.coroutines.onKeyPressed
 import ktfx.coroutines.onMouseClicked
@@ -24,8 +25,8 @@ import kotlin.text.RegexOption.IGNORE_CASE
 
 class SearchCustomerPopover(context: Context) :
     ResultablePopover<Customer>(context, R.string_search_customer) {
-    private var searchField: TextField
-    private lateinit var customerList: ListView<Customer>
+    private val searchField: TextField
+    private val customerList: ListView<Customer>
 
     init {
         vbox {
@@ -53,12 +54,12 @@ class SearchCustomerPopover(context: Context) :
                             }
                         }
                         onMouseClicked {
-                            if (it.isDoubleClick() && customerList.selectionModel.isSelected()) {
+                            if (it.isDoubleClick() && selectionModel.isSelected()) {
                                 defaultButton.fire()
                             }
                         }
                         onKeyPressed {
-                            if (it.code == ENTER && customerList.selectionModel.isSelected()) {
+                            if (it.code == ENTER && selectionModel.isSelected()) {
                                 defaultButton.fire()
                             }
                         }
@@ -67,7 +68,7 @@ class SearchCustomerPopover(context: Context) :
         }
         defaultButton
             .disableProperty()
-            .bind(customerList.selectionModel.selectedItemProperty().isNull)
+            .bind(customerList.selectionModel.notSelectedBinding)
     }
 
     override val nullableResult: Customer? get() = customerList.selectionModel.selectedItem

@@ -9,6 +9,7 @@ import javafx.beans.value.ObservableValue
 import kotlinx.nosql.equal
 import kotlinx.nosql.update
 import ktfx.cells.textFieldCellFactory
+import ktfx.controls.TableColumnScope
 import ktfx.coroutines.onEditCommit
 import ktfx.doublePropertyOf
 import ktfx.text.buildStringConverter
@@ -19,8 +20,10 @@ class EditDigitalPrintPriceDialog(context: Context) :
         R.string_digital_print_price,
         DigitalPrices,
     ) {
-    init {
-        getString(R.string_one_side_price)<Double> {
+    override fun onColumns(columns: TableColumnScope<DigitalPrice>) {
+        super.onColumns(columns)
+
+        columns.append<Double>(getString(R.string_one_side_price)) {
             style = "-fx-alignment: center-right;"
             setCellValueFactory {
                 doublePropertyOf(it.value.oneSidePrice) as ObservableValue<Double>
@@ -35,7 +38,7 @@ class EditDigitalPrintPriceDialog(context: Context) :
                 cell.rowValue.oneSidePrice = cell.newValue
             }
         }
-        getString(R.string_two_side_price)<Double> {
+        columns.append<Double>(getString(R.string_two_side_price)) {
             style = "-fx-alignment: center-right;"
             setCellValueFactory {
                 doublePropertyOf(it.value.twoSidePrice) as ObservableValue<Double>

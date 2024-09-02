@@ -5,6 +5,7 @@ import com.hanggrian.openpss.R
 import com.hanggrian.openpss.popup.dialog.ResultableDialog
 import javafx.scene.Node
 import ktfx.collections.toObservableList
+import ktfx.controls.notSelectedBinding
 import ktfx.jfoenix.layouts.jfxListView
 
 class UpdateDialog(context: Context, assets: List<GitHubApi.Asset>) :
@@ -12,7 +13,7 @@ class UpdateDialog(context: Context, assets: List<GitHubApi.Asset>) :
     private val listView =
         jfxListView<GitHubApi.Asset> {
             items = assets.toObservableList()
-            defaultButton.disableProperty().bind(selectionModel.selectedItemProperty().isNull)
+            defaultButton.disableProperty().bind(selectionModel.notSelectedBinding)
         }
 
     override val focusedNode: Node

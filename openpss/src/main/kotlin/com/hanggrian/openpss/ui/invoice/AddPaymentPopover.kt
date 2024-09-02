@@ -26,9 +26,9 @@ import ktfx.text.invoke
 
 class AddPaymentPopover(context: Context, private val invoice: Invoice) :
     ResultablePopover<Payment>(context, R.string_add_payment) {
-    private var valueField: DoubleField
-    private var cashBox: CheckBox
-    private var referenceField: TextField
+    private val valueField: DoubleField
+    private val cashBox: CheckBox
+    private val referenceField: TextField
     private val receivable = transaction { invoice.calculateDue() }
 
     init {

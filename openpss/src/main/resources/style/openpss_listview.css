@@ -2,23 +2,23 @@
 .list-view-no-scrollbar .scroll-bar .decrement-arrow,
 .list-view-no-scrollbar .scroll-bar .increment-button,
 .list-view-no-scrollbar .scroll-bar .decrement-button {
-    -fx-padding:0;
+  -fx-padding:0;
 }
 
 .list-view-no-scrollbar-vertical .scroll-bar:vertical .increment-arrow,
 .list-view-no-scrollbar-vertical .scroll-bar:vertical .decrement-arrow,
 .list-view-no-scrollbar-vertical .scroll-bar:vertical .increment-button,
 .list-view-no-scrollbar-vertical .scroll-bar:vertical .decrement-button {
-    -fx-padding:0;
+  -fx-padding:0;
 }
 
 .list-view-no-scrollbar-horizontal .scroll-bar:horizontal .increment-arrow,
 .list-view-no-scrollbar-horizontal .scroll-bar:horizontal .decrement-arrow,
 .list-view-no-scrollbar-horizontal .scroll-bar:horizontal .increment-button,
 .list-view-no-scrollbar-horizontal .scroll-bar:horizontal .decrement-button {
-    -fx-padding:0;
+  -fx-padding:0;
 }
 
 .list-view-no-scrollbar-horizontal .scroll-bar:horizontal {
-    -fx-scale-x: 0;
+  -fx-scale-x: 0;
 }

@@ -14,5 +14,10 @@ object LoginFile : PropertiesFile("login") {
     var DB_PASSWORD: String by ""
 
     fun isDbValid(): Boolean =
-        DB_HOST.isNotBlank() && DB_PORT != 0 && DB_USER.isNotBlank() && DB_PASSWORD.isNotBlank()
+        DB_HOST.isNotBlank() &&
+            DB_PORT != 0 &&
+            DB_USER.isNotBlank() &&
+            DB_PASSWORD.isNotBlank()
+
+    private fun readResolve(): Any = LoginFile
 }

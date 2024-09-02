@@ -17,7 +17,7 @@ object GlobalSettings :
     val key = string("key")
     val value = string("value")
 
-    val LANGUAGE = "language" to Language.EN_US.fullCode
+    val LANGUAGE = "language" to Language.EN_US.code
     val INVOICE_HEADERS = "invoice_headers" to ""
 
     override fun setup(wrapper: ExtendedSession) =

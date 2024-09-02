@@ -25,11 +25,11 @@ class EditCustomerDialog(context: Context, private val customer: Customer) :
     ResultableDialog<Customer>(context, R.string_edit_customer) {
     private val unchangedProperty = booleanPropertyOf(true)
 
-    private var image: ImageView
-    private var description: Label
-    private var nameField: TextField
-    private var addressField: TextField
-    private var noteArea: TextArea
+    private val image: ImageView
+    private val description: Label
+    private val nameField: TextField
+    private val addressField: TextField
+    private val noteArea: TextArea
 
     init {
         gridPane {

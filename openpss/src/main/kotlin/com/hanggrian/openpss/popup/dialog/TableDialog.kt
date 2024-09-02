@@ -7,15 +7,16 @@ import com.hanggrian.openpss.db.transaction
 import com.hanggrian.openpss.ui.Refreshable
 import javafx.scene.Node
 import javafx.scene.control.Button
-import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
-import javafx.scene.control.TableView.CONSTRAINED_RESIZE_POLICY
 import javafx.scene.image.ImageView
 import javafx.stage.Stage
 import kotlinx.nosql.mongodb.DocumentSchema
 import ktfx.collections.toMutableObservableList
 import ktfx.controls.RIGHT
 import ktfx.controls.TableColumnScope
+import ktfx.controls.columns
+import ktfx.controls.constrained
+import ktfx.controls.notSelectedBinding
 import ktfx.coroutines.onAction
 import ktfx.jfoenix.layouts.jfxButton
 import ktfx.layouts.anchorPane
@@ -29,14 +30,24 @@ abstract class TableDialog<D : Document<S>, S : DocumentSchema<D>>(
     titleId: String,
     protected val schema: S,
 ) : Dialog(context, titleId),
-    TableColumnScope<D>,
     Refreshable {
-    protected var refreshButton: Button
-    protected var addButton: Button
-    protected var deleteButton: Button
-    protected lateinit var table: TableView<D>
+    protected val table: TableView<D>
+    protected val refreshButton: Button
+    protected val addButton: Button
+    protected val deleteButton: Button
 
     init {
+        anchorPane {
+            table =
+                tableView {
+                    prefHeight = 275.0
+                    isEditable = true
+                    constrained()
+                    columns {
+                        onColumns(this)
+                    }
+                }.anchor(1.0)
+        }
         graphic =
             ktfx.layouts.vbox(getDouble(R.dimen_padding_medium)) {
                 alignment = RIGHT
@@ -57,22 +68,13 @@ abstract class TableDialog<D : Document<S>, S : DocumentSchema<D>>(
                             tooltip(getString(R.string_delete))
                             onAction { delete() }
                             runLater {
-                                disableProperty()
-                                    .bind(table.selectionModel.selectedItemProperty().isNull)
+                                disableProperty().bind(table.selectionModel.notSelectedBinding)
                             }
                         }
                 }
             }
-        anchorPane {
-            table =
-                tableView<D> {
-                    prefHeight = 275.0
-                    columnResizePolicy = CONSTRAINED_RESIZE_POLICY
-                    isEditable = true
-                }.anchor(1.0)
-        }
-        refresh()
         runLater {
+            refresh()
             (scene.window as Stage).let {
                 it.width = width
                 it.height = height
@@ -82,17 +84,19 @@ abstract class TableDialog<D : Document<S>, S : DocumentSchema<D>>(
 
     override val focusedNode: Node? get() = table
 
-    override val columns: MutableCollection<TableColumn<D, *>> get() = table.columns
-
     override fun refresh() {
         table.items = transaction { schema().toMutableObservableList() }
     }
 
+    open fun onColumns(columns: TableColumnScope<D>) {}
+
     abstract fun add()
 
-    open fun delete() =
-        ConfirmDialog(this).show {
-            transaction { schema -= table.selectionModel.selectedItem }
-            table.items.remove(table.selectionModel.selectedItem)
+    open fun delete() {
+        val item = table.selectionModel.selectedItem
+        ConfirmDialog(this, getString(R.string__delete_item)).show {
+            transaction { schema -= item }
+            table.items.remove(item)
         }
+    }
 }

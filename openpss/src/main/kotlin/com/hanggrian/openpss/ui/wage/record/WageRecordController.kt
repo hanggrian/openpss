@@ -39,9 +39,11 @@ import ktfx.bindings.sizeBinding
 import ktfx.bindings.stringBindingOf
 import ktfx.cells.cellFactory
 import ktfx.controls.capture
+import ktfx.controls.notSelectedBinding
 import ktfx.controls.toSwingImage
 import ktfx.coroutines.onAction
-import ktfx.jfoenix.controls.jfxIndefiniteSnackbar
+import ktfx.jfoenix.controls.jfxSnackbar
+import ktfx.jfoenix.controls.showIndefinite
 import ktfx.layouts.label
 import ktfx.layouts.menuItem
 import ktfx.runLater
@@ -117,7 +119,7 @@ class WageRecordController : Controller() {
         undoMenu.disableProperty().bind(editMenu.items.sizeBinding lessEq 2)
         arrayOf(lockStartButton, lockEndButton).forEach { button ->
             button.disableProperty().bind(
-                recordTable.selectionModel.selectedItemProperty().isNull or
+                recordTable.selectionModel.notSelectedBinding or
                     booleanBindingOf(recordTable.selectionModel.selectedItemProperty()) {
                         recordTable.selectionModel.selectedItems?.any { !it.value.isChild() }
                             ?: true
@@ -197,7 +199,7 @@ class WageRecordController : Controller() {
                             records
                                 .asSequence()
                                 .filter { it.isTotal() }
-                                .sumByDouble { it.totalProperty.value },
+                                .sumOf { it.totalProperty.value },
                         )
                     },
                 )
@@ -302,7 +304,7 @@ class WageRecordController : Controller() {
         )
         togglePrintMode(false, STYLESHEET_PRINT_TREETABLEVIEW)
         ImageIO.write(images.concatenate(), "png", WageFile())
-        stack.jfxIndefiniteSnackbar(
+        stack.jfxSnackbar.showIndefinite(
             getString(R.string_screenshot_finished),
             getString(R.string_open_folder),
         ) {

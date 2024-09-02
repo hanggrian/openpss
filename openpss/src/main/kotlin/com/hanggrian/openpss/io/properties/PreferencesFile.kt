@@ -7,13 +7,15 @@ import com.hanggrian.openpss.ui.wage.readers.EClockingReader
 
 /** User manually configurable settings file. */
 object PreferencesFile : PropertiesFile("settings") {
-    var LANGUAGE: String by Language.EN_US.fullCode
+    var LANGUAGE: String by Language.EN_US.code
 
     var WAGE_READER: String by EClockingReader.name
 
     var language: Language
-        get() = Language.ofFullCode(LANGUAGE)
+        get() = Language.ofCode(LANGUAGE)
         set(value) {
-            LANGUAGE = value.fullCode
+            LANGUAGE = value.code
         }
+
+    private fun readResolve(): Any = LoginFile
 }

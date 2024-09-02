@@ -1,81 +1,61 @@
 [![CircleCI](https://img.shields.io/circleci/build/gh/hanggrian/openpss)](https://app.circleci.com/pipelines/github/hanggrian/openpss/)
 [![GitHub Releases](https://img.shields.io/github/release/hanggrian/openpss)](https://github.com/hanggrian/openpss/releases/)
-[![OpenJDK](https://img.shields.io/badge/jdk-17%2B-informational)](https://openjdk.org/projects/jdk/17/)
+[![Java](https://img.shields.io/badge/java-8+-informational)](https://docs.oracle.com/javase/8/)
 
 # OpenPSS
 
-![OpenPSS][logo]
+![The OpenPSS logo.](https://github.com/hanggrian/openpss/raw/assets/OpenPSS.png)
 
-Point of Sale software specifically designed for offset and digital printing business.
-Powered by JavaFX and Kotlin frameworks.
-Heavily under development.
-
-## Features
+Point of Sale software specifically designed for offset and digital printing
+business. Powered by JavaFX and Kotlin frameworks. Heavily under development.
 
 - Multi-language: currently supports English and Bahasa.
+- Priviledged-based employee management, certain actions can only be done by
+  admins.
 
 ## How to use
 
-#### Download
+### Download
 
-Head to releases to download this app in 3 variants:
+Head to releases to download this app in several variants:
 
-- `app` - Native MacOS app.
-- `zip` - Compressed folder containing Windows 64-bit libraries and executables.
-- `jar` - Smaller Java executable that requires JRE 1.8.
+- `dmg` - macOS installer for Apple Silicon.
+- `exe` - Windows 64-bit installer.
 
-#### Database
+### Database
 
-[MongoDB] is required to run the app, install it on server system and grant
-privileges to the main user in admin database:
-
-```json
-{
-	"user": "my_name",
-	"pwd": "my_password",
-	"roles": [
-		{
-			"role": "userAdminAnyDatabase",
-			"db": "admin"
-		},
-		{
-			"role": "dbAdminAnyDatabase",
-			"db": "admin"
-		},
-		{
-			"role": "readWriteAnyDatabase",
-			"db": "admin"
-		},
-		{
-			"role": "executeFunctions",
-			"db": "admin"
-		}
-	]
-}
-```
-
-Where `executeFunctions` is a custom role:
+[MongoDB](https://www.mongodb.com/) is required to run the app, install it on
+server system and grant privileges to the main user in admin database:
 
 ```json
 {
-	"role": "executeFunctions",
-	"privileges": [
-		{
-			"resource": {
-				"anyResource": true
-			},
-			"actions": [
-				"anyAction"
-			]
-		}
-	],
-	"roles": [ ]
+  "user": "my_name",
+  "pwd": "my_password",
+  "roles": [
+    {
+      "role": "userAdminAnyDatabase",
+      "db": "admin"
+    },
+    {
+      "role": "dbAdminAnyDatabase",
+      "db": "admin"
+    },
+    {
+      "role": "readWriteAnyDatabase",
+      "db": "admin"
+    }
+  ]
 }
 ```
+
+### Hardware
+
+Type | Tested Device | Note
+--- | --- | ---
+ESC/POS compatible printer | Epson LX-310 | Printed in continuous form paper sized **4.25" &times; 5.5"** (quarter Letter).
+Fingerprint scanner | E-Clocking Reader | Employee and attendee records are obtained with *Microsoft Excel* using plugin.
 
 ## Developer note
-
-#### Tech stacks
 
 Built with Kotlin in mind, this app is fully written in Kotlin and using some
 Kotlin-based frameworks:
@@ -92,23 +72,3 @@ Others include:
 - Joda-Time and SLF4J, brought by Kotlin NoSQL.
 - Apache POI and some of its commons libraries.
 - Personal libraries.
-
-#### How to build
-
-To open the project, you're going to need Oracle JDK 1.8, IntelliJ IDEA and
-optional SceneBuilder. Testing the app requires authenticated MongoDB server
-over IP address (or localhost).
-
-Then, simply follow steps below to build [releases]:
-
-- Apply [ktlint] IDE settings (preferably in default-level, not project), if not already.
-- Run `./gradlew clean build`, it will automatically perform additional tasks in the process.
-  - Generate sources in `app/build/generated`.
-  - Check Kotlin code style.
-  - Ensure all test specs are successful.
-- Use [shadowJar] and [packr] to build native packages from jar with following steps.
-
-[logo]: /openpss/src/main/resources/image/logo.png
-[MongoDB]: https://www.mongodb.com/
-[ktlint]: https://github.com/pinterest/ktlint
-[packr]: https://github.com/hanggrian/packaging-gradle-plugin

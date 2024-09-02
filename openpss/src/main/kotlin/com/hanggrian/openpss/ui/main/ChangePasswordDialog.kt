@@ -14,8 +14,8 @@ import ktfx.layouts.label
 
 class ChangePasswordDialog(context: Context) :
     ResultableDialog<String>(context, R.string_change_password) {
-    private var changePasswordField: PasswordField
-    private var confirmPasswordField: PasswordField
+    private val changePasswordField: PasswordField
+    private val confirmPasswordField: PasswordField
 
     init {
         gridPane {

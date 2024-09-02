@@ -9,12 +9,27 @@
   fx:controller="com.hanggrian.openpss.ui.schedule.ScheduleController">
   <!-- Necessary for displaying border of table -->
   <Pane prefHeight="1"/>
-  <TreeTableView fx:id="scheduleTable" showRoot="false" VBox.vgrow="ALWAYS">
+  <TreeTableView
+    fx:id="scheduleTable"
+    showRoot="false"
+    VBox.vgrow="ALWAYS">
     <columns>
-      <TreeTableColumn sortable="false" fx:id="jobType" text="%jobs"/>
-      <TreeTableColumn sortable="false" fx:id="descColumn" text="%description"/>
-      <TreeTableColumn sortable="false" fx:id="qtyColumn" text="%qty"/>
-      <TreeTableColumn sortable="false" fx:id="typeColumn" text="%type"/>
+      <TreeTableColumn
+        fx:id="jobType"
+        sortable="false"
+        text="%jobs"/>
+      <TreeTableColumn
+        fx:id="descColumn"
+        sortable="false"
+        text="%description"/>
+      <TreeTableColumn
+        fx:id="qtyColumn"
+        sortable="false"
+        text="%qty"/>
+      <TreeTableColumn
+        fx:id="typeColumn"
+        sortable="false"
+        text="%type"/>
     </columns>
     <columnResizePolicy>
       <TreeTableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>

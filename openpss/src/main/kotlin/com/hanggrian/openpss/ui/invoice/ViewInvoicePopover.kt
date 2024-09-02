@@ -1,9 +1,11 @@
-package com.hanggrian.openpss.popup.popover
+package com.hanggrian.openpss.ui.invoice
 
+import com.hanggrian.openpss.BuildConfig
 import com.hanggrian.openpss.Context
 import com.hanggrian.openpss.Language
 import com.hanggrian.openpss.PATTERN_DATETIME_EXTENDED
 import com.hanggrian.openpss.R
+import com.hanggrian.openpss.STYLESHEET_OPENPSS
 import com.hanggrian.openpss.control.Space
 import com.hanggrian.openpss.db.schemas.Customer
 import com.hanggrian.openpss.db.schemas.Customers
@@ -13,22 +15,25 @@ import com.hanggrian.openpss.db.schemas.GlobalSetting.Companion.KEY_INVOICE_HEAD
 import com.hanggrian.openpss.db.schemas.Invoice
 import com.hanggrian.openpss.db.schemas.Invoices
 import com.hanggrian.openpss.db.transaction
+import com.hanggrian.openpss.popup.popover.Popover
 import com.sun.javafx.print.PrintHelper
-import com.sun.javafx.print.Units.MM
-import javafx.print.PageOrientation.PORTRAIT
-import javafx.print.Paper
+import com.sun.javafx.print.Units
+import javafx.print.PageOrientation
+import javafx.print.PageRange
+import javafx.print.PrintColor
+import javafx.print.PrintSides
 import javafx.print.Printer
 import javafx.print.PrinterJob
 import javafx.scene.layout.Border
 import javafx.scene.layout.BorderStroke
 import javafx.scene.layout.BorderStrokeStyle
-import javafx.scene.layout.BorderStrokeStyle.DASHED
 import javafx.scene.layout.BorderStrokeStyle.SOLID
 import javafx.scene.layout.BorderWidths.DEFAULT
 import javafx.scene.layout.CornerRadii.EMPTY
 import javafx.scene.layout.Priority.ALWAYS
 import javafx.scene.layout.VBox
 import javafx.scene.paint.Color.BLACK
+import javafx.scene.shape.Line
 import javafx.scene.text.TextAlignment
 import javafx.scene.transform.Scale
 import kotlinx.nosql.update
@@ -40,6 +45,7 @@ import ktfx.controls.RIGHT
 import ktfx.controls.columnConstraints
 import ktfx.controls.insetsOf
 import ktfx.coroutines.onAction
+import ktfx.dialogs.errorAlert
 import ktfx.layouts.KtfxGridPane
 import ktfx.layouts.NodeContainer
 import ktfx.layouts.button
@@ -56,6 +62,7 @@ import ktfx.runLater
 import ktfx.text.append
 import ktfx.text.invoke
 import ktfx.text.pt
+import org.slf4j.LoggerFactory
 import java.util.ResourceBundle
 
 /**
@@ -71,20 +78,21 @@ class ViewInvoicePopover(
     private lateinit var customer: Customer
     private lateinit var employee: Employee
     private val invoiceBox: VBox
+    private val lines = mutableListOf<Line>()
 
-    override val resourceBundle: ResourceBundle = Language.ofServer().toResourcesBundle()
+    private val serverLanguage = Language.ofServer()
+
+    override val resourceBundle: ResourceBundle = serverLanguage.toResourcesBundle()
 
     init {
-        graphic = label("${getString(R.string_server_language)}: $language")
+        graphic = label("${getString(R.string_server_language)}: $serverLanguage")
         transaction {
             invoiceHeaders = findGlobalSettings(KEY_INVOICE_HEADERS).single().valueList
-            employee = Employees[invoice.employeeId].single()
+            employee = Employees[invoice.employeeId].singleOrNull() ?: Employee.NONE
             customer = Customers[invoice.customerId].single()
         }
         invoiceBox =
             vbox(getDouble(R.dimen_padding_medium)) {
-                border = DASHED.toBorder()
-                padding = insetsOf(getDouble(R.dimen_padding_medium))
                 setMinSize(WIDTH, HEIGHT)
                 setMaxSize(WIDTH, HEIGHT)
                 hbox(getDouble(R.dimen_padding_medium)) {
@@ -104,12 +112,12 @@ class ViewInvoicePopover(
                         label("# ${invoice.no}") { font = 32.pt }
                     }
                 }
-                fullLine()
+                lines += fullLine()
                 vbox {
                     alignment = CENTER
                     label(
                         "${invoice.dateTime.toString(PATTERN_DATETIME_EXTENDED)} " +
-                            "(${transaction { Employees[invoice.employeeId].single().name }})",
+                            "(${employee.name})",
                     )
                     styledLabel("${customer.no}. ${customer.name}", null, R.style_bold)
                 }
@@ -191,7 +199,7 @@ class ViewInvoicePopover(
                             }
                     }
                 }.vgrow()
-                fullLine()
+                lines += fullLine()
                 gridPane {
                     hgap = getDouble(R.dimen_padding_medium)
                     vgap = getDouble(R.dimen_padding_medium)
@@ -224,22 +232,58 @@ class ViewInvoicePopover(
                 isDefaultButton = true
                 runLater { isDisable = invoice.isPrinted }
                 onAction {
-                    // resize node to actual print size
+                    // find default printer
                     val printer = Printer.getDefaultPrinter()
-                    val layout = printer.createPageLayout(PAPER, PORTRAIT, 0.0, 0.0, 0.0, 0.0)
+                    if (printer == null) {
+                        errorAlert {
+                            dialogPane.stylesheets += STYLESHEET_OPENPSS
+                            headerText = getString(R.string__no_printer)
+                        }
+                        return@onAction
+                    }
+
+                    // resize node to actual print size
+                    val layout =
+                        printer.createPageLayout(
+                            PRINT_PAPER,
+                            PageOrientation.PORTRAIT,
+                            Printer.MarginType.HARDWARE_MINIMUM,
+                        )
                     invoiceBox.run {
-                        border = null
+                        padding =
+                            insetsOf(right = PRINT_PADDING_RIGHT, bottom = PRINT_PADDING_BOTTOM)
+                        lines.forEach { it.endX -= PRINT_PADDING_RIGHT }
                         transforms +=
                             Scale(
                                 layout.printableWidth / boundsInParent.width,
                                 layout.printableHeight / boundsInParent.height,
                             )
                     }
+                    if (BuildConfig.DEBUG) {
+                        LOGGER.info(
+                            "Printable size: " +
+                                "${layout.printableWidth} \u00D7 " +
+                                "${layout.printableHeight}",
+                        )
+                    }
+
                     // disable auto-hide when print dialog is showing
-                    // isAutoHide = false
+                    isAutoHide = false
                     val job = PrinterJob.createPrinterJob(printer)!!
+                    job.jobSettings.run {
+                        setPageRanges(PRINT_RANGE)
+                        title = "#${getString(R.string_invoice)} + ${invoice.no}"
+                        copies = PRINT_COPIES
+                        pageLayout = layout
+                        printResolution = printer.printerAttributes.defaultPrintResolution
+                        printSides = PrintSides.ONE_SIDED
+                        printColor = PrintColor.MONOCHROME
+                    }
+                    if (BuildConfig.DEBUG) {
+                        LOGGER.info("Job: $job")
+                    }
                     if (job.showPrintDialog(this@ViewInvoicePopover.scene.window) &&
-                        job.printPage(layout, invoiceBox)
+                        job.printPage(invoiceBox)
                     ) {
                         job.endJob()
                         if (!isTest) {
@@ -275,13 +319,22 @@ class ViewInvoicePopover(
 
     private fun BorderStrokeStyle.toBorder() = Border(BorderStroke(BLACK, this, EMPTY, DEFAULT))
 
-    private fun NodeContainer.fullLine() =
-        line(endX = WIDTH - getDouble(R.dimen_padding_medium) * 2)
+    private fun NodeContainer.fullLine() = line(endX = WIDTH)
 
     private companion object {
+        val LOGGER = LoggerFactory.getLogger(ViewInvoicePopover::class.java)!!
+
         const val WIDTH = 378.0
         const val HEIGHT = 530.0
 
-        val PAPER: Paper = PrintHelper.createPaper("Invoice", 100.0, 140.0, MM)
+        // Since moving away from JavaFX 8, we cannot explicitly set printer margin to 0. The end
+        // parts of the print content will be slightly cut off when printing in JavaFX 11. The dirty
+        // hotfix is to apply right padding to invoice box before printing.
+        const val PRINT_PADDING_RIGHT = 60
+        const val PRINT_PADDING_BOTTOM = 10
+
+        const val PRINT_COPIES = 1
+        val PRINT_RANGE = PageRange(1, 1)
+        val PRINT_PAPER = PrintHelper.createPaper("Invoice", 4.25, 5.5, Units.INCH)!!
     }
 }

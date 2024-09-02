@@ -1,14 +1,14 @@
 .flat {
-    -fx-text-fill: -accent;
+  -fx-text-fill: -accent;
 }
 
 .raised {
-    -fx-text-fill: white;
-    -fx-background-color: -accent;
+  -fx-text-fill: white;
+  -fx-background-color: -accent;
 }
 .raised:hover {
-    -fx-background-color: -accent-light;
+  -fx-background-color: -accent-light;
 }
 .raised:pressed {
-    -fx-background-color: -accent-dark;
+  -fx-background-color: -accent-dark;
 }

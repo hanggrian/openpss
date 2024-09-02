@@ -17,6 +17,7 @@ import ktfx.collections.toObservableList
 import ktfx.controls.LEFT
 import ktfx.controls.find
 import ktfx.controls.insetsOf
+import ktfx.controls.selectedBinding
 import ktfx.controlsfx.layouts.masterDetailPane
 import ktfx.coroutines.listener
 import ktfx.coroutines.onAction
@@ -60,9 +61,7 @@ class AboutDialog(context: Context) :
             }
             contextMenu {
                 "Homepage" {
-                    disableProperty().bind(
-                        !this@jfxListView.selectionModel.selectedItemProperty().isNotNull,
-                    )
+                    disableProperty().bind(!this@jfxListView.selectionModel.selectedBinding)
                     onAction {
                         desktop?.browse(URI(this@jfxListView.selectionModel.selectedItem.homepage))
                     }
@@ -96,11 +95,8 @@ class AboutDialog(context: Context) :
                         text("${getString(R.string_version)} ${BuildConfig.VERSION}") {
                             font = Font.font(12.0)
                         }.margin(insetsOf(top = 2))
-                        text(
-                            getString(
-                                R.string_built_with_open_source_software_expand_to_see_licenses,
-                            ),
-                        ).margin(insetsOf(top = 20))
+                        text(getString(R.string__about))
+                            .margin(insetsOf(top = 20))
                         textFlow {
                             "${getString(R.string_powered_by)} " { font = Font.font(12.0) }
                             styledText("JavaFX", R.style_bold)
@@ -123,14 +119,13 @@ class AboutDialog(context: Context) :
                                 }
                             }
                         }.margin(insetsOf(top = 20))
-                    }.margin(insetsOf(top = 48))
+                    }.margin(insetsOf(top = 20, left = 10))
                 }
             expandableContent =
                 masterDetailPane {
                     prefHeight = 200.0
                     dividerPosition = 0.3
-                    showDetailNodeProperty()
-                        .bind(licenseList.selectionModel.selectedItemProperty().isNotNull)
+                    showDetailNodeProperty().bind(licenseList.selectionModel.selectedBinding)
                     masterNode = licenseList
                     detailNode =
                         ktfx.jfoenix.layouts.jfxTextArea {
@@ -146,13 +141,13 @@ class AboutDialog(context: Context) :
         runLater {
             dialogPane.run {
                 val detailsButton = find<Hyperlink>(".details-button")
-                detailsButton.text = getString(R.string__open_source_license_show)
+                detailsButton.text = getString(R.string_show_open_source_licenses)
                 expandedProperty().listener { _, _, isExpanded ->
                     detailsButton.text =
                         getString(
                             when {
-                                isExpanded -> R.string__open_source_license_hide
-                                else -> R.string__open_source_license_show
+                                isExpanded -> R.string_hide_open_source_licenses
+                                else -> R.string_show_open_source_licenses
                             },
                         )
                 }

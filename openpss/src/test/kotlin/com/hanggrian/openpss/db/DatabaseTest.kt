@@ -5,7 +5,6 @@ package com.hanggrian.openpss.db
 import com.hanggrian.openpss.db.schemas.Employee
 import com.hanggrian.openpss.io.properties.LoginFile
 import kotlinx.coroutines.runBlocking
-import org.apache.log4j.BasicConfigurator
 import kotlin.test.Ignore
 import kotlin.test.Test
 
@@ -17,7 +16,6 @@ class DatabaseTest {
             return
         }
         runBlocking {
-            BasicConfigurator.configure()
             try {
                 login(
                     LoginFile.DB_HOST,
@@ -27,7 +25,6 @@ class DatabaseTest {
                     Employee.BACKDOOR.name,
                     Employee.BACKDOOR.password,
                 )
-                println(dbDateTime)
             } catch (e: Exception) {
                 e.printStackTrace()
                 error(e.message.toString())

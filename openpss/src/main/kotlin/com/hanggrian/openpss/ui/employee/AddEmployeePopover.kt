@@ -1,3 +1,5 @@
+@file:Suppress("ktlint:rulebook:if-else-flattening")
+
 package com.hanggrian.openpss.ui.employee
 
 import com.hanggrian.openpss.Context
@@ -9,23 +11,22 @@ import javafx.beans.binding.BooleanBinding
 import ktfx.controlsfx.controls.registerPredicateValidator
 import org.controlsfx.validation.Severity
 
-class AddEmployeePopover : InputPopover {
-    private val restrictiveInput: Boolean
-
-    constructor(context: Context, titleId: String, restrictiveInput: Boolean = true) :
-        super(context, titleId) {
-        this.restrictiveInput = restrictiveInput
-        if (!restrictiveInput) {
-            return
-        }
-        editor.registerPredicateValidator<String>(
-            getString(R.string_name_doesnt_start_with_uppercase_letter_add_anyway),
-            Severity.WARNING,
-            false,
-        ) { _ ->
-            editor.text
-                .split(' ')
-                .none { s -> s.firstOrNull().let { it == null || it.isLowerCase() } }
+class AddEmployeePopover(
+    context: Context,
+    titleId: String,
+    private val restrictiveInput: Boolean = true,
+) : InputPopover(context, titleId) {
+    init {
+        if (restrictiveInput) {
+            editor.registerPredicateValidator<String>(
+                getString(R.string__restrictive_input),
+                Severity.WARNING,
+                false,
+            ) { _ ->
+                editor.text
+                    .split(' ')
+                    .none { s -> s.firstOrNull().let { it == null || it.isLowerCase() } }
+            }
         }
     }
 

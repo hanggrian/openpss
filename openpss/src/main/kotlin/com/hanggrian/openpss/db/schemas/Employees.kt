@@ -45,8 +45,9 @@ data class Employee(override var name: String, var password: String, var isAdmin
 
     companion object {
         const val DEFAULT_PASSWORD = "1234"
-        val BACKDOOR: Employee = Employee("Test", DEFAULT_PASSWORD, true)
+        val BACKDOOR = Employee("Test", DEFAULT_PASSWORD, true)
+        val NONE = Employee("\u2013", "", false)
 
-        fun new(name: String): Employee = Employee(name, DEFAULT_PASSWORD, false)
+        fun new(name: String) = Employee(name, DEFAULT_PASSWORD, false)
     }
 }

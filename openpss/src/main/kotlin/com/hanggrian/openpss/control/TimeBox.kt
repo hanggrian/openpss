@@ -28,9 +28,9 @@ open class TimeBox
     @JvmOverloads
     constructor(prefill: LocalTime = MIDNIGHT) :
     KtfxHBox(0.0) {
-        lateinit var picker: JFXTimePicker
-        var previousButton: Button
-        var nextButton: Button
+        val picker: JFXTimePicker
+        val previousButton: Button
+        val nextButton: Button
         var onOverlap: ((Boolean) -> Unit)? = null
 
         val valueProperty: ObjectProperty<LocalTime> = SimpleObjectProperty()
@@ -38,20 +38,7 @@ open class TimeBox
 
         init {
             alignment = CENTER
-            previousButton =
-                styledJfxButton(null, ImageView(R.image_btn_previous), R.style_flat) {
-                    onAction {
-                        picker.value =
-                            when (picker.value.hour) {
-                                0 -> {
-                                    onOverlap?.invoke(false)
-                                    java.time.LocalTime
-                                        .of(23, picker.value.minute, picker.value.second)
-                                }
-                                else -> picker.value.minusHours(1)
-                            }
-                    }
-                }
+            previousButton = styledJfxButton(null, ImageView(R.image_btn_previous), R.style_flat)
             picker =
                 jfxTimePicker {
                     editor.alignment = CENTER
@@ -88,6 +75,18 @@ open class TimeBox
                             }
                     }
                 }
+
+            previousButton.onAction {
+                picker.value =
+                    when (picker.value.hour) {
+                        0 -> {
+                            onOverlap?.invoke(false)
+                            java.time.LocalTime
+                                .of(23, picker.value.minute, picker.value.second)
+                        }
+                        else -> picker.value.minusHours(1)
+                    }
+            }
 
             valueProperty.bind(bindingOf(picker.valueProperty()) { picker.value.toJoda() })
         }

@@ -2,13 +2,13 @@ package com.hanggrian.openpss
 
 import com.hanggrian.openpss.db.schemas.Employee
 import com.hanggrian.openpss.db.schemas.Employees
-import com.hanggrian.openpss.db.schemas.GlobalSetting
 import com.hanggrian.openpss.db.transaction
 import javafx.scene.layout.StackPane
 import javafx.util.StringConverter
 import javafx.util.converter.CurrencyStringConverter
 import javafx.util.converter.NumberStringConverter
 import ktfx.jfoenix.controls.jfxSnackbar
+import ktfx.jfoenix.controls.show
 import java.awt.Desktop
 
 /** Usually being passed around as first constructor of many components. */
@@ -25,20 +25,13 @@ interface Context : Resources {
 
     /** Number decimal with currency prefix string converter. */
     val currencyConverter: StringConverter<Number>
-        get() =
-            CurrencyStringConverter(
-                transaction {
-                    Language
-                        .ofFullCode(findGlobalSettings(GlobalSetting.KEY_LANGUAGE).single().value)
-                        .toLocale()
-                },
-            )
+        get() = CurrencyStringConverter(Language.ofServer().toLocale())
 
     /** Returns [Desktop] instance, may be null if it is unsupported. */
     val desktop: Desktop?
         get() {
             if (!Desktop.isDesktopSupported()) {
-                stack.jfxSnackbar(
+                stack.jfxSnackbar.show(
                     "java.awt.Desktop is not supported.",
                     OpenPssApp.DURATION_SHORT,
                 )

@@ -1,128 +1,131 @@
 /* GLOBAL */
 
 * {
-    -accent: #1e88e5;
-    -accent-light: #6ab7ff;
-    -accent-dark: #005cb2;
+  -accent: #1e88e5;
+  -accent-light: #6ab7ff;
+  -accent-dark: #005cb2;
 
-    -dark: rgba(0.0, 0.0, 0.0, 0.54);
+  -dark: rgba(0.0, 0.0, 0.0, 0.54);
 }
 
 /* OVERRIDING */
 
 .root {
-    -fx-accent: -accent;
-    -fx-focus-color: -accent;
-    -fx-default-button: -accent;
-    -fx-background-color: white;
+  -fx-accent: -accent;
+  -fx-focus-color: -accent;
+  -fx-default-button: -accent;
+  -fx-background-color: white;
 }
 
 .pagination {
-    -fx-page-information-alignment: right;
-    -fx-padding: 0 0 5 0;
+  -fx-page-information-alignment: right;
+  -fx-padding: 0 0 5 0;
 }
 
 .split-pane *.split-pane-divider {
-    -fx-padding: 0 1 0 1;
+  -fx-padding: 0 1 0 1;
 }
 
 .label {
-    -fx-font-family: "Roboto";
+  -fx-font-family: 'Roboto';
 }
 
 /* OVERRIDING JFOENIX */
 
 .jfx-button .jfx-rippler {
-    -jfx-rippler-fill: -accent;
+  -jfx-rippler-fill: -accent;
 }
 
 .jfx-check-box {
-    -jfx-checked-color: -accent;
+  -jfx-checked-color: -accent;
 }
 
 .jfx-combo-box {
-    -jfx-focus-color: -accent;
-    -fx-prompt-text-fill: -dark;
+  -jfx-focus-color: -accent;
+  -fx-prompt-text-fill: -dark;
 }
 
 .jfx-date-picker {
-    -jfx-default-color: -accent;
+  -jfx-default-color: -accent;
 }
 
 .jfx-dialog-overlay-pane {
-    -fx-background-color: -dark;
+  -fx-background-color: -dark;
 }
 
 .jfx-drawer-overlay-pane {
-    -fx-background-color: -dark;
+  -fx-background-color: -dark;
 }
 
 .jfx-hamburger {
-    -fx-spacing: 3;
-    -fx-cursor: hand;
+  -fx-spacing: 3;
+  -fx-cursor: hand;
 }
 .jfx-hamburger StackPane {
-    -fx-pref-height: 3;
-    -fx-background-color: -accent;
+  -fx-pref-height: 3;
+  -fx-background-color: -accent;
 }
 
 .jfx-radio-button {
-    -jfx-selected-color: -accent;
+  -jfx-selected-color: -accent;
 }
 
 .jfx-snackbar-content {
-    -fx-background-color: #323232;
+  -fx-background-color: #323232;
 }
 .jfx-snackbar-toast {
-    -fx-text-fill: white;
+  -fx-text-fill: white;
 }
 .jfx-snackbar-action {
-    -fx-text-fill: -accent;
+  -fx-text-fill: -accent;
 }
 
 .jfx-spinner .arc {
-    -fx-stroke: -accent;
+  -fx-stroke: -accent;
 }
 
 .jfx-tab-pane .tab-header-area .jfx-rippler {
-    -jfx-rippler-fill: -accent;
+  -jfx-rippler-fill: -accent;
 }
 .jfx-tab-pane .tab-header-background {
-    -fx-background-color: transparent;
+  -fx-background-color: transparent;
 }
 .jfx-tab-pane .tab-selected-line {
-    -fx-background-color: -accent;
+  -fx-background-color: -accent;
 }
 .jfx-tab-pane .tab {
-    -fx-padding: 8;
+  -fx-padding: 8;
 }
 .jfx-tab-pane .tab .tab-label {
-    -fx-text-fill: -fx-text-background-color;
+  -fx-text-fill: -fx-text-background-color;
 }
 .jfx-tab-pane .tab:selected .tab-label {
-    -fx-text-fill: -accent;
+  -fx-text-fill: -accent;
+}
+.jfx-tab-pane .depth-container {
+  -fx-effect: none;
 }
 
 .jfx-text-field, .jfx-text-area, .jfx-password-field {
-    -jfx-focus-color: -accent;
-    -fx-prompt-text-fill: -dark;
+  -jfx-focus-color: -accent;
+  -fx-prompt-text-fill: -dark;
 }
 
 .jfx-time-picker {
-    -jfx-default-color: -accent;
+  -jfx-default-color: -accent;
 }
 
 .jfx-toggle-button {
-    -jfx-toggle-color: -accent;
+  -jfx-toggle-color: -accent;
 }
 
 .jfx-tool-bar {
-    -fx-min-height: 50;
-    -fx-pref-height: 50;
-    -fx-max-height: 50;
-    -fx-padding: 0 20 0 20;
+  -fx-min-height: 50;
+  -fx-pref-height: 50;
+  -fx-max-height: 50;
+  -fx-padding: 0 20 0 20;
 }
 .jfx-tool-bar HBox {
-    -fx-alignment: center;
-    -fx-spacing: 20;
+  -fx-alignment: center;
+  -fx-spacing: 20;
 }

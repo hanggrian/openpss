@@ -14,6 +14,7 @@ import ktfx.bindings.booleanBindingBy
 import ktfx.bindings.or
 import ktfx.collections.toObservableList
 import ktfx.jfoenix.controls.jfxSnackbar
+import ktfx.jfoenix.controls.show
 import ktfx.jfoenix.layouts.jfxComboBox
 import ktfx.jfoenix.layouts.jfxPasswordField
 import ktfx.layouts.gridPane
@@ -33,8 +34,8 @@ abstract class Action<T>(private val context: Context, private val requireAdmin:
                     PermissionDialog(context).show { admin ->
                         when (admin) {
                             null ->
-                                stack.jfxSnackbar(
-                                    getString(R.string_invalid_password),
+                                stack.jfxSnackbar.show(
+                                    getString(R.string__permission_required),
                                     OpenPssApp.DURATION_SHORT,
                                 )
                             else -> transaction { block(handle()) }
@@ -56,7 +57,7 @@ abstract class Action<T>(private val context: Context, private val requireAdmin:
                 hgap = getDouble(R.dimen_padding_medium)
                 vgap = getDouble(R.dimen_padding_medium)
                 label {
-                    text = getString(R.string_permission_required)
+                    text = getString(R.string__permission_required)
                 }.grid(0, 0 to 2)
                 label(getString(R.string_admin)).grid(1, 0)
                 adminCombo =

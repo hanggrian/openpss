@@ -85,9 +85,11 @@ class SettingsDialog(context: Context) : Dialog(context, R.string_settings) {
                             languageBox =
                                 jfxComboBox(Language.entries.toObservableList()) {
                                     converter =
-                                        buildStringConverter { toString { it!!.toString(true) } }
+                                        buildStringConverter {
+                                            toString { it!!.toStringWithCurrency() }
+                                        }
                                     selectionModel.select(
-                                        Language.ofFullCode(
+                                        Language.ofCode(
                                             findGlobalSettings(KEY_LANGUAGE).single().value,
                                         ),
                                     )
@@ -129,7 +131,7 @@ class SettingsDialog(context: Context) : Dialog(context, R.string_settings) {
                         transaction {
                             findGlobalSettings(KEY_LANGUAGE)
                                 .projection { value }
-                                .update(languageBox.value.fullCode)
+                                .update(languageBox.value.code)
                             findGlobalSettings(KEY_INVOICE_HEADERS)
                                 .projection { value }
                                 .update(invoiceHeadersArea.text.trim().replace("\n", "|"))

@@ -24,33 +24,31 @@ import org.joda.time.LocalDate.now
  * [DateBox] width is deliberately measured to match [com.hanggrian.scene.layout.TimeBox]'s
  * width.
  */
-open class DateBox
-    @JvmOverloads
-    constructor(prefill: LocalDate = now()) : KtfxHBox(0.0) {
-        lateinit var picker: DatePicker
-        var previousButton: Button
-        var nextButton: Button
+open class DateBox(prefill: LocalDate = now()) : KtfxHBox(0.0) {
+    val picker: DatePicker
+    val previousButton: Button
+    val nextButton: Button
 
-        val valueProperty: ObjectProperty<LocalDate> = SimpleObjectProperty()
-        val value: LocalDate? by valueProperty
+    val valueProperty: ObjectProperty<LocalDate> = SimpleObjectProperty()
+    val value: LocalDate? by valueProperty
 
-        init {
-            alignment = CENTER
-            previousButton =
-                styledJfxButton(null, ImageView(R.image_btn_previous), R.style_flat) {
-                    onAction { picker.value = picker.value.minusDays(1) }
-                }
-            picker =
-                jfxDatePicker {
-                    editor.alignment = CENTER
-                    value = prefill.toJava()
-                    isEditable = false
-                    maxWidth = 116.0
-                }
-            nextButton =
-                styledJfxButton(null, ImageView(R.image_btn_next), R.style_flat) {
-                    onAction { picker.value = picker.value.plusDays(1) }
-                }
-            valueProperty.bind(bindingOf(picker.valueProperty()) { picker.value.toJoda() })
-        }
+    init {
+        alignment = CENTER
+        previousButton = styledJfxButton(null, ImageView(R.image_btn_previous), R.style_flat)
+        picker =
+            jfxDatePicker {
+                editor.alignment = CENTER
+                value = prefill.toJava()
+                isEditable = false
+                maxWidth = 116.0
+            }
+        nextButton =
+            styledJfxButton(null, ImageView(R.image_btn_next), R.style_flat) {
+                onAction { picker.value = picker.value.plusDays(1) }
+            }
+
+        previousButton.onAction { picker.value = picker.value.minusDays(1) }
+
+        valueProperty.bind(bindingOf(picker.valueProperty()) { picker.value.toJoda() })
     }
+}

@@ -13,9 +13,6 @@ interface Resources {
 
     val colorResources: Properties
 
-    val language: Language
-        get() = Language.ofCode(resourceBundle.baseBundleName.substringAfter('_'))
-
     fun getString(id: String): String = resourceBundle.getString(id)
 
     fun getString(id: String, vararg args: Any): String = getString(id).format(*args)

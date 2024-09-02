@@ -14,9 +14,16 @@
   fx:id="stack"
   styleClass="white-background">
   <VBox fx:id="vbox">
-    <MenuBar fx:id="menuBar" styleClass="white-background">
-      <Menu mnemonicParsing="false" text="File">
-        <MenuItem mnemonicParsing="false" text="%save_screenshot" onAction="#screenshot">
+    <MenuBar
+      fx:id="menuBar"
+      styleClass="white-background">
+      <Menu
+        mnemonicParsing="false"
+        text="File">
+        <MenuItem
+          mnemonicParsing="false"
+          text="%save_screenshot"
+          onAction="#screenshot">
           <graphic>
             <ImageView>
               <Image url="@/image/menu_save.png"/>
@@ -24,8 +31,15 @@
           </graphic>
         </MenuItem>
       </Menu>
-      <Menu mnemonicParsing="false" fx:id="editMenu" text="Edit">
-        <MenuItem fx:id="undoMenu" mnemonicParsing="false" text="%undo" onAction="#undo">
+      <Menu
+        mnemonicParsing="false"
+        fx:id="editMenu"
+        text="Edit">
+        <MenuItem
+          fx:id="undoMenu"
+          mnemonicParsing="false"
+          text="%undo"
+          onAction="#undo">
           <graphic>
             <ImageView>
               <Image url="@/image/menu_undo.png"/>
@@ -82,12 +96,20 @@
         </JFXButton>
       </leftItems>
       <rightItems>
-        <Label fx:id="totalLabel" styleClass="display"/>
+        <Label
+          fx:id="totalLabel"
+          styleClass="display"/>
       </rightItems>
     </Toolbar>
-    <TreeTableView fx:id="recordTable" showRoot="false" VBox.vgrow="ALWAYS">
+    <TreeTableView
+      fx:id="recordTable"
+      showRoot="false"
+      VBox.vgrow="ALWAYS">
       <columns>
-        <TreeTableColumn fx:id="nameColumn" sortable="false" text="%name"/>
+        <TreeTableColumn
+          fx:id="nameColumn"
+          sortable="false"
+          text="%name"/>
         <TreeTableColumn
           fx:id="startColumn"
           sortable="false"

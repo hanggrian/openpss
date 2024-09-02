@@ -30,6 +30,7 @@ import ktfx.controls.CENTER
 import ktfx.controls.find
 import ktfx.controls.insetsOf
 import ktfx.controls.isSelected
+import ktfx.controls.notSelectedBinding
 import ktfx.coroutines.eventFilter
 import ktfx.coroutines.listener
 import ktfx.coroutines.onAction
@@ -56,9 +57,9 @@ class AttendeePane(context: Context, val attendee: Attendee) :
     KtfxTitledPane(attendee.toString()),
     Context by context {
     val recessChecks: MutableList<CheckBox> = mutableListOf()
-    var deleteMenu: MenuItem
-    var deleteOthersMenu: MenuItem
-    var deleteToTheRightMenu: MenuItem
+    val deleteMenu: MenuItem
+    val deleteOthersMenu: MenuItem
+    val deleteToTheRightMenu: MenuItem
     lateinit var attendanceList: ListView<DateTime>
 
     init {
@@ -194,17 +195,16 @@ class AttendeePane(context: Context, val attendee: Attendee) :
             getString(R.string_add)(ImageView(R.image_menu_add)) {
                 onAction { addAttendance() }
             }
-            separatorMenuItem()
             getString(R.string_copy)(ImageView(R.image_menu_copy)) {
-                disableProperty().bind(attendanceList.selectionModel.selectedItemProperty().isNull)
+                disableProperty().bind(attendanceList.selectionModel.notSelectedBinding)
                 onAction { copyAttendance() }
             }
             getString(R.string_edit)(ImageView(R.image_menu_edit)) {
-                disableProperty().bind(!attendanceList.selectionModel.selectedItemProperty().isNull)
+                disableProperty().bind(attendanceList.selectionModel.notSelectedBinding)
                 onAction { editAttendance() }
             }
             getString(R.string_delete)(ImageView(R.image_menu_delete)) {
-                disableProperty().bind(!attendanceList.selectionModel.selectedItemProperty().isNull)
+                disableProperty().bind(attendanceList.selectionModel.notSelectedBinding)
                 onAction { attendanceList.items.remove(attendanceList.selectionModel.selectedItem) }
             }
             separatorMenuItem()

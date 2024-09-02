@@ -9,6 +9,7 @@ import javafx.beans.value.ObservableValue
 import kotlinx.nosql.equal
 import kotlinx.nosql.update
 import ktfx.cells.textFieldCellFactory
+import ktfx.controls.TableColumnScope
 import ktfx.coroutines.onEditCommit
 import ktfx.doublePropertyOf
 import ktfx.intPropertyOf
@@ -16,8 +17,10 @@ import ktfx.text.buildStringConverter
 
 class EditOffsetPrintPriceDialog(context: Context) :
     EditPriceDialog<OffsetPrice, OffsetPrices>(context, R.string_offset_print_price, OffsetPrices) {
-    init {
-        getString(R.string_min_qty)<Int> {
+    override fun onColumns(columns: TableColumnScope<OffsetPrice>) {
+        super.onColumns(columns)
+
+        columns.append<Int>(getString(R.string_min_qty)) {
             style = "-fx-alignment: center-right;"
             setCellValueFactory {
                 intPropertyOf(it.value.minQty) as ObservableValue<Int>
@@ -32,8 +35,7 @@ class EditOffsetPrintPriceDialog(context: Context) :
                 cell.rowValue.minQty = cell.newValue
             }
         }
-
-        getString(R.string_min_price)<Double> {
+        columns.append<Double>(getString(R.string_min_price)) {
             style = "-fx-alignment: center-right;"
             setCellValueFactory {
                 doublePropertyOf(it.value.minPrice) as ObservableValue<Double>
@@ -48,8 +50,7 @@ class EditOffsetPrintPriceDialog(context: Context) :
                 cell.rowValue.minPrice = cell.newValue
             }
         }
-
-        getString(R.string_excess_price)<Double> {
+        columns.append<Double>(getString(R.string_excess_price)) {
             style = "-fx-alignment: center-right;"
             setCellValueFactory {
                 doublePropertyOf(it.value.excessPrice) as ObservableValue<Double>

@@ -1,7 +1,6 @@
 package com.hanggrian.openpss.db.schemas
 
 import com.hanggrian.openpss.db.Document
-import com.hanggrian.openpss.db.dbDateTime
 import kotlinx.nosql.Id
 import kotlinx.nosql.dateTime
 import kotlinx.nosql.double
@@ -35,11 +34,11 @@ data class Payment(
             employeeId: Id<String, Employees>,
             value: Double,
             reference: String?,
-        ): Payment = Payment(invoiceId, employeeId, dbDateTime, value, reference)
+        ) = Payment(invoiceId, employeeId, DateTime.now(), value, reference)
 
         fun gather(payments: List<Payment>, isCash: Boolean) =
             payments
                 .filter { it.isCash() == isCash }
-                .sumByDouble { it.value }
+                .sumOf { it.value }
     }
 }

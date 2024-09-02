@@ -83,7 +83,15 @@ class WageController : ActionController() {
         saveWageButton =
             styledJfxButton(null, ImageView(R.image_act_save), R.style_flat) {
                 tooltip(getString(R.string_save_wage))
-                onAction { saveWage() }
+                disableProperty().bind(flowPane.children.emptyBinding)
+                onAction {
+                    saveWage()
+                    TextDialog(
+                        this@WageController,
+                        R.string_save_wage,
+                        getString(R.string__wage_saved),
+                    ).show()
+                }
             }
         historyButton =
             styledJfxButton(null, ImageView(R.image_act_history), R.style_flat) {
@@ -123,7 +131,8 @@ class WageController : ActionController() {
 
     @FXML
     fun process() =
-        stage(getString(R.string_wage_record)) {
+        stage {
+            title = getString(R.string_wage_record)
             val loader = FXMLLoader(getResource(R.layout_controller_wage_record), resourceBundle)
             scene {
                 stylesheets += STYLESHEET_OPENPSS
@@ -140,9 +149,13 @@ class WageController : ActionController() {
 
     private fun browse() =
         anchorPane.scene.window
-            .chooseFile(
-                ExtensionFilter(getString(R.string_input_file), *Reader.of(WAGE_READER).extensions),
-            )?.let { file -> (ReadWageAction(this)) { read(file) } }
+            .chooseFile {
+                extensionFilters +=
+                    ExtensionFilter(
+                        getString(R.string_input_file),
+                        *Reader.of(WAGE_READER).extensions,
+                    )
+            }?.let { file -> (ReadWageAction(this)) { read(file) } }
 
     private fun read(file: File) {
         filePath = file.absolutePath
@@ -170,7 +183,7 @@ class WageController : ActionController() {
                                     onAction {
                                         flowPane.children -=
                                             flowPane.children
-                                                .toMutableList()
+                                                .toMutableSet()
                                                 .also { it -= this@apply }
                                         bindProcessButton()
                                     }
@@ -184,11 +197,10 @@ class WageController : ActionController() {
                                     onAction {
                                         flowPane.children -=
                                             flowPane.children
-                                                .toList()
                                                 .takeLast(
                                                     flowPane.children.lastIndex -
                                                         flowPane.children.indexOf(this@apply),
-                                                )
+                                                ).toSet()
                                         bindProcessButton()
                                     }
                                 }

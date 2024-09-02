@@ -13,6 +13,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.javafx.JavaFx
 import kotlinx.coroutines.launch
 import ktfx.jfoenix.controls.jfxSnackbar
+import ktfx.jfoenix.controls.show
 import okhttp3.OkHttpClient
 import org.apache.maven.artifact.versioning.ComparableVersion
 import retrofit2.Retrofit
@@ -31,7 +32,7 @@ interface GitHubApi {
         private const val END_POINT = "https://api.github.com"
         private const val TIMEOUT = 5L
 
-        private fun create(): GitHubApi =
+        private fun create() =
             Retrofit
                 .Builder()
                 .client(
@@ -59,9 +60,9 @@ interface GitHubApi {
                     GlobalScope.launch(Dispatchers.JavaFx) {
                         when {
                             release.isNewer() ->
-                                context.stack.jfxSnackbar(
+                                context.stack.jfxSnackbar.show(
                                     context.getString(
-                                        R.string_openpss_is_available,
+                                        R.string__update_available,
                                         release.version,
                                     ),
                                     OpenPssApp.DURATION_LONG,
@@ -72,9 +73,9 @@ interface GitHubApi {
                                     }
                                 }
                             else ->
-                                context.stack.jfxSnackbar(
+                                context.stack.jfxSnackbar.show(
                                     context.getString(
-                                        R.string_openpss_is_currently_the_newest_version_available,
+                                        R.string__update_unavailable,
                                         BuildConfig.VERSION,
                                     ),
                                     OpenPssApp.DURATION_SHORT,
@@ -84,8 +85,8 @@ interface GitHubApi {
                 } catch (e: Exception) {
                     if (BuildConfig.DEBUG) e.printStackTrace()
                     GlobalScope.launch(Dispatchers.JavaFx) {
-                        context.stack.jfxSnackbar(
-                            context.getString(R.string_no_internet_connection),
+                        context.stack.jfxSnackbar.show(
+                            context.getString(R.string__no_internet),
                             OpenPssApp.DURATION_SHORT,
                         )
                     }

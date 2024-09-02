@@ -3,7 +3,6 @@ package com.hanggrian.openpss.ui.invoice
 import com.hanggrian.openpss.Context
 import com.hanggrian.openpss.PATTERN_DATE
 import com.hanggrian.openpss.R
-import com.hanggrian.openpss.db.dbDateTime
 import com.hanggrian.openpss.db.schemas.Customer
 import com.hanggrian.openpss.db.schemas.Invoice
 import com.hanggrian.openpss.popup.dialog.ResultableDialog
@@ -38,12 +37,13 @@ import ktfx.controls.H_RIGHT
 import ktfx.controls.TableColumnScope
 import ktfx.controls.columns
 import ktfx.controls.isSelected
+import ktfx.controls.notSelectedBinding
 import ktfx.coroutines.onAction
 import ktfx.coroutines.onKeyPressed
 import ktfx.coroutines.onMouseClicked
 import ktfx.inputs.isDelete
 import ktfx.jfoenix.layouts.jfxTextField
-import ktfx.jfoenix.layouts.styledJfxButton
+import ktfx.jfoenix.layouts.styledJfxTabPane
 import ktfx.layouts.NodeContainer
 import ktfx.layouts.contextMenu
 import ktfx.layouts.gridPane
@@ -55,17 +55,18 @@ import ktfx.layouts.tableView
 import ktfx.layouts.textArea
 import ktfx.runLater
 import ktfx.text.invoke
+import org.joda.time.DateTime
 
 class AddInvoiceDialog(context: Context) :
     ResultableDialog<Invoice>(context, R.string_add_invoice) {
-    private var customerField: TextField
+    private val customerField: TextField
+    private val noteArea: TextArea
     private lateinit var offsetTable: TableView<Invoice.OffsetJob>
     private lateinit var digitalTable: TableView<Invoice.DigitalJob>
     private lateinit var plateTable: TableView<Invoice.PlateJob>
     private lateinit var otherTable: TableView<Invoice.OtherJob>
-    private var noteArea: TextArea
 
-    private val dateTime = dbDateTime
+    private val dateTime = DateTime.now()
     private val customerProperty = SimpleObjectProperty<Customer>(null)
     private val totalProperty = SimpleDoubleProperty()
 
@@ -102,22 +103,22 @@ class AddInvoiceDialog(context: Context) :
                 }.grid(1, 1)
             label(getString(R.string_jobs))
                 .grid(2, 0)
-            styledJfxButton(styleClass = arrayOf(R.style_jfx_tab_pane_small)) {
+            styledJfxTabPane(styleClass = arrayOf(R.style_jfx_tab_pane_small)) {
                 tab {
                     digitalTable =
                         invoiceTableView({ AddDigitalJobPopover(this@AddInvoiceDialog) }) {
                             bindTitle(this, R.string_digital)
                             columns {
-                                append<Invoice.DigitalJob, String>(R.string_qty, 72) {
+                                append(R.string_qty, 72) {
                                     numberCell(this@AddInvoiceDialog) { qty }
                                 }
-                                append<Invoice.DigitalJob, String>(R.string_type, 72) {
+                                append(R.string_type, 72) {
                                     stringCell { type }
                                 }
-                                append<Invoice.DigitalJob, String>(R.string_description, 264) {
+                                append(R.string_description, 264) {
                                     stringCell { desc }
                                 }
-                                append<Invoice.DigitalJob, String>(R.string_total, 156) {
+                                append(R.string_total, 156) {
                                     currencyCell(this@AddInvoiceDialog) { total }
                                 }
                             }
@@ -128,19 +129,19 @@ class AddInvoiceDialog(context: Context) :
                         invoiceTableView({ AddOffsetJobPopover(this@AddInvoiceDialog) }) {
                             bindTitle(this, R.string_offset)
                             columns {
-                                append<Invoice.OffsetJob, String>(R.string_qty, 72) {
+                                append(R.string_qty, 72) {
                                     numberCell(this@AddInvoiceDialog) { qty }
                                 }
-                                append<Invoice.OffsetJob, String>(R.string_type, 72) {
+                                append(R.string_type, 72) {
                                     stringCell { type }
                                 }
-                                append<Invoice.OffsetJob, String>(R.string_technique, 72) {
+                                append(R.string_technique, 72) {
                                     stringCell { typedTechnique.toString(this@AddInvoiceDialog) }
                                 }
-                                append<Invoice.OffsetJob, String>(R.string_description, 192) {
+                                append(R.string_description, 192) {
                                     stringCell { desc }
                                 }
-                                append<Invoice.OffsetJob, String>(R.string_total, 156) {
+                                append(R.string_total, 156) {
                                     currencyCell(this@AddInvoiceDialog) { total }
                                 }
                             }
@@ -151,16 +152,16 @@ class AddInvoiceDialog(context: Context) :
                         invoiceTableView({ AddPlateJobPopover(this@AddInvoiceDialog) }) {
                             bindTitle(this, R.string_plate)
                             columns {
-                                append<Invoice.PlateJob, String>(R.string_qty, 72) {
+                                append(R.string_qty, 72) {
                                     numberCell(this@AddInvoiceDialog) { qty }
                                 }
-                                append<Invoice.PlateJob, String>(R.string_type, 72) {
+                                append(R.string_type, 72) {
                                     stringCell { type }
                                 }
-                                append<Invoice.PlateJob, String>(R.string_description, 264) {
+                                append(R.string_description, 264) {
                                     stringCell { desc }
                                 }
-                                append<Invoice.PlateJob, String>(R.string_total, 156) {
+                                append(R.string_total, 156) {
                                     currencyCell(this@AddInvoiceDialog) { total }
                                 }
                             }
@@ -171,13 +172,13 @@ class AddInvoiceDialog(context: Context) :
                         invoiceTableView({ AddOtherJobPopover(this@AddInvoiceDialog) }) {
                             bindTitle(this, R.string_others)
                             columns {
-                                append<Invoice.OtherJob, String>(R.string_qty, 72) {
+                                append(R.string_qty, 72) {
                                     numberCell(this@AddInvoiceDialog) { qty }
                                 }
-                                append<Invoice.OtherJob, String>(R.string_description, 336) {
+                                append(R.string_description, 336) {
                                     stringCell { desc }
                                 }
-                                append<Invoice.OtherJob, String>(R.string_total, 156) {
+                                append(R.string_total, 156) {
                                     currencyCell(this@AddInvoiceDialog) { total }
                                 }
                             }
@@ -191,10 +192,10 @@ class AddInvoiceDialog(context: Context) :
                     plateTable.items,
                     otherTable.items,
                 ) {
-                    offsetTable.items.sumByDouble { it.total } +
-                        digitalTable.items.sumByDouble { it.total } +
-                        plateTable.items.sumByDouble { it.total } +
-                        otherTable.items.sumByDouble { it.total }
+                    offsetTable.items.sumOf { it.total } +
+                        digitalTable.items.sumOf { it.total } +
+                        plateTable.items.sumOf { it.total } +
+                        otherTable.items.sumOf { it.total }
                 },
             )
             label(getString(R.string_note))
@@ -247,8 +248,7 @@ class AddInvoiceDialog(context: Context) :
             separatorMenuItem()
             getString(R.string_delete)(ImageView(R.image_menu_delete)) {
                 runLater {
-                    disableProperty()
-                        .bind(this@tableView.selectionModel.selectedItemProperty().isNull)
+                    disableProperty().bind(this@tableView.selectionModel.notSelectedBinding)
                 }
                 onAction {
                     this@tableView.items.remove(this@tableView.selectionModel.selectedItem)

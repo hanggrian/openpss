@@ -16,9 +16,12 @@ import kotlinx.nosql.notEqual
 import ktfx.bindings.bindingOf
 import ktfx.bindings.stringBindingOf
 import ktfx.collections.toMutableObservableList
+import ktfx.controls.TableColumnScope
 import ktfx.controls.isSelected
+import ktfx.controls.notSelectedBinding
 import ktfx.coroutines.onAction
 import ktfx.jfoenix.controls.jfxSnackbar
+import ktfx.jfoenix.controls.show
 import ktfx.layouts.contextMenu
 import ktfx.layouts.menuItem
 import ktfx.layouts.separatorMenuItem
@@ -26,8 +29,6 @@ import ktfx.layouts.separatorMenuItem
 class EditEmployeeDialog(context: Context) :
     TableDialog<Employee, Employees>(context, R.string_employee, Employees) {
     init {
-        getString(R.string_name).invoke { stringCell { name } }
-        getString(R.string_admin).invoke { doneCell { isAdmin } }
         table.contextMenu {
             menuItem {
                 textProperty().bind(
@@ -78,17 +79,21 @@ class EditEmployeeDialog(context: Context) :
                         this@EditEmployeeDialog,
                         table.selectionModel.selectedItem,
                     ).invoke {
-                        stack.jfxSnackbar(
-                            getString(
-                                R.string_change_password_popup_will_appear_when_is_logged_back_in,
-                                login.name,
-                            ),
+                        stack.jfxSnackbar.show(
+                            getString(R.string__password_reset, login.name),
                             OpenPssApp.DURATION_LONG,
                         )
                     }
                 }
             }
         }
+    }
+
+    override fun onColumns(columns: TableColumnScope<Employee>) {
+        super.onColumns(columns)
+
+        columns.append(getString(R.string_name)) { stringCell { name } }
+        columns.append(getString(R.string_admin)) { doneCell { isAdmin } }
     }
 
     override fun refresh() {
@@ -113,5 +118,5 @@ class EditEmployeeDialog(context: Context) :
         }
 
     private fun MenuItem.bindDisable() =
-        disableProperty().bind(table.selectionModel.selectedItemProperty().isNull)
+        disableProperty().bind(table.selectionModel.notSelectedBinding)
 }

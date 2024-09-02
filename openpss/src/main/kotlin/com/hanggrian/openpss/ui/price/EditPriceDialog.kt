@@ -13,13 +13,15 @@ import com.hanggrian.openpss.util.isNotEmpty
 import com.hanggrian.openpss.util.stringCell
 import kotlinx.nosql.equal
 import kotlinx.nosql.mongodb.DocumentSchema
+import ktfx.controls.TableColumnScope
 import ktfx.jfoenix.controls.jfxSnackbar
+import ktfx.jfoenix.controls.show
 
 abstract class EditPriceDialog<D, S>(context: Context, headerId: String, schema: S) :
     TableDialog<D, S>(context, headerId, schema)
     where D : Document<S>, D : Named, S : DocumentSchema<D>, S : NamedSchema {
-    init {
-        getString(R.string_name).invoke {
+    override fun onColumns(columns: TableColumnScope<D>) {
+        columns.append(getString(R.string_name)) {
             minWidth = 96.0
             stringCell { name }
         }
@@ -39,7 +41,8 @@ abstract class EditPriceDialog<D, S>(context: Context, headerId: String, schema:
             transaction {
                 when {
                     schema { it.name.equal(name) }.isNotEmpty() ->
-                        stack.jfxSnackbar(getString(R.string_name_taken), OpenPssApp.DURATION_SHORT)
+                        stack.jfxSnackbar
+                            .show(getString(R.string_name_taken), OpenPssApp.DURATION_SHORT)
                     else -> {
                         val price = newPrice(name!!)
                         price.id = schema.insert(price)

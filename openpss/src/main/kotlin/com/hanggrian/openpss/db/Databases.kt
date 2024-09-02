@@ -24,9 +24,6 @@ import kotlinx.coroutines.withContext
 import kotlinx.nosql.equal
 import kotlinx.nosql.mongodb.MongoDB
 import ktfx.dialogs.errorAlert
-import org.joda.time.DateTime
-import org.joda.time.LocalDate
-import org.joda.time.LocalTime
 
 private lateinit var database: MongoDB
 private val TABLES =
@@ -76,13 +73,13 @@ suspend fun login(
     database = connect(host, port, user, password)
     transaction {
         // check first time installation
-        TABLES.mapNotNull { it as? Setupable }.forEach { it.setup(this) }
+        TABLES.forEach { (it as? Setupable)?.setup(this) }
         // check login credentials
         employee =
             checkNotNull(Employees { it.name.equal(employeeName) }.singleOrNull()) {
-                "Employee not found"
+                "Employee not found."
             }
-        check(employee.password == employeePassword) { "Invalid password" }
+        check(employee.password == employeePassword) { "Invalid password." }
     }
     employee.clearPassword()
     return employee
@@ -99,14 +96,3 @@ private suspend fun connect(host: String, port: Int, user: String, password: Str
             TABLES,
         )
     }
-
-/** Date and time new server. */
-val dbDateTime: DateTime get() = DateTime(evalDate)
-
-/** Local date new server. */
-val dbDate: LocalDate get() = LocalDate.fromDateFields(evalDate)
-
-/** Local time new server. */
-val dbTime: LocalTime get() = LocalTime.fromDateFields(evalDate)
-
-private val evalDate get() = database.db.doEval("new Date()").getDate("retval")

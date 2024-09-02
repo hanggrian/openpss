@@ -3,8 +3,6 @@ package com.hanggrian.openpss.ui.customer
 import com.hanggrian.openpss.Context
 import com.hanggrian.openpss.R
 import com.hanggrian.openpss.db.schemas.Customer
-import com.hanggrian.openpss.db.schemas.Customer.Contact.Type.PHONE
-import com.hanggrian.openpss.db.schemas.Customer.Contact.Type.entries
 import com.hanggrian.openpss.popup.popover.ResultablePopover
 import javafx.scene.Node
 import javafx.scene.control.ComboBox
@@ -20,8 +18,8 @@ import org.apache.commons.validator.routines.EmailValidator
 
 class AddContactPopover(context: Context) :
     ResultablePopover<Customer.Contact>(context, R.string_add_contact) {
-    private var typeChoice: ComboBox<Customer.Contact.Type>
-    private var contactField: TextField
+    private val typeChoice: ComboBox<Customer.Contact.Type>
+    private val contactField: TextField
 
     init {
         gridPane {
@@ -30,9 +28,10 @@ class AddContactPopover(context: Context) :
             label(getString(R.string_type))
                 .grid(0, 0)
             typeChoice =
-                jfxComboBox(entries.toObservableList()) {
+                jfxComboBox(Customer.Contact.Type.entries.toObservableList()) {
                     converter =
                         buildStringConverter { toString { it!!.toString(this@AddContactPopover) } }
+                    selectionModel.selectFirst()
                 }.grid(0, 1)
             label(getString(R.string_contact))
                 .grid(1, 0)
@@ -46,7 +45,7 @@ class AddContactPopover(context: Context) :
                 booleanBindingOf(typeChoice.valueProperty(), contactField.textProperty()) {
                     when (typeChoice.value) {
                         null -> true
-                        PHONE ->
+                        Customer.Contact.Type.PHONE ->
                             contactField.text.isBlank() ||
                                 !contactField.text.matches(REGEX_PHONE)
                         else ->

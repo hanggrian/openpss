@@ -33,6 +33,6 @@ data class OffsetPrice(
     override fun toString(): String = name
 
     companion object {
-        fun new(name: String): OffsetPrice = OffsetPrice(name, 1000, 0.0, 0.0)
+        fun new(name: String) = OffsetPrice(name, 1000, 0.0, 0.0)
     }
 }

@@ -11,15 +11,16 @@ import com.hanggrian.openpss.db.schemas.Payment
 import com.hanggrian.openpss.db.schemas.Payments
 import com.hanggrian.openpss.db.transaction
 import com.hanggrian.openpss.io.properties.PreferencesFile
-import com.hanggrian.openpss.popup.popover.ViewInvoicePopover
 import com.hanggrian.openpss.ui.ActionController
 import com.hanggrian.openpss.ui.Refreshable
+import com.hanggrian.openpss.ui.invoice.ViewInvoicePopover
 import com.hanggrian.openpss.util.currencyCell
 import com.hanggrian.openpss.util.doneCell
 import com.hanggrian.openpss.util.matches
 import com.hanggrian.openpss.util.numberCell
 import com.hanggrian.openpss.util.stringCell
 import com.hanggrian.openpss.util.toJava
+import com.jfoenix.effects.JFXDepthManager
 import javafx.beans.binding.When
 import javafx.fxml.FXML
 import javafx.scene.Node
@@ -33,6 +34,7 @@ import javafx.scene.layout.BorderPane
 import ktfx.bindings.eq
 import ktfx.collections.toMutableObservableList
 import ktfx.controls.isSelected
+import ktfx.controls.notSelectedBinding
 import ktfx.coroutines.listener
 import ktfx.coroutines.onAction
 import ktfx.coroutines.onMouseClicked
@@ -123,6 +125,7 @@ class FinanceController :
 
     override fun initialize(location: URL, resources: ResourceBundle) {
         super.initialize(location, resources)
+        JFXDepthManager.setDepth(tabPane, 0)
         switchablePane.centerProperty().bind(
             When(tabPane.selectionModel.selectedIndexProperty() eq 0)
                 .then<Node>(dateBox)
@@ -131,13 +134,20 @@ class FinanceController :
 
         dailyNoColumn.numberCell(this) { transaction { Invoices[invoiceId].single().no } }
         dailyTimeColumn.stringCell { dateTime.toString(PATTERN_TIME) }
-        dailyEmployeeColumn.stringCell { transaction { Employees[employeeId].single().toString() } }
+        dailyEmployeeColumn.stringCell {
+            transaction {
+                Employees[employeeId]
+                    .singleOrNull()
+                    ?.toString()
+                    .orEmpty()
+            }
+        }
         dailyValueColumn.currencyCell(this) { value }
         dailyCashColumn.doneCell { isCash() }
         dailyReferenceColumn.stringCell { reference }
         viewInvoiceItem
             .disableProperty()
-            .bind(dailyTable.selectionModel.selectedItemProperty().isNull)
+            .bind(dailyTable.selectionModel.notSelectedBinding)
         dailyTable.onMouseClicked {
             if (it.isDoubleClick() && dailyTable.selectionModel.isSelected()) {
                 viewInvoice()
@@ -150,7 +160,7 @@ class FinanceController :
         monthlyTotalColumn.currencyCell(this) { total }
         viewPaymentsItem
             .disableProperty()
-            .bind(monthlyTable.selectionModel.selectedItemProperty().isNull)
+            .bind(monthlyTable.selectionModel.notSelectedBinding)
         monthlyTable.onMouseClicked {
             if (it.isDoubleClick() && monthlyTable.selectionModel.isSelected()) {
                 viewPayments()
@@ -200,7 +210,7 @@ class FinanceController :
         when (tabPane.selectionModel.selectedIndex) {
             0 -> Payment.gather(dailyTable.items, isCash)
             else ->
-                monthlyTable.items.sumByDouble {
+                monthlyTable.items.sumOf {
                     when {
                         isCash -> it.cash
                         else -> it.nonCash
